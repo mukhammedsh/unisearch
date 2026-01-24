@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Университеты | UniSearch</title>
 
+  <!-- ваш общий стиль -->
   <link rel="stylesheet" href="style.css" />
+  <!-- стиль именно страницы университетов -->
   <link rel="stylesheet" href="universities.css" />
 </head>
 
 <body data-page="universities">
-  <!-- Navbar (как у тебя уже есть) -->
+  <!-- Navbar -->
   <header class="navbar">
     <div class="navbar-left">
       <img src="images/logo.jpeg" alt="Логотип" class="logo" />
@@ -28,104 +30,145 @@
     </div>
   </header>
 
-  <main class="uni-page">
-    <div class="uni-container">
-      <!-- LEFT: Filters -->
-      <aside class="filters">
-        <div class="filters__header">
-          <h2>Фильтры</h2>
-          <button class="filters__reset" id="resetFiltersBtn" type="button">Сбросить</button>
+  <main class="u-page">
+    <div class="u-layout">
+      <!-- LEFT: sidebar -->
+      <aside class="u-sidebar">
+        <div class="u-tabs">
+          <button class="u-tab u-tab--active" type="button">Зарубежные</button>
+          <button class="u-tab" type="button">Местные (РК)</button>
+          <button class="u-tab" type="button">Сп. местные</button>
         </div>
 
-        <div class="filter-block">
-          <label class="filter-label" for="qInput">Поиск</label>
-          <input id="qInput" class="filter-input" type="text" placeholder="Название университета..." />
-        </div>
-
-        <div class="filter-block">
-          <label class="filter-label" for="countrySelect">Страна</label>
-          <select id="countrySelect" class="filter-select">
-            <option value="">Любая</option>
-            <!-- можно заполнять с backend позже -->
-            <option value="Kazakhstan">Kazakhstan</option>
-            <option value="USA">USA</option>
-            <option value="UK">UK</option>
-          </select>
-        </div>
-
-        <div class="filter-block">
-          <label class="filter-label" for="citySelect">Город</label>
-          <select id="citySelect" class="filter-select">
-            <option value="">Любой</option>
-            <option value="Almaty">Almaty</option>
-            <option value="Astana">Astana</option>
-            <option value="London">London</option>
-          </select>
-        </div>
-
-        <div class="filter-block">
-          <label class="filter-label" for="fieldSelect">Направление</label>
-          <select id="fieldSelect" class="filter-select">
-            <option value="">Любое</option>
-            <option value="IT">IT</option>
-            <option value="Business">Business</option>
-            <option value="Medicine">Medicine</option>
-          </select>
-        </div>
-
-        <div class="filter-block">
-          <div class="filter-row">
-            <div class="filter-col">
-              <label class="filter-label" for="minTuitionInput">Мин. цена</label>
-              <input id="minTuitionInput" class="filter-input" type="number" min="0" placeholder="0" />
-            </div>
-            <div class="filter-col">
-              <label class="filter-label" for="maxTuitionInput">Макс. цена</label>
-              <input id="maxTuitionInput" class="filter-input" type="number" min="0" placeholder="100000" />
-            </div>
+        <div class="u-filter-card">
+          <div class="u-filter-title">
+            <span class="u-filter-icon" aria-hidden="true">
+              <!-- filter icon -->
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span>Фильтр</span>
+            <button id="resetFiltersBtn" class="u-reset" type="button">Сбросить</button>
           </div>
-          <div class="filter-hint">Цена/год (пример)</div>
-        </div>
 
-        <div class="filter-block">
-          <label class="filter-label" for="sortSelectMobile">Сортировка</label>
-          <select id="sortSelectMobile" class="filter-select">
-            <option value="rating_desc">По рейтингу ↓</option>
-            <option value="tuition_asc">По цене ↑</option>
-            <option value="tuition_desc">По цене ↓</option>
-            <option value="name_asc">По названию A→Z</option>
-          </select>
-          <div class="filter-hint">На ПК сортировка справа сверху</div>
-        </div>
-      </aside>
+          <div class="u-field">
+            <label class="u-label" for="countrySelect">Страна</label>
+            <select id="countrySelect" class="u-select">
+              <option value="">Все страны</option>
+              <!-- можно расширить вручную -->
+              <option value="USA">USA</option>
+              <option value="Kazakhstan">Kazakhstan</option>
+              <option value="UK">UK</option>
+              <option value="Finland">Finland</option>
+              <option value="UAE">UAE</option>
+            </select>
+          </div>
 
-      <!-- RIGHT: Results -->
-      <section class="results">
-        <div class="results__top">
-          <div>
-            <h1 class="results__title">Университеты</h1>
-            <div class="results__subtitle">
-              Найдено: <span id="totalCount">0</span>
+          <div class="u-field">
+            <label class="u-label" for="citySelect">Город</label>
+            <input id="citySelect" class="u-input" type="text" placeholder="Напр. New York" />
+          </div>
+
+          <div class="u-field">
+            <label class="u-label" for="majorInput">Специальность / Major</label>
+            <input id="majorInput" class="u-input" type="text" placeholder="Напр. Computer Science" />
+          </div>
+
+          <div class="u-field">
+            <label class="u-label" for="studyLevelSelect">Уровень обучения</label>
+            <select id="studyLevelSelect" class="u-select">
+              <option value="">Любой</option>
+              <option value="Bachelor">Bachelor</option>
+              <option value="Master">Master</option>
+              <option value="PhD">PhD</option>
+            </select>
+          </div>
+
+          <div class="u-field">
+            <label class="u-label" for="formatSelect">Формат</label>
+            <select id="formatSelect" class="u-select">
+              <option value="">Любой</option>
+              <option value="On-campus">On-campus</option>
+              <option value="Online">Online</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
+          </div>
+
+          <div class="u-sep"></div>
+
+          <div class="u-field">
+            <label class="u-label">Стоимость в год (USD)</label>
+            <div class="u-two">
+              <input id="minTuitionInput" class="u-input" type="number" min="0" placeholder="min" />
+              <input id="maxTuitionInput" class="u-input" type="number" min="0" placeholder="max" />
             </div>
           </div>
 
-          <div class="results__controls">
-            <select id="sortSelect" class="results__sort">
-              <option value="rating_desc">По рейтингу ↓</option>
-              <option value="tuition_asc">По цене ↑</option>
-              <option value="tuition_desc">По цене ↓</option>
+          <div class="u-field">
+            <label class="u-label">Acceptance rate (%)</label>
+            <div class="u-two">
+              <input id="minAcceptanceInput" class="u-input" type="number" min="0" max="100" placeholder="min" />
+              <input id="maxAcceptanceInput" class="u-input" type="number" min="0" max="100" placeholder="max" />
+            </div>
+          </div>
+
+          <div class="u-field">
+            <label class="u-label">IELTS</label>
+            <div class="u-two">
+              <input id="minIeltsInput" class="u-input" type="number" step="0.5" min="0" max="9" placeholder="min" />
+              <input id="maxIeltsInput" class="u-input" type="number" step="0.5" min="0" max="9" placeholder="max" />
+            </div>
+          </div>
+
+          <div class="u-field">
+            <label class="u-label">GPA</label>
+            <div class="u-two">
+              <input id="minGpaInput" class="u-input" type="number" step="1" min="0" max="100" placeholder="min" />
+              <input id="maxGpaInput" class="u-input" type="number" step="1" min="0" max="100" placeholder="max" />
+            </div>
+          </div>
+
+          <!-- sort (не обязателен в UI, но оставим) -->
+          <div class="u-field">
+            <label class="u-label" for="sortSelect">Сортировка</label>
+            <select id="sortSelect" class="u-select">
               <option value="name_asc">По названию A→Z</option>
+              <option value="tuition_asc">Цена ↑</option>
+              <option value="tuition_desc">Цена ↓</option>
+              <option value="acceptance_asc">Acceptance ↑</option>
+              <option value="acceptance_desc">Acceptance ↓</option>
+              <option value="ielts_desc">IELTS ↓</option>
+              <option value="gpa_desc">GPA ↓</option>
             </select>
           </div>
         </div>
+      </aside>
 
-        <div id="listState" class="list-state"></div>
+      <!-- RIGHT: content -->
+      <section class="u-content">
+        <div class="u-top">
+          <div class="u-search">
+            <span class="u-search-icon" aria-hidden="true">
+              <!-- search icon -->
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <input id="qInput" type="text" placeholder="Университет или специальность" />
+          </div>
 
-        <div id="universitiesList" class="uni-list">
-          <!-- Карточки будут рендериться через JS -->
+          <div class="u-found">
+            Найдено(о) <span id="totalCount">0</span> университетов
+          </div>
         </div>
 
-        <div class="pagination" id="pagination"></div>
+        <div id="listState" class="u-state"></div>
+
+        <div id="universitiesList" class="u-grid"></div>
+
+        <div id="pagination" class="u-pagination"></div>
       </section>
     </div>
   </main>

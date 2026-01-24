@@ -10,6 +10,7 @@
 </head>
 
 <body data-page="university">
+  <!-- Navbar -->
   <header class="navbar">
     <div class="navbar-left">
       <img src="images/logo.jpeg" alt="Логотип" class="logo" />
@@ -27,36 +28,44 @@
     </div>
   </header>
 
-  <main class="uni-detail">
-    <div class="detail-container">
-      <div id="detailState" class="detail-state"></div>
+  <main class="d-page">
+    <div class="d-container">
+      <div id="detailState" class="d-state"></div>
 
-      <section class="detail-card" id="detailCard" style="display:none;">
-        <div class="detail-head">
-          <div class="detail-logo" id="detailLogo"></div>
-
-          <div class="detail-head-main">
-            <h1 class="detail-title" id="detailName">—</h1>
-            <div class="detail-sub" id="detailLocation">—</div>
-
-            <div class="detail-tags" id="detailTags"></div>
-          </div>
-
-          <div class="detail-actions">
-            <div class="detail-price" id="detailPrice">—</div>
-            <button class="detail-btn" id="openWebsiteBtn" type="button">Открыть сайт</button>
-          </div>
+      <section id="detailCard" class="d-card" style="display:none;">
+        <div class="d-cover" id="detailCover">
+          <div class="d-cover-price" id="detailPrice"></div>
+          <div class="d-cover-logo" id="detailLogo"></div>
         </div>
 
-        <div class="detail-grid">
-          <div class="detail-box">
-            <div class="box-title">Описание</div>
-            <div class="box-text" id="detailDescription">—</div>
+        <div class="d-head">
+          <div>
+            <h1 id="detailName" class="d-title"></h1>
+            <div id="detailLocation" class="d-location"></div>
           </div>
 
-          <div class="detail-box">
-            <div class="box-title">Показатели</div>
-            <div class="box-list" id="detailStats"></div>
+          <a class="d-back" href="universities.html">Назад к списку</a>
+        </div>
+
+        <div class="d-grid">
+          <div class="d-box">
+            <div class="d-box-title">Программы</div>
+            <div id="detailPrograms" class="d-box-text"></div>
+          </div>
+
+          <div class="d-box">
+            <div class="d-box-title">Требования</div>
+            <div id="detailRequirements" class="d-box-text"></div>
+          </div>
+
+          <div class="d-box">
+            <div class="d-box-title">Финансы</div>
+            <div id="detailFinance" class="d-box-text"></div>
+          </div>
+
+          <div class="d-box">
+            <div class="d-box-title">Дополнительно</div>
+            <div id="detailExtra" class="d-box-text"></div>
           </div>
         </div>
       </section>
