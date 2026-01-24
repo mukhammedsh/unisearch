@@ -28,32 +28,6 @@
 /* sidebar */
 .u-sidebar{ min-width: 0; }
 
-.u-tabs{
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 8px;
-  display: grid;
-  gap: 8px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.04);
-  margin-bottom: 12px;
-}
-
-.u-tab{
-  border: 0;
-  background: transparent;
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  color: rgba(0,0,0,.68);
-}
-
-.u-tab--active{
-  background: rgba(93,23,234,.08);
-  color: var(--accent);
-}
-
 .u-filter-card{
   background: var(--card);
   border: 1px solid var(--line);

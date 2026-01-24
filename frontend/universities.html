@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Университеты | UniSearch</title>
 
-  <!-- ваш общий стиль -->
   <link rel="stylesheet" href="style.css" />
-  <!-- стиль именно страницы университетов -->
   <link rel="stylesheet" href="universities.css" />
 </head>
 
@@ -20,9 +18,7 @@
 
     <nav class="navbar-center">
       <a href="index.html">Главная</a>
-      <a href="#">Возможности</a>
       <a href="universities.html">Университеты</a>
-      <a href="#">О нас</a>
     </nav>
 
     <div class="navbar-right">
@@ -34,29 +30,27 @@
     <div class="u-layout">
       <!-- LEFT: sidebar -->
       <aside class="u-sidebar">
-        <div class="u-tabs">
-          <button class="u-tab u-tab--active" type="button">Зарубежные</button>
-          <button class="u-tab" type="button">Местные (РК)</button>
-          <button class="u-tab" type="button">Сп. местные</button>
-        </div>
 
+        <!-- FILTER CARD -->
         <div class="u-filter-card">
           <div class="u-filter-title">
             <span class="u-filter-icon" aria-hidden="true">
-              <!-- filter icon -->
               <svg viewBox="0 0 24 24" fill="none">
-                <path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M3 5h18M6 12h12M10 19h4"
+                      stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
               </svg>
             </span>
             <span>Фильтр</span>
-            <button id="resetFiltersBtn" class="u-reset" type="button">Сбросить</button>
+            <button id="resetFiltersBtn" class="u-reset" type="button">
+              Сбросить
+            </button>
           </div>
 
           <div class="u-field">
             <label class="u-label" for="countrySelect">Страна</label>
             <select id="countrySelect" class="u-select">
               <option value="">Все страны</option>
-              <!-- можно расширить вручную -->
               <option value="USA">USA</option>
               <option value="Kazakhstan">Kazakhstan</option>
               <option value="UK">UK</option>
@@ -129,7 +123,6 @@
             </div>
           </div>
 
-          <!-- sort (не обязателен в UI, но оставим) -->
           <div class="u-field">
             <label class="u-label" for="sortSelect">Сортировка</label>
             <select id="sortSelect" class="u-select">
@@ -150,10 +143,12 @@
         <div class="u-top">
           <div class="u-search">
             <span class="u-search-icon" aria-hidden="true">
-              <!-- search icon -->
               <svg viewBox="0 0 24 24" fill="none">
-                <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
-                <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+                      stroke="currentColor" stroke-width="2"/>
+                <path d="M16.5 16.5 21 21"
+                      stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
               </svg>
             </span>
             <input id="qInput" type="text" placeholder="Университет или специальность" />
@@ -165,9 +160,7 @@
         </div>
 
         <div id="listState" class="u-state"></div>
-
         <div id="universitiesList" class="u-grid"></div>
-
         <div id="pagination" class="u-pagination"></div>
       </section>
     </div>

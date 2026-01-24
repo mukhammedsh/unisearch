@@ -17,54 +17,59 @@ a {
 }
 
 /* ===== Navbar ===== */
-.navbar {
+/* ===== Navbar (same on all pages) ===== */
+.navbar{
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+
   height: 70px;
-  background: #ffffff;
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding: 0 40px;
+  box-sizing: border-box;
+
+  background: #ffffff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   z-index: 1000;
 }
 
-.navbar-left {
+.navbar-left,
+.navbar-center,
+.navbar-right{
   display: flex;
   align-items: center;
 }
 
-.logo-placeholder {
-  font-weight: 900;
-  font-size: 20px;
-  color: #5d17ea;
-}
-
-.navbar-center {
-  display: flex;
+.navbar-center{
   gap: 30px;
+  justify-content: center;
+  flex: 1;
 }
 
-.navbar-center a {
+.navbar-center a{
   font-weight: 600;
   color: #333;
 }
 
-.navbar-center a:hover {
+.navbar-center a:hover{
   color: #5d17ea;
 }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
+.logo{
+  height: 42px;
+  width: auto;
+  object-fit: contain;
 }
 
-.login-btn {
+.login-btn{
   background: #5d17ea;
-  color: #ffffff;
+  color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
@@ -72,7 +77,7 @@ a {
   cursor: pointer;
 }
 
-.login-btn:hover {
+.login-btn:hover{
   background: #5715db;
 }
 
