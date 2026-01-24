@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Университет | UniSearch</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="university.css" />
+</head>
+
+<body data-page="university">
+  <header class="navbar">
+    <div class="navbar-left">
+      <img src="images/logo.jpeg" alt="Логотип" class="logo" />
+    </div>
+
+    <nav class="navbar-center">
+      <a href="index.html">Главная</a>
+      <a href="#">Возможности</a>
+      <a href="universities.html">Университеты</a>
+      <a href="#">О нас</a>
+    </nav>
+
+    <div class="navbar-right">
+      <button class="login-btn">Войти</button>
+    </div>
+  </header>
+
+  <main class="uni-detail">
+    <div class="detail-container">
+      <div id="detailState" class="detail-state"></div>
+
+      <section class="detail-card" id="detailCard" style="display:none;">
+        <div class="detail-head">
+          <div class="detail-logo" id="detailLogo"></div>
+
+          <div class="detail-head-main">
+            <h1 class="detail-title" id="detailName">—</h1>
+            <div class="detail-sub" id="detailLocation">—</div>
+
+            <div class="detail-tags" id="detailTags"></div>
+          </div>
+
+          <div class="detail-actions">
+            <div class="detail-price" id="detailPrice">—</div>
+            <button class="detail-btn" id="openWebsiteBtn" type="button">Открыть сайт</button>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-box">
+            <div class="box-title">Описание</div>
+            <div class="box-text" id="detailDescription">—</div>
+          </div>
+
+          <div class="detail-box">
+            <div class="box-title">Показатели</div>
+            <div class="box-list" id="detailStats"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

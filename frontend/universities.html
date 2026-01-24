@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Университеты | UniSearch</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="universities.css" />
+</head>
+
+<body data-page="universities">
+  <!-- Navbar (как у тебя уже есть) -->
+  <header class="navbar">
+    <div class="navbar-left">
+      <img src="images/logo.jpeg" alt="Логотип" class="logo" />
+    </div>
+
+    <nav class="navbar-center">
+      <a href="index.html">Главная</a>
+      <a href="#">Возможности</a>
+      <a href="universities.html">Университеты</a>
+      <a href="#">О нас</a>
+    </nav>
+
+    <div class="navbar-right">
+      <button class="login-btn">Войти</button>
+    </div>
+  </header>
+
+  <main class="uni-page">
+    <div class="uni-container">
+      <!-- LEFT: Filters -->
+      <aside class="filters">
+        <div class="filters__header">
+          <h2>Фильтры</h2>
+          <button class="filters__reset" id="resetFiltersBtn" type="button">Сбросить</button>
+        </div>
+
+        <div class="filter-block">
+          <label class="filter-label" for="qInput">Поиск</label>
+          <input id="qInput" class="filter-input" type="text" placeholder="Название университета..." />
+        </div>
+
+        <div class="filter-block">
+          <label class="filter-label" for="countrySelect">Страна</label>
+          <select id="countrySelect" class="filter-select">
+            <option value="">Любая</option>
+            <!-- можно заполнять с backend позже -->
+            <option value="Kazakhstan">Kazakhstan</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <label class="filter-label" for="citySelect">Город</label>
+          <select id="citySelect" class="filter-select">
+            <option value="">Любой</option>
+            <option value="Almaty">Almaty</option>
+            <option value="Astana">Astana</option>
+            <option value="London">London</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <label class="filter-label" for="fieldSelect">Направление</label>
+          <select id="fieldSelect" class="filter-select">
+            <option value="">Любое</option>
+            <option value="IT">IT</option>
+            <option value="Business">Business</option>
+            <option value="Medicine">Medicine</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-row">
+            <div class="filter-col">
+              <label class="filter-label" for="minTuitionInput">Мин. цена</label>
+              <input id="minTuitionInput" class="filter-input" type="number" min="0" placeholder="0" />
+            </div>
+            <div class="filter-col">
+              <label class="filter-label" for="maxTuitionInput">Макс. цена</label>
+              <input id="maxTuitionInput" class="filter-input" type="number" min="0" placeholder="100000" />
+            </div>
+          </div>
+          <div class="filter-hint">Цена/год (пример)</div>
+        </div>
+
+        <div class="filter-block">
+          <label class="filter-label" for="sortSelectMobile">Сортировка</label>
+          <select id="sortSelectMobile" class="filter-select">
+            <option value="rating_desc">По рейтингу ↓</option>
+            <option value="tuition_asc">По цене ↑</option>
+            <option value="tuition_desc">По цене ↓</option>
+            <option value="name_asc">По названию A→Z</option>
+          </select>
+          <div class="filter-hint">На ПК сортировка справа сверху</div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: Results -->
+      <section class="results">
+        <div class="results__top">
+          <div>
+            <h1 class="results__title">Университеты</h1>
+            <div class="results__subtitle">
+              Найдено: <span id="totalCount">0</span>
+            </div>
+          </div>
+
+          <div class="results__controls">
+            <select id="sortSelect" class="results__sort">
+              <option value="rating_desc">По рейтингу ↓</option>
+              <option value="tuition_asc">По цене ↑</option>
+              <option value="tuition_desc">По цене ↓</option>
+              <option value="name_asc">По названию A→Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="listState" class="list-state"></div>
+
+        <div id="universitiesList" class="uni-list">
+          <!-- Карточки будут рендериться через JS -->
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
