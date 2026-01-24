@@ -151,15 +151,16 @@ Returns a list of universities with filtering, sorting, and pagination.
 
 Supported query parameters include:
 
-- `q` — search by university name
-- `country`, `city`
-- `major`
-- `study_level`
-- `format`
-- `min_tuition`, `max_tuition`
-- `min_acceptance`, `max_acceptance`
+- `q` - search by university name (contains)
+- `country`, `city`, `state`
+- `major` (contains in `academics.majors`)
+- `study_level` (exact match in `academics.study_levels`)
+- `format` (exact match in `academics.formats`)
+- `min_tuition`, `max_tuition` (USD)
+- `min_acceptance`, `max_acceptance` (percent)
 - `min_gpa`, `max_gpa`
 - `min_ielts`, `max_ielts`
+- `size` (exact match in `student_life.size`)
 - `sort`, `page`, `limit`
 
 Example:
@@ -179,6 +180,15 @@ GET http://127.0.0.1:8000/universities/test-university-usa-nyc
 ```
 
 ---
+
+### GET /
+
+Health check endpoint.
+
+Example:
+```
+GET http://127.0.0.1:8000/
+```
 
 ## How to add a university
 

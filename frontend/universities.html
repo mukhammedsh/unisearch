@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Университеты | UniSearch</title>
+  <title>Universities | UniSearch</title>
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="universities.css" />
@@ -13,16 +13,16 @@
   <!-- Navbar -->
   <header class="navbar">
     <div class="navbar-left">
-      <img src="images/logo.jpeg" alt="Логотип" class="logo" />
+      <img src="images/logo.jpeg" alt="Logo" class="logo" />
     </div>
 
     <nav class="navbar-center">
-      <a href="index.html">Главная</a>
-      <a href="universities.html">Университеты</a>
+      <a href="index.html">Home</a>
+      <a href="universities.html">Universities</a>
     </nav>
 
     <div class="navbar-right">
-      <button class="login-btn">Войти</button>
+      <button class="login-btn">Log in</button>
     </div>
   </header>
 
@@ -41,16 +41,16 @@
                       stroke-linecap="round"/>
               </svg>
             </span>
-            <span>Фильтр</span>
+            <span>Filter</span>
             <button id="resetFiltersBtn" class="u-reset" type="button">
-              Сбросить
+              Reset
             </button>
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="countrySelect">Страна</label>
+            <label class="u-label" for="countrySelect">Country</label>
             <select id="countrySelect" class="u-select">
-              <option value="">Все страны</option>
+              <option value="">All countries</option>
               <option value="USA">USA</option>
               <option value="Kazakhstan">Kazakhstan</option>
               <option value="UK">UK</option>
@@ -60,19 +60,19 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="citySelect">Город</label>
-            <input id="citySelect" class="u-input" type="text" placeholder="Напр. New York" />
+            <label class="u-label" for="citySelect">City</label>
+            <input id="citySelect" class="u-input" type="text" placeholder="e.g. New York" />
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="majorInput">Специальность / Major</label>
-            <input id="majorInput" class="u-input" type="text" placeholder="Напр. Computer Science" />
+            <label class="u-label" for="majorInput">Major</label>
+            <input id="majorInput" class="u-input" type="text" placeholder="e.g. Computer Science" />
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="studyLevelSelect">Уровень обучения</label>
+            <label class="u-label" for="studyLevelSelect">Study level</label>
             <select id="studyLevelSelect" class="u-select">
-              <option value="">Любой</option>
+              <option value="">Any</option>
               <option value="Bachelor">Bachelor</option>
               <option value="Master">Master</option>
               <option value="PhD">PhD</option>
@@ -80,9 +80,9 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="formatSelect">Формат</label>
+            <label class="u-label" for="formatSelect">Format</label>
             <select id="formatSelect" class="u-select">
-              <option value="">Любой</option>
+              <option value="">Any</option>
               <option value="On-campus">On-campus</option>
               <option value="Online">Online</option>
               <option value="Hybrid">Hybrid</option>
@@ -92,7 +92,7 @@
           <div class="u-sep"></div>
 
           <div class="u-field">
-            <label class="u-label">Стоимость в год (USD)</label>
+            <label class="u-label">Tuition per year (USD)</label>
             <div class="u-two">
               <input id="minTuitionInput" class="u-input" type="number" min="0" placeholder="min" />
               <input id="maxTuitionInput" class="u-input" type="number" min="0" placeholder="max" />
@@ -124,15 +124,15 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="sortSelect">Сортировка</label>
+            <label class="u-label" for="sortSelect">Sort</label>
             <select id="sortSelect" class="u-select">
-              <option value="name_asc">По названию A→Z</option>
-              <option value="tuition_asc">Цена ↑</option>
-              <option value="tuition_desc">Цена ↓</option>
-              <option value="acceptance_asc">Acceptance ↑</option>
-              <option value="acceptance_desc">Acceptance ↓</option>
-              <option value="ielts_desc">IELTS ↓</option>
-              <option value="gpa_desc">GPA ↓</option>
+              <option value="name_asc">Name A-Z</option>
+              <option value="tuition_asc">Tuition low to high</option>
+              <option value="tuition_desc">Tuition high to low</option>
+              <option value="acceptance_asc">Acceptance low to high</option>
+              <option value="acceptance_desc">Acceptance high to low</option>
+              <option value="ielts_desc">IELTS high to low</option>
+              <option value="gpa_desc">GPA high to low</option>
             </select>
           </div>
         </div>
@@ -151,11 +151,11 @@
                       stroke-linecap="round"/>
               </svg>
             </span>
-            <input id="qInput" type="text" placeholder="Университет или специальность" />
+            <input id="qInput" type="text" placeholder="University or major" />
           </div>
 
           <div class="u-found">
-            Найдено(о) <span id="totalCount">0</span> университетов
+            Found <span id="totalCount">0</span> universities
           </div>
         </div>
 
