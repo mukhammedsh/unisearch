@@ -1,0 +1,16 @@
+[
+  {
+    "id": "test-university-usa-nyc",
+    "name": "Test University",
+    "location": { "country": "USA", "city": "New York", "state": "NY" },
+    "academics": {
+      "majors": ["Computer Science"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 40
+    },
+    "finance": { "tuition_year_usd": 15000, "application_fee_usd": 60 },
+    "student_life": { "size": "medium" },
+    "exams_avg": { "GPA": 75, "IELTS": 6.0 }
+  }
+]
