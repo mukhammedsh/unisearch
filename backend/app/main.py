@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
 from typing import Any, Optional, List, Dict
+from app.core.validation import EXAM_WHITELIST
 
 app = FastAPI(title="UniSearch API", version="0.2.0")
 
@@ -101,6 +102,39 @@ def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
 @app.get("/")
 def root():
     return {"status": "ok", "service": "uniesearch-backend", "storage": "json"}
+
+
+@app.post("/exams/validate")
+def validate_exam(payload: Dict[str, Any]):
+    exam_raw = str(payload.get("exam", "")).strip()
+    score_raw = payload.get("score", None)
+
+    if not exam_raw:
+        raise HTTPException(status_code=400, detail="Exam name is required")
+
+    if score_raw is None or score_raw == "":
+        raise HTTPException(status_code=400, detail="Score is required")
+
+    try:
+        score = float(score_raw)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Score must be a number")
+
+    whitelist = {k.upper(): k for k in EXAM_WHITELIST.keys()}
+    key = exam_raw.upper()
+
+    if key not in whitelist:
+        raise HTTPException(status_code=400, detail="Unknown exam")
+
+    canonical = whitelist[key]
+    min_score, max_score = EXAM_WHITELIST[canonical]
+    if score < min_score or score > max_score:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Score must be between {min_score} and {max_score}",
+        )
+
+    return {"ok": True, "exam": canonical, "score": score}
 
 
 @app.get("/universities")

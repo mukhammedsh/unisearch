@@ -5,6 +5,8 @@
 */
 
 const API_BASE = "http://127.0.0.1:8000";
+const PROFILE_STORAGE_KEY = "unisearch_profile";
+const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
 
 // ---------- helpers ----------
 function $(id) { return document.getElementById(id); }
@@ -61,6 +63,7 @@ function setUrlParams(params) {
 
 // ---------- init routing ----------
 document.addEventListener("DOMContentLoaded", () => {
+  initProfileUI();
   const page = document.body?.dataset?.page;
 
   if (page === "universities" || $("universitiesList")) initUniversitiesPage();
@@ -511,4 +514,268 @@ async function initUniversityPage() {
   function kv(k, v) {
     return `<div class="d-kv"><span>${escapeHtml(k)}</span><span>${escapeHtml(v)}</span></div>`;
   }
+}
+
+// =====================================
+// Profile modal (local-only)
+// =====================================
+function initProfileUI() {
+  const modal = $("profileModal");
+  if (!modal) return;
+
+  const openBtn = $("profileBtn");
+  const closeBtn = $("profileCloseBtn");
+  const backdrop = modal.querySelector("[data-close='profile']");
+
+  const nameWrap = modal.querySelector(".profile-username");
+  const nameDisplay = $("profileNameDisplay");
+  const nameInput = $("profileNameInput");
+  const editBtn = $("editNameBtn");
+  const usernameError = $("usernameError");
+
+  const budgetInput = $("budgetInput");
+  const examNameInput = $("examNameInput");
+  const examScoreInput = $("examScoreInput");
+  const addExamBtn = $("addExamBtn");
+  const examList = $("examList");
+  const examError = $("examError");
+
+  let profile = loadProfile();
+  renderProfile();
+
+  openBtn?.addEventListener("click", () => {
+    openModal();
+  });
+
+  closeBtn?.addEventListener("click", closeModal);
+  backdrop?.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("is-open")) {
+      closeModal();
+    }
+  });
+
+  editBtn?.addEventListener("click", () => {
+    clearUsernameError();
+    nameWrap?.classList.add("is-editing");
+    nameInput?.focus();
+    nameInput?.select();
+  });
+
+  nameInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitName();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      cancelNameEdit();
+    }
+  });
+
+  nameInput?.addEventListener("blur", () => {
+    commitName();
+  });
+
+  budgetInput?.addEventListener("input", () => {
+    profile.budget = budgetInput.value;
+    saveProfile(profile);
+  });
+
+  budgetInput?.addEventListener("blur", () => {
+    const val = parseBudget(budgetInput.value);
+    if (val === "") {
+      profile.budget = "";
+      budgetInput.value = "";
+    } else {
+      profile.budget = String(val);
+      budgetInput.value = String(val);
+    }
+    saveProfile(profile);
+  });
+
+  addExamBtn?.addEventListener("click", async () => {
+    clearError();
+    const exam = String(examNameInput?.value || "").trim();
+    const scoreRaw = String(examScoreInput?.value || "").trim();
+
+    if (!exam) {
+      return showError("Exam name is required.");
+    }
+
+    if (!scoreRaw) {
+      return showError("Score is required.");
+    }
+
+    const score = Number(scoreRaw);
+    if (!Number.isFinite(score)) {
+      return showError("Score must be a number.");
+    }
+
+    addExamBtn.disabled = true;
+    addExamBtn.textContent = "Adding...";
+
+    try {
+      const result = await validateExam(exam, score);
+      profile.exams.push({ exam: result.exam, score: result.score });
+      saveProfile(profile);
+      renderExamList();
+      examNameInput.value = "";
+      examScoreInput.value = "";
+    } catch (err) {
+      showError(err?.message || "Exam validation failed.");
+    } finally {
+      addExamBtn.disabled = false;
+      addExamBtn.textContent = "Add";
+    }
+  });
+
+  examList?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-exam-index]");
+    if (!btn) return;
+    const idx = Number(btn.getAttribute("data-exam-index"));
+    if (!Number.isFinite(idx)) return;
+    profile.exams.splice(idx, 1);
+    saveProfile(profile);
+    renderExamList();
+  });
+
+  function openModal() {
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    clearUsernameError();
+  }
+
+  function closeModal() {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    cancelNameEdit();
+  }
+
+  function commitName() {
+    if (!nameInput || !nameDisplay) return;
+    const raw = String(nameInput.value || "").trim();
+    const cleaned = sanitizeUsername(raw);
+    if (!cleaned.ok) {
+      showUsernameError(cleaned.reason || "Invalid username.");
+      return;
+    }
+    profile.name = cleaned.value;
+    nameDisplay.textContent = cleaned.value;
+    nameInput.value = cleaned.value;
+    saveProfile(profile);
+    nameWrap?.classList.remove("is-editing");
+    clearUsernameError();
+  }
+
+  function cancelNameEdit() {
+    if (!nameInput) return;
+    nameInput.value = profile.name || "User";
+    nameWrap?.classList.remove("is-editing");
+    clearUsernameError();
+  }
+
+  function renderProfile() {
+    if (nameDisplay) nameDisplay.textContent = profile.name || "User";
+    if (nameInput) nameInput.value = profile.name || "User";
+    if (budgetInput) budgetInput.value = profile.budget || "";
+    renderExamList();
+  }
+
+  function renderExamList() {
+    if (!examList) return;
+    if (!Array.isArray(profile.exams) || profile.exams.length === 0) {
+      examList.innerHTML = "";
+      return;
+    }
+
+    examList.innerHTML = profile.exams.map((item, idx) => {
+      return `
+        <div class="profile-exam-item">
+          <div class="profile-exam-meta">
+            <div class="profile-exam-name">${escapeHtml(item.exam)}</div>
+            <div class="profile-exam-score">Score: ${escapeHtml(String(item.score))}</div>
+          </div>
+          <button class="profile-delete" type="button" data-exam-index="${idx}">Delete</button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function showError(msg) {
+    if (examError) examError.textContent = msg;
+  }
+
+  function clearError() {
+    if (examError) examError.textContent = "";
+  }
+
+  function showUsernameError(msg) {
+    if (usernameError) usernameError.textContent = msg;
+  }
+
+  function clearUsernameError() {
+    if (usernameError) usernameError.textContent = "";
+  }
+}
+
+function parseBudget(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const num = Number(raw);
+  if (!Number.isFinite(num)) return "";
+  if (num < 1) return 1;
+  if (num > 1000000) return 1000000;
+  return Math.round(num);
+}
+
+function sanitizeUsername(value) {
+  const v = String(value || "").trim();
+  if (!v) return { ok: false, reason: "Username is required." };
+  if (v.length < 3 || v.length > 12) {
+    return { ok: false, reason: "Too many symbols in username (3-12)" };
+  }
+  if (!/^[A-Za-z0-9]+$/.test(v)) {
+    return { ok: false, reason: "Invalid symbols" };
+  }
+  return { ok: true, value: v };
+}
+
+function loadProfile() {
+  try {
+    const raw = window.localStorage.getItem(PROFILE_STORAGE_KEY);
+    if (!raw) return { ...PROFILE_DEFAULTS };
+    const parsed = JSON.parse(raw);
+    return {
+      name: String(parsed?.name || PROFILE_DEFAULTS.name),
+      budget: parsed?.budget ?? PROFILE_DEFAULTS.budget,
+      exams: Array.isArray(parsed?.exams) ? parsed.exams : [],
+    };
+  } catch {
+    return { ...PROFILE_DEFAULTS };
+  }
+}
+
+function saveProfile(profile) {
+  try {
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+  } catch {
+    // ignore storage errors in alpha
+  }
+}
+
+async function validateExam(exam, score) {
+  const payload = { exam, score };
+  const res = await fetch(`${API_BASE}/exams/validate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => null);
+    const message = data?.detail || "Exam validation failed.";
+    throw new Error(message);
+  }
+
+  return res.json();
 }

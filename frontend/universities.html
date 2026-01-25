@@ -22,7 +22,7 @@
     </nav>
 
     <div class="navbar-right">
-      <button class="login-btn">Log in</button>
+      <button class="login-btn" id="profileBtn">Profile</button>
     </div>
   </header>
 
@@ -165,6 +165,57 @@
       </section>
     </div>
   </main>
+
+  <!-- Profile modal -->
+  <div class="profile-modal" id="profileModal" aria-hidden="true">
+    <div class="profile-backdrop" data-close="profile"></div>
+    <div class="profile-card" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <div class="profile-header">
+        <div class="profile-title">
+          <div class="profile-username">
+            <span id="profileNameDisplay">User</span>
+            <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="12" pattern="[A-Za-z0-9]+" />
+            <button class="icon-btn" id="editNameBtn" type="button" aria-label="Edit name">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 20h4l10-10-4-4L4 16v4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M14 6l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="profile-subtitle" id="profileTitle">Profile</div>
+        </div>
+        <button class="icon-btn profile-close" id="profileCloseBtn" type="button" aria-label="Close profile">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="usernameError" class="profile-error profile-error--username" aria-live="polite"></div>
+
+      <div class="profile-body">
+        <div class="profile-field">
+          <label class="profile-label" for="budgetInput">Budget of tuition per year (USD)</label>
+          <div class="profile-budget">
+            <input id="budgetInput" class="profile-input" type="number" min="1" max="1000000" step="1" placeholder="e.g. 20000" />
+            <span class="profile-unit">USD / year</span>
+          </div>
+          <div class="profile-hint">Range: 1 - 1 000 000</div>
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-label">Exams (list, optional)</label>
+          <div class="profile-exam-form">
+            <input id="examNameInput" class="profile-input" type="text" placeholder="IELTS, GPA, SAT..." />
+            <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
+            <button id="addExamBtn" class="profile-add" type="button">Add</button>
+          </div>
+          <div id="examError" class="profile-error" aria-live="polite"></div>
+          <div id="examList" class="profile-exam-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
