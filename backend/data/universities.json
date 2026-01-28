@@ -1,16 +1,135 @@
 [
   {
-    "id": "test-university-usa-nyc",
-    "name": "Test University",
-    "location": { "country": "USA", "city": "New York", "state": "NY" },
+    "id": "nazarbayev-university-kaz-astana",
+    "name": "Nazarbayev University",
+    "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
     "academics": {
-      "majors": ["Computer Science"],
+      "majors": ["Engineering", "Computer Science", "Business", "Natural Sciences"],
       "study_levels": ["Bachelor"],
       "formats": ["On-campus"],
-      "acceptance_rate_percent": 40
+      "acceptance_rate_percent": 25
     },
-    "finance": { "tuition_year_usd": 15000, "application_fee_usd": 60 },
+    "finance": {
+      "total_cost_year_usd": 19500,
+      "application_fee_usd": 35,
+      "financial_aid_available": true
+    },
     "student_life": { "size": "medium" },
-    "exams_avg": { "GPA": 75, "IELTS": 6.0 }
+    "exams_avg": { "GPA": 92, "IELTS": 7.5, "SAT": 1420 },
+    "exams_min": { "GPA": 80, "IELTS": 6.5, "SAT": 1300 }
+  },
+  {
+    "id": "suleyman-demirel-university-kaz-kaskelen",
+    "name": "Suleyman Demirel University",
+    "location": { "country": "Kazakhstan", "city": "Kaskelen", "state": "Almaty Region" },
+    "academics": {
+      "majors": ["Business", "Engineering", "Law", "Education & Humanities"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 70
+    },
+    "finance": {
+      "total_cost_year_usd": 8500,
+      "application_fee_usd": 0,
+      "financial_aid_available": true
+    },
+    "student_life": { "size": "medium" },
+    "exams_avg": { "GPA": 85, "IELTS": 6.5 },
+    "exams_min": { "GPA": 70, "IELTS": 6.0 }
+  },
+  {
+    "id": "mit-usa-cambridge",
+    "name": "Massachusetts Institute of Technology (MIT)",
+    "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
+    "academics": {
+      "majors": ["Computer Science", "Engineering", "Physics", "Mathematics"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 5
+    },
+    "finance": {
+      "total_cost_year_usd": 85960,
+      "application_fee_usd": 75,
+      "financial_aid_available": true
+    },
+    "student_life": { "size": "medium" },
+    "exams_avg": { "GPA": 99, "IELTS": 8.5, "SAT": 1560 },
+    "exams_min": { "GPA": 95, "IELTS": 7.5, "SAT": 1520 }
+  },
+  {
+    "id": "harvard-usa-cambridge",
+    "name": "Harvard University",
+    "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
+    "academics": {
+      "majors": ["Economics", "Government", "Computer Science", "Social Sciences"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 3.6
+    },
+    "finance": {
+      "total_cost_year_usd": 87450,
+      "application_fee_usd": 85,
+      "financial_aid_available": true
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 99, "IELTS": 8.5, "SAT": 1550 },
+    "exams_min": { "GPA": 95, "IELTS": 7.5, "SAT": 1500 }
+  },
+  {
+    "id": "kaist-kr-daejeon",
+    "name": "KAIST",
+    "location": { "country": "South Korea", "city": "Daejeon", "state": "" },
+    "academics": {
+      "majors": ["Electrical Engineering", "Computer Science", "Physics"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 18
+    },
+    "finance": {
+      "total_cost_year_usd": 14000,
+      "application_fee_usd": 80,
+      "financial_aid_available": true
+    },
+    "student_life": { "size": "medium" },
+    "exams_avg": { "GPA": 93, "IELTS": 7.0, "SAT": 1480 },
+    "exams_min": { "GPA": 88, "IELTS": 6.5, "SAT": 1380 }
+  },
+  {
+    "id": "kyoto-university-jp-kyoto",
+    "name": "Kyoto University",
+    "location": { "country": "Japan", "city": "Kyoto", "state": "" },
+    "academics": {
+      "majors": ["Engineering", "Science", "Economics"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 15
+    },
+    "finance": {
+      "total_cost_year_usd": 15500,
+      "application_fee_usd": 150,
+      "financial_aid_available": true
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 90, "IELTS": 7.0 },
+    "exams_min": { "GPA": 80, "IELTS": 6.5 }
+  },
+  {
+    "id": "cuhk-hk-shatin",
+    "name": "The Chinese University of Hong Kong (CUHK)",
+    "location": { "country": "Hong Kong", "city": "Sha Tin", "state": "" },
+    "academics": {
+      "majors": ["Business Administration", "Computer Science", "Medicine"],
+      "study_levels": ["Bachelor"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 14
+    },
+    "finance": {
+      "total_cost_year_usd": 27000,
+      "application_fee_usd": 60,
+      "financial_aid_available": true
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 95, "IELTS": 7.0, "SAT": 1440 },
+    "exams_min": { "GPA": 90, "IELTS": 6.0, "SAT": 1350 }
   }
 ]

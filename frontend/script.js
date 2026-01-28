@@ -8,6 +8,27 @@ const API_BASE = "http://127.0.0.1:8000";
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
 
+const CITY_OPTIONS_BY_COUNTRY = {
+  USA: ["New York", "Los Angeles", "Boston", "Chicago", "San Francisco"],
+  Kazakhstan: ["Almaty", "Astana", "Shymkent", "Karaganda", "Aktobe"],
+  UK: ["London", "Manchester", "Edinburgh", "Bristol", "Birmingham"],
+  Finland: ["Helsinki", "Espoo", "Tampere", "Turku", "Oulu"],
+  UAE: ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah"],
+};
+
+const MAJOR_OPTIONS = [
+  "Computer Science",
+  "Business Administration",
+  "Engineering",
+  "Medicine",
+  "Economics",
+  "Psychology",
+  "Law",
+  "Architecture",
+  "Data Science",
+  "International Relations",
+];
+
 // ---------- helpers ----------
 function $(id) { return document.getElementById(id); }
 
@@ -78,7 +99,7 @@ function initUniversitiesPage() {
     qInput: $("qInput"),
     countrySelect: $("countrySelect"),
     citySelect: $("citySelect"),
-    majorInput: $("majorInput"),
+    majorSelect: $("majorSelect"),
     studyLevelSelect: $("studyLevelSelect"),
     formatSelect: $("formatSelect"),
 
@@ -88,8 +109,6 @@ function initUniversitiesPage() {
     maxAcceptanceInput: $("maxAcceptanceInput"),
     minIeltsInput: $("minIeltsInput"),
     maxIeltsInput: $("maxIeltsInput"),
-    minGpaInput: $("minGpaInput"),
-    maxGpaInput: $("maxGpaInput"),
 
     sortSelect: $("sortSelect"),
     resetBtn: $("resetFiltersBtn"),
@@ -114,10 +133,6 @@ function initUniversitiesPage() {
     max_tuition: "",
     min_acceptance: "",
     max_acceptance: "",
-    min_ielts: "",
-    max_ielts: "",
-    min_gpa: "",
-    max_gpa: "",
 
     sort: "name_asc",
     page: 1,
@@ -135,9 +150,17 @@ function initUniversitiesPage() {
 
   // listeners
   el.qInput?.addEventListener("input", () => { state.q = el.qInput.value.trim(); refetch(); });
-  el.countrySelect?.addEventListener("change", () => { state.country = el.countrySelect.value; refetch(); });
-  el.citySelect?.addEventListener("input", () => { state.city = el.citySelect.value.trim(); refetch(); });
-  el.majorInput?.addEventListener("input", () => { state.major = el.majorInput.value.trim(); refetch(); });
+  el.countrySelect?.addEventListener("change", () => {
+    state.country = el.countrySelect.value;
+    updateCityOptions(state.country, state.city);
+    if (!CITY_OPTIONS_BY_COUNTRY[state.country]?.includes(state.city)) {
+      state.city = "";
+      el.citySelect && (el.citySelect.value = "");
+    }
+    refetch();
+  });
+  el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
+  el.majorSelect?.addEventListener("change", () => { state.major = el.majorSelect.value; refetch(); });
   el.studyLevelSelect?.addEventListener("change", () => { state.study_level = el.studyLevelSelect.value; refetch(); });
   el.formatSelect?.addEventListener("change", () => { state.format = el.formatSelect.value; refetch(); });
 
@@ -147,12 +170,6 @@ function initUniversitiesPage() {
   el.minAcceptanceInput?.addEventListener("input", () => { state.min_acceptance = el.minAcceptanceInput.value; refetch(); });
   el.maxAcceptanceInput?.addEventListener("input", () => { state.max_acceptance = el.maxAcceptanceInput.value; refetch(); });
 
-  el.minIeltsInput?.addEventListener("input", () => { state.min_ielts = el.minIeltsInput.value; refetch(); });
-  el.maxIeltsInput?.addEventListener("input", () => { state.max_ielts = el.maxIeltsInput.value; refetch(); });
-
-  el.minGpaInput?.addEventListener("input", () => { state.min_gpa = el.minGpaInput.value; refetch(); });
-  el.maxGpaInput?.addEventListener("input", () => { state.max_gpa = el.maxGpaInput.value; refetch(); });
-
   el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; refetch(); });
 
   el.resetBtn?.addEventListener("click", () => {
@@ -160,8 +177,6 @@ function initUniversitiesPage() {
       q: "", country: "", city: "", major: "", study_level: "", format: "",
       min_tuition: "", max_tuition: "",
       min_acceptance: "", max_acceptance: "",
-      min_ielts: "", max_ielts: "",
-      min_gpa: "", max_gpa: "",
       sort: "name_asc",
       page: 1,
       limit: state.limit,
@@ -200,12 +215,6 @@ function initUniversitiesPage() {
 
     if (state.min_acceptance !== "") p.set("min_acceptance", state.min_acceptance);
     if (state.max_acceptance !== "") p.set("max_acceptance", state.max_acceptance);
-
-    if (state.min_ielts !== "") p.set("min_ielts", state.min_ielts);
-    if (state.max_ielts !== "") p.set("max_ielts", state.max_ielts);
-
-    if (state.min_gpa !== "") p.set("min_gpa", state.min_gpa);
-    if (state.max_gpa !== "") p.set("max_gpa", state.max_gpa);
 
     p.set("sort", state.sort);
     p.set("page", String(state.page));
@@ -367,12 +376,6 @@ function initUniversitiesPage() {
     state.min_acceptance = sp.get("min_acceptance") || "";
     state.max_acceptance = sp.get("max_acceptance") || "";
 
-    state.min_ielts = sp.get("min_ielts") || "";
-    state.max_ielts = sp.get("max_ielts") || "";
-
-    state.min_gpa = sp.get("min_gpa") || "";
-    state.max_gpa = sp.get("max_gpa") || "";
-
     state.sort = sp.get("sort") || state.sort;
 
     const page = Number(sp.get("page"));
@@ -382,11 +385,13 @@ function initUniversitiesPage() {
   }
 
   function applyToForm() {
+    updateMajorOptions();
+    updateCityOptions(state.country, state.city);
     el.qInput && (el.qInput.value = state.q);
     el.countrySelect && (el.countrySelect.value = state.country);
     el.citySelect && (el.citySelect.value = state.city);
 
-    el.majorInput && (el.majorInput.value = state.major);
+    el.majorSelect && (el.majorSelect.value = state.major);
     el.studyLevelSelect && (el.studyLevelSelect.value = state.study_level);
     el.formatSelect && (el.formatSelect.value = state.format);
 
@@ -396,13 +401,49 @@ function initUniversitiesPage() {
     el.minAcceptanceInput && (el.minAcceptanceInput.value = state.min_acceptance);
     el.maxAcceptanceInput && (el.maxAcceptanceInput.value = state.max_acceptance);
 
-    el.minIeltsInput && (el.minIeltsInput.value = state.min_ielts);
-    el.maxIeltsInput && (el.maxIeltsInput.value = state.max_ielts);
-
-    el.minGpaInput && (el.minGpaInput.value = state.min_gpa);
-    el.maxGpaInput && (el.maxGpaInput.value = state.max_gpa);
-
     el.sortSelect && (el.sortSelect.value = state.sort);
+  }
+
+  function updateCityOptions(country, selectedCity = "") {
+    if (!el.citySelect) return;
+    const cities = CITY_OPTIONS_BY_COUNTRY[country] || [];
+    const hasCountry = Boolean(country);
+
+    el.citySelect.innerHTML = "";
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = hasCountry ? "All cities" : "Select country first";
+    el.citySelect.appendChild(placeholder);
+
+    if (hasCountry) {
+      cities.forEach((city) => {
+        const opt = document.createElement("option");
+        opt.value = city;
+        opt.textContent = city;
+        el.citySelect.appendChild(opt);
+      });
+    }
+
+    el.citySelect.disabled = !hasCountry;
+    const validSelection = hasCountry && cities.includes(selectedCity);
+    el.citySelect.value = validSelection ? selectedCity : "";
+  }
+
+  function updateMajorOptions() {
+    if (!el.majorSelect) return;
+    el.majorSelect.innerHTML = "";
+
+    const anyOpt = document.createElement("option");
+    anyOpt.value = "";
+    anyOpt.textContent = "Any major";
+    el.majorSelect.appendChild(anyOpt);
+
+    MAJOR_OPTIONS.forEach((major) => {
+      const opt = document.createElement("option");
+      opt.value = major;
+      opt.textContent = major;
+      el.majorSelect.appendChild(opt);
+    });
   }
 }
 
@@ -443,8 +484,6 @@ async function initUniversityPage() {
     const fee = nested(u, ["finance", "application_fee_usd"], null);
 
     const size = nested(u, ["student_life", "size"], null);
-    const gpa = nested(u, ["exams_avg", "GPA"], null);
-    const ielts = nested(u, ["exams_avg", "IELTS"], null);
 
     // fill UI
     stateEl && (stateEl.textContent = "");
@@ -488,8 +527,6 @@ async function initUniversityPage() {
     if (req) {
       req.innerHTML = [
         kv("Acceptance rate", (acceptance !== null && acceptance !== undefined) ? `${acceptance}%` : "—"),
-        kv("GPA (avg)", (gpa !== null && gpa !== undefined) ? String(gpa) : "—"),
-        kv("IELTS (avg)", (ielts !== null && ielts !== undefined) ? String(ielts) : "—"),
       ].join("");
     }
 

@@ -61,12 +61,16 @@
 
           <div class="u-field">
             <label class="u-label" for="citySelect">City</label>
-            <input id="citySelect" class="u-input" type="text" placeholder="e.g. New York" />
+            <select id="citySelect" class="u-select" disabled>
+              <option value="">Select country first</option>
+            </select>
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="majorInput">Major</label>
-            <input id="majorInput" class="u-input" type="text" placeholder="e.g. Computer Science" />
+            <label class="u-label" for="majorSelect">Major</label>
+            <select id="majorSelect" class="u-select">
+              <option value="">Any major</option>
+            </select>
           </div>
 
           <div class="u-field">
@@ -104,22 +108,6 @@
             <div class="u-two">
               <input id="minAcceptanceInput" class="u-input" type="number" min="0" max="100" placeholder="min" />
               <input id="maxAcceptanceInput" class="u-input" type="number" min="0" max="100" placeholder="max" />
-            </div>
-          </div>
-
-          <div class="u-field">
-            <label class="u-label">IELTS</label>
-            <div class="u-two">
-              <input id="minIeltsInput" class="u-input" type="number" step="0.5" min="0" max="9" placeholder="min" />
-              <input id="maxIeltsInput" class="u-input" type="number" step="0.5" min="0" max="9" placeholder="max" />
-            </div>
-          </div>
-
-          <div class="u-field">
-            <label class="u-label">GPA</label>
-            <div class="u-two">
-              <input id="minGpaInput" class="u-input" type="number" step="1" min="0" max="100" placeholder="min" />
-              <input id="maxGpaInput" class="u-input" type="number" step="1" min="0" max="100" placeholder="max" />
             </div>
           </div>
 
