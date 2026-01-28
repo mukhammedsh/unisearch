@@ -230,6 +230,97 @@ function initUniversitiesPage() {
     return p;
   }
 
+  // ==========================================
+  // 🧠 AI SMART SORTING ALGORITHM
+  // ==========================================
+  function getSmartSortedUniversities(universities) {
+    // 1. Загружаем профиль пользователя
+    const profile = loadProfile(); // Твоя существующая функция
+    
+    // Если профиль пустой (нет бюджета и экзаменов), возвращаем список как есть
+    const hasBudget = profile.budget && !isNaN(parseFloat(profile.budget));
+    const hasExams = profile.exams && profile.exams.length > 0;
+    
+    if (!hasBudget && !hasExams) return universities;
+
+    const userBudget = hasBudget ? parseFloat(profile.budget) : 0;
+
+    // Превращаем массив экзаменов юзера в удобный объект: {"IELTS": 7.5, "SAT": 1400}
+    const userScores = {};
+    if (hasExams) {
+        profile.exams.forEach(item => {
+            if (item.exam && item.score) {
+                userScores[item.exam.toUpperCase()] = parseFloat(item.score);
+            }
+        });
+    }
+
+    // 2. Оцениваем каждый университет
+    const scored = universities.map(u => {
+        let score = 0;
+        let isEligible = true; // Подходит ли вообще?
+
+        // --- А. ПРОВЕРКА ЭКЗАМЕНОВ ---
+        // Проходимся по всем экзаменам, которые сдал юзер
+        for (const [examName, userScore] of Object.entries(userScores)) {
+            // Ищем требования вуза. Если их нет в базе, считаем 0.
+            const min = u.exams_min ? (u.exams_min[examName] || 0) : 0;
+            const avg = u.exams_avg ? (u.exams_avg[examName] || 0) : 0;
+
+            // ❌ HARD FILTER: Если у вуза есть минимум, а у нас меньше — исключаем
+            if (min > 0 && userScore < min) {
+                isEligible = false;
+            }
+
+            // ⭐ SCORING: Начисляем баллы
+            if (isEligible) {
+                if (avg > 0) {
+                    // Если выше среднего — даем много очков. Чем выше, тем лучше.
+                    const diff = (userScore - avg) / avg;
+                    score += diff * 20; 
+                } else if (min > 0) {
+                    // Если есть только минимум и мы прошли — даем немного очков
+                    const diff = (userScore - min) / min;
+                    score += diff * 10;
+                }
+            }
+        }
+
+        // --- Б. ПРОВЕРКА БЮДЖЕТА ---
+        if (userBudget > 0) {
+            const cost = u.finance.total_cost_year_usd;
+            const fa = u.finance.financial_aid || {};
+            // Считаем, что грант есть, если Merit или Need based = true
+            const hasGrant = fa.merit_based || fa.need_based;
+
+            if (cost <= userBudget) {
+                score += 20; // ✅ Вписываемся в бюджет — отлично!
+            } else {
+                // ⚠️ Бюджет превышен
+                if (hasGrant) {
+                    score -= 5;  // Штраф маленький, так как есть шанс гранта
+                } else {
+                    score -= 50; // Штраф огромный, так как денег нет и гранта нет
+                }
+            }
+        }
+
+        return { uni: u, score: score, isEligible: isEligible };
+    });
+
+    // 3. Фильтрация и Сортировка
+    // Оставляем только те, где прошли Hard Filter (isEligible)
+    const filtered = scored.filter(item => item.isEligible);
+    
+    // Сортируем: у кого больше score, тот выше
+    filtered.sort((a, b) => b.score - a.score);
+
+    console.log("📊 AI Ranking applied. Top result:", filtered[0]?.uni.name);
+    
+    // Возвращаем чистый список университетов
+    return filtered.map(item => item.uni);
+  }
+
   async function fetchAndRender() {
     el.state && (el.state.textContent = "Loading...");
     el.list.innerHTML = "";
@@ -243,8 +334,19 @@ function initUniversitiesPage() {
       if (!res.ok) throw new Error("API Error");
       const data = await res.json();
 
-      const items = data.items || [];
+      let items = data.items || [];    // ✅ let разрешает изменение
       const total = data.total || 0;
+
+      if (state.sort === "ai_rec") {
+          items = getSmartSortedUniversities(items); 
+      }
+
+      if (el.total) el.total.textContent = String(total);
+      
+      if (!items.length) {
+        el.state && (el.state.textContent = "No universities found.");
+        return;
+      }
 
       if (el.total) el.total.textContent = String(total);
       
@@ -269,34 +371,50 @@ function initUniversitiesPage() {
     }
   }
 
-  function renderCard(u, userBudget) {
+  function renderCard(u, _unusedBudget) { // userBudget берем свежий из профиля внутри
     const id = u.id;
     const name = u.name;
     const country = nested(u, ["location", "country"], "");
     const city = nested(u, ["location", "city"], "");
     const loc = [city, country].filter(Boolean).join(", ");
     const cost = nested(u, ["finance", "total_cost_year_usd"], 0);
-    const fa = nested(u, ["finance", "financial_aid"], {});
-    // Если есть Merit ИЛИ Need — считаем, что помощь есть
-    const hasAid = fa.merit_based || fa.need_based;
     const acceptance = nested(u, ["academics", "acceptance_rate_percent"], "?");
-
-    // ПУТИ К КАРТИНКАМ
-    // Логотип: images/logos/ID.png
-    // Фон: images/thumbnails/ID.jpg
+    
+    // Картинки
     const logoSrc = `images/logos/${id}.png`;
     const thumbSrc = `images/thumbnails/${id}.jpg`;
 
-    // Логика бейджей (как раньше)
+    // --- 1. ПРОВЕРЯЕМ ГРАНТЫ ---
+    const fa = u.finance.financial_aid || {};
+    const hasGrant = fa.merit_based || fa.need_based; 
+
+    // --- 2. БЕРЕМ БЮДЖЕТ ЮЗЕРА ---
+    const profile = loadProfile();
+    const myBudget = parseFloat(profile.budget);
+    
     let badgeHTML = "";
-    if (hasAid) {
-        badgeHTML = `<span style="background:#d4edda; color:#155724; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:bold;">✅ Grant Available</span>`;
-    } else {
-        badgeHTML = `<span style="background:#eee; color:#333; padding:4px 8px; border-radius:4px; font-size:12px;">Acceptance: ${acceptance}%</span>`;
+
+    // --- 3. ЛОГИКА ЦВЕТОВ ---
+    
+    // СЦЕНАРИЙ А: Бюджет указан и ЦЕНА ВЫШЕ бюджета
+    if (!isNaN(myBudget) && myBudget > 0 && cost > myBudget) {
+        if (hasGrant) {
+            // 🔵 Синий: Денег не хватает, но грант спасет
+            badgeHTML = `<span style="background:#dbeafe; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #93c5fd;">🔵 Budget exceeded, Grant available</span>`;
+        } else {
+            // 🟣 Фиолетовый: Денег не хватает и грантов нет
+            badgeHTML = `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe;">🟣 Budget exceeded</span>`;
+        }
+    } 
+    // СЦЕНАРИЙ Б: Все хорошо (бюджет ок) и есть грант
+    else if (hasGrant) {
+        badgeHTML = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+    } 
+    // СЦЕНАРИЙ В: Обычный
+    else {
+        badgeHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acceptance}%</span>`;
     }
 
-    // В HTML добавляем style для фона и img для логотипа
-    // onerror="this.style.display='none'" скроет битую картинку логотипа, если ты её еще не добавил
     return `
       <article class="uni-card" data-uni-id="${escapeHtml(id)}">
         <div class="uni-media" style="background-image: url('${thumbSrc}');">
