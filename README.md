@@ -33,61 +33,65 @@ UniSearch helps:
 ## Project structure
 
 ```text  
-backend/  
-│  
-├── app/  
+backend/
+│
+├── app/
 │   ├── main.py              # FastAPI application entry point  
-│   └── core/  
+│   └── core/
 │       └── validation.py    # whitelist of supported exams  
-│  
-├── data/  
+│
+├── data/
 │   └── universities.json    # dataset of universities (JSON)  
-│  
-├── requirements.txt  
+│
+├── requirements.txt
 └── venv/                    # Python virtual environment (not committed)
 
-frontend/  
-│  
+frontend/
+│
 ├── index.html               # landing / main page  
 ├── universities.html        # universities list page (Smart Search)  
 ├── university.html          # university detail page (Tabs view)  
-│  
+│
 ├── style.css                # global styles  
 ├── universities.css         # universities list & card styles  
 ├── university.css           # university detail & tabs styles  
 ├── script.js                # frontend logic (AI sorting, API interaction)  
-│  
+│
 └── images/  
     ├── logo.jpeg            # project logo  
     ├── logos/               # University logos (PNG, 1:1)  
     └── thumbnails/          # Campus covers (JPG, 16:9)
+```
 
-## ---
+---
 
 **How to run the backend**
 
 1. Go to the backend directory:  
-   Bash  
+```bash
    cd backend
+```
 
 2. Create a virtual environment (one time):  
-   Bash  
-   python \-m venv venv
+```bash
+   python -m venv venv
+```
 
 3. Activate the virtual environment:  
    * **Windows:** venv\\Scripts\\activate  
    * **macOS / Linux:** source venv/bin/activate  
 4. Install dependencies:  
-   Bash  
-   pip install \-r requirements.txt
-
+```bash
+   pip install -r requirements.txt
+```
 5. Run the backend server:  
-   Bash  
-   uvicorn app.main:app \--reload \--port 8000
+```bash
+   uvicorn app.main:app --reload --port 8000
+```
 
 The backend will be available at: http://127.0.0.1:8000
 
-## ---
+---
 
 **How to run the frontend**
 
@@ -103,13 +107,13 @@ The backend will be available at: http://127.0.0.1:8000
 
 From the frontend/ directory:
 
-Bash
-
-python \-m http.server 5500
+```bash
+python -m http.server 5500
+```
 
 Then open: http://127.0.0.1:5500/universities.html
 
-## ---
+---
 
 **Smart Sorting & Ranking Logic**
 
@@ -125,7 +129,7 @@ The application uses a weighted algorithm to rank universities:
    * 🟣 **Purple Badge:** "Budget exceeded" (Warning).  
    * ✅ **Green Badge:** "Within Budget" or "Grant Available".
 
-## ---
+---
 
 **How to add a university**
 
@@ -135,40 +139,39 @@ Edit backend/data/universities.json. The structure has been updated to support p
 
 **Example Entry:**
 
-JSON
-
+```json
 {  
   "id": "harvard-usa-cambridge",  
   "name": "Harvard University",  
   "location": { "country": "USA", "city": "Cambridge", "state": "MA" },  
-  "website": "\[https://www.harvard.edu/\](https://www.harvard.edu/)",  
+  "website": "https://www.harvard.edu/",  
   "academics": {  
-    "majors": \["Economics", "Computer Science"\],  
-    "study\_levels": \["Bachelor"\],  
-    "formats": \["On-campus"\],  
-    "acceptance\_rate\_percent": 3.6  
+    "majors": ["Economics", "Computer Science"],  
+    "study_levels": ["Bachelor"],  
+    "formats": ["On-campus"],  
+    "acceptance_rate_percent": 3.6  
   },  
   "finance": {  
-    "total\_cost\_year\_usd": 87450,  
-    "application\_fee\_usd": 85,  
-    "financial\_aid": {  
-      "merit\_based": false,  
-      "need\_based": true  
+    "total_cost_year_usd": 87450,  
+    "application_fee_usd": 85,  
+    "financial_aid": {  
+      "merit_based": false,  
+      "need_based": true  
     }  
   },  
-  "student\_life": { "size": "large" },  
-  "exams\_avg": { "GPA": 99, "IELTS": 8.5, "SAT": 1550 },  
-  "exams\_min": { "GPA": 95, "IELTS": 7.5, "SAT": 1500 }  
+  "student_life": { "size": "large" },  
+  "exams_avg": { "GPA": 99, "IELTS": 8.5, "SAT": 1550 },  
+  "exams_min": { "GPA": 95, "IELTS": 7.5, "SAT": 1500 }  
 }
-
-### **2\. Add Images**
+```
+### **2. Add Images**
 
 To ensure the UI looks correct, add images matching the id from the JSON:
 
 * **Logo:** frontend/images/logos/harvard-usa-cambridge.png (Transparent PNG recommended)  
 * **Cover:** frontend/images/thumbnails/harvard-usa-cambridge.jpg (1280x720 or 16:9 JPG)
 
-## ---
+---
 
 **Future development**
 
@@ -178,7 +181,7 @@ Planned features for Beta:
 * **Cloud Database:** Migration from JSON to PostgreSQL/MongoDB.  
 * **Machine Learning:** Training a model on admission statistics to predict acceptance probability percentages.
 
-## ---
+---
 
 **Infomatrix note**
 
