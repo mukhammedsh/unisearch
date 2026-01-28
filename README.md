@@ -1,66 +1,66 @@
-\# UniSearch — Alpha Version (Infomatrix 2026\)
+# UniSearch — Alpha Version (Infomatrix 2026)
 
-\#\# Project description
+## Project description
 
-**\*\*UniSearch\*\*** is a socially oriented web application designed to help school students and applicants choose suitable universities based on structured data and **\*\*AI-based Smart Ranking\*\***.
+**UniSearch** is a socially oriented web application designed to help school students and applicants choose suitable universities based on structured data and **AI-based Smart Ranking**.
 
 The main goal of the project is to reduce inequality in access to educational information, eliminate the need for expensive educational consultants, and provide personalized recommendations based on the applicant's budget and academic profile.
 
-The project is developed for participation in **\*\*Infomatrix 2026\*\***.
+The project is developed for participation in **Infomatrix 2026**.
 
-\---
+---
 
-\#\# Social significance & AI Integration
+## Social significance & AI Integration
 
-UniSearch helps:  
-\- **\*\*Personalize the search:\*\*** The "Smart Sort" algorithm ranks universities not just by popularity, but by how well they fit the specific user (Budget \+ Exams).  
-\- **\*\*Visualize complex data:\*\*** Clear separation of Merit-based vs. Need-based aid helps students understand their real financial options.  
-\- **\*\*Explainable logic:\*\*** Color-coded badges (Blue/Purple/Green) explain *\*why\** a university matches or exceeds the budget.
+UniSearch helps:
+- **Personalize the search:** The "Smart Sort" algorithm ranks universities not just by popularity, but by how well they fit the specific user (Budget + Exams).
+- **Visualize complex data:** Clear separation of Merit-based vs. Need-based aid helps students understand their real financial options.
+- **Explainable logic:** Color-coded badges (Blue/Purple/Green) explain *why* a university matches or exceeds the budget.
 
-\---
+---
 
-\#\# What's New in this Version
+## What's New in this Version
 
-\- **\*\*AI Smart Sorting:\*\*** A logic engine that filters universities by minimum requirements and ranks them by "fit score" (comparing User GPA/SAT vs University Average).  
-\- **\*\*Smart Badges:\*\*** Dynamic UI labels that detect "Grant Opportunities" even if the tuition exceeds the user's budget.  
-\- **\*\*Enhanced UI/UX:\*\***  
-  \- **\*\*Tabs System:\*\*** University details are organized into General, Programs, Admission, and Costs tabs.  
-  \- **\*\*Visuals:\*\*** Dynamic loading of university logos and campus thumbnails based on IDs.  
-\- **\*\*Granular Data:\*\*** Separation of \`exams\_min\` (hard requirements) vs \`exams\_avg\` (recommendations), and split financial aid types.
+- **AI Smart Sorting:** A logic engine that filters universities by minimum requirements and ranks them by "fit score" (comparing User GPA/SAT vs University Average).
+- **Smart Badges:** Dynamic UI labels that detect "Grant Opportunities" even if the tuition exceeds the user's budget.
+- **Enhanced UI/UX:**
+  - **Tabs System:** University details are organized into General, Programs, Admission, and Costs tabs.
+  - **Visuals:** Dynamic loading of university logos and campus thumbnails based on IDs.
+- **Granular Data:** Separation of `exams_min` (hard requirements) vs `exams_avg` (recommendations), and split financial aid types.
 
-\---
+---
 
-\#\# Project structure
+## Project structure
 
-\`\`\`text  
+```text  
 backend/  
 │  
 ├── app/  
-│   ├── main.py              \# FastAPI application entry point  
+│   ├── main.py              # FastAPI application entry point  
 │   └── core/  
-│       └── validation.py    \# whitelist of supported exams  
+│       └── validation.py    # whitelist of supported exams  
 │  
 ├── data/  
-│   └── universities.json    \# dataset of universities (JSON)  
+│   └── universities.json    # dataset of universities (JSON)  
 │  
 ├── requirements.txt  
-└── venv/                    \# Python virtual environment (not committed)
+└── venv/                    # Python virtual environment (not committed)
 
 frontend/  
 │  
-├── index.html               \# landing / main page  
-├── universities.html        \# universities list page (Smart Search)  
-├── university.html          \# university detail page (Tabs view)  
+├── index.html               # landing / main page  
+├── universities.html        # universities list page (Smart Search)  
+├── university.html          # university detail page (Tabs view)  
 │  
-├── style.css                \# global styles  
-├── universities.css         \# universities list & card styles  
-├── university.css           \# university detail & tabs styles  
-├── script.js                \# frontend logic (AI sorting, API interaction)  
+├── style.css                # global styles  
+├── universities.css         # universities list & card styles  
+├── university.css           # university detail & tabs styles  
+├── script.js                # frontend logic (AI sorting, API interaction)  
 │  
 └── images/  
-    ├── logo.jpeg            \# project logo  
-    ├── logos/               \# University logos (PNG, 1:1)  
-    └── thumbnails/          \# Campus covers (JPG, 16:9)
+    ├── logo.jpeg            # project logo  
+    ├── logos/               # University logos (PNG, 1:1)  
+    └── thumbnails/          # Campus covers (JPG, 16:9)
 
 ## ---
 
@@ -115,11 +115,11 @@ Then open: http://127.0.0.1:5500/universities.html
 
 The application uses a weighted algorithm to rank universities:
 
-1. **Hard Filter:** Excludes universities where the user's score \< exams\_min.  
+1. **Hard Filter:** Excludes universities where the user's score < exams_min.  
 2. **Scoring:** Calculates a "Fit Score":  
-   * **Academic Fit:** Points awarded for exceeding the exams\_avg (GPA, IELTS, SAT).  
-   * **Financial Fit:** Points deducted if Total Cost \> User Budget.  
-   * **Grant Mitigation:** If the budget is exceeded but financial\_aid is available, the penalty is significantly reduced (Smart Recommendation).  
+   * **Academic Fit:** Points awarded for exceeding the exams_avg (GPA, IELTS, SAT).  
+   * **Financial Fit:** Points deducted if Total Cost > User Budget.  
+   * **Grant Mitigation:** If the budget is exceeded but financial_aid is available, the penalty is significantly reduced (Smart Recommendation).  
 3. **Visualization:**  
    * 🔵 **Blue Badge:** "Budget exceeded, Grant available" (High recommendation).  
    * 🟣 **Purple Badge:** "Budget exceeded" (Warning).  
@@ -129,7 +129,7 @@ The application uses a weighted algorithm to rank universities:
 
 **How to add a university**
 
-### **1\. Update JSON Data**
+### **1. Update JSON Data**
 
 Edit backend/data/universities.json. The structure has been updated to support precise grant types and exam requirements.
 
@@ -152,8 +152,8 @@ JSON
     "total\_cost\_year\_usd": 87450,  
     "application\_fee\_usd": 85,  
     "financial\_aid": {  
-      "merit\_based": false,   // Merit scholarships  
-      "need\_based": true      // Need-based aid  
+      "merit\_based": false,  
+      "need\_based": true  
     }  
   },  
   "student\_life": { "size": "large" },  
