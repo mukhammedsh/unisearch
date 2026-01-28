@@ -31,40 +31,95 @@
       <div id="detailState" class="d-state"></div>
 
       <section id="detailCard" class="d-card" style="display:none;">
+        
         <div class="d-cover" id="detailCover">
-          <div class="d-cover-price" id="detailPrice"></div>
-          <div class="d-cover-logo" id="detailLogo"></div>
+          <div class="d-cover-overlay"></div>
+          <div class="d-cover-logo" id="detailLogo">U</div>
         </div>
 
         <div class="d-head">
-          <div>
-            <h1 id="detailName" class="d-title"></h1>
-            <div id="detailLocation" class="d-location"></div>
+          <div style="flex-grow: 1;"> <div style="display:flex; align-items:center; gap: 10px;">
+                <h1 id="detailName" class="d-title">University Name</h1>
+                <a id="detailWebsite" href="#" target="_blank" class="d-site-link" title="Visit Official Website">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                </a>
+            </div>
+            <div id="detailLocation" class="d-location">Location</div>
           </div>
-
           <a class="d-back" href="universities.html">Back to list</a>
         </div>
 
-        <div class="d-grid">
-          <div class="d-box">
-            <div class="d-box-title">Programs</div>
-            <div id="detailPrograms" class="d-box-text"></div>
+        <div class="d-tabs">
+          <button class="d-tab-btn active" data-tab="tab-general">
+            <span class="icon">📄</span> General
+          </button>
+          <button class="d-tab-btn" data-tab="tab-programs">
+            <span class="icon">🎓</span> Programs
+          </button>
+          <button class="d-tab-btn" data-tab="tab-admission">
+            <span class="icon">📝</span> Admission
+          </button>
+          <button class="d-tab-btn" data-tab="tab-finance">
+            <span class="icon">💲</span> Costs
+          </button>
+        </div>
+
+        <div class="d-tab-content">
+          
+          <div id="tab-general" class="d-tab-pane active">
+            <div class="d-box">
+              <div class="d-box-title">About & Campus</div>
+              <div id="detailExtra" class="d-box-text"></div>
+            </div>
+            <div class="d-box" style="margin-top: 20px;">
+               <div class="d-box-title">Overview</div>
+               <div id="detailRecommendations" class="d-box-text"></div>
+            </div>
           </div>
 
-          <div class="d-box">
-            <div class="d-box-title">Requirements</div>
-            <div id="detailRequirements" class="d-box-text"></div>
+          <div id="tab-programs" class="d-tab-pane">
+            <div class="d-box">
+              <div class="d-box-title">Available Majors</div>
+              <div id="detailPrograms" class="d-box-text"></div>
+            </div>
           </div>
 
-          <div class="d-box">
-            <div class="d-box-title">Finances</div>
-            <div id="detailFinance" class="d-box-text"></div>
+          <div id="tab-admission" class="d-tab-pane">
+            <div class="d-box">
+              <div class="d-box-title">Entry Requirements</div>
+              <div id="detailRequirements" class="d-box-text"></div>
+            </div>
           </div>
 
-          <div class="d-box">
-            <div class="d-box-title">Additional info</div>
-            <div id="detailExtra" class="d-box-text"></div>
+          <div id="tab-finance" class="d-tab-pane">
+             <div class="d-box finance-box">
+              <div class="d-box-title">Total Cost Calculator</div>
+              
+              <div class="finance-grid">
+                  <div class="finance-left">
+                     <h3>Discounts & Scholarships</h3>
+                     <div id="detailScholarshipInfo" class="scholarship-card">
+                        <p>✅ Merit-based scholarships available</p>
+                        <p>✅ Need-based financial aid</p>
+                     </div>
+                  </div>
+                  
+                  <div class="finance-right">
+                     <div class="total-price-card">
+                        <div class="price-header">Total Estimated Cost</div>
+                        <div class="price-big" id="detailPrice"></div>
+                        <div class="price-sub">per year</div>
+                        <div class="price-divider"></div>
+                        <div id="detailFinance" class="finance-list"></div>
+                     </div>
+                  </div>
+              </div>
+            </div>
           </div>
+
         </div>
       </section>
     </div>

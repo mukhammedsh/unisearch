@@ -2,12 +2,19 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
-from typing import Any, Optional, List, Dict
-from app.core.validation import EXAM_WHITELIST
+from typing import Any, Optional, List, Dict, Union
 
-app = FastAPI(title="UniSearch API", version="0.2.0")
+# --- ВСТРОЕННАЯ КОНФИГУРАЦИЯ ---
+EXAM_WHITELIST = {
+    "IELTS": (0.0, 9.0),
+    "TOEFL": (0.0, 120.0),
+    "SAT": (400.0, 1600.0),
+    "ACT": (1.0, 36.0),
+    "GPA": (0.0, 100.0),
+}
 
-# CORS (можно оставить "*", позже ограничите до localhost фронтенда)
+app = FastAPI(title="UniSearch AI API", version="1.0.0")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,25 +23,47 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # backend/
-DATA_PATH = os.path.join(BASE_DIR, "data", "universities.json")
+# --- РАБОТА С ФАЙЛАМИ ---
+# 1. Получаем папку, где лежит main.py (это папка 'app')
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# 2. Поднимаемся на уровень выше (в папку 'backend')
+BACKEND_DIR = os.path.dirname(CURRENT_DIR)
+
+# 3. Строим путь к JSON: backend -> data -> universities.json
+DATA_PATH = os.path.join(BACKEND_DIR, "data", "universities.json")
 
 def load_universities() -> List[Dict[str, Any]]:
-    if not os.path.exists(DATA_PATH):
-        return []
-    with open(DATA_PATH, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    if not isinstance(data, list):
-        raise ValueError("universities.json должен быть JSON-массивом")
-    return data
+    # Проверка основного пути
+    if os.path.exists(DATA_PATH):
+        try:
+            with open(DATA_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data if isinstance(data, list) else []
+        except Exception:
+            return []
+    
+    # Проверка запасного пути (в корне)
+    alt = os.path.join(BASE_DIR, "universities.json")
+    if os.path.exists(alt):
+        try:
+            with open(alt, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+            
+    return []
 
+# --- БЕЗОПАСНЫЕ HELPER-ФУНКЦИИ ---
 
 def _safe_lower(x: Any) -> str:
-    return str(x or "").strip().lower()
+    """Безопасно приводит к строке и нижнему регистру."""
+    if x is None:
+        return ""
+    return str(x).strip().lower()
 
-
-def _get_nested(u: Dict[str, Any], path: List[str], default=None):
+def _get_nested(u: Dict[str, Any], path: List[str], default: Any = None) -> Any:
+    """Безопасно достает значение из вложенного словаря."""
     cur: Any = u
     for key in path:
         if not isinstance(cur, dict):
@@ -44,65 +73,69 @@ def _get_nested(u: Dict[str, Any], path: List[str], default=None):
             return default
     return cur
 
+def _get_list(u: Dict[str, Any], path: List[str]) -> List[str]:
+    """Гарантированно возвращает список, даже если в базе None."""
+    val = _get_nested(u, path, [])
+    if isinstance(val, list):
+        return val
+    return []
 
 def _to_float(x: Any) -> Optional[float]:
+    """Преобразует в float или возвращает None."""
     try:
         if x is None or x == "":
             return None
         return float(x)
-    except Exception:
+    except (ValueError, TypeError):
         return None
 
+def _safe_compare_lte(value: Optional[float], threshold: float) -> bool:
+    """
+    Возвращает True, если value <= threshold.
+    Если value равно None (данных нет), считаем, что условие НЕ выполнено (False),
+    либо можно менять логику. Здесь: жесткий фильтр.
+    """
+    if value is None:
+        return False
+    return value <= threshold
 
-def _contains_case_insensitive(haystack: Any, needle: str) -> bool:
-    return _safe_lower(needle) in _safe_lower(haystack)
+def _safe_compare_gte(value: Optional[float], threshold: float) -> bool:
+    """Возвращает True, если value >= threshold."""
+    if value is None:
+        return False
+    return value >= threshold
 
-
+# --- ЛОГИКА СОРТИРОВКИ ---
 def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
     sort = (sort or "").strip()
 
-    # helpers to read numeric fields safely
-    def tuition(u: Dict[str, Any]) -> Optional[float]:
-        return _to_float(_get_nested(u, ["finance", "tuition_year_usd"]))
-
-    def acceptance(u: Dict[str, Any]) -> Optional[float]:
-        return _to_float(_get_nested(u, ["academics", "acceptance_rate_percent"]))
-
-    def gpa(u: Dict[str, Any]) -> Optional[float]:
-        return _to_float(_get_nested(u, ["exams_avg", "GPA"]))
-
-    def ielts(u: Dict[str, Any]) -> Optional[float]:
-        return _to_float(_get_nested(u, ["exams_avg", "IELTS"]))
+    def get_val(u, path):
+        return _to_float(_get_nested(u, path)) or 0.0
 
     if sort == "name_asc":
         return sorted(items, key=lambda u: _safe_lower(u.get("name")))
-
+        
+    # Сортировка чисел. (val is None) нужно для того, чтобы None улетали в конец списка
     if sort == "tuition_asc":
-        return sorted(items, key=lambda u: (tuition(u) is None, tuition(u) or 0))
-
+        return sorted(items, key=lambda u: get_val(u, ["finance", "total_cost_year_usd"]))
     if sort == "tuition_desc":
-        return sorted(items, key=lambda u: (tuition(u) is None, -(tuition(u) or 0)))
-
+        return sorted(items, key=lambda u: get_val(u, ["finance", "total_cost_year_usd"]), reverse=True)
+        
     if sort == "acceptance_asc":
-        return sorted(items, key=lambda u: (acceptance(u) is None, acceptance(u) or 0))
-
+        return sorted(items, key=lambda u: get_val(u, ["academics", "acceptance_rate_percent"]))
     if sort == "acceptance_desc":
-        return sorted(items, key=lambda u: (acceptance(u) is None, -(acceptance(u) or 0)))
-
+        return sorted(items, key=lambda u: get_val(u, ["academics", "acceptance_rate_percent"]), reverse=True)
+        
     if sort == "gpa_desc":
-        return sorted(items, key=lambda u: (gpa(u) is None, -(gpa(u) or 0)))
-
-    if sort == "ielts_desc":
-        return sorted(items, key=lambda u: (ielts(u) is None, -(ielts(u) or 0)))
-
-    # default (если не задано) — name_asc, чтобы было предсказуемо
+        return sorted(items, key=lambda u: get_val(u, ["exams_avg", "GPA"]), reverse=True)
+    
     return sorted(items, key=lambda u: _safe_lower(u.get("name")))
 
+# --- API ENDPOINTS ---
 
 @app.get("/")
 def root():
-    return {"status": "ok", "service": "uniesearch-backend", "storage": "json"}
-
+    return {"status": "ok", "service": "uniesearch-backend-ai", "version": "1.0"}
 
 @app.post("/exams/validate")
 def validate_exam(payload: Dict[str, Any]):
@@ -111,7 +144,6 @@ def validate_exam(payload: Dict[str, Any]):
 
     if not exam_raw:
         raise HTTPException(status_code=400, detail="Exam name is required")
-
     if score_raw is None or score_raw == "":
         raise HTTPException(status_code=400, detail="Score is required")
 
@@ -120,165 +152,103 @@ def validate_exam(payload: Dict[str, Any]):
     except Exception:
         raise HTTPException(status_code=400, detail="Score must be a number")
 
-    whitelist = {k.upper(): k for k in EXAM_WHITELIST.keys()}
     key = exam_raw.upper()
+    if key not in EXAM_WHITELIST:
+        raise HTTPException(status_code=400, detail=f"Unknown exam. Allowed: {list(EXAM_WHITELIST.keys())}")
 
-    if key not in whitelist:
-        raise HTTPException(status_code=400, detail="Unknown exam")
+    min_s, max_s = EXAM_WHITELIST[key]
+    if score < min_s or score > max_s:
+        raise HTTPException(status_code=400, detail=f"Score must be between {min_s} and {max_s}")
 
-    canonical = whitelist[key]
-    min_score, max_score = EXAM_WHITELIST[canonical]
-    if score < min_score or score > max_score:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Score must be between {min_score} and {max_score}",
-        )
-
-    return {"ok": True, "exam": canonical, "score": score}
-
+    return {"ok": True, "exam": key, "score": score}
 
 @app.get("/universities")
 def list_universities(
-    # Поиск
     q: Optional[str] = None,
-
-    # Location filters
     country: Optional[str] = None,
     city: Optional[str] = None,
-    state: Optional[str] = None,
+    major: Optional[str] = None,
+    study_level: Optional[str] = None,
+    format: Optional[str] = None,
 
-    # Academics filters
-    major: Optional[str] = None,           # matches academics.majors (contains)
-    study_level: Optional[str] = None,     # matches academics.study_levels (exact-ish)
-    format: Optional[str] = None,          # matches academics.formats (exact-ish)
-
-    # Finance filters
-    min_tuition: Optional[float] = Query(None, ge=0),
+    # --- УМНЫЙ ФИЛЬТР (Оставляем только бюджет) ---
+    user_budget: Optional[float] = Query(None, ge=0),
+    
+    # Старые фильтры по цене (на всякий случай можно оставить)
+    min_tuition: Optional[float] = Query(None, ge=0), 
     max_tuition: Optional[float] = Query(None, ge=0),
 
-    # Acceptance rate
+    # Фильтры по Acceptance Rate (можно оставить или тоже убрать, если не нужны)
     min_acceptance: Optional[float] = Query(None, ge=0),
     max_acceptance: Optional[float] = Query(None, ge=0),
 
-    # Exams
-    min_gpa: Optional[float] = Query(None, ge=0),
-    max_gpa: Optional[float] = Query(None, ge=0),
-    min_ielts: Optional[float] = Query(None, ge=0),
-    max_ielts: Optional[float] = Query(None, ge=0),
+    # --- УДАЛЕНО: min_gpa, min_ielts и т.д. ---
 
-    # Student life
-    size: Optional[str] = None,            # matches student_life.size
-
-    # Sorting & pagination
+    size: Optional[str] = None,
     sort: str = "name_asc",
     page: int = Query(1, ge=1),
     limit: int = Query(200, ge=1, le=500),
 ):
     items = load_universities()
 
-    # 1) q search by name (contains)
+    # 1. Text Search
     if q:
         qq = _safe_lower(q)
         items = [u for u in items if qq in _safe_lower(u.get("name"))]
 
-    # 2) location filters
+    # 2. Location
     if country:
         items = [u for u in items if _safe_lower(_get_nested(u, ["location", "country"])) == _safe_lower(country)]
     if city:
         items = [u for u in items if _safe_lower(_get_nested(u, ["location", "city"])) == _safe_lower(city)]
-    if state:
-        items = [u for u in items if _safe_lower(_get_nested(u, ["location", "state"])) == _safe_lower(state)]
 
-    # 3) academics: majors
+    # 3. Academics
     if major:
         m = _safe_lower(major)
-        def has_major(u: Dict[str, Any]) -> bool:
-            majors = _get_nested(u, ["academics", "majors"], default=[])
-            if not isinstance(majors, list):
-                return False
-            return any(m in _safe_lower(x) for x in majors)
-        items = [u for u in items if has_major(u)]
-
-    # 4) academics: study_levels
+        items = [u for u in items if any(m in _safe_lower(x) for x in _get_list(u, ["academics", "majors"]))]
+    
     if study_level:
         sl = _safe_lower(study_level)
-        def has_level(u: Dict[str, Any]) -> bool:
-            levels = _get_nested(u, ["academics", "study_levels"], default=[])
-            if not isinstance(levels, list):
-                return False
-            return any(_safe_lower(x) == sl for x in levels)
-        items = [u for u in items if has_level(u)]
+        items = [u for u in items if any(_safe_lower(x) == sl for x in _get_list(u, ["academics", "study_levels"]))]
 
-    # 5) academics: formats
     if format:
         fm = _safe_lower(format)
-        def has_format(u: Dict[str, Any]) -> bool:
-            formats = _get_nested(u, ["academics", "formats"], default=[])
-            if not isinstance(formats, list):
-                return False
-            return any(_safe_lower(x) == fm for x in formats)
-        items = [u for u in items if has_format(u)]
+        items = [u for u in items if any(_safe_lower(x) == fm for x in _get_list(u, ["academics", "formats"]))]
 
-    # 6) finance tuition range
-    if min_tuition is not None or max_tuition is not None:
-        def tuition_ok(u: Dict[str, Any]) -> bool:
-            t = _to_float(_get_nested(u, ["finance", "tuition_year_usd"]))
-            if t is None:
-                return False
-            if min_tuition is not None and t < min_tuition:
-                return False
-            if max_tuition is not None and t > max_tuition:
-                return False
-            return True
-        items = [u for u in items if tuition_ok(u)]
+    # 4. EXAMS (УДАЛЕНО)
+    # Здесь был блок Hard Filter, теперь мы пропускаем всех, 
+    # чтобы ИИ потом сам решал, кого рекомендовать.
 
-    # 7) acceptance rate range
-    if min_acceptance is not None or max_acceptance is not None:
-        def acc_ok(u: Dict[str, Any]) -> bool:
-            a = _to_float(_get_nested(u, ["academics", "acceptance_rate_percent"]))
-            if a is None:
-                return False
-            if min_acceptance is not None and a < min_acceptance:
-                return False
-            if max_acceptance is not None and a > max_acceptance:
-                return False
-            return True
-        items = [u for u in items if acc_ok(u)]
+    # 5. FINANCE (Smart Logic)
+    if user_budget is not None:
+        filtered = []
+        for u in items:
+            cost = _to_float(_get_nested(u, ["finance", "total_cost_year_usd"])) or 999999.0
+            aid = bool(_get_nested(u, ["finance", "financial_aid_available"], False))
+            
+            # Проходим, если цена ниже бюджета ИЛИ если есть грант
+            if cost <= user_budget or aid:
+                filtered.append(u)
+        items = filtered
+    
+    # Старые фильтры цены (Range)
+    if min_tuition is not None:
+        items = [u for u in items if _safe_compare_gte(_to_float(_get_nested(u, ["finance", "total_cost_year_usd"])), min_tuition)]
+    if max_tuition is not None:
+        items = [u for u in items if _safe_compare_lte(_to_float(_get_nested(u, ["finance", "total_cost_year_usd"])), max_tuition)]
 
-    # 8) GPA range
-    if min_gpa is not None or max_gpa is not None:
-        def gpa_ok(u: Dict[str, Any]) -> bool:
-            g = _to_float(_get_nested(u, ["exams_avg", "GPA"]))
-            if g is None:
-                return False
-            if min_gpa is not None and g < min_gpa:
-                return False
-            if max_gpa is not None and g > max_gpa:
-                return False
-            return True
-        items = [u for u in items if gpa_ok(u)]
-
-    # 9) IELTS range
-    if min_ielts is not None or max_ielts is not None:
-        def ielts_ok(u: Dict[str, Any]) -> bool:
-            i = _to_float(_get_nested(u, ["exams_avg", "IELTS"]))
-            if i is None:
-                return False
-            if min_ielts is not None and i < min_ielts:
-                return False
-            if max_ielts is not None and i > max_ielts:
-                return False
-            return True
-        items = [u for u in items if ielts_ok(u)]
-
-    # 10) student_life size
+    # 6. Остальные фильтры
+    if min_acceptance is not None:
+        items = [u for u in items if _safe_compare_gte(_to_float(_get_nested(u, ["academics", "acceptance_rate_percent"])), min_acceptance)]
+    if max_acceptance is not None:
+        items = [u for u in items if _safe_compare_lte(_to_float(_get_nested(u, ["academics", "acceptance_rate_percent"])), max_acceptance)]
+    
     if size:
         items = [u for u in items if _safe_lower(_get_nested(u, ["student_life", "size"])) == _safe_lower(size)]
 
-    # Sort
+    # 7. Sort & Paginate
     items = _apply_sort(items, sort)
 
-    # Pagination
     total = len(items)
     start = (page - 1) * limit
     end = start + limit
@@ -286,13 +256,12 @@ def list_universities(
 
     return {
         "items": page_items,
-        "count": len(page_items),   # сколько вернули на этой странице
-        "total": total,             # сколько всего после фильтров
+        "count": len(page_items),
+        "total": total,
         "page": page,
         "limit": limit,
         "sort": sort,
     }
-
 
 @app.get("/universities/{university_id}")
 def get_university(university_id: str):
@@ -302,3 +271,7 @@ def get_university(university_id: str):
         if str(u.get("id")) == uid:
             return u
     raise HTTPException(status_code=404, detail="University not found")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)

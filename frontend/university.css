@@ -35,10 +35,21 @@
   box-shadow: 0 6px 18px rgba(0,0,0,.05);
 }
 
-.d-cover{
-  position: relative;
-  height: 220px;
-  background: linear-gradient(135deg, rgba(93,23,234,.22), rgba(0,0,0,.06));
+.d-cover {
+    height: 300px;
+    position: relative;
+    background-color: #333;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px 12px 0 0;
+}
+
+/* Затемнение фона (градиент), чтобы текст читался */
+.d-cover-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0,0,0,0.4));
+    border-radius: 12px 12px 0 0;
 }
 .d-cover::after{
   content:"";
@@ -112,17 +123,22 @@
 .d-back:hover{ background: rgba(93,23,234,.12); }
 
 .d-grid{
-  padding: 14px 16px 18px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  display: block;
+  column-count: 2;
+  column-gap: 20px;
 }
 
 .d-box{
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
-  background: #fff;
+  background: white;
+  border-radius: 0px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  
+  /* Важные настройки для колонок: */
+  margin-bottom: 0px; /* Отступ снизу (вместо gap) */
+  break-inside: avoid; /* Запрещаем разрывать блок между колонками */
+  display: inline-block; /* Помогает браузеру правильно считать размеры */
+  width: 100%; /* Растягиваем на ширину колонки */
 }
 
 .d-box-title{
@@ -136,6 +152,111 @@
   font-weight: 700;
 }
 
+.d-tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    padding-left: 15px;
+}
+
+.d-tab-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px; /* Делаем овальными */
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.d-tab-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #ccc;
+    transform: translateY(-1px);
+}
+
+.d-tab-btn.active {
+    background-color: #2563eb; /* Синий цвет */
+    color: white;
+    border-color: #2563eb;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+}
+
+.d-tab-btn .icon {
+    font-size: 1.1rem;
+}
+
+/* --- TAB CONTENT --- */
+.d-tab-pane {
+    display: none; /* Скрываем все вкладки по умолчанию */
+    animation: fadeIn 0.4s ease;
+}
+
+.d-tab-pane.active {
+    display: block; /* Показываем активную */
+}
+
+.d-site-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 50%;
+    transition: all 0.2s;
+    border: 1px solid #bfdbfe;
+}
+
+.d-site-link:hover {
+    background: #2563eb;
+    color: white;
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- НОВЫЙ ДИЗАЙН ФИНАНСОВ (как на фото) --- */
+.finance-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+.scholarship-card {
+    background: #ecfdf5; /* Светло-зеленый фон */
+    border: 1px solid #10b981;
+    border-radius: 8px;
+    padding: 20px;
+    color: #065f46;
+}
+
+.total-price-card {
+    background: #eff6ff; /* Светло-синий фон */
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.price-header { font-weight: bold; color: #1e40af; margin-bottom: 5px; }
+.price-big { font-size: 2.5rem; font-weight: 800; color: #2563eb; }
+.price-sub { font-size: 0.9rem; color: #6b7280; margin-bottom: 15px; }
+.price-divider { height: 1px; background: #bfdbfe; margin-bottom: 15px; }
+
 .d-kv{
   display: flex;
   justify-content: space-between;
@@ -147,6 +268,16 @@
 .d-kv span:first-child{ color: rgba(0,0,0,.55); font-weight: 800; }
 .d-kv span:last-child{ color: rgba(0,0,0,.80); font-weight: 900; }
 
-@media (max-width: 860px){
-  .d-grid{ grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+    .finance-grid {
+        grid-template-columns: 1fr;
+    }
+    .d-tabs {
+        overflow-x: auto;
+        padding-bottom: 10px;
+        flex-wrap: nowrap;
+    }
+    .d-tab-btn {
+        white-space: nowrap;
+    }
 }
