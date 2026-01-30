@@ -151,28 +151,31 @@ Edit backend/data/universities.json. The structure has been updated to support p
 **Example Entry:**
 
 ```json
-{  
-  "id": "harvard-usa-cambridge",  
-  "name": "Harvard University",  
-  "location": { "country": "USA", "city": "Cambridge", "state": "MA" },  
-  "website": "https://www.harvard.edu/",  
-  "academics": {  
-    "majors": ["Economics", "Computer Science"],  
-    "study_levels": ["Bachelor"],  
-    "formats": ["On-campus"],  
-    "acceptance_rate_percent": 3.6  
-  },  
-  "finance": {  
-    "total_cost_year_usd": 87450,  
-    "application_fee_usd": 85,  
-    "financial_aid": {  
-      "merit_based": false,  
-      "need_based": true  
-    }  
-  },  
-  "student_life": { "size": "large" },  
-  "exams_avg": { "GPA": 99, "IELTS": 8.5, "SAT": 1550 },  
-  "exams_min": { "GPA": 95, "IELTS": 7.5, "SAT": 1500 }  
+{
+   "id": "stanford-university-usa-ca",
+   "name": "Stanford University",
+   "location": { "country": "USA", "city": "Stanford", "state": "California" },
+   "website": "https://www.stanford.edu/",
+   "academics": {
+      "majors": ["Computer Science", "Engineering", "Business", "Biology", "Psychology", "Earth Sciences"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus", "Online"],
+      "acceptance_rate_percent": 4
+   },
+   "finance": {
+      "total_cost_year_usd": 82000,
+      "application_fee_usd": 90,
+      "financial_aid": { "merit_based": false, "need_based": true },
+      "costs_breakdown_year_usd": {
+         "Tuition": 62000,
+         "Housing_Dorm": 12000,
+         "Food": 7500,
+         "Books_Transport_Misc": 500
+      }
+   },
+   "student_life": { "size": "large" },
+   "exams_avg": { "GPA": 99, "IELTS": 8.0, "SAT": 1560 },
+   "exams_min": { "GPA": 97, "IELTS": 7.5, "SAT": 1500 }
 }
 ```
 ### **2. Add Images**
