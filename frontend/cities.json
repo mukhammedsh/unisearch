@@ -1,0 +1,29 @@
+{
+  "Kazakhstan": [
+    "Astana",
+    "Kaskelen"
+  ],
+  "USA": {
+    "Massachusetts": [
+      "Cambridge"
+    ],
+    "California": [
+      "Stanford"
+    ]
+  },
+  "South Korea": [
+    "Daejeon"
+  ],
+  "Japan": [
+    "Kyoto"
+  ],
+  "Hong Kong": [
+    "Sha Tin"
+  ],
+  "UK": [
+    "London"
+  ],
+  "Switzerland": [
+    "Zurich"
+  ]
+}

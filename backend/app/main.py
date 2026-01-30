@@ -167,6 +167,7 @@ def list_universities(
     q: Optional[str] = None,
     country: Optional[str] = None,
     city: Optional[str] = None,
+    region: Optional[str] = None,
     major: Optional[str] = None,
     study_level: Optional[str] = None,
     format: Optional[str] = None,
@@ -197,6 +198,10 @@ def list_universities(
         items = [u for u in items if qq in _safe_lower(u.get("name"))]
 
     # 2. Location
+    if region:
+        # Сравниваем параметр region с полем state в базе данных
+        reg = _safe_lower(region)
+        items = [u for u in items if _safe_lower(_get_nested(u, ["location", "state"])) == reg]
     if country:
         items = [u for u in items if _safe_lower(_get_nested(u, ["location", "country"])) == _safe_lower(country)]
     if city:

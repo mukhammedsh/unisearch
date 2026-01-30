@@ -19,14 +19,24 @@ UniSearch helps:
 
 ---
 
-## What's New in this Version
+## Latest Updates (v1.1)
 
-- **AI Smart Sorting:** A logic engine that filters universities by minimum requirements and ranks them by "fit score" (comparing User GPA/SAT vs University Average).
-- **Smart Badges:** Dynamic UI labels that detect "Grant Opportunities" even if the tuition exceeds the user's budget.
-- **Enhanced UI/UX:**
-  - **Tabs System:** University details are organized into General, Programs, Admission, and Costs tabs.
-  - **Visuals:** Dynamic loading of university logos and campus thumbnails based on IDs.
-- **Granular Data:** Separation of `exams_min` (hard requirements) vs `exams_avg` (recommendations), and split financial aid types.
+### Advanced Location Filtering
+- **Dynamic Location Logic:** Implemented a dependency-based filter system.
+    - Selecting a country (e.g., "USA") dynamically loads its specific **States/Regions**.
+    - Selecting a country without states (e.g., "Kazakhstan") immediately loads the list of **Cities**.
+- **Data Source:** Added `cities.json` — a lightweight database mapping countries to their states and cities.
+
+### Backend & API
+- **New Filter Parameter:** Updated FastAPI endpoint `/universities` to accept a `region` parameter.
+- **Smart Filtering:** The backend now filters universities by Country -> State (Region) -> City.
+- **AI-powered functions prototype:** Added prototype of new sorts: UniFit: Chance, UniFit: Budget.
+
+### Database Improvements
+- **Refined University Data:**
+    - Normalized study formats (`On-campus`, `Online`, `Hybrid`).
+    - Added detailed **Cost Breakdown** (Tuition, Housing, Food, etc.).
+    - Updated financial data and exam requirements for major universities.
 
 ---
 
@@ -47,6 +57,7 @@ backend/
 └── venv/                    # Python virtual environment (not committed)
 
 frontend/
+├── cities.json              # contains all cities and countries for filter (JSON)
 │
 ├── index.html               # landing / main page  
 ├── universities.html        # universities list page (Smart Search)  

@@ -51,12 +51,13 @@
             <label class="u-label" for="countrySelect">Country</label>
             <select id="countrySelect" class="u-select">
               <option value="">All countries</option>
-              <option value="Kazakhstan">Kazakhstan</option>
-              <option value="USA">USA</option>
-              <option value="UK">UK</option>
-              <option value="South Korea">South Korea</option>
-              <option value="Japan">Japan</option>
-              <option value="Hong Kong">Hong Kong</option>
+              </select>
+          </div>
+
+          <div class="u-field" id="stateDiv" style="display: none;">
+            <label class="u-label" for="stateSelect">State / Region</label>
+            <select id="stateSelect" class="u-select">
+              <option value="">Any State</option>
             </select>
           </div>
 
@@ -105,25 +106,13 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label">Acceptance rate (%)</label>
-            <div class="u-two">
-              <input id="minAcceptanceInput" class="u-input" type="number" min="0" max="100" placeholder="min" />
-              <input id="maxAcceptanceInput" class="u-input" type="number" min="0" max="100" placeholder="max" />
-            </div>
-          </div>
-
-          <div class="u-field">
             <label class="u-label" for="sortSelect">Sort</label>
             <select id="sortSelect" class="u-select">
-              <option value="ai_rec">✨ Recommended for you</option>
-              
+              <option value="uni_chance">UniFit: Chance</option>
+              <option value="uni_budget">UniFit: Budget</option>
               <option value="name_asc">Name A-Z</option>
-              <option value="tuition_asc">Tuition low to high</option>
-              <option value="tuition_desc">Tuition high to low</option>
-              <option value="acceptance_asc">Acceptance low to high</option>
-              <option value="acceptance_desc">Acceptance high to low</option>
-              <option value="ielts_desc">IELTS high to low</option>
-              <option value="gpa_desc">GPA high to low</option>
+              <option value="tuition_asc">Cost low to high</option>
+              <option value="tuition_desc">Cost high to low</option>
             </select>
           </div>
         </div>
@@ -186,7 +175,7 @@
 
       <div class="profile-body">
         <div class="profile-field">
-          <label class="profile-label" for="budgetInput">Budget of tuition per year (USD)</label>
+          <label class="profile-label" for="budgetInput">Total Budget per year (USD)</label>
           <div class="profile-budget">
             <input id="budgetInput" class="profile-input" type="number" min="1" max="1000000" step="1" placeholder="e.g. 20000" />
             <span class="profile-unit">USD / year</span>

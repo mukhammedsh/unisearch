@@ -4,15 +4,26 @@ const API_BASE = "http://127.0.0.1:8000";
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
 
-// Обновленные списки под новую БД
-const CITY_OPTIONS_BY_COUNTRY = {
-  "USA": ["Cambridge"],
-  "Kazakhstan": ["Astana", "Kaskelen"],
-  "UK": ["Cambridge"],
-  "South Korea": ["Daejeon"],
-  "Japan": ["Kyoto"],
-  "Hong Kong": ["Sha Tin"]
-};
+let CITY_OPTIONS_BY_COUNTRY = {};
+
+async function loadCityDatabase() {
+  try {
+    const response = await fetch('./cities.json'); 
+    const data = await response.json();
+    
+    CITY_OPTIONS_BY_COUNTRY = data;
+    
+    console.log("База городов успешно загружена");
+    
+    // 🔥 ВАЖНО: Отправляем сигнал, что база готова!
+    window.dispatchEvent(new Event("citiesLoaded"));
+    
+  } catch (error) {
+    console.error("Ошибка при загрузке городов:", error);
+  }
+}
+
+loadCityDatabase();
 
 const MAJOR_OPTIONS = [
   "Computer Science",
@@ -81,7 +92,6 @@ function setUrlParams(params) {
 }
 
 // ---------- Init Routing ----------
-// ---------- Init Routing (ИСПРАВЛЕННАЯ ВЕРСИЯ) ----------
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🚀 Script loaded! Checking page..."); // Это должно появиться в консоли
 
@@ -109,12 +119,13 @@ function initUniversitiesPage() {
   const el = {
     qInput: $("qInput"),
     countrySelect: $("countrySelect"),
+    stateDiv: $("stateDiv"),      // 🔥 Обертка штата
+    stateSelect: $("stateSelect"),// 🔥 Селект штата
     citySelect: $("citySelect"),
     majorSelect: $("majorSelect"),
     studyLevelSelect: $("studyLevelSelect"),
     formatSelect: $("formatSelect"),
 
-    // Эти инпуты оставляем, но они будут работать параллельно с умным поиском
     minTuitionInput: $("minTuitionInput"),
     maxTuitionInput: $("maxTuitionInput"),
     
@@ -132,6 +143,7 @@ function initUniversitiesPage() {
   const state = {
     q: "",
     country: "",
+    region: "", // 🔥 Состояние для штата
     city: "",
     major: "",
     study_level: "",
@@ -145,8 +157,40 @@ function initUniversitiesPage() {
 
   // 1. Initial Setup
   readFromUrl();
-  updateMajorOptions(); // Populate majors
-  updateCityOptions(state.country, state.city); // Populate cities
+  updateMajorOptions();
+
+  const initLocations = () => {
+      updateCountryOptions();
+      
+      if (state.country) {
+          el.countrySelect.value = state.country;
+          // Запускаем логику: проверяем, нужны ли штаты
+          updateLocationLogic(state.country);
+          
+          // Если был выбран штат, восстанавливаем его
+          if (state.region && el.stateSelect && el.stateSelect.offsetParent !== null) {
+              el.stateSelect.value = state.region;
+              updateCitiesForState(state.country, state.region);
+          }
+          
+          // Восстанавливаем город
+          if (state.city) {
+              el.citySelect.value = state.city;
+          }
+      }
+  };
+  
+  // Если база уже есть - рисуем сразу
+  if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) {
+      initLocations();
+  }
+
+  // Слушаем, когда база догрузится (если интернет медленный)
+  window.addEventListener("citiesLoaded", () => {
+      console.log("⚡ Cities loaded event, updating UI...");
+      initLocations();
+  });
+
   applyToForm();
 
   const refetch = debounce(() => {
@@ -159,16 +203,27 @@ function initUniversitiesPage() {
   
   el.countrySelect?.addEventListener("change", () => {
     state.country = el.countrySelect.value;
-    updateCityOptions(state.country);
-    state.city = ""; // Reset city on country change
+    state.region = ""; 
+    state.city = ""; 
+    
+    // Сбрасываем визуально
+    if(el.stateSelect) el.stateSelect.value = "";
     if(el.citySelect) el.citySelect.value = "";
+
+    updateLocationLogic(state.country);
+    refetch();
+  });
+
+  el.stateSelect?.addEventListener("change", () => {
+    state.region = el.stateSelect.value;
+    state.city = ""; // Новый штат = сброс города
+    
+    updateCitiesForState(state.country, state.region);
     refetch();
   });
 
   el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
   el.majorSelect?.addEventListener("change", () => { state.major = el.majorSelect.value; refetch(); });
-  
-  // Доп фильтры, если они есть в HTML
   el.studyLevelSelect?.addEventListener("change", () => { state.study_level = el.studyLevelSelect.value; refetch(); });
   el.formatSelect?.addEventListener("change", () => { state.format = el.formatSelect.value; refetch(); });
   el.minTuitionInput?.addEventListener("input", () => { state.min_tuition = el.minTuitionInput.value; refetch(); });
@@ -177,10 +232,13 @@ function initUniversitiesPage() {
 
   el.resetBtn?.addEventListener("click", () => {
     Object.assign(state, {
-      q: "", country: "", city: "", major: "", study_level: "", format: "",
+      q: "", country: "", region: "", city: "", major: "", study_level: "", format: "",
       min_tuition: "", max_tuition: "", sort: "name_asc", page: 1
     });
     applyToForm();
+    // Скрываем штаты при сбросе
+    if (el.stateDiv) el.stateDiv.style.display = "none";
+    updateCityDropdown([]);
     fetchAndRender();
   });
 
@@ -188,7 +246,6 @@ function initUniversitiesPage() {
   el.list.addEventListener("click", (e) => {
     const card = e.target.closest("[data-uni-id]");
     if (!card) return;
-    // Don't trigger if clicked on a link inside card
     if (e.target.tagName === "A") return;
     const id = card.getAttribute("data-uni-id");
     if (id) window.location.href = `university.html?id=${encodeURIComponent(id)}`;
@@ -197,131 +254,164 @@ function initUniversitiesPage() {
   // Initial Fetch
   fetchAndRender();
 
+  // Слушаем обновление профиля и перерисовываем список на лету
+  window.addEventListener("profileUpdated", () => {
+      fetchAndRender();
+  });
+
   // --- Functions ---
 
   function buildParams() {
     const p = new URLSearchParams();
     if (state.q) p.set("q", state.q);
     if (state.country) p.set("country", state.country);
+    // Добавляем штат в URL (для сохранения состояния), даже если бэкенд его пока не фильтрует
+    if (state.region) p.set("region", state.region);
     if (state.city) p.set("city", state.city);
+    
     if (state.major) p.set("major", state.major);
     if (state.study_level) p.set("study_level", state.study_level);
     if (state.format) p.set("format", state.format);
     if (state.min_tuition) p.set("min_tuition", state.min_tuition);
     if (state.max_tuition) p.set("max_tuition", state.max_tuition);
-    p.set("sort", state.sort);
-    p.set("page", String(state.page));
-    p.set("limit", String(state.limit));
-
-    // !!! ИНТЕГРАЦИЯ AI !!!
-    // Берем данные из профиля для "умного" поиска
-    const profile = loadProfile();
-    const userBudget = parseFloat(profile.budget);
-    if (!isNaN(userBudget) && userBudget > 0) {
-        p.set("user_budget", userBudget);
-    }
-    // Берем экзамены для проверки min требований
-    const userGPA = profile.exams.find(e => e.exam === "GPA")?.score;
-    if (userGPA) p.set("min_gpa", userGPA);
     
-    const userIELTS = profile.exams.find(e => e.exam === "IELTS")?.score;
-    if (userIELTS) p.set("min_ielts", userIELTS);
+    const isAiSort = (state.sort === "uni_chance" || state.sort === "uni_budget");
+    p.set("sort", isAiSort ? "name_asc" : state.sort);
 
+    if (state.sort === "uni_chance" || state.sort === "uni_budget") {
+        p.set("limit", "100"); 
+        p.set("page", "1"); 
+    } else {
+        p.set("page", String(state.page));
+        p.set("limit", String(state.limit));
+    }
     return p;
   }
 
   // ==========================================
-  // 🧠 AI SMART SORTING ALGORITHM
+  // 🧠 UniFit Sorting (Chance / Budget)
+  // - returns ALL universities (soft ranking)
+  // - exams missing in user profile => "unknown" (no hard penalty)
+  // - user below uni min on required exam => strong penalty
   // ==========================================
-  function getSmartSortedUniversities(universities) {
-    // 1. Загружаем профиль пользователя
-    const profile = loadProfile(); // Твоя существующая функция
-    
-    // Если профиль пустой (нет бюджета и экзаменов), возвращаем список как есть
-    const hasBudget = profile.budget && !isNaN(parseFloat(profile.budget));
-    const hasExams = profile.exams && profile.exams.length > 0;
-    
-    if (!hasBudget && !hasExams) return universities;
 
-    const userBudget = hasBudget ? parseFloat(profile.budget) : 0;
+  const UNIFIT_WEIGHTS = {
+    chance:   { exams: 0.70, budget: 0.10, acceptance: 0.20 },
+    budget:   { exams: 0, budget: 1, acceptance: 0 },
+  };
 
-    // Превращаем массив экзаменов юзера в удобный объект: {"IELTS": 7.5, "SAT": 1400}
-    const userScores = {};
-    if (hasExams) {
-        profile.exams.forEach(item => {
-            if (item.exam && item.score) {
-                userScores[item.exam.toUpperCase()] = parseFloat(item.score);
-            }
-        });
-    }
+  function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
 
-    // 2. Оцениваем каждый университет
-    const scored = universities.map(u => {
-        let score = 0;
-        let isEligible = true; // Подходит ли вообще?
-
-        // --- А. ПРОВЕРКА ЭКЗАМЕНОВ ---
-        // Проходимся по всем экзаменам, которые сдал юзер
-        for (const [examName, userScore] of Object.entries(userScores)) {
-            // Ищем требования вуза. Если их нет в базе, считаем 0.
-            const min = u.exams_min ? (u.exams_min[examName] || 0) : 0;
-            const avg = u.exams_avg ? (u.exams_avg[examName] || 0) : 0;
-
-            // ❌ HARD FILTER: Если у вуза есть минимум, а у нас меньше — исключаем
-            if (min > 0 && userScore < min) {
-                isEligible = false;
-            }
-
-            // ⭐ SCORING: Начисляем баллы
-            if (isEligible) {
-                if (avg > 0) {
-                    // Если выше среднего — даем много очков. Чем выше, тем лучше.
-                    const diff = (userScore - avg) / avg;
-                    score += diff * 20; 
-                } else if (min > 0) {
-                    // Если есть только минимум и мы прошли — даем немного очков
-                    const diff = (userScore - min) / min;
-                    score += diff * 10;
-                }
-            }
-        }
-
-        // --- Б. ПРОВЕРКА БЮДЖЕТА ---
-        if (userBudget > 0) {
-            const cost = u.finance.total_cost_year_usd;
-            const fa = u.finance.financial_aid || {};
-            // Считаем, что грант есть, если Merit или Need based = true
-            const hasGrant = fa.merit_based || fa.need_based;
-
-            if (cost <= userBudget) {
-                score += 20; // ✅ Вписываемся в бюджет — отлично!
-            } else {
-                // ⚠️ Бюджет превышен
-                if (hasGrant) {
-                    score -= 5;  // Штраф маленький, так как есть шанс гранта
-                } else {
-                    score -= 50; // Штраф огромный, так как денег нет и гранта нет
-                }
-            }
-        }
-
-        return { uni: u, score: score, isEligible: isEligible };
-    });
-
-    // 3. Фильтрация и Сортировка
-    // Оставляем только те, где прошли Hard Filter (isEligible)
-    const filtered = scored.filter(item => item.isEligible);
-    
-    // Сортируем: у кого больше score, тот выше
-    filtered.sort((a, b) => b.score - a.score);
-
-    console.log("📊 AI Ranking applied. Top result:", filtered[0]?.uni.name);
-    
-    // Возвращаем чистый список университетов
-    return filtered.map(item => item.uni);
+  function acceptanceScore(u) {
+    const ar = u?.academics?.acceptance_rate_percent;
+    if (ar === undefined || ar === null || isNaN(ar)) return 0.5;
+    return clamp(ar / 100, 0, 1);
   }
 
+  // Budget score differs by mode
+  function budgetScore(u, userBudget, mode) {
+    const cost = u?.finance?.total_cost_year_usd;
+    if (!userBudget || isNaN(userBudget) || userBudget <= 0) return 0.5;
+    if (cost === undefined || cost === null || isNaN(cost)) return 0.5;
+    const hasAid = !!(u?.finance?.financial_aid?.merit_based || u?.finance?.financial_aid?.need_based);
+    const ratio = cost / userBudget;
+    if (cost <= userBudget) {
+      let s = 0.50 + 0.50 * clamp(ratio, 0, 1);
+      if (mode === "chance") s = 0.85 + 0.15 * clamp(ratio, 0, 1);
+      return clamp(s, 0, 1);
+    }
+    const over = (cost - userBudget) / userBudget;
+    let s;
+    if (mode === "chance") s = 1.00 - 1.5 * over;
+    else s = 1.00 - 2.5 * over;
+    if (hasAid) s += (mode === "chance" ? 0.05 : 0.10);
+    return clamp(s, 0, 1);
+  }
+
+
+  // Exams scoring:
+  // - evaluates only exams that exist both in user profile and in uni requirements (min/avg)
+  // - user below min => hard negative penalty
+  // - if no matched exams => neutral 0.5, but low "coverage" reduces confidence slightly
+  function examsScore(u, userScores) {
+    const minMap = u?.exams_min || {};
+    const avgMap = u?.exams_avg || {};
+    const uniExamKeys = new Set([...Object.keys(minMap || {}), ...Object.keys(avgMap || {})]);
+    const comparable = [];
+    for (const examKey of uniExamKeys) {
+      const key = examKey.toUpperCase();
+      if (userScores[key] !== undefined && !isNaN(userScores[key])) comparable.push(key);
+    }
+    if (comparable.length === 0) return { score01: 0.5, penalty: 0, coverage: 0 };
+
+    let sum = 0;
+    let hardFails = 0;
+    for (const key of comparable) {
+      const user = userScores[key];
+      const min = (minMap[key] !== undefined) ? minMap[key] : minMap[key.toLowerCase()];
+      const avg = (avgMap[key] !== undefined) ? avgMap[key] : avgMap[key.toLowerCase()];
+      const minVal = (min !== undefined && !isNaN(min)) ? Number(min) : 0;
+      const avgVal = (avg !== undefined && !isNaN(avg)) ? Number(avg) : 0;
+
+      if (minVal > 0 && user < minVal) {
+        hardFails += 1;
+        sum += 0.05;
+        continue;
+      }
+      if (avgVal > 0) {
+        const r = user / avgVal;
+        const s = clamp(0.75 + (r - 1) * 1.0, 0, 1);
+        sum += s;
+      } else if (minVal > 0) {
+        const r = user / minVal;
+        const s = clamp(0.70 + (r - 1) * 0.3, 0, 1);
+        sum += s;
+      } else { sum += 0.5; }
+    }
+    const avgScore = sum / comparable.length;
+    const coverage = clamp(comparable.length / Math.max(1, uniExamKeys.size), 0, 1);
+    const penalty = hardFails * 0.75;
+    const confidenceMult = 0.8 + 0.2 * coverage;
+    return { score01: clamp(avgScore * confidenceMult, 0, 1), penalty, coverage };
+  }
+
+  // Main scoring function
+  function uniFitScore(u, profile, mode) {
+    const weights = UNIFIT_WEIGHTS[mode] || UNIFIT_WEIGHTS.chance;
+    const userBudget = profile?.budget ? Number(profile.budget) : 0;
+    const userScores = {};
+    if (profile?.exams && Array.isArray(profile.exams)) {
+      for (const item of profile.exams) {
+        if (!item?.exam) continue;
+        const key = String(item.exam).toUpperCase().trim();
+        const val = Number(item.score);
+        if (!isNaN(val)) userScores[key] = val;
+      }
+    }
+    const ex = examsScore(u, userScores);
+    const b  = budgetScore(u, userBudget, mode);
+    const a  = acceptanceScore(u);
+    let score01 = ex.score01 * weights.exams + b * weights.budget + a * weights.acceptance;
+    score01 = clamp(score01 - ex.penalty, 0, 1);
+    return { score01, breakdown: { exams: ex.score01, budget: b, acceptance: a, penalty: ex.penalty, coverage: ex.coverage, weights } };
+  }
+
+  // Public API: sorts and returns universities
+  function getUniSort(universities, mode = "chance", { returnDebug = false } = {}) {
+    const profile = loadProfile?.() || {};
+    if (!Array.isArray(universities) || universities.length === 0) return [];
+    const scored = universities.map(u => {
+      const res = uniFitScore(u, profile, mode);
+      return { uni: u, score01: res.score01, breakdown: res.breakdown };
+    });
+    scored.sort((x, y) => y.score01 - x.score01);
+    if (returnDebug) return scored;
+    return scored.map(x => x.uni);
+  }
+
+
   async function fetchAndRender() {
+    console.log("PROFILE:", loadProfile());
     el.state && (el.state.textContent = "Loading...");
     el.list.innerHTML = "";
     el.pagination && (el.pagination.innerHTML = "");
@@ -334,44 +424,32 @@ function initUniversitiesPage() {
       if (!res.ok) throw new Error("API Error");
       const data = await res.json();
 
-      let items = data.items || [];    // ✅ let разрешает изменение
+      let items = data.items || [];
       const total = data.total || 0;
 
-      if (state.sort === "ai_rec") {
-          items = getSmartSortedUniversities(items); 
-      }
+      if (state.sort === "uni_chance") items = getUniSort(items, "chance"); 
+      if (state.sort === "uni_budget") items = getUniSort(items, "budget"); 
 
-      if (el.total) el.total.textContent = String(total);
+      const isAiSort = (state.sort === "uni_chance" || state.sort === "uni_budget");
+      if (el.total) el.total.textContent = String(isAiSort ? items.length : total);
       
       if (!items.length) {
         el.state && (el.state.textContent = "No universities found.");
         return;
       }
-
-      if (el.total) el.total.textContent = String(total);
-      
-      if (!items.length) {
-        el.state && (el.state.textContent = "No universities found.");
-        return;
-      }
-
       el.state && (el.state.textContent = "");
-      
-      // Получаем бюджет еще раз для рендеринга бейджиков
       const profile = loadProfile();
       const userBudget = parseFloat(profile.budget);
-      
       el.list.innerHTML = items.map(u => renderCard(u, userBudget)).join("");
-      
-      renderPagination(total);
-
+      if (!isAiSort) renderPagination(total);
+      else if (el.pagination) el.pagination.innerHTML = "";
     } catch (err) {
       console.error(err);
-      el.state && (el.state.textContent = "Failed to load data. Is python main.py running?");
+      el.state && (el.state.textContent = "Failed to load data.");
     }
   }
 
-  function renderCard(u, _unusedBudget) { // userBudget берем свежий из профиля внутри
+  function renderCard(u, _unusedBudget) { 
     const id = u.id;
     const name = u.name;
     const country = nested(u, ["location", "country"], "");
@@ -379,69 +457,48 @@ function initUniversitiesPage() {
     const loc = [city, country].filter(Boolean).join(", ");
     const cost = nested(u, ["finance", "total_cost_year_usd"], 0);
     const acceptance = nested(u, ["academics", "acceptance_rate_percent"], "?");
-    
-    // Картинки
     const logoSrc = `images/logos/${id}.png`;
     const thumbSrc = `images/thumbnails/${id}.jpg`;
-
-    // --- 1. ПРОВЕРЯЕМ ГРАНТЫ ---
-    const fa = u.finance.financial_aid || {};
-    const hasGrant = fa.merit_based || fa.need_based; 
-
-    // --- 2. БЕРЕМ БЮДЖЕТ ЮЗЕРА ---
     const profile = loadProfile();
     const myBudget = parseFloat(profile.budget);
-    
-    let badgeHTML = "";
-
-    // --- 3. ЛОГИКА ЦВЕТОВ ---
-    
-    // СЦЕНАРИЙ А: Бюджет указан и ЦЕНА ВЫШЕ бюджета
-    if (!isNaN(myBudget) && myBudget > 0 && cost > myBudget) {
-        if (hasGrant) {
-            // 🔵 Синий: Денег не хватает, но грант спасет
-            badgeHTML = `<span style="background:#dbeafe; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #93c5fd;">🔵 Budget exceeded, Grant available</span>`;
-        } else {
-            // 🟣 Фиолетовый: Денег не хватает и грантов нет
-            badgeHTML = `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe;">🟣 Budget exceeded</span>`;
+    const hasExams = profile.exams && profile.exams.length > 0;
+    let failedReqs = [];
+    if (hasExams && u.exams_min) {
+        const userScores = {};
+        profile.exams.forEach(e => { if(e.exam && e.score) userScores[e.exam.toUpperCase()] = parseFloat(e.score); });
+        for (const [exam, minScore] of Object.entries(u.exams_min)) {
+            const myScore = userScores[exam];
+            if (myScore !== undefined && myScore < minScore) failedReqs.push(`${exam} < ${minScore}`);
         }
-    } 
-    // СЦЕНАРИЙ Б: Все хорошо (бюджет ок) и есть грант
-    else if (hasGrant) {
-        badgeHTML = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
-    } 
-    // СЦЕНАРИЙ В: Обычный
-    else {
-        badgeHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acceptance}%</span>`;
     }
+    const fa = u.finance.financial_aid || {};
+    const hasGrant = fa.merit_based || fa.need_based; 
+    let budgetBadge = "";
+    if (!isNaN(myBudget) && myBudget > 0) {
+        if (cost > myBudget) {
+            if (hasGrant) budgetBadge = `<span style="background:#dbeafe; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #93c5fd;">🔵 Budget exceeded, Grant available</span>`;
+            else budgetBadge = `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe;">🟣 Budget exceeded</span>`;
+        } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+    } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+    let badgesHTML = "";
+    if (failedReqs.length > 0) {
+        const reasonStr = failedReqs.join(", ");
+        badgesHTML += `<span style="background:#fee2e2; color:#991b1b; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fca5a5; margin-bottom:4px;">⛔ Requirements: ${reasonStr}</span> `;
+    }
+    if (budgetBadge) badgesHTML += budgetBadge;
+    if (!badgesHTML) badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acceptance}%</span>`;
 
     return `
       <article class="uni-card" data-uni-id="${escapeHtml(id)}">
         <div class="uni-media" style="background-image: url('${thumbSrc}');">
-          <div class="uni-price">
-            <small>Total/Year</small>
-            <b>${moneyUSD(cost)}</b>
-          </div>
-          <div class="uni-logo">
-             <img src="${logoSrc}" alt="${initials(name)}" onerror="this.onerror=null; this.parentNode.textContent='${initials(name)}';">
-          </div>
+          <div class="uni-price"><small>Total/Year</small><b>${moneyUSD(cost)}</b></div>
+          <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" onerror="this.onerror=null; this.parentNode.textContent='${initials(name)}';"></div>
         </div>
-
         <div class="uni-body">
           <h3 class="uni-title">${escapeHtml(name)}</h3>
-          <div class="uni-loc">
-             📍 ${escapeHtml(loc)}
-          </div>
-          
-          <div class="uni-badge" style="margin-top:10px; min-height:24px;">
-            ${badgeHTML}
-          </div>
-
-          <div class="uni-footer">
-            <a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">
-              View Details →
-            </a>
-          </div>
+          <div class="uni-loc">📍 ${escapeHtml(loc)}</div>
+          <div class="uni-badge" style="margin-top:10px; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
+          <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
         </div>
       </article>
     `;
@@ -451,18 +508,11 @@ function initUniversitiesPage() {
     if (!el.pagination) return;
     const pages = Math.ceil(total / state.limit);
     if (pages <= 1) return;
-
     let html = "";
-    // Simple prev/next logic
     if (state.page > 1) html += `<button data-page="${state.page - 1}">←</button>`;
-    
-    // Show current page
     html += `<span style="margin:0 10px;">Page ${state.page} of ${pages}</span>`;
-    
     if (state.page < pages) html += `<button data-page="${state.page + 1}">→</button>`;
-
     el.pagination.innerHTML = html;
-    
     el.pagination.querySelectorAll("button").forEach(b => {
         b.onclick = () => {
             state.page = Number(b.dataset.page);
@@ -476,8 +526,11 @@ function initUniversitiesPage() {
     const sp = new URL(window.location.href).searchParams;
     state.q = sp.get("q") || "";
     state.country = sp.get("country") || "";
+    state.region = sp.get("region") || ""; // Читаем штат из URL
     state.city = sp.get("city") || "";
     state.major = sp.get("major") || "";
+    state.study_level = sp.get("study_level") || "";
+    state.format = sp.get("format") || "";
     state.min_tuition = sp.get("min_tuition") || "";
     state.max_tuition = sp.get("max_tuition") || "";
     state.sort = sp.get("sort") || "name_asc";
@@ -488,22 +541,35 @@ function initUniversitiesPage() {
   function applyToForm() {
     if(el.qInput) el.qInput.value = state.q;
     if(el.countrySelect) el.countrySelect.value = state.country;
+    if(el.stateSelect) el.stateSelect.value = state.region; // Восстанавливаем штат
     if(el.citySelect) el.citySelect.value = state.city;
     if(el.majorSelect) el.majorSelect.value = state.major;
+    if(el.studyLevelSelect) el.studyLevelSelect.value = state.study_level;
+    if(el.formatSelect) el.formatSelect.value = state.format;
+    if(el.minTuitionInput) el.minTuitionInput.value = state.min_tuition;
+    if(el.maxTuitionInput) el.maxTuitionInput.value = state.max_tuition;
     if(el.sortSelect) el.sortSelect.value = state.sort;
   }
 
   function updateCityOptions(country, selectedCity = "") {
     if (!el.citySelect) return;
-    el.citySelect.innerHTML = `<option value="">All cities</option>`;
+
     const cities = CITY_OPTIONS_BY_COUNTRY[country] || [];
+
+    el.citySelect.innerHTML = cities.length
+      ? `<option value="">All cities</option>`
+      : `<option value="">Select country first</option>`;
+
+    el.citySelect.disabled = !cities.length;
+
     cities.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c;
-        el.citySelect.appendChild(opt);
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      el.citySelect.appendChild(opt);
     });
-    if(cities.includes(selectedCity)) el.citySelect.value = selectedCity;
+
+    if (cities.includes(selectedCity)) el.citySelect.value = selectedCity;
   }
 
   function updateMajorOptions() {
@@ -515,6 +581,82 @@ function initUniversitiesPage() {
         opt.textContent = m;
         el.majorSelect.appendChild(opt);
     });
+  }
+
+  function updateCityDropdown(cities) {
+    if (!el.citySelect) return;
+    
+    if (!cities || cities.length === 0) {
+        el.citySelect.innerHTML = `<option value="">Select region/country first</option>`;
+        el.citySelect.disabled = true;
+    } else {
+        el.citySelect.disabled = false;
+        el.citySelect.innerHTML = `<option value="">All Cities</option>`;
+        cities.sort().forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c;
+            opt.textContent = c;
+            el.citySelect.appendChild(opt);
+        });
+    }
+  }
+
+  function updateLocationLogic(country) {
+    if (!el.stateDiv) return;
+    const countryData = CITY_OPTIONS_BY_COUNTRY[country];
+
+    if (!country || !countryData) {
+        // Страна не выбрана
+        el.stateDiv.style.display = "none";
+        updateCityDropdown([]); 
+        return;
+    }
+
+    // Проверяем: это массив (список городов) или объект (список штатов)?
+    if (Array.isArray(countryData)) {
+        // 🟢 Простая страна (Kazakhstan, Hong Kong)
+        el.stateDiv.style.display = "none"; 
+        updateCityDropdown(countryData); // Сразу грузим города
+    } else {
+        // 🔵 Страна со штатами (USA)
+        el.stateDiv.style.display = "block"; // Показываем селект штатов
+        
+        // Заполняем список штатов
+        const states = Object.keys(countryData).sort();
+        el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
+        states.forEach(s => {
+            el.stateSelect.innerHTML += `<option value="${s}">${s}</option>`;
+        });
+
+        // Города блокируем, пока не выберут штат
+        updateCityDropdown([]); 
+    }
+  }
+
+  function updateCitiesForState(country, region) {
+    if (!country || !region) {
+        updateCityDropdown([]); 
+        return;
+    }
+    // Безопасный доступ к данным
+    const countryData = CITY_OPTIONS_BY_COUNTRY[country];
+    if (countryData && !Array.isArray(countryData)) {
+        const cities = countryData[region] || [];
+        updateCityDropdown(cities);
+    }
+  }
+
+  function updateCountryOptions() {
+    if (!el.countrySelect) return;
+    const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
+    const currentVal = el.countrySelect.value || state.country;
+
+    let html = `<option value="">All Countries</option>`;
+    countries.forEach(c => {
+        const isSelected = (c === currentVal) ? "selected" : "";
+        html += `<option value="${c}" ${isSelected}>${c}</option>`;
+    });
+    el.countrySelect.innerHTML = html;
   }
 }
 
@@ -832,6 +974,9 @@ function loadProfile() {
   } catch(e) { return { ...PROFILE_DEFAULTS }; }
 }
 
+// В самом низу script.js
 function saveProfile(p) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
+  // ЭТА СТРОКА СООБЩАЕТ ВСЕМУ САЙТУ ОБ ИЗМЕНЕНИЯХ
+  window.dispatchEvent(new Event("profileUpdated"));
 }
