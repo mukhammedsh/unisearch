@@ -42,15 +42,6 @@ def load_universities() -> List[Dict[str, Any]]:
                 return data if isinstance(data, list) else []
         except Exception:
             return []
-    
-    # Проверка запасного пути (в корне)
-    alt = os.path.join(BASE_DIR, "universities.json")
-    if os.path.exists(alt):
-        try:
-            with open(alt, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            return []
             
     return []
 
@@ -229,7 +220,8 @@ def list_universities(
         filtered = []
         for u in items:
             cost = _to_float(_get_nested(u, ["finance", "total_cost_year_usd"])) or 999999.0
-            aid = bool(_get_nested(u, ["finance", "financial_aid_available"], False))
+            fa = _get_nested(u, ["finance", "financial_aid"], {})
+            aid = fa.get("merit_based") or fa.get("need_based")
             
             # Проходим, если цена ниже бюджета ИЛИ если есть грант
             if cost <= user_budget or aid:

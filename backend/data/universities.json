@@ -28,7 +28,7 @@
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
     "name": "Suleyman Demirel University",
-    "location": { "country": "Kazakhstan", "city": "Kaskelen", "state": "Almaty Region" },
+    "location": { "country": "Kazakhstan", "city": "Kaskelen", "state": "" },
     "website": "https://sdu.edu.kz/en/",
     "academics": {
       "majors": ["Business", "Engineering", "Law", "Education & Humanities", "Social Sciences"],
@@ -204,8 +204,8 @@
       }
     },
     "student_life": { "size": "medium" },
-    "exams_avg": { "GPA": 3.4, "IELTS": 6.0 },
-    "exams_min": { "GPA": 2.67, "IELTS": 5.0 }
+    "exams_avg": { "GPA": 85, "IELTS": 6.0 },
+    "exams_min": { "GPA": 67, "IELTS": 5.0 }
   },
   {
     "id": "imperial-college-london-uk",

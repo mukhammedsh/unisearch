@@ -142,6 +142,27 @@ The application uses a weighted algorithm to rank universities:
 
 ---
 
+## 🛠 Tech Stack
+
+**Frontend:**
+- **Vanilla JavaScript (ES6+)**: No heavy frameworks, ensuring high performance.
+- **CSS Variables**: For consistent theming and easy maintainability.
+- **Dynamic DOM Manipulation**: Real-time rendering of search results.
+
+**Backend:**
+- **FastAPI (Python)**: High-performance async framework for API creation (Prerequisites: Python 3.9 or higher.).
+- **Type Hints & Pydantic**: Ensures data validation and code reliability.
+
+**Data:**
+- **JSON-based NoSQL approach**: Flexible schema for storing complex university data.
+
+---
+
+## ⚠️ Alpha Limitations
+- **Currency:** All costs are displayed in USD for consistency, although local currencies (KZT, GBP, JPY) are used in respective countries.
+
+---
+
 **How to add a university**
 
 ### **1. Update JSON Data**
