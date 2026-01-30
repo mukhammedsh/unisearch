@@ -212,9 +212,8 @@ To ensure the UI looks correct, add images matching the id from the JSON:
 
 Planned features for Beta:
 
-* **User Accounts:** Saving the User Profile (GPA/Budget) to the database instead of local testing variables.  
-* **Cloud Database:** Migration from JSON to PostgreSQL/MongoDB.  
-* **Machine Learning:** Training a model on admission statistics to predict acceptance probability percentages.
+* **User Accounts:** Saving the User Profile (GPA/Budget) to the database instead of local testing variables. 
+* **Cloud Database:** Migration from JSON to PostgreSQL/MongoDB.
 
 ---
 
