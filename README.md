@@ -40,6 +40,21 @@ UniSearch helps:
 
 ---
 
+## 🛠 Tech Stack
+
+**Frontend:**
+- **Vanilla JavaScript (ES6+)**: Developed without heavy frameworks for maximum performance and deep understanding of DOM manipulation.
+- **CSS Variables**: Used for consistent theming and responsive design.
+
+**Backend:**
+- **FastAPI (Python)**: High-performance asynchronous framework for building APIs.
+- **Pydantic**: Used for strict data validation and type safety.
+
+**Data:**
+- **JSON-based NoSQL approach**: A flexible schema designed to store complex hierarchical data (universities -> academics -> majors).
+
+---
+
 ## Project structure
 
 ```text  
@@ -139,22 +154,6 @@ The application uses a weighted algorithm to rank universities:
    * 🔵 **Blue Badge:** "Budget exceeded, Grant available" (High recommendation).  
    * 🟣 **Purple Badge:** "Budget exceeded" (Warning).  
    * ✅ **Green Badge:** "Within Budget" or "Grant Available".
-
----
-
-## 🛠 Tech Stack
-
-**Frontend:**
-- **Vanilla JavaScript (ES6+)**: No heavy frameworks, ensuring high performance.
-- **CSS Variables**: For consistent theming and easy maintainability.
-- **Dynamic DOM Manipulation**: Real-time rendering of search results.
-
-**Backend:**
-- **FastAPI (Python)**: High-performance async framework for API creation (Prerequisites: Python 3.9 or higher.).
-- **Type Hints & Pydantic**: Ensures data validation and code reliability.
-
-**Data:**
-- **JSON-based NoSQL approach**: Flexible schema for storing complex university data.
 
 ---
 
