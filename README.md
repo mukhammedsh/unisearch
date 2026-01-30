@@ -19,15 +19,20 @@ UniSearch helps:
 
 ---
 
-## Latest Updates (v1.3)
+## Latest Updates (v1.4)
 
-### Database Improvements
-- **Map Mode:**
-    - Added mode that shows you the world map, and universities at the map
-- **New universities:**
-    - Added ~9 more universities to database
-- **New Logo**
-    - Website logo added
+### 🌍 Interactive Map System
+- **Smart Clustering:** Universities are grouped dynamically. Clusters display the logo of the top university in the group.
+- **Smooth Navigation:** Implemented cinematic "FlyTo" animations and automatic zooming logic using Leaflet API.
+- **Custom Markers:** Each university is represented by its official logo inside a styled circular pin.
+
+### 💾 User Experience (UX)
+- **State Persistence:** Filters, search queries, and view modes (Map/List) are now saved in `LocalStorage`. You won't lose your progress upon page reload.
+- **Advanced Details Page:** New tabbed interface (General, Programs, Admission, Costs) with dynamic Cost Breakdown charts.
+
+### 📊 Database & Filters
+- **Expanded Database:** Added detailed data for 20 top universities worldwide (MIT, Harvard, KAIST, EPFL, etc.).
+- **Visualized Costs:** Tuition fees and living expenses are now separated and visualized with color-coded bars.
 
 ---
 

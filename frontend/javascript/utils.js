@@ -29,8 +29,23 @@ async function loadCityDatabase() {
 loadCityDatabase();
 
 const MAJOR_OPTIONS = [
-  "Computer Science", "Engineering", "Business", "Medicine", "Natural Sciences",
-  "Economics", "Physics", "Mathematics", "Law", "Social Sciences"
+  "Computer Science",
+  "Engineering",
+  "Business",
+  "Medicine",
+  "Natural Sciences", // Covers Physics, Chemistry, Biology
+  "Economics",
+  "Physics",
+  "Mathematics",
+  "Law",
+  "Social Sciences",
+  "Architecture",       // <-- Добавлено (есть в MIT, Delft, ETH)
+  "Psychology",         // <-- Добавлено (есть в Stanford, Toronto)
+  "Humanities",         // <-- Добавлено (Arts & Humanities)
+  "Design",             // <-- Добавлено (Industrial Design)
+  "Life Sciences",      // <-- Добавлено (Biology, Bioengineering)
+  "Education",          // <-- Добавлено (Melbourne, SDU)
+  "Agriculture"         // <-- Добавлено (Kyoto, Tokyo)
 ];
 
 // --- Helpers ---
