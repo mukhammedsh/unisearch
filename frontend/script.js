@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("✅ Detected Details Page");
       initUniversityPage();
   }
+  else if (path.includes("ranking.html") || document.getElementById("rankingList")) {
+      initRankingPage();
+  }
 });
 
 // =====================================
@@ -357,30 +360,43 @@ function initUniversitiesPage() {
 
   // 1. Prestige (0..1): 
   // Учитываем и Min (база), и Avg (престиж)
+  // 1. Prestige (50% Rank + 50% Difficulty)
   function calculatePrestigeScore(u) {
-      let score = 0, count = 0;
+      // A. Сложность поступления (Exam Difficulty)
+      let diffScore = 0;
+      let count = 0;
       
       const ar = u?.academics?.acceptance_rate_percent;
       if (ar !== undefined && !isNaN(ar)) {
-          score += (100 - ar) / 100; 
+          diffScore += (100 - ar) / 100; // Чем ниже AR, тем выше балл
           count++;
       }
 
-      // Оцениваем сложность по минимумам
-      const mins = u?.exams_min || {};
-      for (const [exam, val] of Object.entries(mins)) {
-          const norm = normalizeScore(exam, val);
-          if (norm > 0) { score += norm; count++; }
-      }
-
-      // 🔥 НОВОЕ: Оцениваем престиж по СРЕДНИМ баллам (Avg)
+      // Учитываем средние баллы (Avg)
       const avgs = u?.exams_avg || {};
-      for (const [exam, val] of Object.entries(avgs)) {
-          const norm = normalizeScore(exam, val);
-          if (norm > 0) { score += norm; count++; }
+      for (const [key, val] of Object.entries(avgs)) {
+          const norm = normalizeScore(key, val);
+          if (norm > 0) { diffScore += norm; count++; }
+      }
+      
+      const difficulty = count === 0 ? 0.5 : (diffScore / count);
+
+      // B. Мировой рейтинг (World Rank)
+      const rank = u.rank || 1000; // Если ранга нет, считаем 1000-м
+      
+      // Формула: 1 место = 1.0, 100 место = 0.8, 1000 место = 0.1
+      // Логарифмическое затухание было бы лучше, но линейное проще:
+      let rankScore = 0;
+      if (rank <= 100) {
+          // Для топ-100: от 1.0 до 0.5
+          rankScore = 1.0 - (rank * 0.005); 
+      } else {
+          // Для остальных: от 0.5 до 0.0
+          rankScore = Math.max(0, 0.5 - ((rank - 100) * 0.0005));
       }
 
-      return count === 0 ? 0.5 : (score / count);
+      // ИТОГ: Смешиваем 50/50
+      return (difficulty * 0.5) + (rankScore * 0.5);
   }
 
   // 2. Eligibility (Multiplier)
@@ -646,9 +662,21 @@ async function initUniversityPage() {
         }
     }
 
+    // 2. БЛОК RECOMMENDATIONS (Average Stats & Acceptance & Rank)
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
+        // 🔥 Формируем красивый ранг
+        let rankHtml = "<span>—</span>";
+        if (u.rank) {
+            let trophy = "";
+            if (u.rank === 1) trophy = "🥇 ";
+            else if (u.rank === 2) trophy = "🥈 ";
+            else if (u.rank === 3) trophy = "🥉 ";
+            rankHtml = `<span style="color:#5d17ea; font-size:1.1em;">${trophy}#${u.rank}</span>`;
+        }
+
         const avgHTML = `
+            <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
             <div class="d-kv"><span>Acceptance Rate</span><span>${u.academics.acceptance_rate_percent}%</span></div>
             <div class="d-kv"><span>Avg GPA</span><span>${u.exams_avg?.GPA || "—"}</span></div>
             <div class="d-kv"><span>Avg IELTS</span><span>${u.exams_avg?.IELTS || "—"}</span></div>
@@ -843,6 +871,51 @@ function initProfileUI() {
           `).join("");
       }
   }
+}
+
+// =====================================
+// PAGE: RANKING
+// =====================================
+async function initRankingPage() {
+    const listEl = document.getElementById("rankingList");
+    if (!listEl) return;
+
+    try {
+        // Запрашиваем все университеты
+        const res = await fetch(`${API_BASE}/universities?limit=1000`);
+        const data = await res.json();
+        let items = data.items || [];
+
+        // Сортируем: у кого rank меньше, тот выше. Если rank нет, кидаем в конец (9999)
+        items.sort((a, b) => (a.rank || 9999) - (b.rank || 9999));
+
+        const html = items.map((u, index) => {
+            // Если ранг есть в базе - берем его, иначе просто порядковый номер
+            const rank = u.rank || (index + 1);
+            
+            // Золото, серебро, бронза для топ-3
+            const rankClass = rank === 1 ? "rank-1" : rank === 2 ? "rank-2" : rank === 3 ? "rank-3" : "";
+            
+            return `
+            <a href="university.html?id=${u.id}" class="rank-card">
+                <div class="rank-num ${rankClass}">#${rank}</div>
+                <div class="rank-logo">
+                    <img src="images/logos/${u.id}.png" alt="${initials(u.name)}" onerror="this.parentNode.textContent='${initials(u.name)}'">
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">${escapeHtml(u.name)}</div>
+                    <div class="rank-loc">📍 ${u.location?.city}, ${u.location?.country}</div>
+                </div>
+                <div class="rank-badge">Acceptance: ${u.academics.acceptance_rate_percent}%</div>
+            </a>
+            `;
+        }).join("");
+
+        listEl.innerHTML = html;
+    } catch (e) {
+        console.error(e);
+        listEl.innerHTML = "<p style='text-align:center'>Failed to load rankings.</p>";
+    }
 }
 
 // =====================================

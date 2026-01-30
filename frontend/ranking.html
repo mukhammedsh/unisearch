@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Rankings | UniSearch</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="universities.css" />
+  <link rel="stylesheet" href="ranking.css" />
+</head>
+<body data-page="ranking">
+  <header class="navbar">
+    <div class="navbar-left">
+      <img src="images/logo.jpeg" alt="Logo" class="logo" />
+    </div>
+    <nav class="navbar-center">
+      <a href="index.html">Home</a>
+      <a href="universities.html">Universities</a>
+      <a href="ranking.html" style="color: #5d17ea;">Rankings</a> </nav>
+    <div class="navbar-right">
+      <button class="login-btn" id="profileBtn">Profile</button>
+    </div>
+  </header>
+
+  <main class="u-page">
+    <div class="rank-container">
+      <div class="rank-header">
+        <h1>🏆 Global University Rankings</h1>
+        <p>Top universities ranked by academic prestige and research impact (2025)</p>
+        <p>By QS World University Rankings 2025</p>
+        <div class="rank-source">Data source: <a href="https://www.topuniversities.com/world-university-rankings" target="_blank">QS World University Rankings 2025</a></div>
+      </div>
+      
+      <div id="rankingList">
+        <div style="text-align: center; color: #666;">Loading rankings...</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="profile-modal" id="profileModal" aria-hidden="true">
+    <div class="profile-backdrop" data-close="profile"></div>
+    <div class="profile-card" role="dialog">
+      <div class="profile-header">
+         <div class="profile-title">
+            <div class="profile-username">
+               <span id="profileNameDisplay">User</span>
+               <button class="icon-btn" id="editNameBtn">✏️</button> 
+            </div>
+         </div>
+         <button class="icon-btn profile-close" id="profileCloseBtn">✕</button>
+      </div>
+      <div class="profile-body"></div> </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

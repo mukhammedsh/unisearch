@@ -2,6 +2,7 @@
   {
     "id": "nazarbayev-university-kaz-astana",
     "name": "Nazarbayev University",
+    "rank": 530,
     "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
     "website": "https://nu.edu.kz/",
     "academics": {
@@ -28,6 +29,7 @@
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
     "name": "Suleyman Demirel University",
+    "rank": 801,
     "location": { "country": "Kazakhstan", "city": "Kaskelen", "state": "" },
     "website": "https://sdu.edu.kz/en/",
     "academics": {
@@ -54,6 +56,7 @@
   {
     "id": "mit-usa-cambridge",
     "name": "Massachusetts Institute of Technology (MIT)",
+    "rank": 1,
     "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
     "website": "https://www.mit.edu/",
     "academics": {
@@ -80,6 +83,7 @@
   {
     "id": "harvard-usa-cambridge",
     "name": "Harvard University",
+    "rank": 4,
     "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
     "website": "https://www.harvard.edu/",
     "academics": {
@@ -106,6 +110,7 @@
   {
     "id": "kaist-kr-daejeon",
     "name": "KAIST",
+    "rank": 53,
     "location": { "country": "South Korea", "city": "Daejeon", "state": "" },
     "website": "https://www.kaist.ac.kr/en/",
     "academics": {
@@ -132,6 +137,7 @@
   {
     "id": "kyoto-university-jp-kyoto",
     "name": "Kyoto University",
+    "rank": 68,
     "location": { "country": "Japan", "city": "Kyoto", "state": "" },
     "website": "https://www.kyoto-u.ac.jp/en",
     "academics": {
@@ -158,6 +164,7 @@
   {
     "id": "cuhk-hk-shatin",
     "name": "The Chinese University of Hong Kong (CUHK)",
+    "rank": 36,
     "location": { "country": "Hong Kong", "city": "Sha Tin", "state": "" },
     "website": "https://www.cuhk.edu.hk/english/",
     "academics": {
@@ -184,6 +191,7 @@
   {
     "id": "astana-it-university-kaz-astana",
     "name": "Astana IT University",
+    "rank": 950,
     "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
     "website": "https://astanait.edu.kz/",
     "academics": {
@@ -210,6 +218,7 @@
   {
     "id": "imperial-college-london-uk",
     "name": "Imperial College London",
+    "rank": 2,
     "location": { "country": "UK", "city": "London", "state": "" },
     "website": "https://www.imperial.ac.uk/",
     "academics": {
@@ -236,6 +245,7 @@
   {
     "id": "stanford-university-usa-ca",
     "name": "Stanford University",
+    "rank": 6,
     "location": { "country": "USA", "city": "Stanford", "state": "California" },
     "website": "https://www.stanford.edu/",
     "academics": {
@@ -262,6 +272,7 @@
   {
     "id": "eth-zurich-ch-zurich",
     "name": "ETH Zurich",
+    "rank": 7,
     "location": { "country": "Switzerland", "city": "Zurich", "state": "" },
     "website": "https://ethz.ch/en.html",
     "academics": {

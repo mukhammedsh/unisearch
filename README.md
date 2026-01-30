@@ -19,24 +19,11 @@ UniSearch helps:
 
 ---
 
-## Latest Updates (v1.1)
-
-### Advanced Location Filtering
-- **Dynamic Location Logic:** Implemented a dependency-based filter system.
-    - Selecting a country (e.g., "USA") dynamically loads its specific **States/Regions**.
-    - Selecting a country without states (e.g., "Kazakhstan") immediately loads the list of **Cities**.
-- **Data Source:** Added `cities.json` — a lightweight database mapping countries to their states and cities.
-
-### Backend & API
-- **New Filter Parameter:** Updated FastAPI endpoint `/universities` to accept a `region` parameter.
-- **Smart Filtering:** The backend now filters universities by Country -> State (Region) -> City.
-- **AI-powered functions prototype:** Changed prototype of new sorts: Now its based on slider, from budget based to prestige based
+## Latest Updates (v1.2)
 
 ### Database Improvements
-- **Refined University Data:**
-    - Normalized study formats (`On-campus`, `Online`, `Hybrid`).
-    - Added detailed **Cost Breakdown** (Tuition, Housing, Food, etc.).
-    - Updated financial data and exam requirements for major universities.
+- **Ranking:**
+    - Added rank parameter, for ranking universities
 
 ---
 
@@ -174,6 +161,7 @@ Edit backend/data/universities.json. The structure has been updated to support p
 {
    "id": "stanford-university-usa-ca",
    "name": "Stanford University",
+   "rank": 6,
    "location": { "country": "USA", "city": "Stanford", "state": "California" },
    "website": "https://www.stanford.edu/",
    "academics": {

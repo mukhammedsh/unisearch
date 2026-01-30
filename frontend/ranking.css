@@ -1,0 +1,83 @@
+.rank-container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+.rank-header { text-align: center; margin-bottom: 40px; }
+.rank-header h1 { font-size: 36px; margin-bottom: 10px; color: #111; }
+.rank-header p { color: #666; font-size: 16px; }
+
+.rank-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+.rank-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(93, 23, 234, 0.15);
+    border-color: rgba(93, 23, 234, 0.4);
+}
+
+.rank-num {
+    font-size: 28px;
+    font-weight: 900;
+    width: 60px;
+    text-align: center;
+    color: #999;
+    margin-right: 20px;
+}
+/* Цвета медалей для топ-3 */
+.rank-1 { color: #FFD700; text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5); font-size: 36px; }
+.rank-2 { color: #C0C0C0; text-shadow: 0 2px 10px rgba(192, 192, 192, 0.5); font-size: 34px; }
+.rank-3 { color: #CD7F32; text-shadow: 0 2px 10px rgba(205, 127, 50, 0.5); font-size: 32px; }
+
+.rank-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    margin-right: 20px;
+    background: #fff;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+.rank-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+.rank-info { flex-grow: 1; }
+.rank-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; }
+
+.rank-badge {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.rank-source {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #888;
+    background: #f9f9f9;
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+}
+.rank-source a {
+    color: #5d17ea;
+    font-weight: 600;
+    text-decoration: none;
+}
+.rank-source a:hover {
+    text-decoration: underline;
+}

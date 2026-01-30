@@ -179,7 +179,7 @@ def list_universities(
     size: Optional[str] = None,
     sort: str = "name_asc",
     page: int = Query(1, ge=1),
-    limit: int = Query(200, ge=1, le=500),
+    limit: int = Query(200, ge=1, le=2000),
 ):
     items = load_universities()
 
