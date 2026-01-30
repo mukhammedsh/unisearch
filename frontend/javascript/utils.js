@@ -9,12 +9,16 @@ let CITY_OPTIONS_BY_COUNTRY = {};
 // Загрузка базы городов
 async function loadCityDatabase() {
   try {
-    // 🔥 ПУТЬ ИСПРАВЛЕН: теперь он ведет в папку data
-    const response = await fetch('data/cities.json'); 
+    // 🔥 БЫЛО: const response = await fetch('data/cities.json');
     
+    // ✅ СТАЛО: Запрашиваем у нашего Python-сервера
+    const response = await fetch(`${API_BASE}/locations`); 
+    
+    if (!response.ok) throw new Error("API Error fetching locations");
+
     const data = await response.json();
     CITY_OPTIONS_BY_COUNTRY = data;
-    console.log("База городов успешно загружена");
+    console.log("База городов успешно загружена с Бэкенда");
     window.dispatchEvent(new Event("citiesLoaded"));
   } catch (error) {
     console.error("Ошибка при загрузке городов:", error);

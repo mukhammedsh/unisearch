@@ -32,6 +32,7 @@ BACKEND_DIR = os.path.dirname(CURRENT_DIR)
 
 # 3. Строим путь к JSON: backend -> data -> universities.json
 DATA_PATH = os.path.join(BACKEND_DIR, "data", "universities.json")
+CITIES_PATH = os.path.join(BACKEND_DIR, "data", "cities.json")
 
 def load_universities() -> List[Dict[str, Any]]:
     # Проверка основного пути
@@ -268,6 +269,17 @@ def get_university(university_id: str):
         if str(u.get("id")) == uid:
             return u
     raise HTTPException(status_code=404, detail="University not found")
+
+@app.get("/locations")
+def get_locations():
+    """Отдает список стран и городов из backend/data/cities.json"""
+    if os.path.exists(CITIES_PATH):
+        try:
+            with open(CITIES_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error loading cities: {str(e)}")
+    return {}
 
 if __name__ == "__main__":
     import uvicorn
