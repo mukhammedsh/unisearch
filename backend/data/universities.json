@@ -3,6 +3,7 @@
     "id": "nazarbayev-university-kaz-astana",
     "name": "Nazarbayev University",
     "rank": 530,
+    "student_count": 7089,
     "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
     "website": "https://nu.edu.kz/",
     "academics": {
@@ -16,10 +17,10 @@
       "application_fee_usd": 35,
       "financial_aid": { "merit_based": true, "need_based": true },
       "costs_breakdown_year_usd": {
-        "Tuition": 14500,
+        "Tuition": 15000,
         "Housing_Dorm": 1800,
         "Food": 2200,
-        "Books_Transport_Misc": 1000
+        "Books_Transport_Misc": 500
       }
     },
     "student_life": { "size": "medium" },
@@ -29,7 +30,8 @@
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
     "name": "Suleyman Demirel University",
-    "rank": 801,
+    "rank": 1201,
+    "student_count": 8500,
     "location": { "country": "Kazakhstan", "city": "Kaskelen", "state": "" },
     "website": "https://sdu.edu.kz/en/",
     "academics": {
@@ -57,6 +59,7 @@
     "id": "mit-usa-cambridge",
     "name": "Massachusetts Institute of Technology (MIT)",
     "rank": 1,
+    "student_count": 11934,
     "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
     "website": "https://www.mit.edu/",
     "academics": {
@@ -70,10 +73,10 @@
       "application_fee_usd": 75,
       "financial_aid": { "merit_based": false, "need_based": true },
       "costs_breakdown_year_usd": {
-        "Tuition": 60156,
-        "Housing_Dorm": 12900,
-        "Food": 7100,
-        "Books_Transport_Misc": 5804
+        "Tuition": 61990,
+        "Housing_Dorm": 13000,
+        "Food": 7200,
+        "Books_Transport_Misc": 3770
       }
     },
     "student_life": { "size": "medium" },
@@ -84,6 +87,7 @@
     "id": "harvard-usa-cambridge",
     "name": "Harvard University",
     "rank": 4,
+    "student_count": 25266,
     "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
     "website": "https://www.harvard.edu/",
     "academics": {
@@ -111,6 +115,7 @@
     "id": "kaist-kr-daejeon",
     "name": "KAIST",
     "rank": 53,
+    "student_count": 10951,
     "location": { "country": "South Korea", "city": "Daejeon", "state": "" },
     "website": "https://www.kaist.ac.kr/en/",
     "academics": {
@@ -137,7 +142,8 @@
   {
     "id": "kyoto-university-jp-kyoto",
     "name": "Kyoto University",
-    "rank": 68,
+    "rank": 50,
+    "student_count": 22958,
     "location": { "country": "Japan", "city": "Kyoto", "state": "" },
     "website": "https://www.kyoto-u.ac.jp/en",
     "academics": {
@@ -165,6 +171,7 @@
     "id": "cuhk-hk-shatin",
     "name": "The Chinese University of Hong Kong (CUHK)",
     "rank": 36,
+    "student_count": 22021,
     "location": { "country": "Hong Kong", "city": "Sha Tin", "state": "" },
     "website": "https://www.cuhk.edu.hk/english/",
     "academics": {
@@ -174,14 +181,14 @@
       "acceptance_rate_percent": 14
     },
     "finance": {
-      "total_cost_year_usd": 27000,
+      "total_cost_year_usd": 33354,
       "application_fee_usd": 60,
       "financial_aid": { "merit_based": true, "need_based": true },
       "costs_breakdown_year_usd": {
-        "Tuition": 18500,
-        "Housing_Dorm": 2000,
-        "Food": 4500,
-        "Books_Transport_Misc": 2000
+        "Tuition": 23000,
+        "Housing_Dorm": 2200,
+        "Food": 5800,
+        "Books_Transport_Misc": 2354
       }
     },
     "student_life": { "size": "large" },
@@ -191,7 +198,8 @@
   {
     "id": "astana-it-university-kaz-astana",
     "name": "Astana IT University",
-    "rank": 950,
+    "rank": 9999,
+    "student_count": 5426,
     "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
     "website": "https://astanait.edu.kz/",
     "academics": {
@@ -205,10 +213,10 @@
       "application_fee_usd": 0,
       "financial_aid": { "merit_based": true, "need_based": true },
       "costs_breakdown_year_usd": {
-        "Tuition": 3000,
-        "Housing_Dorm": 1500,
-        "Food": 1700,
-        "Books_Transport_Misc": 800
+        "Tuition": 5200,
+        "Housing_Dorm": 1000,
+        "Food": 500,
+        "Books_Transport_Misc": 300
       }
     },
     "student_life": { "size": "medium" },
@@ -219,6 +227,7 @@
     "id": "imperial-college-london-uk",
     "name": "Imperial College London",
     "rank": 2,
+    "student_count": 21340,
     "location": { "country": "UK", "city": "London", "state": "" },
     "website": "https://www.imperial.ac.uk/",
     "academics": {
@@ -228,13 +237,13 @@
       "acceptance_rate_percent": 15
     },
     "finance": {
-      "total_cost_year_usd": 65000,
+      "total_cost_year_usd": 73200,
       "application_fee_usd": 35,
       "financial_aid": { "merit_based": true, "need_based": false },
       "costs_breakdown_year_usd": {
-        "Tuition": 47000,
-        "Housing_Dorm": 10000,
-        "Food": 5000,
+        "Tuition": 52500,
+        "Housing_Dorm": 12000,
+        "Food": 5700,
         "Books_Transport_Misc": 3000
       }
     },
@@ -246,6 +255,7 @@
     "id": "stanford-university-usa-ca",
     "name": "Stanford University",
     "rank": 6,
+    "student_count": 17469,
     "location": { "country": "USA", "city": "Stanford", "state": "California" },
     "website": "https://www.stanford.edu/",
     "academics": {
@@ -255,14 +265,14 @@
       "acceptance_rate_percent": 4
     },
     "finance": {
-      "total_cost_year_usd": 82000,
+      "total_cost_year_usd": 92892,
       "application_fee_usd": 90,
       "financial_aid": { "merit_based": false, "need_based": true },
       "costs_breakdown_year_usd": {
-        "Tuition": 62000,
-        "Housing_Dorm": 12000,
-        "Food": 7500,
-        "Books_Transport_Misc": 500
+        "Tuition": 65910,
+        "Housing_Dorm": 13000,
+        "Food": 8000,
+        "Books_Transport_Misc": 5982
       }
     },
     "student_life": { "size": "large" },
@@ -273,6 +283,7 @@
     "id": "eth-zurich-ch-zurich",
     "name": "ETH Zurich",
     "rank": 7,
+    "student_count": 26198,
     "location": { "country": "Switzerland", "city": "Zurich", "state": "" },
     "website": "https://ethz.ch/en.html",
     "academics": {
@@ -286,10 +297,10 @@
       "application_fee_usd": 150,
       "financial_aid": { "merit_based": true, "need_based": true },
       "costs_breakdown_year_usd": {
-        "Tuition": 1600,
+        "Tuition": 1800,
         "Housing_Rent": 13000,
         "Food": 9000,
-        "Insurance_Transport_Misc": 4400
+        "Insurance_Transport_Misc": 4200
       }
     },
     "student_life": { "size": "large" },

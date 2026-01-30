@@ -295,6 +295,7 @@ async function initUniversityPage() {
         else { siteBtn.style.display = "none"; }
     }
 
+    // --- Блок GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
         let rankHtml = "<span>—</span>";
@@ -312,6 +313,20 @@ async function initUniversityPage() {
         `;
     }
 
+    // Блок со студентами
+    const extraDiv = document.getElementById("detailExtra");
+    if (extraDiv) {
+         const studentCount = u.student_count 
+            ? new Intl.NumberFormat('en-US').format(u.student_count) 
+            : "—";
+
+         extraDiv.innerHTML = `
+            <div class="d-kv"><span>Students</span><span>${studentCount}</span></div>
+            <div class="d-kv"><span>Size</span><span>${u.student_life?.size || "—"}</span></div>
+            <div class="d-kv"><span>Format</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
+         `;
+    }
+
     const reqDiv = document.getElementById("detailRequirements");
     if (reqDiv) {
         let reqList = ""; let count = 0;
@@ -326,6 +341,7 @@ async function initUniversityPage() {
         progDiv.innerHTML = u.academics.majors.map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${m}</span>`).join(" ");
     }
 
+    // --- ЛОГИКА FINANCE (С ЦВЕТНЫМИ ЦЕНАМИ) ---
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo");
     if (u.finance) {
@@ -337,20 +353,51 @@ async function initUniversityPage() {
         }
         const priceBig = document.getElementById("detailPrice");
         if (priceBig) priceBig.textContent = moneyUSD(u.finance.total_cost_year_usd);
+        
         if (finDiv) {
-            finDiv.innerHTML = `
-                <div class="d-kv"><span>Tuition Fee</span><span>${moneyUSD(u.finance.total_cost_year_usd)}</span></div>
-                <div class="d-kv"><span>Application Fee</span><span>$${u.finance.application_fee_usd}</span></div>
-            `;
-        }
-    }
+            const breakdown = u.finance.costs_breakdown_year_usd;
+            // Если есть детализация расходов - строим диаграмму
+            if (breakdown && Object.keys(breakdown).length > 0) {
+                const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#6b7280"];
+                
+                let listHTML = `<div class="cost-breakdown">`;
+                let barHTML = `<div class="cost-progress-bar">`;
+                
+                let i = 0;
+                let totalForCalc = u.finance.total_cost_year_usd || 1;
 
-    const extraDiv = document.getElementById("detailExtra");
-    if (extraDiv) {
-         extraDiv.innerHTML = `
-            <div class="d-kv"><span>Size</span><span>${u.student_life?.size || "—"}</span></div>
-            <div class="d-kv"><span>Format</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
-         `;
+                for (const [key, val] of Object.entries(breakdown)) {
+                    const color = colors[i % colors.length];
+                    const percent = (val / totalForCalc) * 100;
+                    const label = key.replace(/_/g, " ");
+
+                    // 🔥 ИЗМЕНЕНИЕ: Добавлен style="color: ${color}" к цене
+                    listHTML += `
+                        <div class="cost-row">
+                            <div class="cost-label">
+                                <span class="cost-dot" style="background-color: ${color};"></span>
+                                ${label}
+                            </div>
+                            <span class="cost-val" style="color: ${color};">${moneyUSD(val)}</span>
+                        </div>
+                    `;
+
+                    // Кусочек полоски
+                    barHTML += `<div class="cost-segment" style="width: ${percent}%; background-color: ${color};" title="${label}: ${Math.round(percent)}%"></div>`;
+                    i++;
+                }
+
+                listHTML += `</div>`;
+                barHTML += `</div>`;
+                finDiv.innerHTML = listHTML + barHTML;
+            } else {
+                // Старый вид, если нет breakdown
+                finDiv.innerHTML = `
+                    <div class="d-kv"><span>Tuition Fee</span><span>${moneyUSD(u.finance.total_cost_year_usd)}</span></div>
+                    <div class="d-kv"><span>Application Fee</span><span>$${u.finance.application_fee_usd}</span></div>
+                `;
+            }
+        }
     }
 
     if (stateEl) stateEl.textContent = "";

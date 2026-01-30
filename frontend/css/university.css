@@ -268,6 +268,56 @@
 .d-kv span:first-child{ color: rgba(0,0,0,.55); font-weight: 800; }
 .d-kv span:last-child{ color: rgba(0,0,0,.80); font-weight: 900; }
 
+/* --- Стили для диаграммы расходов (Breakdown) --- */
+.cost-breakdown {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cost-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.cost-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cost-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.cost-val {
+  font-weight: 800;
+  color: #111;
+}
+
+/* Полоска прогресса (диаграмма) */
+.cost-progress-bar {
+  margin-top: 20px;
+  height: 8px;
+  width: 100%;
+  background: #e5e7eb;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+}
+
+.cost-segment {
+  height: 100%;
+}
+
 @media (max-width: 768px) {
     .finance-grid {
         grid-template-columns: 1fr;
@@ -281,3 +331,4 @@
         white-space: nowrap;
     }
 }
+
