@@ -6,24 +6,26 @@ const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
 
 let CITY_OPTIONS_BY_COUNTRY = {};
 
-// Загрузка базы городов
 async function loadCityDatabase() {
   try {
-    // 🔥 БЫЛО: const response = await fetch('data/cities.json');
+    // ❌ БЫЛО: const response = await fetch('data/cities.json');
     
-    // ✅ СТАЛО: Запрашиваем у нашего Python-сервера
+    // ✅ СТАЛО: Запрашиваем у нашего Python-сервера (API)
     const response = await fetch(`${API_BASE}/locations`); 
     
-    if (!response.ok) throw new Error("API Error fetching locations");
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     const data = await response.json();
     CITY_OPTIONS_BY_COUNTRY = data;
-    console.log("База городов успешно загружена с Бэкенда");
+    console.log("✅ База городов успешно загружена с Бэкенда");
     window.dispatchEvent(new Event("citiesLoaded"));
   } catch (error) {
-    console.error("Ошибка при загрузке городов:", error);
+    console.error("❌ Ошибка при загрузке городов:", error);
   }
 }
+
 loadCityDatabase();
 
 const MAJOR_OPTIONS = [
@@ -31,7 +33,7 @@ const MAJOR_OPTIONS = [
   "Economics", "Physics", "Mathematics", "Law", "Social Sciences"
 ];
 
-// --- Helpers (Помощники) ---
+// --- Helpers ---
 function $(id) { return document.getElementById(id); }
 
 function debounce(fn, ms = 250) {
@@ -43,12 +45,7 @@ function debounce(fn, ms = 250) {
 }
 
 function escapeHtml(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(str ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 
 function nested(obj, path, fallback = null) {
@@ -79,7 +76,40 @@ function setUrlParams(params) {
   window.history.replaceState({}, "", url.toString());
 }
 
-// --- Управление профилем (Global) ---
+// --- Система уведомлений (TOASTS) ---
+function showToast(message, type = "error") {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`; // type: 'error' или 'success'
+    
+    // Иконка в зависимости от типа
+    const icon = type === "success" ? "✅" : "⚠️";
+    
+    toast.innerHTML = `
+        <span>${icon} ${escapeHtml(message)}</span>
+        <button class="toast-close">&times;</button>
+    `;
+
+    // Удаление по клику на крестик
+    toast.querySelector(".toast-close").onclick = () => removeToast(toast);
+
+    // Авто-удаление через 3 секунды (было 2, сделал чуть больше для читаемости)
+    setTimeout(() => removeToast(toast), 3000);
+
+    // Добавляем в начало (новые снизу толкают старые вверх)
+    container.appendChild(toast);
+}
+
+function removeToast(toast) {
+    toast.style.animation = "fadeOut 0.3s ease forwards";
+    toast.addEventListener("animationend", () => {
+        if(toast.parentNode) toast.parentNode.removeChild(toast);
+    });
+}
+
+// --- Управление профилем ---
 function loadProfile() {
   try {
     const s = localStorage.getItem(PROFILE_STORAGE_KEY);

@@ -1,0 +1,68 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <img src="images/logo.jpeg" alt="Logo" class="logo" />
+  </div>
+
+  <nav class="navbar-center">
+    <a href="index.html" data-link="home">Home</a>
+    <a href="universities.html" data-link="universities">Universities</a>
+    <a href="ranking.html" data-link="ranking">Rankings</a>
+  </nav>
+
+  <div class="navbar-right">
+    <button class="login-btn" id="profileBtn">Profile</button>
+  </div>
+</header>
+
+<div class="profile-modal" id="profileModal" aria-hidden="true">
+  <div class="profile-backdrop" data-close="profile"></div>
+  <div class="profile-card" role="dialog">
+    <div class="profile-header">
+      <div class="profile-title">
+        <div class="profile-username">
+          <span id="profileNameDisplay">User</span>
+          <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="12" />
+          <button class="icon-btn" id="editNameBtn" title="Edit Name">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
+          </button>
+        </div>
+        <div class="profile-subtitle">Profile</div>
+      </div>
+      <button class="icon-btn profile-close" id="profileCloseBtn" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="usernameError" class="profile-error profile-error--username"></div>
+
+    <div class="profile-body">
+      <div class="profile-field">
+        <label class="profile-label">Total Budget per year (USD)</label>
+        
+        <div class="profile-budget">
+          <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" />
+          
+          <button id="saveBudgetBtn" class="icon-btn profile-save-btn" title="Save Budget">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
+
+          <span class="profile-unit">USD / year</span>
+        </div>
+        <div class="profile-hint">Range: 1 - 1,000,000</div>
+      </div>
+
+      <div class="profile-field">
+        <label class="profile-label">Exams (list, optional)</label>
+        <div class="profile-exam-form">
+          <input id="examNameInput" class="profile-input" type="text" placeholder="IELTS..." />
+          <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
+          <button id="addExamBtn" class="profile-add">Add</button>
+        </div>
+        <div id="examError" class="profile-error"></div>
+        <div id="examList" class="profile-exam-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>

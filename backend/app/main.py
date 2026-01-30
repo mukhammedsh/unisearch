@@ -278,7 +278,8 @@ def get_locations():
             with open(CITIES_PATH, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error loading cities: {str(e)}")
+            print(f"Error reading cities file: {e}")
+            return {}
     return {}
 
 if __name__ == "__main__":

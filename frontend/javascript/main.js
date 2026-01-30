@@ -1,12 +1,17 @@
 /* 5. main.js - Точка входа приложения */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
 
-  // Инициализация профиля (есть на всех страницах)
-  initProfileUI();
+  // 1. Сначала грузим меню и профиль из layout.html
+  // Функция берется из components.js
+  if (typeof loadGlobalLayout === "function") {
+      await loadGlobalLayout();
+  } else {
+      console.error("❌ loadGlobalLayout not found! Check components.js");
+  }
 
-  // Простой роутер
+  // 2. Потом запускаем логику конкретной страницы
   const path = window.location.pathname;
 
   if (path.includes("universities.html") || document.getElementById("universitiesList")) {
