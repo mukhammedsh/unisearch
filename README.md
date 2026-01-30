@@ -30,7 +30,7 @@ UniSearch helps:
 ### Backend & API
 - **New Filter Parameter:** Updated FastAPI endpoint `/universities` to accept a `region` parameter.
 - **Smart Filtering:** The backend now filters universities by Country -> State (Region) -> City.
-- **AI-powered functions prototype:** Added prototype of new sorts: UniFit: Chance, UniFit: Budget.
+- **AI-powered functions prototype:** Changed prototype of new sorts: Now its based on slider, from budget based to prestige based
 
 ### Database Improvements
 - **Refined University Data:**

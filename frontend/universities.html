@@ -10,7 +10,6 @@
 </head>
 
 <body data-page="universities">
-  <!-- Navbar -->
   <header class="navbar">
     <div class="navbar-left">
       <img src="images/logo.jpeg" alt="Logo" class="logo" />
@@ -28,10 +27,8 @@
 
   <main class="u-page">
     <div class="u-layout">
-      <!-- LEFT: sidebar -->
       <aside class="u-sidebar">
 
-        <!-- FILTER CARD -->
         <div class="u-filter-card">
           <div class="u-filter-title">
             <span class="u-filter-icon" aria-hidden="true">
@@ -51,7 +48,7 @@
             <label class="u-label" for="countrySelect">Country</label>
             <select id="countrySelect" class="u-select">
               <option value="">All countries</option>
-              </select>
+            </select>
           </div>
 
           <div class="u-field" id="stateDiv" style="display: none;">
@@ -106,19 +103,29 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="sortSelect">Sort</label>
+            <label class="u-label" for="sortSelect">Sort Strategy</label>
             <select id="sortSelect" class="u-select">
-              <option value="uni_chance">UniFit: Chance</option>
-              <option value="uni_budget">UniFit: Budget</option>
+              <option value="uni_ai">✨ UniFit: AI Smart Sort</option>
               <option value="name_asc">Name A-Z</option>
               <option value="tuition_asc">Cost low to high</option>
               <option value="tuition_desc">Cost high to low</option>
             </select>
           </div>
+
+          <div class="u-field" id="aiSliderContainer">
+            <label class="u-label" style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span>Budget 💰</span>
+                <span>Prestige 🏆</span>
+            </label>
+            <input type="range" id="uniFitSlider" min="0" max="100" value="50" style="width:100%; cursor:pointer; accent-color: #5d17ea;">
+            <div style="font-size: 11px; color: #666; text-align: center; margin-top: 6px; font-weight:600;">
+                <span id="sliderLabel">Balanced Strategy (50/50)</span>
+            </div>
+          </div>
+
         </div>
       </aside>
 
-      <!-- RIGHT: content -->
       <section class="u-content">
         <div class="u-top">
           <div class="u-search">
@@ -146,7 +153,6 @@
     </div>
   </main>
 
-  <!-- Profile modal -->
   <div class="profile-modal" id="profileModal" aria-hidden="true">
     <div class="profile-backdrop" data-close="profile"></div>
     <div class="profile-card" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
@@ -184,7 +190,7 @@
         </div>
 
         <div class="profile-field">
-          <label class="profile-label">Exams (list, optional)</label>
+          <label class="profile-label">Exams (list, optional). Scale: 0-100 (GPA), 1600 (SAT)</label>
           <div class="profile-exam-form">
             <input id="examNameInput" class="profile-input" type="text" placeholder="IELTS, GPA, SAT..." />
             <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
