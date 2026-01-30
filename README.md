@@ -30,7 +30,7 @@ UniSearch helps:
 ## 🛠 Tech Stack
 
 **Frontend:**
-- **Vanilla JavaScript (ES6+)**: Developed without heavy frameworks for maximum performance and deep understanding of DOM manipulation.
+- **Modular Vanilla JavaScript (ES6+)**: Developed without heavy frameworks using ES modules. Logic is split into specialized files (`algo.js`, `components.js`, `pages.js`) for better maintainability.
 - **CSS Variables**: Used for consistent theming and responsive design.
 
 **Backend:**
@@ -54,23 +54,32 @@ backend/
 │
 ├── data/
 │   └── universities.json    # dataset of universities (JSON)  
+│   └── cities.json          # dataset of country:city (JSON)  
 │
 ├── requirements.txt
 └── venv/                    # Python virtual environment (not committed)
 
 frontend/
-├── cities.json              # contains all cities and countries for filter (JSON)
 │
 ├── index.html               # landing / main page  
 ├── universities.html        # universities list page (Smart Search)  
 ├── university.html          # university detail page (Tabs view)  
+├── ranking.html             # NEW: Global Rankings Leaderboard
 │
-├── style.css                # global styles  
-├── universities.css         # universities list & card styles  
-├── university.css           # university detail & tabs styles  
-├── script.js                # frontend logic (AI sorting, API interaction)  
+├── css/                     
+│   ├── style.css            # global styles
+│   ├── universities.css     
+│   ├── university.css       
+│   └── ranking.css          
 │
-└── images/  
+├── javascript/              # NEW: Modular Logic (Refactored)
+│   ├── main.js              # Entry point & Router
+│   ├── algo.js              # AI Sorting & Math
+│   ├── components.js        # Navbar, Profile Modal, Tabs
+│   ├── pages.js             # Page rendering (Lists, Details)
+│   └── utils.js             # Helpers & API fetchers
+│
+└── images/
     ├── logo.jpeg            # project logo  
     ├── logos/               # University logos (PNG, 1:1)  
     └── thumbnails/          # Campus covers (JPG, 16:9)
@@ -133,10 +142,10 @@ Then open: http://127.0.0.1:5500/universities.html
 The application uses a weighted algorithm to rank universities:
 
 1. **Hard Filter:** Excludes universities where the user's score < exams_min.  
-2. **Scoring:** Calculates a "Fit Score":  
-   * **Academic Fit:** Points awarded for exceeding the exams_avg (GPA, IELTS, SAT).  
-   * **Financial Fit:** Points deducted if Total Cost > User Budget.  
-   * **Grant Mitigation:** If the budget is exceeded but financial_aid is available, the penalty is significantly reduced (Smart Recommendation).  
+2. **Scoring & Weights:** Calculates a "Fit Score" based on user preference (Slider):
+   * **Prestige Score:** Combines Global Rank (QS/THE) and Acceptance Rate.
+   * **Budget Score:** Calculates affordability. If `Total Cost > User Budget`, a penalty is applied. However, if `financial_aid` is available, the penalty is mitigated.
+   * **User Balance:** A slider allows the user to weigh **Prestige** vs. **Budget** (e.g., 80% Prestige priority / 20% Budget).
 3. **Visualization:**  
    * 🔵 **Blue Badge:** "Budget exceeded, Grant available" (High recommendation).  
    * 🟣 **Purple Badge:** "Budget exceeded" (Warning).  
@@ -159,31 +168,32 @@ Edit backend/data/universities.json. The structure has been updated to support p
 
 ```json
 {
-   "id": "stanford-university-usa-ca",
-   "name": "Stanford University",
-   "rank": 6,
-   "location": { "country": "USA", "city": "Stanford", "state": "California" },
-   "website": "https://www.stanford.edu/",
+   "id": "eth-zurich-ch-zurich",
+   "name": "ETH Zurich",
+   "rank": 7,
+   "student_count": 26198,
+   "location": { "country": "Switzerland", "city": "Zurich", "state": "" },
+   "website": "https://ethz.ch/en.html",
    "academics": {
-      "majors": ["Computer Science", "Engineering", "Business", "Biology", "Psychology", "Earth Sciences"],
-      "study_levels": ["Bachelor", "Master", "PhD"],
-      "formats": ["On-campus", "Online"],
-      "acceptance_rate_percent": 4
+   "majors": ["Architecture", "Engineering", "Chemistry", "Physics", "Computer Science", "Mathematics"],
+   "study_levels": ["Bachelor", "Master", "PhD"],
+   "formats": ["On-campus"],
+   "acceptance_rate_percent": 27
    },
    "finance": {
-      "total_cost_year_usd": 82000,
-      "application_fee_usd": 90,
-      "financial_aid": { "merit_based": false, "need_based": true },
-      "costs_breakdown_year_usd": {
-         "Tuition": 62000,
-         "Housing_Dorm": 12000,
-         "Food": 7500,
-         "Books_Transport_Misc": 500
-      }
+   "total_cost_year_usd": 28000,
+   "application_fee_usd": 150,
+   "financial_aid": { "merit_based": true, "need_based": true },
+   "costs_breakdown_year_usd": {
+      "Tuition": 1800,
+      "Housing_Rent": 13000,
+      "Food": 9000,
+      "Insurance_Transport_Misc": 4200
+   }
    },
    "student_life": { "size": "large" },
-   "exams_avg": { "GPA": 99, "IELTS": 8.0, "SAT": 1560 },
-   "exams_min": { "GPA": 97, "IELTS": 7.5, "SAT": 1500 }
+   "exams_avg": { "GPA": 90, "IELTS": 7.5 },
+   "exams_min": { "GPA": 80, "IELTS": 7.0 }
 }
 ```
 ### **2. Add Images**
