@@ -6,7 +6,7 @@ from typing import Any, Optional, List, Dict, Union
 
 # --- ВСТРОЕННАЯ КОНФИГУРАЦИЯ ---
 EXAM_WHITELIST = {
-    "IELTS": (0.0, 9.0),
+    "IELTS": (1.0, 9.0),
     "TOEFL": (0.0, 120.0),
     "SAT": (400.0, 1600.0),
     "ACT": (1.0, 36.0),

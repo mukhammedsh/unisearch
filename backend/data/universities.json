@@ -5,6 +5,7 @@
     "rank": 530,
     "student_count": 7089,
     "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
+    "coordinates": { "lat": 51.0900, "lon": 71.3994 },
     "website": "https://nu.edu.kz/",
     "academics": {
       "majors": ["Engineering", "Computer Science", "Business", "Natural Sciences", "Medicine", "Mining"],
@@ -33,6 +34,7 @@
     "rank": 1201,
     "student_count": 8500,
     "location": { "country": "Kazakhstan", "city": "Kaskelen", "state": "" },
+    "coordinates": { "lat": 43.2080, "lon": 76.6700 },
     "website": "https://sdu.edu.kz/en/",
     "academics": {
       "majors": ["Business", "Engineering", "Law", "Education & Humanities", "Social Sciences"],
@@ -61,6 +63,7 @@
     "rank": 1,
     "student_count": 11934,
     "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
+    "coordinates": { "lat": 42.3601, "lon": -71.0942 },
     "website": "https://www.mit.edu/",
     "academics": {
       "majors": ["Computer Science", "Engineering", "Physics", "Mathematics", "Architecture", "Biology"],
@@ -89,6 +92,7 @@
     "rank": 4,
     "student_count": 25266,
     "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
+    "coordinates": { "lat": 42.3736, "lon": -71.1097 },
     "website": "https://www.harvard.edu/",
     "academics": {
       "majors": ["Economics", "Government", "Computer Science", "Social Sciences", "Law", "Medicine"],
@@ -117,6 +121,7 @@
     "rank": 53,
     "student_count": 10951,
     "location": { "country": "South Korea", "city": "Daejeon", "state": "" },
+    "coordinates": { "lat": 36.3721, "lon": 127.3604 },
     "website": "https://www.kaist.ac.kr/en/",
     "academics": {
       "majors": ["Electrical Engineering", "Computer Science", "Physics", "Industrial Design", "Bioengineering"],
@@ -145,6 +150,7 @@
     "rank": 50,
     "student_count": 22958,
     "location": { "country": "Japan", "city": "Kyoto", "state": "" },
+    "coordinates": { "lat": 35.0262, "lon": 135.7808 },
     "website": "https://www.kyoto-u.ac.jp/en",
     "academics": {
       "majors": ["Engineering", "Science", "Economics", "Agriculture", "Medicine"],
@@ -173,6 +179,7 @@
     "rank": 36,
     "student_count": 22021,
     "location": { "country": "Hong Kong", "city": "Sha Tin", "state": "" },
+    "coordinates": { "lat": 22.4195, "lon": 114.2052 },
     "website": "https://www.cuhk.edu.hk/english/",
     "academics": {
       "majors": ["Business Administration", "Computer Science", "Medicine", "Chinese Studies", "Engineering"],
@@ -201,6 +208,7 @@
     "rank": 9999,
     "student_count": 5426,
     "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
+    "coordinates": { "lat": 51.0913, "lon": 71.4128 },
     "website": "https://astanait.edu.kz/",
     "academics": {
       "majors": ["Computer Science", "Software Engineering", "Big Data Analysis", "Cyber Security", "IT Management", "Smart Technologies"],
@@ -229,6 +237,7 @@
     "rank": 2,
     "student_count": 21340,
     "location": { "country": "UK", "city": "London", "state": "" },
+    "coordinates": { "lat": 51.4988, "lon": -0.1749 },
     "website": "https://www.imperial.ac.uk/",
     "academics": {
       "majors": ["Engineering", "Medicine", "Natural Sciences", "Business"],
@@ -257,6 +266,7 @@
     "rank": 6,
     "student_count": 17469,
     "location": { "country": "USA", "city": "Stanford", "state": "California" },
+    "coordinates": { "lat": 37.4275, "lon": -122.1697 },
     "website": "https://www.stanford.edu/",
     "academics": {
       "majors": ["Computer Science", "Engineering", "Business", "Biology", "Psychology", "Earth Sciences"],
@@ -285,6 +295,7 @@
     "rank": 7,
     "student_count": 26198,
     "location": { "country": "Switzerland", "city": "Zurich", "state": "" },
+    "coordinates": { "lat": 47.3763, "lon": 8.5477 },
     "website": "https://ethz.ch/en.html",
     "academics": {
       "majors": ["Architecture", "Engineering", "Chemistry", "Physics", "Computer Science", "Mathematics"],
@@ -306,5 +317,266 @@
     "student_life": { "size": "large" },
     "exams_avg": { "GPA": 90, "IELTS": 7.5 },
     "exams_min": { "GPA": 80, "IELTS": 7.0 }
+  },
+  {
+    "id": "epfl-ch-lausanne",
+    "name": "École Polytechnique Fédérale de Lausanne (EPFL)",
+    "rank": 26,
+    "student_count": 12574,
+    "location": { "country": "Switzerland", "city": "Lausanne", "state": "Vaud" },
+    "coordinates": { "lat": 46.5191, "lon": 6.5668 },
+    "website": "https://www.epfl.ch/en/",
+    "academics": {
+      "majors": ["Computer Science", "Microengineering", "Life Sciences", "Civil Engineering", "Architecture", "Mathematics"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 21
+    },
+    "finance": {
+      "total_cost_year_usd": 25000,
+      "application_fee_usd": 160,
+      "financial_aid": { "merit_based": false, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 1800,
+        "Housing_Rent": 13200,
+        "Food": 8000,
+        "Insurance_Transport_Misc": 2000
+      }
+    },
+    "student_life": { "size": "medium" },
+    "exams_avg": { "GPA": 90, "IELTS": 7.0 },
+    "exams_min": { "GPA": 80, "IELTS": 7.0 }
+  },
+  {
+    "id": "national-university-of-singapore-sg-singapore",
+    "name": "National University of Singapore (NUS)",
+    "rank": 8,
+    "student_count": 38000,
+    "location": { "country": "Singapore", "city": "Singapore", "state": "" },
+    "coordinates": { "lat": 1.2966, "lon": 103.7764 },
+    "website": "https://nus.edu.sg/",
+    "academics": {
+      "majors": ["Engineering", "Computing", "Business", "Science", "Design", "Arts & Social Sciences"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 5
+    },
+    "finance": {
+      "total_cost_year_usd": 32000,
+      "application_fee_usd": 15,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 20000,
+        "Housing_Dorm": 6000,
+        "Food": 4000,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 97, "IELTS": 7.5, "SAT": 1520 },
+    "exams_min": { "GPA": 90, "IELTS": 6.5, "SAT": 1450 }
+  },
+  {
+    "id": "tsinghua-university-cn-beijing",
+    "name": "Tsinghua University",
+    "rank": 20,
+    "student_count": 59270,
+    "location": { "country": "China", "city": "Beijing", "state": "" },
+    "coordinates": { "lat": 40.0000, "lon": 116.3333 },
+    "website": "https://www.tsinghua.edu.cn/en/",
+    "academics": {
+      "majors": ["Computer Science", "Civil Engineering", "Physics", "Economics", "Architecture", "Environment"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 2
+    },
+    "finance": {
+      "total_cost_year_usd": 9500,
+      "application_fee_usd": 60,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 4500,
+        "Housing_Dorm": 2000,
+        "Food": 2000,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 95, "IELTS": 7.0, "SAT": 1480 },
+    "exams_min": { "GPA": 88, "IELTS": 6.5, "SAT": 1350 }
+  },
+  {
+    "id": "university-of-toronto-ca-toronto",
+    "name": "University of Toronto",
+    "rank": 25,
+    "student_count": 97678,
+    "location": { "country": "Canada", "city": "Toronto", "state": "Ontario" },
+    "coordinates": { "lat": 43.6629, "lon": -79.3957 },
+    "website": "https://www.utoronto.ca/",
+    "academics": {
+      "majors": ["Psychology", "Medical Technology", "Human Humanities", "Engineering", "Business", "Computer Science"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus", "Hybrid"],
+      "acceptance_rate_percent": 43
+    },
+    "finance": {
+      "total_cost_year_usd": 62000,
+      "application_fee_usd": 130,
+      "financial_aid": { "merit_based": true, "need_based": false },
+      "costs_breakdown_year_usd": {
+        "Tuition": 45000,
+        "Housing_Dorm": 11000,
+        "Food": 4000,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 90, "IELTS": 7.0, "SAT": 1400 },
+    "exams_min": { "GPA": 85, "IELTS": 6.5, "SAT": 1300 }
+  },
+  {
+    "id": "university-of-melbourne-au-melbourne",
+    "name": "University of Melbourne",
+    "rank": 13,
+    "student_count": 54000,
+    "location": { "country": "Australia", "city": "Melbourne", "state": "Victoria" },
+    "coordinates": { "lat": -37.7986, "lon": 144.9602 },
+    "website": "https://www.unimelb.edu.au/",
+    "academics": {
+      "majors": ["Law", "Education", "Business", "Engineering", "Medicine", "Arts"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 70
+    },
+    "finance": {
+      "total_cost_year_usd": 52000,
+      "application_fee_usd": 75,
+      "financial_aid": { "merit_based": true, "need_based": false },
+      "costs_breakdown_year_usd": {
+        "Tuition": 32000,
+        "Housing_Dorm": 13000,
+        "Food": 5000,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 85, "IELTS": 7.0, "SAT": 1350 },
+    "exams_min": { "GPA": 75, "IELTS": 6.5, "SAT": 1250 }
+  },
+  {
+    "id": "technical-university-of-munich-de-munich",
+    "name": "Technical University of Munich",
+    "rank": 28,
+    "student_count": 52580,
+    "location": { "country": "Germany", "city": "Munich", "state": "Bavaria" },
+    "coordinates": { "lat": 48.1507, "lon": 11.5691 },
+    "website": "https://www.tum.de/en/",
+    "academics": {
+      "majors": ["Engineering", "Natural Sciences", "Life Sciences", "Management", "Social Sciences"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 8
+    },
+    "finance": {
+      "total_cost_year_usd": 19000,
+      "application_fee_usd": 50,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 6500,
+        "Housing_Dorm": 8000,
+        "Food": 3500,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 92, "IELTS": 7.0, "SAT": 1350 },
+    "exams_min": { "GPA": 85, "IELTS": 6.5, "SAT": 1250 }
+  },
+  {
+    "id": "delft-university-of-technology-nl-delft",
+    "name": "Delft University of Technology",
+    "rank": 47,
+    "student_count": 27265,
+    "location": { "country": "Netherlands", "city": "Delft", "state": "" },
+    "coordinates": { "lat": 52.0017, "lon": 4.3725 },
+    "website": "https://www.tudelft.nl/en/",
+    "academics": {
+      "majors": ["Aerospace Engineering", "Architecture", "Civil Engineering", "Computer Science", "Industrial Design"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 65
+    },
+    "finance": {
+      "total_cost_year_usd": 36000,
+      "application_fee_usd": 100,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 19000,
+        "Housing_Dorm": 10000,
+        "Food": 5000,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 88, "IELTS": 7.0 },
+    "exams_min": { "GPA": 75, "IELTS": 6.5 }
+  },
+  {
+    "id": "seoul-national-university-kr-seoul",
+    "name": "Seoul National University",
+    "rank": 31,
+    "student_count": 30323,
+    "location": { "country": "South Korea", "city": "Seoul", "state": "" },
+    "coordinates": { "lat": 37.4600, "lon": 126.9525 },
+    "website": "https://en.snu.ac.kr/",
+    "academics": {
+      "majors": ["Engineering", "Medicine", "Humanities", "Social Sciences", "Natural Sciences"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 15
+    },
+    "finance": {
+      "total_cost_year_usd": 15000,
+      "application_fee_usd": 60,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 5000,
+        "Housing_Dorm": 5000,
+        "Food": 4000,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 94, "IELTS": 7.0, "SAT": 1400 },
+    "exams_min": { "GPA": 85, "IELTS": 6.0, "SAT": 1300 }
+  },
+  {
+    "id": "university-of-tokyo-jp-tokyo",
+    "name": "University of Tokyo",
+    "rank": 32,
+    "student_count": 28585,
+    "location": { "country": "Japan", "city": "Tokyo", "state": "" },
+    "coordinates": { "lat": 35.7128, "lon": 139.7620 },
+    "website": "https://www.u-tokyo.ac.jp/en/",
+    "academics": {
+      "majors": ["Engineering", "Economics", "Law", "Science", "Agriculture", "Medicine"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 34
+    },
+    "finance": {
+      "total_cost_year_usd": 16000,
+      "application_fee_usd": 50,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 5000,
+        "Housing_Dorm": 6000,
+        "Food": 4000,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "student_life": { "size": "large" },
+    "exams_avg": { "GPA": 92, "IELTS": 7.5, "SAT": 1420 },
+    "exams_min": { "GPA": 85, "IELTS": 7.0, "SAT": 1350 }
   }
 ]

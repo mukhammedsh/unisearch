@@ -121,3 +121,38 @@ function saveProfile(p) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
   window.dispatchEvent(new Event("profileUpdated"));
 }
+
+/* --- Сохранение фильтров и состояния (LocalStorage) --- */
+const FILTERS_KEY = "unisearch_filters";
+
+// Сохраняем текущее состояние (фильтры + режим просмотра)
+function saveFilters(state) {
+    if (!state) return;
+    // Копируем стейт, чтобы не мутировать оригинал
+    const dataToSave = { 
+        q: state.q,
+        country: state.country,
+        region: state.region,
+        city: state.city,
+        major: state.major,
+        study_level: state.study_level,
+        format: state.format,
+        min_tuition: state.min_tuition,
+        max_tuition: state.max_tuition,
+        sort: state.sort,
+        ai_balance: state.ai_balance,
+        viewMode: state.viewMode || "list" // сохраняем режим: 'list' или 'map'
+    };
+    localStorage.setItem(FILTERS_KEY, JSON.stringify(dataToSave));
+}
+
+// Загружаем сохраненное состояние
+function loadFilters() {
+    try {
+        const saved = localStorage.getItem(FILTERS_KEY);
+        return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+        console.error("Error loading filters", e);
+        return {};
+    }
+}

@@ -3,7 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="images/minilogo.png" type="image/png">
   <title>Universities | UniSearch</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/universities.css" />
+
+  <script src="javascript/utils.js" defer></script>
+  <script src="javascript/components.js" defer></script>
+  <script src="javascript/pages.js" defer></script>
+  <script src="javascript/main.js" defer></script>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/universities.css" />
@@ -123,16 +139,31 @@
                       stroke-linecap="round"/>
               </svg>
             </span>
-            <input id="qInput" type="text" placeholder="University or major" />
+            <input id="qInput" type="text" placeholder="Search university..." />
           </div>
 
-          <div class="u-found">
-            Found <span id="totalCount">0</span> universities
+          <div class="u-controls">
+             <div class="u-found">
+               Found <span id="totalCount">0</span> universities
+             </div>
+             
+             <div class="view-toggles">
+                <button id="viewListBtn" class="view-btn active" title="List View">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                </button>
+                <button id="viewMapBtn" class="view-btn" title="Map View">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                </button>
+             </div>
           </div>
         </div>
 
         <div id="listState" class="u-state"></div>
+        
         <div id="universitiesList" class="u-grid"></div>
+        
+        <div id="mapContainer" class="u-map-container" style="display: none;"></div>
+
         <div id="pagination" class="u-pagination"></div>
       </section>
     </div>

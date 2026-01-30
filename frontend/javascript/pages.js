@@ -1,257 +1,527 @@
 /* 4. pages.js - Логика страниц */
 
 // =====================================
-// PAGE: UNIVERSITIES LIST (Список)
+// PAGE: UNIVERSITIES LIST (Список + Карта)
 // =====================================
 function initUniversitiesPage() {
-  const el = {
-    qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
-    stateSelect: $("stateSelect"), citySelect: $("citySelect"), majorSelect: $("majorSelect"),
-    studyLevelSelect: $("studyLevelSelect"), formatSelect: $("formatSelect"),
-    minTuitionInput: $("minTuitionInput"), maxTuitionInput: $("maxTuitionInput"),
-    sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
-    slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
-    list: $("universitiesList"), total: $("totalCount"), state: $("listState"), pagination: $("pagination"),
-  };
+    const el = {
+        qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
+        stateSelect: $("stateSelect"), citySelect: $("citySelect"), majorSelect: $("majorSelect"),
+        studyLevelSelect: $("studyLevelSelect"), formatSelect: $("formatSelect"),
+        minTuitionInput: $("minTuitionInput"), maxTuitionInput: $("maxTuitionInput"),
+        sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
+        slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
+        
+        // Списки и контейнеры
+        list: $("universitiesList"), 
+        mapContainer: $("mapContainer"), // Контейнер карты
+        total: $("totalCount"), 
+        state: $("listState"), 
+        pagination: $("pagination"),
+        
+        // Кнопки переключения
+        btnList: $("viewListBtn"),
+        btnMap: $("viewMapBtn")
+    };
 
-  if (!el.list) return;
+    if (!el.list) return;
 
-  const state = {
-    q: "", country: "", region: "", city: "", major: "", study_level: "", format: "",
-    min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1, limit: 12,
-  };
-
-  readFromUrl();
-  updateMajorOptions();
-
-  const initLocations = () => {
-      updateCountryOptions();
-      if (state.country) {
-          if (el.countrySelect) el.countrySelect.value = state.country;
-          updateLocationLogic(state.country);
-          if (state.region && el.stateSelect && el.stateSelect.offsetParent !== null) {
-              el.stateSelect.value = state.region;
-              updateCitiesForState(state.country, state.region);
-          }
-          if (state.city && el.citySelect) el.citySelect.value = state.city;
-      }
-  };
-  
-  if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) initLocations();
-  window.addEventListener("citiesLoaded", initLocations);
-
-  applyToForm();
-  updateSliderVisibility(); 
-
-  const refetch = debounce(() => { state.page = 1; fetchAndRender(); }, 250);
-
-  // Listeners
-  el.qInput?.addEventListener("input", () => { state.q = el.qInput.value.trim(); refetch(); });
-  el.countrySelect?.addEventListener("change", () => {
-    state.country = el.countrySelect.value; state.region = ""; state.city = ""; 
-    if(el.stateSelect) el.stateSelect.value = ""; if(el.citySelect) el.citySelect.value = "";
-    updateLocationLogic(state.country); refetch();
-  });
-  el.stateSelect?.addEventListener("change", () => { state.region = el.stateSelect.value; state.city = ""; updateCitiesForState(state.country, state.region); refetch(); });
-  el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
-  el.majorSelect?.addEventListener("change", () => { state.major = el.majorSelect.value; refetch(); });
-  el.studyLevelSelect?.addEventListener("change", () => { state.study_level = el.studyLevelSelect.value; refetch(); });
-  el.formatSelect?.addEventListener("change", () => { state.format = el.formatSelect.value; refetch(); });
-  el.minTuitionInput?.addEventListener("input", () => { state.min_tuition = el.minTuitionInput.value; refetch(); });
-  el.maxTuitionInput?.addEventListener("input", () => { state.max_tuition = el.maxTuitionInput.value; refetch(); });
-  el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; updateSliderVisibility(); refetch(); });
-  el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
-
-  el.resetBtn?.addEventListener("click", () => {
-    Object.assign(state, { q: "", country: "", region: "", city: "", major: "", study_level: "", format: "", min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1 });
-    applyToForm(); if (el.stateDiv) el.stateDiv.style.display = "none"; updateCityDropdown([]); updateSliderVisibility(); fetchAndRender();
-  });
-
-  el.list.addEventListener("click", (e) => {
-    const card = e.target.closest("[data-uni-id]");
-    if (!card || e.target.tagName === "A") return;
-    window.location.href = `university.html?id=${encodeURIComponent(card.getAttribute("data-uni-id"))}`;
-  });
-
-  fetchAndRender();
-  window.addEventListener("profileUpdated", () => fetchAndRender());
-
-  // --- Internal Page Helpers ---
-  function updateSliderVisibility() {
-      if (!el.sliderContainer) return;
-      if (state.sort === "uni_ai") { el.sliderContainer.style.display = "block"; updateSliderLabel(); } 
-      else { el.sliderContainer.style.display = "none"; }
-  }
-  function updateSliderLabel() {
-      if (!el.sliderLabel) return;
-      const val = state.ai_balance;
-      let text = "Balanced (50/50)";
-      if (val <= 20) text = "Strict Budget Priority 💰";
-      else if (val >= 80) text = "Top Prestige Priority 🏆";
-      else if (val < 50) text = `Focus on Budget (${100-val}%)`;
-      else text = `Focus on Prestige (${val}%)`;
-      el.sliderLabel.textContent = text;
-  }
-  function buildParams() {
-    const p = new URLSearchParams();
-    if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
-    if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
-    if (state.major) p.set("major", state.major); if (state.study_level) p.set("study_level", state.study_level);
-    if (state.format) p.set("format", state.format); if (state.min_tuition) p.set("min_tuition", state.min_tuition);
-    if (state.max_tuition) p.set("max_tuition", state.max_tuition);
-    const isAiSort = (state.sort === "uni_ai");
-    p.set("sort", isAiSort ? "name_asc" : state.sort);
-    if (isAiSort) { p.set("limit", "100"); p.set("page", "1"); } else { p.set("page", String(state.page)); p.set("limit", String(state.limit)); }
-    return p;
-  }
-  function applyToForm() {
-    if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
-    if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
-    if(el.majorSelect) el.majorSelect.value = state.major; if(el.studyLevelSelect) el.studyLevelSelect.value = state.study_level;
-    if(el.formatSelect) el.formatSelect.value = state.format; if(el.minTuitionInput) el.minTuitionInput.value = state.min_tuition;
-    if(el.maxTuitionInput) el.maxTuitionInput.value = state.max_tuition; if(el.sortSelect) el.sortSelect.value = state.sort;
-    if(el.slider) el.slider.value = state.ai_balance;
-  }
-  function updateLocationLogic(country) {
-    if (!el.stateDiv) return;
-    const countryData = CITY_OPTIONS_BY_COUNTRY[country];
-    if (!country || !countryData) { el.stateDiv.style.display = "none"; updateCityDropdown([]); return; }
-    if (Array.isArray(countryData)) { el.stateDiv.style.display = "none"; updateCityDropdown(countryData); } 
-    else {
-        el.stateDiv.style.display = "block"; 
-        const states = Object.keys(countryData).sort();
-        el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
-        states.forEach(s => { el.stateSelect.innerHTML += `<option value="${s}">${s}</option>`; });
-        updateCityDropdown([]); 
-    }
-  }
-  function updateCitiesForState(country, region) {
-    if (!country || !region) { updateCityDropdown([]); return; }
-    const countryData = CITY_OPTIONS_BY_COUNTRY[country];
-    if (countryData && !Array.isArray(countryData)) { updateCityDropdown(countryData[region] || []); }
-  }
-  function updateCityDropdown(cities) {
-    if (!el.citySelect) return;
-    if (!cities || cities.length === 0) { el.citySelect.innerHTML = `<option value="">Select region/country first</option>`; el.citySelect.disabled = true; } 
-    else { el.citySelect.disabled = false; el.citySelect.innerHTML = `<option value="">All Cities</option>`; cities.sort().forEach(c => { const opt = document.createElement("option"); opt.value = c; opt.textContent = c; el.citySelect.appendChild(opt); }); }
-  }
-  function updateCountryOptions() {
-    if (!el.countrySelect) return;
-    const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
-    const currentVal = el.countrySelect.value || state.country;
-    let html = `<option value="">All Countries</option>`;
-    countries.forEach(c => { const isSelected = (c === currentVal) ? "selected" : ""; html += `<option value="${c}" ${isSelected}>${c}</option>`; });
-    el.countrySelect.innerHTML = html;
-  }
-  function updateMajorOptions() {
-    if (!el.majorSelect) return;
-    el.majorSelect.innerHTML = `<option value="">Any major</option>`;
-    MAJOR_OPTIONS.forEach(m => { const opt = document.createElement("option"); opt.value = m; opt.textContent = m; el.majorSelect.appendChild(opt); });
-  }
-  function readFromUrl() {
-    const sp = new URL(window.location.href).searchParams;
-    state.q = sp.get("q") || ""; state.country = sp.get("country") || ""; state.region = sp.get("region") || "";
-    state.city = sp.get("city") || ""; state.major = sp.get("major") || ""; state.study_level = sp.get("study_level") || "";
-    state.format = sp.get("format") || ""; state.min_tuition = sp.get("min_tuition") || ""; state.max_tuition = sp.get("max_tuition") || "";
-    state.sort = sp.get("sort") || "uni_ai"; const p = Number(sp.get("page")); if (p > 0) state.page = p;
-  }
-
-  async function fetchAndRender() {
-    console.log("PROFILE:", loadProfile());
-    if (el.state) el.state.textContent = "Loading...";
-    el.list.innerHTML = "";
-    if (el.pagination) el.pagination.innerHTML = "";
-
-    const params = buildParams();
-    setUrlParams(params);
-
-    try {
-      const res = await fetch(`${API_BASE}/universities?${params.toString()}`);
-      if (!res.ok) throw new Error("API Error");
-      const data = await res.json();
-      let items = data.items || [];
-      const total = data.total || 0;
-      const isAiSort = (state.sort === "uni_ai");
-      
-      if (isAiSort) { items = getUniSort(items, state.ai_balance); } // getUniSort from algo.js
-
-      if (el.total) el.total.textContent = String(isAiSort ? items.length : total);
-      
-      if (!items.length) { if (el.state) el.state.textContent = "No universities found."; return; }
-      if (el.state) el.state.textContent = "";
-      const profile = loadProfile();
-      const userBudget = parseFloat(profile.budget);
-      el.list.innerHTML = items.map(u => renderCard(u, userBudget)).join("");
-      
-      if (!isAiSort) renderPagination(total);
-      else if (el.pagination) el.pagination.innerHTML = "";
-    } catch (err) {
-      console.error(err);
-      if (el.state) el.state.textContent = "Failed to load data.";
-    }
-  }
-
-  function renderCard(u, myBudget) { 
-    const id = u.id; const name = u.name; const country = nested(u, ["location", "country"], "");
-    const city = nested(u, ["location", "city"], ""); const loc = [city, country].filter(Boolean).join(", ");
-    const cost = nested(u, ["finance", "total_cost_year_usd"], 0);
-    const acceptance = nested(u, ["academics", "acceptance_rate_percent"], "?");
-    // Пути к картинкам учитывают запуск из корня frontend
-    const logoSrc = `images/logos/${id}.png`; const thumbSrc = `images/thumbnails/${id}.jpg`;
+    // 1. Начальное состояние (Загружаем из LocalStorage или дефолт)
+    const savedState = loadFilters(); // из utils.js
     
-    const profile = loadProfile();
-    const hasExams = profile.exams && profile.exams.length > 0;
-    let failedReqs = [];
-    if (hasExams && u.exams_min) {
-        const userScores = {};
-        profile.exams.forEach(e => { if(e.exam && e.score) userScores[e.exam.toUpperCase()] = parseFloat(e.score); });
-        for (const [exam, minScore] of Object.entries(u.exams_min)) {
-            const myScore = userScores[exam];
-            if (myScore !== undefined && myScore < minScore) failedReqs.push(`${exam} < ${minScore}`);
+    const state = {
+        q: savedState.q || "", 
+        country: savedState.country || "", 
+        region: savedState.region || "", 
+        city: savedState.city || "", 
+        major: savedState.major || "", 
+        study_level: savedState.study_level || "", 
+        format: savedState.format || "",
+        min_tuition: savedState.min_tuition || "", 
+        max_tuition: savedState.max_tuition || "", 
+        sort: savedState.sort || "uni_ai", 
+        ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
+        viewMode: savedState.viewMode || "list", // 'list' или 'map'
+        page: 1, 
+        limit: 12,
+    };
+
+    // Переменные для карты
+    let mapInstance = null;
+    let markersLayer = null;
+
+    // Инициализация
+    readFromUrl(); 
+    updateMajorOptions();
+    
+    const initLocations = () => {
+        updateCountryOptions();
+        if (state.country) {
+            if (el.countrySelect) el.countrySelect.value = state.country;
+            updateLocationLogic(state.country);
+            if (state.region && el.stateSelect) {
+                el.stateSelect.value = state.region;
+                updateCitiesForState(state.country, state.region);
+            }
+            if (state.city && el.citySelect) el.citySelect.value = state.city;
+        }
+    };
+    
+    if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) initLocations();
+    window.addEventListener("citiesLoaded", initLocations);
+
+    applyToForm();
+    updateSliderVisibility(); 
+    
+    // Применяем сохраненный режим (Карта или Список)
+    // И сразу грузим данные (fetchAndRender внутри switchView не вызывался при старте)
+    switchView(state.viewMode, false); // false = не вызывать fetch повторно, т.к. вызовем ниже
+    
+    const refetch = debounce(() => { 
+        state.page = 1; 
+        saveFilters(state);
+        fetchAndRender(); 
+    }, 250);
+
+    // --- LISTENERS ---
+    el.qInput?.addEventListener("input", () => { state.q = el.qInput.value.trim(); refetch(); });
+    
+    el.countrySelect?.addEventListener("change", () => {
+        state.country = el.countrySelect.value; state.region = ""; state.city = ""; 
+        if(el.stateSelect) el.stateSelect.value = ""; if(el.citySelect) el.citySelect.value = "";
+        updateLocationLogic(state.country); refetch();
+    });
+    
+    el.stateSelect?.addEventListener("change", () => { state.region = el.stateSelect.value; state.city = ""; updateCitiesForState(state.country, state.region); refetch(); });
+    el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
+    el.majorSelect?.addEventListener("change", () => { state.major = el.majorSelect.value; refetch(); });
+    el.studyLevelSelect?.addEventListener("change", () => { state.study_level = el.studyLevelSelect.value; refetch(); });
+    el.formatSelect?.addEventListener("change", () => { state.format = el.formatSelect.value; refetch(); });
+    el.minTuitionInput?.addEventListener("input", () => { state.min_tuition = el.minTuitionInput.value; refetch(); });
+    el.maxTuitionInput?.addEventListener("input", () => { state.max_tuition = el.maxTuitionInput.value; refetch(); });
+    el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; updateSliderVisibility(); refetch(); });
+    el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
+
+    el.resetBtn?.addEventListener("click", () => {
+        Object.assign(state, { q: "", country: "", region: "", city: "", major: "", study_level: "", format: "", min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1 });
+        saveFilters(state);
+        applyToForm(); 
+        if (el.stateDiv) el.stateDiv.style.display = "none"; 
+        updateCityDropdown([]); 
+        updateSliderVisibility(); 
+        fetchAndRender();
+    });
+
+    el.list.addEventListener("click", (e) => {
+        const card = e.target.closest("[data-uni-id]");
+        if (!card || e.target.tagName === "A") return;
+        window.location.href = `university.html?id=${encodeURIComponent(card.getAttribute("data-uni-id"))}`;
+    });
+
+    // Переключатели
+    el.btnList?.addEventListener("click", () => { switchView("list", true); });
+    el.btnMap?.addEventListener("click", () => { switchView("map", true); });
+
+    fetchAndRender(); // Первый запуск
+    window.addEventListener("profileUpdated", () => fetchAndRender());
+
+
+    // --- ФУНКЦИИ КАРТЫ ---
+    function switchView(mode, shouldFetch = false) {
+        state.viewMode = mode;
+        saveFilters(state);
+
+        if (mode === "map") {
+            el.list.style.display = "none";
+            el.pagination.style.display = "none"; 
+            el.mapContainer.style.display = "block";
+            
+            el.btnList.classList.remove("active");
+            el.btnMap.classList.add("active");
+
+            initMap(); 
+            setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
+            
+            // 🔥 При переключении на карту грузим данные (чтобы получить все 200 точек)
+            if (shouldFetch) fetchAndRender(); 
+
+        } else {
+            el.list.style.display = "grid";
+            el.pagination.style.display = "flex";
+            el.mapContainer.style.display = "none";
+            
+            el.btnList.classList.add("active");
+            el.btnMap.classList.remove("active");
+            
+            // 🔥 При переключении на список грузим данные (чтобы сбросить лимит до 12 и пагинацию)
+            if (shouldFetch) fetchAndRender();
         }
     }
-    const fa = u.finance?.financial_aid || {}; const hasGrant = fa.merit_based || fa.need_based; 
-    let budgetBadge = "";
-    if (!isNaN(myBudget) && myBudget > 0) {
-        if (cost > myBudget) {
-            if (hasGrant) budgetBadge = `<span style="background:#dbeafe; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #93c5fd;">🔵 Budget exceeded, Grant available</span>`;
-            else budgetBadge = `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe;">🟣 Budget exceeded</span>`;
-        } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
-    } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+
+    function initMap() {
+        if (mapInstance) return; 
+        if (typeof L === "undefined") return;
+
+        mapInstance = L.map('mapContainer', {
+            maxBounds: [[-90, -180], [90, 180]],
+            maxBoundsViscosity: 1.0,
+            minZoom: 2,
+            maxZoom: 19,
+            // Включаем нативную поддержку анимаций самого Leaflet
+            zoomAnimation: true,
+            markerZoomAnimation: true
+        }).setView([25, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            noWrap: true
+        }).addTo(mapInstance);
+
+        markersLayer = L.markerClusterGroup({
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: false,
+            spiderfyOnMaxZoom: true,
+            animate: true,
+            animationDuration: 1000,
+            // 🔥 ТЕПЕРЬ ИСПОЛЬЗУЕМ ЛОГОТИП
+            iconCreateFunction: function(cluster) {
+                const markers = cluster.getAllChildMarkers();
+                const count = markers.length;
+                
+                // Достаем ID первого универа из его маркера
+                const firstMarkerHtml = markers[0].options.icon.options.html;
+                const idMatch = firstMarkerHtml.match(/logos\/(.+?)\.png/);
+                const firstId = idMatch ? idMatch[1] : 'default';
+
+                const logoUrl = `images/logos/${firstId}.png`;
+                
+                return L.divIcon({
+                    html: `
+                    <div class="cluster-node-fix">
+                        <div class="map-marker-container">
+                            <div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div>
+                        </div>
+                        <div class="cluster-badge">+${count - 1}</div>
+                    </div>
+                    `,
+                    className: 'cluster-icon-container',
+                    iconSize: [44, 44],
+                    iconAnchor: [22, 22]
+                });
+            }
+        });
+
+        // Плавный полет при клике на группу (кластер)
+        markersLayer.on('clusterclick', function (a) {
+            mapInstance.flyToBounds(a.layer.getBounds(), {
+                padding: [80, 80],
+                duration: 1.0 // Можешь менять здесь скорость полета к группе
+            });
+        });
+
+        mapInstance.addLayer(markersLayer);
+    }
+
+    function updateMapMarkers(items) {
+        if (!mapInstance || !markersLayer) return;
+        markersLayer.clearLayers(); 
+        const profile = loadProfile();
+        const userBudget = parseFloat(profile.budget);
+        const newMarkers = [];
+
+        items.forEach(u => {
+            if (u.coordinates?.lat && u.coordinates?.lon) {
+                const customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `
+                    <div class="map-marker-container">
+                        <div class="marker-img-inner" style="background-image: url('images/logos/${u.id}.png');"></div>
+                    </div>
+                    `,
+                    iconSize: [44, 44],
+                    iconAnchor: [22, 22],
+                    popupAnchor: [0, -24]
+                });
+
+                const marker = L.marker([u.coordinates.lat, u.coordinates.lon], { icon: customIcon });
+                
+                // Настраиваем попап ЗАРАНЕЕ, но отключаем всё авто-движение
+                const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
+                marker.bindPopup(cardHTML, { 
+                    minWidth: 280, maxWidth: 320, 
+                    className: 'custom-map-popup',
+                    autoPan: false // ⬅️ КРИТИЧНО: Чтобы попап не дергал карту
+                });
+
+                // 🔥 РУЧНОЙ КОНТРОЛЬ ПОЛЕТА
+                marker.on('click', function(e) {
+                    this.setZIndexOffset(1000);
+                    
+                    // Сначала летим плавно...
+                    mapInstance.flyTo(e.target.getLatLng(), 16, {
+                        animate: true,
+                        duration: 3.0,     // ⬅️ ТЕПЕРЬ ЭТО ТОЧНО ЗАРАБОТАЕТ. Поставь 5.0 для теста.
+                        easeLinearity: 0.1
+                    });
+
+                    // ...и только ПОСЛЕ начала полета открываем попап вручную через 100мс
+                    setTimeout(() => {
+                        if (!marker.getPopup().isOpen()) marker.openPopup();
+                    }, 100);
+                });
+
+                newMarkers.push(marker);
+            }
+        });
+
+        markersLayer.addLayers(newMarkers);
+    }
+
+    // --- ФУНКЦИИ СТРАНИЦЫ ---
+    function updateSliderVisibility() {
+        if (!el.sliderContainer) return;
+        if (state.sort === "uni_ai") { el.sliderContainer.style.display = "block"; updateSliderLabel(); } 
+        else { el.sliderContainer.style.display = "none"; }
+    }
+    function updateSliderLabel() {
+        if (!el.sliderLabel) return;
+        const val = state.ai_balance;
+        let text = "Balanced (50/50)";
+        if (val <= 20) text = "Strict Budget Priority 💰";
+        else if (val >= 80) text = "Top Prestige Priority 🏆";
+        else if (val < 50) text = `Focus on Budget (${100-val}%)`;
+        else text = `Focus on Prestige (${val}%)`;
+        el.sliderLabel.textContent = text;
+    }
     
-    let badgesHTML = "";
-    if (failedReqs.length > 0) { const reasonStr = failedReqs.join(", "); badgesHTML += `<span style="background:#fee2e2; color:#991b1b; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fca5a5; margin-bottom:4px;">⛔ Requirements: ${reasonStr}</span> `; }
-    if (budgetBadge) badgesHTML += budgetBadge;
-    if (!badgesHTML) badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acceptance}%</span>`;
+    function buildParams() {
+        const p = new URLSearchParams();
+        if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
+        if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
+        if (state.major) p.set("major", state.major); if (state.study_level) p.set("study_level", state.study_level);
+        if (state.format) p.set("format", state.format); if (state.min_tuition) p.set("min_tuition", state.min_tuition);
+        if (state.max_tuition) p.set("max_tuition", state.max_tuition);
+        const isAiSort = (state.sort === "uni_ai");
+        p.set("sort", isAiSort ? "name_asc" : state.sort);
+        
+        if (state.viewMode === "map") {
+            p.set("limit", "200"); p.set("page", "1");
+        } else {
+            if (isAiSort) { p.set("limit", "100"); p.set("page", "1"); } 
+            else { p.set("page", String(state.page)); p.set("limit", String(state.limit)); }
+        }
+        return p;
+    }
 
-    return `
-      <article class="uni-card" data-uni-id="${escapeHtml(id)}">
-        <div class="uni-media" style="background-image: url('${thumbSrc}');">
-          <div class="uni-price"><small>Total/Year</small><b>${moneyUSD(cost)}</b></div>
-          <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" onerror="this.onerror=null; this.parentNode.textContent='${initials(name)}';"></div>
-        </div>
-        <div class="uni-body">
-          <h3 class="uni-title">${escapeHtml(name)}</h3>
-          <div class="uni-loc">📍 ${escapeHtml(loc)}</div>
-          <div class="uni-badge" style="margin-top:10px; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
-          <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
-        </div>
-      </article>
-    `;
-  }
+    function applyToForm() {
+        if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
+        if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
+        if(el.majorSelect) el.majorSelect.value = state.major; if(el.studyLevelSelect) el.studyLevelSelect.value = state.study_level;
+        if(el.formatSelect) el.formatSelect.value = state.format; if(el.minTuitionInput) el.minTuitionInput.value = state.min_tuition;
+        if(el.maxTuitionInput) el.maxTuitionInput.value = state.max_tuition; if(el.sortSelect) el.sortSelect.value = state.sort;
+        if(el.slider) el.slider.value = state.ai_balance;
+    }
 
-  function renderPagination(total) {
-    if (!el.pagination) return;
-    const pages = Math.ceil(total / state.limit); if (pages <= 1) return;
-    let html = "";
-    if (state.page > 1) html += `<button data-page="${state.page - 1}">←</button>`;
-    html += `<span style="margin:0 10px;">Page ${state.page} of ${pages}</span>`;
-    if (state.page < pages) html += `<button data-page="${state.page + 1}">→</button>`;
-    el.pagination.innerHTML = html;
-    el.pagination.querySelectorAll("button").forEach(b => {
-        b.onclick = () => { state.page = Number(b.dataset.page); fetchAndRender(); window.scrollTo({top:0, behavior:'smooth'}); };
-    });
-  }
+    function updateLocationLogic(country) {
+        if (!el.stateDiv) return;
+        const countryData = CITY_OPTIONS_BY_COUNTRY[country];
+        if (!country || !countryData) { el.stateDiv.style.display = "none"; updateCityDropdown([]); return; }
+        if (Array.isArray(countryData)) { el.stateDiv.style.display = "none"; updateCityDropdown(countryData); } 
+        else {
+            el.stateDiv.style.display = "block"; 
+            const states = Object.keys(countryData).sort();
+            el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
+            states.forEach(s => { el.stateSelect.innerHTML += `<option value="${s}">${s}</option>`; });
+            updateCityDropdown([]); 
+        }
+    }
+    function updateCitiesForState(country, region) {
+        if (!country || !region) { updateCityDropdown([]); return; }
+        const countryData = CITY_OPTIONS_BY_COUNTRY[country];
+        if (countryData && !Array.isArray(countryData)) { updateCityDropdown(countryData[region] || []); }
+    }
+    function updateCityDropdown(cities) {
+        if (!el.citySelect) return;
+        if (!cities || cities.length === 0) { el.citySelect.innerHTML = `<option value="">Select region/country first</option>`; el.citySelect.disabled = true; } 
+        else { el.citySelect.disabled = false; el.citySelect.innerHTML = `<option value="">All Cities</option>`; cities.sort().forEach(c => { const opt = document.createElement("option"); opt.value = c; opt.textContent = c; el.citySelect.appendChild(opt); }); }
+    }
+    function updateCountryOptions() {
+        if (!el.countrySelect) return;
+        const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
+        const currentVal = el.countrySelect.value || state.country;
+        let html = `<option value="">All Countries</option>`;
+        countries.forEach(c => { const isSelected = (c === currentVal) ? "selected" : ""; html += `<option value="${c}" ${isSelected}>${c}</option>`; });
+        el.countrySelect.innerHTML = html;
+    }
+    function updateMajorOptions() {
+        if (!el.majorSelect) return;
+        el.majorSelect.innerHTML = `<option value="">Any major</option>`;
+        MAJOR_OPTIONS.forEach(m => { const opt = document.createElement("option"); opt.value = m; opt.textContent = m; el.majorSelect.appendChild(opt); });
+    }
+    function readFromUrl() {
+        const sp = new URL(window.location.href).searchParams;
+        if(sp.has("q")) state.q = sp.get("q");
+        if(sp.has("country")) state.country = sp.get("country");
+    }
+
+    async function fetchAndRender() {
+        if (el.state && state.viewMode === 'list') el.state.textContent = "Loading...";
+        if (state.viewMode === 'list') el.list.innerHTML = "";
+        if (el.pagination) el.pagination.innerHTML = "";
+
+        const params = buildParams();
+        setUrlParams(params);
+
+        try {
+        const res = await fetch(`${API_BASE}/universities?${params.toString()}`);
+        if (!res.ok) throw new Error("API Error");
+        const data = await res.json();
+        let items = data.items || [];
+        const total = data.total || 0;
+        const isAiSort = (state.sort === "uni_ai");
+        
+        // === Рендер СПИСКА ===
+        if (state.viewMode === 'list') {
+            let displayItems = items;
+            let displayTotal = total;
+
+            // 🔥 Исправление: Нарезаем на страницы на КЛИЕНТЕ для AI Sort
+            if (isAiSort) { 
+                items = getUniSort(items, state.ai_balance); 
+                displayTotal = items.length; // Всего загружено (100)
+                
+                const start = (state.page - 1) * state.limit;
+                const end = start + state.limit;
+                displayItems = items.slice(start, end); // Берем только 12 штук для текущей страницы
+            }
+
+            if (el.total) el.total.textContent = String(displayTotal);
+            
+            if (!displayItems.length) { 
+                if (el.state) el.state.textContent = "No universities found."; 
+                return; 
+            }
+            if (el.state) el.state.textContent = "";
+            const profile = loadProfile();
+            const userBudget = parseFloat(profile.budget);
+            
+            el.list.innerHTML = displayItems.map(u => renderCard(u, userBudget)).join("");
+            
+            // Передаем правильное общее количество для пагинации
+            renderPagination(displayTotal);
+        } 
+        
+        // === Рендер КАРТЫ ===
+        else if (state.viewMode === 'map') {
+            if (el.total) el.total.textContent = String(items.length);
+            updateMapMarkers(items);
+            if (el.state) el.state.textContent = "";
+        }
+
+        } catch (err) {
+        console.error(err);
+        if (el.state) el.state.textContent = "Failed to load data.";
+        }
+    }
+
+    function renderCard(u, myBudget) { 
+        const id = u.id; const name = u.name; const country = nested(u, ["location", "country"], "");
+        const city = nested(u, ["location", "city"], ""); const loc = [city, country].filter(Boolean).join(", ");
+        const cost = nested(u, ["finance", "total_cost_year_usd"], 0);
+        const acceptance = nested(u, ["academics", "acceptance_rate_percent"], "?");
+        const logoSrc = `images/logos/${id}.png`; const thumbSrc = `images/thumbnails/${id}.jpg`;
+        
+        const profile = loadProfile();
+        const hasExams = profile.exams && profile.exams.length > 0;
+        let failedReqs = [];
+        if (hasExams && u.exams_min) {
+            const userScores = {};
+            profile.exams.forEach(e => { if(e.exam && e.score) userScores[e.exam.toUpperCase()] = parseFloat(e.score); });
+            for (const [exam, minScore] of Object.entries(u.exams_min)) {
+                const myScore = userScores[exam];
+                if (myScore !== undefined && myScore < minScore) failedReqs.push(`${exam} < ${minScore}`);
+            }
+        }
+        const fa = u.finance?.financial_aid || {}; const hasGrant = fa.merit_based || fa.need_based; 
+        let budgetBadge = "";
+        if (!isNaN(myBudget) && myBudget > 0) {
+            if (cost > myBudget) {
+                if (hasGrant) budgetBadge = `<span style="background:#dbeafe; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #93c5fd;">🔵 Budget exceeded, Grant available</span>`;
+                else budgetBadge = `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe;">🟣 Budget exceeded</span>`;
+            } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+        } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+        
+        let badgesHTML = "";
+        if (failedReqs.length > 0) { const reasonStr = failedReqs.join(", "); badgesHTML += `<span style="background:#fee2e2; color:#991b1b; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fca5a5; margin-bottom:4px;">⛔ Requirements: ${reasonStr}</span> `; }
+        if (budgetBadge) badgesHTML += budgetBadge;
+        if (!badgesHTML) badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acceptance}%</span>`;
+
+        return `
+        <article class="uni-card" data-uni-id="${escapeHtml(id)}">
+            <div class="uni-media" style="background-image: url('${thumbSrc}');">
+            <div class="uni-price"><small>Total/Year</small><b>${moneyUSD(cost)}</b></div>
+            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" onerror="this.onerror=null; this.parentNode.textContent='${initials(name)}';"></div>
+            </div>
+            <div class="uni-body">
+            <h3 class="uni-title">${escapeHtml(name)}</h3>
+            <div class="uni-loc">📍 ${escapeHtml(loc)}</div>
+            <div class="uni-badge" style="margin-top:10px; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
+            <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
+            </div>
+        </article>
+        `;
+    }
+
+    function renderPagination(total) {
+        if (!el.pagination) return;
+        const totalPages = Math.ceil(total / state.limit);
+        if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
+
+        let html = "";
+        const p = state.page;
+        const maxVisible = 5;
+
+        const createBtn = (page, text, isActive = false) => {
+            const activeClass = isActive ? "page-btn--active" : "";
+            return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`;
+        };
+
+        if (p > 1) {
+            html += createBtn(1, "«"); 
+            html += createBtn(p - 1, "‹ Prev");
+        }
+
+        let startPage, endPage;
+        if (totalPages <= maxVisible) {
+            startPage = 1; endPage = totalPages;
+        } else {
+            const maxPagesBefore = Math.floor(maxVisible / 2);
+            const maxPagesAfter = Math.ceil(maxVisible / 2) - 1;
+            if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } 
+            else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } 
+            else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; }
+        }
+
+        if (startPage > 1) html += `<span class="page-dots">...</span>`;
+        for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); }
+        if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
+
+        if (p < totalPages) {
+            html += createBtn(p + 1, "Next ›");
+            html += createBtn(totalPages, "»");
+        }
+
+        el.pagination.innerHTML = html;
+        el.pagination.querySelectorAll("button").forEach(b => {
+            b.onclick = () => {
+                const newPage = Number(b.dataset.page);
+                if (newPage && newPage !== state.page) {
+                    state.page = newPage;
+                    fetchAndRender();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            };
+        });
+    }
 }
 
 // =====================================

@@ -12,10 +12,12 @@
     ]
   },
   "South Korea": [
-    "Daejeon"
+    "Daejeon",
+    "Seoul"
   ],
   "Japan": [
-    "Kyoto"
+    "Kyoto",
+    "Tokyo"
   ],
   "Hong Kong": [
     "Sha Tin"
@@ -24,6 +26,31 @@
     "London"
   ],
   "Switzerland": [
-    "Zurich"
+    "Zurich",
+    "Lausanne"
+  ],
+  "Canada": {
+    "Ontario": [
+      "Toronto"
+    ]
+  },
+  "Australia": {
+    "Victoria": [
+      "Melbourne"
+    ]
+  },
+  "China": [
+    "Beijing"
+  ],
+  "Singapore": [
+    "Singapore"
+  ],
+  "Germany": {
+    "Bavaria": [
+      "Munich"
+    ]
+  },
+  "Netherlands": [
+    "Delft"
   ]
 }

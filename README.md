@@ -19,11 +19,15 @@ UniSearch helps:
 
 ---
 
-## Latest Updates (v1.2)
+## Latest Updates (v1.3)
 
 ### Database Improvements
-- **Ranking:**
-    - Added rank parameter, for ranking universities
+- **Map Mode:**
+    - Added mode that shows you the world map, and universities at the map
+- **New universities:**
+    - Added ~9 more universities to database
+- **New Logo**
+    - Website logo added
 
 ---
 
@@ -168,32 +172,35 @@ Edit backend/data/universities.json. The structure has been updated to support p
 
 ```json
 {
-   "id": "eth-zurich-ch-zurich",
-   "name": "ETH Zurich",
-   "rank": 7,
-   "student_count": 26198,
-   "location": { "country": "Switzerland", "city": "Zurich", "state": "" },
-   "website": "https://ethz.ch/en.html",
-   "academics": {
-   "majors": ["Architecture", "Engineering", "Chemistry", "Physics", "Computer Science", "Mathematics"],
-   "study_levels": ["Bachelor", "Master", "PhD"],
-   "formats": ["On-campus"],
-   "acceptance_rate_percent": 27
-   },
-   "finance": {
-   "total_cost_year_usd": 28000,
-   "application_fee_usd": 150,
-   "financial_aid": { "merit_based": true, "need_based": true },
-   "costs_breakdown_year_usd": {
-      "Tuition": 1800,
-      "Housing_Rent": 13000,
-      "Food": 9000,
-      "Insurance_Transport_Misc": 4200
-   }
-   },
-   "student_life": { "size": "large" },
-   "exams_avg": { "GPA": 90, "IELTS": 7.5 },
-   "exams_min": { "GPA": 80, "IELTS": 7.0 }
+   {
+    "id": "nazarbayev-university-kaz-astana",
+    "name": "Nazarbayev University",
+    "rank": 530,
+    "student_count": 7089,
+    "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
+    "coordinates": { "lat": 51.0900, "lon": 71.3994 },
+    "website": "https://nu.edu.kz/",
+    "academics": {
+      "majors": ["Engineering", "Computer Science", "Business", "Natural Sciences", "Medicine", "Mining"],
+      "study_levels": ["Bachelor", "Master", "PhD"],
+      "formats": ["On-campus"],
+      "acceptance_rate_percent": 18
+    },
+    "finance": {
+      "total_cost_year_usd": 19500,
+      "application_fee_usd": 35,
+      "financial_aid": { "merit_based": true, "need_based": true },
+      "costs_breakdown_year_usd": {
+        "Tuition": 15000,
+        "Housing_Dorm": 1800,
+        "Food": 2200,
+        "Books_Transport_Misc": 500
+      }
+    },
+    "student_life": { "size": "medium" },
+    "exams_avg": { "GPA": 92, "IELTS": 7.0, "SAT": 1380 },
+    "exams_min": { "GPA": 80, "IELTS": 6.5, "SAT": 1250 }
+  }
 }
 ```
 ### **2. Add Images**
