@@ -457,3 +457,114 @@ a {
   color: #5d17ea;
   margin-bottom: 10px;
 }
+
+/* frontend/css/style.css - Добавить в самый конец */
+
+/* --- Custom Select (Глобальные стили для Dropdown) --- */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+  user-select: none;
+}
+
+/* Скрываем стандартный селект */
+.u-select-hidden {
+  display: none !important;
+}
+
+/* Кнопка открытия списка */
+.custom-select-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.custom-select-trigger:hover {
+  border-color: #5d17ea;
+}
+
+/* Стрелочка */
+.custom-select-trigger::after {
+  content: '';
+  width: 10px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.2s;
+}
+
+.custom-select-wrapper.open .custom-select-trigger::after {
+  transform: rotate(180deg);
+}
+
+/* Выпадающее меню */
+.custom-options {
+  position: absolute;
+  display: block;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  background: #fff;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+  z-index: 9999; /* Максимальный приоритет */
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 5px;
+}
+
+.custom-select-wrapper.open .custom-options {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+/* Элемент списка */
+.custom-option {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-option:hover {
+  background-color: #f6f7fb;
+  color: #5d17ea;
+}
+
+.custom-option.selected {
+  background-color: rgba(93, 23, 234, 0.05);
+  font-weight: 600;
+  color: #5d17ea;
+}
+
+/* Картинки (флаги) */
+.custom-option img, .custom-select-trigger img {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
