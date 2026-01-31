@@ -171,3 +171,146 @@ function loadFilters() {
         return {};
     }
 }
+
+// --- Flags Configuration (ISO Codes) ---
+const COUNTRY_CODES = {
+  "Kazakhstan": "kz",
+  "USA": "us",
+  "South Korea": "kr",
+  "Japan": "jp",
+  "Hong Kong": "hk",
+  "UK": "gb",
+  "Switzerland": "ch",
+  "Canada": "ca",
+  "Australia": "au",
+  "China": "cn",
+  "Singapore": "sg",
+  "Germany": "de",
+  "Netherlands": "nl"
+};
+
+// Функция 1: Возвращает HTML-картинку (для красивых карточек)
+function getFlagImg(countryName) {
+  const code = COUNTRY_CODES[countryName];
+  if (!code) return "";
+  // Используем CDN flagcdn.com (размер 20x15 px)
+  return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${code}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">`;
+}
+
+// Функция 2: Возвращает эмодзи (для выпадающего списка)
+// В Windows это будут буквы (KZ, US), но это единственное, что работает внутри <option>
+function getFlagEmoji(countryName) {
+  const code = COUNTRY_CODES[countryName];
+  if (!code) return "🏳️";
+  
+  // Магическая формула: превращает "kz" в 🇰🇿
+  return code.toUpperCase().replace(/./g, char => 
+      String.fromCodePoint(char.charCodeAt(0) + 127397)
+  );
+}
+
+function initCustomSelect(selectId) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    // 1. Очистка: Если уже есть кастомный список, удаляем его перед перерисовкой
+    // Это важно для кнопок Reset или когда список городов обновляется
+    if (select.parentNode.classList.contains('custom-select-wrapper')) {
+        const wrapper = select.parentNode;
+        const parent = wrapper.parentNode;
+        parent.insertBefore(select, wrapper); // Возвращаем селект на место
+        wrapper.remove(); // Удаляем обертку
+        select.classList.remove('u-select-hidden');
+    }
+
+    // 2. Создаем структуру
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('custom-select-wrapper');
+    
+    select.parentNode.insertBefore(wrapper, select.nextSibling);
+    wrapper.appendChild(select);
+    select.classList.add('u-select-hidden');
+
+    const trigger = document.createElement('div');
+    trigger.classList.add('custom-select-trigger');
+    wrapper.appendChild(trigger);
+
+    const customOptions = document.createElement('div');
+    customOptions.classList.add('custom-options');
+    wrapper.appendChild(customOptions);
+
+    // Функция обновления заголовка (то, что видит пользователь)
+    function updateTrigger() {
+        const selectedOption = select.options[select.selectedIndex];
+        // Защита, если список пустой
+        if (!selectedOption) return;
+
+        const val = selectedOption.value;
+        const text = selectedOption.text;
+        
+        // Пытаемся получить флаг (если это страна)
+        const flag = getFlagImg(val); 
+
+        if (flag) {
+            // Если есть флаг — рисуем с флагом
+            trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${text}</span></div>`;
+        } else {
+            // Если флага нет (например, Major или Sort) — просто текст
+            trigger.innerHTML = `<span>${text}</span>`;
+        }
+    }
+
+    // 3. Генерация списка опций
+    for (const option of select.options) {
+        const div = document.createElement('div');
+        div.classList.add('custom-option');
+        
+        const val = option.value;
+        const text = option.text;
+        const flag = getFlagImg(val); // Проверяем, есть ли флаг для этого значения
+
+        if (flag) {
+            div.innerHTML = `${flag} <span>${text}</span>`;
+        } else {
+            div.textContent = text;
+        }
+
+        // Подсветка выбранного
+        if (option.selected) {
+            div.classList.add('selected');
+        }
+
+        div.addEventListener('click', () => {
+            select.value = val;
+            select.dispatchEvent(new Event('change')); // Сообщаем сайту, что выбор изменился
+            
+            updateTrigger();
+            wrapper.classList.remove('open');
+            
+            wrapper.querySelectorAll('.custom-option').forEach(el => el.classList.remove('selected'));
+            div.classList.add('selected');
+        });
+
+        customOptions.appendChild(div);
+    }
+
+    // Открытие/закрытие
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Закрываем другие открытые списки, чтобы не накладывались
+        document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+            if (w !== wrapper) w.classList.remove('open');
+        });
+        wrapper.classList.toggle('open');
+    });
+
+    // Инициализация (показать текущее значение)
+    updateTrigger();
+
+    // Закрытие при клике вне элемента
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+            wrapper.classList.remove('open');
+        }
+    });
+}

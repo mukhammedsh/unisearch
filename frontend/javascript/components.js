@@ -59,11 +59,21 @@ const LAYOUT_HTML = `
 
       <div class="profile-field">
         <label class="profile-label">Exams (list, optional)</label>
+        
         <div class="profile-exam-form">
-          <input id="examNameInput" class="profile-input" type="text" placeholder="IELTS..." />
+          <select id="examNameSelect" class="profile-input" style="cursor:pointer;">
+             <option value="" disabled selected>Select Exam</option>
+             <option value="IELTS">IELTS</option>
+             <option value="TOEFL">TOEFL</option>
+             <option value="SAT">SAT</option>
+             <option value="ACT">ACT</option>
+             <option value="GPA">GPA</option>
+          </select>
+
           <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
           <button id="addExamBtn" class="profile-add">Add</button>
         </div>
+        
         <div id="examError" class="profile-error"></div>
         <div id="examList" class="profile-exam-list"></div>
       </div>
@@ -115,7 +125,7 @@ function initProfileUI() {
   const budgetInput = document.getElementById("budgetInput");
   const nameDisplay = document.getElementById("profileNameDisplay");
   
-  const examNameInput = document.getElementById("examNameInput");
+  const examNameSelect = document.getElementById("examNameSelect");
   const examScoreInput = document.getElementById("examScoreInput");
   const addExamBtn = document.getElementById("addExamBtn");
   const examList = document.getElementById("examList");
@@ -138,7 +148,12 @@ function initProfileUI() {
   if (openBtn) openBtn.onclick = () => { 
       resetFields(); 
       modal.classList.add("is-open"); 
-      modal.style.display = "flex"; 
+      modal.style.display = "flex";
+      
+      // Инициализируем стиль для нового селекта экзаменов
+      if (typeof initCustomSelect === "function") {
+          initCustomSelect("examNameSelect");
+      }
   };
   
   const close = () => { 
@@ -207,17 +222,39 @@ function initProfileUI() {
       };
   }
 
-  // Добавление экзамена
+  // 🔥 ЛОГИКА ДОБАВЛЕНИЯ / ОБНОВЛЕНИЯ ЭКЗАМЕНА
   if (addExamBtn) {
       addExamBtn.onclick = async () => {
-          const name = examNameInput.value.trim();
-          const score = parseFloat(examScoreInput.value);
+          const name = examNameSelect.value;
+          const rawScore = examScoreInput.value;
+          const score = parseFloat(rawScore);
 
-          if (!name || isNaN(score)) {
-              showToast("Invalid exam data", "error");
+          if (!name) {
+              showToast("Please select an exam", "error");
+              return;
+          }
+          if (isNaN(score)) {
+              showToast("Invalid score format", "error");
               return;
           }
 
+          // 1. Проверка на целые числа (кроме GPA и IELTS)
+          if (name !== "GPA" && name !== "IELTS") {
+              if (!Number.isInteger(score)) {
+                  showToast(`${name} score must be an integer (e.g. 1400)`, "error");
+                  return;
+              }
+          }
+
+          // 2. Проверка IELTS (шаг 0.5)
+          if (name === "IELTS") {
+              if (score % 0.5 !== 0) {
+                  showToast("IELTS score must end with .0 or .5", "error");
+                  return;
+              }
+          }
+
+          // 3. Отправка на сервер и сохранение
           try {
              const res = await fetch(`${API_BASE}/exams/validate`, {
                  method: "POST",
@@ -228,13 +265,29 @@ function initProfileUI() {
              
              if(!res.ok) throw new Error(json.detail || "Error");
              
-             profile.exams.push({ exam: json.exam, score: json.score });
+             // 🔥 НОВАЯ ЛОГИКА: Ищем дубликат
+             const existingIndex = profile.exams.findIndex(e => e.exam === json.exam);
+             
+             if (existingIndex !== -1) {
+                 // Если нашли — обновляем балл
+                 profile.exams[existingIndex].score = json.score;
+                 showToast(`Updated ${json.exam} to ${json.score}`, "success");
+             } else {
+                 // Если не нашли — добавляем новый
+                 profile.exams.push({ exam: json.exam, score: json.score });
+                 showToast(`Added ${json.exam}`, "success");
+             }
+             
              saveProfile(profile);
              renderProfileData();
-             showToast(`Added ${json.exam}`, "success");
              
-             examNameInput.value = "";
+             // Сброс полей
              examScoreInput.value = "";
+             examNameSelect.value = ""; 
+             // Обновляем красивый селект (сбрасываем выбор)
+             if (typeof initCustomSelect === "function") {
+                 initCustomSelect("examNameSelect");
+             }
 
           } catch(e) {
               showToast(e.message, "error");

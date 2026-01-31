@@ -8,7 +8,11 @@ function initUniversitiesPage() {
         qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
         stateSelect: $("stateSelect"), citySelect: $("citySelect"), majorSelect: $("majorSelect"),
         studyLevelSelect: $("studyLevelSelect"), formatSelect: $("formatSelect"),
-        minTuitionInput: $("minTuitionInput"), maxTuitionInput: $("maxTuitionInput"),
+        minInput: $("minCostInput"),
+        maxInput: $("maxCostInput"),
+        minSlider: $("minCostSlider"),
+        maxSlider: $("maxCostSlider"),
+        track: $("sliderTrack"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
         
@@ -37,14 +41,56 @@ function initUniversitiesPage() {
         major: savedState.major || "", 
         study_level: savedState.study_level || "", 
         format: savedState.format || "",
-        min_tuition: savedState.min_tuition || "", 
-        max_tuition: savedState.max_tuition || "", 
+        min_tuition: savedState.min_tuition || 0, 
+        max_tuition: savedState.max_tuition || 1000000,
         sort: savedState.sort || "uni_ai", 
         ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
         viewMode: savedState.viewMode || "list", // 'list' или 'map'
         page: 1, 
         limit: 12,
     };
+
+    // --- ФУНКЦИЯ: Отрисовка цветной полоски ---
+    function fillTrack() {
+        if (!el.minSlider || !el.maxSlider || !el.track) return;
+        
+        const minVal = parseInt(el.minSlider.value);
+        const maxVal = parseInt(el.maxSlider.value);
+        const maxRange = parseInt(el.maxSlider.max);
+        
+        const percent1 = (minVal / maxRange) * 100;
+        const percent2 = (maxVal / maxRange) * 100;
+        
+        // Красим градиентом: Серый -> Фиолетовый -> Серый
+        el.track.style.background = `linear-gradient(to right, #e0e0e0 ${percent1}%, #5d17ea ${percent1}%, #5d17ea ${percent2}%, #e0e0e0 ${percent2}%)`;
+    }
+
+    // --- ФУНКЦИЯ: Контроль пересечения ползунков ---
+    function slideMin() {
+        let gap = 10000; // Минимальный разрыв между ценами (10k)
+        let minVal = parseInt(el.minSlider.value);
+        let maxVal = parseInt(el.maxSlider.value);
+
+        if (maxVal - minVal <= gap) {
+            el.minSlider.value = maxVal - gap;
+        }
+        el.minInput.value = el.minSlider.value;
+        state.min_tuition = el.minSlider.value;
+        fillTrack();
+    }
+
+    function slideMax() {
+        let gap = 10000;
+        let minVal = parseInt(el.minSlider.value);
+        let maxVal = parseInt(el.maxSlider.value);
+
+        if (maxVal - minVal <= gap) {
+            el.maxSlider.value = minVal + gap;
+        }
+        el.maxInput.value = el.maxSlider.value;
+        state.max_tuition = el.maxSlider.value;
+        fillTrack();
+    }
 
     // Переменные для карты
     let mapInstance = null;
@@ -58,13 +104,19 @@ function initUniversitiesPage() {
         updateCountryOptions();
         if (state.country) {
             if (el.countrySelect) el.countrySelect.value = state.country;
+            
             updateLocationLogic(state.country);
+            
             if (state.region && el.stateSelect) {
                 el.stateSelect.value = state.region;
                 updateCitiesForState(state.country, state.region);
             }
             if (state.city && el.citySelect) el.citySelect.value = state.city;
         }
+
+        // 🔥 ДОБАВИТЬ ЭТУ СТРОЧКУ В КОНЕЦ:
+        // Это заставит кастомные селекты перерисоваться с новыми значениями
+        applyToForm();
     };
     
     if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) initLocations();
@@ -105,11 +157,14 @@ function initUniversitiesPage() {
     el.resetBtn?.addEventListener("click", () => {
         Object.assign(state, { q: "", country: "", region: "", city: "", major: "", study_level: "", format: "", min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1 });
         saveFilters(state);
-        applyToForm(); 
+        state.min_tuition = 0;
+        state.max_tuition = 1000000;
+        applyToForm(); // Это само обновит слайдеры и закраску
         if (el.stateDiv) el.stateDiv.style.display = "none"; 
         updateCityDropdown([]); 
         updateSliderVisibility(); 
         fetchAndRender();
+        
     });
 
     el.list.addEventListener("click", (e) => {
@@ -121,6 +176,38 @@ function initUniversitiesPage() {
     // Переключатели
     el.btnList?.addEventListener("click", () => { switchView("list", true); });
     el.btnMap?.addEventListener("click", () => { switchView("map", true); });
+
+    // --- СЛУШАТЕЛИ СОБЫТИЙ ---
+    // Используем событие 'input' для плавности и 'change' для запроса API
+    
+    if (el.minSlider && el.maxSlider) {
+        el.minSlider.addEventListener("input", slideMin);
+        el.maxSlider.addEventListener("input", slideMax);
+        
+        // Запрос отправляем только когда отпустили ползунок (чтобы не спамить API)
+        el.minSlider.addEventListener("change", () => refetch());
+        el.maxSlider.addEventListener("change", () => refetch());
+    }
+
+    // Синхронизация инпутов (если ввели цифрами)
+    el.minInput?.addEventListener("change", () => {
+        let val = parseInt(el.minInput.value) || 0;
+        // Не даем ввести больше макс. слайдера
+        if (val >= parseInt(el.maxSlider.value)) val = parseInt(el.maxSlider.value) - 10000;
+        el.minSlider.value = val;
+        state.min_tuition = val;
+        fillTrack();
+        refetch();
+    });
+
+    el.maxInput?.addEventListener("change", () => {
+        let val = parseInt(el.maxInput.value) || 1000000;
+        if (val <= parseInt(el.minSlider.value)) val = parseInt(el.minSlider.value) + 10000;
+        el.maxSlider.value = val;
+        state.max_tuition = val;
+        fillTrack();
+        refetch();
+    });
 
     fetchAndRender(); // Первый запуск
     window.addEventListener("profileUpdated", () => fetchAndRender());
@@ -316,10 +403,39 @@ function initUniversitiesPage() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
         if(el.majorSelect) el.majorSelect.value = state.major; if(el.studyLevelSelect) el.studyLevelSelect.value = state.study_level;
-        if(el.formatSelect) el.formatSelect.value = state.format; if(el.minTuitionInput) el.minTuitionInput.value = state.min_tuition;
-        if(el.maxTuitionInput) el.maxTuitionInput.value = state.max_tuition; if(el.sortSelect) el.sortSelect.value = state.sort;
         if(el.slider) el.slider.value = state.ai_balance;
+        
+
+        if (el.minSlider) el.minSlider.value = state.min_tuition;
+        if (el.maxSlider) el.maxSlider.value = state.max_tuition;
+        if (el.minInput) el.minInput.value = state.min_tuition;
+        if (el.maxInput) el.maxInput.value = state.max_tuition;
+        
+        fillTrack(); // Красим полоску при загрузке
+
+        ["countrySelect", "stateSelect", "citySelect", "majorSelect", 
+         "studyLevelSelect", "formatSelect", "sortSelect"].forEach(id => initCustomSelect(id));
     }
+
+    // --- НОВЫЕ СЛУШАТЕЛИ СОБЫТИЙ (LISTENERS) ---
+    
+    // 1. Двигаем ползунок -> меняется цифра и обновляется поиск
+    el.costSlider?.addEventListener("input", () => {
+        const val = el.costSlider.value;
+        el.costInput.value = val;
+        // Если слайдер на максимуме, считаем что фильтра нет ("любой бюджет")
+        // Либо, если хочешь жесткий фильтр, оставь val
+        state.max_tuition = (val === "100000") ? "" : val; 
+        refetch();
+    });
+
+    // 2. Пишем цифру -> двигается ползунок и обновляется поиск
+    el.costInput?.addEventListener("input", () => {
+        const val = el.costInput.value;
+        el.costSlider.value = val || 0;
+        state.max_tuition = val;
+        refetch();
+    });
 
     function updateLocationLogic(country) {
         if (!el.stateDiv) return;
@@ -331,7 +447,9 @@ function initUniversitiesPage() {
             const states = Object.keys(countryData).sort();
             el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
             states.forEach(s => { el.stateSelect.innerHTML += `<option value="${s}">${s}</option>`; });
-            updateCityDropdown([]); 
+            initCustomSelect("stateSelect");
+            
+            updateCityDropdown([]);
         }
     }
     function updateCitiesForState(country, region) {
@@ -343,19 +461,29 @@ function initUniversitiesPage() {
         if (!el.citySelect) return;
         if (!cities || cities.length === 0) { el.citySelect.innerHTML = `<option value="">Select region/country first</option>`; el.citySelect.disabled = true; } 
         else { el.citySelect.disabled = false; el.citySelect.innerHTML = `<option value="">All Cities</option>`; cities.sort().forEach(c => { const opt = document.createElement("option"); opt.value = c; opt.textContent = c; el.citySelect.appendChild(opt); }); }
+        initCustomSelect("citySelect");
     }
     function updateCountryOptions() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
+        
+        // Оставляем обычный HTML для совместимости (вдруг JS отключен или ошибка)
         let html = `<option value="">All Countries</option>`;
-        countries.forEach(c => { const isSelected = (c === currentVal) ? "selected" : ""; html += `<option value="${c}" ${isSelected}>${c}</option>`; });
+        countries.forEach(c => { 
+            const isSelected = (c === currentVal) ? "selected" : ""; 
+            html += `<option value="${c}" ${isSelected}>${c}</option>`; 
+        });
         el.countrySelect.innerHTML = html;
+
+        // 🔥 ДОБАВЛЕНО: Превращаем его в кастомный список с флагами
+        initCustomSelect("countrySelect");
     }
     function updateMajorOptions() {
         if (!el.majorSelect) return;
         el.majorSelect.innerHTML = `<option value="">Any major</option>`;
         MAJOR_OPTIONS.forEach(m => { const opt = document.createElement("option"); opt.value = m; opt.textContent = m; el.majorSelect.appendChild(opt); });
+        initCustomSelect("majorSelect");
     }
     function readFromUrl() {
         const sp = new URL(window.location.href).searchParams;
@@ -426,6 +554,18 @@ function initUniversitiesPage() {
     function renderCard(u, myBudget) { 
         const id = u.id; const name = u.name; const country = nested(u, ["location", "country"], "");
         const city = nested(u, ["location", "city"], ""); const loc = [city, country].filter(Boolean).join(", ");
+
+        let locString = "";
+        if (country) {
+            const flagHtml = getFlagImg(country);
+            // flex-контейнер, чтобы картинка стояла ровно с текстом
+            locString = city 
+                ? `<div style="display:flex; align-items:center; gap:6px;">${city}, ${flagHtml} ${country}</div>`
+                : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${country}</div>`;
+        } else {
+            locString = city;
+        }
+
         const cost = nested(u, ["finance", "total_cost_year_usd"], 0);
         const acceptance = nested(u, ["academics", "acceptance_rate_percent"], "?");
         const logoSrc = `images/logos/${id}.png`; const thumbSrc = `images/thumbnails/${id}.jpg`;
@@ -463,7 +603,8 @@ function initUniversitiesPage() {
             </div>
             <div class="uni-body">
             <h3 class="uni-title">${escapeHtml(name)}</h3>
-            <div class="uni-loc">📍 ${escapeHtml(loc)}</div>
+            <div class="uni-loc">📍 ${locString}</div> 
+            
             <div class="uni-badge" style="margin-top:10px; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
             <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
             </div>
