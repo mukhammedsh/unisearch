@@ -15,10 +15,14 @@ EXAM_WHITELIST = {
 
 app = FastAPI(title="UniSearch AI API", version="1.0.0")
 
+FRONTEND_ORIGIN = os.getenv(
+    "FRONTEND_ORIGIN",
+    "http://127.0.0.1:5500"  # локально
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=[FRONTEND_ORIGIN],
     allow_methods=["*"],
     allow_headers=["*"],
 )

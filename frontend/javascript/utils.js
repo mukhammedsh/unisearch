@@ -1,6 +1,8 @@
 /* 1. utils.js - Базовые настройки, утилиты и работа с профилем */
 
-const API_BASE = "http://127.0.0.1:8000";
+export const API_BASE_URL =
+  window.API_BASE_URL || "http://127.0.0.1:8000";
+
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
 
@@ -11,7 +13,7 @@ async function loadCityDatabase() {
     // ❌ БЫЛО: const response = await fetch('data/cities.json');
     
     // ✅ СТАЛО: Запрашиваем у нашего Python-сервера (API)
-    const response = await fetch(`${API_BASE}/locations`); 
+    const response = await fetch(`${API_BASE_URL}/locations`); 
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
