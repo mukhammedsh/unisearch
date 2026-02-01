@@ -234,9 +234,11 @@ function initProfileUI() {
         modal.style.display = "flex";
         modal.removeAttribute("aria-hidden");
         
-        // Инициализируем стиль для нового селекта экзаменов
+        // Инициализируем стиль для ВСЕХ селектов в профиле
         if (typeof initCustomSelect === "function") {
             initCustomSelect("examNameSelect");
+            initCustomSelect("studyModeSelect");    // <--- ДОБАВЛЕНО
+            initCustomSelect("profileMajorSelect"); // <--- ДОБАВЛЕНО
         }
     };
     

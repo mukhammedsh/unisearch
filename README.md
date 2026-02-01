@@ -1,42 +1,56 @@
-# UniSearch — Alpha v1.5.0 (Infomatrix 2026)
+# UniSearch — Beta v2.0.0 (Infomatrix 2026)
 
 ## Project description
 
 **UniSearch** is a socially oriented web application designed to help school students and applicants choose suitable universities based on structured data and **AI-based Smart Ranking**.
 
-The main goal of the project is to reduce inequality in access to educational information, eliminate the need for expensive educational consultants, and provide personalized recommendations based on the applicant's budget and academic profile.
-
-The project is developed for participation in **Infomatrix 2026**.
+The main goal is to reduce inequality in access to educational information and eliminate the need for expensive consultants by providing personalized recommendations based on the applicant's **specific admission scenario** (SAT, UNT, IELTS, etc.).
 
 ---
 
-## Social significance & AI Integration
+## 🚀 Key Features (v2.0 Update)
 
-UniSearch helps:
-- **Personalize the search:** The "Smart Sort" algorithm ranks universities not just by popularity, but by how well they fit the specific user (Budget + Exams).
-- **Visualize complex data:** Clear separation of Merit-based vs. Need-based aid helps students understand their real financial options.
-- **Explainable logic:** Color-coded badges (Blue/Purple/Green) explain *why* a university matches or exceeds the budget.
+### 1. Track-Based Admission Logic 🛤️
+Universities often have multiple ways to enter (e.g., "Direct Entry via SAT" vs. "Foundation Year" vs. "National Exam Track").
+* **Old approach:** One generic "Avg GPA" for the whole university.
+* **New approach:** Smart separation of requirements. The system calculates your chances for *each specific track* independently.
 
----
+### 2. Dynamic Exam Configuration ⚙️
+The system is no longer hardcoded. Supported exams (IELTS, SAT, UNT, etc.) are fetched from the backend (`/exams/config`). This allows administrators to add new national exams (like NUET or ENT) without changing the frontend code.
 
-## Latest Updates (v2.0.0)
-
-
+### 3. AI Smart Profile 🧠
+* Users input their scores in a specialized modal.
+* The **"Smart Sort"** algorithm ranks universities by a weighted "Fit Score" that combines:
+    * **Academic Fit:** Do you meet the track requirements?
+    * **Financial Fit:** ROI calculation (Salary / Tuition).
+    * **Prestige Preference:** Adjustable slider (Budget vs. Prestige).
 
 ---
 
 ## 🛠 Tech Stack
 
 **Frontend:**
-- **Modular Vanilla JavaScript (ES6+)**: Developed without heavy frameworks using ES modules. Logic is split into specialized files (`algo.js`, `components.js`, `pages.js`) for better maintainability.
-- **CSS Variables**: Used for consistent theming and responsive design.
+- **Modular Vanilla JavaScript (ES6+)**: Logic split into `algo.js` (Math), `components.js` (UI), `pages.js` (Rendering).
+- **Dynamic UI**: Dropdowns and inputs are generated based on API responses.
 
 **Backend:**
-- **FastAPI (Python)**: High-performance asynchronous framework for building APIs.
-- **Pydantic**: Used for strict data validation and type safety.
+- **FastAPI (Python)**: asynchronous API.
+- **Endpoints**:
+    - `GET /universities`: Search with smart filtering.
+    - `GET /exams/config`: Source of truth for valid exams and ranges.
+    - `POST /exams/validate`: Server-side validation of user scores.
 
-**Data:**
-- **JSON-based NoSQL approach**: A flexible schema designed to store complex hierarchical data (universities -> academics -> majors).
+---
+
+## Smart Sorting Logic
+
+1.  **Load Config:** Frontend fetches valid exams from Backend.
+2.  **User Profile:** User saves scores (e.g., SAT: 1450, IELTS: 7.5).
+3.  **Matching:**
+    * The algorithm scans every **Admission Track** of a university.
+    * If the user fits *any* track, the university is marked as "Qualified".
+    * If the user fits a "Scholarship Track", a **Green Badge** is awarded.
+    * If the user fits a "Direct Entry" track, a **Blue Badge** is awarded.
 
 ---
 
@@ -166,35 +180,58 @@ Edit backend/data/universities.json. The structure has been updated to support p
 
 ```json
 {
+   "id": "astana-it-university-kaz-astana",
+   "name": "Astana IT University",
+   "rank": 20,
+   "student_count": 5426,
+   "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
+   "coordinates": { "lat": 51.0913, "lon": 71.4128 },
+   "website": "https://astanait.edu.kz/",
+   "academics": {
+   "majors": ["Computer Science", "Software Engineering", "Big Data Analysis", "Cyber Security", "IT Management", "Smart Technologies"],
+   "study_levels": ["Bachelor", "Master", "PhD"],
+   "formats": ["On-campus"],
+   "acceptance_rate_percent": 25
+   },
+   "finance": {
+   "total_cost_year_usd": 7000,
+   "application_fee_usd": 0,
+   "financial_aid": { "merit_based": true, "need_based": true },
+   "costs_breakdown_year_usd": {
+      "Tuition": 5200,
+      "Housing_Dorm": 1000,
+      "Food": 500,
+      "Books_Transport_Misc": 300
+   }
+   },
+   "student_life": { "size": "medium" },
+   "admission_tracks": [
    {
-    "id": "nazarbayev-university-kaz-astana",
-    "name": "Nazarbayev University",
-    "rank": 530,
-    "student_count": 7089,
-    "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
-    "coordinates": { "lat": 51.0900, "lon": 71.3994 },
-    "website": "https://nu.edu.kz/",
-    "academics": {
-      "majors": ["Engineering", "Computer Science", "Business", "Natural Sciences", "Medicine", "Mining"],
-      "study_levels": ["Bachelor", "Master", "PhD"],
-      "formats": ["On-campus"],
-      "acceptance_rate_percent": 18
-    },
-    "finance": {
-      "total_cost_year_usd": 19500,
-      "application_fee_usd": 35,
-      "financial_aid": { "merit_based": true, "need_based": true },
-      "costs_breakdown_year_usd": {
-        "Tuition": 15000,
-        "Housing_Dorm": 1800,
-        "Food": 2200,
-        "Books_Transport_Misc": 500
-      }
-    },
-    "student_life": { "size": "medium" },
-    "exams_avg": { "GPA": 92, "IELTS": 7.0, "SAT": 1380 },
-    "exams_min": { "GPA": 80, "IELTS": 6.5, "SAT": 1250 }
-  }
+      "id": "aitu_unt",
+      "label": "UNT Track (IT Major)",
+      "study_mode": "On-campus",
+      "requirements": {
+         "UNT": 85,
+         "GPA": 70
+      },
+      "stats_avg": {
+         "UNT": 105,
+         "GPA": 85
+      },
+      "scholarships": [
+         {
+         "name": "State Grant (Computer Science)",
+         "type": "state",
+         "requirements": { "UNT": 115, "GPA": 85 }
+         },
+         {
+         "name": "Rector's Grant",
+         "type": "merit",
+         "requirements": { "UNT": 125 }
+         }
+      ]
+   }
+   ]
 }
 ```
 ### **2. Add Images**
@@ -215,6 +252,6 @@ Planned features for Beta:
 
 ---
 
-**Infomatrix note**
+**Infomatrix Note**
 
-This Alpha version demonstrates a fully functional **Full-Stack Application** with implemented logic for **Intelligent Decision Support**. It moves beyond a simple directory by analyzing user data to provide context-aware results.
+This Beta version demonstrates a fully functional **Full-Stack Application** with implemented logic for **Intelligent Decision Support**. It moves beyond a simple directory by analyzing user data to provide context-aware results.

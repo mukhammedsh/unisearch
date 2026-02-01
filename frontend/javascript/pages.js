@@ -686,20 +686,17 @@ export async function initUniversityPage() {
     if (!res.ok) throw new Error("Backend error");
     const u = await res.json();
 
-    // 1. Заполняем шапку
+    // 1. Шапка (Header) - Без изменений
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
 
     setTxt("detailName", u.name); 
     setTxt("detailLocation", u.location ? `${u.location.city}, ${u.location.country}` : "—");
     
-    // Формируем цену "ОТ" (самая низкая из треков)
+    // Цена "ОТ"
     let minPrice = u.finance?.total_cost_year_usd || 0;
     if (u.admission_tracks) {
-        u.admission_tracks.forEach(t => {
-            if (t.finance_override?.total_cost_year_usd && t.finance_override.total_cost_year_usd < minPrice) {
-                minPrice = t.finance_override.total_cost_year_usd;
-            }
-        });
+        const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0);
+        if (prices.length > 0) minPrice = Math.min(...prices);
     }
     setTxt("detailPrice", `from ${moneyUSD(minPrice)} / year`);
     setTxt("detailLogo", (u.name || "U").substring(0, 2).toUpperCase());
@@ -714,12 +711,9 @@ export async function initUniversityPage() {
     }
 
     const siteBtn = document.getElementById("detailWebsite");
-    if (siteBtn) {
-        if (u.website) { siteBtn.href = u.website; siteBtn.style.display = "inline-flex"; } 
-        else { siteBtn.style.display = "none"; }
-    }
+    if (siteBtn && u.website) { siteBtn.href = u.website; siteBtn.style.display = "inline-flex"; }
 
-    // --- TAB 1: GENERAL ---
+    // --- TAB 1: GENERAL (Чистая статистика) ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
         let rankHtml = "<span>—</span>";
@@ -729,29 +723,26 @@ export async function initUniversityPage() {
             rankHtml = `<span style="color:#5d17ea; font-size:1.1em;">${trophy}#${u.rank}</span>`;
         }
         
-        let avgStatsHtml = "";
-        // Берем среднее из первого попавшегося трека для overview, или из корня если есть
-        const defaultAvg = u.admission_tracks?.[0]?.stats_avg || u.exams_avg;
-        if (defaultAvg) {
-             for (const [k, v] of Object.entries(defaultAvg)) {
-                 avgStatsHtml += `<div class="d-kv"><span>Avg ${k}</span><span>${k==='GPA'?v+'%':v}</span></div>`;
-             }
-        }
-
         recDiv.innerHTML = `
             <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
             <div class="d-kv"><span>Acceptance Rate</span><span>${u.academics.acceptance_rate_percent}%</span></div>
-            ${avgStatsHtml}
+            <div class="d-kv" style="border-bottom:none;"><span>Campus Size</span><span>${u.student_life?.size || "Medium"}</span></div>
         `;
     }
 
     const extraDiv = document.getElementById("detailExtra");
     if (extraDiv) {
+         // Описание, если будет добавлено в JSON
+         const description = u.description 
+            ? `<p style="margin-bottom:15px; line-height:1.6; color:#444;">${u.description}</p>` 
+            : ""; 
+
          const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
+         
          extraDiv.innerHTML = `
-            <div class="d-kv"><span>Students</span><span>${studentCount}</span></div>
-            <div class="d-kv"><span>Size</span><span>${u.student_life?.size || "—"}</span></div>
-            <div class="d-kv"><span>Formats</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
+            ${description}
+            <div class="d-kv"><span>Total Students</span><span>${studentCount}</span></div>
+            <div class="d-kv" style="border-bottom:none;"><span>Study Formats</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
          `;
     }
 
@@ -761,50 +752,108 @@ export async function initUniversityPage() {
         progDiv.innerHTML = u.academics.majors.map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${m}</span>`).join(" ");
     }
 
-    // --- TAB 3: ADMISSION (Сценарии!) ---
+    // --- TAB 3: ADMISSION (С Major вместо Mode) ---
     const reqDiv = document.getElementById("detailRequirements");
     if (reqDiv) {
-        // Очищаем и строим треки
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
             reqDiv.innerHTML = `<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
         } else {
             let tracksHTML = "";
             u.admission_tracks.forEach(track => {
-                // Бейджик режима (Online/On-campus)
-                let modeBadge = "";
-                if (track.study_mode === "Online") modeBadge = `<span style="background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:8px;">🌐 Online</span>`;
-                else if (track.study_mode === "Hybrid") modeBadge = `<span style="background:#f3e8ff; color:#6b21a8; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:8px;">⚡ Hybrid</span>`;
                 
-                // Требования
-                let reqList = "";
+                // 🔥 1. ПОКАЗЫВАЕМ ПРОФЕССИИ (Majors), А НЕ РЕЖИМ
+                let majorsBadge = "";
+                if (track.applicable_majors && track.applicable_majors.length > 0) {
+                    majorsBadge = `<div style="margin-top:4px; display:flex; flex-wrap:wrap; gap:6px;">
+                        ${track.applicable_majors.map(m => 
+                            `<span style="background:#f0fdf4; color:#166534; font-size:11px; padding:3px 8px; border-radius:4px; border:1px solid #bbf7d0;">📚 ${m}</span>`
+                        ).join("")}
+                    </div>`;
+                } else {
+                    majorsBadge = `<span style="font-size:12px; color:#666; font-style:italic;">For all majors</span>`;
+                }
+                
+                // 2. MIN Requirements
+                let minList = "";
                 for (const [exam, score] of Object.entries(track.requirements || {})) {
-                    reqList += `<div style="display:inline-block; margin-right:12px; font-size:13px;"><strong>${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
+                    minList += `<div style="margin-right:12px;"><strong>Min ${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
                 }
 
-                // Гранты
-                let grantsHTML = "";
+                // 3. AVG Stats
+                let avgList = "";
+                const avgs = track.stats_avg || {};
+                if (Object.keys(avgs).length > 0) {
+                    for (const [exam, score] of Object.entries(avgs)) {
+                        avgList += `<div style="margin-right:12px; color:#059669;"><strong>Avg ${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
+                    }
+                } else {
+                    avgList = `<div style="color:#999; font-style:italic;">Not available</div>`;
+                }
+
+                // 4. ГРАНТЫ (Инфо о наличии)
+                // 4. ГРАНТЫ (Теперь с условиями и суммами)
+                let grantsInfo = "";
                 if (track.scholarships && track.scholarships.length > 0) {
-                    grantsHTML = `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #eee;">
-                        <div style="font-size:11px; font-weight:700; color:#065f46; margin-bottom:4px;">AVAILABLE GRANTS:</div>
-                        <ul style="margin:0; padding-left:20px; font-size:13px; color:#333;">
-                            ${track.scholarships.map(s => `<li>${s.name}</li>`).join("")}
-                        </ul>
+                    grantsInfo = `
+                    <div style="margin-top:12px; padding-top:12px; border-top:1px dashed #e5e7eb;">
+                        <div style="font-size:11px; font-weight:700; color:#059669; margin-bottom:8px; letter-spacing:0.5px;">AVAILABLE GRANTS & AID:</div>
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            ${track.scholarships.map(s => {
+                                // А. Формируем строку условий (например: "GPA 3.5, SAT 1400")
+                                let conditions = "";
+                                if (s.requirements) {
+                                    conditions = Object.entries(s.requirements)
+                                        .map(([k, v]) => `${k} ≥ ${v}`)
+                                        .join(" • ");
+                                }
+                                
+                                // Б. Формируем сумму (если есть) или тип
+                                const badgeText = s.amount 
+                                    ? `Cover: ${moneyUSD(s.amount)}` 
+                                    : (s.type === 'need' ? 'Need-based Aid' : 'Merit Scholarship');
+
+                                return `
+                                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px 10px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                        <div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#064e3b; font-size:13px;">
+                                            <span>🏆</span> ${s.name}
+                                        </div>
+                                        <div style="font-size:10px; font-weight:700; background:#fff; color:#059669; padding:2px 6px; border-radius:4px; border:1px solid #86efac;">
+                                            ${badgeText}
+                                        </div>
+                                    </div>
+                                    
+                                    ${conditions ? `
+                                        <div style="font-size:11px; color:#4b5563; margin-left:22px;">
+                                            <span style="font-weight:600; color:#059669;">Requires:</span> ${conditions}
+                                        </div>
+                                    ` : `<div style="font-size:11px; color:#9ca3af; margin-left:22px; font-style:italic;">No specific requirements listed</div>`}
+                                </div>
+                                `;
+                            }).join("")}
+                        </div>
                     </div>`;
                 }
 
-                // Карточка трека
                 tracksHTML += `
-                <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:16px; margin-bottom:12px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                        <h4 style="margin:0; font-size:16px; color:#5d17ea;">${track.label} ${modeBadge}</h4>
+                <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:20px; margin-bottom:16px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                    <div style="margin-bottom:12px;">
+                        <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${track.label}</h4>
+                        ${majorsBadge}
+                        <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${track.description || ""}</p>
                     </div>
-                    <p style="margin:0 0 10px; font-size:13px; color:#666; line-height:1.4;">${track.description || ""}</p>
                     
-                    <div style="background:#f9fafb; padding:8px 12px; border-radius:8px;">
-                        <div style="font-size:11px; font-weight:700; color:#6b7280; margin-bottom:4px; text-transform:uppercase;">Entry Requirements (Minimum)</div>
-                        ${reqList}
+                    <div class="track-stats-grid">
+                        <div style="background:#f9fafb; padding:12px; border-radius:8px; border:1px solid #f3f4f6;">
+                            <div style="font-size:10px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase;">Minimum To Apply</div>
+                            <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">${minList || "None"}</div>
+                        </div>
+                        <div style="background:#ecfdf5; padding:12px; border-radius:8px; border:1px solid #d1fae5;">
+                            <div style="font-size:10px; font-weight:700; color:#047857; margin-bottom:6px; text-transform:uppercase;">Real Average (Admitted)</div>
+                            <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">${avgList}</div>
+                        </div>
                     </div>
-                    ${grantsHTML}
+                    ${grantsInfo}
                 </div>
                 `;
             });
@@ -814,48 +863,118 @@ export async function initUniversityPage() {
 
     // --- TAB 4: FINANCE ---
     const finDiv = document.getElementById("detailFinance");
-    const priceBig = document.getElementById("detailPrice");
+    const scholDiv = document.getElementById("detailScholarshipInfo"); 
+    const priceBig = document.getElementById("detailPrice");           
     
     if (u.finance) {
-        if (priceBig) priceBig.textContent = moneyUSD(u.finance.total_cost_year_usd);
-        
-        if (finDiv) {
-            // Если есть разные цены в треках, показываем это
-            let variationHTML = "";
-            if (u.admission_tracks) {
-                const differentPrices = u.admission_tracks.filter(t => t.finance_override);
-                if (differentPrices.length > 0) {
-                    variationHTML = `<div style="margin-bottom:20px; background:#ffffff; border:1px solid #bfdbfe; padding:12px; border-radius:8px;">
-                        <div style="font-size:12px; font-weight:bold; color:#1e40af; margin-bottom:6px;">💡 Special Pricing Available:</div>
-                        ${differentPrices.map(t => `
-                            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
-                                <span>${t.label}:</span>
-                                <b>${moneyUSD(t.finance_override.total_cost_year_usd)}</b>
-                            </div>
-                        `).join("")}
-                    </div>`;
-                }
-            }
+        // 1. Блок Скидок
+        if (scholDiv) {
+            const fa = u.finance.financial_aid || {};
+            const meritHtml = fa.merit_based 
+                ? `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-weight:600; color:#065f46;">
+                     <span style="font-size:16px;">✅</span> Merit-based scholarships available
+                   </div>` 
+                : `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; opacity:0.6; color:#4b5563;">
+                     <span style="font-size:16px;">❌</span> No merit-based scholarships
+                   </div>`;
+            const needHtml = fa.need_based 
+                ? `<div style="display:flex; align-items:center; gap:8px; font-weight:600; color:#065f46;">
+                     <span style="font-size:16px;">✅</span> Need-based financial aid
+                   </div>` 
+                : `<div style="display:flex; align-items:center; gap:8px; opacity:0.6; color:#4b5563;">
+                     <span style="font-size:16px;">❌</span> No need-based aid
+                   </div>`;
+            
+            scholDiv.innerHTML = meritHtml + needHtml;
+        }
 
-            const breakdown = u.finance.costs_breakdown_year_usd;
-            if (breakdown) {
-                let listHTML = `<div class="cost-breakdown">`;
+        // 2. Блок Цены (🔥 ИСПРАВЛЕНО: Расчет "from $...")
+        if (priceBig) {
+            let minTotal = u.finance.total_cost_year_usd || 0;
+            if (u.admission_tracks) {
+                const prices = u.admission_tracks
+                    .map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0)
+                    .filter(p => p > 0);
+                
+                if (prices.length > 0) minTotal = Math.min(...prices);
+            }
+            // Пишем "from", если есть варианты, или просто цену
+            priceBig.innerHTML = `<span style="font-size:0.5em; color:#64748b; vertical-align:middle; margin-right:4px;">from</span>${moneyUSD(minTotal)}`;
+        }
+        
+        // 3. Карточки треков
+        if (finDiv) {
+            finDiv.innerHTML = ""; 
+
+            const tracks = (u.admission_tracks && u.admission_tracks.length > 0) 
+                ? u.admission_tracks 
+                : [{ label: "General Tuition", finance_override: null }];
+
+            let financeHTML = "";
+
+            tracks.forEach(track => {
+                const fData = track.finance_override || u.finance;
+                const total = fData.total_cost_year_usd;
+                const breakdown = fData.costs_breakdown_year_usd || {};
+
+                // График
+                let barHTML = `<div class="cost-progress-bar" style="height:8px; display:flex; border-radius:4px; overflow:hidden; background:#e5e7eb;">`;
+                let legendHTML = `<div class="cost-legend">`;
+                
                 const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
                 let i = 0;
-                for (const [key, val] of Object.entries(breakdown)) {
-                    const color = colors[i % colors.length];
-                    listHTML += `
-                        <div class="cost-row">
-                            <div class="cost-label"><span class="cost-dot" style="background:${color}"></span>${key.replace(/_/g, " ")}</div>
-                            <span class="cost-val" style="color:${color}">${moneyUSD(val)}</span>
-                        </div>`;
-                    i++;
+
+                if (Object.keys(breakdown).length > 0) {
+                    for (const [key, val] of Object.entries(breakdown)) {
+                        const color = colors[i % colors.length];
+                        const percent = (val / total) * 100;
+                        barHTML += `<div style="width:${percent}%; background:${color};" title="${key}"></div>`;
+                        legendHTML += `
+                            <div style="display:flex; align-items:center; font-size:13px; margin-bottom:6px;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span style="width:8px; height:8px; border-radius:50%; background:${color}; flex-shrink:0;"></span>
+                                    <span style="color:#555;">${key.replace(/_/g, " ")}</span>
+                                </div>
+                                <span style="font-weight:700; color:#111; margin-left:12px;">${moneyUSD(val)}</span>
+                            </div>
+                        `;
+                        i++;
+                    }
+                } else {
+                    barHTML += `<div style="width:100%; background:#3b82f6;"></div>`;
+                    legendHTML += `<div style="font-size:13px;">Tuition: <b>${moneyUSD(total)}</b></div>`;
                 }
-                listHTML += `</div>`;
-                finDiv.innerHTML = variationHTML + listHTML;
-            } else {
-                finDiv.innerHTML = variationHTML + `<div class="d-kv"><span>Total</span><span>${moneyUSD(u.finance.total_cost_year_usd)}</span></div>`;
-            }
+                barHTML += `</div>`;
+                legendHTML += `</div>`;
+
+                financeHTML += `
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <div class="finance-track-name">${track.label || "General Cost"}</div>
+                        <div class="finance-total">
+                            <small>Total / Year</small>
+                            <span>${moneyUSD(total)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="finance-body">
+                        ${barHTML}
+                        ${legendHTML}
+                    </div>
+
+                    ${track.scholarships && track.scholarships.length > 0 ? `
+                        <div class="finance-footer">
+                            <div class="finance-grant-title">Available Scholarships:</div>
+                            <ul class="finance-grant-list">
+                                ${track.scholarships.map(s => `<li>${s.name}</li>`).join("")}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+                `;
+            });
+
+            finDiv.innerHTML = `<div class="finance-grid-new">${financeHTML}</div>`;
         }
     }
 
@@ -868,7 +987,6 @@ export async function initUniversityPage() {
     if (stateEl) stateEl.textContent = "Error loading details.";
   }
 }
-
 // --- Страница Рейтинга ---
 export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
