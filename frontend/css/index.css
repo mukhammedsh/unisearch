@@ -12,8 +12,8 @@
 }
 
 .hero-text {
-    flex: 1;
-    text-align: left;
+    position: relative;
+    z-index: 10; /* Поднимаем слой с кнопками */
 }
 
 .hero-badge {
@@ -106,6 +106,7 @@
     transition: transform 0.3s ease;
     position: relative;
     z-index: 2;
+    pointer-events: none;
 }
 
 .mockup-card:hover { 
@@ -121,6 +122,7 @@
     z-index: 1;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 /* 2. STATS SECTION */
@@ -230,6 +232,7 @@
         transform: rotate(0); 
         width: 100%; 
         max-width: 320px; 
+        pointer-events: none;
     }
     .stats-grid { 
         grid-template-columns: repeat(2, 1fr); 

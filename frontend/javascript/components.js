@@ -3,7 +3,9 @@ import {
   loadProfile,
   saveProfile,
   initCustomSelect,
-  getFlagImg
+  getFlagImg,
+  showToast,
+  API_BASE,
 } from "./utils.js";
 
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
@@ -26,7 +28,7 @@ const LAYOUT_HTML = `
   </div>
 </header>
 
-<div class="profile-modal" id="profileModal" aria-hidden="true">
+<div class="profile-modal" id="profileModal">
   <div class="profile-backdrop" data-close="profile"></div>
   <div class="profile-card" role="dialog">
     <div class="profile-header">
@@ -117,219 +119,228 @@ export async function loadGlobalLayout() {
 
 // 🔥 2. Логика профиля
 function initProfileUI() {
-  const modal = document.getElementById("profileModal");
-  if (!modal) {
-      console.error("❌ initProfileUI: Modal not found in DOM!");
-      return;
-  }
+    const modal = document.getElementById("profileModal");
+    if (!modal) {
+        console.error("❌ initProfileUI: Modal not found in DOM!");
+        return;
+    }
 
-  const openBtn = document.getElementById("profileBtn");
-  const closeBtn = document.getElementById("profileCloseBtn");
-  const backdrop = modal.querySelector(".profile-backdrop");
-  
-  const nameInput = document.getElementById("profileNameInput");
-  const budgetInput = document.getElementById("budgetInput");
-  const nameDisplay = document.getElementById("profileNameDisplay");
-  
-  const examNameSelect = document.getElementById("examNameSelect");
-  const examScoreInput = document.getElementById("examScoreInput");
-  const addExamBtn = document.getElementById("addExamBtn");
-  const examList = document.getElementById("examList");
-  
-  const editNameBtn = document.getElementById("editNameBtn");
-  const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
-  const profileUsernameDiv = document.querySelector(".profile-username");
+    modal.setAttribute("aria-hidden", "true");
 
-  let profile = loadProfile(); 
-  
-  const resetFields = () => {
-      profile = loadProfile(); 
-      if(nameInput) nameInput.value = profile.name;
-      if(nameDisplay) nameDisplay.textContent = profile.name;
-      if(budgetInput) budgetInput.value = profile.budget || "";
-      if(profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
-      renderProfileData();
-  };
+    const openBtn = document.getElementById("profileBtn");
+    const closeBtn = document.getElementById("profileCloseBtn");
+    const backdrop = modal.querySelector(".profile-backdrop");
+    
+    const nameInput = document.getElementById("profileNameInput");
+    const budgetInput = document.getElementById("budgetInput");
+    const nameDisplay = document.getElementById("profileNameDisplay");
+    
+    const examNameSelect = document.getElementById("examNameSelect");
+    const examScoreInput = document.getElementById("examScoreInput");
+    const addExamBtn = document.getElementById("addExamBtn");
+    const examList = document.getElementById("examList");
+    
+    const editNameBtn = document.getElementById("editNameBtn");
+    const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
+    const profileUsernameDiv = document.querySelector(".profile-username");
 
-  if (openBtn) openBtn.onclick = () => { 
-      resetFields(); 
-      modal.classList.add("is-open"); 
-      modal.style.display = "flex";
-      
-      // Инициализируем стиль для нового селекта экзаменов
-      if (typeof initCustomSelect === "function") {
-          initCustomSelect("examNameSelect");
-      }
-  };
-  
-  const close = () => { 
-      modal.classList.remove("is-open"); 
-      modal.style.display = "none"; 
-      resetFields(); 
-  };
-  
-  if (closeBtn) closeBtn.onclick = close;
-  if (backdrop) backdrop.onclick = close;
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    let profile = loadProfile(); 
+    
+    const resetFields = () => {
+        profile = loadProfile(); 
+        if(nameInput) nameInput.value = profile.name;
+        if(nameDisplay) nameDisplay.textContent = profile.name;
+        if(budgetInput) budgetInput.value = profile.budget || "";
+        if(profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+        renderProfileData();
+    };
 
-  // Редактирование имени
-  if (editNameBtn && profileUsernameDiv) {
-      editNameBtn.onclick = () => {
-          const isEditing = profileUsernameDiv.classList.contains("is-editing");
-          if (!isEditing) {
-              profileUsernameDiv.classList.add("is-editing");
-              nameInput.focus();
-          } else {
-              const newName = nameInput.value.trim();
-              const validName = /^[A-Za-z0-9 ]+$/;
-              if (newName.length < 3 || newName.length > 12) {
-                  showToast("Name length must be 3-12 chars", "error");
-                  return;
-              }
-              if (!validName.test(newName)) {
-                  showToast("Invalid symbols in name", "error");
-                  return;
-              }
-              profile.name = newName;
-              saveProfile(profile);
-              nameDisplay.textContent = newName;
-              profileUsernameDiv.classList.remove("is-editing");
-              showToast("Nickname updated!", "success");
-          }
-      };
-  }
+    if (openBtn) openBtn.onclick = () => { 
+        resetFields(); 
+        modal.classList.add("is-open"); 
+        modal.style.display = "flex";
+        modal.removeAttribute("aria-hidden");
+        
+        // Инициализируем стиль для нового селекта экзаменов
+        if (typeof initCustomSelect === "function") {
+            initCustomSelect("examNameSelect");
+        }
+    };
+    
+    const close = () => { 
+        // 1. Сначала возвращаем фокус на кнопку открытия (чтобы не было ошибки aria-hidden)
+        if (openBtn) openBtn.focus();
 
-  // Сохранение бюджета
-  if (saveBudgetBtn) {
-      saveBudgetBtn.onclick = () => {
-          const rawVal = budgetInput.value;
-          if (!rawVal) {
-              profile.budget = "";
-              saveProfile(profile);
-              showToast("Budget cleared", "success");
-              return;
-          }
-          if (rawVal.includes(".") || rawVal.includes(",")) {
-              showToast("Integers only (no dots/commas)", "error");
-              return;
-          }
-          const val = Number(rawVal);
-          if (isNaN(val)) {
-              showToast("Budget must be a number", "error");
-              return;
-          }
-          if (val < 1 || val > 1000000) {
-              showToast("Limit: 1 - 1,000,000 USD", "error");
-              return;
-          }
-          profile.budget = val;
-          saveProfile(profile);
-          showToast("Budget saved!", "success");
-      };
-  }
+        // 2. Затем скрываем окно
+        modal.classList.remove("is-open"); 
+        modal.style.display = "none"; 
+        modal.setAttribute("aria-hidden", "true");
+        
+        resetFields(); 
+    };
+    
+    if (closeBtn) closeBtn.onclick = close;
+    if (backdrop) backdrop.onclick = close;
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
-  // 🔥 ЛОГИКА ДОБАВЛЕНИЯ / ОБНОВЛЕНИЯ ЭКЗАМЕНА
-  if (addExamBtn) {
-      addExamBtn.onclick = async () => {
-          const name = examNameSelect.value;
-          const rawScore = examScoreInput.value;
-          const score = parseFloat(rawScore);
+    // Редактирование имени
+    if (editNameBtn && profileUsernameDiv) {
+        editNameBtn.onclick = () => {
+            const isEditing = profileUsernameDiv.classList.contains("is-editing");
+            if (!isEditing) {
+                profileUsernameDiv.classList.add("is-editing");
+                nameInput.focus();
+            } else {
+                const newName = nameInput.value.trim();
+                const validName = /^[A-Za-z0-9 ]+$/;
+                if (newName.length < 3 || newName.length > 12) {
+                    showToast("Name length must be 3-12 chars", "error");
+                    return;
+                }
+                if (!validName.test(newName)) {
+                    showToast("Invalid symbols in name", "error");
+                    return;
+                }
+                profile.name = newName;
+                saveProfile(profile);
+                nameDisplay.textContent = newName;
+                profileUsernameDiv.classList.remove("is-editing");
+                showToast("Nickname updated!", "success");
+            }
+        };
+    }
 
-          if (!name) {
-              showToast("Please select an exam", "error");
-              return;
-          }
-          if (isNaN(score)) {
-              showToast("Invalid score format", "error");
-              return;
-          }
+    // Сохранение бюджета
+    if (saveBudgetBtn) {
+        saveBudgetBtn.onclick = () => {
+            const rawVal = budgetInput.value;
+            if (!rawVal) {
+                profile.budget = "";
+                saveProfile(profile);
+                showToast("Budget cleared", "success");
+                return;
+            }
+            if (rawVal.includes(".") || rawVal.includes(",")) {
+                showToast("Integers only (no dots/commas)", "error");
+                return;
+            }
+            const val = Number(rawVal);
+            if (isNaN(val)) {
+                showToast("Budget must be a number", "error");
+                return;
+            }
+            if (val < 1 || val > 1000000) {
+                showToast("Limit: 1 - 1,000,000 USD", "error");
+                return;
+            }
+            profile.budget = val;
+            saveProfile(profile);
+            showToast("Budget saved!", "success");
+        };
+    }
 
-          // 1. Проверка на целые числа (кроме GPA и IELTS)
-          if (name !== "GPA" && name !== "IELTS") {
-              if (!Number.isInteger(score)) {
-                  showToast(`${name} score must be an integer (e.g. 1400)`, "error");
-                  return;
-              }
-          }
+    // 🔥 ЛОГИКА ДОБАВЛЕНИЯ / ОБНОВЛЕНИЯ ЭКЗАМЕНА
+    if (addExamBtn) {
+        addExamBtn.onclick = async () => {
+            const name = examNameSelect.value;
+            const rawScore = examScoreInput.value;
+            const score = parseFloat(rawScore);
 
-          // 2. Проверка IELTS (шаг 0.5)
-          if (name === "IELTS") {
-              if (score % 0.5 !== 0) {
-                  showToast("IELTS score must end with .0 or .5", "error");
-                  return;
-              }
-          }
+            if (!name) {
+                showToast("Please select an exam", "error");
+                return;
+            }
+            if (isNaN(score)) {
+                showToast("Invalid score format", "error");
+                return;
+            }
 
-          // 3. Отправка на сервер и сохранение
-          try {
-             const res = await fetch(`${API_BASE}/exams/validate`, {
-                 method: "POST",
-                 headers: {"Content-Type": "application/json"},
-                 body: JSON.stringify({ exam: name, score: score })
-             });
-             const json = await res.json();
-             
-             if(!res.ok) throw new Error(json.detail || "Error");
-             
-             // 🔥 НОВАЯ ЛОГИКА: Ищем дубликат
-             const existingIndex = profile.exams.findIndex(e => e.exam === json.exam);
-             
-             if (existingIndex !== -1) {
-                 // Если нашли — обновляем балл
-                 profile.exams[existingIndex].score = json.score;
-                 showToast(`Updated ${json.exam} to ${json.score}`, "success");
-             } else {
-                 // Если не нашли — добавляем новый
-                 profile.exams.push({ exam: json.exam, score: json.score });
-                 showToast(`Added ${json.exam}`, "success");
-             }
-             
-             saveProfile(profile);
-             renderProfileData();
-             
-             // Сброс полей
-             examScoreInput.value = "";
-             examNameSelect.value = ""; 
-             // Обновляем красивый селект (сбрасываем выбор)
-             if (typeof initCustomSelect === "function") {
-                 initCustomSelect("examNameSelect");
-             }
+            // 1. Проверка на целые числа (кроме GPA и IELTS)
+            if (name !== "GPA" && name !== "IELTS") {
+                if (!Number.isInteger(score)) {
+                    showToast(`${name} score must be an integer (e.g. 1400)`, "error");
+                    return;
+                }
+            }
 
-          } catch(e) {
-              showToast(e.message, "error");
-          }
-      };
-  }
+            // 2. Проверка IELTS (шаг 0.5)
+            if (name === "IELTS") {
+                if (score % 0.5 !== 0) {
+                    showToast("IELTS score must end with .0 or .5", "error");
+                    return;
+                }
+            }
 
-  if (examList) {
-      examList.onclick = (e) => {
-          if (e.target.tagName === "BUTTON") {
-              const idx = e.target.dataset.idx;
-              profile.exams.splice(idx, 1);
-              saveProfile(profile);
-              renderProfileData();
-              showToast("Exam removed", "success");
-          }
-      };
-  }
+            // 3. Отправка на сервер и сохранение
+            try {
+                const res = await fetch(`${API_BASE}/exams/validate`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ exam: name, score: score })
+                });
+                const json = await res.json();
+                
+                if(!res.ok) throw new Error(json.detail || "Error");
+                
+                // 🔥 НОВАЯ ЛОГИКА: Ищем дубликат
+                const existingIndex = profile.exams.findIndex(e => e.exam === json.exam);
+                
+                if (existingIndex !== -1) {
+                    // Если нашли — обновляем балл
+                    profile.exams[existingIndex].score = json.score;
+                    showToast(`Updated ${json.exam} to ${json.score}`, "success");
+                } else {
+                    // Если не нашли — добавляем новый
+                    profile.exams.push({ exam: json.exam, score: json.score });
+                    showToast(`Added ${json.exam}`, "success");
+                }
+                
+                saveProfile(profile);
+                renderProfileData();
+                
+                // Сброс полей
+                examScoreInput.value = "";
+                examNameSelect.value = ""; 
+                // Обновляем красивый селект (сбрасываем выбор)
+                if (typeof initCustomSelect === "function") {
+                    initCustomSelect("examNameSelect");
+                }
 
-  function renderProfileData() {
-      if(examList) {
-          examList.innerHTML = profile.exams.map((ex, i) => `
-            <div class="profile-exam-item">
-                <div class="profile-exam-meta">
-                    <span class="profile-exam-name">${ex.exam}</span>
-                    <span class="profile-exam-score">Score: ${ex.score}</span>
+            } catch(e) {
+                showToast(e.message, "error");
+            }
+        };
+    }
+
+    if (examList) {
+        examList.onclick = (e) => {
+            if (e.target.tagName === "BUTTON") {
+                const idx = e.target.dataset.idx;
+                profile.exams.splice(idx, 1);
+                saveProfile(profile);
+                renderProfileData();
+                showToast("Exam removed", "success");
+            }
+        };
+    }
+
+    function renderProfileData() {
+        if(examList) {
+            examList.innerHTML = profile.exams.map((ex, i) => `
+                <div class="profile-exam-item">
+                    <div class="profile-exam-meta">
+                        <span class="profile-exam-name">${ex.exam}</span>
+                        <span class="profile-exam-score">Score: ${ex.score}</span>
+                    </div>
+                    <button data-idx="${i}" class="profile-delete">Delete</button>
                 </div>
-                <button data-idx="${i}" class="profile-delete">Delete</button>
-            </div>
-          `).join("");
-      }
-  }
+            `).join("");
+        }
+    }
 }
 
 // Вспомогательная функция для табов
-function setupTabs() {
+export function setupTabs() {
   const buttons = document.querySelectorAll(".d-tab-btn");
   const panes = document.querySelectorAll(".d-tab-pane");
 

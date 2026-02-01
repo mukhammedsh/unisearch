@@ -19,6 +19,7 @@ import {
 
 import { getUniSort } from "./algo.js";
 
+import { setupTabs } from "./components.js";
 
 
 // =====================================
@@ -818,6 +819,20 @@ export async function initUniversityPage() {
                     barHTML += `<div class="cost-segment" style="width: ${percent}%; background-color: ${color};" title="${label}: ${Math.round(percent)}%"></div>`;
                     i++;
                 }
+
+                // 👇👇👇 ДОБАВЛЯЕМ APPLICATION FEE СЮДА (В ПРАВИЛЬНОЕ МЕСТО) 👇👇👇
+                if (u.finance.application_fee_usd !== undefined) {
+                    listHTML += `
+                        <div class="cost-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb;">
+                            <div class="cost-label">
+                                <span class="cost-dot" style="background-color: #9ca3af;"></span>
+                                Application Fee <small style="color:#999; font-weight:normal; margin-left:4px;">(one-time)</small>
+                            </div>
+                            <span class="cost-val" style="color: #111;">$${u.finance.application_fee_usd}</span>
+                        </div>
+                    `;
+                }
+                // 👆👆👆
 
                 listHTML += `</div>`;
                 barHTML += `</div>`;

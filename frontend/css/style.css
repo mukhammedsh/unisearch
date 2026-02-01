@@ -16,6 +16,12 @@ a {
   color: inherit;
 }
 
+html, body {
+  overflow-x: hidden; /* ⛔️ Главный фикс: запрещает скролл влево-вправо */
+  width: 100%;        /* Гарантирует, что сайт не шире окна */
+  position: relative; /* Стабилизирует позиционирование */
+}
+
 /* ===== Navbar ===== */
 /* ===== Navbar (same on all pages) ===== */
 .navbar{
@@ -83,13 +89,14 @@ a {
 }
 
 /* ===== Profile Modal ===== */
-.profile-modal{
+.profile-modal {
   position: fixed;
   inset: 0;
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1200;
+  z-index: 9999; /* 🔥 Было 1200, ставим максимум, чтобы перекрыть всё */
+  padding: 20px; /* Чтобы на маленьких экранах края не прилипали */
 }
 
 .profile-modal.is-open{
@@ -133,6 +140,8 @@ a {
   font-size: 20px;
   font-weight: 800;
   color: #111;
+  max-width: 100%; /* Не даем блоку с именем быть шире родителя */
+  overflow: hidden; /* Обрезаем лишнее, если вдруг что */
 }
 
 .profile-subtitle{
@@ -329,6 +338,16 @@ a {
   .profile-exam-form{ grid-template-columns: 1fr; }
   .profile-budget{ grid-template-columns: 1fr; }
   .profile-unit{ width: fit-content; }
+
+  .profile-name-input {
+    min-width: 0;   /* Разрешаем сжиматься меньше 180px */
+    width: 120px;   /* Оптимальная ширина для телефона */
+    max-width: 100%;
+  }
+  
+  .profile-username {
+    gap: 5px; /* Уменьшаем отступ между полем и ручкой */
+  }
 }
 
 /* --- TOAST NOTIFICATIONS (Система уведомлений) --- */
@@ -593,33 +612,43 @@ a {
     font-weight: 500;
 }
 
-/* --- Адаптивность для мобильных устройств (ширина экрана < 768px) --- */
+/* --- Адаптивность для мобильных (Улучшенная) --- */
 @media (max-width: 768px) {
-  /* 1. Изменяем сам контейнер навбара */
+  /* 1. Делаем меню "липким", а не фиксированным */
   .navbar {
-    height: auto;             /* Убираем фиксированную высоту 70px */
-    flex-direction: column;   /* Выстраиваем элементы в колонку */
-    padding: 15px 20px;       /* Немного уменьшаем отступы */
-    gap: 15px;                /* Расстояние между лого, меню и кнопкой */
+    position: sticky; /* Магия: меню само толкает контент вниз */
+    top: 0;
+    height: auto;
+    padding: 10px 15px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
   }
 
-  /* 2. Центрируем внутренние блоки */
-  .navbar-left,
-  .navbar-center,
-  .navbar-right {
-    justify-content: center;  /* Центрируем содержимое */
-    width: 100%;              /* Растягиваем блоки на всю ширину */
-    padding: 0;               /* Убираем лишние отступы */
-  }
-
-  /* 3. Ссылки меню тоже ставим в колонку (или оставляем в строку, если влезают) */
-  .navbar-center {
-    flex-direction: column;   /* Ссылки друг под другом */
-    gap: 15px;                /* Расстояние между ссылками */
-  }
-
-  /* 4. Корректируем отступ у body, так как меню стало выше */
+  /* 2. Убираем отступ у body, так как sticky меню его не требует */
   body {
-    padding-top: 180px; /* Подбираем, чтобы контент не залезал под меню */
+    margin: 0;
+    font-family: 'Inter', Arial, sans-serif; /* Добавил Inter для красоты, если он подключен */
+    background: #ffffff;
+    color: #111;
+    /* padding-top убираем, так как теперь navbar sticky (липкий) */
+    padding-top: 0;
+  }
+
+  /* Настройки элементов меню (как мы обсуждали ранее) */
+  .navbar-left { order: 1; width: auto; flex: 0 0 auto; }
+  .logo { height: 32px; }
+  
+  .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
+  .login-btn { padding: 8px 14px; font-size: 13px; }
+
+  .navbar-center {
+    order: 3;
+    width: 100%;
+    margin: 5px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    justify-content: center;
+    gap: 15px;
   }
 }

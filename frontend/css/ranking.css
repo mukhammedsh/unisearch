@@ -81,3 +81,62 @@
 .rank-source a:hover {
     text-decoration: underline;
 }
+
+/* --- Адаптивность для телефонов --- */
+@media (max-width: 600px) {
+    /* Уменьшаем отступы контейнера */
+    .rank-container {
+        padding: 20px 15px;
+    }
+
+    /* Заголовок страницы поменьше */
+    .rank-header h1 {
+        font-size: 28px;
+    }
+
+    /* Карточка рейтинга */
+    .rank-card {
+        flex-wrap: wrap; /* Разрешаем перенос элементов */
+        padding: 15px;
+        gap: 10px;       /* Отступ между элементами */
+    }
+
+    /* Номер места (#1) */
+    .rank-num {
+        font-size: 20px;
+        width: 30px;     /* Уменьшаем ширину */
+        margin-right: 5px;
+    }
+
+    /* Логотип */
+    .rank-logo {
+        width: 48px;
+        height: 48px;
+        margin-right: 10px;
+        border-radius: 10px;
+    }
+
+    /* Инфо о вузе растягиваем */
+    .rank-info {
+        flex: 1; /* Занимает всё оставшееся место в строке */
+        min-width: 120px; /* Чтобы текст не сжимался в 0 */
+    }
+    
+    .rank-title {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .rank-loc {
+        font-size: 13px;
+    }
+
+    /* Бейдж переносим на новую строку на всю ширину */
+    .rank-badge {
+        width: 100%;
+        margin-top: 5px;
+        text-align: center;
+        background-color: #f8f9fa; /* Делаем фон чуть заметнее */
+        border: 1px solid #eee;
+    }
+}

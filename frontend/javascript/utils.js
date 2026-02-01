@@ -329,6 +329,8 @@ export {
   loadFilters,
   getFlagImg,
   initCustomSelect,
+  removeToast,
+  showToast,
   CITY_OPTIONS_BY_COUNTRY,
   MAJOR_OPTIONS
 };
