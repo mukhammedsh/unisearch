@@ -10,7 +10,7 @@ EXAM_WHITELIST = {
     "TOEFL": (0.0, 120.0),
     "SAT": (400.0, 1600.0),
     "ACT": (1.0, 36.0),
-    "GPA": (0.0, 100.0),
+    "GPA": (0.0, 100.0), #проценты
 }
 
 app = FastAPI(title="UniSearch AI API", version="1.5.0")

@@ -600,7 +600,11 @@ export function initUniversitiesPage() {
             profile.exams.forEach(e => { if(e.exam && e.score) userScores[e.exam.toUpperCase()] = parseFloat(e.score); });
             for (const [exam, minScore] of Object.entries(u.exams_min)) {
                 const myScore = userScores[exam];
-                if (myScore !== undefined && myScore < minScore) failedReqs.push(`${exam} < ${minScore}`);
+                if (myScore !== undefined && myScore < minScore) {
+                    // 🔥 Добавляем % если это GPA
+                    const suffix = exam === 'GPA' ? '%' : '';
+                    failedReqs.push(`${exam} < ${minScore}${suffix}`);
+                }
             }
         }
         const fa = u.finance?.financial_aid || {}; const hasGrant = fa.merit_based || fa.need_based; 
@@ -740,7 +744,7 @@ export async function initUniversityPage() {
         recDiv.innerHTML = `
             <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
             <div class="d-kv"><span>Acceptance Rate</span><span>${u.academics.acceptance_rate_percent}%</span></div>
-            <div class="d-kv"><span>Avg GPA</span><span>${u.exams_avg?.GPA || "—"}</span></div>
+            <div class="d-kv"><span>Avg GPA</span><span>${u.exams_avg?.GPA ? u.exams_avg.GPA + "%" : "—"}</span></div>
             <div class="d-kv"><span>Avg IELTS</span><span>${u.exams_avg?.IELTS || "—"}</span></div>
             <div class="d-kv"><span>Avg SAT</span><span>${u.exams_avg?.SAT || "—"}</span></div>
         `;
@@ -763,7 +767,7 @@ export async function initUniversityPage() {
     const reqDiv = document.getElementById("detailRequirements");
     if (reqDiv) {
         let reqList = ""; let count = 0;
-        if (u.exams_min?.GPA) { reqList += `<div class="d-kv"><span>Min GPA</span><span>${u.exams_min.GPA}</span></div>`; count++; }
+        if (u.exams_min?.GPA) { reqList += `<div class="d-kv"><span>Min GPA</span><span>${u.exams_min.GPA}%</span></div>`; count++; }
         if (u.exams_min?.IELTS) { reqList += `<div class="d-kv"><span>Min IELTS</span><span>${u.exams_min.IELTS}</span></div>`; count++; }
         if (u.exams_min?.SAT) { reqList += `<div class="d-kv"><span>Min SAT</span><span>${u.exams_min.SAT}</span></div>`; count++; }
         if (count === 0) { reqDiv.innerHTML = `<div style="padding:10px 0; color:#666; font-style:italic;">No strict exam requirements</div>`; } else { reqDiv.innerHTML = reqList; }

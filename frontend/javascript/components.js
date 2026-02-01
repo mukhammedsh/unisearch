@@ -330,7 +330,7 @@ function initProfileUI() {
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
                         <span class="profile-exam-name">${ex.exam}</span>
-                        <span class="profile-exam-score">Score: ${ex.score}</span>
+                        <span class="profile-exam-score">Score: ${ex.score}${ex.exam === 'GPA' ? '%' : ''}</span>
                     </div>
                     <button data-idx="${i}" class="profile-delete">Delete</button>
                 </div>
