@@ -3,9 +3,10 @@ import {
   loadProfile,
   saveProfile,
   initCustomSelect,
-  getFlagImg,
+  EXAM_CONFIG,
   showToast,
   API_BASE,
+  MAJOR_OPTIONS,
 } from "./utils.js";
 
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
@@ -40,7 +41,7 @@ const LAYOUT_HTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
           </button>
         </div>
-        <div class="profile-subtitle">Profile</div>
+        <div class="profile-subtitle">Smart Profile</div>
       </div>
       <button class="icon-btn profile-close" id="profileCloseBtn" title="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
@@ -50,19 +51,34 @@ const LAYOUT_HTML = `
     <div id="usernameError" class="profile-error profile-error--username"></div>
 
     <div class="profile-body">
+      
       <div class="profile-field">
         <label class="profile-label">Total Budget per year (USD)</label>
-        
         <div class="profile-budget">
           <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" />
-          
           <button id="saveBudgetBtn" class="icon-btn profile-save-btn" title="Save Budget">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </button>
-
           <span class="profile-unit">USD / year</span>
         </div>
         <div class="profile-hint">Range: 1 - 1,000,000</div>
+      </div>
+
+      <div class="profile-field">
+        <label class="profile-label">Preferred Study Mode</label>
+        <select id="studyModeSelect" class="profile-input" style="cursor:pointer;">
+           <option value="Any">Any (All formats)</option>
+           <option value="On-campus">On-campus (Live)</option>
+           <option value="Online">Online / Distance</option>
+           <option value="Hybrid">Hybrid (Blended)</option>
+        </select>
+      </div>
+
+      <div class="profile-field">
+        <label class="profile-label">Intended Major</label>
+        <select id="profileMajorSelect" class="profile-input" style="cursor:pointer;">
+           <option value="">Undecided / Any</option>
+        </select>
       </div>
 
       <div class="profile-field">
@@ -85,6 +101,7 @@ const LAYOUT_HTML = `
         <div id="examError" class="profile-error"></div>
         <div id="examList" class="profile-exam-list"></div>
       </div>
+
     </div>
   </div>
 </div>
@@ -136,15 +153,54 @@ function initProfileUI() {
     const nameDisplay = document.getElementById("profileNameDisplay");
     
     const examNameSelect = document.getElementById("examNameSelect");
+    const studyModeSelect = document.getElementById("studyModeSelect");
     const examScoreInput = document.getElementById("examScoreInput");
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
+    const profileMajorSelect = document.getElementById("profileMajorSelect");
     
     const editNameBtn = document.getElementById("editNameBtn");
     const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
     const profileUsernameDiv = document.querySelector(".profile-username");
-
+    
     let profile = loadProfile(); 
+
+    const populateMajors = () => {
+        if (!profileMajorSelect) return;
+        profileMajorSelect.innerHTML = `<option value="">Undecided / Any</option>`;
+        MAJOR_OPTIONS.forEach(m => {
+            const opt = document.createElement("option");
+            opt.value = m;
+            opt.textContent = m;
+            profileMajorSelect.appendChild(opt);
+        });
+    };
+    populateMajors();
+
+    // --- ЛОГИКА 2: Динамические экзамены ---
+    const populateExamSelect = () => {
+        if (!examNameSelect) return;
+        examNameSelect.innerHTML = `<option value="" disabled selected>Select Exam</option>`;
+        
+        Object.keys(EXAM_CONFIG).forEach(examKey => {
+            const opt = document.createElement("option");
+            opt.value = examKey;
+            // Красивые названия
+            if (examKey === "UNT") opt.textContent = "UNT (ЕНТ)";
+            else opt.textContent = examKey;
+            
+            examNameSelect.appendChild(opt);
+        });
+        
+        // Обновляем кастомный селект, если он есть
+        if (typeof initCustomSelect === "function") initCustomSelect("examNameSelect");
+    };
+
+    if (Object.keys(EXAM_CONFIG).length > 0) {
+        populateExamSelect();
+    }
+
+    window.addEventListener("examConfigLoaded", populateExamSelect);
     
     const resetFields = () => {
         profile = loadProfile(); 
@@ -152,8 +208,25 @@ function initProfileUI() {
         if(nameDisplay) nameDisplay.textContent = profile.name;
         if(budgetInput) budgetInput.value = profile.budget || "";
         if(profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+        if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
+        if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         renderProfileData();
-    };
+    }; 
+
+    if (profileMajorSelect) {
+        profileMajorSelect.addEventListener("change", () => {
+            profile.major = profileMajorSelect.value;
+            saveProfile(profile);
+        });
+    }
+
+    if (studyModeSelect) {
+        studyModeSelect.addEventListener("change", () => {
+            profile.studyMode = studyModeSelect.value;
+            saveProfile(profile);
+            showToast("Preference saved", "success"); // Можно без тоста, чтобы не спамить
+        });
+    }
 
     if (openBtn) openBtn.onclick = () => { 
         resetFields(); 

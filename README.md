@@ -19,10 +19,9 @@ UniSearch helps:
 
 ---
 
-## Latest Updates (v1.5.0)
+## Latest Updates (v2.0.0)
 
-### Visual Improvements
-- Slider for budget, improved dropdowns
+
 
 ---
 

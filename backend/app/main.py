@@ -7,13 +7,13 @@ from typing import Any, Optional, List, Dict, Union
 # --- ВСТРОЕННАЯ КОНФИГУРАЦИЯ ---
 EXAM_WHITELIST = {
     "IELTS": (1.0, 9.0),
-    "TOEFL": (0.0, 120.0),
     "SAT": (400.0, 1600.0),
-    "ACT": (1.0, 36.0),
     "GPA": (0.0, 100.0), #проценты
+    "UNT": (0.0, 140.0),
 }
+# В планах добавить TOEFL
 
-app = FastAPI(title="UniSearch AI API", version="1.5.0")
+app = FastAPI(title="UniSearch AI API", version="2.0.0")
 
 FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",
@@ -285,6 +285,11 @@ def get_locations():
             print(f"Error reading cities file: {e}")
             return {}
     return {}
+
+@app.get("/exams/config")
+def get_exam_config():
+    """Отдает список разрешенных экзаменов и их диапазоны (min, max)"""
+    return EXAM_WHITELIST
 
 if __name__ == "__main__":
     import uvicorn

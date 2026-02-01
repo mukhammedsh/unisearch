@@ -14,7 +14,6 @@ import {
   getFlagImg,
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
-  MAJOR_OPTIONS
 } from "./utils.js";
 
 import { getUniSort } from "./algo.js";
@@ -28,8 +27,7 @@ import { setupTabs } from "./components.js";
 export function initUniversitiesPage() {
     const el = {
         qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
-        stateSelect: $("stateSelect"), citySelect: $("citySelect"), majorSelect: $("majorSelect"),
-        studyLevelSelect: $("studyLevelSelect"), formatSelect: $("formatSelect"),
+        stateSelect: $("stateSelect"), citySelect: $("citySelect"),
         minInput: $("minCostInput"),
         maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"),
@@ -60,9 +58,6 @@ export function initUniversitiesPage() {
         country: savedState.country || "", 
         region: savedState.region || "", 
         city: savedState.city || "", 
-        major: savedState.major || "", 
-        study_level: savedState.study_level || "", 
-        format: savedState.format || "",
         min_tuition: savedState.min_tuition || 0, 
         max_tuition: savedState.max_tuition || 1000000,
         sort: savedState.sort || "uni_ai", 
@@ -120,7 +115,6 @@ export function initUniversitiesPage() {
 
     // Инициализация
     readFromUrl(); 
-    updateMajorOptions();
     
     const initLocations = () => {
         updateCountryOptions();
@@ -168,16 +162,13 @@ export function initUniversitiesPage() {
     
     el.stateSelect?.addEventListener("change", () => { state.region = el.stateSelect.value; state.city = ""; updateCitiesForState(state.country, state.region); refetch(); });
     el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
-    el.majorSelect?.addEventListener("change", () => { state.major = el.majorSelect.value; refetch(); });
-    el.studyLevelSelect?.addEventListener("change", () => { state.study_level = el.studyLevelSelect.value; refetch(); });
-    el.formatSelect?.addEventListener("change", () => { state.format = el.formatSelect.value; refetch(); });
     el.minTuitionInput?.addEventListener("input", () => { state.min_tuition = el.minTuitionInput.value; refetch(); });
     el.maxTuitionInput?.addEventListener("input", () => { state.max_tuition = el.maxTuitionInput.value; refetch(); });
     el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; updateSliderVisibility(); refetch(); });
     el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
 
     el.resetBtn?.addEventListener("click", () => {
-        Object.assign(state, { q: "", country: "", region: "", city: "", major: "", study_level: "", format: "", min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1 });
+        Object.assign(state, { q: "", country: "", region: "", city: "", min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1 });
         saveFilters(state);
         state.min_tuition = 0;
         state.max_tuition = 1000000;
@@ -406,8 +397,7 @@ export function initUniversitiesPage() {
         const p = new URLSearchParams();
         if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
         if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
-        if (state.major) p.set("major", state.major); if (state.study_level) p.set("study_level", state.study_level);
-        if (state.format) p.set("format", state.format); if (state.min_tuition) p.set("min_tuition", state.min_tuition);
+        if (state.min_tuition) p.set("min_tuition", state.min_tuition);
         if (state.max_tuition) p.set("max_tuition", state.max_tuition);
         const isAiSort = (state.sort === "uni_ai");
         p.set("sort", isAiSort ? "name_asc" : state.sort);
@@ -424,7 +414,6 @@ export function initUniversitiesPage() {
     function applyToForm() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
-        if(el.majorSelect) el.majorSelect.value = state.major; if(el.studyLevelSelect) el.studyLevelSelect.value = state.study_level;
         if(el.slider) el.slider.value = state.ai_balance;
         
 
@@ -435,29 +424,10 @@ export function initUniversitiesPage() {
         
         fillTrack(); // Красим полоску при загрузке
 
-        ["countrySelect", "stateSelect", "citySelect", "majorSelect", 
-         "studyLevelSelect", "formatSelect", "sortSelect"].forEach(id => initCustomSelect(id));
+        ["countrySelect", "stateSelect", "citySelect", "sortSelect"].forEach(id => initCustomSelect(id));
     }
 
     // --- НОВЫЕ СЛУШАТЕЛИ СОБЫТИЙ (LISTENERS) ---
-    
-    // 1. Двигаем ползунок -> меняется цифра и обновляется поиск
-    el.costSlider?.addEventListener("input", () => {
-        const val = el.costSlider.value;
-        el.costInput.value = val;
-        // Если слайдер на максимуме, считаем что фильтра нет ("любой бюджет")
-        // Либо, если хочешь жесткий фильтр, оставь val
-        state.max_tuition = (val === "100000") ? "" : val; 
-        refetch();
-    });
-
-    // 2. Пишем цифру -> двигается ползунок и обновляется поиск
-    el.costInput?.addEventListener("input", () => {
-        const val = el.costInput.value;
-        el.costSlider.value = val || 0;
-        state.max_tuition = val;
-        refetch();
-    });
 
     function updateLocationLogic(country) {
         if (!el.stateDiv) return;
@@ -501,12 +471,6 @@ export function initUniversitiesPage() {
         // 🔥 ДОБАВЛЕНО: Превращаем его в кастомный список с флагами
         initCustomSelect("countrySelect");
     }
-    function updateMajorOptions() {
-        if (!el.majorSelect) return;
-        el.majorSelect.innerHTML = `<option value="">Any major</option>`;
-        MAJOR_OPTIONS.forEach(m => { const opt = document.createElement("option"); opt.value = m; opt.textContent = m; el.majorSelect.appendChild(opt); });
-        initCustomSelect("majorSelect");
-    }
     function readFromUrl() {
         const sp = new URL(window.location.href).searchParams;
         if(sp.has("q")) state.q = sp.get("q");
@@ -536,7 +500,8 @@ export function initUniversitiesPage() {
 
             // 🔥 Исправление: Нарезаем на страницы на КЛИЕНТЕ для AI Sort
             if (isAiSort) { 
-                items = getUniSort(items, state.ai_balance); 
+                // Передаем весь объект state, так как там лежит выбранный major
+                items = getUniSort(items, state.ai_balance, state);
                 displayTotal = items.length; // Всего загружено (100)
                 
                 const start = (state.page - 1) * state.limit;
@@ -574,64 +539,74 @@ export function initUniversitiesPage() {
     }
 
     function renderCard(u, myBudget) { 
-        const id = u.id; const name = u.name; const country = nested(u, ["location", "country"], "");
-        const city = nested(u, ["location", "city"], ""); const loc = [city, country].filter(Boolean).join(", ");
-
-        let locString = "";
+        const id = u.id; 
+        const name = u.name; 
+        const country = nested(u, ["location", "country"], "");
+        const city = nested(u, ["location", "city"], ""); 
+        
+        // Логика флага
+        let locString = city;
         if (country) {
             const flagHtml = getFlagImg(country);
-            // flex-контейнер, чтобы картинка стояла ровно с текстом
             locString = city 
                 ? `<div style="display:flex; align-items:center; gap:6px;">${city}, ${flagHtml} ${country}</div>`
                 : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${country}</div>`;
-        } else {
-            locString = city;
         }
 
-        const cost = nested(u, ["finance", "total_cost_year_usd"], 0);
-        const acceptance = nested(u, ["academics", "acceptance_rate_percent"], "?");
-        const logoSrc = `images/logos/${id}.png`; const thumbSrc = `images/thumbnails/${id}.jpg`;
+        // --- НОВАЯ ЛОГИКА ОТОБРАЖЕНИЯ (Smart Match) ---
+        // Если алгоритм отработал, у нас есть u.matchData
+        const match = u.matchData || {}; 
         
-        const profile = loadProfile();
-        const hasExams = profile.exams && profile.exams.length > 0;
-        let failedReqs = [];
-        if (hasExams && u.exams_min) {
-            const userScores = {};
-            profile.exams.forEach(e => { if(e.exam && e.score) userScores[e.exam.toUpperCase()] = parseFloat(e.score); });
-            for (const [exam, minScore] of Object.entries(u.exams_min)) {
-                const myScore = userScores[exam];
-                if (myScore !== undefined && myScore < minScore) {
-                    // 🔥 Добавляем % если это GPA
-                    const suffix = exam === 'GPA' ? '%' : '';
-                    failedReqs.push(`${exam} < ${minScore}${suffix}`);
-                }
-            }
-        }
-        const fa = u.finance?.financial_aid || {}; const hasGrant = fa.merit_based || fa.need_based; 
-        let budgetBadge = "";
-        if (!isNaN(myBudget) && myBudget > 0) {
-            if (cost > myBudget) {
-                if (hasGrant) budgetBadge = `<span style="background:#dbeafe; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #93c5fd;">🔵 Budget exceeded, Grant available</span>`;
-                else budgetBadge = `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe;">🟣 Budget exceeded</span>`;
-            } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
-        } else if (hasGrant) budgetBadge = `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7;">✅ Grant Available</span>`;
+        // 1. Цена (Берем персональную или общую)
+        const cost = match.finalPrice !== undefined ? match.finalPrice : nested(u, ["finance", "total_cost_year_usd"], 0);
         
+        // 2. Бейджики (Статус поступления)
         let badgesHTML = "";
-        if (failedReqs.length > 0) { const reasonStr = failedReqs.join(", "); badgesHTML += `<span style="background:#fee2e2; color:#991b1b; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fca5a5; margin-bottom:4px;">⛔ Requirements: ${reasonStr}</span> `; }
-        if (budgetBadge) badgesHTML += budgetBadge;
-        if (!badgesHTML) badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acceptance}%</span>`;
+        
+        // А. Трек (Сценарий)
+        if (match.trackLabel) {
+            badgesHTML += `<span style="background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #dbeafe; margin-bottom:4px;">🚀 Track: ${match.trackLabel}</span> `;
+        }
+
+        // Б. Грант
+        if (match.grantName) {
+            // Зеленый бейдж, если грант доступен
+            badgesHTML += `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🏆 ${match.grantName}</span> `;
+        } else if (cost > myBudget && myBudget > 0) {
+            // Фиолетовый бейдж, если дорого и без гранта
+            badgesHTML += `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe; margin-bottom:4px;">💰 Over Budget</span> `;
+        } else if (match.trackLabel) {
+             // Серый бейдж "Matched", если просто прошли по баллам
+             badgesHTML += `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span> `;
+        } else {
+             // Фолбек для обычного списка (если алгоритм не запускался или это карта)
+             const acc = u.academics?.acceptance_rate_percent;
+             badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acc}%</span>`;
+        }
+
+        // В. ROI Score (Окупаемость)
+        if (match.roiScore && match.roiScore > 0) {
+            const isHigh = match.roiScore > 15; // Порог можно настроить
+            const roiColor = isHigh ? "#059669" : "#d97706"; // Зеленый или оранжевый
+            const roiBg = isHigh ? "#d1fae5" : "#fef3c7";
+            badgesHTML += `<span style="background:${roiBg}; color:${roiColor}; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid ${roiColor}30; margin-bottom:4px;">📈 ROI: ${match.roiScore}x</span> `;
+        }
+
+        // 3. Логотип и картинка
+        const logoSrc = `images/logos/${id}.png`; 
+        const thumbSrc = `images/thumbnails/${id}.jpg`;
 
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media" style="background-image: url('${thumbSrc}');">
-            <div class="uni-price"><small>Total/Year</small><b>${moneyUSD(cost)}</b></div>
+            <div class="uni-price"><small>Est. Cost/Year</small><b>${moneyUSD(cost)}</b></div>
             <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" onerror="this.onerror=null; this.parentNode.textContent='${initials(name)}';"></div>
             </div>
             <div class="uni-body">
             <h3 class="uni-title">${escapeHtml(name)}</h3>
-            <div class="uni-loc">📍 ${locString}</div> 
+            <div class="uni-loc" style="margin-bottom:8px;">📍 ${locString}</div> 
             
-            <div class="uni-badge" style="margin-top:10px; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
+            <div class="uni-badge" style="margin-top:auto; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
             <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
             </div>
         </article>
@@ -711,10 +686,22 @@ export async function initUniversityPage() {
     if (!res.ok) throw new Error("Backend error");
     const u = await res.json();
 
+    // 1. Заполняем шапку
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
 
-    setTxt("detailName", u.name); setTxt("detailLocation", u.location ? `${u.location.city}, ${u.location.country}` : "—");
-    if (u.finance) setTxt("detailPrice", `${moneyUSD(u.finance.total_cost_year_usd)} / year`);
+    setTxt("detailName", u.name); 
+    setTxt("detailLocation", u.location ? `${u.location.city}, ${u.location.country}` : "—");
+    
+    // Формируем цену "ОТ" (самая низкая из треков)
+    let minPrice = u.finance?.total_cost_year_usd || 0;
+    if (u.admission_tracks) {
+        u.admission_tracks.forEach(t => {
+            if (t.finance_override?.total_cost_year_usd && t.finance_override.total_cost_year_usd < minPrice) {
+                minPrice = t.finance_override.total_cost_year_usd;
+            }
+        });
+    }
+    setTxt("detailPrice", `from ${moneyUSD(minPrice)} / year`);
     setTxt("detailLogo", (u.name || "U").substring(0, 2).toUpperCase());
 
     const coverEl = document.getElementById("detailCover");
@@ -732,7 +719,7 @@ export async function initUniversityPage() {
         else { siteBtn.style.display = "none"; }
     }
 
-    // --- Блок GENERAL ---
+    // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
         let rankHtml = "<span>—</span>";
@@ -741,119 +728,140 @@ export async function initUniversityPage() {
             if (u.rank === 1) trophy = "🥇 "; else if (u.rank === 2) trophy = "🥈 "; else if (u.rank === 3) trophy = "🥉 ";
             rankHtml = `<span style="color:#5d17ea; font-size:1.1em;">${trophy}#${u.rank}</span>`;
         }
+        
+        let avgStatsHtml = "";
+        // Берем среднее из первого попавшегося трека для overview, или из корня если есть
+        const defaultAvg = u.admission_tracks?.[0]?.stats_avg || u.exams_avg;
+        if (defaultAvg) {
+             for (const [k, v] of Object.entries(defaultAvg)) {
+                 avgStatsHtml += `<div class="d-kv"><span>Avg ${k}</span><span>${k==='GPA'?v+'%':v}</span></div>`;
+             }
+        }
+
         recDiv.innerHTML = `
             <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
             <div class="d-kv"><span>Acceptance Rate</span><span>${u.academics.acceptance_rate_percent}%</span></div>
-            <div class="d-kv"><span>Avg GPA</span><span>${u.exams_avg?.GPA ? u.exams_avg.GPA + "%" : "—"}</span></div>
-            <div class="d-kv"><span>Avg IELTS</span><span>${u.exams_avg?.IELTS || "—"}</span></div>
-            <div class="d-kv"><span>Avg SAT</span><span>${u.exams_avg?.SAT || "—"}</span></div>
+            ${avgStatsHtml}
         `;
     }
 
-    // Блок со студентами
     const extraDiv = document.getElementById("detailExtra");
     if (extraDiv) {
-         const studentCount = u.student_count 
-            ? new Intl.NumberFormat('en-US').format(u.student_count) 
-            : "—";
-
+         const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
          extraDiv.innerHTML = `
             <div class="d-kv"><span>Students</span><span>${studentCount}</span></div>
             <div class="d-kv"><span>Size</span><span>${u.student_life?.size || "—"}</span></div>
-            <div class="d-kv"><span>Format</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
+            <div class="d-kv"><span>Formats</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
          `;
     }
 
-    const reqDiv = document.getElementById("detailRequirements");
-    if (reqDiv) {
-        let reqList = ""; let count = 0;
-        if (u.exams_min?.GPA) { reqList += `<div class="d-kv"><span>Min GPA</span><span>${u.exams_min.GPA}%</span></div>`; count++; }
-        if (u.exams_min?.IELTS) { reqList += `<div class="d-kv"><span>Min IELTS</span><span>${u.exams_min.IELTS}</span></div>`; count++; }
-        if (u.exams_min?.SAT) { reqList += `<div class="d-kv"><span>Min SAT</span><span>${u.exams_min.SAT}</span></div>`; count++; }
-        if (count === 0) { reqDiv.innerHTML = `<div style="padding:10px 0; color:#666; font-style:italic;">No strict exam requirements</div>`; } else { reqDiv.innerHTML = reqList; }
-    }
-
+    // --- TAB 2: PROGRAMS ---
     const progDiv = document.getElementById("detailPrograms");
     if (progDiv && u.academics?.majors) {
         progDiv.innerHTML = u.academics.majors.map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${m}</span>`).join(" ");
     }
 
-    // --- ЛОГИКА FINANCE (С ЦВЕТНЫМИ ЦЕНАМИ) ---
-    const finDiv = document.getElementById("detailFinance");
-    const scholDiv = document.getElementById("detailScholarshipInfo");
-    if (u.finance) {
-        if (scholDiv) {
-            const fa = u.finance.financial_aid || {};
-            const meritHtml = fa.merit_based ? `<p style="margin-bottom:5px;">✅ Merit-based scholarships available</p>` : `<p style="margin-bottom:5px; opacity:0.5;">❌ No merit-based scholarships</p>`;
-            const needHtml = fa.need_based ? `<p>✅ Need-based financial aid</p>` : `<p style="opacity:0.5;">❌ No need-based aid</p>`;
-            scholDiv.innerHTML = meritHtml + needHtml;
+    // --- TAB 3: ADMISSION (Сценарии!) ---
+    const reqDiv = document.getElementById("detailRequirements");
+    if (reqDiv) {
+        // Очищаем и строим треки
+        if (!u.admission_tracks || u.admission_tracks.length === 0) {
+            reqDiv.innerHTML = `<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
+        } else {
+            let tracksHTML = "";
+            u.admission_tracks.forEach(track => {
+                // Бейджик режима (Online/On-campus)
+                let modeBadge = "";
+                if (track.study_mode === "Online") modeBadge = `<span style="background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:8px;">🌐 Online</span>`;
+                else if (track.study_mode === "Hybrid") modeBadge = `<span style="background:#f3e8ff; color:#6b21a8; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:8px;">⚡ Hybrid</span>`;
+                
+                // Требования
+                let reqList = "";
+                for (const [exam, score] of Object.entries(track.requirements || {})) {
+                    reqList += `<div style="display:inline-block; margin-right:12px; font-size:13px;"><strong>${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
+                }
+
+                // Гранты
+                let grantsHTML = "";
+                if (track.scholarships && track.scholarships.length > 0) {
+                    grantsHTML = `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #eee;">
+                        <div style="font-size:11px; font-weight:700; color:#065f46; margin-bottom:4px;">AVAILABLE GRANTS:</div>
+                        <ul style="margin:0; padding-left:20px; font-size:13px; color:#333;">
+                            ${track.scholarships.map(s => `<li>${s.name}</li>`).join("")}
+                        </ul>
+                    </div>`;
+                }
+
+                // Карточка трека
+                tracksHTML += `
+                <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:16px; margin-bottom:12px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <h4 style="margin:0; font-size:16px; color:#5d17ea;">${track.label} ${modeBadge}</h4>
+                    </div>
+                    <p style="margin:0 0 10px; font-size:13px; color:#666; line-height:1.4;">${track.description || ""}</p>
+                    
+                    <div style="background:#f9fafb; padding:8px 12px; border-radius:8px;">
+                        <div style="font-size:11px; font-weight:700; color:#6b7280; margin-bottom:4px; text-transform:uppercase;">Entry Requirements (Minimum)</div>
+                        ${reqList}
+                    </div>
+                    ${grantsHTML}
+                </div>
+                `;
+            });
+            reqDiv.innerHTML = tracksHTML;
         }
-        const priceBig = document.getElementById("detailPrice");
+    }
+
+    // --- TAB 4: FINANCE ---
+    const finDiv = document.getElementById("detailFinance");
+    const priceBig = document.getElementById("detailPrice");
+    
+    if (u.finance) {
         if (priceBig) priceBig.textContent = moneyUSD(u.finance.total_cost_year_usd);
         
         if (finDiv) {
-            const breakdown = u.finance.costs_breakdown_year_usd;
-            // Если есть детализация расходов - строим диаграмму
-            if (breakdown && Object.keys(breakdown).length > 0) {
-                const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#6b7280"];
-                
-                let listHTML = `<div class="cost-breakdown">`;
-                let barHTML = `<div class="cost-progress-bar">`;
-                
-                let i = 0;
-                let totalForCalc = u.finance.total_cost_year_usd || 1;
+            // Если есть разные цены в треках, показываем это
+            let variationHTML = "";
+            if (u.admission_tracks) {
+                const differentPrices = u.admission_tracks.filter(t => t.finance_override);
+                if (differentPrices.length > 0) {
+                    variationHTML = `<div style="margin-bottom:20px; background:#ffffff; border:1px solid #bfdbfe; padding:12px; border-radius:8px;">
+                        <div style="font-size:12px; font-weight:bold; color:#1e40af; margin-bottom:6px;">💡 Special Pricing Available:</div>
+                        ${differentPrices.map(t => `
+                            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                <span>${t.label}:</span>
+                                <b>${moneyUSD(t.finance_override.total_cost_year_usd)}</b>
+                            </div>
+                        `).join("")}
+                    </div>`;
+                }
+            }
 
+            const breakdown = u.finance.costs_breakdown_year_usd;
+            if (breakdown) {
+                let listHTML = `<div class="cost-breakdown">`;
+                const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
+                let i = 0;
                 for (const [key, val] of Object.entries(breakdown)) {
                     const color = colors[i % colors.length];
-                    const percent = (val / totalForCalc) * 100;
-                    const label = key.replace(/_/g, " ");
-
-                    // 🔥 ИЗМЕНЕНИЕ: Добавлен style="color: ${color}" к цене
                     listHTML += `
                         <div class="cost-row">
-                            <div class="cost-label">
-                                <span class="cost-dot" style="background-color: ${color};"></span>
-                                ${label}
-                            </div>
-                            <span class="cost-val" style="color: ${color};">${moneyUSD(val)}</span>
-                        </div>
-                    `;
-
-                    // Кусочек полоски
-                    barHTML += `<div class="cost-segment" style="width: ${percent}%; background-color: ${color};" title="${label}: ${Math.round(percent)}%"></div>`;
+                            <div class="cost-label"><span class="cost-dot" style="background:${color}"></span>${key.replace(/_/g, " ")}</div>
+                            <span class="cost-val" style="color:${color}">${moneyUSD(val)}</span>
+                        </div>`;
                     i++;
                 }
-
-                // 👇👇👇 ДОБАВЛЯЕМ APPLICATION FEE СЮДА (В ПРАВИЛЬНОЕ МЕСТО) 👇👇👇
-                if (u.finance.application_fee_usd !== undefined) {
-                    listHTML += `
-                        <div class="cost-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb;">
-                            <div class="cost-label">
-                                <span class="cost-dot" style="background-color: #9ca3af;"></span>
-                                Application Fee <small style="color:#999; font-weight:normal; margin-left:4px;">(one-time)</small>
-                            </div>
-                            <span class="cost-val" style="color: #111;">$${u.finance.application_fee_usd}</span>
-                        </div>
-                    `;
-                }
-                // 👆👆👆
-
                 listHTML += `</div>`;
-                barHTML += `</div>`;
-                finDiv.innerHTML = listHTML + barHTML;
+                finDiv.innerHTML = variationHTML + listHTML;
             } else {
-                // Старый вид, если нет breakdown
-                finDiv.innerHTML = `
-                    <div class="d-kv"><span>Tuition Fee</span><span>${moneyUSD(u.finance.total_cost_year_usd)}</span></div>
-                    <div class="d-kv"><span>Application Fee</span><span>$${u.finance.application_fee_usd}</span></div>
-                `;
+                finDiv.innerHTML = variationHTML + `<div class="d-kv"><span>Total</span><span>${moneyUSD(u.finance.total_cost_year_usd)}</span></div>`;
             }
         }
     }
 
     if (stateEl) stateEl.textContent = "";
     if (cardEl) cardEl.style.display = "block"; 
-    setupTabs(); // из components.js
+    setupTabs(); 
 
   } catch (err) {
     console.error(err);

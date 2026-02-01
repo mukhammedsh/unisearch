@@ -320,6 +320,37 @@
   height: 100%;
 }
 
+/* Добавь это в конец frontend/css/university.css */
+
+/* Стили для карточек сценариев поступления */
+.track-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    border: 1px solid #eee; /* Fallback */
+}
+
+.track-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08) !important;
+    border-color: #5d17ea !important;
+}
+
+.track-card ul li {
+    margin-bottom: 4px;
+    list-style-type: "🔹 "; /* Красивый маркер */
+}
+
+/* Стили для бейджика в хедере трека */
+.track-badge {
+    background: #f3f4f6;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #555;
+    margin-left: 10px;
+}
+
 /* --- Адаптивность для телефонов --- */
 @media (max-width: 768px) {
     /* Убираем лишние отступы по краям страницы */

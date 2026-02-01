@@ -7,6 +7,34 @@ export const $ = (id) => document.getElementById(id);
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
 
+export let EXAM_CONFIG = {};
+
+async function loadExamConfig() {
+  try {
+    const response = await fetch(`${API_BASE}/exams/config`);
+    if (!response.ok) throw new Error("Failed to load exam config");
+    
+    EXAM_CONFIG = await response.json();
+    console.log("✅ Exam config loaded:", EXAM_CONFIG);
+    
+    // Сообщаем всему приложению, что конфиг загружен (чтобы перерисовать селекты)
+    window.dispatchEvent(new Event("examConfigLoaded"));
+  } catch (error) {
+    console.error("❌ Error loading exam config:", error);
+    // Фолбек на случай ошибки (чтобы сайт не сломался)
+    EXAM_CONFIG = {
+        "IELTS": [1.0, 9.0],
+        "TOEFL": [0.0, 120.0],
+        "SAT": [400.0, 1600.0],
+        "ACT": [1.0, 36.0],
+        "GPA": [0.0, 100.0],
+        "UNT": [0.0, 140.0],
+    };
+  }
+}
+
+loadExamConfig();
+
 let CITY_OPTIONS_BY_COUNTRY = {};
 
 async function loadCityDatabase() {
@@ -196,18 +224,6 @@ function getFlagImg(countryName) {
   if (!code) return "";
   // Используем CDN flagcdn.com (размер 20x15 px)
   return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${code}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">`;
-}
-
-// Функция 2: Возвращает эмодзи (для выпадающего списка)
-// В Windows это будут буквы (KZ, US), но это единственное, что работает внутри <option>
-function getFlagEmoji(countryName) {
-  const code = COUNTRY_CODES[countryName];
-  if (!code) return "🏳️";
-  
-  // Магическая формула: превращает "kz" в 🇰🇿
-  return code.toUpperCase().replace(/./g, char => 
-      String.fromCodePoint(char.charCodeAt(0) + 127397)
-  );
 }
 
 function initCustomSelect(selectId) {
