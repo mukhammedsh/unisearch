@@ -728,3 +728,14 @@
     height: 400px;
   }
 }
+
+@media (max-width: 600px) {
+  .u-grid {
+    grid-template-columns: 1fr; /* Одна колонка на всю ширину */
+  }
+  
+  /* Сайдбар с фильтрами убираем из сетки и ставим сверху */
+  .u-layout {
+    grid-template-columns: 1fr;
+  }
+}

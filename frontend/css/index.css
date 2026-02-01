@@ -236,3 +236,9 @@
         gap: 30px; 
     }
 }
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 36px; /* Было 56px */
+  }
+}
