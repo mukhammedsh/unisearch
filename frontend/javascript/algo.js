@@ -1,4 +1,5 @@
 /* 3. algo.js - Алгоритмы сортировки и ИИ */
+import { loadProfile } from "./utils.js";
 
 const SCALES = { "GPA": 100, "IELTS": 9.0, "TOEFL": 120, "SAT": 1600, "ACT": 36 };
 
