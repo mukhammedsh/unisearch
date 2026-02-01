@@ -13,7 +13,7 @@ EXAM_WHITELIST = {
     "GPA": (0.0, 100.0),
 }
 
-app = FastAPI(title="UniSearch AI API", version="1.0.0")
+app = FastAPI(title="UniSearch AI API", version="1.5.0")
 
 FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",

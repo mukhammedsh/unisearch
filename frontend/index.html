@@ -4,34 +4,104 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
-  <title>UniSearch</title>
+  <title>UniSearch - AI University Finder</title>
 
-  <!-- Global styles -->
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/index.css" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <main class="hero">
-    <h1>Choose an university without problems</h1>
-    <p>
-      UniSearch helps applicants find universities
-      based on real data and transparent criteria.
 
-      Keep in mind that we use information only about Undergraduate.
-    </p>
+  <section class="hero-section">
+      <div class="hero-text">
+          <span class="hero-badge">Alpha Version 1.5 • Infomatrix 2026</span>
+          <h1 class="hero-title">
+              Find your dream university with <span class="text-gradient">AI Power</span>
+          </h1>
+          <p class="hero-desc">
+              UniSearch analyzes your GPA, budget, and preferences to build a personalized list of universities. No expensive consultants needed.
+          </p>
+          <div class="hero-buttons">
+              <a href="universities.html" class="btn-primary">Start Matching</a>
+              <a href="ranking.html" class="btn-secondary">View Rankings</a>
+          </div>
+      </div>
 
-    <a class="hero-btn" href="universities.html">Browse universities</a>
-  </main>
+      <div class="hero-visual">
+          <div class="blob"></div>
+          
+          <div class="mockup-card">
+              <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
+                  <div style="width:50px; height:50px; background:#f0f0f0; border-radius:10px; overflow:hidden;">
+                      <img src="images/logos/mit-usa-cambridge.png" style="width:100%; height:100%; object-fit:contain; padding:5px;">
+                  </div>
+                  <div>
+                      <div style="font-weight:800; color:#111;">MIT</div>
+                      <div style="font-size:13px; color:#666;">Cambridge, USA</div>
+                  </div>
+              </div>
+              <div style="display:flex; gap:10px; margin-bottom:15px;">
+                  <span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:bold;">✅ Grant Available</span>
+                  <span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:11px;">#1 Global</span>
+              </div>
+              <div style="height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden;">
+                  <div style="width:92%; height:100%; background:#5d17ea;"></div>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:11px; color:#666;">
+                  <span>Match Score</span>
+                  <span style="font-weight:bold; color:#5d17ea;">92%</span>
+              </div>
+          </div>
+          
+          <div class="mockup-card" style="position:absolute; top:20px; left:40px; z-index:1; transform: rotate(5deg) scale(0.9); opacity:0.6; pointer-events:none;"></div>
+      </div>
+  </section>
 
-  <section class="features">
-    <div class="feature-card">
-      <h3>Open-source</h3>
-      <p>Project is fully open-sourced</p>
+  <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-item">
+            <h3 id="stat-uni">20+</h3>
+            <p>Top Universities</p>
+        </div>
+        <div class="stat-item">
+            <h3 id="stat-countries">13</h3>
+            <p>Countries</p>
+        </div>
+        <div class="stat-item">
+            <h3>100%</h3>
+            <p>Free & Open Source</p>
+        </div>
+        <div class="stat-item">
+            <h3>AI</h3>
+            <p>Smart Ranking</p>
+        </div>
     </div>
+  </section>
 
-    <div class="feature-card">
-      <h3>AI-powered</h3>
-      <p>We have AI-powered function to help find university</p>
-    </div>
+  <section class="features-section">
+      <h2 class="section-title">Why use UniSearch?</h2>
+      
+      <div class="feature-grid-new">
+          <div class="feature-box">
+              <div class="feature-icon">🧠</div>
+              <h4>AI Smart Sorting</h4>
+              <p>We don't just sort by rank. We calculate a "Fit Score" based on your budget, exam scores (IELTS/SAT), and prestige preference.</p>
+          </div>
+          
+          <div class="feature-box">
+              <div class="feature-icon">💸</div>
+              <h4>Financial Clarity</h4>
+              <p>See the real cost. Our system highlights Merit-based and Need-based aid opportunities, flagging universities that fit your wallet.</p>
+          </div>
+
+          <div class="feature-box">
+              <div class="feature-icon">🚀</div>
+              <h4>Data-Driven Decisions</h4>
+              <p>Built for the Infomatrix competition, we use structured JSON data and algorithms to eliminate bias in university selection.</p>
+          </div>
+      </div>
   </section>
 
   <script src="config.js"></script>

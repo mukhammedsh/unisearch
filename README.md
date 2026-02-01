@@ -1,4 +1,4 @@
-# UniSearch — Alpha Version (Infomatrix 2026)
+# UniSearch — Alpha v1.5.0 (Infomatrix 2026)
 
 ## Project description
 
@@ -19,7 +19,7 @@ UniSearch helps:
 
 ---
 
-## Latest Updates (v1.5)
+## Latest Updates (v1.5.0)
 
 ### Visual Improvements
 - Slider for budget, improved dropdowns
