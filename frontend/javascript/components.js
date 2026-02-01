@@ -1,4 +1,10 @@
 /* 2. components.js - Элементы интерфейса */
+import {
+  loadProfile,
+  saveProfile,
+  initCustomSelect,
+  getFlagImg
+} from "./utils.js";
 
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
 const LAYOUT_HTML = `
@@ -85,7 +91,7 @@ const LAYOUT_HTML = `
 `;
 
 // 🔥 1. Функция загрузки (теперь берет строку, а не файл)
-async function loadGlobalLayout() {
+export async function loadGlobalLayout() {
     try {
         console.log("Injecting Layout HTML...");
         // Вставляем HTML из переменной

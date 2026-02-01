@@ -117,3 +117,5 @@ function getUniSort(universities, balance0to100) {
     scored.sort((a, b) => b.score - a.score);
     return scored.map(x => x.uni);
 }
+
+export { getUniSort };

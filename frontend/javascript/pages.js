@@ -1,9 +1,30 @@
 /* 4. pages.js - Логика страниц */
+import {
+  API_BASE,
+  $,
+  debounce,
+  loadFilters,
+  saveFilters,
+  setUrlParams,
+  nested,
+  escapeHtml,
+  initials,
+  moneyUSD,
+  loadProfile,
+  getFlagImg,
+  initCustomSelect,
+  CITY_OPTIONS_BY_COUNTRY,
+  MAJOR_OPTIONS
+} from "./utils.js";
+
+import { getUniSort } from "./algo.js";
+
+
 
 // =====================================
 // PAGE: UNIVERSITIES LIST (Список + Карта)
 // =====================================
-function initUniversitiesPage() {
+export function initUniversitiesPage() {
     const el = {
         qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
         stateSelect: $("stateSelect"), citySelect: $("citySelect"), majorSelect: $("majorSelect"),
@@ -668,7 +689,7 @@ function initUniversitiesPage() {
 // =====================================
 // PAGE: UNIVERSITY DETAILS (Детальная страница)
 // =====================================
-async function initUniversityPage() {
+export async function initUniversityPage() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
   const stateEl = document.getElementById("detailState");
@@ -822,7 +843,7 @@ async function initUniversityPage() {
 }
 
 // --- Страница Рейтинга ---
-async function initRankingPage() {
+export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
     if (!listEl) return;
 

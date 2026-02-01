@@ -1,7 +1,8 @@
 /* 1. utils.js - Базовые настройки, утилиты и работа с профилем */
 
-export const API_BASE_URL =
-  window.API_BASE_URL || "http://127.0.0.1:8000";
+export const API_BASE = window.API_BASE_URL || "http://127.0.0.1:8000";
+
+export const $ = (id) => document.getElementById(id);
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
@@ -13,7 +14,7 @@ async function loadCityDatabase() {
     // ❌ БЫЛО: const response = await fetch('data/cities.json');
     
     // ✅ СТАЛО: Запрашиваем у нашего Python-сервера (API)
-    const response = await fetch(`${API_BASE_URL}/locations`); 
+    const response = await fetch(`${API_BASE}/locations`); 
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -51,8 +52,6 @@ const MAJOR_OPTIONS = [
 ];
 
 // --- Helpers ---
-function $(id) { return document.getElementById(id); }
-
 function debounce(fn, ms = 250) {
   let t = null;
   return (...args) => {
@@ -316,3 +315,20 @@ function initCustomSelect(selectId) {
         }
     });
 }
+
+export {
+  debounce,
+  escapeHtml,
+  nested,
+  initials,
+  moneyUSD,
+  setUrlParams,
+  loadProfile,
+  saveProfile,
+  saveFilters,
+  loadFilters,
+  getFlagImg,
+  initCustomSelect,
+  CITY_OPTIONS_BY_COUNTRY,
+  MAJOR_OPTIONS
+};
