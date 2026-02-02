@@ -1,0 +1,292 @@
+{
+  "version": 2,
+  "cefr": [
+    {
+      "id": 1,
+      "code": "A1",
+      "label": "A1 (Beginner)"
+    },
+    {
+      "id": 2,
+      "code": "A2",
+      "label": "A2 (Elementary)"
+    },
+    {
+      "id": 3,
+      "code": "B1",
+      "label": "B1 (Intermediate)"
+    },
+    {
+      "id": 4,
+      "code": "B2",
+      "label": "B2 (Upper-Intermediate)"
+    },
+    {
+      "id": 5,
+      "code": "C1",
+      "label": "C1 (Advanced)"
+    },
+    {
+      "id": 6,
+      "code": "C2",
+      "label": "C2 (Proficient)"
+    }
+  ],
+  "proof_kinds": [
+    {
+      "id": "native",
+      "label": "Native"
+    },
+    {
+      "id": "cefr",
+      "label": "CEFR level"
+    },
+    {
+      "id": "exam",
+      "label": "Certificate / Exam"
+    },
+    {
+      "id": "waiver",
+      "label": "Waiver (no exam)"
+    }
+  ],
+  "waiver_notes": [
+    "A waiver usually means the university accepts proof like: previous schooling taught in that language, citizenship/education documents, or an internal interview. Rules vary by university."
+  ],
+  "languages": [
+    {
+      "code": "kk",
+      "name": "Kazakh",
+      "native_name": "Қазақ тілі",
+      "script": "Cyrillic/Latin",
+      "notes": "Sometimes required as state language depending on university/program."
+    },
+    {
+      "code": "ru",
+      "name": "Russian",
+      "native_name": "Русский",
+      "script": "Cyrillic",
+      "notes": "May be required for Russian-taught programs (often via internal test/interview)."
+    },
+    {
+      "code": "en",
+      "name": "English",
+      "native_name": "English",
+      "script": "Latin",
+      "notes": "Most common language requirement (IELTS/TOEFL/DET/etc)."
+    },
+    {
+      "code": "de",
+      "name": "German",
+      "native_name": "Deutsch",
+      "script": "Latin",
+      "notes": "For German-taught programs often B2/C1 or certificates."
+    },
+    {
+      "code": "fr",
+      "name": "French",
+      "native_name": "Français",
+      "script": "Latin",
+      "notes": "For French-taught programs (DELF/DALF/TCF/TEF)."
+    },
+    {
+      "code": "nl",
+      "name": "Dutch",
+      "native_name": "Nederlands",
+      "script": "Latin",
+      "notes": "Dutch-taught programs may require NT2 or equivalent."
+    },
+    {
+      "code": "zh",
+      "name": "Chinese",
+      "native_name": "中文",
+      "script": "Han",
+      "notes": "Chinese-taught programs often require HSK."
+    },
+    {
+      "code": "ja",
+      "name": "Japanese",
+      "native_name": "日本語",
+      "script": "Kana/Kanji",
+      "notes": "Japanese-taught programs often require JLPT."
+    },
+    {
+      "code": "ko",
+      "name": "Korean",
+      "native_name": "한국어",
+      "script": "Hangul",
+      "notes": "Korean-taught programs often require TOPIK."
+    },
+    {
+      "code": "es",
+      "name": "Spanish",
+      "native_name": "Español",
+      "script": "Latin",
+      "notes": ""
+    },
+    {
+      "code": "it",
+      "name": "Italian",
+      "native_name": "Italiano",
+      "script": "Latin",
+      "notes": ""
+    }
+  ],
+  "language_exams": {
+    "en": [
+      {
+        "id": "IELTS",
+        "label": "IELTS Academic",
+        "min": 0.0,
+        "max": 9.0,
+        "type": "float",
+        "step": 0.5,
+        "decimals_allowed": [
+          0,
+          5
+        ],
+        "notes": "Band score; commonly 6.0–7.5+. Decimal part usually .0 or .5."
+      },
+      {
+        "id": "TOEFL_iBT",
+        "label": "TOEFL iBT",
+        "min": 0,
+        "max": 120,
+        "type": "int",
+        "step": 1
+      },
+      {
+        "id": "Duolingo_English_Test",
+        "label": "Duolingo English Test (DET)",
+        "min": 10,
+        "max": 160,
+        "type": "int",
+        "step": 5
+      },
+      {
+        "id": "PTE_Academic",
+        "label": "Pearson PTE Academic",
+        "min": 10,
+        "max": 90,
+        "type": "int",
+        "step": 1
+      }
+    ],
+    "de": [
+      {
+        "id": "TestDaF_TDN",
+        "label": "TestDaF (TDN level)",
+        "min": 3,
+        "max": 5,
+        "type": "int",
+        "step": 1,
+        "notes": "Simplified storage: minimal TDN level across sections (3–5)."
+      },
+      {
+        "id": "DSH_Level",
+        "label": "DSH level",
+        "min": 1,
+        "max": 3,
+        "type": "int",
+        "step": 1,
+        "notes": "DSH-1..DSH-3 (higher is better)."
+      },
+      {
+        "id": "Telc_C1_Hochschule",
+        "label": "telc Deutsch C1 Hochschule",
+        "min": 0,
+        "max": 100,
+        "type": "int",
+        "step": 1,
+        "unit": "%",
+        "notes": "Some certificates report %; adjust to your needs."
+      }
+    ],
+    "fr": [
+      {
+        "id": "DELF_DALF_Level",
+        "label": "DELF/DALF level",
+        "min": 1,
+        "max": 6,
+        "type": "int",
+        "step": 1,
+        "notes": "1..6 maps to A1..C2 (same as CEFR ids)."
+      },
+      {
+        "id": "TCF_Score",
+        "label": "TCF score (simplified)",
+        "min": 0,
+        "max": 699,
+        "type": "int",
+        "step": 1,
+        "notes": "Actual scaling varies by component; store your chosen total scale."
+      }
+    ],
+    "nl": [
+      {
+        "id": "NT2_Programme_II",
+        "label": "NT2 Programme II",
+        "min": 0,
+        "max": 100,
+        "type": "int",
+        "step": 1,
+        "unit": "%"
+      }
+    ],
+    "zh": [
+      {
+        "id": "HSK_Level",
+        "label": "HSK level (legacy 1–6)",
+        "min": 1,
+        "max": 6,
+        "type": "int",
+        "step": 1
+      }
+    ],
+    "ja": [
+      {
+        "id": "JLPT_Level",
+        "label": "JLPT level",
+        "min": 1,
+        "max": 5,
+        "type": "int",
+        "step": 1,
+        "notes": "1 = N1 (highest), 5 = N5 (lowest)."
+      }
+    ],
+    "ko": [
+      {
+        "id": "TOPIK_Level",
+        "label": "TOPIK level",
+        "min": 1,
+        "max": 6,
+        "type": "int",
+        "step": 1
+      }
+    ],
+    "kk": [
+      {
+        "id": "State_Language_Test",
+        "label": "State language test (custom)",
+        "min": 0,
+        "max": 100,
+        "type": "int",
+        "step": 1,
+        "unit": "%",
+        "notes": "Generic slot for state-language requirement; set rules per-university if needed."
+      }
+    ],
+    "ru": [
+      {
+        "id": "Russian_Internal_Test",
+        "label": "Russian internal test (custom)",
+        "min": 0,
+        "max": 100,
+        "type": "int",
+        "step": 1,
+        "unit": "%",
+        "notes": "Generic slot; many universities use interviews/internal testing rather than a standard exam."
+      }
+    ]
+  }
+}

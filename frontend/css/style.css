@@ -95,36 +95,42 @@ html, body {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 9999; /* 🔥 Было 1200, ставим максимум, чтобы перекрыть всё */
-  padding: 20px; /* Чтобы на маленьких экранах края не прилипали */
+  z-index: 9999;
+  padding: 12px; /* чтобы на маленьких экранах края не прилипали */
 }
 
-.profile-modal.is-open{
+.profile-modal.is-open {
   display: flex;
 }
 
 .profile-backdrop{
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.45); /* ✅ затемнение через отдельный слой */
 }
 
+/* Само окно */
 .profile-card{
   position: relative;
-  width: min(680px, 92vw);
+  width: min(760px, 96vw);      /* ✅ шире на больших экранах */
+  max-height: 92vh;             /* ✅ не вылезает за экран */
   background: #ffffff;
   border-radius: 18px;
-  padding: 22px 22px 26px;
   box-shadow: 0 24px 60px rgba(0,0,0,0.20);
   z-index: 1;
+
+  display: flex;                /* ✅ фиксируем header, скроллим body */
+  flex-direction: column;
+  overflow: hidden;             /* ✅ чтобы внутренний скролл работал красиво */
 }
 
 .profile-header{
+  padding: 22px 22px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 
 .profile-title{
@@ -140,8 +146,8 @@ html, body {
   font-size: 20px;
   font-weight: 800;
   color: #111;
-  max-width: 100%; /* Не даем блоку с именем быть шире родителя */
-  overflow: hidden; /* Обрезаем лишнее, если вдруг что */
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .profile-subtitle{
@@ -200,7 +206,11 @@ html, body {
   background: rgba(0,0,0,0.12);
 }
 
+/* ✅ Контент скроллится внутри */
 .profile-body{
+  padding: 16px 22px 22px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   display: grid;
   gap: 18px;
 }
@@ -234,8 +244,7 @@ html, body {
 
 .profile-budget {
   display: grid;
-  /* 3 колонки: Поле (растягивается) | Кнопка (авто) | Текст (авто) */
-  grid-template-columns: 1fr auto auto; 
+  grid-template-columns: 1fr auto auto;
   gap: 10px;
   align-items: center;
 }
@@ -333,21 +342,82 @@ html, body {
   color: #5d17ea;
 }
 
-@media (max-width: 640px){
-  .profile-card{ padding: 18px; }
-  .profile-exam-form{ grid-template-columns: 1fr; }
-  .profile-budget{ grid-template-columns: 1fr; }
-  .profile-unit{ width: fit-content; }
+/* ===== Languages block ===== */
+.profile-block {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  background: rgba(93,23,234,0.03);
+}
 
-  .profile-name-input {
-    min-width: 0;   /* Разрешаем сжиматься меньше 180px */
-    width: 120px;   /* Оптимальная ширина для телефона */
-    max-width: 100%;
-  }
-  
-  .profile-username {
-    gap: 5px; /* Уменьшаем отступ между полем и ручкой */
-  }
+.profile-block-head{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.profile-block h3{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #111;
+}
+
+.mini-label{
+  display:block;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.55);
+  margin: 0 0 6px;
+}
+
+.lang-add-grid{
+  display: grid;
+  grid-template-columns: 1fr 0.9fr 0.9fr 1.2fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.lang-actions{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.lang-exam-grid{
+  display:grid;
+  grid-template-columns: 1fr 0.7fr;
+  gap: 10px;
+}
+
+.lang-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.lang-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+}
+
+.lang-item strong{
+  color:#111;
+}
+
+.lang-item small{
+  color: rgba(0,0,0,0.6);
+}
+
+.lang-item button{
+  cursor: pointer;
 }
 
 /* --- TOAST NOTIFICATIONS (Система уведомлений) --- */
@@ -359,7 +429,7 @@ html, body {
   flex-direction: column;
   gap: 10px;
   z-index: 9999;
-  pointer-events: none; /* Чтобы клики проходили сквозь контейнер */
+  pointer-events: none;
 }
 
 .toast {
@@ -376,18 +446,18 @@ html, body {
   min-width: 250px;
   max-width: 350px;
   animation: slideIn 0.3s ease forwards;
-  pointer-events: auto; /* Сами уведомления кликабельны */
-  border-left: 4px solid #5d17ea; /* Цвет по умолчанию */
+  pointer-events: auto;
+  border-left: 4px solid #5d17ea;
 }
 
 .toast.error {
-  border-left-color: #ef4444; /* Красный для ошибок */
+  border-left-color: #ef4444;
   background: #fef2f2;
   color: #991b1b;
 }
 
 .toast.success {
-  border-left-color: #10b981; /* Зеленый для успеха */
+  border-left-color: #10b981;
   background: #ecfdf5;
   color: #065f46;
 }
@@ -477,8 +547,6 @@ html, body {
   margin-bottom: 10px;
 }
 
-/* frontend/css/style.css - Добавить в самый конец */
-
 /* --- Custom Select (Глобальные стили для Dropdown) --- */
 .custom-select-wrapper {
   position: relative;
@@ -486,12 +554,10 @@ html, body {
   user-select: none;
 }
 
-/* Скрываем стандартный селект */
 .u-select-hidden {
   display: none !important;
 }
 
-/* Кнопка открытия списка */
 .custom-select-trigger {
   position: relative;
   display: flex;
@@ -512,7 +578,6 @@ html, body {
   border-color: #5d17ea;
 }
 
-/* Стрелочка */
 .custom-select-trigger::after {
   content: '';
   width: 10px;
@@ -527,7 +592,6 @@ html, body {
   transform: rotate(180deg);
 }
 
-/* Выпадающее меню */
 .custom-options {
   position: absolute;
   display: block;
@@ -543,7 +607,7 @@ html, body {
   visibility: hidden;
   pointer-events: none;
   transform: translateY(-10px);
-  z-index: 9999; /* Максимальный приоритет */
+  z-index: 9999;
   max-height: 200px;
   overflow-y: auto;
   margin-top: 5px;
@@ -556,7 +620,6 @@ html, body {
   transform: translateY(0);
 }
 
-/* Элемент списка */
 .custom-option {
   padding: 10px 14px;
   font-size: 14px;
@@ -579,7 +642,6 @@ html, body {
   color: #5d17ea;
 }
 
-/* Картинки (флаги) */
 .custom-option img, .custom-select-trigger img {
   width: 20px;
   height: 15px;
@@ -590,23 +652,21 @@ html, body {
 
 /* Основной блок футера */
 .site-footer {
-    background-color: #f8f9fa; /* Светло-серый фон (поменяй на свой) */
-    padding: 20px 0;           /* Отступы сверху и снизу */
-    margin-top: auto;          /* Прижимает футер к низу, если контента мало */
-    border-top: 1px solid #e1e4e8; /* Тонкая линия сверху для красоты */
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    margin-top: auto;
+    border-top: 1px solid #e1e4e8;
 }
 
-/* Контейнер внутри футера */
 .footer-content {
-    display: flex;              /* Включаем режим гибкой верстки */
-    justify-content: space-between; /* Текст слева, иконка справа */
-    align-items: center;        /* Выравниваем их по одной линии по вертикали */
-    max-width: 1200px;          /* Ограничение ширины (как у тебя на сайте) */
-    margin: 0 auto;             /* Центрируем сам контейнер */
-    padding: 0 20px;            /* Отступы по бокам для мобилок */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-/* Убираем лишние отступы у текста, чтобы стоял ровно */
 .footer-content p {
     margin: 0;
     font-weight: 500;
@@ -614,9 +674,8 @@ html, body {
 
 /* --- Адаптивность для мобильных (Улучшенная) --- */
 @media (max-width: 768px) {
-  /* 1. Делаем меню "липким", а не фиксированным */
   .navbar {
-    position: sticky; /* Магия: меню само толкает контент вниз */
+    position: sticky;
     top: 0;
     height: auto;
     padding: 10px 15px;
@@ -625,17 +684,14 @@ html, body {
     gap: 10px;
   }
 
-  /* 2. Убираем отступ у body, так как sticky меню его не требует */
   body {
     margin: 0;
-    font-family: 'Inter', Arial, sans-serif; /* Добавил Inter для красоты, если он подключен */
+    font-family: 'Inter', Arial, sans-serif;
     background: #ffffff;
     color: #111;
-    /* padding-top убираем, так как теперь navbar sticky (липкий) */
     padding-top: 0;
   }
 
-  /* Настройки элементов меню (как мы обсуждали ранее) */
   .navbar-left { order: 1; width: auto; flex: 0 0 auto; }
   .logo { height: 32px; }
   
@@ -651,4 +707,30 @@ html, body {
     justify-content: center;
     gap: 15px;
   }
+
+  /* Profile modal tweaks */
+  .profile-card{ width: min(720px, 96vw); }
+  .profile-header{ padding: 18px 16px 12px; }
+  .profile-body{ padding: 12px 16px 16px; }
+
+  .profile-exam-form{ grid-template-columns: 1fr; }
+  .profile-budget{ grid-template-columns: 1fr; }
+  .profile-unit{ width: fit-content; }
+
+  .profile-name-input {
+    min-width: 0;
+    width: 120px;
+    max-width: 100%;
+  }
+  
+  .profile-username {
+    gap: 5px;
+  }
+
+  .lang-add-grid{
+    grid-template-columns: 1fr;
+  }
+  .lang-actions{ justify-content: stretch; }
+  .lang-actions .profile-add{ width: 100%; }
+  .lang-exam-grid{ grid-template-columns: 1fr; }
 }

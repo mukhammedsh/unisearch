@@ -10,32 +10,72 @@ const PROFILE_DEFAULTS = {
     name: "User", 
     budget: "", 
     exams: [], 
+    languages: [],   // ✅ новое поле
     major: "", 
     studyMode: "Any" 
 };
 
-export let EXAM_CONFIG = {};
+export let EXAM_CONFIG = {
+        "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
+        "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
+        "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
+        "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
+        "NUET_Total": {"min": 0, "max": 240, "type": "int", "step": 1},
+        "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
+        "AP_Score": {"min": 1, "max": 5, "type": "int", "step": 1},
+        "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
+        "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
+    };
 
 async function loadExamConfig() {
   try {
     const response = await fetch(`${API_BASE}/exams/config`);
     if (!response.ok) throw new Error("Failed to load exam config");
     
-    EXAM_CONFIG = await response.json();
-    console.log("✅ Exam config loaded:", EXAM_CONFIG);
-    window.dispatchEvent(new Event("examConfigLoaded"));
+    const raw = await response.json();
+
+// Поддерживаем оба формата:
+// 1) { "SAT": {min,max,...}, ... }
+// 2) { version, exams: { ... } }
+EXAM_CONFIG = raw?.exams ? raw.exams : raw;
+
+console.log("✅ Exam config loaded:", EXAM_CONFIG);
+window.dispatchEvent(new Event("examConfigLoaded"));
   } catch (error) {
     console.error("❌ Error loading exam config:", error);
     EXAM_CONFIG = {
-        "IELTS": [1.0, 9.0],
-        "SAT": [400.0, 1600.0],
-        "GPA": [0.0, 100.0],
-        "UNT": [0.0, 140.0],
+        "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
+        "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
+        "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
+        "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
+        "NUET_Total": {"min": 0, "max": 240, "type": "int", "step": 1},
+        "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
+        "AP_Score": {"min": 1, "max": 5, "type": "int", "step": 1},
+        "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
+        "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
     };
   }
 }
 
 loadExamConfig();
+
+export let LANG_CONFIG = null;
+
+async function loadLanguageConfig() {
+  try {
+    const response = await fetch(`${API_BASE}/languages/config`);
+    if (!response.ok) throw new Error("Failed to load language config");
+    LANG_CONFIG = await response.json();
+    console.log("✅ Language config loaded:", LANG_CONFIG);
+    window.dispatchEvent(new Event("languageConfigLoaded"));
+  } catch (error) {
+    console.error("❌ Error loading language config:", error);
+    LANG_CONFIG = null;
+  }
+}
+
+loadLanguageConfig();
+
 
 export let CITY_OPTIONS_BY_COUNTRY = {};
 

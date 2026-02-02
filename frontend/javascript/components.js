@@ -102,6 +102,35 @@ const LAYOUT_HTML = `
         <div id="examList" class="profile-exam-list"></div>
       </div>
 
+      <section class="profile-block" id="languagesBlock">
+        <h3>Languages</h3>
+
+        <div class="lang-add-row">
+            <select id="langCode"></select>
+            <select id="langKind">
+            <option value="native">Native</option>
+            <option value="cefr">CEFR</option>
+            <option value="exam">Exam</option>
+            </select>
+
+            <select id="langCefr" style="display:none">
+            <option value="1">A1</option>
+            <option value="2">A2</option>
+            <option value="3">B1</option>
+            <option value="4">B2</option>
+            <option value="5">C1</option>
+            <option value="6">C2</option>
+            </select>
+
+            <select id="langExam" style="display:none"></select>
+            <input id="langExamScore" type="number" placeholder="score" style="display:none; width:110px" />
+
+            <button id="langAddBtn" type="button">Add</button>
+        </div>
+
+        <div id="langList" class="lang-list"></div>
+        </section>
+
     </div>
   </div>
 </div>

@@ -3,18 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
 from typing import Any, Optional, List, Dict, Union
-
-# --- ВСТРОЕННАЯ КОНФИГУРАЦИЯ ---
-EXAM_WHITELIST = {
-    "IELTS": (1.0, 9.0),
-    "SAT": (400.0, 1600.0),
-    "GPA": (0.0, 100.0), #проценты
-    "UNT": (0.0, 140.0),
-}
-# В планах добавить TOEFL
+from decimal import Decimal
+from pathlib import Path
 
 app = FastAPI(title="UniSearch AI API", version="2.0.0")
-
 FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",
     "http://127.0.0.1:5500"  # локально
@@ -37,6 +29,40 @@ BACKEND_DIR = os.path.dirname(CURRENT_DIR)
 # 3. Строим путь к JSON: backend -> data -> universities.json
 DATA_PATH = os.path.join(BACKEND_DIR, "data", "universities.json")
 CITIES_PATH = os.path.join(BACKEND_DIR, "data", "cities.json")
+
+EXAMS_PATH = os.path.join(BACKEND_DIR, "data", "exams.json")
+
+def load_exams_config() -> Dict[str, Dict[str, Any]]:
+    """
+    Загружает exams.json и возвращает конфиг с КЛЮЧАМИ в UPPERCASE:
+    {
+      "IELTS": {"min":0, "max":9, "type":"float", "step":0.5, ...},
+      ...
+    }
+    """
+    if not os.path.exists(EXAMS_PATH):
+        return {}
+
+    try:
+        with open(EXAMS_PATH, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+            if not isinstance(raw, dict):
+                return {}
+            cfg = {}
+            for k, v in raw.items():
+                if isinstance(v, dict):
+                    cfg[str(k).strip().upper()] = v
+            return cfg
+    except Exception:
+        return {}
+
+EXAMS_CONFIG = load_exams_config()
+
+# Для совместимости с твоими эндпоинтами: min/max как раньше
+EXAM_WHITELIST = {
+    k: (float(v.get("min", 0.0)), float(v.get("max", 0.0)))
+    for k, v in EXAMS_CONFIG.items()
+}
 
 def load_universities() -> List[Dict[str, Any]]:
     # Проверка основного пути
@@ -133,6 +159,63 @@ def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
 def root():
     return {"status": "ok", "service": "uniesearch-backend-ai", "version": "1.0"}
 
+def _to_decimal(x: Any) -> Decimal:
+    return Decimal(str(x).strip())
+
+def validate_exam_value(exam_key: str, score_raw: Any) -> Union[int, float]:
+    """
+    Валидирует score по EXAMS_CONFIG:
+    - диапазон min/max
+    - step (если указан)
+    - type: int/float/bool
+    - спец-правило IELTS decimals_allowed (если задано)
+    Возвращает нормализованное значение (int/float).
+    """
+    if exam_key not in EXAMS_CONFIG:
+        raise ValueError(f"Unknown exam: {exam_key}")
+
+    cfg = EXAMS_CONFIG[exam_key]
+    t = str(cfg.get("type", "float")).lower()
+
+    # bool
+    if t == "bool":
+        if str(score_raw).strip() in ("1", "true", "True"):
+            return 1
+        if str(score_raw).strip() in ("0", "false", "False"):
+            return 0
+        raise ValueError(f"{exam_key} must be 0 or 1")
+
+    # numeric
+    dv = _to_decimal(score_raw)
+    mn = _to_decimal(cfg.get("min", 0))
+    mx = _to_decimal(cfg.get("max", 0))
+
+    if dv < mn or dv > mx:
+        raise ValueError(f"Score must be between {mn} and {mx}")
+
+    # step check (Decimal-safe)
+    step = cfg.get("step", None)
+    if step is not None:
+        st = _to_decimal(step)
+        # (dv - mn) must be multiple of st
+        q = (dv - mn) / st
+        if q != q.to_integral_value():
+            raise ValueError(f"Score must follow step={st}")
+
+    # IELTS decimals_allowed: [0,5] => .0 или .5
+    if exam_key == "IELTS" and "decimals_allowed" in cfg:
+        allowed = set(int(x) for x in cfg.get("decimals_allowed", []))
+        # одна цифра после запятой: 6.5 -> 5
+        tenth = int((dv * 10) % 10)
+        if tenth not in allowed:
+            raise ValueError("IELTS decimals must be .0 or .5")
+
+    if t == "int":
+        return int(dv)
+
+    return float(dv)
+
+
 @app.post("/exams/validate")
 def validate_exam(payload: Dict[str, Any]):
     exam_raw = str(payload.get("exam", "")).strip()
@@ -143,18 +226,14 @@ def validate_exam(payload: Dict[str, Any]):
     if score_raw is None or score_raw == "":
         raise HTTPException(status_code=400, detail="Score is required")
 
+    key = exam_raw.strip().upper()
+
     try:
-        score = float(score_raw)
+        score = validate_exam_value(key, score_raw)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception:
-        raise HTTPException(status_code=400, detail="Score must be a number")
-
-    key = exam_raw.upper()
-    if key not in EXAM_WHITELIST:
-        raise HTTPException(status_code=400, detail=f"Unknown exam. Allowed: {list(EXAM_WHITELIST.keys())}")
-
-    min_s, max_s = EXAM_WHITELIST[key]
-    if score < min_s or score > max_s:
-        raise HTTPException(status_code=400, detail=f"Score must be between {min_s} and {max_s}")
+        raise HTTPException(status_code=400, detail="Invalid score format")
 
     return {"ok": True, "exam": key, "score": score}
 
@@ -290,6 +369,99 @@ def get_locations():
 def get_exam_config():
     """Отдает список разрешенных экзаменов и их диапазоны (min, max)"""
     return EXAM_WHITELIST
+
+@app.get("/exams/config/full")
+def get_exam_config_full():
+    return EXAMS_CONFIG
+
+LANGUAGES_PATH = os.path.join(BACKEND_DIR, "data", "languages.json")
+
+def load_languages() -> Dict[str, Any]:
+    if os.path.exists(LANGUAGES_PATH):
+        try:
+            with open(LANGUAGES_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data if isinstance(data, dict) else {}
+        except Exception:
+            return {}
+    return {}
+
+LANGUAGES_CONFIG = load_languages()
+
+@app.get("/languages/config")
+def get_languages_config():
+    if os.path.exists(LANGUAGES_PATH):
+        try:
+            with open(LANGUAGES_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {"version": 0, "cefr": [], "languages": [], "language_exams": {}, "waiver_rules": []}
+    return {"version": 0, "cefr": [], "languages": [], "language_exams": {}, "waiver_rules": []}
+
+@app.post("/languages/validate")
+def validate_language(payload: Dict[str, Any]):
+    cfg = LANGUAGES_CONFIG or {}
+    langs = cfg.get("languages", {})
+    cefr_map = cfg.get("cefr_map", {})
+
+    code = str(payload.get("code", "")).strip().lower()
+    kind = str(payload.get("kind", "")).strip().lower()
+
+    if not code or code not in langs:
+        raise HTTPException(status_code=400, detail="Unknown language code")
+    if kind not in ("native", "cefr", "exam"):
+        raise HTTPException(status_code=400, detail="kind must be native/cefr/exam")
+
+    supports = set(langs[code].get("supports", []))
+    if kind not in supports:
+        raise HTTPException(status_code=400, detail=f"{code} does not support kind={kind}")
+
+    # native: ничего больше не нужно
+    if kind == "native":
+        return {"ok": True, "language": {"code": code, "kind": "native"}}
+
+    # cefr: можно принять либо level (1..6), либо label (A1..C2)
+    if kind == "cefr":
+        level = payload.get("level", None)
+        label = str(payload.get("label", "")).strip().upper()
+
+        if level is None and label:
+            if label not in cefr_map:
+                raise HTTPException(status_code=400, detail="Invalid CEFR label")
+            level = cefr_map[label]
+
+        try:
+            level_i = int(level)
+        except Exception:
+            raise HTTPException(status_code=400, detail="CEFR level must be integer 1..6")
+
+        if level_i < 1 or level_i > 6:
+            raise HTTPException(status_code=400, detail="CEFR level must be 1..6")
+
+        return {"ok": True, "language": {"code": code, "kind": "cefr", "level": level_i}}
+
+    # exam: экзамен должен быть разрешён для этого языка + валиден в EXAM_WHITELIST
+    if kind == "exam":
+        exam = str(payload.get("exam", "")).strip().upper()
+        score_raw = payload.get("score", None)
+
+        allowed = set(langs[code].get("allowed_exams", []))
+        if exam not in allowed:
+            raise HTTPException(status_code=400, detail=f"Exam {exam} is not allowed for language {code}")
+
+        if exam not in EXAM_WHITELIST:
+            raise HTTPException(status_code=400, detail=f"Unknown exam: {exam}")
+
+        try:
+            score = float(score_raw)
+        except Exception:
+            raise HTTPException(status_code=400, detail="score must be a number")
+
+        mn, mx = EXAM_WHITELIST[exam]
+        if score < mn or score > mx:
+            raise HTTPException(status_code=400, detail=f"score must be between {mn} and {mx}")
+
+        return {"ok": True, "language": {"code": code, "kind": "exam", "exam": exam, "score": score}}
 
 if __name__ == "__main__":
     import uvicorn
