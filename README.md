@@ -1,24 +1,25 @@
 # UniSearch — Beta v2.0.0 (Infomatrix 2026)
 
 ## Project description
+ 
+**UniSearch** is a socially oriented web application designed to help students and applicants choose universities based on their preferences, structured data and **AI-based Smart Ranking**.
 
-**UniSearch** is a socially oriented web application designed to help school students and applicants choose suitable universities based on structured data and **AI-based Smart Ranking**.
-
-The main goal is to reduce inequality in access to educational information and eliminate the need for expensive consultants by providing personalized recommendations based on the applicant's **specific admission scenario** (SAT, UNT, IELTS, etc.).
+The main goal of the project UniSearch is to reduce inequality in access to educational information and eliminate the need for expensive consultants by providing personalized recommendations based on the applicant's **specific admission scenario** (SAT, UNT, IELTS, etc.).
 
 ---
 
 ## 🚀 Key Features (v2.0 Update)
 
 ### 1. Track-Based Admission Logic 🛤️
-Universities often have multiple ways to enter (e.g., "Direct Entry via SAT" vs. "Foundation Year" vs. "National Exam Track").
-* **Old approach:** One generic "Avg GPA" for the whole university.
-* **New approach:** Smart separation of requirements. The system calculates your chances for *each specific track* independently.
+Universities often have multiple ways to enter (e.g., "Direct Entry via SAT" or "Foundation Year" or "National Exam Track").
+* **Old version:** One generic "Avg GPA" for all scenarios.
+* **New version:** Smart separation of requirements. The system calculates your chances for *each specific track* independently.
 
 ### 2. Dynamic Exam Configuration ⚙️
 The system is no longer hardcoded. Supported exams (IELTS, SAT, UNT, etc.) are fetched from the backend (`/exams/config`). This allows administrators to add new national exams (like NUET or ENT) without changing the frontend code.
 
 ### 3. AI Smart Profile 🧠
+
 * Users input their scores in a specialized modal.
 * The **"Smart Sort"** algorithm ranks universities by a weighted "Fit Score" that combines:
     * **Academic Fit:** Do you meet the track requirements?
@@ -174,7 +175,7 @@ The application uses a weighted algorithm to rank universities:
 
 ### **1. Update JSON Data**
 
-Edit backend/data/universities.json. The structure has been updated to support precise grant types and exam requirements.
+Edited backend/data/universities.json. The structure has been updated to support precise grant types and exam requirements.
 
 **Example Entry:**
 
@@ -238,7 +239,7 @@ Edit backend/data/universities.json. The structure has been updated to support p
 
 To ensure the UI looks correct, add images matching the id from the JSON:
 
-* **Logo:** frontend/images/logos/harvard-usa-cambridge.png (Transparent PNG recommended)  
+* **Logo:** frontend/images/logos/harvard-usa-cambridge.png (Transparent PNG required)  
 * **Cover:** frontend/images/thumbnails/harvard-usa-cambridge.jpg (1280x720 or 16:9 JPG)
 
 ---
@@ -247,7 +248,7 @@ To ensure the UI looks correct, add images matching the id from the JSON:
 
 Planned features for Beta:
 
-* **User Accounts:** Saving the User Profile (GPA/Budget) to the database instead of local testing variables. 
+* **User Accounts:** Saving the User Profile (GPA/Budget) to the database instead of local testing variables and add signing in by Google account.
 * **Cloud Database:** Migration from JSON to PostgreSQL/MongoDB.
 
 ---
