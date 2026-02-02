@@ -24,29 +24,28 @@
         "Books_Transport_Misc": 3770
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 110000,
+      "average_salary_by_major": {
+        "Computer Science": 126841,
+        "Engineering": 102000,
+        "Mathematics": 115000,
+        "Physics": 95000,
+        "Business": 135000,
+        "Biology": 75000
+      }
+    },
     "student_life": { "size": "medium" },
     "admission_tracks": [
       {
         "id": "mit_regular",
         "label": "Regular Action (SAT/ACT Required)",
         "study_mode": "On-campus",
-        "description": "Standard admission process. SAT/ACT is mandatory for all applicants.",
-        "requirements": {
-          "IELTS": 7.5,
-          "SAT": 1500,
-          "GPA": 95
-        },
-        "stats_avg": {
-          "IELTS": 8.0,
-          "SAT": 1550,
-          "GPA": 99
-        },
+        "description": "Standard admission process. SAT/ACT is mandatory.",
+        "requirements": { "IELTS": 7.5, "SAT": 1520, "GPA": 98 },
+        "stats_avg": { "IELTS": 8.0, "SAT": 1560, "GPA": 100 },
         "scholarships": [
-          {
-            "name": "Need-based Financial Aid (Full Ride)",
-            "type": "need",
-            "requirements": { "SAT": 1550, "GPA": 98 }
-          }
+          { "name": "MIT Need-based Scholarship (Full Ride)", "type": "need", "requirements": { "GPA": 98 } }
         ]
       }
     ]
@@ -60,7 +59,7 @@
     "coordinates": { "lat": 51.4988, "lon": -0.1749 },
     "website": "https://www.imperial.ac.uk/",
     "academics": {
-      "majors": ["Engineering", "Medicine", "Natural Sciences", "Business"],
+      "majors": ["Engineering", "Medicine", "Natural Sciences", "Business", "Computer Science"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 15
@@ -76,6 +75,16 @@
         "Books_Transport_Misc": 3000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 68000,
+      "average_salary_by_major": {
+        "Computer Science": 82000,
+        "Engineering": 65000,
+        "Medicine": 55000,
+        "Mathematics": 70000,
+        "Business": 75000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
       {
@@ -83,49 +92,11 @@
         "label": "Engineering & Science Track",
         "study_mode": "On-campus",
         "applicable_majors": ["Engineering", "Natural Sciences", "Computer Science"],
-        "description": "Standard entry for technical majors.",
-        "requirements": {
-          "IELTS": 7.0,
-          "SAT": 1400,
-          "GPA": 90
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "SAT": 1480,
-          "GPA": 95
-        },
+        "requirements": { "IELTS": 7.0, "SAT": 1450, "GPA": 92 },
+        "stats_avg": { "IELTS": 7.5, "SAT": 1500, "GPA": 96 },
         "scholarships": [
-          {
-            "name": "President's Undergraduate Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1520, "GPA": 98 }
-          }
+          { "name": "President's Undergraduate Scholarship", "type": "merit", "requirements": { "GPA": 98 } }
         ]
-      },
-      {
-        "id": "imperial_med",
-        "label": "Medicine School Track",
-        "study_mode": "On-campus",
-        "applicable_majors": ["Medicine"],
-        "description": "Specific track for MBBS Medicine. Higher English requirements.",
-        "requirements": {
-          "IELTS": 7.5,
-          "GPA": 98
-        },
-        "stats_avg": {
-          "IELTS": 8.0,
-          "GPA": 99
-        },
-        "finance_override": {
-          "total_cost_year_usd": 85000,
-          "costs_breakdown_year_usd": {
-             "Tuition": 65000,
-             "Housing_Dorm": 12000,
-             "Food": 5700,
-             "Books_Transport_Misc": 2300
-          }
-        },
-        "scholarships": []
       }
     ]
   },
@@ -134,14 +105,14 @@
     "name": "Harvard University",
     "rank": 3,
     "student_count": 25266,
-    "location": { "country": "USA", "city": "Cambridge", "state": "Massachusetts" },
+    "location": { "country": "USA", "city": "Cambridge", "state": "MA" },
     "coordinates": { "lat": 42.3736, "lon": -71.1097 },
     "website": "https://www.harvard.edu/",
     "academics": {
-      "majors": ["Economics", "Government", "Computer Science", "Social Sciences", "Law", "Medicine"],
+      "majors": ["Economics", "Computer Science", "Political Science", "Law", "Medicine", "Psychology"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus", "Hybrid"],
-      "acceptance_rate_percent": 4
+      "acceptance_rate_percent": 3
     },
     "finance": {
       "total_cost_year_usd": 87450,
@@ -154,54 +125,25 @@
         "Books_Transport_Misc": 6350
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 95000,
+      "average_salary_by_major": {
+        "Computer Science": 125000,
+        "Economics": 105000,
+        "Law": 160000,
+        "Political Science": 75000,
+        "Psychology": 65000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
       {
         "id": "harvard_college",
         "label": "Harvard College (Standard)",
         "study_mode": "On-campus",
-        "description": "Standard residential undergraduate program.",
-        "requirements": {
-          "IELTS": 7.5,
-          "SAT": 1500,
-          "GPA": 95
-        },
-        "stats_avg": {
-          "IELTS": 8.0,
-          "SAT": 1540,
-          "GPA": 99
-        },
-        "scholarships": [
-          {
-            "name": "Full Need-Based Aid",
-            "type": "need",
-            "requirements": { "SAT": 1520, "GPA": 95 }
-          }
-        ]
-      },
-      {
-        "id": "harvard_extension",
-        "label": "Harvard Extension School",
-        "study_mode": "Hybrid",
-        "description": "Degree program for adult learners. Mostly online with mandatory on-campus summer.",
-        "requirements": {
-          "IELTS": 7.0,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "GPA": 88
-        },
-        "finance_override": {
-          "total_cost_year_usd": 35000,
-          "costs_breakdown_year_usd": {
-             "Tuition": 30000,
-             "Housing_Dorm": 3000,
-             "Food": 1500,
-             "Books_Transport_Misc": 500
-          }
-        },
-        "scholarships": []
+        "requirements": { "IELTS": 7.5, "SAT": 1520, "GPA": 98 },
+        "stats_avg": { "IELTS": 8.0, "SAT": 1560, "GPA": 100 },
+        "scholarships": [{ "name": "Full Need-Based Aid", "type": "need", "requirements": { "GPA": 95 } }]
       }
     ]
   },
@@ -210,11 +152,11 @@
     "name": "Stanford University",
     "rank": 4,
     "student_count": 17469,
-    "location": { "country": "USA", "city": "Stanford", "state": "California" },
+    "location": { "country": "USA", "city": "Stanford", "state": "CA" },
     "coordinates": { "lat": 37.4275, "lon": -122.1697 },
     "website": "https://www.stanford.edu/",
     "academics": {
-      "majors": ["Computer Science", "Engineering", "Business", "Biology", "Psychology", "Earth Sciences"],
+      "majors": ["Computer Science", "Engineering", "Business", "Biology", "Economics"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 4
@@ -230,29 +172,25 @@
         "Books_Transport_Misc": 5982
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 105000,
+      "average_salary_by_major": {
+        "Computer Science": 135000,
+        "Engineering": 110000,
+        "Business": 125000,
+        "Economics": 98000,
+        "Biology": 70000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
       {
         "id": "stanford_standard",
         "label": "Standard Admission",
         "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 7.5,
-          "SAT": 1500,
-          "GPA": 95
-        },
-        "stats_avg": {
-          "IELTS": 8.0,
-          "SAT": 1550,
-          "GPA": 99
-        },
-        "scholarships": [
-          {
-            "name": "Zero Tuition (Income <$150k)",
-            "type": "need",
-            "requirements": { "SAT": 1500, "GPA": 95 }
-          }
-        ]
+        "requirements": { "IELTS": 7.5, "SAT": 1500, "GPA": 96 },
+        "stats_avg": { "IELTS": 8.0, "SAT": 1550, "GPA": 99 },
+        "scholarships": [{ "name": "Zero Tuition (Income <$150k)", "type": "need", "requirements": {} }]
       }
     ]
   },
@@ -265,7 +203,7 @@
     "coordinates": { "lat": 47.3763, "lon": 8.5477 },
     "website": "https://ethz.ch/en.html",
     "academics": {
-      "majors": ["Architecture", "Engineering", "Chemistry", "Physics", "Computer Science", "Mathematics"],
+      "majors": ["Engineering", "Computer Science", "Architecture", "Physics", "Mathematics"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 27
@@ -281,26 +219,27 @@
         "Insurance_Transport_Misc": 4200
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 95000,
+      "average_salary_by_major": {
+        "Computer Science": 110000,
+        "Engineering": 100000,
+        "Architecture": 85000,
+        "Physics": 98000,
+        "Mathematics": 95000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
       {
-        "id": "eth_standard",
-        "label": "Entrance Exam / Diploma Recognition",
+        "id": "eth_exam",
+        "label": "Direct Entry (Exam/Diploma)",
         "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 7.0,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "GPA": 92
-        },
+        "description": "Requires reduced entrance exam or recognized high school diploma (e.g. IB, A-Level with specific grades).",
+        "requirements": { "IELTS": 7.0, "GPA": 90 },
+        "stats_avg": { "IELTS": 7.5, "GPA": 96 },
         "scholarships": [
-          {
-            "name": "Excellence Scholarship & Opportunity Programme",
-            "type": "merit",
-            "requirements": { "GPA": 98 }
-          }
+            { "name": "Excellence Scholarship", "type": "merit", "requirements": { "GPA": 98 } }
         ]
       }
     ]
@@ -314,7 +253,7 @@
     "coordinates": { "lat": 1.2966, "lon": 103.7764 },
     "website": "https://nus.edu.sg/",
     "academics": {
-      "majors": ["Engineering", "Computing", "Business", "Science", "Design", "Arts & Social Sciences"],
+      "majors": ["Computer Science", "Engineering", "Business", "Law", "Medicine"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 5
@@ -330,29 +269,25 @@
         "Books_Transport_Misc": 2000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 55000,
+      "average_salary_by_major": {
+        "Computer Science": 65000,
+        "Law": 68000,
+        "Business": 58000,
+        "Engineering": 52000,
+        "Medicine": 60000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
       {
         "id": "nus_intl",
         "label": "International Admission",
         "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1450,
-          "GPA": 90
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "SAT": 1520,
-          "GPA": 97
-        },
-        "scholarships": [
-          {
-            "name": "ASEAN Undergraduate Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1550, "GPA": 98 }
-          }
-        ]
+        "requirements": { "IELTS": 7.0, "SAT": 1450, "GPA": 95 },
+        "stats_avg": { "IELTS": 7.5, "SAT": 1540, "GPA": 98 },
+        "scholarships": [{ "name": "ASEAN Undergraduate Scholarship", "type": "merit", "requirements": { "SAT": 1550 } }]
       }
     ]
   },
@@ -365,7 +300,7 @@
     "coordinates": { "lat": -37.7986, "lon": 144.9602 },
     "website": "https://www.unimelb.edu.au/",
     "academics": {
-      "majors": ["Law", "Education", "Business", "Engineering", "Medicine", "Arts"],
+      "majors": ["Business", "Engineering", "Law", "Medicine", "Arts", "Science"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 70
@@ -381,30 +316,29 @@
         "Books_Transport_Misc": 2000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 49000,
+      "average_salary_by_major": {
+        "Business": 55000,
+        "Engineering": 58000,
+        "Computer Science": 52000,
+        "Law": 64000,
+        "Medicine": 70000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "melb_standard",
-        "label": "Standard Entry",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1250,
-          "GPA": 75
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "scholarships": [
-          {
-            "name": "Melbourne International Undergraduate Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1500, "GPA": 95 }
-          }
-        ]
-      }
+        {
+            "id": "melb_intl",
+            "label": "International Undergraduate",
+            "study_mode": "On-campus",
+            "description": "Direct entry based on secondary school results (A-levels, IB, SAT).",
+            "requirements": { "IELTS": 6.5, "SAT": 1350, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.0, "SAT": 1420, "GPA": 92 },
+            "scholarships": [
+                { "name": "Melbourne International Undergraduate Scholarship", "type": "merit", "amount": 10000, "requirements": { "GPA": 96 } }
+            ]
+        }
     ]
   },
   {
@@ -416,7 +350,7 @@
     "coordinates": { "lat": 40.0000, "lon": 116.3333 },
     "website": "https://www.tsinghua.edu.cn/en/",
     "academics": {
-      "majors": ["Computer Science", "Civil Engineering", "Physics", "Economics", "Architecture", "Environment"],
+      "majors": ["Computer Science", "Engineering", "Physics", "Economics", "Architecture"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 2
@@ -432,30 +366,29 @@
         "Books_Transport_Misc": 1000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 35000,
+      "average_salary_by_major": {
+        "Computer Science": 48000,
+        "Engineering": 38000,
+        "Economics": 40000,
+        "Architecture": 32000,
+        "Physics": 30000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "tsinghua_intl",
-        "label": "International Student Track",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1300,
-          "GPA": 88
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1480,
-          "GPA": 95
-        },
-        "scholarships": [
-          {
-            "name": "Chinese Government Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1450, "GPA": 95 }
-          }
-        ]
-      }
+        {
+            "id": "tsinghua_intl",
+            "label": "International Student Track",
+            "study_mode": "On-campus",
+            "description": "For non-Chinese citizens. Selection based on academic performance and language proficiency.",
+            "requirements": { "IELTS": 6.5, "SAT": 1300, "GPA": 88 },
+            "stats_avg": { "IELTS": 7.0, "SAT": 1450, "GPA": 95 },
+            "scholarships": [
+                { "name": "Chinese Government Scholarship", "type": "merit", "requirements": { "GPA": 95 } }
+            ]
+        }
     ]
   },
   {
@@ -467,7 +400,7 @@
     "coordinates": { "lat": 43.6629, "lon": -79.3957 },
     "website": "https://www.utoronto.ca/",
     "academics": {
-      "majors": ["Psychology", "Medical Technology", "Human Humanities", "Engineering", "Business", "Computer Science"],
+      "majors": ["Computer Science", "Business", "Engineering", "Psychology", "Life Sciences"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus", "Hybrid"],
       "acceptance_rate_percent": 43
@@ -483,42 +416,41 @@
         "Books_Transport_Misc": 2000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 55000,
+      "average_salary_by_major": {
+        "Computer Science": 68000,
+        "Engineering": 62000,
+        "Business": 60000,
+        "Life Sciences": 45000,
+        "Psychology": 42000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "uoft_standard",
-        "label": "Standard Admission",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1300,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1400,
-          "GPA": 90
-        },
-        "scholarships": [
-          {
-            "name": "Lester B. Pearson International Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1500, "GPA": 98 }
-          }
-        ]
-      }
+        {
+            "id": "uoft_general",
+            "label": "General Admission",
+            "study_mode": "On-campus",
+            "description": "Standard entry based on high school diploma and English proficiency.",
+            "requirements": { "IELTS": 6.5, "SAT": 1300, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.5, "SAT": 1400, "GPA": 92 },
+            "scholarships": [
+                { "name": "Lester B. Pearson International Scholarship", "type": "merit", "requirements": { "GPA": 98 } }
+            ]
+        }
     ]
   },
   {
     "id": "epfl-ch-lausanne",
-    "name": "École Polytechnique Fédérale de Lausanne (EPFL)",
+    "name": "EPFL",
     "rank": 10,
     "student_count": 12574,
     "location": { "country": "Switzerland", "city": "Lausanne", "state": "Vaud" },
     "coordinates": { "lat": 46.5191, "lon": 6.5668 },
     "website": "https://www.epfl.ch/en/",
     "academics": {
-      "majors": ["Computer Science", "Microengineering", "Life Sciences", "Civil Engineering", "Architecture", "Mathematics"],
+      "majors": ["Computer Science", "Engineering", "Life Sciences", "Architecture", "Mathematics"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 21
@@ -534,34 +466,39 @@
         "Insurance_Transport_Misc": 2000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 92000,
+      "average_salary_by_major": {
+        "Computer Science": 105000,
+        "Engineering": 98000,
+        "Mathematics": 95000,
+        "Architecture": 88000,
+        "Life Sciences": 85000
+      }
+    },
     "student_life": { "size": "medium" },
     "admission_tracks": [
-      {
-        "id": "epfl_exam",
-        "label": "Entrance Exam Track",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 7.0,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "GPA": 90
-        },
-        "scholarships": []
-      }
+        {
+            "id": "epfl_exam",
+            "label": "Entrance Examination",
+            "study_mode": "On-campus",
+            "description": "For applicants without a recognized Swiss high school diploma. Intensive math/science test.",
+            "requirements": { "IELTS": 7.0, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.5, "GPA": 92 },
+            "scholarships": []
+        }
     ]
   },
   {
     "id": "technical-university-of-munich-de-munich",
-    "name": "Technical University of Munich",
+    "name": "Technical University of Munich (TUM)",
     "rank": 11,
     "student_count": 52580,
     "location": { "country": "Germany", "city": "Munich", "state": "Bavaria" },
     "coordinates": { "lat": 48.1507, "lon": 11.5691 },
     "website": "https://www.tum.de/en/",
     "academics": {
-      "majors": ["Engineering", "Natural Sciences", "Life Sciences", "Management", "Social Sciences"],
+      "majors": ["Engineering", "Computer Science", "Natural Sciences", "Management", "Life Sciences"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 8
@@ -577,24 +514,26 @@
         "Books_Transport_Misc": 1000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 65000,
+      "average_salary_by_major": {
+        "Computer Science": 75000,
+        "Engineering": 72000,
+        "Management": 68000,
+        "Natural Sciences": 60000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "tum_standard",
-        "label": "Aptitude Assessment",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1250,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1350,
-          "GPA": 92
-        },
-        "scholarships": []
-      }
+        {
+            "id": "tum_aptitude",
+            "label": "Aptitude Assessment (EFV)",
+            "study_mode": "On-campus",
+            "description": "Evaluation of HS grades + interview/test. Usually requires German C1, some programs English.",
+            "requirements": { "IELTS": 6.5, "GPA": 80 },
+            "stats_avg": { "IELTS": 7.5, "GPA": 90 },
+            "scholarships": []
+        }
     ]
   },
   {
@@ -622,30 +561,28 @@
         "Books_Transport_Misc": 1000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 46000,
+      "average_salary_by_major": {
+        "Engineering": 52000,
+        "Medicine": 65000,
+        "Business": 48000,
+        "Humanities": 38000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "snu_intl",
-        "label": "International Admissions",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.0,
-          "SAT": 1300,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1450,
-          "GPA": 94
-        },
-        "scholarships": [
-          {
-            "name": "Glo-Harmony Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1500, "GPA": 96 }
-          }
-        ]
-      }
+        {
+            "id": "snu_global",
+            "label": "International Admissions",
+            "study_mode": "On-campus",
+            "description": "For non-Korean citizens. Document screening + optional interview.",
+            "requirements": { "IELTS": 6.5, "SAT": 1300, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.0, "SAT": 1450, "GPA": 94 },
+            "scholarships": [
+                { "name": "Glo-Harmony Scholarship", "type": "merit", "requirements": { "GPA": 95 } }
+            ]
+        }
     ]
   },
   {
@@ -657,7 +594,7 @@
     "coordinates": { "lat": 35.7128, "lon": 139.7620 },
     "website": "https://www.u-tokyo.ac.jp/en/",
     "academics": {
-      "majors": ["Engineering", "Economics", "Law", "Science", "Agriculture", "Medicine"],
+      "majors": ["Engineering", "Economics", "Law", "Science", "Agriculture"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 34
@@ -673,30 +610,28 @@
         "Books_Transport_Misc": 1000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 45000,
+      "average_salary_by_major": {
+        "Engineering": 50000,
+        "Law": 55000,
+        "Economics": 48000,
+        "Science": 42000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "utokyo_peak",
-        "label": "PEAK Program (English)",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 7.0,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "SAT": 1420,
-          "GPA": 92
-        },
-        "scholarships": [
-          {
-            "name": "University of Tokyo Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1500, "GPA": 95 }
-          }
-        ]
-      }
+        {
+            "id": "utokyo_peak",
+            "label": "PEAK (English Track)",
+            "study_mode": "On-campus",
+            "description": "Programs in English at Komaba (PEAK). Screening of documents + interview.",
+            "requirements": { "IELTS": 7.0, "SAT": 1350, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.5, "SAT": 1450, "GPA": 93 },
+            "scholarships": [
+                { "name": "University of Tokyo Scholarship", "type": "merit", "requirements": { "SAT": 1500 } }
+            ]
+        }
     ]
   },
   {
@@ -724,30 +659,28 @@
         "Books_Transport_Misc": 2354
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 42000,
+      "average_salary_by_major": {
+        "Business Administration": 48000,
+        "Medicine": 80000,
+        "Computer Science": 45000,
+        "Engineering": 40000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "cuhk_intl",
-        "label": "International Admissions Scheme",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.0,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1440,
-          "GPA": 95
-        },
-        "scholarships": [
-          {
-            "name": "Admission Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1500, "GPA": 98 }
-          }
-        ]
-      }
+        {
+            "id": "cuhk_intl",
+            "label": "International Admissions",
+            "study_mode": "On-campus",
+            "description": "Admission for non-local students via standardized tests (SAT/ALevel/IB).",
+            "requirements": { "IELTS": 6.5, "SAT": 1300, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.0, "SAT": 1420, "GPA": 94 },
+            "scholarships": [
+                { "name": "Admission Scholarship", "type": "merit", "requirements": { "SAT": 1500 } }
+            ]
+        }
     ]
   },
   {
@@ -759,7 +692,7 @@
     "coordinates": { "lat": 52.0017, "lon": 4.3725 },
     "website": "https://www.tudelft.nl/en/",
     "academics": {
-      "majors": ["Aerospace Engineering", "Architecture", "Civil Engineering", "Computer Science", "Industrial Design"],
+      "majors": ["Aerospace Engineering", "Architecture", "Computer Science", "Civil Engineering", "Industrial Design"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 65
@@ -775,28 +708,28 @@
         "Books_Transport_Misc": 2000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 58000,
+      "average_salary_by_major": {
+        "Computer Science": 70000,
+        "Aerospace Engineering": 65000,
+        "Civil Engineering": 60000,
+        "Architecture": 55000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "tudelft_numerus",
-        "label": "Numerus Clausus (Selection)",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "GPA": 75
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "GPA": 88
-        },
-        "scholarships": [
-          {
-            "name": "Justus & Louise van Effen Scholarship",
-            "type": "merit",
-            "requirements": { "GPA": 95, "IELTS": 7.5 }
-          }
-        ]
-      }
+        {
+            "id": "tudelft_numerus",
+            "label": "Numerus Clausus (Selection)",
+            "study_mode": "On-campus",
+            "description": "Selection procedure for competitive majors (CS, Aerospace). Cognitive tests.",
+            "requirements": { "IELTS": 6.5, "GPA": 80 },
+            "stats_avg": { "IELTS": 7.0, "GPA": 90 },
+            "scholarships": [
+                { "name": "Justus & Louise van Effen Scholarship", "type": "merit", "requirements": { "GPA": 95 } }
+            ]
+        }
     ]
   },
   {
@@ -808,7 +741,7 @@
     "coordinates": { "lat": 36.3721, "lon": 127.3604 },
     "website": "https://www.kaist.ac.kr/en/",
     "academics": {
-      "majors": ["Electrical Engineering", "Computer Science", "Physics", "Industrial Design", "Bioengineering"],
+      "majors": ["Computer Science", "Electrical Engineering", "Physics", "Bioengineering", "Industrial Design"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 18
@@ -824,30 +757,28 @@
         "Books_Transport_Misc": 1000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 50000,
+      "average_salary_by_major": {
+        "Computer Science": 60000,
+        "Electrical Engineering": 55000,
+        "Physics": 45000,
+        "Bioengineering": 48000
+      }
+    },
     "student_life": { "size": "medium" },
     "admission_tracks": [
-      {
-        "id": "kaist_intl",
-        "label": "International Admission",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1480,
-          "GPA": 93
-        },
-        "scholarships": [
-          {
-            "name": "KAIST International Student Scholarship",
-            "type": "merit",
-            "requirements": { "SAT": 1450, "GPA": 90 }
-          }
-        ]
-      }
+        {
+            "id": "kaist_intl",
+            "label": "International Admission",
+            "study_mode": "On-campus",
+            "description": "KAIST Scholarship covers full tuition for admitted international students.",
+            "requirements": { "IELTS": 6.5, "SAT": 1350, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.0, "SAT": 1480, "GPA": 94 },
+            "scholarships": [
+                { "name": "KAIST International Student Scholarship", "type": "merit", "requirements": { "GPA": 85 } }
+            ]
+        }
     ]
   },
   {
@@ -875,30 +806,28 @@
         "Books_Transport_Misc": 2000
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 42000,
+      "average_salary_by_major": {
+        "Engineering": 48000,
+        "Economics": 45000,
+        "Medicine": 60000,
+        "Science": 40000
+      }
+    },
     "student_life": { "size": "large" },
     "admission_tracks": [
-      {
-        "id": "kyoto_iup",
-        "label": "Kyoto iUP (International Undergraduate)",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1350,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1420,
-          "GPA": 90
-        },
-        "scholarships": [
-          {
-            "name": "Full Scholarship + Stipend",
-            "type": "merit",
-            "requirements": { "SAT": 1480, "GPA": 95 }
-          }
-        ]
-      }
+        {
+            "id": "kyoto_iup",
+            "label": "Kyoto iUP",
+            "study_mode": "On-campus",
+            "description": "International Undergraduate Program. 6 months Japanese prep + 4 years degree.",
+            "requirements": { "IELTS": 6.5, "SAT": 1350, "GPA": 85 },
+            "stats_avg": { "IELTS": 7.0, "SAT": 1420, "GPA": 92 },
+            "scholarships": [
+                { "name": "Full Scholarship + Stipend", "type": "merit", "requirements": { "GPA": 90 } }
+            ]
+        }
     ]
   },
   {
@@ -910,7 +839,7 @@
     "coordinates": { "lat": 51.0900, "lon": 71.3994 },
     "website": "https://nu.edu.kz/",
     "academics": {
-      "majors": ["Engineering", "Computer Science", "Business", "Natural Sciences", "Medicine", "Mining"],
+      "majors": ["Engineering", "Computer Science", "Business", "Natural Sciences", "Medicine"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 18
@@ -926,53 +855,25 @@
         "Books_Transport_Misc": 500
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 13000,
+      "average_salary_by_major": {
+        "Computer Science": 16000,
+        "Engineering": 14000,
+        "Business": 12000,
+        "Medicine": 11000
+      }
+    },
     "student_life": { "size": "medium" },
     "admission_tracks": [
       {
         "id": "nu_sat",
-        "label": "SAT Track / Direct Admission",
+        "label": "Direct Admission (SAT/IELTS)",
         "study_mode": "On-campus",
-        "description": "Direct entry to undergraduate program skipping Foundation.",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1240,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1380,
-          "GPA": 92
-        },
-        "scholarships": [
-          {
-            "name": "Abay Kunanbayev Scholarship (100%)",
-            "type": "merit",
-            "requirements": { "SAT": 1450, "GPA": 95 }
-          }
-        ]
-      },
-      {
-        "id": "nu_unt",
-        "label": "National Track (UNT / NUET equivalent)",
-        "study_mode": "On-campus",
-        "description": "Alternative path for strong national students (modelled on NUET/UNT logic).",
-        "requirements": {
-          "IELTS": 6.0,
-          "UNT": 85,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 6.5,
-          "UNT": 120,
-          "GPA": 90
-        },
-        "scholarships": [
-          {
-            "name": "State Grant (Госгрант)",
-            "type": "state",
-            "requirements": { "UNT": 128, "GPA": 90 }
-          }
-        ]
+        "description": "Direct entry skipping Foundation.",
+        "requirements": { "IELTS": 6.5, "SAT": 1240, "GPA": 80 },
+        "stats_avg": { "IELTS": 7.0, "SAT": 1380, "GPA": 92 },
+        "scholarships": [{ "name": "Abay Kunanbayev Scholarship", "type": "merit", "requirements": { "SAT": 1450 } }]
       }
     ]
   },
@@ -985,7 +886,7 @@
     "coordinates": { "lat": 43.2080, "lon": 76.6700 },
     "website": "https://sdu.edu.kz/en/",
     "academics": {
-      "majors": ["Business", "Engineering", "Law", "Education & Humanities", "Social Sciences"],
+      "majors": ["Business", "Engineering", "Law", "Education", "Social Sciences"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus", "Online"],
       "acceptance_rate_percent": 65
@@ -1001,67 +902,24 @@
         "Books_Transport_Misc": 500
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 9500,
+      "average_salary_by_major": {
+        "Engineering": 12000,
+        "Business": 9000,
+        "Law": 8500,
+        "Education": 7500
+      }
+    },
     "student_life": { "size": "medium" },
     "admission_tracks": [
       {
         "id": "sdu_unt",
-        "label": "UNT Track (Еңбек нарығы)",
+        "label": "UNT Track",
         "study_mode": "On-campus",
-        "requirements": {
-          "UNT": 50,
-          "GPA": 60
-        },
-        "stats_avg": {
-          "UNT": 95,
-          "GPA": 80
-        },
-        "scholarships": [
-          {
-            "name": "Internal SDU Grant (Merit)",
-            "type": "merit",
-            "requirements": { "UNT": 110 }
-          },
-          {
-            "name": "State Educational Grant",
-            "type": "state",
-            "requirements": { "UNT": 105 }
-          }
-        ]
-      },
-      {
-        "id": "sdu_intl",
-        "label": "International/Direct Track",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 5.5,
-          "GPA": 70
-        },
-        "stats_avg": {
-          "IELTS": 6.0,
-          "GPA": 80
-        },
-        "scholarships": []
-      },
-      {
-        "id": "sdu_online",
-        "label": "Distance Learning (Online)",
-        "study_mode": "Online",
-        "requirements": {
-          "UNT": 50,
-          "GPA": 60
-        },
-        "stats_avg": {
-          "UNT": 70,
-          "GPA": 75
-        },
-        "finance_override": {
-          "total_cost_year_usd": 4500,
-          "costs_breakdown_year_usd": {
-             "Tuition": 4000,
-             "Books_Transport_Misc": 500
-          }
-        },
-        "scholarships": []
+        "requirements": { "UNT": 50, "GPA": 60 },
+        "stats_avg": { "UNT": 95, "GPA": 80 },
+        "scholarships": [{ "name": "State Grant", "type": "state", "requirements": { "UNT": 105 } }]
       }
     ]
   },
@@ -1074,7 +932,7 @@
     "coordinates": { "lat": 51.0913, "lon": 71.4128 },
     "website": "https://astanait.edu.kz/",
     "academics": {
-      "majors": ["Computer Science", "Software Engineering", "Big Data Analysis", "Cyber Security", "IT Management", "Smart Technologies"],
+      "majors": ["Computer Science", "Software Engineering", "Cyber Security", "IT Management"],
       "study_levels": ["Bachelor", "Master", "PhD"],
       "formats": ["On-campus"],
       "acceptance_rate_percent": 25
@@ -1090,32 +948,24 @@
         "Books_Transport_Misc": 300
       }
     },
+    "outcomes": {
+      "average_early_career_salary_usd": 11000,
+      "average_salary_by_major": {
+        "Computer Science": 13000,
+        "Software Engineering": 13000,
+        "Cyber Security": 14000,
+        "IT Management": 10000
+      }
+    },
     "student_life": { "size": "medium" },
     "admission_tracks": [
       {
         "id": "aitu_unt",
-        "label": "UNT Track (IT Major)",
+        "label": "UNT Track",
         "study_mode": "On-campus",
-        "requirements": {
-          "UNT": 85,
-          "GPA": 70
-        },
-        "stats_avg": {
-          "UNT": 105,
-          "GPA": 85
-        },
-        "scholarships": [
-          {
-            "name": "State Grant (Computer Science)",
-            "type": "state",
-            "requirements": { "UNT": 115, "GPA": 85 }
-          },
-          {
-            "name": "Rector's Grant",
-            "type": "merit",
-            "requirements": { "UNT": 125 }
-          }
-        ]
+        "requirements": { "UNT": 85, "GPA": 70 },
+        "stats_avg": { "UNT": 105, "GPA": 85 },
+        "scholarships": [{ "name": "Rector's Grant", "type": "merit", "requirements": { "UNT": 125 } }]
       }
     ]
   }

@@ -438,8 +438,21 @@
   .finance-summary-right { flex: auto; width: 100%; }
 }
 
+.roi-box {
+    transition: transform 0.2s;
+}
+
+.roi-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+}
+
 @media (max-width: 600px) {
     
+    .roi-box {
+        padding: 20px !important;
+    }
+
     /* Делаем Admissions в одну колонку */
     .track-stats-grid {
         grid-template-columns: 1fr;

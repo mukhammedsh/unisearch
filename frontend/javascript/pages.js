@@ -1,4 +1,5 @@
-/* 4. pages.js - Логика страниц */
+/* 4. pages.js - ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ ВЕРСИЯ */
+
 import {
   API_BASE,
   $,
@@ -17,121 +18,67 @@ import {
 } from "./utils.js";
 
 import { getUniSort } from "./algo.js";
-
 import { setupTabs } from "./components.js";
 
-
 // =====================================
-// PAGE: UNIVERSITIES LIST (Список + Карта)
+// PAGE: UNIVERSITIES LIST (Список вузов)
 // =====================================
 export function initUniversitiesPage() {
     const el = {
         qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
         stateSelect: $("stateSelect"), citySelect: $("citySelect"),
-        minInput: $("minCostInput"),
-        maxInput: $("maxCostInput"),
-        minSlider: $("minCostSlider"),
-        maxSlider: $("maxCostSlider"),
-        track: $("sliderTrack"),
+        minInput: $("minCostInput"), maxInput: $("maxCostInput"),
+        minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
-        
-        // Списки и контейнеры
-        list: $("universitiesList"), 
-        mapContainer: $("mapContainer"), // Контейнер карты
-        total: $("totalCount"), 
-        state: $("listState"), 
-        pagination: $("pagination"),
-        
-        // Кнопки переключения
-        btnList: $("viewListBtn"),
-        btnMap: $("viewMapBtn")
+        list: $("universitiesList"), mapContainer: $("mapContainer"), total: $("totalCount"), 
+        state: $("listState"), pagination: $("pagination"),
+        btnList: $("viewListBtn"), btnMap: $("viewMapBtn")
     };
 
     if (!el.list) return;
 
-    // 1. Начальное состояние (Загружаем из LocalStorage или дефолт)
-    const savedState = loadFilters(); // из utils.js
-    
+    const savedState = loadFilters();
     const state = {
-        q: savedState.q || "", 
-        country: savedState.country || "", 
-        region: savedState.region || "", 
-        city: savedState.city || "", 
-        min_tuition: savedState.min_tuition || 0, 
-        max_tuition: savedState.max_tuition || 1000000,
-        sort: savedState.sort || "uni_ai", 
-        ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
-        viewMode: savedState.viewMode || "list", // 'list' или 'map'
-        page: 1, 
-        limit: 12,
+        q: savedState.q || "", country: savedState.country || "", region: savedState.region || "", 
+        city: savedState.city || "", study_level: savedState.study_level || "", 
+        min_tuition: savedState.min_tuition || 0, max_tuition: savedState.max_tuition || 1000000, 
+        sort: savedState.sort || "uni_ai", ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
+        viewMode: savedState.viewMode || "list", page: 1, limit: 12,
     };
 
-    // --- ФУНКЦИЯ: Отрисовка цветной полоски ---
+    // --- Слайдеры ---
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
-        
-        const minVal = parseInt(el.minSlider.value);
-        const maxVal = parseInt(el.maxSlider.value);
-        const maxRange = parseInt(el.maxSlider.max);
-        
-        const percent1 = (minVal / maxRange) * 100;
-        const percent2 = (maxVal / maxRange) * 100;
-        
-        // Красим градиентом: Серый -> Фиолетовый -> Серый
+        const minVal = parseInt(el.minSlider.value); const maxVal = parseInt(el.maxSlider.value); const maxRange = parseInt(el.maxSlider.max);
+        const percent1 = (minVal / maxRange) * 100; const percent2 = (maxVal / maxRange) * 100;
         el.track.style.background = `linear-gradient(to right, #e0e0e0 ${percent1}%, #5d17ea ${percent1}%, #5d17ea ${percent2}%, #e0e0e0 ${percent2}%)`;
     }
-
-    // --- ФУНКЦИЯ: Контроль пересечения ползунков ---
     function slideMin() {
-        let gap = 10000; // Минимальный разрыв между ценами (10k)
-        let minVal = parseInt(el.minSlider.value);
-        let maxVal = parseInt(el.maxSlider.value);
-
-        if (maxVal - minVal <= gap) {
-            el.minSlider.value = maxVal - gap;
-        }
-        el.minInput.value = el.minSlider.value;
-        state.min_tuition = el.minSlider.value;
-        fillTrack();
+        let gap = 10000; let minVal = parseInt(el.minSlider.value); let maxVal = parseInt(el.maxSlider.value);
+        if (maxVal - minVal <= gap) { el.minSlider.value = maxVal - gap; }
+        el.minInput.value = el.minSlider.value; state.min_tuition = el.minSlider.value; fillTrack();
     }
-
     function slideMax() {
-        let gap = 10000;
-        let minVal = parseInt(el.minSlider.value);
-        let maxVal = parseInt(el.maxSlider.value);
-
-        if (maxVal - minVal <= gap) {
-            el.maxSlider.value = minVal + gap;
-        }
-        el.maxInput.value = el.maxSlider.value;
-        state.max_tuition = el.maxSlider.value;
-        fillTrack();
+        let gap = 10000; let minVal = parseInt(el.minSlider.value); let maxVal = parseInt(el.maxSlider.value);
+        if (maxVal - minVal <= gap) { el.maxSlider.value = minVal + gap; }
+        el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
-    // Переменные для карты
+    // --- Карта ---
     let mapInstance = null;
     let markersLayer = null;
 
-    // Инициализация
     readFromUrl(); 
     
     const initLocations = () => {
         updateCountryOptions();
         if (state.country) {
             if (el.countrySelect) el.countrySelect.value = state.country;
-            
             updateLocationLogic(state.country);
-            
-            if (state.region && el.stateSelect) {
-                el.stateSelect.value = state.region;
-                updateCitiesForState(state.country, state.region);
-            }
+            if (state.region && el.stateSelect) { el.stateSelect.value = state.region; updateCitiesForState(state.country, state.region); }
             if (state.city && el.citySelect) el.citySelect.value = state.city;
         }
-
-        // 🔥 ДОБАВИТЬ ЭТУ СТРОЧКУ В КОНЕЦ:
-        // Это заставит кастомные селекты перерисоваться с новыми значениями
         applyToForm();
     };
     
@@ -141,9 +88,7 @@ export function initUniversitiesPage() {
     applyToForm();
     updateSliderVisibility(); 
     
-    // Применяем сохраненный режим (Карта или Список)
-    // И сразу грузим данные (fetchAndRender внутри switchView не вызывался при старте)
-    switchView(state.viewMode, false); // false = не вызывать fetch повторно, т.к. вызовем ниже
+    switchView(state.viewMode, false);
     
     const refetch = debounce(() => { 
         state.page = 1; 
@@ -151,7 +96,7 @@ export function initUniversitiesPage() {
         fetchAndRender(); 
     }, 250);
 
-    // --- LISTENERS ---
+    // --- Listeners ---
     el.qInput?.addEventListener("input", () => { state.q = el.qInput.value.trim(); refetch(); });
     
     el.countrySelect?.addEventListener("change", () => {
@@ -162,22 +107,22 @@ export function initUniversitiesPage() {
     
     el.stateSelect?.addEventListener("change", () => { state.region = el.stateSelect.value; state.city = ""; updateCitiesForState(state.country, state.region); refetch(); });
     el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
+    
+    if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
+
     el.minTuitionInput?.addEventListener("input", () => { state.min_tuition = el.minTuitionInput.value; refetch(); });
     el.maxTuitionInput?.addEventListener("input", () => { state.max_tuition = el.maxTuitionInput.value; refetch(); });
     el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; updateSliderVisibility(); refetch(); });
     el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
 
     el.resetBtn?.addEventListener("click", () => {
-        Object.assign(state, { q: "", country: "", region: "", city: "", min_tuition: "", max_tuition: "", sort: "uni_ai", ai_balance: 50, page: 1 });
+        Object.assign(state, { q: "", country: "", region: "", city: "", study_level: "", min_tuition: 0, max_tuition: 1000000, sort: "uni_ai", ai_balance: 50, page: 1 });
         saveFilters(state);
-        state.min_tuition = 0;
-        state.max_tuition = 1000000;
-        applyToForm(); // Это само обновит слайдеры и закраску
+        applyToForm();
         if (el.stateDiv) el.stateDiv.style.display = "none"; 
         updateCityDropdown([]); 
         updateSliderVisibility(); 
         fetchAndRender();
-        
     });
 
     el.list.addEventListener("click", (e) => {
@@ -186,197 +131,84 @@ export function initUniversitiesPage() {
         window.location.href = `university.html?id=${encodeURIComponent(card.getAttribute("data-uni-id"))}`;
     });
 
-    // Переключатели
     el.btnList?.addEventListener("click", () => { switchView("list", true); });
     el.btnMap?.addEventListener("click", () => { switchView("map", true); });
 
-    // --- СЛУШАТЕЛИ СОБЫТИЙ ---
-    // Используем событие 'input' для плавности и 'change' для запроса API
-    
     if (el.minSlider && el.maxSlider) {
         el.minSlider.addEventListener("input", slideMin);
         el.maxSlider.addEventListener("input", slideMax);
-        
-        // Запрос отправляем только когда отпустили ползунок (чтобы не спамить API)
         el.minSlider.addEventListener("change", () => refetch());
         el.maxSlider.addEventListener("change", () => refetch());
     }
 
-    // Синхронизация инпутов (если ввели цифрами)
     el.minInput?.addEventListener("change", () => {
         let val = parseInt(el.minInput.value) || 0;
-        // Не даем ввести больше макс. слайдера
         if (val >= parseInt(el.maxSlider.value)) val = parseInt(el.maxSlider.value) - 10000;
-        el.minSlider.value = val;
-        state.min_tuition = val;
-        fillTrack();
-        refetch();
+        el.minSlider.value = val; state.min_tuition = val; fillTrack(); refetch();
     });
 
     el.maxInput?.addEventListener("change", () => {
         let val = parseInt(el.maxInput.value) || 1000000;
         if (val <= parseInt(el.minSlider.value)) val = parseInt(el.minSlider.value) + 10000;
-        el.maxSlider.value = val;
-        state.max_tuition = val;
-        fillTrack();
-        refetch();
+        el.maxSlider.value = val; state.max_tuition = val; fillTrack(); refetch();
     });
 
-    fetchAndRender(); // Первый запуск
+    fetchAndRender(); 
     window.addEventListener("profileUpdated", () => fetchAndRender());
 
-
-    // --- ФУНКЦИИ КАРТЫ ---
     function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
         saveFilters(state);
-
         if (mode === "map") {
-            el.list.style.display = "none";
-            el.pagination.style.display = "none"; 
-            el.mapContainer.style.display = "block";
-            
-            el.btnList.classList.remove("active");
-            el.btnMap.classList.add("active");
-
-            initMap(); 
-            setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
-            
-            // 🔥 При переключении на карту грузим данные (чтобы получить все 200 точек)
+            el.list.style.display = "none"; el.pagination.style.display = "none"; 
+            el.mapContainer.style.display = "block"; el.btnList.classList.remove("active"); el.btnMap.classList.add("active");
+            initMap(); setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
             if (shouldFetch) fetchAndRender(); 
-
         } else {
-            el.list.style.display = "grid";
-            el.pagination.style.display = "flex";
-            el.mapContainer.style.display = "none";
-            
-            el.btnList.classList.add("active");
-            el.btnMap.classList.remove("active");
-            
-            // 🔥 При переключении на список грузим данные (чтобы сбросить лимит до 12 и пагинацию)
+            el.list.style.display = "grid"; el.pagination.style.display = "flex"; el.mapContainer.style.display = "none";
+            el.btnList.classList.add("active"); el.btnMap.classList.remove("active");
             if (shouldFetch) fetchAndRender();
         }
     }
 
     function initMap() {
-        if (mapInstance) return; 
+        if (mapInstance) return;
         if (typeof L === "undefined") return;
-
-        mapInstance = L.map('mapContainer', {
-            maxBounds: [[-90, -180], [90, 180]],
-            maxBoundsViscosity: 1.0,
-            minZoom: 2,
-            maxZoom: 19,
-            // Включаем нативную поддержку анимаций самого Leaflet
-            zoomAnimation: true,
-            markerZoomAnimation: true
-        }).setView([25, 0], 2);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            noWrap: true
-        }).addTo(mapInstance);
-
+        mapInstance = L.map('mapContainer', { maxBounds: [[-90, -180], [90, 180]], maxBoundsViscosity: 1.0, minZoom: 2, maxZoom: 19, zoomAnimation: true, markerZoomAnimation: true }).setView([25, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
         markersLayer = L.markerClusterGroup({
-            showCoverageOnHover: false,
-            zoomToBoundsOnClick: false,
-            spiderfyOnMaxZoom: true,
-            animate: true,
-            animationDuration: 1000,
-            // 🔥 ТЕПЕРЬ ИСПОЛЬЗУЕМ ЛОГОТИП
+            showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
             iconCreateFunction: function(cluster) {
-                const markers = cluster.getAllChildMarkers();
-                const count = markers.length;
-                
-                // Достаем ID первого универа из его маркера
+                const markers = cluster.getAllChildMarkers(); const count = markers.length;
                 const firstMarkerHtml = markers[0].options.icon.options.html;
                 const idMatch = firstMarkerHtml.match(/logos\/(.+?)\.png/);
                 const firstId = idMatch ? idMatch[1] : 'default';
-
                 const logoUrl = `images/logos/${firstId}.png`;
-                
-                return L.divIcon({
-                    html: `
-                    <div class="cluster-node-fix">
-                        <div class="map-marker-container">
-                            <div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div>
-                        </div>
-                        <div class="cluster-badge">+${count - 1}</div>
-                    </div>
-                    `,
-                    className: 'cluster-icon-container',
-                    iconSize: [44, 44],
-                    iconAnchor: [22, 22]
-                });
+                return L.divIcon({ html: `<div class="cluster-node-fix"><div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div></div><div class="cluster-badge">+${count - 1}</div></div>`, className: 'cluster-icon-container', iconSize: [44, 44], iconAnchor: [22, 22] });
             }
         });
-
-        // Плавный полет при клике на группу (кластер)
-        markersLayer.on('clusterclick', function (a) {
-            mapInstance.flyToBounds(a.layer.getBounds(), {
-                padding: [80, 80],
-                duration: 1.0 // Можешь менять здесь скорость полета к группе
-            });
-        });
-
+        markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
         mapInstance.addLayer(markersLayer);
     }
 
     function updateMapMarkers(items) {
         if (!mapInstance || !markersLayer) return;
-        markersLayer.clearLayers(); 
-        const profile = loadProfile();
-        const userBudget = parseFloat(profile.budget);
+        markersLayer.clearLayers();
+        const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
         const newMarkers = [];
-
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
-                const customIcon = L.divIcon({
-                    className: 'custom-div-icon',
-                    html: `
-                    <div class="map-marker-container">
-                        <div class="marker-img-inner" style="background-image: url('images/logos/${u.id}.png');"></div>
-                    </div>
-                    `,
-                    iconSize: [44, 44],
-                    iconAnchor: [22, 22],
-                    popupAnchor: [0, -24]
-                });
-
+                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('images/logos/${u.id}.png');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
                 const marker = L.marker([u.coordinates.lat, u.coordinates.lon], { icon: customIcon });
-                
-                // Настраиваем попап ЗАРАНЕЕ, но отключаем всё авто-движение
                 const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
-                marker.bindPopup(cardHTML, { 
-                    minWidth: 280, maxWidth: 320, 
-                    className: 'custom-map-popup',
-                    autoPan: false // ⬅️ КРИТИЧНО: Чтобы попап не дергал карту
-                });
-
-                // 🔥 РУЧНОЙ КОНТРОЛЬ ПОЛЕТА
-                marker.on('click', function(e) {
-                    this.setZIndexOffset(1000);
-                    
-                    // Сначала летим плавно...
-                    mapInstance.flyTo(e.target.getLatLng(), 16, {
-                        animate: true,
-                        duration: 3.0,     // ⬅️ ТЕПЕРЬ ЭТО ТОЧНО ЗАРАБОТАЕТ. Поставь 5.0 для теста.
-                        easeLinearity: 0.1
-                    });
-
-                    // ...и только ПОСЛЕ начала полета открываем попап вручную через 100мс
-                    setTimeout(() => {
-                        if (!marker.getPopup().isOpen()) marker.openPopup();
-                    }, 100);
-                });
-
+                marker.bindPopup(cardHTML, { minWidth: 280, maxWidth: 320, className: 'custom-map-popup', autoPan: false });
+                marker.on('click', function(e) { this.setZIndexOffset(1000); mapInstance.flyTo(e.target.getLatLng(), 16, { animate: true, duration: 3.0, easeLinearity: 0.1 }); setTimeout(() => { if (!marker.getPopup().isOpen()) marker.openPopup(); }, 100); });
                 newMarkers.push(marker);
             }
         });
-
         markersLayer.addLayers(newMarkers);
     }
 
-    // --- ФУНКЦИИ СТРАНИЦЫ ---
     function updateSliderVisibility() {
         if (!el.sliderContainer) return;
         if (state.sort === "uni_ai") { el.sliderContainer.style.display = "block"; updateSliderLabel(); } 
@@ -399,6 +231,8 @@ export function initUniversitiesPage() {
         if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
         if (state.min_tuition) p.set("min_tuition", state.min_tuition);
         if (state.max_tuition) p.set("max_tuition", state.max_tuition);
+        if (state.study_level) p.set("study_level", state.study_level);
+
         const isAiSort = (state.sort === "uni_ai");
         p.set("sort", isAiSort ? "name_asc" : state.sort);
         
@@ -415,19 +249,15 @@ export function initUniversitiesPage() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
         if(el.slider) el.slider.value = state.ai_balance;
-        
-
         if (el.minSlider) el.minSlider.value = state.min_tuition;
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
         if (el.minInput) el.minInput.value = state.min_tuition;
         if (el.maxInput) el.maxInput.value = state.max_tuition;
         
-        fillTrack(); // Красим полоску при загрузке
+        fillTrack(); 
 
-        ["countrySelect", "stateSelect", "citySelect", "sortSelect"].forEach(id => initCustomSelect(id));
+        ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect"].forEach(id => initCustomSelect(id));
     }
-
-    // --- НОВЫЕ СЛУШАТЕЛИ СОБЫТИЙ (LISTENERS) ---
 
     function updateLocationLogic(country) {
         if (!el.stateDiv) return;
@@ -440,7 +270,6 @@ export function initUniversitiesPage() {
             el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
             states.forEach(s => { el.stateSelect.innerHTML += `<option value="${s}">${s}</option>`; });
             initCustomSelect("stateSelect");
-            
             updateCityDropdown([]);
         }
     }
@@ -459,16 +288,12 @@ export function initUniversitiesPage() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        
-        // Оставляем обычный HTML для совместимости (вдруг JS отключен или ошибка)
         let html = `<option value="">All Countries</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
             html += `<option value="${c}" ${isSelected}>${c}</option>`; 
         });
         el.countrySelect.innerHTML = html;
-
-        // 🔥 ДОБАВЛЕНО: Превращаем его в кастомный список с флагами
         initCustomSelect("countrySelect");
     }
     function readFromUrl() {
@@ -493,20 +318,16 @@ export function initUniversitiesPage() {
         const total = data.total || 0;
         const isAiSort = (state.sort === "uni_ai");
         
-        // === Рендер СПИСКА ===
         if (state.viewMode === 'list') {
             let displayItems = items;
             let displayTotal = total;
 
-            // 🔥 Исправление: Нарезаем на страницы на КЛИЕНТЕ для AI Sort
             if (isAiSort) { 
-                // Передаем весь объект state, так как там лежит выбранный major
-                items = getUniSort(items, state.ai_balance, state);
-                displayTotal = items.length; // Всего загружено (100)
-                
+                items = getUniSort(items, state.ai_balance, state); 
+                displayTotal = items.length;
                 const start = (state.page - 1) * state.limit;
                 const end = start + state.limit;
-                displayItems = items.slice(start, end); // Берем только 12 штук для текущей страницы
+                displayItems = items.slice(start, end);
             }
 
             if (el.total) el.total.textContent = String(displayTotal);
@@ -520,13 +341,8 @@ export function initUniversitiesPage() {
             const userBudget = parseFloat(profile.budget);
             
             el.list.innerHTML = displayItems.map(u => renderCard(u, userBudget)).join("");
-            
-            // Передаем правильное общее количество для пагинации
             renderPagination(displayTotal);
-        } 
-        
-        // === Рендер КАРТЫ ===
-        else if (state.viewMode === 'map') {
+        } else if (state.viewMode === 'map') {
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
             if (el.state) el.state.textContent = "";
@@ -538,13 +354,10 @@ export function initUniversitiesPage() {
         }
     }
 
-    function renderCard(u, myBudget) { 
-        const id = u.id; 
-        const name = u.name; 
-        const country = nested(u, ["location", "country"], "");
+    // --- RENDER CARD (БЕЗ ROI) ---
+    function renderCard(u, myBudget) {
+        const id = u.id; const name = u.name; const country = nested(u, ["location", "country"], "");
         const city = nested(u, ["location", "city"], ""); 
-        
-        // Логика флага
         let locString = city;
         if (country) {
             const flagHtml = getFlagImg(country);
@@ -552,50 +365,27 @@ export function initUniversitiesPage() {
                 ? `<div style="display:flex; align-items:center; gap:6px;">${city}, ${flagHtml} ${country}</div>`
                 : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${country}</div>`;
         }
-
-        // --- НОВАЯ ЛОГИКА ОТОБРАЖЕНИЯ (Smart Match) ---
-        // Если алгоритм отработал, у нас есть u.matchData
         const match = u.matchData || {}; 
-        
-        // 1. Цена (Берем персональную или общую)
         const cost = match.finalPrice !== undefined ? match.finalPrice : nested(u, ["finance", "total_cost_year_usd"], 0);
-        
-        // 2. Бейджики (Статус поступления)
         let badgesHTML = "";
-        
-        // А. Трек (Сценарий)
         if (match.trackLabel) {
             badgesHTML += `<span style="background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #dbeafe; margin-bottom:4px;">🚀 Track: ${match.trackLabel}</span> `;
         }
-
-        // Б. Грант
         if (match.grantName) {
-            // Зеленый бейдж, если грант доступен
             badgesHTML += `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🏆 ${match.grantName}</span> `;
         } else if (cost > myBudget && myBudget > 0) {
-            // Фиолетовый бейдж, если дорого и без гранта
             badgesHTML += `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe; margin-bottom:4px;">💰 Over Budget</span> `;
         } else if (match.trackLabel) {
-             // Серый бейдж "Matched", если просто прошли по баллам
              badgesHTML += `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span> `;
         } else {
-             // Фолбек для обычного списка (если алгоритм не запускался или это карта)
              const acc = u.academics?.acceptance_rate_percent;
              badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acc}%</span>`;
         }
+        
+        // ROI УБРАН ПОЛНОСТЬЮ
 
-        // В. ROI Score (Окупаемость)
-        if (match.roiScore && match.roiScore > 0) {
-            const isHigh = match.roiScore > 15; // Порог можно настроить
-            const roiColor = isHigh ? "#059669" : "#d97706"; // Зеленый или оранжевый
-            const roiBg = isHigh ? "#d1fae5" : "#fef3c7";
-            badgesHTML += `<span style="background:${roiBg}; color:${roiColor}; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid ${roiColor}30; margin-bottom:4px;">📈 ROI: ${match.roiScore}x</span> `;
-        }
-
-        // 3. Логотип и картинка
         const logoSrc = `images/logos/${id}.png`; 
         const thumbSrc = `images/thumbnails/${id}.jpg`;
-
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media" style="background-image: url('${thumbSrc}');">
@@ -605,7 +395,6 @@ export function initUniversitiesPage() {
             <div class="uni-body">
             <h3 class="uni-title">${escapeHtml(name)}</h3>
             <div class="uni-loc" style="margin-bottom:8px;">📍 ${locString}</div> 
-            
             <div class="uni-badge" style="margin-top:auto; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
             <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
             </div>
@@ -617,57 +406,20 @@ export function initUniversitiesPage() {
         if (!el.pagination) return;
         const totalPages = Math.ceil(total / state.limit);
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
-
-        let html = "";
-        const p = state.page;
-        const maxVisible = 5;
-
-        const createBtn = (page, text, isActive = false) => {
-            const activeClass = isActive ? "page-btn--active" : "";
-            return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`;
-        };
-
-        if (p > 1) {
-            html += createBtn(1, "«"); 
-            html += createBtn(p - 1, "‹ Prev");
-        }
-
+        let html = ""; const p = state.page; const maxVisible = 5;
+        const createBtn = (page, text, isActive = false) => { const activeClass = isActive ? "page-btn--active" : ""; return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`; };
+        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, "‹ Prev"); }
         let startPage, endPage;
-        if (totalPages <= maxVisible) {
-            startPage = 1; endPage = totalPages;
-        } else {
-            const maxPagesBefore = Math.floor(maxVisible / 2);
-            const maxPagesAfter = Math.ceil(maxVisible / 2) - 1;
-            if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } 
-            else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } 
-            else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; }
-        }
-
-        if (startPage > 1) html += `<span class="page-dots">...</span>`;
-        for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); }
-        if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-
-        if (p < totalPages) {
-            html += createBtn(p + 1, "Next ›");
-            html += createBtn(totalPages, "»");
-        }
-
+        if (totalPages <= maxVisible) { startPage = 1; endPage = totalPages; } else { const maxPagesBefore = Math.floor(maxVisible / 2); const maxPagesAfter = Math.ceil(maxVisible / 2) - 1; if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; } }
+        if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
+        if (p < totalPages) { html += createBtn(p + 1, "Next ›"); html += createBtn(totalPages, "»"); }
         el.pagination.innerHTML = html;
-        el.pagination.querySelectorAll("button").forEach(b => {
-            b.onclick = () => {
-                const newPage = Number(b.dataset.page);
-                if (newPage && newPage !== state.page) {
-                    state.page = newPage;
-                    fetchAndRender();
-                    window.scrollTo({top: 0, behavior: 'smooth'});
-                }
-            };
-        });
+        el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
     }
 }
 
 // =====================================
-// PAGE: UNIVERSITY DETAILS (Детальная страница)
+// PAGE: UNIVERSITY DETAILS (Детальная)
 // =====================================
 export async function initUniversityPage() {
   const params = new URLSearchParams(window.location.search);
@@ -686,13 +438,11 @@ export async function initUniversityPage() {
     if (!res.ok) throw new Error("Backend error");
     const u = await res.json();
 
-    // 1. Шапка (Header) - Без изменений
+    // 1. Шапка
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
-
     setTxt("detailName", u.name); 
     setTxt("detailLocation", u.location ? `${u.location.city}, ${u.location.country}` : "—");
     
-    // Цена "ОТ"
     let minPrice = u.finance?.total_cost_year_usd || 0;
     if (u.admission_tracks) {
         const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0);
@@ -713,7 +463,7 @@ export async function initUniversityPage() {
     const siteBtn = document.getElementById("detailWebsite");
     if (siteBtn && u.website) { siteBtn.href = u.website; siteBtn.style.display = "inline-flex"; }
 
-    // --- TAB 1: GENERAL (Чистая статистика) ---
+    // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
         let rankHtml = "<span>—</span>";
@@ -732,11 +482,7 @@ export async function initUniversityPage() {
 
     const extraDiv = document.getElementById("detailExtra");
     if (extraDiv) {
-         // Описание, если будет добавлено в JSON
-         const description = u.description 
-            ? `<p style="margin-bottom:15px; line-height:1.6; color:#444;">${u.description}</p>` 
-            : ""; 
-
+         const description = u.description ? `<p style="margin-bottom:15px; line-height:1.6; color:#444;">${u.description}</p>` : ""; 
          const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
          
          extraDiv.innerHTML = `
@@ -752,7 +498,7 @@ export async function initUniversityPage() {
         progDiv.innerHTML = u.academics.majors.map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${m}</span>`).join(" ");
     }
 
-    // --- TAB 3: ADMISSION (С Major вместо Mode) ---
+    // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
     const reqDiv = document.getElementById("detailRequirements");
     if (reqDiv) {
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
@@ -760,8 +506,6 @@ export async function initUniversityPage() {
         } else {
             let tracksHTML = "";
             u.admission_tracks.forEach(track => {
-                
-                // 🔥 1. ПОКАЗЫВАЕМ ПРОФЕССИИ (Majors), А НЕ РЕЖИМ
                 let majorsBadge = "";
                 if (track.applicable_majors && track.applicable_majors.length > 0) {
                     majorsBadge = `<div style="margin-top:4px; display:flex; flex-wrap:wrap; gap:6px;">
@@ -773,13 +517,16 @@ export async function initUniversityPage() {
                     majorsBadge = `<span style="font-size:12px; color:#666; font-style:italic;">For all majors</span>`;
                 }
                 
-                // 2. MIN Requirements
+                // Цена трека (Вернули!)
+                const trackPrice = track.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0;
+
+                // Требования
                 let minList = "";
                 for (const [exam, score] of Object.entries(track.requirements || {})) {
                     minList += `<div style="margin-right:12px;"><strong>Min ${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
                 }
 
-                // 3. AVG Stats
+                // Средние баллы
                 let avgList = "";
                 const avgs = track.stats_avg || {};
                 if (Object.keys(avgs).length > 0) {
@@ -790,8 +537,7 @@ export async function initUniversityPage() {
                     avgList = `<div style="color:#999; font-style:italic;">Not available</div>`;
                 }
 
-                // 4. ГРАНТЫ (Инфо о наличии)
-                // 4. ГРАНТЫ (Теперь с условиями и суммами)
+                // Гранты
                 let grantsInfo = "";
                 if (track.scholarships && track.scholarships.length > 0) {
                     grantsInfo = `
@@ -799,15 +545,10 @@ export async function initUniversityPage() {
                         <div style="font-size:11px; font-weight:700; color:#059669; margin-bottom:8px; letter-spacing:0.5px;">AVAILABLE GRANTS & AID:</div>
                         <div style="display:flex; flex-direction:column; gap:10px;">
                             ${track.scholarships.map(s => {
-                                // А. Формируем строку условий (например: "GPA 3.5, SAT 1400")
                                 let conditions = "";
                                 if (s.requirements) {
-                                    conditions = Object.entries(s.requirements)
-                                        .map(([k, v]) => `${k} ≥ ${v}`)
-                                        .join(" • ");
+                                    conditions = Object.entries(s.requirements).map(([k, v]) => `${k} ≥ ${v}`).join(" • ");
                                 }
-                                
-                                // Б. Формируем сумму (если есть) или тип
                                 const badgeText = s.amount 
                                     ? `Cover: ${moneyUSD(s.amount)}` 
                                     : (s.type === 'need' ? 'Need-based Aid' : 'Merit Scholarship');
@@ -822,7 +563,6 @@ export async function initUniversityPage() {
                                             ${badgeText}
                                         </div>
                                     </div>
-                                    
                                     ${conditions ? `
                                         <div style="font-size:11px; color:#4b5563; margin-left:22px;">
                                             <span style="font-weight:600; color:#059669;">Requires:</span> ${conditions}
@@ -837,10 +577,16 @@ export async function initUniversityPage() {
 
                 tracksHTML += `
                 <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:20px; margin-bottom:16px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
-                    <div style="margin-bottom:12px;">
-                        <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${track.label}</h4>
-                        ${majorsBadge}
-                        <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${track.description || ""}</p>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                        <div>
+                            <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${track.label}</h4>
+                            ${majorsBadge}
+                            <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${track.description || ""}</p>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:12px; color:#666;">Est. Cost</div>
+                            <div style="font-size:16px; font-weight:800; color:#111;">${moneyUSD(trackPrice)}</div>
+                        </div>
                     </div>
                     
                     <div class="track-stats-grid">
@@ -861,55 +607,38 @@ export async function initUniversityPage() {
         }
     }
 
-    // --- TAB 4: FINANCE ---
+    // --- TAB 4: FINANCE (С блоком ROI) ---
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo"); 
     const priceBig = document.getElementById("detailPrice");           
     
     if (u.finance) {
-        // 1. Блок Скидок
+        // Блок скидок
         if (scholDiv) {
             const fa = u.finance.financial_aid || {};
             const meritHtml = fa.merit_based 
-                ? `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-weight:600; color:#065f46;">
-                     <span style="font-size:16px;">✅</span> Merit-based scholarships available
-                   </div>` 
-                : `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; opacity:0.6; color:#4b5563;">
-                     <span style="font-size:16px;">❌</span> No merit-based scholarships
-                   </div>`;
+                ? `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-weight:600; color:#065f46;"><span style="font-size:16px;">✅</span> Merit-based scholarships available</div>` 
+                : `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; opacity:0.6; color:#4b5563;"><span style="font-size:16px;">❌</span> No merit-based scholarships</div>`;
             const needHtml = fa.need_based 
-                ? `<div style="display:flex; align-items:center; gap:8px; font-weight:600; color:#065f46;">
-                     <span style="font-size:16px;">✅</span> Need-based financial aid
-                   </div>` 
-                : `<div style="display:flex; align-items:center; gap:8px; opacity:0.6; color:#4b5563;">
-                     <span style="font-size:16px;">❌</span> No need-based aid
-                   </div>`;
-            
+                ? `<div style="display:flex; align-items:center; gap:8px; font-weight:600; color:#065f46;"><span style="font-size:16px;">✅</span> Need-based financial aid</div>` 
+                : `<div style="display:flex; align-items:center; gap:8px; opacity:0.6; color:#4b5563;"><span style="font-size:16px;">❌</span> No need-based aid</div>`;
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
-        // 2. Блок Цены (🔥 ИСПРАВЛЕНО: Расчет "from $...")
+        // Блок цены
         if (priceBig) {
             let minTotal = u.finance.total_cost_year_usd || 0;
             if (u.admission_tracks) {
-                const prices = u.admission_tracks
-                    .map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0)
-                    .filter(p => p > 0);
-                
+                const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0).filter(p => p > 0);
                 if (prices.length > 0) minTotal = Math.min(...prices);
             }
-            // Пишем "from", если есть варианты, или просто цену
             priceBig.innerHTML = `<span style="font-size:0.5em; color:#64748b; vertical-align:middle; margin-right:4px;">from</span>${moneyUSD(minTotal)}`;
         }
         
-        // 3. Карточки треков
+        // Карточки треков
         if (finDiv) {
             finDiv.innerHTML = ""; 
-
-            const tracks = (u.admission_tracks && u.admission_tracks.length > 0) 
-                ? u.admission_tracks 
-                : [{ label: "General Tuition", finance_override: null }];
-
+            const tracks = (u.admission_tracks && u.admission_tracks.length > 0) ? u.admission_tracks : [{ label: "General Tuition", finance_override: null }];
             let financeHTML = "";
 
             tracks.forEach(track => {
@@ -917,7 +646,6 @@ export async function initUniversityPage() {
                 const total = fData.total_cost_year_usd;
                 const breakdown = fData.costs_breakdown_year_usd || {};
 
-                // График
                 let barHTML = `<div class="cost-progress-bar" style="height:8px; display:flex; border-radius:4px; overflow:hidden; background:#e5e7eb;">`;
                 let legendHTML = `<div class="cost-legend">`;
                 
@@ -974,7 +702,81 @@ export async function initUniversityPage() {
                 `;
             });
 
-            finDiv.innerHTML = `<div class="finance-grid-new">${financeHTML}</div>`;
+            // 🔥 ROI БЛОК (Сделано!)
+            const profile = loadProfile();
+            const userMajor = profile.major || "";
+            
+            const outcomes = u.outcomes || {};
+            const salariesByMajor = outcomes.average_salary_by_major || {};
+            const avgSalaryGeneric = outcomes.average_early_career_salary_usd || 0;
+            
+            let roiTitle = "Estimated ROI (Return on Investment)";
+            let roiContent = "";
+            let userSalary = 0;
+
+            if (!userMajor) {
+                userSalary = avgSalaryGeneric;
+                roiContent = `
+                    <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #ffeeba;">
+                        ⚠️ <strong>Tip:</strong> Select your <b>Major</b> in Profile to see precise ROI for your field. Showing average for all graduates.
+                    </div>
+                `;
+            } else {
+                if (salariesByMajor[userMajor]) {
+                    userSalary = salariesByMajor[userMajor];
+                    roiContent = `
+                        <div style="background:#d1fae5; color:#065f46; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #a7f3d0;">
+                            ✅ Calculation based on <b>${userMajor}</b> graduates from this university.
+                        </div>
+                    `;
+                } else {
+                    userSalary = avgSalaryGeneric;
+                    roiContent = `
+                        <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
+                            ℹ️ Specific data for <b>${userMajor}</b> not available. Showing average for all graduates.
+                        </div>
+                    `;
+                }
+            }
+
+            let minPrice = u.finance?.total_cost_year_usd || 1;
+             if (u.admission_tracks && u.admission_tracks.length > 0) {
+                const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0).filter(p => p > 0);
+                if (prices.length > 0) minPrice = Math.min(...prices);
+            }
+            const roiValue = (userSalary / minPrice).toFixed(1);
+            
+            const roiBlock = `
+                <div class="roi-box" style="margin-top:30px; background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:25px; box-shadow:0 4px 6px rgba(0,0,0,0.02);">
+                    <h3 style="margin:0 0 10px 0; color:#5d17ea; font-size:18px;">${roiTitle}</h3>
+                    <p style="font-size:13px; color:#666; margin-bottom:20px; line-height:1.5;">
+                        <b>What is ROI?</b> It calculates how many times your first annual salary covers the cost of one year of education. 
+                        <br><i>Formula: Avg. Graduate Salary / Annual Tuition Cost</i>
+                    </p>
+                    
+                    ${roiContent}
+
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;">
+                        <div style="flex:1; min-width:200px;">
+                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">Est. Graduate Salary</div>
+                            <div style="font-size:24px; font-weight:800; color:#111;">${moneyUSD(userSalary)}</div>
+                            <div style="font-size:11px; color:#999;">per year (early career)</div>
+                        </div>
+                        <div style="width:1px; height:50px; background:#eee; display:none; @media(min-width:600px){display:block;}"></div>
+                        <div style="flex:1; min-width:200px;">
+                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">ROI Score</div>
+                            <div style="font-size:32px; font-weight:900; color:${roiValue > 1.5 ? '#059669' : '#d97706'};">
+                                ${roiValue}x
+                            </div>
+                            <div style="font-size:11px; color:${roiValue > 1.5 ? '#059669' : '#d97706'}; font-weight:600;">
+                                ${roiValue > 2.0 ? 'Excellent Return' : (roiValue > 1.0 ? 'Positive Return' : 'High Investment')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            finDiv.innerHTML = `<div class="finance-grid-new">${financeHTML}</div>` + roiBlock;
         }
     }
 
@@ -987,40 +789,60 @@ export async function initUniversityPage() {
     if (stateEl) stateEl.textContent = "Error loading details.";
   }
 }
-// --- Страница Рейтинга ---
+
+// =====================================
+// PAGE: RANKING (Исправлена сортировка)
+// =====================================
 export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
     if (!listEl) return;
 
     try {
-        const res = await fetch(`${API_BASE}/universities?limit=2000`);
+        // Запрашиваем 200 вузов
+        const res = await fetch(`${API_BASE}/universities?limit=200`);
+        if (!res.ok) throw new Error("Error loading ranking");
         const data = await res.json();
         let items = data.items || [];
 
-        items.sort((a, b) => (a.rank || 9999) - (b.rank || 9999));
+        // 🔥 FIX: Сортируем массив вручную от 1 к 100
+        items.sort((a, b) => (a.rank || 999) - (b.rank || 999));
 
         const html = items.map((u, index) => {
             const rank = u.rank || (index + 1);
-            const rankClass = rank === 1 ? "rank-1" : rank === 2 ? "rank-2" : rank === 3 ? "rank-3" : "";
-            const logoSrc = `images/logos/${u.id}.png`; // Путь от корня
+            
+            // Цвета для топ-3
+            let rankClass = "";
+            if (rank === 1) rankClass = "rank-1";
+            else if (rank === 2) rankClass = "rank-2";
+            else if (rank === 3) rankClass = "rank-3";
+
+            const logoSrc = `images/logos/${u.id}.png`;
+            const flag = getFlagImg(u.location.country);
+
             return `
-            <a href="university.html?id=${u.id}" class="rank-card">
+            <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">
                     <img src="${logoSrc}" alt="${initials(u.name)}" onerror="this.parentNode.textContent='${initials(u.name)}'">
                 </div>
                 <div class="rank-info">
                     <div class="rank-title">${escapeHtml(u.name)}</div>
-                    <div class="rank-loc">📍 ${u.location?.city}, ${u.location?.country}</div>
+                    <div class="rank-loc">
+                        ${flag} 
+                        <span style="margin-left:6px;">${u.location.city}, ${u.location.country}</span>
+                    </div>
                 </div>
-                <div class="rank-badge">Acceptance: ${u.academics.acceptance_rate_percent}%</div>
+                <div class="rank-badge">
+                    Acceptance: <b>${u.academics.acceptance_rate_percent}%</b>
+                </div>
             </a>
             `;
         }).join("");
 
         listEl.innerHTML = html;
-    } catch (e) {
-        console.error(e);
-        listEl.innerHTML = "<p style='text-align:center'>Failed to load rankings.</p>";
+
+    } catch (err) {
+        console.error(err);
+        listEl.innerHTML = `<div style="padding:20px; text-align:center; color:red;">Failed to load rankings.</div>`;
     }
 }

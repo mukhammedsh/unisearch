@@ -5,7 +5,14 @@ export const API_BASE = window.API_BASE_URL || "http://127.0.0.1:8000";
 export const $ = (id) => document.getElementById(id);
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
-const PROFILE_DEFAULTS = { name: "User", budget: "", exams: [] };
+// 🔥 ДОБАВЛЕНО: Новые поля в дефолтном профиле
+const PROFILE_DEFAULTS = { 
+    name: "User", 
+    budget: "", 
+    exams: [], 
+    major: "", 
+    studyMode: "Any" 
+};
 
 export let EXAM_CONFIG = {};
 
@@ -16,17 +23,12 @@ async function loadExamConfig() {
     
     EXAM_CONFIG = await response.json();
     console.log("✅ Exam config loaded:", EXAM_CONFIG);
-    
-    // Сообщаем всему приложению, что конфиг загружен (чтобы перерисовать селекты)
     window.dispatchEvent(new Event("examConfigLoaded"));
   } catch (error) {
     console.error("❌ Error loading exam config:", error);
-    // Фолбек на случай ошибки (чтобы сайт не сломался)
     EXAM_CONFIG = {
         "IELTS": [1.0, 9.0],
-        "TOEFL": [0.0, 120.0],
         "SAT": [400.0, 1600.0],
-        "ACT": [1.0, 36.0],
         "GPA": [0.0, 100.0],
         "UNT": [0.0, 140.0],
     };
@@ -35,22 +37,16 @@ async function loadExamConfig() {
 
 loadExamConfig();
 
-let CITY_OPTIONS_BY_COUNTRY = {};
+export let CITY_OPTIONS_BY_COUNTRY = {};
 
 async function loadCityDatabase() {
   try {
-    // ❌ БЫЛО: const response = await fetch('data/cities.json');
-    
-    // ✅ СТАЛО: Запрашиваем у нашего Python-сервера (API)
     const response = await fetch(`${API_BASE}/locations`); 
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const data = await response.json();
     CITY_OPTIONS_BY_COUNTRY = data;
-    console.log("✅ База городов успешно загружена с Бэкенда");
+    console.log("✅ База городов успешно загружена");
     window.dispatchEvent(new Event("citiesLoaded"));
   } catch (error) {
     console.error("❌ Ошибка при загрузке городов:", error);
@@ -59,28 +55,28 @@ async function loadCityDatabase() {
 
 loadCityDatabase();
 
-const MAJOR_OPTIONS = [
+export const MAJOR_OPTIONS = [
   "Computer Science",
   "Engineering",
   "Business",
   "Medicine",
-  "Natural Sciences", // Covers Physics, Chemistry, Biology
+  "Natural Sciences",
   "Economics",
   "Physics",
   "Mathematics",
   "Law",
   "Social Sciences",
-  "Architecture",       // <-- Добавлено (есть в MIT, Delft, ETH)
-  "Psychology",         // <-- Добавлено (есть в Stanford, Toronto)
-  "Humanities",         // <-- Добавлено (Arts & Humanities)
-  "Design",             // <-- Добавлено (Industrial Design)
-  "Life Sciences",      // <-- Добавлено (Biology, Bioengineering)
-  "Education",          // <-- Добавлено (Melbourne, SDU)
-  "Agriculture"         // <-- Добавлено (Kyoto, Tokyo)
+  "Architecture",
+  "Psychology",
+  "Humanities",
+  "Design",
+  "Life Sciences",
+  "Education",
+  "Agriculture"
 ];
 
 // --- Helpers ---
-function debounce(fn, ms = 250) {
+export function debounce(fn, ms = 250) {
   let t = null;
   return (...args) => {
     clearTimeout(t);
@@ -88,11 +84,11 @@ function debounce(fn, ms = 250) {
   };
 }
 
-function escapeHtml(str) {
+export function escapeHtml(str) {
   return String(str ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 
-function nested(obj, path, fallback = null) {
+export function nested(obj, path, fallback = null) {
   let cur = obj;
   for (const key of path) {
     if (!cur || typeof cur !== "object") return fallback;
@@ -101,52 +97,40 @@ function nested(obj, path, fallback = null) {
   return (cur === undefined || cur === null) ? fallback : cur;
 }
 
-function initials(name) {
+export function initials(name) {
   const s = String(name || "").trim();
   if (!s) return "U";
   const parts = s.split(/\s+/).slice(0, 2);
   return (parts.map(p => (p[0] || "").toUpperCase()).join("") || "U");
 }
 
-function moneyUSD(val) {
+export function moneyUSD(val) {
   const n = Number(val);
   if (!Number.isFinite(n)) return "—";
   return "$" + new Intl.NumberFormat("en-US").format(n);
 }
 
-function setUrlParams(params) {
+export function setUrlParams(params) {
   const url = new URL(window.location.href);
   url.search = params.toString();
   window.history.replaceState({}, "", url.toString());
 }
 
-// --- Система уведомлений (TOASTS) ---
-function showToast(message, type = "error") {
+export function showToast(message, type = "error") {
     const container = document.getElementById("toast-container");
     if (!container) return;
 
     const toast = document.createElement("div");
-    toast.className = `toast ${type}`; // type: 'error' или 'success'
-    
-    // Иконка в зависимости от типа
+    toast.className = `toast ${type}`;
     const icon = type === "success" ? "✅" : "⚠️";
     
-    toast.innerHTML = `
-        <span>${icon} ${escapeHtml(message)}</span>
-        <button class="toast-close">&times;</button>
-    `;
-
-    // Удаление по клику на крестик
+    toast.innerHTML = `<span>${icon} ${escapeHtml(message)}</span><button class="toast-close">&times;</button>`;
     toast.querySelector(".toast-close").onclick = () => removeToast(toast);
-
-    // Авто-удаление через 3 секунды (было 2, сделал чуть больше для читаемости)
     setTimeout(() => removeToast(toast), 3000);
-
-    // Добавляем в начало (новые снизу толкают старые вверх)
     container.appendChild(toast);
 }
 
-function removeToast(toast) {
+export function removeToast(toast) {
     toast.style.animation = "fadeOut 0.3s ease forwards";
     toast.addEventListener("animationend", () => {
         if(toast.parentNode) toast.parentNode.removeChild(toast);
@@ -154,44 +138,42 @@ function removeToast(toast) {
 }
 
 // --- Управление профилем ---
-function loadProfile() {
+export function loadProfile() {
   try {
     const s = localStorage.getItem(PROFILE_STORAGE_KEY);
-    return s ? JSON.parse(s) : { ...PROFILE_DEFAULTS };
+    // Мержим с дефолтными значениями, чтобы новые поля (major, studyMode) появились
+    return s ? { ...PROFILE_DEFAULTS, ...JSON.parse(s) } : { ...PROFILE_DEFAULTS };
   } catch(e) { return { ...PROFILE_DEFAULTS }; }
 }
 
-function saveProfile(p) {
+export function saveProfile(p) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
   window.dispatchEvent(new Event("profileUpdated"));
 }
 
-/* --- Сохранение фильтров и состояния (LocalStorage) --- */
+/* --- Сохранение фильтров (ОЧИЩЕНО) --- */
 const FILTERS_KEY = "unisearch_filters";
 
-// Сохраняем текущее состояние (фильтры + режим просмотра)
-function saveFilters(state) {
+export function saveFilters(state) {
     if (!state) return;
-    // Копируем стейт, чтобы не мутировать оригинал
+    
     const dataToSave = { 
         q: state.q,
         country: state.country,
         region: state.region,
         city: state.city,
-        major: state.major,
+        // 🔥 УДАЛЕНО: major и format больше не сохраняются в фильтрах
         study_level: state.study_level,
-        format: state.format,
         min_tuition: state.min_tuition,
         max_tuition: state.max_tuition,
         sort: state.sort,
         ai_balance: state.ai_balance,
-        viewMode: state.viewMode || "list" // сохраняем режим: 'list' или 'map'
+        viewMode: state.viewMode || "list"
     };
     localStorage.setItem(FILTERS_KEY, JSON.stringify(dataToSave));
 }
 
-// Загружаем сохраненное состояние
-function loadFilters() {
+export function loadFilters() {
     try {
         const saved = localStorage.getItem(FILTERS_KEY);
         return saved ? JSON.parse(saved) : {};
@@ -201,49 +183,33 @@ function loadFilters() {
     }
 }
 
-// --- Flags Configuration (ISO Codes) ---
+// --- Flags ---
 const COUNTRY_CODES = {
-  "Kazakhstan": "kz",
-  "USA": "us",
-  "South Korea": "kr",
-  "Japan": "jp",
-  "Hong Kong": "hk",
-  "UK": "gb",
-  "Switzerland": "ch",
-  "Canada": "ca",
-  "Australia": "au",
-  "China": "cn",
-  "Singapore": "sg",
-  "Germany": "de",
-  "Netherlands": "nl"
+  "Kazakhstan": "kz", "USA": "us", "South Korea": "kr", "Japan": "jp",
+  "Hong Kong": "hk", "UK": "gb", "Switzerland": "ch", "Canada": "ca",
+  "Australia": "au", "China": "cn", "Singapore": "sg", "Germany": "de", "Netherlands": "nl"
 };
 
-// Функция 1: Возвращает HTML-картинку (для красивых карточек)
-function getFlagImg(countryName) {
+export function getFlagImg(countryName) {
   const code = COUNTRY_CODES[countryName];
   if (!code) return "";
-  // Используем CDN flagcdn.com (размер 20x15 px)
   return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${code}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">`;
 }
 
-function initCustomSelect(selectId) {
+export function initCustomSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return;
 
-    // 1. Очистка: Если уже есть кастомный список, удаляем его перед перерисовкой
-    // Это важно для кнопок Reset или когда список городов обновляется
     if (select.parentNode.classList.contains('custom-select-wrapper')) {
         const wrapper = select.parentNode;
         const parent = wrapper.parentNode;
-        parent.insertBefore(select, wrapper); // Возвращаем селект на место
-        wrapper.remove(); // Удаляем обертку
+        parent.insertBefore(select, wrapper);
+        wrapper.remove();
         select.classList.remove('u-select-hidden');
     }
 
-    // 2. Создаем структуру
     const wrapper = document.createElement('div');
     wrapper.classList.add('custom-select-wrapper');
-    
     select.parentNode.insertBefore(wrapper, select.nextSibling);
     wrapper.appendChild(select);
     select.classList.add('u-select-hidden');
@@ -256,97 +222,44 @@ function initCustomSelect(selectId) {
     customOptions.classList.add('custom-options');
     wrapper.appendChild(customOptions);
 
-    // Функция обновления заголовка (то, что видит пользователь)
     function updateTrigger() {
         const selectedOption = select.options[select.selectedIndex];
-        // Защита, если список пустой
         if (!selectedOption) return;
-
         const val = selectedOption.value;
         const text = selectedOption.text;
-        
-        // Пытаемся получить флаг (если это страна)
         const flag = getFlagImg(val); 
-
-        if (flag) {
-            // Если есть флаг — рисуем с флагом
-            trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${text}</span></div>`;
-        } else {
-            // Если флага нет (например, Major или Sort) — просто текст
-            trigger.innerHTML = `<span>${text}</span>`;
-        }
+        if (flag) trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${text}</span></div>`;
+        else trigger.innerHTML = `<span>${text}</span>`;
     }
 
-    // 3. Генерация списка опций
     for (const option of select.options) {
         const div = document.createElement('div');
         div.classList.add('custom-option');
-        
         const val = option.value;
         const text = option.text;
-        const flag = getFlagImg(val); // Проверяем, есть ли флаг для этого значения
+        const flag = getFlagImg(val); 
+        if (flag) div.innerHTML = `${flag} <span>${text}</span>`;
+        else div.textContent = text;
 
-        if (flag) {
-            div.innerHTML = `${flag} <span>${text}</span>`;
-        } else {
-            div.textContent = text;
-        }
-
-        // Подсветка выбранного
-        if (option.selected) {
-            div.classList.add('selected');
-        }
+        if (option.selected) div.classList.add('selected');
 
         div.addEventListener('click', () => {
             select.value = val;
-            select.dispatchEvent(new Event('change')); // Сообщаем сайту, что выбор изменился
-            
+            select.dispatchEvent(new Event('change')); 
             updateTrigger();
             wrapper.classList.remove('open');
-            
             wrapper.querySelectorAll('.custom-option').forEach(el => el.classList.remove('selected'));
             div.classList.add('selected');
         });
-
         customOptions.appendChild(div);
     }
 
-    // Открытие/закрытие
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
-        // Закрываем другие открытые списки, чтобы не накладывались
-        document.querySelectorAll('.custom-select-wrapper').forEach(w => {
-            if (w !== wrapper) w.classList.remove('open');
-        });
+        document.querySelectorAll('.custom-select-wrapper').forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
         wrapper.classList.toggle('open');
     });
 
-    // Инициализация (показать текущее значение)
     updateTrigger();
-
-    // Закрытие при клике вне элемента
-    document.addEventListener('click', (e) => {
-        if (!wrapper.contains(e.target)) {
-            wrapper.classList.remove('open');
-        }
-    });
+    document.addEventListener('click', (e) => { if (!wrapper.contains(e.target)) wrapper.classList.remove('open'); });
 }
-
-export {
-  debounce,
-  escapeHtml,
-  nested,
-  initials,
-  moneyUSD,
-  setUrlParams,
-  loadProfile,
-  saveProfile,
-  saveFilters,
-  loadFilters,
-  getFlagImg,
-  initCustomSelect,
-  removeToast,
-  showToast,
-  CITY_OPTIONS_BY_COUNTRY,
-  MAJOR_OPTIONS
-};
