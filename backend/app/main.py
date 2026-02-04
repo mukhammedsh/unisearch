@@ -2,15 +2,54 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
+import re
 from typing import Any, Optional, List, Dict, Union
 from decimal import Decimal
 from pathlib import Path
+from urllib.parse import quote, urlencode
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+
+def _load_local_env() -> None:
+    """
+    Minimal .env loader (no extra dependency).
+    Looks for backend/.env and sets missing os.environ keys.
+    """
+    try:
+        current_dir = Path(__file__).resolve().parent
+        backend_dir = current_dir.parent
+        env_path = backend_dir / ".env"
+        if not env_path.exists():
+            return
+        for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            k = key.strip()
+            v = value.strip().strip('"').strip("'")
+            if k and k not in os.environ:
+                os.environ[k] = v
+    except Exception:
+        return
+
+_load_local_env()
 
 app = FastAPI(title="UniSearch AI API", version="2.0.0")
 FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",
     "http://127.0.0.1:5501"  # локально
 )
+UNIMENTOR_NAME = os.getenv("UNIMENTOR_NAME", "UniMentor").strip() or "UniMentor"
+UNIMENTOR_PROVIDER = os.getenv("UNIMENTOR_PROVIDER", "local").strip().lower() or "local"
+UNIMENTOR_ENABLE_ONLINE = os.getenv("UNIMENTOR_ENABLE_ONLINE", "1").strip().lower() not in ("0", "false", "no")
+UNIMENTOR_GEMINI_MODEL = os.getenv("UNIMENTOR_GEMINI_MODEL", "gemini-2.0-flash").strip() or "gemini-2.0-flash"
+UNIMENTOR_GEMINI_ENABLE_WEB = os.getenv("UNIMENTOR_GEMINI_ENABLE_WEB", "1").strip().lower() not in ("0", "false", "no")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+try:
+    UNIMENTOR_TIMEOUT = float(os.getenv("UNIMENTOR_TIMEOUT", "6"))
+except Exception:
+    UNIMENTOR_TIMEOUT = 6.0
 
 app.add_middleware(
     CORSMiddleware,
@@ -538,6 +577,355 @@ def validate_language(payload: Dict[str, Any]):
         raise HTTPException(status_code=400, detail="Invalid score format")
 
     return {"ok": True, "language": {"code": code, "kind": "exam", "exam": exam_id, "score": score}}
+
+def _mentor_http_json(url: str) -> Optional[Dict[str, Any]]:
+    try:
+        req = Request(url, headers={"User-Agent": "UniSearch-UniMentor/1.0"})
+        with urlopen(req, timeout=UNIMENTOR_TIMEOUT) as r:
+            body = r.read().decode("utf-8", errors="ignore")
+            data = json.loads(body)
+            return data if isinstance(data, dict) else None
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, ValueError):
+        return None
+    except Exception:
+        return None
+
+def _mentor_find_university(question: str, university_id: str = "") -> Optional[Dict[str, Any]]:
+    items = load_universities()
+    uid = str(university_id or "").strip().lower()
+    if uid:
+        for u in items:
+            if str(u.get("id", "")).strip().lower() == uid:
+                return u
+
+    q = str(question or "").strip().lower()
+    if not q:
+        return None
+
+    # Try direct name/id containment.
+    for u in items:
+        name = str(u.get("name", "")).lower()
+        uid2 = str(u.get("id", "")).lower()
+        if name and name in q:
+            return u
+        if uid2 and uid2 in q:
+            return u
+
+    # Fuzzy token overlap fallback.
+    words = set(re.findall(r"[a-z0-9]+", q))
+    best = None
+    best_score = 0
+    for u in items:
+        tokens = set(re.findall(r"[a-z0-9]+", str(u.get("name", "")).lower()))
+        if not tokens:
+            continue
+        score = len(words.intersection(tokens))
+        if score > best_score:
+            best = u
+            best_score = score
+    return best if best_score >= 2 else None
+
+def _mentor_university_answer(university: Dict[str, Any], question: str) -> str:
+    q = str(question or "").lower()
+    name = university.get("name", "This university")
+    loc = university.get("location", {}) or {}
+    country = loc.get("country", "Unknown")
+    city = loc.get("city", "Unknown city")
+    rank = university.get("rank", None)
+    finance = university.get("finance", {}) or {}
+    tuition = finance.get("total_cost_year_usd", None)
+    tracks = university.get("admission_tracks", []) or []
+
+    if any(k in q for k in ("cost", "tuition", "price", "budget", "fee")):
+        cost_line = f"Estimated annual cost is around ${tuition:,} USD." if isinstance(tuition, (int, float)) else "Annual cost is not fully specified."
+        return f"{name}: {cost_line} I can also break down track-specific costs and scholarships if needed."
+
+    if any(k in q for k in ("scholarship", "grant", "aid", "financial aid")):
+        grants = []
+        for t in tracks:
+            for s in (t.get("scholarships", []) or []):
+                title = s.get("name")
+                if title:
+                    grants.append(title)
+        if grants:
+            first = ", ".join(grants[:6])
+            return f"{name} has these scholarship/aid options in our data: {first}."
+        return f"I do not see explicit scholarship entries for {name} in the current dataset."
+
+    if any(k in q for k in ("language", "ielts", "toefl", "cefr", "jlpt", "testdaf")):
+        lines = []
+        for t in tracks:
+            lrs = t.get("language_requirements", []) or []
+            if not lrs:
+                continue
+            mode = str(t.get("language_requirements_mode", "all")).upper()
+            lines.append(f"{t.get('label', 'Track')} ({mode}) has {len(lrs)} language rule(s).")
+        if lines:
+            return f"{name} language requirements summary: " + " ".join(lines[:4]) + " Check Admission tab for full per-track details."
+        return f"No structured language requirements are listed for {name} in our dataset."
+
+    if any(k in q for k in ("admission", "requirement", "exam", "sat", "gpa", "unt")):
+        if not tracks:
+            return f"{name} has no detailed admission track data in our dataset."
+        first = tracks[0]
+        req = first.get("requirements", {}) or {}
+        req_text = ", ".join([f"{k} >= {v}" for k, v in req.items()][:6]) or "No explicit minimum exam rules"
+        return f"{name} admission overview: first track '{first.get('label', 'Track')}' requires {req_text}. There are {len(tracks)} track(s) in total."
+
+    base = f"{name} is located in {city}, {country}."
+    if isinstance(rank, int):
+        base += f" Global rank in our dataset is #{rank}."
+    if isinstance(tuition, (int, float)):
+        base += f" Estimated annual cost is ${tuition:,} USD."
+    if tracks:
+        base += f" We track {len(tracks)} admission pathway(s)."
+    return base
+
+def _mentor_online_context(university: Optional[Dict[str, Any]], question: str, enabled: bool) -> List[Dict[str, str]]:
+    if not enabled or not UNIMENTOR_ENABLE_ONLINE:
+        return []
+
+    q = str(question or "").strip()
+    if not q:
+        return []
+
+    uni_name = str((university or {}).get("name", "")).strip()
+    seed = f"{uni_name} {q}".strip()
+    sources: List[Dict[str, str]] = []
+
+    # Wikipedia summary (free, no key)
+    if uni_name:
+        wiki_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{quote(uni_name)}"
+        wiki = _mentor_http_json(wiki_url)
+        if wiki:
+            extract = str(wiki.get("extract", "")).strip()
+            page_url = ((wiki.get("content_urls") or {}).get("desktop") or {}).get("page", "")
+            if extract:
+                sources.append({
+                    "title": f"Wikipedia: {uni_name}",
+                    "url": str(page_url or f"https://en.wikipedia.org/wiki/{quote(uni_name)}"),
+                    "snippet": extract[:500],
+                })
+
+    # DuckDuckGo Instant Answer (free, no key)
+    ddg_params = urlencode({"q": seed, "format": "json", "no_html": "1", "skip_disambig": "1"})
+    ddg_url = f"https://api.duckduckgo.com/?{ddg_params}"
+    ddg = _mentor_http_json(ddg_url)
+    if ddg:
+        abstract = str(ddg.get("AbstractText", "")).strip()
+        abstract_url = str(ddg.get("AbstractURL", "")).strip()
+        heading = str(ddg.get("Heading", "")).strip() or "DuckDuckGo Instant Answer"
+        if abstract:
+            sources.append({
+                "title": heading,
+                "url": abstract_url or "https://duckduckgo.com/",
+                "snippet": abstract[:500],
+            })
+
+    return sources[:4]
+
+def _mentor_profile_summary(profile: Dict[str, Any]) -> Dict[str, Any]:
+    p = profile if isinstance(profile, dict) else {}
+    exams = []
+    for e in (p.get("exams", []) or []):
+        if not isinstance(e, dict):
+            continue
+        exam_id = str(e.get("id") or e.get("exam") or "").strip()
+        score = e.get("score", None)
+        if exam_id and score not in (None, ""):
+            exams.append({"exam": exam_id, "score": score})
+
+    langs = []
+    for l in (p.get("languages", []) or []):
+        if not isinstance(l, dict):
+            continue
+        code = str(l.get("code") or l.get("lang") or "").strip().lower()
+        kind = str(l.get("kind") or "").strip().lower()
+        if not code or not kind:
+            continue
+        row = {"code": code, "kind": kind}
+        if kind == "cefr":
+            row["level"] = l.get("level")
+        if kind == "exam":
+            row["exam"] = l.get("exam")
+            row["score"] = l.get("score")
+        langs.append(row)
+
+    return {
+        "name": str(p.get("name", "")).strip(),
+        "major": str(p.get("major", "")).strip(),
+        "study_mode": str(p.get("studyMode", "")).strip(),
+        "budget_usd": p.get("budget", None),
+        "exams": exams[:20],
+        "languages": langs[:20],
+    }
+
+def _mentor_university_summary(university: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if not isinstance(university, dict):
+        return {}
+    tracks_raw = university.get("admission_tracks", []) or []
+    tracks = []
+    for t in tracks_raw[:6]:
+        if not isinstance(t, dict):
+            continue
+        tracks.append({
+            "id": t.get("id"),
+            "label": t.get("label"),
+            "requirements": t.get("requirements", {}) or {},
+            "stats_avg": t.get("stats_avg", {}) or {},
+            "language_requirements_mode": t.get("language_requirements_mode", "all"),
+            "language_requirements": t.get("language_requirements", []) or [],
+            "finance_override": (t.get("finance_override", {}) or {}).get("total_cost_year_usd"),
+        })
+    return {
+        "id": university.get("id"),
+        "name": university.get("name"),
+        "website": university.get("website"),
+        "location": university.get("location", {}) or {},
+        "rank": university.get("rank"),
+        "finance_total_cost_year_usd": (university.get("finance", {}) or {}).get("total_cost_year_usd"),
+        "admission_tracks": tracks,
+    }
+
+def _mentor_parse_gemini_text(resp: Dict[str, Any]) -> str:
+    if not isinstance(resp, dict):
+        return ""
+    out: List[str] = []
+    for cand in (resp.get("candidates", []) or []):
+        if not isinstance(cand, dict):
+            continue
+        content = cand.get("content", {}) or {}
+        for part in (content.get("parts", []) or []):
+            if isinstance(part, dict):
+                txt = str(part.get("text", "")).strip()
+                if txt:
+                    out.append(txt)
+    return "\n\n".join(out).strip()
+
+def _mentor_parse_gemini_sources(resp: Dict[str, Any]) -> List[Dict[str, str]]:
+    if not isinstance(resp, dict):
+        return []
+    seen: set = set()
+    out: List[Dict[str, str]] = []
+
+    def add(title: str, url: str):
+        u = str(url or "").strip()
+        if not u or u in seen:
+            return
+        seen.add(u)
+        out.append({"title": str(title or "Web source").strip() or "Web source", "url": u})
+
+    for cand in (resp.get("candidates", []) or []):
+        if not isinstance(cand, dict):
+            continue
+        gm = cand.get("groundingMetadata") or cand.get("grounding_metadata") or {}
+        chunks = gm.get("groundingChunks") or gm.get("grounding_chunks") or []
+        for ch in (chunks or []):
+            if not isinstance(ch, dict):
+                continue
+            web = ch.get("web", {}) or {}
+            add(web.get("title", "Web source"), web.get("uri", ""))
+        cm = cand.get("citationMetadata") or cand.get("citation_metadata") or {}
+        for c in (cm.get("citations", []) or []):
+            if isinstance(c, dict):
+                add(c.get("title", "Citation"), c.get("uri", ""))
+    return out[:5]
+
+def _mentor_call_gemini(question: str, university: Optional[Dict[str, Any]], profile: Dict[str, Any], online: bool) -> Dict[str, Any]:
+    model = UNIMENTOR_GEMINI_MODEL
+    endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{quote(model)}:generateContent?key={quote(GEMINI_API_KEY)}"
+    profile_ctx = _mentor_profile_summary(profile)
+    uni_ctx = _mentor_university_summary(university)
+    system_text = (
+        f"You are {UNIMENTOR_NAME}, an admissions consultant for UniSearch. "
+        "Use provided profile and university context first. "
+        "Be concise, practical, and explicit about uncertainty. "
+        "Do not invent scholarships, deadlines, or hard requirements. "
+        "If information is missing, say it clearly and suggest what to check on official university websites."
+    )
+    user_payload = {
+        "question": question,
+        "user_profile": profile_ctx,
+        "university_context": uni_ctx,
+        "task": "Answer the question and include concrete next steps for this applicant.",
+    }
+    body: Dict[str, Any] = {
+        "system_instruction": {"parts": [{"text": system_text}]},
+        "contents": [{"role": "user", "parts": [{"text": json.dumps(user_payload, ensure_ascii=False)}]}],
+        "generationConfig": {"temperature": 0.35, "maxOutputTokens": 700},
+    }
+    if online and UNIMENTOR_GEMINI_ENABLE_WEB:
+        body["tools"] = [{"google_search": {}}]
+
+    req = Request(
+        endpoint,
+        data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json", "User-Agent": "UniSearch-UniMentor/1.0"},
+        method="POST",
+    )
+    with urlopen(req, timeout=max(UNIMENTOR_TIMEOUT, 8.0)) as r:
+        raw = r.read().decode("utf-8", errors="ignore")
+    data = json.loads(raw)
+    text = _mentor_parse_gemini_text(data)
+    if not text:
+        raise ValueError("Empty response from Gemini")
+    return {
+        "answer": text,
+        "sources": _mentor_parse_gemini_sources(data),
+        "model": model,
+        "online_used": bool(online and UNIMENTOR_GEMINI_ENABLE_WEB),
+    }
+
+@app.post("/mentor/ask")
+def mentor_ask(payload: Dict[str, Any]):
+    question = str(payload.get("question", "")).strip()
+    if not question:
+        raise HTTPException(status_code=400, detail="question is required")
+
+    university_id = str(payload.get("university_id", "")).strip()
+    online = bool(payload.get("online", True))
+    profile = payload.get("profile", {}) if isinstance(payload.get("profile"), dict) else {}
+
+    university = _mentor_find_university(question, university_id)
+    db_answer = _mentor_university_answer(university, question) if university else "I could not match a specific university from your request, but I can still answer general questions."
+    answer = db_answer
+    web_sources: List[Dict[str, str]] = []
+    online_used = False
+
+    use_gemini = UNIMENTOR_PROVIDER in ("gemini", "auto")
+    if use_gemini and GEMINI_API_KEY:
+        try:
+            g = _mentor_call_gemini(question, university, profile, online=online)
+            answer = g["answer"]
+            web_sources = g.get("sources", []) or []
+            online_used = bool(g.get("online_used", False))
+        except Exception:
+            web_sources = _mentor_online_context(university, question, online)
+            answer = db_answer
+            if web_sources:
+                answer += " I also found extra context online; please verify official details directly on university websites."
+    else:
+        web_sources = _mentor_online_context(university, question, online)
+        if web_sources:
+            answer += " I also found extra context online; please verify official details directly on university websites."
+
+    out_sources: List[Dict[str, str]] = []
+    if university and str(university.get("website", "")).strip():
+        out_sources.append({
+            "title": f"{university.get('name', 'University')} official website",
+            "url": str(university.get("website")),
+        })
+    for s in web_sources:
+        out_sources.append({"title": s.get("title", "Source"), "url": s.get("url", "")})
+
+    return {
+        "assistant": UNIMENTOR_NAME,
+        "answer": answer,
+        "university_id": (university or {}).get("id", None),
+        "sources": [s for s in out_sources if s.get("url")][:5],
+        "online_used": bool(online_used or web_sources),
+        "provider": "gemini" if (use_gemini and GEMINI_API_KEY) else "local",
+    }
 
 if __name__ == "__main__":
     import uvicorn

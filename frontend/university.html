@@ -56,6 +56,9 @@
           <button class="d-tab-btn" data-tab="tab-finance">
             <span class="icon">💲</span> Costs
           </button>
+          <button class="d-tab-btn" data-tab="tab-mentor">
+            <span class="icon">🤖</span> <span data-ai-name="mentor">UniMentor</span>
+          </button>
         </div>
 
         <div class="d-tab-content">
@@ -108,6 +111,24 @@
 
               <div id="detailFinance" class="finance-list-full"></div>
               
+            </div>
+          </div>
+
+          <div id="tab-mentor" class="d-tab-pane">
+            <div class="d-box">
+              <div class="d-box-title"><span id="mentorAssistantName" data-ai-name="mentor">UniMentor</span> Chat Assistant</div>
+              <p class="guide-muted" style="margin-bottom:10px;">Ask questions about this university. Answers combine our database and optional online references.</p>
+              <div id="mentorPanel" class="mentor-panel">
+                <div id="mentorDisabledNote" class="mentor-disabled" style="display:none;">
+                  <strong data-ai-name="mentor">UniMentor</strong> is disabled in config.
+                </div>
+                <div id="mentorMessages" class="mentor-messages"></div>
+                <div class="mentor-input-row">
+                  <input id="mentorInput" type="text" class="profile-input" placeholder="Ask about admission, scholarships, housing, deadlines..." />
+                  <button id="mentorSendBtn" class="profile-add" type="button">Send</button>
+                  <button id="mentorClearBtn" class="profile-delete" type="button">Clear</button>
+                </div>
+              </div>
             </div>
           </div>
 

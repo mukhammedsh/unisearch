@@ -18,10 +18,12 @@ import {
   getExamDisplayName,
   EXAM_CONFIG,
   LANG_CONFIG,
+  aiName,
 } from "./utils.js";
 
 import { getUniSort } from "./algo.js";
 import { estimateUniChance } from "./ai/unichance.js";
+import { initUniMentor } from "./ai/mentor.js";
 import { setupTabs } from "./components.js";
 
 // =====================================
@@ -49,6 +51,13 @@ export function initUniversitiesPage() {
     };
 
     if (!el.list) return;
+
+    const applyAISortOptionLabel = () => {
+        if (!el.sortSelect) return;
+        const aiOpt = el.sortSelect.querySelector('option[value="uni_ai"]');
+        if (aiOpt) aiOpt.textContent = `✨ ${aiName("fit")}: AI Smart Sort`;
+    };
+    applyAISortOptionLabel();
 
     const savedState = loadFilters();
     const initialMin = clampTuition(savedState.min_tuition, 0);
@@ -812,7 +821,7 @@ export async function initUniversityPage() {
             <div class="chance-panel">
               <div class="chance-head">
                 <div>
-                  <div class="chance-title">UniChance AI - Admission Probability</div>
+                  <div class="chance-title">${escapeHtml(aiName("chance"))} AI - Admission Probability</div>
                   <div class="chance-sub">Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.</div>
                 </div>
                 <div class="chance-percent ${tone.cls}">${chance}%</div>
@@ -827,7 +836,7 @@ export async function initUniversityPage() {
         if (!trackChance) return "";
         const chance = Number(trackChance.chancePercent) || 0;
         const tone = chanceTone(chance);
-        return `<div class="chance-track-chip ${tone.cls}">UniChance ${chance}%</div>`;
+        return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
         }
 
 
@@ -1128,6 +1137,7 @@ export async function initUniversityPage() {
 
     if (stateEl) stateEl.textContent = "";
     if (cardEl) cardEl.style.display = "block"; 
+    initUniMentor(u);
     setupTabs(); 
 
   } catch (err) {
@@ -1204,16 +1214,21 @@ export function initGuidePage() {
     const languageWrap = document.getElementById("guideLanguageExams");
     const glossaryWrap = document.getElementById("guideGlossary");
 
+    const fitName = aiName("fit");
+    const chanceName = aiName("chance");
+    const mentorName = aiName("mentor");
+
     const gloss = [
-        { term: "UniFit", desc: "AI ranking mode that balances prestige, affordability, and admission feasibility." },
-        { term: "UniChance", desc: "AI probability (0-100) of your admission, computed per track from your profile and requirements." },
+        { term: fitName, desc: "AI ranking mode that balances prestige, affordability, and admission feasibility." },
+        { term: chanceName, desc: "AI probability (0-100) of your admission, computed per track from your profile and requirements." },
+        { term: mentorName, desc: "AI consultant chatbot that answers university questions using project data and optional web context." },
         { term: "Admission Track", desc: "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)." },
         { term: "Requirements", desc: "Minimum scores to be considered for a track." },
         { term: "Stats Avg", desc: "Typical scores of admitted students on that track." },
         { term: "Language Requirements", desc: "Accepted proof of language ability: native, CEFR, or language exam." },
         { term: "Mode = any", desc: "You need to satisfy at least one listed language option." },
         { term: "Mode = all", desc: "You must satisfy every listed language requirement." },
-        { term: "Match Score", desc: "Internal UniFit ranking score; higher means a better fit for your profile." },
+        { term: "Match Score", desc: `Internal ${fitName} ranking score; higher means a better fit for your profile.` },
     ];
 
     function typeLabel(t) {

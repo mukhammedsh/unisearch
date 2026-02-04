@@ -5,3 +5,16 @@ window.API_BASE_URL =
     : "https://unisearch-bsjl.onrender.com";
 
 window.APP_VERSION = "2.0.0 Beta";
+
+// AI function display names (change these names in one place).
+window.AI_FUNCTIONS = {
+  fit: "UniFit",
+  chance: "UniChance",
+  mentor: "UniMentor",
+};
+
+// UniMentor frontend settings.
+window.UNIMENTOR_CONFIG = {
+  enabled: true,
+  online: true,
+};

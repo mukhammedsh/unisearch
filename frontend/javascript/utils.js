@@ -1,6 +1,18 @@
 /* 1. utils.js - Базовые настройки, утилиты и работа с профилем */
 
 export const API_BASE = window.API_BASE_URL || "http://127.0.0.1:8000";
+const AI_DEFAULTS = { fit: "UniFit", chance: "UniChance", mentor: "UniMentor" };
+export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
+export const UNIMENTOR_CONFIG = {
+  enabled: true,
+  online: true,
+  ...(window.UNIMENTOR_CONFIG || {}),
+};
+
+export function aiName(key) {
+  const k = String(key || "").trim().toLowerCase();
+  return AI_FUNCTIONS[k] || AI_DEFAULTS[k] || "AI Function";
+}
 
 export const $ = (id) => document.getElementById(id);
 

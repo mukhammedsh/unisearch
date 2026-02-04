@@ -1,11 +1,12 @@
-# UniSearch / UniFit / UniChance - Beta v2.0 (Infomatrix 2026)
+# UniSearch / UniFit / UniChance / UniMentor - Beta v2.0 (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app that helps applicants choose universities using:
 - structured university data,
 - profile-based filtering,
 - UniFit ranking (AI-like scoring with prestige/budget/admission feasibility balance),
-- and UniChance probability (0-100 estimated admission chance).
+- UniChance probability (0-100 estimated admission chance),
+- and UniMentor (AI chatbot consultant for university Q&A).
 
 It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
 
@@ -108,16 +109,77 @@ UniChance is rendered in the University -> Admission tab with a dedicated UI pan
 
 ---
 
+## UniMentor AI engine (smart chatbot consultant)
+
+UniMentor is a chatbot assistant focused on university questions.
+
+### What it does
+- Answers questions about admission, language requirements, tuition, scholarships, rank, and location.
+- Uses your own university database as primary source.
+- Optionally augments answers with free online context.
+
+### Methods supported
+UniMentor supports 2 modes:
+1. **Local free mode** (default):
+   - Database retrieval + rule-based reasoning from `universities.json`
+   - Optional free web enrichment (Wikipedia REST + DuckDuckGo Instant Answer)
+2. **Gemini mode** (smarter LLM):
+   - Uses Google Gemini API (recommended model: `gemini-2.0-flash`)
+   - Can use Google Search grounding when enabled
+   - Receives both user profile + selected university context before answering
+
+Notes:
+- Gemini has a free tier, but quotas/rate limits apply and may change over time.
+- Keep fallback to local mode for reliability when quota/network fails.
+
+### How to enable UniMentor
+
+Frontend (`frontend/config.js`):
+- `window.UNIMENTOR_CONFIG.enabled = true`
+- `window.UNIMENTOR_CONFIG.online = true` (optional web context)
+
+Backend environment:
+- `UNIMENTOR_ENABLE_ONLINE=1` to allow online enrichment
+- `UNIMENTOR_ENABLE_ONLINE=0` for offline/database-only mode
+- optional: `UNIMENTOR_NAME=UniMentor` and `UNIMENTOR_TIMEOUT=6`
+- `UNIMENTOR_PROVIDER=local` (default) or `UNIMENTOR_PROVIDER=gemini`
+- `GEMINI_API_KEY=...` (required for Gemini mode)
+- optional: `UNIMENTOR_GEMINI_MODEL=gemini-2.0-flash`
+- optional: `UNIMENTOR_GEMINI_ENABLE_WEB=1` (Google Search grounding)
+
+### Endpoint
+- `POST /mentor/ask`
+  - input: `question`, optional `university_id`, optional `online`, optional `profile`
+  - output: `answer`, `sources`, `online_used`, `provider`
+
+---
+
+## Rename AI function names from config
+
+All AI function names in UI are loaded from `frontend/config.js`:
+
+```js
+window.AI_FUNCTIONS = {
+  fit: "UniFit",
+  chance: "UniChance",
+  mentor: "UniMentor",
+};
+```
+
+Change these names once, and UI labels update across pages.
+
+---
+
 ## Social impact (Infomatrix mission fit)
 
 UniSearch addresses inequality in admissions guidance:
 - **Access**: gives free, understandable recommendations without paid consultants.
-- **Transparency**: shows why a university is recommended (requirements, cost, language fit, aid, UniChance score).
+- **Transparency**: shows why a university is recommended (requirements, cost, language fit, aid, UniChance score) and lets users ask follow-up questions via UniMentor.
 - **Financial awareness**: highlights affordability and scholarships early, reducing risky choices.
 - **Inclusion**: supports non-English tracks and multiple proof formats (native, CEFR, exams).
 - **Decision quality**: helps students choose realistic and high-opportunity paths based on data.
 
-In short, UniFit + UniChance convert complex admission data into actionable, explainable guidance for students from different economic backgrounds.
+In short, UniFit + UniChance + UniMentor convert complex admission data into actionable, explainable guidance for students from different economic backgrounds.
 
 ---
 
@@ -137,7 +199,8 @@ If you are just using UniSearch (not developing it), this is the fastest flow:
    - UniChance probability (0-100),
    - minimum vs typical admitted scores,
    - language requirements,
-   - grants/scholarships and estimated yearly cost.
+   - grants/scholarships and estimated yearly cost,
+   - ask UniMentor for extra context.
 
 You can also open **Guide** page to understand terms like CEFR, admission tracks, and score types.
 
@@ -147,7 +210,7 @@ You can also open **Guide** page to understand terms like CEFR, admission tracks
 
 - `index.html` (Home): project overview and entry point.
 - `universities.html` (Main search): filters + UniFit ranking + map/list view.
-- `university.html` (Details): full information about one university and its tracks + UniChance panel in Admission.
+- `university.html` (Details): full information about one university and its tracks + UniChance panel in Admission + UniMentor chat tab.
 - `ranking.html` (Rankings): ranking-focused view.
 - `guide.html` (Guide): explains admission terms, exams, and language proofs in simple words.
 
@@ -236,8 +299,11 @@ UniFit uses language requirements from track data (`language_requirements`) incl
   - `frontend/javascript/components.js` - navbar/profile modal
   - `frontend/javascript/pages.js` - page logic/rendering
   - `frontend/javascript/algo.js` - UniFit scoring logic
+  - `frontend/javascript/ai/unichance.js` - UniChance probability engine
+  - `frontend/javascript/ai/mentor.js` - UniMentor chat client
+  - `frontend/javascript/ai/shared.js` - shared AI helpers
   - `frontend/javascript/languages.js` - language profile UI logic
-  - `frontend/javascript/utils.js` - config/profile/helpers
+  - `frontend/javascript/utils.js` - config/profile/helpers + AI name config reader
 
 ### Backend
 - FastAPI (Python)
@@ -261,6 +327,7 @@ UniFit uses language requirements from track data (`language_requirements`) incl
 - `POST /exams/validate` - validate one academic exam score
 - `GET /languages/config` - languages/CEFR/language exam config
 - `POST /languages/validate` - validate one language evidence item
+- `POST /mentor/ask` - UniMentor chatbot endpoint (DB answer + optional free web context)
 
 Backend default local URL: `http://127.0.0.1:8000`
 
@@ -275,6 +342,16 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
+```
+
+Optional UniMentor backend env:
+```bash
+set UNIMENTOR_ENABLE_ONLINE=1
+set UNIMENTOR_NAME=UniMentor
+set UNIMENTOR_PROVIDER=gemini
+set GEMINI_API_KEY=your_api_key_here
+set UNIMENTOR_GEMINI_MODEL=gemini-2.0-flash
+set UNIMENTOR_GEMINI_ENABLE_WEB=1
 ```
 
 ## 2) Frontend
@@ -324,7 +401,7 @@ Track can include:
 
 ---
 
-## How UniFit + UniChance work (high level)
+## How UniFit + UniChance + UniMentor work (high level)
 For each university:
 1. Evaluate each track against user profile (academic + language requirements).
 2. Estimate admission feasibility from requirement fit + acceptance context.
@@ -332,6 +409,7 @@ For each university:
 4. Mix prestige vs budget preference using slider.
 5. Keep the best track and sort by final UniFit score.
 6. Compute UniChance (0-100) for each track and overall university probability.
+7. Use UniMentor to ask natural-language questions about the selected university; answer comes from DB and optional free web sources.
 
 Important: high prestige does not fully override impossible admissions; feasibility still gates ranking.
 
@@ -345,6 +423,9 @@ Because UniFit does not optimize only prestige. If admission chance is low or co
 ### What is the difference between UniFit and UniChance?
 UniFit is a ranking score for comparing many universities at once.  
 UniChance is a probability score (0-100) for one university/track based on your profile.
+
+### What is UniMentor?
+UniMentor is a chatbot consultant. It explains university details from your dataset and can add optional free online references when enabled.
 
 ### Why can I add some decimal scores but not others?
 Each exam has its own type and step rules from config.  
@@ -406,6 +487,7 @@ frontend/
     ai/
       shared.js
       unichance.js
+      mentor.js
     languages.js
     utils.js
   images/

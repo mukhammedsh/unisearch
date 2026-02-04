@@ -14,12 +14,14 @@
       <p class="guide-eyebrow">UniSearch Guide</p>
       <h1>How to use UniSearch and understand scores</h1>
       <p>
-        This page explains the key terms used in UniSearch: UniFit ranking logic,
+        This page explains key terms used in UniSearch: <span data-ai-name="fit">UniFit</span> ranking logic,
+        <span data-ai-name="chance">UniChance</span> probability, <span data-ai-name="mentor">UniMentor</span> assistance,
         admission tracks, score types, language proofs, and budget behavior.
       </p>
       <div class="guide-nav">
-        <a href="#guide-unifit">UniFit</a>
-        <a href="#guide-unichance">UniChance</a>
+        <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
+        <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
+        <a href="#guide-unimentor" data-ai-template="{mentor}">UniMentor</a>
         <a href="#guide-admission">Admission</a>
         <a href="#guide-exam-basics">Exam Basics</a>
         <a href="#guide-academic-exams">Academic Exams</a>
@@ -29,7 +31,7 @@
     </section>
 
     <section id="guide-unifit" class="guide-section">
-      <h2>UniFit (AI Smart Sort)</h2>
+      <h2><span data-ai-name="fit">UniFit</span> (AI Smart Sort)</h2>
       <div class="guide-grid">
         <article class="guide-card">
           <h4>What it optimizes</h4>
@@ -47,9 +49,9 @@
     </section>
 
     <section id="guide-unichance" class="guide-section">
-      <h2>UniChance (0-100 Admission Probability)</h2>
+      <h2><span data-ai-name="chance">UniChance</span> (0-100 Admission Probability)</h2>
       <p class="guide-muted">
-        UniChance estimates your probability to enter a specific university and track using your current profile.
+        <span data-ai-name="chance">UniChance</span> estimates your probability to enter a specific university and track using your current profile.
       </p>
       <div class="guide-grid">
         <article class="guide-card">
@@ -62,7 +64,28 @@
         </article>
         <article class="guide-card">
           <h4>Best Track logic</h4>
-          <p>The system evaluates each admission track and shows the strongest path as your best UniChance result.</p>
+          <p>The system evaluates each admission track and shows the strongest path as your best <span data-ai-name="chance">UniChance</span> result.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="guide-unimentor" class="guide-section">
+      <h2><span data-ai-name="mentor">UniMentor</span> (AI Chat Consultant)</h2>
+      <p class="guide-muted">
+        <span data-ai-name="mentor">UniMentor</span> answers questions using university database facts and optional online references.
+      </p>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h4>Database-first answers</h4>
+          <p>It explains tuition, admission tracks, language rules, scholarships, location, and ranking from your project dataset.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Optional online context</h4>
+          <p>When enabled, it can include extra references from free public sources to answer details not stored in your JSON data.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Explainable output</h4>
+          <p>It returns concise answers plus source links, so users can verify information quickly.</p>
         </article>
       </div>
     </section>

@@ -1,8 +1,31 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
-import { API_BASE } from "./utils.js";
+import { API_BASE, aiName } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
+
+function applyAINameConfig() {
+  const tokens = {
+    fit: aiName("fit"),
+    chance: aiName("chance"),
+    mentor: aiName("mentor"),
+  };
+
+  const replace = (template) =>
+    String(template || "")
+      .replaceAll("{fit}", tokens.fit)
+      .replaceAll("{chance}", tokens.chance)
+      .replaceAll("{mentor}", tokens.mentor);
+
+  document.querySelectorAll("[data-ai-template]").forEach((el) => {
+    el.textContent = replace(el.getAttribute("data-ai-template"));
+  });
+
+  document.querySelectorAll("[data-ai-name]").forEach((el) => {
+    const key = String(el.getAttribute("data-ai-name") || "").trim().toLowerCase();
+    if (tokens[key]) el.textContent = tokens[key];
+  });
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
@@ -10,6 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)
   await loadGlobalLayout();
 
+  applyAINameConfig();
   initLanguagesPanel();
 
   const badge = document.querySelector(".hero-badge");
