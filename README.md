@@ -1,10 +1,11 @@
-# UniSearch / UniFit - Beta v2.0 (Infomatrix 2026)
+# UniSearch / UniFit / UniChance - Beta v2.0 (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app that helps applicants choose universities using:
 - structured university data,
 - profile-based filtering,
-- and UniFit ranking (AI-like scoring with prestige/budget/admission feasibility balance).
+- UniFit ranking (AI-like scoring with prestige/budget/admission feasibility balance),
+- and UniChance probability (0-100 estimated admission chance).
 
 It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
 
@@ -67,16 +68,56 @@ It is not a simple sort-by-rank script. It is a multi-factor recommendation algo
 
 ---
 
+## UniChance AI engine (0-100 probability)
+
+UniChance is a second AI function that estimates your admission probability for a university from **0 to 100**.
+
+### What UniChance solves
+- UniFit tells you "what is best for me overall?"
+- UniChance tells you "how likely am I to enter this university/track?"
+
+Together they provide both ranking and probability.
+
+### UniChance algorithm inputs
+- user academic exams
+- user language evidence (native/CEFR/exam)
+- user budget
+- track minimums and `stats_avg`
+- language requirements (`all` / `any`)
+- university selectivity (acceptance rate)
+- aid/scholarship context
+
+### UniChance pipeline
+1. Evaluate each admission track independently.
+2. Score each requirement against minimum and typical admitted values.
+3. Evaluate language bundle rules with native/CEFR/exam alternatives.
+4. Apply feasibility gate when hard minimums are not met.
+5. Add selectivity and affordability context.
+6. Return:
+   - per-track chance,
+   - overall university chance,
+   - best track.
+
+### Output interpretation
+- **80-100**: high chance
+- **60-79**: good chance
+- **40-59**: moderate chance
+- **0-39**: low chance
+
+UniChance is rendered in the University -> Admission tab with a dedicated UI panel and track chips.
+
+---
+
 ## Social impact (Infomatrix mission fit)
 
 UniSearch addresses inequality in admissions guidance:
 - **Access**: gives free, understandable recommendations without paid consultants.
-- **Transparency**: shows why a university is recommended (requirements, cost, language fit, aid).
+- **Transparency**: shows why a university is recommended (requirements, cost, language fit, aid, UniChance score).
 - **Financial awareness**: highlights affordability and scholarships early, reducing risky choices.
 - **Inclusion**: supports non-English tracks and multiple proof formats (native, CEFR, exams).
 - **Decision quality**: helps students choose realistic and high-opportunity paths based on data.
 
-In short, UniFit converts complex admission data into actionable, explainable guidance for students from different economic backgrounds.
+In short, UniFit + UniChance convert complex admission data into actionable, explainable guidance for students from different economic backgrounds.
 
 ---
 
@@ -93,6 +134,7 @@ If you are just using UniSearch (not developing it), this is the fastest flow:
 4. Browse ranked universities and open details.
 5. On each university, check:
    - best-matching admission track,
+   - UniChance probability (0-100),
    - minimum vs typical admitted scores,
    - language requirements,
    - grants/scholarships and estimated yearly cost.
@@ -105,7 +147,7 @@ You can also open **Guide** page to understand terms like CEFR, admission tracks
 
 - `index.html` (Home): project overview and entry point.
 - `universities.html` (Main search): filters + UniFit ranking + map/list view.
-- `university.html` (Details): full information about one university and its tracks.
+- `university.html` (Details): full information about one university and its tracks + UniChance panel in Admission.
 - `ranking.html` (Rankings): ranking-focused view.
 - `guide.html` (Guide): explains admission terms, exams, and language proofs in simple words.
 
@@ -282,13 +324,14 @@ Track can include:
 
 ---
 
-## How UniFit scoring works (high level)
+## How UniFit + UniChance work (high level)
 For each university:
 1. Evaluate each track against user profile (academic + language requirements).
 2. Estimate admission feasibility from requirement fit + acceptance context.
 3. Apply affordability scoring (budget, aid, scholarships).
 4. Mix prestige vs budget preference using slider.
 5. Keep the best track and sort by final UniFit score.
+6. Compute UniChance (0-100) for each track and overall university probability.
 
 Important: high prestige does not fully override impossible admissions; feasibility still gates ranking.
 
@@ -298,6 +341,10 @@ Important: high prestige does not fully override impossible admissions; feasibil
 
 ### Why did a top university appear lower?
 Because UniFit does not optimize only prestige. If admission chance is low or cost is too high for your profile, score is reduced.
+
+### What is the difference between UniFit and UniChance?
+UniFit is a ranking score for comparing many universities at once.  
+UniChance is a probability score (0-100) for one university/track based on your profile.
 
 ### Why can I add some decimal scores but not others?
 Each exam has its own type and step rules from config.  
@@ -356,6 +403,9 @@ frontend/
     components.js
     pages.js
     algo.js
+    ai/
+      shared.js
+      unichance.js
     languages.js
     utils.js
   images/

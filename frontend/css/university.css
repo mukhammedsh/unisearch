@@ -238,6 +238,114 @@
 }
 
 /* =========================================
+   UNICHANCE (ADMISSION PROBABILITY)
+   ========================================= */
+.chance-panel {
+  border: 1px solid #dbeafe;
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.chance-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.chance-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: #1e3a8a;
+  letter-spacing: 0.2px;
+}
+
+.chance-sub {
+  font-size: 12px;
+  color: #475569;
+  margin-top: 4px;
+  max-width: 700px;
+}
+
+.chance-percent {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chance-meter {
+  margin-top: 10px;
+  width: 100%;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.chance-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.chance-foot {
+  font-size: 12px;
+  color: #334155;
+  margin-top: 8px;
+}
+
+.chance-track-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+  margin-top: 4px;
+  border: 1px solid transparent;
+}
+
+.chance-high {
+  color: #065f46;
+  background: #d1fae5;
+  border-color: #6ee7b7;
+}
+
+.chance-good {
+  color: #166534;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.chance-medium {
+  color: #9a3412;
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+.chance-low {
+  color: #991b1b;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.chance-percent.chance-high,
+.chance-percent.chance-good,
+.chance-percent.chance-medium,
+.chance-percent.chance-low {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.chance-fill.chance-high { background: #10b981; }
+.chance-fill.chance-good { background: #22c55e; }
+.chance-fill.chance-medium { background: #f59e0b; }
+.chance-fill.chance-low { background: #ef4444; }
+
+/* =========================================
    TRACK CARDS (ADMISSIONS)
    ========================================= */
 .track-card {

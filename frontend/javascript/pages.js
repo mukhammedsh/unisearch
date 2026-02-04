@@ -21,6 +21,7 @@ import {
 } from "./utils.js";
 
 import { getUniSort } from "./algo.js";
+import { estimateUniChance } from "./ai/unichance.js";
 import { setupTabs } from "./components.js";
 
 // =====================================
@@ -28,7 +29,7 @@ import { setupTabs } from "./components.js";
 // =====================================
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
-    const MIN_RANGE_GAP = 1000;
+    const MIN_RANGE_GAP = 100;
     const clampTuition = (value, fallback = 0) => {
         const n = Number(value);
         if (!Number.isFinite(n)) return fallback;
@@ -65,6 +66,8 @@ export function initUniversitiesPage() {
     if (state.max_tuition < state.min_tuition + MIN_RANGE_GAP) {
         state.max_tuition = state.min_tuition + MIN_RANGE_GAP;
     }
+    let focusUniId = "";
+    let focusUniDone = false;
 
     // --- Слайдеры ---
     function fillTrack() {
@@ -95,6 +98,7 @@ export function initUniversitiesPage() {
     // --- Карта ---
     let mapInstance = null;
     let markersLayer = null;
+    let markersByUniId = new Map();
 
     readFromUrl(); 
     
@@ -219,6 +223,7 @@ export function initUniversitiesPage() {
     function updateMapMarkers(items) {
         if (!mapInstance || !markersLayer) return;
         markersLayer.clearLayers();
+        markersByUniId = new Map();
         const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
         const newMarkers = [];
         items.forEach(u => {
@@ -229,9 +234,22 @@ export function initUniversitiesPage() {
                 marker.bindPopup(cardHTML, { minWidth: 280, maxWidth: 320, className: 'custom-map-popup', autoPan: false });
                 marker.on('click', function(e) { this.setZIndexOffset(1000); mapInstance.flyTo(e.target.getLatLng(), 16, { animate: true, duration: 3.0, easeLinearity: 0.1 }); setTimeout(() => { if (!marker.getPopup().isOpen()) marker.openPopup(); }, 100); });
                 newMarkers.push(marker);
+                markersByUniId.set(String(u.id), marker);
             }
         });
         markersLayer.addLayers(newMarkers);
+        if (state.viewMode === "map" && focusUniId && !focusUniDone) {
+            const target = markersByUniId.get(focusUniId);
+            if (target) {
+                focusUniDone = true;
+                const latLng = target.getLatLng();
+                mapInstance.flyTo(latLng, 14, { animate: true, duration: 1.2 });
+                setTimeout(() => {
+                    target.setZIndexOffset(1200);
+                    target.openPopup();
+                }, 700);
+            }
+        }
     }
 
     function updateSliderVisibility() {
@@ -269,6 +287,7 @@ export function initUniversitiesPage() {
         }
         if (state.ai_balance !== undefined && state.ai_balance !== null) p.set("ai_balance", String(state.ai_balance));
         if (state.viewMode) p.set("view", state.viewMode);
+        if (!forApi && focusUniId) p.set("focus_uni", focusUniId);
         return p;
     }
 
@@ -344,6 +363,10 @@ export function initUniversitiesPage() {
         if(sp.has("view")) {
             const view = sp.get("view");
             if (view === "map" || view === "list") state.viewMode = view;
+        }
+        if (sp.has("focus_uni")) {
+            const id = String(sp.get("focus_uni") || "").trim();
+            if (id) focusUniId = id;
         }
 
         if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
@@ -584,6 +607,23 @@ export async function initUniversityPage() {
 
     const siteBtn = document.getElementById("detailWebsite");
     if (siteBtn && u.website) { siteBtn.href = u.website; siteBtn.style.display = "inline-flex"; }
+    const mapBtn = document.getElementById("detailMapLink");
+    if (mapBtn) {
+        const p = new URLSearchParams();
+        p.set("view", "map");
+        p.set("focus_uni", String(u.id || id));
+        if (u.location?.country) p.set("country", String(u.location.country));
+        if (u.location?.city) p.set("city", String(u.location.city));
+        mapBtn.href = `universities.html?${p.toString()}`;
+        mapBtn.style.display = "inline-flex";
+    }
+    let uniChance = null;
+    let uniChanceByTrackKey = new Map();
+    const recomputeUniChance = () => {
+        uniChance = estimateUniChance(u, loadProfile());
+        uniChanceByTrackKey = new Map((uniChance?.tracks || []).map((x) => [String(x.trackKey), x]));
+    };
+    recomputeUniChance();
 
     // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
@@ -748,15 +788,59 @@ export async function initUniversityPage() {
         `;
         }
 
+        function trackLookupKey(track, idx) {
+        const id = String(track?.id || "").trim();
+        if (id) return id;
+        const label = String(track?.label || "").trim();
+        if (label) return `label:${label}`;
+        return `track:${idx}`;
+        }
+
+        function chanceTone(chance) {
+        const c = Number(chance) || 0;
+        if (c >= 80) return { cls: "chance-high", label: "High chance" };
+        if (c >= 60) return { cls: "chance-good", label: "Good chance" };
+        if (c >= 40) return { cls: "chance-medium", label: "Moderate chance" };
+        return { cls: "chance-low", label: "Low chance" };
+        }
+
+        function renderUniChanceSummary() {
+        if (!uniChance) return "";
+        const chance = Number(uniChance.overallChance) || 0;
+        const tone = chanceTone(chance);
+        return `
+            <div class="chance-panel">
+              <div class="chance-head">
+                <div>
+                  <div class="chance-title">UniChance AI - Admission Probability</div>
+                  <div class="chance-sub">Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.</div>
+                </div>
+                <div class="chance-percent ${tone.cls}">${chance}%</div>
+              </div>
+              <div class="chance-meter"><div class="chance-fill ${tone.cls}" style="width:${chance}%;"></div></div>
+              <div class="chance-foot">Best track: <strong>${escapeHtml(uniChance.bestTrackLabel || "General admission")}</strong> • ${escapeHtml(tone.label)}</div>
+            </div>
+        `;
+        }
+
+        function renderTrackChanceChip(trackChance) {
+        if (!trackChance) return "";
+        const chance = Number(trackChance.chancePercent) || 0;
+        const tone = chanceTone(chance);
+        return `<div class="chance-track-chip ${tone.cls}">UniChance ${chance}%</div>`;
+        }
+
 
     // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
     const reqDiv = document.getElementById("detailRequirements");
-    if (reqDiv) {
+    const renderAdmissionTab = () => {
+        if (!reqDiv) return;
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
             reqDiv.innerHTML = `<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
         } else {
-            let tracksHTML = "";
-            u.admission_tracks.forEach(track => {
+            let tracksHTML = renderUniChanceSummary();
+            u.admission_tracks.forEach((track, idx) => {
+                const trackChance = uniChanceByTrackKey.get(trackLookupKey(track, idx));
                 let majorsBadge = "";
                 if (track.applicable_majors && track.applicable_majors.length > 0) {
                     majorsBadge = `<div style="margin-top:4px; display:flex; flex-wrap:wrap; gap:6px;">
@@ -835,6 +919,7 @@ export async function initUniversityPage() {
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <div>
                             <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${track.label}</h4>
+                            ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
                             <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${track.description || ""}</p>
                         </div>
@@ -861,7 +946,12 @@ export async function initUniversityPage() {
             });
             reqDiv.innerHTML = tracksHTML;
         }
-    }
+    };
+    renderAdmissionTab();
+    window.addEventListener("profileUpdated", () => {
+        recomputeUniChance();
+        renderAdmissionTab();
+    });
 
     // --- TAB 4: FINANCE (С блоком ROI) ---
     const finDiv = document.getElementById("detailFinance");
@@ -1116,6 +1206,7 @@ export function initGuidePage() {
 
     const gloss = [
         { term: "UniFit", desc: "AI ranking mode that balances prestige, affordability, and admission feasibility." },
+        { term: "UniChance", desc: "AI probability (0-100) of your admission, computed per track from your profile and requirements." },
         { term: "Admission Track", desc: "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)." },
         { term: "Requirements", desc: "Minimum scores to be considered for a track." },
         { term: "Stats Avg", desc: "Typical scores of admitted students on that track." },

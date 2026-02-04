@@ -26,7 +26,21 @@ const FALLBACK_LANG_EXAMS = {
 };
 
 function normalizeLangCode(code) {
-  return String(code || "").trim().toLowerCase();
+  const raw = String(code || "").trim().toLowerCase();
+  if (!raw) return "";
+
+  if (LANG_CONFIG?.languages && Array.isArray(LANG_CONFIG.languages)) {
+    const found = LANG_CONFIG.languages.find((l) => {
+      const c = String(l?.code || "").trim().toLowerCase();
+      const name = String(l?.name || "").trim().toLowerCase();
+      const label = String(l?.label || "").trim().toLowerCase();
+      const nativeName = String(l?.native_name || "").trim().toLowerCase();
+      return raw === c || raw === name || raw === label || raw === nativeName;
+    });
+    if (found?.code) return String(found.code).trim().toLowerCase();
+  }
+
+  return raw;
 }
 
 function isLanguageExamKey(key) {
@@ -169,7 +183,50 @@ function buildUserLanguages(profile) {
   return byCode;
 }
 
-function getUserScore(userScores, key) {
+function getExamLanguageCode(examId) {
+  const id = String(examId || "").trim();
+  if (!id) return "";
+  const groups = LANG_CONFIG?.language_exams || {};
+  if (!groups || typeof groups !== "object") return "";
+  for (const [code, arr] of Object.entries(groups)) {
+    if (!Array.isArray(arr)) continue;
+    const found = arr.some((x) => String(x?.id || "").trim() === id);
+    if (found) return normalizeLangCode(code);
+  }
+  return "";
+}
+
+function inferLanguageExamScore(examId, userLanguages) {
+  const cfg = getExamLimits(examId);
+  if (!cfg) return null;
+
+  const code = getExamLanguageCode(examId);
+  if (!code) return null;
+  const langState = userLanguages?.[code];
+  if (!langState) return null;
+
+  const min = toNum(cfg.min);
+  const max = toNum(cfg.max);
+  if (min === null || max === null) return null;
+
+  const higherIsBetter = (typeof cfg.higher_is_better === "boolean")
+    ? cfg.higher_is_better
+    : !String(examId || "").toUpperCase().includes("JLPT");
+
+  if (langState.native) {
+    return higherIsBetter ? max : min;
+  }
+
+  const cefr = toNum(langState.cefr);
+  if (cefr === null) return null;
+  const t = clamp01((cefr - 1) / 5); // A1..C2 -> 0..1
+  const raw = higherIsBetter
+    ? (min + (max - min) * t)
+    : (max - (max - min) * t);
+  return clampToLimits(examId, raw);
+}
+
+function getUserScore(userScores, key, userLanguages = null) {
   if (!userScores || !key) return null;
   const k = String(key);
 
@@ -193,7 +250,8 @@ function getUserScore(userScores, key) {
     if (Object.prototype.hasOwnProperty.call(userScores, key2)) return userScores[key2];
   }
 
-  return null;
+  // No explicit language exam score: infer from language profile (native/CEFR).
+  return inferLanguageExamScore(k, userLanguages);
 }
 
 // weight important exams slightly higher (GPA, SAT/ACT, language)
@@ -300,18 +358,20 @@ function collectLanguageRequirements(track) {
   return { mode, items: [] };
 }
 
-function pickBestLanguageEvidence(langReq, userLangState, userScores) {
+function pickBestLanguageEvidence(langReq, userLangState, userLanguages) {
   const acceptNative = !!langReq?.accept_native;
   const minCefr = toNum(langReq?.min_cefr);
   const avgCefr = toNum(langReq?.recommended_cefr ?? langReq?.avg_cefr ?? langReq?.stats_avg_cefr);
+  const code = normalizeLangCode(langReq?.code);
 
   if (acceptNative && userLangState?.native) {
     return { score: 1, hardPass: true, gap: 0 };
   }
 
   const candidates = [];
-  if (minCefr !== null) {
-    candidates.push(scoreRequirement(userLangState?.cefr, minCefr, avgCefr));
+  const cefrUser = toNum(userLangState?.cefr);
+  if (minCefr !== null && cefrUser !== null) {
+    candidates.push(scoreRequirement(cefrUser, minCefr, avgCefr));
   }
 
   const examReq = (langReq?.requirements && typeof langReq.requirements === "object")
@@ -324,24 +384,29 @@ function pickBestLanguageEvidence(langReq, userLangState, userScores) {
 
   for (const [examId, minVal] of Object.entries(examReq)) {
     const localScore = userLangState?.exams?.[examId];
-    const user = (localScore !== undefined) ? localScore : getUserScore(userScores, examId);
+    const inferredFromSameLanguage = getUserScore({}, examId, userLangState ? { [code]: userLangState } : null);
+    const user = (localScore !== undefined) ? localScore : inferredFromSameLanguage;
+    if (user === null || user === undefined) continue;
     const avgVal = Object.prototype.hasOwnProperty.call(examAvg, examId) ? examAvg[examId] : null;
     const higherIsBetter = isHigherBetterForExam(examId);
     candidates.push(scoreRequirementDirected(user, minVal, avgVal, higherIsBetter));
   }
 
   if (!candidates.length) {
-    // No explicit threshold, but language item exists => mild neutral.
+    const hasThresholds = (minCefr !== null) || Object.keys(examReq).length > 0;
+    if (hasThresholds) return { score: 0.15, hardPass: false, gap: 1 };
     return { score: 0.55, hardPass: true, gap: 0 };
   }
 
-  candidates.sort((a, b) => {
-    if (Math.abs((b.score ?? 0) - (a.score ?? 0)) > 1e-9) return (b.score ?? 0) - (a.score ?? 0);
-    if (a.hardPass !== b.hardPass) return a.hardPass ? -1 : 1;
-    return (a.gap ?? 0) - (b.gap ?? 0);
-  });
-
-  return candidates[0];
+  const bestScore = candidates.reduce((m, x) => Math.max(m, x.score ?? 0), 0);
+  const avgScore = candidates.reduce((s, x) => s + (x.score ?? 0), 0) / Math.max(candidates.length, 1);
+  const hardPass = candidates.some((x) => !!x.hardPass);
+  const minGap = candidates.reduce((m, x) => Math.min(m, x.gap ?? 1), 1);
+  return {
+    score: clamp01(0.72 * bestScore + 0.28 * avgScore),
+    hardPass,
+    gap: hardPass ? 0 : minGap,
+  };
 }
 
 function analyzeTrack(track, userScores, userLanguages) {
@@ -367,7 +432,7 @@ function analyzeTrack(track, userScores, userLanguages) {
     if (hasStructuredLangReq && isLanguageExamKey(k)) continue;
 
     const w = examWeight(k);
-    const user = getUserScore(userScores, k);
+    const user = getUserScore(userScores, k, userLanguages);
     const avgVal = Object.prototype.hasOwnProperty.call(avg, k) ? avg[k] : null;
 
     const r = scoreRequirement(user, minVal, avgVal);
@@ -387,7 +452,7 @@ function analyzeTrack(track, userScores, userLanguages) {
         const code = normalizeLangCode(langReq?.code);
         if (!code) continue;
         const langState = userLanguages?.[code] || null;
-        const r = pickBestLanguageEvidence(langReq, langState, userScores);
+        const r = pickBestLanguageEvidence(langReq, langState, userLanguages);
         candidates.push(r);
       }
 
@@ -412,7 +477,7 @@ function analyzeTrack(track, userScores, userLanguages) {
         if (!code) continue;
 
         const langState = userLanguages?.[code] || null;
-        const r = pickBestLanguageEvidence(langReq, langState, userScores);
+        const r = pickBestLanguageEvidence(langReq, langState, userLanguages);
         const w = 1.2;
 
         sSum += r.score * w;
@@ -430,7 +495,7 @@ function analyzeTrack(track, userScores, userLanguages) {
   return { fit: clamp01(fit), hardPassAll, worstGap };
 }
 
-function analyzeScholarships(track, userScores) {
+function analyzeScholarships(track, userScores, userLanguages) {
   const list = Array.isArray(track?.scholarships) ? track.scholarships : [];
   if (list.length === 0) {
     return { hasAny: false, bestPotential: 0, bestEligible: null, bestEligibleFit: 0 };
@@ -454,7 +519,7 @@ function analyzeScholarships(track, userScores) {
 
       for (const [k, minVal] of Object.entries(req)) {
         const w = examWeight(k);
-        const user = getUserScore(userScores, k);
+        const user = getUserScore(userScores, k, userLanguages);
         const r = scoreRequirement(user, minVal, null);
         sSum += r.score * w;
         wSum += w;
@@ -577,7 +642,7 @@ function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rank
 
   for (const tr of tracks) {
     const trInfo = analyzeTrack(tr, userScores, userLanguages);
-    const schInfo = analyzeScholarships(tr, userScores);
+    const schInfo = analyzeScholarships(tr, userScores, userLanguages);
 
     const cost = getUniCost(uni, tr);
 
