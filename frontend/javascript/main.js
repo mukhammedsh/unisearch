@@ -1,13 +1,16 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout } from "./components.js";
-import { initUniversitiesPage, initUniversityPage, initRankingPage } from "./pages.js";
+import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
 import { API_BASE } from "./utils.js";
+import { initLanguagesPanel } from "./languages.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
 
   // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)
   await loadGlobalLayout();
+
+  initLanguagesPanel();
 
   const badge = document.querySelector(".hero-badge");
   const path = window.location.pathname;
@@ -18,6 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (path.includes("universities.html") || document.getElementById("universitiesList")) {
     initUniversitiesPage();
+  } else if (path.includes("guide.html") || document.getElementById("guidePage")) {
+    initGuidePage();
   } else if (path.includes("university.html") || document.getElementById("detailCard")) {
     initUniversityPage();
   } else if (path.includes("ranking.html") || document.getElementById("rankingList")) {

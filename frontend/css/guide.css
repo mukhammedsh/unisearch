@@ -1,0 +1,132 @@
+.guide-page{
+  max-width: 1100px;
+  margin: 40px auto 80px;
+  padding: 0 18px;
+}
+
+.guide-hero{
+  padding: 28px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: linear-gradient(120deg, #f8fafc, #eef2ff);
+  margin-bottom: 18px;
+}
+
+.guide-eyebrow{
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #4f46e5;
+}
+
+.guide-hero h1{
+  margin: 0 0 10px;
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.guide-hero p{
+  margin: 0;
+  color: #475569;
+}
+
+.guide-nav{
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.guide-nav a{
+  text-decoration: none;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.guide-section{
+  margin-top: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+.guide-section h2{
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.guide-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.guide-grid--2col{
+  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.guide-card{
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+}
+
+.guide-card h4,
+.guide-card h5{
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.guide-card p{
+  margin: 0 0 4px;
+  color: #334155;
+  font-size: 13px;
+}
+
+.guide-list{
+  margin: 0;
+  padding-left: 18px;
+  color: #334155;
+  font-size: 13px;
+}
+
+.guide-list li{
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.guide-muted{
+  margin: 0 0 12px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.guide-subsection{
+  margin-top: 10px;
+}
+
+.guide-subsection h4{
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+@media (max-width: 680px){
+  .guide-page{
+    margin-top: 24px;
+  }
+  .guide-hero{
+    padding: 18px;
+  }
+  .guide-section{
+    padding: 14px;
+  }
+}

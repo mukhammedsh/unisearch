@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="images/minilogo.png" type="image/png">
+  <title>Guide | UniSearch</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/guide.css" />
+</head>
+<body data-page="guide">
+  <main class="guide-page" id="guidePage">
+    <section class="guide-hero">
+      <p class="guide-eyebrow">UniSearch Guide</p>
+      <h1>How to use UniSearch and understand scores</h1>
+      <p>
+        This page explains the key terms used in UniSearch: UniFit ranking logic,
+        admission tracks, score types, language proofs, and budget behavior.
+      </p>
+      <div class="guide-nav">
+        <a href="#guide-unifit">UniFit</a>
+        <a href="#guide-admission">Admission</a>
+        <a href="#guide-exam-basics">Exam Basics</a>
+        <a href="#guide-academic-exams">Academic Exams</a>
+        <a href="#guide-language-exams">Language Exams</a>
+        <a href="#guide-glossary">Glossary</a>
+      </div>
+    </section>
+
+    <section id="guide-unifit" class="guide-section">
+      <h2>UniFit (AI Smart Sort)</h2>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h4>What it optimizes</h4>
+          <p>UniFit balances prestige, affordability, and your admission feasibility.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Slider behavior</h4>
+          <p><strong>Budget → Prestige</strong> controls preference, but impossible tracks are still penalized.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Requirements logic</h4>
+          <p>Higher scores improve fit; scores below minimum strongly reduce admission chance.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="guide-admission" class="guide-section">
+      <h2>Admission Track Terms</h2>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h4>Requirements</h4>
+          <p>Minimum scores needed to apply for the track.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Real Average (Admitted)</h4>
+          <p>Typical scores of accepted students; target this for safer chances.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Language Track Rules</h4>
+          <p><strong>Mode any</strong>: one listed proof is enough. <strong>Mode all</strong>: all listed proofs are required.</p>
+        </article>
+        <article class="guide-card">
+          <h4>Scholarships</h4>
+          <p>Some tracks include merit/need grants that can remove or reduce budget penalty.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="guide-exam-basics" class="guide-section">
+      <h2>Exam Basics (Admissions)</h2>
+      <p class="guide-muted">
+        Exams are used to estimate academic readiness and language proficiency.
+        Most admissions systems combine one or more of these exam types.
+      </p>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h4>National Exams</h4>
+          <p>State-level exams used for local university admission (example: Gaokao, UNT).</p>
+        </article>
+        <article class="guide-card">
+          <h4>International Academic Tests</h4>
+          <p>Used by universities abroad (example: SAT, ACT, IB/AP evidence).</p>
+        </article>
+        <article class="guide-card">
+          <h4>Language Certificates</h4>
+          <p>Required when program language is foreign for the applicant (example: IELTS, TOEFL, TestDaF).</p>
+        </article>
+      </div>
+      <div class="guide-grid guide-grid--2col">
+        <article class="guide-card">
+          <h4>National Exam Structure</h4>
+          <ul class="guide-list">
+            <li><strong>Core subjects:</strong> literacy, mathematics, and basic civic/history blocks.</li>
+            <li><strong>Electives:</strong> major-specific tracks (technical, medical, humanities).</li>
+            <li><strong>Cutoff score:</strong> minimum score needed to apply at all.</li>
+            <li><strong>Passing score:</strong> competitive threshold changing by year and seat count.</li>
+          </ul>
+        </article>
+        <article class="guide-card">
+          <h4>Task Formats You Will See</h4>
+          <ul class="guide-list">
+            <li><strong>MCQ:</strong> fast check of foundational knowledge.</li>
+            <li><strong>Context tasks:</strong> apply knowledge to text/tables/diagrams.</li>
+            <li><strong>Open-ended:</strong> show deeper reasoning or writing quality.</li>
+            <li><strong>Digital trend:</strong> many exams now use computer/adaptive delivery.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="guide-academic-exams" class="guide-section">
+      <h2>Academic Exams</h2>
+      <p class="guide-muted">Loaded from your current backend exam configuration.</p>
+      <div id="guideAcademicExams" class="guide-grid"></div>
+    </section>
+
+    <section id="guide-language-exams" class="guide-section">
+      <h2>Language Exams</h2>
+      <p class="guide-muted">Loaded from language configuration by language code and exam label.</p>
+      <div id="guideLanguageExams"></div>
+    </section>
+
+    <section id="guide-glossary" class="guide-section">
+      <h2>Glossary</h2>
+      <div id="guideGlossary" class="guide-grid"></div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script type="module" src="javascript/main.js"></script>
+</body>
+</html>

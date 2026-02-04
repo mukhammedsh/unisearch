@@ -1,57 +1,17 @@
 {
   "version": 2,
   "cefr": [
-    {
-      "id": 1,
-      "code": "A1",
-      "label": "A1 (Beginner)"
-    },
-    {
-      "id": 2,
-      "code": "A2",
-      "label": "A2 (Elementary)"
-    },
-    {
-      "id": 3,
-      "code": "B1",
-      "label": "B1 (Intermediate)"
-    },
-    {
-      "id": 4,
-      "code": "B2",
-      "label": "B2 (Upper-Intermediate)"
-    },
-    {
-      "id": 5,
-      "code": "C1",
-      "label": "C1 (Advanced)"
-    },
-    {
-      "id": 6,
-      "code": "C2",
-      "label": "C2 (Proficient)"
-    }
+    { "id": 1, "code": "A1", "label": "A1 (Beginner)" },
+    { "id": 2, "code": "A2", "label": "A2 (Elementary)" },
+    { "id": 3, "code": "B1", "label": "B1 (Intermediate)" },
+    { "id": 4, "code": "B2", "label": "B2 (Upper-Intermediate)" },
+    { "id": 5, "code": "C1", "label": "C1 (Advanced)" },
+    { "id": 6, "code": "C2", "label": "C2 (Proficient)" }
   ],
   "proof_kinds": [
-    {
-      "id": "native",
-      "label": "Native"
-    },
-    {
-      "id": "cefr",
-      "label": "CEFR level"
-    },
-    {
-      "id": "exam",
-      "label": "Certificate / Exam"
-    },
-    {
-      "id": "waiver",
-      "label": "Waiver (no exam)"
-    }
-  ],
-  "waiver_notes": [
-    "A waiver usually means the university accepts proof like: previous schooling taught in that language, citizenship/education documents, or an internal interview. Rules vary by university."
+    { "id": "native", "label": "Native" },
+    { "id": "cefr", "label": "CEFR level" },
+    { "id": "exam", "label": "Certificate / Exam" }
   ],
   "languages": [
     {
@@ -73,7 +33,7 @@
       "name": "English",
       "native_name": "English",
       "script": "Latin",
-      "notes": "Most common language requirement (IELTS/TOEFL/DET/etc)."
+      "notes": "Most common language requirement (IELTS/TOEFL/DET/PTE/Cambridge)."
     },
     {
       "code": "de",
@@ -141,35 +101,54 @@
         "max": 9.0,
         "type": "float",
         "step": 0.5,
-        "decimals_allowed": [
-          0,
-          5
-        ],
-        "notes": "Band score; commonly 6.0–7.5+. Decimal part usually .0 or .5."
+        "decimals_allowed": [0, 5],
+        "notes": "IELTS uses whole or half bands (e.g., 6.0, 6.5, 7.0)."
       },
       {
-        "id": "TOEFL_iBT",
-        "label": "TOEFL iBT",
+        "id": "TOEFL_iBT_0_120",
+        "label": "TOEFL iBT (0–120, legacy total)",
         "min": 0,
         "max": 120,
         "type": "int",
-        "step": 1
+        "step": 1,
+        "notes": "ETS still provides 0–120 comparable totals during the transition period."
       },
       {
-        "id": "Duolingo_English_Test",
+        "id": "TOEFL_iBT_1_6",
+        "label": "TOEFL iBT (1–6 band, since Jan 21 2026)",
+        "min": 1.0,
+        "max": 6.0,
+        "type": "float",
+        "step": 0.5,
+        "decimals_allowed": [0, 5],
+        "notes": "New 1–6 scale with 0.5 increments (score reports since Jan 21, 2026)."
+      },
+      {
+        "id": "DET",
         "label": "Duolingo English Test (DET)",
         "min": 10,
         "max": 160,
         "type": "int",
-        "step": 5
+        "step": 5,
+        "notes": "DET scores are 10–160 in increments of 5."
       },
       {
-        "id": "PTE_Academic",
+        "id": "PTE",
         "label": "Pearson PTE Academic",
         "min": 10,
         "max": 90,
         "type": "int",
-        "step": 1
+        "step": 1,
+        "notes": "Overall score range is 10–90."
+      },
+      {
+        "id": "Cambridge_C1_Advanced",
+        "label": "Cambridge C1 Advanced (Scale score)",
+        "min": 160,
+        "max": 210,
+        "type": "int",
+        "step": 1,
+        "notes": "Cambridge English Scale range for C1 Advanced reporting."
       }
     ],
     "de": [
@@ -180,7 +159,7 @@
         "max": 5,
         "type": "int",
         "step": 1,
-        "notes": "Simplified storage: minimal TDN level across sections (3–5)."
+        "notes": "Store minimal TDN level across sections (3–5)."
       },
       {
         "id": "DSH_Level",
@@ -190,16 +169,6 @@
         "type": "int",
         "step": 1,
         "notes": "DSH-1..DSH-3 (higher is better)."
-      },
-      {
-        "id": "Telc_C1_Hochschule",
-        "label": "telc Deutsch C1 Hochschule",
-        "min": 0,
-        "max": 100,
-        "type": "int",
-        "step": 1,
-        "unit": "%",
-        "notes": "Some certificates report %; adjust to your needs."
       }
     ],
     "fr": [
@@ -210,33 +179,34 @@
         "max": 6,
         "type": "int",
         "step": 1,
-        "notes": "1..6 maps to A1..C2 (same as CEFR ids)."
+        "notes": "1..6 maps to CEFR ids A1..C2."
       },
       {
-        "id": "TCF_Score",
-        "label": "TCF score (simplified)",
+        "id": "TCF_Total",
+        "label": "TCF total score (simplified)",
         "min": 0,
         "max": 699,
         "type": "int",
         "step": 1,
-        "notes": "Actual scaling varies by component; store your chosen total scale."
+        "notes": "Total scaling varies by version/components; store the scale you use."
       }
     ],
     "nl": [
       {
         "id": "NT2_Programme_II",
-        "label": "NT2 Programme II",
+        "label": "NT2 Programme II (simplified)",
         "min": 0,
         "max": 100,
         "type": "int",
         "step": 1,
-        "unit": "%"
+        "unit": "%",
+        "notes": "Some providers report pass/score differently; keep as % if you want."
       }
     ],
     "zh": [
       {
         "id": "HSK_Level",
-        "label": "HSK level (legacy 1–6)",
+        "label": "HSK level (1–6 legacy)",
         "min": 1,
         "max": 6,
         "type": "int",
@@ -251,6 +221,7 @@
         "max": 5,
         "type": "int",
         "step": 1,
+        "higher_is_better": false,
         "notes": "1 = N1 (highest), 5 = N5 (lowest)."
       }
     ],
@@ -262,30 +233,6 @@
         "max": 6,
         "type": "int",
         "step": 1
-      }
-    ],
-    "kk": [
-      {
-        "id": "State_Language_Test",
-        "label": "State language test (custom)",
-        "min": 0,
-        "max": 100,
-        "type": "int",
-        "step": 1,
-        "unit": "%",
-        "notes": "Generic slot for state-language requirement; set rules per-university if needed."
-      }
-    ],
-    "ru": [
-      {
-        "id": "Russian_Internal_Test",
-        "label": "Russian internal test (custom)",
-        "min": 0,
-        "max": 100,
-        "type": "int",
-        "step": 1,
-        "unit": "%",
-        "notes": "Generic slot; many universities use interviews/internal testing rather than a standard exam."
       }
     ]
   }

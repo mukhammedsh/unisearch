@@ -15,6 +15,9 @@ import {
   getFlagImg,
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
+  getExamDisplayName,
+  EXAM_CONFIG,
+  LANG_CONFIG,
 } from "./utils.js";
 
 import { getUniSort } from "./algo.js";
@@ -24,6 +27,14 @@ import { setupTabs } from "./components.js";
 // PAGE: UNIVERSITIES LIST (Список вузов)
 // =====================================
 export function initUniversitiesPage() {
+    const MAX_TUITION = 150000;
+    const MIN_RANGE_GAP = 1000;
+    const clampTuition = (value, fallback = 0) => {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return fallback;
+        return Math.max(0, Math.min(MAX_TUITION, Math.round(n)));
+    };
+
     const el = {
         qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
         stateSelect: $("stateSelect"), citySelect: $("citySelect"),
@@ -39,13 +50,21 @@ export function initUniversitiesPage() {
     if (!el.list) return;
 
     const savedState = loadFilters();
+    const initialMin = clampTuition(savedState.min_tuition, 0);
+    const initialMax = clampTuition(savedState.max_tuition, MAX_TUITION);
     const state = {
         q: savedState.q || "", country: savedState.country || "", region: savedState.region || "", 
         city: savedState.city || "", study_level: savedState.study_level || "", 
-        min_tuition: savedState.min_tuition || 0, max_tuition: savedState.max_tuition || 1000000, 
+        min_tuition: initialMin,
+        max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
         sort: savedState.sort || "uni_ai", ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
         viewMode: savedState.viewMode || "list", page: 1, limit: 12,
     };
+    if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
+    state.max_tuition = Math.min(MAX_TUITION, state.max_tuition);
+    if (state.max_tuition < state.min_tuition + MIN_RANGE_GAP) {
+        state.max_tuition = state.min_tuition + MIN_RANGE_GAP;
+    }
 
     // --- Слайдеры ---
     function fillTrack() {
@@ -55,13 +74,21 @@ export function initUniversitiesPage() {
         el.track.style.background = `linear-gradient(to right, #e0e0e0 ${percent1}%, #5d17ea ${percent1}%, #5d17ea ${percent2}%, #e0e0e0 ${percent2}%)`;
     }
     function slideMin() {
-        let gap = 10000; let minVal = parseInt(el.minSlider.value); let maxVal = parseInt(el.maxSlider.value);
-        if (maxVal - minVal <= gap) { el.minSlider.value = maxVal - gap; }
+        let minVal = parseInt(el.minSlider.value);
+        const maxVal = parseInt(el.maxSlider.value);
+        if (maxVal - minVal <= MIN_RANGE_GAP) {
+            minVal = Math.max(0, maxVal - MIN_RANGE_GAP);
+            el.minSlider.value = String(minVal);
+        }
         el.minInput.value = el.minSlider.value; state.min_tuition = el.minSlider.value; fillTrack();
     }
     function slideMax() {
-        let gap = 10000; let minVal = parseInt(el.minSlider.value); let maxVal = parseInt(el.maxSlider.value);
-        if (maxVal - minVal <= gap) { el.maxSlider.value = minVal + gap; }
+        const minVal = parseInt(el.minSlider.value);
+        let maxVal = parseInt(el.maxSlider.value);
+        if (maxVal - minVal <= MIN_RANGE_GAP) {
+            maxVal = Math.min(MAX_TUITION, minVal + MIN_RANGE_GAP);
+            el.maxSlider.value = String(maxVal);
+        }
         el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
@@ -110,13 +137,11 @@ export function initUniversitiesPage() {
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
 
-    el.minTuitionInput?.addEventListener("input", () => { state.min_tuition = el.minTuitionInput.value; refetch(); });
-    el.maxTuitionInput?.addEventListener("input", () => { state.max_tuition = el.maxTuitionInput.value; refetch(); });
     el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; updateSliderVisibility(); refetch(); });
     el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
 
     el.resetBtn?.addEventListener("click", () => {
-        Object.assign(state, { q: "", country: "", region: "", city: "", study_level: "", min_tuition: 0, max_tuition: 1000000, sort: "uni_ai", ai_balance: 50, page: 1 });
+        Object.assign(state, { q: "", country: "", region: "", city: "", study_level: "", min_tuition: 0, max_tuition: MAX_TUITION, sort: "uni_ai", ai_balance: 50, page: 1 });
         saveFilters(state);
         applyToForm();
         if (el.stateDiv) el.stateDiv.style.display = "none"; 
@@ -142,14 +167,14 @@ export function initUniversitiesPage() {
     }
 
     el.minInput?.addEventListener("change", () => {
-        let val = parseInt(el.minInput.value) || 0;
-        if (val >= parseInt(el.maxSlider.value)) val = parseInt(el.maxSlider.value) - 10000;
+        let val = clampTuition(el.minInput.value, 0);
+        if (val >= parseInt(el.maxSlider.value)) val = Math.max(0, parseInt(el.maxSlider.value) - MIN_RANGE_GAP);
         el.minSlider.value = val; state.min_tuition = val; fillTrack(); refetch();
     });
 
     el.maxInput?.addEventListener("change", () => {
-        let val = parseInt(el.maxInput.value) || 1000000;
-        if (val <= parseInt(el.minSlider.value)) val = parseInt(el.minSlider.value) + 10000;
+        let val = clampTuition(el.maxInput.value, MAX_TUITION);
+        if (val <= parseInt(el.minSlider.value)) val = Math.min(MAX_TUITION, parseInt(el.minSlider.value) + MIN_RANGE_GAP);
         el.maxSlider.value = val; state.max_tuition = val; fillTrack(); refetch();
     });
 
@@ -225,7 +250,7 @@ export function initUniversitiesPage() {
         el.sliderLabel.textContent = text;
     }
     
-    function buildParams() {
+    function buildParams(forApi = false) {
         const p = new URLSearchParams();
         if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
         if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
@@ -234,14 +259,16 @@ export function initUniversitiesPage() {
         if (state.study_level) p.set("study_level", state.study_level);
 
         const isAiSort = (state.sort === "uni_ai");
-        p.set("sort", isAiSort ? "name_asc" : state.sort);
+        p.set("sort", forApi ? (isAiSort ? "name_asc" : state.sort) : state.sort);
         
-        if (state.viewMode === "map") {
+        if (forApi && state.viewMode === "map") {
             p.set("limit", "200"); p.set("page", "1");
         } else {
-            if (isAiSort) { p.set("limit", "100"); p.set("page", "1"); } 
+            if (forApi && isAiSort) { p.set("limit", "100"); p.set("page", "1"); } 
             else { p.set("page", String(state.page)); p.set("limit", String(state.limit)); }
         }
+        if (state.ai_balance !== undefined && state.ai_balance !== null) p.set("ai_balance", String(state.ai_balance));
+        if (state.viewMode) p.set("view", state.viewMode);
         return p;
     }
 
@@ -288,7 +315,7 @@ export function initUniversitiesPage() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">All Countries</option>`;
+        let html = `<option value="">🌍 Global</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
             html += `<option value="${c}" ${isSelected}>${c}</option>`; 
@@ -300,6 +327,30 @@ export function initUniversitiesPage() {
         const sp = new URL(window.location.href).searchParams;
         if(sp.has("q")) state.q = sp.get("q");
         if(sp.has("country")) state.country = sp.get("country");
+        if(sp.has("region")) state.region = sp.get("region");
+        if(sp.has("city")) state.city = sp.get("city");
+        if(sp.has("study_level")) state.study_level = sp.get("study_level");
+        if(sp.has("min_tuition")) state.min_tuition = clampTuition(sp.get("min_tuition"), state.min_tuition);
+        if(sp.has("max_tuition")) state.max_tuition = clampTuition(sp.get("max_tuition"), state.max_tuition);
+        if(sp.has("sort")) state.sort = sp.get("sort");
+        if(sp.has("ai_balance")) {
+            const ab = Number(sp.get("ai_balance"));
+            if (Number.isFinite(ab)) state.ai_balance = Math.max(0, Math.min(100, Math.round(ab)));
+        }
+        if(sp.has("page")) {
+            const page = Number(sp.get("page"));
+            if (Number.isFinite(page) && page >= 1) state.page = Math.floor(page);
+        }
+        if(sp.has("view")) {
+            const view = sp.get("view");
+            if (view === "map" || view === "list") state.viewMode = view;
+        }
+
+        if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
+        state.max_tuition = Math.min(MAX_TUITION, state.max_tuition);
+        if (state.max_tuition < state.min_tuition + MIN_RANGE_GAP) {
+            state.max_tuition = state.min_tuition + MIN_RANGE_GAP;
+        }
     }
 
     async function fetchAndRender() {
@@ -307,11 +358,12 @@ export function initUniversitiesPage() {
         if (state.viewMode === 'list') el.list.innerHTML = "";
         if (el.pagination) el.pagination.innerHTML = "";
 
-        const params = buildParams();
-        setUrlParams(params);
+        const urlParams = buildParams(false);
+        const apiParams = buildParams(true);
+        setUrlParams(urlParams);
 
         try {
-        const res = await fetch(`${API_BASE}/universities?${params.toString()}`);
+        const res = await fetch(`${API_BASE}/universities?${apiParams.toString()}`);
         if (!res.ok) throw new Error("API Error");
         const data = await res.json();
         let items = data.items || [];
@@ -365,22 +417,92 @@ export function initUniversitiesPage() {
                 ? `<div style="display:flex; align-items:center; gap:6px;">${city}, ${flagHtml} ${country}</div>`
                 : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${country}</div>`;
         }
-        const match = u.matchData || {}; 
-        const cost = match.finalPrice !== undefined ? match.finalPrice : nested(u, ["finance", "total_cost_year_usd"], 0);
+        const match = u.matchData || {};
+
+        // Базовая цена (трековая, если algo её дал)
+        const baseCost =
+        (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
+        nested(u, ["finance", "total_cost_year_usd"], 0);
+
+        // Итоговая цена с учётом scholarship amount (если есть)
+        const cost =
+        (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
+        baseCost;
+
         let badgesHTML = "";
-        if (match.trackLabel) {
-            badgesHTML += `<span style="background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #dbeafe; margin-bottom:4px;">🚀 Track: ${match.trackLabel}</span> `;
-        }
-        if (match.grantName) {
-            badgesHTML += `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🏆 ${match.grantName}</span> `;
-        } else if (cost > myBudget && myBudget > 0) {
-            badgesHTML += `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe; margin-bottom:4px;">💰 Over Budget</span> `;
+
+        // “Есть ли вообще aid/grants”
+        const aidAnyFallback =
+        !!(u.finance?.financial_aid?.merit_based || u.finance?.financial_aid?.need_based) ||
+        (Array.isArray(u.admission_tracks) && u.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0));
+
+        const aidAny =
+        (match.aidAvailable !== undefined) ? !!match.aidAvailable : aidAnyFallback;
+
+        // “Юзер проходит на грант/aid по требованиям”
+        const aidEligible =
+        (match.grantEligible !== undefined) ? !!match.grantEligible : !!match.grantName;
+
+        // ВАЖНО: если aidEligible=true, ты сам писал “no budget penalty”
+        // значит overBudget считаем только когда aidEligible=false
+        const overBudget = (myBudget > 0 && cost > myBudget && !aidEligible);
+
+        const badges = [];
+
+        if (match.meetMinRequirements) {
+            badges.push(
+                `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span>`
+            );
         } else if (match.trackLabel) {
-             badgesHTML += `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span> `;
-        } else {
-             const acc = u.academics?.acceptance_rate_percent;
-             badgesHTML = `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acc}%</span>`;
+            badges.push(
+                `<span style="background:#fff7ed; color:#9a3412; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fdba74; margin-bottom:4px;">⚠️ Below Requirements</span>`
+            );
         }
+
+
+        // Grant/Aid badges
+        if (match.grantName) {
+        badges.push(
+            `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🏆 ${match.grantName}</span>`
+        );
+        } else if (overBudget) {
+        if (aidEligible) {
+            badges.push(
+            `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🎓 Grant/Aid Likely (no budget penalty)</span>`
+            );
+        } else if (aidAny) {
+            badges.push(
+            `<span style="background:#fff7ed; color:#9a3412; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fdba74; margin-bottom:4px;">💸 Over Budget • Aid Available</span>`
+            );
+        } else {
+            badges.push(
+            `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe; margin-bottom:4px;">💰 Over Budget</span>`
+            );
+        }
+        } else {
+        // Не over budget
+        if (aidAny) {
+            badges.push(
+            `<span style="background:#ecfdf5; color:#047857; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #a7f3d0; margin-bottom:4px;">🎓 Aid Available</span>`
+            );
+        }
+        if (match.trackLabel) {
+            badges.push(
+            `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span>`
+            );
+        }
+        }
+
+        // Fallback: acceptance
+        if (badges.length === 0) {
+        const acc = u.academics?.acceptance_rate_percent;
+        badges.push(
+            `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acc ?? "—"}%</span>`
+        );
+        }
+
+        badgesHTML = badges.join(" ");
+
         
         // ROI УБРАН ПОЛНОСТЬЮ
 
@@ -498,6 +620,135 @@ export async function initUniversityPage() {
         progDiv.innerHTML = u.academics.majors.map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${m}</span>`).join(" ");
     }
 
+    function isLanguageExam(examKey) {
+        const k = String(examKey || "").toUpperCase();
+        return (
+            k.includes("IELTS") ||
+            k.includes("TOEFL") ||
+            k.includes("DET") ||
+            k.includes("DUOLINGO") ||
+            k.includes("PTE") ||
+            k.includes("CAMBRIDGE") ||
+            k.includes("TESTDAF") ||
+            k.includes("DSH") ||
+            k.includes("DELF") ||
+            k.includes("DALF") ||
+            k.includes("TCF") ||
+            k.includes("TEF") ||
+            k.includes("NT2") ||
+            k.includes("HSK") ||
+            k.includes("JLPT") ||
+            k.includes("TOPIK")
+        );
+        }
+
+        function formatExamScore(examKey, score) {
+        const k = String(examKey || "").toUpperCase();
+        // В твоей базе GPA в процентах
+        if (k === "GPA") return `${score}%`;
+        if (k.includes("JLPT")) return `N${score}`;
+        if (k.includes("TOPIK") || k.includes("HSK") || k.includes("TESTDAF") || k.includes("DSH")) return `Level ${score}`;
+        return String(score);
+        }
+
+        function splitExamEntries(obj) {
+        const lang = [];
+        const acad = [];
+        for (const [k, v] of Object.entries(obj || {})) {
+            if (v === null || v === undefined) continue;
+            (isLanguageExam(k) ? lang : acad).push([k, v]);
+        }
+        return { lang, acad };
+        }
+
+        function renderExamGroup(title, pairs, color) {
+        if (!pairs.length) return "";
+        return `
+            <div style="margin-top:10px;">
+            <div style="font-size:11px; font-weight:800; color:${color}; margin-bottom:6px; letter-spacing:0.4px;">
+                ${title}
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px; font-size:13px;">
+                ${pairs.map(([exam, score]) => `
+                <div><strong>${escapeHtml(getExamDisplayName(exam))}:</strong> ${escapeHtml(formatExamScore(exam, score))}</div>
+                `).join("")}
+            </div>
+            </div>
+        `;
+        }
+
+        function cefrLabel(id) {
+        const n = Number(id);
+        if (n === 1) return "A1";
+        if (n === 2) return "A2";
+        if (n === 3) return "B1";
+        if (n === 4) return "B2";
+        if (n === 5) return "C1";
+        if (n === 6) return "C2";
+        return String(id);
+        }
+
+        function renderLanguageRequirements(track) {
+        const list = Array.isArray(track?.language_requirements) ? track.language_requirements : [];
+        if (!list.length) return "";
+
+        const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
+        const modeText = mode === "any"
+            ? "Any one language proof is enough"
+            : "All listed language proofs are required";
+
+        return `
+            <div style="margin-top:12px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:12px;">
+              <div style="font-size:11px; font-weight:800; color:#1d4ed8; margin-bottom:8px; letter-spacing:0.4px;">
+                LANGUAGE TRACK RULES
+              </div>
+              <div style="font-size:12px; color:#1e3a8a; margin-bottom:10px;">${escapeHtml(modeText)}</div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                ${list.map(lr => {
+                    const code = String(lr?.code || "").toUpperCase();
+                    const nativeOk = !!lr?.accept_native;
+                    const minCefr = lr?.min_cefr != null ? cefrLabel(lr.min_cefr) : null;
+                    const recCefr = lr?.recommended_cefr != null ? cefrLabel(lr.recommended_cefr) : null;
+
+                    const reqPairs = Object.entries(lr?.requirements || {});
+                    const avgPairs = Object.entries(lr?.stats_avg || {});
+
+                    return `
+                      <div style="background:#fff; border:1px solid #dbeafe; border-radius:8px; padding:10px;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                          <span style="font-size:10px; font-weight:800; color:#1d4ed8; border:1px solid #93c5fd; background:#eff6ff; padding:2px 6px; border-radius:999px;">
+                            ${escapeHtml(code || "LANG")}
+                          </span>
+                          ${nativeOk ? `<span style="font-size:11px; color:#065f46; font-weight:700;">Native accepted</span>` : ""}
+                        </div>
+                        ${(minCefr || recCefr) ? `
+                          <div style="font-size:12px; color:#334155; margin-bottom:6px;">
+                            ${minCefr ? `<span><strong>Min CEFR:</strong> ${escapeHtml(minCefr)}</span>` : ""}
+                            ${(minCefr && recCefr) ? `<span> • </span>` : ""}
+                            ${recCefr ? `<span><strong>Typical:</strong> ${escapeHtml(recCefr)}</span>` : ""}
+                          </div>
+                        ` : ""}
+                        ${reqPairs.length ? `
+                          <div style="font-size:12px; color:#334155;">
+                            <strong>Exam minimums:</strong>
+                            ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
+                          </div>
+                        ` : ""}
+                        ${avgPairs.length ? `
+                          <div style="font-size:12px; color:#475569; margin-top:6px;">
+                            <strong>Typical admitted:</strong>
+                            ${avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")}
+                          </div>
+                        ` : ""}
+                      </div>
+                    `;
+                }).join("")}
+              </div>
+            </div>
+        `;
+        }
+
+
     // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
     const reqDiv = document.getElementById("detailRequirements");
     if (reqDiv) {
@@ -521,21 +772,25 @@ export async function initUniversityPage() {
                 const trackPrice = track.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0;
 
                 // Требования
-                let minList = "";
-                for (const [exam, score] of Object.entries(track.requirements || {})) {
-                    minList += `<div style="margin-right:12px;"><strong>Min ${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
-                }
+                const reqSplit = splitExamEntries(track.requirements || {});
+                const minList =
+                    renderExamGroup("ACADEMIC EXAMS", reqSplit.acad, "#6b7280") +
+                    renderExamGroup("LANGUAGE EXAMS", reqSplit.lang, "#2563eb");
+
 
                 // Средние баллы
+                const avgSplit = splitExamEntries(track.stats_avg || {});
                 let avgList = "";
-                const avgs = track.stats_avg || {};
-                if (Object.keys(avgs).length > 0) {
-                    for (const [exam, score] of Object.entries(avgs)) {
-                        avgList += `<div style="margin-right:12px; color:#059669;"><strong>Avg ${exam}:</strong> ${score}${exam==='GPA'?'%':''}</div>`;
-                    }
+
+                if (Object.keys(track.stats_avg || {}).length > 0) {
+                avgList =
+                    renderExamGroup("ACADEMIC EXAMS", avgSplit.acad, "#047857") +
+                    renderExamGroup("LANGUAGE EXAMS", avgSplit.lang, "#047857");
                 } else {
-                    avgList = `<div style="color:#999; font-style:italic;">Not available</div>`;
+                avgList = `<div style="color:#999; font-style:italic;">Not available</div>`;
                 }
+
+                const languageReqInfo = renderLanguageRequirements(track);
 
                 // Гранты
                 let grantsInfo = "";
@@ -599,6 +854,7 @@ export async function initUniversityPage() {
                             <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">${avgList}</div>
                         </div>
                     </div>
+                    ${languageReqInfo}
                     ${grantsInfo}
                 </div>
                 `;
@@ -845,4 +1101,119 @@ export async function initRankingPage() {
         console.error(err);
         listEl.innerHTML = `<div style="padding:20px; text-align:center; color:red;">Failed to load rankings.</div>`;
     }
+}
+
+// =====================================
+// PAGE: GUIDE
+// =====================================
+export function initGuidePage() {
+    const page = document.getElementById("guidePage");
+    if (!page) return;
+
+    const academicWrap = document.getElementById("guideAcademicExams");
+    const languageWrap = document.getElementById("guideLanguageExams");
+    const glossaryWrap = document.getElementById("guideGlossary");
+
+    const gloss = [
+        { term: "UniFit", desc: "AI ranking mode that balances prestige, affordability, and admission feasibility." },
+        { term: "Admission Track", desc: "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)." },
+        { term: "Requirements", desc: "Minimum scores to be considered for a track." },
+        { term: "Stats Avg", desc: "Typical scores of admitted students on that track." },
+        { term: "Language Requirements", desc: "Accepted proof of language ability: native, CEFR, or language exam." },
+        { term: "Mode = any", desc: "You need to satisfy at least one listed language option." },
+        { term: "Mode = all", desc: "You must satisfy every listed language requirement." },
+        { term: "Match Score", desc: "Internal UniFit ranking score; higher means a better fit for your profile." },
+    ];
+
+    function typeLabel(t) {
+        const x = String(t || "").toLowerCase();
+        if (x === "int") return "Integer";
+        if (x === "float") return "Decimal";
+        if (x === "bool") return "Boolean";
+        return x || "Number";
+    }
+
+    function renderGlossary() {
+        if (!glossaryWrap) return;
+        glossaryWrap.innerHTML = gloss.map((g) => `
+            <div class="guide-card">
+                <h4>${escapeHtml(g.term)}</h4>
+                <p>${escapeHtml(g.desc)}</p>
+            </div>
+        `).join("");
+    }
+
+    function renderAcademicExams() {
+        if (!academicWrap) return;
+
+        const langIds = new Set();
+        const groups = LANG_CONFIG?.language_exams || {};
+        for (const arr of Object.values(groups)) {
+            if (!Array.isArray(arr)) continue;
+            arr.forEach((x) => langIds.add(String(x?.id || "").trim()));
+        }
+
+        const exams = Object.entries(EXAM_CONFIG || {})
+            .filter(([id]) => !langIds.has(String(id)))
+            .sort((a, b) => getExamDisplayName(a[0]).localeCompare(getExamDisplayName(b[0])));
+
+        if (!exams.length) {
+            academicWrap.innerHTML = `<p class="guide-muted">Exam config is loading...</p>`;
+            return;
+        }
+
+        academicWrap.innerHTML = exams.map(([id, cfg]) => `
+            <div class="guide-card">
+                <h4>${escapeHtml(getExamDisplayName(id))}</h4>
+                <p><strong>Type:</strong> ${escapeHtml(typeLabel(cfg?.type))}</p>
+                <p><strong>Range:</strong> ${escapeHtml(String(cfg?.min ?? "—"))} - ${escapeHtml(String(cfg?.max ?? "—"))}</p>
+                <p><strong>Step:</strong> ${escapeHtml(String(cfg?.step ?? "—"))}</p>
+            </div>
+        `).join("");
+    }
+
+    function renderLanguageExams() {
+        if (!languageWrap) return;
+        const groups = LANG_CONFIG?.language_exams || {};
+        const languages = LANG_CONFIG?.languages || [];
+        const nameByCode = Object.fromEntries(languages.map((x) => [x.code, x.name || x.label || x.code]));
+
+        const codes = Object.keys(groups).sort();
+        if (!codes.length) {
+            languageWrap.innerHTML = `<p class="guide-muted">Language exam config is loading...</p>`;
+            return;
+        }
+
+        languageWrap.innerHTML = codes.map((code) => {
+            const arr = Array.isArray(groups[code]) ? groups[code] : [];
+            if (!arr.length) return "";
+            const title = nameByCode[code] || code.toUpperCase();
+
+            return `
+                <section class="guide-subsection">
+                    <h4>${escapeHtml(title)} (${escapeHtml(code.toUpperCase())})</h4>
+                    <div class="guide-grid">
+                        ${arr.map((ex) => `
+                            <div class="guide-card">
+                                <h5>${escapeHtml(ex?.label || getExamDisplayName(ex?.id, { langCode: code }))}</h5>
+                                <p><strong>Type:</strong> ${escapeHtml(typeLabel(ex?.type))}</p>
+                                <p><strong>Range:</strong> ${escapeHtml(String(ex?.min ?? "—"))} - ${escapeHtml(String(ex?.max ?? "—"))}</p>
+                                <p><strong>Step:</strong> ${escapeHtml(String(ex?.step ?? "—"))}</p>
+                            </div>
+                        `).join("")}
+                    </div>
+                </section>
+            `;
+        }).join("");
+    }
+
+    function renderAll() {
+        renderGlossary();
+        renderAcademicExams();
+        renderLanguageExams();
+    }
+
+    renderAll();
+    window.addEventListener("examConfigLoaded", renderAll);
+    window.addEventListener("languageConfigLoaded", renderAll);
 }

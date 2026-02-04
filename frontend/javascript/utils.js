@@ -150,6 +150,87 @@ export function moneyUSD(val) {
   return "$" + new Intl.NumberFormat("en-US").format(n);
 }
 
+const EXAM_LABEL_OVERRIDES = {
+  SAT: "SAT",
+  ACT: "ACT",
+  GPA: "GPA",
+  UNT: "UNT (ЕНТ)",
+  NUET_Total: "NUET Total",
+  AP_Total: "AP Total",
+  AP_Score: "AP Subject Score",
+  IB_Diploma: "IB Diploma",
+  IB_Course: "IB Course Grade",
+  IELTS: "IELTS Academic",
+  TOEFL_iBT_0_120: "TOEFL iBT (0-120)",
+  TOEFL_iBT_1_6: "TOEFL iBT (1-6)",
+  DET: "Duolingo English Test (DET)",
+  PTE: "PTE Academic",
+  Cambridge_C1_Advanced: "Cambridge C1 Advanced",
+  TestDaF_TDN: "TestDaF (TDN)",
+  DSH_Level: "DSH Level",
+  DELF_DALF_Level: "DELF/DALF Level",
+  TCF_Total: "TCF Total",
+  NT2_Programme_II: "NT2 Programme II",
+  HSK_Level: "HSK Level",
+  JLPT_Level: "JLPT Level",
+  TOPIK_Level: "TOPIK Level",
+};
+
+function humanizeExamId(examId) {
+  const s = String(examId || "").trim();
+  if (!s) return "";
+  return s
+    .replaceAll("_", " ")
+    .replace(/\bIbt\b/g, "iBT")
+    .replace(/\bNuet\b/g, "NUET")
+    .replace(/\bDsh\b/g, "DSH")
+    .replace(/\bTdn\b/g, "TDN")
+    .replace(/\bJlpt\b/g, "JLPT")
+    .replace(/\bTopik\b/g, "TOPIK")
+    .replace(/\bHsk\b/g, "HSK")
+    .replace(/\bTcf\b/g, "TCF")
+    .replace(/\bDelf\b/g, "DELF")
+    .replace(/\bDalf\b/g, "DALF");
+}
+
+function getLangExamLabel(examId, langCode = "") {
+  const targetId = String(examId || "").trim();
+  if (!targetId) return "";
+
+  const groups = LANG_CONFIG?.language_exams;
+  if (!groups || typeof groups !== "object") return "";
+
+  const code = String(langCode || "").trim().toLowerCase();
+  if (code && Array.isArray(groups[code])) {
+    const found = groups[code].find((x) => String(x?.id || "").trim() === targetId);
+    if (found?.label) return String(found.label);
+  }
+
+  for (const arr of Object.values(groups)) {
+    if (!Array.isArray(arr)) continue;
+    const found = arr.find((x) => String(x?.id || "").trim() === targetId);
+    if (found?.label) return String(found.label);
+  }
+
+  return "";
+}
+
+export function getExamDisplayName(examId, opts = {}) {
+  const id = String(examId || "").trim();
+  if (!id) return "";
+
+  const langLabel = getLangExamLabel(id, opts.langCode || "");
+  if (langLabel) return langLabel;
+
+  const cfgLabel = EXAM_CONFIG?.[id]?.label || EXAM_CONFIG?.[id.toUpperCase()]?.label;
+  if (cfgLabel) return String(cfgLabel);
+
+  if (EXAM_LABEL_OVERRIDES[id]) return EXAM_LABEL_OVERRIDES[id];
+  if (EXAM_LABEL_OVERRIDES[id.toUpperCase()]) return EXAM_LABEL_OVERRIDES[id.toUpperCase()];
+
+  return humanizeExamId(id);
+}
+
 export function setUrlParams(params) {
   const url = new URL(window.location.href);
   url.search = params.toString();
@@ -181,15 +262,33 @@ export function removeToast(toast) {
 export function loadProfile() {
   try {
     const s = localStorage.getItem(PROFILE_STORAGE_KEY);
-    // Мержим с дефолтными значениями, чтобы новые поля (major, studyMode) появились
-    return s ? { ...PROFILE_DEFAULTS, ...JSON.parse(s) } : { ...PROFILE_DEFAULTS };
-  } catch(e) { return { ...PROFILE_DEFAULTS }; }
+    const raw = s ? JSON.parse(s) : {};
+    const normalized = normalizeProfile(raw);
+
+    // optional: если хочешь автоматически почистить localStorage от мусора
+    // localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
+
+    return normalized;
+  } catch (e) {
+    return { ...PROFILE_DEFAULTS };
+  }
 }
 
+const FALLBACK_LANG_LIMITS = {
+  "IELTS": { min: 0, max: 9, step: 0.5 },
+  "TOEFL": { min: 0, max: 120, step: 1 },
+  "Duolingo": { min: 10, max: 160, step: 1 },
+  "DET": { min: 10, max: 160, step: 1 },       // если используешь DET как отдельный ключ
+  "Cambridge": { min: 80, max: 230, step: 1 },
+  "PTE": { min: 10, max: 90, step: 1 },
+};
+
 export function saveProfile(p) {
-  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
+  const normalized = normalizeProfile(p);
+  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
   window.dispatchEvent(new Event("profileUpdated"));
 }
+
 
 /* --- Сохранение фильтров (ОЧИЩЕНО) --- */
 const FILTERS_KEY = "unisearch_filters";
@@ -302,4 +401,153 @@ export function initCustomSelect(selectId) {
 
     updateTrigger();
     document.addEventListener('click', (e) => { if (!wrapper.contains(e.target)) wrapper.classList.remove('open'); });
+}
+
+export function getLangExamLimits(examId, LANG_CONFIG) {
+  const le = LANG_CONFIG?.language_exams;
+  if (!le) return null;
+
+  for (const locale of Object.keys(le)) {
+    const arr = le[locale];
+    if (!Array.isArray(arr)) continue;
+    const found = arr.find(x => x?.id === examId);
+    if (found) return { min: found.min, max: found.max, step: found.step };
+  }
+  return null;
+}
+
+export function clampNumberToLimits(val, limits) {
+  const n = Number(val);
+  if (!Number.isFinite(n)) return null;
+  if (!limits) return n;
+
+  let out = n;
+  const min = Number(limits.min);
+  const max = Number(limits.max);
+  const step = Number(limits.step);
+
+  if (Number.isFinite(min)) out = Math.max(min, out);
+  if (Number.isFinite(max)) out = Math.min(max, out);
+
+  if (Number.isFinite(step) && step > 0) {
+    const base = Number.isFinite(min) ? min : 0;
+    out = base + Math.round((out - base) / step) * step;
+    if (Number.isFinite(min)) out = Math.max(min, out);
+    if (Number.isFinite(max)) out = Math.min(max, out);
+    out = Math.round(out * 1000) / 1000;
+  }
+  return out;
+}
+
+export function applyNumberInputLimits(inputEl, limits) {
+  if (!inputEl) return;
+
+  if (!limits) {
+    inputEl.removeAttribute("min");
+    inputEl.removeAttribute("max");
+    inputEl.removeAttribute("step");
+    return;
+  }
+
+  if (limits.min !== undefined) inputEl.min = String(limits.min);
+  if (limits.max !== undefined) inputEl.max = String(limits.max);
+  if (limits.step !== undefined) inputEl.step = String(limits.step);
+}
+
+export function applyLanguageExamInputLimits(inputEl, examId) {
+  // 1) config с сервера
+  let limits = getLangExamLimits(examId, LANG_CONFIG);
+
+  // 2) fallback
+  if (!limits) limits = FALLBACK_LANG_LIMITS[examId] || null;
+
+  applyNumberInputLimits(inputEl, limits);
+  return limits; // удобно для отладки
+}
+
+
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+function roundToStep(val, min, step) {
+  const base = Number.isFinite(min) ? min : 0;
+  const out = base + Math.round((val - base) / step) * step;
+  return Math.round(out * 1000) / 1000;
+}
+
+function clampWithCfg(score, cfg) {
+  let v = Number(score);
+  if (!Number.isFinite(v)) return null;
+  const min = Number.isFinite(Number(cfg?.min)) ? Number(cfg.min) : -Infinity;
+  const max = Number.isFinite(Number(cfg?.max)) ? Number(cfg.max) : Infinity;
+  const step = Number.isFinite(Number(cfg?.step)) ? Number(cfg.step) : null;
+
+  v = clamp(v, min, max);
+  if (step && step > 0) v = roundToStep(v, min, step);
+  return clamp(v, min, max);
+}
+
+function normalizeProfile(p) {
+  const out = { ...PROFILE_DEFAULTS, ...(p || {}) };
+
+  // --- Academic exams: profile.exams = [{id:"SAT", score:1500}, ...]
+  if (!Array.isArray(out.exams)) out.exams = [];
+  out.exams = out.exams
+    .map(it => {
+      const rawId = String(it?.id || it?.exam || "").trim();
+      const id = rawId || "";
+      if (!id) return null;
+
+      const cfg =
+        EXAM_CONFIG?.[id] ||
+        EXAM_CONFIG?.[id.toUpperCase()] ||
+        null;
+      const normalizedId = EXAM_CONFIG?.[id] ? id : (EXAM_CONFIG?.[id.toUpperCase()] ? id.toUpperCase() : id);
+      if (!cfg) return { ...it, id: normalizedId, exam: normalizedId }; // если нет конфига — не трогаем
+
+      const clamped = clampWithCfg(it?.score, cfg);
+      return { ...it, id: normalizedId, exam: normalizedId, score: (clamped ?? it?.score) };
+    })
+    .filter(Boolean);
+
+  // --- Language exams: profile.languages = [{kind:"Exam", exam:"IELTS", score:7.5}, ...]
+  if (!Array.isArray(out.languages)) out.languages = [];
+  out.languages = out.languages
+    .map(it => {
+      if (!it || typeof it !== "object") return null;
+
+      const code = String(it?.code || it?.lang || "").trim().toLowerCase();
+      const kind = String(it?.kind || "").trim().toLowerCase();
+      if (!code || !kind) return null;
+
+      if (kind === "native") {
+        return { code, kind };
+      }
+
+      if (kind === "cefr") {
+        const level = Number(it?.level);
+        if (!Number.isInteger(level) || level < 1 || level > 6) return null;
+        return { code, kind, level };
+      }
+
+      if (kind === "exam") {
+        const examId = String(it?.exam || it?.examId || "").trim();
+        if (!examId) return null;
+
+        // 1) пробуем из LANG_CONFIG
+        let limits = getLangExamLimits(examId, LANG_CONFIG);
+
+        // 2) если не нашли — пробуем fallback
+        if (!limits) limits = FALLBACK_LANG_LIMITS[examId] || null;
+
+        const clamped = limits ? clampNumberToLimits(it?.score, limits) : Number(it?.score);
+        if (!Number.isFinite(clamped)) return null;
+
+        return { code, kind, exam: examId, score: clamped };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+
+  return out;
 }

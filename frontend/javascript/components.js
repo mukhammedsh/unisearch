@@ -4,6 +4,7 @@ import {
   saveProfile,
   initCustomSelect,
   EXAM_CONFIG,
+  getExamDisplayName,
   showToast,
   API_BASE,
   MAJOR_OPTIONS,
@@ -22,6 +23,7 @@ const LAYOUT_HTML = `
     <a href="index.html" data-link="home">Home</a>
     <a href="universities.html" data-link="universities">Universities</a>
     <a href="ranking.html" data-link="ranking">Rankings</a>
+    <a href="guide.html" data-link="guide">Guide</a>
   </nav>
 
   <div class="navbar-right">
@@ -41,7 +43,7 @@ const LAYOUT_HTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
           </button>
         </div>
-        <div class="profile-subtitle">Smart Profile</div>
+        <div class="profile-subtitle">Profile</div>
       </div>
       <button class="icon-btn profile-close" id="profileCloseBtn" title="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
@@ -95,7 +97,7 @@ const LAYOUT_HTML = `
           </select>
 
           <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
-          <button id="addExamBtn" class="profile-add">Add</button>
+          <button id="addExamBtn" class="profile-add" type="button">Add</button>
         </div>
         
         <div id="examError" class="profile-error"></div>
@@ -103,35 +105,53 @@ const LAYOUT_HTML = `
       </div>
 
       <section class="profile-block" id="languagesBlock">
-        <h3>Languages</h3>
+        <div class="profile-block-head">
+            <h3>Languages</h3>
+        </div>
 
-        <div class="lang-add-row">
-            <select id="langCode"></select>
-            <select id="langKind">
-            <option value="native">Native</option>
-            <option value="cefr">CEFR</option>
-            <option value="exam">Exam</option>
+        <div class="lang-add-grid lang-add-grid--compact">
+            <div>
+            <span class="mini-label">Language</span>
+            <select id="langCode" class="profile-input"></select>
+            </div>
+
+            <div>
+            <span class="mini-label">Type</span>
+            <select id="langKind" class="profile-input"></select>
+            </div>
+
+            <div id="cefrContainer" style="display:none">
+            <span class="mini-label">CEFR</span>
+            <select id="langCefr" class="profile-input">
+                <option value="1">A1</option>
+                <option value="2">A2</option>
+                <option value="3">B1</option>
+                <option value="4">B2</option>
+                <option value="5">C1</option>
+                <option value="6">C2</option>
             </select>
+            </div>
 
-            <select id="langCefr" style="display:none">
-            <option value="1">A1</option>
-            <option value="2">A2</option>
-            <option value="3">B1</option>
-            <option value="4">B2</option>
-            <option value="5">C1</option>
-            <option value="6">C2</option>
-            </select>
+            <div id="examContainer" style="display:none">
+            <span class="mini-label">Exam</span>
+            <select id="langExam" class="profile-input"></select>
+            </div>
 
-            <select id="langExam" style="display:none"></select>
-            <input id="langExamScore" type="number" placeholder="score" style="display:none; width:110px" />
+            <div id="scoreContainer" style="display:none">
+            <span class="mini-label">Score</span>
+            <input id="langExamScore"
+                    type="text"
+                    inputmode="decimal"
+                    class="profile-input"
+                    placeholder="Score (e.g. 7.5)" />
+            </div>
 
-            <button id="langAddBtn" type="button">Add</button>
+            <button id="langAddBtn" class="profile-add" type="button">Add</button>
         </div>
 
         <div id="langList" class="lang-list"></div>
         </section>
 
-    </div>
   </div>
 </div>
 
@@ -140,6 +160,7 @@ const LAYOUT_HTML = `
 
 // 🔥 1. Функция загрузки (теперь берет строку, а не файл)
 export async function loadGlobalLayout() {
+    if (document.getElementById("profileModal")) return;
     try {
         console.log("Injecting Layout HTML...");
         // Вставляем HTML из переменной
@@ -163,8 +184,11 @@ export async function loadGlobalLayout() {
     }
 }
 
+let __profileInited = false;
 // 🔥 2. Логика профиля
 function initProfileUI() {
+    if (__profileInited) return;   // ✅ не инициализируем 2 раза
+    __profileInited = true;
     const modal = document.getElementById("profileModal");
     if (!modal) {
         console.error("❌ initProfileUI: Modal not found in DOM!");
@@ -172,6 +196,9 @@ function initProfileUI() {
     }
 
     modal.setAttribute("aria-hidden", "true");
+
+    if (modal.dataset.bound === "1") return;
+    modal.dataset.bound = "1";
 
     const openBtn = document.getElementById("profileBtn");
     const closeBtn = document.getElementById("profileCloseBtn");
@@ -187,7 +214,7 @@ function initProfileUI() {
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
     const profileMajorSelect = document.getElementById("profileMajorSelect");
-    
+
     const editNameBtn = document.getElementById("editNameBtn");
     const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
     const profileUsernameDiv = document.querySelector(".profile-username");
@@ -214,10 +241,7 @@ function initProfileUI() {
         Object.keys(EXAM_CONFIG).forEach(examKey => {
             const opt = document.createElement("option");
             opt.value = examKey;
-            // Красивые названия
-            if (examKey === "UNT") opt.textContent = "UNT (ЕНТ)";
-            else opt.textContent = examKey;
-            
+            opt.textContent = getExamDisplayName(examKey);
             examNameSelect.appendChild(opt);
         });
         
@@ -230,7 +254,7 @@ function initProfileUI() {
     }
 
     window.addEventListener("examConfigLoaded", populateExamSelect);
-    
+
     const resetFields = () => {
         profile = loadProfile(); 
         if(nameInput) nameInput.value = profile.name;
@@ -240,7 +264,7 @@ function initProfileUI() {
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         renderProfileData();
-    }; 
+    };
 
     if (profileMajorSelect) {
         profileMajorSelect.addEventListener("change", () => {
@@ -258,7 +282,8 @@ function initProfileUI() {
     }
 
     if (openBtn) openBtn.onclick = () => { 
-        resetFields(); 
+        resetFields();
+        window.dispatchEvent(new Event("profileModalOpened"));
         modal.classList.add("is-open"); 
         modal.style.display = "flex";
         modal.removeAttribute("aria-hidden");
@@ -350,6 +375,27 @@ function initProfileUI() {
             const rawScore = examScoreInput.value;
             const score = parseFloat(rawScore);
 
+            const cfg = EXAM_CONFIG?.[name];
+            if (cfg) {
+            const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
+            const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
+            const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
+
+            if (Number.isFinite(min) && score < min) { showToast(`Min for ${name} is ${min}`, "error"); return; }
+            if (Number.isFinite(max) && score > max) { showToast(`Max for ${name} is ${max}`, "error"); return; }
+
+            if (Number.isFinite(step) && step > 0) {
+                const base = Number.isFinite(min) ? min : 0;
+                const k = (score - base) / step;
+                const diff = Math.abs(k - Math.round(k));
+                if (diff > 1e-9) {
+                showToast(`${name} score must use step ${step}`, "error");
+                return;
+                }
+            }
+            }
+
+
             if (!name) {
                 showToast("Please select an exam", "error");
                 return;
@@ -387,17 +433,18 @@ function initProfileUI() {
                 if(!res.ok) throw new Error(json.detail || "Error");
                 
                 // 🔥 НОВАЯ ЛОГИКА: Ищем дубликат
-                const existingIndex = profile.exams.findIndex(e => e.exam === json.exam);
-                
+                const examId = (json.exam ?? json.id);
+                const examLabel = getExamDisplayName(examId);
+                const existingIndex = profile.exams.findIndex(e => e.exam === examId);
+
                 if (existingIndex !== -1) {
-                    // Если нашли — обновляем балл
-                    profile.exams[existingIndex].score = json.score;
-                    showToast(`Updated ${json.exam} to ${json.score}`, "success");
+                profile.exams[existingIndex].score = json.score;
+                showToast(`Updated ${examLabel} to ${json.score}`, "success");
                 } else {
-                    // Если не нашли — добавляем новый
-                    profile.exams.push({ exam: json.exam, score: json.score });
-                    showToast(`Added ${json.exam}`, "success");
+                profile.exams.push({ exam: examId, score: json.score });
+                showToast(`Added ${examLabel}`, "success");
                 }
+
                 
                 saveProfile(profile);
                 renderProfileData();
@@ -433,8 +480,8 @@ function initProfileUI() {
             examList.innerHTML = profile.exams.map((ex, i) => `
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
-                        <span class="profile-exam-name">${ex.exam}</span>
-                        <span class="profile-exam-score">Score: ${ex.score}${ex.exam === 'GPA' ? '%' : ''}</span>
+                        <span class="profile-exam-name">${getExamDisplayName(ex.exam)}</span>
+                        <span class="profile-exam-score">Score: ${ex.score}${String(ex.exam).toUpperCase() === 'GPA' ? '%' : ''}</span>
                     </div>
                     <button data-idx="${i}" class="profile-delete">Delete</button>
                 </div>

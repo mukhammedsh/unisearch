@@ -1,258 +1,294 @@
-# UniSearch — Beta v2.0.0 (Infomatrix 2026)
+# UniSearch / UniFit - Beta v2.0 (Infomatrix 2026)
 
-## Project description
- 
-**UniSearch** is a socially oriented web application designed to help students and applicants choose universities based on their preferences, structured data and **AI-based Smart Ranking**.
+## What this project is
+UniSearch is a full-stack web app that helps applicants choose universities using:
+- structured university data,
+- profile-based filtering,
+- and UniFit ranking (AI-like scoring with prestige/budget/admission feasibility balance).
 
-The main goal of the project UniSearch is to reduce inequality in access to educational information and eliminate the need for expensive consultants by providing personalized recommendations based on the applicant's **specific admission scenario** (SAT, UNT, IELTS, etc.).
-
----
-
-## 🚀 Key Features (v2.0 Update)
-
-### 1. Track-Based Admission Logic 🛤️
-Universities often have multiple ways to enter (e.g., "Direct Entry via SAT" or "Foundation Year" or "National Exam Track").
-* **Old version:** One generic "Avg GPA" for all scenarios.
-* **New version:** Smart separation of requirements. The system calculates your chances for *each specific track* independently.
-
-### 2. Dynamic Exam Configuration ⚙️
-The system is no longer hardcoded. Supported exams (IELTS, SAT, UNT, etc.) are fetched from the backend (`/exams/config`). This allows administrators to add new national exams (like NUET or ENT) without changing the frontend code.
-
-### 3. AI Smart Profile 🧠
-
-* Users input their scores in a specialized modal.
-* The **"Smart Sort"** algorithm ranks universities by a weighted "Fit Score" that combines:
-    * **Academic Fit:** Do you meet the track requirements?
-    * **Financial Fit:** ROI calculation (Salary / Tuition).
-    * **Prestige Preference:** Adjustable slider (Budget vs. Prestige).
+It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
 
 ---
 
-## 🛠 Tech Stack
+## Quick start for non-technical users
 
-**Frontend:**
-- **Modular Vanilla JavaScript (ES6+)**: Logic split into `algo.js` (Math), `components.js` (UI), `pages.js` (Rendering).
-- **Dynamic UI**: Dropdowns and inputs are generated based on API responses.
+If you are just using UniSearch (not developing it), this is the fastest flow:
 
-**Backend:**
-- **FastAPI (Python)**: asynchronous API.
-- **Endpoints**:
-    - `GET /universities`: Search with smart filtering.
-    - `GET /exams/config`: Source of truth for valid exams and ranges.
-    - `POST /exams/validate`: Server-side validation of user scores.
+1. Open **Universities** page.
+2. Click **Profile** and add your:
+   - budget,
+   - exam scores (SAT/ACT/GPA/etc.),
+   - language proof (native/CEFR/exam).
+3. Set your preference slider (**Budget <-> Prestige**).
+4. Browse ranked universities and open details.
+5. On each university, check:
+   - best-matching admission track,
+   - minimum vs typical admitted scores,
+   - language requirements,
+   - grants/scholarships and estimated yearly cost.
+
+You can also open **Guide** page to understand terms like CEFR, admission tracks, and score types.
 
 ---
 
-## Smart Sorting Logic
+## What each page does
 
-1.  **Load Config:** Frontend fetches valid exams from Backend.
-2.  **User Profile:** User saves scores (e.g., SAT: 1450, IELTS: 7.5).
-3.  **Matching:**
-    * The algorithm scans every **Admission Track** of a university.
-    * If the user fits *any* track, the university is marked as "Qualified".
-    * If the user fits a "Scholarship Track", a **Green Badge** is awarded.
-    * If the user fits a "Direct Entry" track, a **Blue Badge** is awarded.
+- `index.html` (Home): project overview and entry point.
+- `universities.html` (Main search): filters + UniFit ranking + map/list view.
+- `university.html` (Details): full information about one university and its tracks.
+- `ranking.html` (Rankings): ranking-focused view.
+- `guide.html` (Guide): explains admission terms, exams, and language proofs in simple words.
+
+---
+
+## How to read the profile fields
+
+- **Budget (USD/year)**: your maximum comfortable yearly cost.
+- **Exams**: academic exams (SAT, ACT, GPA, UNT, etc.).  
+  The app validates format/range automatically.
+- **Languages**:
+  - **Native**: language is your native proficiency.
+  - **CEFR**: level from A1 to C2.
+  - **Exam**: certificate score (IELTS, TOEFL, TestDaF, etc.), validated by exam type/range/step.
+
+Tip: language and academic exams are handled separately; both can affect matching.
+
+---
+
+## How to read results and badges
+
+- **Requirements Met**: your profile passes minimum requirements for the selected track.
+- **Below Requirements**: some minimum score(s) are not met.
+- **Aid/Grant badges**: scholarships or aid are available/likely for your profile.
+- **Over Budget**: estimated annual cost is above your budget (after applicable aid logic).
+
+On university details page:
+- **Minimum To Apply** = hard threshold.
+- **Real Average (Admitted)** = typical admitted student scores.
+- **Language Track Rules**:
+  - `mode = all`: all listed language proofs are required.
+  - `mode = any`: any one listed language option is enough.
+
+---
+
+## Main updates in this version
+
+### 1) Track-based admissions
+Universities can have multiple admission tracks (`admission_tracks`), each with:
+- its own exam minimums,
+- typical admitted scores (`stats_avg`),
+- scholarships and finance overrides.
+
+UniFit evaluates tracks separately and chooses the best track for the user.
+
+### 2) Dynamic exams and language exams
+Exam limits/types are loaded from backend config, not hardcoded.
+- Academic exams: `backend/data/exams.json`
+- Language config + language exams: `backend/data/languages.json`
+
+Frontend loads config from:
+- `GET /exams/config`
+- `GET /languages/config`
+
+Validation happens server-side:
+- `POST /exams/validate`
+- `POST /languages/validate`
+
+### 3) Language profile support
+User can add language evidence in Profile:
+- native,
+- CEFR level,
+- language exam score.
+
+UniFit uses language requirements from track data (`language_requirements`) including:
+- mode `all` / `any`,
+- native acceptance,
+- CEFR threshold,
+- exam-specific minimums.
+
+### 4) UX improvements
+- Budget filter max set to `150000`.
+- Country default option renamed to `🌍 Global`.
+- URL query params now keep current filters/page/view correctly.
+- New `Guide` page with glossary + exam explanations + dynamic exam references.
+
+---
+
+## Tech stack
+
+### Frontend
+- Vanilla JS (ES modules)
+- HTML/CSS pages
+- Main modules:
+  - `frontend/javascript/main.js` - app entry/router
+  - `frontend/javascript/components.js` - navbar/profile modal
+  - `frontend/javascript/pages.js` - page logic/rendering
+  - `frontend/javascript/algo.js` - UniFit scoring logic
+  - `frontend/javascript/languages.js` - language profile UI logic
+  - `frontend/javascript/utils.js` - config/profile/helpers
+
+### Backend
+- FastAPI (Python)
+- Main app:
+  - `backend/app/main.py`
+- Data:
+  - `backend/data/universities.json`
+  - `backend/data/exams.json`
+  - `backend/data/languages.json`
+  - `backend/data/cities.json`
+
+---
+
+## API overview
+
+- `GET /universities` - search/list with filters + pagination
+- `GET /universities/{id}` - single university details
+- `GET /locations` - countries/states/cities
+- `GET /exams/config` - full academic exam config (min/max/type/step/notes)
+- `GET /exams/config/full` - full exam config (same source)
+- `POST /exams/validate` - validate one academic exam score
+- `GET /languages/config` - languages/CEFR/language exam config
+- `POST /languages/validate` - validate one language evidence item
+
+Backend default local URL: `http://127.0.0.1:8000`
+
+---
+
+## Run locally
+
+## 1) Backend
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+## 2) Frontend
+Use any local HTTP server (do not use `file://`).
+
+Example:
+```bash
+cd frontend
+python -m http.server 5501
+```
+
+Open:
+- `http://127.0.0.1:5501/index.html`
+- `http://127.0.0.1:5501/universities.html`
+- `http://127.0.0.1:5501/guide.html`
+
+Note: backend CORS default origin is `http://127.0.0.1:5501`.
+
+---
+
+## Data model notes
+
+## Universities
+Each university can include:
+- general metadata,
+- finance block,
+- outcomes block,
+- multiple admission tracks.
+
+Track can include:
+- `requirements`
+- `stats_avg`
+- `language_requirements`
+- `language_requirements_mode` (`all` or `any`)
+- `scholarships`
+- `finance_override`
+
+## Exams
+`exams.json` stores exam rules (`min`, `max`, `type`, `step`, optional notes).
+
+## Languages
+`languages.json` stores:
+- supported language codes,
+- CEFR mapping,
+- proof kinds (`native`, `cefr`, `exam`),
+- `language_exams` grouped by language code.
+
+---
+
+## How UniFit scoring works (high level)
+For each university:
+1. Evaluate each track against user profile (academic + language requirements).
+2. Estimate admission feasibility from requirement fit + acceptance context.
+3. Apply affordability scoring (budget, aid, scholarships).
+4. Mix prestige vs budget preference using slider.
+5. Keep the best track and sort by final UniFit score.
+
+Important: high prestige does not fully override impossible admissions; feasibility still gates ranking.
+
+---
+
+## FAQ (simple)
+
+### Why did a top university appear lower?
+Because UniFit does not optimize only prestige. If admission chance is low or cost is too high for your profile, score is reduced.
+
+### Why can I add some decimal scores but not others?
+Each exam has its own type and step rules from config.  
+Example: IELTS allows `0.5` steps, many other exams allow only integers.
+
+### Why does one university show multiple admission options?
+Because one university can have many tracks (direct, foundation, scholarship path, etc.), each with different requirements and costs.
+
+### Why can language requirement be "not met" even if my academic exams are high?
+Academic and language requirements are independent in many tracks. Strong SAT/GPA does not automatically satisfy language proof.
+
+---
+
+## Known limitations
+- University dataset is still curated JSON, not a live official API feed.
+- Some country-specific admission rules are simplified.
+- Salary/ROI proxies are estimates and may be missing for some majors/tracks.
+
+---
+
+## Recommended next steps
+- Migrate JSON data to a database (PostgreSQL/MongoDB).
+- Add admin ingestion/update tools for university + track data.
+- Add authentication and cloud profile storage.
+- Add tests for ranking edge cases and language requirement scenarios.
 
 ---
 
 ## Project structure
 
-```text  
+```text
 backend/
-│
-├── app/
-│   ├── main.py              # FastAPI application entry point  
-│   └── core/
-│       └── validation.py    # whitelist of supported exams  
-│
-├── data/
-│   └── universities.json    # dataset of universities (JSON)  
-│   └── cities.json          # dataset of country:city (JSON)  
-│
-├── requirements.txt
-└── venv/                    # Python virtual environment (not committed)
+  app/
+    main.py
+  data/
+    universities.json
+    exams.json
+    languages.json
+    cities.json
+  requirements.txt
 
 frontend/
-│
-├── index.html               # landing / main page  
-├── universities.html        # universities list page (Smart Search)  
-├── university.html          # university detail page (Tabs view)  
-├── ranking.html             # NEW: Global Rankings Leaderboard
-│
-├── css/                     
-│   ├── style.css            # global styles
-│   ├── universities.css     
-│   ├── university.css       
-│   └── ranking.css          
-│
-├── javascript/              # NEW: Modular Logic (Refactored)
-│   ├── main.js              # Entry point & Router
-│   ├── algo.js              # AI Sorting & Math
-│   ├── components.js        # Navbar, Profile Modal, Tabs
-│   ├── pages.js             # Page rendering (Lists, Details)
-│   └── utils.js             # Helpers & API fetchers
-│
-└── images/
-    ├── logo.jpeg            # project logo  
-    ├── logos/               # University logos (PNG, 1:1)  
-    └── thumbnails/          # Campus covers (JPG, 16:9)
+  index.html
+  universities.html
+  university.html
+  ranking.html
+  guide.html
+  css/
+    style.css
+    universities.css
+    university.css
+    ranking.css
+    guide.css
+  javascript/
+    main.js
+    components.js
+    pages.js
+    algo.js
+    languages.js
+    utils.js
+  images/
+    logos/
+    thumbnails/
 ```
-
----
-
-**How to run the backend**
-
-1. Go to the backend directory:  
-```bash
-   cd backend
-```
-
-2. Create a virtual environment (one time):  
-```bash
-   python -m venv venv
-```
-
-3. Activate the virtual environment:  
-   * **Windows:** venv\\Scripts\\activate  
-   * **macOS / Linux:** source venv/bin/activate  
-4. Install dependencies:  
-```bash
-   pip install -r requirements.txt
-```
-5. Run the backend server:  
-```bash
-   uvicorn app.main:app --reload --port 8000
-```
-
-The backend will be available at: http://127.0.0.1:8000
-
----
-
-**How to run the frontend**
-
-⚠️ **Important:** Do NOT open HTML files using file://. A local HTTP server is required.
-
-### **Option A — VS Code Live Server (recommended)**
-
-1. Open the frontend/ folder in VS Code.  
-2. Install the **Live Server** extension.  
-3. Right-click on universities.html → **Open with Live Server**.
-
-### **Option B — Python HTTP server**
-
-From the frontend/ directory:
-
-```bash
-python -m http.server 5500
-```
-
-Then open: http://127.0.0.1:5500/universities.html
-
----
-
-**Smart Sorting & Ranking Logic**
-
-The application uses a weighted algorithm to rank universities:
-
-1. **Hard Filter:** Excludes universities where the user's score < exams_min.  
-2. **Scoring & Weights:** Calculates a "Fit Score" based on user preference (Slider):
-   * **Prestige Score:** Combines Global Rank (QS/THE) and Acceptance Rate.
-   * **Budget Score:** Calculates affordability. If `Total Cost > User Budget`, a penalty is applied. However, if `financial_aid` is available, the penalty is mitigated.
-   * **User Balance:** A slider allows the user to weigh **Prestige** vs. **Budget** (e.g., 80% Prestige priority / 20% Budget).
-3. **Visualization:**  
-   * 🔵 **Blue Badge:** "Budget exceeded, Grant available" (High recommendation).  
-   * 🟣 **Purple Badge:** "Budget exceeded" (Warning).  
-   * ✅ **Green Badge:** "Within Budget" or "Grant Available".
-
----
-
-## ⚠️ Alpha Limitations
-- **Currency:** All costs are displayed in USD for consistency, although local currencies (KZT, GBP, JPY) are used in respective countries.
-
----
-
-**How to add a university**
-
-### **1. Update JSON Data**
-
-Edited backend/data/universities.json. The structure has been updated to support precise grant types and exam requirements.
-
-**Example Entry:**
-
-```json
-{
-   "id": "astana-it-university-kaz-astana",
-   "name": "Astana IT University",
-   "rank": 20,
-   "student_count": 5426,
-   "location": { "country": "Kazakhstan", "city": "Astana", "state": "" },
-   "coordinates": { "lat": 51.0913, "lon": 71.4128 },
-   "website": "https://astanait.edu.kz/",
-   "academics": {
-   "majors": ["Computer Science", "Software Engineering", "Big Data Analysis", "Cyber Security", "IT Management", "Smart Technologies"],
-   "study_levels": ["Bachelor", "Master", "PhD"],
-   "formats": ["On-campus"],
-   "acceptance_rate_percent": 25
-   },
-   "finance": {
-   "total_cost_year_usd": 7000,
-   "application_fee_usd": 0,
-   "financial_aid": { "merit_based": true, "need_based": true },
-   "costs_breakdown_year_usd": {
-      "Tuition": 5200,
-      "Housing_Dorm": 1000,
-      "Food": 500,
-      "Books_Transport_Misc": 300
-   }
-   },
-   "student_life": { "size": "medium" },
-   "admission_tracks": [
-   {
-      "id": "aitu_unt",
-      "label": "UNT Track (IT Major)",
-      "study_mode": "On-campus",
-      "requirements": {
-         "UNT": 85,
-         "GPA": 70
-      },
-      "stats_avg": {
-         "UNT": 105,
-         "GPA": 85
-      },
-      "scholarships": [
-         {
-         "name": "State Grant (Computer Science)",
-         "type": "state",
-         "requirements": { "UNT": 115, "GPA": 85 }
-         },
-         {
-         "name": "Rector's Grant",
-         "type": "merit",
-         "requirements": { "UNT": 125 }
-         }
-      ]
-   }
-   ]
-}
-```
-### **2. Add Images**
-
-To ensure the UI looks correct, add images matching the id from the JSON:
-
-* **Logo:** frontend/images/logos/harvard-usa-cambridge.png (Transparent PNG required)  
-* **Cover:** frontend/images/thumbnails/harvard-usa-cambridge.jpg (1280x720 or 16:9 JPG)
-
----
-
-**Future development**
-
-Planned features for Beta:
-
-* **User Accounts:** Saving the User Profile (GPA/Budget) to the database instead of local testing variables and add signing in by Google account.
-* **Cloud Database:** Migration from JSON to PostgreSQL/MongoDB.
-
----
-
-**Infomatrix Note**
-
-This Beta version demonstrates a fully functional **Full-Stack Application** with implemented logic for **Intelligent Decision Support**. It moves beyond a simple directory by analyzing user data to provide context-aware results.

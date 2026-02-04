@@ -9,7 +9,7 @@ from pathlib import Path
 app = FastAPI(title="UniSearch AI API", version="2.0.0")
 FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",
-    "http://127.0.0.1:5500"  # локально
+    "http://127.0.0.1:5501"  # локально
 )
 
 app.add_middleware(
@@ -157,7 +157,7 @@ def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
 
 @app.get("/")
 def root():
-    return {"status": "ok", "service": "uniesearch-backend-ai", "version": "1.0"}
+    return {"status": "ok", "service": "uniesearch-backend-ai", "version": "2.0"}
 
 def _to_decimal(x: Any) -> Decimal:
     return Decimal(str(x).strip())
@@ -215,6 +215,72 @@ def validate_exam_value(exam_key: str, score_raw: Any) -> Union[int, float]:
 
     return float(dv)
 
+def _build_languages_index(cfg: Dict[str, Any]) -> Dict[str, Any]:
+    # languages: [{code,name,...}]
+    langs_list = cfg.get("languages", [])
+    codes = set()
+    for l in langs_list:
+        c = str(l.get("code", "")).strip().lower()
+        if c:
+            codes.add(c)
+
+    # cefr: [{id, code, label}]
+    cefr_list = cfg.get("cefr", [])
+    cefr_map = {}
+    for c in cefr_list:
+        label = str(c.get("code", "")).strip().upper()  # A1..C2
+        cid = c.get("id", None)
+        if label and cid is not None:
+            try:
+                cefr_map[label] = int(cid)
+            except Exception:
+                pass
+
+    # language_exams: { "en": [ {id,label,min,max,type,step,...}, ... ], ... }
+    exams_by_lang = cfg.get("language_exams", {})
+    if not isinstance(exams_by_lang, dict):
+        exams_by_lang = {}
+
+    return {
+        "codes": codes,
+        "cefr_map": cefr_map,
+        "exams_by_lang": exams_by_lang
+    }
+
+def validate_language_exam_from_cfg(lang_cfg: Dict[str, Any], score_raw: Any) -> Union[int, float]:
+    """
+    Валидирует score по описанию экзамена в languages.json:
+    - min/max
+    - step
+    - type: int/float
+    - decimals_allowed (если задано)
+    """
+    t = str(lang_cfg.get("type", "float")).lower()
+
+    dv = _to_decimal(score_raw)
+    mn = _to_decimal(lang_cfg.get("min", 0))
+    mx = _to_decimal(lang_cfg.get("max", 0))
+
+    if dv < mn or dv > mx:
+        raise ValueError(f"Score must be between {mn} and {mx}")
+
+    step = lang_cfg.get("step", None)
+    if step is not None:
+        st = _to_decimal(step)
+        q = (dv - mn) / st
+        if q != q.to_integral_value():
+            raise ValueError(f"Score must follow step={st}")
+
+    # decimals_allowed: например IELTS .0/.5
+    if "decimals_allowed" in lang_cfg:
+        allowed = set(int(x) for x in (lang_cfg.get("decimals_allowed") or []))
+        tenth = int((dv * 10) % 10)
+        if tenth not in allowed:
+            raise ValueError("Decimals not allowed for this exam")
+
+    if t == "int":
+        return int(dv)
+    return float(dv)
 
 @app.post("/exams/validate")
 def validate_exam(payload: Dict[str, Any]):
@@ -367,8 +433,8 @@ def get_locations():
 
 @app.get("/exams/config")
 def get_exam_config():
-    """Отдает список разрешенных экзаменов и их диапазоны (min, max)"""
-    return EXAM_WHITELIST
+    """Отдает полный конфиг экзаменов (min/max/type/step/notes)."""
+    return EXAMS_CONFIG
 
 @app.get("/exams/config/full")
 def get_exam_config_full():
@@ -400,38 +466,41 @@ def get_languages_config():
 
 @app.post("/languages/validate")
 def validate_language(payload: Dict[str, Any]):
-    cfg = LANGUAGES_CONFIG or {}
-    langs = cfg.get("languages", {})
-    cefr_map = cfg.get("cefr_map", {})
+    # ВСЕГДА читаем актуальный languages.json (а не LANGUAGES_CONFIG, который грузится один раз)
+    cfg = load_languages() or {}
+    idx = _build_languages_index(cfg)
 
     code = str(payload.get("code", "")).strip().lower()
     kind = str(payload.get("kind", "")).strip().lower()
 
-    if not code or code not in langs:
+    if not code or code not in idx["codes"]:
         raise HTTPException(status_code=400, detail="Unknown language code")
+
+    # поддерживаем только то, что реально используешь
     if kind not in ("native", "cefr", "exam"):
         raise HTTPException(status_code=400, detail="kind must be native/cefr/exam")
 
-    supports = set(langs[code].get("supports", []))
-    if kind not in supports:
-        raise HTTPException(status_code=400, detail=f"{code} does not support kind={kind}")
-
-    # native: ничего больше не нужно
+    # native — всегда можно
     if kind == "native":
         return {"ok": True, "language": {"code": code, "kind": "native"}}
 
-    # cefr: можно принять либо level (1..6), либо label (A1..C2)
+    # cefr
     if kind == "cefr":
         level = payload.get("level", None)
         label = str(payload.get("label", "")).strip().upper()
 
-        if level is None and label:
-            if label not in cefr_map:
+        if (level is None or str(level).strip() == "") and label:
+            if label not in idx["cefr_map"]:
                 raise HTTPException(status_code=400, detail="Invalid CEFR label")
-            level = cefr_map[label]
+            level = idx["cefr_map"][label]
+
+        # ✅ вот тут фикс для Pylance + защита от None/""
+        level_str = str(level).strip()
+        if level_str == "":
+            raise HTTPException(status_code=400, detail="CEFR level is required (1..6)")
 
         try:
-            level_i = int(level)
+            level_i = int(level_str)
         except Exception:
             raise HTTPException(status_code=400, detail="CEFR level must be integer 1..6")
 
@@ -439,29 +508,36 @@ def validate_language(payload: Dict[str, Any]):
             raise HTTPException(status_code=400, detail="CEFR level must be 1..6")
 
         return {"ok": True, "language": {"code": code, "kind": "cefr", "level": level_i}}
+    # exam — разрешаем только если у языка реально есть экзамены в languages.json
+    exams = idx["exams_by_lang"].get(code, [])
+    if not isinstance(exams, list) or len(exams) == 0:
+        raise HTTPException(status_code=400, detail=f"{code} does not support kind=exam")
 
-    # exam: экзамен должен быть разрешён для этого языка + валиден в EXAM_WHITELIST
-    if kind == "exam":
-        exam = str(payload.get("exam", "")).strip().upper()
-        score_raw = payload.get("score", None)
+    exam_id = str(payload.get("exam", "")).strip()
+    score_raw = payload.get("score", None)
 
-        allowed = set(langs[code].get("allowed_exams", []))
-        if exam not in allowed:
-            raise HTTPException(status_code=400, detail=f"Exam {exam} is not allowed for language {code}")
+    if not exam_id:
+        raise HTTPException(status_code=400, detail="Exam id is required")
+    if score_raw is None or score_raw == "":
+        raise HTTPException(status_code=400, detail="Score is required")
 
-        if exam not in EXAM_WHITELIST:
-            raise HTTPException(status_code=400, detail=f"Unknown exam: {exam}")
+    # ищем экзамен по id (как в languages.json)
+    ex = None
+    for e in exams:
+        if str(e.get("id", "")).strip() == exam_id:
+            ex = e
+            break
+    if ex is None:
+        raise HTTPException(status_code=400, detail=f"Exam {exam_id} is not allowed for language {code}")
 
-        try:
-            score = float(score_raw)
-        except Exception:
-            raise HTTPException(status_code=400, detail="score must be a number")
+    try:
+        score = validate_language_exam_from_cfg(ex, score_raw)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid score format")
 
-        mn, mx = EXAM_WHITELIST[exam]
-        if score < mn or score > mx:
-            raise HTTPException(status_code=400, detail=f"score must be between {mn} and {mx}")
-
-        return {"ok": True, "language": {"code": code, "kind": "exam", "exam": exam, "score": score}}
+    return {"ok": True, "language": {"code": code, "kind": "exam", "exam": exam_id, "score": score}}
 
 if __name__ == "__main__":
     import uvicorn

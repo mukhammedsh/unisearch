@@ -1,69 +1,65 @@
 {
-  "version": 2,
-  "notes": "Non-language academic/entrance exams only. Language-related certificates are in languages.json -> language_exams.",
-  "exams": {
-    "SAT": {
-      "min": 400,
-      "max": 1600,
-      "type": "int",
-      "step": 10,
-      "notes": "Total score (EBRW+Math)."
-    },
-    "ACT": {
-      "min": 1,
-      "max": 36,
-      "type": "int",
-      "step": 1
-    },
-    "GPA": {
-      "min": 0,
-      "max": 100,
-      "type": "int",
-      "step": 1,
-      "unit": "%",
-      "notes": "Percent GPA (0–100)."
-    },
-    "UNT": {
-      "min": 0,
-      "max": 140,
-      "type": "int",
-      "step": 1,
-      "notes": "Kazakhstan Unified National Testing."
-    },
-    "NUET_Total": {
-      "min": 0,
-      "max": 240,
-      "type": "int",
-      "step": 1,
-      "notes": "Nazarbayev University Entrance Test (total)."
-    },
-    "AP_Total": {
-      "min": 0,
-      "max": 25,
-      "type": "int",
-      "step": 1,
-      "notes": "Sum of up to 5 AP exams (each 1–5)."
-    },
-    "AP_Score": {
-      "min": 1,
-      "max": 5,
-      "type": "int",
-      "step": 1,
-      "notes": "Single AP subject score."
-    },
-    "IB_Diploma": {
-      "min": 24,
-      "max": 45,
-      "type": "int",
-      "step": 1,
-      "notes": "IB Diploma Programme total."
-    },
-    "IB_Course": {
-      "min": 1,
-      "max": 7,
-      "type": "int",
-      "step": 1,
-      "notes": "Single IB subject grade."
-    }
+  "SAT": {
+    "min": 400,
+    "max": 1600,
+    "type": "int",
+    "step": 10,
+    "notes": "Total score (EBRW+Math)."
+  },
+  "ACT": {
+    "min": 1,
+    "max": 36,
+    "type": "int",
+    "step": 1
+  },
+  "GPA": {
+    "min": 0,
+    "max": 100,
+    "type": "int",
+    "step": 1,
+    "unit": "%",
+    "notes": "Percent GPA (0–100)."
+  },
+  "UNT": {
+    "min": 0,
+    "max": 140,
+    "type": "int",
+    "step": 1,
+    "notes": "Kazakhstan Unified National Testing."
+  },
+  "NUET_Total": {
+    "min": 0,
+    "max": 240,
+    "type": "int",
+    "step": 1,
+    "notes": "Nazarbayev University Entrance Test (total)."
+  },
+  "AP_Total": {
+    "min": 0,
+    "max": 25,
+    "type": "int",
+    "step": 1,
+    "notes": "Sum of up to 5 AP exams (each 1–5)."
+  },
+  "AP_Score": {
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Single AP subject score."
+  },
+  "IB_Diploma": {
+    "min": 24,
+    "max": 45,
+    "type": "int",
+    "step": 1,
+    "notes": "IB Diploma Programme total."
+  },
+  "IB_Course": {
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "Single IB subject grade."
   }
 }
