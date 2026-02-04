@@ -10,6 +10,76 @@ It is designed to reduce the need for expensive admission consulting by making r
 
 ---
 
+## UniFit AI engine (important for judges)
+
+UniFit is the core decision engine of UniSearch.  
+It is not a simple sort-by-rank script. It is a multi-factor recommendation algorithm that evaluates each university against a real applicant profile.
+
+### Inputs UniFit uses
+- User profile:
+  - academic exams (`SAT`, `ACT`, `GPA`, `UNT`, etc.)
+  - language evidence (native / CEFR / language exam)
+  - annual budget
+  - user preference slider (**budget <-> prestige**)
+- University data:
+  - global rank, acceptance rate, tuition
+  - admission tracks
+  - track requirements + typical admitted scores
+  - language requirements (mode `all` / `any`)
+  - scholarships / aid
+
+### UniFit logic pipeline
+1. **Track-level evaluation**  
+   For each university, UniFit evaluates every admission track separately.
+
+2. **Requirement scoring (not binary only)**  
+   For each required metric, UniFit compares user score vs:
+   - minimum required score,
+   - typical admitted score (`stats_avg`).
+   This gives a graded fit score, not just pass/fail.
+
+3. **Language requirement reasoning**  
+   UniFit checks language requirements independently from academic scores:
+   - supports `native`, `CEFR`, and exam evidence,
+   - supports mode `all` (all language conditions) and `any` (one is enough),
+   - supports exam direction where needed (for inverse scales like JLPT levels).
+
+4. **Admission feasibility gate**  
+   UniFit computes admission feasibility using requirement fit + acceptance context.  
+   High prestige cannot fully dominate if the applicant is very unlikely to pass requirements.
+
+5. **Affordability and aid modeling**  
+   UniFit evaluates affordability against budget and adjusts score with scholarship/aid signals:
+   - over-budget tracks are penalized,
+   - aid-eligible tracks get reduced/removed budget penalty.
+
+6. **Preference mixing (slider)**  
+   Final score combines prestige and affordability according to user-selected priority.
+
+7. **Best-track selection**  
+   For each university, UniFit keeps the highest-scoring track and sorts universities by final score.
+
+### Why this is AI-oriented (Infomatrix AI-programming relevance)
+- Uses algorithmic multi-objective optimization (prestige, cost, feasibility).
+- Uses structured knowledge representation (tracks, exams, language rules, scholarships).
+- Uses profile personalization (same university ranks differently for different users).
+- Uses explainable outputs (badges, track labels, min vs typical scores, language rule display).
+
+---
+
+## Social impact (Infomatrix mission fit)
+
+UniSearch addresses inequality in admissions guidance:
+- **Access**: gives free, understandable recommendations without paid consultants.
+- **Transparency**: shows why a university is recommended (requirements, cost, language fit, aid).
+- **Financial awareness**: highlights affordability and scholarships early, reducing risky choices.
+- **Inclusion**: supports non-English tracks and multiple proof formats (native, CEFR, exams).
+- **Decision quality**: helps students choose realistic and high-opportunity paths based on data.
+
+In short, UniFit converts complex admission data into actionable, explainable guidance for students from different economic backgrounds.
+
+---
+
 ## Quick start for non-technical users
 
 If you are just using UniSearch (not developing it), this is the fastest flow:
