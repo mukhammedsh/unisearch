@@ -17,4 +17,6 @@ window.AI_FUNCTIONS = {
 window.UNIMENTOR_CONFIG = {
   enabled: true,
   online: true,
+  // Default UI mode: auto | gemini | fallback | local
+  mode: "auto",
 };

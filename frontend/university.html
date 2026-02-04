@@ -122,6 +122,18 @@
                 <div id="mentorDisabledNote" class="mentor-disabled" style="display:none;">
                   <strong data-ai-name="mentor">UniMentor</strong> is disabled in config.
                 </div>
+                <div class="mentor-toolbar">
+                  <div id="mentorModeBadge" class="mentor-mode-badge">Mode: Auto</div>
+                  <label class="mentor-mode-label">
+                    Model:
+                    <select id="mentorModeSelect" class="profile-input mentor-mode-select">
+                      <option value="auto">Auto</option>
+                      <option value="gemini">Gemini</option>
+                      <option value="fallback">Fallback model</option>
+                      <option value="local">Local fallback</option>
+                    </select>
+                  </label>
+                </div>
                 <div id="mentorMessages" class="mentor-messages"></div>
                 <div class="mentor-input-row">
                   <input id="mentorInput" type="text" class="profile-input" placeholder="Ask about admission, scholarships, housing, deadlines..." />

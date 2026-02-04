@@ -122,6 +122,10 @@ UniMentor is a chatbot assistant focused on university questions.
 UniMentor supports 2 modes:
 1. **Local free mode** (default):
    - Database retrieval + rule-based reasoning from `universities.json`
+   - Profile-aware fallback analysis (best track, missing requirements, language and budget checks)
+   - Quick follow-up options in chat (one-click suggested questions)
+   - Improvement roadmap mode (prioritized steps to increase admission chance)
+   - Track comparison mode (top tracks + blockers)
    - Optional free web enrichment (Wikipedia REST + DuckDuckGo Instant Answer)
 2. **Gemini mode** (smarter LLM):
    - Uses Google Gemini API (recommended model: `gemini-2.0-flash`)
@@ -137,6 +141,7 @@ Notes:
 Frontend (`frontend/config.js`):
 - `window.UNIMENTOR_CONFIG.enabled = true`
 - `window.UNIMENTOR_CONFIG.online = true` (optional web context)
+- `window.UNIMENTOR_CONFIG.mode = "auto"` (default mode in UI: `auto | gemini | fallback | local`)
 
 Backend environment:
 - `UNIMENTOR_ENABLE_ONLINE=1` to allow online enrichment
@@ -145,7 +150,14 @@ Backend environment:
 - `UNIMENTOR_PROVIDER=local` (default) or `UNIMENTOR_PROVIDER=gemini`
 - `GEMINI_API_KEY=...` (required for Gemini mode)
 - optional: `UNIMENTOR_GEMINI_MODEL=gemini-2.0-flash`
+- optional: `UNIMENTOR_GEMINI_FALLBACK_MODEL=gemini-2.0-flash-lite` (used automatically on quota 429)
 - optional: `UNIMENTOR_GEMINI_ENABLE_WEB=1` (Google Search grounding)
+
+Troubleshooting:
+- After changing `backend/.env`, restart backend server (`uvicorn`).
+- `provider` in `/mentor/ask` response shows which mode actually answered (`gemini` or `local`).
+- If `provider_requested` starts with `gemini` but `provider=local`, check `warning` (most common: invalid key, quota, blocked network).
+- In University → UniMentor tab, users can choose model mode and see current active mode badge (`Now: Gemini(...)` or `Now: Local fallback model`).
 
 ### Endpoint
 - `POST /mentor/ask`
@@ -351,6 +363,7 @@ set UNIMENTOR_NAME=UniMentor
 set UNIMENTOR_PROVIDER=gemini
 set GEMINI_API_KEY=your_api_key_here
 set UNIMENTOR_GEMINI_MODEL=gemini-2.0-flash
+set UNIMENTOR_GEMINI_FALLBACK_MODEL=gemini-2.0-flash-lite
 set UNIMENTOR_GEMINI_ENABLE_WEB=1
 ```
 

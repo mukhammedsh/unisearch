@@ -365,6 +365,40 @@
   font-size: 13px;
 }
 
+.mentor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mentor-mode-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.mentor-mode-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.mentor-mode-select {
+  min-width: 170px;
+  height: 34px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
 .mentor-messages {
   border: 1px solid #e2e8f0;
   background: #fff;
@@ -418,6 +452,28 @@
   color: #1d4ed8;
 }
 
+.mentor-options {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mentor-option-btn {
+  border: 1px solid #bfdbfe;
+  background: #f8fbff;
+  color: #1d4ed8;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.mentor-option-btn:hover {
+  background: #eff6ff;
+}
+
 .mentor-input-row {
   margin-top: 10px;
   display: grid;
@@ -426,6 +482,17 @@
 }
 
 @media (max-width: 680px) {
+  .mentor-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mentor-mode-label {
+    justify-content: space-between;
+  }
+  .mentor-mode-select {
+    min-width: 0;
+    flex: 1;
+  }
   .mentor-input-row {
     grid-template-columns: 1fr;
   }
