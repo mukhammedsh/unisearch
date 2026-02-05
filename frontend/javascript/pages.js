@@ -493,6 +493,11 @@ export function initUniversitiesPage() {
                 `<span class="uni-pill uni-pill--warn">⚠️ Below Requirements</span>`
             );
         }
+        if (match.missingRequiredEvidence) {
+            badges.push(
+                `<span class="uni-pill uni-pill--warn">⚠️ Not enough information for algorithms to work</span>`
+            );
+        }
 
 
         // Grant/Aid badges
@@ -1212,6 +1217,8 @@ export async function initRankingPage() {
 export function initGuidePage() {
     const page = document.getElementById("guidePage");
     if (!page) return;
+    const navLinks = Array.from(page.querySelectorAll(".guide-nav a[href^='#guide-']"));
+    const sections = Array.from(page.querySelectorAll(".guide-section[id]"));
 
     const academicWrap = document.getElementById("guideAcademicExams");
     const languageWrap = document.getElementById("guideLanguageExams");
@@ -1234,22 +1241,78 @@ export function initGuidePage() {
         { term: "Match Score", desc: `Internal ${fitName} ranking score; higher means a better fit for your profile.` },
     ];
 
-    function typeLabel(t) {
-        const x = String(t || "").toLowerCase();
-        if (x === "int") return "Integer";
-        if (x === "float") return "Decimal";
-        if (x === "bool") return "Boolean";
-        return x || "Number";
+    const normalizeExamId = (value) => String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const scoreScaleText = (cfg) => {
+        const min = Number(cfg?.min);
+        const max = Number(cfg?.max);
+        if (!Number.isFinite(min) || !Number.isFinite(max)) return "";
+        if (min === max) return "";
+        return `In UniSearch, this score is entered on a ${min}-${max} scale.`;
+    };
+
+    const academicExamDescriptions = {
+        SAT: "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics.",
+        ACT: "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.",
+        GPA: "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency.",
+        UNT: "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways.",
+        NUETTOTAL: "This is a combined entrance test score used in specific institutional admission routes.",
+        APTOTAL: "AP Total reflects combined performance across multiple Advanced Placement subjects.",
+        APSCORE: "AP Score is a subject-level Advanced Placement result used to show advanced coursework strength.",
+        IBDIPLOMA: "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.",
+        IBCOURSE: "IB Course score is an individual IB subject grade used for subject-level requirement checks.",
+    };
+
+    function describeAcademicExam(id, cfg) {
+        const normalized = normalizeExamId(id);
+        const base = academicExamDescriptions[normalized]
+            || "This is an academic metric used by one or more admission tracks in the UniSearch dataset.";
+        const scale = scoreScaleText(cfg);
+        return `${base}${scale ? ` ${scale}` : ""}`.trim();
+    }
+
+    function describeLanguageExam(examId, langCode, cfg, labelText = "") {
+        const exam = String(examId || "").toUpperCase();
+        const label = String(labelText || "").toUpperCase();
+        const key = `${exam} ${label}`;
+
+        let base = "This language proficiency exam is used to verify readiness for study in the program language.";
+        if (key.includes("IELTS")) {
+            base = "IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.";
+        } else if (key.includes("TOEFL")) {
+            base = "TOEFL measures academic English proficiency and is commonly accepted for university admissions.";
+        } else if (key.includes("DUOLINGO") || key.includes("DET")) {
+            base = "Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.";
+        } else if (key.includes("PTE")) {
+            base = "PTE Academic is a computer-based English proficiency test used in international admissions.";
+        } else if (key.includes("CAMBRIDGE")) {
+            base = "Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.";
+        } else if (key.includes("TESTDAF") || key.includes("DSH")) {
+            base = "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study tracks.";
+        } else if (key.includes("DELF") || key.includes("DALF") || key.includes("TCF") || key.includes("TEF")) {
+            base = "These exams assess French proficiency and are used for French-language academic eligibility.";
+        } else if (key.includes("NT2")) {
+            base = "NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.";
+        } else if (key.includes("HSK")) {
+            base = "HSK measures Chinese language proficiency for academic and formal language use.";
+        } else if (key.includes("JLPT")) {
+            base = "JLPT measures Japanese language proficiency across standard difficulty levels.";
+        } else if (key.includes("TOPIK")) {
+            base = "TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.";
+        } else if (langCode) {
+            base = `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission tracks.`;
+        }
+
+        const scale = scoreScaleText(cfg);
+        return `${base}${scale ? ` ${scale}` : ""}`.trim();
     }
 
     function renderGlossary() {
         if (!glossaryWrap) return;
-        glossaryWrap.innerHTML = gloss.map((g) => `
-            <div class="guide-card">
-                <h4>${escapeHtml(g.term)}</h4>
-                <p>${escapeHtml(g.desc)}</p>
-            </div>
-        `).join("");
+        const lines = gloss.map((g) => `<li><strong>${escapeHtml(g.term)}:</strong> ${escapeHtml(g.desc)}</li>`).join("");
+        glossaryWrap.innerHTML = `
+            <p>This glossary defines the exact terms used throughout UniSearch so users can interpret ranking and probability outputs consistently.</p>
+            <ul class="guide-list">${lines}</ul>
+        `;
     }
 
     function renderAcademicExams() {
@@ -1271,14 +1334,13 @@ export function initGuidePage() {
             return;
         }
 
-        academicWrap.innerHTML = exams.map(([id, cfg]) => `
-            <div class="guide-card">
-                <h4>${escapeHtml(getExamDisplayName(id))}</h4>
-                <p><strong>Type:</strong> ${escapeHtml(typeLabel(cfg?.type))}</p>
-                <p><strong>Range:</strong> ${escapeHtml(String(cfg?.min ?? "—"))} - ${escapeHtml(String(cfg?.max ?? "—"))}</p>
-                <p><strong>Step:</strong> ${escapeHtml(String(cfg?.step ?? "—"))}</p>
-            </div>
-        `).join("");
+        const items = exams.map(([id, cfg]) =>
+            `<li><strong>${escapeHtml(getExamDisplayName(id))}.</strong> ${escapeHtml(describeAcademicExam(id, cfg))}</li>`
+        ).join("");
+        academicWrap.innerHTML = `
+            <p>The following academic exams are currently used by UniSearch for admission track matching and recommendation quality.</p>
+            <ul class="guide-list">${items}</ul>
+        `;
     }
 
     function renderLanguageExams() {
@@ -1301,16 +1363,11 @@ export function initGuidePage() {
             return `
                 <section class="guide-subsection">
                     <h4>${escapeHtml(title)} (${escapeHtml(code.toUpperCase())})</h4>
-                    <div class="guide-grid">
+                    <ul class="guide-list">
                         ${arr.map((ex) => `
-                            <div class="guide-card">
-                                <h5>${escapeHtml(ex?.label || getExamDisplayName(ex?.id, { langCode: code }))}</h5>
-                                <p><strong>Type:</strong> ${escapeHtml(typeLabel(ex?.type))}</p>
-                                <p><strong>Range:</strong> ${escapeHtml(String(ex?.min ?? "—"))} - ${escapeHtml(String(ex?.max ?? "—"))}</p>
-                                <p><strong>Step:</strong> ${escapeHtml(String(ex?.step ?? "—"))}</p>
-                            </div>
+                            <li><strong>${escapeHtml(ex?.label || getExamDisplayName(ex?.id, { langCode: code }))}.</strong> ${escapeHtml(describeLanguageExam(ex?.id, code, ex, ex?.label || ""))}</li>
                         `).join("")}
-                    </div>
+                    </ul>
                 </section>
             `;
         }).join("");
@@ -1322,7 +1379,41 @@ export function initGuidePage() {
         renderLanguageExams();
     }
 
+    const sectionById = new Map(sections.map((sec) => [sec.id, sec]));
+    const activateSection = (id, updateHash = false) => {
+        const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
+        if (!nextId) return;
+
+        sections.forEach((sec) => {
+            const active = sec.id === nextId;
+            sec.classList.toggle("is-active", active);
+            sec.setAttribute("aria-hidden", active ? "false" : "true");
+        });
+
+        navLinks.forEach((link) => {
+            const active = link.getAttribute("href") === `#${nextId}`;
+            link.classList.toggle("is-active", active);
+            link.setAttribute("aria-current", active ? "page" : "false");
+        });
+
+        if (updateHash) {
+            history.replaceState(null, "", `#${nextId}`);
+        }
+    };
+
+    navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            activateSection((link.getAttribute("href") || "").replace("#", ""), true);
+        });
+    });
+
+    window.addEventListener("hashchange", () => {
+        activateSection(String(window.location.hash || "").replace("#", ""), false);
+    });
+
     renderAll();
+    activateSection(String(window.location.hash || "").replace("#", ""), false);
     window.addEventListener("examConfigLoaded", renderAll);
     window.addEventListener("languageConfigLoaded", renderAll);
 }

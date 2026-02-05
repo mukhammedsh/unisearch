@@ -12,14 +12,6 @@
     "type": "int",
     "step": 1
   },
-  "GPA": {
-    "min": 0,
-    "max": 100,
-    "type": "int",
-    "step": 1,
-    "unit": "%",
-    "notes": "Percent GPA (0–100)."
-  },
   "UNT": {
     "min": 0,
     "max": 140,

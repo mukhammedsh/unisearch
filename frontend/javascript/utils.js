@@ -44,7 +44,7 @@ function _systemTheme() {
 }
 
 export function getCurrentTheme() {
-  const attr = String(document.documentElement.getAttribute("data-theme") || "").toLowerCase();
+  const attr = String(document.documentElement.getAttribute("data-theme") || "").trim().toLowerCase();
   if (attr === THEME_DARK) return THEME_DARK;
   if (attr === THEME_LIGHT) return THEME_LIGHT;
   return _systemTheme();
@@ -122,6 +122,7 @@ const PROFILE_STORAGE_KEY = "unisearch_profile";
 const PROFILE_DEFAULTS = { 
     name: "User", 
     budget: "", 
+    gpa: "",
     exams: [], 
     languages: [],   // ✅ новое поле
     major: "", 
@@ -601,6 +602,12 @@ function clampWithCfg(score, cfg) {
 
 function normalizeProfile(p) {
   const out = { ...PROFILE_DEFAULTS, ...(p || {}) };
+  const gpaCfg = EXAM_CONFIG?.GPA || EXAM_CONFIG?.gpa || { min: 0, max: 100, step: 1 };
+  const clampGpa = (v) => {
+    const normalized = clampWithCfg(v, gpaCfg);
+    return Number.isFinite(normalized) ? normalized : null;
+  };
+  let normalizedGpa = clampGpa(out.gpa);
 
   // --- Academic exams: profile.exams = [{id:"SAT", score:1500}, ...]
   if (!Array.isArray(out.exams)) out.exams = [];
@@ -615,6 +622,10 @@ function normalizeProfile(p) {
         EXAM_CONFIG?.[id.toUpperCase()] ||
         null;
       const normalizedId = EXAM_CONFIG?.[id] ? id : (EXAM_CONFIG?.[id.toUpperCase()] ? id.toUpperCase() : id);
+      if (String(normalizedId).toUpperCase() === "GPA") {
+        if (normalizedGpa === null) normalizedGpa = clampGpa(it?.score);
+        return null;
+      }
       if (!cfg) return { ...it, id: normalizedId, exam: normalizedId }; // если нет конфига — не трогаем
 
       const clamped = clampWithCfg(it?.score, cfg);
@@ -662,5 +673,6 @@ function normalizeProfile(p) {
     })
     .filter(Boolean);
 
+  out.gpa = (normalizedGpa === null) ? "" : normalizedGpa;
   return out;
 }

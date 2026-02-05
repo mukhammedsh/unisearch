@@ -47,6 +47,19 @@
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.guide-nav a:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+}
+
+.guide-nav a.is-active{
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
 }
 
 .guide-section{
@@ -55,11 +68,43 @@
   border-radius: 16px;
   border: 1px solid rgba(0,0,0,0.08);
   background: #fff;
+  display: none;
+  overflow: hidden;
+}
+
+.guide-section.is-active{
+  display: block;
+  animation: guide-section-in 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes guide-section-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .guide-section h2{
   margin: 0 0 10px;
   font-size: 22px;
+}
+
+.guide-doc{
+  font-size: 15px;
+  line-height: 1.75;
+  color: #334155;
+}
+
+.guide-doc p{
+  margin: 0 0 14px;
+}
+
+.guide-doc p:last-child{
+  margin-bottom: 0;
 }
 
 .guide-grid{
@@ -142,6 +187,7 @@
 
 :root[data-theme="dark"] .guide-hero p,
 :root[data-theme="dark"] .guide-muted,
+:root[data-theme="dark"] .guide-doc,
 :root[data-theme="dark"] .guide-list,
 :root[data-theme="dark"] .guide-card p {
   color: var(--text-muted);
@@ -151,6 +197,20 @@
   color: var(--accent);
   background: #101624;
   border-color: var(--line);
+}
+
+:root[data-theme="dark"] .guide-nav a.is-active {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .guide-nav a,
+  .guide-section{
+    transition: none;
+    animation: none;
+  }
 }
 
 :root[data-theme="dark"] .guide-section,

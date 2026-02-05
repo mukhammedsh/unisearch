@@ -24,6 +24,7 @@ const FALLBACK_LANG_EXAMS = {
   Cambridge_C1_Advanced: { min: 160, max: 210, step: 1 },
   Cambridge: { min: 80, max: 230, step: 1 },
 };
+const GPA_FALLBACK = { min: 0, max: 100, step: 1 };
 
 function normalizeLangCode(code) {
   const raw = String(code || "").trim().toLowerCase();
@@ -68,6 +69,7 @@ function isLanguageExamKey(key) {
 function getExamLimits(examKey) {
   if (!examKey) return null;
   const k = String(examKey).trim();
+  if (k.toUpperCase() === "GPA") return GPA_FALLBACK;
 
   const examCfg = EXAM_CONFIG && EXAM_CONFIG[k] ? EXAM_CONFIG[k] : null;
   if (examCfg) return examCfg;
@@ -120,6 +122,8 @@ function clampToLimits(examKey, score) {
 
 function buildUserScores(profile) {
   const scores = {};
+  const gpa = clampToLimits("GPA", profile?.gpa);
+  if (gpa !== null) scores.GPA = gpa;
 
   // Academic exams: profile.exams[] can be {id, score} or {exam, score}
   for (const it of (profile?.exams || [])) {
@@ -365,7 +369,7 @@ function pickBestLanguageEvidence(langReq, userLangState, userLanguages) {
   const code = normalizeLangCode(langReq?.code);
 
   if (acceptNative && userLangState?.native) {
-    return { score: 1, hardPass: true, gap: 0 };
+    return { score: 1, hardPass: true, gap: 0, missingEvidence: false };
   }
 
   const candidates = [];
@@ -394,8 +398,8 @@ function pickBestLanguageEvidence(langReq, userLangState, userLanguages) {
 
   if (!candidates.length) {
     const hasThresholds = (minCefr !== null) || Object.keys(examReq).length > 0;
-    if (hasThresholds) return { score: 0.15, hardPass: false, gap: 1 };
-    return { score: 0.55, hardPass: true, gap: 0 };
+    if (hasThresholds) return { score: 0.15, hardPass: false, gap: 1, missingEvidence: true };
+    return { score: 0.55, hardPass: true, gap: 0, missingEvidence: false };
   }
 
   const bestScore = candidates.reduce((m, x) => Math.max(m, x.score ?? 0), 0);
@@ -406,6 +410,7 @@ function pickBestLanguageEvidence(langReq, userLangState, userLanguages) {
     score: clamp01(0.72 * bestScore + 0.28 * avgScore),
     hardPass,
     gap: hardPass ? 0 : minGap,
+    missingEvidence: false,
   };
 }
 
@@ -420,19 +425,21 @@ function analyzeTrack(track, userScores, userLanguages) {
   const keys = Object.keys(req || {});
   if (!keys.length && !langReqs.length) {
     // no requirements => treat as passable
-    return { fit: 0.70, hardPassAll: true, worstGap: 0 };
+    return { fit: 0.70, hardPassAll: true, worstGap: 0, missingRequiredEvidence: false };
   }
 
   let wSum = 0;
   let sSum = 0;
   let hardPassAll = true;
   let worstGap = 0;
+  let missingRequiredEvidence = false;
 
   for (const [k, minVal] of Object.entries(req)) {
     if (hasStructuredLangReq && isLanguageExamKey(k)) continue;
 
     const w = examWeight(k);
     const user = getUserScore(userScores, k, userLanguages);
+    if (user === null || user === undefined) missingRequiredEvidence = true;
     const avgVal = Object.prototype.hasOwnProperty.call(avg, k) ? avg[k] : null;
 
     const r = scoreRequirement(user, minVal, avgVal);
@@ -466,6 +473,7 @@ function analyzeTrack(track, userScores, userLanguages) {
         const w = 1.2;
         sSum += best.score * w;
         wSum += w;
+        if (best.missingEvidence) missingRequiredEvidence = true;
         if (!best.hardPass) {
           hardPassAll = false;
           worstGap = Math.max(worstGap, best.gap ?? 0);
@@ -482,6 +490,7 @@ function analyzeTrack(track, userScores, userLanguages) {
 
         sSum += r.score * w;
         wSum += w;
+        if (r.missingEvidence) missingRequiredEvidence = true;
 
         if (!r.hardPass) {
           hardPassAll = false;
@@ -492,7 +501,7 @@ function analyzeTrack(track, userScores, userLanguages) {
   }
 
   const fit = wSum > 0 ? (sSum / wSum) : 0.55;
-  return { fit: clamp01(fit), hardPassAll, worstGap };
+  return { fit: clamp01(fit), hardPassAll, worstGap, missingRequiredEvidence };
 }
 
 function analyzeScholarships(track, userScores, userLanguages) {
@@ -711,6 +720,7 @@ function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rank
       // useful extras (можно показывать в detail/debug):
       admitChance: admit,
       meetMinRequirements: trInfo.hardPassAll,
+      missingRequiredEvidence: !!trInfo.missingRequiredEvidence,
       costYearUSD: cost,
       grantPotential,
       grantEligible: aidEligible,
@@ -720,7 +730,7 @@ function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rank
     if (!best || candidate.score > best.score) best = candidate;
   }
 
-  return best || { score: 0, matchData: { finalPrice: 0, aidAny: false, aidEligible: false, grantName: "", trackLabel: "Standard" } };
+  return best || { score: 0, matchData: { finalPrice: 0, aidAny: false, aidEligible: false, grantName: "", trackLabel: "Standard", missingRequiredEvidence: false } };
 }
 
 export function getUniSort(items, aiBalance = 50) {

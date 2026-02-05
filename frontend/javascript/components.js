@@ -12,15 +12,48 @@ import {
   getCurrentTheme,
 } from "./utils.js";
 
+function syncNavbarLogo(themeOverride = "") {
+    const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
+    if (!navbarLogo) return;
+    const theme = (themeOverride || getCurrentTheme() || "light").toLowerCase();
+    const nextLogo = theme === "dark" ? "images/darklogo.png" : "images/whitelogo.png";
+    if (!nextLogo) return;
+    if (navbarLogo.getAttribute("src") !== nextLogo) {
+        navbarLogo.dataset.fallback = "0";
+        navbarLogo.setAttribute("src", nextLogo);
+    }
+}
+
+let __themeUiSyncBound = false;
+function bindThemeUiSync() {
+    if (__themeUiSyncBound) return;
+    __themeUiSyncBound = true;
+
+    const syncNow = () => syncNavbarLogo();
+
+    try {
+        const obs = new MutationObserver(() => syncNow());
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    } catch (e) {
+        // ignore
+    }
+
+    window.addEventListener("load", syncNow);
+    window.addEventListener("pageshow", syncNow);
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) syncNow();
+    });
+}
+
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
 const LAYOUT_HTML = `
 <header class="navbar">
   <div class="navbar-left">
     <a href="index.html" style="display: flex; align-items: center;">
       <img
-        src="images/darklogo.png"
-        data-logo-light="images/darklogo.png"
-        data-logo-dark="images/whitelogo.png"
+        src="images/whitelogo.png"
+        data-logo-light="images/whitelogo.png"
+        data-logo-dark="images/darklogo.png"
         onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='images/logo.jpeg';}"
         alt="Logo"
         class="logo"
@@ -94,6 +127,18 @@ const LAYOUT_HTML = `
       </div>
 
       <div class="profile-field">
+        <label class="profile-label">GPA (Percent)</label>
+        <div class="profile-budget">
+          <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" />
+          <button id="saveGpaBtn" class="icon-btn profile-save-btn" title="Save GPA">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
+          <span class="profile-unit">% (0 to 100)</span>
+        </div>
+        <div class="profile-hint">GPA is stored as percent and used in admission matching.</div>
+      </div>
+
+      <div class="profile-field">
         <label class="profile-label">Exams (list, optional)</label>
         
         <div class="profile-exam-form">
@@ -103,7 +148,6 @@ const LAYOUT_HTML = `
              <option value="TOEFL">TOEFL</option>
              <option value="SAT">SAT</option>
              <option value="ACT">ACT</option>
-             <option value="GPA">GPA</option>
           </select>
 
           <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
@@ -175,6 +219,8 @@ export async function loadGlobalLayout() {
         console.log("Injecting Layout HTML...");
         // Вставляем HTML из переменной
         document.body.insertAdjacentHTML('afterbegin', LAYOUT_HTML);
+        syncNavbarLogo();
+        bindThemeUiSync();
 
         // Подсветка активной ссылки в меню
         const currentPage = document.body.getAttribute('data-page');
@@ -216,9 +262,9 @@ function initProfileUI() {
     
     const nameInput = document.getElementById("profileNameInput");
     const budgetInput = document.getElementById("budgetInput");
+    const gpaInput = document.getElementById("gpaInput");
     const nameDisplay = document.getElementById("profileNameDisplay");
     const themeToggleBtn = document.getElementById("themeToggleBtn");
-    const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
     
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
@@ -229,6 +275,7 @@ function initProfileUI() {
 
     const editNameBtn = document.getElementById("editNameBtn");
     const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
+    const saveGpaBtn = document.getElementById("saveGpaBtn");
     const profileUsernameDiv = document.querySelector(".profile-username");
 
     const syncThemeButton = () => {
@@ -238,21 +285,22 @@ function initProfileUI() {
         themeToggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
         themeToggleBtn.title = `Switch to ${nextTheme} theme`;
         themeToggleBtn.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-
-        if (navbarLogo) {
-            const nextLogo = theme === "dark" ? navbarLogo.dataset.logoDark : navbarLogo.dataset.logoLight;
-            if (nextLogo && navbarLogo.getAttribute("src") !== nextLogo) {
-                navbarLogo.dataset.fallback = "0";
-                navbarLogo.setAttribute("src", nextLogo);
-            }
-        }
+        syncNavbarLogo(theme);
     };
     syncThemeButton();
     themeToggleBtn?.addEventListener("click", () => {
         toggleTheme();
         syncThemeButton();
     });
-    window.addEventListener("themeChanged", syncThemeButton);
+    window.addEventListener("themeChanged", (e) => {
+        const theme = e?.detail?.theme || "";
+        syncNavbarLogo(theme);
+        syncThemeButton();
+    });
+    window.addEventListener("pageshow", () => {
+        syncNavbarLogo();
+        syncThemeButton();
+    });
     
     let profile = loadProfile(); 
 
@@ -274,6 +322,7 @@ function initProfileUI() {
         examNameSelect.innerHTML = `<option value="" disabled selected>Select Exam</option>`;
         
         Object.keys(EXAM_CONFIG).forEach(examKey => {
+            if (String(examKey).toUpperCase() === "GPA") return;
             const opt = document.createElement("option");
             opt.value = examKey;
             opt.textContent = getExamDisplayName(examKey);
@@ -295,6 +344,7 @@ function initProfileUI() {
         if(nameInput) nameInput.value = profile.name;
         if(nameDisplay) nameDisplay.textContent = profile.name;
         if(budgetInput) budgetInput.value = profile.budget || "";
+        if(gpaInput) gpaInput.value = (profile.gpa === "" || profile.gpa === null || profile.gpa === undefined) ? "" : String(profile.gpa);
         if(profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
@@ -403,6 +453,46 @@ function initProfileUI() {
         };
     }
 
+    if (saveGpaBtn) {
+        saveGpaBtn.onclick = () => {
+            const rawVal = (gpaInput?.value || "").trim();
+            if (!rawVal) {
+                profile.gpa = "";
+                saveProfile(profile);
+                showToast("GPA cleared", "success");
+                return;
+            }
+
+            const val = Number(rawVal);
+            if (!Number.isFinite(val)) {
+                showToast("GPA must be a number", "error");
+                return;
+            }
+
+            const cfg = EXAM_CONFIG?.GPA || { min: 0, max: 100, step: 1 };
+            const min = Number.isFinite(Number(cfg?.min)) ? Number(cfg.min) : 0;
+            const max = Number.isFinite(Number(cfg?.max)) ? Number(cfg.max) : 100;
+            const step = Number.isFinite(Number(cfg?.step)) ? Number(cfg.step) : 1;
+
+            if (val < min || val > max) {
+                showToast(`GPA must be between ${min} and ${max}%`, "error");
+                return;
+            }
+            if (step > 0) {
+                const k = (val - min) / step;
+                if (Math.abs(k - Math.round(k)) > 1e-9) {
+                    showToast(`GPA must use step ${step}`, "error");
+                    return;
+                }
+            }
+
+            profile.gpa = Number((Math.round(val * 1000) / 1000));
+            saveProfile(profile);
+            if (gpaInput) gpaInput.value = String(profile.gpa);
+            showToast("GPA saved", "success");
+        };
+    }
+
     // 🔥 ЛОГИКА ДОБАВЛЕНИЯ / ОБНОВЛЕНИЯ ЭКЗАМЕНА
     if (addExamBtn) {
         addExamBtn.onclick = async () => {
@@ -440,8 +530,8 @@ function initProfileUI() {
                 return;
             }
 
-            // 1. Проверка на целые числа (кроме GPA и IELTS)
-            if (name !== "GPA" && name !== "IELTS") {
+            // 1. Проверка на целые числа (кроме IELTS)
+            if (name !== "IELTS") {
                 if (!Number.isInteger(score)) {
                     showToast(`${name} score must be an integer (e.g. 1400)`, "error");
                     return;
@@ -516,7 +606,7 @@ function initProfileUI() {
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
                         <span class="profile-exam-name">${getExamDisplayName(ex.exam)}</span>
-                        <span class="profile-exam-score">Score: ${ex.score}${String(ex.exam).toUpperCase() === 'GPA' ? '%' : ''}</span>
+                        <span class="profile-exam-score">Score: ${ex.score}</span>
                     </div>
                     <button data-idx="${i}" class="profile-delete">Delete</button>
                 </div>

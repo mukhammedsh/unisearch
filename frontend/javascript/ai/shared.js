@@ -55,6 +55,7 @@ export function buildUserContext(profile) {
   const userScores = {};
   const userLanguages = {};
   const p = profile || {};
+  setBestScore(userScores, "GPA", p?.gpa);
 
   for (const e of (p.exams || [])) {
     const key = e?.id ?? e?.exam;
@@ -112,6 +113,7 @@ function findLangExamCfg(examId) {
 export function getExamConfig(examId) {
   const id = String(examId || "").trim();
   if (!id) return null;
+  if (id.toUpperCase() === "GPA") return { min: 0, max: 100, step: 1 };
 
   if (EXAM_CONFIG?.[id]) return EXAM_CONFIG[id];
   if (EXAM_CONFIG?.[id.toUpperCase()]) return EXAM_CONFIG[id.toUpperCase()];

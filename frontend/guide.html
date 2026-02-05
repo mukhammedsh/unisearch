@@ -33,143 +33,69 @@
 
     <section id="guide-unifit" class="guide-section">
       <h2><span data-ai-name="fit">UniFit</span> (AI Smart Sort)</h2>
-      <div class="guide-grid">
-        <article class="guide-card">
-          <h4>What it optimizes</h4>
-          <p>UniFit balances prestige, affordability, and your admission feasibility.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Slider behavior</h4>
-          <p><strong>Budget → Prestige</strong> controls preference, but impossible tracks are still penalized.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Requirements logic</h4>
-          <p>Higher scores improve fit; scores below minimum strongly reduce admission chance.</p>
-        </article>
+      <div class="guide-doc">
+        <p><span data-ai-name="fit">UniFit</span> is the ranking mode used in the Universities page when sort is set to AI Smart Sort. It is designed to prioritize realistic options, not only famous names. In practical terms, this means the score combines three dimensions that are visible in your product behavior: academic feasibility from profile data, financial fit from yearly budget and university costs, and prestige signals such as rank and selectivity.</p>
+        <p>The budget-prestige slider changes weighting, but it does not ignore constraints. Even if the slider is moved to prestige, tracks that are far outside your profile are still penalized. Likewise, if slider priority is budget, the algorithm still keeps academically suitable options above choices that are cheap but unrealistic for admission. This prevents unstable recommendations and keeps output useful for real application planning.</p>
+        <p>The model evaluates admission tracks separately when track data exists. That is why one university can look stronger than another for a specific student even if overall rank is lower. A track with matching exam thresholds and language conditions will usually score above a track that has better reputation but poor eligibility match.</p>
+        <p>Because your profile can change at any moment, <span data-ai-name="fit">UniFit</span> results are intentionally dynamic. Updating exam scores, languages, or budget should immediately change ordering. This is expected and correct behavior: the goal is a personalized shortlist that reflects current data, not a fixed static ranking.</p>
       </div>
     </section>
 
     <section id="guide-unichance" class="guide-section">
       <h2><span data-ai-name="chance">UniChance</span> (0-100 Admission Probability)</h2>
-      <p class="guide-muted">
-        <span data-ai-name="chance">UniChance</span> estimates your probability to enter a specific university and track using your current profile.
-      </p>
-      <div class="guide-grid">
-        <article class="guide-card">
-          <h4>What it uses</h4>
-          <p>Exams, language proof, track minimums, typical admitted scores, selectivity, and affordability context.</p>
-        </article>
-        <article class="guide-card">
-          <h4>How to interpret</h4>
-          <p><strong>80-100:</strong> high chance • <strong>60-79:</strong> good chance • <strong>40-59:</strong> moderate • <strong>0-39:</strong> low.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Best Track logic</h4>
-          <p>The system evaluates each admission track and shows the strongest path as your best <span data-ai-name="chance">UniChance</span> result.</p>
-        </article>
+      <div class="guide-doc">
+        <p><span data-ai-name="chance">UniChance</span> provides a probability estimate from 0 to 100 for each university and, when available, for each admission track. It should be read as a decision-support indicator rather than a guarantee. The score helps compare options by feasibility and identify which paths are competitive, borderline, or low-probability.</p>
+        <p>The estimate is calculated from profile and track data already present in the platform: minimum requirements, typical admitted scores, language rules, acceptance context, and affordability signals. If your profile does not satisfy strict minimums, probability decreases strongly. If your profile is around typical admitted values, probability generally rises.</p>
+        <p>Recommended interpretation in this product is straightforward: 80-100 means high chance, 60-79 means good chance, 40-59 means moderate chance, and below 40 means low chance. These ranges are useful for planning application strategy. A balanced plan usually includes safer options, target options, and a limited number of ambitious options.</p>
+        <p>The “Best Track” output is important: it highlights the strongest path inside one university. Students often focus on one main route and miss alternative tracks with better fit. This section helps reveal those alternatives and can materially improve shortlisting quality.</p>
       </div>
     </section>
 
     <section id="guide-unimentor" class="guide-section">
       <h2><span data-ai-name="mentor">UniMentor</span> (AI Chat Consultant)</h2>
-      <p class="guide-muted">
-        <span data-ai-name="mentor">UniMentor</span> answers questions using university database facts and optional online references.
-      </p>
-      <div class="guide-grid">
-        <article class="guide-card">
-          <h4>Database-first answers</h4>
-          <p>It explains tuition, admission tracks, language rules, scholarships, location, and ranking from your project dataset.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Optional online context</h4>
-          <p>When enabled, it can include extra references from free public sources to answer details not stored in your JSON data.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Explainable output</h4>
-          <p>It returns concise answers plus source links, so users can verify information quickly.</p>
-        </article>
+      <div class="guide-doc">
+        <p><span data-ai-name="mentor">UniMentor</span> is intended for side questions that are useful for applicants but are not always available in the local dataset. The primary behavior is database-first: when information exists in UniSearch data, answers should rely on that data and present it clearly.</p>
+        <p>Typical high-value usage is clarification. For example: understanding track differences, language requirement logic, cost composition, scholarship notes, or what profile changes can improve fit. This reduces confusion and helps users convert ranking output into an actionable application plan.</p>
+        <p>When online mode is enabled, <span data-ai-name="mentor">UniMentor</span> may include external context for questions outside core dataset coverage. This can be useful for institutional background questions and similar side topics. In such cases, answers should stay concise and transparent about source context.</p>
+        <p>Best practice for users is to use mentor output as guidance, then verify critical final details on official university pages before submitting applications. UniSearch helps narrow and explain options; official admissions documents remain the authoritative source for final rules and deadlines.</p>
       </div>
     </section>
 
     <section id="guide-admission" class="guide-section">
       <h2>Admission Track Terms</h2>
-      <div class="guide-grid">
-        <article class="guide-card">
-          <h4>Requirements</h4>
-          <p>Minimum scores needed to apply for the track.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Real Average (Admitted)</h4>
-          <p>Typical scores of accepted students; target this for safer chances.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Language Track Rules</h4>
-          <p><strong>Mode any</strong>: one listed proof is enough. <strong>Mode all</strong>: all listed proofs are required.</p>
-        </article>
-        <article class="guide-card">
-          <h4>Scholarships</h4>
-          <p>Some tracks include merit/need grants that can remove or reduce budget penalty.</p>
-        </article>
+      <div class="guide-doc">
+        <p>An admission track is a specific pathway into a program. One university can publish several tracks with different minimum scores, language proofs, scholarship conditions, and expected costs. In UniSearch, these tracks are intentionally separated because applicant outcomes often depend on choosing the right track, not just the right university.</p>
+        <p><strong>Requirements</strong> represent the minimum threshold for eligibility. Meeting only minimums may keep an application valid but does not automatically indicate strong competitiveness. <strong>Real Average (Admitted)</strong> provides a better practical target where available, because it reflects profile levels observed among admitted students.</p>
+        <p>Language rules are handled as explicit logic. In <strong>mode any</strong>, satisfying one listed proof is enough. In <strong>mode all</strong>, every listed language condition must be satisfied. This difference is significant and can change both ranking and probability outcomes.</p>
+        <p>Track-level scholarships and aid can modify financial viability. In some cases grants partially offset tuition; in others they can be substantial. For shortlist planning, compare both gross and effective cost after aid assumptions, then prioritize tracks that are both feasible and sustainable.</p>
       </div>
     </section>
 
     <section id="guide-exam-basics" class="guide-section">
       <h2>Exam Basics (Admissions)</h2>
-      <p class="guide-muted">
-        Exams are used to estimate academic readiness and language proficiency.
-        Most admissions systems combine one or more of these exam types.
-      </p>
-      <div class="guide-grid">
-        <article class="guide-card">
-          <h4>National Exams</h4>
-          <p>State-level exams used for local university admission (example: Gaokao, UNT).</p>
-        </article>
-        <article class="guide-card">
-          <h4>International Academic Tests</h4>
-          <p>Used by universities abroad (example: SAT, ACT, IB/AP evidence).</p>
-        </article>
-        <article class="guide-card">
-          <h4>Language Certificates</h4>
-          <p>Required when program language is foreign for the applicant (example: IELTS, TOEFL, TestDaF).</p>
-        </article>
-      </div>
-      <div class="guide-grid guide-grid--2col">
-        <article class="guide-card">
-          <h4>National Exam Structure</h4>
-          <ul class="guide-list">
-            <li><strong>Core subjects:</strong> literacy, mathematics, and basic civic/history blocks.</li>
-            <li><strong>Electives:</strong> major-specific tracks (technical, medical, humanities).</li>
-            <li><strong>Cutoff score:</strong> minimum score needed to apply at all.</li>
-            <li><strong>Passing score:</strong> competitive threshold changing by year and seat count.</li>
-          </ul>
-        </article>
-        <article class="guide-card">
-          <h4>Task Formats You Will See</h4>
-          <ul class="guide-list">
-            <li><strong>MCQ:</strong> fast check of foundational knowledge.</li>
-            <li><strong>Context tasks:</strong> apply knowledge to text/tables/diagrams.</li>
-            <li><strong>Open-ended:</strong> show deeper reasoning or writing quality.</li>
-            <li><strong>Digital trend:</strong> many exams now use computer/adaptive delivery.</li>
-          </ul>
-        </article>
+      <div class="guide-doc">
+        <p>Admissions generally evaluate two different dimensions: academic preparation and language readiness. Academic exams measure subject performance; language evidence confirms that the applicant can study in the program’s teaching language. Most universities combine these dimensions with transcripts and, in some cases, additional materials.</p>
+        <p>National exams are commonly used in domestic systems, while international pathways can include exams such as SAT, ACT, AP, IB, or institution-specific alternatives. UniSearch does not assume one universal exam model; it maps each track’s stated requirements and compares them to the profile entered by the user.</p>
+        <p>Language certificates are especially important for international applicants. A program may accept several exam options and define minimum thresholds for one or more exams. Some tracks also allow native-language conditions. Because these rules differ by track, applicants should avoid broad assumptions and read track-level requirements carefully.</p>
+        <p>For strategy, treat exam planning as timeline management: confirm minimums first, then target typical admitted levels where possible, then distribute applications by risk level. This approach is usually more effective than applying only to highly selective options with weak profile alignment.</p>
       </div>
     </section>
 
     <section id="guide-academic-exams" class="guide-section">
       <h2>Academic Exams</h2>
-      <p class="guide-muted">Loaded from your current backend exam configuration.</p>
-      <div id="guideAcademicExams" class="guide-grid"></div>
+      <p class="guide-muted">Plain-language explanations of the academic scores used in UniSearch admission matching.</p>
+      <div id="guideAcademicExams" class="guide-doc"></div>
     </section>
 
     <section id="guide-language-exams" class="guide-section">
       <h2>Language Exams</h2>
-      <p class="guide-muted">Loaded from language configuration by language code and exam label.</p>
-      <div id="guideLanguageExams"></div>
+      <p class="guide-muted">Plain-language explanations of accepted language proofs across tracks.</p>
+      <div id="guideLanguageExams" class="guide-doc"></div>
     </section>
 
     <section id="guide-glossary" class="guide-section">
       <h2>Glossary</h2>
-      <div id="guideGlossary" class="guide-grid"></div>
+      <div id="guideGlossary" class="guide-doc"></div>
     </section>
   </main>
 
