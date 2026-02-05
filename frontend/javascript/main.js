@@ -1,7 +1,7 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
-import { API_BASE, aiName } from "./utils.js";
+import { API_BASE, aiName, initTheme } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 
 function applyAINameConfig() {
@@ -29,6 +29,7 @@ function applyAINameConfig() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
+  initTheme();
 
   // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)
   await loadGlobalLayout();

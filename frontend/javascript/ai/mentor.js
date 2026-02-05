@@ -1,4 +1,4 @@
-import { API_BASE, UNIMENTOR_CONFIG, aiName, escapeHtml, loadProfile } from "../utils.js";
+import { API_BASE, UNIMENTOR_CONFIG, aiName, escapeHtml, loadProfile, initCustomSelect } from "../utils.js";
 
 const MODE_STORAGE_KEY = "unimentor_mode";
 
@@ -103,6 +103,8 @@ export function initUniMentor(university) {
     return;
   }
 
+  if (modeSelect) initCustomSelect("mentorModeSelect");
+
   const intro = `Hi! I am ${mentorName}. Ask me about ${university?.name || "this university"}: admission, language requirements, costs, scholarships, ranking, or campus info.`;
   messages.innerHTML = messageHtml("assistant", intro);
 
@@ -113,7 +115,11 @@ export function initUniMentor(university) {
   };
 
   const ask = async (forcedQuestion = "") => {
-    const question = String(forcedQuestion || input.value || "").trim();
+    const hasForcedQuestion =
+      typeof forcedQuestion === "string" && forcedQuestion.trim().length > 0;
+    const question = hasForcedQuestion
+      ? forcedQuestion.trim()
+      : String(input.value || "").trim();
     if (!question) return;
 
     messages.insertAdjacentHTML("beforeend", messageHtml("user", question));
@@ -171,7 +177,9 @@ export function initUniMentor(university) {
     }
   };
 
-  sendBtn.addEventListener("click", ask);
+  sendBtn.addEventListener("click", () => {
+    ask();
+  });
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();

@@ -1320,6 +1320,17 @@ def _mentor_trim_error(text: str, limit: int = 240) -> str:
         return msg
     return msg[: limit - 3] + "..."
 
+def _mentor_allow_next_steps(intent: str) -> bool:
+    return str(intent or "").strip().lower() in ("improve", "checklist")
+
+def _mentor_strip_unsolicited_next_steps(text: str) -> str:
+    raw = str(text or "").strip()
+    if not raw:
+        return raw
+    # Remove common "Next Steps" tails if model adds them without being asked.
+    cleaned = re.sub(r"(?is)\n?\s*(next\s*steps?|recommended\s*next\s*steps?|action\s*plan)\s*:\s*.*$", "", raw).strip()
+    return cleaned or raw
+
 def _mentor_http_post_json(url: str, body: Dict[str, Any]) -> Dict[str, Any]:
     req = Request(
         url,
@@ -1356,7 +1367,7 @@ def _mentor_http_post_json(url: str, body: Dict[str, Any]) -> Dict[str, Any]:
     except json.JSONDecodeError as e:
         raise RuntimeError(f"Gemini invalid JSON: {_mentor_trim_error(str(e))}") from e
 
-def _mentor_call_gemini_for_model(model: str, question: str, university: Optional[Dict[str, Any]], profile: Dict[str, Any], online: bool) -> Dict[str, Any]:
+def _mentor_call_gemini_for_model(model: str, question: str, university: Optional[Dict[str, Any]], profile: Dict[str, Any], online: bool, allow_next_steps: bool = False) -> Dict[str, Any]:
     endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{quote(model)}:generateContent"
     profile_ctx = _mentor_profile_summary(profile)
     uni_ctx = _mentor_university_summary(university)
@@ -1368,17 +1379,25 @@ def _mentor_call_gemini_for_model(model: str, question: str, university: Optiona
         "Use short paragraphs and numbered steps when useful. "
         "Do not invent scholarships, deadlines, or hard requirements. "
         "If information is missing, say it clearly and suggest what to check on official university websites."
+        "Do not provide unsolicited advice or plans."
+        "Only answer the user’s explicit question."
+        "Do not suggest admission plans, roadmaps, or next steps unless the user explicitly asks for them."
+        "Do not add a 'Next Steps' section when the user did not request it."
     )
     user_payload = {
         "question": question,
         "user_profile": profile_ctx,
         "university_context": uni_ctx,
-        "task": "Answer the question and include concrete next steps for this applicant.",
+        "task": (
+            "Answer only the user question directly."
+            if not allow_next_steps
+            else "Answer the question and include concise, concrete next steps."
+        ),
     }
     body: Dict[str, Any] = {
         "system_instruction": {"parts": [{"text": system_text}]},
         "contents": [{"role": "user", "parts": [{"text": json.dumps(user_payload, ensure_ascii=False)}]}],
-        "generationConfig": {"temperature": 0.35, "maxOutputTokens": 700},
+        "generationConfig": {"temperature": 0.15, "maxOutputTokens": 700},
     }
     warning = ""
     data: Dict[str, Any]
@@ -1407,27 +1426,27 @@ def _mentor_call_gemini_for_model(model: str, question: str, university: Optiona
         "warning": warning,
     }
 
-def _mentor_call_gemini(question: str, university: Optional[Dict[str, Any]], profile: Dict[str, Any], online: bool, mode: str = "auto") -> Dict[str, Any]:
+def _mentor_call_gemini(question: str, university: Optional[Dict[str, Any]], profile: Dict[str, Any], online: bool, mode: str = "auto", allow_next_steps: bool = False) -> Dict[str, Any]:
     primary = UNIMENTOR_GEMINI_MODEL
     fallback = UNIMENTOR_GEMINI_FALLBACK_MODEL
     mode_norm = str(mode or "auto").strip().lower()
 
     if mode_norm == "gemini":
-        return _mentor_call_gemini_for_model(primary, question, university, profile, online)
+        return _mentor_call_gemini_for_model(primary, question, university, profile, online, allow_next_steps=allow_next_steps)
 
     if mode_norm == "fallback":
         if not fallback:
             raise RuntimeError("Fallback model is not configured")
-        return _mentor_call_gemini_for_model(fallback, question, university, profile, online)
+        return _mentor_call_gemini_for_model(fallback, question, university, profile, online, allow_next_steps=allow_next_steps)
 
     try:
-        return _mentor_call_gemini_for_model(primary, question, university, profile, online)
+        return _mentor_call_gemini_for_model(primary, question, university, profile, online, allow_next_steps=allow_next_steps)
     except RuntimeError as e:
         msg = str(e).lower()
         can_retry = ("http 429" in msg or "quota" in msg) and fallback and fallback != primary
         if not can_retry:
             raise
-        res = _mentor_call_gemini_for_model(fallback, question, university, profile, online)
+        res = _mentor_call_gemini_for_model(fallback, question, university, profile, online, allow_next_steps=allow_next_steps)
         prev = str(res.get("warning", "")).strip()
         note = f"Primary model quota reached; switched to fallback model: {fallback}."
         res["warning"] = (prev + " " + note).strip() if prev else note
@@ -1477,12 +1496,15 @@ def mentor_ask(payload: Dict[str, Any]):
     if use_gemini and GEMINI_API_KEY:
         try:
             gemini_mode = "auto"
+            allow_next_steps = _mentor_allow_next_steps(intent)
             if mode == "gemini":
                 gemini_mode = "gemini"
             elif mode == "fallback":
                 gemini_mode = "fallback"
-            g = _mentor_call_gemini(question, university, profile, online=online, mode=gemini_mode)
+            g = _mentor_call_gemini(question, university, profile, online=online, mode=gemini_mode, allow_next_steps=allow_next_steps)
             answer = g["answer"]
+            if not allow_next_steps:
+                answer = _mentor_strip_unsolicited_next_steps(answer)
             web_sources = g.get("sources", []) or []
             online_used = bool(g.get("online_used", False))
             provider_used = "gemini"

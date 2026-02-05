@@ -8,6 +8,8 @@ import {
   showToast,
   API_BASE,
   MAJOR_OPTIONS,
+  toggleTheme,
+  getCurrentTheme,
 } from "./utils.js";
 
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
@@ -15,7 +17,14 @@ const LAYOUT_HTML = `
 <header class="navbar">
   <div class="navbar-left">
     <a href="index.html" style="display: flex; align-items: center;">
-      <img src="images/logo.jpeg" alt="Logo" class="logo" />
+      <img
+        src="images/whitelogo.png"
+        data-logo-light="images/whitelogo.png"
+        data-logo-dark="images/darklogo.png"
+        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='images/logo.jpeg';}"
+        alt="Logo"
+        class="logo"
+      />
     </a>
   </div>
 
@@ -27,6 +36,7 @@ const LAYOUT_HTML = `
   </nav>
 
   <div class="navbar-right">
+    <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme">🌙</button>
     <button class="login-btn" id="profileBtn">Profile</button>
   </div>
 </header>
@@ -172,7 +182,7 @@ export async function loadGlobalLayout() {
             const activeLink = document.querySelector(`.navbar-center a[data-link="${currentPage}"]`) || 
                                document.querySelector(`.navbar-center a[href*="${currentPage}"]`);
             if (activeLink) {
-                activeLink.style.color = "#5d17ea";
+                activeLink.style.color = "var(--accent)";
             }
         }
 
@@ -207,6 +217,8 @@ function initProfileUI() {
     const nameInput = document.getElementById("profileNameInput");
     const budgetInput = document.getElementById("budgetInput");
     const nameDisplay = document.getElementById("profileNameDisplay");
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
     
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
@@ -218,6 +230,29 @@ function initProfileUI() {
     const editNameBtn = document.getElementById("editNameBtn");
     const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
     const profileUsernameDiv = document.querySelector(".profile-username");
+
+    const syncThemeButton = () => {
+        if (!themeToggleBtn) return;
+        const theme = getCurrentTheme();
+        const nextTheme = theme === "dark" ? "light" : "dark";
+        themeToggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+        themeToggleBtn.title = `Switch to ${nextTheme} theme`;
+        themeToggleBtn.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+
+        if (navbarLogo) {
+            const nextLogo = theme === "dark" ? navbarLogo.dataset.logoDark : navbarLogo.dataset.logoLight;
+            if (nextLogo && navbarLogo.getAttribute("src") !== nextLogo) {
+                navbarLogo.dataset.fallback = "0";
+                navbarLogo.setAttribute("src", nextLogo);
+            }
+        }
+    };
+    syncThemeButton();
+    themeToggleBtn?.addEventListener("click", () => {
+        toggleTheme();
+        syncThemeButton();
+    });
+    window.addEventListener("themeChanged", syncThemeButton);
     
     let profile = loadProfile(); 
 

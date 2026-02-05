@@ -1,4 +1,36 @@
 /* ===== Base ===== */
+:root {
+  --accent: #5d17ea;
+  --accent-strong: #5715db;
+  --bg: #ffffff;
+  --bg-soft: #f8fafc;
+  --text: #111111;
+  --text-muted: #555555;
+  --surface: #ffffff;
+  --surface-soft: #f4f6fb;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.2);
+  --footer-icon-filter: none;
+}
+
+:root[data-theme="dark"] {
+  --accent: #9d85ff;
+  --accent-strong: #8b70ff;
+  --bg: #0f1117;
+  --bg-soft: #151926;
+  --text: #e7ecf7;
+  --text-muted: #a8b1c5;
+  --surface: #171c29;
+  --surface-soft: #1d2332;
+  --line: #2c3449;
+  --line-strong: #3a4258;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.5);
+  --footer-icon-filter: invert(1);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -6,8 +38,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #ffffff;
-  color: #111;
+  background: var(--bg);
+  color: var(--text);
   padding-top: 70px;
 }
 
@@ -40,8 +72,9 @@ html, body {
   padding: 0 40px;
   box-sizing: border-box;
 
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
   z-index: 1000;
 }
 
@@ -61,11 +94,11 @@ html, body {
 
 .navbar-center a{
   font-weight: 600;
-  color: #333;
+  color: var(--text-muted);
 }
 
 .navbar-center a:hover{
-  color: #5d17ea;
+  color: var(--accent);
 }
 
 .logo{
@@ -75,7 +108,7 @@ html, body {
 }
 
 .login-btn{
-  background: #5d17ea;
+  background: var(--accent);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -85,7 +118,24 @@ html, body {
 }
 
 .login-btn:hover{
-  background: #5715db;
+  background: var(--accent-strong);
+}
+
+.theme-btn {
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ===== Profile Modal ===== */
@@ -114,9 +164,9 @@ html, body {
   position: relative;
   width: min(760px, 96vw);      /* ✅ шире на больших экранах */
   max-height: 92vh;             /* ✅ не вылезает за экран */
-  background: #ffffff;
+  background: var(--surface);
   border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.20);
+  box-shadow: var(--shadow-md);
   z-index: 1;
 
   display: flex;                /* ✅ фиксируем header, скроллим body */
@@ -130,7 +180,7 @@ html, body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
+  border-bottom: 1px solid var(--line);
 }
 
 .profile-title{
@@ -145,7 +195,7 @@ html, body {
   gap: 10px;
   font-size: 20px;
   font-weight: 800;
-  color: #111;
+  color: var(--text);
   max-width: 100%;
   overflow: hidden;
 }
@@ -153,18 +203,20 @@ html, body {
 .profile-subtitle{
   font-size: 12px;
   font-weight: 700;
-  color: rgba(0,0,0,0.55);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .profile-name-input{
   display: none;
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid var(--line-strong);
   border-radius: 10px;
   padding: 8px 10px;
   font-size: 16px;
   min-width: 180px;
+  background: var(--surface);
+  color: var(--text);
 }
 
 .profile-username.is-editing #profileNameDisplay{
@@ -178,7 +230,7 @@ html, body {
 .icon-btn{
   border: none;
   background: rgba(93,23,234,0.08);
-  color: #5d17ea;
+  color: var(--accent);
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -198,12 +250,12 @@ html, body {
 }
 
 .profile-close{
-  background: rgba(0,0,0,0.06);
-  color: rgba(0,0,0,0.6);
+  background: var(--surface-soft);
+  color: var(--text-muted);
 }
 
 .profile-close:hover{
-  background: rgba(0,0,0,0.12);
+  background: var(--line);
 }
 
 /* ✅ Контент скроллится внутри */
@@ -223,7 +275,7 @@ html, body {
 .profile-label{
   font-size: 12px;
   font-weight: 700;
-  color: rgba(0,0,0,0.58);
+  color: var(--text-muted);
 }
 
 .profile-input{
@@ -231,9 +283,10 @@ html, body {
   box-sizing: border-box;
   padding: 12px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid var(--line-strong);
   outline: none;
-  background: #fff;
+  background: var(--surface);
+  color: var(--text);
   font-size: 14px;
 }
 
@@ -251,7 +304,7 @@ html, body {
 
 .profile-unit{
   font-weight: 700;
-  color: rgba(0,0,0,0.6);
+  color: var(--text-muted);
   background: rgba(93,23,234,0.06);
   border: 1px solid rgba(93,23,234,0.12);
   padding: 10px 12px;
@@ -261,7 +314,7 @@ html, body {
 
 .profile-hint{
   font-size: 12px;
-  color: rgba(0,0,0,0.45);
+  color: var(--text-muted);
 }
 
 .profile-exam-form{
@@ -272,7 +325,7 @@ html, body {
 
 .profile-add{
   border: none;
-  background: #5d17ea;
+  background: var(--accent);
   color: #fff;
   padding: 12px 16px;
   border-radius: 12px;
@@ -281,7 +334,7 @@ html, body {
 }
 
 .profile-add:hover{
-  background: #5715db;
+  background: var(--accent-strong);
 }
 
 .profile-error{
@@ -300,14 +353,14 @@ html, body {
 }
 
 .profile-exam-item{
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 10px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 6px 14px rgba(0,0,0,0.04);
 }
 
@@ -319,18 +372,18 @@ html, body {
 
 .profile-exam-name{
   font-weight: 700;
-  color: #111;
+  color: var(--text);
 }
 
 .profile-exam-score{
   font-size: 12px;
-  color: rgba(0,0,0,0.6);
+  color: var(--text-muted);
 }
 
 .profile-delete{
-  border: 1px solid rgba(0,0,0,0.12);
-  background: #fff;
-  color: rgba(0,0,0,0.65);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text-muted);
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
@@ -344,7 +397,7 @@ html, body {
 
 /* ===== Languages block ===== */
 .profile-block {
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid var(--line);
   border-radius: 14px;
   padding: 14px 14px 12px;
   background: rgba(93,23,234,0.03);
@@ -362,14 +415,14 @@ html, body {
   margin: 0;
   font-size: 14px;
   font-weight: 800;
-  color: #111;
+  color: var(--text);
 }
 
 .mini-label{
   display:block;
   font-size: 11px;
   font-weight: 700;
-  color: rgba(0,0,0,0.55);
+  color: var(--text-muted);
   margin: 0 0 6px;
 }
 
@@ -402,18 +455,18 @@ html, body {
   justify-content: space-between;
   gap: 12px;
   padding: 10px 12px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 6px 14px rgba(0,0,0,0.04);
 }
 
 .lang-item strong{
-  color:#111;
+  color: var(--text);
 }
 
 .lang-item small{
-  color: rgba(0,0,0,0.6);
+  color: var(--text-muted);
 }
 
 .lang-item button{
@@ -433,8 +486,8 @@ html, body {
 }
 
 .toast {
-  background: #fff;
-  color: #333;
+  background: var(--surface);
+  color: var(--text);
   padding: 12px 16px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -566,16 +619,16 @@ html, body {
   padding: 12px;
   font-size: 14px;
   font-weight: 400;
-  color: #333;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, .08);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .custom-select-trigger:hover {
-  border-color: #5d17ea;
+  border-color: var(--accent);
 }
 
 .custom-select-trigger::after {
@@ -598,10 +651,10 @@ html, body {
   top: 100%;
   left: 0;
   right: 0;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid var(--line);
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  background: #fff;
+  background: var(--surface);
   transition: all 0.2s ease-in-out;
   opacity: 0;
   visibility: hidden;
@@ -623,7 +676,7 @@ html, body {
 .custom-option {
   padding: 10px 14px;
   font-size: 14px;
-  color: #333;
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -632,14 +685,14 @@ html, body {
 }
 
 .custom-option:hover {
-  background-color: #f6f7fb;
-  color: #5d17ea;
+  background-color: var(--surface-soft);
+  color: var(--accent);
 }
 
 .custom-option.selected {
   background-color: rgba(93, 23, 234, 0.05);
   font-weight: 600;
-  color: #5d17ea;
+  color: var(--accent);
 }
 
 .custom-option img, .custom-select-trigger img {
@@ -652,10 +705,10 @@ html, body {
 
 /* Основной блок футера */
 .site-footer {
-    background-color: #f8f9fa;
+    background-color: var(--surface-soft);
     padding: 20px 0;
     margin-top: auto;
-    border-top: 1px solid #e1e4e8;
+    border-top: 1px solid var(--line);
 }
 
 .footer-content {
@@ -670,6 +723,11 @@ html, body {
 .footer-content p {
     margin: 0;
     font-weight: 500;
+    color: var(--text);
+}
+
+.site-footer img {
+    filter: var(--footer-icon-filter);
 }
 
 /* --- Адаптивность для мобильных (Улучшенная) --- */
@@ -687,8 +745,8 @@ html, body {
   body {
     margin: 0;
     font-family: 'Inter', Arial, sans-serif;
-    background: #ffffff;
-    color: #111;
+    background: var(--bg);
+    color: var(--text);
     padding-top: 0;
   }
 
@@ -697,13 +755,14 @@ html, body {
   
   .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
   .login-btn { padding: 8px 14px; font-size: 13px; }
+  .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
 
   .navbar-center {
     order: 3;
     width: 100%;
     margin: 5px 0 0;
     padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--line);
     justify-content: center;
     gap: 15px;
   }

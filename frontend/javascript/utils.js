@@ -16,6 +16,85 @@ export function aiName(key) {
 
 export const $ = (id) => document.getElementById(id);
 
+const THEME_STORAGE_KEY = "unisearch_theme";
+const THEME_LIGHT = "light";
+const THEME_DARK = "dark";
+let __themeWatchBound = false;
+
+function _readStoredTheme() {
+  try {
+    const v = localStorage.getItem(THEME_STORAGE_KEY);
+    return v === THEME_DARK || v === THEME_LIGHT ? v : "";
+  } catch (e) {
+    return "";
+  }
+}
+
+function _systemTheme() {
+  try {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return THEME_DARK;
+    }
+  } catch (e) {
+    // ignore
+  }
+  return THEME_LIGHT;
+}
+
+export function getCurrentTheme() {
+  const attr = String(document.documentElement.getAttribute("data-theme") || "").toLowerCase();
+  if (attr === THEME_DARK) return THEME_DARK;
+  if (attr === THEME_LIGHT) return THEME_LIGHT;
+  return _systemTheme();
+}
+
+export function applyTheme(theme, opts = {}) {
+  const next = theme === THEME_DARK ? THEME_DARK : THEME_LIGHT;
+  const persist = !!opts.persist;
+  document.documentElement.setAttribute("data-theme", next);
+  document.documentElement.style.colorScheme = next;
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch (e) {
+      // ignore
+    }
+  }
+  window.dispatchEvent(new CustomEvent("themeChanged", { detail: { theme: next } }));
+  return next;
+}
+
+export function initTheme() {
+  const stored = _readStoredTheme();
+  const resolved = stored || _systemTheme();
+  applyTheme(resolved, { persist: false });
+
+  if (!__themeWatchBound && window.matchMedia) {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => {
+      if (_readStoredTheme()) return;
+      applyTheme(_systemTheme(), { persist: false });
+    };
+    try {
+      mq.addEventListener("change", onChange);
+      __themeWatchBound = true;
+    } catch (e) {
+      // Fallback for old browsers.
+      if (typeof mq.addListener === "function") {
+        mq.addListener(onChange);
+        __themeWatchBound = true;
+      }
+    }
+  }
+
+  return resolved;
+}
+
+export function toggleTheme() {
+  const next = getCurrentTheme() === THEME_DARK ? THEME_LIGHT : THEME_DARK;
+  return applyTheme(next, { persist: true });
+}
+
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 // 🔥 ДОБАВЛЕНО: Новые поля в дефолтном профиле
 const PROFILE_DEFAULTS = { 

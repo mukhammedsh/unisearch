@@ -245,3 +245,51 @@
     font-size: 36px; /* Было 56px */
   }
 }
+
+:root[data-theme="dark"] .hero-title {
+    color: var(--text);
+}
+
+:root[data-theme="dark"] .hero-desc,
+:root[data-theme="dark"] .feature-box p,
+:root[data-theme="dark"] .stat-item p {
+    color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .hero-badge {
+    background: rgba(157, 133, 255, 0.16);
+    color: var(--accent);
+}
+
+:root[data-theme="dark"] .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--line);
+}
+
+:root[data-theme="dark"] .btn-secondary:hover {
+    background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .mockup-card,
+:root[data-theme="dark"] .feature-box {
+    background: var(--surface);
+    border-color: var(--line);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .stats-section {
+    background: var(--surface-soft);
+    border-top-color: var(--line);
+    border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] .section-title,
+:root[data-theme="dark"] .feature-box h4 {
+    color: var(--text);
+}
+
+:root[data-theme="dark"] .feature-icon {
+    background: rgba(157, 133, 255, 0.16);
+    color: var(--accent);
+}

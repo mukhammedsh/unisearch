@@ -116,6 +116,7 @@ UniMentor is a chatbot assistant focused on university questions.
 ### What it does
 - Answers questions about admission, language requirements, tuition, scholarships, rank, and location.
 - Uses your own university database as primary source.
+- Handles secondary university questions that are usually not stored in your DB (for example: "Who is the owner of this university?").
 - Optionally augments answers with free online context.
 
 ### Methods supported
@@ -438,7 +439,7 @@ UniFit is a ranking score for comparing many universities at once.
 UniChance is a probability score (0-100) for one university/track based on your profile.
 
 ### What is UniMentor?
-UniMentor is a chatbot consultant. It explains university details from your dataset and can add optional free online references when enabled.
+UniMentor is a chatbot consultant. It explains university details from your dataset and is especially useful for side questions beyond DB fields (for example: "Who is the owner of this university?") using optional online references when enabled.
 
 ### Why can I add some decimal scores but not others?
 Each exam has its own type and step rules from config.  

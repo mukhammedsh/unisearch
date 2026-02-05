@@ -130,3 +130,39 @@
     padding: 14px;
   }
 }
+
+:root[data-theme="dark"] .guide-hero {
+  border-color: var(--line);
+  background: linear-gradient(120deg, #171d2b, #101624);
+}
+
+:root[data-theme="dark"] .guide-eyebrow {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .guide-hero p,
+:root[data-theme="dark"] .guide-muted,
+:root[data-theme="dark"] .guide-list,
+:root[data-theme="dark"] .guide-card p {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .guide-nav a {
+  color: var(--accent);
+  background: #101624;
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .guide-section,
+:root[data-theme="dark"] .guide-card {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .guide-section h2,
+:root[data-theme="dark"] .guide-card h4,
+:root[data-theme="dark"] .guide-card h5,
+:root[data-theme="dark"] .guide-subsection h4,
+:root[data-theme="dark"] .guide-hero h1 {
+  color: var(--text);
+}

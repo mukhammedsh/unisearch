@@ -9,6 +9,17 @@
   --shadow: 0 10px 24px rgba(0, 0, 0, .06);
 }
 
+:root[data-theme="dark"] {
+  --accent: #9d85ff;
+  --accent2: #8b70ff;
+  --bg: #0f1117;
+  --card: #171c29;
+  --text: #e7ecf7;
+  --muted: rgba(231, 236, 247, .72);
+  --line: #2c3449;
+  --shadow: 0 14px 28px rgba(0, 0, 0, .45);
+}
+
 /* =========================================
    PAGE LAYOUT
    ========================================= */
@@ -432,13 +443,13 @@
   margin: 0;
   font-size: 15px;
   font-weight: 900;
-  color: #111;
+  color: var(--text);
   min-height: 40px;
 }
 
 .uni-loc {
   margin-top: 8px;
-  color: rgba(0, 0, 0, .62);
+  color: var(--muted);
   font-size: 13px;
   display: flex;
   align-items: center;
@@ -467,13 +478,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: rgba(0, 0, 0, .65);
+  color: var(--muted);
   font-weight: 800;
   font-size: 13px;
 }
 
 .uni-details {
-  color: rgba(0, 0, 0, .65);
+  color: var(--muted);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -503,13 +514,13 @@
   min-width: 40px;
   height: 40px;
   padding: 0 12px;
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 8px;
   font-family: inherit;
   font-weight: 600;
   font-size: 14px;
-  color: #4b5563;
+  color: var(--muted);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
@@ -535,7 +546,7 @@
 }
 
 .page-dots {
-  color: #9ca3af;
+  color: var(--muted);
   font-weight: 600;
   letter-spacing: 1px;
   padding: 0 4px;
@@ -738,4 +749,84 @@
   .u-layout {
     grid-template-columns: 1fr;
   }
+}
+
+:root[data-theme="dark"] .u-reset,
+:root[data-theme="dark"] .u-input,
+:root[data-theme="dark"] .u-select,
+:root[data-theme="dark"] .u-search input,
+:root[data-theme="dark"] .view-toggles,
+:root[data-theme="dark"] .page-btn,
+:root[data-theme="dark"] .uni-price,
+:root[data-theme="dark"] .uni-logo {
+  background: #101624;
+  color: var(--text);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .u-search-icon {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .slider-track {
+  background: #334155;
+}
+
+:root[data-theme="dark"] .uni-media {
+  background-color: #101624;
+  border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] .view-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme="dark"] .u-map-container {
+  background: #101624;
+}
+
+:root[data-theme="dark"] .uni-card {
+  background: #151d2d;
+  border-color: #344155;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+}
+
+:root[data-theme="dark"] .uni-card .uni-title {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .uni-card .uni-loc,
+:root[data-theme="dark"] .uni-card .uni-footer,
+:root[data-theme="dark"] .uni-card .uni-details {
+  color: #b9c4d8;
+}
+
+:root[data-theme="dark"] .uni-card .uni-badge {
+  background: #1d2739;
+  border-color: #36465f;
+  color: #c8d4e8;
+}
+
+:root[data-theme="dark"] .uni-card .uni-badge strong {
+  color: #c4b5fd;
+}
+
+:root[data-theme="dark"] .uni-card .uni-price {
+  background: #f8fafc;
+  border-color: #dbe3f0;
+  color: #111827;
+}
+
+:root[data-theme="dark"] .uni-card .uni-price small {
+  color: #64748b;
+}
+
+:root[data-theme="dark"] .uni-card .uni-price b {
+  color: #6d28d9;
+}
+
+:root[data-theme="dark"] .uni-card .uni-logo {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #6d28d9;
 }
