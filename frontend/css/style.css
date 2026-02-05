@@ -108,7 +108,7 @@ html, body {
 }
 
 .login-btn{
-  background: var(--accent);
+  background: #2563eb;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -118,7 +118,7 @@ html, body {
 }
 
 .login-btn:hover{
-  background: var(--accent-strong);
+  background: #1d4ed8;
 }
 
 .theme-btn {

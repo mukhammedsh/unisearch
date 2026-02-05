@@ -158,13 +158,37 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
 
-:root[data-theme="dark"] .rank-logo,
 :root[data-theme="dark"] .rank-badge,
 :root[data-theme="dark"] .rank-source {
     background: #101624;
     border-color: var(--line);
 }
 
+:root[data-theme="dark"] .rank-logo {
+    background: #ffffff;
+    border-color: #d1d9e6;
+}
+
 :root[data-theme="dark"] .rank-num {
     color: #94a3b8;
+}
+
+:root[data-theme="dark"] .rank-1 {
+    color: #FFD700;
+}
+
+:root[data-theme="dark"] .rank-2 {
+    color: #C0C0C0;
+}
+
+:root[data-theme="dark"] .rank-3 {
+    color: #CD7F32;
+}
+
+:root[data-theme="dark"] .rank-badge {
+    color: #e7ecf7;
+}
+
+:root[data-theme="dark"] .rank-badge b {
+    color: #f8fafc;
 }

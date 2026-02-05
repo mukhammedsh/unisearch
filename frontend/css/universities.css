@@ -7,6 +7,8 @@
   --muted: rgba(0, 0, 0, .58);
   --line: rgba(0, 0, 0, .08);
   --shadow: 0 10px 24px rgba(0, 0, 0, .06);
+  --slider-track-inactive: #d4d8e0;
+  --slider-track-active: #5d17ea;
 }
 
 :root[data-theme="dark"] {
@@ -18,6 +20,8 @@
   --muted: rgba(231, 236, 247, .72);
   --line: #2c3449;
   --shadow: 0 14px 28px rgba(0, 0, 0, .45);
+  --slider-track-inactive: #2a3346;
+  --slider-track-active: #8b70ff;
 }
 
 /* =========================================
@@ -234,7 +238,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #e0e0e0; /* Серый фон по умолчанию */
+    background: var(--slider-track-inactive);
     border-radius: 5px;
     z-index: 1;
 }
@@ -256,6 +260,26 @@
     padding: 0;
 }
 
+.dual-slider-container input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+}
+
+.dual-slider-container input[type="range"]::-moz-range-track {
+    height: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+}
+
+.dual-slider-container input[type="range"]::-moz-range-progress {
+    height: 6px;
+    background: transparent;
+    border-radius: 999px;
+}
+
 /* Бегунок (Thumb) для Chrome, Safari, Edge */
 .dual-slider-container input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -267,8 +291,7 @@
     border: 2px solid #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     cursor: pointer;
-    /* Убираем любые margin, так как инпут уже отцентрован */
-    margin-top: 0; 
+    margin-top: -6px;
 }
 
 /* Бегунок для Firefox */
@@ -281,12 +304,66 @@
     border: 2px solid #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     cursor: pointer;
-    border: none; /* Фикс для FF */
 }
 
 /* Убираем стандартный фокус */
 .dual-slider-container input[type="range"]:focus {
     outline: none;
+}
+
+#uniFitSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+#uniFitSlider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--slider-track-inactive);
+}
+
+#uniFitSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #5d17ea;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  margin-top: -6px;
+}
+
+#uniFitSlider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--slider-track-inactive);
+  border: none;
+}
+
+#uniFitSlider::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--slider-track-active);
+}
+
+#uniFitSlider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #5d17ea;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
 }
 
 /* Toggle Buttons (List/Map) */
@@ -471,6 +548,41 @@
 
 .uni-badge strong {
   color: var(--accent);
+}
+
+.uni-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+}
+
+.uni-pill--neutral {
+  background: rgba(55, 65, 81, 0.10);
+  color: #374151;
+  border-color: rgba(55, 65, 81, 0.20);
+}
+
+.uni-pill--warn {
+  background: rgba(245, 158, 11, 0.16);
+  color: #9a3412;
+  border-color: rgba(245, 158, 11, 0.34);
+}
+
+.uni-pill--success {
+  background: rgba(16, 185, 129, 0.16);
+  color: #065f46;
+  border-color: rgba(16, 185, 129, 0.34);
+}
+
+.uni-pill--budget {
+  background: rgba(139, 92, 246, 0.16);
+  color: #6b21a8;
+  border-color: rgba(139, 92, 246, 0.34);
 }
 
 .uni-footer {
@@ -768,8 +880,40 @@
   color: var(--muted);
 }
 
+:root[data-theme="dark"] .u-found {
+  color: #f8fafc;
+}
+
 :root[data-theme="dark"] .slider-track {
   background: #334155;
+}
+
+:root[data-theme="dark"] .dual-slider-container input[type="range"]::-webkit-slider-thumb,
+:root[data-theme="dark"] #uniFitSlider::-webkit-slider-thumb {
+  border-color: #111827;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .dual-slider-container input[type="range"]::-moz-range-thumb,
+:root[data-theme="dark"] #uniFitSlider::-moz-range-thumb {
+  border-color: #111827;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] #uniFitSlider {
+  background: transparent;
+}
+
+:root[data-theme="dark"] #uniFitSlider::-moz-range-track {
+  background: #2a3346;
+}
+
+:root[data-theme="dark"] #uniFitSlider::-webkit-slider-runnable-track {
+  background: #2a3346;
+}
+
+:root[data-theme="dark"] #uniFitSlider::-moz-range-progress {
+  background: #8b70ff;
 }
 
 :root[data-theme="dark"] .uni-media {
@@ -829,4 +973,28 @@
   background: #ffffff;
   border-color: #e2e8f0;
   color: #6d28d9;
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--neutral {
+  background: rgba(148, 163, 184, 0.16);
+  color: #dbe4f2;
+  border-color: rgba(148, 163, 184, 0.30);
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--warn {
+  background: rgba(251, 191, 36, 0.16);
+  color: #fcd9a5;
+  border-color: rgba(251, 191, 36, 0.32);
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--success {
+  background: rgba(52, 211, 153, 0.16);
+  color: #b8f5d9;
+  border-color: rgba(52, 211, 153, 0.32);
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--budget {
+  background: rgba(167, 139, 250, 0.16);
+  color: #decfff;
+  border-color: rgba(167, 139, 250, 0.34);
 }

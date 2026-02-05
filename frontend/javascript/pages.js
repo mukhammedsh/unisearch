@@ -83,7 +83,10 @@ export function initUniversitiesPage() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
         const minVal = parseInt(el.minSlider.value); const maxVal = parseInt(el.maxSlider.value); const maxRange = parseInt(el.maxSlider.max);
         const percent1 = (minVal / maxRange) * 100; const percent2 = (maxVal / maxRange) * 100;
-        el.track.style.background = `linear-gradient(to right, #e0e0e0 ${percent1}%, #5d17ea ${percent1}%, #5d17ea ${percent2}%, #e0e0e0 ${percent2}%)`;
+        const styles = getComputedStyle(document.documentElement);
+        const inactive = (styles.getPropertyValue("--slider-track-inactive") || "#d4d8e0").trim();
+        const active = (styles.getPropertyValue("--slider-track-active") || "#5d17ea").trim();
+        el.track.style.background = `linear-gradient(to right, ${inactive} ${percent1}%, ${active} ${percent1}%, ${active} ${percent2}%, ${inactive} ${percent2}%)`;
     }
     function slideMin() {
         let minVal = parseInt(el.minSlider.value);
@@ -483,11 +486,11 @@ export function initUniversitiesPage() {
 
         if (match.meetMinRequirements) {
             badges.push(
-                `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span>`
+                `<span class="uni-pill uni-pill--neutral">✅ Requirements Met</span>`
             );
         } else if (match.trackLabel) {
             badges.push(
-                `<span style="background:#fff7ed; color:#9a3412; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fdba74; margin-bottom:4px;">⚠️ Below Requirements</span>`
+                `<span class="uni-pill uni-pill--warn">⚠️ Below Requirements</span>`
             );
         }
 
@@ -495,32 +498,32 @@ export function initUniversitiesPage() {
         // Grant/Aid badges
         if (match.grantName) {
         badges.push(
-            `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🏆 ${match.grantName}</span>`
+            `<span class="uni-pill uni-pill--success">🏆 ${match.grantName}</span>`
         );
         } else if (overBudget) {
         if (aidEligible) {
             badges.push(
-            `<span style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #6ee7b7; margin-bottom:4px;">🎓 Grant/Aid Likely (no budget penalty)</span>`
+            `<span class="uni-pill uni-pill--success">🎓 Grant/Aid Likely (no budget penalty)</span>`
             );
         } else if (aidAny) {
             badges.push(
-            `<span style="background:#fff7ed; color:#9a3412; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #fdba74; margin-bottom:4px;">💸 Over Budget • Aid Available</span>`
+            `<span class="uni-pill uni-pill--warn">💸 Over Budget • Aid Available</span>`
             );
         } else {
             badges.push(
-            `<span style="background:#f3e8ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #d8b4fe; margin-bottom:4px;">💰 Over Budget</span>`
+            `<span class="uni-pill uni-pill--budget">💰 Over Budget</span>`
             );
         }
         } else {
         // Не over budget
         if (aidAny) {
             badges.push(
-            `<span style="background:#ecfdf5; color:#047857; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; border:1px solid #a7f3d0; margin-bottom:4px;">🎓 Aid Available</span>`
+            `<span class="uni-pill uni-pill--success">🎓 Aid Available</span>`
             );
         }
         if (match.trackLabel) {
             badges.push(
-            `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb; margin-bottom:4px;">✅ Requirements Met</span>`
+            `<span class="uni-pill uni-pill--neutral">✅ Requirements Met</span>`
             );
         }
         }
@@ -529,7 +532,7 @@ export function initUniversitiesPage() {
         if (badges.length === 0) {
         const acc = u.academics?.acceptance_rate_percent;
         badges.push(
-            `<span style="background:#f3f4f6; color:#374151; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid #e5e7eb;">Acceptance: ${acc ?? "—"}%</span>`
+            `<span class="uni-pill uni-pill--neutral">Acceptance: ${acc ?? "—"}%</span>`
         );
         }
 

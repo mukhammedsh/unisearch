@@ -113,6 +113,26 @@
     transform: rotate(0deg) translateY(-15px); 
 }
 
+.mockup-uni-name {
+    color: #111;
+}
+
+.mockup-uni-loc {
+    color: #666;
+}
+
+.ai-gold {
+    color: #fbbf24;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.24);
+}
+
+.text-gradient .ai-gold {
+    background: none;
+    -webkit-text-fill-color: #fbbf24;
+    color: #fbbf24;
+}
+
 /* Декоративный круг сзади */
 .blob {
     position: absolute;
@@ -292,4 +312,12 @@
 :root[data-theme="dark"] .feature-icon {
     background: rgba(157, 133, 255, 0.16);
     color: var(--accent);
+}
+
+:root[data-theme="dark"] .mockup-uni-name {
+    color: #f8fafc;
+}
+
+:root[data-theme="dark"] .mockup-uni-loc {
+    color: #cbd5e1;
 }
