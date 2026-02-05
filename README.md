@@ -226,6 +226,7 @@ You can also open **Guide** page to understand terms like CEFR, admission tracks
 - `university.html` (Details): full information about one university and its tracks + UniChance panel in Admission + UniMentor chat tab.
 - `ranking.html` (Rankings): ranking-focused view.
 - `guide.html` (Guide): explains admission terms, exams, and language proofs in simple words.
+- `about.html` (About Us): team introduction, contact blocks (mail/GitHub/social templates), and profile cards with PNG photo placeholders.
 
 ---
 
@@ -299,6 +300,11 @@ UniFit uses language requirements from track data (`language_requirements`) incl
 - Country default option renamed to `🌍 Global`.
 - URL query params now keep current filters/page/view correctly.
 - New `Guide` page with glossary + exam explanations + dynamic exam references.
+- New `About Us` page with:
+  - contact cards (email, GitHub, presentation/social template links),
+  - team member blocks and roles,
+  - black human-icon placeholders for future transparent PNG photos.
+- Global navbar updated with `About Us` link (via `components.js`) on all pages.
 
 ---
 
@@ -381,6 +387,7 @@ Open:
 - `http://127.0.0.1:5501/index.html`
 - `http://127.0.0.1:5501/universities.html`
 - `http://127.0.0.1:5501/guide.html`
+- `http://127.0.0.1:5501/about.html`
 
 Note: backend CORS default origin is `http://127.0.0.1:5501`.
 
@@ -487,12 +494,14 @@ frontend/
   university.html
   ranking.html
   guide.html
+  about.html
   css/
     style.css
     universities.css
     university.css
     ranking.css
     guide.css
+    about.css
   javascript/
     main.js
     components.js

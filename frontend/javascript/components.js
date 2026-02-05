@@ -66,6 +66,7 @@ const LAYOUT_HTML = `
     <a href="universities.html" data-link="universities">Universities</a>
     <a href="ranking.html" data-link="ranking">Rankings</a>
     <a href="guide.html" data-link="guide">Guide</a>
+    <a href="about.html" data-link="about">About Us</a>
   </nav>
 
   <div class="navbar-right">
