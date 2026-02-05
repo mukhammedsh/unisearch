@@ -48,7 +48,7 @@ const LAYOUT_HTML = `
       <div class="profile-title">
         <div class="profile-username">
           <span id="profileNameDisplay">User</span>
-          <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="12" />
+          <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="16" />
           <button class="icon-btn" id="editNameBtn" title="Edit Name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
           </button>
@@ -357,8 +357,8 @@ function initProfileUI() {
             } else {
                 const newName = nameInput.value.trim();
                 const validName = /^[A-Za-z0-9 ]+$/;
-                if (newName.length < 3 || newName.length > 12) {
-                    showToast("Name length must be 3-12 chars", "error");
+                if (newName.length < 3 || newName.length > 16) {
+                    showToast("Name length must be 3-16 chars", "error");
                     return;
                 }
                 if (!validName.test(newName)) {

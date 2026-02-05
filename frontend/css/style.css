@@ -43,6 +43,83 @@ body {
   padding-top: 70px;
 }
 
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes detail-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  main {
+    animation: page-enter 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  .d-card.is-mounted {
+    animation: detail-enter 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  :root.theme-animating body,
+  :root.theme-animating .navbar,
+  :root.theme-animating .theme-btn,
+  :root.theme-animating .profile-card,
+  :root.theme-animating .profile-input,
+  :root.theme-animating .profile-name-input,
+  :root.theme-animating .profile-block,
+  :root.theme-animating .profile-exam-item,
+  :root.theme-animating .lang-item,
+  :root.theme-animating .custom-select-trigger,
+  :root.theme-animating .custom-options,
+  :root.theme-animating .custom-option,
+  :root.theme-animating .site-footer,
+  :root.theme-animating .hero-section,
+  :root.theme-animating .stats-section,
+  :root.theme-animating .feature-box,
+  :root.theme-animating .mockup-card,
+  :root.theme-animating .u-card,
+  :root.theme-animating .uni-card,
+  :root.theme-animating .u-panel,
+  :root.theme-animating .u-input,
+  :root.theme-animating .u-select,
+  :root.theme-animating .u-reset,
+  :root.theme-animating .page-btn,
+  :root.theme-animating .view-toggles,
+  :root.theme-animating .rank-card,
+  :root.theme-animating .rank-badge,
+  :root.theme-animating .d-card,
+  :root.theme-animating .d-box,
+  :root.theme-animating .track-card,
+  :root.theme-animating .roi-box,
+  :root.theme-animating .chance-panel,
+  :root.theme-animating .mentor-panel,
+  :root.theme-animating .finance-card,
+  :root.theme-animating .total-price-card,
+  :root.theme-animating .scholarship-card,
+  :root.theme-animating .mentor-messages,
+  :root.theme-animating .mentor-msg--assistant,
+  :root.theme-animating .mentor-msg--user {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;

@@ -234,6 +234,37 @@
     margin: 0; 
 }
 
+@keyframes home-pop {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    body[data-page="home"] .hero-section,
+    body[data-page="home"] .stats-section,
+    body[data-page="home"] .features-section {
+        animation: home-pop 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+
+    body[data-page="home"] .stats-section {
+        animation-delay: 0.08s;
+    }
+
+    body[data-page="home"] .features-section:nth-of-type(3) {
+        animation-delay: 0.14s;
+    }
+
+    body[data-page="home"] .features-section:nth-of-type(4) {
+        animation-delay: 0.2s;
+    }
+}
+
 /* Адаптив */
 @media (max-width: 900px) {
     .hero-section { 

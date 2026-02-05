@@ -20,6 +20,8 @@ const THEME_STORAGE_KEY = "unisearch_theme";
 const THEME_LIGHT = "light";
 const THEME_DARK = "dark";
 let __themeWatchBound = false;
+let __themeAnimTimer = 0;
+let __themeAnimFrame = 0;
 
 function _readStoredTheme() {
   try {
@@ -51,8 +53,28 @@ export function getCurrentTheme() {
 export function applyTheme(theme, opts = {}) {
   const next = theme === THEME_DARK ? THEME_DARK : THEME_LIGHT;
   const persist = !!opts.persist;
-  document.documentElement.setAttribute("data-theme", next);
-  document.documentElement.style.colorScheme = next;
+  const animate = opts.animate !== false;
+  const root = document.documentElement;
+  const applyNow = () => {
+    root.setAttribute("data-theme", next);
+    root.style.colorScheme = next;
+  };
+
+  if (animate) {
+    root.classList.add("theme-animating");
+    if (__themeAnimFrame) window.cancelAnimationFrame(__themeAnimFrame);
+    if (__themeAnimTimer) window.clearTimeout(__themeAnimTimer);
+    __themeAnimFrame = window.requestAnimationFrame(() => {
+      __themeAnimFrame = 0;
+      applyNow();
+      __themeAnimTimer = window.setTimeout(() => {
+        root.classList.remove("theme-animating");
+        __themeAnimTimer = 0;
+      }, 220);
+    });
+  } else {
+    applyNow();
+  }
   if (persist) {
     try {
       localStorage.setItem(THEME_STORAGE_KEY, next);
@@ -67,13 +89,13 @@ export function applyTheme(theme, opts = {}) {
 export function initTheme() {
   const stored = _readStoredTheme();
   const resolved = stored || _systemTheme();
-  applyTheme(resolved, { persist: false });
+  applyTheme(resolved, { persist: false, animate: false });
 
   if (!__themeWatchBound && window.matchMedia) {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = () => {
       if (_readStoredTheme()) return;
-      applyTheme(_systemTheme(), { persist: false });
+      applyTheme(_systemTheme(), { persist: false, animate: true });
     };
     try {
       mq.addEventListener("change", onChange);

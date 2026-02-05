@@ -521,11 +521,6 @@ export function initUniversitiesPage() {
             `<span class="uni-pill uni-pill--success">🎓 Aid Available</span>`
             );
         }
-        if (match.trackLabel) {
-            badges.push(
-            `<span class="uni-pill uni-pill--neutral">✅ Requirements Met</span>`
-            );
-        }
         }
 
         // Fallback: acceptance
@@ -1139,7 +1134,10 @@ export async function initUniversityPage() {
     }
 
     if (stateEl) stateEl.textContent = "";
-    if (cardEl) cardEl.style.display = "block"; 
+    if (cardEl) {
+        cardEl.style.display = "block";
+        cardEl.classList.add("is-mounted");
+    }
     initUniMentor(u);
     setupTabs(); 
 
