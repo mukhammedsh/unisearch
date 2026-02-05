@@ -6,7 +6,7 @@ UniSearch is a full-stack web app that helps applicants choose universities usin
 - profile-based filtering,
 - UniFit ranking (AI-like scoring with prestige/budget/admission feasibility balance),
 - UniChance probability (0-100 estimated admission chance),
-- and UniMentor (AI chatbot consultant for university Q&A).
+- and UniMentor (AI chatbot consultant for university Q&A)
 
 It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
 
