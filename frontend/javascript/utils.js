@@ -270,6 +270,8 @@ const EXAM_LABEL_OVERRIDES = {
   GPA: "GPA",
   UNT: "UNT (ЕНТ)",
   NUET_Total: "NUET Total",
+  NUET: "NUET Total",
+  NUET_TOTAL: "NUET Total",
   AP_Total: "AP Total",
   AP_Score: "AP Subject Score",
   IB_Diploma: "IB Diploma",

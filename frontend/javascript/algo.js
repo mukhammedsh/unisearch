@@ -11,6 +11,7 @@ const toNum = (v) => {
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
 };
+const canonicalExamKey = (key) => String(key || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 
 // Conservative fallback to avoid "IELTS 10000" even if config failed to load.
 const FALLBACK_LANG_EXAMS = {
@@ -69,10 +70,21 @@ function isLanguageExamKey(key) {
 function getExamLimits(examKey) {
   if (!examKey) return null;
   const k = String(examKey).trim();
+  const ku = k.toUpperCase();
+  const kc = canonicalExamKey(k);
   if (k.toUpperCase() === "GPA") return GPA_FALLBACK;
 
-  const examCfg = EXAM_CONFIG && EXAM_CONFIG[k] ? EXAM_CONFIG[k] : null;
+  const examCfg =
+    (EXAM_CONFIG && EXAM_CONFIG[k]) ? EXAM_CONFIG[k] :
+    (EXAM_CONFIG && EXAM_CONFIG[ku]) ? EXAM_CONFIG[ku] :
+    null;
   if (examCfg) return examCfg;
+
+  if (EXAM_CONFIG && typeof EXAM_CONFIG === "object") {
+    for (const [id, cfg] of Object.entries(EXAM_CONFIG)) {
+      if (canonicalExamKey(id) === kc) return cfg;
+    }
+  }
 
   // поддержка разных форматов LANG_CONFIG:
   // - LANG_CONFIG.exams[IELTS]
@@ -88,12 +100,12 @@ function getExamLimits(examKey) {
   if (groups && typeof groups === "object") {
     for (const arr of Object.values(groups)) {
       if (!Array.isArray(arr)) continue;
-      const found = arr.find((x) => String(x?.id || "").trim() === k);
+      const found = arr.find((x) => canonicalExamKey(x?.id) === kc);
       if (found) return found;
     }
   }
 
-  return FALLBACK_LANG_EXAMS[k] || null;
+  return FALLBACK_LANG_EXAMS[k] || FALLBACK_LANG_EXAMS[ku] || null;
 }
 
 function clampToLimits(examKey, score) {
@@ -120,17 +132,28 @@ function clampToLimits(examKey, score) {
   return out;
 }
 
+function setBestScore(map, examKey, score) {
+  const raw = String(examKey || "").trim();
+  if (!raw) return;
+  const value = clampToLimits(raw, score);
+  if (value === null) return;
+
+  const keys = [raw, raw.toUpperCase(), canonicalExamKey(raw)];
+  for (const k of keys) {
+    if (!k) continue;
+    const prev = toNum(map[k]);
+    map[k] = prev === null ? value : Math.max(prev, value);
+  }
+}
+
 function buildUserScores(profile) {
   const scores = {};
-  const gpa = clampToLimits("GPA", profile?.gpa);
-  if (gpa !== null) scores.GPA = gpa;
+  setBestScore(scores, "GPA", profile?.gpa);
 
   // Academic exams: profile.exams[] can be {id, score} or {exam, score}
   for (const it of (profile?.exams || [])) {
     const key = it?.id ?? it?.exam;
-    if (!key) continue;
-    const v = clampToLimits(key, it?.score);
-    if (v !== null) scores[String(key)] = v;
+    setBestScore(scores, key, it?.score);
   }
 
   // Language exams stored in profile.languages:
@@ -140,9 +163,7 @@ function buildUserScores(profile) {
     if (kind !== "exam") continue;
 
     const key = it?.exam ?? it?.examId ?? it?.id;
-    if (!key) continue;
-    const v = clampToLimits(key, it?.score);
-    if (v !== null) scores[String(key)] = v;
+    setBestScore(scores, key, it?.score);
   }
 
   return scores;
@@ -189,12 +210,13 @@ function buildUserLanguages(profile) {
 
 function getExamLanguageCode(examId) {
   const id = String(examId || "").trim();
+  const canon = canonicalExamKey(id);
   if (!id) return "";
   const groups = LANG_CONFIG?.language_exams || {};
   if (!groups || typeof groups !== "object") return "";
   for (const [code, arr] of Object.entries(groups)) {
     if (!Array.isArray(arr)) continue;
-    const found = arr.some((x) => String(x?.id || "").trim() === id);
+    const found = arr.some((x) => canonicalExamKey(x?.id) === canon);
     if (found) return normalizeLangCode(code);
   }
   return "";
@@ -233,11 +255,16 @@ function inferLanguageExamScore(examId, userLanguages) {
 function getUserScore(userScores, key, userLanguages = null) {
   if (!userScores || !key) return null;
   const k = String(key);
+  const ku = k.toUpperCase();
+  const kc = canonicalExamKey(k);
 
-  if (Object.prototype.hasOwnProperty.call(userScores, k)) return userScores[k];
+  const directKeys = [k, ku, kc];
+  for (const dk of directKeys) {
+    if (Object.prototype.hasOwnProperty.call(userScores, dk)) return userScores[dk];
+  }
 
   // алиасы под разные названия
-  const up = k.toUpperCase();
+  const up = ku;
   const aliases = {
     TOEFL: ["TOEFL_IBT", "TOEFL_iBT", "TOEFLIBT"],
     TOEFL_IBT: ["TOEFL", "TOEFL_iBT", "TOEFLIBT"],
@@ -246,12 +273,22 @@ function getUserScore(userScores, key, userLanguages = null) {
     DUOLINGO: ["DET", "DUOLINGO_ENGLISH_TEST", "DUOLINGOENGLISHTEST"],
     DET: ["DUOLINGO", "DUOLINGO_ENGLISH_TEST"],
     CAMBRIDGE_C1_ADVANCED: ["CAMBRIDGE"],
+    NUET: ["NUET_TOTAL", "NUETTOTAL"],
+    NUET_TOTAL: ["NUET", "NUETTOTAL"],
   };
 
   const list = aliases[up] || [];
   for (const a of list) {
     const key2 = String(a);
-    if (Object.prototype.hasOwnProperty.call(userScores, key2)) return userScores[key2];
+    const aliasKeys = [key2, key2.toUpperCase(), canonicalExamKey(key2)];
+    for (const ak of aliasKeys) {
+      if (Object.prototype.hasOwnProperty.call(userScores, ak)) return userScores[ak];
+    }
+  }
+
+  // Last-resort canonical match against existing keys.
+  for (const [existingKey, val] of Object.entries(userScores)) {
+    if (canonicalExamKey(existingKey) === kc) return val;
   }
 
   // No explicit language exam score: infer from language profile (native/CEFR).
@@ -579,7 +616,13 @@ function getRankScoreFactory(items) {
 }
 
 function acceptanceScore(uni) {
-  const ar = toNum(uni?.academics?.acceptance_rate_percent);
+  let ar = toNum(uni?.academics?.acceptance_rate_percent);
+  if (ar === null) {
+    const vals = (Array.isArray(uni?.academics?.programs) ? uni.academics.programs : [])
+      .map((p) => toNum(p?.acceptance_rate_percent))
+      .filter((v) => v !== null);
+    if (vals.length) ar = vals.reduce((sum, v) => sum + v, 0) / vals.length;
+  }
   if (ar === null) return 0.35;
   // sqrt makes low acceptance hurt, but not collapse everything
   return clamp01(Math.sqrt(clamp(ar, 0, 100) / 100));

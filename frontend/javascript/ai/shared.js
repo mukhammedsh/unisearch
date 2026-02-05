@@ -6,6 +6,7 @@ export const toNum = (v) => {
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
 };
+const canonicalExamKey = (key) => String(key || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 
 const FALLBACK_LANG_EXAMS = {
   IELTS: { min: 0, max: 9, step: 0.5 },
@@ -101,10 +102,12 @@ export function buildUserContext(profile) {
 
 function findLangExamCfg(examId) {
   const groups = LANG_CONFIG?.language_exams || {};
+  const target = canonicalExamKey(examId);
+  if (!target) return null;
   if (!groups || typeof groups !== "object") return null;
   for (const arr of Object.values(groups)) {
     if (!Array.isArray(arr)) continue;
-    const found = arr.find((x) => String(x?.id || "").trim() === examId);
+    const found = arr.find((x) => canonicalExamKey(x?.id) === target);
     if (found) return found;
   }
   return null;
@@ -112,11 +115,18 @@ function findLangExamCfg(examId) {
 
 export function getExamConfig(examId) {
   const id = String(examId || "").trim();
+  const up = id.toUpperCase();
+  const canon = canonicalExamKey(id);
   if (!id) return null;
   if (id.toUpperCase() === "GPA") return { min: 0, max: 100, step: 1 };
 
   if (EXAM_CONFIG?.[id]) return EXAM_CONFIG[id];
-  if (EXAM_CONFIG?.[id.toUpperCase()]) return EXAM_CONFIG[id.toUpperCase()];
+  if (EXAM_CONFIG?.[up]) return EXAM_CONFIG[up];
+  if (EXAM_CONFIG && typeof EXAM_CONFIG === "object") {
+    for (const [k, cfg] of Object.entries(EXAM_CONFIG)) {
+      if (canonicalExamKey(k) === canon) return cfg;
+    }
+  }
 
   const langCfg = findLangExamCfg(id);
   if (langCfg) return langCfg;
@@ -126,12 +136,13 @@ export function getExamConfig(examId) {
 
 function getExamLanguageCode(examId) {
   const id = String(examId || "").trim();
+  const target = canonicalExamKey(id);
   if (!id) return "";
   const groups = LANG_CONFIG?.language_exams || {};
   if (!groups || typeof groups !== "object") return "";
   for (const [code, arr] of Object.entries(groups)) {
     if (!Array.isArray(arr)) continue;
-    const found = arr.some((x) => String(x?.id || "").trim() === id);
+    const found = arr.some((x) => canonicalExamKey(x?.id) === target);
     if (found) return normalizeLangCode(code);
   }
   return "";
@@ -192,19 +203,30 @@ const SCORE_ALIASES = {
   TOEFL_iBT_1_6: ["TOEFL", "TOEFL_iBT"],
   Duolingo: ["DET"],
   DET: ["Duolingo"],
+  NUET: ["NUET_TOTAL"],
+  NUET_TOTAL: ["NUET"],
 };
 
 export function getUserScore(userScores, examId, userLanguages = null) {
   const id = String(examId || "").trim();
+  const up = id.toUpperCase();
+  const canon = canonicalExamKey(id);
   if (!id) return null;
 
   if (toNum(userScores?.[id]) !== null) return toNum(userScores[id]);
-  if (toNum(userScores?.[id.toUpperCase()]) !== null) return toNum(userScores[id.toUpperCase()]);
+  if (toNum(userScores?.[up]) !== null) return toNum(userScores[up]);
+  if (toNum(userScores?.[canon]) !== null) return toNum(userScores[canon]);
 
-  const aliases = SCORE_ALIASES[id] || SCORE_ALIASES[id.toUpperCase()] || [];
+  const aliases = SCORE_ALIASES[id] || SCORE_ALIASES[up] || [];
   for (const a of aliases) {
     if (toNum(userScores?.[a]) !== null) return toNum(userScores[a]);
     if (toNum(userScores?.[a.toUpperCase()]) !== null) return toNum(userScores[a.toUpperCase()]);
+    const ac = canonicalExamKey(a);
+    if (toNum(userScores?.[ac]) !== null) return toNum(userScores[ac]);
+  }
+
+  for (const [k, v] of Object.entries(userScores || {})) {
+    if (canonicalExamKey(k) === canon && toNum(v) !== null) return toNum(v);
   }
 
   // No explicit exam score: try inferring from language evidence (native/CEFR).

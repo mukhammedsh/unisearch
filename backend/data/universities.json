@@ -15,31 +15,25 @@
     },
     "website": "https://www.mit.edu/",
     "academics": {
-      "majors": [
-        "Computer Science",
-        "Engineering",
-        "Physics",
-        "Mathematics",
-        "Architecture",
-        "Biology"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 4
+      "programs": [
+        {
+          "name": "Computer Science & Eng",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 4,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 89340,
-      "application_fee_usd": 75,
-      "financial_aid": {
-        "merit_based": false,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 64310,
         "Housing_Dorm": 13614,
@@ -48,28 +42,15 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 110000,
-      "average_salary_by_major": {
-        "Computer Science": 126841,
-        "Engineering": 102000,
-        "Mathematics": 115000,
-        "Physics": 95000,
-        "Business": 135000,
-        "Biology": 75000
-      }
-    },
-    "student_life": {
-      "size": "medium"
+      "average_early_career_salary_usd": 110000
     },
     "admission_tracks": [
       {
         "id": "mit_regular",
-        "label": "Regular Action (SAT/ACT Required)",
-        "study_mode": "On-campus",
-        "description": "Standard admission process. SAT/ACT is mandatory.",
+        "label": "Regular Action",
         "requirements": {
           "IELTS": 7.5,
-          "SAT": 1520,
+          "SAT": 1500,
           "GPA": 98
         },
         "stats_avg": {
@@ -79,37 +60,27 @@
         },
         "scholarships": [
           {
-            "name": "MIT Need-based Scholarship (Full Ride)",
+            "name": "Need-based Aid",
             "type": "need",
             "requirements": {
               "GPA": 98
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
             "requirements": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
               "IELTS": 7.5
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 110,
-              "TOEFL_iBT_1_6": 6.0,
-              "DET": 150,
-              "PTE": 79,
-              "Cambridge_C1_Advanced": 200,
               "IELTS": 8.0
             }
           }
-        ]
+        ],
+        "language_requirements_mode": "any"
       }
     ]
   },
@@ -129,30 +100,25 @@
     },
     "website": "https://www.imperial.ac.uk/",
     "academics": {
-      "majors": [
-        "Engineering",
-        "Medicine",
-        "Natural Sciences",
-        "Business",
-        "Computer Science"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 15
+      "programs": [
+        {
+          "name": "Computing (CS)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 14,
+          "duration": "3-4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 75000,
-      "application_fee_usd": 35,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": false
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 52500,
         "Housing_Dorm": 13000,
@@ -161,28 +127,12 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 68000,
-      "average_salary_by_major": {
-        "Computer Science": 82000,
-        "Engineering": 65000,
-        "Medicine": 55000,
-        "Mathematics": 70000,
-        "Business": 75000
-      }
-    },
-    "student_life": {
-      "size": "large"
+      "average_early_career_salary_usd": 68000
     },
     "admission_tracks": [
       {
         "id": "imperial_eng",
-        "label": "Engineering & Science Track",
-        "study_mode": "On-campus",
-        "applicable_majors": [
-          "Engineering",
-          "Natural Sciences",
-          "Computer Science"
-        ],
+        "label": "Engineering Track",
         "requirements": {
           "IELTS": 7.0,
           "SAT": 1450,
@@ -190,155 +140,32 @@
         },
         "stats_avg": {
           "IELTS": 7.5,
-          "SAT": 1500,
-          "GPA": 96
+          "SAT": 1510,
+          "GPA": 98
         },
         "scholarships": [
           {
-            "name": "President's Undergraduate Scholarship",
+            "name": "President's Scholarship",
             "type": "merit",
             "requirements": {
               "GPA": 98
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
             "requirements": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
               "IELTS": 7.0
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
               "IELTS": 7.5
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "harvard-usa-cambridge",
-    "name": "Harvard University",
-    "rank": 5,
-    "student_count": 25266,
-    "location": {
-      "country": "USA",
-      "city": "Cambridge",
-      "state": "MA"
-    },
-    "coordinates": {
-      "lat": 42.3736,
-      "lon": -71.1097
-    },
-    "website": "https://www.harvard.edu/",
-    "academics": {
-      "majors": [
-        "Economics",
-        "Computer Science",
-        "Political Science",
-        "Law",
-        "Medicine",
-        "Psychology"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus",
-        "Hybrid"
-      ],
-      "acceptance_rate_percent": 3
-    },
-    "finance": {
-      "total_cost_year_usd": 86926,
-      "application_fee_usd": 85,
-      "financial_aid": {
-        "merit_based": false,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 59320,
-        "Housing_Dorm": 13532,
-        "Food": 8598,
-        "Books_Transport_Misc": 5476
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 95000,
-      "average_salary_by_major": {
-        "Computer Science": 125000,
-        "Economics": 105000,
-        "Law": 160000,
-        "Political Science": 75000,
-        "Psychology": 65000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "harvard_college",
-        "label": "Harvard College (Standard)",
-        "study_mode": "On-campus",
-        "requirements": {
-          "IELTS": 7.5,
-          "SAT": 1520,
-          "GPA": 98
-        },
-        "stats_avg": {
-          "IELTS": 8.0,
-          "SAT": 1560,
-          "GPA": 100
-        },
-        "scholarships": [
-          {
-            "name": "Full Need-Based Aid",
-            "type": "need",
-            "requirements": {
-              "GPA": 95
             }
           }
         ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
-            "requirements": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
-              "IELTS": 7.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 110,
-              "TOEFL_iBT_1_6": 6.0,
-              "DET": 150,
-              "PTE": 79,
-              "Cambridge_C1_Advanced": 200,
-              "IELTS": 8.0
-            }
-          }
-        ]
+        "language_requirements_mode": "any"
       }
     ]
   },
@@ -358,30 +185,25 @@
     },
     "website": "https://www.stanford.edu/",
     "academics": {
-      "majors": [
-        "Computer Science",
-        "Engineering",
-        "Business",
-        "Biology",
-        "Economics"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 4
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 4,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 93213,
-      "application_fee_usd": 90,
-      "financial_aid": {
-        "merit_based": false,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 65910,
         "Housing_Dorm": 13000,
@@ -390,23 +212,12 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 105000,
-      "average_salary_by_major": {
-        "Computer Science": 135000,
-        "Engineering": 110000,
-        "Business": 125000,
-        "Economics": 98000,
-        "Biology": 70000
-      }
-    },
-    "student_life": {
-      "size": "large"
+      "average_early_career_salary_usd": 105000
     },
     "admission_tracks": [
       {
         "id": "stanford_standard",
         "label": "Standard Admission",
-        "study_mode": "On-campus",
         "requirements": {
           "IELTS": 7.5,
           "SAT": 1500,
@@ -419,35 +230,108 @@
         },
         "scholarships": [
           {
-            "name": "Zero Tuition (Income <$150k)",
+            "name": "Need-based Aid",
             "type": "need",
             "requirements": {}
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
             "requirements": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
               "IELTS": 7.5
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 110,
-              "TOEFL_iBT_1_6": 6.0,
-              "DET": 150,
-              "PTE": 79,
-              "Cambridge_C1_Advanced": 200,
               "IELTS": 8.0
             }
           }
-        ]
+        ],
+        "language_requirements_mode": "any"
+      }
+    ]
+  },
+  {
+    "id": "harvard-usa-cambridge",
+    "name": "Harvard University",
+    "rank": 5,
+    "student_count": 25266,
+    "location": {
+      "country": "USA",
+      "city": "Cambridge",
+      "state": "MA"
+    },
+    "coordinates": {
+      "lat": 42.3736,
+      "lon": -71.1097
+    },
+    "website": "https://www.harvard.edu/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 3,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 86926,
+      "costs_breakdown_year_usd": {
+        "Tuition": 59320,
+        "Housing_Dorm": 13532,
+        "Food": 8598,
+        "Books_Transport_Misc": 5476
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 95000
+    },
+    "admission_tracks": [
+      {
+        "id": "harvard_college",
+        "label": "Harvard College",
+        "requirements": {
+          "IELTS": 7.5,
+          "SAT": 1520,
+          "GPA": 98
+        },
+        "stats_avg": {
+          "IELTS": 8.0,
+          "SAT": 1570,
+          "GPA": 100
+        },
+        "scholarships": [
+          {
+            "name": "Financial Aid",
+            "type": "need",
+            "requirements": {}
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5
+            },
+            "stats_avg": {
+              "IELTS": 8.0
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
       }
     ]
   },
@@ -467,30 +351,25 @@
     },
     "website": "https://ethz.ch/en.html",
     "academics": {
-      "majors": [
-        "Engineering",
-        "Computer Science",
-        "Architecture",
-        "Physics",
-        "Mathematics"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 27
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 20,
+          "duration": "3 years",
+          "language": [
+            "German"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 28000,
-      "application_fee_usd": 150,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 1800,
         "Housing_Rent": 13000,
@@ -499,30 +378,16 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 95000,
-      "average_salary_by_major": {
-        "Computer Science": 110000,
-        "Engineering": 100000,
-        "Architecture": 85000,
-        "Physics": 98000,
-        "Mathematics": 95000
-      }
-    },
-    "student_life": {
-      "size": "large"
+      "average_early_career_salary_usd": 95000
     },
     "admission_tracks": [
       {
         "id": "eth_exam",
-        "label": "Direct Entry (Exam/Diploma)",
-        "study_mode": "On-campus",
-        "description": "Requires reduced entrance exam or recognized high school diploma (e.g. IB, A-Level with specific grades).",
+        "label": "Direct Entry",
         "requirements": {
-          "IELTS": 7.0,
           "GPA": 90
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "GPA": 96
         },
         "scholarships": [
@@ -534,46 +399,30 @@
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
-            "requirements": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
-              "IELTS": 7.5
-            }
-          },
           {
             "code": "de",
             "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
+            "min_cefr": 5,
             "requirements": {
               "TestDaF_TDN": 4,
-              "DSH_Level": 2
-            },
-            "stats_avg": {
-              "TestDaF_TDN": 5,
               "DSH_Level": 3
             },
-            "notes": "Typical German-taught admission threshold: B2/C1 via TestDaF/DSH."
+            "stats_avg": {
+              "TestDaF_TDN": 4,
+              "DSH_Level": 3
+            },
+            "notes": "ETH Bachelor programs are taught in German; C1-level proficiency is required."
           }
         ],
         "language_requirements_mode": "any"
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "language_requirements",
+        "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/language-requirements.html"
       }
     ]
   },
@@ -593,30 +442,25 @@
     },
     "website": "https://nus.edu.sg/",
     "academics": {
-      "majors": [
-        "Computer Science",
-        "Engineering",
-        "Business",
-        "Law",
-        "Medicine"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 5
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 7,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 32000,
-      "application_fee_usd": 15,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 20000,
         "Housing_Dorm": 6000,
@@ -625,23 +469,12 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 55000,
-      "average_salary_by_major": {
-        "Computer Science": 65000,
-        "Law": 68000,
-        "Business": 58000,
-        "Engineering": 52000,
-        "Medicine": 60000
-      }
-    },
-    "student_life": {
-      "size": "large"
+      "average_early_career_salary_usd": 55000
     },
     "admission_tracks": [
       {
         "id": "nus_intl",
         "label": "International Admission",
-        "study_mode": "On-campus",
         "requirements": {
           "IELTS": 7.0,
           "SAT": 1450,
@@ -649,156 +482,721 @@
         },
         "stats_avg": {
           "IELTS": 7.5,
-          "SAT": 1540,
-          "GPA": 98
+          "SAT": 1530,
+          "GPA": 99
         },
         "scholarships": [
           {
-            "name": "ASEAN Undergraduate Scholarship",
+            "name": "ASEAN Scholarship",
             "type": "merit",
             "requirements": {
               "SAT": 1550
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
             "requirements": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
               "IELTS": 7.0
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
               "IELTS": 7.5
             }
           }
-        ]
+        ],
+        "language_requirements_mode": "any"
       }
     ]
   },
   {
-    "id": "university-of-melbourne-au-melbourne",
-    "name": "University of Melbourne",
-    "rank": 19,
-    "student_count": 54000,
+    "id": "epfl-ch-lausanne",
+    "name": "EPFL",
+    "rank": 9,
+    "student_count": 12574,
     "location": {
-      "country": "Australia",
-      "city": "Melbourne",
-      "state": "Victoria"
+      "country": "Switzerland",
+      "city": "Lausanne",
+      "state": "Vaud"
     },
     "coordinates": {
-      "lat": -37.7986,
-      "lon": 144.9602
+      "lat": 46.5191,
+      "lon": 6.5668
     },
-    "website": "https://www.unimelb.edu.au/",
+    "website": "https://www.epfl.ch/en/",
     "academics": {
-      "majors": [
-        "Business",
-        "Engineering",
-        "Law",
-        "Medicine",
-        "Arts",
-        "Science"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 70
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 20,
+          "duration": "3 years",
+          "language": [
+            "French"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
-      "total_cost_year_usd": 52000,
-      "application_fee_usd": 75,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": false
-      },
+      "total_cost_year_usd": 25000,
       "costs_breakdown_year_usd": {
-        "Tuition": 32000,
-        "Housing_Dorm": 13000,
+        "Tuition": 1800,
+        "Housing_Rent": 13200,
+        "Food": 8000,
+        "Insurance_Transport_Misc": 2000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 92000
+    },
+    "admission_tracks": [
+      {
+        "id": "epfl_exam",
+        "label": "Entrance Exam",
+        "requirements": {
+          "GPA": 85
+        },
+        "stats_avg": {
+          "GPA": 92
+        },
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "fr",
+            "accept_native": true,
+            "min_cefr": 4,
+            "requirements": {
+              "DELF_DALF_Level": 4
+            },
+            "stats_avg": {
+              "DELF_DALF_Level": 5
+            },
+            "notes": "EPFL requires French B2 minimum (C1 strongly recommended)."
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "language_requirements",
+        "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/level-of-french-required-for-admission-to-bachelor-programs/"
+      }
+    ]
+  },
+  {
+    "id": "technical-university-of-munich-de-munich",
+    "name": "Technical University of Munich (TUM)",
+    "rank": 10,
+    "student_count": 52580,
+    "location": {
+      "country": "Germany",
+      "city": "Munich",
+      "state": "Bavaria"
+    },
+    "coordinates": {
+      "lat": 48.1507,
+      "lon": 11.5691
+    },
+    "website": "https://www.tum.de/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Informatics (CS)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 25,
+          "duration": "3 years",
+          "language": [
+            "German",
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 19000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 6500,
+        "Housing_Dorm": 8000,
+        "Food": 3500,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 65000
+    },
+    "admission_tracks": [
+      {
+        "id": "tum_aptitude",
+        "label": "Aptitude Assessment",
+        "requirements": {
+          "IELTS": 6.5,
+          "GPA": 80
+        },
+        "stats_avg": {
+          "IELTS": 7.5,
+          "GPA": 90
+        },
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5
+            },
+            "stats_avg": {
+              "IELTS": 7.5
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ]
+  },
+  {
+    "id": "university-of-toronto-ca-toronto",
+    "name": "University of Toronto",
+    "rank": 11,
+    "student_count": 102431,
+    "location": {
+      "country": "Canada",
+      "city": "Toronto",
+      "state": "Ontario"
+    },
+    "coordinates": {
+      "lat": 43.6629,
+      "lon": -79.3957
+    },
+    "website": "https://www.utoronto.ca/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 62000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 45000,
+        "Housing_Dorm": 11000,
+        "Food": 4000,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 55000
+    },
+    "admission_tracks": [
+      {
+        "id": "uoft_general",
+        "label": "General Admission",
+        "requirements": {
+          "IELTS": 6.5,
+          "SAT": 1300,
+          "GPA": 85
+        },
+        "stats_avg": {
+          "IELTS": 7.5,
+          "SAT": 1480,
+          "GPA": 94
+        },
+        "scholarships": [
+          {
+            "name": "Pearson Scholarship",
+            "type": "merit",
+            "requirements": {
+              "GPA": 99
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5
+            },
+            "stats_avg": {
+              "IELTS": 7.5
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ]
+  },
+  {
+    "id": "cuhk-hk-shatin",
+    "name": "The Chinese University of Hong Kong (CUHK)",
+    "rank": 12,
+    "student_count": 22021,
+    "location": {
+      "country": "Hong Kong",
+      "city": "Sha Tin",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 22.4195,
+      "lon": 114.2052
+    },
+    "website": "https://www.cuhk.edu.hk/english/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 33354,
+      "costs_breakdown_year_usd": {
+        "Tuition": 23000,
+        "Housing_Dorm": 2200,
+        "Food": 5800,
+        "Books_Transport_Misc": 2354
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 42000
+    },
+    "admission_tracks": [
+      {
+        "id": "cuhk_intl",
+        "label": "International Admissions",
+        "requirements": {
+          "SAT": 1300,
+          "GPA": 85
+        },
+        "stats_avg": {
+          "SAT": 1450,
+          "GPA": 93
+        },
+        "scholarships": [
+          {
+            "name": "Admission Scholarship",
+            "type": "merit",
+            "requirements": {
+              "SAT": 1500
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5,
+              "TOEFL_iBT_0_120": 80
+            },
+            "stats_avg": {
+              "IELTS": 7.0,
+              "TOEFL_iBT_0_120": 100
+            },
+            "notes": "CUHK accepts TOEFL iBT 80 (old scale) or 47 (new scale from Jan 21, 2026); section minimums also apply."
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "language_requirements",
+        "url": "https://admission.cuhk.edu.hk/apply/other-qualifications/"
+      }
+    ]
+  },
+  {
+    "id": "university-of-tokyo-jp-tokyo",
+    "name": "University of Tokyo",
+    "rank": 13,
+    "student_count": 28585,
+    "location": {
+      "country": "Japan",
+      "city": "Tokyo",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 35.7128,
+      "lon": 139.762
+    },
+    "website": "https://www.u-tokyo.ac.jp/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "PEAK (Intl Track)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 20,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 16000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 5000,
+        "Housing_Dorm": 6000,
+        "Food": 4000,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 45000
+    },
+    "admission_tracks": [
+      {
+        "id": "utokyo_peak",
+        "label": "PEAK (English Track)",
+        "requirements": {
+          "IELTS": 7.0,
+          "SAT": 1350,
+          "GPA": 85
+        },
+        "stats_avg": {
+          "IELTS": 7.5,
+          "SAT": 1450,
+          "GPA": 93
+        },
+        "scholarships": [
+          {
+            "name": "UTokyo Scholarship",
+            "type": "merit",
+            "requirements": {
+              "SAT": 1500
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.0
+            },
+            "stats_avg": {
+              "IELTS": 7.5
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ]
+  },
+  {
+    "id": "seoul-national-university-kr-seoul",
+    "name": "Seoul National University",
+    "rank": 14,
+    "student_count": 30323,
+    "location": {
+      "country": "South Korea",
+      "city": "Seoul",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 37.46,
+      "lon": 126.9525
+    },
+    "website": "https://en.snu.ac.kr/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science & Eng",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "Korean",
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 15000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 5000,
+        "Housing_Dorm": 5000,
+        "Food": 4000,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 46000
+    },
+    "admission_tracks": [
+      {
+        "id": "snu_global",
+        "label": "International Admissions",
+        "requirements": {
+          "SAT": 1300,
+          "GPA": 85
+        },
+        "stats_avg": {
+          "SAT": 1480,
+          "GPA": 95
+        },
+        "scholarships": [
+          {
+            "name": "Glo-Harmony",
+            "type": "merit",
+            "requirements": {
+              "GPA": 95
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.0,
+              "TOEFL_iBT_0_120": 80
+            },
+            "stats_avg": {
+              "IELTS": 6.5,
+              "TOEFL_iBT_0_120": 90
+            }
+          },
+          {
+            "code": "ko",
+            "accept_native": true,
+            "requirements": {
+              "TOPIK_Level": 3
+            },
+            "stats_avg": {
+              "TOPIK_Level": 4
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "language_requirements",
+        "url": "https://admission.snu.ac.kr/international/faq"
+      }
+    ]
+  },
+  {
+    "id": "delft-university-of-technology-nl-delft",
+    "name": "Delft University of Technology",
+    "rank": 15,
+    "student_count": 27265,
+    "location": {
+      "country": "Netherlands",
+      "city": "Delft",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 52.0017,
+      "lon": 4.3725
+    },
+    "website": "https://www.tudelft.nl/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 20,
+          "duration": "3 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 36000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 19000,
+        "Housing_Dorm": 10000,
         "Food": 5000,
         "Books_Transport_Misc": 2000
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 49000,
-      "average_salary_by_major": {
-        "Business": 55000,
-        "Engineering": 58000,
-        "Computer Science": 52000,
-        "Law": 64000,
-        "Medicine": 70000
-      }
-    },
-    "student_life": {
-      "size": "large"
+      "average_early_career_salary_usd": 58000
     },
     "admission_tracks": [
       {
-        "id": "melb_intl",
-        "label": "International Undergraduate",
+        "id": "tudelft_numerus",
+        "label": "Numerus Clausus",
+        "requirements": {
+          "IELTS": 6.5,
+          "GPA": 80
+        },
+        "stats_avg": {
+          "IELTS": 7.0,
+          "GPA": 92
+        },
+        "scholarships": [
+          {
+            "name": "Justus & Louise van Effen",
+            "type": "merit",
+            "requirements": {
+              "GPA": 95
+            }
+          }
+        ],
         "study_mode": "On-campus",
-        "description": "Direct entry based on secondary school results (A-levels, IB, SAT).",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5
+            },
+            "stats_avg": {
+              "IELTS": 7.0
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ]
+  },
+  {
+    "id": "kaist-kr-daejeon",
+    "name": "KAIST",
+    "rank": 16,
+    "student_count": 10951,
+    "location": {
+      "country": "South Korea",
+      "city": "Daejeon",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 36.3721,
+      "lon": 127.3604
+    },
+    "website": "https://www.kaist.ac.kr/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 14000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 7000,
+        "Housing_Dorm": 2500,
+        "Food": 3500,
+        "Books_Transport_Misc": 1000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 50000
+    },
+    "admission_tracks": [
+      {
+        "id": "kaist_intl",
+        "label": "International Admission",
         "requirements": {
           "IELTS": 6.5,
           "SAT": 1350,
           "GPA": 85
         },
         "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1420,
-          "GPA": 92
+          "IELTS": 7.5,
+          "SAT": 1500,
+          "GPA": 94
         },
         "scholarships": [
           {
-            "name": "Melbourne International Undergraduate Scholarship",
+            "name": "KAIST Scholarship",
             "type": "merit",
-            "amount": 10000,
             "requirements": {
-              "GPA": 96
+              "GPA": 85
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
             "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
               "IELTS": 6.5
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
+              "IELTS": 7.5
             }
           }
-        ]
+        ],
+        "language_requirements_mode": "any"
       }
     ]
   },
@@ -818,30 +1216,26 @@
     },
     "website": "https://www.tsinghua.edu.cn/en/",
     "academics": {
-      "majors": [
-        "Computer Science",
-        "Engineering",
-        "Physics",
-        "Economics",
-        "Architecture"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 2
+      "programs": [
+        {
+          "name": "Computer Science (Intl)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 2,
+          "duration": "4 years",
+          "language": [
+            "English",
+            "Chinese"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 9500,
-      "application_fee_usd": 60,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 4500,
         "Housing_Dorm": 2000,
@@ -850,24 +1244,12 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 35000,
-      "average_salary_by_major": {
-        "Computer Science": 48000,
-        "Engineering": 38000,
-        "Economics": 40000,
-        "Architecture": 32000,
-        "Physics": 30000
-      }
-    },
-    "student_life": {
-      "size": "large"
+      "average_early_career_salary_usd": 35000
     },
     "admission_tracks": [
       {
         "id": "tsinghua_intl",
-        "label": "International Student Track",
-        "study_mode": "On-campus",
-        "description": "For non-Chinese citizens. Selection based on academic performance and language proficiency.",
+        "label": "International Track",
         "requirements": {
           "IELTS": 6.5,
           "SAT": 1300,
@@ -875,1149 +1257,29 @@
         },
         "stats_avg": {
           "IELTS": 7.0,
-          "SAT": 1450,
+          "SAT": 1460,
           "GPA": 95
         },
         "scholarships": [
           {
-            "name": "Chinese Government Scholarship",
+            "name": "Chinese Govt Scholarship",
             "type": "merit",
             "requirements": {
               "GPA": 95
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
             "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
               "IELTS": 6.5
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
               "IELTS": 7.0
             }
-          },
-          {
-            "code": "zh",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "HSK_Level": 4
-            },
-            "stats_avg": {
-              "HSK_Level": 5
-            },
-            "notes": "Chinese-taught tracks often require at least HSK 4/5."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "university-of-toronto-ca-toronto",
-    "name": "University of Toronto",
-    "rank": 29,
-    "student_count": 102431,
-    "location": {
-      "country": "Canada",
-      "city": "Toronto",
-      "state": "Ontario"
-    },
-    "coordinates": {
-      "lat": 43.6629,
-      "lon": -79.3957
-    },
-    "website": "https://www.utoronto.ca/",
-    "academics": {
-      "majors": [
-        "Computer Science",
-        "Business",
-        "Engineering",
-        "Psychology",
-        "Life Sciences"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus",
-        "Hybrid"
-      ],
-      "acceptance_rate_percent": 43
-    },
-    "finance": {
-      "total_cost_year_usd": 62000,
-      "application_fee_usd": 130,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": false
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 45000,
-        "Housing_Dorm": 11000,
-        "Food": 4000,
-        "Books_Transport_Misc": 2000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 55000,
-      "average_salary_by_major": {
-        "Computer Science": 68000,
-        "Engineering": 62000,
-        "Business": 60000,
-        "Life Sciences": 45000,
-        "Psychology": 42000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "uoft_general",
-        "label": "General Admission",
-        "study_mode": "On-campus",
-        "description": "Standard entry based on high school diploma and English proficiency.",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1300,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "SAT": 1400,
-          "GPA": 92
-        },
-        "scholarships": [
-          {
-            "name": "Lester B. Pearson International Scholarship",
-            "type": "merit",
-            "requirements": {
-              "GPA": 98
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 6,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
-              "IELTS": 7.5
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "epfl-ch-lausanne",
-    "name": "EPFL",
-    "rank": 22,
-    "student_count": 12574,
-    "location": {
-      "country": "Switzerland",
-      "city": "Lausanne",
-      "state": "Vaud"
-    },
-    "coordinates": {
-      "lat": 46.5191,
-      "lon": 6.5668
-    },
-    "website": "https://www.epfl.ch/en/",
-    "academics": {
-      "majors": [
-        "Computer Science",
-        "Engineering",
-        "Life Sciences",
-        "Architecture",
-        "Mathematics"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 21
-    },
-    "finance": {
-      "total_cost_year_usd": 25000,
-      "application_fee_usd": 160,
-      "financial_aid": {
-        "merit_based": false,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 1800,
-        "Housing_Rent": 13200,
-        "Food": 8000,
-        "Insurance_Transport_Misc": 2000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 92000,
-      "average_salary_by_major": {
-        "Computer Science": 105000,
-        "Engineering": 98000,
-        "Mathematics": 95000,
-        "Architecture": 88000,
-        "Life Sciences": 85000
-      }
-    },
-    "student_life": {
-      "size": "medium"
-    },
-    "admission_tracks": [
-      {
-        "id": "epfl_exam",
-        "label": "Entrance Examination",
-        "study_mode": "On-campus",
-        "description": "For applicants without a recognized Swiss high school diploma. Intensive math/science test.",
-        "requirements": {
-          "IELTS": 7.0,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "GPA": 92
-        },
-        "scholarships": [],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
-            "requirements": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
-              "IELTS": 7.5
-            }
-          },
-          {
-            "code": "fr",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "DELF_DALF_Level": 4,
-              "TCF_Total": 400
-            },
-            "stats_avg": {
-              "DELF_DALF_Level": 5,
-              "TCF_Total": 500
-            },
-            "notes": "French-taught tracks commonly expect around B2/C1."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "technical-university-of-munich-de-munich",
-    "name": "Technical University of Munich (TUM)",
-    "rank": 22,
-    "student_count": 52580,
-    "location": {
-      "country": "Germany",
-      "city": "Munich",
-      "state": "Bavaria"
-    },
-    "coordinates": {
-      "lat": 48.1507,
-      "lon": 11.5691
-    },
-    "website": "https://www.tum.de/en/",
-    "academics": {
-      "majors": [
-        "Engineering",
-        "Computer Science",
-        "Natural Sciences",
-        "Management",
-        "Life Sciences"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 8
-    },
-    "finance": {
-      "total_cost_year_usd": 19000,
-      "application_fee_usd": 50,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 6500,
-        "Housing_Dorm": 8000,
-        "Food": 3500,
-        "Books_Transport_Misc": 1000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 65000,
-      "average_salary_by_major": {
-        "Computer Science": 75000,
-        "Engineering": 72000,
-        "Management": 68000,
-        "Natural Sciences": 60000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "tum_aptitude",
-        "label": "Aptitude Assessment (EFV)",
-        "study_mode": "On-campus",
-        "description": "Evaluation of HS grades + interview/test. Usually requires German C1, some programs English.",
-        "requirements": {
-          "IELTS": 6.5,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "GPA": 90
-        },
-        "scholarships": [],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 6,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
-              "IELTS": 7.5
-            }
-          },
-          {
-            "code": "de",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TestDaF_TDN": 4,
-              "DSH_Level": 2
-            },
-            "stats_avg": {
-              "TestDaF_TDN": 5,
-              "DSH_Level": 3
-            },
-            "notes": "Typical German-taught admission threshold: B2/C1 via TestDaF/DSH."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "seoul-national-university-kr-seoul",
-    "name": "Seoul National University",
-    "rank": 38,
-    "student_count": 30323,
-    "location": {
-      "country": "South Korea",
-      "city": "Seoul",
-      "state": ""
-    },
-    "coordinates": {
-      "lat": 37.46,
-      "lon": 126.9525
-    },
-    "website": "https://en.snu.ac.kr/",
-    "academics": {
-      "majors": [
-        "Engineering",
-        "Medicine",
-        "Humanities",
-        "Social Sciences",
-        "Natural Sciences"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 15
-    },
-    "finance": {
-      "total_cost_year_usd": 15000,
-      "application_fee_usd": 60,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 5000,
-        "Housing_Dorm": 5000,
-        "Food": 4000,
-        "Books_Transport_Misc": 1000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 46000,
-      "average_salary_by_major": {
-        "Engineering": 52000,
-        "Medicine": 65000,
-        "Business": 48000,
-        "Humanities": 38000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "snu_global",
-        "label": "International Admissions",
-        "study_mode": "On-campus",
-        "description": "For non-Korean citizens. Document screening + optional interview.",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1300,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1450,
-          "GPA": 94
-        },
-        "scholarships": [
-          {
-            "name": "Glo-Harmony Scholarship",
-            "type": "merit",
-            "requirements": {
-              "GPA": 95
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            }
-          },
-          {
-            "code": "ko",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOPIK_Level": 3
-            },
-            "stats_avg": {
-              "TOPIK_Level": 4
-            },
-            "notes": "Korean-taught tracks commonly require TOPIK 3+."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "university-of-tokyo-jp-tokyo",
-    "name": "University of Tokyo",
-    "rank": 36,
-    "student_count": 28585,
-    "location": {
-      "country": "Japan",
-      "city": "Tokyo",
-      "state": ""
-    },
-    "coordinates": {
-      "lat": 35.7128,
-      "lon": 139.762
-    },
-    "website": "https://www.u-tokyo.ac.jp/en/",
-    "academics": {
-      "majors": [
-        "Engineering",
-        "Economics",
-        "Law",
-        "Science",
-        "Agriculture"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 34
-    },
-    "finance": {
-      "total_cost_year_usd": 16000,
-      "application_fee_usd": 50,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 5000,
-        "Housing_Dorm": 6000,
-        "Food": 4000,
-        "Books_Transport_Misc": 1000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 45000,
-      "average_salary_by_major": {
-        "Engineering": 50000,
-        "Law": 55000,
-        "Economics": 48000,
-        "Science": 42000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "utokyo_peak",
-        "label": "PEAK (English Track)",
-        "study_mode": "On-campus",
-        "description": "Programs in English at Komaba (PEAK). Screening of documents + interview.",
-        "requirements": {
-          "IELTS": 7.0,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.5,
-          "SAT": 1450,
-          "GPA": 93
-        },
-        "scholarships": [
-          {
-            "name": "University of Tokyo Scholarship",
-            "type": "merit",
-            "requirements": {
-              "SAT": 1500
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 5,
-            "recommended_cefr": 6,
-            "requirements": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 103,
-              "TOEFL_iBT_1_6": 5.5,
-              "DET": 140,
-              "PTE": 73,
-              "Cambridge_C1_Advanced": 191,
-              "IELTS": 7.5
-            }
-          },
-          {
-            "code": "ja",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "JLPT_Level": 2
-            },
-            "stats_avg": {
-              "JLPT_Level": 1
-            },
-            "notes": "Japanese-taught tracks commonly require around JLPT N2/N1."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "cuhk-hk-shatin",
-    "name": "The Chinese University of Hong Kong (CUHK)",
-    "rank": 32,
-    "student_count": 22021,
-    "location": {
-      "country": "Hong Kong",
-      "city": "Sha Tin",
-      "state": ""
-    },
-    "coordinates": {
-      "lat": 22.4195,
-      "lon": 114.2052
-    },
-    "website": "https://www.cuhk.edu.hk/english/",
-    "academics": {
-      "majors": [
-        "Business Administration",
-        "Computer Science",
-        "Medicine",
-        "Chinese Studies",
-        "Engineering"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 14
-    },
-    "finance": {
-      "total_cost_year_usd": 33354,
-      "application_fee_usd": 60,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 23000,
-        "Housing_Dorm": 2200,
-        "Food": 5800,
-        "Books_Transport_Misc": 2354
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 42000,
-      "average_salary_by_major": {
-        "Business Administration": 48000,
-        "Medicine": 80000,
-        "Computer Science": 45000,
-        "Engineering": 40000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "cuhk_intl",
-        "label": "International Admissions",
-        "study_mode": "On-campus",
-        "description": "Admission for non-local students via standardized tests (SAT/A-Level/IB).",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1300,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1420,
-          "GPA": 94
-        },
-        "scholarships": [
-          {
-            "name": "Admission Scholarship",
-            "type": "merit",
-            "requirements": {
-              "SAT": 1500
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            }
-          },
-          {
-            "code": "zh",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "HSK_Level": 4
-            },
-            "stats_avg": {
-              "HSK_Level": 5
-            },
-            "notes": "Chinese-taught tracks often require at least HSK 4/5."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "delft-university-of-technology-nl-delft",
-    "name": "Delft University of Technology",
-    "rank": 47,
-    "student_count": 27265,
-    "location": {
-      "country": "Netherlands",
-      "city": "Delft",
-      "state": ""
-    },
-    "coordinates": {
-      "lat": 52.0017,
-      "lon": 4.3725
-    },
-    "website": "https://www.tudelft.nl/en/",
-    "academics": {
-      "majors": [
-        "Aerospace Engineering",
-        "Architecture",
-        "Computer Science",
-        "Civil Engineering",
-        "Industrial Design"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 65
-    },
-    "finance": {
-      "total_cost_year_usd": 36000,
-      "application_fee_usd": 100,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 19000,
-        "Housing_Dorm": 10000,
-        "Food": 5000,
-        "Books_Transport_Misc": 2000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 58000,
-      "average_salary_by_major": {
-        "Computer Science": 70000,
-        "Aerospace Engineering": 65000,
-        "Civil Engineering": 60000,
-        "Architecture": 55000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "tudelft_numerus",
-        "label": "Numerus Clausus (Selection)",
-        "study_mode": "On-campus",
-        "description": "Selection procedure for competitive majors (CS, Aerospace). Cognitive tests.",
-        "requirements": {
-          "IELTS": 6.5,
-          "GPA": 80
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "GPA": 90
-        },
-        "scholarships": [
-          {
-            "name": "Justus & Louise van Effen Scholarship",
-            "type": "merit",
-            "requirements": {
-              "GPA": 95
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            }
-          },
-          {
-            "code": "nl",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "NT2_Programme_II": 60
-            },
-            "stats_avg": {
-              "NT2_Programme_II": 80
-            },
-            "notes": "Dutch-taught tracks typically use NT2 Programme II or equivalent."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "kaist-kr-daejeon",
-    "name": "KAIST",
-    "rank": 53,
-    "student_count": 10951,
-    "location": {
-      "country": "South Korea",
-      "city": "Daejeon",
-      "state": ""
-    },
-    "coordinates": {
-      "lat": 36.3721,
-      "lon": 127.3604
-    },
-    "website": "https://www.kaist.ac.kr/en/",
-    "academics": {
-      "majors": [
-        "Computer Science",
-        "Electrical Engineering",
-        "Physics",
-        "Bioengineering",
-        "Industrial Design"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 18
-    },
-    "finance": {
-      "total_cost_year_usd": 14000,
-      "application_fee_usd": 80,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 7000,
-        "Housing_Dorm": 2500,
-        "Food": 3500,
-        "Books_Transport_Misc": 1000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 50000,
-      "average_salary_by_major": {
-        "Computer Science": 60000,
-        "Electrical Engineering": 55000,
-        "Physics": 45000,
-        "Bioengineering": 48000
-      }
-    },
-    "student_life": {
-      "size": "medium"
-    },
-    "admission_tracks": [
-      {
-        "id": "kaist_intl",
-        "label": "International Admission",
-        "study_mode": "On-campus",
-        "description": "KAIST Scholarship covers full tuition for admitted international students.",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1480,
-          "GPA": 94
-        },
-        "scholarships": [
-          {
-            "name": "KAIST International Student Scholarship",
-            "type": "merit",
-            "requirements": {
-              "GPA": 85
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            }
-          },
-          {
-            "code": "ko",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOPIK_Level": 3
-            },
-            "stats_avg": {
-              "TOPIK_Level": 4
-            },
-            "notes": "Korean-taught tracks commonly require TOPIK 3+."
-          }
-        ],
-        "language_requirements_mode": "any"
-      }
-    ]
-  },
-  {
-    "id": "kyoto-university-jp-kyoto",
-    "name": "Kyoto University",
-    "rank": 57,
-    "student_count": 22958,
-    "location": {
-      "country": "Japan",
-      "city": "Kyoto",
-      "state": ""
-    },
-    "coordinates": {
-      "lat": 35.0262,
-      "lon": 135.7808
-    },
-    "website": "https://www.kyoto-u.ac.jp/en",
-    "academics": {
-      "majors": [
-        "Engineering",
-        "Science",
-        "Economics",
-        "Agriculture",
-        "Medicine"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 15
-    },
-    "finance": {
-      "total_cost_year_usd": 16500,
-      "application_fee_usd": 150,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
-      "costs_breakdown_year_usd": {
-        "Tuition": 4800,
-        "Housing_Rent": 5500,
-        "Food": 4200,
-        "Books_Transport_Misc": 2000
-      }
-    },
-    "outcomes": {
-      "average_early_career_salary_usd": 42000,
-      "average_salary_by_major": {
-        "Engineering": 48000,
-        "Economics": 45000,
-        "Medicine": 60000,
-        "Science": 40000
-      }
-    },
-    "student_life": {
-      "size": "large"
-    },
-    "admission_tracks": [
-      {
-        "id": "kyoto_iup",
-        "label": "Kyoto iUP",
-        "study_mode": "On-campus",
-        "description": "International Undergraduate Program. 6 months Japanese prep + 4 years degree.",
-        "requirements": {
-          "IELTS": 6.5,
-          "SAT": 1350,
-          "GPA": 85
-        },
-        "stats_avg": {
-          "IELTS": 7.0,
-          "SAT": 1420,
-          "GPA": 92
-        },
-        "scholarships": [
-          {
-            "name": "Full Scholarship + Stipend",
-            "type": "merit",
-            "requirements": {
-              "GPA": 90
-            }
-          }
-        ],
-        "language_requirements": [
-          {
-            "code": "en",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
-              "IELTS": 6.5
-            },
-            "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
-              "IELTS": 7.0
-            }
-          },
-          {
-            "code": "ja",
-            "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
-            "requirements": {
-              "JLPT_Level": 2
-            },
-            "stats_avg": {
-              "JLPT_Level": 1
-            },
-            "notes": "Japanese-taught tracks commonly require around JLPT N2/N1."
           }
         ],
         "language_requirements_mode": "any"
@@ -2027,7 +1289,7 @@
   {
     "id": "nazarbayev-university-kaz-astana",
     "name": "Nazarbayev University",
-    "rank": 401,
+    "rank": 18,
     "student_count": 7089,
     "location": {
       "country": "Kazakhstan",
@@ -2040,30 +1302,37 @@
     },
     "website": "https://nu.edu.kz/",
     "academics": {
-      "majors": [
-        "Engineering",
-        "Computer Science",
-        "Business",
-        "Natural Sciences",
-        "Medicine"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 18
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Foundation Year",
+          "study_levels": [
+            "Foundation"
+          ],
+          "acceptance_rate_percent": 30,
+          "duration": "1 year",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 19500,
-      "application_fee_usd": 35,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 15000,
         "Housing_Dorm": 1800,
@@ -2072,73 +1341,265 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 13000,
-      "average_salary_by_major": {
-        "Computer Science": 16000,
-        "Engineering": 14000,
-        "Business": 12000,
-        "Medicine": 11000
-      }
-    },
-    "student_life": {
-      "size": "medium"
+      "average_early_career_salary_usd": 13000
     },
     "admission_tracks": [
       {
-        "id": "nu_sat",
-        "label": "Direct Admission (SAT/IELTS)",
-        "study_mode": "On-campus",
-        "description": "Direct entry skipping Foundation.",
+        "id": "nu_direct",
+        "label": "Direct Admission (SAT)",
         "requirements": {
-          "IELTS": 6.5,
           "SAT": 1240,
           "GPA": 80
         },
         "stats_avg": {
-          "IELTS": 7.0,
           "SAT": 1380,
-          "GPA": 92
+          "GPA": 90
         },
         "scholarships": [
           {
-            "name": "Abay Kunanbayev Scholarship",
+            "name": "Abay Kunanbayev",
             "type": "merit",
             "requirements": {
               "SAT": 1450
             }
           }
         ],
+        "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
-            "min_cefr": 4,
-            "recommended_cefr": 5,
             "requirements": {
-              "TOEFL_iBT_0_120": 88,
-              "TOEFL_iBT_1_6": 4.5,
-              "DET": 120,
-              "PTE": 58,
-              "Cambridge_C1_Advanced": 176,
+              "IELTS": 6.5,
+              "TOEFL_iBT_0_120": 79
+            },
+            "stats_avg": {
+              "IELTS": 7.0,
+              "TOEFL_iBT_0_120": 95
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      },
+      {
+        "id": "nu_nuet",
+        "label": "Foundation (NUET)",
+        "requirements": {
+          "NUET": 130
+        },
+        "stats_avg": {
+          "NUET": 135
+        },
+        "scholarships": [
+          {
+            "name": "State Grant",
+            "type": "state",
+            "requirements": {
+              "NUET": 130
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 5.5
+            },
+            "stats_avg": {
+              "IELTS": 6.0
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "undergraduate_requirements",
+        "url": "https://nu.edu.kz/admissions/requirements"
+      },
+      {
+        "topic": "nufyp_nuet_threshold",
+        "url": "https://nu.edu.kz/admissions/undergraduate-admissions/nazarbayev-university-foundation-year-programme-nufyp"
+      }
+    ]
+  },
+  {
+    "id": "kyoto-university-jp-kyoto",
+    "name": "Kyoto University",
+    "rank": 18,
+    "student_count": 22958,
+    "location": {
+      "country": "Japan",
+      "city": "Kyoto",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 35.0262,
+      "lon": 135.7808
+    },
+    "website": "https://www.kyoto-u.ac.jp/en",
+    "academics": {
+      "programs": [
+        {
+          "name": "Civil Engineering (Intl)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 16500,
+      "costs_breakdown_year_usd": {
+        "Tuition": 4800,
+        "Housing_Rent": 5500,
+        "Food": 4200,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 42000
+    },
+    "admission_tracks": [
+      {
+        "id": "kyoto_iup",
+        "label": "Kyoto iUP",
+        "requirements": {
+          "IELTS": 6.5,
+          "SAT": 1350,
+          "GPA": 85
+        },
+        "stats_avg": {
+          "IELTS": 7.0,
+          "SAT": 1430,
+          "GPA": 92
+        },
+        "scholarships": [
+          {
+            "name": "iUP Scholarship",
+            "type": "merit",
+            "requirements": {
+              "GPA": 90
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
               "IELTS": 6.5
             },
             "stats_avg": {
-              "TOEFL_iBT_0_120": 95,
-              "TOEFL_iBT_1_6": 5.0,
-              "DET": 130,
-              "PTE": 65,
-              "Cambridge_C1_Advanced": 185,
               "IELTS": 7.0
             }
           }
-        ]
+        ],
+        "language_requirements_mode": "any"
+      }
+    ]
+  },
+  {
+    "id": "university-of-melbourne-au-melbourne",
+    "name": "University of Melbourne",
+    "rank": 19,
+    "student_count": 54000,
+    "location": {
+      "country": "Australia",
+      "city": "Melbourne",
+      "state": "Victoria"
+    },
+    "coordinates": {
+      "lat": -37.7986,
+      "lon": 144.9602
+    },
+    "website": "https://www.unimelb.edu.au/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Bachelor of Science (CS)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 40,
+          "duration": "3 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
+    },
+    "finance": {
+      "total_cost_year_usd": 52000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 32000,
+        "Housing_Dorm": 13000,
+        "Food": 5000,
+        "Books_Transport_Misc": 2000
+      }
+    },
+    "outcomes": {
+      "average_early_career_salary_usd": 49000
+    },
+    "admission_tracks": [
+      {
+        "id": "melb_intl",
+        "label": "International UG",
+        "requirements": {
+          "IELTS": 6.5,
+          "SAT": 1350,
+          "GPA": 85
+        },
+        "stats_avg": {
+          "IELTS": 7.0,
+          "SAT": 1420,
+          "GPA": 92
+        },
+        "scholarships": [
+          {
+            "name": "Melbourne Intl Scholarship",
+            "type": "merit",
+            "requirements": {
+              "GPA": 96
+            }
+          }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5
+            },
+            "stats_avg": {
+              "IELTS": 7.0
+            }
+          }
+        ],
+        "language_requirements_mode": "any"
       }
     ]
   },
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
     "name": "Suleyman Demirel University",
-    "rank": 1201,
+    "rank": 19,
     "student_count": 8500,
     "location": {
       "country": "Kazakhstan",
@@ -2151,31 +1612,25 @@
     },
     "website": "https://sdu.edu.kz/en/",
     "academics": {
-      "majors": [
-        "Business",
-        "Engineering",
-        "Law",
-        "Education",
-        "Social Sciences"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus",
-        "Online"
-      ],
-      "acceptance_rate_percent": 65
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 60,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 8500,
-      "application_fee_usd": 0,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 5500,
         "Housing_Dorm": 1200,
@@ -2184,29 +1639,42 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 9500,
-      "average_salary_by_major": {
-        "Engineering": 12000,
-        "Business": 9000,
-        "Law": 8500,
-        "Education": 7500
-      }
-    },
-    "student_life": {
-      "size": "medium"
+      "average_early_career_salary_usd": 9500
     },
     "admission_tracks": [
       {
-        "id": "sdu_unt",
-        "label": "UNT Track",
-        "study_mode": "On-campus",
+        "id": "sdu_unt_paid",
+        "label": "UNT (Paid)",
         "requirements": {
           "UNT": 50,
           "GPA": 60
         },
         "stats_avg": {
-          "UNT": 95,
+          "UNT": 85,
+          "GPA": 75
+        },
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 3,
+            "notes": "SDU preparatory guidance requires English at intermediate level or above."
+          }
+        ]
+      },
+      {
+        "id": "sdu_unt_grant",
+        "label": "State Grant",
+        "requirements": {
+          "UNT": 105,
           "GPA": 80
+        },
+        "stats_avg": {
+          "UNT": 115,
+          "GPA": 90
         },
         "scholarships": [
           {
@@ -2216,14 +1684,30 @@
               "UNT": 105
             }
           }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 3,
+            "notes": "SDU preparatory guidance requires English at intermediate level or above."
+          }
         ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "english_entry_level",
+        "url": "https://sdu.edu.kz/language/ru/preparatory-school/entry-requirements-for-bachelors-degree/"
       }
     ]
   },
   {
     "id": "astana-it-university-kaz-astana",
     "name": "Astana IT University",
-    "rank": 1401,
+    "rank": 20,
     "student_count": 5426,
     "location": {
       "country": "Kazakhstan",
@@ -2236,29 +1720,24 @@
     },
     "website": "https://astanait.edu.kz/",
     "academics": {
-      "majors": [
-        "Computer Science",
-        "Software Engineering",
-        "Cyber Security",
-        "IT Management"
-      ],
-      "study_levels": [
-        "Bachelor",
-        "Master",
-        "PhD"
-      ],
-      "formats": [
-        "On-campus"
-      ],
-      "acceptance_rate_percent": 25
+      "programs": [
+        {
+          "name": "Software Engineering",
+          "study_levels": [
+            "Bachelor",
+            "Master"
+          ],
+          "acceptance_rate_percent": 30,
+          "duration": "3 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        }
+      ]
     },
     "finance": {
       "total_cost_year_usd": 7000,
-      "application_fee_usd": 0,
-      "financial_aid": {
-        "merit_based": true,
-        "need_based": true
-      },
       "costs_breakdown_year_usd": {
         "Tuition": 5200,
         "Housing_Dorm": 1000,
@@ -2267,28 +1746,18 @@
       }
     },
     "outcomes": {
-      "average_early_career_salary_usd": 11000,
-      "average_salary_by_major": {
-        "Computer Science": 13000,
-        "Software Engineering": 13000,
-        "Cyber Security": 14000,
-        "IT Management": 10000
-      }
-    },
-    "student_life": {
-      "size": "medium"
+      "average_early_career_salary_usd": 11000
     },
     "admission_tracks": [
       {
-        "id": "aitu_unt",
-        "label": "UNT Track",
-        "study_mode": "On-campus",
+        "id": "aitu_unt_grant",
+        "label": "State/Rector Grant",
         "requirements": {
           "UNT": 85,
           "GPA": 70
         },
         "stats_avg": {
-          "UNT": 105,
+          "UNT": 110,
           "GPA": 85
         },
         "scholarships": [
@@ -2299,7 +1768,62 @@
               "UNT": 125
             }
           }
+        ],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 3,
+            "requirements": {
+              "IELTS": 5.0,
+              "TOEFL_iBT_0_120": 46
+            },
+            "stats_avg": {
+              "IELTS": 5.5,
+              "TOEFL_iBT_0_120": 60
+            },
+            "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46-59 to CEFR B1."
+          }
         ]
+      },
+      {
+        "id": "aitu_paid",
+        "label": "Paid Admission",
+        "requirements": {
+          "UNT": 75,
+          "GPA": 65
+        },
+        "stats_avg": {
+          "UNT": 90,
+          "GPA": 75
+        },
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 3,
+            "requirements": {
+              "IELTS": 5.0,
+              "TOEFL_iBT_0_120": 46
+            },
+            "stats_avg": {
+              "IELTS": 5.5,
+              "TOEFL_iBT_0_120": 60
+            },
+            "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46-59 to CEFR B1."
+          }
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "english_language_policy",
+        "url": "https://astanait.edu.kz/wp-content/uploads/2024/12/INTERNAL-POLICY.pdf"
       }
     ]
   }

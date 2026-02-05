@@ -640,6 +640,16 @@ export async function initUniversityPage() {
     // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
+        const acceptanceDirect = Number(u?.academics?.acceptance_rate_percent);
+        const acceptanceValues = (Array.isArray(u?.academics?.programs) ? u.academics.programs : [])
+            .map((p) => Number(p?.acceptance_rate_percent))
+            .filter((v) => Number.isFinite(v));
+        const acceptanceComputed = acceptanceValues.length
+            ? (acceptanceValues.reduce((sum, v) => sum + v, 0) / acceptanceValues.length)
+            : NaN;
+        const acceptanceRate = Number.isFinite(acceptanceDirect)
+            ? acceptanceDirect
+            : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
         let rankHtml = "<span>—</span>";
         if (u.rank) {
             let trophy = "";
@@ -649,7 +659,7 @@ export async function initUniversityPage() {
         
         recDiv.innerHTML = `
             <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
-            <div class="d-kv"><span>Acceptance Rate</span><span>${u.academics.acceptance_rate_percent}%</span></div>
+            <div class="d-kv"><span>Acceptance Rate</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
             <div class="d-kv" style="border-bottom:none;"><span>Campus Size</span><span>${u.student_life?.size || "Medium"}</span></div>
         `;
     }
@@ -668,8 +678,68 @@ export async function initUniversityPage() {
 
     // --- TAB 2: PROGRAMS ---
     const progDiv = document.getElementById("detailPrograms");
-    if (progDiv && u.academics?.majors) {
-        progDiv.innerHTML = u.academics.majors.map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${m}</span>`).join(" ");
+    if (progDiv) {
+        const programs = Array.isArray(u?.academics?.programs)
+            ? u.academics.programs.filter((p) => p && typeof p === "object")
+            : [];
+
+        const prettyField = (key) =>
+            String(key || "")
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase());
+
+        const formatProgramValue = (key, value) => {
+            if (value === null || value === undefined || value === "") return "—";
+            if (Array.isArray(value)) return value.map((x) => String(x)).join(", ");
+            if (typeof value === "boolean") return value ? "Yes" : "No";
+            if (String(key) === "acceptance_rate_percent") return `${value}%`;
+            return String(value);
+        };
+
+        if (programs.length) {
+            const knownKeys = new Set(["name", "study_levels", "acceptance_rate_percent", "duration", "language", "study_mode"]);
+            progDiv.innerHTML = `
+                <div class="program-list">
+                    ${programs.map((program, idx) => {
+                        const rows = [
+                            ["Acceptance Rate", formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent)],
+                            ["Study Levels", formatProgramValue("study_levels", program.study_levels)],
+                            ["Duration", formatProgramValue("duration", program.duration)],
+                            ["Language", formatProgramValue("language", program.language)],
+                            ["Study Mode", formatProgramValue("study_mode", program.study_mode)],
+                        ];
+
+                        const extraRows = Object.entries(program)
+                            .filter(([k, v]) => !knownKeys.has(k) && v !== null && v !== undefined && v !== "")
+                            .map(([k, v]) => [prettyField(k), formatProgramValue(k, v)]);
+
+                        const allRows = [...rows, ...extraRows];
+
+                        return `
+                            <div class="program-card">
+                                <div class="program-card-title">
+                                    ${escapeHtml(program.name || `Program ${idx + 1}`)}
+                                </div>
+                                <div class="program-card-rows">
+                                    ${allRows.map(([label, value]) => `
+                                        <div class="program-card-row">
+                                            <span class="program-card-label">${escapeHtml(label)}</span>
+                                            <span class="program-card-value">${escapeHtml(value)}</span>
+                                        </div>
+                                    `).join("")}
+                                </div>
+                            </div>
+                        `;
+                    }).join("")}
+                </div>
+            `;
+        } else if (u.academics?.majors) {
+            progDiv.innerHTML = u.academics.majors
+                .map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${escapeHtml(String(m))}</span>`)
+                .join(" ");
+        } else {
+            progDiv.innerHTML = `<div class="program-empty">No program data available.</div>`;
+        }
     }
 
     function isLanguageExam(examKey) {
@@ -1065,33 +1135,57 @@ export async function initUniversityPage() {
             const userMajor = profile.major || "";
             
             const outcomes = u.outcomes || {};
-            const salariesByMajor = outcomes.average_salary_by_major || {};
-            const avgSalaryGeneric = outcomes.average_early_career_salary_usd || 0;
+            const salariesByMajorRaw =
+                outcomes.average_salary_by_major ||
+                outcomes.salary_by_major ||
+                outcomes.average_salary_by_program ||
+                outcomes.average_early_career_salary_by_major_usd ||
+                {};
+            const avgSalaryGeneric = Number(outcomes.average_early_career_salary_usd) || 0;
+            const normalizeMajorKey = (value) =>
+                String(value || "")
+                    .trim()
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, " ")
+                    .trim();
+            const salariesByMajorEntries = Object.entries(salariesByMajorRaw)
+                .map(([majorName, salary]) => [String(majorName || "").trim(), Number(salary)])
+                .filter(([majorName, salary]) => !!majorName && Number.isFinite(salary) && salary > 0);
+            const salariesAvgAcrossMajors = salariesByMajorEntries.length
+                ? (salariesByMajorEntries.reduce((sum, [, salary]) => sum + salary, 0) / salariesByMajorEntries.length)
+                : 0;
+            const fallbackSalary = salariesAvgAcrossMajors > 0 ? salariesAvgAcrossMajors : avgSalaryGeneric;
+            const userMajorNormalized = normalizeMajorKey(userMajor);
+            const exactMajorMatch = salariesByMajorEntries.find(([majorName]) => normalizeMajorKey(majorName) === userMajorNormalized);
+            const looseMajorMatch = exactMajorMatch || salariesByMajorEntries.find(([majorName]) => {
+                const majorNorm = normalizeMajorKey(majorName);
+                return !!userMajorNormalized && (majorNorm.includes(userMajorNormalized) || userMajorNormalized.includes(majorNorm));
+            });
             
             let roiTitle = "Estimated ROI (Return on Investment)";
             let roiContent = "";
             let userSalary = 0;
 
             if (!userMajor) {
-                userSalary = avgSalaryGeneric;
+                userSalary = fallbackSalary;
                 roiContent = `
                     <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #ffeeba;">
-                        ⚠️ <strong>Tip:</strong> Select your <b>Major</b> in Profile to see precise ROI for your field. Showing average for all graduates.
+                        ⚠️ <strong>Tip:</strong> Select your <b>Major</b> in Profile to see precise ROI for your field. ${salariesByMajorEntries.length ? "Showing computed average across all majors." : "Showing average for all graduates."}
                     </div>
                 `;
             } else {
-                if (salariesByMajor[userMajor]) {
-                    userSalary = salariesByMajor[userMajor];
+                if (looseMajorMatch) {
+                    userSalary = looseMajorMatch[1];
                     roiContent = `
                         <div style="background:#d1fae5; color:#065f46; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #a7f3d0;">
                             ✅ Calculation based on <b>${userMajor}</b> graduates from this university.
                         </div>
                     `;
                 } else {
-                    userSalary = avgSalaryGeneric;
+                    userSalary = fallbackSalary;
                     roiContent = `
                         <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
-                            ℹ️ Specific data for <b>${userMajor}</b> not available. Showing average for all graduates.
+                            ℹ️ Specific data for <b>${userMajor}</b> not available. ${salariesByMajorEntries.length ? "Showing computed average across all majors." : "Showing average for all graduates."}
                         </div>
                     `;
                 }

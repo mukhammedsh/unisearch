@@ -104,13 +104,135 @@ EXAM_WHITELIST = {
     for k, v in EXAMS_CONFIG.items()
 }
 
+def _canonical_exam_key(exam_id: Any) -> str:
+    return re.sub(r"[^A-Z0-9]", "", str(exam_id or "").strip().upper())
+
+EXAM_KEY_ALIASES: Dict[str, List[str]] = {
+    "NUET": ["NUET_TOTAL"],
+    "NUET_TOTAL": ["NUET"],
+    "TOEFL": ["TOEFL_IBT", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
+    "TOEFL_IBT": ["TOEFL", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
+}
+
+def _resolve_exam_key(exam_id: Any) -> str:
+    """
+    Resolve user/data exam id to existing EXAMS_CONFIG key.
+    Supports canonical matching and common aliases (e.g. NUET <-> NUET_TOTAL).
+    """
+    raw = str(exam_id or "").strip().upper()
+    if not raw:
+        return ""
+    if raw in EXAMS_CONFIG:
+        return raw
+
+    target = _canonical_exam_key(raw)
+    for k in EXAMS_CONFIG.keys():
+        if _canonical_exam_key(k) == target:
+            return k
+
+    for a in EXAM_KEY_ALIASES.get(raw, []):
+        alias = str(a).strip().upper()
+        if alias in EXAMS_CONFIG:
+            return alias
+        alias_canon = _canonical_exam_key(alias)
+        for k in EXAMS_CONFIG.keys():
+            if _canonical_exam_key(k) == alias_canon:
+                return k
+
+    return raw
+
+def _num_or_none(x: Any) -> Optional[float]:
+    try:
+        if x is None or x == "":
+            return None
+        return float(x)
+    except (ValueError, TypeError):
+        return None
+
+def _uniq_non_empty(items: List[Any]) -> List[str]:
+    out: List[str] = []
+    seen = set()
+    for it in items:
+        s = str(it).strip()
+        if not s:
+            continue
+        k = s.lower()
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(s)
+    return out
+
+def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Adds backward-compatible academics fields for the new DB structure:
+    - academics.programs[].name -> academics.majors
+    - academics.programs[].study_levels -> academics.study_levels
+    - academics.programs[].study_mode -> academics.formats
+    - average(programs[].acceptance_rate_percent) -> academics.acceptance_rate_percent
+    """
+    if not isinstance(u, dict):
+        return {}
+
+    academics = u.get("academics")
+    if not isinstance(academics, dict):
+        academics = {}
+        u["academics"] = academics
+
+    programs_raw = academics.get("programs", [])
+    programs = [p for p in programs_raw if isinstance(p, dict)] if isinstance(programs_raw, list) else []
+
+    majors = academics.get("majors")
+    if not isinstance(majors, list) or len(majors) == 0:
+        academics["majors"] = _uniq_non_empty([p.get("name") for p in programs])
+
+    study_levels = academics.get("study_levels")
+    if not isinstance(study_levels, list) or len(study_levels) == 0:
+        levels: List[Any] = []
+        for p in programs:
+            lv = p.get("study_levels")
+            if isinstance(lv, list):
+                levels.extend(lv)
+            elif lv is not None:
+                levels.append(lv)
+        academics["study_levels"] = _uniq_non_empty(levels)
+
+    formats = academics.get("formats")
+    if not isinstance(formats, list) or len(formats) == 0:
+        fmts: List[Any] = []
+        for p in programs:
+            mode = p.get("study_mode")
+            if isinstance(mode, list):
+                fmts.extend(mode)
+            elif mode is not None:
+                fmts.append(mode)
+        academics["formats"] = _uniq_non_empty(fmts)
+
+    acc = _num_or_none(academics.get("acceptance_rate_percent"))
+    if acc is None:
+        vals = []
+        for p in programs:
+            v = _num_or_none(p.get("acceptance_rate_percent"))
+            if v is not None:
+                vals.append(v)
+        if vals:
+            academics["acceptance_rate_percent"] = round(sum(vals) / len(vals), 2)
+
+    return u
+
 def load_universities() -> List[Dict[str, Any]]:
     # Проверка основного пути
     if os.path.exists(DATA_PATH):
         try:
             with open(DATA_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                return data if isinstance(data, list) else []
+                if not isinstance(data, list):
+                    return []
+                out: List[Dict[str, Any]] = []
+                for row in data:
+                    if isinstance(row, dict):
+                        out.append(_normalize_university_schema(row))
+                return out
         except Exception:
             return []
             
@@ -151,6 +273,25 @@ def _to_float(x: Any) -> Optional[float]:
     except (ValueError, TypeError):
         return None
 
+def _iter_programs(u: Dict[str, Any]) -> List[Dict[str, Any]]:
+    raw = _get_nested(u, ["academics", "programs"], [])
+    if not isinstance(raw, list):
+        return []
+    return [p for p in raw if isinstance(p, dict)]
+
+def _get_university_acceptance_rate(u: Dict[str, Any]) -> Optional[float]:
+    direct = _to_float(_get_nested(u, ["academics", "acceptance_rate_percent"]))
+    if direct is not None:
+        return direct
+    vals = []
+    for p in _iter_programs(u):
+        v = _to_float(p.get("acceptance_rate_percent"))
+        if v is not None:
+            vals.append(v)
+    if vals:
+        return sum(vals) / len(vals)
+    return None
+
 def _safe_compare_lte(value: Optional[float], threshold: float) -> bool:
     """
     Возвращает True, если value <= threshold.
@@ -184,9 +325,9 @@ def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
         return sorted(items, key=lambda u: get_val(u, ["finance", "total_cost_year_usd"]), reverse=True)
         
     if sort == "acceptance_asc":
-        return sorted(items, key=lambda u: get_val(u, ["academics", "acceptance_rate_percent"]))
+        return sorted(items, key=lambda u: (_get_university_acceptance_rate(u) or 0.0))
     if sort == "acceptance_desc":
-        return sorted(items, key=lambda u: get_val(u, ["academics", "acceptance_rate_percent"]), reverse=True)
+        return sorted(items, key=lambda u: (_get_university_acceptance_rate(u) or 0.0), reverse=True)
         
     if sort == "gpa_desc":
         return sorted(items, key=lambda u: get_val(u, ["exams_avg", "GPA"]), reverse=True)
@@ -211,6 +352,7 @@ def validate_exam_value(exam_key: str, score_raw: Any) -> Union[int, float]:
     - спец-правило IELTS decimals_allowed (если задано)
     Возвращает нормализованное значение (int/float).
     """
+    exam_key = _resolve_exam_key(exam_key)
     if exam_key not in EXAMS_CONFIG:
         raise ValueError(f"Unknown exam: {exam_key}")
 
@@ -332,7 +474,7 @@ def validate_exam(payload: Dict[str, Any]):
     if score_raw is None or score_raw == "":
         raise HTTPException(status_code=400, detail="Score is required")
 
-    key = exam_raw.strip().upper()
+    key = _resolve_exam_key(exam_raw.strip().upper())
 
     try:
         score = validate_exam_value(key, score_raw)
@@ -391,15 +533,37 @@ def list_universities(
     # 3. Academics
     if major:
         m = _safe_lower(major)
-        items = [u for u in items if any(m in _safe_lower(x) for x in _get_list(u, ["academics", "majors"]))]
+        items = [
+            u for u in items
+            if (
+                any(m in _safe_lower(x) for x in _get_list(u, ["academics", "majors"])) or
+                any(m in _safe_lower(p.get("name")) for p in _iter_programs(u))
+            )
+        ]
     
     if study_level:
         sl = _safe_lower(study_level)
-        items = [u for u in items if any(_safe_lower(x) == sl for x in _get_list(u, ["academics", "study_levels"]))]
+        items = [
+            u for u in items
+            if (
+                any(_safe_lower(x) == sl for x in _get_list(u, ["academics", "study_levels"])) or
+                any(
+                    (_safe_lower(x) == sl)
+                    for p in _iter_programs(u)
+                    for x in (p.get("study_levels") if isinstance(p.get("study_levels"), list) else [p.get("study_levels")])
+                )
+            )
+        ]
 
     if format:
         fm = _safe_lower(format)
-        items = [u for u in items if any(_safe_lower(x) == fm for x in _get_list(u, ["academics", "formats"]))]
+        items = [
+            u for u in items
+            if (
+                any(_safe_lower(x) == fm for x in _get_list(u, ["academics", "formats"])) or
+                any(_safe_lower(p.get("study_mode")) == fm for p in _iter_programs(u))
+            )
+        ]
 
     # 4. EXAMS (УДАЛЕНО)
     # Здесь был блок Hard Filter, теперь мы пропускаем всех, 
@@ -426,9 +590,9 @@ def list_universities(
 
     # 6. Остальные фильтры
     if min_acceptance is not None:
-        items = [u for u in items if _safe_compare_gte(_to_float(_get_nested(u, ["academics", "acceptance_rate_percent"])), min_acceptance)]
+        items = [u for u in items if _safe_compare_gte(_get_university_acceptance_rate(u), min_acceptance)]
     if max_acceptance is not None:
-        items = [u for u in items if _safe_compare_lte(_to_float(_get_nested(u, ["academics", "acceptance_rate_percent"])), max_acceptance)]
+        items = [u for u in items if _safe_compare_lte(_get_university_acceptance_rate(u), max_acceptance)]
     
     if size:
         items = [u for u in items if _safe_lower(_get_nested(u, ["student_life", "size"])) == _safe_lower(size)]
@@ -690,10 +854,29 @@ def _mentor_profile_state(profile: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 def _mentor_pick_score(scores: Dict[str, float], exam_id: str) -> Optional[float]:
-    key = str(exam_id or "").strip().upper()
-    if not key:
+    key_raw = str(exam_id or "").strip().upper()
+    if not key_raw:
         return None
-    return _to_float(scores.get(key))
+
+    candidates = [key_raw, _resolve_exam_key(key_raw)]
+    candidates.extend(EXAM_KEY_ALIASES.get(key_raw, []))
+
+    target_canon = _canonical_exam_key(key_raw)
+    if target_canon:
+        for existing_key in (scores or {}).keys():
+            if _canonical_exam_key(existing_key) == target_canon:
+                candidates.append(str(existing_key).strip().upper())
+
+    seen = set()
+    for c in candidates:
+        k = str(c or "").strip().upper()
+        if not k or k in seen:
+            continue
+        seen.add(k)
+        val = _to_float((scores or {}).get(k))
+        if val is not None:
+            return val
+    return None
 
 def _mentor_language_rules(track: Dict[str, Any]) -> List[Dict[str, Any]]:
     raw = track.get("language_requirements")

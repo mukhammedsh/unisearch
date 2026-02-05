@@ -27,7 +27,13 @@ function getTrackCost(university, track) {
 }
 
 function acceptanceScore(university) {
-  const ar = toNum(university?.academics?.acceptance_rate_percent);
+  let ar = toNum(university?.academics?.acceptance_rate_percent);
+  if (ar === null) {
+    const vals = (Array.isArray(university?.academics?.programs) ? university.academics.programs : [])
+      .map((p) => toNum(p?.acceptance_rate_percent))
+      .filter((v) => v !== null);
+    if (vals.length) ar = vals.reduce((sum, v) => sum + v, 0) / vals.length;
+  }
   if (ar === null) return 0.55;
   return clamp01(Math.sqrt(clamp(ar, 1, 100) / 100));
 }

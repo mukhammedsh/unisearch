@@ -180,6 +180,57 @@
 .d-kv span:last-child { color: var(--text); font-weight: 800; }
 
 /* =========================================
+   PROGRAM CARDS
+   ========================================= */
+.program-list {
+  display: grid;
+  gap: 12px;
+}
+
+.program-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--card);
+}
+
+.program-card-title {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.program-card-rows {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.program-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 4px;
+}
+
+.program-card-label {
+  color: var(--muted);
+}
+
+.program-card-value {
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+}
+
+.program-empty {
+  padding: 10px 0;
+  color: var(--muted);
+}
+
+/* =========================================
    TABS
    ========================================= */
 .d-tabs {
