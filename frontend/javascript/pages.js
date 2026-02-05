@@ -1174,10 +1174,12 @@ export async function initRankingPage() {
             else if (rank === 3) rankClass = "rank-3";
 
             const logoSrc = `images/logos/${u.id}.png`;
+            const thumbSrc = `images/thumbnails/${u.id}.jpg`;
             const flag = getFlagImg(u.location.country);
 
             return `
             <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
+                <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="lazy" onerror="this.src='${logoSrc}'">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">
                     <img src="${logoSrc}" alt="${initials(u.name)}" onerror="this.parentNode.textContent='${initials(u.name)}'">

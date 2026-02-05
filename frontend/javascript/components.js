@@ -18,9 +18,9 @@ const LAYOUT_HTML = `
   <div class="navbar-left">
     <a href="index.html" style="display: flex; align-items: center;">
       <img
-        src="images/whitelogo.png"
-        data-logo-light="images/whitelogo.png"
-        data-logo-dark="images/darklogo.png"
+        src="images/darklogo.png"
+        data-logo-light="images/darklogo.png"
+        data-logo-dark="images/whitelogo.png"
         onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='images/logo.jpeg';}"
         alt="Logo"
         class="logo"

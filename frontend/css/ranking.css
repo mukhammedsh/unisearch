@@ -16,6 +16,34 @@
     cursor: pointer;
     text-decoration: none;
     color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.rank-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+.rank-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.52;
+    filter: brightness(0.68) saturate(1.08);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.rank-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.54), rgba(255,255,255,0.4));
+    z-index: 1;
+    pointer-events: none;
 }
 .rank-card:hover {
     transform: translateY(-3px);
@@ -156,6 +184,14 @@
     background: var(--surface);
     border-color: var(--line);
     box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+:root[data-theme="dark"] .rank-bg-img {
+    opacity: 0.36;
+}
+
+:root[data-theme="dark"] .rank-card::after {
+    background: linear-gradient(120deg, rgba(23,28,41,0.62), rgba(23,28,41,0.5));
 }
 
 :root[data-theme="dark"] .rank-badge,
