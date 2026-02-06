@@ -16,6 +16,7 @@ import {
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
   getExamDisplayName,
+  canonicalizeExamId,
   EXAM_CONFIG,
   LANG_CONFIG,
   aiName,
@@ -110,6 +111,73 @@ export function initUniversitiesPage() {
     let lastFetchPayload = null;
     let lastFetchAt = 0;
 
+    const hasProfileEvidence = (profile) => {
+        const exams = Array.isArray(profile?.exams) ? profile.exams : [];
+        const langs = Array.isArray(profile?.languages) ? profile.languages : [];
+        return exams.length > 0 || langs.length > 0;
+    };
+
+    const ensureUniFitWarningModal = () => {
+        let modal = document.getElementById("unifitWarningModal");
+        if (modal) return modal;
+
+        modal = document.createElement("div");
+        modal.id = "unifitWarningModal";
+        modal.className = "unifit-warning-modal";
+        modal.setAttribute("aria-hidden", "true");
+        modal.style.display = "none";
+        modal.innerHTML = `
+            <div class="unifit-warning-backdrop" data-action="cancel"></div>
+            <div class="unifit-warning-card" role="dialog" aria-modal="true" aria-labelledby="unifitWarningTitle">
+                <div class="unifit-warning-icon">!</div>
+                <div class="unifit-warning-content">
+                    <h3 id="unifitWarningTitle">Limited Profile Data</h3>
+                    <p>UniFit works best when your profile includes exam scores or language evidence. Without them, the AI ranking may be less accurate.</p>
+                </div>
+                <div class="unifit-warning-actions">
+                    <button class="unifit-warning-btn unifit-warning-confirm" data-action="confirm" type="button">Okay I understand</button>
+                    <button class="unifit-warning-btn unifit-warning-cancel" data-action="cancel" type="button">Cancel</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        return modal;
+    };
+
+    const showUniFitWarning = () => new Promise((resolve) => {
+        const modal = ensureUniFitWarningModal();
+        const okBtn = modal.querySelector("[data-action='confirm']");
+        const cancelEls = modal.querySelectorAll("[data-action='cancel']");
+
+        const cleanup = (result) => {
+            okBtn?.removeEventListener("click", onOk);
+            cancelEls.forEach((el) => el.removeEventListener("click", onCancel));
+            document.removeEventListener("keydown", onKey);
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            modal.style.display = "none";
+            resolve(result);
+        };
+
+        const onOk = () => cleanup(true);
+        const onCancel = () => cleanup(false);
+        const onKey = (e) => {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                cleanup(false);
+            }
+        };
+
+        okBtn?.addEventListener("click", onOk);
+        cancelEls.forEach((el) => el.addEventListener("click", onCancel));
+        document.addEventListener("keydown", onKey);
+
+        modal.style.display = "flex";
+        modal.classList.add("is-open");
+        modal.removeAttribute("aria-hidden");
+        okBtn?.focus();
+    });
+
     // --- Слайдеры ---
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
@@ -185,7 +253,26 @@ export function initUniversitiesPage() {
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
 
-    el.sortSelect?.addEventListener("change", () => { state.sort = el.sortSelect.value; updateSliderVisibility(); refetch(); });
+    el.sortSelect?.addEventListener("change", async () => {
+        const nextSort = el.sortSelect.value;
+        const prevSort = state.sort;
+
+        if (nextSort === "uni_ai" && prevSort !== "uni_ai") {
+            const profile = loadProfile();
+            if (!hasProfileEvidence(profile)) {
+                el.sortSelect.value = prevSort;
+                initCustomSelect("sortSelect");
+                const confirmed = await showUniFitWarning();
+                if (!confirmed) return;
+                el.sortSelect.value = "uni_ai";
+                initCustomSelect("sortSelect");
+            }
+        }
+
+        state.sort = el.sortSelect.value;
+        updateSliderVisibility();
+        refetch();
+    });
     el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
 
     el.resetBtn?.addEventListener("click", () => {
@@ -348,6 +435,14 @@ export function initUniversitiesPage() {
 
         const isAiSort = (state.sort === "uni_ai");
         p.set("sort", forApi ? (isAiSort ? "name_asc" : state.sort) : state.sort);
+
+        if (forApi) {
+            const profile = loadProfile();
+            const major = String(profile?.major || "").trim();
+            const mode = String(profile?.studyMode || "").trim();
+            if (major) p.set("major", major);
+            if (mode && mode.toLowerCase() !== "any") p.set("format", mode);
+        }
         
         if (forApi && state.viewMode === "map") {
             p.set("limit", "200"); p.set("page", "1");
@@ -578,11 +673,6 @@ export function initUniversitiesPage() {
                 `<span class="uni-pill uni-pill--warn">⚠️ Below Requirements</span>`
             );
         }
-        if (match.missingRequiredEvidence) {
-            badges.push(
-                `<span class="uni-pill uni-pill--warn">⚠️ Not enough information for algorithms to work</span>`
-            );
-        }
 
 
         // Grant/Aid badges
@@ -638,7 +728,6 @@ export function initUniversitiesPage() {
             <h3 class="uni-title">${escapeHtml(name)}</h3>
             <div class="uni-loc" style="margin-bottom:8px;">📍 ${locString}</div> 
             <div class="uni-badge" style="margin-top:auto; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
-            <div class="uni-footer"><a class="uni-details" href="university.html?id=${encodeURIComponent(id)}">View Details →</a></div>
             </div>
         </article>
         `;
@@ -1018,10 +1107,13 @@ export async function initUniversityPage() {
     const reqDiv = document.getElementById("detailRequirements");
     const renderAdmissionTab = () => {
         if (!reqDiv) return;
+        const warningHTML = uniChance?.missingEvidence
+            ? `<div class="chance-warning">Add exam scores or language evidence in your profile to unlock a reliable ${escapeHtml(aiName("chance"))} estimate for this university.</div>`
+            : "";
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
-            reqDiv.innerHTML = `<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
+            reqDiv.innerHTML = `${warningHTML}<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
         } else {
-            let tracksHTML = renderUniChanceSummary();
+            let tracksHTML = warningHTML + renderUniChanceSummary();
             u.admission_tracks.forEach((track, idx) => {
                 const trackChance = uniChanceByTrackKey.get(trackLookupKey(track, idx));
                 let majorsBadge = "";
@@ -1058,6 +1150,17 @@ export async function initUniversityPage() {
                 }
 
                 const languageReqInfo = renderLanguageRequirements(track);
+                const extraReqs = Array.isArray(track.extra_requirements) ? track.extra_requirements.filter(Boolean) : [];
+                const extraReqInfo = extraReqs.length
+                    ? `
+                    <div style="margin-top:12px; background:#f9fafb; padding:12px; border-radius:8px; border:1px solid #f3f4f6;">
+                        <div style="font-size:10px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase;">Extra Requirements</div>
+                        <ul style="margin:0; padding-left:18px; font-size:12px; color:#4b5563; line-height:1.4;">
+                            ${extraReqs.map((item) => `<li>${escapeHtml(String(item))}</li>`).join("")}
+                        </ul>
+                    </div>
+                    `
+                    : "";
 
                 // Гранты
                 let grantsInfo = "";
@@ -1126,6 +1229,7 @@ export async function initUniversityPage() {
                         </div>
                     </div>
                     ${languageReqInfo}
+                    ${extraReqInfo}
                     ${grantsInfo}
                 </div>
                 `;
@@ -1458,9 +1562,7 @@ export function initGuidePage() {
         UNT: "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways.",
         NUETTOTAL: "This is a combined entrance test score used in specific institutional admission routes.",
         APTOTAL: "AP Total reflects combined performance across multiple Advanced Placement subjects.",
-        APSCORE: "AP Score is a subject-level Advanced Placement result used to show advanced coursework strength.",
         IBDIPLOMA: "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.",
-        IBCOURSE: "IB Course score is an individual IB subject grade used for subject-level requirement checks.",
     };
 
     function describeAcademicExam(id, cfg) {
@@ -1526,8 +1628,17 @@ export function initGuidePage() {
             arr.forEach((x) => langIds.add(String(x?.id || "").trim()));
         }
 
+        const seen = new Set();
         const exams = Object.entries(EXAM_CONFIG || {})
             .filter(([id]) => !langIds.has(String(id)))
+            .filter(([id]) => {
+                const normalized = canonicalizeExamId(id);
+                const key = String(normalized || id).toUpperCase().replace(/[^A-Z0-9]/g, "");
+                if (!key) return false;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            })
             .sort((a, b) => getExamDisplayName(a[0]).localeCompare(getExamDisplayName(b[0])));
 
         if (!exams.length) {

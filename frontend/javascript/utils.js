@@ -136,9 +136,8 @@ export let EXAM_CONFIG = {
         "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
         "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
         "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
-        "AP_Score": {"min": 1, "max": 5, "type": "int", "step": 1},
         "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
-        "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
+        "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
     };
 
 let __examConfigPromise = null;
@@ -167,9 +166,7 @@ async function loadExamConfig() {
           "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
           "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
           "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
-          "AP_Score": {"min": 1, "max": 5, "type": "int", "step": 1},
-          "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
-          "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
+          "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
       };
     }
     return EXAM_CONFIG;
@@ -288,6 +285,43 @@ export function moneyUSD(val) {
   return "$" + new Intl.NumberFormat("en-US").format(n);
 }
 
+const EXAM_KEY_ALIASES = {
+  NUET: ["NUET_TOTAL", "NUETTOTAL"],
+  NUET_TOTAL: ["NUET", "NUETTOTAL"],
+  NUETTOTAL: ["NUET", "NUET_TOTAL"],
+  TOEFL: ["TOEFL_IBT", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
+  TOEFL_IBT: ["TOEFL", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
+};
+
+function canonicalExamKey(value) {
+  return String(value || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+export function canonicalizeExamId(examId) {
+  const raw = String(examId || "").trim().toUpperCase();
+  if (!raw) return "";
+
+  const cfg = EXAM_CONFIG || {};
+  if (cfg[raw]) return raw;
+
+  const rawCanon = canonicalExamKey(raw);
+  for (const k of Object.keys(cfg)) {
+    if (canonicalExamKey(k) === rawCanon) return k;
+  }
+
+  const aliases = EXAM_KEY_ALIASES[raw] || [];
+  for (const a of aliases) {
+    const alias = String(a || "").trim().toUpperCase();
+    if (cfg[alias]) return alias;
+    const aliasCanon = canonicalExamKey(alias);
+    for (const k of Object.keys(cfg)) {
+      if (canonicalExamKey(k) === aliasCanon) return k;
+    }
+  }
+
+  return raw;
+}
+
 const EXAM_LABEL_OVERRIDES = {
   SAT: "SAT",
   ACT: "ACT",
@@ -297,9 +331,7 @@ const EXAM_LABEL_OVERRIDES = {
   NUET: "NUET Total",
   NUET_TOTAL: "NUET Total",
   AP_Total: "AP Total",
-  AP_Score: "AP Subject Score",
   IB_Diploma: "IB Diploma",
-  IB_Course: "IB Course Grade",
   IELTS: "IELTS Academic",
   TOEFL_iBT_0_120: "TOEFL iBT (0-120)",
   TOEFL_iBT_1_6: "TOEFL iBT (1-6)",
@@ -356,19 +388,21 @@ function getLangExamLabel(examId, langCode = "") {
 }
 
 export function getExamDisplayName(examId, opts = {}) {
-  const id = String(examId || "").trim();
-  if (!id) return "";
+  const raw = String(examId || "").trim();
+  if (!raw) return "";
+  const id = canonicalizeExamId(raw);
 
-  const langLabel = getLangExamLabel(id, opts.langCode || "");
+  const langLabel = getLangExamLabel(raw, opts.langCode || "");
   if (langLabel) return langLabel;
 
-  const cfgLabel = EXAM_CONFIG?.[id]?.label || EXAM_CONFIG?.[id.toUpperCase()]?.label;
+  const cfgLabel = EXAM_CONFIG?.[id]?.label || EXAM_CONFIG?.[raw]?.label || EXAM_CONFIG?.[raw.toUpperCase()]?.label;
   if (cfgLabel) return String(cfgLabel);
 
   if (EXAM_LABEL_OVERRIDES[id]) return EXAM_LABEL_OVERRIDES[id];
-  if (EXAM_LABEL_OVERRIDES[id.toUpperCase()]) return EXAM_LABEL_OVERRIDES[id.toUpperCase()];
+  if (EXAM_LABEL_OVERRIDES[raw]) return EXAM_LABEL_OVERRIDES[raw];
+  if (EXAM_LABEL_OVERRIDES[raw.toUpperCase()]) return EXAM_LABEL_OVERRIDES[raw.toUpperCase()];
 
-  return humanizeExamId(id);
+  return humanizeExamId(raw);
 }
 
 export function setUrlParams(params) {
@@ -650,27 +684,37 @@ function normalizeProfile(p) {
 
   // --- Academic exams: profile.exams = [{id:"SAT", score:1500}, ...]
   if (!Array.isArray(out.exams)) out.exams = [];
-  out.exams = out.exams
-    .map(it => {
-      const rawId = String(it?.id || it?.exam || "").trim();
-      const id = rawId || "";
-      if (!id) return null;
+  const dedupedExams = new Map();
+  out.exams.forEach((it) => {
+    const rawId = String(it?.id || it?.exam || "").trim();
+    if (!rawId) return;
 
-      const cfg =
-        EXAM_CONFIG?.[id] ||
-        EXAM_CONFIG?.[id.toUpperCase()] ||
-        null;
-      const normalizedId = EXAM_CONFIG?.[id] ? id : (EXAM_CONFIG?.[id.toUpperCase()] ? id.toUpperCase() : id);
-      if (String(normalizedId).toUpperCase() === "GPA") {
-        if (normalizedGpa === null) normalizedGpa = clampGpa(it?.score);
-        return null;
-      }
-      if (!cfg) return { ...it, id: normalizedId, exam: normalizedId }; // если нет конфига — не трогаем
+    const normalizedId = canonicalizeExamId(rawId);
+    if (!normalizedId) return;
+    const key = canonicalExamKey(normalizedId);
 
-      const clamped = clampWithCfg(it?.score, cfg);
-      return { ...it, id: normalizedId, exam: normalizedId, score: (clamped ?? it?.score) };
-    })
-    .filter(Boolean);
+    if (String(normalizedId).toUpperCase() === "GPA") {
+      if (normalizedGpa === null) normalizedGpa = clampGpa(it?.score);
+      return;
+    }
+
+    const cfg = EXAM_CONFIG?.[normalizedId] || EXAM_CONFIG?.[normalizedId.toUpperCase()] || null;
+    const clamped = cfg ? clampWithCfg(it?.score, cfg) : it?.score;
+    const score = (clamped ?? it?.score);
+
+    if (!dedupedExams.has(key)) {
+      dedupedExams.set(key, { ...it, id: normalizedId, exam: normalizedId, score });
+      return;
+    }
+
+    const existing = dedupedExams.get(key);
+    const existingScore = Number(existing?.score);
+    const nextScore = Number(score);
+    if (Number.isFinite(nextScore) && (!Number.isFinite(existingScore) || nextScore >= existingScore)) {
+      dedupedExams.set(key, { ...existing, ...it, id: normalizedId, exam: normalizedId, score });
+    }
+  });
+  out.exams = Array.from(dedupedExams.values());
 
   // --- Language exams: profile.languages = [{kind:"Exam", exam:"IELTS", score:7.5}, ...]
   if (!Array.isArray(out.languages)) out.languages = [];

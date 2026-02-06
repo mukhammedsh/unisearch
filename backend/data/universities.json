@@ -17,7 +17,21 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science & Eng",
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 4,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -80,7 +94,37 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "MIT short-answer essays (multiple prompts)",
+          "Two teacher recommendations (one math/science, one humanities/social science/language)",
+          "Secondary School Report with counselor recommendation and school profile",
+          "Official high school transcript submitted by school",
+          "Midyear grades (February Updates & Notes Form)",
+          "Application fee (fee waiver available)"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://mitadmissions.org/apply/firstyear/essays-activities-academics/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://mitadmissions.org/help/faq/recommendations-secondary-school-report/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://mitadmissions.org/apply/firstyear/transcripts/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://mitadmissions.org/apply/freshman/dates"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://mitadmissions.org/apply/firstyear/getting-started/"
       }
     ]
   },
@@ -165,7 +209,27 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "UCAS application with personal statement",
+          "One academic reference (UCAS)",
+          "Admissions test (course-dependent)",
+          "Interview (course-dependent)"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/personal-statement/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/reference/"
       }
     ]
   },
@@ -248,7 +312,23 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Common Application plus Stanford Questions (short essays)",
+          "School report and counselor recommendation",
+          "Official high school transcript",
+          "Two academic teacher recommendations"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://admission.stanford.edu/apply/first-year/apply.html"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://admission.stanford.edu/apply/first-year/forms.html"
       }
     ]
   },
@@ -331,7 +411,22 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Common Application or Coalition Application with personal essay",
+          "Harvard College Questions/supplement (short-answer questions)",
+          "School report with counselor recommendation and high school transcript",
+          "Two teacher recommendations",
+          "Midyear school report",
+          "Final school report (for admitted students only)",
+          "Application fee (fee waiver available)"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://college.harvard.edu/admissions/apply/first-year-applicants"
       }
     ]
   },
@@ -416,13 +511,33 @@
             "notes": "ETH Bachelor programs are taught in German; C1-level proficiency is required."
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application via eApply",
+          "Passport photo and copy of passport/ID",
+          "Curriculum vitae (resume)",
+          "Upper secondary school-leaving certificate",
+          "School reports from the last three school years",
+          "Certificate of university admission (if required)",
+          "German language certificate (if required)",
+          "Signed declaration of consent",
+          "Application fee (non-refundable)",
+          "Entrance examination (reduced or comprehensive) if required by certificate"
+        ]
       }
     ],
     "verified_sources": [
       {
         "topic": "language_requirements",
         "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/language-requirements.html"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/how-to-apply.html"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/admission-prerequisites.html"
       }
     ]
   },
@@ -507,7 +622,23 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application with supporting documents uploaded",
+          "Passport (or birth certificate if no passport)",
+          "High school examination result slip (final or most recent)",
+          "Additional test score reports if submitted (e.g., IELTS/TOEFL/AP/ACT/SAT)",
+          "University academic transcripts if currently/previously enrolled",
+          "Medical report or doctor’s memo if a medical condition/disability is declared",
+          "Statement of criminal records or offence if declared",
+          "Application fee"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://nus.edu.sg/oam/docs/default-source/supporting-documents-guides/supporting-documents-guide-%28cat-d_international-students-with-international-qualifications%29.pdf?sfvrsn=a4ed34_4"
       }
     ]
   },
@@ -582,13 +713,26 @@
             "notes": "EPFL requires French B2 minimum (C1 strongly recommended)."
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online registration form submitted and application fee paid",
+          "Identity photo",
+          "Passport or identity document",
+          "Grade sheets from the last two years of upper secondary school",
+          "Transcripts from prior higher-education institutions (if applicable)",
+          "Final upper-secondary school certificate and transcripts by the stated deadline",
+          "French language certificate (if required)"
+        ]
       }
     ],
     "verified_sources": [
       {
         "topic": "language_requirements",
         "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/level-of-french-required-for-admission-to-bachelor-programs/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/how-to-apply/"
       }
     ]
   },
@@ -664,7 +808,18 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Upload authentic documents to TUMonline",
+          "Proof of school education / academic career",
+          "Higher education entrance qualification for Bachelor’s programs"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.tum.de/en/studies/application/application-info-portal/document-requirements"
       }
     ]
   },
@@ -749,7 +904,24 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Transcripts or academic documentation for all secondary and postsecondary studies",
+          "Proof of English language proficiency (if required)",
+          "Standardized test results if requested (e.g., SAT/ACT/IB/AP)",
+          "Supplementary application/profile/personal statement for some programs",
+          "Submit documents electronically via applicant portals or testing authorities"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://future.utoronto.ca/required-documents"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.ouac.on.ca/guide/undergrad-toronto"
       }
     ]
   },
@@ -835,13 +1007,25 @@
             "notes": "CUHK accepts TOEFL iBT 80 (old scale) or 47 (new scale from Jan 21, 2026); section minimums also apply."
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Passport or entry permit copy",
+          "Personal statement",
+          "Academic transcripts",
+          "Public examination results",
+          "At least one recommendation via the online system",
+          "Application fee"
+        ]
       }
     ],
     "verified_sources": [
       {
         "topic": "language_requirements",
         "url": "https://admission.cuhk.edu.hk/apply/other-qualifications/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://admission.cuhk.edu.hk/international/faq.html"
       }
     ]
   },
@@ -863,7 +1047,21 @@
     "academics": {
       "programs": [
         {
-          "name": "PEAK (Intl Track)",
+          "name": "Environmental Sciences (PEAK)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 20,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Japan in East Asia (PEAK)",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -926,7 +1124,35 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application with required document uploads",
+          "Official secondary school transcripts",
+          "Official standardized examination results",
+          "Official English proficiency test scores (if applicable)",
+          "Certificate of (expected) graduation",
+          "School profile (if applicable)",
+          "Other documentary evidence of achievements (if applicable)",
+          "Payment receipt (examination fee)"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://peak.c.u-tokyo.ac.jp/apply/l3/l4/Step3.html"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.peak.c.u-tokyo.ac.jp/vcms_lf/ApplicationGuidelines_2025.pdf"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://peak.c.u-tokyo.ac.jp/apply/l3/l4/Step5.html"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_PROSPECTUS_2024.pdf"
       }
     ]
   },
@@ -948,7 +1174,22 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science & Eng",
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "Korean",
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1022,13 +1263,27 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "Personal statement and study plan (online)",
+          "Recommendation letter submitted online",
+          "Language proficiency evidence (Korean/English test scores or proof of instruction language)",
+          "Enrollment certificate showing study periods",
+          "All-years transcripts (elementary through high school, as applicable)",
+          "High school graduation or expected graduation certificate",
+          "Applicant nationality proof (passport or nationality certificate/ID)"
+        ]
       }
     ],
     "verified_sources": [
       {
         "topic": "language_requirements",
         "url": "https://admission.snu.ac.kr/international/faq"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/01/AdmissionsforUndergraduate_Fall2025.pdf"
       }
     ]
   },
@@ -1051,6 +1306,20 @@
       "programs": [
         {
           "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 20,
+          "duration": "3 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Aerospace Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1111,7 +1380,22 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Apply in Studielink for the numerus-fixus program by the deadline",
+          "Complete the matching & selection steps (matching questionnaire, online student experience, cognitive skills test, teamwork assignment)",
+          "Complete the TU Delft application in OSIRIS if you have a non-Dutch diploma"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://www.delta.tudelft.nl/en/article/number-students-delft-higher-education-still-growing"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.scribd.com/document/880887339/Regulation-Matching-Selection-Criteria-Procedure-BSc-Computer-Science-Engineering-TUD25-26"
       }
     ]
   },
@@ -1134,6 +1418,20 @@
       "programs": [
         {
           "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Mechanical Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1196,7 +1494,23 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "One recommendation letter (submitted electronically)",
+          "Official high school (and university, if applicable) transcripts",
+          "Copy of passport or national ID (proof of nationality)"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025%20%28including%20fee%20waiver%29_v.2.pdf"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.kaist.ac.kr/en/academics"
       }
     ]
   },
@@ -1218,7 +1532,22 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science (Intl)",
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 2,
+          "duration": "4 years",
+          "language": [
+            "English",
+            "Chinese"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Mechanical Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1282,7 +1611,28 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Passport pages (applicant and parents; visa/entry stamps if applicable)",
+          "Final or expected graduation certificate",
+          "Curriculum vitae",
+          "High school/university transcripts",
+          "Standardized test results (national/regional exams or SAT/ACT/A-Level/AP/IB, etc.)",
+          "English language test report (if required)",
+          "Two recommendation letters (submitted via the system)",
+          "Personal statement",
+          "Financial sponsor form and sponsor income/employment certificate"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://international.join-tsinghua.edu.cn/List-of-Uploading-Documents-in-the-Online-Application-System.pdf"
+      },
+      {
+        "topic": "programs",
+        "url": "https://international.join-tsinghua.edu.cn/Divisions.html"
       }
     ]
   },
@@ -1305,6 +1655,20 @@
       "programs": [
         {
           "name": "Computer Science",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Mechanical and Aerospace Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1379,7 +1743,16 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "Scanned copy of passport or national ID",
+          "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
+          "Motivation letter in English",
+          "Valid test certificates as required by category",
+          "IELTS/TOEFL certificate uploaded in personal account",
+          "Application fee (paid online)"
+        ]
       },
       {
         "id": "nu_nuet",
@@ -1412,7 +1785,16 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "Scanned copy of passport or national ID",
+          "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
+          "Motivation letter in English",
+          "Valid test certificates as required by category",
+          "IELTS/TOEFL certificate uploaded in personal account",
+          "Application fee (paid online)"
+        ]
       }
     ],
     "verified_sources": [
@@ -1423,6 +1805,14 @@
       {
         "topic": "nufyp_nuet_threshold",
         "url": "https://nu.edu.kz/admissions/undergraduate-admissions/nazarbayev-university-foundation-year-programme-nufyp"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://old.nu.edu.kz/admissions/undergraduate-eng"
+      },
+      {
+        "topic": "programs",
+        "url": "https://nu.edu.kz/admissions/undergraduate-admissions/list-of-undergraduate-programs"
       }
     ]
   },
@@ -1444,11 +1834,21 @@
     "academics": {
       "programs": [
         {
-          "name": "Civil Engineering (Intl)",
+          "name": "Kyoto iUP Preparatory Course",
           "study_levels": [
-            "Bachelor",
-            "Master",
-            "PhD"
+            "Foundation"
+          ],
+          "acceptance_rate_percent": 15,
+          "duration": "6 months",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Kyoto iUP Undergraduate Program",
+          "study_levels": [
+            "Bachelor"
           ],
           "acceptance_rate_percent": 15,
           "duration": "4 years",
@@ -1507,7 +1907,26 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Apply through the Kyoto iUP Online Application System",
+          "Application fee",
+          "Certificate of graduation (Form A)",
+          "Evaluation form submitted by school (Form B)",
+          "English proficiency evaluation form (Form C)",
+          "Essay (Form D)",
+          "Documents prepared in English or with English translation"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.iup.kyoto-u.ac.jp/apply/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.iup.kyoto-u.ac.jp/wp-content/uploads/2025/10/UndergraduateAdmissionGuide2026_web.pdf"
       }
     ]
   },
@@ -1529,7 +1948,21 @@
     "academics": {
       "programs": [
         {
-          "name": "Bachelor of Science (CS)",
+          "name": "Computer Science (Computing and Software Systems major)",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 40,
+          "duration": "3 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Engineering (Digital Infrastructure Engineering Systems major)",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1592,7 +2025,34 @@
             }
           }
         ],
-        "language_requirements_mode": "any"
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application with supporting documentation upload",
+          "Secondary school transcripts (or most recent results if final not yet available)",
+          "Tertiary transcripts if previous university study",
+          "Proof of English language proficiency",
+          "Passport copy",
+          "Additional documents if required by program (personal statement/portfolio/aptitude test results)",
+          "Application fee (non-refundable for direct international applicants)"
+        ]
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://study.unimelb.edu.au/how-to-apply/your-online-application"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/applications"
+      },
+      {
+        "topic": "programs",
+        "url": "https://study.unimelb.edu.au/find/majors/major/computing-and-software-systems/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://study.unimelb.edu.au/find/majors/engineering-technology-majors"
       }
     ]
   },
@@ -1614,7 +2074,21 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Information Systems",
+          "study_levels": [
+            "Bachelor",
+            "Master",
+            "PhD"
+          ],
+          "acceptance_rate_percent": 60,
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Business Information Systems",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1663,6 +2137,17 @@
             "min_cefr": 3,
             "notes": "SDU preparatory guidance requires English at intermediate level or above."
           }
+        ],
+        "extra_requirements": [
+          "Admissions fee payment and pre-registration form",
+          "Passport",
+          "Diploma/certificate and transcript",
+          "Letter of recommendation",
+          "Motivational letter",
+          "Admissions fee receipt",
+          "Additional supporting documents (e.g., ISPT certificate, achievements)",
+          "Placement test in English or IELTS 5.5+ waiver",
+          "Online interview with faculty"
         ]
       },
       {
@@ -1694,6 +2179,17 @@
             "min_cefr": 3,
             "notes": "SDU preparatory guidance requires English at intermediate level or above."
           }
+        ],
+        "extra_requirements": [
+          "Admissions fee payment and pre-registration form",
+          "Passport",
+          "Diploma/certificate and transcript",
+          "Letter of recommendation",
+          "Motivational letter",
+          "Admissions fee receipt",
+          "Additional supporting documents (e.g., ISPT certificate, achievements)",
+          "Placement test in English or IELTS 5.5+ waiver",
+          "Online interview with faculty"
         ]
       }
     ],
@@ -1701,6 +2197,18 @@
       {
         "topic": "english_entry_level",
         "url": "https://sdu.edu.kz/language/ru/preparatory-school/entry-requirements-for-bachelors-degree/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://sdu.edu.kz/en/international-admissions/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://sdu.edu.kz/language/en/information-system-example/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://sdu.edu.kz/language/en/business-information-systems/"
       }
     ]
   },
@@ -1723,6 +2231,19 @@
       "programs": [
         {
           "name": "Software Engineering",
+          "study_levels": [
+            "Bachelor",
+            "Master"
+          ],
+          "acceptance_rate_percent": 30,
+          "duration": "3 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus"
+        },
+        {
+          "name": "Computer Science",
           "study_levels": [
             "Bachelor",
             "Master"
@@ -1786,6 +2307,14 @@
             },
             "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46-59 to CEFR B1."
           }
+        ],
+        "extra_requirements": [
+          "Register on the admission platform",
+          "Interview with the Dean",
+          "Diploma (original)",
+          "Passport copy",
+          "3x4 photos (6 pcs.)",
+          "English proficiency certificate if available (IELTS/TOEFL/APTIS/Duolingo/Interpress)"
         ]
       },
       {
@@ -1817,6 +2346,14 @@
             },
             "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46-59 to CEFR B1."
           }
+        ],
+        "extra_requirements": [
+          "Register on the admission platform",
+          "Interview with the Dean",
+          "Diploma (original)",
+          "Passport copy",
+          "3x4 photos (6 pcs.)",
+          "English proficiency certificate if available (IELTS/TOEFL/APTIS/Duolingo/Interpress)"
         ]
       }
     ],
@@ -1824,6 +2361,18 @@
       {
         "topic": "english_language_policy",
         "url": "https://astanait.edu.kz/wp-content/uploads/2024/12/INTERNAL-POLICY.pdf"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://admission.astanait.edu.kz/paid_basis"
+      },
+      {
+        "topic": "programs",
+        "url": "https://astanait.edu.kz/en/education/programs/bachelor/software-engineering/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://astanait.edu.kz/en/education/programs/bachelor/computer-science/"
       }
     ]
   }

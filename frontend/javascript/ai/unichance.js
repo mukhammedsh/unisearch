@@ -205,8 +205,11 @@ export function estimateUniChance(university, profile) {
     : [{ id: "default", label: "General admission", requirements: {}, stats_avg: {} }];
 
   // Requested behavior: if profile has no usable exam/language evidence, return 0.
-  if (!hasUsableEvidence(ctx)) {
-    return zeroChanceResult(tracks);
+  const hasEvidence = hasUsableEvidence(ctx);
+  if (!hasEvidence) {
+    const res = zeroChanceResult(tracks);
+    res.missingEvidence = true;
+    return res;
   }
 
   const perTrack = tracks.map((t, idx) => scoreTrack(university, t, idx, ctx));
@@ -230,5 +233,6 @@ export function estimateUniChance(university, profile) {
     bestTrackId: best.trackId,
     bestTrackLabel: best.trackLabel,
     tracks: perTrack,
+    missingEvidence: false,
   };
 }

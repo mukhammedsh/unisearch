@@ -33,25 +33,11 @@
     "step": 1,
     "notes": "Sum of up to 5 AP exams (each 1–5)."
   },
-  "AP_Score": {
-    "min": 1,
-    "max": 5,
-    "type": "int",
-    "step": 1,
-    "notes": "Single AP subject score."
-  },
   "IB_Diploma": {
     "min": 24,
     "max": 45,
     "type": "int",
     "step": 1,
     "notes": "IB Diploma Programme total."
-  },
-  "IB_Course": {
-    "min": 1,
-    "max": 7,
-    "type": "int",
-    "step": 1,
-    "notes": "Single IB subject grade."
   }
 }

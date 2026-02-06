@@ -5,6 +5,7 @@ import {
   initCustomSelect,
   EXAM_CONFIG,
   getExamDisplayName,
+  canonicalizeExamId,
   escapeHtml,
   showToast,
   API_BASE,
@@ -322,12 +323,18 @@ function initProfileUI() {
     const populateExamSelect = () => {
         if (!examNameSelect) return;
         examNameSelect.innerHTML = `<option value="" disabled selected>Select Exam</option>`;
-        
-        Object.keys(EXAM_CONFIG).forEach(examKey => {
-            if (String(examKey).toUpperCase() === "GPA") return;
+
+        const seen = new Set();
+        Object.keys(EXAM_CONFIG).forEach((examKey) => {
+            const normalized = canonicalizeExamId(examKey);
+            const key = String(normalized || examKey).toUpperCase().replace(/[^A-Z0-9]/g, "");
+            if (!key || key === "GPA") return;
+            if (seen.has(key)) return;
+            seen.add(key);
+
             const opt = document.createElement("option");
-            opt.value = examKey;
-            opt.textContent = getExamDisplayName(examKey);
+            opt.value = normalized || examKey;
+            opt.textContent = getExamDisplayName(normalized || examKey);
             examNameSelect.appendChild(opt);
         });
         
@@ -560,9 +567,11 @@ function initProfileUI() {
                 if(!res.ok) throw new Error(json.detail || "Error");
                 
                 // 🔥 НОВАЯ ЛОГИКА: Ищем дубликат
-                const examId = (json.exam ?? json.id);
-                const examLabel = getExamDisplayName(examId);
-                const existingIndex = profile.exams.findIndex(e => e.exam === examId);
+                const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
+                const examLabel = getExamDisplayName(examId || name);
+                const existingIndex = profile.exams.findIndex(e =>
+                    canonicalizeExamId(e.exam ?? e.id ?? "") === examId
+                );
 
                 if (existingIndex !== -1) {
                 profile.exams[existingIndex].score = json.score;

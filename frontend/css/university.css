@@ -310,6 +310,17 @@
   margin-bottom: 16px;
 }
 
+.chance-warning {
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .chance-head {
   display: flex;
   justify-content: space-between;
@@ -825,6 +836,12 @@
 :root[data-theme="dark"] .scholarship-card {
   background: #101624;
   border-color: var(--line);
+}
+
+:root[data-theme="dark"] .chance-warning {
+  background: #2a1f12;
+  border-color: #4b3a1d;
+  color: #fcd9a5;
 }
 
 :root[data-theme="dark"] .chance-title,
