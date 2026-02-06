@@ -47,6 +47,37 @@ function bindThemeUiSync() {
     });
 }
 
+const LAYOUT_CACHE_KEY = "unisearch_layout_cache_v1";
+
+function hashString(input) {
+    let hash = 0;
+    for (let i = 0; i < input.length; i++) {
+        hash = ((hash << 5) - hash) + input.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+    }
+    return String(hash);
+}
+
+function readLayoutCache() {
+    try {
+        const raw = localStorage.getItem(LAYOUT_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed.html !== "string" || typeof parsed.hash !== "string") return null;
+        return parsed;
+    } catch (e) {
+        return null;
+    }
+}
+
+function writeLayoutCache(html, hash) {
+    try {
+        localStorage.setItem(LAYOUT_CACHE_KEY, JSON.stringify({ html, hash, ts: Date.now() }));
+    } catch (e) {
+        // ignore
+    }
+}
+
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
 const LAYOUT_HTML = `
 <header class="navbar">
@@ -220,8 +251,16 @@ export async function loadGlobalLayout() {
     if (document.getElementById("profileModal")) return;
     try {
         console.log("Injecting Layout HTML...");
-        // Вставляем HTML из переменной
-        document.body.insertAdjacentHTML('afterbegin', LAYOUT_HTML);
+        const currentHash = hashString(LAYOUT_HTML);
+        const cached = readLayoutCache();
+        const htmlToInject = (cached && cached.hash === currentHash) ? cached.html : LAYOUT_HTML;
+
+        if (!cached || cached.hash !== currentHash) {
+            writeLayoutCache(LAYOUT_HTML, currentHash);
+        }
+
+        // Вставляем HTML из кэша (или из переменной, если кэш устарел/отсутствует)
+        document.body.insertAdjacentHTML('afterbegin', htmlToInject);
         syncNavbarLogo();
         bindThemeUiSync();
 
