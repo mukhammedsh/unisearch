@@ -63,12 +63,10 @@
         "id": "mit_regular",
         "label": "Regular Action",
         "requirements": {
-          "IELTS": 7.5,
           "SAT": 1500,
           "GPA": 98
         },
         "stats_avg": {
-          "IELTS": 8.0,
           "SAT": 1560,
           "GPA": 100
         },
@@ -178,12 +176,10 @@
         "id": "imperial_eng",
         "label": "Engineering Track",
         "requirements": {
-          "IELTS": 7.0,
           "SAT": 1450,
           "GPA": 92
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "SAT": 1510,
           "GPA": 98
         },
@@ -283,12 +279,10 @@
         "id": "stanford_standard",
         "label": "Standard Admission",
         "requirements": {
-          "IELTS": 7.5,
           "SAT": 1500,
           "GPA": 96
         },
         "stats_avg": {
-          "IELTS": 8.0,
           "SAT": 1550,
           "GPA": 99
         },
@@ -382,12 +376,10 @@
         "id": "harvard_college",
         "label": "Harvard College",
         "requirements": {
-          "IELTS": 7.5,
           "SAT": 1520,
           "GPA": 98
         },
         "stats_avg": {
-          "IELTS": 8.0,
           "SAT": 1570,
           "GPA": 100
         },
@@ -591,12 +583,10 @@
         "id": "nus_intl",
         "label": "International Admission",
         "requirements": {
-          "IELTS": 7.0,
           "SAT": 1450,
           "GPA": 95
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "SAT": 1530,
           "GPA": 99
         },
@@ -787,11 +777,9 @@
         "id": "tum_aptitude",
         "label": "Aptitude Assessment",
         "requirements": {
-          "IELTS": 6.5,
           "GPA": 80
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "GPA": 90
         },
         "scholarships": [],
@@ -873,12 +861,10 @@
         "id": "uoft_general",
         "label": "General Admission",
         "requirements": {
-          "IELTS": 6.5,
           "SAT": 1300,
           "GPA": 85
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "SAT": 1480,
           "GPA": 94
         },
@@ -1093,12 +1079,10 @@
         "id": "utokyo_peak",
         "label": "PEAK (English Track)",
         "requirements": {
-          "IELTS": 7.0,
           "SAT": 1350,
           "GPA": 85
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "SAT": 1450,
           "GPA": 93
         },
@@ -1351,11 +1335,9 @@
         "id": "tudelft_numerus",
         "label": "Numerus Clausus",
         "requirements": {
-          "IELTS": 6.5,
           "GPA": 80
         },
         "stats_avg": {
-          "IELTS": 7.0,
           "GPA": 92
         },
         "scholarships": [
@@ -1463,12 +1445,10 @@
         "id": "kaist_intl",
         "label": "International Admission",
         "requirements": {
-          "IELTS": 6.5,
           "SAT": 1350,
           "GPA": 85
         },
         "stats_avg": {
-          "IELTS": 7.5,
           "SAT": 1500,
           "GPA": 94
         },
@@ -1580,12 +1560,10 @@
         "id": "tsinghua_intl",
         "label": "International Track",
         "requirements": {
-          "IELTS": 6.5,
           "SAT": 1300,
           "GPA": 88
         },
         "stats_avg": {
-          "IELTS": 7.0,
           "SAT": 1460,
           "GPA": 95
         },
@@ -1876,12 +1854,10 @@
         "id": "kyoto_iup",
         "label": "Kyoto iUP",
         "requirements": {
-          "IELTS": 6.5,
           "SAT": 1350,
           "GPA": 85
         },
         "stats_avg": {
-          "IELTS": 7.0,
           "SAT": 1430,
           "GPA": 92
         },
@@ -1994,12 +1970,10 @@
         "id": "melb_intl",
         "label": "International UG",
         "requirements": {
-          "IELTS": 6.5,
           "SAT": 1350,
           "GPA": 85
         },
         "stats_avg": {
-          "IELTS": 7.0,
           "SAT": 1420,
           "GPA": 92
         },

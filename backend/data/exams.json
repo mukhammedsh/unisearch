@@ -12,6 +12,13 @@
     "type": "int",
     "step": 1
   },
+  "GPA": {
+    "min": 0,
+    "max": 100,
+    "type": "int",
+    "step": 1,
+    "notes": "Stored as percent (0-100)."
+  },
   "UNT": {
     "min": 0,
     "max": 140,
