@@ -55,7 +55,7 @@ const LAYOUT_HTML = `
         src="images/whitelogo.png"
         data-logo-light="images/whitelogo.png"
         data-logo-dark="images/darklogo.png"
-        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='images/logo.jpeg';}"
+        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='images/minilogo.png';}"
         alt="Logo"
         class="logo"
       />

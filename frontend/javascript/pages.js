@@ -247,7 +247,7 @@ export function initUniversitiesPage() {
     function initMap() {
         if (mapInstance) return;
         if (typeof L === "undefined") return;
-        mapInstance = L.map('mapContainer', { maxBounds: [[-90, -180], [90, 180]], maxBoundsViscosity: 1.0, minZoom: 2, maxZoom: 19, zoomAnimation: true, markerZoomAnimation: true }).setView([25, 0], 2);
+        mapInstance = L.map('mapContainer', { maxBounds: [[-90, -180], [90, 180]], maxBoundsViscosity: 1.0, minZoom: 2, maxZoom: 18, zoomAnimation: true, markerZoomAnimation: true }).setView([25, 0], 2);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
         markersLayer = L.markerClusterGroup({
             showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
@@ -514,10 +514,12 @@ export function initUniversitiesPage() {
         // Базовая цена (трековая, если algo её дал)
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
+        (match.cost !== undefined ? match.cost : null) ??
         nested(u, ["finance", "total_cost_year_usd"], 0);
 
         // Итоговая цена с учётом scholarship amount (если есть)
         const cost =
+        (match.finalPrice !== undefined ? match.finalPrice : null) ??
         (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
         baseCost;
 
@@ -529,11 +531,13 @@ export function initUniversitiesPage() {
         (Array.isArray(u.admission_tracks) && u.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0));
 
         const aidAny =
-        (match.aidAvailable !== undefined) ? !!match.aidAvailable : aidAnyFallback;
+        (match.aidAny !== undefined) ? !!match.aidAny :
+        ((match.aidAvailable !== undefined) ? !!match.aidAvailable : aidAnyFallback);
 
         // “Юзер проходит на грант/aid по требованиям”
         const aidEligible =
-        (match.grantEligible !== undefined) ? !!match.grantEligible : !!match.grantName;
+        (match.aidEligible !== undefined) ? !!match.aidEligible :
+        ((match.grantEligible !== undefined) ? !!match.grantEligible : !!match.grantName);
 
         // ВАЖНО: если aidEligible=true, ты сам писал “no budget penalty”
         // значит overBudget считаем только когда aidEligible=false

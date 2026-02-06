@@ -124,6 +124,10 @@ def _mentor_profile_state(profile: Dict[str, Any]) -> Dict[str, Any]:
                         langs[code]["exams"].get(exam_id) or 0,
                         float(score),
                     )
+                    scores[exam_id] = max(
+                        scores.get(exam_id) or 0,
+                        float(score),
+                    )
                 except Exception:
                     pass
 
@@ -193,6 +197,8 @@ def _mentor_eval_lang_rule(rule: Dict[str, Any], state: Dict[str, Any]) -> Dict[
     if reqs and isinstance(reqs, dict):
         for ex_id, min_v in reqs.items():
             user = _mentor_pick_score(global_scores, ex_id)
+            if user is None:
+                user = _mentor_pick_score(lang.get("exams") or {}, ex_id)
             if user is None:
                 missing.append(f"{ex_id} >= {_mentor_fmt_num(min_v)}")
             elif user < float(min_v):
@@ -677,11 +683,11 @@ def _mentor_call_gemini_for_model(model: str, question: str, university: Optiona
         "Output plain text only (no markdown symbols like **, *, #, or code blocks). "
         "Use short paragraphs and numbered steps when useful. "
         "Do not invent scholarships, deadlines, or hard requirements. "
-        "If information is missing, say it clearly and suggest what to check on official university websites."
-        "Do not provide unsolicited advice or plans."
-        "Only answer the user’s explicit question."
-        "Do not suggest admission plans, roadmaps, or next steps unless the user explicitly asks for them."
-        "Do not add a 'Next Steps' section when the user did not request it."
+        "If information is missing, say it clearly and suggest what to check on official university websites. "
+        "Do not provide unsolicited advice or plans. "
+        "Only answer the user’s explicit question. "
+        "Do not suggest admission plans, roadmaps, or next steps unless the user explicitly asks for them. "
+        "Do not add a 'Next Steps' section when the user did not request it. "
     )
     user_payload = {
         "question": question,
