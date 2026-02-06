@@ -299,6 +299,7 @@ def list_universities(
     region: Optional[str] = None,
     major: Optional[str] = None,
     study_level: Optional[str] = None,
+    funding_type: Optional[str] = None,
     format: Optional[str] = None,
     user_budget: Optional[float] = None,
     min_tuition: Optional[float] = None,
@@ -353,6 +354,19 @@ def list_universities(
             for (u, meta_row) in pairs
             if any(x == fm for x in meta_row.get("formats", []))
         ]
+
+    if funding_type:
+        ft = _safe_lower(funding_type)
+        if ft in {"grant", "paid"}:
+            pairs = [
+                (u, m)
+                for (u, m) in pairs
+                if any(
+                    _safe_lower(t.get("funding_type")) == ft
+                    for t in (u.get("admission_tracks") or [])
+                    if isinstance(t, dict)
+                )
+            ]
 
     if user_budget is not None:
         filtered = []

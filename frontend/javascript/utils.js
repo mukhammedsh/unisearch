@@ -477,6 +477,7 @@ export function saveFilters(state) {
         city: state.city,
         // 🔥 УДАЛЕНО: major и format больше не сохраняются в фильтрах
         study_level: state.study_level,
+        funding_type: state.funding_type || "",
         min_tuition: state.min_tuition,
         max_tuition: state.max_tuition,
         sort: state.sort,

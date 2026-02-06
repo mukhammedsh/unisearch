@@ -168,6 +168,47 @@ function clampToExamConfig(value, cfg) {
   return Math.round(out * 1000) / 1000;
 }
 
+function examScoreToProficiency(examId, score) {
+  const cfg = getExamConfig(examId);
+  if (!cfg) return null;
+  const s = toNum(score);
+  const min = toNum(cfg.min);
+  const max = toNum(cfg.max);
+  if (s === null || min === null || max === null || max <= min) return null;
+  const higherIsBetter = isHigherBetterExam(examId);
+  const raw = higherIsBetter
+    ? (s - min) / (max - min)
+    : (max - s) / (max - min);
+  return clamp01(raw);
+}
+
+function proficiencyToExamScore(examId, proficiency) {
+  const cfg = getExamConfig(examId);
+  if (!cfg) return null;
+  const p = clamp01(toNum(proficiency) ?? 0);
+  const min = toNum(cfg.min);
+  const max = toNum(cfg.max);
+  if (min === null || max === null || max <= min) return null;
+  const higherIsBetter = isHigherBetterExam(examId);
+  const raw = higherIsBetter
+    ? (min + (max - min) * p)
+    : (max - (max - min) * p);
+  return clampToExamConfig(raw, cfg);
+}
+
+function bestEquivalentLanguageExamScore(targetExamId, langState) {
+  const exams = (langState && typeof langState.exams === "object") ? langState.exams : null;
+  if (!exams) return null;
+  let bestProficiency = null;
+  for (const [srcExamId, srcScore] of Object.entries(exams)) {
+    const p = examScoreToProficiency(srcExamId, srcScore);
+    if (p === null) continue;
+    if (bestProficiency === null || p > bestProficiency) bestProficiency = p;
+  }
+  if (bestProficiency === null) return null;
+  return proficiencyToExamScore(targetExamId, bestProficiency);
+}
+
 function inferLanguageExamScoreFromEvidence(examId, userLanguages) {
   const cfg = getExamConfig(examId);
   if (!cfg) return null;
@@ -353,9 +394,12 @@ function scoreSingleLanguageRequirement(langReq, userLanguages) {
   const req = (langReq?.requirements && typeof langReq.requirements === "object") ? langReq.requirements : {};
   const avg = (langReq?.stats_avg && typeof langReq.stats_avg === "object") ? langReq.stats_avg : {};
   for (const [examId, minVal] of Object.entries(req)) {
-    const local = toNum(state?.exams?.[examId]);
+    const local = getUserScore(state?.exams || {}, examId, null);
+    const equivalent = (local === null) ? bestEquivalentLanguageExamScore(examId, state) : null;
     const inferredFromSameLanguage = getUserScore({}, examId, state ? { [code]: state } : null);
-    const user = local !== null ? local : inferredFromSameLanguage;
+    const user = (local !== null)
+      ? local
+      : ((equivalent !== null) ? equivalent : inferredFromSameLanguage);
     if (user === null) continue;
     const avgVal = Object.prototype.hasOwnProperty.call(avg, examId) ? avg[examId] : null;
     const higher = isHigherBetterExam(examId);
@@ -371,11 +415,10 @@ function scoreSingleLanguageRequirement(langReq, userLanguages) {
   }
 
   const best = candidates.reduce((m, x) => Math.max(m, x.score || 0), 0);
-  const avgScore = candidates.reduce((s, x) => s + (x.score || 0), 0) / Math.max(candidates.length, 1);
   const pass = candidates.some((x) => !!x.pass);
   const minGap = candidates.reduce((m, x) => Math.min(m, x.gap || 0), 1);
   return {
-    score: clamp01(0.72 * best + 0.28 * avgScore),
+    score: clamp01(best),
     pass,
     gap: pass ? 0 : minGap,
     source: "combined",

@@ -72,6 +72,7 @@ export function initUniversitiesPage() {
         minInput: $("minCostInput"), maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
+        fundingTypeSelect: $("fundingTypeSelect"),
         slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
         list: $("universitiesList"), mapContainer: $("mapContainer"), total: $("totalCount"), 
         state: $("listState"), pagination: $("pagination"),
@@ -92,7 +93,8 @@ export function initUniversitiesPage() {
     const initialMax = clampTuition(savedState.max_tuition, MAX_TUITION);
     const state = {
         q: savedState.q || "", country: savedState.country || "", region: savedState.region || "", 
-        city: savedState.city || "", study_level: savedState.study_level || "", 
+        city: savedState.city || "", study_level: savedState.study_level || "",
+        funding_type: savedState.funding_type || "",
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
         sort: savedState.sort || "uni_ai", ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
@@ -252,6 +254,7 @@ export function initUniversitiesPage() {
     el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
+    el.fundingTypeSelect?.addEventListener("change", () => { state.funding_type = el.fundingTypeSelect.value; refetch(); });
 
     el.sortSelect?.addEventListener("change", async () => {
         const nextSort = el.sortSelect.value;
@@ -276,7 +279,7 @@ export function initUniversitiesPage() {
     el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
 
     el.resetBtn?.addEventListener("click", () => {
-        Object.assign(state, { q: "", country: "", region: "", city: "", study_level: "", min_tuition: 0, max_tuition: MAX_TUITION, sort: "uni_ai", ai_balance: 50, page: 1 });
+        Object.assign(state, { q: "", country: "", region: "", city: "", study_level: "", funding_type: "", min_tuition: 0, max_tuition: MAX_TUITION, sort: "uni_ai", ai_balance: 50, page: 1 });
         saveFilters(state);
         applyToForm();
         if (el.stateDiv) el.stateDiv.style.display = "none"; 
@@ -432,6 +435,7 @@ export function initUniversitiesPage() {
         if (state.min_tuition) p.set("min_tuition", state.min_tuition);
         if (state.max_tuition) p.set("max_tuition", state.max_tuition);
         if (state.study_level) p.set("study_level", state.study_level);
+        if (state.funding_type) p.set("funding_type", state.funding_type);
 
         const isAiSort = (state.sort === "uni_ai");
         p.set("sort", forApi ? (isAiSort ? "name_asc" : state.sort) : state.sort);
@@ -459,6 +463,7 @@ export function initUniversitiesPage() {
     function applyToForm() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
+        if(el.fundingTypeSelect) el.fundingTypeSelect.value = state.funding_type;
         if(el.slider) el.slider.value = state.ai_balance;
         if (el.minSlider) el.minSlider.value = state.min_tuition;
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
@@ -467,7 +472,7 @@ export function initUniversitiesPage() {
         
         fillTrack(); 
 
-        ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect"].forEach(id => initCustomSelect(id));
+        ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect", "fundingTypeSelect"].forEach(id => initCustomSelect(id));
     }
 
     function updateLocationLogic(country) {
@@ -515,6 +520,7 @@ export function initUniversitiesPage() {
         if(sp.has("region")) state.region = sp.get("region");
         if(sp.has("city")) state.city = sp.get("city");
         if(sp.has("study_level")) state.study_level = sp.get("study_level");
+        if(sp.has("funding_type")) state.funding_type = sp.get("funding_type");
         if(sp.has("min_tuition")) state.min_tuition = clampTuition(sp.get("min_tuition"), state.min_tuition);
         if(sp.has("max_tuition")) state.max_tuition = clampTuition(sp.get("max_tuition"), state.max_tuition);
         if(sp.has("sort")) state.sort = sp.get("sort");
@@ -647,7 +653,10 @@ export function initUniversitiesPage() {
         // “Есть ли вообще aid/grants”
         const aidAnyFallback =
         !!(u.finance?.financial_aid?.merit_based || u.finance?.financial_aid?.need_based) ||
-        (Array.isArray(u.admission_tracks) && u.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0));
+        (Array.isArray(u.admission_tracks) && (
+            u.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0) ||
+            u.admission_tracks.some(t => String(t?.funding_type || "").toLowerCase() === "grant")
+        ));
 
         const aidAny =
         (match.aidAny !== undefined) ? !!match.aidAny :
@@ -1102,6 +1111,46 @@ export async function initUniversityPage() {
         return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
         }
 
+        function renderTrackFundingBadge(track) {
+        const rawType = String(track?.funding_type || "").trim().toLowerCase();
+        const badgeRaw = String(track?.track_badge || "").trim();
+        if (!rawType && !badgeRaw) return "";
+        const isGrant = rawType === "grant" || /grant|scholar/i.test(badgeRaw);
+        const text = badgeRaw || (isGrant ? "Grant" : "Paid");
+        const bg = isGrant ? "#ecfdf5" : "#f3f4f6";
+        const border = isGrant ? "#86efac" : "#d1d5db";
+        const color = isGrant ? "#166534" : "#374151";
+        return `<span style="display:inline-block; margin-top:4px; font-size:11px; font-weight:700; padding:3px 8px; border-radius:999px; background:${bg}; border:1px solid ${border}; color:${color};">${escapeHtml(text)}</span>`;
+        }
+
+        function getTrackFundingType(track) {
+        const rawType = String(track?.funding_type || "").trim().toLowerCase();
+        if (rawType === "grant" || rawType === "paid") return rawType;
+        const badgeRaw = String(track?.track_badge || "").trim().toLowerCase();
+        return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
+        }
+
+        const ADMISSION_TRACK_FILTER_KEY = "unisearch_admission_track_filter";
+        const readAdmissionTrackFilter = () => {
+        try {
+            const raw = String(localStorage.getItem(ADMISSION_TRACK_FILTER_KEY) || "all").trim().toLowerCase();
+            if (raw === "grant" || raw === "paid" || raw === "all") return raw;
+        } catch (e) {
+            // ignore
+        }
+        return "all";
+        };
+        const writeAdmissionTrackFilter = (value) => {
+        const v = String(value || "all").trim().toLowerCase();
+        if (v !== "all" && v !== "grant" && v !== "paid") return;
+        try {
+            localStorage.setItem(ADMISSION_TRACK_FILTER_KEY, v);
+        } catch (e) {
+            // ignore
+        }
+        };
+        let admissionTrackFilter = readAdmissionTrackFilter();
+
 
     // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
     const reqDiv = document.getElementById("detailRequirements");
@@ -1113,8 +1162,27 @@ export async function initUniversityPage() {
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
             reqDiv.innerHTML = `${warningHTML}<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
         } else {
+            const tracks = Array.isArray(u.admission_tracks) ? u.admission_tracks : [];
+            const filteredEntries = tracks
+                .map((track, idx) => ({ track, idx }))
+                .filter(({ track }) => {
+                if (admissionTrackFilter === "all") return true;
+                return getTrackFundingType(track) === admissionTrackFilter;
+            });
+            const totalTracks = tracks.length;
+            const shownTracks = filteredEntries.length;
+
             let tracksHTML = warningHTML + renderUniChanceSummary();
-            u.admission_tracks.forEach((track, idx) => {
+            tracksHTML += `
+            <div style="margin:12px 0 16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <span style="font-size:12px; color:#4b5563; font-weight:700;">Track Filter:</span>
+                <button type="button" class="ad-track-filter-btn${admissionTrackFilter === "all" ? " is-active" : ""}" data-track-filter="all" style="padding:6px 10px; border-radius:999px; border:1px solid ${admissionTrackFilter === "all" ? "#6366f1" : "#d1d5db"}; background:${admissionTrackFilter === "all" ? "#eef2ff" : "#fff"}; color:${admissionTrackFilter === "all" ? "#3730a3" : "#374151"}; font-size:12px; font-weight:700; cursor:pointer;">All</button>
+                <button type="button" class="ad-track-filter-btn${admissionTrackFilter === "grant" ? " is-active" : ""}" data-track-filter="grant" style="padding:6px 10px; border-radius:999px; border:1px solid ${admissionTrackFilter === "grant" ? "#16a34a" : "#d1d5db"}; background:${admissionTrackFilter === "grant" ? "#ecfdf5" : "#fff"}; color:${admissionTrackFilter === "grant" ? "#166534" : "#374151"}; font-size:12px; font-weight:700; cursor:pointer;">Grant</button>
+                <button type="button" class="ad-track-filter-btn${admissionTrackFilter === "paid" ? " is-active" : ""}" data-track-filter="paid" style="padding:6px 10px; border-radius:999px; border:1px solid ${admissionTrackFilter === "paid" ? "#6b7280" : "#d1d5db"}; background:${admissionTrackFilter === "paid" ? "#f3f4f6" : "#fff"}; color:${admissionTrackFilter === "paid" ? "#1f2937" : "#374151"}; font-size:12px; font-weight:700; cursor:pointer;">Paid</button>
+                <span style="font-size:12px; color:#6b7280;">Showing ${shownTracks} of ${totalTracks} tracks</span>
+            </div>`;
+
+            filteredEntries.forEach(({ track, idx }) => {
                 const trackChance = uniChanceByTrackKey.get(trackLookupKey(track, idx));
                 let majorsBadge = "";
                 if (track.applicable_majors && track.applicable_majors.length > 0) {
@@ -1127,8 +1195,12 @@ export async function initUniversityPage() {
                     majorsBadge = `<span style="font-size:12px; color:#666; font-style:italic;">For all majors</span>`;
                 }
                 
-                // Цена трека (Вернули!)
-                const trackPrice = track.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0;
+                const trackPriceOverride = track.finance_override?.total_cost_year_usd;
+                const trackPrice = trackPriceOverride ?? u.finance?.total_cost_year_usd ?? 0;
+                const isGrantTrack = getTrackFundingType(track) === "grant";
+                const trackPriceTitle = isGrantTrack
+                    ? (trackPriceOverride != null ? "Est. Net Cost" : "Base Cost (before grant)")
+                    : "Est. Cost";
 
                 // Требования
                 const reqSplit = splitExamEntries(track.requirements || {});
@@ -1208,12 +1280,13 @@ export async function initUniversityPage() {
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <div>
                             <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${escapeHtml(String(track.label || "Track"))}</h4>
+                            ${renderTrackFundingBadge(track)}
                             ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
                             <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${escapeHtml(String(track.description || "")).replace(/\n/g, "<br>")}</p>
                         </div>
                         <div style="text-align:right;">
-                            <div style="font-size:12px; color:#666;">Est. Cost</div>
+                            <div style="font-size:12px; color:#666;">${trackPriceTitle}</div>
                             <div style="font-size:16px; font-weight:800; color:#111;">${moneyUSD(trackPrice)}</div>
                         </div>
                     </div>
@@ -1234,7 +1307,19 @@ export async function initUniversityPage() {
                 </div>
                 `;
             });
+            if (!filteredEntries.length) {
+                tracksHTML += `<div style="padding:10px 0; color:#666;">No tracks for selected filter.</div>`;
+            }
             reqDiv.innerHTML = tracksHTML;
+            reqDiv.querySelectorAll("[data-track-filter]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const next = String(btn.getAttribute("data-track-filter") || "all").toLowerCase();
+                    if (next === admissionTrackFilter) return;
+                    admissionTrackFilter = (next === "grant" || next === "paid" || next === "all") ? next : "all";
+                    writeAdmissionTrackFilter(admissionTrackFilter);
+                    renderAdmissionTab();
+                });
+            });
         }
     };
     renderAdmissionTab();
