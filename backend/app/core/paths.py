@@ -1,0 +1,11 @@
+from pathlib import Path
+
+CORE_DIR = Path(__file__).resolve().parent
+APP_DIR = CORE_DIR.parent
+BACKEND_DIR = APP_DIR.parent
+DATA_DIR = BACKEND_DIR / "data"
+
+DATA_PATH = str(DATA_DIR / "universities.json")
+CITIES_PATH = str(DATA_DIR / "cities.json")
+EXAMS_PATH = str(DATA_DIR / "exams.json")
+LANGUAGES_PATH = str(DATA_DIR / "languages.json")

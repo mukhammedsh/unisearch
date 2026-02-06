@@ -26,6 +26,33 @@ import { estimateUniChance } from "./ai/unichance.js";
 import { initUniMentor } from "./ai/mentor.js";
 import { setupTabs } from "./components.js";
 
+const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
+
+function normalizeUrl(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "";
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^\/\//.test(s)) return `https:${s}`;
+  if (/^www\./i.test(s)) return `https://${s}`;
+  return "";
+}
+
+function safeUrl(raw) {
+  const candidate = normalizeUrl(raw);
+  if (!candidate) return "";
+  try {
+    const url = new URL(candidate);
+    if (SAFE_PROTOCOLS.has(url.protocol)) return url.href;
+  } catch (e) {
+    return "";
+  }
+  return "";
+}
+
+function safePathSegment(raw) {
+  return encodeURIComponent(String(raw || "").trim());
+}
+
 // =====================================
 // PAGE: UNIVERSITIES LIST (Список вузов)
 // =====================================
@@ -77,6 +104,11 @@ export function initUniversitiesPage() {
     }
     let focusUniId = "";
     let focusUniDone = false;
+
+    const CACHE_TTL_MS = 30000;
+    let lastFetchKey = "";
+    let lastFetchPayload = null;
+    let lastFetchAt = 0;
 
     // --- Слайдеры ---
     function fillTrack() {
@@ -219,6 +251,7 @@ export function initUniversitiesPage() {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
         markersLayer = L.markerClusterGroup({
             showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
+            chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
             iconCreateFunction: function(cluster) {
                 const markers = cluster.getAllChildMarkers(); const count = markers.length;
                 const firstMarkerHtml = markers[0].options.icon.options.html;
@@ -240,7 +273,8 @@ export function initUniversitiesPage() {
         const newMarkers = [];
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
-                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('images/logos/${u.id}.png');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
+                const safeId = safePathSegment(u.id);
+                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('images/logos/${safeId}.png');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
                 const marker = L.marker([u.coordinates.lat, u.coordinates.lon], { icon: customIcon });
                 const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
                 marker.bindPopup(cardHTML, { minWidth: 280, maxWidth: 320, className: 'custom-map-popup', autoPan: false });
@@ -326,7 +360,7 @@ export function initUniversitiesPage() {
             el.stateDiv.style.display = "block"; 
             const states = Object.keys(countryData).sort();
             el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
-            states.forEach(s => { el.stateSelect.innerHTML += `<option value="${s}">${s}</option>`; });
+            states.forEach(s => { el.stateSelect.innerHTML += `<option value="${escapeHtml(String(s))}">${escapeHtml(String(s))}</option>`; });
             initCustomSelect("stateSelect");
             updateCityDropdown([]);
         }
@@ -349,7 +383,8 @@ export function initUniversitiesPage() {
         let html = `<option value="">🌍 Global</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
-            html += `<option value="${c}" ${isSelected}>${c}</option>`; 
+            const text = escapeHtml(String(c));
+            html += `<option value="${text}" ${isSelected}>${text}</option>`; 
         });
         el.countrySelect.innerHTML = html;
         initCustomSelect("countrySelect");
@@ -388,6 +423,25 @@ export function initUniversitiesPage() {
         }
     }
 
+    async function fetchUniversities(apiParams) {
+        const key = apiParams.toString();
+        const now = Date.now();
+        if (lastFetchKey === key && lastFetchPayload && (now - lastFetchAt) < CACHE_TTL_MS) {
+            return lastFetchPayload;
+        }
+        const res = await fetch(`${API_BASE}/universities?${key}`);
+        if (!res.ok) throw new Error("API Error");
+        const data = await res.json();
+        const payload = {
+            items: data.items || [],
+            total: data.total || 0,
+        };
+        lastFetchKey = key;
+        lastFetchPayload = payload;
+        lastFetchAt = now;
+        return payload;
+    }
+
     async function fetchAndRender() {
         if (el.state && state.viewMode === 'list') el.state.textContent = "Loading...";
         if (state.viewMode === 'list') el.list.innerHTML = "";
@@ -398,9 +452,7 @@ export function initUniversitiesPage() {
         setUrlParams(urlParams);
 
         try {
-        const res = await fetch(`${API_BASE}/universities?${apiParams.toString()}`);
-        if (!res.ok) throw new Error("API Error");
-        const data = await res.json();
+        const data = await fetchUniversities(apiParams);
         let items = data.items || [];
         const total = data.total || 0;
         const isAiSort = (state.sort === "uni_ai");
@@ -443,14 +495,19 @@ export function initUniversitiesPage() {
 
     // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget) {
-        const id = u.id; const name = u.name; const country = nested(u, ["location", "country"], "");
-        const city = nested(u, ["location", "city"], ""); 
-        let locString = city;
+        const id = u.id;
+        const safeId = safePathSegment(id);
+        const name = u.name;
+        const country = nested(u, ["location", "country"], "");
+        const city = nested(u, ["location", "city"], "");
+        const cityText = escapeHtml(city);
+        const countryText = escapeHtml(country);
+        let locString = cityText;
         if (country) {
             const flagHtml = getFlagImg(country);
             locString = city 
-                ? `<div style="display:flex; align-items:center; gap:6px;">${city}, ${flagHtml} ${country}</div>`
-                : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${country}</div>`;
+                ? `<div style="display:flex; align-items:center; gap:6px;">${cityText}, ${flagHtml} ${countryText}</div>`
+                : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${countryText}</div>`;
         }
         const match = u.matchData || {};
 
@@ -503,7 +560,7 @@ export function initUniversitiesPage() {
         // Grant/Aid badges
         if (match.grantName) {
         badges.push(
-            `<span class="uni-pill uni-pill--success">🏆 ${match.grantName}</span>`
+            `<span class="uni-pill uni-pill--success">🏆 ${escapeHtml(match.grantName)}</span>`
         );
         } else if (overBudget) {
         if (aidEligible) {
@@ -541,8 +598,8 @@ export function initUniversitiesPage() {
         
         // ROI УБРАН ПОЛНОСТЬЮ
 
-        const logoSrc = `images/logos/${id}.png`; 
-        const thumbSrc = `images/thumbnails/${id}.jpg`;
+        const logoSrc = `images/logos/${safeId}.png`;
+        const thumbSrc = `images/thumbnails/${safeId}.jpg`;
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media" style="background-image: url('${thumbSrc}');">
@@ -594,6 +651,7 @@ export async function initUniversityPage() {
     const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}`);
     if (!res.ok) throw new Error("Backend error");
     const u = await res.json();
+    const safeUniId = safePathSegment(u.id);
 
     // 1. Шапка
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
@@ -609,16 +667,25 @@ export async function initUniversityPage() {
     setTxt("detailLogo", (u.name || "U").substring(0, 2).toUpperCase());
 
     const coverEl = document.getElementById("detailCover");
-    if (coverEl) coverEl.style.backgroundImage = `url('images/thumbnails/${u.id}.jpg')`;
+    if (coverEl) coverEl.style.backgroundImage = `url('images/thumbnails/${safeUniId}.jpg')`;
 
     const logoEl = document.getElementById("detailLogo");
     if (logoEl) {
         const initialsText = (u.name || "U").substring(0, 2).toUpperCase();
-        logoEl.innerHTML = `<img src="images/logos/${u.id}.png" alt="Logo" onerror="this.style.display='none'; this.parentNode.textContent='${initialsText}'" style="width:100%; height:100%; object-fit:contain;">`;
+        logoEl.innerHTML = `<img src="images/logos/${safeUniId}.png" alt="Logo" onerror="this.style.display='none'; this.parentNode.textContent='${initialsText}'" style="width:100%; height:100%; object-fit:contain;">`;
     }
 
     const siteBtn = document.getElementById("detailWebsite");
-    if (siteBtn && u.website) { siteBtn.href = u.website; siteBtn.style.display = "inline-flex"; }
+    if (siteBtn && u.website) {
+        const safeWebsite = safeUrl(u.website);
+        if (safeWebsite) {
+            siteBtn.href = safeWebsite;
+            siteBtn.style.display = "inline-flex";
+        } else {
+            siteBtn.removeAttribute("href");
+            siteBtn.style.display = "none";
+        }
+    }
     const mapBtn = document.getElementById("detailMapLink");
     if (mapBtn) {
         const p = new URLSearchParams();
@@ -657,22 +724,28 @@ export async function initUniversityPage() {
             rankHtml = `<span style="color:#5d17ea; font-size:1.1em;">${trophy}#${u.rank}</span>`;
         }
         
+        const campusSize = escapeHtml(String(u.student_life?.size || "Medium"));
         recDiv.innerHTML = `
             <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
             <div class="d-kv"><span>Acceptance Rate</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
-            <div class="d-kv" style="border-bottom:none;"><span>Campus Size</span><span>${u.student_life?.size || "Medium"}</span></div>
+            <div class="d-kv" style="border-bottom:none;"><span>Campus Size</span><span>${campusSize}</span></div>
         `;
     }
 
     const extraDiv = document.getElementById("detailExtra");
     if (extraDiv) {
-         const description = u.description ? `<p style="margin-bottom:15px; line-height:1.6; color:#444;">${u.description}</p>` : ""; 
+         const description = u.description
+            ? `<p style="margin-bottom:15px; line-height:1.6; color:#444;">${escapeHtml(String(u.description)).replace(/\n/g, "<br>")}</p>`
+            : "";
          const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
+         const formats = Array.isArray(u.academics?.formats)
+            ? u.academics.formats.map((x) => escapeHtml(String(x))).join(", ")
+            : escapeHtml("On-campus");
          
          extraDiv.innerHTML = `
             ${description}
             <div class="d-kv"><span>Total Students</span><span>${studentCount}</span></div>
-            <div class="d-kv" style="border-bottom:none;"><span>Study Formats</span><span>${u.academics?.formats?.join(", ") || "On-campus"}</span></div>
+            <div class="d-kv" style="border-bottom:none;"><span>Study Formats</span><span>${formats || escapeHtml("On-campus")}</span></div>
          `;
     }
 
@@ -927,7 +1000,7 @@ export async function initUniversityPage() {
                 if (track.applicable_majors && track.applicable_majors.length > 0) {
                     majorsBadge = `<div style="margin-top:4px; display:flex; flex-wrap:wrap; gap:6px;">
                         ${track.applicable_majors.map(m => 
-                            `<span style="background:#f0fdf4; color:#166534; font-size:11px; padding:3px 8px; border-radius:4px; border:1px solid #bbf7d0;">📚 ${m}</span>`
+                            `<span style="background:#f0fdf4; color:#166534; font-size:11px; padding:3px 8px; border-radius:4px; border:1px solid #bbf7d0;">📚 ${escapeHtml(String(m))}</span>`
                         ).join("")}
                     </div>`;
                 } else {
@@ -968,20 +1041,23 @@ export async function initUniversityPage() {
                             ${track.scholarships.map(s => {
                                 let conditions = "";
                                 if (s.requirements) {
-                                    conditions = Object.entries(s.requirements).map(([k, v]) => `${k} ≥ ${v}`).join(" • ");
+                                    conditions = Object.entries(s.requirements)
+                                        .map(([k, v]) => `${escapeHtml(String(k))} ≥ ${escapeHtml(String(v))}`)
+                                        .join(" • ");
                                 }
                                 const badgeText = s.amount 
                                     ? `Cover: ${moneyUSD(s.amount)}` 
                                     : (s.type === 'need' ? 'Need-based Aid' : 'Merit Scholarship');
+                                const safeBadgeText = escapeHtml(String(badgeText));
 
                                 return `
                                 <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px 10px;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                                         <div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#064e3b; font-size:13px;">
-                                            <span>🏆</span> ${s.name}
+                                            <span>🏆</span> ${escapeHtml(String(s.name || ""))}
                                         </div>
                                         <div style="font-size:10px; font-weight:700; background:#fff; color:#059669; padding:2px 6px; border-radius:4px; border:1px solid #86efac;">
-                                            ${badgeText}
+                                            ${safeBadgeText}
                                         </div>
                                     </div>
                                     ${conditions ? `
@@ -1000,10 +1076,10 @@ export async function initUniversityPage() {
                 <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:20px; margin-bottom:16px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <div>
-                            <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${track.label}</h4>
+                            <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${escapeHtml(String(track.label || "Track"))}</h4>
                             ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
-                            <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${track.description || ""}</p>
+                            <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${escapeHtml(String(track.description || "")).replace(/\n/g, "<br>")}</p>
                         </div>
                         <div style="text-align:right;">
                             <div style="font-size:12px; color:#666;">Est. Cost</div>
@@ -1084,12 +1160,12 @@ export async function initUniversityPage() {
                     for (const [key, val] of Object.entries(breakdown)) {
                         const color = colors[i % colors.length];
                         const percent = (val / total) * 100;
-                        barHTML += `<div style="width:${percent}%; background:${color};" title="${key}"></div>`;
+                        barHTML += `<div style="width:${percent}%; background:${color};" title="${escapeHtml(String(key))}"></div>`;
                         legendHTML += `
                             <div style="display:flex; align-items:center; font-size:13px; margin-bottom:6px;">
                                 <div style="display:flex; align-items:center; gap:6px;">
                                     <span style="width:8px; height:8px; border-radius:50%; background:${color}; flex-shrink:0;"></span>
-                                    <span style="color:#555;">${key.replace(/_/g, " ")}</span>
+                                    <span style="color:#555;">${escapeHtml(String(key)).replace(/_/g, " ")}</span>
                                 </div>
                                 <span style="font-weight:700; color:#111; margin-left:12px;">${moneyUSD(val)}</span>
                             </div>
@@ -1106,7 +1182,7 @@ export async function initUniversityPage() {
                 financeHTML += `
                 <div class="finance-card">
                     <div class="finance-header">
-                        <div class="finance-track-name">${track.label || "General Cost"}</div>
+                        <div class="finance-track-name">${escapeHtml(String(track.label || "General Cost"))}</div>
                         <div class="finance-total">
                             <small>Total / Year</small>
                             <span>${moneyUSD(total)}</span>
@@ -1122,7 +1198,7 @@ export async function initUniversityPage() {
                         <div class="finance-footer">
                             <div class="finance-grant-title">Available Scholarships:</div>
                             <ul class="finance-grant-list">
-                                ${track.scholarships.map(s => `<li>${s.name}</li>`).join("")}
+                                ${track.scholarships.map(s => `<li>${escapeHtml(String(s.name || ""))}</li>`).join("")}
                             </ul>
                         </div>
                     ` : ''}
@@ -1178,14 +1254,14 @@ export async function initUniversityPage() {
                     userSalary = looseMajorMatch[1];
                     roiContent = `
                         <div style="background:#d1fae5; color:#065f46; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #a7f3d0;">
-                            ✅ Calculation based on <b>${userMajor}</b> graduates from this university.
+                            ✅ Calculation based on <b>${escapeHtml(String(userMajor))}</b> graduates from this university.
                         </div>
                     `;
                 } else {
                     userSalary = fallbackSalary;
                     roiContent = `
                         <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
-                            ℹ️ Specific data for <b>${userMajor}</b> not available. ${salariesByMajorEntries.length ? "Showing computed average across all majors." : "Showing average for all graduates."}
+                            ℹ️ Specific data for <b>${escapeHtml(String(userMajor))}</b> not available. ${salariesByMajorEntries.length ? "Showing computed average across all majors." : "Showing average for all graduates."}
                         </div>
                     `;
                 }
@@ -1272,9 +1348,12 @@ export async function initRankingPage() {
             else if (rank === 2) rankClass = "rank-2";
             else if (rank === 3) rankClass = "rank-3";
 
-            const logoSrc = `images/logos/${u.id}.png`;
-            const thumbSrc = `images/thumbnails/${u.id}.jpg`;
+            const safeId = safePathSegment(u.id);
+            const logoSrc = `images/logos/${safeId}.png`;
+            const thumbSrc = `images/thumbnails/${safeId}.jpg`;
             const flag = getFlagImg(u.location.country);
+            const cityText = escapeHtml(String(u.location.city || ""));
+            const countryText = escapeHtml(String(u.location.country || ""));
 
             return `
             <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
@@ -1287,7 +1366,7 @@ export async function initRankingPage() {
                     <div class="rank-title">${escapeHtml(u.name)}</div>
                     <div class="rank-loc">
                         ${flag} 
-                        <span style="margin-left:6px;">${u.location.city}, ${u.location.country}</span>
+                        <span style="margin-left:6px;">${cityText}, ${countryText}</span>
                     </div>
                 </div>
                 <div class="rank-badge">

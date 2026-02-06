@@ -5,6 +5,7 @@ import {
   initCustomSelect,
   EXAM_CONFIG,
   getExamDisplayName,
+  escapeHtml,
   showToast,
   API_BASE,
   MAJOR_OPTIONS,
@@ -606,8 +607,8 @@ function initProfileUI() {
             examList.innerHTML = profile.exams.map((ex, i) => `
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
-                        <span class="profile-exam-name">${getExamDisplayName(ex.exam)}</span>
-                        <span class="profile-exam-score">Score: ${ex.score}</span>
+                        <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam))}</span>
+                        <span class="profile-exam-score">Score: ${escapeHtml(String(ex.score))}</span>
                     </div>
                     <button data-idx="${i}" class="profile-delete">Delete</button>
                 </div>

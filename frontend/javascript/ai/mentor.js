@@ -1,6 +1,28 @@
 import { API_BASE, UNIMENTOR_CONFIG, aiName, escapeHtml, loadProfile, initCustomSelect } from "../utils.js";
 
 const MODE_STORAGE_KEY = "unimentor_mode";
+const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
+
+function normalizeUrl(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "";
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^\/\//.test(s)) return `https:${s}`;
+  if (/^www\./i.test(s)) return `https://${s}`;
+  return "";
+}
+
+function safeUrl(raw) {
+  const candidate = normalizeUrl(raw);
+  if (!candidate) return "";
+  try {
+    const url = new URL(candidate);
+    if (SAFE_PROTOCOLS.has(url.protocol)) return url.href;
+  } catch (e) {
+    return "";
+  }
+  return "";
+}
 
 function normalizeMode(value) {
   const m = String(value || "").trim().toLowerCase();
@@ -40,7 +62,9 @@ function renderSources(sources) {
       ${sources
         .map((s) => {
           const title = escapeHtml(s?.title || "Source");
-          const url = escapeHtml(s?.url || "#");
+          const safe = safeUrl(s?.url || "");
+          if (!safe) return `<span class="mentor-source-disabled">${title}</span>`;
+          const url = escapeHtml(safe);
           return `<a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>`;
         })
         .join("")}

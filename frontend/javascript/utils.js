@@ -141,73 +141,97 @@ export let EXAM_CONFIG = {
         "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
     };
 
+let __examConfigPromise = null;
 async function loadExamConfig() {
-  try {
-    const response = await fetch(`${API_BASE}/exams/config`);
-    if (!response.ok) throw new Error("Failed to load exam config");
-    
-    const raw = await response.json();
+  if (__examConfigPromise) return __examConfigPromise;
+  __examConfigPromise = (async () => {
+    try {
+      const response = await fetch(`${API_BASE}/exams/config`);
+      if (!response.ok) throw new Error("Failed to load exam config");
+      
+      const raw = await response.json();
 
-// Поддерживаем оба формата:
-// 1) { "SAT": {min,max,...}, ... }
-// 2) { version, exams: { ... } }
-EXAM_CONFIG = raw?.exams ? raw.exams : raw;
+      // Поддерживаем оба формата:
+      // 1) { "SAT": {min,max,...}, ... }
+      // 2) { version, exams: { ... } }
+      EXAM_CONFIG = raw?.exams ? raw.exams : raw;
 
-console.log("✅ Exam config loaded:", EXAM_CONFIG);
-window.dispatchEvent(new Event("examConfigLoaded"));
-  } catch (error) {
-    console.error("❌ Error loading exam config:", error);
-    EXAM_CONFIG = {
-        "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
-        "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
-        "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
-        "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
-        "NUET_Total": {"min": 0, "max": 240, "type": "int", "step": 1},
-        "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
-        "AP_Score": {"min": 1, "max": 5, "type": "int", "step": 1},
-        "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
-        "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
-    };
-  }
+      console.log("✅ Exam config loaded:", EXAM_CONFIG);
+      window.dispatchEvent(new Event("examConfigLoaded"));
+    } catch (error) {
+      console.error("❌ Error loading exam config:", error);
+      EXAM_CONFIG = {
+          "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
+          "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
+          "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
+          "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
+          "NUET_Total": {"min": 0, "max": 240, "type": "int", "step": 1},
+          "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
+          "AP_Score": {"min": 1, "max": 5, "type": "int", "step": 1},
+          "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
+          "IB_Course": {"min": 1, "max": 7, "type": "int", "step": 1}
+      };
+    }
+    return EXAM_CONFIG;
+  })();
+  return __examConfigPromise;
 }
 
-loadExamConfig();
+export function ensureExamConfig() {
+  return loadExamConfig();
+}
 
 export let LANG_CONFIG = null;
 
+let __langConfigPromise = null;
 async function loadLanguageConfig() {
-  try {
-    const response = await fetch(`${API_BASE}/languages/config`);
-    if (!response.ok) throw new Error("Failed to load language config");
-    LANG_CONFIG = await response.json();
-    console.log("✅ Language config loaded:", LANG_CONFIG);
-    window.dispatchEvent(new Event("languageConfigLoaded"));
-  } catch (error) {
-    console.error("❌ Error loading language config:", error);
-    LANG_CONFIG = null;
-  }
+  if (__langConfigPromise) return __langConfigPromise;
+  __langConfigPromise = (async () => {
+    try {
+      const response = await fetch(`${API_BASE}/languages/config`);
+      if (!response.ok) throw new Error("Failed to load language config");
+      LANG_CONFIG = await response.json();
+      console.log("✅ Language config loaded:", LANG_CONFIG);
+      window.dispatchEvent(new Event("languageConfigLoaded"));
+    } catch (error) {
+      console.error("❌ Error loading language config:", error);
+      LANG_CONFIG = null;
+    }
+    return LANG_CONFIG;
+  })();
+  return __langConfigPromise;
 }
 
-loadLanguageConfig();
+export function ensureLanguageConfig() {
+  return loadLanguageConfig();
+}
 
 
 export let CITY_OPTIONS_BY_COUNTRY = {};
 
+let __cityDbPromise = null;
 async function loadCityDatabase() {
-  try {
-    const response = await fetch(`${API_BASE}/locations`); 
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  if (__cityDbPromise) return __cityDbPromise;
+  __cityDbPromise = (async () => {
+    try {
+      const response = await fetch(`${API_BASE}/locations`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    const data = await response.json();
-    CITY_OPTIONS_BY_COUNTRY = data;
-    console.log("✅ База городов успешно загружена");
-    window.dispatchEvent(new Event("citiesLoaded"));
-  } catch (error) {
-    console.error("❌ Ошибка при загрузке городов:", error);
-  }
+      const data = await response.json();
+      CITY_OPTIONS_BY_COUNTRY = data;
+      console.log("✅ База городов успешно загружена");
+      window.dispatchEvent(new Event("citiesLoaded"));
+    } catch (error) {
+      console.error("❌ Ошибка при загрузке городов:", error);
+    }
+    return CITY_OPTIONS_BY_COUNTRY;
+  })();
+  return __cityDbPromise;
 }
 
-loadCityDatabase();
+export function ensureCityDatabase() {
+  return loadCityDatabase();
+}
 
 export const MAJOR_OPTIONS = [
   "Computer Science",
@@ -454,69 +478,82 @@ export function getFlagImg(countryName) {
 export function initCustomSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return;
+    let wrapper = select.parentNode;
+    const alreadyWrapped = wrapper && wrapper.classList.contains("custom-select-wrapper");
 
-    if (select.parentNode.classList.contains('custom-select-wrapper')) {
-        const wrapper = select.parentNode;
-        const parent = wrapper.parentNode;
-        parent.insertBefore(select, wrapper);
-        wrapper.remove();
-        select.classList.remove('u-select-hidden');
+    if (!alreadyWrapped) {
+        wrapper = document.createElement("div");
+        wrapper.classList.add("custom-select-wrapper");
+        select.parentNode.insertBefore(wrapper, select.nextSibling);
+        wrapper.appendChild(select);
+        select.classList.add("u-select-hidden");
+    } else {
+        select.classList.add("u-select-hidden");
     }
 
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('custom-select-wrapper');
-    select.parentNode.insertBefore(wrapper, select.nextSibling);
-    wrapper.appendChild(select);
-    select.classList.add('u-select-hidden');
+    let trigger = wrapper.querySelector(".custom-select-trigger");
+    if (!trigger) {
+        trigger = document.createElement("div");
+        trigger.classList.add("custom-select-trigger");
+        wrapper.appendChild(trigger);
+    }
 
-    const trigger = document.createElement('div');
-    trigger.classList.add('custom-select-trigger');
-    wrapper.appendChild(trigger);
-
-    const customOptions = document.createElement('div');
-    customOptions.classList.add('custom-options');
-    wrapper.appendChild(customOptions);
+    let customOptions = wrapper.querySelector(".custom-options");
+    if (!customOptions) {
+        customOptions = document.createElement("div");
+        customOptions.classList.add("custom-options");
+        wrapper.appendChild(customOptions);
+    }
 
     function updateTrigger() {
         const selectedOption = select.options[select.selectedIndex];
         if (!selectedOption) return;
         const val = selectedOption.value;
         const text = selectedOption.text;
-        const flag = getFlagImg(val); 
-        if (flag) trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${text}</span></div>`;
-        else trigger.innerHTML = `<span>${text}</span>`;
+        const flag = getFlagImg(val);
+        if (flag) {
+            trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${escapeHtml(text)}</span></div>`;
+        } else {
+            trigger.innerHTML = `<span>${escapeHtml(text)}</span>`;
+        }
     }
 
+    customOptions.innerHTML = "";
     for (const option of select.options) {
-        const div = document.createElement('div');
-        div.classList.add('custom-option');
+        const div = document.createElement("div");
+        div.classList.add("custom-option");
         const val = option.value;
         const text = option.text;
-        const flag = getFlagImg(val); 
-        if (flag) div.innerHTML = `${flag} <span>${text}</span>`;
+        const flag = getFlagImg(val);
+        if (flag) div.innerHTML = `${flag} <span>${escapeHtml(text)}</span>`;
         else div.textContent = text;
 
-        if (option.selected) div.classList.add('selected');
+        if (option.selected) div.classList.add("selected");
 
-        div.addEventListener('click', () => {
+        div.addEventListener("click", () => {
             select.value = val;
-            select.dispatchEvent(new Event('change')); 
+            select.dispatchEvent(new Event("change"));
             updateTrigger();
-            wrapper.classList.remove('open');
-            wrapper.querySelectorAll('.custom-option').forEach(el => el.classList.remove('selected'));
-            div.classList.add('selected');
+            wrapper.classList.remove("open");
+            wrapper.querySelectorAll(".custom-option").forEach(el => el.classList.remove("selected"));
+            div.classList.add("selected");
         });
         customOptions.appendChild(div);
     }
 
-    trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.querySelectorAll('.custom-select-wrapper').forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
-        wrapper.classList.toggle('open');
-    });
+    if (wrapper.dataset.bound !== "1") {
+        wrapper.dataset.bound = "1";
+        trigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            document.querySelectorAll(".custom-select-wrapper").forEach(w => { if (w !== wrapper) w.classList.remove("open"); });
+            wrapper.classList.toggle("open");
+        });
+
+        document.addEventListener("click", (e) => { if (!wrapper.contains(e.target)) wrapper.classList.remove("open"); });
+        select.addEventListener("change", () => updateTrigger());
+    }
 
     updateTrigger();
-    document.addEventListener('click', (e) => { if (!wrapper.contains(e.target)) wrapper.classList.remove('open'); });
 }
 
 export function getLangExamLimits(examId, LANG_CONFIG) {

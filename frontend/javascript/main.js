@@ -1,7 +1,7 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
-import { API_BASE, aiName, initTheme } from "./utils.js";
+import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 
 function applyAINameConfig() {
@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   applyAINameConfig();
   initLanguagesPanel();
 
+  // Load configs early so UI and algorithms match previous behavior.
+  ensureExamConfig();
+  ensureLanguageConfig();
+
   const badge = document.querySelector(".hero-badge");
   const path = window.location.pathname;
 
@@ -45,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (path.includes("universities.html") || document.getElementById("universitiesList")) {
+    ensureCityDatabase();
     initUniversitiesPage();
   } else if (path.includes("guide.html") || document.getElementById("guidePage")) {
     initGuidePage();
@@ -63,6 +68,13 @@ async function initHomePageStats() {
   if (!uniStat || !countryStat) return;
 
   try {
+    const resStats = await fetch(`${API_BASE}/stats`);
+    if (resStats.ok) {
+      const dataStats = await resStats.json();
+      if (dataStats.universities_total) uniStat.textContent = dataStats.universities_total + "+";
+      if (dataStats.countries_total) countryStat.textContent = dataStats.countries_total;
+      return;
+    }
     const resUni = await fetch(`${API_BASE}/universities?limit=1`);
     const dataUni = await resUni.json();
 
