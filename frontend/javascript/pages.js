@@ -247,17 +247,36 @@ export function initUniversitiesPage() {
     function initMap() {
         if (mapInstance) return;
         if (typeof L === "undefined") return;
-        mapInstance = L.map('mapContainer', { maxBounds: [[-90, -180], [90, 180]], maxBoundsViscosity: 1.0, minZoom: 2, maxZoom: 18, zoomAnimation: true, markerZoomAnimation: true }).setView([25, 0], 2);
+        mapInstance = L.map('mapContainer', {
+            maxBounds: [[-90, -180], [90, 180]],
+            maxBoundsViscosity: 1.0,
+            minZoom: 2,
+            maxZoom: 18,
+            zoomAnimation: true,
+            zoomAnimationThreshold: 4,
+            fadeAnimation: true,
+            markerZoomAnimation: true,
+            zoomSnap: 0.25,
+            zoomDelta: 0.25,
+            wheelDebounceTime: 30,
+            wheelPxPerZoomLevel: 120
+        }).setView([25, 0], 2);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
         markersLayer = L.markerClusterGroup({
             showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
             chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
             iconCreateFunction: function(cluster) {
-                const markers = cluster.getAllChildMarkers(); const count = markers.length;
-                const firstMarkerHtml = markers[0].options.icon.options.html;
-                const idMatch = firstMarkerHtml.match(/logos\/(.+?)\.png/);
-                const firstId = idMatch ? idMatch[1] : 'default';
-                const logoUrl = `images/logos/${firstId}.png`;
+                const markers = cluster.getAllChildMarkers();
+                const count = markers.length;
+                let best = null;
+                for (const m of markers) {
+                    const r = Number(m?.options?.uniRank);
+                    if (!Number.isFinite(r)) continue;
+                    if (!best || r < best.rank) best = { rank: r, id: m?.options?.uniId };
+                }
+                const fallbackId = markers[0]?.options?.uniId || "default";
+                const bestId = (best && best.id) ? best.id : fallbackId;
+                const logoUrl = `images/logos/${bestId}.png`;
                 return L.divIcon({ html: `<div class="cluster-node-fix"><div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div></div><div class="cluster-badge">+${count - 1}</div></div>`, className: 'cluster-icon-container', iconSize: [44, 44], iconAnchor: [22, 22] });
             }
         });
@@ -275,7 +294,12 @@ export function initUniversitiesPage() {
             if (u.coordinates?.lat && u.coordinates?.lon) {
                 const safeId = safePathSegment(u.id);
                 const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('images/logos/${safeId}.png');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
-                const marker = L.marker([u.coordinates.lat, u.coordinates.lon], { icon: customIcon });
+                const rankValue = Number(u.rank);
+                const marker = L.marker([u.coordinates.lat, u.coordinates.lon], {
+                    icon: customIcon,
+                    uniId: safeId,
+                    uniRank: Number.isFinite(rankValue) ? rankValue : 999999
+                });
                 const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
                 marker.bindPopup(cardHTML, { minWidth: 280, maxWidth: 320, className: 'custom-map-popup', autoPan: false });
                 marker.on('click', function(e) { this.setZIndexOffset(1000); mapInstance.flyTo(e.target.getLatLng(), 16, { animate: true, duration: 3.0, easeLinearity: 0.1 }); setTimeout(() => { if (!marker.getPopup().isOpen()) marker.openPopup(); }, 100); });
