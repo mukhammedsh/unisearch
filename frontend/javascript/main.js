@@ -4,6 +4,15 @@ import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePag
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 
+async function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  try {
+    await navigator.serviceWorker.register("./sw.js", { scope: "./" });
+  } catch (e) {
+    console.warn("Service worker registration failed:", e);
+  }
+}
+
 function applyAINameConfig() {
   const tokens = {
     fit: aiName("fit"),
@@ -30,6 +39,7 @@ function applyAINameConfig() {
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
   initTheme();
+  registerServiceWorker();
 
   // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)
   await loadGlobalLayout();

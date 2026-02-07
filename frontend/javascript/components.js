@@ -430,6 +430,8 @@ function initProfileUI() {
     };
     
     const close = () => { 
+        if (!modal.classList.contains("is-open")) return;
+
         // 1. Сначала возвращаем фокус на кнопку открытия (чтобы не было ошибки aria-hidden)
         if (openBtn) openBtn.focus();
 
@@ -437,6 +439,7 @@ function initProfileUI() {
         modal.classList.remove("is-open"); 
         modal.style.display = "none"; 
         modal.setAttribute("aria-hidden", "true");
+        window.dispatchEvent(new Event("profileModalClosed"));
         
         resetFields(); 
     };

@@ -54,9 +54,59 @@ function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
 }
 
+const MOBILE_IMAGE_MAX_WIDTH = 820;
+
+function shouldUseOptimizedImages() {
+  try {
+    const viewport = Math.min(window.innerWidth || 9999, window.screen?.width || 9999);
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const saveData = !!conn?.saveData;
+    const effectiveType = String(conn?.effectiveType || "").toLowerCase();
+    const slowNetwork = effectiveType.includes("2g") || effectiveType.includes("3g") || effectiveType.includes("slow-2g");
+    return viewport <= MOBILE_IMAGE_MAX_WIDTH || saveData || slowNetwork;
+  } catch (e) {
+    return (window.innerWidth || 1024) <= MOBILE_IMAGE_MAX_WIDTH;
+  }
+}
+
+function uniThumbnailSrc(universityId, opts = {}) {
+  const safeId = safePathSegment(universityId);
+  const forceFull = !!opts.forceFull;
+  if (!forceFull && shouldUseOptimizedImages()) {
+    return `images/thumbnails-mobile/${safeId}.jpg`;
+  }
+  return `images/thumbnails/${safeId}.jpg`;
+}
+
+function uniLogoSrc(universityId, opts = {}) {
+  const safeId = safePathSegment(universityId);
+  const forceFull = !!opts.forceFull;
+  if (!forceFull && shouldUseOptimizedImages()) {
+    return `images/logos-mobile/${safeId}.png`;
+  }
+  return `images/logos/${safeId}.png`;
+}
+
 const DETAIL_CACHE_KEY = "unisearch_detail_cache_v1";
 const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 const DETAIL_CACHE_MAX_ITEMS = 24;
+const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
+
+function hasSeenUniversitiesTour() {
+  try {
+    return localStorage.getItem(UNIVERSITIES_TOUR_SEEN_KEY) === "1";
+  } catch (e) {
+    return false;
+  }
+}
+
+function markUniversitiesTourSeen() {
+  try {
+    localStorage.setItem(UNIVERSITIES_TOUR_SEEN_KEY, "1");
+  } catch (e) {
+    // ignore storage errors
+  }
+}
 
 function readDetailCache() {
   try {
@@ -219,6 +269,7 @@ export function initUniversitiesPage() {
     let lastFetchPayload = null;
     let lastFetchAt = 0;
     let fetchRunSeq = 0;
+    let firstVisitTourPending = !hasSeenUniversitiesTour();
 
     const hasProfileEvidence = (profile) => {
         const exams = Array.isArray(profile?.exams) ? profile.exams : [];
@@ -231,6 +282,210 @@ export function initUniversitiesPage() {
         el.loading.classList.toggle("is-visible", !!isLoading);
         el.loading.setAttribute("aria-hidden", isLoading ? "false" : "true");
     }
+
+    const ensureUniversitiesTourModal = () => {
+        let modal = document.getElementById("universitiesTourModal");
+        if (modal) return modal;
+
+        modal = document.createElement("div");
+        modal.id = "universitiesTourModal";
+        modal.className = "u-tour-modal";
+        modal.setAttribute("aria-hidden", "true");
+        modal.style.display = "none";
+        modal.innerHTML = `
+            <div class="u-tour-backdrop" data-action="close"></div>
+            <div class="u-tour-card" role="dialog" aria-modal="true" aria-labelledby="uTourTitle">
+                <button class="u-tour-close" type="button" data-action="close" aria-label="Close tutorial">×</button>
+                <div class="u-tour-progress">
+                    <span id="uTourProgressLabel"></span>
+                    <div id="uTourDots" class="u-tour-dots"></div>
+                </div>
+                <div id="uTourSlide" class="u-tour-slide" aria-live="polite"></div>
+                <div class="u-tour-actions">
+                    <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">Skip</button>
+                    <div class="u-tour-actions-right">
+                        <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">Back</button>
+                        <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next">Next</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        return modal;
+    };
+
+    const showUniversitiesTour = () => new Promise((resolve) => {
+        const modal = ensureUniversitiesTourModal();
+        const slideEl = modal.querySelector("#uTourSlide");
+        const dotsEl = modal.querySelector("#uTourDots");
+        const progressLabelEl = modal.querySelector("#uTourProgressLabel");
+        const prevBtn = modal.querySelector("[data-action='prev']");
+        const nextBtn = modal.querySelector("[data-action='next']");
+        const skipBtn = modal.querySelector("[data-action='skip']");
+        const closeEls = modal.querySelectorAll("[data-action='close']");
+
+        const steps = [
+            {
+                kicker: "Welcome",
+                title: "Find universities faster",
+                desc: "This page helps you quickly shortlist universities by location, tuition, and fit for your profile.",
+                points: [
+                    "Use search + filters in the left panel.",
+                    "Switch between List and Map view on the top right.",
+                    `Use ${aiName("fit")} to sort by personalized fit.`,
+                ],
+                action: "",
+            },
+            {
+                kicker: "Step 1",
+                title: "Fill your profile first",
+                desc: "Profile data makes recommendations and admission estimates more accurate.",
+                points: [
+                    "Add budget, major, and GPA.",
+                    "Add exam and language scores.",
+                    `This improves ${aiName("fit")} and ${aiName("chance")} quality.`,
+                ],
+                action: "open_profile",
+            },
+            {
+                kicker: "Step 2",
+                title: "Use filtering strategically",
+                desc: "Start broad, then narrow by country, city, cost range, study level, and funding type.",
+                points: [
+                    "Adjust tuition min/max with the slider.",
+                    "Use grant/paid track filter for finance planning.",
+                    "Use map view to spot location clusters.",
+                ],
+                action: "",
+            },
+            {
+                kicker: "Step 3",
+                title: "Open details and compare tracks",
+                desc: "Click any card to inspect admissions, finance, and requirements per track.",
+                points: [
+                    `Review ${aiName("chance")} by track in the detail page.`,
+                    `Ask ${aiName("mentor")} for quick explanations.`,
+                    "Compare yearly cost and scholarships before applying.",
+                ],
+                action: "",
+            },
+        ];
+
+        let idx = 0;
+        let isPausedForProfile = false;
+
+        const renderStep = (direction = "forward") => {
+            const step = steps[idx];
+            if (!step || !slideEl || !dotsEl || !progressLabelEl || !prevBtn || !nextBtn || !skipBtn) return;
+
+            progressLabelEl.textContent = `Step ${idx + 1} of ${steps.length}`;
+            dotsEl.innerHTML = steps
+                .map((_, i) => `<span class="u-tour-dot ${i === idx ? "is-active" : ""}" aria-hidden="true"></span>`)
+                .join("");
+
+            const actionHtml = step.action === "open_profile"
+                ? `<button class="u-tour-inline-btn" type="button" data-action="open-profile">Open Profile</button>`
+                : "";
+
+            slideEl.classList.remove("is-enter-forward", "is-enter-back");
+            void slideEl.offsetWidth;
+            slideEl.classList.add(direction === "back" ? "is-enter-back" : "is-enter-forward");
+            slideEl.innerHTML = `
+                <article class="u-tour-step">
+                    <div class="u-tour-kicker">${escapeHtml(step.kicker)}</div>
+                    <h3 id="uTourTitle" class="u-tour-title">${escapeHtml(step.title)}</h3>
+                    <p class="u-tour-desc">${escapeHtml(step.desc)}</p>
+                    <ul class="u-tour-list">
+                        ${step.points.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
+                    </ul>
+                    ${actionHtml}
+                </article>
+            `;
+
+            slideEl.querySelector("[data-action='open-profile']")?.addEventListener("click", () => {
+                const profileBtn = document.getElementById("profileBtn");
+                if (!profileBtn) return;
+
+                isPausedForProfile = true;
+                modal.classList.remove("is-open");
+                modal.setAttribute("aria-hidden", "true");
+                modal.style.display = "none";
+
+                const onProfileClosed = () => {
+                    isPausedForProfile = false;
+                    modal.style.display = "flex";
+                    modal.classList.add("is-open");
+                    modal.setAttribute("aria-hidden", "false");
+                    nextBtn?.focus();
+                };
+
+                window.addEventListener("profileModalClosed", onProfileClosed, { once: true });
+                profileBtn.click();
+            });
+
+            prevBtn.disabled = idx === 0;
+            prevBtn.style.visibility = idx === 0 ? "hidden" : "visible";
+            nextBtn.textContent = idx === steps.length - 1 ? "Finish" : "Next";
+            skipBtn.textContent = idx === steps.length - 1 ? "Close" : "Skip";
+        };
+
+        const cleanup = () => {
+            nextBtn?.removeEventListener("click", onNext);
+            prevBtn?.removeEventListener("click", onPrev);
+            skipBtn?.removeEventListener("click", onSkip);
+            closeEls.forEach((el) => el.removeEventListener("click", onSkip));
+            document.removeEventListener("keydown", onKey);
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            modal.style.display = "none";
+            resolve();
+        };
+
+        const onNext = () => {
+            if (idx >= steps.length - 1) {
+                cleanup();
+                return;
+            }
+            idx += 1;
+            renderStep("forward");
+        };
+
+        const onPrev = () => {
+            if (idx <= 0) return;
+            idx -= 1;
+            renderStep("back");
+        };
+
+        const onSkip = () => cleanup();
+
+        const onKey = (e) => {
+            if (isPausedForProfile) return;
+            if (e.key === "Escape") {
+                e.preventDefault();
+                cleanup();
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                onNext();
+            } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                onPrev();
+            }
+        };
+
+        markUniversitiesTourSeen();
+        renderStep("forward");
+
+        nextBtn?.addEventListener("click", onNext);
+        prevBtn?.addEventListener("click", onPrev);
+        skipBtn?.addEventListener("click", onSkip);
+        closeEls.forEach((el) => el.addEventListener("click", onSkip));
+        document.addEventListener("keydown", onKey);
+
+        modal.style.display = "flex";
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        nextBtn?.focus();
+    });
 
     const ensureUniFitWarningModal = () => {
         let modal = document.getElementById("unifitWarningModal");
@@ -479,7 +734,7 @@ export function initUniversitiesPage() {
                 }
                 const fallbackId = markers[0]?.options?.uniId || "default";
                 const bestId = (best && best.id) ? best.id : fallbackId;
-                const logoUrl = `images/logos/${bestId}.png`;
+                const logoUrl = uniLogoSrc(bestId);
                 return L.divIcon({ html: `<div class="cluster-node-fix"><div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div></div><div class="cluster-badge">+${count - 1}</div></div>`, className: 'cluster-icon-container', iconSize: [44, 44], iconAnchor: [22, 22] });
             }
         });
@@ -495,19 +750,19 @@ export function initUniversitiesPage() {
         const newMarkers = [];
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
-                const safeId = safePathSegment(u.id);
-                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('images/logos/${safeId}.png');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
+                const uniId = String(u.id || "");
+                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${uniLogoSrc(uniId)}');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
                 const rankValue = Number(u.rank);
                 const marker = L.marker([u.coordinates.lat, u.coordinates.lon], {
                     icon: customIcon,
-                    uniId: safeId,
+                    uniId: uniId,
                     uniRank: Number.isFinite(rankValue) ? rankValue : 999999
                 });
                 const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
                 marker.bindPopup(cardHTML, { minWidth: 280, maxWidth: 320, className: 'custom-map-popup', autoPan: false });
                 marker.on('click', function(e) { this.setZIndexOffset(1000); mapInstance.flyTo(e.target.getLatLng(), 16, { animate: true, duration: 3.0, easeLinearity: 0.1 }); setTimeout(() => { if (!marker.getPopup().isOpen()) marker.openPopup(); }, 100); });
                 newMarkers.push(marker);
-                markersByUniId.set(String(u.id), marker);
+                markersByUniId.set(uniId, marker);
             }
         });
         markersLayer.addLayers(newMarkers);
@@ -733,14 +988,19 @@ export function initUniversitiesPage() {
         console.error(err);
         if (el.state) el.state.textContent = "Failed to load data.";
         } finally {
-        if (runSeq === fetchRunSeq) setUniversitiesLoading(false);
+        if (runSeq === fetchRunSeq) {
+            setUniversitiesLoading(false);
+            if (firstVisitTourPending) {
+                firstVisitTourPending = false;
+                window.setTimeout(() => { showUniversitiesTour(); }, 120);
+            }
+        }
         }
     }
 
     // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget) {
         const id = u.id;
-        const safeId = safePathSegment(id);
         const name = u.name;
         const country = nested(u, ["location", "country"], "");
         const city = nested(u, ["location", "city"], "");
@@ -844,13 +1104,16 @@ export function initUniversitiesPage() {
         
         // ROI УБРАН ПОЛНОСТЬЮ
 
-        const logoSrc = `images/logos/${safeId}.png`;
-        const thumbSrc = `images/thumbnails/${safeId}.jpg`;
+        const logoSrc = uniLogoSrc(id);
+        const logoSrcFull = uniLogoSrc(id, { forceFull: true });
+        const thumbSrc = uniThumbnailSrc(id);
+        const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
-            <div class="uni-media" style="background-image: url('${thumbSrc}');">
+            <div class="uni-media">
+            <img class="uni-media-img" src="${thumbSrc}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
             <div class="uni-price"><small>Est. Cost/Year</small><b>${moneyUSD(cost)}</b></div>
-            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" onerror="this.onerror=null; this.parentNode.textContent='${initials(name)}';"></div>
+            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
             </div>
             <div class="uni-body">
             <h3 class="uni-title">${escapeHtml(name)}</h3>
@@ -894,7 +1157,7 @@ export async function initUniversityPage() {
   try {
     if (stateEl) stateEl.textContent = "Loading...";
     const u = await fetchUniversityDetailCached(id);
-    const safeUniId = safePathSegment(u.id);
+    const uniId = String(u.id || id);
 
     // 1. Шапка
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
@@ -910,12 +1173,12 @@ export async function initUniversityPage() {
     setTxt("detailLogo", (u.name || "U").substring(0, 2).toUpperCase());
 
     const coverEl = document.getElementById("detailCover");
-    if (coverEl) coverEl.style.backgroundImage = `url('images/thumbnails/${safeUniId}.jpg')`;
+    if (coverEl) coverEl.style.backgroundImage = `url('${uniThumbnailSrc(uniId)}')`;
 
     const logoEl = document.getElementById("detailLogo");
     if (logoEl) {
         const initialsText = (u.name || "U").substring(0, 2).toUpperCase();
-        logoEl.innerHTML = `<img src="images/logos/${safeUniId}.png" alt="Logo" onerror="this.style.display='none'; this.parentNode.textContent='${initialsText}'" style="width:100%; height:100%; object-fit:contain;">`;
+        logoEl.innerHTML = `<img src="${uniLogoSrc(uniId)}" alt="Logo" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${uniLogoSrc(uniId, { forceFull: true })}';}else{this.style.display='none'; this.parentNode.textContent='${initialsText}';}" style="width:100%; height:100%; object-fit:contain;">`;
     }
 
     const siteBtn = document.getElementById("detailWebsite");
@@ -1682,19 +1945,20 @@ export async function initRankingPage() {
             else if (rank === 2) rankClass = "rank-2";
             else if (rank === 3) rankClass = "rank-3";
 
-            const safeId = safePathSegment(u.id);
-            const logoSrc = `images/logos/${safeId}.png`;
-            const thumbSrc = `images/thumbnails/${safeId}.jpg`;
+            const logoSrc = uniLogoSrc(u.id);
+            const logoSrcFull = uniLogoSrc(u.id, { forceFull: true });
+            const thumbSrc = uniThumbnailSrc(u.id);
+            const thumbSrcFull = uniThumbnailSrc(u.id, { forceFull: true });
             const flag = getFlagImg(u.location.country);
             const cityText = escapeHtml(String(u.location.city || ""));
             const countryText = escapeHtml(String(u.location.country || ""));
 
             return `
             <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
-                <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="lazy" onerror="this.src='${logoSrc}'">
+                <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">
-                    <img src="${logoSrc}" alt="${initials(u.name)}" onerror="this.parentNode.textContent='${initials(u.name)}'">
+                    <img src="${logoSrc}" alt="${initials(u.name)}" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(u.name)}';}">
                 </div>
                 <div class="rank-info">
                     <div class="rank-title">${escapeHtml(u.name)}</div>
