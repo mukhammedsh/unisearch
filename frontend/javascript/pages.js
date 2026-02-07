@@ -60,6 +60,14 @@ function normalizeFundingPreference(value) {
   return "any";
 }
 
+function normalizeSortMode(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (raw === "uni_ai" || raw === "name_asc" || raw === "tuition_asc" || raw === "tuition_desc") {
+    return raw;
+  }
+  return "uni_ai";
+}
+
 function fundingPreferenceToQueryValue(value) {
   const normalized = normalizeFundingPreference(value);
   return normalized === "any" ? "" : normalized;
@@ -269,7 +277,7 @@ export function initUniversitiesPage() {
         funding_type: getProfileFundingQueryValue(),
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
-        sort: savedState.sort || "uni_ai", ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
+        sort: normalizeSortMode(savedState.sort || "uni_ai"), ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
         viewMode: savedState.viewMode || "list", page: 1, limit: 12,
     };
     if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
@@ -903,6 +911,16 @@ export function initUniversitiesPage() {
     function applyToForm() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
+        if (el.sortSelect) {
+            state.sort = normalizeSortMode(state.sort);
+            el.sortSelect.value = state.sort;
+            if (el.sortSelect.value !== state.sort) {
+                state.sort = "uni_ai";
+                el.sortSelect.value = state.sort;
+            }
+        }
+        const studyLevelSelect = $("studyLevelSelect");
+        if (studyLevelSelect) studyLevelSelect.value = state.study_level || "";
         if(el.slider) el.slider.value = state.ai_balance;
         if (el.minSlider) el.minSlider.value = state.min_tuition;
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
@@ -912,6 +930,7 @@ export function initUniversitiesPage() {
         fillTrack(); 
 
         ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect"].forEach(id => initCustomSelect(id));
+        updateSliderVisibility();
     }
 
     function updateLocationLogic(country) {
@@ -961,7 +980,7 @@ export function initUniversitiesPage() {
         if(sp.has("study_level")) state.study_level = sp.get("study_level");
         if(sp.has("min_tuition")) state.min_tuition = clampTuition(sp.get("min_tuition"), state.min_tuition);
         if(sp.has("max_tuition")) state.max_tuition = clampTuition(sp.get("max_tuition"), state.max_tuition);
-        if(sp.has("sort")) state.sort = sp.get("sort");
+        if(sp.has("sort")) state.sort = normalizeSortMode(sp.get("sort"));
         if(sp.has("ai_balance")) {
             const ab = Number(sp.get("ai_balance"));
             if (Number.isFinite(ab)) state.ai_balance = Math.max(0, Math.min(100, Math.round(ab)));
