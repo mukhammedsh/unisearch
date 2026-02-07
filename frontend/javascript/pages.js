@@ -72,7 +72,8 @@ function shouldUseOptimizedImages() {
 function uniThumbnailSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const forceFull = !!opts.forceFull;
-  if (!forceFull && shouldUseOptimizedImages()) {
+  const preferOptimized = !!opts.preferOptimized;
+  if (!forceFull && (preferOptimized || shouldUseOptimizedImages())) {
     return `images/thumbnails-mobile/${safeId}.jpg`;
   }
   return `images/thumbnails/${safeId}.jpg`;
@@ -81,7 +82,8 @@ function uniThumbnailSrc(universityId, opts = {}) {
 function uniLogoSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const forceFull = !!opts.forceFull;
-  if (!forceFull && shouldUseOptimizedImages()) {
+  const preferOptimized = !!opts.preferOptimized;
+  if (!forceFull && (preferOptimized || shouldUseOptimizedImages())) {
     return `images/logos-mobile/${safeId}.png`;
   }
   return `images/logos/${safeId}.png`;
@@ -734,7 +736,7 @@ export function initUniversitiesPage() {
                 }
                 const fallbackId = markers[0]?.options?.uniId || "default";
                 const bestId = (best && best.id) ? best.id : fallbackId;
-                const logoUrl = uniLogoSrc(bestId);
+                const logoUrl = uniLogoSrc(bestId, { preferOptimized: true });
                 return L.divIcon({ html: `<div class="cluster-node-fix"><div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div></div><div class="cluster-badge">+${count - 1}</div></div>`, className: 'cluster-icon-container', iconSize: [44, 44], iconAnchor: [22, 22] });
             }
         });
@@ -751,7 +753,7 @@ export function initUniversitiesPage() {
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
                 const uniId = String(u.id || "");
-                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${uniLogoSrc(uniId)}');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
+                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${uniLogoSrc(uniId, { preferOptimized: true })}');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
                 const rankValue = Number(u.rank);
                 const marker = L.marker([u.coordinates.lat, u.coordinates.lon], {
                     icon: customIcon,
@@ -975,7 +977,7 @@ export function initUniversitiesPage() {
             const profile = loadProfile();
             const userBudget = parseFloat(profile.budget);
             
-            el.list.innerHTML = displayItems.map(u => renderCard(u, userBudget)).join("");
+            el.list.innerHTML = displayItems.map((u, idx) => renderCard(u, userBudget, idx)).join("");
             renderPagination(displayTotal);
         } else if (state.viewMode === 'map') {
             if (el.total) el.total.textContent = String(items.length);
@@ -999,7 +1001,7 @@ export function initUniversitiesPage() {
     }
 
     // --- RENDER CARD (БЕЗ ROI) ---
-    function renderCard(u, myBudget) {
+    function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = u.name;
         const country = nested(u, ["location", "country"], "");
@@ -1104,16 +1106,18 @@ export function initUniversitiesPage() {
         
         // ROI УБРАН ПОЛНОСТЬЮ
 
-        const logoSrc = uniLogoSrc(id);
+        const logoSrc = uniLogoSrc(id, { preferOptimized: true });
         const logoSrcFull = uniLogoSrc(id, { forceFull: true });
-        const thumbSrc = uniThumbnailSrc(id);
+        const thumbSrc = uniThumbnailSrc(id, { preferOptimized: true });
         const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
+        const loadingAttr = idx < 4 ? "eager" : "lazy";
+        const fetchPriorityAttr = idx < 2 ? "high" : "auto";
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media">
-            <img class="uni-media-img" src="${thumbSrc}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
+            <img class="uni-media-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
             <div class="uni-price"><small>Est. Cost/Year</small><b>${moneyUSD(cost)}</b></div>
-            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
+            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
             </div>
             <div class="uni-body">
             <h3 class="uni-title">${escapeHtml(name)}</h3>
@@ -1945,20 +1949,22 @@ export async function initRankingPage() {
             else if (rank === 2) rankClass = "rank-2";
             else if (rank === 3) rankClass = "rank-3";
 
-            const logoSrc = uniLogoSrc(u.id);
+            const logoSrc = uniLogoSrc(u.id, { preferOptimized: true });
             const logoSrcFull = uniLogoSrc(u.id, { forceFull: true });
-            const thumbSrc = uniThumbnailSrc(u.id);
+            const thumbSrc = uniThumbnailSrc(u.id, { preferOptimized: true });
             const thumbSrcFull = uniThumbnailSrc(u.id, { forceFull: true });
+            const loadingAttr = index < 4 ? "eager" : "lazy";
+            const fetchPriorityAttr = index < 2 ? "high" : "auto";
             const flag = getFlagImg(u.location.country);
             const cityText = escapeHtml(String(u.location.city || ""));
             const countryText = escapeHtml(String(u.location.country || ""));
 
             return `
             <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
-                <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
+                <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">
-                    <img src="${logoSrc}" alt="${initials(u.name)}" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(u.name)}';}">
+                    <img src="${logoSrc}" alt="${initials(u.name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(u.name)}';}">
                 </div>
                 <div class="rank-info">
                     <div class="rank-title">${escapeHtml(u.name)}</div>
