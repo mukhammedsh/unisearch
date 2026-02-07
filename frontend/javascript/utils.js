@@ -8,10 +8,6 @@ export const UNIMENTOR_CONFIG = {
   online: true,
   ...(window.UNIMENTOR_CONFIG || {}),
 };
-const FEATURE_FLAG_DEFAULTS = {
-  enable_gap_coach: true,
-};
-export const FEATURE_FLAGS = { ...FEATURE_FLAG_DEFAULTS, ...(window.FEATURE_FLAGS || {}) };
 
 export function aiName(key) {
   const k = String(key || "").trim().toLowerCase();

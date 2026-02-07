@@ -13,11 +13,6 @@ window.AI_FUNCTIONS = {
   mentor: "UniMentor",
 };
 
-window.FEATURE_FLAGS = {
-  enable_gap_coach: true,
-  ...(window.FEATURE_FLAGS || {}),
-};
-
 // UniMentor frontend settings.
 window.UNIMENTOR_CONFIG = {
   enabled: true,

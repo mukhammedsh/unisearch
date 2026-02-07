@@ -426,7 +426,7 @@
   {
     "id": "harvard-usa-cambridge",
     "name": "Harvard University",
-    "rank": 5,
+    "rank": 4,
     "student_count": 25266,
     "location": {
       "country": "USA",
@@ -558,7 +558,7 @@
   {
     "id": "eth-zurich-ch-zurich",
     "name": "ETH Zurich",
-    "rank": 7,
+    "rank": 5,
     "student_count": 26198,
     "location": {
       "country": "Switzerland",
@@ -708,7 +708,7 @@
   {
     "id": "national-university-of-singapore-sg-singapore",
     "name": "National University of Singapore (NUS)",
-    "rank": 8,
+    "rank": 6,
     "student_count": 38000,
     "location": {
       "country": "Singapore",
@@ -842,7 +842,7 @@
   {
     "id": "epfl-ch-lausanne",
     "name": "EPFL",
-    "rank": 9,
+    "rank": 7,
     "student_count": 12574,
     "location": {
       "country": "Switzerland",
@@ -938,7 +938,7 @@
   {
     "id": "technical-university-of-munich-de-munich",
     "name": "Technical University of Munich (TUM)",
-    "rank": 10,
+    "rank": 8,
     "student_count": 52580,
     "location": {
       "country": "Germany",
@@ -1025,7 +1025,7 @@
   {
     "id": "university-of-toronto-ca-toronto",
     "name": "University of Toronto",
-    "rank": 11,
+    "rank": 9,
     "student_count": 102431,
     "location": {
       "country": "Canada",
@@ -1157,7 +1157,7 @@
   {
     "id": "cuhk-hk-shatin",
     "name": "The Chinese University of Hong Kong (CUHK)",
-    "rank": 12,
+    "rank": 10,
     "student_count": 22021,
     "location": {
       "country": "Hong Kong",
@@ -1297,7 +1297,7 @@
   {
     "id": "university-of-tokyo-jp-tokyo",
     "name": "University of Tokyo",
-    "rank": 13,
+    "rank": 11,
     "student_count": 28585,
     "location": {
       "country": "Japan",
@@ -1457,7 +1457,7 @@
   {
     "id": "seoul-national-university-kr-seoul",
     "name": "Seoul National University",
-    "rank": 14,
+    "rank": 12,
     "student_count": 30323,
     "location": {
       "country": "South Korea",
@@ -1635,7 +1635,7 @@
   {
     "id": "delft-university-of-technology-nl-delft",
     "name": "Delft University of Technology",
-    "rank": 15,
+    "rank": 13,
     "student_count": 27265,
     "location": {
       "country": "Netherlands",
@@ -1773,7 +1773,7 @@
   {
     "id": "kaist-kr-daejeon",
     "name": "KAIST",
-    "rank": 16,
+    "rank": 14,
     "student_count": 10951,
     "location": {
       "country": "South Korea",
@@ -1917,7 +1917,7 @@
   {
     "id": "tsinghua-university-cn-beijing",
     "name": "Tsinghua University",
-    "rank": 17,
+    "rank": 15,
     "student_count": 59270,
     "location": {
       "country": "China",
@@ -2073,7 +2073,7 @@
   {
     "id": "nazarbayev-university-kaz-astana",
     "name": "Nazarbayev University",
-    "rank": 18,
+    "rank": 16,
     "student_count": 7089,
     "location": {
       "country": "Kazakhstan",
@@ -2321,7 +2321,7 @@
   {
     "id": "kyoto-university-jp-kyoto",
     "name": "Kyoto University",
-    "rank": 18,
+    "rank": 17,
     "student_count": 22958,
     "location": {
       "country": "Japan",
@@ -2467,7 +2467,7 @@
   {
     "id": "university-of-melbourne-au-melbourne",
     "name": "University of Melbourne",
-    "rank": 19,
+    "rank": 18,
     "student_count": 54000,
     "location": {
       "country": "Australia",

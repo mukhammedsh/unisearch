@@ -1,5 +1,5 @@
 :root {
-  --accent: #5d17ea;
+  --accent: #5715db;
   --accent2: #5715db;
   --bg: #f6f7fb;
   --card: #ffffff;
@@ -8,12 +8,12 @@
   --line: rgba(0, 0, 0, .08);
   --shadow: 0 10px 24px rgba(0, 0, 0, .06);
   --slider-track-inactive: #d4d8e0;
-  --slider-track-active: #5d17ea;
+  --slider-track-active: #5715db;
 }
 
 :root[data-theme="dark"] {
-  --accent: #8f8f8f;
-  --accent2: #737373;
+  --accent: #5715db;
+  --accent2: #5715db;
   --bg: #0f0f0f;
   --card: #1a1a1a;
   --text: #ededed;
@@ -21,7 +21,7 @@
   --line: #323232;
   --shadow: 0 14px 28px rgba(0, 0, 0, .45);
   --slider-track-inactive: #303030;
-  --slider-track-active: #8f8f8f;
+  --slider-track-active: #5715db;
 }
 
 /* =========================================
@@ -81,7 +81,7 @@
 
 .u-reset {
   margin-left: auto;
-  border: 1px solid rgba(93, 23, 234, .28);
+  border: 1px solid rgba(87, 21, 219, .28);
   background: #fff;
   color: var(--accent);
   padding: 7px 10px;
@@ -92,7 +92,7 @@
 }
 
 .u-reset:hover {
-  background: rgba(93, 23, 234, .06);
+  background: rgba(87, 21, 219, .06);
 }
 
 .u-field {
@@ -121,8 +121,8 @@
 
 .u-input:focus,
 .u-select:focus {
-  border-color: rgba(93, 23, 234, .45);
-  box-shadow: 0 0 0 3px rgba(93, 23, 234, .10);
+  border-color: rgba(87, 21, 219, .45);
+  box-shadow: 0 0 0 3px rgba(87, 21, 219, .10);
 }
 
 .u-two {
@@ -186,8 +186,8 @@
 }
 
 .u-search input:focus {
-  border-color: rgba(93, 23, 234, .45);
-  box-shadow: 0 0 0 3px rgba(93, 23, 234, .10);
+  border-color: rgba(87, 21, 219, .45);
+  box-shadow: 0 0 0 3px rgba(87, 21, 219, .10);
 }
 
 .u-controls {
@@ -222,7 +222,7 @@
     width: 100%;
     text-align: center;
     font-weight: 700;
-    color: #5d17ea;
+    color: #5715db;
     padding: 8px;
 }
 
@@ -288,7 +288,7 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #5d17ea;
+    background: #5715db;
     border: 2px solid #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     cursor: pointer;
@@ -301,7 +301,7 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #5d17ea;
+    background: #5715db;
     border: 2px solid #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     cursor: pointer;
@@ -337,7 +337,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #5d17ea;
+  background: #5715db;
   border: 2px solid #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
   cursor: pointer;
@@ -361,7 +361,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #5d17ea;
+  background: #5715db;
   border: 2px solid #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
   cursor: pointer;
@@ -394,7 +394,7 @@
 }
 
 .view-btn.active {
-  background: rgba(93, 23, 234, 0.1);
+  background: rgba(87, 21, 219, 0.1);
   color: var(--accent);
 }
 
@@ -518,7 +518,7 @@
 .u-tour-dot.is-active {
   width: 18px;
   border-radius: 999px;
-  background: #5d17ea;
+  background: #5715db;
 }
 
 .u-tour-slide {
@@ -557,8 +557,8 @@
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.2px;
-  color: #5d17ea;
-  background: rgba(93, 23, 234, 0.1);
+  color: #5715db;
+  background: rgba(87, 21, 219, 0.1);
 }
 
 .u-tour-title {
@@ -591,9 +591,9 @@
 .u-tour-inline-btn {
   align-self: flex-start;
   margin-top: 6px;
-  border: 1px solid rgba(93, 23, 234, 0.25);
+  border: 1px solid rgba(87, 21, 219, 0.25);
   background: #ffffff;
-  color: #5d17ea;
+  color: #5715db;
   border-radius: 10px;
   font-size: 13px;
   font-weight: 700;
@@ -627,8 +627,8 @@
 }
 
 .u-tour-btn--primary {
-  border-color: #5d17ea;
-  background: #5d17ea;
+  border-color: #5715db;
+  background: #5715db;
   color: #ffffff;
   min-width: 84px;
 }
@@ -781,8 +781,8 @@
   margin-top: 10px;
   padding: 10px 10px;
   border-radius: 12px;
-  background: rgba(93, 23, 234, .06);
-  border: 1px solid rgba(93, 23, 234, .12);
+  background: rgba(87, 21, 219, .06);
+  border: 1px solid rgba(87, 21, 219, .12);
   color: rgba(0, 0, 0, .70);
   font-size: 12px;
   display: flex;
@@ -976,7 +976,7 @@
 .page-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(93, 23, 234, 0.04);
+  background: rgba(87, 21, 219, 0.04);
   transform: translateY(-1px);
 }
 
@@ -1100,7 +1100,7 @@
 }
 
 .map-marker-container.no-logo {
-  background: #5d17ea;
+  background: #5715db;
   border-color: white;
 }
 
@@ -1116,7 +1116,7 @@
     position: absolute;
     top: -8px;
     right: -8px;
-    background: #5d17ea;
+    background: #5715db;
     color: white;
     border: 2px solid white;
     border-radius: 10px;
@@ -1404,16 +1404,16 @@
 }
 
 :root[data-theme="dark"] .u-tour-dot.is-active {
-  background: #9a9a9a;
+  background: var(--accent);
 }
 
 :root[data-theme="dark"] .u-tour-kicker {
-  color: #d1d1d1;
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--accent);
+  background: rgba(87, 21, 219, 0.14);
 }
 
 :root[data-theme="dark"] .u-tour-btn--primary {
-  border-color: #8f8f8f;
-  background: #8f8f8f;
-  color: #111111;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
 }

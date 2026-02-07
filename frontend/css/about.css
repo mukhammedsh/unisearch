@@ -21,8 +21,8 @@
 
 .about-hero-copy {
   background:
-    radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.18), transparent 55%),
-    radial-gradient(circle at 20% 90%, rgba(93, 23, 234, 0.16), transparent 48%),
+    radial-gradient(circle at 85% 15%, rgba(87, 21, 219, 0.18), transparent 55%),
+    radial-gradient(circle at 20% 90%, rgba(87, 21, 219, 0.16), transparent 48%),
     #f8fbff;
   padding: 32px;
 }
@@ -33,7 +33,7 @@
   letter-spacing: 1px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #1d4ed8;
+  color: var(--accent);
 }
 
 .about-title {
@@ -60,9 +60,9 @@
 .about-tag {
   border-radius: 999px;
   padding: 7px 12px;
-  background: rgba(29, 78, 216, 0.1);
-  border: 1px solid rgba(29, 78, 216, 0.18);
-  color: #1e3a8a;
+  background: rgba(87, 21, 219, 0.1);
+  border: 1px solid rgba(87, 21, 219, 0.18);
+  color: var(--accent);
   font-size: 12px;
   font-weight: 700;
 }
@@ -121,7 +121,7 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   font-weight: 800;
-  color: #2563eb;
+  color: var(--accent);
 }
 
 .about-section-head h2 {
@@ -156,7 +156,7 @@
   display: block;
   font-size: 15px;
   font-weight: 700;
-  color: #1e3a8a;
+  color: var(--accent);
   overflow-wrap: anywhere;
 }
 
@@ -187,7 +187,7 @@
 .team-role {
   margin: 5px 0 10px;
   font-weight: 700;
-  color: #2563eb;
+  color: var(--accent);
   font-size: 14px;
 }
 
@@ -272,7 +272,7 @@
 :root[data-theme="dark"] .about-kicker,
 :root[data-theme="dark"] .team-role,
 :root[data-theme="dark"] .about-contact-card a {
-  color: #d4d4d4;
+  color: var(--accent);
 }
 
 :root[data-theme="dark"] .about-lead,
@@ -281,9 +281,9 @@
 }
 
 :root[data-theme="dark"] .about-tag {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #d4d4d4;
+  background: rgba(87, 21, 219, 0.14);
+  border-color: rgba(87, 21, 219, 0.32);
+  color: var(--accent);
 }
 
 :root[data-theme="dark"] .about-link,

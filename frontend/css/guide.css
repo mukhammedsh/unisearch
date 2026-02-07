@@ -18,7 +18,7 @@
   font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: #4f46e5;
+  color: var(--accent);
 }
 
 .guide-hero h1{
@@ -40,9 +40,9 @@
 
 .guide-nav a{
   text-decoration: none;
-  color: #1e40af;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  color: var(--accent);
+  background: #f5f0ff;
+  border: 1px solid #d8c9ff;
   border-radius: 999px;
   padding: 6px 10px;
   font-size: 12px;
@@ -52,14 +52,14 @@
 
 .guide-nav a:hover{
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 6px 14px rgba(87, 21, 219, 0.2);
 }
 
 .guide-nav a.is-active{
   color: #ffffff;
-  background: #2563eb;
-  border-color: #2563eb;
-  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 8px 18px rgba(87, 21, 219, 0.28);
 }
 
 .guide-section{
@@ -201,8 +201,8 @@
 
 :root[data-theme="dark"] .guide-nav a.is-active {
   color: #ffffff;
-  background: #5a5a5a;
-  border-color: #5a5a5a;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce){
