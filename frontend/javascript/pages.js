@@ -20,6 +20,7 @@ import {
   EXAM_CONFIG,
   LANG_CONFIG,
   aiName,
+  FEATURE_FLAGS,
 } from "./utils.js";
 
 import { getUniSort } from "./algo.js";
@@ -209,6 +210,205 @@ async function fetchUniversityDetailCached(universityId) {
     if (cached?.data) return cached.data;
     throw err;
   }
+}
+
+const GAP_COACH_CACHE_KEY = "unisearch_gap_coach_cache_v1";
+const GAP_COACH_CACHE_MAX_ITEMS = 40;
+const GAP_COACH_TOP_N_ACTIONS = 3;
+
+function toNumberOrNull(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function quickHash(input) {
+  const text = String(input || "");
+  let hash = 5381;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = ((hash << 5) + hash) + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return (hash >>> 0).toString(36);
+}
+
+function normalizeGapCoachProfile(rawProfile = {}) {
+  const profile = rawProfile && typeof rawProfile === "object" ? rawProfile : {};
+
+  const exams = (Array.isArray(profile.exams) ? profile.exams : [])
+    .map((entry) => {
+      if (!entry || typeof entry !== "object") return null;
+      const examRaw = String(entry.id || entry.exam || "").trim();
+      const exam = canonicalizeExamId(examRaw || "").trim();
+      const score = toNumberOrNull(entry.score);
+      if (!exam || score === null) return null;
+      return { exam, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => {
+      const keyCmp = a.exam.localeCompare(b.exam);
+      if (keyCmp !== 0) return keyCmp;
+      return b.score - a.score;
+    })
+    .map((x) => ({ exam: x.exam, score: x.score }));
+
+  const languages = (Array.isArray(profile.languages) ? profile.languages : [])
+    .map((entry) => {
+      if (!entry || typeof entry !== "object") return null;
+      const code = String(entry.code || entry.lang || "").trim().toLowerCase();
+      const kind = String(entry.kind || "").trim().toLowerCase();
+      if (!code || !kind) return null;
+
+      if (kind === "native") return { code, kind };
+      if (kind === "cefr") {
+        const level = toNumberOrNull(entry.level);
+        if (level === null) return null;
+        return { code, kind, level: Math.round(level) };
+      }
+      if (kind === "exam") {
+        const examRaw = String(entry.exam || entry.examId || "").trim();
+        const exam = canonicalizeExamId(examRaw || "").trim() || examRaw;
+        const score = toNumberOrNull(entry.score);
+        if (!exam || score === null) return null;
+        return { code, kind, exam, score };
+      }
+      return null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => {
+      const codeCmp = a.code.localeCompare(b.code);
+      if (codeCmp !== 0) return codeCmp;
+      const kindCmp = a.kind.localeCompare(b.kind);
+      if (kindCmp !== 0) return kindCmp;
+      const examA = String(a.exam || "");
+      const examB = String(b.exam || "");
+      const examCmp = examA.localeCompare(examB);
+      if (examCmp !== 0) return examCmp;
+      const scoreA = Number(a.score || a.level || 0);
+      const scoreB = Number(b.score || b.level || 0);
+      return scoreB - scoreA;
+    });
+
+  return {
+    budget: toNumberOrNull(profile.budget),
+    gpa: toNumberOrNull(profile.gpa),
+    exams,
+    languages,
+    major: String(profile.major || "").trim(),
+    studyMode: String(profile.studyMode || "Any").trim() || "Any",
+  };
+}
+
+function buildGapCoachProfileHash(profile) {
+  return quickHash(JSON.stringify(profile || {}));
+}
+
+function readGapCoachCache() {
+  try {
+    const raw = localStorage.getItem(GAP_COACH_CACHE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function writeGapCoachCache(cache) {
+  try {
+    localStorage.setItem(GAP_COACH_CACHE_KEY, JSON.stringify(cache || {}));
+  } catch (e) {
+    // ignore storage quota and serialization errors
+  }
+}
+
+function buildGapCoachCacheEntryKey(universityId, profileHash) {
+  const uniKey = String(universityId || "").trim();
+  const hash = String(profileHash || "").trim();
+  if (!uniKey || !hash) return "";
+  return `${uniKey}::${hash}`;
+}
+
+function getGapCoachCacheEntry(universityId, profileHash) {
+  const key = buildGapCoachCacheEntryKey(universityId, profileHash);
+  if (!key) return null;
+  const cache = readGapCoachCache();
+  const entry = cache[key];
+  if (!entry || typeof entry !== "object" || !entry.data || typeof entry.data !== "object") {
+    return null;
+  }
+  return {
+    key,
+    data: entry.data,
+    etag: String(entry.etag || ""),
+    ts: Number(entry.ts) || 0,
+  };
+}
+
+function setGapCoachCacheEntry(universityId, profileHash, data, etag = "") {
+  const key = buildGapCoachCacheEntryKey(universityId, profileHash);
+  if (!key || !data || typeof data !== "object") return;
+
+  const cache = readGapCoachCache();
+  cache[key] = {
+    data,
+    etag: String(etag || ""),
+    ts: Date.now(),
+  };
+
+  const keys = Object.keys(cache);
+  if (keys.length > GAP_COACH_CACHE_MAX_ITEMS) {
+    keys
+      .sort((a, b) => (Number(cache[a]?.ts) || 0) - (Number(cache[b]?.ts) || 0))
+      .slice(0, keys.length - GAP_COACH_CACHE_MAX_ITEMS)
+      .forEach((oldKey) => delete cache[oldKey]);
+  }
+
+  writeGapCoachCache(cache);
+}
+
+function touchGapCoachCacheEntry(universityId, profileHash) {
+  const key = buildGapCoachCacheEntryKey(universityId, profileHash);
+  if (!key) return;
+  const cache = readGapCoachCache();
+  if (!cache[key] || typeof cache[key] !== "object") return;
+  cache[key].ts = Date.now();
+  writeGapCoachCache(cache);
+}
+
+async function fetchGapCoachFromApi(universityId, profile, etag = "", topNActions = GAP_COACH_TOP_N_ACTIONS) {
+  const key = String(universityId || "").trim();
+  if (!key) throw new Error("University ID is required");
+
+  const headers = { "Content-Type": "application/json" };
+  if (etag) headers["If-None-Match"] = etag;
+
+  const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(key)}/gap-coach`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      profile: profile || {},
+      top_n_actions: topNActions,
+    }),
+  });
+
+  if (res.status === 304) {
+    return {
+      status: 304,
+      data: null,
+      etag: String(etag || ""),
+    };
+  }
+
+  if (!res.ok) {
+    throw new Error(`Gap coach request failed (${res.status})`);
+  }
+
+  const data = await res.json();
+  return {
+    status: res.status,
+    data,
+    etag: res.headers.get("ETag") || "",
+  };
 }
 
 // =====================================
@@ -1213,6 +1413,171 @@ export async function initUniversityPage() {
         uniChanceByTrackKey = new Map((uniChance?.tracks || []).map((x) => [String(x.trackKey), x]));
     };
     recomputeUniChance();
+    const GAP_COACH_ENABLED = !!FEATURE_FLAGS?.enable_gap_coach;
+    let gapCoachRunSeq = 0;
+    let gapCoachDataHash = "";
+
+    const gapCoachStatusClass = (status) => {
+        const key = String(status || "").trim().toLowerCase();
+        if (key === "safe") return "gap-coach-badge--safe";
+        if (key === "borderline") return "gap-coach-badge--borderline";
+        return "gap-coach-badge--risk";
+    };
+
+    const gapCoachNum = (value) => {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return "—";
+        if (Math.abs(n - Math.round(n)) < 1e-9) return String(Math.round(n));
+        return String(Math.round(n * 100) / 100);
+    };
+
+    const gapCoachExamLabel = (key) => {
+        const raw = String(key || "").trim();
+        if (!raw) return "Requirement";
+        if (raw.toUpperCase().startsWith("CEFR_")) {
+            const code = raw.split("_")[1] || "LANG";
+            return `${code.toUpperCase()} CEFR`;
+        }
+        return getExamDisplayName(raw) || raw;
+    };
+
+    const gapCoachBlockerText = (blocker) => {
+        const type = String(blocker?.type || "").toLowerCase();
+        const key = String(blocker?.key || "");
+        const requiredMin = blocker?.required_min;
+        const current = blocker?.current;
+        const deltaNeeded = blocker?.delta_needed;
+
+        if (type === "budget") {
+            const gap = Number(deltaNeeded);
+            if (Number.isFinite(gap) && gap > 0) {
+                return `Budget gap: +$${Math.round(gap).toLocaleString("en-US")} / year needed`;
+            }
+            return "Budget is below estimated yearly cost";
+        }
+
+        const label = gapCoachExamLabel(key);
+        const hasCurrent = Number.isFinite(Number(current));
+        const hasRequired = Number.isFinite(Number(requiredMin));
+
+        if (!hasCurrent && hasRequired) {
+            if (String(key).toUpperCase().startsWith("CEFR_")) {
+                return `${label}: add proof at least ${cefrLabel(requiredMin)}`;
+            }
+            return `${label}: add score at least ${gapCoachNum(requiredMin)}`;
+        }
+
+        if (hasCurrent && hasRequired) {
+            if (String(key).toUpperCase().startsWith("CEFR_")) {
+                return `${label}: ${cefrLabel(current)} -> ${cefrLabel(requiredMin)}`;
+            }
+            const delta = Number(deltaNeeded);
+            const deltaText = Number.isFinite(delta) ? ` (+${gapCoachNum(delta)})` : "";
+            return `${label}: ${gapCoachNum(current)} / ${gapCoachNum(requiredMin)}${deltaText}`;
+        }
+
+        return `${label}: does not meet requirement`;
+    };
+
+    const renderGapCoachShell = () => `
+      <section id="gapCoachPanel" class="gap-coach-panel gap-coach-panel--loading" aria-live="polite">
+        <div class="gap-coach-head">
+          <div class="gap-coach-title-wrap">
+            <h4>Profile Gap Coach</h4>
+            <div class="gap-coach-subtitle">Personalized checklist based on your profile</div>
+          </div>
+          <span class="gap-coach-meta">Analyzing…</span>
+        </div>
+        <div class="gap-coach-loading-row">
+          <span class="gap-coach-spinner" aria-hidden="true"></span>
+          <span>Checking your profile against this university tracks...</span>
+        </div>
+        <div class="gap-coach-skeleton">
+          <span></span><span></span><span></span>
+        </div>
+      </section>
+    `;
+
+    const renderGapCoachError = (message = "Could not load gap coach right now.") => `
+      <section id="gapCoachPanel" class="gap-coach-panel gap-coach-panel--error" aria-live="polite">
+        <div class="gap-coach-head">
+          <h4>Profile Gap Coach</h4>
+          <span class="gap-coach-meta">Unavailable</span>
+        </div>
+        <div class="gap-coach-error">${escapeHtml(message)}</div>
+        <button type="button" class="gap-coach-refresh-btn" data-gap-coach-recheck="1">Re-check after profile update</button>
+      </section>
+    `;
+
+    const renderGapCoachData = (payload, meta = {}) => {
+        const readiness = payload?.readiness || {};
+        const blockers = Array.isArray(payload?.blockers) ? payload.blockers : [];
+        const actions = Array.isArray(payload?.recommended_actions) ? payload.recommended_actions : [];
+        const bestTrack = payload?.best_track || {};
+        const statusClass = gapCoachStatusClass(readiness.status);
+        const statusKey = String(readiness.status || "at-risk").trim().toLowerCase();
+        const readinessPct = Math.max(0, Math.min(100, Number(readiness.score_0_100) || 0));
+        const sourceText = meta.fromCache ? "cached" : "live";
+        const refreshingText = meta.refreshing ? "Refreshing..." : "";
+        const metaText = refreshingText ? `${sourceText} • ${refreshingText}` : sourceText;
+
+        return `
+          <section id="gapCoachPanel" class="gap-coach-panel" aria-live="polite">
+            <div class="gap-coach-head">
+              <div class="gap-coach-title-wrap">
+                <h4>Profile Gap Coach</h4>
+                <div class="gap-coach-subtitle">Personalized checklist based on your profile</div>
+              </div>
+              <span class="gap-coach-meta">${escapeHtml(metaText)}</span>
+            </div>
+
+            <div class="gap-coach-readiness">
+              <div>
+                <div class="gap-coach-label">Current readiness</div>
+                <div class="gap-coach-track">Best track: <strong>${escapeHtml(bestTrack.label || "General admission")}</strong></div>
+                <div class="gap-coach-progress" role="img" aria-label="Readiness ${readinessPct}%">
+                  <div class="gap-coach-progress-fill gap-coach-progress-fill--${escapeHtml(statusKey)}" style="width:${readinessPct}%"></div>
+                </div>
+              </div>
+              <div class="gap-coach-score-wrap">
+                <span class="gap-coach-score">${gapCoachNum(readiness.score_0_100)}</span>
+                <span class="gap-coach-badge ${statusClass}">${escapeHtml(String(readiness.status || "at-risk"))}</span>
+              </div>
+            </div>
+
+            <div class="gap-coach-grid">
+              <div class="gap-coach-col">
+                <div class="gap-coach-label">Top blockers</div>
+                ${blockers.length ? `
+                  <ul class="gap-coach-list">
+                    ${blockers.slice(0, 5).map((blocker) => `<li class="gap-coach-chip">${escapeHtml(gapCoachBlockerText(blocker))}</li>`).join("")}
+                  </ul>
+                ` : `<div class="gap-coach-empty">No blockers found. You currently meet tracked minimums.</div>`}
+              </div>
+
+              <div class="gap-coach-col">
+                <div class="gap-coach-label">Priority action plan</div>
+                ${actions.length ? `
+                  <ol class="gap-coach-actions">
+                    ${actions.map((action) => `
+                      <li>
+                        <button type="button" class="gap-coach-action-btn" data-gap-action-id="${escapeHtml(String(action.id || ""))}">
+                          <span>${escapeHtml(String(action.text || ""))}</span>
+                          <span class="gap-coach-gain">+${escapeHtml(String(action.estimated_chance_gain_pct || 0))}%</span>
+                        </button>
+                      </li>
+                    `).join("")}
+                  </ol>
+                ` : `<div class="gap-coach-empty">No action recommendations at the moment.</div>`}
+              </div>
+            </div>
+
+            <div class="gap-coach-foot">
+              <button type="button" class="gap-coach-refresh-btn" data-gap-coach-recheck="1">Re-check after profile update</button>
+            </div>
+          </section>
+        `;
+    };
 
     // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
@@ -1538,13 +1903,115 @@ export async function initUniversityPage() {
 
     // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
     const reqDiv = document.getElementById("detailRequirements");
-    const renderAdmissionTab = () => {
+
+    const replaceGapCoachPanel = (html) => {
         if (!reqDiv) return;
+        const panel = reqDiv.querySelector("#gapCoachPanel");
+        if (!panel) return;
+        panel.outerHTML = html;
+    };
+
+    const emitGapCoachLoaded = (data, source) => {
+        const nextHash = quickHash(JSON.stringify(data || {}));
+        if (nextHash !== gapCoachDataHash) {
+            gapCoachDataHash = nextHash;
+            console.info("gap_coach_loaded", { source, university_id: uniId });
+        }
+    };
+
+    function bindGapCoachPanelHandlers() {
+        if (!reqDiv) return;
+        const panel = reqDiv.querySelector("#gapCoachPanel");
+        if (!panel) return;
+
+        panel.querySelectorAll("[data-gap-action-id]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const actionId = String(btn.getAttribute("data-gap-action-id") || "").trim();
+                console.info("gap_coach_action_clicked", { action_id: actionId, university_id: uniId });
+            });
+        });
+
+        const recheckBtn = panel.querySelector("[data-gap-coach-recheck]");
+        if (recheckBtn) {
+            recheckBtn.addEventListener("click", () => {
+                refreshGapCoachPanel({ reason: "manual", network: true });
+            });
+        }
+    }
+
+    async function refreshGapCoachPanel(opts = {}) {
+        if (!GAP_COACH_ENABLED || !reqDiv) return;
+        const panel = reqDiv.querySelector("#gapCoachPanel");
+        if (!panel) return;
+
+        const reason = String(opts.reason || "render");
+        const shouldUseNetwork = opts.network !== false;
+
+        const normalizedProfile = normalizeGapCoachProfile(loadProfile());
+        const profileHash = buildGapCoachProfileHash(normalizedProfile);
+        const cachedEntry = getGapCoachCacheEntry(uniId, profileHash);
+
+        if (cachedEntry?.data) {
+            replaceGapCoachPanel(renderGapCoachData(cachedEntry.data, { fromCache: true, refreshing: shouldUseNetwork }));
+            bindGapCoachPanelHandlers();
+            emitGapCoachLoaded(cachedEntry.data, "cache");
+        } else {
+            replaceGapCoachPanel(renderGapCoachShell());
+            bindGapCoachPanelHandlers();
+        }
+
+        if (!shouldUseNetwork) return;
+
+        const runSeq = ++gapCoachRunSeq;
+        try {
+            const result = await fetchGapCoachFromApi(
+                uniId,
+                normalizedProfile,
+                cachedEntry?.etag || "",
+                GAP_COACH_TOP_N_ACTIONS
+            );
+
+            if (runSeq !== gapCoachRunSeq) return;
+
+            if (result.status === 304 && cachedEntry?.data) {
+                touchGapCoachCacheEntry(uniId, profileHash);
+                replaceGapCoachPanel(renderGapCoachData(cachedEntry.data, { fromCache: true, refreshing: false }));
+                bindGapCoachPanelHandlers();
+                console.info("gap_coach_refreshed", { reason, updated: false, university_id: uniId });
+                return;
+            }
+
+            const data = result?.data;
+            if (!data || typeof data !== "object") throw new Error("Invalid gap coach response");
+
+            setGapCoachCacheEntry(uniId, profileHash, data, result.etag || "");
+            replaceGapCoachPanel(renderGapCoachData(data, { fromCache: false, refreshing: false }));
+            bindGapCoachPanelHandlers();
+
+            const prevHash = cachedEntry?.data ? quickHash(JSON.stringify(cachedEntry.data)) : "";
+            const nextHash = quickHash(JSON.stringify(data));
+            console.info("gap_coach_refreshed", { reason, updated: !prevHash || prevHash !== nextHash, university_id: uniId });
+            emitGapCoachLoaded(data, "network");
+        } catch (err) {
+            if (runSeq !== gapCoachRunSeq) return;
+            if (cachedEntry?.data) {
+                replaceGapCoachPanel(renderGapCoachData(cachedEntry.data, { fromCache: true, refreshing: false }));
+                bindGapCoachPanelHandlers();
+                return;
+            }
+            replaceGapCoachPanel(renderGapCoachError("Unable to analyze profile right now. Try again in a moment."));
+            bindGapCoachPanelHandlers();
+        }
+    }
+
+    const renderAdmissionTab = (opts = {}) => {
+        if (!reqDiv) return;
+        const gapCoachHTML = GAP_COACH_ENABLED ? renderGapCoachShell() : "";
         const warningHTML = uniChance?.missingEvidence
             ? `<div class="chance-warning">Add exam scores or language evidence in your profile to unlock a reliable ${escapeHtml(aiName("chance"))} estimate for this university.</div>`
             : "";
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
-            reqDiv.innerHTML = `${warningHTML}<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
+            reqDiv.innerHTML = `${warningHTML}${gapCoachHTML}<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
         } else {
             const tracks = Array.isArray(u.admission_tracks) ? u.admission_tracks : [];
             const filteredEntries = tracks
@@ -1556,7 +2023,7 @@ export async function initUniversityPage() {
             const totalTracks = tracks.length;
             const shownTracks = filteredEntries.length;
 
-            let tracksHTML = warningHTML + renderUniChanceSummary();
+            let tracksHTML = warningHTML + gapCoachHTML + renderUniChanceSummary();
             tracksHTML += `
             <div style="margin:12px 0 16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
                 <span style="font-size:12px; color:#4b5563; font-weight:700;">Track Filter:</span>
@@ -1701,15 +2168,21 @@ export async function initUniversityPage() {
                     if (next === admissionTrackFilter) return;
                     admissionTrackFilter = (next === "grant" || next === "paid" || next === "all") ? next : "all";
                     writeAdmissionTrackFilter(admissionTrackFilter);
-                    renderAdmissionTab();
+                    renderAdmissionTab({ refreshGapCoach: false });
                 });
             });
         }
+        if (GAP_COACH_ENABLED) {
+            refreshGapCoachPanel({
+                reason: String(opts.gapReason || "render"),
+                network: opts.refreshGapCoach !== false,
+            });
+        }
     };
-    renderAdmissionTab();
+    renderAdmissionTab({ gapReason: "initial" });
     window.addEventListener("profileUpdated", () => {
         recomputeUniChance();
-        renderAdmissionTab();
+        renderAdmissionTab({ gapReason: "profile_updated" });
     });
 
     // --- TAB 4: FINANCE (С блоком ROI) ---
@@ -2008,6 +2481,8 @@ export function initGuidePage() {
     const gloss = [
         { term: fitName, desc: "AI ranking mode that balances prestige, affordability, and admission feasibility." },
         { term: chanceName, desc: "AI probability (0-100) of your admission, computed per track from your profile and requirements." },
+        { term: "Gap Coach", desc: "Admission helper that shows readiness score, blockers, and prioritized profile improvements for the best track." },
+        { term: "SWR Cache", desc: "Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed." },
         { term: mentorName, desc: "AI consultant chatbot that answers university questions using project data and optional web context." },
         { term: "Admission Track", desc: "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)." },
         { term: "Requirements", desc: "Minimum scores to be considered for a track." },

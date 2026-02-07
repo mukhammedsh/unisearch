@@ -6,6 +6,7 @@ UniSearch is a full-stack web app that helps applicants choose universities usin
 - profile-based filtering,
 - UniFit ranking (AI-like scoring with prestige/budget/admission feasibility balance),
 - UniChance probability (0-100 estimated admission chance),
+- Gap Coach (profile blockers + prioritized improvement actions),
 - and UniMentor (AI chatbot consultant for university Q&A)
 
 It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
@@ -181,6 +182,14 @@ window.AI_FUNCTIONS = {
 
 Change these names once, and UI labels update across pages.
 
+Feature flags are also loaded from `frontend/config.js`:
+
+```js
+window.FEATURE_FLAGS = {
+  enable_gap_coach: true,
+};
+```
+
 ---
 
 ## Social impact (Infomatrix mission fit)
@@ -210,6 +219,7 @@ If you are just using UniSearch (not developing it), this is the fastest flow:
 5. On each university, check:
    - best-matching admission track,
    - UniChance probability (0-100),
+   - Gap Coach readiness score + blockers + priority action plan,
    - minimum vs typical admitted scores,
    - language requirements,
    - grants/scholarships and estimated yearly cost,
@@ -223,7 +233,7 @@ You can also open **Guide** page to understand terms like CEFR, admission tracks
 
 - `index.html` (Home): project overview and entry point.
 - `universities.html` (Main search): filters + UniFit ranking + map/list view.
-- `university.html` (Details): full information about one university and its tracks + UniChance panel in Admission + UniMentor chat tab.
+- `university.html` (Details): full information about one university and its tracks + Gap Coach and UniChance panels in Admission + UniMentor chat tab.
 - `ranking.html` (Rankings): ranking-focused view.
 - `guide.html` (Guide): explains admission terms, exams, and language proofs in simple words.
 - `about.html` (About Us): team introduction, contact blocks (mail/GitHub/social templates), and profile cards with PNG photo placeholders.
@@ -306,6 +316,25 @@ UniFit uses language requirements from track data (`language_requirements`) incl
   - black human-icon placeholders for future transparent PNG photos.
 - Global navbar updated with `About Us` link (via `components.js`) on all pages.
 
+### 5) Gap Coach (Admission helper)
+- New profile-based coach in University -> Admission tab.
+- Shows:
+  - readiness score (`0-100`) and status (`safe / borderline / at-risk`),
+  - top blockers (academic/language/budget),
+  - prioritized action plan with estimated chance gain.
+- Automatically refreshes after profile update and supports manual re-check.
+- Uses frontend stale-while-revalidate behavior:
+  - render cached result immediately,
+  - revalidate in background and update panel if data changed.
+
+### 6) Performance and caching updates
+- University details endpoint uses HTTP caching with `ETag` and `Cache-Control`.
+- Gap Coach endpoint uses `ETag` + `Cache-Control: private, max-age=60, stale-while-revalidate=120`.
+- Frontend localStorage caches:
+  - details cache key: `unisearch_detail_cache_v1`,
+  - gap coach cache key: `unisearch_gap_coach_cache_v1`.
+- Mobile-optimized thumbnails/logos are preferred on smaller or slower devices.
+
 ---
 
 ## Tech stack
@@ -340,6 +369,7 @@ UniFit uses language requirements from track data (`language_requirements`) incl
 
 - `GET /universities` - search/list with filters + pagination
 - `GET /universities/{id}` - single university details
+- `POST /universities/{id}/gap-coach` - profile gap analysis for best track + blockers + actions
 - `GET /locations` - countries/states/cities
 - `GET /exams/config` - full academic exam config (min/max/type/step/notes)
 - `GET /exams/config/full` - full exam config (same source)

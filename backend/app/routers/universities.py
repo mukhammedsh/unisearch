@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Query, Request, Response
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from app.services import universities as uni_service
+from app.services import gap_coach as gap_coach_service
 
 
 router = APIRouter()
@@ -81,6 +82,42 @@ def get_university(university_id: str, request: Request, response: Response = No
         })
 
     return u
+
+
+@router.post("/universities/{university_id}/gap-coach")
+def get_university_gap_coach(
+    university_id: str,
+    payload: Dict[str, Any],
+    request: Request,
+    response: Response = None,
+):
+    university = uni_service.get_university_by_id(university_id)
+    if university is None:
+        raise HTTPException(status_code=404, detail="University not found")
+
+    profile = payload.get("profile", {})
+    if not isinstance(profile, dict):
+        raise HTTPException(status_code=400, detail="profile must be an object")
+
+    top_n = gap_coach_service.normalize_top_n(payload.get("top_n_actions", 3))
+    uni_etag = uni_service.get_university_etag(university_id)
+    etag = gap_coach_service.build_gap_coach_etag(uni_etag, profile, top_n)
+
+    cache_control = "private, max-age=60, stale-while-revalidate=120"
+    if response is not None:
+        response.headers["Cache-Control"] = cache_control
+        response.headers["ETag"] = etag
+
+    if _etag_matches(request.headers.get("if-none-match", ""), etag):
+        return Response(
+            status_code=304,
+            headers={
+                "Cache-Control": cache_control,
+                "ETag": etag,
+            },
+        )
+
+    return gap_coach_service.build_gap_coach(university, profile, top_n)
 
 
 @router.get("/locations")

@@ -22,6 +22,7 @@
       <div class="guide-nav">
         <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
         <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
+        <a href="#guide-gap-coach">Gap Coach</a>
         <a href="#guide-unimentor" data-ai-template="{mentor}">UniMentor</a>
         <a href="#guide-admission">Admission</a>
         <a href="#guide-exam-basics">Exam Basics</a>
@@ -48,6 +49,16 @@
         <p>The estimate is calculated from profile and track data already present in the platform: minimum requirements, typical admitted scores, language rules, acceptance context, and affordability signals. If your profile does not satisfy strict minimums, probability decreases strongly. If your profile is around typical admitted values, probability generally rises.</p>
         <p>Recommended interpretation in this product is straightforward: 80-100 means high chance, 60-79 means good chance, 40-59 means moderate chance, and below 40 means low chance. These ranges are useful for planning application strategy. A balanced plan usually includes safer options, target options, and a limited number of ambitious options.</p>
         <p>The “Best Track” output is important: it highlights the strongest path inside one university. Students often focus on one main route and miss alternative tracks with better fit. This section helps reveal those alternatives and can materially improve shortlisting quality.</p>
+      </div>
+    </section>
+
+    <section id="guide-gap-coach" class="guide-section">
+      <h2>Gap Coach (Readiness + Action Plan)</h2>
+      <div class="guide-doc">
+        <p>Gap Coach is shown in University -> Admission and explains exactly what is missing for your best track right now. It is designed as a practical checklist: not only score output, but concrete next steps.</p>
+        <p>The panel includes three parts: current readiness score (0-100), top blockers (academic, language, budget), and a priority action plan. This helps users understand what to fix first instead of guessing.</p>
+        <p>Readiness status is interpreted as: <strong>safe</strong> (strong fit), <strong>borderline</strong> (possible but risky), and <strong>at-risk</strong> (key requirements not met). This is guidance, not a guarantee of admission.</p>
+        <p>The panel uses stale-while-revalidate behavior: cached result appears immediately for fast UX, then the app refreshes in background and updates if server data changed. After profile edits, Gap Coach is re-checked automatically.</p>
       </div>
     </section>
 
