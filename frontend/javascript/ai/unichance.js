@@ -26,6 +26,26 @@ function getTrackCost(university, track) {
   return u !== null ? Math.max(0, u) : 0;
 }
 
+function normalizeFundingPreference(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (raw === "grant" || raw === "paid") return raw;
+  return "any";
+}
+
+function getTrackFundingType(track) {
+  const rawType = String(track?.funding_type || "").trim().toLowerCase();
+  if (rawType === "grant" || rawType === "paid") return rawType;
+  const badgeRaw = String(track?.track_badge || "").trim().toLowerCase();
+  return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
+}
+
+function filterTrackEntriesByFundingPreference(tracks, fundingPreference) {
+  const entries = (Array.isArray(tracks) ? tracks : []).map((track, idx) => ({ track, idx }));
+  const pref = normalizeFundingPreference(fundingPreference);
+  if (pref === "any") return entries;
+  return entries.filter(({ track }) => getTrackFundingType(track) === pref);
+}
+
 function acceptanceScore(university) {
   let ar = toNum(university?.academics?.acceptance_rate_percent);
   if (ar === null) {
@@ -100,21 +120,26 @@ function hasUsableEvidence(ctx) {
   return false;
 }
 
-function zeroChanceResult(tracks) {
-  const perTrack = tracks.map((t, idx) => ({
-    trackKey: getTrackKey(t, idx),
-    trackId: t?.id || "",
-    trackLabel: t?.label || `Track ${idx + 1}`,
-    chancePercent: 0,
-    level: chanceLevel(0),
-    details: {
-      academic: 0,
-      language: 0,
-      selectivity: 0,
-      affordability: 0,
-      feasibilityGate: 0,
-    },
-  }));
+function zeroChanceResult(trackEntries) {
+  const entries = Array.isArray(trackEntries) ? trackEntries : [];
+  const perTrack = entries.map((entry, fallbackIdx) => {
+    const track = entry?.track || entry || {};
+    const idx = Number.isInteger(entry?.idx) ? entry.idx : fallbackIdx;
+    return {
+      trackKey: getTrackKey(track, idx),
+      trackId: track?.id || "",
+      trackLabel: track?.label || `Track ${idx + 1}`,
+      chancePercent: 0,
+      level: chanceLevel(0),
+      details: {
+        academic: 0,
+        language: 0,
+        selectivity: 0,
+        affordability: 0,
+        feasibilityGate: 0,
+      },
+    };
+  });
 
   const best = perTrack[0] || {
     trackKey: "default",
@@ -200,19 +225,35 @@ function scoreTrack(university, track, idx, ctx) {
 
 export function estimateUniChance(university, profile) {
   const ctx = buildUserContext(profile || {});
-  const tracks = Array.isArray(university?.admission_tracks) && university.admission_tracks.length
+  const allTracks = Array.isArray(university?.admission_tracks) && university.admission_tracks.length
     ? university.admission_tracks
     : [{ id: "default", label: "General admission", requirements: {}, stats_avg: {} }];
+  const fundingType = normalizeFundingPreference(profile?.fundingType || profile?.funding_type || "any");
+  const trackEntries = filterTrackEntriesByFundingPreference(allTracks, fundingType);
 
   // Requested behavior: if profile has no usable exam/language evidence, return 0.
   const hasEvidence = hasUsableEvidence(ctx);
   if (!hasEvidence) {
-    const res = zeroChanceResult(tracks);
+    const res = zeroChanceResult(trackEntries);
     res.missingEvidence = true;
+    res.fundingType = fundingType;
     return res;
   }
 
-  const perTrack = tracks.map((t, idx) => scoreTrack(university, t, idx, ctx));
+  if (!trackEntries.length) {
+    return {
+      overallChance: 0,
+      level: chanceLevel(0),
+      bestTrackKey: "none",
+      bestTrackId: "",
+      bestTrackLabel: "No tracks for selected funding type",
+      tracks: [],
+      missingEvidence: false,
+      fundingType,
+    };
+  }
+
+  const perTrack = trackEntries.map(({ track, idx }) => scoreTrack(university, track, idx, ctx));
   perTrack.sort((a, b) => b.chancePercent - a.chancePercent);
 
   const best = perTrack[0] || {
@@ -234,5 +275,6 @@ export function estimateUniChance(university, profile) {
     bestTrackLabel: best.trackLabel,
     tracks: perTrack,
     missingEvidence: false,
+    fundingType,
   };
 }

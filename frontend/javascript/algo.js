@@ -13,6 +13,26 @@ const toNum = (v) => {
 };
 const canonicalExamKey = (key) => String(key || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 
+function normalizeFundingPreference(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (raw === "grant" || raw === "paid") return raw;
+  return "any";
+}
+
+function getTrackFundingType(track) {
+  const rawType = String(track?.funding_type || "").trim().toLowerCase();
+  if (rawType === "grant" || rawType === "paid") return rawType;
+  const badgeRaw = String(track?.track_badge || "").trim().toLowerCase();
+  return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
+}
+
+function filterTracksByFundingPreference(tracks, fundingPreference) {
+  const pref = normalizeFundingPreference(fundingPreference);
+  if (!Array.isArray(tracks) || !tracks.length) return [];
+  if (pref === "any") return tracks;
+  return tracks.filter((track) => getTrackFundingType(track) === pref);
+}
+
 // Conservative fallback to avoid "IELTS 10000" even if config failed to load.
 const FALLBACK_LANG_EXAMS = {
   IELTS: { min: 0, max: 9, step: 0.5 },
@@ -725,10 +745,24 @@ function admissionChance(trackFit, hardPassAll, worstGap, accScore) {
  * - prestige/budget slider only controls preference between rank vs affordability,
  *   but feasibility still gates everything.
  */
-function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rankScoreFn) {
-  const tracks = Array.isArray(uni?.admission_tracks) && uni.admission_tracks.length
+function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rankScoreFn, fundingPreference) {
+  const allTracks = Array.isArray(uni?.admission_tracks) && uni.admission_tracks.length
     ? uni.admission_tracks
     : [{ id: "default", label: "Standard", requirements: {}, stats_avg: {}, scholarships: [] }];
+  const tracks = filterTracksByFundingPreference(allTracks, fundingPreference);
+  if (!tracks.length) {
+    return {
+      score: 0,
+      matchData: {
+        finalPrice: 0,
+        aidAny: false,
+        aidEligible: false,
+        grantName: "",
+        trackLabel: "No matching track",
+        missingRequiredEvidence: true,
+      },
+    };
+  }
 
   const rScore = rankScoreFn(uni?.rank);
   const acc = acceptanceScore(uni);
@@ -745,7 +779,7 @@ function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rank
       schInfo.hasAny ||
       !!uni?.finance?.financial_aid?.merit_based ||
       !!uni?.finance?.financial_aid?.need_based ||
-      (Array.isArray(uni?.admission_tracks) && uni.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0));
+      tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0);
 
     const aidEligible = !!schInfo.bestEligible;
 
@@ -819,15 +853,18 @@ function scoreUniversity(uni, userScores, userLanguages, budget, aiBalance, rank
   return best || { score: 0, matchData: { finalPrice: 0, aidAny: false, aidEligible: false, grantName: "", trackLabel: "Standard", missingRequiredEvidence: false } };
 }
 
-export function getUniSort(items, aiBalance = 50) {
+export function getUniSort(items, aiBalance = 50, opts = {}) {
   const profile = loadProfile();
   const userScores = buildUserScores(profile);
   const userLanguages = buildUserLanguages(profile);
   const userBudget = toNum(profile?.budget);
+  const fundingPreference = normalizeFundingPreference(
+    opts?.funding_type || profile?.fundingType || profile?.funding_type || "any"
+  );
   const rankScoreFn = getRankScoreFactory(items);
 
   const enriched = items.map((u) => {
-    const res = scoreUniversity(u, userScores, userLanguages, userBudget, aiBalance, rankScoreFn);
+    const res = scoreUniversity(u, userScores, userLanguages, userBudget, aiBalance, rankScoreFn, fundingPreference);
     return { ...u, __ai_score: res.score, matchData: res.matchData };
   });
 

@@ -130,7 +130,8 @@ const PROFILE_DEFAULTS = {
     exams: [], 
     languages: [],   // ✅ новое поле
     major: "", 
-    studyMode: "Any" 
+    studyMode: "Any",
+    fundingType: "any",
 };
 
 export let EXAM_CONFIG = {
@@ -479,9 +480,8 @@ export function saveFilters(state) {
         country: state.country,
         region: state.region,
         city: state.city,
-        // 🔥 УДАЛЕНО: major и format больше не сохраняются в фильтрах
+        // funding type now comes from profile.fundingType
         study_level: state.study_level,
-        funding_type: state.funding_type || "",
         min_tuition: state.min_tuition,
         max_tuition: state.max_tuition,
         sort: state.sort,
@@ -680,6 +680,10 @@ function clampWithCfg(score, cfg) {
 
 function normalizeProfile(p) {
   const out = { ...PROFILE_DEFAULTS, ...(p || {}) };
+  const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
+  if (fundingRaw === "grant" || fundingRaw === "paid") out.fundingType = fundingRaw;
+  else out.fundingType = "any";
+
   const gpaCfg = EXAM_CONFIG?.GPA || EXAM_CONFIG?.gpa || { min: 0, max: 100, step: 1 };
   const clampGpa = (v) => {
     const normalized = clampWithCfg(v, gpaCfg);

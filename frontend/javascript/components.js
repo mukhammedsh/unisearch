@@ -154,6 +154,15 @@ const LAYOUT_HTML = `
       </div>
 
       <div class="profile-field">
+        <label class="profile-label">Preferred Funding Type</label>
+        <select id="profileFundingTypeSelect" class="profile-input" style="cursor:pointer;">
+           <option value="any">Any (Grant + Paid)</option>
+           <option value="grant">Grant only</option>
+           <option value="paid">Paid only</option>
+        </select>
+      </div>
+
+      <div class="profile-field">
         <label class="profile-label">Intended Major</label>
         <select id="profileMajorSelect" class="profile-input" style="cursor:pointer;">
            <option value="">Undecided / Any</option>
@@ -310,6 +319,7 @@ function initProfileUI() {
     
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
+    const profileFundingTypeSelect = document.getElementById("profileFundingTypeSelect");
     const examScoreInput = document.getElementById("examScoreInput");
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
@@ -395,6 +405,7 @@ function initProfileUI() {
         if(gpaInput) gpaInput.value = (profile.gpa === "" || profile.gpa === null || profile.gpa === undefined) ? "" : String(profile.gpa);
         if(profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
+        if (profileFundingTypeSelect) profileFundingTypeSelect.value = profile.fundingType || "any";
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         renderProfileData();
     };
@@ -414,6 +425,15 @@ function initProfileUI() {
         });
     }
 
+    if (profileFundingTypeSelect) {
+        profileFundingTypeSelect.addEventListener("change", () => {
+            const raw = String(profileFundingTypeSelect.value || "").trim().toLowerCase();
+            profile.fundingType = (raw === "grant" || raw === "paid") ? raw : "any";
+            saveProfile(profile);
+            showToast("Preference saved", "success");
+        });
+    }
+
     if (openBtn) openBtn.onclick = () => { 
         resetFields();
         window.dispatchEvent(new Event("profileModalOpened"));
@@ -425,6 +445,7 @@ function initProfileUI() {
         if (typeof initCustomSelect === "function") {
             initCustomSelect("examNameSelect");
             initCustomSelect("studyModeSelect");    // <--- ДОБАВЛЕНО
+            initCustomSelect("profileFundingTypeSelect");
             initCustomSelect("profileMajorSelect"); // <--- ДОБАВЛЕНО
         }
     };
