@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance / UniMentor - Beta v2.0 (Infomatrix 2026)
+# UniSearch / UniFit / UniChance / UniMentor - 2.1.0 Beta (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app that helps applicants choose universities using:
@@ -9,6 +9,61 @@ UniSearch is a full-stack web app that helps applicants choose universities usin
 - and UniMentor (AI chatbot consultant for university Q&A)
 
 It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
+
+## Version
+- Current release: `2.1.0 Beta`
+
+## Product logos (from `frontend/images`)
+
+<p align="center">
+  <img src="frontend/images/whitelogo.png" alt="UniSearch light logo" width="220" />
+  <img src="frontend/images/darklogo.png" alt="UniSearch dark logo" width="220" />
+</p>
+
+`minilogo.png` is a compact fallback logo used when the primary logo file cannot be loaded.
+
+## Architecture (v2.1.0, backend-first)
+
+### High-level flow
+
+```text
+[User]
+  -> interacts with UI pages
+     [Frontend: HTML/CSS/JS]
+       -> sends GET/POST JSON requests
+          [FastAPI Backend: routers]
+            -> calls service layer
+               [Services: filtering/sorting/ranking/AI scoring]
+                 -> reads canonical datasets
+                    [backend/data/*.json]
+                 <- returns computed results
+            <- returns UI-ready JSON
+       <- renders cards/map/details/charts/chat
+  <- sees final results
+```
+
+### Responsibility split
+
+#### Backend (FastAPI)
+- Source of truth for business logic and data access.
+- Reads and validates data from `backend/data/*.json` (or future DB).
+- Performs filtering, search, sorting, ranking, pagination.
+- Computes UniFit ordering, UniChance probability, ROI, gap coaching.
+- Returns ready-to-render JSON for list, map, ranking, and detail pages.
+
+#### Frontend
+- Sends query/body parameters to backend endpoints.
+- Renders cards, detail sections, map markers, tabs, and chatbot messages.
+- Stores only local UI concerns:
+  - form state,
+  - debounce,
+  - cache of already fetched UI data,
+  - loading overlays/spinners.
+
+### Why this architecture
+- One decision engine for web and future mobile app.
+- Smaller frontend complexity and fewer duplicated calculations.
+- Easier testing and safer changes to ranking/chance logic.
 
 ---
 
@@ -269,55 +324,38 @@ On university details page:
 
 ## Main updates in this version
 
-### 1) Track-based admissions
-Universities can have multiple admission tracks (`admission_tracks`), each with:
-- its own exam minimums,
-- typical admitted scores (`stats_avg`),
-- scholarships and finance overrides.
+### 1) Backend-first decision logic
+UniFit and UniChance calculations were moved from frontend modules to backend services/routes:
+- `POST /universities/ai-sort` (server-side UniFit ranking + pagination)
+- `POST /universities/{id}/uni-chance` (server-side UniChance output)
+- `POST /universities/{id}/roi` (server-side ROI estimate for detail page)
 
-UniFit evaluates tracks separately and chooses the best track for the user.
+This keeps business logic centralized for web + future mobile clients.
 
-### 2) Dynamic exams and language exams
-Exam limits/types are loaded from backend config, not hardcoded.
-- Academic exams: `backend/data/exams.json`
-- Language config + language exams: `backend/data/languages.json`
+### 2) Frontend simplified to UI/rendering
+Frontend now focuses on:
+- collecting filters/profile input,
+- calling backend endpoints,
+- rendering returned JSON,
+- local UI state/caching/debounce.
 
-Frontend loads config from:
-- `GET /exams/config`
-- `GET /languages/config`
+Old client-side scoring modules were removed from active architecture.
 
-Validation happens server-side:
-- `POST /exams/validate`
-- `POST /languages/validate`
+### 3) Loading animation improvements
+Loading visuals now cover backend wait states in major user flows:
+- Universities page: centered large white spinner + dimmed content area while loading list/map.
+- University details page: centered large white spinner overlay while details/chance/ROI are fetched.
 
-### 3) Language profile support
-User can add language evidence in Profile:
-- native,
-- CEFR level,
-- language exam score.
+### 4) Ranking and sort consistency
+- Ranking page now requests backend-sorted ranking (`sort=rank_asc`) instead of client-side re-sorting.
+- UniFit slider visibility state on page load was fixed when sort is restored from saved filters.
 
-UniFit uses language requirements from track data (`language_requirements`) including:
-- mode `all` / `any`,
-- native acceptance,
-- CEFR threshold,
-- exam-specific minimums.
-
-### 4) UX improvements
-- Budget filter max set to `150000`.
-- Country default option renamed to `🌍 Global`.
-- URL query params now keep current filters/page/view correctly.
-- New `Guide` page with glossary + exam explanations + dynamic exam references.
-- New `About Us` page with:
-  - contact cards (email, GitHub, presentation/social template links),
-  - team member blocks and roles,
-  - black human-icon placeholders for future transparent PNG photos.
-- Global navbar updated with `About Us` link (via `components.js`) on all pages.
-
-### 5) Performance and caching updates
-- University details endpoint uses HTTP caching with `ETag` and `Cache-Control`.
-- Frontend localStorage caches:
-  - details cache key: `unisearch_detail_cache_v1`
-- Mobile-optimized thumbnails/logos are preferred on smaller or slower devices.
+### 5) Existing data/config flow remains server-validated
+- Academic exams config: `backend/data/exams.json` via `GET /exams/config`
+- Language config: `backend/data/languages.json` via `GET /languages/config`
+- Validation endpoints:
+  - `POST /exams/validate`
+  - `POST /languages/validate`
 
 ---
 
@@ -329,11 +367,8 @@ UniFit uses language requirements from track data (`language_requirements`) incl
 - Main modules:
   - `frontend/javascript/main.js` - app entry/router
   - `frontend/javascript/components.js` - navbar/profile modal
-  - `frontend/javascript/pages.js` - page logic/rendering
-  - `frontend/javascript/algo.js` - UniFit scoring logic
-  - `frontend/javascript/ai/unichance.js` - UniChance probability engine
+  - `frontend/javascript/pages.js` - page logic/rendering + backend API integration
   - `frontend/javascript/ai/mentor.js` - UniMentor chat client
-  - `frontend/javascript/ai/shared.js` - shared AI helpers
   - `frontend/javascript/languages.js` - language profile UI logic
   - `frontend/javascript/utils.js` - config/profile/helpers + AI name config reader
 
@@ -341,6 +376,7 @@ UniFit uses language requirements from track data (`language_requirements`) incl
 - FastAPI (Python)
 - Main app:
   - `backend/app/main.py`
+  - `backend/app/services/ai_scoring.py` - UniFit/UniChance/ROI scoring service
 - Data:
   - `backend/data/universities.json`
   - `backend/data/exams.json`
@@ -352,8 +388,13 @@ UniFit uses language requirements from track data (`language_requirements`) incl
 ## API overview
 
 - `GET /universities` - search/list with filters + pagination
+- `POST /universities/ai-sort` - backend UniFit ranking for list page
 - `GET /universities/{id}` - single university details
+- `POST /universities/{id}/uni-chance` - backend UniChance probability response
+- `POST /universities/{id}/roi` - backend ROI estimation for profile + university
+- `POST /universities/{id}/gap-coach` - profile gap analysis/actions
 - `GET /locations` - countries/states/cities
+- `GET /stats` - homepage aggregate stats
 - `GET /exams/config` - full academic exam config (min/max/type/step/notes)
 - `GET /exams/config/full` - full exam config (same source)
 - `POST /exams/validate` - validate one academic exam score
@@ -445,6 +486,8 @@ For each university:
 6. Compute UniChance (0-100) for each track and overall university probability.
 7. Use UniMentor to ask natural-language questions about the selected university; answer comes from DB and optional free web sources.
 
+Note: in `2.1.0 Beta`, UniFit and UniChance computation is backend-side; frontend only sends parameters and renders responses.
+
 Important: high prestige does not fully override impossible admissions; feasibility still gates ranking.
 
 ---
@@ -488,45 +531,135 @@ Academic and language requirements are independent in many tracks. Strong SAT/GP
 
 ---
 
+## Image assets contract (`frontend/images`)
+
+All university media files are resolved by `university.id`, so naming must match exactly.
+
+Example:
+- University id: `mit-usa-cambridge`
+- Required files:
+  - `frontend/images/logos/mit-usa-cambridge.png`
+  - `frontend/images/logos-mobile/mit-usa-cambridge.png`
+  - `frontend/images/thumbnails/mit-usa-cambridge.jpg`
+  - `frontend/images/thumbnails-mobile/mit-usa-cambridge.jpg`
+
+### What each images folder contains
+- `frontend/images/whitelogo.png`: main app logo for light backgrounds/navigation.
+- `frontend/images/darklogo.png`: main app logo for dark backgrounds/navigation.
+- `frontend/images/minilogo.png`: fallback logo if primary logo is missing.
+- `frontend/images/logos/`: desktop university logos (`.png`), used in cards/map/details.
+- `frontend/images/logos-mobile/`: optimized mobile logos (`.png`) for small screens/slow networks.
+- `frontend/images/thumbnails/`: desktop hero/card photos (`.jpg`).
+- `frontend/images/thumbnails-mobile/`: optimized mobile photos (`.jpg`).
+
+### Recommended asset specs
+- Logo format: transparent `.png`, square, clear at `44x44` and `96x96`.
+- Thumbnail format: `.jpg`, landscape ratio (recommended `16:9`).
+- Keep desktop/mobile pairs visually consistent (same university, same composition).
+- Avoid spaces in filenames; use the exact `university.id` slug.
+
+---
+
+## File and folder meaning
+
+### Backend
+- `backend/app/main.py`: FastAPI app bootstrap, CORS, router registration.
+- `backend/app/routers/`: HTTP endpoints (universities, exams, languages, mentor, root).
+- `backend/app/services/`: core logic (search/filter/sort, AI scoring, validation, mentor logic).
+- `backend/app/core/`: shared backend infrastructure (settings, env, paths, security helpers).
+- `backend/data/`: canonical datasets (`universities.json`, `exams.json`, `languages.json`, `cities.json`).
+- `backend/requirements.txt`: Python dependencies.
+
+### Frontend
+- `frontend/index.html`: landing/stats entry page.
+- `frontend/universities.html`: main search/list/map page.
+- `frontend/university.html`: university detail page (overview/admission/ROI/mentor).
+- `frontend/ranking.html`: rank-focused page.
+- `frontend/guide.html`: user guide/tutorial page.
+- `frontend/about.html`: project/about page.
+- `frontend/javascript/main.js`: app startup and per-page initialization.
+- `frontend/javascript/pages.js`: page orchestration, backend API calls, rendering logic.
+- `frontend/javascript/components.js`: shared UI components (navbar/tabs/modal behaviors).
+- `frontend/javascript/utils.js`: helpers, config readers, profile/local storage utilities.
+- `frontend/javascript/ai/mentor.js`: UniMentor chat UI client.
+- `frontend/css/`: page-specific and shared styles.
+- `frontend/images/`: brand assets, university logos, and thumbnails.
+- `frontend/config.js`: frontend runtime config (API base URL, feature flags, AI names, app version).
+- `frontend/sw.js`: service worker for caching/offline support.
+
+### Root
+- `README.md`: architecture, setup, API, and data model documentation.
+- `LICENSE`: project license.
+- `.gitignore`: ignored files/directories for git.
+
+---
+
 ## Project structure
 
 ```text
 backend/
   app/
-    main.py
-  data/
-    universities.json
-    exams.json
-    languages.json
-    cities.json
-  requirements.txt
+    main.py                       # FastAPI app entrypoint + router mounting + CORS
+    core/                         # shared backend infra
+      env.py                      # env variable parsing helpers
+      files.py                    # safe file read/write utilities
+      paths.py                    # central project/data paths
+      security.py                 # security-related helpers
+      settings.py                 # runtime settings object
+    routers/                      # HTTP endpoints layer
+      root.py                     # health/version endpoints
+      universities.py             # list/detail/ai-sort/chance/roi/gap-coach endpoints
+      exams.py                    # exam config + validation endpoints
+      languages.py                # language config + validation endpoints
+      mentor.py                   # UniMentor ask endpoint
+    services/                     # business logic layer (no UI)
+      universities.py             # filtering/search/sort/pagination/location stats logic
+      ai_scoring.py               # UniFit/UniChance/ROI calculations
+      gap_coach.py                # profile gap analysis/recommendations
+      exams.py                    # exam validation logic
+      languages.py                # language validation logic
+      mentor.py                   # mentor answer generation/orchestration
+  data/                           # source data (replaceable by DB in future)
+    universities.json             # universities + tracks + requirements + finance/outcomes
+    exams.json                    # academic exam constraints (min/max/type/step)
+    languages.json                # language/CEFR/exam requirement config
+    cities.json                   # country/state/city reference
+  requirements.txt                # backend dependencies
 
 frontend/
-  index.html
-  universities.html
-  university.html
-  ranking.html
-  guide.html
-  about.html
+  index.html                      # landing page
+  universities.html               # search/list/map page
+  university.html                 # single university details page
+  ranking.html                    # ranking-focused page
+  guide.html                      # user tutorial/guide
+  about.html                      # about/contact page
+  config.js                       # frontend runtime config (API URL, flags, names, version)
+  sw.js                           # service worker (cache/offline behavior)
+  theme-init.js                   # early theme bootstrap
   css/
-    style.css
-    universities.css
-    university.css
-    ranking.css
-    guide.css
-    about.css
+    style.css                     # shared global styles
+    universities.css              # list/map page styles + loading overlays
+    university.css                # details page styles + loading overlays
+    ranking.css                   # ranking page styles
+    guide.css                     # guide page styles
+    about.css                     # about page styles
+    index.css                     # landing page styles
   javascript/
-    main.js
-    components.js
-    pages.js
-    algo.js
+    main.js                       # page routing + app bootstrap
+    pages.js                      # page logic, backend calls, rendering
+    components.js                 # reusable UI components
+    languages.js                  # profile language UI logic
+    utils.js                      # common helpers/config/profile/localStorage
     ai/
-      shared.js
-      unichance.js
-      mentor.js
-    languages.js
-    utils.js
+      mentor.js                   # UniMentor frontend chat client
   images/
-    logos/
-    thumbnails/
+    whitelogo.png                 # app logo for light contexts
+    darklogo.png                  # app logo for dark contexts
+    minilogo.png                  # fallback compact logo
+    logos/                        # desktop university logos: PNG, 1:1, filename = university.id
+                                  # example: mit-usa-cambridge.png
+    logos-mobile/                 # optimized mobile version of logos/ (same filename rule)
+    thumbnails/                   # desktop university photos: JPG, recommended 16:9
+                                  # example: mit-usa-cambridge.jpg
+    thumbnails-mobile/            # optimized mobile version of thumbnails/ (same filename rule)
 ```

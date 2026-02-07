@@ -5,7 +5,7 @@ from app.core.settings import FRONTEND_ORIGIN
 from app.routers import root, universities, exams, languages, mentor
 
 
-app = FastAPI(title="UniSearch AI API", version="2.0.0")
+app = FastAPI(title="UniSearch AI API", version="2.1.0 Beta")
 
 app.add_middleware(
     CORSMiddleware,
