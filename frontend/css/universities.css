@@ -487,6 +487,7 @@
   cursor: pointer;
   font-size: 18px;
   line-height: 1;
+  display: none !important;
 }
 
 .u-tour-progress {
