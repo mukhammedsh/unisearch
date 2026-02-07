@@ -142,6 +142,7 @@
    ========================================= */
 .u-content {
   min-width: 0;
+  position: relative;
 }
 
 .u-top {
@@ -404,9 +405,12 @@
 }
 
 .u-loading-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1400;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 86px;
+  height: clamp(240px, 52vh, 520px);
+  z-index: 20;
   display: none;
   align-items: center;
   justify-content: center;
@@ -1179,6 +1183,11 @@
 
   .u-map-container {
     height: 400px;
+  }
+
+  .u-loading-overlay {
+    top: 132px;
+    height: clamp(220px, 46vh, 420px);
   }
 }
 
