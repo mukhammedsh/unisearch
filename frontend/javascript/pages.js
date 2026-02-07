@@ -531,6 +531,7 @@ export function initUniversitiesPage() {
 
         const steps = [
             {
+                kicker: "Welcome",
                 title: "Find universities faster",
                 desc: "This page helps you quickly shortlist universities by location, tuition, and fit for your profile.",
                 points: [
@@ -541,6 +542,7 @@ export function initUniversitiesPage() {
                 action: "",
             },
             {
+                kicker: "Step 1",
                 title: "Fill your profile first",
                 desc: "Profile data makes recommendations and admission estimates more accurate.",
                 points: [
@@ -551,6 +553,7 @@ export function initUniversitiesPage() {
                 action: "open_profile",
             },
             {
+                kicker: "Step 2",
                 title: "Use filtering strategically",
                 desc: "Start broad, then narrow by country, city, cost range, study level, and funding type.",
                 points: [
@@ -561,6 +564,7 @@ export function initUniversitiesPage() {
                 action: "",
             },
             {
+                kicker: "Step 3",
                 title: "Open details and compare tracks",
                 desc: "Click any card to inspect admissions, finance, and requirements per track.",
                 points: [
@@ -579,7 +583,8 @@ export function initUniversitiesPage() {
             const step = steps[idx];
             if (!step || !slideEl || !dotsEl || !progressLabelEl || !prevBtn || !nextBtn || !skipBtn || !actionsEl) return;
 
-            progressLabelEl.textContent = `Step ${idx + 1}/${steps.length}`;
+            progressLabelEl.textContent = "";
+            progressLabelEl.style.display = "none";
             dotsEl.innerHTML = steps
                 .map((_, i) => `<span class="u-tour-dot ${i === idx ? "is-active" : ""}" aria-hidden="true"></span>`)
                 .join("");
@@ -593,6 +598,7 @@ export function initUniversitiesPage() {
             slideEl.classList.add(direction === "back" ? "is-enter-back" : "is-enter-forward");
             slideEl.innerHTML = `
                 <article class="u-tour-step">
+                    <div class="u-tour-kicker">${escapeHtml(step.kicker || "")}</div>
                     <h3 id="uTourTitle" class="u-tour-title">${escapeHtml(step.title)}</h3>
                     <p class="u-tour-desc">${escapeHtml(step.desc)}</p>
                     <ul class="u-tour-list">
