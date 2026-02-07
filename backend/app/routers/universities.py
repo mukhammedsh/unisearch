@@ -1,10 +1,22 @@
-from fastapi import APIRouter, HTTPException, Query, Response
+from fastapi import APIRouter, HTTPException, Query, Request, Response
 from typing import Optional
 
 from app.services import universities as uni_service
 
 
 router = APIRouter()
+
+
+def _etag_matches(if_none_match: str, etag: str) -> bool:
+    raw = str(if_none_match or "").strip()
+    if not raw:
+        return False
+    if raw == "*":
+        return True
+    target = etag.strip()
+    target_weak = f"W/{target}"
+    candidates = [part.strip() for part in raw.split(",") if part.strip()]
+    return target in candidates or target_weak in candidates
 
 
 @router.get("/universities")
@@ -52,13 +64,23 @@ def list_universities(
 
 
 @router.get("/universities/{university_id}")
-def get_university(university_id: str, response: Response = None):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=300"
+def get_university(university_id: str, request: Request, response: Response = None):
     u = uni_service.get_university_by_id(university_id)
-    if u is not None:
-        return u
-    raise HTTPException(status_code=404, detail="University not found")
+    if u is None:
+        raise HTTPException(status_code=404, detail="University not found")
+
+    etag = uni_service.get_university_etag(university_id)
+    if response is not None:
+        response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=120"
+        response.headers["ETag"] = etag
+
+    if _etag_matches(request.headers.get("if-none-match", ""), etag):
+        return Response(status_code=304, headers={
+            "Cache-Control": "public, max-age=300, stale-while-revalidate=120",
+            "ETag": etag,
+        })
+
+    return u
 
 
 @router.get("/locations")

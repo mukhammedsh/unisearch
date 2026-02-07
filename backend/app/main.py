@@ -12,6 +12,7 @@ app.add_middleware(
     allow_origins=[FRONTEND_ORIGIN],
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["ETag", "Cache-Control"],
 )
 
 app.include_router(root.router)

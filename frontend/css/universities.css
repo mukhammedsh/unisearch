@@ -403,6 +403,35 @@
   font-size: 13px;
 }
 
+.u-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.u-loading-overlay.is-visible {
+  display: flex;
+}
+
+.u-loading-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 8px solid #c5cad3;
+  border-top-color: #ffffff;
+  animation: uSpinnerRotate 0.9s linear infinite;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes uSpinnerRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* =========================================
    GRID VIEW
    ========================================= */

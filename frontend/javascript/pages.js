@@ -54,6 +54,111 @@ function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
 }
 
+const DETAIL_CACHE_KEY = "unisearch_detail_cache_v1";
+const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
+const DETAIL_CACHE_MAX_ITEMS = 24;
+
+function readDetailCache() {
+  try {
+    const raw = localStorage.getItem(DETAIL_CACHE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function writeDetailCache(cache) {
+  try {
+    localStorage.setItem(DETAIL_CACHE_KEY, JSON.stringify(cache || {}));
+  } catch (e) {
+    // ignore storage quota and serialization errors
+  }
+}
+
+function getDetailCacheEntry(universityId) {
+  const key = String(universityId || "").trim();
+  if (!key) return null;
+  const cache = readDetailCache();
+  const entry = cache[key];
+  if (!entry || typeof entry !== "object" || !entry.data || typeof entry.data !== "object") {
+    return null;
+  }
+  return {
+    key,
+    data: entry.data,
+    etag: String(entry.etag || ""),
+    ts: Number(entry.ts) || 0,
+  };
+}
+
+function setDetailCacheEntry(universityId, data, etag = "") {
+  const key = String(universityId || "").trim();
+  if (!key || !data || typeof data !== "object") return;
+
+  const cache = readDetailCache();
+  cache[key] = {
+    data,
+    etag: String(etag || ""),
+    ts: Date.now(),
+  };
+
+  const keys = Object.keys(cache);
+  if (keys.length > DETAIL_CACHE_MAX_ITEMS) {
+    keys
+      .sort((a, b) => (Number(cache[a]?.ts) || 0) - (Number(cache[b]?.ts) || 0))
+      .slice(0, keys.length - DETAIL_CACHE_MAX_ITEMS)
+      .forEach((oldKey) => delete cache[oldKey]);
+  }
+
+  writeDetailCache(cache);
+}
+
+function touchDetailCacheEntry(universityId) {
+  const key = String(universityId || "").trim();
+  if (!key) return;
+  const cache = readDetailCache();
+  if (!cache[key] || typeof cache[key] !== "object") return;
+  cache[key].ts = Date.now();
+  writeDetailCache(cache);
+}
+
+async function fetchUniversityDetailCached(universityId) {
+  const key = String(universityId || "").trim();
+  if (!key) throw new Error("University ID is required");
+
+  const cached = getDetailCacheEntry(key);
+  const age = cached ? (Date.now() - cached.ts) : Number.POSITIVE_INFINITY;
+
+  if (cached && age < DETAIL_CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  const headers = {};
+  if (cached?.etag) {
+    headers["If-None-Match"] = cached.etag;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(key)}`, { headers });
+
+    if (res.status === 304 && cached?.data) {
+      touchDetailCacheEntry(key);
+      return cached.data;
+    }
+    if (!res.ok) throw new Error("Backend error");
+
+    const data = await res.json();
+    const etag = res.headers.get("ETag") || "";
+    setDetailCacheEntry(key, data, etag);
+    return data;
+  } catch (err) {
+    if (cached?.data) return cached.data;
+    throw err;
+  }
+}
+
 // =====================================
 // PAGE: UNIVERSITIES LIST (Список вузов)
 // =====================================
@@ -76,7 +181,8 @@ export function initUniversitiesPage() {
         slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
         list: $("universitiesList"), mapContainer: $("mapContainer"), total: $("totalCount"), 
         state: $("listState"), pagination: $("pagination"),
-        btnList: $("viewListBtn"), btnMap: $("viewMapBtn")
+        btnList: $("viewListBtn"), btnMap: $("viewMapBtn"),
+        loading: $("universitiesLoading")
     };
 
     if (!el.list) return;
@@ -112,12 +218,19 @@ export function initUniversitiesPage() {
     let lastFetchKey = "";
     let lastFetchPayload = null;
     let lastFetchAt = 0;
+    let fetchRunSeq = 0;
 
     const hasProfileEvidence = (profile) => {
         const exams = Array.isArray(profile?.exams) ? profile.exams : [];
         const langs = Array.isArray(profile?.languages) ? profile.languages : [];
         return exams.length > 0 || langs.length > 0;
     };
+
+    function setUniversitiesLoading(isLoading) {
+        if (!el.loading) return;
+        el.loading.classList.toggle("is-visible", !!isLoading);
+        el.loading.setAttribute("aria-hidden", isLoading ? "false" : "true");
+    }
 
     const ensureUniFitWarningModal = () => {
         let modal = document.getElementById("unifitWarningModal");
@@ -568,7 +681,9 @@ export function initUniversitiesPage() {
     }
 
     async function fetchAndRender() {
-        if (el.state && state.viewMode === 'list') el.state.textContent = "Loading...";
+        const runSeq = ++fetchRunSeq;
+        setUniversitiesLoading(true);
+        if (el.state && state.viewMode === 'list') el.state.textContent = "";
         if (state.viewMode === 'list') el.list.innerHTML = "";
         if (el.pagination) el.pagination.innerHTML = "";
 
@@ -578,6 +693,7 @@ export function initUniversitiesPage() {
 
         try {
         const data = await fetchUniversities(apiParams);
+        if (runSeq !== fetchRunSeq) return;
         let items = data.items || [];
         const total = data.total || 0;
         const isAiSort = (state.sort === "uni_ai");
@@ -613,8 +729,11 @@ export function initUniversitiesPage() {
         }
 
         } catch (err) {
+        if (runSeq !== fetchRunSeq) return;
         console.error(err);
         if (el.state) el.state.textContent = "Failed to load data.";
+        } finally {
+        if (runSeq === fetchRunSeq) setUniversitiesLoading(false);
         }
     }
 
@@ -774,9 +893,7 @@ export async function initUniversityPage() {
 
   try {
     if (stateEl) stateEl.textContent = "Loading...";
-    const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}`);
-    if (!res.ok) throw new Error("Backend error");
-    const u = await res.json();
+    const u = await fetchUniversityDetailCached(id);
     const safeUniId = safePathSegment(u.id);
 
     // 1. Шапка

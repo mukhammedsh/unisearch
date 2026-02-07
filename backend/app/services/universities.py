@@ -1,3 +1,4 @@
+import hashlib
 import json
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -261,6 +262,15 @@ def get_universities_with_meta() -> Tuple[List[Dict[str, Any]], List[Dict[str, A
 def get_university_by_id(university_id: str) -> Optional[Dict[str, Any]]:
     _load_universities_cached()
     return _UNI_CACHE["by_id"].get(str(university_id))
+
+
+def get_university_etag(university_id: str) -> str:
+    _load_universities_cached()
+    mtime = _UNI_CACHE.get("mtime")
+    mtime_key = "none" if mtime is None else str(mtime)
+    uid = str(university_id or "").strip()
+    digest = hashlib.sha1(f"{mtime_key}:{uid}".encode("utf-8")).hexdigest()
+    return f"\"{digest}\""
 
 
 _LOC_CACHE = {"mtime": None, "data": {}}
