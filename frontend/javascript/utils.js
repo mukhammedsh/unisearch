@@ -16,6 +16,125 @@ export function aiName(key) {
 
 export const $ = (id) => document.getElementById(id);
 
+const GLOBAL_API_LOADER_ID = "globalApiLoader";
+const GLOBAL_API_LOADER_SHOW_DELAY_MS = 120;
+const GLOBAL_API_LOADER_MIN_VISIBLE_MS = 220;
+
+let __apiLoaderInstalled = false;
+let __apiPendingCount = 0;
+let __apiShowTimer = 0;
+let __apiHideTimer = 0;
+let __apiVisible = false;
+let __apiVisibleAt = 0;
+
+function getRequestUrl(input) {
+  if (typeof input === "string") return input;
+  if (input && typeof input.url === "string") return input.url;
+  return "";
+}
+
+function isBackendApiRequest(input) {
+  const raw = getRequestUrl(input);
+  if (!raw) return false;
+  try {
+    const reqUrl = new URL(raw, window.location.origin);
+    const apiUrl = new URL(API_BASE, window.location.origin);
+    if (reqUrl.origin !== apiUrl.origin) return false;
+
+    const apiPath = String(apiUrl.pathname || "/");
+    const apiPrefix = apiPath.endsWith("/") ? apiPath : `${apiPath}/`;
+    return reqUrl.pathname === apiPath || reqUrl.pathname.startsWith(apiPrefix) || apiPrefix === "/";
+  } catch (e) {
+    return raw.startsWith(API_BASE);
+  }
+}
+
+function ensureGlobalApiLoaderNode() {
+  if (typeof document === "undefined" || !document.body) return null;
+  let node = document.getElementById(GLOBAL_API_LOADER_ID);
+  if (node) return node;
+
+  node = document.createElement("div");
+  node.id = GLOBAL_API_LOADER_ID;
+  node.className = "global-api-loader";
+  node.setAttribute("aria-hidden", "true");
+  node.innerHTML = `<div class="global-api-loader__spinner" aria-hidden="true"></div>`;
+  document.body.appendChild(node);
+  return node;
+}
+
+function setGlobalApiLoaderVisible(visible) {
+  const node = ensureGlobalApiLoaderNode();
+  if (!node) return;
+  if (visible) {
+    node.classList.add("is-visible");
+    node.setAttribute("aria-hidden", "false");
+    __apiVisibleAt = Date.now();
+    __apiVisible = true;
+    return;
+  }
+  node.classList.remove("is-visible");
+  node.setAttribute("aria-hidden", "true");
+  __apiVisible = false;
+}
+
+function onApiRequestStart() {
+  __apiPendingCount += 1;
+
+  if (__apiHideTimer) {
+    clearTimeout(__apiHideTimer);
+    __apiHideTimer = 0;
+  }
+  if (__apiVisible || __apiShowTimer) return;
+
+  __apiShowTimer = window.setTimeout(() => {
+    __apiShowTimer = 0;
+    if (__apiPendingCount > 0) setGlobalApiLoaderVisible(true);
+  }, GLOBAL_API_LOADER_SHOW_DELAY_MS);
+}
+
+function onApiRequestEnd() {
+  __apiPendingCount = Math.max(0, __apiPendingCount - 1);
+  if (__apiPendingCount > 0) return;
+
+  if (__apiShowTimer) {
+    clearTimeout(__apiShowTimer);
+    __apiShowTimer = 0;
+  }
+
+  if (!__apiVisible) return;
+  const elapsed = Date.now() - __apiVisibleAt;
+  const wait = Math.max(0, GLOBAL_API_LOADER_MIN_VISIBLE_MS - elapsed);
+  __apiHideTimer = window.setTimeout(() => {
+    __apiHideTimer = 0;
+    if (__apiPendingCount === 0) setGlobalApiLoaderVisible(false);
+  }, wait);
+}
+
+export function initGlobalApiLoadingIndicator() {
+  if (__apiLoaderInstalled || typeof window === "undefined" || typeof window.fetch !== "function") return;
+  __apiLoaderInstalled = true;
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      ensureGlobalApiLoaderNode();
+    }, { once: true });
+  } else {
+    ensureGlobalApiLoaderNode();
+  }
+
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = async (input, init) => {
+    const tracked = isBackendApiRequest(input);
+    if (tracked) onApiRequestStart();
+    try {
+      return await originalFetch(input, init);
+    } finally {
+      if (tracked) onApiRequestEnd();
+    }
+  };
+}
+
 const THEME_STORAGE_KEY = "unisearch_theme";
 const THEME_LIGHT = "light";
 const THEME_DARK = "dark";

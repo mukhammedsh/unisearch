@@ -239,6 +239,7 @@ export function initUniversitiesPage() {
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
+        content: document.querySelector(".u-content"),
         list: $("universitiesList"), mapContainer: $("mapContainer"), total: $("totalCount"), 
         state: $("listState"), pagination: $("pagination"),
         btnList: $("viewListBtn"), btnMap: $("viewMapBtn"),
@@ -299,6 +300,9 @@ export function initUniversitiesPage() {
         if (!el.loading) return;
         el.loading.classList.toggle("is-visible", !!isLoading);
         el.loading.setAttribute("aria-hidden", isLoading ? "false" : "true");
+        if (el.content) {
+            el.content.classList.toggle("is-loading", !!isLoading);
+        }
     }
 
     const ensureUniversitiesTourModal = () => {
