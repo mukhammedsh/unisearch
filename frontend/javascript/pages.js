@@ -445,7 +445,7 @@ export function initUniversitiesPage() {
             });
 
             prevBtn.disabled = idx === 0;
-            prevBtn.style.visibility = idx === 0 ? "hidden" : "visible";
+            prevBtn.style.display = idx === 0 ? "none" : "";
             nextBtn.textContent = idx === steps.length - 1 ? "Finish" : "Next";
             skipBtn.textContent = "Skip";
             skipBtn.disabled = idx === steps.length - 1;

@@ -1223,7 +1223,16 @@
   }
 
   .u-tour-actions-right {
-    justify-content: flex-end;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .u-tour-actions .u-tour-btn,
+  .u-tour-actions-right .u-tour-btn {
+    width: 100%;
   }
 }
 
