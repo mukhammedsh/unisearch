@@ -223,6 +223,24 @@ html, body {
   color: var(--accent);
 }
 
+.menu-btn {
+  display: none;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.menu-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ===== Profile Modal ===== */
 .profile-modal {
   position: fixed;
@@ -839,8 +857,10 @@ html, body {
   .logo { height: 32px; }
   
   .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
+  .navbar-right { gap: 6px; }
   .login-btn { padding: 8px 14px; font-size: 13px; }
   .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
+  .menu-btn { display: none; }
 
   .navbar-center {
     order: 3;
@@ -877,4 +897,60 @@ html, body {
   .lang-actions{ justify-content: stretch; }
   .lang-actions .profile-add{ width: 100%; }
   .lang-exam-grid{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 599px) {
+  .navbar-right {
+    margin-left: auto;
+    gap: 6px;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .navbar-center {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    margin-top: 0;
+    padding: 0 15px;
+    background: var(--surface);
+    border-top: none;
+    border-bottom: 1px solid transparent;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.25s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .navbar.is-menu-open .navbar-center {
+    margin-top: 0;
+    padding: 8px 15px 12px;
+    border-top: 1px solid var(--line);
+    border-bottom-color: var(--line);
+    max-height: 280px;
+    opacity: 1;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    pointer-events: auto;
+  }
+
+  .navbar-center a {
+    width: 100%;
+    padding: 10px 0;
+    text-align: left;
+  }
 }

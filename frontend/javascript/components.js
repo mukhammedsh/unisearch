@@ -94,7 +94,7 @@ const LAYOUT_HTML = `
     </a>
   </div>
 
-  <nav class="navbar-center">
+  <nav class="navbar-center" id="primaryNav">
     <a href="index.html" data-link="home">Home</a>
     <a href="universities.html" data-link="universities">Universities</a>
     <a href="ranking.html" data-link="ranking">Rankings</a>
@@ -103,6 +103,7 @@ const LAYOUT_HTML = `
   </nav>
 
   <div class="navbar-right">
+    <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu">☰</button>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme">🌙</button>
     <button class="login-btn" id="profileBtn">Profile</button>
   </div>
@@ -255,6 +256,53 @@ const LAYOUT_HTML = `
 <div id="toast-container" class="toast-container"></div>
 `;
 
+function initMobileMenu() {
+    const navbar = document.querySelector(".navbar");
+    const menuBtn = document.getElementById("menuToggleBtn");
+    const nav = document.getElementById("primaryNav");
+    if (!navbar || !menuBtn || !nav) return;
+    if (menuBtn.dataset.bound === "1") return;
+    menuBtn.dataset.bound = "1";
+
+    const closeMenu = () => {
+        navbar.classList.remove("is-menu-open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open menu");
+        menuBtn.textContent = "☰";
+    };
+
+    const openMenu = () => {
+        navbar.classList.add("is-menu-open");
+        menuBtn.setAttribute("aria-expanded", "true");
+        menuBtn.setAttribute("aria-label", "Close menu");
+        menuBtn.textContent = "✕";
+    };
+
+    menuBtn.addEventListener("click", () => {
+        const isOpen = navbar.classList.contains("is-menu-open");
+        if (isOpen) closeMenu();
+        else openMenu();
+    });
+
+    nav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+    });
+
+    const media = window.matchMedia("(max-width: 599px)");
+    const onViewportChange = (e) => {
+        if (!e.matches) closeMenu();
+    };
+    if (typeof media.addEventListener === "function") {
+        media.addEventListener("change", onViewportChange);
+    } else if (typeof media.addListener === "function") {
+        media.addListener(onViewportChange);
+    }
+}
+
 // 🔥 1. Функция загрузки (теперь берет строку, а не файл)
 export async function loadGlobalLayout() {
     if (document.getElementById("profileModal")) return;
@@ -283,6 +331,8 @@ export async function loadGlobalLayout() {
                 activeLink.classList.add("is-active");
             }
         }
+
+        initMobileMenu();
 
         // Запускаем логику профиля
         initProfileUI();
