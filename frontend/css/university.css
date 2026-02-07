@@ -43,22 +43,31 @@
   padding: 10px 2px 14px;
 }
 
-.d-loading-state {
-  display: inline-flex;
+.d-loading-overlay {
+  position: fixed;
+  top: 70px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1200;
+  display: none;
   align-items: center;
-  gap: 10px;
-  color: var(--muted);
-  font-weight: 700;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.d-loading-overlay.is-visible {
+  display: flex;
 }
 
 .d-loading-spinner {
-  width: 34px;
-  height: 34px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  border: 5px solid #c5cad3;
+  border: 8px solid #c5cad3;
   border-top-color: #ffffff;
   animation: dSpinnerRotate 0.9s linear infinite;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 @keyframes dSpinnerRotate {

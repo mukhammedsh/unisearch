@@ -1253,6 +1253,13 @@ export async function initUniversityPage() {
   const id = params.get("id");
   const stateEl = document.getElementById("detailState");
   const cardEl = document.getElementById("detailCard");
+  const loadingEl = document.getElementById("detailLoading");
+
+  const setDetailLoading = (isLoading) => {
+    if (!loadingEl) return;
+    loadingEl.classList.toggle("is-visible", !!isLoading);
+    loadingEl.setAttribute("aria-hidden", isLoading ? "false" : "true");
+  };
 
   if (!id) {
     if (stateEl) stateEl.innerHTML = "<h2 style='color:red; text-align:center;'>Error: No ID provided.</h2>";
@@ -1260,14 +1267,8 @@ export async function initUniversityPage() {
   }
 
   try {
-    if (stateEl) {
-        stateEl.innerHTML = `
-            <div class="d-loading-state" role="status" aria-live="polite" aria-label="Loading university details">
-                <div class="d-loading-spinner" aria-hidden="true"></div>
-                <span>Loading...</span>
-            </div>
-        `;
-    }
+    setDetailLoading(true);
+    if (stateEl) stateEl.textContent = "";
     const u = await fetchUniversityDetailCached(id);
     const uniId = String(u.id || id);
 
@@ -2017,6 +2018,8 @@ export async function initUniversityPage() {
   } catch (err) {
     console.error(err);
     if (stateEl) stateEl.textContent = "Error loading details.";
+  } finally {
+    setDetailLoading(false);
   }
 }
 
