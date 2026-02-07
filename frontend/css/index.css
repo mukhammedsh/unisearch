@@ -202,8 +202,8 @@
 
 .feature-grid-new {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 24px;
 }
 
 .feature-box {
@@ -306,6 +306,32 @@
   .hero-title {
     font-size: 36px; /* Было 56px */
   }
+}
+
+@media (max-width: 600px) {
+    .features-section {
+        padding: 56px 12px;
+    }
+
+    .section-title {
+        margin-bottom: 28px;
+        font-size: 28px;
+    }
+
+    .feature-grid-new {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .feature-box {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .feature-box h4,
+    .feature-box p {
+        overflow-wrap: anywhere;
+    }
 }
 
 :root[data-theme="dark"] .hero-title {
