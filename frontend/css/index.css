@@ -319,7 +319,7 @@
 }
 
 :root[data-theme="dark"] .hero-badge {
-    background: rgba(157, 133, 255, 0.16);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--accent);
 }
 
@@ -342,7 +342,7 @@
 
 :root[data-theme="dark"] .mockup-card {
     background-image:
-        linear-gradient(135deg, rgba(23,28,41,0.95), rgba(23,28,41,0.9)),
+        linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(20, 20, 20, 0.9)),
         url("../images/thumbnails/mit-usa-cambridge.jpg");
     background-size: cover;
     background-position: center;
@@ -360,14 +360,14 @@
 }
 
 :root[data-theme="dark"] .feature-icon {
-    background: rgba(157, 133, 255, 0.16);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--accent);
 }
 
 :root[data-theme="dark"] .mockup-uni-name {
-    color: #f8fafc;
+    color: #f2f2f2;
 }
 
 :root[data-theme="dark"] .mockup-uni-loc {
-    color: #cbd5e1;
+    color: #c3c3c3;
 }

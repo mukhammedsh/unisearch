@@ -263,30 +263,30 @@
 
 :root[data-theme="dark"] .about-hero-copy {
   background:
-    radial-gradient(circle at 90% 20%, rgba(37, 99, 235, 0.28), transparent 52%),
-    radial-gradient(circle at 10% 85%, rgba(147, 51, 234, 0.24), transparent 48%),
-    #151b27;
+    radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.1), transparent 52%),
+    radial-gradient(circle at 10% 85%, rgba(255, 255, 255, 0.06), transparent 48%),
+    #171717;
 }
 
 :root[data-theme="dark"] .about-eyebrow,
 :root[data-theme="dark"] .about-kicker,
 :root[data-theme="dark"] .team-role,
 :root[data-theme="dark"] .about-contact-card a {
-  color: #93c5fd;
+  color: #d4d4d4;
 }
 
 :root[data-theme="dark"] .about-lead,
 :root[data-theme="dark"] .contact-note {
-  color: #cbd5e1;
+  color: #c3c3c3;
 }
 
 :root[data-theme="dark"] .about-tag {
-  background: rgba(147, 197, 253, 0.14);
-  border-color: rgba(147, 197, 253, 0.32);
-  color: #bfdbfe;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #d4d4d4;
 }
 
 :root[data-theme="dark"] .about-link,
 :root[data-theme="dark"] .about-contact-card {
-  background: #1a2334;
+  background: #222222;
 }

@@ -191,22 +191,22 @@
 }
 
 :root[data-theme="dark"] .rank-card::after {
-    background: linear-gradient(120deg, rgba(23,28,41,0.62), rgba(23,28,41,0.5));
+    background: linear-gradient(120deg, rgba(20, 20, 20, 0.62), rgba(20, 20, 20, 0.5));
 }
 
 :root[data-theme="dark"] .rank-badge,
 :root[data-theme="dark"] .rank-source {
-    background: #101624;
+    background: #171717;
     border-color: var(--line);
 }
 
 :root[data-theme="dark"] .rank-logo {
     background: #ffffff;
-    border-color: #d1d9e6;
+    border-color: #d4d4d4;
 }
 
 :root[data-theme="dark"] .rank-num {
-    color: #94a3b8;
+    color: #9a9a9a;
 }
 
 :root[data-theme="dark"] .rank-1 {
@@ -222,9 +222,9 @@
 }
 
 :root[data-theme="dark"] .rank-badge {
-    color: #e7ecf7;
+    color: #e5e5e5;
 }
 
 :root[data-theme="dark"] .rank-badge b {
-    color: #f8fafc;
+    color: #f2f2f2;
 }

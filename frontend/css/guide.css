@@ -178,7 +178,7 @@
 
 :root[data-theme="dark"] .guide-hero {
   border-color: var(--line);
-  background: linear-gradient(120deg, #171d2b, #101624);
+  background: linear-gradient(120deg, #1e1e1e, #141414);
 }
 
 :root[data-theme="dark"] .guide-eyebrow {
@@ -195,14 +195,14 @@
 
 :root[data-theme="dark"] .guide-nav a {
   color: var(--accent);
-  background: #101624;
+  background: #171717;
   border-color: var(--line);
 }
 
 :root[data-theme="dark"] .guide-nav a.is-active {
   color: #ffffff;
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #5a5a5a;
+  border-color: #5a5a5a;
 }
 
 @media (prefers-reduced-motion: reduce){

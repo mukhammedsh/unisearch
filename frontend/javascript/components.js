@@ -276,10 +276,11 @@ export async function loadGlobalLayout() {
         // Подсветка активной ссылки в меню
         const currentPage = document.body.getAttribute('data-page');
         if (currentPage) {
+            document.querySelectorAll(".navbar-center a").forEach((link) => link.classList.remove("is-active"));
             const activeLink = document.querySelector(`.navbar-center a[data-link="${currentPage}"]`) || 
                                document.querySelector(`.navbar-center a[href*="${currentPage}"]`);
             if (activeLink) {
-                activeLink.style.color = "var(--accent)";
+                activeLink.classList.add("is-active");
             }
         }
 

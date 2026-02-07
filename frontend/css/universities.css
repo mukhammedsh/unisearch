@@ -12,16 +12,16 @@
 }
 
 :root[data-theme="dark"] {
-  --accent: #9d85ff;
-  --accent2: #8b70ff;
-  --bg: #0f1117;
-  --card: #171c29;
-  --text: #e7ecf7;
-  --muted: rgba(231, 236, 247, .72);
-  --line: #2c3449;
+  --accent: #8f8f8f;
+  --accent2: #737373;
+  --bg: #0f0f0f;
+  --card: #1a1a1a;
+  --text: #ededed;
+  --muted: rgba(237, 237, 237, .72);
+  --line: #323232;
   --shadow: 0 14px 28px rgba(0, 0, 0, .45);
-  --slider-track-inactive: #2a3346;
-  --slider-track-active: #8b70ff;
+  --slider-track-inactive: #303030;
+  --slider-track-active: #8f8f8f;
 }
 
 /* =========================================
@@ -1235,7 +1235,7 @@
 :root[data-theme="dark"] .page-btn,
 :root[data-theme="dark"] .uni-price,
 :root[data-theme="dark"] .uni-logo {
-  background: #101624;
+  background: #171717;
   color: var(--text);
   border-color: var(--line);
 }
@@ -1245,22 +1245,22 @@
 }
 
 :root[data-theme="dark"] .u-found {
-  color: #f8fafc;
+  color: #f0f0f0;
 }
 
 :root[data-theme="dark"] .slider-track {
-  background: #334155;
+  background: #3f3f3f;
 }
 
 :root[data-theme="dark"] .dual-slider-container input[type="range"]::-webkit-slider-thumb,
 :root[data-theme="dark"] #uniFitSlider::-webkit-slider-thumb {
-  border-color: #111827;
+  border-color: #121212;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 :root[data-theme="dark"] .dual-slider-container input[type="range"]::-moz-range-thumb,
 :root[data-theme="dark"] #uniFitSlider::-moz-range-thumb {
-  border-color: #111827;
+  border-color: #121212;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -1269,19 +1269,19 @@
 }
 
 :root[data-theme="dark"] #uniFitSlider::-moz-range-track {
-  background: #2a3346;
+  background: #303030;
 }
 
 :root[data-theme="dark"] #uniFitSlider::-webkit-slider-runnable-track {
-  background: #2a3346;
+  background: #303030;
 }
 
 :root[data-theme="dark"] #uniFitSlider::-moz-range-progress {
-  background: #8b70ff;
+  background: var(--accent);
 }
 
 :root[data-theme="dark"] .uni-media {
-  background-color: #101624;
+  background-color: #171717;
   border-bottom-color: var(--line);
 }
 
@@ -1290,59 +1290,59 @@
 }
 
 :root[data-theme="dark"] .u-map-container {
-  background: #101624;
+  background: #171717;
 }
 
 :root[data-theme="dark"] .uni-card {
-  background: #151d2d;
-  border-color: #344155;
+  background: #1b1b1b;
+  border-color: #383838;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
 }
 
 :root[data-theme="dark"] .uni-card .uni-title {
-  color: #f1f5f9;
+  color: #f2f2f2;
 }
 
 :root[data-theme="dark"] .uni-card .uni-loc,
 :root[data-theme="dark"] .uni-card .uni-footer,
 :root[data-theme="dark"] .uni-card .uni-details {
-  color: #b9c4d8;
+  color: #b8b8b8;
 }
 
 :root[data-theme="dark"] .uni-card .uni-badge {
-  background: #1d2739;
-  border-color: #36465f;
-  color: #c8d4e8;
+  background: #242424;
+  border-color: #3a3a3a;
+  color: #d2d2d2;
 }
 
 :root[data-theme="dark"] .uni-card .uni-badge strong {
-  color: #c4b5fd;
+  color: #f2f2f2;
 }
 
 :root[data-theme="dark"] .uni-card .uni-price {
-  background: #f8fafc;
-  border-color: #dbe3f0;
-  color: #111827;
+  background: #f2f2f2;
+  border-color: #d2d2d2;
+  color: #111111;
 }
 
 :root[data-theme="dark"] .uni-card .uni-price small {
-  color: #64748b;
+  color: #4b5563;
 }
 
 :root[data-theme="dark"] .uni-card .uni-price b {
-  color: #6d28d9;
+  color: #2b2b2b;
 }
 
 :root[data-theme="dark"] .uni-card .uni-logo {
   background: #ffffff;
-  border-color: #e2e8f0;
-  color: #6d28d9;
+  border-color: #d9d9d9;
+  color: #3a3a3a;
 }
 
 :root[data-theme="dark"] .uni-card .uni-pill--neutral {
-  background: rgba(148, 163, 184, 0.16);
-  color: #dbe4f2;
-  border-color: rgba(148, 163, 184, 0.30);
+  background: rgba(160, 160, 160, 0.16);
+  color: #dedede;
+  border-color: rgba(160, 160, 160, 0.30);
 }
 
 :root[data-theme="dark"] .uni-card .uni-pill--warn {
@@ -1358,18 +1358,18 @@
 }
 
 :root[data-theme="dark"] .uni-card .uni-pill--budget {
-  background: rgba(167, 139, 250, 0.16);
-  color: #decfff;
-  border-color: rgba(167, 139, 250, 0.34);
+  background: rgba(160, 160, 160, 0.16);
+  color: #e2e2e2;
+  border-color: rgba(160, 160, 160, 0.34);
 }
 
 :root[data-theme="dark"] .unifit-warning-card {
-  background: #121826;
+  background: #161616;
   border-color: var(--line);
 }
 
 :root[data-theme="dark"] .unifit-warning-btn {
-  background: #101624;
+  background: #171717;
   color: var(--text);
   border-color: var(--line);
 }
@@ -1384,36 +1384,36 @@
 :root[data-theme="dark"] .u-tour-close,
 :root[data-theme="dark"] .u-tour-btn,
 :root[data-theme="dark"] .u-tour-inline-btn {
-  background: #121826;
-  border-color: #334155;
-  color: #e2e8f0;
+  background: #161616;
+  border-color: #3f3f3f;
+  color: #e2e2e2;
 }
 
 :root[data-theme="dark"] .u-tour-progress,
 :root[data-theme="dark"] .u-tour-desc,
 :root[data-theme="dark"] .u-tour-list {
-  color: #cbd5e1;
+  color: #bcbcbc;
 }
 
 :root[data-theme="dark"] .u-tour-title {
-  color: #f8fafc;
+  color: #f2f2f2;
 }
 
 :root[data-theme="dark"] .u-tour-dot {
-  background: #475569;
+  background: #5f5f5f;
 }
 
 :root[data-theme="dark"] .u-tour-dot.is-active {
-  background: #8b70ff;
+  background: #9a9a9a;
 }
 
 :root[data-theme="dark"] .u-tour-kicker {
-  color: #c4b5fd;
-  background: rgba(139, 112, 255, 0.18);
+  color: #d1d1d1;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 :root[data-theme="dark"] .u-tour-btn--primary {
-  border-color: #8b70ff;
-  background: #8b70ff;
-  color: #0f172a;
+  border-color: #8f8f8f;
+  background: #8f8f8f;
+  color: #111111;
 }
