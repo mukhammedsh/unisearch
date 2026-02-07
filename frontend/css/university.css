@@ -43,6 +43,29 @@
   padding: 10px 2px 14px;
 }
 
+.d-loading-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.d-loading-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 5px solid #c5cad3;
+  border-top-color: #ffffff;
+  animation: dSpinnerRotate 0.9s linear infinite;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10);
+}
+
+@keyframes dSpinnerRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* =========================================
    HEADER & COVER
    ========================================= */

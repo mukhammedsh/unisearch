@@ -1260,7 +1260,14 @@ export async function initUniversityPage() {
   }
 
   try {
-    if (stateEl) stateEl.textContent = "Loading...";
+    if (stateEl) {
+        stateEl.innerHTML = `
+            <div class="d-loading-state" role="status" aria-live="polite" aria-label="Loading university details">
+                <div class="d-loading-spinner" aria-hidden="true"></div>
+                <span>Loading...</span>
+            </div>
+        `;
+    }
     const u = await fetchUniversityDetailCached(id);
     const uniId = String(u.id || id);
 
