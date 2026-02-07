@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 
 from app.services import universities as uni_service
 from app.services import gap_coach as gap_coach_service
+from app.services import ai_scoring as ai_scoring_service
 
 
 router = APIRouter()
@@ -64,6 +65,99 @@ def list_universities(
     )
 
 
+@router.post("/universities/ai-sort")
+def list_universities_ai_sort(payload: Dict[str, Any], response: Response = None):
+    def _to_float_or_none(value: Any) -> Optional[float]:
+        try:
+            if value is None or value == "":
+                return None
+            return float(value)
+        except Exception:
+            return None
+
+    profile = payload.get("profile", {})
+    if profile is None:
+        profile = {}
+    if not isinstance(profile, dict):
+        raise HTTPException(status_code=400, detail="profile must be an object")
+
+    q = payload.get("q")
+    country = payload.get("country")
+    city = payload.get("city")
+    region = payload.get("region")
+    major = payload.get("major")
+    study_level = payload.get("study_level")
+    funding_type = payload.get("funding_type")
+    fmt = payload.get("format")
+    min_tuition = _to_float_or_none(payload.get("min_tuition"))
+    max_tuition = _to_float_or_none(payload.get("max_tuition"))
+    min_acceptance = _to_float_or_none(payload.get("min_acceptance"))
+    max_acceptance = _to_float_or_none(payload.get("max_acceptance"))
+    size = payload.get("size")
+    ai_balance = payload.get("ai_balance", 50)
+    page_raw = payload.get("page", 1)
+    limit_raw = payload.get("limit", 200)
+
+    try:
+        page = int(page_raw)
+        if page < 1:
+            page = 1
+    except Exception:
+        page = 1
+
+    try:
+        limit = int(limit_raw)
+        if limit < 1:
+            limit = 1
+        if limit > 2000:
+            limit = 2000
+    except Exception:
+        limit = 200
+
+    base = uni_service.list_universities(
+        q=q,
+        country=country,
+        city=city,
+        region=region,
+        major=major,
+        study_level=study_level,
+        funding_type=funding_type,
+        format=fmt,
+        min_tuition=min_tuition,
+        max_tuition=max_tuition,
+        min_acceptance=min_acceptance,
+        max_acceptance=max_acceptance,
+        size=size,
+        sort="name_asc",
+        page=1,
+        limit=100000,
+    )
+
+    sorted_items = ai_scoring_service.sort_universities_ai(
+        base.get("items", []),
+        profile=profile,
+        ai_balance=ai_balance,
+        funding_type=funding_type,
+    )
+
+    total = len(sorted_items)
+    start = (page - 1) * limit
+    end = start + limit
+    page_items = sorted_items[start:end] if start < total else []
+
+    if response is not None:
+        response.headers["Cache-Control"] = "private, max-age=30"
+
+    return {
+        "items": page_items,
+        "count": len(page_items),
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "sort": "uni_ai",
+    }
+
+
 @router.get("/universities/{university_id}")
 def get_university(university_id: str, request: Request, response: Response = None):
     u = uni_service.get_university_by_id(university_id)
@@ -82,6 +176,40 @@ def get_university(university_id: str, request: Request, response: Response = No
         })
 
     return u
+
+
+@router.post("/universities/{university_id}/uni-chance")
+def get_university_uni_chance(university_id: str, payload: Dict[str, Any], response: Response = None):
+    university = uni_service.get_university_by_id(university_id)
+    if university is None:
+        raise HTTPException(status_code=404, detail="University not found")
+
+    profile = payload.get("profile", {})
+    if profile is None:
+        profile = {}
+    if not isinstance(profile, dict):
+        raise HTTPException(status_code=400, detail="profile must be an object")
+
+    if response is not None:
+        response.headers["Cache-Control"] = "private, max-age=30"
+    return ai_scoring_service.estimate_uni_chance(university, profile)
+
+
+@router.post("/universities/{university_id}/roi")
+def get_university_roi(university_id: str, payload: Dict[str, Any], response: Response = None):
+    university = uni_service.get_university_by_id(university_id)
+    if university is None:
+        raise HTTPException(status_code=404, detail="University not found")
+
+    profile = payload.get("profile", {})
+    if profile is None:
+        profile = {}
+    if not isinstance(profile, dict):
+        raise HTTPException(status_code=400, detail="profile must be an object")
+
+    if response is not None:
+        response.headers["Cache-Control"] = "private, max-age=30"
+    return ai_scoring_service.estimate_university_roi(university, profile)
 
 
 @router.post("/universities/{university_id}/gap-coach")

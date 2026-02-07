@@ -22,8 +22,6 @@ import {
   aiName,
 } from "./utils.js";
 
-import { getUniSort } from "./algo.js";
-import { estimateUniChance } from "./ai/unichance.js";
 import { initUniMentor } from "./ai/mentor.js";
 import { setupTabs } from "./components.js";
 
@@ -285,6 +283,9 @@ export function initUniversitiesPage() {
     let lastFetchKey = "";
     let lastFetchPayload = null;
     let lastFetchAt = 0;
+    let lastAiFetchKey = "";
+    let lastAiFetchPayload = null;
+    let lastAiFetchAt = 0;
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
 
@@ -870,6 +871,31 @@ export function initUniversitiesPage() {
         return p;
     }
 
+    function buildAiSortPayload() {
+        const profile = loadProfile();
+        const payload = {
+            profile,
+            ai_balance: state.ai_balance,
+            page: state.page,
+            limit: state.limit,
+        };
+        state.funding_type = getProfileFundingQueryValue();
+        if (state.q) payload.q = state.q;
+        if (state.country) payload.country = state.country;
+        if (state.region) payload.region = state.region;
+        if (state.city) payload.city = state.city;
+        if (state.study_level) payload.study_level = state.study_level;
+        if (state.funding_type) payload.funding_type = state.funding_type;
+        if (state.min_tuition) payload.min_tuition = state.min_tuition;
+        if (state.max_tuition) payload.max_tuition = state.max_tuition;
+
+        const major = String(profile?.major || "").trim();
+        const mode = String(profile?.studyMode || "").trim();
+        if (major) payload.major = major;
+        if (mode && mode.toLowerCase() !== "any") payload.format = mode;
+        return payload;
+    }
+
     function applyToForm() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
@@ -975,6 +1001,29 @@ export function initUniversitiesPage() {
         return payload;
     }
 
+    async function fetchUniversitiesAiSort(payload) {
+        const key = JSON.stringify(payload);
+        const now = Date.now();
+        if (lastAiFetchKey === key && lastAiFetchPayload && (now - lastAiFetchAt) < CACHE_TTL_MS) {
+            return lastAiFetchPayload;
+        }
+        const res = await fetch(`${API_BASE}/universities/ai-sort`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("AI sort API Error");
+        const data = await res.json();
+        const parsed = {
+            items: data.items || [],
+            total: data.total || 0,
+        };
+        lastAiFetchKey = key;
+        lastAiFetchPayload = parsed;
+        lastAiFetchAt = now;
+        return parsed;
+    }
+
     async function fetchAndRender() {
         const runSeq = ++fetchRunSeq;
         setUniversitiesLoading(true);
@@ -987,27 +1036,18 @@ export function initUniversitiesPage() {
         setUrlParams(urlParams);
 
         try {
-        const data = await fetchUniversities(apiParams);
+        const isAiSort = (state.sort === "uni_ai") && state.viewMode === "list";
+        const data = isAiSort
+            ? await fetchUniversitiesAiSort(buildAiSortPayload())
+            : await fetchUniversities(apiParams);
         if (runSeq !== fetchRunSeq) return;
-        let items = data.items || [];
+        const items = data.items || [];
         const total = data.total || 0;
-        const isAiSort = (state.sort === "uni_ai");
-        
+
         if (state.viewMode === 'list') {
-            let displayItems = items;
-            let displayTotal = total;
-
-            if (isAiSort) { 
-                items = getUniSort(items, state.ai_balance, { funding_type: state.funding_type });
-                displayTotal = items.length;
-                const start = (state.page - 1) * state.limit;
-                const end = start + state.limit;
-                displayItems = items.slice(start, end);
-            }
-
-            if (el.total) el.total.textContent = String(displayTotal);
+            if (el.total) el.total.textContent = String(total);
             
-            if (!displayItems.length) { 
+            if (!items.length) { 
                 if (el.state) el.state.textContent = "No universities found."; 
                 return; 
             }
@@ -1015,8 +1055,8 @@ export function initUniversitiesPage() {
             const profile = loadProfile();
             const userBudget = parseFloat(profile.budget);
             
-            el.list.innerHTML = displayItems.map((u, idx) => renderCard(u, userBudget, idx)).join("");
-            renderPagination(displayTotal);
+            el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
+            renderPagination(total);
         } else if (state.viewMode === 'map') {
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
@@ -1246,11 +1286,39 @@ export async function initUniversityPage() {
     }
     let uniChance = null;
     let uniChanceByTrackKey = new Map();
-    const recomputeUniChance = () => {
-        uniChance = estimateUniChance(u, loadProfile());
+    let uniRoi = null;
+    const recomputeUniChance = async () => {
+        try {
+            const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/uni-chance`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ profile: loadProfile() }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.detail || "UniChance API Error");
+            uniChance = data || null;
+        } catch (err) {
+            console.error("Failed to compute UniChance on backend:", err);
+            uniChance = null;
+        }
         uniChanceByTrackKey = new Map((uniChance?.tracks || []).map((x) => [String(x.trackKey), x]));
     };
-    recomputeUniChance();
+    const recomputeUniRoi = async () => {
+        try {
+            const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/roi`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ profile: loadProfile() }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.detail || "ROI API Error");
+            uniRoi = data || null;
+        } catch (err) {
+            console.error("Failed to compute ROI on backend:", err);
+            uniRoi = null;
+        }
+    };
+    await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
 
     // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
@@ -1732,9 +1800,9 @@ export async function initUniversityPage() {
         }
     };
     renderAdmissionTab();
-    window.addEventListener("profileUpdated", () => {
+    window.addEventListener("profileUpdated", async () => {
         admissionTrackFilter = readAdmissionTrackFilterFromProfile();
-        recomputeUniChance();
+        await recomputeUniChance();
         renderAdmissionTab();
     });
 
@@ -1833,73 +1901,46 @@ export async function initUniversityPage() {
                 `;
             });
 
-            // 🔥 ROI БЛОК (Сделано!)
-            const profile = loadProfile();
-            const userMajor = profile.major || "";
-            
-            const outcomes = u.outcomes || {};
-            const salariesByMajorRaw =
-                outcomes.average_salary_by_major ||
-                outcomes.salary_by_major ||
-                outcomes.average_salary_by_program ||
-                outcomes.average_early_career_salary_by_major_usd ||
-                {};
-            const avgSalaryGeneric = Number(outcomes.average_early_career_salary_usd) || 0;
-            const normalizeMajorKey = (value) =>
-                String(value || "")
-                    .trim()
-                    .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, " ")
-                    .trim();
-            const salariesByMajorEntries = Object.entries(salariesByMajorRaw)
-                .map(([majorName, salary]) => [String(majorName || "").trim(), Number(salary)])
-                .filter(([majorName, salary]) => !!majorName && Number.isFinite(salary) && salary > 0);
-            const salariesAvgAcrossMajors = salariesByMajorEntries.length
-                ? (salariesByMajorEntries.reduce((sum, [, salary]) => sum + salary, 0) / salariesByMajorEntries.length)
-                : 0;
-            const fallbackSalary = salariesAvgAcrossMajors > 0 ? salariesAvgAcrossMajors : avgSalaryGeneric;
-            const userMajorNormalized = normalizeMajorKey(userMajor);
-            const exactMajorMatch = salariesByMajorEntries.find(([majorName]) => normalizeMajorKey(majorName) === userMajorNormalized);
-            const looseMajorMatch = exactMajorMatch || salariesByMajorEntries.find(([majorName]) => {
-                const majorNorm = normalizeMajorKey(majorName);
-                return !!userMajorNormalized && (majorNorm.includes(userMajorNormalized) || userMajorNormalized.includes(majorNorm));
-            });
-            
-            let roiTitle = "Estimated ROI (Return on Investment)";
-            let roiContent = "";
-            let userSalary = 0;
+            // ROI block is calculated on backend.
+            const roi = uniRoi || {};
+            const roiTitle = escapeHtml(String(roi.title || "Estimated ROI (Return on Investment)"));
+            const roiValueNum = Number(roi.roi_value);
+            const roiValue = Number.isFinite(roiValueNum) ? roiValueNum.toFixed(1) : "0.0";
+            const userSalary = Number(roi.salary_used_usd) || 0;
+            const roiLabel = escapeHtml(String(roi.roi_label || "High Investment"));
+            const roiTone = String(roi.roi_tone || "warn");
+            const roiColor = (roiTone === "excellent" || roiTone === "good") ? "#059669" : "#d97706";
+            const roiContextType = String(roi.context_type || "");
+            const userMajor = escapeHtml(String(roi.user_major || ""));
+            const points = Number(roi.salary_data_points) || 0;
+            const avgHint = points > 0 ? "Showing computed average across all majors." : "Showing average for all graduates.";
 
-            if (!userMajor) {
-                userSalary = fallbackSalary;
+            let roiContent = "";
+            if (roiContextType === "matched_major") {
+                roiContent = `
+                    <div style="background:#d1fae5; color:#065f46; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #a7f3d0;">
+                        ✅ Calculation based on <b>${userMajor}</b> graduates from this university.
+                    </div>
+                `;
+            } else if (roiContextType === "missing_major") {
                 roiContent = `
                     <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #ffeeba;">
-                        ⚠️ <strong>Tip:</strong> Select your <b>Major</b> in Profile to see precise ROI for your field. ${salariesByMajorEntries.length ? "Showing computed average across all majors." : "Showing average for all graduates."}
+                        ⚠️ <strong>Tip:</strong> Select your <b>Major</b> in Profile to see precise ROI for your field. ${avgHint}
+                    </div>
+                `;
+            } else if (roiContextType === "fallback_major") {
+                roiContent = `
+                    <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
+                        ℹ️ Specific data for <b>${userMajor}</b> not available. ${avgHint}
                     </div>
                 `;
             } else {
-                if (looseMajorMatch) {
-                    userSalary = looseMajorMatch[1];
-                    roiContent = `
-                        <div style="background:#d1fae5; color:#065f46; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #a7f3d0;">
-                            ✅ Calculation based on <b>${escapeHtml(String(userMajor))}</b> graduates from this university.
-                        </div>
-                    `;
-                } else {
-                    userSalary = fallbackSalary;
-                    roiContent = `
-                        <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
-                            ℹ️ Specific data for <b>${escapeHtml(String(userMajor))}</b> not available. ${salariesByMajorEntries.length ? "Showing computed average across all majors." : "Showing average for all graduates."}
-                        </div>
-                    `;
-                }
+                roiContent = `
+                    <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
+                        ℹ️ ROI is based on available university outcomes data.
+                    </div>
+                `;
             }
-
-            let minPrice = u.finance?.total_cost_year_usd || 1;
-             if (u.admission_tracks && u.admission_tracks.length > 0) {
-                const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0).filter(p => p > 0);
-                if (prices.length > 0) minPrice = Math.min(...prices);
-            }
-            const roiValue = (userSalary / minPrice).toFixed(1);
             
             const roiBlock = `
                 <div class="roi-box" style="margin-top:30px; background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:25px; box-shadow:0 4px 6px rgba(0,0,0,0.02);">
@@ -1920,11 +1961,11 @@ export async function initUniversityPage() {
                         <div style="width:1px; height:50px; background:#eee; display:none; @media(min-width:600px){display:block;}"></div>
                         <div style="flex:1; min-width:200px;">
                             <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">ROI Score</div>
-                            <div style="font-size:32px; font-weight:900; color:${roiValue > 1.5 ? '#059669' : '#d97706'};">
+                            <div style="font-size:32px; font-weight:900; color:${roiColor};">
                                 ${roiValue}x
                             </div>
-                            <div style="font-size:11px; color:${roiValue > 1.5 ? '#059669' : '#d97706'}; font-weight:600;">
-                                ${roiValue > 2.0 ? 'Excellent Return' : (roiValue > 1.0 ? 'Positive Return' : 'High Investment')}
+                            <div style="font-size:11px; color:${roiColor}; font-weight:600;">
+                                ${roiLabel}
                             </div>
                         </div>
                     </div>
@@ -1958,13 +1999,10 @@ export async function initRankingPage() {
 
     try {
         // Запрашиваем 200 вузов
-        const res = await fetch(`${API_BASE}/universities?limit=200`);
+        const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc`);
         if (!res.ok) throw new Error("Error loading ranking");
         const data = await res.json();
         let items = data.items || [];
-
-        // 🔥 FIX: Сортируем массив вручную от 1 к 100
-        items.sort((a, b) => (a.rank || 999) - (b.rank || 999));
 
         const html = items.map((u, index) => {
             const rank = u.rank || (index + 1);

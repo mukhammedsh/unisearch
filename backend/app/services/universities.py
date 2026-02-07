@@ -202,6 +202,11 @@ def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
     if sort == "acceptance_desc":
         return sorted(items, key=lambda u: (_get_university_acceptance_rate(u) or 0.0), reverse=True)
 
+    if sort == "rank_asc":
+        return sorted(items, key=lambda u: (_to_float(u.get("rank")) or 999999.0))
+    if sort == "rank_desc":
+        return sorted(items, key=lambda u: (_to_float(u.get("rank")) or 0.0), reverse=True)
+
     if sort == "gpa_desc":
         return sorted(items, key=lambda u: get_val(u, ["exams_avg", "GPA"]), reverse=True)
 
