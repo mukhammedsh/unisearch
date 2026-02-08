@@ -8,6 +8,7 @@ FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",
     "http://127.0.0.1:5501",
 )
+APP_VERSION = os.getenv("APP_VERSION", "2.1.1").strip() or "2.1.1"
 
 UNIMENTOR_NAME = os.getenv("UNIMENTOR_NAME", "UniMentor").strip() or "UniMentor"
 UNIMENTOR_PROVIDER = os.getenv("UNIMENTOR_PROVIDER", "local").strip().lower() or "local"
@@ -23,3 +24,11 @@ except Exception:
     UNIMENTOR_TIMEOUT = 6.0
 
 MENTOR_API_KEY = (os.getenv("UNIMENTOR_API_KEY") or os.getenv("MENTOR_API_KEY") or "").strip()
+try:
+    MENTOR_RATE_LIMIT_REQUESTS = int(os.getenv("MENTOR_RATE_LIMIT_REQUESTS", "20"))
+except Exception:
+    MENTOR_RATE_LIMIT_REQUESTS = 20
+try:
+    MENTOR_RATE_LIMIT_WINDOW_SEC = int(os.getenv("MENTOR_RATE_LIMIT_WINDOW_SEC", "60"))
+except Exception:
+    MENTOR_RATE_LIMIT_WINDOW_SEC = 60

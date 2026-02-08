@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance / UniMentor - 2.1.0 Beta (Infomatrix 2026)
+# UniSearch / UniFit / UniChance / UniMentor - 2.1.1 (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app that helps applicants choose universities using:
@@ -11,7 +11,31 @@ UniSearch is a full-stack web app that helps applicants choose universities usin
 It is designed to reduce the need for expensive admission consulting by making requirements and fit scoring transparent.
 
 ## Version
-- Current release: `2.1.0 Beta`
+- Current release: `2.1.1`
+
+## What's new in 2.1.1
+- Backend request validation upgraded to typed Pydantic payloads for core POST endpoints (`/universities/ai-sort`, `/universities/{id}/uni-chance`, `/universities/{id}/roi`, `/universities/{id}/gap-coach`, `/mentor/ask`, `/exams/validate`, `/languages/validate`).
+- UniMentor endpoint hardening:
+  - secure API key comparison,
+  - in-memory sliding-window rate limiting with response headers (`X-RateLimit-*`, `Retry-After`),
+  - `Cache-Control: no-store` for chat responses.
+- AI sort endpoint optimization:
+  - removed hardcoded `limit=100000` behavior,
+  - added short-lived in-memory cache for repeated AI-sort queries.
+- Observability and ops:
+  - request metrics middleware with latency logging and `X-Request-Id`,
+  - added `/health` and `/ready` endpoints.
+- Frontend network reliability improvements:
+  - enabled global API loading indicator hook,
+  - added `AbortController` cancellation for stale university list and AI-sort fetches.
+- PWA cache behavior update:
+  - service worker API cache now supports production backend host (`unisearch-bsjl.onrender.com`).
+- UniMentor frontend rendering safety:
+  - chat messages/sources/options now render via DOM nodes instead of HTML-string injection for user-provided text.
+- Added backend tests (`backend/tests`) for:
+  - rate limiter behavior,
+  - AI scoring output contract,
+  - API payload validation.
 
 ## Product logos (from `frontend/images`)
 
@@ -22,7 +46,7 @@ It is designed to reduce the need for expensive admission consulting by making r
 
 `minilogo.png` is a compact fallback logo used when the primary logo file cannot be loaded.
 
-## Architecture (v2.1.0, backend-first)
+## Architecture (v2.1.1, backend-first)
 
 ### High-level flow
 
@@ -208,6 +232,8 @@ Backend environment:
 - optional: `UNIMENTOR_GEMINI_MODEL=gemini-2.0-flash`
 - optional: `UNIMENTOR_GEMINI_FALLBACK_MODEL=gemini-2.0-flash-lite` (used automatically on quota 429)
 - optional: `UNIMENTOR_GEMINI_ENABLE_WEB=1` (Google Search grounding)
+- optional: `UNIMENTOR_API_KEY=...` to protect `/mentor/ask`
+- optional: `MENTOR_RATE_LIMIT_REQUESTS=20` and `MENTOR_RATE_LIMIT_WINDOW_SEC=60` for chat abuse protection
 
 Troubleshooting:
 - After changing `backend/.env`, restart backend server (`uvicorn`).
@@ -417,6 +443,12 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
+For backend tests (dev-only dependencies):
+```bash
+cd backend
+pip install -r requirements-dev.txt
+```
+
 Optional UniMentor backend env:
 ```bash
 set UNIMENTOR_ENABLE_ONLINE=1
@@ -444,6 +476,19 @@ Open:
 - `http://127.0.0.1:5501/about.html`
 
 Note: backend CORS default origin is `http://127.0.0.1:5501`.
+
+---
+
+## Tests
+Backend tests are in `backend/tests` and are intended for developers/maintainers.
+End users of the web application do not need to install test dependencies.
+
+Run tests:
+```bash
+cd backend
+set PYTHONPATH=.
+python -m unittest discover tests -v
+```
 
 ---
 
@@ -486,7 +531,7 @@ For each university:
 6. Compute UniChance (0-100) for each track and overall university probability.
 7. Use UniMentor to ask natural-language questions about the selected university; answer comes from DB and optional free web sources.
 
-Note: in `2.1.0 Beta`, UniFit and UniChance computation is backend-side; frontend only sends parameters and renders responses.
+Note: in `2.1.1`, UniFit and UniChance computation is backend-side; frontend only sends parameters and renders responses.
 
 Important: high prestige does not fully override impossible admissions; feasibility still gates ranking.
 
@@ -624,7 +669,9 @@ backend/
     exams.json                    # academic exam constraints (min/max/type/step)
     languages.json                # language/CEFR/exam requirement config
     cities.json                   # country/state/city reference
-  requirements.txt                # backend dependencies
+  requirements.txt                # backend runtime dependencies
+  requirements-dev.txt            # backend dev/test dependencies (includes httpx)
+  tests/                          # backend unit/integration tests
 
 frontend/
   index.html                      # landing page

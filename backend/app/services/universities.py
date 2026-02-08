@@ -325,6 +325,7 @@ def list_universities(
     sort: str = "name_asc",
     page: int = 1,
     limit: int = 200,
+    paginate: bool = True,
 ) -> Dict[str, Any]:
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
@@ -419,6 +420,16 @@ def list_universities(
     items = _apply_sort(items, sort)
 
     total = len(items)
+    if not paginate:
+        return {
+            "items": items,
+            "count": total,
+            "total": total,
+            "page": 1,
+            "limit": total,
+            "sort": sort,
+        }
+
     start = (page - 1) * limit
     end = start + limit
     page_items = items[start:end] if start < total else []

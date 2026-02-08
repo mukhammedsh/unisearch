@@ -1,7 +1,7 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
-import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase } from "./utils.js";
+import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 
 async function registerServiceWorker() {
@@ -39,6 +39,7 @@ function applyAINameConfig() {
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
   initTheme();
+  initGlobalApiLoadingIndicator();
   registerServiceWorker();
 
   // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)

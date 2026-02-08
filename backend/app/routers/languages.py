@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Response
-from typing import Any, Dict
 
 from app.services import languages as lang_service
+from app.schemas import LanguageValidateRequest
 
 
 router = APIRouter()
@@ -15,9 +15,9 @@ def get_languages_config(response: Response = None):
 
 
 @router.post("/languages/validate")
-def validate_language(payload: Dict[str, Any]):
+def validate_language(payload: LanguageValidateRequest):
     try:
-        return lang_service.validate_language(payload)
+        return lang_service.validate_language(payload.model_dump(exclude_none=True))
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:

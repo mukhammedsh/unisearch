@@ -295,6 +295,8 @@ export function initUniversitiesPage() {
     let lastAiFetchKey = "";
     let lastAiFetchPayload = null;
     let lastAiFetchAt = 0;
+    let listFetchController = null;
+    let aiFetchController = null;
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
 
@@ -1011,7 +1013,27 @@ export function initUniversitiesPage() {
         if (lastFetchKey === key && lastFetchPayload && (now - lastFetchAt) < CACHE_TTL_MS) {
             return lastFetchPayload;
         }
-        const res = await fetch(`${API_BASE}/universities?${key}`);
+
+        if (listFetchController) {
+            listFetchController.abort();
+        }
+        const controller = new AbortController();
+        listFetchController = controller;
+
+        let res;
+        try {
+            res = await fetch(`${API_BASE}/universities?${key}`, { signal: controller.signal });
+        } catch (err) {
+            if (err?.name === "AbortError") {
+                return { items: [], total: 0, __aborted: true };
+            }
+            throw err;
+        } finally {
+            if (listFetchController === controller) {
+                listFetchController = null;
+            }
+        }
+
         if (!res.ok) throw new Error("API Error");
         const data = await res.json();
         const payload = {
@@ -1030,11 +1052,32 @@ export function initUniversitiesPage() {
         if (lastAiFetchKey === key && lastAiFetchPayload && (now - lastAiFetchAt) < CACHE_TTL_MS) {
             return lastAiFetchPayload;
         }
-        const res = await fetch(`${API_BASE}/universities/ai-sort`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-        });
+
+        if (aiFetchController) {
+            aiFetchController.abort();
+        }
+        const controller = new AbortController();
+        aiFetchController = controller;
+
+        let res;
+        try {
+            res = await fetch(`${API_BASE}/universities/ai-sort`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+                signal: controller.signal,
+            });
+        } catch (err) {
+            if (err?.name === "AbortError") {
+                return { items: [], total: 0, __aborted: true };
+            }
+            throw err;
+        } finally {
+            if (aiFetchController === controller) {
+                aiFetchController = null;
+            }
+        }
+
         if (!res.ok) throw new Error("AI sort API Error");
         const data = await res.json();
         const parsed = {
@@ -1063,6 +1106,7 @@ export function initUniversitiesPage() {
         const data = isAiSort
             ? await fetchUniversitiesAiSort(buildAiSortPayload())
             : await fetchUniversities(apiParams);
+        if (data?.__aborted) return;
         if (runSeq !== fetchRunSeq) return;
         const items = data.items || [];
         const total = data.total || 0;
@@ -1088,6 +1132,7 @@ export function initUniversitiesPage() {
 
         } catch (err) {
         if (runSeq !== fetchRunSeq) return;
+        if (err?.name === "AbortError") return;
         console.error(err);
         if (el.state) el.state.textContent = "Failed to load data.";
         } finally {

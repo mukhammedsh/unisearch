@@ -1,4 +1,4 @@
-import { API_BASE, UNIMENTOR_CONFIG, aiName, escapeHtml, loadProfile, initCustomSelect } from "../utils.js";
+import { API_BASE, UNIMENTOR_CONFIG, aiName, loadProfile, initCustomSelect } from "../utils.js";
 
 const MODE_STORAGE_KEY = "unimentor_mode";
 const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
@@ -42,7 +42,7 @@ function setModeBadge(el, text) {
   el.textContent = text;
 }
 
-function formatMentorText(text) {
+function normalizeMentorText(text) {
   let out = String(text || "").replace(/\r\n/g, "\n");
   // Strip common markdown markers that look ugly in plain chat bubbles.
   out = out.replace(/\*\*(.*?)\*\*/g, "$1");
@@ -52,49 +52,86 @@ function formatMentorText(text) {
     .map((line) => line.replace(/^\s*[*-]\s+/, "• "))
     .join("\n")
     .trim();
-  return escapeHtml(out).replace(/\n/g, "<br>");
+  return out;
 }
 
-function renderSources(sources) {
-  if (!Array.isArray(sources) || !sources.length) return "";
-  return `
-    <div class="mentor-sources">
-      ${sources
-        .map((s) => {
-          const title = escapeHtml(s?.title || "Source");
-          const safe = safeUrl(s?.url || "");
-          if (!safe) return `<span class="mentor-source-disabled">${title}</span>`;
-          const url = escapeHtml(safe);
-          return `<a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>`;
-        })
-        .join("")}
-    </div>
-  `;
+function appendMultilineText(el, text) {
+  const lines = String(text || "").split("\n");
+  lines.forEach((line, idx) => {
+    if (idx > 0) {
+      el.appendChild(document.createElement("br"));
+    }
+    el.appendChild(document.createTextNode(line));
+  });
 }
 
-function renderQuickOptions(options) {
-  if (!Array.isArray(options) || !options.length) return "";
+function createSourcesNode(sources) {
+  if (!Array.isArray(sources) || !sources.length) return null;
+  const wrap = document.createElement("div");
+  wrap.className = "mentor-sources";
+
+  sources.forEach((s) => {
+    const title = String(s?.title || "Source").trim() || "Source";
+    const safe = safeUrl(s?.url || "");
+    if (!safe) {
+      const span = document.createElement("span");
+      span.className = "mentor-source-disabled";
+      span.textContent = title;
+      wrap.appendChild(span);
+      return;
+    }
+
+    const link = document.createElement("a");
+    link.href = safe;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = title;
+    wrap.appendChild(link);
+  });
+
+  return wrap;
+}
+
+function createQuickOptionsNode(options) {
+  if (!Array.isArray(options) || !options.length) return null;
   const list = options
     .map((x) => String(x || "").trim())
     .filter(Boolean)
     .slice(0, 6);
-  if (!list.length) return "";
-  return `
-    <div class="mentor-options">
-      ${list.map((q) => `<button type="button" class="mentor-option-btn" data-mentor-q="${escapeHtml(q)}">${escapeHtml(q)}</button>`).join("")}
-    </div>
-  `;
+  if (!list.length) return null;
+
+  const wrap = document.createElement("div");
+  wrap.className = "mentor-options";
+  list.forEach((q) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "mentor-option-btn";
+    btn.setAttribute("data-mentor-q", q);
+    btn.textContent = q;
+    wrap.appendChild(btn);
+  });
+
+  return wrap;
 }
 
-function messageHtml(role, text, sources = [], options = []) {
+function createMessageNode(role, text, sources = [], options = []) {
   const cls = role === "user" ? "mentor-msg mentor-msg--user" : "mentor-msg mentor-msg--assistant";
-  return `
-    <div class="${cls}">
-      <div class="mentor-msg-body">${formatMentorText(text)}</div>
-      ${role === "assistant" ? renderSources(sources) : ""}
-      ${role === "assistant" ? renderQuickOptions(options) : ""}
-    </div>
-  `;
+  const root = document.createElement("div");
+  root.className = cls;
+
+  const body = document.createElement("div");
+  body.className = "mentor-msg-body";
+  appendMultilineText(body, normalizeMentorText(text));
+  root.appendChild(body);
+
+  if (role === "assistant") {
+    const sourcesNode = createSourcesNode(sources);
+    if (sourcesNode) root.appendChild(sourcesNode);
+    const optionsNode = createQuickOptionsNode(options);
+    if (optionsNode) root.appendChild(optionsNode);
+  }
+
+  return root;
 }
 
 export function initUniMentor(university) {
@@ -130,7 +167,7 @@ export function initUniMentor(university) {
   if (modeSelect) initCustomSelect("mentorModeSelect");
 
   const intro = `Hi! I am ${mentorName}. Ask me about ${university?.name || "this university"}: admission, language requirements, costs, scholarships, ranking, or campus info.`;
-  messages.innerHTML = messageHtml("assistant", intro);
+  messages.replaceChildren(createMessageNode("assistant", intro));
 
   const setBusy = (busy) => {
     sendBtn.disabled = busy;
@@ -146,7 +183,7 @@ export function initUniMentor(university) {
       : String(input.value || "").trim();
     if (!question) return;
 
-    messages.insertAdjacentHTML("beforeend", messageHtml("user", question));
+    messages.appendChild(createMessageNode("user", question));
     messages.scrollTop = messages.scrollHeight;
     input.value = "";
     setBusy(true);
@@ -177,12 +214,11 @@ export function initUniMentor(university) {
       }
       if (requested.startsWith("gemini") && provider !== "gemini") {
         const note = warning || "Gemini is not available right now, switched to local UniMentor mode.";
-        messages.insertAdjacentHTML("beforeend", messageHtml("assistant", note));
+        messages.appendChild(createMessageNode("assistant", note));
       }
 
-      messages.insertAdjacentHTML(
-        "beforeend",
-        messageHtml(
+      messages.appendChild(
+        createMessageNode(
           "assistant",
           data?.answer || "Sorry, I could not generate an answer.",
           data?.sources || [],
@@ -191,9 +227,8 @@ export function initUniMentor(university) {
       );
       messages.scrollTop = messages.scrollHeight;
     } catch (e) {
-      messages.insertAdjacentHTML(
-        "beforeend",
-        messageHtml("assistant", `I could not answer right now: ${e.message || "Unknown error"}`)
+      messages.appendChild(
+        createMessageNode("assistant", `I could not answer right now: ${e.message || "Unknown error"}`)
       );
     } finally {
       setBusy(false);
@@ -212,7 +247,7 @@ export function initUniMentor(university) {
   });
 
   clearBtn?.addEventListener("click", () => {
-    messages.innerHTML = messageHtml("assistant", intro);
+    messages.replaceChildren(createMessageNode("assistant", intro));
   });
 
   modeSelect?.addEventListener("change", () => {

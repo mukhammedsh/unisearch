@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-02-07-1";
+const SW_VERSION = "2026-02-08-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -9,7 +9,11 @@ const MAX_IMAGE_ENTRIES = 140;
 const MAX_API_ENTRIES = 90;
 const MAX_STATIC_ENTRIES = 80;
 
-const API_HOSTS = new Set(["127.0.0.1:8000", "localhost:8000"]);
+const API_HOSTS = new Set([
+  "127.0.0.1:8000",
+  "localhost:8000",
+  "unisearch-bsjl.onrender.com",
+]);
 const API_PATH_PREFIXES = [
   "/universities",
   "/locations",
@@ -50,7 +54,8 @@ function isImageRequest(request, url) {
 
 function isApiRequest(request, url) {
   if (request.method !== "GET") return false;
-  if (!API_HOSTS.has(url.host)) return false;
+  const sameOrigin = url.origin === self.location.origin;
+  if (!sameOrigin && !API_HOSTS.has(url.host)) return false;
   return API_PATH_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
 }
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Response
-from typing import Any, Dict
 
 from app.services import exams as exams_service
+from app.schemas import ExamValidateRequest
 
 
 router = APIRouter()
@@ -24,14 +24,9 @@ def get_exam_config_full(response: Response = None):
 
 
 @router.post("/exams/validate")
-def validate_exam(payload: Dict[str, Any]):
-    exam_raw = str(payload.get("exam", "")).strip()
-    score_raw = payload.get("score", None)
-
-    if not exam_raw:
-        raise HTTPException(status_code=400, detail="Exam name is required")
-    if score_raw is None or score_raw == "":
-        raise HTTPException(status_code=400, detail="Score is required")
+def validate_exam(payload: ExamValidateRequest):
+    exam_raw = payload.exam
+    score_raw = payload.score
 
     key = exams_service.resolve_exam_key(exam_raw.strip().upper())
 
