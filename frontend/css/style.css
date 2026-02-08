@@ -43,6 +43,42 @@ body {
   padding-top: 70px;
 }
 
+/* Shared centered loading spinner */
+.center-loading {
+  width: 100%;
+  min-height: 140px;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-loading--compact {
+  min-height: 72px;
+  padding: 8px 0;
+}
+
+.center-loading-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 8px solid #c5cad3;
+  border-top-color: #ffffff;
+  animation: center-loading-spin 0.9s linear infinite;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.center-loading-spinner--sm {
+  width: 40px;
+  height: 40px;
+  border-width: 6px;
+}
+
+@keyframes center-loading-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* Global API loader for backend requests */
 .global-api-loader {
   position: fixed;

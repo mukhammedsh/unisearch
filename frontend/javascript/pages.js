@@ -2125,6 +2125,12 @@ export function initGuidePage() {
         return `In UniSearch, this score is entered on a ${min}-${max} scale.`;
     };
 
+    const guideLoadingMarkup = (label) => `
+        <div class="center-loading center-loading--compact" role="status" aria-label="${escapeHtml(String(label || "Loading"))}">
+            <div class="center-loading-spinner center-loading-spinner--sm" aria-hidden="true"></div>
+        </div>
+    `;
+
     const academicExamDescriptions = {
         SAT: "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics.",
         ACT: "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.",
@@ -2212,7 +2218,7 @@ export function initGuidePage() {
             .sort((a, b) => getExamDisplayName(a[0]).localeCompare(getExamDisplayName(b[0])));
 
         if (!exams.length) {
-            academicWrap.innerHTML = `<p class="guide-muted">Exam config is loading...</p>`;
+            academicWrap.innerHTML = guideLoadingMarkup("Loading exam config");
             return;
         }
 
@@ -2233,7 +2239,7 @@ export function initGuidePage() {
 
         const codes = Object.keys(groups).sort();
         if (!codes.length) {
-            languageWrap.innerHTML = `<p class="guide-muted">Language exam config is loading...</p>`;
+            languageWrap.innerHTML = guideLoadingMarkup("Loading language exam config");
             return;
         }
 
