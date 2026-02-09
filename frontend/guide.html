@@ -21,6 +21,7 @@
       </p>
       <div class="guide-nav">
         <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
+        <a href="#guide-ml">ML</a>
         <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
         <a href="#guide-unimentor" data-ai-template="{mentor}">UniMentor</a>
         <a href="#guide-admission">Admission</a>
@@ -38,6 +39,16 @@
         <p>The budget-prestige slider changes weighting, but it does not ignore constraints. Even if the slider is moved to prestige, tracks that are far outside your profile are still penalized. Likewise, if slider priority is budget, the algorithm still keeps academically suitable options above choices that are cheap but unrealistic for admission. This prevents unstable recommendations and keeps output useful for real application planning.</p>
         <p>The model evaluates admission tracks separately when track data exists. That is why one university can look stronger than another for a specific student even if overall rank is lower. A track with matching exam thresholds and language conditions will usually score above a track that has better reputation but poor eligibility match.</p>
         <p>Because your profile can change at any moment, <span data-ai-name="fit">UniFit</span> results are intentionally dynamic. Updating exam scores, languages, or budget should immediately change ordering. This is expected and correct behavior: the goal is a personalized shortlist that reflects current data, not a fixed static ranking.</p>
+      </div>
+    </section>
+
+    <section id="guide-ml" class="guide-section">
+      <h2>ML in UniSearch (What it means)</h2>
+      <div class="guide-doc">
+        <p><strong>ML</strong> means <strong>Machine Learning</strong>. In UniSearch, ML is used as an additional personalization signal inside AI sorting, not as a replacement for admission rules.</p>
+        <p>The user can write free-text preferences in Profile (field <code>interests</code>): for example desired programs, research topics, campus type, or preferred location. This text is sent to backend, where UniSearch computes relevance with <strong>TF-IDF</strong> and <strong>cosine similarity</strong> against university metadata.</p>
+        <p>Metadata text is built from university name, city/country, and program names (and optional description/tags when present in data). This gives each university a text vector and allows semantic matching to user intent.</p>
+        <p>When interests are provided, UniFit uses a hybrid formula: <code>final_score = 0.7 * hard_score + 0.3 * ml_score</code>. If interests are empty, sorting stays purely rule-based. This keeps recommendations stable and explainable while adding personalization.</p>
       </div>
     </section>
 

@@ -3,6 +3,7 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.services import languages as languages_service
+from app.services.ml_scoring import get_ml_recommender
 
 
 def _to_num(value: Any) -> Optional[float]:
@@ -104,11 +105,15 @@ def _set_best_score(dst: Dict[str, float], exam_id: Any, score: Any) -> None:
     val = _to_num(score)
     if not raw or val is None:
         return
+    higher_is_better = _is_higher_better(raw)
     for key in (raw, raw.upper(), _canonical_exam_key(raw)):
         if not key:
             continue
         prev = _to_num(dst.get(key))
-        dst[key] = val if prev is None else max(prev, val)
+        if prev is None:
+            dst[key] = val
+        else:
+            dst[key] = max(prev, val) if higher_is_better else min(prev, val)
 
 
 def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Dict[str, Any]:
@@ -490,11 +495,21 @@ def sort_universities_ai(
     w_prestige = _clamp01((_to_num(ai_balance) or 50.0) / 100.0)
     w_budget = 1.0 - w_prestige
     rank_score = _rank_score_factory(items)
+    interest_text = str(profile.get("interests") or "").strip()
+
+    ml_scores_by_id: Dict[str, float] = {}
+    use_ml = bool(interest_text)
+    if use_ml:
+        try:
+            ml_scores_by_id = get_ml_recommender().predict_relevance(interest_text)
+        except Exception:
+            ml_scores_by_id = {}
 
     enriched: List[Dict[str, Any]] = []
     for row in items:
         if not isinstance(row, dict):
             continue
+        row_id = str(row.get("id") or "").strip()
 
         tracks = row.get("admission_tracks")
         if not isinstance(tracks, list) or not tracks:
@@ -566,7 +581,13 @@ def sort_universities_ai(
 
             grant_bonus = _clamp01(0.70 + 0.30 * best_scholar_potential) if aid_eligible else (_clamp01(0.40 + 0.20 * best_scholar_potential) if aid_any else 0.0)
             gate = admit ** 1.15
-            total = _clamp01(gate * (0.58 * pref_score + 0.32 * admit + 0.10 * grant_bonus))
+            hard_score = _clamp01(gate * (0.58 * pref_score + 0.32 * admit + 0.10 * grant_bonus))
+            if use_ml:
+                ml_score = float(ml_scores_by_id.get(row_id, 0.0))
+                final_score = _clamp01((0.7 * hard_score) + (0.3 * ml_score))
+            else:
+                ml_score = 0.0
+                final_score = hard_score
 
             amount = _to_num((eligible_scholar or {}).get("amount")) if isinstance(eligible_scholar, dict) else None
             final_price = max(0.0, cost - amount) if (aid_eligible and amount is not None) else cost
@@ -583,8 +604,11 @@ def sort_universities_ai(
                 "costYearUSD": cost,
                 "grantPotential": best_scholar_potential,
                 "grantEligible": aid_eligible,
+                "hardScore": hard_score,
+                "mlScore": ml_score,
+                "finalScore": final_score,
             }
-            candidate = {"score": total, "matchData": match_data}
+            candidate = {"score": final_score, "matchData": match_data}
             if best is None or float(candidate["score"]) > float(best["score"]):
                 best = candidate
 

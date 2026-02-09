@@ -1,6 +1,5 @@
 from app.schemas.payloads import (
     ExamValidateRequest,
-    GapCoachRequest,
     LanguageValidateRequest,
     MentorAskRequest,
     ProfileOnlyRequest,
@@ -10,7 +9,6 @@ from app.schemas.payloads import (
 
 __all__ = [
     "ExamValidateRequest",
-    "GapCoachRequest",
     "LanguageValidateRequest",
     "MentorAskRequest",
     "ProfileOnlyRequest",

@@ -171,6 +171,18 @@ const LAYOUT_HTML = `
       </div>
 
       <div class="profile-field">
+        <label class="profile-label">University Interests (AI)</label>
+        <textarea
+          id="profileInterestsInput"
+          class="profile-input"
+          rows="4"
+          maxlength="1200"
+          placeholder="Describe your ideal university: programs, research, location, campus style, and goals."
+        ></textarea>
+        <div class="profile-hint">Used by backend ML matching (TF-IDF + cosine similarity).</div>
+      </div>
+
+      <div class="profile-field">
         <label class="profile-label">GPA (Percent)</label>
         <div class="profile-budget">
           <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" />
@@ -375,6 +387,7 @@ function initProfileUI() {
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
     const profileMajorSelect = document.getElementById("profileMajorSelect");
+    const profileInterestsInput = document.getElementById("profileInterestsInput");
 
     const editNameBtn = document.getElementById("editNameBtn");
     const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
@@ -406,6 +419,15 @@ function initProfileUI() {
     });
     
     let profile = loadProfile(); 
+    const syncInterestsToProfile = (notify = false) => {
+        if (!profileInterestsInput) return;
+        const next = String(profileInterestsInput.value || "").trim().slice(0, 1200);
+        const prev = String(profile.interests || "");
+        if (next === prev) return;
+        profile.interests = next;
+        saveProfile(profile);
+        if (notify) showToast("Interests saved", "success");
+    };
 
     const populateMajors = () => {
         if (!profileMajorSelect) return;
@@ -458,6 +480,7 @@ function initProfileUI() {
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
         if (profileFundingTypeSelect) profileFundingTypeSelect.value = profile.fundingType || "any";
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
+        if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
         renderProfileData();
     };
 
@@ -485,6 +508,11 @@ function initProfileUI() {
         });
     }
 
+    if (profileInterestsInput) {
+        profileInterestsInput.addEventListener("blur", () => syncInterestsToProfile(false));
+        profileInterestsInput.addEventListener("change", () => syncInterestsToProfile(true));
+    }
+
     if (openBtn) openBtn.onclick = () => { 
         resetFields();
         window.dispatchEvent(new Event("profileModalOpened"));
@@ -503,6 +531,7 @@ function initProfileUI() {
     
     const close = () => { 
         if (!modal.classList.contains("is-open")) return;
+        syncInterestsToProfile(false);
 
         // 1. Сначала возвращаем фокус на кнопку открытия (чтобы не было ошибки aria-hidden)
         if (openBtn) openBtn.focus();

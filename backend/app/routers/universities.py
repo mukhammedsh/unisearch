@@ -5,10 +5,9 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 
-from app.schemas import GapCoachRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas import ProfileOnlyRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
-from app.services import gap_coach as gap_coach_service
 from app.services import ai_scoring as ai_scoring_service
 
 
@@ -243,39 +242,6 @@ def get_university_roi(
     if response is not None:
         response.headers["Cache-Control"] = "private, max-age=30"
     return ai_scoring_service.estimate_university_roi(university, profile)
-
-
-@router.post("/universities/{university_id}/gap-coach")
-def get_university_gap_coach(
-    university_id: str,
-    payload: GapCoachRequest,
-    request: Request,
-    response: Response = None,
-):
-    university = uni_service.get_university_by_id(university_id)
-    if university is None:
-        raise HTTPException(status_code=404, detail="University not found")
-
-    profile = to_profile_dict(payload.profile)
-    top_n = gap_coach_service.normalize_top_n(payload.top_n_actions)
-    uni_etag = uni_service.get_university_etag(university_id)
-    etag = gap_coach_service.build_gap_coach_etag(uni_etag, profile, top_n)
-
-    cache_control = "private, max-age=60, stale-while-revalidate=120"
-    if response is not None:
-        response.headers["Cache-Control"] = cache_control
-        response.headers["ETag"] = etag
-
-    if _etag_matches(request.headers.get("if-none-match", ""), etag):
-        return Response(
-            status_code=304,
-            headers={
-                "Cache-Control": cache_control,
-                "ETag": etag,
-            },
-        )
-
-    return gap_coach_service.build_gap_coach(university, profile, top_n)
 
 
 @router.get("/locations")

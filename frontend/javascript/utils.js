@@ -245,6 +245,7 @@ const PROFILE_DEFAULTS = {
     exams: [], 
     languages: [],   // ✅ новое поле
     major: "", 
+    interests: "",
     studyMode: "Any",
     fundingType: "any",
 };
@@ -798,6 +799,7 @@ function normalizeProfile(p) {
   const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
   if (fundingRaw === "grant" || fundingRaw === "paid") out.fundingType = fundingRaw;
   else out.fundingType = "any";
+  out.interests = String(out.interests ?? "").trim().slice(0, 1200);
 
   const gpaCfg = EXAM_CONFIG?.GPA || EXAM_CONFIG?.gpa || { min: 0, max: 100, step: 1 };
   const clampGpa = (v) => {

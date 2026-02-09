@@ -14,7 +14,7 @@ It is designed to reduce the need for expensive admission consulting by making r
 - Current release: `2.1.1`
 
 ## What's new in 2.1.1
-- Backend request validation upgraded to typed Pydantic payloads for core POST endpoints (`/universities/ai-sort`, `/universities/{id}/uni-chance`, `/universities/{id}/roi`, `/universities/{id}/gap-coach`, `/mentor/ask`, `/exams/validate`, `/languages/validate`).
+- Backend request validation upgraded to typed Pydantic payloads for core POST endpoints (`/universities/ai-sort`, `/universities/{id}/uni-chance`, `/universities/{id}/roi`, `/mentor/ask`, `/exams/validate`, `/languages/validate`).
 - UniMentor endpoint hardening:
   - secure API key comparison,
   - in-memory sliding-window rate limiting with response headers (`X-RateLimit-*`, `Retry-After`),
@@ -36,6 +36,22 @@ It is designed to reduce the need for expensive admission consulting by making r
   - rate limiter behavior,
   - AI scoring output contract,
   - API payload validation.
+- Hybrid content-based ML recommender integrated into UniFit sorting:
+  - new optional profile field: `profile.interests` (free-text user intent),
+  - TF-IDF vectorization over university metadata (name, location, program names; optional description/tags/major_focus),
+  - cosine-similarity relevance score per university,
+  - final hybrid score when interests are provided:
+    - `final_score = 0.7 * hard_score + 0.3 * ml_score`.
+
+## What ML means in UniSearch
+
+**ML** means **Machine Learning**.  
+In UniSearch, ML is used as a content-based ranking signal that compares user interest text with university metadata text.
+
+Important:
+- Frontend only collects and sends text (`profile.interests`).
+- All ML computation stays in backend (`backend/app/services/ml_scoring.py`).
+- If `interests` is empty, UniFit keeps pure rule-based scoring.
 
 ## Product logos (from `frontend/images`)
 
@@ -72,7 +88,7 @@ It is designed to reduce the need for expensive admission consulting by making r
 - Source of truth for business logic and data access.
 - Reads and validates data from `backend/data/*.json` (or future DB).
 - Performs filtering, search, sorting, ranking, pagination.
-- Computes UniFit ordering, UniChance probability, ROI, gap coaching.
+- Computes UniFit ordering, UniChance probability, and ROI.
 - Returns ready-to-render JSON for list, map, ranking, and detail pages.
 
 #### Frontend
@@ -139,6 +155,12 @@ It is not a simple sort-by-rank script. It is a multi-factor recommendation algo
 
 7. **Best-track selection**  
    For each university, UniFit keeps the highest-scoring track and sorts universities by final score.
+
+8. **Hybrid ML personalization (optional)**  
+   If user provides `profile.interests`, UniFit blends rule-based hard score with ML relevance:
+   - hard score: admissions + affordability + prestige logic,
+   - ML score: TF-IDF + cosine similarity match between user interests and university metadata,
+   - blend formula: `0.7 * hard_score + 0.3 * ml_score`.
 
 ### Why this is AI-oriented (Infomatrix AI-programming relevance)
 - Uses algorithmic multi-objective optimization (prestige, cost, feasibility).
@@ -418,7 +440,6 @@ Loading visuals now cover backend wait states in major user flows:
 - `GET /universities/{id}` - single university details
 - `POST /universities/{id}/uni-chance` - backend UniChance probability response
 - `POST /universities/{id}/roi` - backend ROI estimation for profile + university
-- `POST /universities/{id}/gap-coach` - profile gap analysis/actions
 - `GET /locations` - countries/states/cities
 - `GET /stats` - homepage aggregate stats
 - `GET /exams/config` - full academic exam config (min/max/type/step/notes)
@@ -653,14 +674,13 @@ backend/
       settings.py                 # runtime settings object
     routers/                      # HTTP endpoints layer
       root.py                     # health/version endpoints
-      universities.py             # list/detail/ai-sort/chance/roi/gap-coach endpoints
+      universities.py             # list/detail/ai-sort/chance/roi endpoints
       exams.py                    # exam config + validation endpoints
       languages.py                # language config + validation endpoints
       mentor.py                   # UniMentor ask endpoint
     services/                     # business logic layer (no UI)
       universities.py             # filtering/search/sort/pagination/location stats logic
       ai_scoring.py               # UniFit/UniChance/ROI calculations
-      gap_coach.py                # profile gap analysis/recommendations
       exams.py                    # exam validation logic
       languages.py                # language validation logic
       mentor.py                   # mentor answer generation/orchestration

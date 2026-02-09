@@ -75,6 +75,7 @@ class ProfilePayload(BaseModel):
     budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
     gpa: Optional[float] = Field(default=None, ge=0, le=100)
     major: str = Field(default="", max_length=120)
+    interests: Optional[str] = Field(default=None, max_length=1200)
     studyMode: str = Field(default="", max_length=40)
     fundingType: str = Field(default="", max_length=20)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
@@ -84,6 +85,11 @@ class ProfilePayload(BaseModel):
     @classmethod
     def _normalize_text_fields(cls, value: Any) -> str:
         return _strip_or_empty(value)
+
+    @field_validator("interests", mode="before")
+    @classmethod
+    def _normalize_optional_interests(cls, value: Any) -> Optional[str]:
+        return _strip_or_none(value)
 
 
 class UniversitiesAiSortRequest(BaseModel):
@@ -128,10 +134,6 @@ class ProfileOnlyRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     profile: ProfilePayload = Field(default_factory=ProfilePayload)
-
-
-class GapCoachRequest(ProfileOnlyRequest):
-    top_n_actions: int = Field(default=3, ge=1, le=6)
 
 
 class MentorAskRequest(BaseModel):

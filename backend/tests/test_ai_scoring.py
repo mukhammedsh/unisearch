@@ -1,9 +1,58 @@
 import unittest
+from unittest.mock import Mock, patch
 
-from app.services.ai_scoring import estimate_uni_chance
+from app.services.ai_scoring import estimate_uni_chance, sort_universities_ai
 
 
 class AiScoringTests(unittest.TestCase):
+    def test_ai_sort_blends_hard_and_ml_scores_when_interests_present(self):
+        items = [
+            {
+                "id": "u1",
+                "name": "University One",
+                "rank": 100,
+                "finance": {"total_cost_year_usd": 30000, "financial_aid": {"merit_based": False, "need_based": False}},
+                "academics": {"acceptance_rate_percent": 45},
+                "admission_tracks": [
+                    {
+                        "id": "default",
+                        "label": "Default",
+                        "requirements": {},
+                        "stats_avg": {},
+                        "scholarships": [],
+                    }
+                ],
+            },
+            {
+                "id": "u2",
+                "name": "University Two",
+                "rank": 100,
+                "finance": {"total_cost_year_usd": 30000, "financial_aid": {"merit_based": False, "need_based": False}},
+                "academics": {"acceptance_rate_percent": 45},
+                "admission_tracks": [
+                    {
+                        "id": "default",
+                        "label": "Default",
+                        "requirements": {},
+                        "stats_avg": {},
+                        "scholarships": [],
+                    }
+                ],
+            },
+        ]
+        profile = {"budget": 40000, "interests": "ai robotics"}
+        fake_ml = Mock()
+        fake_ml.predict_relevance.return_value = {"u1": 1.0, "u2": 0.0}
+
+        with patch("app.services.ai_scoring.get_ml_recommender", return_value=fake_ml):
+            result = sort_universities_ai(items, profile=profile, ai_balance=50, funding_type="any")
+
+        self.assertEqual("u1", result[0].get("id"))
+        self.assertIn("mlScore", result[0].get("matchData", {}))
+        self.assertIn("hardScore", result[0].get("matchData", {}))
+        self.assertIn("finalScore", result[0].get("matchData", {}))
+        self.assertGreater(float(result[0]["matchData"]["finalScore"]), float(result[1]["matchData"]["finalScore"]))
+
     def test_estimate_uni_chance_returns_valid_shape(self):
         university = {
             "id": "demo-u",
@@ -90,6 +139,38 @@ class AiScoringTests(unittest.TestCase):
 
         self.assertLess(int(chance_b2.get("overallChance", 0)), int(chance_c1.get("overallChance", 0)))
 
+    def test_jlpt_uses_best_lower_score_when_duplicate_exam_entries_exist(self):
+        university = {
+            "id": "jp-demo",
+            "name": "JP Demo",
+            "rank": 80,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 60},
+            "admission_tracks": [
+                {
+                    "id": "jp-track",
+                    "label": "JP Track",
+                    "requirements": {"JLPT_N": 2},
+                    "stats_avg": {"JLPT_N": 2},
+                }
+            ],
+        }
+        profile_worse_only = {
+            "budget": 20000,
+            "exams": [{"id": "JLPT_N", "score": 3}],
+        }
+        profile_with_better_duplicate = {
+            "budget": 20000,
+            "exams": [
+                {"id": "JLPT_N", "score": 3},
+                {"id": "JLPT_N", "score": 1},
+            ],
+        }
+
+        chance_worse = estimate_uni_chance(university, profile_worse_only)
+        chance_better = estimate_uni_chance(university, profile_with_better_duplicate)
+
+        self.assertGreater(int(chance_better.get("overallChance", 0)), int(chance_worse.get("overallChance", 0)))
 
 if __name__ == "__main__":
     unittest.main()
