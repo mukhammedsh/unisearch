@@ -17,7 +17,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Computer Science and Engineering (6-3)",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -31,7 +31,7 @@
           "study_mode": "On-campus"
         },
         {
-          "name": "Engineering",
+          "name": "Electrical Engineering and Computer Science (6-2/6-5)",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -44,6 +44,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -156,6 +159,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://mitadmissions.org/apply/firstyear/getting-started/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.eecs.mit.edu/academics/undergraduate-programs/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.eecs.mit.edu/academics/undergraduate-programs/curriculum/6-3-computer-science-and-engineering/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.eecs.mit.edu/academics/undergraduate-programs/"
       }
     ],
     "description": "MIT is a private research university in Cambridge, Massachusetts, known for science, engineering, and hands-on learning. Its ecosystem connects closely with labs, industry, and startup activity around Kendall Square. Core strengths include artificial intelligence, robotics, computing, energy systems, and advanced materials research.",
@@ -188,7 +203,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computing (CS)",
+          "name": "Computing (BEng/MEng)",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -201,6 +216,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -301,6 +319,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/reference/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/ug/beng-meng-computing/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-visual-computing-robotics-meng/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/ug/beng-meng-computing/"
       }
     ],
     "description": "Imperial College London is a science-focused university with strengths in engineering, medicine, natural sciences, and business. Located in central London, it combines research intensity with strong links to hospitals, industry, and entrepreneurship networks. Key areas include AI, bioengineering, health innovation, climate technologies, and advanced computing.",
@@ -346,6 +376,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -442,6 +475,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://admission.stanford.edu/apply/first-year/forms.html"
+      },
+      {
+        "topic": "programs",
+        "url": "https://majors.stanford.edu/majors/computer-science"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.cs.stanford.edu/admissions/phd-admissions"
+      },
+      {
+        "topic": "formats",
+        "url": "https://majors.stanford.edu/majors/computer-science"
       }
     ],
     "description": "Stanford is a private research university in California with a broad academic portfolio and strong interdisciplinary culture. Its location in Silicon Valley supports close ties with technology companies, startups, and venture ecosystems. Major strengths include computer science, AI, engineering, medicine, and entrepreneurship.",
@@ -487,6 +532,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -585,6 +633,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://college.harvard.edu/admissions/apply/first-year-applicants"
+      },
+      {
+        "topic": "programs",
+        "url": "https://seas.harvard.edu/computer-science"
+      },
+      {
+        "topic": "programs",
+        "url": "https://seas.harvard.edu/computer-science/graduate-program/general-requirements/cs-phd-course-requirements"
+      },
+      {
+        "topic": "formats",
+        "url": "https://seas.harvard.edu/computer-science"
       }
     ],
     "description": "Harvard University is a research university in Cambridge, Massachusetts, with a long academic history and global reach. It brings together undergraduate and graduate schools across arts and sciences, medicine, law, business, and public policy. The university emphasizes rigorous scholarship, interdisciplinary research, and international collaboration.",
@@ -630,6 +690,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -746,6 +809,14 @@
       {
         "topic": "extra_requirements",
         "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/admission-prerequisites.html"
+      },
+      {
+        "topic": "programs",
+        "url": "https://inf.ethz.ch/studies.html"
+      },
+      {
+        "topic": "formats",
+        "url": "https://inf.ethz.ch/studies.html"
       }
     ],
     "description": "ETH Zurich is a science and technology university with international standing in engineering and natural sciences. It combines foundational research with practical innovation and collaboration across academia and industry. High-impact areas include robotics, AI, data science, climate research, and energy systems.",
@@ -778,7 +849,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Computer Science (BComp)",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -791,6 +862,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -891,6 +965,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://nus.edu.sg/oam/docs/default-source/supporting-documents-guides/supporting-documents-guide-%28cat-d_international-students-with-international-qualifications%29.pdf?sfvrsn=a4ed34_4"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.comp.nus.edu.sg/programmes/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.comp.nus.edu.sg/programmes/ug/cs/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.comp.nus.edu.sg/programmes/"
       }
     ],
     "description": "NUS is a comprehensive research university in Singapore with a strong global and Asian orientation. It supports cross-disciplinary study and applied research connected to government, industry, and regional development. Priority areas include computing, engineering, biomedical sciences, sustainability, and entrepreneurship.",
@@ -936,6 +1022,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -998,6 +1087,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/how-to-apply/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.epfl.ch/education/master/programs/computer-science/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/"
       }
     ],
     "description": "EPFL is a leading Swiss technical university in Lausanne focused on education, research, and innovation. Its campuses host an international community and strong partnerships with laboratories, startups, and industry. Research strengths include digital technologies, AI, robotics, life sciences, and energy systems.",
@@ -1030,7 +1131,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Informatics (CS)",
+          "name": "Informatics",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1044,6 +1145,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -1096,6 +1200,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://www.tum.de/en/studies/application/application-info-portal/document-requirements"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-master-of-science-msc"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
       }
     ],
     "description": "TUM is a German research university with strong schools in engineering, natural sciences, medicine, and management. It is known for an entrepreneurial culture and active technology transfer with industry and startup partners. Key focus areas include AI, mobility, aerospace, energy, and health technologies.",
@@ -1141,6 +1257,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -1239,6 +1358,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://www.ouac.on.ca/guide/undergrad-toronto"
+      },
+      {
+        "topic": "programs",
+        "url": "https://web.cs.toronto.edu/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://web.cs.toronto.edu/graduate/msc"
+      },
+      {
+        "topic": "formats",
+        "url": "https://web.cs.toronto.edu/"
       }
     ],
     "description": "The University of Toronto is a major public research university with campuses in Toronto and nearby regions. It offers extensive programs across science, engineering, medicine, business, humanities, and social sciences. The university is strongly associated with research output, urban partnerships, and international student diversity.",
@@ -1271,7 +1402,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Computer Science and Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1284,6 +1415,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -1390,6 +1524,18 @@
       {
         "topic": "extra_requirements",
         "url": "https://admission.cuhk.edu.hk/international/faq.html"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.cse.cuhk.edu.hk/about/department/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.cse.cuhk.edu.hk/admission/mphil-phd/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.cse.cuhk.edu.hk/about/department/"
       }
     ],
     "description": "CUHK is a comprehensive university in Hong Kong with a collegiate system and bilingual academic environment. It combines Chinese cultural heritage with global research orientation across medicine, engineering, business, and social sciences. The university emphasizes whole-person education, innovation, and interdisciplinary collaboration.",
@@ -1449,6 +1595,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -1560,7 +1709,11 @@
       },
       {
         "topic": "programs",
-        "url": "https://www.peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_PROSPECTUS_2024.pdf"
+        "url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html"
       }
     ],
     "description": "The University of Tokyo is a leading national university with broad strengths across sciences, engineering, medicine, and humanities. It is known for research-driven education and collaboration across advanced laboratories and institutes. Major areas include AI, robotics, materials, life sciences, and public policy research.",
@@ -1593,11 +1746,9 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Computer Science and Engineering",
           "study_levels": [
-            "Bachelor",
-            "Master",
-            "PhD"
+            "Bachelor"
           ],
           "acceptance_rate_percent": 15,
           "duration": "4 years",
@@ -1608,9 +1759,8 @@
           "study_mode": "On-campus"
         },
         {
-          "name": "Engineering",
+          "name": "Computer Science and Engineering (Graduate)",
           "study_levels": [
-            "Bachelor",
             "Master",
             "PhD"
           ],
@@ -1622,6 +1772,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -1750,6 +1903,14 @@
       {
         "topic": "extra_requirements",
         "url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/01/AdmissionsforUndergraduate_Fall2025.pdf"
+      },
+      {
+        "topic": "programs",
+        "url": "https://cse.snu.ac.kr/en/academics"
+      },
+      {
+        "topic": "formats",
+        "url": "https://cse.snu.ac.kr/en/academics"
       }
     ],
     "description": "Seoul National University is a flagship public research university in South Korea with comprehensive academic fields. Its schools and institutes support high-level research in engineering, medicine, natural sciences, and social sciences. The university has strong national impact and increasing global research collaboration.",
@@ -1782,7 +1943,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Computer Science and Engineering",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -1809,6 +1970,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -1893,12 +2057,20 @@
     ],
     "verified_sources": [
       {
-        "topic": "programs",
-        "url": "https://www.delta.tudelft.nl/en/article/number-students-delft-higher-education-still-growing"
-      },
-      {
         "topic": "extra_requirements",
         "url": "https://www.scribd.com/document/880887339/Regulation-Matching-Selection-Criteria-Procedure-BSc-Computer-Science-Engineering-TUD25-26"
+      },
+      {
+        "topic": "programs",
+        "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/"
       }
     ],
     "description": "TU Delft is a technical university in the Netherlands focused on engineering, design, and technology for societal challenges. Its research and education emphasize practical impact through laboratories, prototypes, and collaboration with industry. Prominent domains include aerospace, civil infrastructure, robotics, sustainability, and digital engineering.",
@@ -1958,6 +2130,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -2053,7 +2228,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://www.kaist.ac.kr/en/academics"
+        "url": "https://engineering.kaist.ac.kr/education/department"
+      },
+      {
+        "topic": "programs",
+        "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guide%20for%20international%20applicants%202024.pdf"
+      },
+      {
+        "topic": "formats",
+        "url": "https://engineering.kaist.ac.kr/education/department"
       }
     ],
     "description": "KAIST is a science and technology research university in Daejeon with a strong innovation and startup orientation. It focuses on advanced graduate and undergraduate training linked to national and global technology priorities. Core strengths include AI, semiconductors, robotics, materials, and future mobility systems.",
@@ -2086,7 +2269,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
+          "name": "Computer Science and Technology",
           "study_levels": [
             "Bachelor",
             "Master",
@@ -2115,6 +2298,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -2220,7 +2406,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://international.join-tsinghua.edu.cn/Divisions.html"
+        "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
+      },
+      {
+        "topic": "programs",
+        "url": "https://apply.join-tsinghua.edu.cn/international/res/file/2025_Undergraduate_Divisions_for_International_Students_of_Tsinghua_University.pdf"
+      },
+      {
+        "topic": "formats",
+        "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
       }
     ],
     "description": "Tsinghua University is a comprehensive research university in Beijing with strong foundations in engineering and science. It has expanded across public policy, management, architecture, and interdisciplinary research programs. The university is recognized for high research intensity in AI, advanced manufacturing, materials, and climate-related technologies.",
@@ -2292,6 +2486,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -2479,7 +2676,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://nu.edu.kz/admissions/undergraduate-admissions/list-of-undergraduate-programs"
+        "url": "https://nu.edu.kz/admissions/programs/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://seds.nu.edu.kz/undergraduate_programs"
+      },
+      {
+        "topic": "formats",
+        "url": "https://nu.edu.kz/admissions/programs/"
       }
     ],
     "description": "Nazarbayev University is an autonomous research university in Astana with English-medium education and international partnerships. Its schools span engineering, sciences, medicine, public policy, and business, with emphasis on modern research standards. Priority areas include energy, digital technologies, data science, and regional development challenges.",
@@ -2535,6 +2740,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -2636,7 +2844,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://www.iup.kyoto-u.ac.jp/wp-content/uploads/2025/10/UndergraduateAdmissionGuide2026_web.pdf"
+        "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html"
+      },
+      {
+        "topic": "programs",
+        "url": "https://www.iup.kyoto-u.ac.jp/academics/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html"
       }
     ],
     "description": "Kyoto University is a national research university known for academic freedom and a strong fundamental research tradition. It has broad strengths in natural sciences, engineering, medicine, and interdisciplinary scholarship. The university environment supports independent inquiry and long-term scientific discovery.",
@@ -2696,6 +2912,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -2801,11 +3020,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://study.unimelb.edu.au/find/majors/major/computing-and-software-systems/"
+        "url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure"
       },
       {
         "topic": "programs",
-        "url": "https://study.unimelb.edu.au/find/majors/engineering-technology-majors"
+        "url": "https://edsc.unimelb.edu.au/course-planning/sample-course-plans/computing"
+      },
+      {
+        "topic": "formats",
+        "url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure"
       }
     ],
     "description": "The University of Melbourne is a research-intensive public university with a major urban campus in Melbourne. It offers broad programs from engineering and computing to health sciences, business, law, and arts. The university is known for international engagement, strong graduate pathways, and interdisciplinary research culture.",
@@ -2865,6 +3088,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -2964,11 +3190,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://sdu.edu.kz/language/en/information-system-example/"
+        "url": "https://sdu.edu.kz/en/information-system-example/"
       },
       {
         "topic": "programs",
-        "url": "https://sdu.edu.kz/language/en/business-information-systems/"
+        "url": "https://sdu.edu.kz/en/business-information-systems/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://sdu.edu.kz/en/information-system-example/"
       }
     ],
     "description": "Suleyman Demirel University is a private university in Kazakhstan with programs in IT, engineering, education, business, and law. The campus emphasizes practical training, multilingual learning, and student development in a modern academic setting. It continues to expand applied research and industry-oriented initiatives for regional workforce needs.",
@@ -3026,6 +3256,9 @@
           ],
           "study_mode": "On-campus"
         }
+      ],
+      "formats": [
+        "On-campus"
       ]
     },
     "finance": {
@@ -3135,11 +3368,15 @@
       },
       {
         "topic": "programs",
-        "url": "https://astanait.edu.kz/en/education/programs/bachelor/software-engineering/"
+        "url": "https://astanait.edu.kz/en/software-engineering-2/"
       },
       {
         "topic": "programs",
-        "url": "https://astanait.edu.kz/en/education/programs/bachelor/computer-science/"
+        "url": "https://astanait.edu.kz/en/computer-science-2/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://astanait.edu.kz/en/software-engineering-2/"
       }
     ],
     "description": "Astana IT University is a Kazakhstan university focused on digital transformation and ICT education. Its academic model emphasizes software engineering, cybersecurity, data technologies, and industry-linked projects. The university positions entrepreneurship and practical innovation as core elements of student training.",

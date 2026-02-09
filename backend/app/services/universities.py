@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import file_mtime
@@ -61,6 +62,105 @@ def _to_float(x: Any) -> Optional[float]:
         return float(x)
     except (ValueError, TypeError):
         return None
+
+
+_CANONICAL_MAJORS = [
+    "computer science",
+    "engineering",
+    "business",
+    "medicine",
+    "natural sciences",
+    "economics",
+    "physics",
+    "mathematics",
+    "law",
+    "social sciences",
+    "architecture",
+    "psychology",
+    "humanities",
+    "design",
+    "life sciences",
+    "education",
+    "agriculture",
+]
+
+_MAJOR_PHRASES: Dict[str, List[str]] = {
+    "computer science": [
+        "computer science",
+        "computing",
+        "informatics",
+        "software engineering",
+        "information systems",
+        "computer engineering",
+        "computer science and engineering",
+        "computer science and technology",
+        "cs",
+        "eecs",
+    ],
+    "engineering": [
+        "engineering",
+        "aerospace",
+        "mechanical",
+        "electrical",
+        "civil",
+        "chemical",
+        "industrial",
+        "mechatronics",
+        "robotics",
+    ],
+    "business": ["business", "management", "finance", "marketing", "accounting", "mba"],
+    "medicine": ["medicine", "medical", "clinical", "nursing", "pharmacy", "dentistry"],
+    "natural sciences": ["natural sciences", "natural science", "chemistry", "earth science", "environmental science"],
+    "economics": ["economics", "economy", "econometrics"],
+    "physics": ["physics", "astrophysics"],
+    "mathematics": ["mathematics", "math", "statistics", "actuarial"],
+    "law": ["law", "legal", "jurisprudence", "llb", "jd"],
+    "social sciences": ["social sciences", "social science", "sociology", "political science", "anthropology"],
+    "architecture": ["architecture", "urban planning", "built environment"],
+    "psychology": ["psychology", "psychological"],
+    "humanities": ["humanities", "history", "philosophy", "linguistics", "literature", "classics"],
+    "design": ["design", "graphic design", "industrial design", "interaction design", "ux", "ui", "product design"],
+    "life sciences": ["life sciences", "life science", "biology", "biotechnology", "biomedical", "genetics", "neuroscience"],
+    "education": ["education", "teaching", "pedagogy", "curriculum", "teacher"],
+    "agriculture": ["agriculture", "agricultural", "agronomy", "horticulture"],
+}
+
+
+def _normalize_major_text(value: Any) -> str:
+    text = _safe_lower(value).replace("&", " and ")
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _contains_phrase(text: str, phrase: str) -> bool:
+    if not text or not phrase:
+        return False
+    pattern = r"\b" + re.escape(phrase).replace(r"\ ", r"\s+") + r"\b"
+    return re.search(pattern, text) is not None
+
+
+def _major_tags_from_text(value: Any) -> List[str]:
+    text = _normalize_major_text(value)
+    if not text:
+        return []
+    out: List[str] = []
+    for canonical in _CANONICAL_MAJORS:
+        phrases = _MAJOR_PHRASES.get(canonical, [canonical])
+        if any(_contains_phrase(text, _normalize_major_text(p)) for p in phrases):
+            out.append(canonical)
+    return out
+
+
+def _canonical_major(value: Any) -> str:
+    text = _normalize_major_text(value)
+    if not text:
+        return ""
+    if text in _CANONICAL_MAJORS:
+        return text
+    tags = _major_tags_from_text(text)
+    if len(tags) == 1:
+        return tags[0]
+    return ""
 
 
 def _iter_programs(u: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -131,18 +231,32 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
 def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
     programs = _iter_programs(u)
     majors = _get_list(u, ["academics", "majors"])
+    explicit_major_tags = _get_list(u, ["academics", "major_tags"])
     study_levels = _get_list(u, ["academics", "study_levels"])
     formats = _get_list(u, ["academics", "formats"])
 
     program_names = [p.get("name") for p in programs]
+    program_major_tags: List[Any] = []
     program_levels: List[Any] = []
     for p in programs:
+        p_tags = p.get("major_tags")
+        if isinstance(p_tags, list):
+            program_major_tags.extend(p_tags)
+        elif p_tags is not None:
+            program_major_tags.append(p_tags)
         lv = p.get("study_levels")
         if isinstance(lv, list):
             program_levels.extend(lv)
         else:
             program_levels.append(lv)
     program_formats = [p.get("study_mode") for p in programs]
+    major_exact = _uniq_non_empty(
+        [
+            tag
+            for value in (majors + program_names + explicit_major_tags + program_major_tags)
+            for tag in _major_tags_from_text(value)
+        ]
+    )
 
     return {
         "name": _safe_lower(u.get("name")),
@@ -152,6 +266,7 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
         "size": _safe_lower(_get_nested(u, ["student_life", "size"])),
         "majors": [_safe_lower(x) for x in majors if x],
         "program_names": [_safe_lower(x) for x in program_names if x],
+        "major_exact": [_safe_lower(x) for x in major_exact if x],
         "study_levels": [_safe_lower(x) for x in study_levels if x] + [_safe_lower(x) for x in program_levels if x],
         "formats": [_safe_lower(x) for x in formats if x] + [_safe_lower(x) for x in program_formats if x],
     }
@@ -345,13 +460,20 @@ def list_universities(
         pairs = [(u, m) for (u, m) in pairs if m.get("city", "") == cc]
 
     if major:
-        m = _safe_lower(major)
+        m_exact = _canonical_major(major)
+        m_raw = _normalize_major_text(major)
         pairs = [
             (u, meta_row)
             for (u, meta_row) in pairs
             if (
-                any(m in x for x in meta_row.get("majors", [])) or
-                any(m in x for x in meta_row.get("program_names", []))
+                (bool(m_exact) and any(x == m_exact for x in meta_row.get("major_exact", [])))
+                or (
+                    not m_exact
+                    and (
+                        any(_normalize_major_text(x) == m_raw for x in meta_row.get("majors", []))
+                        or any(_normalize_major_text(x) == m_raw for x in meta_row.get("program_names", []))
+                    )
+                )
             )
         ]
 
