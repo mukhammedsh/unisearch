@@ -48,27 +48,37 @@ document.addEventListener("DOMContentLoaded", async () => {
   applyAINameConfig();
   initLanguagesPanel();
 
-  // Load configs early so UI and algorithms match previous behavior.
-  ensureExamConfig();
-  ensureLanguageConfig();
-
   const badge = document.querySelector(".hero-badge");
   const path = window.location.pathname;
+  const isUniversitiesPage = path.includes("universities.html") || document.getElementById("universitiesList");
 
   if (badge && window.APP_VERSION) {
     badge.textContent = `${window.APP_VERSION} • Infomatrix 2026`;
   }
 
-  if (path.includes("universities.html") || document.getElementById("universitiesList")) {
+  if (isUniversitiesPage) {
+    // Keep universities first paint focused on list data; preload configs shortly after.
+    window.setTimeout(() => {
+      ensureExamConfig();
+      ensureLanguageConfig();
+    }, 1200);
     ensureCityDatabase();
     initUniversitiesPage();
   } else if (path.includes("guide.html") || document.getElementById("guidePage")) {
+    ensureExamConfig();
+    ensureLanguageConfig();
     initGuidePage();
   } else if (path.includes("university.html") || document.getElementById("detailCard")) {
+    ensureExamConfig();
+    ensureLanguageConfig();
     initUniversityPage();
   } else if (path.includes("ranking.html") || document.getElementById("rankingList")) {
+    ensureExamConfig();
+    ensureLanguageConfig();
     initRankingPage();
   } else {
+    ensureExamConfig();
+    ensureLanguageConfig();
     initHomePageStats();
   }
 });

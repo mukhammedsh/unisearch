@@ -289,6 +289,7 @@ export function initUniversitiesPage() {
     let focusUniDone = false;
 
     const CACHE_TTL_MS = 30000;
+    const AI_FAST_FALLBACK_MS = 900;
     let lastFetchKey = "";
     let lastFetchPayload = null;
     let lastFetchAt = 0;
@@ -299,6 +300,7 @@ export function initUniversitiesPage() {
     let aiFetchController = null;
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
+    let hasInitialListPaint = false;
 
     const hasProfileEvidence = (profile) => {
         const exams = Array.isArray(profile?.exams) ? profile.exams : [];
@@ -910,6 +912,14 @@ export function initUniversitiesPage() {
         return payload;
     }
 
+    function buildFallbackListParams(apiParams) {
+        const fallback = new URLSearchParams(apiParams.toString());
+        fallback.set("sort", "name_asc");
+        fallback.set("page", String(state.page));
+        fallback.set("limit", String(state.limit));
+        return fallback;
+    }
+
     function applyToForm() {
         if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
@@ -1090,6 +1100,33 @@ export function initUniversitiesPage() {
         return parsed;
     }
 
+    function renderFetchedData(data) {
+        const items = data.items || [];
+        const total = data.total || 0;
+
+        if (state.viewMode === "list") {
+            if (el.total) el.total.textContent = String(total);
+            hasInitialListPaint = true;
+
+            if (!items.length) {
+                if (el.state) el.state.textContent = "No universities found.";
+                return;
+            }
+            if (el.state) el.state.textContent = "";
+            const profile = loadProfile();
+            const userBudget = parseFloat(profile.budget);
+            el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
+            renderPagination(total);
+            return;
+        }
+
+        if (state.viewMode === "map") {
+            if (el.total) el.total.textContent = String(items.length);
+            updateMapMarkers(items);
+            if (el.state) el.state.textContent = "";
+        }
+    }
+
     async function fetchAndRender() {
         const runSeq = ++fetchRunSeq;
         setUniversitiesLoading(true);
@@ -1103,32 +1140,52 @@ export function initUniversitiesPage() {
 
         try {
         const isAiSort = (state.sort === "uni_ai") && state.viewMode === "list";
-        const data = isAiSort
-            ? await fetchUniversitiesAiSort(buildAiSortPayload())
-            : await fetchUniversities(apiParams);
+        if (isAiSort) {
+            const canUseFallback = !hasInitialListPaint && state.page === 1;
+            if (!canUseFallback) {
+                const aiData = await fetchUniversitiesAiSort(buildAiSortPayload());
+                if (aiData?.__aborted) return;
+                if (runSeq !== fetchRunSeq) return;
+                renderFetchedData(aiData);
+                return;
+            }
+
+            const aiPayload = buildAiSortPayload();
+            const aiPromise = fetchUniversitiesAiSort(aiPayload).catch((err) => {
+                if (err?.name !== "AbortError") {
+                    console.warn("AI sort request failed, fallback list is kept.", err);
+                }
+                return null;
+            });
+            const fastAiData = await Promise.race([
+                aiPromise,
+                new Promise((resolve) => window.setTimeout(() => resolve(null), AI_FAST_FALLBACK_MS)),
+            ]);
+
+            if (fastAiData && !fastAiData.__aborted) {
+                if (runSeq !== fetchRunSeq) return;
+                renderFetchedData(fastAiData);
+                return;
+            }
+
+            const fallbackData = await fetchUniversities(buildFallbackListParams(apiParams));
+            if (fallbackData?.__aborted) return;
+            if (runSeq !== fetchRunSeq) return;
+            renderFetchedData(fallbackData);
+
+            aiPromise.then((lateAiData) => {
+                if (!lateAiData || lateAiData.__aborted) return;
+                if (runSeq !== fetchRunSeq) return;
+                if (state.sort !== "uni_ai" || state.viewMode !== "list") return;
+                renderFetchedData(lateAiData);
+            });
+            return;
+        }
+
+        const data = await fetchUniversities(apiParams);
         if (data?.__aborted) return;
         if (runSeq !== fetchRunSeq) return;
-        const items = data.items || [];
-        const total = data.total || 0;
-
-        if (state.viewMode === 'list') {
-            if (el.total) el.total.textContent = String(total);
-            
-            if (!items.length) { 
-                if (el.state) el.state.textContent = "No universities found."; 
-                return; 
-            }
-            if (el.state) el.state.textContent = "";
-            const profile = loadProfile();
-            const userBudget = parseFloat(profile.budget);
-            
-            el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
-            renderPagination(total);
-        } else if (state.viewMode === 'map') {
-            if (el.total) el.total.textContent = String(items.length);
-            updateMapMarkers(items);
-            if (el.state) el.state.textContent = "";
-        }
+        renderFetchedData(data);
 
         } catch (err) {
         if (runSeq !== fetchRunSeq) return;
