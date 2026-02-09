@@ -1495,10 +1495,6 @@ export async function initUniversityPage() {
          const description = u.description
             ? `<p class="uni-description">${escapeHtml(String(u.description)).replace(/\n/g, "<br>")}</p>`
             : "";
-         const descriptionSourceUrl = typeof u.description_source === "string" ? u.description_source.trim() : "";
-         const descriptionSource = /^https?:\/\//i.test(descriptionSourceUrl)
-            ? `<div class="uni-description-source">Source: <a href="${escapeHtml(descriptionSourceUrl)}" target="_blank" rel="noopener noreferrer">official page</a></div>`
-            : "";
          const tags = Array.isArray(u.tags)
             ? u.tags.map((t) => String(t || "").trim()).filter(Boolean)
             : (typeof u.tags === "string" ? u.tags.split(",").map((t) => t.trim()).filter(Boolean) : []);
@@ -1519,7 +1515,6 @@ export async function initUniversityPage() {
          
          extraDiv.innerHTML = `
             ${description}
-            ${descriptionSource}
             ${tagsHtml}
             <div class="d-kv"><span>Total Students</span><span>${studentCount}</span></div>
             <div class="d-kv" style="border-bottom:none;"><span>Study Formats</span><span>${formats || escapeHtml("On-campus")}</span></div>
