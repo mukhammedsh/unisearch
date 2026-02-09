@@ -157,7 +157,18 @@
         "topic": "extra_requirements",
         "url": "https://mitadmissions.org/apply/firstyear/getting-started/"
       }
-    ]
+    ],
+    "description": "MIT is a private research university in Cambridge, Massachusetts, known for science, engineering, and hands-on learning. Its ecosystem connects closely with labs, industry, and startup activity around Kendall Square. Core strengths include artificial intelligence, robotics, computing, energy systems, and advanced materials research.",
+    "tags": [
+      "Research",
+      "STEM",
+      "AI",
+      "Robotics",
+      "Startups",
+      "Urban",
+      "Innovation"
+    ],
+    "description_source": "https://www.mit.edu/about/"
   },
   {
     "id": "imperial-college-london-uk",
@@ -291,7 +302,18 @@
         "topic": "extra_requirements",
         "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/reference/"
       }
-    ]
+    ],
+    "description": "Imperial College London is a science-focused university with strengths in engineering, medicine, natural sciences, and business. Located in central London, it combines research intensity with strong links to hospitals, industry, and entrepreneurship networks. Key areas include AI, bioengineering, health innovation, climate technologies, and advanced computing.",
+    "tags": [
+      "Research",
+      "Engineering",
+      "Medicine",
+      "AI",
+      "Urban",
+      "Innovation",
+      "Global"
+    ],
+    "description_source": "https://www.imperial.ac.uk/about/introduction-to-imperial/"
   },
   {
     "id": "stanford-university-usa-ca",
@@ -421,7 +443,18 @@
         "topic": "extra_requirements",
         "url": "https://admission.stanford.edu/apply/first-year/forms.html"
       }
-    ]
+    ],
+    "description": "Stanford is a private research university in California with a broad academic portfolio and strong interdisciplinary culture. Its location in Silicon Valley supports close ties with technology companies, startups, and venture ecosystems. Major strengths include computer science, AI, engineering, medicine, and entrepreneurship.",
+    "tags": [
+      "Research",
+      "Silicon Valley",
+      "AI",
+      "Engineering",
+      "Startups",
+      "Interdisciplinary",
+      "Innovation"
+    ],
+    "description_source": "https://www.stanford.edu/about/"
   },
   {
     "id": "harvard-usa-cambridge",
@@ -553,7 +586,18 @@
         "topic": "extra_requirements",
         "url": "https://college.harvard.edu/admissions/apply/first-year-applicants"
       }
-    ]
+    ],
+    "description": "Harvard University is a research university in Cambridge, Massachusetts, with a long academic history and global reach. It brings together undergraduate and graduate schools across arts and sciences, medicine, law, business, and public policy. The university emphasizes rigorous scholarship, interdisciplinary research, and international collaboration.",
+    "tags": [
+      "Research",
+      "Liberal Arts",
+      "Medicine",
+      "Policy",
+      "Global",
+      "Interdisciplinary",
+      "Prestige"
+    ],
+    "description_source": "https://www.harvard.edu/about/"
   },
   {
     "id": "eth-zurich-ch-zurich",
@@ -703,7 +747,18 @@
         "topic": "extra_requirements",
         "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/admission-prerequisites.html"
       }
-    ]
+    ],
+    "description": "ETH Zurich is a science and technology university with international standing in engineering and natural sciences. It combines foundational research with practical innovation and collaboration across academia and industry. High-impact areas include robotics, AI, data science, climate research, and energy systems.",
+    "tags": [
+      "Research",
+      "Engineering",
+      "Natural Sciences",
+      "AI",
+      "Robotics",
+      "Innovation",
+      "Europe"
+    ],
+    "description_source": "https://ethz.ch/en/the-eth-zurich/profile.html"
   },
   {
     "id": "national-university-of-singapore-sg-singapore",
@@ -837,7 +892,18 @@
         "topic": "extra_requirements",
         "url": "https://nus.edu.sg/oam/docs/default-source/supporting-documents-guides/supporting-documents-guide-%28cat-d_international-students-with-international-qualifications%29.pdf?sfvrsn=a4ed34_4"
       }
-    ]
+    ],
+    "description": "NUS is a comprehensive research university in Singapore with a strong global and Asian orientation. It supports cross-disciplinary study and applied research connected to government, industry, and regional development. Priority areas include computing, engineering, biomedical sciences, sustainability, and entrepreneurship.",
+    "tags": [
+      "Research",
+      "Asia",
+      "Computing",
+      "Engineering",
+      "Biomedical",
+      "Sustainability",
+      "Global"
+    ],
+    "description_source": "https://www.nus.edu.sg/about"
   },
   {
     "id": "epfl-ch-lausanne",
@@ -933,7 +999,18 @@
         "topic": "extra_requirements",
         "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/how-to-apply/"
       }
-    ]
+    ],
+    "description": "EPFL is a leading Swiss technical university in Lausanne focused on education, research, and innovation. Its campuses host an international community and strong partnerships with laboratories, startups, and industry. Research strengths include digital technologies, AI, robotics, life sciences, and energy systems.",
+    "tags": [
+      "Research",
+      "Engineering",
+      "AI",
+      "Robotics",
+      "Life Sciences",
+      "Startups",
+      "Innovation"
+    ],
+    "description_source": "https://www.epfl.ch/about/"
   },
   {
     "id": "technical-university-of-munich-de-munich",
@@ -1020,7 +1097,18 @@
         "topic": "extra_requirements",
         "url": "https://www.tum.de/en/studies/application/application-info-portal/document-requirements"
       }
-    ]
+    ],
+    "description": "TUM is a German research university with strong schools in engineering, natural sciences, medicine, and management. It is known for an entrepreneurial culture and active technology transfer with industry and startup partners. Key focus areas include AI, mobility, aerospace, energy, and health technologies.",
+    "tags": [
+      "Research",
+      "Engineering",
+      "AI",
+      "Entrepreneurship",
+      "Mobility",
+      "Industry Links",
+      "Innovation"
+    ],
+    "description_source": "https://www.tum.de/en/about-tum"
   },
   {
     "id": "university-of-toronto-ca-toronto",
@@ -1152,7 +1240,18 @@
         "topic": "extra_requirements",
         "url": "https://www.ouac.on.ca/guide/undergrad-toronto"
       }
-    ]
+    ],
+    "description": "The University of Toronto is a major public research university with campuses in Toronto and nearby regions. It offers extensive programs across science, engineering, medicine, business, humanities, and social sciences. The university is strongly associated with research output, urban partnerships, and international student diversity.",
+    "tags": [
+      "Research",
+      "Public University",
+      "Urban",
+      "AI",
+      "Medicine",
+      "Engineering",
+      "Global"
+    ],
+    "description_source": "https://www.utoronto.ca/about-u-of-t"
   },
   {
     "id": "cuhk-hk-shatin",
@@ -1292,7 +1391,18 @@
         "topic": "extra_requirements",
         "url": "https://admission.cuhk.edu.hk/international/faq.html"
       }
-    ]
+    ],
+    "description": "CUHK is a comprehensive university in Hong Kong with a collegiate system and bilingual academic environment. It combines Chinese cultural heritage with global research orientation across medicine, engineering, business, and social sciences. The university emphasizes whole-person education, innovation, and interdisciplinary collaboration.",
+    "tags": [
+      "Research",
+      "Collegiate",
+      "Bilingual",
+      "Medicine",
+      "Engineering",
+      "Business",
+      "Asia"
+    ],
+    "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
   },
   {
     "id": "university-of-tokyo-jp-tokyo",
@@ -1452,7 +1562,18 @@
         "topic": "programs",
         "url": "https://www.peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_PROSPECTUS_2024.pdf"
       }
-    ]
+    ],
+    "description": "The University of Tokyo is a leading national university with broad strengths across sciences, engineering, medicine, and humanities. It is known for research-driven education and collaboration across advanced laboratories and institutes. Major areas include AI, robotics, materials, life sciences, and public policy research.",
+    "tags": [
+      "Research",
+      "National University",
+      "Engineering",
+      "AI",
+      "Robotics",
+      "Life Sciences",
+      "Global"
+    ],
+    "description_source": "https://www.u-tokyo.ac.jp/en/about/overview.html"
   },
   {
     "id": "seoul-national-university-kr-seoul",
@@ -1630,7 +1751,18 @@
         "topic": "extra_requirements",
         "url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/01/AdmissionsforUndergraduate_Fall2025.pdf"
       }
-    ]
+    ],
+    "description": "Seoul National University is a flagship public research university in South Korea with comprehensive academic fields. Its schools and institutes support high-level research in engineering, medicine, natural sciences, and social sciences. The university has strong national impact and increasing global research collaboration.",
+    "tags": [
+      "Research",
+      "Public University",
+      "Engineering",
+      "Medicine",
+      "Asia",
+      "Comprehensive",
+      "Global"
+    ],
+    "description_source": "https://en.snu.ac.kr/about/overview"
   },
   {
     "id": "delft-university-of-technology-nl-delft",
@@ -1768,7 +1900,18 @@
         "topic": "extra_requirements",
         "url": "https://www.scribd.com/document/880887339/Regulation-Matching-Selection-Criteria-Procedure-BSc-Computer-Science-Engineering-TUD25-26"
       }
-    ]
+    ],
+    "description": "TU Delft is a technical university in the Netherlands focused on engineering, design, and technology for societal challenges. Its research and education emphasize practical impact through laboratories, prototypes, and collaboration with industry. Prominent domains include aerospace, civil infrastructure, robotics, sustainability, and digital engineering.",
+    "tags": [
+      "Research",
+      "Engineering",
+      "Design",
+      "Aerospace",
+      "Robotics",
+      "Sustainability",
+      "Europe"
+    ],
+    "description_source": "https://www.tudelft.nl/en/about-tu-delft"
   },
   {
     "id": "kaist-kr-daejeon",
@@ -1912,7 +2055,18 @@
         "topic": "programs",
         "url": "https://www.kaist.ac.kr/en/academics"
       }
-    ]
+    ],
+    "description": "KAIST is a science and technology research university in Daejeon with a strong innovation and startup orientation. It focuses on advanced graduate and undergraduate training linked to national and global technology priorities. Core strengths include AI, semiconductors, robotics, materials, and future mobility systems.",
+    "tags": [
+      "Research",
+      "Science and Technology",
+      "AI",
+      "Semiconductors",
+      "Robotics",
+      "Startups",
+      "Innovation"
+    ],
+    "description_source": "https://www.kaist.ac.kr/en/html/kaist/010101.html"
   },
   {
     "id": "tsinghua-university-cn-beijing",
@@ -2068,7 +2222,18 @@
         "topic": "programs",
         "url": "https://international.join-tsinghua.edu.cn/Divisions.html"
       }
-    ]
+    ],
+    "description": "Tsinghua University is a comprehensive research university in Beijing with strong foundations in engineering and science. It has expanded across public policy, management, architecture, and interdisciplinary research programs. The university is recognized for high research intensity in AI, advanced manufacturing, materials, and climate-related technologies.",
+    "tags": [
+      "Research",
+      "Engineering",
+      "AI",
+      "Manufacturing",
+      "Policy",
+      "Interdisciplinary",
+      "Asia"
+    ],
+    "description_source": "https://www.tsinghua.edu.cn/en/About.htm"
   },
   {
     "id": "nazarbayev-university-kaz-astana",
@@ -2316,7 +2481,18 @@
         "topic": "programs",
         "url": "https://nu.edu.kz/admissions/undergraduate-admissions/list-of-undergraduate-programs"
       }
-    ]
+    ],
+    "description": "Nazarbayev University is an autonomous research university in Astana with English-medium education and international partnerships. Its schools span engineering, sciences, medicine, public policy, and business, with emphasis on modern research standards. Priority areas include energy, digital technologies, data science, and regional development challenges.",
+    "tags": [
+      "Research",
+      "English-medium",
+      "Engineering",
+      "Data Science",
+      "Public Policy",
+      "Kazakhstan",
+      "Innovation"
+    ],
+    "description_source": "https://nu.edu.kz/about-us"
   },
   {
     "id": "kyoto-university-jp-kyoto",
@@ -2462,7 +2638,18 @@
         "topic": "programs",
         "url": "https://www.iup.kyoto-u.ac.jp/wp-content/uploads/2025/10/UndergraduateAdmissionGuide2026_web.pdf"
       }
-    ]
+    ],
+    "description": "Kyoto University is a national research university known for academic freedom and a strong fundamental research tradition. It has broad strengths in natural sciences, engineering, medicine, and interdisciplinary scholarship. The university environment supports independent inquiry and long-term scientific discovery.",
+    "tags": [
+      "Research",
+      "Academic Freedom",
+      "Natural Sciences",
+      "Engineering",
+      "Medicine",
+      "Japan",
+      "Fundamental Research"
+    ],
+    "description_source": "https://www.kyoto-u.ac.jp/en/about/profile"
   },
   {
     "id": "university-of-melbourne-au-melbourne",
@@ -2620,7 +2807,18 @@
         "topic": "programs",
         "url": "https://study.unimelb.edu.au/find/majors/engineering-technology-majors"
       }
-    ]
+    ],
+    "description": "The University of Melbourne is a research-intensive public university with a major urban campus in Melbourne. It offers broad programs from engineering and computing to health sciences, business, law, and arts. The university is known for international engagement, strong graduate pathways, and interdisciplinary research culture.",
+    "tags": [
+      "Research",
+      "Public University",
+      "Urban",
+      "Engineering",
+      "Health Sciences",
+      "Interdisciplinary",
+      "Global"
+    ],
+    "description_source": "https://about.unimelb.edu.au/"
   },
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
@@ -2772,7 +2970,18 @@
         "topic": "programs",
         "url": "https://sdu.edu.kz/language/en/business-information-systems/"
       }
-    ]
+    ],
+    "description": "Suleyman Demirel University is a private university in Kazakhstan with programs in IT, engineering, education, business, and law. The campus emphasizes practical training, multilingual learning, and student development in a modern academic setting. It continues to expand applied research and industry-oriented initiatives for regional workforce needs.",
+    "tags": [
+      "Private University",
+      "Kazakhstan",
+      "IT",
+      "Engineering",
+      "Multilingual",
+      "Applied Learning",
+      "Regional Impact"
+    ],
+    "description_source": "https://sdu.edu.kz/language/en/why-sdu/"
   },
   {
     "id": "astana-it-university-kaz-astana",
@@ -2932,6 +3141,17 @@
         "topic": "programs",
         "url": "https://astanait.edu.kz/en/education/programs/bachelor/computer-science/"
       }
-    ]
+    ],
+    "description": "Astana IT University is a Kazakhstan university focused on digital transformation and ICT education. Its academic model emphasizes software engineering, cybersecurity, data technologies, and industry-linked projects. The university positions entrepreneurship and practical innovation as core elements of student training.",
+    "tags": [
+      "ICT",
+      "Software Engineering",
+      "Cybersecurity",
+      "Data",
+      "Kazakhstan",
+      "Innovation",
+      "Industry Projects"
+    ],
+    "description_source": "https://astanait.edu.kz/en/university/mission/"
   }
 ]

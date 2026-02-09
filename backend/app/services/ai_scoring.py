@@ -3,7 +3,7 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.services import languages as languages_service
-from app.services.ml_scoring import get_ml_recommender
+from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 
 
 def _to_num(value: Any) -> Optional[float]:
@@ -498,12 +498,20 @@ def sort_universities_ai(
     interest_text = str(profile.get("interests") or "").strip()
 
     ml_scores_by_id: Dict[str, float] = {}
-    use_ml = bool(interest_text)
+    ml_status = get_ml_runtime_status() if interest_text else {"available": False, "message": ""}
+    ml_available = bool(ml_status.get("available"))
+    ml_unavailable_warning = bool(interest_text) and not ml_available
+    ml_warning_message = str(ml_status.get("message") or "") if ml_unavailable_warning else ""
+    use_ml = bool(interest_text) and ml_available
     if use_ml:
         try:
             ml_scores_by_id = get_ml_recommender().predict_relevance(interest_text)
         except Exception:
             ml_scores_by_id = {}
+            use_ml = False
+            ml_available = False
+            ml_unavailable_warning = bool(interest_text)
+            ml_warning_message = "Machine Learning unavailable"
 
     enriched: List[Dict[str, Any]] = []
     for row in items:
@@ -526,6 +534,11 @@ def sort_universities_ai(
                 "grantName": "",
                 "trackLabel": "No matching track",
                 "missingRequiredEvidence": True,
+                "mlEnabled": bool(interest_text),
+                "mlApplied": use_ml,
+                "mlAvailable": ml_available,
+                "mlUnavailable": ml_unavailable_warning,
+                "mlWarning": ml_warning_message,
             }
             item["__ai_score"] = 0.0
             enriched.append(item)
@@ -607,6 +620,11 @@ def sort_universities_ai(
                 "hardScore": hard_score,
                 "mlScore": ml_score,
                 "finalScore": final_score,
+                "mlEnabled": bool(interest_text),
+                "mlApplied": use_ml,
+                "mlAvailable": ml_available,
+                "mlUnavailable": ml_unavailable_warning,
+                "mlWarning": ml_warning_message,
             }
             candidate = {"score": final_score, "matchData": match_data}
             if best is None or float(candidate["score"]) > float(best["score"]):

@@ -47,7 +47,8 @@
       <div class="guide-doc">
         <p><strong>ML</strong> means <strong>Machine Learning</strong>. In UniSearch, ML is used as an additional personalization signal inside AI sorting, not as a replacement for admission rules.</p>
         <p>The user can write free-text preferences in Profile (field <code>interests</code>): for example desired programs, research topics, campus type, or preferred location. This text is sent to backend, where UniSearch computes relevance with <strong>TF-IDF</strong> and <strong>cosine similarity</strong> against university metadata.</p>
-        <p>Metadata text is built from university name, city/country, and program names (and optional description/tags when present in data). This gives each university a text vector and allows semantic matching to user intent.</p>
+        <p>Metadata text is built from university name, city/country, and program names, and also enriched with university <code>description</code> and <code>tags</code>. This gives each university a text vector and allows semantic matching to user intent.</p>
+        <p>Before scoring, backend normalizes common short words and abbreviations (for example: <code>ict</code>, <code>gamedev</code>, <code>ui/ux</code>, <code>genai</code>) into expanded technical terms. This improves matching quality for short profile descriptions.</p>
         <p>When interests are provided, UniFit uses a hybrid formula: <code>final_score = 0.7 * hard_score + 0.3 * ml_score</code>. If interests are empty, sorting stays purely rule-based. This keeps recommendations stable and explainable while adding personalization.</p>
       </div>
     </section>

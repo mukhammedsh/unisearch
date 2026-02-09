@@ -39,9 +39,11 @@ It is designed to reduce the need for expensive admission consulting by making r
 - Hybrid content-based ML recommender integrated into UniFit sorting:
   - new optional profile field: `profile.interests` (free-text user intent),
   - TF-IDF vectorization over university metadata (name, location, program names; optional description/tags/major_focus),
+  - query normalization for abbreviations/slang (e.g. `ict`, `gamedev`, `ui/ux`, `genai`),
   - cosine-similarity relevance score per university,
   - final hybrid score when interests are provided:
     - `final_score = 0.7 * hard_score + 0.3 * ml_score`.
+  - university metadata enriched with `description`, `tags`, and `description_source` fields.
 
 ## What ML means in UniSearch
 
@@ -51,6 +53,7 @@ In UniSearch, ML is used as a content-based ranking signal that compares user in
 Important:
 - Frontend only collects and sends text (`profile.interests`).
 - All ML computation stays in backend (`backend/app/services/ml_scoring.py`).
+- TF-IDF corpus uses university metadata (including `description` and `tags`) and normalized user queries.
 - If `interests` is empty, UniFit keeps pure rule-based scoring.
 
 ## Product logos (from `frontend/images`)

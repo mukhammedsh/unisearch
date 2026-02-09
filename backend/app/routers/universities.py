@@ -177,6 +177,13 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, response: Resp
     start = (page - 1) * limit
     end = start + limit
     page_items = (sorted_items or [])[start:end] if start < total else []
+    probe_items = page_items if page_items else ((sorted_items or [])[:1] if sorted_items else [])
+    ml_unavailable = any(
+        bool(((row.get("matchData") or {}).get("mlUnavailable")))
+        for row in probe_items
+        if isinstance(row, dict)
+    )
+    warnings = ["Machine Learning unavailable"] if ml_unavailable else []
 
     if response is not None:
         response.headers["Cache-Control"] = "private, max-age=30"
@@ -189,6 +196,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, response: Resp
         "page": page,
         "limit": limit,
         "sort": "uni_ai",
+        "warnings": warnings,
     }
 
 

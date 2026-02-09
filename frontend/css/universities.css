@@ -425,6 +425,11 @@
   font-size: 13px;
 }
 
+.u-state.u-state-warning {
+  color: #b45309;
+  font-weight: 700;
+}
+
 .u-loading-overlay {
   position: absolute;
   left: 0;
@@ -1275,6 +1280,10 @@
 
 :root[data-theme="dark"] .u-found {
   color: #f0f0f0;
+}
+
+:root[data-theme="dark"] .u-state.u-state-warning {
+  color: #fbbf24;
 }
 
 :root[data-theme="dark"] .slider-track {

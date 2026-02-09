@@ -52,7 +52,7 @@ function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
 }
 
-const MOBILE_IMAGE_MAX_WIDTH = 820;
+const MOBILE_IMAGE_MAX_WIDTH = 640;
 
 function normalizeFundingPreference(value) {
   const raw = String(value || "").trim().toLowerCase();
@@ -75,12 +75,8 @@ function fundingPreferenceToQueryValue(value) {
 
 function shouldUseOptimizedImages() {
   try {
-    const viewport = Math.min(window.innerWidth || 9999, window.screen?.width || 9999);
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const saveData = !!conn?.saveData;
-    const effectiveType = String(conn?.effectiveType || "").toLowerCase();
-    const slowNetwork = effectiveType.includes("2g") || effectiveType.includes("3g") || effectiveType.includes("slow-2g");
-    return viewport <= MOBILE_IMAGE_MAX_WIDTH || saveData || slowNetwork;
+    const viewport = window.innerWidth || 9999;
+    return viewport <= MOBILE_IMAGE_MAX_WIDTH;
   } catch (e) {
     return (window.innerWidth || 1024) <= MOBILE_IMAGE_MAX_WIDTH;
   }
@@ -89,8 +85,8 @@ function shouldUseOptimizedImages() {
 function uniThumbnailSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const forceFull = !!opts.forceFull;
-  const preferOptimized = !!opts.preferOptimized;
-  if (!forceFull && (preferOptimized || shouldUseOptimizedImages())) {
+  const forceOptimized = !!opts.forceOptimized;
+  if (!forceFull && (forceOptimized || shouldUseOptimizedImages())) {
     return `images/thumbnails-mobile/${safeId}.jpg`;
   }
   return `images/thumbnails/${safeId}.jpg`;
@@ -99,8 +95,8 @@ function uniThumbnailSrc(universityId, opts = {}) {
 function uniLogoSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const forceFull = !!opts.forceFull;
-  const preferOptimized = !!opts.preferOptimized;
-  if (!forceFull && (preferOptimized || shouldUseOptimizedImages())) {
+  const forceOptimized = !!opts.forceOptimized;
+  if (!forceFull && (forceOptimized || shouldUseOptimizedImages())) {
     return `images/logos-mobile/${safeId}.png`;
   }
   return `images/logos/${safeId}.png`;
@@ -792,7 +788,7 @@ export function initUniversitiesPage() {
                 }
                 const fallbackId = markers[0]?.options?.uniId || "default";
                 const bestId = (best && best.id) ? best.id : fallbackId;
-                const logoUrl = uniLogoSrc(bestId, { preferOptimized: true });
+                const logoUrl = uniLogoSrc(bestId);
                 return L.divIcon({ html: `<div class="cluster-node-fix"><div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${logoUrl}');"></div></div><div class="cluster-badge">+${count - 1}</div></div>`, className: 'cluster-icon-container', iconSize: [44, 44], iconAnchor: [22, 22] });
             }
         });
@@ -809,7 +805,7 @@ export function initUniversitiesPage() {
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
                 const uniId = String(u.id || "");
-                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${uniLogoSrc(uniId, { preferOptimized: true })}');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
+                const customIcon = L.divIcon({ className: 'custom-div-icon', html: `<div class="map-marker-container"><div class="marker-img-inner" style="background-image: url('${uniLogoSrc(uniId)}');"></div></div>`, iconSize: [44, 44], iconAnchor: [22, 22], popupAnchor: [0, -24] });
                 const rankValue = Number(u.rank);
                 const marker = L.marker([u.coordinates.lat, u.coordinates.lon], {
                     icon: customIcon,
@@ -1093,6 +1089,7 @@ export function initUniversitiesPage() {
         const parsed = {
             items: data.items || [],
             total: data.total || 0,
+            warnings: Array.isArray(data.warnings) ? data.warnings : [],
         };
         lastAiFetchKey = key;
         lastAiFetchPayload = parsed;
@@ -1103,16 +1100,25 @@ export function initUniversitiesPage() {
     function renderFetchedData(data) {
         const items = data.items || [];
         const total = data.total || 0;
+        const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+        const mlUnavailable = warnings.some((w) => String(w || "").toLowerCase().includes("machine learning unavailable"));
+        const warningText = mlUnavailable ? "Machine Learning unavailable. Using rule-based ranking only." : "";
 
         if (state.viewMode === "list") {
             if (el.total) el.total.textContent = String(total);
             hasInitialListPaint = true;
 
             if (!items.length) {
-                if (el.state) el.state.textContent = "No universities found.";
+                if (el.state) {
+                    el.state.textContent = warningText ? `${warningText} No universities found.` : "No universities found.";
+                    el.state.classList.toggle("u-state-warning", !!warningText);
+                }
                 return;
             }
-            if (el.state) el.state.textContent = "";
+            if (el.state) {
+                el.state.textContent = warningText;
+                el.state.classList.toggle("u-state-warning", !!warningText);
+            }
             const profile = loadProfile();
             const userBudget = parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
@@ -1123,7 +1129,10 @@ export function initUniversitiesPage() {
         if (state.viewMode === "map") {
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
-            if (el.state) el.state.textContent = "";
+            if (el.state) {
+                el.state.textContent = warningText;
+                el.state.classList.toggle("u-state-warning", !!warningText);
+            }
         }
     }
 
@@ -1309,9 +1318,9 @@ export function initUniversitiesPage() {
         
         // ROI УБРАН ПОЛНОСТЬЮ
 
-        const logoSrc = uniLogoSrc(id, { preferOptimized: true });
+        const logoSrc = uniLogoSrc(id);
         const logoSrcFull = uniLogoSrc(id, { forceFull: true });
-        const thumbSrc = uniThumbnailSrc(id, { preferOptimized: true });
+        const thumbSrc = uniThumbnailSrc(id);
         const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
         const loadingAttr = idx < 4 ? "eager" : "lazy";
         const fetchPriorityAttr = idx < 2 ? "high" : "auto";
@@ -1484,7 +1493,24 @@ export async function initUniversityPage() {
     const extraDiv = document.getElementById("detailExtra");
     if (extraDiv) {
          const description = u.description
-            ? `<p style="margin-bottom:15px; line-height:1.6; color:#444;">${escapeHtml(String(u.description)).replace(/\n/g, "<br>")}</p>`
+            ? `<p class="uni-description">${escapeHtml(String(u.description)).replace(/\n/g, "<br>")}</p>`
+            : "";
+         const descriptionSourceUrl = typeof u.description_source === "string" ? u.description_source.trim() : "";
+         const descriptionSource = /^https?:\/\//i.test(descriptionSourceUrl)
+            ? `<div class="uni-description-source">Source: <a href="${escapeHtml(descriptionSourceUrl)}" target="_blank" rel="noopener noreferrer">official page</a></div>`
+            : "";
+         const tags = Array.isArray(u.tags)
+            ? u.tags.map((t) => String(t || "").trim()).filter(Boolean)
+            : (typeof u.tags === "string" ? u.tags.split(",").map((t) => t.trim()).filter(Boolean) : []);
+         const tagsHtml = tags.length
+            ? `
+                <div class="uni-tags-wrap">
+                    <div class="uni-tags-title">Focus Tags</div>
+                    <div class="uni-tags-list">
+                        ${tags.map((tag) => `<span class="uni-tag">${escapeHtml(tag)}</span>`).join("")}
+                    </div>
+                </div>
+              `
             : "";
          const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
          const formats = Array.isArray(u.academics?.formats)
@@ -1493,6 +1519,8 @@ export async function initUniversityPage() {
          
          extraDiv.innerHTML = `
             ${description}
+            ${descriptionSource}
+            ${tagsHtml}
             <div class="d-kv"><span>Total Students</span><span>${studentCount}</span></div>
             <div class="d-kv" style="border-bottom:none;"><span>Study Formats</span><span>${formats || escapeHtml("On-campus")}</span></div>
          `;
@@ -2148,9 +2176,9 @@ export async function initRankingPage() {
             else if (rank === 2) rankClass = "rank-2";
             else if (rank === 3) rankClass = "rank-3";
 
-            const logoSrc = uniLogoSrc(u.id, { preferOptimized: true });
+            const logoSrc = uniLogoSrc(u.id);
             const logoSrcFull = uniLogoSrc(u.id, { forceFull: true });
-            const thumbSrc = uniThumbnailSrc(u.id, { preferOptimized: true });
+            const thumbSrc = uniThumbnailSrc(u.id);
             const thumbSrcFull = uniThumbnailSrc(u.id, { forceFull: true });
             const loadingAttr = index < 4 ? "eager" : "lazy";
             const fetchPriorityAttr = index < 2 ? "high" : "auto";

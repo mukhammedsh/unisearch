@@ -44,7 +44,9 @@ class AiScoringTests(unittest.TestCase):
         fake_ml = Mock()
         fake_ml.predict_relevance.return_value = {"u1": 1.0, "u2": 0.0}
 
-        with patch("app.services.ai_scoring.get_ml_recommender", return_value=fake_ml):
+        with patch("app.services.ai_scoring.get_ml_runtime_status", return_value={"available": True, "message": ""}), patch(
+            "app.services.ai_scoring.get_ml_recommender", return_value=fake_ml
+        ):
             result = sort_universities_ai(items, profile=profile, ai_balance=50, funding_type="any")
 
         self.assertEqual("u1", result[0].get("id"))
@@ -52,6 +54,39 @@ class AiScoringTests(unittest.TestCase):
         self.assertIn("hardScore", result[0].get("matchData", {}))
         self.assertIn("finalScore", result[0].get("matchData", {}))
         self.assertGreater(float(result[0]["matchData"]["finalScore"]), float(result[1]["matchData"]["finalScore"]))
+
+    def test_ai_sort_falls_back_to_hard_score_when_ml_unavailable(self):
+        items = [
+            {
+                "id": "u1",
+                "name": "University One",
+                "rank": 100,
+                "finance": {"total_cost_year_usd": 30000, "financial_aid": {"merit_based": False, "need_based": False}},
+                "academics": {"acceptance_rate_percent": 45},
+                "admission_tracks": [
+                    {
+                        "id": "default",
+                        "label": "Default",
+                        "requirements": {},
+                        "stats_avg": {},
+                        "scholarships": [],
+                    }
+                ],
+            }
+        ]
+        profile = {"budget": 40000, "interests": "ai robotics"}
+
+        with patch(
+            "app.services.ai_scoring.get_ml_runtime_status",
+            return_value={"available": False, "message": "Machine Learning unavailable"},
+        ):
+            result = sort_universities_ai(items, profile=profile, ai_balance=50, funding_type="any")
+
+        match = result[0].get("matchData", {})
+        self.assertAlmostEqual(float(match.get("finalScore", 0.0)), float(match.get("hardScore", 0.0)), places=6)
+        self.assertFalse(bool(match.get("mlApplied")))
+        self.assertTrue(bool(match.get("mlUnavailable")))
+        self.assertEqual("Machine Learning unavailable", str(match.get("mlWarning", "")))
 
     def test_estimate_uni_chance_returns_valid_shape(self):
         university = {

@@ -199,6 +199,77 @@
   font-weight: 500;
 }
 
+.uni-description {
+  margin: 0 0 14px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.uni-description-source {
+  margin: -4px 0 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.uni-description-source a {
+  color: #2a5bd7;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.uni-tags-wrap {
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(87, 21, 219, 0.05), rgba(87, 21, 219, 0.01));
+}
+
+.uni-tags-title {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.uni-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.uni-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 800;
+  background: #ffffff;
+  color: #2b185e;
+  border: 1px solid rgba(87, 21, 219, 0.2);
+  box-shadow: 0 2px 8px rgba(87, 21, 219, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.uni-tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7d3cff, #4b00c7);
+}
+
+.uni-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 14px rgba(87, 21, 219, 0.16);
+  background: #f8f4ff;
+}
+
 .d-kv {
   display: flex;
   justify-content: space-between;
@@ -836,6 +907,31 @@
 
 :root[data-theme="dark"] .d-box {
   background: var(--card);
+}
+
+:root[data-theme="dark"] .uni-tags-wrap {
+  background: linear-gradient(180deg, rgba(140, 110, 255, 0.1), rgba(140, 110, 255, 0.03));
+  border-color: #3f3f3f;
+}
+
+:root[data-theme="dark"] .uni-tags-title {
+  color: #ededed;
+}
+
+:root[data-theme="dark"] .uni-tag {
+  background: #222222;
+  color: #efe8ff;
+  border-color: #5b4b91;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.32);
+}
+
+:root[data-theme="dark"] .uni-tag:hover {
+  background: #2a2a2a;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.42);
+}
+
+:root[data-theme="dark"] .uni-description-source a {
+  color: #9bb8ff;
 }
 
 :root[data-theme="dark"] .d-tabs {
