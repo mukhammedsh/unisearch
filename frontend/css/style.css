@@ -81,6 +81,7 @@ body {
 
 /* Global API loader for backend requests */
 .global-api-loader {
+  display: none !important;
   position: fixed;
   top: 84px;
   right: 18px;
