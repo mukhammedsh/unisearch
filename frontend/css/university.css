@@ -287,50 +287,193 @@
    ========================================= */
 .program-list {
   display: grid;
-  gap: 12px;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .program-card {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 14px;
-  background: var(--card);
+  position: relative;
+  border: 1px solid #e5dbff;
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfaff 100%);
+  box-shadow: 0 10px 24px rgba(36, 14, 79, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.program-card::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7d3cff, #5d17ea, #00a3ff);
+  opacity: 0.95;
+}
+
+.program-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(36, 14, 79, 0.1);
+  border-color: #d7c8ff;
+}
+
+.program-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding-top: 4px;
+}
+
+.program-card-index {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #e4d5ff;
+  background: #f8f3ff;
+  color: #5d17ea;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  padding: 4px 9px;
+}
+
+.program-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.program-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #e6e8f0;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 5px 8px;
+}
+
+.program-pill--accent {
+  border-color: #dbc6ff;
+  background: #f3ebff;
+  color: #5d17ea;
 }
 
 .program-card-title {
   font-weight: 800;
-  color: var(--accent);
-  font-size: 16px;
-  margin-bottom: 8px;
+  color: #22163b;
+  font-size: 15px;
+  line-height: 1.35;
+  margin-bottom: 10px;
 }
 
 .program-card-rows {
   display: grid;
-  gap: 6px;
+  gap: 7px;
   font-size: 13px;
 }
 
 .program-card-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
   gap: 10px;
-  border-bottom: 1px dashed var(--line);
-  padding-bottom: 4px;
+  border-bottom: 1px dashed #ebe7f5;
+  padding-bottom: 6px;
 }
 
 .program-card-label {
-  color: var(--muted);
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
 }
 
 .program-card-value {
-  color: var(--text);
+  color: #1f2937;
+  font-weight: 700;
+  text-align: left;
+  line-height: 1.35;
+}
+
+.program-card-value--empty {
+  color: #94a3b8;
   font-weight: 600;
-  text-align: right;
+}
+
+.program-acceptance {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+}
+
+.program-acceptance-head {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.program-acceptance-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #e9edf5;
+  overflow: hidden;
+}
+
+.program-acceptance-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7d3cff, #5d17ea);
+  transition: width 0.25s ease;
+}
+
+.program-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.program-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #dae3f0;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+}
+
+.program-major-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #f1f1f1;
+  border: 1px solid #dbe0ea;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 11px;
+  margin: 3px 4px 0 0;
 }
 
 .program-empty {
-  padding: 10px 0;
+  padding: 16px 12px;
+  border: 1px dashed #d9dce5;
+  border-radius: 10px;
+  background: #fafafa;
   color: var(--muted);
+  text-align: center;
 }
 
 /* =========================================
@@ -485,26 +628,26 @@
 
 .chance-high {
   color: #065f46;
-  background: #d1fae5;
-  border-color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.38);
 }
 
 .chance-good {
   color: #166534;
-  background: #dcfce7;
-  border-color: #86efac;
+  background: rgba(34, 197, 94, 0.13);
+  border-color: rgba(34, 197, 94, 0.34);
 }
 
 .chance-medium {
   color: #9a3412;
-  background: #ffedd5;
-  border-color: #fdba74;
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.36);
 }
 
 .chance-low {
   color: #991b1b;
-  background: #fee2e2;
-  border-color: #fca5a5;
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.34);
 }
 
 .chance-percent.chance-high,
@@ -520,6 +663,76 @@
 .chance-fill.chance-good { background: #22c55e; }
 .chance-fill.chance-medium { background: #f59e0b; }
 .chance-fill.chance-low { background: #ef4444; }
+
+.admission-filter-row {
+  margin: 12px 0 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.admission-filter-label {
+  font-size: 12px;
+  color: #4b5563;
+  font-weight: 700;
+}
+
+.admission-filter-meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.admission-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admission-filter-pill--grant {
+  color: #166534;
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(22, 163, 74, 0.35);
+}
+
+.admission-filter-pill--paid {
+  color: #374151;
+  background: rgba(107, 114, 128, 0.12);
+  border-color: rgba(107, 114, 128, 0.35);
+}
+
+.admission-filter-pill--any {
+  color: #3730a3;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.track-funding-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.track-funding-badge--grant {
+  color: #166534;
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(22, 163, 74, 0.35);
+}
+
+.track-funding-badge--paid {
+  color: #374151;
+  background: rgba(107, 114, 128, 0.12);
+  border-color: rgba(107, 114, 128, 0.35);
+}
 
 /* =========================================
    UNIMENTOR CHAT
@@ -1077,10 +1290,146 @@
   font-weight: 700;
 }
 
-:root[data-theme="dark"] #detailPrograms span {
-  background: #242424 !important;
-  border: 1px solid #3f3f3f !important;
-  color: #e2e2e2 !important;
+:root[data-theme="dark"] .program-card {
+  background: linear-gradient(180deg, #19171f 0%, #15131b 100%);
+  border-color: #383248;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] .program-card::before {
+  background: linear-gradient(90deg, #a280ff, #7f5cff, #42a4ff);
+}
+
+:root[data-theme="dark"] .program-card:hover {
+  border-color: #4b4163;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="dark"] .program-card-title {
+  color: #f3efff;
+}
+
+:root[data-theme="dark"] .program-card-row {
+  border-bottom-color: #312b3f;
+}
+
+:root[data-theme="dark"] .program-card-label {
+  color: #9ea3b2;
+}
+
+:root[data-theme="dark"] .program-card-value {
+  color: #e5e7eb;
+}
+
+:root[data-theme="dark"] .program-card-value--empty {
+  color: #8d94a3;
+}
+
+:root[data-theme="dark"] .program-acceptance-track {
+  background: #2a2f3a;
+}
+
+:root[data-theme="dark"] .program-acceptance-fill {
+  background: linear-gradient(90deg, #9f86ff, #7f5cff);
+}
+
+:root[data-theme="dark"] .program-card-index {
+  background: #2a2238;
+  border-color: #4b3d67;
+  color: #c8b4ff;
+}
+
+:root[data-theme="dark"] .program-pill {
+  background: #22242d;
+  border-color: #3b4150;
+  color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .program-pill--accent {
+  background: #302449;
+  border-color: #5a4a83;
+  color: #ccb8ff;
+}
+
+:root[data-theme="dark"] .program-tag,
+:root[data-theme="dark"] .program-major-chip {
+  background: #24242a;
+  border-color: #3f3f47;
+  color: #e2e2e2;
+}
+
+:root[data-theme="dark"] .program-empty {
+  background: #17171a;
+  border-color: #34343a;
+  color: #a8adb8;
+}
+
+:root[data-theme="dark"] .admission-filter-label {
+  color: #c3c7d0;
+}
+
+:root[data-theme="dark"] .admission-filter-meta {
+  color: #9ca3af;
+}
+
+:root[data-theme="dark"] .admission-filter-pill--grant,
+:root[data-theme="dark"] .track-funding-badge--grant {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+:root[data-theme="dark"] .admission-filter-pill--paid,
+:root[data-theme="dark"] .track-funding-badge--paid {
+  color: #d1d5db;
+  background: rgba(148, 163, 184, 0.17);
+  border-color: rgba(148, 163, 184, 0.42);
+}
+
+:root[data-theme="dark"] .admission-filter-pill--any {
+  color: #c4b5fd;
+  background: rgba(129, 140, 248, 0.2);
+  border-color: rgba(129, 140, 248, 0.44);
+}
+
+:root[data-theme="dark"] .chance-track-chip.chance-high {
+  color: #86efac;
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.42);
+}
+
+:root[data-theme="dark"] .chance-track-chip.chance-good {
+  color: #bbf7d0;
+  background: rgba(34, 197, 94, 0.19);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+:root[data-theme="dark"] .chance-track-chip.chance-medium {
+  color: #fcd34d;
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.44);
+}
+
+:root[data-theme="dark"] .chance-track-chip.chance-low {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.44);
+}
+
+@media (max-width: 760px) {
+  .program-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .program-card-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .program-card-meta {
+    justify-content: flex-start;
+  }
 }
 
 :root[data-theme="dark"] #detailRequirements .track-card {

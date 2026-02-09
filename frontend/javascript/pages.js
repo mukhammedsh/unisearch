@@ -1546,30 +1546,104 @@ export async function initUniversityPage() {
             progDiv.innerHTML = `
                 <div class="program-list">
                     ${programs.map((program, idx) => {
+                        const renderValueCell = (key, rawValue, formattedValue) => {
+                            if (Array.isArray(rawValue) && rawValue.length) {
+                                return `
+                                    <div class="program-card-tags">
+                                        ${rawValue.map((item) => `
+                                            <span class="program-tag">${escapeHtml(String(item))}</span>
+                                        `).join("")}
+                                    </div>
+                                `;
+                            }
+                            if (String(key) === "acceptance_rate_percent") {
+                                const num = Number(rawValue);
+                                if (Number.isFinite(num)) {
+                                    const pct = Math.max(0, Math.min(100, num));
+                                    return `
+                                        <div class="program-acceptance">
+                                            <div class="program-acceptance-head">
+                                                <span class="program-pill program-pill--accent">${escapeHtml(`${Math.round(pct * 100) / 100}%`)}</span>
+                                            </div>
+                                            <div class="program-acceptance-track" aria-hidden="true">
+                                                <div class="program-acceptance-fill" style="width:${pct}%;"></div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                return `<span class="program-card-value program-card-value--empty">Not specified</span>`;
+                            }
+                            if (formattedValue === "—") {
+                                return `<span class="program-card-value program-card-value--empty">Not specified</span>`;
+                            }
+                            return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
+                        };
+
                         const rows = [
-                            ["Acceptance Rate", formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent)],
-                            ["Study Levels", formatProgramValue("study_levels", program.study_levels)],
-                            ["Duration", formatProgramValue("duration", program.duration)],
-                            ["Language", formatProgramValue("language", program.language)],
-                            ["Study Mode", formatProgramValue("study_mode", program.study_mode)],
+                            {
+                                label: "Acceptance Rate",
+                                key: "acceptance_rate_percent",
+                                rawValue: program.acceptance_rate_percent,
+                                value: formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent),
+                            },
+                            {
+                                label: "Study Levels",
+                                key: "study_levels",
+                                rawValue: program.study_levels,
+                                value: formatProgramValue("study_levels", program.study_levels),
+                            },
+                            {
+                                label: "Duration",
+                                key: "duration",
+                                rawValue: program.duration,
+                                value: formatProgramValue("duration", program.duration),
+                            },
+                            {
+                                label: "Language",
+                                key: "language",
+                                rawValue: program.language,
+                                value: formatProgramValue("language", program.language),
+                            },
+                            {
+                                label: "Study Mode",
+                                key: "study_mode",
+                                rawValue: program.study_mode,
+                                value: formatProgramValue("study_mode", program.study_mode),
+                            },
                         ];
 
                         const extraRows = Object.entries(program)
                             .filter(([k, v]) => !knownKeys.has(k) && v !== null && v !== undefined && v !== "")
-                            .map(([k, v]) => [prettyField(k), formatProgramValue(k, v)]);
+                            .map(([k, v]) => ({
+                                label: prettyField(k),
+                                key: k,
+                                rawValue: v,
+                                value: formatProgramValue(k, v),
+                            }));
 
                         const allRows = [...rows, ...extraRows];
+                        const modeMeta = formatProgramValue("study_mode", program.study_mode);
+                        const durationMeta = formatProgramValue("duration", program.duration);
+                        const levelsMeta = Array.isArray(program.study_levels) ? `${program.study_levels.length} levels` : "";
 
                         return `
                             <div class="program-card">
+                                <div class="program-card-head">
+                                    <span class="program-card-index">Program ${idx + 1}</span>
+                                    <div class="program-card-meta">
+                                        ${durationMeta !== "—" ? `<span class="program-pill">${escapeHtml(durationMeta)}</span>` : ""}
+                                        ${modeMeta !== "—" ? `<span class="program-pill">${escapeHtml(modeMeta)}</span>` : ""}
+                                        ${levelsMeta ? `<span class="program-pill">${escapeHtml(levelsMeta)}</span>` : ""}
+                                    </div>
+                                </div>
                                 <div class="program-card-title">
                                     ${escapeHtml(program.name || `Program ${idx + 1}`)}
                                 </div>
                                 <div class="program-card-rows">
-                                    ${allRows.map(([label, value]) => `
+                                    ${allRows.map((row) => `
                                         <div class="program-card-row">
-                                            <span class="program-card-label">${escapeHtml(label)}</span>
-                                            <span class="program-card-value">${escapeHtml(value)}</span>
+                                            <span class="program-card-label">${escapeHtml(row.label)}</span>
+                                            ${renderValueCell(row.key, row.rawValue, row.value)}
                                         </div>
                                     `).join("")}
                                 </div>
@@ -1580,7 +1654,7 @@ export async function initUniversityPage() {
             `;
         } else if (u.academics?.majors) {
             progDiv.innerHTML = u.academics.majors
-                .map(m => `<span style="display:inline-block; background:#f1f1f1; padding:5px 10px; margin:2px; border-radius:8px; font-size:0.9rem;">${escapeHtml(String(m))}</span>`)
+                .map(m => `<span class="program-major-chip">${escapeHtml(String(m))}</span>`)
                 .join(" ");
         } else {
             progDiv.innerHTML = `<div class="program-empty">No program data available.</div>`;
@@ -1763,10 +1837,8 @@ export async function initUniversityPage() {
         if (!rawType && !badgeRaw) return "";
         const isGrant = rawType === "grant" || /grant|scholar/i.test(badgeRaw);
         const text = badgeRaw || (isGrant ? "Grant" : "Paid");
-        const bg = isGrant ? "#ecfdf5" : "#f3f4f6";
-        const border = isGrant ? "#86efac" : "#d1d5db";
-        const color = isGrant ? "#166534" : "#374151";
-        return `<span style="display:inline-block; margin-top:4px; font-size:11px; font-weight:700; padding:3px 8px; border-radius:999px; background:${bg}; border:1px solid ${border}; color:${color};">${escapeHtml(text)}</span>`;
+        const cls = isGrant ? "track-funding-badge--grant" : "track-funding-badge--paid";
+        return `<span class="track-funding-badge ${cls}">${escapeHtml(text)}</span>`;
         }
 
         function getTrackFundingType(track) {
@@ -1806,22 +1878,16 @@ export async function initUniversityPage() {
             const admissionFilterLabel = admissionTrackFilter === "grant"
                 ? "Grant"
                 : (admissionTrackFilter === "paid" ? "Paid" : "Any");
-            const admissionFilterBg = admissionTrackFilter === "grant"
-                ? "#ecfdf5"
-                : (admissionTrackFilter === "paid" ? "#f3f4f6" : "#eef2ff");
-            const admissionFilterBorder = admissionTrackFilter === "grant"
-                ? "#16a34a"
-                : (admissionTrackFilter === "paid" ? "#6b7280" : "#6366f1");
-            const admissionFilterColor = admissionTrackFilter === "grant"
-                ? "#166534"
-                : (admissionTrackFilter === "paid" ? "#1f2937" : "#3730a3");
+            const admissionFilterClass = admissionTrackFilter === "grant"
+                ? "admission-filter-pill--grant"
+                : (admissionTrackFilter === "paid" ? "admission-filter-pill--paid" : "admission-filter-pill--any");
 
             let tracksHTML = warningHTML + renderUniChanceSummary();
             tracksHTML += `
-            <div style="margin:12px 0 16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                <span style="font-size:12px; color:#4b5563; font-weight:700;">Track Filter:</span>
-                <span style="padding:6px 10px; border-radius:999px; border:1px solid ${admissionFilterBorder}; background:${admissionFilterBg}; color:${admissionFilterColor}; font-size:12px; font-weight:700;">${admissionFilterLabel} (from profile)</span>
-                <span style="font-size:12px; color:#6b7280;">Showing ${shownTracks} of ${totalTracks} tracks</span>
+            <div class="admission-filter-row">
+                <span class="admission-filter-label">Track Filter:</span>
+                <span class="admission-filter-pill ${admissionFilterClass}">${admissionFilterLabel} (from profile)</span>
+                <span class="admission-filter-meta">Showing ${shownTracks} of ${totalTracks} tracks</span>
             </div>`;
 
             filteredEntries.forEach(({ track, idx }) => {
