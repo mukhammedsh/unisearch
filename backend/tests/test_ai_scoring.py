@@ -44,6 +44,52 @@ class AiScoringTests(unittest.TestCase):
         self.assertLessEqual(int(result.get("overallChance", 0)), 100)
         self.assertTrue(len(result.get("tracks", [])) >= 1)
 
+    def test_language_exam_requirements_are_not_inferred_from_cefr(self):
+        university = {
+            "id": "eth-demo",
+            "name": "ETH Demo",
+            "rank": 5,
+            "finance": {
+                "total_cost_year_usd": 28000,
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 35},
+            "admission_tracks": [
+                {
+                    "id": "eth_direct",
+                    "label": "Direct Entry",
+                    "requirements": {"GPA": 90},
+                    "stats_avg": {"GPA": 96},
+                    "language_requirements_mode": "all",
+                    "language_requirements": [
+                        {
+                            "code": "de",
+                            "accept_native": True,
+                            "min_cefr": 5,
+                            "requirements": {"TestDaF_TDN": 4, "DSH_Level": 3},
+                            "stats_avg": {"TestDaF_TDN": 4, "DSH_Level": 3},
+                        }
+                    ],
+                }
+            ],
+        }
+
+        profile_de_b2 = {
+            "gpa": 93,
+            "budget": 30000,
+            "languages": [{"code": "de", "kind": "cefr", "level": 4}],
+        }
+        profile_de_c1 = {
+            "gpa": 93,
+            "budget": 30000,
+            "languages": [{"code": "de", "kind": "cefr", "level": 5}],
+        }
+
+        chance_b2 = estimate_uni_chance(university, profile_de_b2)
+        chance_c1 = estimate_uni_chance(university, profile_de_c1)
+
+        self.assertLess(int(chance_b2.get("overallChance", 0)), int(chance_c1.get("overallChance", 0)))
+
 
 if __name__ == "__main__":
     unittest.main()

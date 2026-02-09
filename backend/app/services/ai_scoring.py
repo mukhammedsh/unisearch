@@ -286,9 +286,10 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
         avg = {}
 
     for exam_id, min_val in req.items():
-        local = _get_user_score(state.get("exams", {}), exam_id, None)
-        inferred = _get_user_score({}, exam_id, {code: state} if code else None)
-        user = local if local is not None else inferred
+        # Do not infer exam-equivalent score from CEFR/native evidence.
+        # Language exam thresholds (IELTS/TestDaF/DSH/etc.) must be met by
+        # explicit exam evidence in this language rule.
+        user = _get_user_score(state.get("exams", {}), exam_id, None)
         if user is None:
             continue
         avg_val = avg.get(exam_id) if exam_id in avg else None
