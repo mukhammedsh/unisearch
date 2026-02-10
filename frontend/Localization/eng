@@ -38,7 +38,7 @@ guide.intro: This page explains key terms used in UniSearch: {fit} ranking logic
 guide.language_exams.title: Language Exams
 guide.loading_language_config: Loading language exam config
 guide.ml.p1: ML means Machine Learning. In UniSearch, ML is an additional personalization signal inside AI sorting, not a replacement for admission rules.
-guide.ml.p2: You can write free-text preferences in Profile (interests). For non-English UI/profile locales, backend translates this text to English via self-hosted LibreTranslate, then compares it against university metadata using TF-IDF and cosine similarity.
+guide.ml.p2: You can write free-text preferences in Profile (interests). Backend always translates this text to US English via self-hosted LibreTranslate before ML scoring, then compares it against university metadata using TF-IDF and cosine similarity.
 guide.ml.p3: Metadata text is built from university name, location, and program names, and is also enriched with description and tags.
 guide.ml.p4: Before scoring, common short words and abbreviations are normalized (for example: ict, gamedev, ui/ux, genai) to improve matching quality.
 guide.ml.p5: When interests are provided, UniFit uses a hybrid formula: final_score = 0.7 * hard_score + 0.3 * ml_score. If interests are empty, sorting stays rule-based.

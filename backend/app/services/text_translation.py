@@ -1,6 +1,5 @@
 import hashlib
 import json
-import re
 import threading
 import time
 from typing import Any, Dict, Optional
@@ -23,10 +22,6 @@ from app.core.settings import (
     ML_INTEREST_TRANSLATION_TIMEOUT_SEC,
 )
 
-
-_CYRILLIC_RE = re.compile(r"[\u0400-\u04FF]")
-_KAZAKH_CYRILLIC_RE = re.compile(r"[ӘәҒғҚқҢңӨөҰұҮүІіҺһ]")
-_LATIN_RE = re.compile(r"[A-Za-z]")
 
 _TRANSLATION_CACHE: Dict[str, Dict[str, Any]] = {}
 _TRANSLATION_CACHE_LOCK = threading.Lock()
@@ -55,18 +50,9 @@ def _detect_source_lang(text: str, source_hint: Any = "") -> str:
     hinted = _normalize_source_hint(source_hint)
     if hinted:
         return hinted
-
     if not text:
         return "auto"
-
-    cyr = len(_CYRILLIC_RE.findall(text))
-    lat = len(_LATIN_RE.findall(text))
-    if cyr <= 0:
-        return "en" if lat > 0 else "auto"
-
-    if _KAZAKH_CYRILLIC_RE.search(text):
-        return "kk"
-    return "ru"
+    return "auto"
 
 
 def _cache_key(provider: str, source_lang: str, target_lang: str, text: str) -> str:
@@ -196,16 +182,8 @@ def translate_interest_text_for_ml(
             "cacheHit": False,
         }
 
-    source_lang = _detect_source_lang(raw, source_hint)
-    if source_lang == "en":
-        return {
-            "text": raw,
-            "translated": False,
-            "source": source_lang,
-            "provider": "none",
-            "reason": "already_english",
-            "cacheHit": False,
-        }
+    detected_source = _detect_source_lang(raw, source_hint)
+    source_lang = str(ML_INTEREST_TRANSLATION_SOURCE or "auto").strip().lower() or "auto"
 
     provider = str(ML_INTEREST_TRANSLATION_PROVIDER or "none").strip().lower()
     target = str(ML_INTEREST_TRANSLATION_TARGET or "en").strip().lower() or "en"
@@ -213,7 +191,7 @@ def translate_interest_text_for_ml(
         return {
             "text": raw,
             "translated": False,
-            "source": source_lang,
+            "source": detected_source,
             "provider": "none",
             "reason": "disabled",
             "cacheHit": False,
@@ -222,7 +200,7 @@ def translate_interest_text_for_ml(
         return {
             "text": raw,
             "translated": False,
-            "source": source_lang,
+            "source": detected_source,
             "provider": provider,
             "reason": "provider_backoff",
             "cacheHit": False,
@@ -242,7 +220,7 @@ def translate_interest_text_for_ml(
         return {
             "text": raw,
             "translated": False,
-            "source": source_lang,
+            "source": detected_source,
             "provider": provider,
             "reason": "rate_limited",
             "retryAfterSec": max(1, int(round(retry_after))),
@@ -256,7 +234,7 @@ def translate_interest_text_for_ml(
         return {
             "text": raw,
             "translated": False,
-            "source": source_lang,
+            "source": detected_source,
             "provider": provider,
             "reason": "provider_error",
             "cacheHit": False,
@@ -265,7 +243,7 @@ def translate_interest_text_for_ml(
     out = {
         "text": translated_text,
         "translated": translated_text.strip().lower() != raw.strip().lower(),
-        "source": source_lang,
+        "source": detected_source,
         "provider": provider,
         "reason": "translated",
         "cacheHit": False,

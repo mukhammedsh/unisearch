@@ -188,7 +188,7 @@ const DICT = {
     "guide.ml.p1":
       "ML means Machine Learning. In UniSearch, ML is an additional personalization signal inside AI sorting, not a replacement for admission rules.",
     "guide.ml.p2":
-      "You can write free-text preferences in Profile (interests). For non-English UI/profile locales, backend translates this text to English via self-hosted LibreTranslate, then compares it against university metadata using TF-IDF and cosine similarity.",
+      "You can write free-text preferences in Profile (interests). Backend always translates this text to US English via self-hosted LibreTranslate before ML scoring, then compares it against university metadata using TF-IDF and cosine similarity.",
     "guide.ml.p3":
       "Metadata text is built from university name, location, and program names, and is also enriched with description and tags.",
     "guide.ml.p4":
@@ -613,7 +613,7 @@ const DICT = {
     "guide.ml.p1":
       "ML — это Machine Learning. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.",
     "guide.ml.p2":
-      "Вы можете указать текстовые интересы в профиле. Для неанглийского языка интерфейса/профиля backend сначала переводит этот текст на английский через self-hosted LibreTranslate, затем сравнивает его с метаданными вузов через TF-IDF и cosine similarity.",
+      "Вы можете указать текстовые интересы в профиле. Перед ML-оценкой backend всегда переводит этот текст на американский английский (US English) через self-hosted LibreTranslate, затем сравнивает его с метаданными вузов через TF-IDF и cosine similarity.",
     "guide.ml.p3":
       "Текст метаданных формируется из названия вуза, локации, программ, а также description и tags.",
     "guide.ml.p4":
@@ -885,7 +885,7 @@ const DICT = {
     "guide.ml.p1":
       "ML — Machine Learning. UniSearch-те ол admission ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.",
     "guide.ml.p2":
-      "Профильдегі interests өрісіне еркін мәтін жаза аласыз. Интерфейс/профиль тілі ағылшын емес болса, backend бұл мәтінді алдымен self-hosted LibreTranslate арқылы ағылшын тіліне аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.",
+      "Профильдегі interests өрісіне еркін мәтін жаза аласыз. ML бағалауына дейін backend бұл мәтінді әрқашан self-hosted LibreTranslate арқылы америкалық ағылшынға (US English) аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.",
     "guide.ml.p3":
       "Метадерек мәтіні университет атауы, орналасуы, бағдарламалар, сондай-ақ description мен tags өрістерінен құралады.",
     "guide.ml.p4":

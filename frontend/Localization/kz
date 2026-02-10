@@ -38,7 +38,7 @@ guide.intro: Бұл бетте UniSearch-тегі негізгі терминд�
 guide.language_exams.title: Тіл емтихандары
 guide.loading_language_config: Тіл емтиханы конфигурациясы жүктелуде
 guide.ml.p1: ML — Machine Learning. UniSearch-те ол admission ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.
-guide.ml.p2: Профильдегі interests өрісіне еркін мәтін жаза аласыз. Интерфейс/профиль тілі ағылшын емес болса, backend бұл мәтінді алдымен self-hosted LibreTranslate арқылы ағылшын тіліне аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.
+guide.ml.p2: Профильдегі interests өрісіне еркін мәтін жаза аласыз. ML бағалауына дейін backend бұл мәтінді әрқашан self-hosted LibreTranslate арқылы америкалық ағылшынға (US English) аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.
 guide.ml.p3: Метадерек мәтіні университет атауы, орналасуы, бағдарламалар, сондай-ақ description мен tags өрістерінен құралады.
 guide.ml.p4: Бағалау алдында қысқа терминдер мен қысқартулар (ict, gamedev, ui/ux, genai) қалыпқа келтіріледі.
 guide.ml.p5: Interests толтырылғанда гибрид формула қолданылады: final_score = 0.7 * hard_score + 0.3 * ml_score. Толтырылмаса, сұрыптау тек rule-based.
