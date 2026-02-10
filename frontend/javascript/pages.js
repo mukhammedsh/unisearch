@@ -28,6 +28,7 @@ import { t, tFormat } from "./i18n.js";
 import {
   translateAdmissionText,
   translateDataValue,
+  translateProgramName,
   translateTrackLabel,
   translateTemplate,
   translateUniversityDescription,
@@ -110,6 +111,12 @@ function trTrackDescription(universityId, trackId, value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
   return translateAdmissionText(raw, raw);
+}
+
+function trProgramName(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return translateProgramName(raw, raw);
 }
 
 function normalizeFundingPreference(value) {
@@ -1739,7 +1746,7 @@ export async function initUniversityPage() {
                                     </div>
                                 </div>
                                 <div class="program-card-title">
-                                    ${escapeHtml(program.name || `${translateWord("program", "Program")} ${idx + 1}`)}
+                                    ${escapeHtml(trProgramName(program.name || `${translateWord("program", "Program")} ${idx + 1}`))}
                                 </div>
                                 <div class="program-card-rows">
                                     ${allRows.map((row) => `
@@ -1756,7 +1763,7 @@ export async function initUniversityPage() {
             `;
         } else if (u.academics?.majors) {
             progDiv.innerHTML = u.academics.majors
-                .map(m => `<span class="program-major-chip">${escapeHtml(String(m))}</span>`)
+                .map(m => `<span class="program-major-chip">${escapeHtml(trProgramName(String(m)))}</span>`)
                 .join(" ");
         } else {
             progDiv.innerHTML = `<div class="program-empty">${escapeHtml(translateWord("no_program_data", "No program data available."))}</div>`;

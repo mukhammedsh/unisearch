@@ -545,6 +545,57 @@ const TRACK_LABELS = {
   },
 };
 
+const PROGRAM_NAMES = {
+  rus: {
+    aerospace_engineering: "Аэрокосмическая инженерия",
+    business_information_systems: "Бизнес-информационные системы",
+    computer_science: "Компьютерные науки",
+    computer_science_bcomp: "Компьютерные науки (BComp)",
+    computer_science_computing_and_software_systems_major: "Компьютерные науки (специализация Computing and Software Systems)",
+    computer_science_and_engineering: "Компьютерные науки и инженерия",
+    computer_science_and_engineering_6_3: "Компьютерные науки и инженерия (6-3)",
+    computer_science_and_engineering_graduate: "Компьютерные науки и инженерия (магистратура/PhD)",
+    computer_science_and_technology: "Компьютерные науки и технологии",
+    computing_beng_meng: "Вычислительная техника (BEng/MEng)",
+    electrical_engineering_and_computer_science_6_2_6_5: "Электротехника и компьютерные науки (6-2/6-5)",
+    engineering_digital_infrastructure_engineering_systems_major: "Инженерия (специализация Digital Infrastructure Engineering Systems)",
+    environmental_sciences_peak: "Экологические науки (PEAK)",
+    foundation_year: "Подготовительный год (Foundation)",
+    informatics: "Информатика",
+    information_systems: "Информационные системы",
+    japan_in_east_asia_peak: "Япония в Восточной Азии (PEAK)",
+    kyoto_iup_preparatory_course: "Подготовительный курс Kyoto iUP",
+    kyoto_iup_undergraduate_program: "Программа бакалавриата Kyoto iUP",
+    mechanical_and_aerospace_engineering: "Машиностроение и аэрокосмическая инженерия",
+    mechanical_engineering: "Машиностроение",
+    software_engineering: "Программная инженерия",
+  },
+  kz: {
+    aerospace_engineering: "Аэроғарыш инженериясы",
+    business_information_systems: "Бизнес-ақпараттық жүйелер",
+    computer_science: "Компьютерлік ғылымдар",
+    computer_science_bcomp: "Компьютерлік ғылымдар (BComp)",
+    computer_science_computing_and_software_systems_major: "Компьютерлік ғылымдар (Computing and Software Systems бағыты)",
+    computer_science_and_engineering: "Компьютерлік ғылымдар және инженерия",
+    computer_science_and_engineering_6_3: "Компьютерлік ғылымдар және инженерия (6-3)",
+    computer_science_and_engineering_graduate: "Компьютерлік ғылымдар және инженерия (магистратура/PhD)",
+    computer_science_and_technology: "Компьютерлік ғылымдар және технологиялар",
+    computing_beng_meng: "Есептеу техникасы (BEng/MEng)",
+    electrical_engineering_and_computer_science_6_2_6_5: "Электротехника және компьютерлік ғылымдар (6-2/6-5)",
+    engineering_digital_infrastructure_engineering_systems_major: "Инженерия (Digital Infrastructure Engineering Systems бағыты)",
+    environmental_sciences_peak: "Экологиялық ғылымдар (PEAK)",
+    foundation_year: "Дайындық жылы (Foundation)",
+    informatics: "Информатика",
+    information_systems: "Ақпараттық жүйелер",
+    japan_in_east_asia_peak: "Шығыс Азиядағы Жапония (PEAK)",
+    kyoto_iup_preparatory_course: "Kyoto iUP дайындық курсы",
+    kyoto_iup_undergraduate_program: "Kyoto iUP бакалавриат бағдарламасы",
+    mechanical_and_aerospace_engineering: "Машина жасау және аэроғарыш инженериясы",
+    mechanical_engineering: "Машина жасау",
+    software_engineering: "Бағдарламалық инженерия",
+  },
+};
+
 const TRACK_LABEL_FALLBACK_REPLACE = {
   rus: [
     ["Need-based Aid", "Поддержка по финансовой потребности"],
@@ -768,4 +819,15 @@ export function translateTrackLabel(value, fallback = "") {
     out = replaceInsensitive(out, from, to);
   });
   return out;
+}
+
+export function translateProgramName(value, fallback = "") {
+  const raw = String(value || "").trim();
+  if (!raw) return String(fallback || "");
+  const lang = getCurrentLanguage();
+  if (lang === "eng") return raw;
+
+  const map = PROGRAM_NAMES[lang] || null;
+  if (!map) return raw;
+  return map[keyify(raw)] || raw;
 }
