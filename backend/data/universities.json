@@ -218,7 +218,8 @@
         }
       ],
       "formats": [
-        "On-campus"
+        "On-campus",
+        "Online"
       ]
     },
     "finance": {
@@ -534,7 +535,8 @@
         }
       ],
       "formats": [
-        "On-campus"
+        "On-campus",
+        "Online"
       ]
     },
     "finance": {
@@ -1259,7 +1261,8 @@
         }
       ],
       "formats": [
-        "On-campus"
+        "On-campus",
+        "Online"
       ]
     },
     "finance": {
@@ -2914,7 +2917,8 @@
         }
       ],
       "formats": [
-        "On-campus"
+        "On-campus",
+        "Online"
       ]
     },
     "finance": {
