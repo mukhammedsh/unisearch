@@ -427,9 +427,9 @@ function initProfileUI() {
     const saveGpaBtn = document.getElementById("saveGpaBtn");
     const profileUsernameDiv = document.querySelector(".profile-username");
 
-    const syncThemeButton = () => {
+    const syncThemeButton = (themeOverride = "") => {
         if (!themeToggleBtn) return;
-        const theme = getCurrentTheme();
+        const theme = String(themeOverride || getCurrentTheme() || "").trim().toLowerCase();
         themeToggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
         themeToggleBtn.title = t("nav.switch_theme", "Switch theme");
         themeToggleBtn.setAttribute("aria-label", t("nav.switch_theme", "Switch theme"));
@@ -437,13 +437,13 @@ function initProfileUI() {
     };
     syncThemeButton();
     themeToggleBtn?.addEventListener("click", () => {
-        toggleTheme();
-        syncThemeButton();
+        const nextTheme = toggleTheme();
+        syncThemeButton(nextTheme);
     });
     window.addEventListener("themeChanged", (e) => {
-        const theme = e?.detail?.theme || "";
+        const theme = String(e?.detail?.theme || "").trim().toLowerCase();
         syncNavbarLogo(theme);
-        syncThemeButton();
+        syncThemeButton(theme);
     });
     window.addEventListener("pageshow", () => {
         syncNavbarLogo();
