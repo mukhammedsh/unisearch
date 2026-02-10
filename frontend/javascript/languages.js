@@ -9,6 +9,7 @@ import {
   escapeHtml,
   getExamDisplayName,
 } from "./utils.js";
+import { t, tFormat } from "./i18n.js";
 
 const KIND_NATIVE = "native";
 const KIND_CEFR = "cefr";
@@ -147,7 +148,7 @@ export function initLanguagesPanel() {
       langKind.innerHTML = "";
       const placeholder = document.createElement("option");
       placeholder.value = "";
-      placeholder.textContent = "Select type";
+      placeholder.textContent = t("languages.select_type", "Select type");
       placeholder.disabled = true;
       placeholder.selected = !current;
       langKind.appendChild(placeholder);
@@ -170,7 +171,7 @@ export function initLanguagesPanel() {
       if (!list.length) {
         const opt = document.createElement("option");
         opt.value = "";
-        opt.textContent = "No exams";
+        opt.textContent = t("languages.no_exams", "No exams");
         langExam.appendChild(opt);
         langExam.disabled = true;
         return;
@@ -179,7 +180,7 @@ export function initLanguagesPanel() {
       langExam.disabled = false;
       const placeholder = document.createElement("option");
       placeholder.value = "";
-      placeholder.textContent = "Select exam";
+      placeholder.textContent = t("languages.select_exam", "Select exam");
       placeholder.disabled = true;
       placeholder.selected = true;
       langExam.appendChild(placeholder);
@@ -221,7 +222,7 @@ export function initLanguagesPanel() {
               <strong>${langName}</strong>
               <small>${kindName}${meta}</small>
             </div>
-            <button class="profile-delete" data-idx="${idx}" type="button">Delete</button>
+            <button class="profile-delete" data-idx="${idx}" type="button">${escapeHtml(t("profile.delete", "Delete"))}</button>
           </div>
         `;
       }).join("");
@@ -286,7 +287,7 @@ export function initLanguagesPanel() {
       const kind = normalizeKind(langKind.value);
 
       if (!code || !kind) {
-        showToast("Choose language and type", "error");
+        showToast(t("languages.error.choose_language_type", "Choose language and type"), "error");
         return;
       }
 
@@ -295,7 +296,7 @@ export function initLanguagesPanel() {
       if (kind === KIND_CEFR) {
         const level = Number(langCefr.value);
         if (!Number.isInteger(level) || level < 1 || level > 6) {
-          showToast("Choose CEFR level", "error");
+          showToast(t("languages.error.choose_cefr", "Choose CEFR level"), "error");
           return;
         }
         payload = { ...payload, level };
@@ -305,25 +306,32 @@ export function initLanguagesPanel() {
         const examId = String(langExam.value || "").trim();
         const exObj = getExam(cfg, code, examId);
         if (!exObj) {
-          showToast("Choose exam", "error");
+          showToast(t("languages.error.choose_exam", "Choose exam"), "error");
           return;
         }
 
         const rawScore = String(langExamScore.value || "").trim().replaceAll(",", ".");
         if (!rawScore) {
-          showToast("Enter score", "error");
+          showToast(t("languages.error.enter_score", "Enter score"), "error");
           return;
         }
 
         const score = Number(rawScore);
         if (Number.isNaN(score)) {
-          showToast("Enter score", "error");
+          showToast(t("languages.error.enter_score", "Enter score"), "error");
           return;
         }
 
         const examType = String(exObj.type || "").trim().toLowerCase();
         if (examType === "int" && !Number.isInteger(score)) {
-          showToast(`${exObj.label || getExamDisplayName(examId, { langCode: code })} requires an integer score`, "error");
+          showToast(
+            tFormat(
+              "languages.error.integer_required",
+              { exam: exObj.label || getExamDisplayName(examId, { langCode: code }) },
+              `${exObj.label || getExamDisplayName(examId, { langCode: code })} requires an integer score`
+            ),
+            "error"
+          );
           return;
         }
 
@@ -370,10 +378,10 @@ export function initLanguagesPanel() {
         saveProfile(prof);
         renderList();
         if (entry.kind === KIND_EXAM) langExamScore.value = "";
-        showToast("Language saved", "success");
+        showToast(t("languages.saved", "Language saved"), "success");
         return;
       } catch (e) {
-        showToast(e.message || "Failed to save language", "error");
+        showToast(e.message || t("languages.error.save_failed", "Failed to save language"), "error");
       }
     }
 
@@ -389,7 +397,7 @@ export function initLanguagesPanel() {
       prof.languages.splice(idx, 1);
       saveProfile(prof);
       renderList();
-      showToast("Removed", "success");
+      showToast(t("languages.removed", "Removed"), "success");
     });
 
     // Когда профиль открыли — перерисуем список (и обновим кастомные селекты)

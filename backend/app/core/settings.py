@@ -10,25 +10,38 @@ FRONTEND_ORIGIN = os.getenv(
 )
 APP_VERSION = os.getenv("APP_VERSION", "2.1.1").strip() or "2.1.1"
 
-UNIMENTOR_NAME = os.getenv("UNIMENTOR_NAME", "UniMentor").strip() or "UniMentor"
-UNIMENTOR_PROVIDER = os.getenv("UNIMENTOR_PROVIDER", "local").strip().lower() or "local"
-UNIMENTOR_ENABLE_ONLINE = os.getenv("UNIMENTOR_ENABLE_ONLINE", "1").strip().lower() not in ("0", "false", "no")
-UNIMENTOR_GEMINI_MODEL = os.getenv("UNIMENTOR_GEMINI_MODEL", "gemini-2.0-flash").strip() or "gemini-2.0-flash"
-UNIMENTOR_GEMINI_FALLBACK_MODEL = os.getenv("UNIMENTOR_GEMINI_FALLBACK_MODEL", "gemini-2.0-flash-lite").strip() or "gemini-2.0-flash-lite"
-UNIMENTOR_GEMINI_ENABLE_WEB = os.getenv("UNIMENTOR_GEMINI_ENABLE_WEB", "1").strip().lower() not in ("0", "false", "no")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 
-try:
-    UNIMENTOR_TIMEOUT = float(os.getenv("UNIMENTOR_TIMEOUT", "6"))
-except Exception:
-    UNIMENTOR_TIMEOUT = 6.0
+def _env_bool(name: str, default: str = "0") -> bool:
+    return os.getenv(name, default).strip().lower() not in ("0", "false", "no", "")
 
-MENTOR_API_KEY = (os.getenv("UNIMENTOR_API_KEY") or os.getenv("MENTOR_API_KEY") or "").strip()
+
+ML_INTEREST_TRANSLATION_ENABLED = _env_bool("ML_INTEREST_TRANSLATION_ENABLED", "1")
+ML_INTEREST_TRANSLATION_PROVIDER = os.getenv("ML_INTEREST_TRANSLATION_PROVIDER", "libretranslate").strip().lower() or "libretranslate"
+ML_INTEREST_TRANSLATION_TARGET = os.getenv("ML_INTEREST_TRANSLATION_TARGET", "en").strip().lower() or "en"
+ML_INTEREST_TRANSLATION_SOURCE = os.getenv("ML_INTEREST_TRANSLATION_SOURCE", "auto").strip().lower() or "auto"
+LIBRETRANSLATE_URL = os.getenv("LIBRETRANSLATE_URL", "http://127.0.0.1:5000/translate").strip()
+LIBRETRANSLATE_API_KEY = os.getenv("LIBRETRANSLATE_API_KEY", "").strip()
 try:
-    MENTOR_RATE_LIMIT_REQUESTS = int(os.getenv("MENTOR_RATE_LIMIT_REQUESTS", "20"))
+    ML_INTEREST_TRANSLATION_TIMEOUT_SEC = float(os.getenv("ML_INTEREST_TRANSLATION_TIMEOUT_SEC", "2.5"))
 except Exception:
-    MENTOR_RATE_LIMIT_REQUESTS = 20
+    ML_INTEREST_TRANSLATION_TIMEOUT_SEC = 2.5
 try:
-    MENTOR_RATE_LIMIT_WINDOW_SEC = int(os.getenv("MENTOR_RATE_LIMIT_WINDOW_SEC", "60"))
+    ML_INTEREST_TRANSLATION_CACHE_TTL_SEC = int(os.getenv("ML_INTEREST_TRANSLATION_CACHE_TTL_SEC", "86400"))
 except Exception:
-    MENTOR_RATE_LIMIT_WINDOW_SEC = 60
+    ML_INTEREST_TRANSLATION_CACHE_TTL_SEC = 86400
+try:
+    ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS = int(os.getenv("ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS", "2000"))
+except Exception:
+    ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS = 2000
+try:
+    ML_INTEREST_TRANSLATION_RATE_LIMIT_REQUESTS = int(os.getenv("ML_INTEREST_TRANSLATION_RATE_LIMIT_REQUESTS", "40"))
+except Exception:
+    ML_INTEREST_TRANSLATION_RATE_LIMIT_REQUESTS = 40
+try:
+    ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC = int(os.getenv("ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC", "60"))
+except Exception:
+    ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC = 60
+try:
+    ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC = int(os.getenv("ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC", "20"))
+except Exception:
+    ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC = 20

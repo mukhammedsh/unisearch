@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
-  <title>Global Rankings | UniSearch</title>
+  <title data-i18n="title.ranking">Global Rankings | UniSearch</title>
   <script src="theme-init.js"></script>
 
   <link rel="stylesheet" href="css/style.css" />
@@ -15,12 +15,12 @@
   <main class="u-page">
     <div class="rank-container">
       <div class="rank-header">
-        <h1>🏆 Global University Rankings</h1>
-        <p>Top universities ranked by academic prestige and research impact (2025)</p>
+        <h1><span class="rank-title-icon">🏆</span> <span data-i18n="ranking.title">Global University Rankings</span></h1>
+        <p data-i18n="ranking.subtitle">Top universities ranked by academic prestige and research impact (2025)</p>
       </div>
       
       <div id="rankingList">
-        <div class="center-loading" role="status" aria-label="Loading rankings">
+        <div class="center-loading" role="status" aria-label="Loading rankings" data-i18n-aria-label="ranking.loading">
           <div class="center-loading-spinner" aria-hidden="true"></div>
         </div>
       </div>
@@ -32,7 +32,7 @@
 
   <footer class="site-footer">
       <div class="container footer-content">
-          <p>© 2026 UniSearch</p>
+          <p data-i18n="footer.copyright">© 2026 UniSearch</p>
           
           <div class="social-links">
               <a href="https://github.com/muxlex/unisearch" target="_blank">

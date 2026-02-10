@@ -1,47 +1,7 @@
-import secrets
 import threading
 import time
 from collections import deque
 from typing import Deque, Dict, Optional, Tuple
-
-from fastapi import HTTPException, Request
-
-from app.core.settings import (
-    MENTOR_API_KEY,
-    MENTOR_RATE_LIMIT_REQUESTS,
-    MENTOR_RATE_LIMIT_WINDOW_SEC,
-)
-
-
-def require_mentor_api_key(request: Request) -> None:
-    if not MENTOR_API_KEY:
-        return
-    token = request.headers.get("x-api-key") or ""
-    auth = request.headers.get("authorization") or ""
-    if auth.lower().startswith("bearer "):
-        token = auth[7:].strip()
-    token = (token or "").strip()
-    if not token or not secrets.compare_digest(token, MENTOR_API_KEY):
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-
-def _client_identifier(request: Request) -> str:
-    xff = str(request.headers.get("x-forwarded-for", "")).strip()
-    if xff:
-        ip = xff.split(",")[0].strip()
-        if ip:
-            return ip
-    if request.client and request.client.host:
-        return request.client.host
-    return "unknown"
-
-
-def _token_identifier(request: Request) -> Optional[str]:
-    token = str(request.headers.get("x-api-key") or "").strip()
-    auth = str(request.headers.get("authorization") or "").strip()
-    if auth.lower().startswith("bearer "):
-        token = auth[7:].strip()
-    return token or None
 
 
 class SlidingWindowRateLimiter:
@@ -90,29 +50,3 @@ class SlidingWindowRateLimiter:
                         self._events.pop(oldest_key, None)
 
             return True, remaining, 0.0
-
-
-_MENTOR_RATE_LIMITER = SlidingWindowRateLimiter(
-    limit=MENTOR_RATE_LIMIT_REQUESTS,
-    window_seconds=MENTOR_RATE_LIMIT_WINDOW_SEC,
-)
-
-
-def enforce_mentor_rate_limit(request: Request) -> Dict[str, str]:
-    key_token = _token_identifier(request)
-    key_client = _client_identifier(request)
-    key = f"token:{key_token}" if key_token else f"ip:{key_client}"
-
-    allowed, remaining, retry_after = _MENTOR_RATE_LIMITER.check(key)
-    headers = {
-        "X-RateLimit-Limit": str(_MENTOR_RATE_LIMITER.limit),
-        "X-RateLimit-Remaining": str(remaining),
-        "X-RateLimit-Window": str(_MENTOR_RATE_LIMITER.window_seconds),
-    }
-
-    if not allowed:
-        retry_seconds = str(max(1, int(round(retry_after))))
-        headers["Retry-After"] = retry_seconds
-        raise HTTPException(status_code=429, detail="Too many mentor requests", headers=headers)
-
-    return headers

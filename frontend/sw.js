@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-02-08-1";
+const SW_VERSION = "2026-02-10-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -61,6 +61,7 @@ function isApiRequest(request, url) {
 
 function isStaticRequest(request, url) {
   if (url.origin !== self.location.origin) return false;
+  if (url.pathname.startsWith("/Localization/")) return true;
   if (request.destination === "script" || request.destination === "style" || request.destination === "document") {
     return true;
   }

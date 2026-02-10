@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from app.services import languages as languages_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
+from app.services.text_translation import translate_interest_text_for_ml
 
 
 def _to_num(value: Any) -> Optional[float]:
@@ -487,6 +488,7 @@ def sort_universities_ai(
     profile: Optional[Dict[str, Any]] = None,
     ai_balance: Any = 50,
     funding_type: Any = "any",
+    translation_client_key: str = "",
 ) -> List[Dict[str, Any]]:
     profile = profile if isinstance(profile, dict) else {}
     lang_cfg = _language_config()
@@ -495,7 +497,23 @@ def sort_universities_ai(
     w_prestige = _clamp01((_to_num(ai_balance) or 50.0) / 100.0)
     w_budget = 1.0 - w_prestige
     rank_score = _rank_score_factory(items)
-    interest_text = str(profile.get("interests") or "").strip()
+    interest_text_raw = str(profile.get("interests") or "").strip()
+    locale_hint = (
+        profile.get("locale")
+        or profile.get("language")
+        or profile.get("lang")
+        or ""
+    )
+    translation_meta = (
+        translate_interest_text_for_ml(
+            interest_text_raw,
+            source_hint=locale_hint,
+            client_key=translation_client_key,
+        )
+        if interest_text_raw
+        else {"text": "", "translated": False, "source": "auto", "reason": "empty", "provider": "none"}
+    )
+    interest_text = str(translation_meta.get("text") or "").strip()
 
     ml_scores_by_id: Dict[str, float] = {}
     ml_status = get_ml_runtime_status() if interest_text else {"available": False, "message": ""}
@@ -539,6 +557,9 @@ def sort_universities_ai(
                 "mlAvailable": ml_available,
                 "mlUnavailable": ml_unavailable_warning,
                 "mlWarning": ml_warning_message,
+                "mlQueryTranslated": bool(translation_meta.get("translated")),
+                "mlQuerySource": str(translation_meta.get("source") or ""),
+                "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
             }
             item["__ai_score"] = 0.0
             enriched.append(item)
@@ -625,6 +646,9 @@ def sort_universities_ai(
                 "mlAvailable": ml_available,
                 "mlUnavailable": ml_unavailable_warning,
                 "mlWarning": ml_warning_message,
+                "mlQueryTranslated": bool(translation_meta.get("translated")),
+                "mlQuerySource": str(translation_meta.get("source") or ""),
+                "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
             }
             candidate = {"score": final_score, "matchData": match_data}
             if best is None or float(candidate["score"]) > float(best["score"]):

@@ -12,6 +12,7 @@ import {
   initials,
   moneyUSD,
   loadProfile,
+  loadProfileForApi,
   getFlagImg,
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
@@ -22,8 +23,16 @@ import {
   aiName,
 } from "./utils.js";
 
-import { initUniMentor } from "./ai/mentor.js";
 import { setupTabs } from "./components.js";
+import { getCurrentLanguage, t, tFormat } from "./i18n.js";
+import {
+  translateAdmissionText,
+  translateDataValue,
+  translateTemplate,
+  translateUniversityDescription,
+  translateUniversityName,
+  translateWord,
+} from "./university-translations.js";
 
 const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
 
@@ -53,6 +62,77 @@ function safePathSegment(raw) {
 }
 
 const MOBILE_IMAGE_MAX_WIDTH = 640;
+
+function trCountry(value) {
+  return translateDataValue("country", value, value);
+}
+
+function trCity(value) {
+  return translateDataValue("city", value, value);
+}
+
+function trState(value) {
+  return translateDataValue("state", value, value);
+}
+
+function trProgramLanguage(value) {
+  return translateDataValue("language", value, value);
+}
+
+function trStudyLevel(value) {
+  return translateDataValue("study_level", value, value);
+}
+
+function trStudyMode(value) {
+  return translateDataValue("study_mode", value, value);
+}
+
+function trTag(value) {
+  return translateDataValue("tag", value, value);
+}
+
+function trUniversityName(u) {
+  return translateUniversityName(u?.id, String(u?.name || ""));
+}
+
+function trUniversityDescription(u) {
+  return translateUniversityDescription(u, String(u?.description || ""));
+}
+
+function trTrackLabel(label) {
+  const raw = String(label || "").trim();
+  if (!raw) return "";
+  const lang = getCurrentLanguage();
+  if (lang === "eng") return raw;
+
+  const pairs = lang === "rus"
+    ? [
+        ["Regular Action", "Основной набор"],
+        ["Need-based Aid", "Поддержка по финансовой потребности"],
+        ["Merit Scholarship", "Стипендия за достижения"],
+        ["Grant", "Грант"],
+        ["Paid", "Платное"],
+      ]
+    : [
+        ["Regular Action", "Негізгі қабылдау"],
+        ["Need-based Aid", "Қаржылық қажеттілікке негізделген қолдау"],
+        ["Merit Scholarship", "Жетістікке арналған шәкіртақы"],
+        ["Grant", "Грант"],
+        ["Paid", "Ақылы"],
+      ];
+
+  let out = raw;
+  pairs.forEach(([src, dst]) => {
+    out = out.replaceAll(src, dst);
+  });
+  return out;
+}
+
+function trTrackDescription(universityId, trackId, value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return translateAdmissionText(raw, raw);
+}
 
 function normalizeFundingPreference(value) {
   const raw = String(value || "").trim().toLowerCase();
@@ -260,7 +340,7 @@ export function initUniversitiesPage() {
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
         const aiOpt = el.sortSelect.querySelector('option[value="uni_ai"]');
-        if (aiOpt) aiOpt.textContent = `✨ ${aiName("fit")}: AI Smart Sort`;
+        if (aiOpt) aiOpt.textContent = tFormat("universities.sort_ai", { fit: aiName("fit") }, `✨ ${aiName("fit")}: AI Smart Sort`);
     };
     applyAISortOptionLabel();
 
@@ -334,10 +414,10 @@ export function initUniversitiesPage() {
                 </div>
                 <div id="uTourSlide" class="u-tour-slide" aria-live="polite"></div>
                 <div class="u-tour-actions">
-                    <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">Skip</button>
+                    <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">${escapeHtml(t("tour.skip", "Skip"))}</button>
                     <div class="u-tour-actions-right">
-                        <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">Back</button>
-                        <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next">Next</button>
+                        <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">${escapeHtml(t("tour.back", "Back"))}</button>
+                        <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next">${escapeHtml(t("tour.next", "Next"))}</button>
                     </div>
                 </div>
             </div>
@@ -359,46 +439,46 @@ export function initUniversitiesPage() {
 
         const steps = [
             {
-                kicker: "Welcome",
-                title: "Find universities faster",
-                desc: "This page helps you quickly shortlist universities by location, tuition, and fit for your profile.",
+                kicker: t("tour.step1.kicker", "Welcome"),
+                title: t("tour.step1.title", "Find universities faster"),
+                desc: t("tour.step1.desc", "This page helps you quickly shortlist universities by location, tuition, and fit for your profile."),
                 points: [
-                    "Use search + filters in the left panel.",
-                    "Switch between List and Map view on the top right.",
-                    `Use ${aiName("fit")} to sort by personalized fit.`,
+                    t("tour.step1.point1", "Use search + filters in the left panel."),
+                    t("tour.step1.point2", "Switch between List and Map view on the top right."),
+                    tFormat("tour.step1.point3", { fit: aiName("fit") }, `Use ${aiName("fit")} to sort by personalized fit.`),
                 ],
                 action: "",
             },
             {
-                kicker: "Step 1",
-                title: "Fill your profile first",
-                desc: "Profile data makes recommendations and admission estimates more accurate.",
+                kicker: t("tour.step2.kicker", "Step 1"),
+                title: t("tour.step2.title", "Fill your profile first"),
+                desc: t("tour.step2.desc", "Profile data makes recommendations and admission estimates more accurate."),
                 points: [
-                    "Add budget, major, and GPA.",
-                    "Add exam and language scores.",
-                    `This improves ${aiName("fit")} and ${aiName("chance")} quality.`,
+                    t("tour.step2.point1", "Add budget, major, and GPA."),
+                    t("tour.step2.point2", "Add exam and language scores."),
+                    tFormat("tour.step2.point3", { fit: aiName("fit"), chance: aiName("chance") }, `This improves ${aiName("fit")} and ${aiName("chance")} quality.`),
                 ],
                 action: "open_profile",
             },
             {
-                kicker: "Step 2",
-                title: "Use filtering strategically",
-                desc: "Start broad, then narrow by country, city, cost range, study level, and funding type.",
+                kicker: t("tour.step3.kicker", "Step 2"),
+                title: t("tour.step3.title", "Use filtering strategically"),
+                desc: t("tour.step3.desc", "Start broad, then narrow by country, city, cost range, study level, and funding type."),
                 points: [
-                    "Adjust tuition min/max with the slider.",
-                    "Use grant/paid track filter for finance planning.",
-                    "Use map view to spot location clusters.",
+                    t("tour.step3.point1", "Adjust tuition min/max with the slider."),
+                    t("tour.step3.point2", "Use grant/paid track filter for finance planning."),
+                    t("tour.step3.point3", "Use map view to spot location clusters."),
                 ],
                 action: "",
             },
             {
-                kicker: "Step 3",
-                title: "Open details and compare tracks",
-                desc: "Click any card to inspect admissions, finance, and requirements per track.",
+                kicker: t("tour.step4.kicker", "Step 3"),
+                title: t("tour.step4.title", "Open details and compare tracks"),
+                desc: t("tour.step4.desc", "Click any card to inspect admissions, finance, and requirements per track."),
                 points: [
-                    `Review ${aiName("chance")} by track in the detail page.`,
-                    `Ask ${aiName("mentor")} for quick explanations.`,
-                    "Compare yearly cost and scholarships before applying.",
+                    tFormat("tour.step4.point1", { chance: aiName("chance") }, `Review ${aiName("chance")} by track in the detail page.`),
+                    t("tour.step4.point2", "Check Admission and Costs tabs for requirement and funding details."),
+                    t("tour.step4.point3", "Compare yearly cost and scholarships before applying."),
                 ],
                 action: "",
             },
@@ -418,7 +498,7 @@ export function initUniversitiesPage() {
                 .join("");
 
             const actionHtml = step.action === "open_profile"
-                ? `<button class="u-tour-inline-btn" type="button" data-action="open-profile">Open Profile</button>`
+                ? `<button class="u-tour-inline-btn" type="button" data-action="open-profile">${escapeHtml(t("tour.open_profile", "Open Profile"))}</button>`
                 : "";
 
             slideEl.classList.remove("is-enter-forward", "is-enter-back");
@@ -459,8 +539,8 @@ export function initUniversitiesPage() {
 
             prevBtn.disabled = idx === 0;
             prevBtn.style.display = idx === 0 ? "none" : "";
-            nextBtn.textContent = idx === steps.length - 1 ? "Finish" : "Next";
-            skipBtn.textContent = "Skip";
+            nextBtn.textContent = idx === steps.length - 1 ? t("tour.finish", "Finish") : t("tour.next", "Next");
+            skipBtn.textContent = t("tour.skip", "Skip");
             skipBtn.disabled = idx === steps.length - 1;
             skipBtn.style.display = idx === steps.length - 1 ? "none" : "";
             skipBtn.style.visibility = idx === steps.length - 1 ? "hidden" : "visible";
@@ -539,12 +619,12 @@ export function initUniversitiesPage() {
             <div class="unifit-warning-card" role="dialog" aria-modal="true" aria-labelledby="unifitWarningTitle">
                 <div class="unifit-warning-icon">!</div>
                 <div class="unifit-warning-content">
-                    <h3 id="unifitWarningTitle">Limited Profile Data</h3>
-                    <p>UniFit works best when your profile includes exam scores or language evidence. Without them, the AI ranking may be less accurate.</p>
+                    <h3 id="unifitWarningTitle">${escapeHtml(t("unifit.warning.title", "Limited Profile Data"))}</h3>
+                    <p>${escapeHtml(t("unifit.warning.desc", "UniFit works best when your profile includes exam scores or language evidence. Without them, the AI ranking may be less accurate."))}</p>
                 </div>
                 <div class="unifit-warning-actions">
-                    <button class="unifit-warning-btn unifit-warning-confirm" data-action="confirm" type="button">Okay I understand</button>
-                    <button class="unifit-warning-btn unifit-warning-cancel" data-action="cancel" type="button">Cancel</button>
+                    <button class="unifit-warning-btn unifit-warning-confirm" data-action="confirm" type="button">${escapeHtml(t("unifit.warning.confirm", "Okay I understand"))}</button>
+                    <button class="unifit-warning-btn unifit-warning-cancel" data-action="cancel" type="button">${escapeHtml(t("unifit.warning.cancel", "Cancel"))}</button>
                 </div>
             </div>
         `;
@@ -740,6 +820,11 @@ export function initUniversitiesPage() {
         saveFilters(state);
         fetchAndRender();
     });
+    window.addEventListener("languageChanged", () => {
+        applyAISortOptionLabel();
+        updateSliderLabel();
+        fetchAndRender();
+    });
 
     function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
@@ -842,11 +927,11 @@ export function initUniversitiesPage() {
     function updateSliderLabel() {
         if (!el.sliderLabel) return;
         const val = state.ai_balance;
-        let text = "Balanced (50/50)";
-        if (val <= 20) text = "Strict Budget Priority 💰";
-        else if (val >= 80) text = "Top Prestige Priority 🏆";
-        else if (val < 50) text = `Focus on Budget (${100-val}%)`;
-        else text = `Focus on Prestige (${val}%)`;
+        let text = t("universities.slider.balanced", "Balanced (50/50)");
+        if (val <= 20) text = t("universities.slider.budget_priority", "Strict Budget Priority");
+        else if (val >= 80) text = t("universities.slider.prestige_priority", "Top Prestige Priority");
+        else if (val < 50) text = tFormat("universities.slider.focus_budget", { value: 100 - val }, `Focus on Budget (${100 - val}%)`);
+        else text = tFormat("universities.slider.focus_prestige", { value: val }, `Focus on Prestige (${val}%)`);
         el.sliderLabel.textContent = text;
     }
     
@@ -884,7 +969,7 @@ export function initUniversitiesPage() {
     }
 
     function buildAiSortPayload() {
-        const profile = loadProfile();
+        const profile = loadProfileForApi();
         const payload = {
             profile,
             ai_balance: state.ai_balance,
@@ -949,8 +1034,12 @@ export function initUniversitiesPage() {
         else {
             el.stateDiv.style.display = "block"; 
             const states = Object.keys(countryData).sort();
-            el.stateSelect.innerHTML = `<option value="">All States / Regions</option>`;
-            states.forEach(s => { el.stateSelect.innerHTML += `<option value="${escapeHtml(String(s))}">${escapeHtml(String(s))}</option>`; });
+            el.stateSelect.innerHTML = `<option value="">${escapeHtml(t("universities.any_state", "Any State"))}</option>`;
+            states.forEach((s) => {
+                const value = String(s || "");
+                const label = trState(value);
+                el.stateSelect.innerHTML += `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
+            });
             initCustomSelect("stateSelect");
             updateCityDropdown([]);
         }
@@ -962,19 +1051,30 @@ export function initUniversitiesPage() {
     }
     function updateCityDropdown(cities) {
         if (!el.citySelect) return;
-        if (!cities || cities.length === 0) { el.citySelect.innerHTML = `<option value="">Select region/country first</option>`; el.citySelect.disabled = true; } 
-        else { el.citySelect.disabled = false; el.citySelect.innerHTML = `<option value="">All Cities</option>`; cities.sort().forEach(c => { const opt = document.createElement("option"); opt.value = c; opt.textContent = c; el.citySelect.appendChild(opt); }); }
+        if (!cities || cities.length === 0) { el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.select_country_first", "Select country first"))}</option>`; el.citySelect.disabled = true; } 
+        else {
+            el.citySelect.disabled = false;
+            el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
+            cities.sort().forEach((c) => {
+                const value = String(c || "");
+                const opt = document.createElement("option");
+                opt.value = value;
+                opt.textContent = trCity(value);
+                el.citySelect.appendChild(opt);
+            });
+        }
         initCustomSelect("citySelect");
     }
     function updateCountryOptions() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">🌍 Global</option>`;
+        let html = `<option value="">🌍 ${escapeHtml(t("universities.global", "Global"))}</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
-            const text = escapeHtml(String(c));
-            html += `<option value="${text}" ${isSelected}>${text}</option>`; 
+            const value = String(c || "");
+            const text = escapeHtml(trCountry(value));
+            html += `<option value="${escapeHtml(value)}" ${isSelected}>${text}</option>`; 
         });
         el.countrySelect.innerHTML = html;
         initCustomSelect("countrySelect");
@@ -1102,7 +1202,7 @@ export function initUniversitiesPage() {
         const total = data.total || 0;
         const warnings = Array.isArray(data.warnings) ? data.warnings : [];
         const mlUnavailable = warnings.some((w) => String(w || "").toLowerCase().includes("machine learning unavailable"));
-        const warningText = mlUnavailable ? "Machine Learning unavailable. Using rule-based ranking only." : "";
+        const warningText = mlUnavailable ? t("universities.state.ml_unavailable", "Machine Learning unavailable. Using rule-based ranking only.") : "";
 
         if (state.viewMode === "list") {
             if (el.total) el.total.textContent = String(total);
@@ -1110,7 +1210,7 @@ export function initUniversitiesPage() {
 
             if (!items.length) {
                 if (el.state) {
-                    el.state.textContent = warningText ? `${warningText} No universities found.` : "No universities found.";
+                    el.state.textContent = warningText ? `${warningText} ${t("universities.state.empty", "No universities found.")}` : t("universities.state.empty", "No universities found.");
                     el.state.classList.toggle("u-state-warning", !!warningText);
                 }
                 return;
@@ -1200,7 +1300,7 @@ export function initUniversitiesPage() {
         if (runSeq !== fetchRunSeq) return;
         if (err?.name === "AbortError") return;
         console.error(err);
-        if (el.state) el.state.textContent = "Failed to load data.";
+        if (el.state) el.state.textContent = t("universities.state.failed", "Failed to load data.");
         } finally {
         if (runSeq === fetchRunSeq) {
             setUniversitiesLoading(false);
@@ -1215,15 +1315,15 @@ export function initUniversitiesPage() {
     // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
-        const name = u.name;
-        const country = nested(u, ["location", "country"], "");
-        const city = nested(u, ["location", "city"], "");
-        const cityText = escapeHtml(city);
-        const countryText = escapeHtml(country);
+        const name = trUniversityName(u);
+        const countryRaw = nested(u, ["location", "country"], "");
+        const cityRaw = nested(u, ["location", "city"], "");
+        const cityText = escapeHtml(trCity(cityRaw));
+        const countryText = escapeHtml(trCountry(countryRaw));
         let locString = cityText;
-        if (country) {
-            const flagHtml = getFlagImg(country);
-            locString = city 
+        if (countryRaw) {
+            const flagHtml = getFlagImg(countryRaw);
+            locString = cityRaw 
                 ? `<div style="display:flex; align-items:center; gap:6px;">${cityText}, ${flagHtml} ${countryText}</div>`
                 : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${countryText}</div>`;
         }
@@ -1269,11 +1369,11 @@ export function initUniversitiesPage() {
 
         if (match.meetMinRequirements) {
             badges.push(
-                `<span class="uni-pill uni-pill--neutral">✅ Requirements Met</span>`
+                `<span class="uni-pill uni-pill--neutral">${escapeHtml(t("universities.badge.requirements_met", "✅ Requirements Met"))}</span>`
             );
         } else if (match.trackLabel) {
             badges.push(
-                `<span class="uni-pill uni-pill--warn">⚠️ Below Requirements</span>`
+                `<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.below_requirements", "⚠️ Below Requirements"))}</span>`
             );
         }
 
@@ -1286,22 +1386,22 @@ export function initUniversitiesPage() {
         } else if (overBudget) {
         if (aidEligible) {
             badges.push(
-            `<span class="uni-pill uni-pill--success">🎓 Grant/Aid Likely (no budget penalty)</span>`
+            `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_likely", "🎓 Grant/Aid Likely (no budget penalty)"))}</span>`
             );
         } else if (aidAny) {
             badges.push(
-            `<span class="uni-pill uni-pill--warn">💸 Over Budget • Aid Available</span>`
+            `<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.over_budget_aid", "💸 Over Budget • Aid Available"))}</span>`
             );
         } else {
             badges.push(
-            `<span class="uni-pill uni-pill--budget">💰 Over Budget</span>`
+            `<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget", "💰 Over Budget"))}</span>`
             );
         }
         } else {
         // Не over budget
         if (aidAny) {
             badges.push(
-            `<span class="uni-pill uni-pill--success">🎓 Aid Available</span>`
+            `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🎓 Aid Available"))}</span>`
             );
         }
         }
@@ -1310,7 +1410,7 @@ export function initUniversitiesPage() {
         if (badges.length === 0) {
         const acc = u.academics?.acceptance_rate_percent;
         badges.push(
-            `<span class="uni-pill uni-pill--neutral">Acceptance: ${acc ?? "—"}%</span>`
+            `<span class="uni-pill uni-pill--neutral">${escapeHtml(tFormat("universities.badge.acceptance", { value: String(acc ?? "—") }, `Acceptance: ${String(acc ?? "—")}%`))}</span>`
         );
         }
 
@@ -1329,11 +1429,11 @@ export function initUniversitiesPage() {
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
-            <div class="uni-price"><small>Est. Cost/Year</small><b>${moneyUSD(cost)}</b></div>
+            <div class="uni-price"><small>${escapeHtml(t("universities.card.est_cost_year", "Est. Cost/Year"))}</small><b>${moneyUSD(cost)}</b></div>
             <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
             </div>
             <div class="uni-body">
-            <h3 class="uni-title">${escapeHtml(name)}</h3>
+                        <h3 class="uni-title">${escapeHtml(name)}</h3>
             <div class="uni-loc" style="margin-bottom:8px;">📍 ${locString}</div> 
             <div class="uni-badge" style="margin-top:auto; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
             </div>
@@ -1347,11 +1447,11 @@ export function initUniversitiesPage() {
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
         let html = ""; const p = state.page; const maxVisible = 5;
         const createBtn = (page, text, isActive = false) => { const activeClass = isActive ? "page-btn--active" : ""; return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`; };
-        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, "‹ Prev"); }
+        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, `‹ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
         let startPage, endPage;
         if (totalPages <= maxVisible) { startPage = 1; endPage = totalPages; } else { const maxPagesBefore = Math.floor(maxVisible / 2); const maxPagesAfter = Math.ceil(maxVisible / 2) - 1; if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; } }
         if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        if (p < totalPages) { html += createBtn(p + 1, "Next ›"); html += createBtn(totalPages, "»"); }
+        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} ›`); html += createBtn(totalPages, "»"); }
         el.pagination.innerHTML = html;
         el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
     }
@@ -1374,7 +1474,7 @@ export async function initUniversityPage() {
   };
 
   if (!id) {
-    if (stateEl) stateEl.innerHTML = "<h2 style='color:red; text-align:center;'>Error: No ID provided.</h2>";
+    if (stateEl) stateEl.innerHTML = `<h2 style='color:red; text-align:center;'>${escapeHtml(t("university.error_no_id", "Error: No ID provided."))}</h2>`;
     return;
   }
 
@@ -1386,23 +1486,26 @@ export async function initUniversityPage() {
 
     // 1. Шапка
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
-    setTxt("detailName", u.name); 
-    setTxt("detailLocation", u.location ? `${u.location.city}, ${u.location.country}` : "—");
+    const translatedName = trUniversityName(u);
+    const translatedCity = trCity(u?.location?.city || "");
+    const translatedCountry = trCountry(u?.location?.country || "");
+    setTxt("detailName", translatedName); 
+    setTxt("detailLocation", u.location ? `${translatedCity}, ${translatedCountry}` : "—");
     
     let minPrice = u.finance?.total_cost_year_usd || 0;
     if (u.admission_tracks) {
         const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0);
         if (prices.length > 0) minPrice = Math.min(...prices);
     }
-    setTxt("detailPrice", `from ${moneyUSD(minPrice)} / year`);
-    setTxt("detailLogo", (u.name || "U").substring(0, 2).toUpperCase());
+    setTxt("detailPrice", tFormat("university.price_from", { price: moneyUSD(minPrice) }, `from ${moneyUSD(minPrice)} / year`));
+    setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
     const coverEl = document.getElementById("detailCover");
     if (coverEl) coverEl.style.backgroundImage = `url('${uniThumbnailSrc(uniId)}')`;
 
     const logoEl = document.getElementById("detailLogo");
     if (logoEl) {
-        const initialsText = (u.name || "U").substring(0, 2).toUpperCase();
+        const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
         logoEl.innerHTML = `<img src="${uniLogoSrc(uniId)}" alt="Logo" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${uniLogoSrc(uniId, { forceFull: true })}';}else{this.style.display='none'; this.parentNode.textContent='${initialsText}';}" style="width:100%; height:100%; object-fit:contain;">`;
     }
 
@@ -1435,7 +1538,7 @@ export async function initUniversityPage() {
             const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/uni-chance`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ profile: loadProfile() }),
+                body: JSON.stringify({ profile: loadProfileForApi() }),
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data?.detail || "UniChance API Error");
@@ -1451,7 +1554,7 @@ export async function initUniversityPage() {
             const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/roi`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ profile: loadProfile() }),
+                body: JSON.stringify({ profile: loadProfileForApi() }),
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data?.detail || "ROI API Error");
@@ -1483,18 +1586,20 @@ export async function initUniversityPage() {
             rankHtml = `<span style="color:#5d17ea; font-size:1.1em;">${trophy}#${u.rank}</span>`;
         }
         
-        const campusSize = escapeHtml(String(u.student_life?.size || "Medium"));
+        const campusSizeRaw = String(u.student_life?.size || "Medium");
+        const campusSize = escapeHtml(translateDataValue("campus_size", campusSizeRaw, campusSizeRaw));
         recDiv.innerHTML = `
-            <div class="d-kv"><span>Global Rank</span>${rankHtml}</div>
-            <div class="d-kv"><span>Acceptance Rate</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
-            <div class="d-kv" style="border-bottom:none;"><span>Campus Size</span><span>${campusSize}</span></div>
+            <div class="d-kv"><span>${escapeHtml(translateWord("global_rank", "Global Rank"))}</span>${rankHtml}</div>
+            <div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance"))}</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
+            <div class="d-kv" style="border-bottom:none;"><span>${escapeHtml(translateWord("campus_size", "Campus Size"))}</span><span>${campusSize}</span></div>
         `;
     }
 
     const extraDiv = document.getElementById("detailExtra");
     if (extraDiv) {
-         const description = u.description
-            ? `<p class="uni-description">${escapeHtml(String(u.description)).replace(/\n/g, "<br>")}</p>`
+         const translatedDescription = trUniversityDescription(u);
+         const description = translatedDescription
+            ? `<p class="uni-description">${escapeHtml(String(translatedDescription)).replace(/\n/g, "<br>")}</p>`
             : "";
          const tags = Array.isArray(u.tags)
             ? u.tags.map((t) => String(t || "").trim()).filter(Boolean)
@@ -1502,23 +1607,23 @@ export async function initUniversityPage() {
          const tagsHtml = tags.length
             ? `
                 <div class="uni-tags-wrap">
-                    <div class="uni-tags-title">Focus Tags</div>
+                    <div class="uni-tags-title">${escapeHtml(translateWord("focus_tags", "Focus Tags"))}</div>
                     <div class="uni-tags-list">
-                        ${tags.map((tag) => `<span class="uni-tag">${escapeHtml(tag)}</span>`).join("")}
+                        ${tags.map((tag) => `<span class="uni-tag">${escapeHtml(trTag(tag))}</span>`).join("")}
                     </div>
                 </div>
               `
             : "";
          const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
          const formats = Array.isArray(u.academics?.formats)
-            ? u.academics.formats.map((x) => escapeHtml(String(x))).join(", ")
-            : escapeHtml("On-campus");
+            ? u.academics.formats.map((x) => escapeHtml(trStudyMode(String(x)))).join(", ")
+            : escapeHtml(trStudyMode("On-campus"));
          
          extraDiv.innerHTML = `
             ${description}
             ${tagsHtml}
-            <div class="d-kv"><span>Total Students</span><span>${studentCount}</span></div>
-            <div class="d-kv" style="border-bottom:none;"><span>Study Formats</span><span>${formats || escapeHtml("On-campus")}</span></div>
+            <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${studentCount}</span></div>
+            <div class="d-kv" style="border-bottom:none;"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(trStudyMode("On-campus"))}</span></div>
          `;
     }
 
@@ -1536,9 +1641,18 @@ export async function initUniversityPage() {
 
         const formatProgramValue = (key, value) => {
             if (value === null || value === undefined || value === "") return "—";
-            if (Array.isArray(value)) return value.map((x) => String(x)).join(", ");
+            if (Array.isArray(value)) {
+                return value.map((x) => {
+                    const raw = String(x);
+                    if (String(key) === "study_levels") return trStudyLevel(raw);
+                    if (String(key) === "language") return trProgramLanguage(raw);
+                    if (String(key) === "study_mode") return trStudyMode(raw);
+                    return raw;
+                }).join(", ");
+            }
             if (typeof value === "boolean") return value ? "Yes" : "No";
             if (String(key) === "acceptance_rate_percent") return `${value}%`;
+            if (String(key) === "study_mode") return trStudyMode(String(value));
             return String(value);
         };
 
@@ -1549,9 +1663,16 @@ export async function initUniversityPage() {
                     ${programs.map((program, idx) => {
                         const renderValueCell = (key, rawValue, formattedValue) => {
                             if (Array.isArray(rawValue) && rawValue.length) {
+                                const translatedItems = rawValue.map((item) => {
+                                    const raw = String(item);
+                                    if (String(key) === "study_levels") return trStudyLevel(raw);
+                                    if (String(key) === "language") return trProgramLanguage(raw);
+                                    if (String(key) === "study_mode") return trStudyMode(raw);
+                                    return raw;
+                                });
                                 return `
                                     <div class="program-card-tags">
-                                        ${rawValue.map((item) => `
+                                        ${translatedItems.map((item) => `
                                             <span class="program-tag">${escapeHtml(String(item))}</span>
                                         `).join("")}
                                     </div>
@@ -1572,41 +1693,41 @@ export async function initUniversityPage() {
                                         </div>
                                     `;
                                 }
-                                return `<span class="program-card-value program-card-value--empty">Not specified</span>`;
+                                return `<span class="program-card-value program-card-value--empty">${escapeHtml(translateWord("not_specified", "Not specified"))}</span>`;
                             }
                             if (formattedValue === "—") {
-                                return `<span class="program-card-value program-card-value--empty">Not specified</span>`;
+                                return `<span class="program-card-value program-card-value--empty">${escapeHtml(translateWord("not_specified", "Not specified"))}</span>`;
                             }
                             return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
                         };
 
                         const rows = [
                             {
-                                label: "Acceptance Rate",
+                                label: translateWord("acceptance_rate", "Acceptance Rate"),
                                 key: "acceptance_rate_percent",
                                 rawValue: program.acceptance_rate_percent,
                                 value: formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent),
                             },
                             {
-                                label: "Study Levels",
+                                label: translateWord("study_levels", "Study Levels"),
                                 key: "study_levels",
                                 rawValue: program.study_levels,
                                 value: formatProgramValue("study_levels", program.study_levels),
                             },
                             {
-                                label: "Duration",
+                                label: translateWord("duration", "Duration"),
                                 key: "duration",
                                 rawValue: program.duration,
                                 value: formatProgramValue("duration", program.duration),
                             },
                             {
-                                label: "Language",
+                                label: translateWord("language", "Language"),
                                 key: "language",
                                 rawValue: program.language,
                                 value: formatProgramValue("language", program.language),
                             },
                             {
-                                label: "Study Mode",
+                                label: translateWord("study_mode", "Study Mode"),
                                 key: "study_mode",
                                 rawValue: program.study_mode,
                                 value: formatProgramValue("study_mode", program.study_mode),
@@ -1625,12 +1746,14 @@ export async function initUniversityPage() {
                         const allRows = [...rows, ...extraRows];
                         const modeMeta = formatProgramValue("study_mode", program.study_mode);
                         const durationMeta = formatProgramValue("duration", program.duration);
-                        const levelsMeta = Array.isArray(program.study_levels) ? `${program.study_levels.length} levels` : "";
+                        const levelsMeta = Array.isArray(program.study_levels)
+                            ? `${program.study_levels.length} ${translateWord("levels", "levels")}`
+                            : "";
 
                         return `
                             <div class="program-card">
                                 <div class="program-card-head">
-                                    <span class="program-card-index">Program ${idx + 1}</span>
+                                    <span class="program-card-index">${escapeHtml(translateWord("program", "Program"))} ${idx + 1}</span>
                                     <div class="program-card-meta">
                                         ${durationMeta !== "—" ? `<span class="program-pill">${escapeHtml(durationMeta)}</span>` : ""}
                                         ${modeMeta !== "—" ? `<span class="program-pill">${escapeHtml(modeMeta)}</span>` : ""}
@@ -1638,7 +1761,7 @@ export async function initUniversityPage() {
                                     </div>
                                 </div>
                                 <div class="program-card-title">
-                                    ${escapeHtml(program.name || `Program ${idx + 1}`)}
+                                    ${escapeHtml(program.name || `${translateWord("program", "Program")} ${idx + 1}`)}
                                 </div>
                                 <div class="program-card-rows">
                                     ${allRows.map((row) => `
@@ -1658,7 +1781,7 @@ export async function initUniversityPage() {
                 .map(m => `<span class="program-major-chip">${escapeHtml(String(m))}</span>`)
                 .join(" ");
         } else {
-            progDiv.innerHTML = `<div class="program-empty">No program data available.</div>`;
+            progDiv.innerHTML = `<div class="program-empty">${escapeHtml(translateWord("no_program_data", "No program data available."))}</div>`;
         }
     }
 
@@ -1689,7 +1812,7 @@ export async function initUniversityPage() {
         // В твоей базе GPA в процентах
         if (k === "GPA") return `${score}%`;
         if (k.includes("JLPT")) return `N${score}`;
-        if (k.includes("TOPIK") || k.includes("HSK") || k.includes("TESTDAF") || k.includes("DSH")) return `Level ${score}`;
+        if (k.includes("TOPIK") || k.includes("HSK") || k.includes("TESTDAF") || k.includes("DSH")) return `${translateWord("level_word", "Level")} ${score}`;
         return String(score);
         }
 
@@ -1736,13 +1859,13 @@ export async function initUniversityPage() {
 
         const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
         const modeText = mode === "any"
-            ? "Any one language proof is enough"
-            : "All listed language proofs are required";
+            ? translateWord("lang_mode_any", "Any one language proof is enough")
+            : translateWord("lang_mode_all", "All listed language proofs are required");
 
         return `
             <div style="margin-top:12px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:12px;">
               <div style="font-size:11px; font-weight:800; color:#1d4ed8; margin-bottom:8px; letter-spacing:0.4px;">
-                LANGUAGE TRACK RULES
+                ${escapeHtml(translateWord("language_track_rules", "LANGUAGE TRACK RULES"))}
               </div>
               <div style="font-size:12px; color:#1e3a8a; margin-bottom:10px;">${escapeHtml(modeText)}</div>
               <div style="display:flex; flex-direction:column; gap:10px;">
@@ -1761,24 +1884,24 @@ export async function initUniversityPage() {
                           <span style="font-size:10px; font-weight:800; color:#1d4ed8; border:1px solid #93c5fd; background:#eff6ff; padding:2px 6px; border-radius:999px;">
                             ${escapeHtml(code || "LANG")}
                           </span>
-                          ${nativeOk ? `<span style="font-size:11px; color:#065f46; font-weight:700;">Native accepted</span>` : ""}
+                          ${nativeOk ? `<span style="font-size:11px; color:#065f46; font-weight:700;">${escapeHtml(translateWord("native_accepted", "Native accepted"))}</span>` : ""}
                         </div>
                         ${(minCefr || recCefr) ? `
                           <div style="font-size:12px; color:#334155; margin-bottom:6px;">
-                            ${minCefr ? `<span><strong>Min CEFR:</strong> ${escapeHtml(minCefr)}</span>` : ""}
+                            ${minCefr ? `<span><strong>${escapeHtml(translateWord("min_cefr", "Min CEFR"))}:</strong> ${escapeHtml(minCefr)}</span>` : ""}
                             ${(minCefr && recCefr) ? `<span> • </span>` : ""}
-                            ${recCefr ? `<span><strong>Typical:</strong> ${escapeHtml(recCefr)}</span>` : ""}
+                            ${recCefr ? `<span><strong>${escapeHtml(translateWord("typical", "Typical"))}:</strong> ${escapeHtml(recCefr)}</span>` : ""}
                           </div>
                         ` : ""}
                         ${reqPairs.length ? `
                           <div style="font-size:12px; color:#334155;">
-                            <strong>Exam minimums:</strong>
+                            <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
                             ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
                           </div>
                         ` : ""}
                         ${avgPairs.length ? `
                           <div style="font-size:12px; color:#475569; margin-top:6px;">
-                            <strong>Typical admitted:</strong>
+                            <strong>${escapeHtml(translateWord("typical_admitted", "Typical admitted"))}:</strong>
                             ${avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")}
                           </div>
                         ` : ""}
@@ -1800,10 +1923,10 @@ export async function initUniversityPage() {
 
         function chanceTone(chance) {
         const c = Number(chance) || 0;
-        if (c >= 80) return { cls: "chance-high", label: "High chance" };
-        if (c >= 60) return { cls: "chance-good", label: "Good chance" };
-        if (c >= 40) return { cls: "chance-medium", label: "Moderate chance" };
-        return { cls: "chance-low", label: "Low chance" };
+        if (c >= 80) return { cls: "chance-high", label: translateWord("high_chance", "High chance") };
+        if (c >= 60) return { cls: "chance-good", label: translateWord("good_chance", "Good chance") };
+        if (c >= 40) return { cls: "chance-medium", label: translateWord("moderate_chance", "Moderate chance") };
+        return { cls: "chance-low", label: translateWord("low_chance", "Low chance") };
         }
 
         function renderUniChanceSummary() {
@@ -1814,13 +1937,13 @@ export async function initUniversityPage() {
             <div class="chance-panel">
               <div class="chance-head">
                 <div>
-                  <div class="chance-title">${escapeHtml(aiName("chance"))} AI - Admission Probability</div>
-                  <div class="chance-sub">Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.</div>
+                  <div class="chance-title">${escapeHtml(aiName("chance"))} AI - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
+                  <div class="chance-sub">${escapeHtml(translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context."))}</div>
                 </div>
                 <div class="chance-percent ${tone.cls}">${chance}%</div>
               </div>
               <div class="chance-meter"><div class="chance-fill ${tone.cls}" style="width:${chance}%;"></div></div>
-              <div class="chance-foot">Best track: <strong>${escapeHtml(uniChance.bestTrackLabel || "General admission")}</strong> • ${escapeHtml(tone.label)}</div>
+              <div class="chance-foot">${escapeHtml(translateWord("best_track", "Best track"))}: <strong>${escapeHtml(trTrackLabel(uniChance.bestTrackLabel || translateWord("general_admission", "General admission")))}</strong> • ${escapeHtml(tone.label)}</div>
             </div>
         `;
         }
@@ -1837,7 +1960,8 @@ export async function initUniversityPage() {
         const badgeRaw = String(track?.track_badge || "").trim();
         if (!rawType && !badgeRaw) return "";
         const isGrant = rawType === "grant" || /grant|scholar/i.test(badgeRaw);
-        const text = badgeRaw || (isGrant ? "Grant" : "Paid");
+        const fallback = isGrant ? translateWord("filter_grant", "Grant") : translateWord("filter_paid", "Paid");
+        const text = badgeRaw ? trTrackLabel(translateAdmissionText(badgeRaw, badgeRaw)) : fallback;
         const cls = isGrant ? "track-funding-badge--grant" : "track-funding-badge--paid";
         return `<span class="track-funding-badge ${cls}">${escapeHtml(text)}</span>`;
         }
@@ -1858,14 +1982,14 @@ export async function initUniversityPage() {
 
 
     // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
-    const reqDiv = document.getElementById("detailRequirements");
-    const renderAdmissionTab = () => {
+        const reqDiv = document.getElementById("detailRequirements");
+        const renderAdmissionTab = () => {
         if (!reqDiv) return;
         const warningHTML = uniChance?.missingEvidence
-            ? `<div class="chance-warning">Add exam scores or language evidence in your profile to unlock a reliable ${escapeHtml(aiName("chance"))} estimate for this university.</div>`
+            ? `<div class="chance-warning">${escapeHtml(translateTemplate("add_profile_evidence", "Add exam scores or language evidence in your profile to unlock a reliable {chance} estimate for this university.", { chance: aiName("chance") }))}</div>`
             : "";
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
-            reqDiv.innerHTML = `${warningHTML}<div style="padding:10px 0; color:#666;">No specific admission tracks data.</div>`;
+            reqDiv.innerHTML = `${warningHTML}<div style="padding:10px 0; color:#666;">${escapeHtml(translateWord("no_admission_tracks_data", "No specific admission tracks data."))}</div>`;
         } else {
             const tracks = Array.isArray(u.admission_tracks) ? u.admission_tracks : [];
             const filteredEntries = tracks
@@ -1877,8 +2001,8 @@ export async function initUniversityPage() {
             const totalTracks = tracks.length;
             const shownTracks = filteredEntries.length;
             const admissionFilterLabel = admissionTrackFilter === "grant"
-                ? "Grant"
-                : (admissionTrackFilter === "paid" ? "Paid" : "Any");
+                ? translateWord("filter_grant", "Grant")
+                : (admissionTrackFilter === "paid" ? translateWord("filter_paid", "Paid") : translateWord("filter_any", "Any"));
             const admissionFilterClass = admissionTrackFilter === "grant"
                 ? "admission-filter-pill--grant"
                 : (admissionTrackFilter === "paid" ? "admission-filter-pill--paid" : "admission-filter-pill--any");
@@ -1886,9 +2010,9 @@ export async function initUniversityPage() {
             let tracksHTML = warningHTML + renderUniChanceSummary();
             tracksHTML += `
             <div class="admission-filter-row">
-                <span class="admission-filter-label">Track Filter:</span>
-                <span class="admission-filter-pill ${admissionFilterClass}">${admissionFilterLabel} (from profile)</span>
-                <span class="admission-filter-meta">Showing ${shownTracks} of ${totalTracks} tracks</span>
+                <span class="admission-filter-label">${escapeHtml(translateWord("track_filter", "Track Filter"))}:</span>
+                <span class="admission-filter-pill ${admissionFilterClass}">${admissionFilterLabel} (${escapeHtml(translateWord("from_profile", "from profile"))})</span>
+                <span class="admission-filter-meta">${escapeHtml(translateTemplate("showing_tracks", "Showing {shown} of {total} tracks", { shown: shownTracks, total: totalTracks }))}</span>
             </div>`;
 
             filteredEntries.forEach(({ track, idx }) => {
@@ -1901,21 +2025,21 @@ export async function initUniversityPage() {
                         ).join("")}
                     </div>`;
                 } else {
-                    majorsBadge = `<span style="font-size:12px; color:#666; font-style:italic;">For all majors</span>`;
+                    majorsBadge = `<span style="font-size:12px; color:#666; font-style:italic;">${escapeHtml(translateWord("for_all_majors", "For all majors"))}</span>`;
                 }
                 
                 const trackPriceOverride = track.finance_override?.total_cost_year_usd;
                 const trackPrice = trackPriceOverride ?? u.finance?.total_cost_year_usd ?? 0;
                 const isGrantTrack = getTrackFundingType(track) === "grant";
                 const trackPriceTitle = isGrantTrack
-                    ? (trackPriceOverride != null ? "Est. Net Cost" : "Base Cost (before grant)")
-                    : "Est. Cost";
+                    ? (trackPriceOverride != null ? translateWord("est_net_cost", "Est. Net Cost") : translateWord("base_cost_before_grant", "Base Cost (before grant)"))
+                    : translateWord("est_cost", "Est. Cost");
 
                 // Требования
                 const reqSplit = splitExamEntries(track.requirements || {});
                 const minList =
-                    renderExamGroup("ACADEMIC EXAMS", reqSplit.acad, "#6b7280") +
-                    renderExamGroup("LANGUAGE EXAMS", reqSplit.lang, "#2563eb");
+                    renderExamGroup(translateWord("academic_exams", "ACADEMIC EXAMS"), reqSplit.acad, "#6b7280") +
+                    renderExamGroup(translateWord("language_exams", "LANGUAGE EXAMS"), reqSplit.lang, "#2563eb");
 
 
                 // Средние баллы
@@ -1924,10 +2048,10 @@ export async function initUniversityPage() {
 
                 if (Object.keys(track.stats_avg || {}).length > 0) {
                 avgList =
-                    renderExamGroup("ACADEMIC EXAMS", avgSplit.acad, "#047857") +
-                    renderExamGroup("LANGUAGE EXAMS", avgSplit.lang, "#047857");
+                    renderExamGroup(translateWord("academic_exams", "ACADEMIC EXAMS"), avgSplit.acad, "#047857") +
+                    renderExamGroup(translateWord("language_exams", "LANGUAGE EXAMS"), avgSplit.lang, "#047857");
                 } else {
-                avgList = `<div style="color:#999; font-style:italic;">Not available</div>`;
+                avgList = `<div style="color:#999; font-style:italic;">${escapeHtml(translateWord("not_available", "Not available"))}</div>`;
                 }
 
                 const languageReqInfo = renderLanguageRequirements(track);
@@ -1935,9 +2059,9 @@ export async function initUniversityPage() {
                 const extraReqInfo = extraReqs.length
                     ? `
                     <div style="margin-top:12px; background:#f9fafb; padding:12px; border-radius:8px; border:1px solid #f3f4f6;">
-                        <div style="font-size:10px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase;">Extra Requirements</div>
+                        <div style="font-size:10px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase;">${escapeHtml(translateWord("extra_requirements", "Extra Requirements"))}</div>
                         <ul style="margin:0; padding-left:18px; font-size:12px; color:#4b5563; line-height:1.4;">
-                            ${extraReqs.map((item) => `<li>${escapeHtml(String(item))}</li>`).join("")}
+                            ${extraReqs.map((item) => `<li>${escapeHtml(translateAdmissionText(String(item), String(item)))}</li>`).join("")}
                         </ul>
                     </div>
                     `
@@ -1948,7 +2072,7 @@ export async function initUniversityPage() {
                 if (track.scholarships && track.scholarships.length > 0) {
                     grantsInfo = `
                     <div style="margin-top:12px; padding-top:12px; border-top:1px dashed #e5e7eb;">
-                        <div style="font-size:11px; font-weight:700; color:#059669; margin-bottom:8px; letter-spacing:0.5px;">AVAILABLE GRANTS & AID:</div>
+                        <div style="font-size:11px; font-weight:700; color:#059669; margin-bottom:8px; letter-spacing:0.5px;">${escapeHtml(translateWord("available_grants_aid", "AVAILABLE GRANTS & AID"))}:</div>
                         <div style="display:flex; flex-direction:column; gap:10px;">
                             ${track.scholarships.map(s => {
                                 let conditions = "";
@@ -1958,8 +2082,8 @@ export async function initUniversityPage() {
                                         .join(" • ");
                                 }
                                 const badgeText = s.amount 
-                                    ? `Cover: ${moneyUSD(s.amount)}` 
-                                    : (s.type === 'need' ? 'Need-based Aid' : 'Merit Scholarship');
+                                    ? `${translateWord("cover", "Cover")}: ${moneyUSD(s.amount)}` 
+                                    : (s.type === 'need' ? translateWord("need_based_aid", "Need-based Aid") : translateWord("merit_scholarship", "Merit Scholarship"));
                                 const safeBadgeText = escapeHtml(String(badgeText));
 
                                 return `
@@ -1974,9 +2098,9 @@ export async function initUniversityPage() {
                                     </div>
                                     ${conditions ? `
                                         <div style="font-size:11px; color:#4b5563; margin-left:22px;">
-                                            <span style="font-weight:600; color:#059669;">Requires:</span> ${conditions}
+                                            <span style="font-weight:600; color:#059669;">${escapeHtml(translateWord("requires", "Requires"))}:</span> ${conditions}
                                         </div>
-                                    ` : `<div style="font-size:11px; color:#9ca3af; margin-left:22px; font-style:italic;">No specific requirements listed</div>`}
+                                    ` : `<div style="font-size:11px; color:#9ca3af; margin-left:22px; font-style:italic;">${escapeHtml(translateWord("no_specific_requirements_listed", "No specific requirements listed"))}</div>`}
                                 </div>
                                 `;
                             }).join("")}
@@ -1988,11 +2112,11 @@ export async function initUniversityPage() {
                 <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:20px; margin-bottom:16px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
                         <div>
-                            <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${escapeHtml(String(track.label || "Track"))}</h4>
+                            <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${escapeHtml(trTrackLabel(String(track.label || translateWord("track", "Track"))))}</h4>
                             ${renderTrackFundingBadge(track)}
                             ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
-                            <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${escapeHtml(String(track.description || "")).replace(/\n/g, "<br>")}</p>
+                            <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${escapeHtml(trTrackDescription(u.id, track.id, String(track.description || ""))).replace(/\n/g, "<br>")}</p>
                         </div>
                         <div style="text-align:right;">
                             <div style="font-size:12px; color:#666;">${trackPriceTitle}</div>
@@ -2002,11 +2126,11 @@ export async function initUniversityPage() {
                     
                     <div class="track-stats-grid">
                         <div style="background:#f9fafb; padding:12px; border-radius:8px; border:1px solid #f3f4f6;">
-                            <div style="font-size:10px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase;">Minimum To Apply</div>
-                            <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">${minList || "None"}</div>
+                            <div style="font-size:10px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase;">${escapeHtml(translateWord("minimum_to_apply", "Minimum To Apply"))}</div>
+                            <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">${minList || escapeHtml(translateWord("none", "None"))}</div>
                         </div>
                         <div style="background:#ecfdf5; padding:12px; border-radius:8px; border:1px solid #d1fae5;">
-                            <div style="font-size:10px; font-weight:700; color:#047857; margin-bottom:6px; text-transform:uppercase;">Real Average (Admitted)</div>
+                            <div style="font-size:10px; font-weight:700; color:#047857; margin-bottom:6px; text-transform:uppercase;">${escapeHtml(translateWord("real_average_admitted", "Real Average (Admitted)"))}</div>
                             <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">${avgList}</div>
                         </div>
                     </div>
@@ -2017,7 +2141,7 @@ export async function initUniversityPage() {
                 `;
             });
             if (!filteredEntries.length) {
-                tracksHTML += `<div style="padding:10px 0; color:#666;">No tracks for selected filter.</div>`;
+                tracksHTML += `<div style="padding:10px 0; color:#666;">${escapeHtml(translateWord("no_tracks_selected_filter", "No tracks for selected filter."))}</div>`;
             }
             reqDiv.innerHTML = tracksHTML;
         }
@@ -2039,11 +2163,11 @@ export async function initUniversityPage() {
         if (scholDiv) {
             const fa = u.finance.financial_aid || {};
             const meritHtml = fa.merit_based 
-                ? `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-weight:600; color:#065f46;"><span style="font-size:16px;">✅</span> Merit-based scholarships available</div>` 
-                : `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; opacity:0.6; color:#4b5563;"><span style="font-size:16px;">❌</span> No merit-based scholarships</div>`;
+                ? `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-weight:600; color:#065f46;"><span style="font-size:16px;">✅</span> ${escapeHtml(translateWord("merit_based_scholarships_available", "Merit-based scholarships available"))}</div>` 
+                : `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; opacity:0.6; color:#4b5563;"><span style="font-size:16px;">❌</span> ${escapeHtml(translateWord("no_merit_based_scholarships", "No merit-based scholarships"))}</div>`;
             const needHtml = fa.need_based 
-                ? `<div style="display:flex; align-items:center; gap:8px; font-weight:600; color:#065f46;"><span style="font-size:16px;">✅</span> Need-based financial aid</div>` 
-                : `<div style="display:flex; align-items:center; gap:8px; opacity:0.6; color:#4b5563;"><span style="font-size:16px;">❌</span> No need-based aid</div>`;
+                ? `<div style="display:flex; align-items:center; gap:8px; font-weight:600; color:#065f46;"><span style="font-size:16px;">✅</span> ${escapeHtml(translateWord("need_based_financial_aid", "Need-based financial aid"))}</div>` 
+                : `<div style="display:flex; align-items:center; gap:8px; opacity:0.6; color:#4b5563;"><span style="font-size:16px;">❌</span> ${escapeHtml(translateWord("no_need_based_aid", "No need-based aid"))}</div>`;
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
@@ -2054,13 +2178,13 @@ export async function initUniversityPage() {
                 const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0).filter(p => p > 0);
                 if (prices.length > 0) minTotal = Math.min(...prices);
             }
-            priceBig.innerHTML = `<span style="font-size:0.5em; color:#64748b; vertical-align:middle; margin-right:4px;">from</span>${moneyUSD(minTotal)}`;
+            priceBig.innerHTML = `<span style="font-size:0.5em; color:#64748b; vertical-align:middle; margin-right:4px;">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`;
         }
         
         // Карточки треков
         if (finDiv) {
             finDiv.innerHTML = ""; 
-            const tracks = (u.admission_tracks && u.admission_tracks.length > 0) ? u.admission_tracks : [{ label: "General Tuition", finance_override: null }];
+            const tracks = (u.admission_tracks && u.admission_tracks.length > 0) ? u.admission_tracks : [{ label: translateWord("general_tuition", "General Tuition"), finance_override: null }];
             let financeHTML = "";
 
             tracks.forEach(track => {
@@ -2100,9 +2224,9 @@ export async function initUniversityPage() {
                 financeHTML += `
                 <div class="finance-card">
                     <div class="finance-header">
-                        <div class="finance-track-name">${escapeHtml(String(track.label || "General Cost"))}</div>
+                        <div class="finance-track-name">${escapeHtml(trTrackLabel(String(track.label || translateWord("general_tuition", "General Tuition"))))}</div>
                         <div class="finance-total">
-                            <small>Total / Year</small>
+                            <small>${escapeHtml(translateWord("total_per_year", "Total / Year"))}</small>
                             <span>${moneyUSD(total)}</span>
                         </div>
                     </div>
@@ -2114,9 +2238,9 @@ export async function initUniversityPage() {
 
                     ${track.scholarships && track.scholarships.length > 0 ? `
                         <div class="finance-footer">
-                            <div class="finance-grant-title">Available Scholarships:</div>
+                            <div class="finance-grant-title">${escapeHtml(translateWord("available_scholarships", "Available Scholarships"))}:</div>
                             <ul class="finance-grant-list">
-                                ${track.scholarships.map(s => `<li>${escapeHtml(String(s.name || ""))}</li>`).join("")}
+                                ${track.scholarships.map(s => `<li>${escapeHtml(translateAdmissionText(String(s.name || ""), String(s.name || "")))}</li>`).join("")}
                             </ul>
                         </div>
                     ` : ''}
@@ -2126,41 +2250,43 @@ export async function initUniversityPage() {
 
             // ROI block is calculated on backend.
             const roi = uniRoi || {};
-            const roiTitle = escapeHtml(String(roi.title || "Estimated ROI (Return on Investment)"));
+            const roiTitle = escapeHtml(String(roi.title || t("roi.title", "Estimated ROI (Return on Investment)")));
             const roiValueNum = Number(roi.roi_value);
             const roiValue = Number.isFinite(roiValueNum) ? roiValueNum.toFixed(1) : "0.0";
             const userSalary = Number(roi.salary_used_usd) || 0;
-            const roiLabel = escapeHtml(String(roi.roi_label || "High Investment"));
+            const roiLabel = escapeHtml(String(roi.roi_label || t("roi.label.high_investment", "High Investment")));
             const roiTone = String(roi.roi_tone || "warn");
             const roiColor = (roiTone === "excellent" || roiTone === "good") ? "#059669" : "#d97706";
             const roiContextType = String(roi.context_type || "");
             const userMajor = escapeHtml(String(roi.user_major || ""));
             const points = Number(roi.salary_data_points) || 0;
-            const avgHint = points > 0 ? "Showing computed average across all majors." : "Showing average for all graduates.";
+            const avgHint = points > 0
+                ? t("roi.avg_hint_all_majors", "Showing computed average across all majors.")
+                : t("roi.avg_hint_all_graduates", "Showing average for all graduates.");
 
             let roiContent = "";
             if (roiContextType === "matched_major") {
                 roiContent = `
                     <div style="background:#d1fae5; color:#065f46; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #a7f3d0;">
-                        ✅ Calculation based on <b>${userMajor}</b> graduates from this university.
+                        ✅ ${tFormat("roi.context.matched_major", { major: userMajor }, "Calculation based on {major} graduates from this university.")}
                     </div>
                 `;
             } else if (roiContextType === "missing_major") {
                 roiContent = `
                     <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #ffeeba;">
-                        ⚠️ <strong>Tip:</strong> Select your <b>Major</b> in Profile to see precise ROI for your field. ${avgHint}
+                        ⚠️ <strong>${escapeHtml(t("roi.tip", "Tip:"))}</strong> ${escapeHtml(t("roi.context.missing_major", "Select your Major in Profile to see precise ROI for your field."))} ${escapeHtml(avgHint)}
                     </div>
                 `;
             } else if (roiContextType === "fallback_major") {
                 roiContent = `
                     <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
-                        ℹ️ Specific data for <b>${userMajor}</b> not available. ${avgHint}
+                        ℹ️ ${tFormat("roi.context.fallback_major", { major: userMajor }, "Specific data for {major} not available.")} ${escapeHtml(avgHint)}
                     </div>
                 `;
             } else {
                 roiContent = `
                     <div style="background:#f3f4f6; color:#374151; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border:1px solid #e5e7eb;">
-                        ℹ️ ROI is based on available university outcomes data.
+                        ℹ️ ${escapeHtml(t("roi.context.default", "ROI is based on available university outcomes data."))}
                     </div>
                 `;
             }
@@ -2169,21 +2295,21 @@ export async function initUniversityPage() {
                 <div class="roi-box" style="margin-top:30px; background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:25px; box-shadow:0 4px 6px rgba(0,0,0,0.02);">
                     <h3 style="margin:0 0 10px 0; color:#5d17ea; font-size:18px;">${roiTitle}</h3>
                     <p style="font-size:13px; color:#666; margin-bottom:20px; line-height:1.5;">
-                        <b>What is ROI?</b> It calculates how many times your first annual salary covers the cost of one year of education. 
-                        <br><i>Formula: Avg. Graduate Salary / Annual Tuition Cost</i>
+                        <b>${escapeHtml(t("roi.what_is", "What is ROI?"))}</b> ${escapeHtml(t("roi.explain", "It calculates how many times your first annual salary covers the cost of one year of education."))}
+                        <br><i>${escapeHtml(t("roi.formula", "Formula: Avg. Graduate Salary / Annual Tuition Cost"))}</i>
                     </p>
                     
                     ${roiContent}
 
                     <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;">
                         <div style="flex:1; min-width:200px;">
-                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">Est. Graduate Salary</div>
+                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">${escapeHtml(t("roi.estimated_salary", "Est. Graduate Salary"))}</div>
                             <div style="font-size:24px; font-weight:800; color:#111;">${moneyUSD(userSalary)}</div>
-                            <div style="font-size:11px; color:#999;">per year (early career)</div>
+                            <div style="font-size:11px; color:#999;">${escapeHtml(t("roi.per_year_early", "per year (early career)"))}</div>
                         </div>
                         <div style="width:1px; height:50px; background:#eee; display:none; @media(min-width:600px){display:block;}"></div>
                         <div style="flex:1; min-width:200px;">
-                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">ROI Score</div>
+                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">${escapeHtml(t("roi.score", "ROI Score"))}</div>
                             <div style="font-size:32px; font-weight:900; color:${roiColor};">
                                 ${roiValue}x
                             </div>
@@ -2204,12 +2330,14 @@ export async function initUniversityPage() {
         cardEl.style.display = "block";
         cardEl.classList.add("is-mounted");
     }
-    initUniMentor(u);
     setupTabs(); 
+    window.addEventListener("languageChanged", () => {
+      window.location.reload();
+    }, { once: true });
 
   } catch (err) {
     console.error(err);
-    if (stateEl) stateEl.textContent = "Error loading details.";
+    if (stateEl) stateEl.textContent = t("university.error_loading", "Error loading details.");
   } finally {
     setDetailLoading(false);
   }
@@ -2221,6 +2349,7 @@ export async function initUniversityPage() {
 export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
     if (!listEl) return;
+    window.addEventListener("languageChanged", () => { initRankingPage(); }, { once: true });
 
     try {
         // Запрашиваем 200 вузов
@@ -2245,25 +2374,26 @@ export async function initRankingPage() {
             const loadingAttr = index < 4 ? "eager" : "lazy";
             const fetchPriorityAttr = index < 2 ? "high" : "auto";
             const flag = getFlagImg(u.location.country);
-            const cityText = escapeHtml(String(u.location.city || ""));
-            const countryText = escapeHtml(String(u.location.country || ""));
+            const cityText = escapeHtml(trCity(String(u.location.city || "")));
+            const countryText = escapeHtml(trCountry(String(u.location.country || "")));
+            const uniName = trUniversityName(u);
 
             return `
             <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
                 <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">
-                    <img src="${logoSrc}" alt="${initials(u.name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(u.name)}';}">
+                    <img src="${logoSrc}" alt="${initials(uniName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(uniName)}';}">
                 </div>
                 <div class="rank-info">
-                    <div class="rank-title">${escapeHtml(u.name)}</div>
+                    <div class="rank-title">${escapeHtml(uniName)}</div>
                     <div class="rank-loc">
                         ${flag} 
                         <span style="margin-left:6px;">${cityText}, ${countryText}</span>
                     </div>
                 </div>
                 <div class="rank-badge">
-                    Acceptance: <b>${u.academics.acceptance_rate_percent}%</b>
+                    ${escapeHtml(t("ranking.acceptance", "Acceptance"))}: <b>${u.academics.acceptance_rate_percent}%</b>
                 </div>
             </a>
             `;
@@ -2273,7 +2403,7 @@ export async function initRankingPage() {
 
     } catch (err) {
         console.error(err);
-        listEl.innerHTML = `<div style="padding:20px; text-align:center; color:red;">Failed to load rankings.</div>`;
+        listEl.innerHTML = `<div style="padding:20px; text-align:center; color:red;">${escapeHtml(t("ranking.failed", "Failed to load rankings."))}</div>`;
     }
 }
 
@@ -2292,20 +2422,17 @@ export function initGuidePage() {
 
     const fitName = aiName("fit");
     const chanceName = aiName("chance");
-    const mentorName = aiName("mentor");
-
     const gloss = [
-        { term: fitName, desc: "AI ranking mode that balances prestige, affordability, and admission feasibility." },
-        { term: chanceName, desc: "AI probability (0-100) of your admission, computed per track from your profile and requirements." },
-        { term: "SWR Cache", desc: "Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed." },
-        { term: mentorName, desc: "AI consultant chatbot that answers university questions using project data and optional web context." },
-        { term: "Admission Track", desc: "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)." },
-        { term: "Requirements", desc: "Minimum scores to be considered for a track." },
-        { term: "Stats Avg", desc: "Typical scores of admitted students on that track." },
-        { term: "Language Requirements", desc: "Accepted proof of language ability: native, CEFR, or language exam." },
-        { term: "Mode = any", desc: "You need to satisfy at least one listed language option." },
-        { term: "Mode = all", desc: "You must satisfy every listed language requirement." },
-        { term: "Match Score", desc: `Internal ${fitName} ranking score; higher means a better fit for your profile.` },
+        { term: fitName, desc: t("guide.glossary.fit", "AI ranking mode that balances prestige, affordability, and admission feasibility.") },
+        { term: chanceName, desc: t("guide.glossary.chance", "AI probability (0-100) of your admission, computed per track from your profile and requirements.") },
+        { term: t("guide.glossary.term.swr", "SWR Cache"), desc: t("guide.glossary.swr", "Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed.") },
+        { term: t("guide.glossary.term.admission_track", "Admission Track"), desc: t("guide.glossary.admission_track", "A specific way to apply to a university (e.g., direct, exam-based, scholarship path).") },
+        { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Minimum scores to be considered for a track.") },
+        { term: t("guide.glossary.term.stats_avg", "Stats Avg"), desc: t("guide.glossary.stats_avg", "Typical scores of admitted students on that track.") },
+        { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam.") },
+        { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "You need to satisfy at least one listed language option.") },
+        { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "You must satisfy every listed language requirement.") },
+        { term: t("guide.glossary.term.match_score", "Match Score"), desc: tFormat("guide.glossary.match_score", { fit: fitName }, `Internal ${fitName} ranking score; higher means a better fit for your profile.`) },
     ];
 
     const normalizeExamId = (value) => String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -2314,29 +2441,29 @@ export function initGuidePage() {
         const max = Number(cfg?.max);
         if (!Number.isFinite(min) || !Number.isFinite(max)) return "";
         if (min === max) return "";
-        return `In UniSearch, this score is entered on a ${min}-${max} scale.`;
+        return tFormat("guide.scale_text", { min, max }, `In UniSearch, this score is entered on a ${min}-${max} scale.`);
     };
 
     const guideLoadingMarkup = (label) => `
-        <div class="center-loading center-loading--compact" role="status" aria-label="${escapeHtml(String(label || "Loading"))}">
+        <div class="center-loading center-loading--compact" role="status" aria-label="${escapeHtml(String(label || t("common.loading", "Loading")))}">
             <div class="center-loading-spinner center-loading-spinner--sm" aria-hidden="true"></div>
         </div>
     `;
 
     const academicExamDescriptions = {
-        SAT: "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics.",
-        ACT: "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.",
-        GPA: "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency.",
-        UNT: "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways.",
-        NUETTOTAL: "This is a combined entrance test score used in specific institutional admission routes.",
-        APTOTAL: "AP Total reflects combined performance across multiple Advanced Placement subjects.",
-        IBDIPLOMA: "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.",
+        SAT: t("guide.academic.sat", "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics."),
+        ACT: t("guide.academic.act", "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning."),
+        GPA: t("guide.academic.gpa", "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency."),
+        UNT: t("guide.academic.unt", "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways."),
+        NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
+        APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
+        IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
     };
 
     function describeAcademicExam(id, cfg) {
         const normalized = normalizeExamId(id);
         const base = academicExamDescriptions[normalized]
-            || "This is an academic metric used by one or more admission tracks in the UniSearch dataset.";
+            || t("guide.academic.default", "This is an academic metric used by one or more admission tracks in the UniSearch dataset.");
         const scale = scoreScaleText(cfg);
         return `${base}${scale ? ` ${scale}` : ""}`.trim();
     }
@@ -2346,31 +2473,31 @@ export function initGuidePage() {
         const label = String(labelText || "").toUpperCase();
         const key = `${exam} ${label}`;
 
-        let base = "This language proficiency exam is used to verify readiness for study in the program language.";
+        let base = t("guide.language.default", "This language proficiency exam is used to verify readiness for study in the program language.");
         if (key.includes("IELTS")) {
-            base = "IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.";
+            base = t("guide.language.ielts", "IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.");
         } else if (key.includes("TOEFL")) {
-            base = "TOEFL measures academic English proficiency and is commonly accepted for university admissions.";
+            base = t("guide.language.toefl", "TOEFL measures academic English proficiency and is commonly accepted for university admissions.");
         } else if (key.includes("DUOLINGO") || key.includes("DET")) {
-            base = "Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.";
+            base = t("guide.language.det", "Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.");
         } else if (key.includes("PTE")) {
-            base = "PTE Academic is a computer-based English proficiency test used in international admissions.";
+            base = t("guide.language.pte", "PTE Academic is a computer-based English proficiency test used in international admissions.");
         } else if (key.includes("CAMBRIDGE")) {
-            base = "Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.";
+            base = t("guide.language.cambridge", "Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.");
         } else if (key.includes("TESTDAF") || key.includes("DSH")) {
-            base = "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study tracks.";
+            base = t("guide.language.german", "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study tracks.");
         } else if (key.includes("DELF") || key.includes("DALF") || key.includes("TCF") || key.includes("TEF")) {
-            base = "These exams assess French proficiency and are used for French-language academic eligibility.";
+            base = t("guide.language.french", "These exams assess French proficiency and are used for French-language academic eligibility.");
         } else if (key.includes("NT2")) {
-            base = "NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.";
+            base = t("guide.language.dutch", "NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.");
         } else if (key.includes("HSK")) {
-            base = "HSK measures Chinese language proficiency for academic and formal language use.";
+            base = t("guide.language.hsk", "HSK measures Chinese language proficiency for academic and formal language use.");
         } else if (key.includes("JLPT")) {
-            base = "JLPT measures Japanese language proficiency across standard difficulty levels.";
+            base = t("guide.language.jlpt", "JLPT measures Japanese language proficiency across standard difficulty levels.");
         } else if (key.includes("TOPIK")) {
-            base = "TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.";
+            base = t("guide.language.topik", "TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.");
         } else if (langCode) {
-            base = `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission tracks.`;
+            base = tFormat("guide.language.by_code", { code: String(langCode).toUpperCase() }, `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission tracks.`);
         }
 
         const scale = scoreScaleText(cfg);
@@ -2381,7 +2508,7 @@ export function initGuidePage() {
         if (!glossaryWrap) return;
         const lines = gloss.map((g) => `<li><strong>${escapeHtml(g.term)}:</strong> ${escapeHtml(g.desc)}</li>`).join("");
         glossaryWrap.innerHTML = `
-            <p>This glossary defines the exact terms used throughout UniSearch so users can interpret ranking and probability outputs consistently.</p>
+            <p>${escapeHtml(t("guide.glossary.intro", "This glossary defines the exact terms used throughout UniSearch so users can interpret ranking and probability outputs consistently."))}</p>
             <ul class="guide-list">${lines}</ul>
         `;
     }
@@ -2410,7 +2537,7 @@ export function initGuidePage() {
             .sort((a, b) => getExamDisplayName(a[0]).localeCompare(getExamDisplayName(b[0])));
 
         if (!exams.length) {
-            academicWrap.innerHTML = guideLoadingMarkup("Loading exam config");
+            academicWrap.innerHTML = guideLoadingMarkup(t("guide.loading_exam_config", "Loading exam config"));
             return;
         }
 
@@ -2418,7 +2545,7 @@ export function initGuidePage() {
             `<li><strong>${escapeHtml(getExamDisplayName(id))}.</strong> ${escapeHtml(describeAcademicExam(id, cfg))}</li>`
         ).join("");
         academicWrap.innerHTML = `
-            <p>The following academic exams are currently used by UniSearch for admission track matching and recommendation quality.</p>
+            <p>${escapeHtml(t("guide.academic.intro", "The following academic exams are currently used by UniSearch for admission track matching and recommendation quality."))}</p>
             <ul class="guide-list">${items}</ul>
         `;
     }
@@ -2431,7 +2558,7 @@ export function initGuidePage() {
 
         const codes = Object.keys(groups).sort();
         if (!codes.length) {
-            languageWrap.innerHTML = guideLoadingMarkup("Loading language exam config");
+            languageWrap.innerHTML = guideLoadingMarkup(t("guide.loading_language_config", "Loading language exam config"));
             return;
         }
 

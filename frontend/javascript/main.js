@@ -3,6 +3,7 @@ import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
+import { applyTranslations, initI18n } from "./i18n.js";
 
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -17,14 +18,12 @@ function applyAINameConfig() {
   const tokens = {
     fit: aiName("fit"),
     chance: aiName("chance"),
-    mentor: aiName("mentor"),
   };
 
   const replace = (template) =>
     String(template || "")
       .replaceAll("{fit}", tokens.fit)
-      .replaceAll("{chance}", tokens.chance)
-      .replaceAll("{mentor}", tokens.mentor);
+      .replaceAll("{chance}", tokens.chance);
 
   document.querySelectorAll("[data-ai-template]").forEach((el) => {
     el.textContent = replace(el.getAttribute("data-ai-template"));
@@ -39,6 +38,7 @@ function applyAINameConfig() {
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
   initTheme();
+  await initI18n();
   initGlobalApiLoadingIndicator();
   registerServiceWorker();
 
@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadGlobalLayout();
 
   applyAINameConfig();
+  applyTranslations(document);
   initLanguagesPanel();
 
   const badge = document.querySelector(".hero-badge");
@@ -81,6 +82,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     ensureLanguageConfig();
     initHomePageStats();
   }
+
+  window.addEventListener("languageChanged", () => {
+    applyAINameConfig();
+    applyTranslations(document);
+  });
 });
 
 async function initHomePageStats() {

@@ -1,0 +1,341 @@
+meta.display_name: Russian
+meta.code: rus
+about.bio.docs: Помогал с тестированием и интерфейсом, отвечает за видеодокументацию и презентацию.
+about.bio.lead: Отвечает за весь код и реализацию всех идей. Является капитаном команды и принимает ключевые решения по проекту.
+about.bio.planning: Отвечает за текстовую документацию, большинство идей и улучшений, а также за многочисленные тесты сайта.
+about.contact.email: Email
+about.contact.github: GitHub
+about.contact_kicker: Контакты
+about.contact_title: Свяжитесь с нами
+about.email_note: Основной контакт по вопросам проекта.
+about.eyebrow: О нас
+about.github_note: Код, коммиты и обновления проекта.
+about.lead: UniSearch создан студентами для студентов. Наша цель — сделать выбор университета более понятным, простым и практичным.
+about.meta.docs: 15 лет, ученик Жанаозенской школы-гимназии №5.
+about.meta.lead: 15 лет, ученик Жанаозенского лицея Білім-Инновация.
+about.meta.planning: 14 лет, ученик Жанаозенского лицея Білім-Инновация.
+about.role.docs: Специалист по документации и презентации
+about.role.lead: Ведущий разработчик и архитектор проекта
+about.role.planning: Ассистент по планированию и документации
+about.team_kicker: Наша команда
+about.team_title: Основные участники
+about.title: Мы студенческая команда UniSearch.
+footer.copyright: © 2026 UniSearch
+guide.academic_exams.title: Академические экзамены
+guide.admission.p1: Admission track — это конкретный путь поступления. У одного вуза может быть несколько треков с разными требованиями и стоимостью.
+guide.admission.p2: Requirements — минимальный порог допуска. Real Average (Admitted) часто лучше отражает практическую конкурентность.
+guide.admission.p3: Языковые правила обрабатываются явно: mode any — достаточно одного доказательства, mode all — нужно выполнить все условия.
+guide.admission.p4: Стипендии и aid на уровне трека могут заметно менять итоговую финансовую картину.
+guide.admission.title: Термины admission track
+guide.exam_basics.p1: Поступление обычно оценивает две отдельные части: академическую подготовку и языковую готовность.
+guide.exam_basics.p2: В разных странах и маршрутах используются разные экзамены: SAT, ACT, AP, IB, национальные или внутренние.
+guide.exam_basics.p3: Языковые сертификаты особенно важны для международных абитуриентов и отличаются по трекам.
+guide.exam_basics.p4: Стратегия: сначала закрыть минимумы, затем целиться в типичные уровни поступивших, затем распределить заявки по риску.
+guide.exam_basics.title: Основы экзаменов (поступление)
+guide.eyebrow: Гайд UniSearch
+guide.glossary.title: Глоссарий
+guide.intro: На этой странице объясняются ключевые термины UniSearch: логика ранжирования {fit}, вероятность {chance}, треки поступления, типы баллов, языковые подтверждения и поведение бюджета.
+guide.language_exams.title: Языковые экзамены
+guide.loading_language_config: Загрузка конфигурации языковых экзаменов
+guide.ml.p1: ML — это Machine Learning. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.
+guide.ml.p2: Вы можете указать текстовые интересы в профиле. Для неанглийского языка интерфейса/профиля backend сначала переводит этот текст на английский через self-hosted LibreTranslate, затем сравнивает его с метаданными вузов через TF-IDF и cosine similarity.
+guide.ml.p3: Текст метаданных формируется из названия вуза, локации, программ, а также description и tags.
+guide.ml.p4: Перед скорингом короткие термины и аббревиатуры нормализуются (например ict, gamedev, ui/ux, genai).
+guide.ml.p5: Если интересы заполнены, используется гибридная формула: final_score = 0.7 * hard_score + 0.3 * ml_score. Иначе сортировка полностью rule-based.
+guide.ml.title: ML в UniSearch (что это значит)
+guide.muted.academic: Объяснения академических баллов, которые используются в matching UniSearch.
+guide.muted.language: Объяснения языковых подтверждений, принимаемых на треках.
+guide.nav.academic_exams: Академические экзамены
+guide.nav.admission: Поступление
+guide.nav.exam_basics: Основы экзаменов
+guide.nav.glossary: Глоссарий
+guide.nav.language_exams: Языковые экзамены
+guide.title: Как пользоваться UniSearch и понимать оценки
+guide.unichance.p1: {chance} дает оценку вероятности от 0 до 100 по вузу и, если есть данные, по каждому треку. Это поддержка решения, а не гарантия.
+guide.unichance.p2: Оценка строится по данным профиля и трека: минимальные требования, средние баллы поступивших, языковые правила, контекст acceptance и доступность по бюджету.
+guide.unichance.p3: Практическая интерпретация: 80-100 высокий шанс, 60-79 хороший, 40-59 средний, ниже 40 низкий.
+guide.unichance.p4: Блок Best Track показывает самый сильный путь внутри вуза и помогает найти более подходящие альтернативы.
+guide.unichance.title: {chance} (вероятность поступления 0-100)
+guide.unifit.p1: {fit} — режим ранжирования на странице Universities при выборе AI Smart Sort. Он отдает приоритет реалистичным вариантам, а не только известным названиям.
+guide.unifit.p2: Слайдер бюджет/престиж меняет веса, но не игнорирует ограничения: неподходящие треки штрафуются, даже если выбран престиж.
+guide.unifit.p3: При наличии данных оценка считается по каждому треку отдельно. Поэтому вуз с меньшим общим рангом может быть лучше именно для вашего профиля.
+guide.unifit.p4: Результаты {fit} динамические: изменение экзаменов, языков или бюджета сразу влияет на порядок.
+guide.unifit.title: {fit} (AI умная сортировка)
+home.feature.ai_desc: {fit} ранжирует варианты по соответствию, а {chance} оценивает вероятность поступления по каждому треку.
+home.feature.ai_title: {fit} + {chance} AI
+home.feature.data_desc: Проект для Infomatrix: используем структурированные JSON-данные и алгоритмы, чтобы снизить субъективность выбора.
+home.feature.data_title: Решения на данных
+home.feature.finance_desc: Смотрите реальную стоимость. Система выделяет merit-based и need-based помощь и показывает университеты под ваш бюджет.
+home.feature.finance_title: Финансовая прозрачность
+home.hero.desc: UniSearch — удобная платформа для поиска университетов: сравнивайте требования, стоимость и возможности в одном месте.
+home.hero.rankings: Смотреть рейтинги
+home.hero.start: Начать подбор
+home.hero.title: Найдите университет мечты с AI
+home.hero.title_html: Найдите университет мечты с <span class="text-gradient"><span class="ai-gold">AI</span></span>
+home.stats.countries: Страны
+home.stats.open_source: Открытый код
+home.stats.ranking_chance: Рейтинг + Шанс
+home.stats.top_universities: Топ университеты
+home.why: Почему UniSearch?
+nav.about: О нас
+nav.close_menu: Закрыть меню
+nav.guide: Гайд
+nav.home: Главная
+nav.lang.eng: ENG
+nav.lang.kz: KZ
+nav.lang.rus: RUS
+nav.language: Язык
+nav.open_menu: Открыть меню
+nav.profile: Профиль
+nav.rankings: Рейтинги
+nav.switch_theme: Сменить тему
+nav.universities: Университеты
+profile.add: Добавить
+profile.budget_cleared: Бюджет очищен
+profile.budget_integers_only: Только целые числа (без точек и запятых)
+profile.budget_limit: Лимит: 1 - 1,000,000 USD
+profile.budget_must_number: Бюджет должен быть числом
+profile.budget_saved: Бюджет сохранен!
+profile.cefr: CEFR
+profile.delete: Удалить
+profile.exam: Экзамен
+profile.exam_added: Добавлен {exam}
+profile.exam_ielts_step: Балл IELTS должен оканчиваться на .0 или .5
+profile.exam_integer_required: Баллы {exam} должны быть целыми (например, 1400)
+profile.exam_invalid_score: Неверный формат балла
+profile.exam_removed: Экзамен удален
+profile.exam_score_label: Балл: {score}
+profile.exam_select_required: Выберите экзамен
+profile.exam_updated: Обновлено: {exam} = {score}
+profile.gpa_cleared: GPA очищен
+profile.gpa_must_number: GPA должен быть числом
+profile.gpa_range: GPA должен быть от {min} до {max}%
+profile.gpa_saved: GPA сохранен
+profile.gpa_step: Шаг GPA должен быть {step}
+profile.hint.budget_range: Диапазон: 1 - 1,000,000
+profile.hint.gpa: GPA хранится в процентах и используется в admission matching.
+profile.hint.interests: Используется для персонализации ваших рекомендаций.
+profile.interests_saved: Интересы сохранены
+profile.label.budget: Общий бюджет в год (USD)
+profile.label.exams: Экзамены (список, необязательно)
+profile.label.funding_type: Предпочтительный тип финансирования
+profile.label.gpa: GPA (в процентах)
+profile.label.interests: Интересы по университету (AI)
+profile.label.major: Планируемая специальность
+profile.label.study_mode: Предпочтительный формат обучения
+profile.language: Язык
+profile.languages: Языки
+profile.name_invalid_length: Длина имени: 3-16 символов
+profile.name_invalid_symbols: Недопустимые символы в имени
+profile.nickname_updated: Ник обновлен!
+profile.option.funding_any: Любой (грант + платно)
+profile.option.funding_grant: Только грант
+profile.option.funding_paid: Только платно
+profile.option.major_any: Не определился / Любая
+profile.option.select_exam: Выберите экзамен
+profile.option.study_mode_any: Любой (все форматы)
+profile.option.study_mode_hybrid: Гибридный
+profile.option.study_mode_oncampus: Очный (On-campus)
+profile.option.study_mode_online: Онлайн / дистанционно
+profile.placeholder.budget: например, 20000
+profile.placeholder.gpa: например, 92
+profile.placeholder.interests: Опишите идеальный университет: программы, исследования, локацию, тип кампуса и цели.
+profile.placeholder.lang_score: Балл (например, 7.5)
+profile.placeholder.score: Балл
+profile.preference_saved: Предпочтение сохранено
+profile.score: Балл
+profile.type: Тип
+profile.unit.gpa: % (от 0 до 100)
+profile.unit.usd_year: USD / год
+ranking.acceptance: Уровень приема
+ranking.failed: Не удалось загрузить рейтинг.
+ranking.loading: Загрузка рейтинга
+ranking.subtitle: Топ университетов по академическому престижу и исследовательскому влиянию (2025)
+ranking.title: Глобальный рейтинг университетов
+title.about: О нас | UniSearch
+title.guide: Гайд | UniSearch
+title.index: UniSearch - AI подбор университета
+title.ranking: Глобальные рейтинги | UniSearch
+title.universities: Университеты | UniSearch
+title.university: Университет | UniSearch
+universities.all_cities: Все города
+universities.any_state: Любой штат
+universities.badge.acceptance: Уровень приема: {value}%
+universities.badge.aid_available: 🎓 Доступна помощь
+universities.badge.aid_likely: 🎓 Вероятен грант/помощь (без штрафа по бюджету)
+universities.badge.below_requirements: ⚠️ Ниже требований
+universities.badge.over_budget: 💰 Выше бюджета
+universities.badge.over_budget_aid: 💸 Выше бюджета • Есть помощь
+universities.badge.requirements_met: ✅ Требования выполнены
+universities.card.est_cost_year: Примерная цена/год
+universities.city: Город
+universities.cost_per_year: Стоимость в год (USD)
+universities.country: Страна
+universities.filter: Фильтр
+universities.found_prefix: Найдено
+universities.found_suffix: университетов
+universities.global: Глобально
+universities.loading: Загрузка университетов
+universities.pagination.next: Далее
+universities.pagination.prev: Назад
+universities.reset: Сброс
+universities.search_placeholder: Поиск университета...
+universities.select_country_first: Сначала выберите страну
+universities.slider.balanced: Сбалансировано (50/50)
+universities.slider.budget: Бюджет 💰
+universities.slider.budget_priority: Приоритет бюджета
+universities.slider.focus_budget: Фокус на бюджете ({value}%)
+universities.slider.focus_prestige: Фокус на престиже ({value}%)
+universities.slider.prestige: Престиж 🏆
+universities.slider.prestige_priority: Приоритет престижа
+universities.sort_ai: ✨ {fit}: AI умная сортировка
+universities.sort_cost_asc: Цена по возрастанию
+universities.sort_cost_desc: Цена по убыванию
+universities.sort_name_asc: Название А-Я
+universities.sort_strategy: Стратегия сортировки
+universities.state.empty: Университеты не найдены.
+universities.state.failed: Не удалось загрузить данные.
+universities.state.ml_unavailable: Machine Learning недоступен. Используется только rule-based ранжирование.
+universities.state_region: Штат / Регион
+universities.view_list: Список
+universities.view_map: Карта
+university.about_campus: О вузе и кампусе
+university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
+university.available_majors: Доступные специальности
+university.back_to_list: Назад к списку
+university.chat_assistant: Чат-ассистент
+university.clear: Очистить
+university.discounts_scholarships: Скидки и стипендии
+university.entry_requirements: Входные требования
+university.error_loading: Ошибка загрузки данных.
+university.error_no_id: Ошибка: ID не указан.
+university.loading: Загрузка данных университета
+university.loading_scholarships: Загрузка стипендий
+university.mode_auto: Режим: Авто
+university.model.auto: Авто
+university.model.fallback: Резервная модель
+university.model.gemini: Gemini
+university.model.local: Локальный fallback
+university.model_label: Модель:
+university.overview: Обзор
+university.per_year: в год
+university.price_from: от {price} / год
+university.send: Отправить
+university.show_on_map: Показать на карте
+university.tab.admission: Поступление
+university.tab.costs: Стоимость
+university.tab.general: Общее
+university.tab.programs: Программы
+university.total_cost_calculator: Калькулятор общей стоимости
+university.total_estimated_cost: Примерная общая стоимость
+university.visit_website: Открыть официальный сайт
+
+# Added localization coverage keys
+common.loading: Загрузка
+guide.academic.act: ACT — стандартизированный вступительный экзамен, используемый многими университетами; включает English, Mathematics, Reading и Science Reasoning.
+guide.academic.aptotal: AP Total отражает суммарный результат по нескольким предметам Advanced Placement.
+guide.academic.default: Это академический показатель, используемый одним или несколькими admission tracks в датасете UniSearch.
+guide.academic.gpa: GPA отражает совокупную школьную успеваемость и часто используется как базовый индикатор стабильности академических результатов.
+guide.academic.ibdiploma: Балл IB Diploma — это общий результат International Baccalaureate Diploma, используемый во многих международных системах поступления.
+guide.academic.intro: Ниже перечислены академические экзамены, которые сейчас используются в UniSearch для сопоставления admission tracks и качества рекомендаций.
+guide.academic.nuettotal: Это суммарный вступительный тестовый балл, используемый в отдельных институциональных маршрутах поступления.
+guide.academic.sat: SAT — стандартизированный экзамен для поступления на бакалавриат, ориентированный на evidence-based reading, writing и mathematics.
+guide.academic.unt: UNT (Unified National Testing) — национальный экзамен Казахстана, используемый во многих маршрутах поступления на бакалавриат.
+guide.glossary.admission_track: Конкретный путь поступления в университет (например, direct, exam-based или scholarship path).
+guide.glossary.chance: AI-вероятность (0-100) вашего поступления, рассчитываемая по треку на основе профиля и требований.
+guide.glossary.fit: AI-режим ранжирования, который балансирует престиж, финансовую доступность и реалистичность поступления.
+guide.glossary.intro: Этот глоссарий определяет точные термины UniSearch, чтобы пользователи одинаково интерпретировали ранжирование и вероятности.
+guide.glossary.language_requirements: Допустимые подтверждения языка: native, CEFR или языковой экзамен.
+guide.glossary.match_score: Внутренний балл ранжирования {fit}; чем выше, тем лучше соответствие вашему профилю.
+guide.glossary.mode_all: Нужно выполнить все перечисленные языковые требования.
+guide.glossary.mode_any: Достаточно выполнить хотя бы один из перечисленных языковых вариантов.
+guide.glossary.requirements: Минимальные баллы, необходимые для рассмотрения по треку.
+guide.glossary.stats_avg: Типичные баллы зачисленных студентов по этому треку.
+guide.glossary.swr: Stale-While-Revalidate: сначала показываются кэшированные данные, затем в фоне выполняется обновление и выводятся изменения.
+guide.glossary.term.admission_track: Admission Track
+guide.glossary.term.language_requirements: Language Requirements
+guide.glossary.term.match_score: Match Score
+guide.glossary.term.mode_all: Mode = all
+guide.glossary.term.mode_any: Mode = any
+guide.glossary.term.requirements: Requirements
+guide.glossary.term.stats_avg: Stats Avg
+guide.glossary.term.swr: SWR Cache
+guide.language.by_code: Этот экзамен используется как языковое подтверждение для треков с языком {code}.
+guide.language.cambridge: Cambridge English qualifications оценивают практическое владение английским на стандартизированных уровнях CEFR.
+guide.language.default: Этот языковой экзамен используется для подтверждения готовности к обучению на языке программы.
+guide.language.det: Duolingo English Test — онлайн-адаптивный экзамен по английскому, принимаемый многими вузами.
+guide.language.dutch: NT2 — экзамен по нидерландскому как второму языку, подтверждающий готовность к обучению на нидерландском.
+guide.language.french: Эти экзамены оценивают владение французским и используются для академической eligibility на французском языке.
+guide.language.german: TestDaF и DSH — экзамены по немецкому, часто требуемые для немецкоязычных треков.
+guide.language.hsk: HSK оценивает владение китайским языком для академического и формального использования.
+guide.language.ielts: IELTS оценивает владение английским в академическом контексте по listening, reading, writing и speaking.
+guide.language.jlpt: JLPT оценивает владение японским по стандартным уровням сложности.
+guide.language.pte: PTE Academic — компьютерный экзамен по английскому, используемый в международном поступлении.
+guide.language.toefl: TOEFL измеряет академическое владение английским и широко принимается университетами.
+guide.language.topik: TOPIK оценивает владение корейским и используется для подтверждения готовности к обучению на корейском.
+guide.loading_exam_config: Загрузка конфигурации экзаменов
+guide.scale_text: В UniSearch этот балл вводится по шкале {min}-{max}.
+home.mockup.grant_available: ✅ Грант доступен
+home.mockup.location: Кембридж, США
+languages.error.choose_cefr: Выберите уровень CEFR
+languages.error.choose_exam: Выберите экзамен
+languages.error.choose_language_type: Выберите язык и тип
+languages.error.enter_score: Введите балл
+languages.error.save_failed: Не удалось сохранить язык
+languages.no_exams: Экзаменов нет
+languages.removed: Удалено
+languages.saved: Язык сохранен
+languages.select_exam: Выберите экзамен
+languages.select_type: Выберите тип
+profile.action.close: Закрыть
+profile.action.edit_name: Изменить имя
+profile.action.save_budget: Сохранить бюджет
+profile.action.save_gpa: Сохранить GPA
+roi.avg_hint_all_graduates: Показано среднее по всем выпускникам.
+roi.avg_hint_all_majors: Показано вычисленное среднее по всем специальностям.
+roi.context.default: ROI рассчитан на основе доступных данных о выпускниках университета.
+roi.context.fallback_major: Специальных данных по направлению {major} нет.
+roi.context.matched_major: Расчет основан на данных выпускников {major} этого университета.
+roi.context.missing_major: Выберите Major в профиле, чтобы увидеть точный ROI для вашего направления.
+roi.estimated_salary: Оценочная зарплата выпускника
+roi.explain: Показывает, во сколько раз ваша первая годовая зарплата покрывает стоимость одного года обучения.
+roi.formula: Формула: Avg. Graduate Salary / Annual Tuition Cost
+roi.label.high_investment: Высокие инвестиции
+roi.per_year_early: в год (ранний этап карьеры)
+roi.score: ROI Score
+roi.tip: Совет:
+roi.title: Оценочный ROI (окупаемость инвестиций)
+roi.what_is: Что такое ROI?
+tour.back: Назад
+tour.finish: Завершить
+tour.next: Далее
+tour.open_profile: Открыть профиль
+tour.skip: Пропустить
+tour.step1.desc: Эта страница помогает быстро собрать shortlist университетов по локации, стоимости и соответствию вашему профилю.
+tour.step1.kicker: Добро пожаловать
+tour.step1.point1: Используйте поиск и фильтры на левой панели.
+tour.step1.point2: Переключайтесь между режимами List и Map справа сверху.
+tour.step1.point3: Используйте {fit} для персонализированной сортировки.
+tour.step1.title: Находите университеты быстрее
+tour.step2.desc: Данные профиля повышают точность рекомендаций и оценок шанса поступления.
+tour.step2.kicker: Шаг 1
+tour.step2.point1: Добавьте бюджет, major и GPA.
+tour.step2.point2: Добавьте экзамены и языковые результаты.
+tour.step2.point3: Это повышает качество {fit} и {chance}.
+tour.step2.title: Сначала заполните профиль
+tour.step3.desc: Начните широко, затем сузьте выбор по стране, городу, диапазону стоимости, уровню обучения и типу финансирования.
+tour.step3.kicker: Шаг 2
+tour.step3.point1: Настройте min/max стоимости слайдером.
+tour.step3.point2: Используйте фильтр grant/paid для финансового планирования.
+tour.step3.point3: Используйте карту, чтобы увидеть географические кластеры.
+tour.step3.title: Используйте фильтрацию стратегически
+tour.step4.desc: Нажмите на карточку, чтобы посмотреть поступление, финансы и требования по каждому треку.
+tour.step4.kicker: Шаг 3
+tour.step4.point1: Смотрите {chance} по каждому треку на странице деталей.
+tour.step4.point2: Проверяйте вкладки Admission и Costs для деталей по требованиям и финансированию.
+tour.step4.point3: Сравнивайте годовую стоимость и стипендии перед подачей.
+tour.step4.title: Открывайте детали и сравнивайте треки
+unifit.warning.cancel: Отмена
+unifit.warning.confirm: Понял(а)
+unifit.warning.desc: UniFit работает лучше, когда в профиле есть экзамены или языковые подтверждения. Без них AI-ранжирование может быть менее точным.
+unifit.warning.title: Недостаточно данных профиля

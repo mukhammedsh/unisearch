@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
-  <title>Universities | UniSearch</title>
+  <title data-i18n="title.universities">Universities | UniSearch</title>
   <script src="theme-init.js"></script>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -32,37 +32,37 @@
                       stroke-linecap="round"/>
               </svg>
             </span>
-            <span>Filter</span>
+            <span data-i18n="universities.filter">Filter</span>
             <button id="resetFiltersBtn" class="u-reset" type="button">
-              Reset
+              <span data-i18n="universities.reset">Reset</span>
             </button>
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="countrySelect">Country</label>
+            <label class="u-label" for="countrySelect" data-i18n="universities.country">Country</label>
             <select id="countrySelect" class="u-select">
-              <option value="">🌍 Global</option>
+              <option value="" data-i18n="universities.global">🌍 Global</option>
             </select>
           </div>
 
           <div class="u-field" id="stateDiv" style="display: none;">
-            <label class="u-label" for="stateSelect">State / Region</label>
+            <label class="u-label" for="stateSelect" data-i18n="universities.state_region">State / Region</label>
             <select id="stateSelect" class="u-select">
-              <option value="">Any State</option>
+              <option value="" data-i18n="universities.any_state">Any State</option>
             </select>
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="citySelect">City</label>
+            <label class="u-label" for="citySelect" data-i18n="universities.city">City</label>
             <select id="citySelect" class="u-select" disabled>
-              <option value="">Select country first</option>
+              <option value="" data-i18n="universities.select_country_first">Select country first</option>
             </select>
           </div>
 
           <div class="u-sep"></div>
 
           <div class="u-field">
-            <label class="u-label">Cost per year (USD)</label>
+            <label class="u-label" data-i18n="universities.cost_per_year">Cost per year (USD)</label>
             
             <div class="budget-control-wrapper">
                 <div class="budget-inputs">
@@ -85,23 +85,23 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="sortSelect">Sort Strategy</label>
+            <label class="u-label" for="sortSelect" data-i18n="universities.sort_strategy">Sort Strategy</label>
             <select id="sortSelect" class="u-select">
-              <option value="uni_ai" data-ai-template="✨ {fit}: AI Smart Sort">✨ UniFit: AI Smart Sort</option>
-              <option value="name_asc">Name A-Z</option>
-              <option value="tuition_asc">Cost low to high</option>
-              <option value="tuition_desc">Cost high to low</option>
+              <option value="uni_ai" data-i18n="universities.sort_ai">✨ UniFit: AI Smart Sort</option>
+              <option value="name_asc" data-i18n="universities.sort_name_asc">Name A-Z</option>
+              <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
+              <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
             </select>
           </div>
 
           <div class="u-field" id="aiSliderContainer">
             <label class="u-label" style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <span>Budget 💰</span>
-                <span>Prestige 🏆</span>
+                <span data-i18n="universities.slider.budget">Budget 💰</span>
+                <span data-i18n="universities.slider.prestige">Prestige 🏆</span>
             </label>
             <input type="range" id="uniFitSlider" min="0" max="100" value="50" style="width:100%; cursor:pointer;">
             <div style="font-size: 11px; color: #666; text-align: center; margin-top: 6px; font-weight:600;">
-                <span id="sliderLabel">Balanced Strategy (50/50)</span>
+                <span id="sliderLabel" data-i18n="universities.slider.balanced">Balanced (50/50)</span>
             </div>
           </div>
 
@@ -120,19 +120,19 @@
                       stroke-linecap="round"/>
               </svg>
             </span>
-            <input id="qInput" type="text" placeholder="Search university..." />
+            <input id="qInput" type="text" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" />
           </div>
 
           <div class="u-controls">
              <div class="u-found">
-               Found <span id="totalCount">0</span> universities
+               <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount">0</span> <span data-i18n="universities.found_suffix">universities</span>
              </div>
              
              <div class="view-toggles">
-                <button id="viewListBtn" class="view-btn active" title="List View">
+                <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list">
                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 </button>
-                <button id="viewMapBtn" class="view-btn" title="Map View">
+                <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map">
                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
                 </button>
              </div>
@@ -141,7 +141,7 @@
 
         <div id="listState" class="u-state"></div>
         <div id="universitiesLoading" class="u-loading-overlay" aria-hidden="true">
-          <div class="u-loading-spinner" role="status" aria-label="Loading universities"></div>
+          <div class="u-loading-spinner" role="status" aria-label="Loading universities" data-i18n-aria-label="universities.loading"></div>
         </div>
         
         <div id="universitiesList" class="u-grid"></div>
@@ -158,7 +158,7 @@
 
   <footer class="site-footer">
       <div class="container footer-content">
-          <p>© 2026 UniSearch</p>
+          <p data-i18n="footer.copyright">© 2026 UniSearch</p>
           
           <div class="social-links">
               <a href="https://github.com/muxlex/unisearch" target="_blank">

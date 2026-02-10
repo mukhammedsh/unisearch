@@ -1,13 +1,8 @@
 /* 1. utils.js - Базовые настройки, утилиты и работа с профилем */
 
 export const API_BASE = window.API_BASE_URL || "http://127.0.0.1:8000";
-const AI_DEFAULTS = { fit: "UniFit", chance: "UniChance", mentor: "UniMentor" };
+const AI_DEFAULTS = { fit: "UniFit", chance: "UniChance" };
 export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
-export const UNIMENTOR_CONFIG = {
-  enabled: true,
-  online: true,
-  ...(window.UNIMENTOR_CONFIG || {}),
-};
 
 export function aiName(key) {
   const k = String(key || "").trim().toLowerCase();
@@ -237,6 +232,9 @@ export function toggleTheme() {
 }
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
+const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
+const API_LANG_DEFAULT = "eng";
+const API_LANG_SUPPORTED = new Set(["eng", "rus", "kz"]);
 // 🔥 ДОБАВЛЕНО: Новые поля в дефолтном профиле
 const PROFILE_DEFAULTS = { 
     name: "User", 
@@ -567,6 +565,45 @@ export function loadProfile() {
   } catch (e) {
     return { ...PROFILE_DEFAULTS };
   }
+}
+
+function normalizeUiLanguageForApi(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw) return "";
+  if (API_LANG_SUPPORTED.has(raw)) return raw;
+  if (raw.startsWith("en")) return "eng";
+  if (raw.startsWith("ru")) return "rus";
+  if (raw.startsWith("kk") || raw.startsWith("kz")) return "kz";
+  return "";
+}
+
+export function getUiLanguageForApi() {
+  try {
+    const stored = normalizeUiLanguageForApi(localStorage.getItem(I18N_STORAGE_KEY));
+    if (stored) return stored;
+  } catch (e) {
+    // ignore storage issues
+  }
+
+  try {
+    const first = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages[0]
+      : (navigator.language || "");
+    const detected = normalizeUiLanguageForApi(first);
+    if (detected) return detected;
+  } catch (e) {
+    // ignore navigator issues
+  }
+
+  return API_LANG_DEFAULT;
+}
+
+export function loadProfileForApi() {
+  const profile = loadProfile();
+  return {
+    ...profile,
+    locale: getUiLanguageForApi(),
+  };
 }
 
 const FALLBACK_LANG_LIMITS = {

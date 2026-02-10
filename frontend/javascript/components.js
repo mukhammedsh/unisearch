@@ -13,6 +13,7 @@ import {
   toggleTheme,
   getCurrentTheme,
 } from "./utils.js";
+import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 
 function syncNavbarLogo(themeOverride = "") {
     const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
@@ -95,17 +96,23 @@ const LAYOUT_HTML = `
   </div>
 
   <nav class="navbar-center" id="primaryNav">
-    <a href="index.html" data-link="home">Home</a>
-    <a href="universities.html" data-link="universities">Universities</a>
-    <a href="ranking.html" data-link="ranking">Rankings</a>
-    <a href="guide.html" data-link="guide">Guide</a>
-    <a href="about.html" data-link="about">About Us</a>
+    <a href="index.html" data-link="home" data-i18n="nav.home">Home</a>
+    <a href="universities.html" data-link="universities" data-i18n="nav.universities">Universities</a>
+    <a href="ranking.html" data-link="ranking" data-i18n="nav.rankings">Rankings</a>
+    <a href="guide.html" data-link="guide" data-i18n="nav.guide">Guide</a>
+    <a href="about.html" data-link="about" data-i18n="nav.about">About Us</a>
   </nav>
 
   <div class="navbar-right">
-    <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu">☰</button>
-    <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme">🌙</button>
-    <button class="login-btn" id="profileBtn">Profile</button>
+    <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">☰</button>
+    <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">🌙</button>
+    <label class="lang-switch-wrap" for="languageSelect" data-i18n="nav.language">Language</label>
+    <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
+      <option value="eng" data-i18n="nav.lang.eng">ENG</option>
+      <option value="rus" data-i18n="nav.lang.rus">RUS</option>
+      <option value="kz" data-i18n="nav.lang.kz">KZ</option>
+    </select>
+    <button class="login-btn" id="profileBtn" data-i18n="nav.profile">Profile</button>
   </div>
 </header>
 
@@ -117,13 +124,13 @@ const LAYOUT_HTML = `
         <div class="profile-username">
           <span id="profileNameDisplay">User</span>
           <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="16" />
-          <button class="icon-btn" id="editNameBtn" title="Edit Name">
+          <button class="icon-btn" id="editNameBtn" title="Edit Name" data-i18n-title="profile.action.edit_name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
           </button>
         </div>
-        <div class="profile-subtitle">Profile</div>
+        <div class="profile-subtitle" data-i18n="nav.profile">Profile</div>
       </div>
-      <button class="icon-btn profile-close" id="profileCloseBtn" title="Close">
+      <button class="icon-btn profile-close" id="profileCloseBtn" title="Close" data-i18n-title="profile.action.close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
       </button>
     </div>
@@ -133,81 +140,82 @@ const LAYOUT_HTML = `
     <div class="profile-body">
       
       <div class="profile-field">
-        <label class="profile-label">Total Budget per year (USD)</label>
+        <label class="profile-label" data-i18n="profile.label.budget">Total Budget per year (USD)</label>
         <div class="profile-budget">
-          <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" />
-          <button id="saveBudgetBtn" class="icon-btn profile-save-btn" title="Save Budget">
+          <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
+          <button id="saveBudgetBtn" class="icon-btn profile-save-btn" title="Save Budget" data-i18n-title="profile.action.save_budget">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </button>
-          <span class="profile-unit">USD / year</span>
+          <span class="profile-unit" data-i18n="profile.unit.usd_year">USD / year</span>
         </div>
-        <div class="profile-hint">Range: 1 - 1,000,000</div>
+        <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 1 - 1,000,000</div>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label">Preferred Study Mode</label>
+        <label class="profile-label" data-i18n="profile.label.study_mode">Preferred Study Mode</label>
         <select id="studyModeSelect" class="profile-input" style="cursor:pointer;">
-           <option value="Any">Any (All formats)</option>
-           <option value="On-campus">On-campus (Live)</option>
-           <option value="Online">Online / Distance</option>
-           <option value="Hybrid">Hybrid (Blended)</option>
+           <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
+           <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
+           <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
+           <option value="Hybrid" data-i18n="profile.option.study_mode_hybrid">Hybrid (Blended)</option>
         </select>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label">Preferred Funding Type</label>
+        <label class="profile-label" data-i18n="profile.label.funding_type">Preferred Funding Type</label>
         <select id="profileFundingTypeSelect" class="profile-input" style="cursor:pointer;">
-           <option value="any">Any (Grant + Paid)</option>
-           <option value="grant">Grant only</option>
-           <option value="paid">Paid only</option>
+           <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
+           <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
+           <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
         </select>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label">Intended Major</label>
+        <label class="profile-label" data-i18n="profile.label.major">Intended Major</label>
         <select id="profileMajorSelect" class="profile-input" style="cursor:pointer;">
-           <option value="">Undecided / Any</option>
+           <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
         </select>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label">University Interests (AI)</label>
+        <label class="profile-label" data-i18n="profile.label.interests">University Interests (AI)</label>
         <textarea
           id="profileInterestsInput"
           class="profile-input"
           rows="4"
           maxlength="1200"
           placeholder="Describe your ideal university: programs, research, location, campus style, and goals."
+          data-i18n-placeholder="profile.placeholder.interests"
         ></textarea>
-        <div class="profile-hint">Used by backend ML matching (TF-IDF + cosine similarity).</div>
+        <div class="profile-hint" data-i18n="profile.hint.interests">Used to personalize your recommendations.</div>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label">GPA (Percent)</label>
+        <label class="profile-label" data-i18n="profile.label.gpa">GPA (Percent)</label>
         <div class="profile-budget">
-          <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" />
-          <button id="saveGpaBtn" class="icon-btn profile-save-btn" title="Save GPA">
+          <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" data-i18n-placeholder="profile.placeholder.gpa" />
+          <button id="saveGpaBtn" class="icon-btn profile-save-btn" title="Save GPA" data-i18n-title="profile.action.save_gpa">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </button>
-          <span class="profile-unit">% (0 to 100)</span>
+          <span class="profile-unit" data-i18n="profile.unit.gpa">% (0 to 100)</span>
         </div>
-        <div class="profile-hint">GPA is stored as percent and used in admission matching.</div>
+        <div class="profile-hint" data-i18n="profile.hint.gpa">GPA is stored as percent and used in admission matching.</div>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label">Exams (list, optional)</label>
+        <label class="profile-label" data-i18n="profile.label.exams">Exams (list, optional)</label>
         
         <div class="profile-exam-form">
           <select id="examNameSelect" class="profile-input" style="cursor:pointer;">
-             <option value="" disabled selected>Select Exam</option>
+             <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
              <option value="IELTS">IELTS</option>
              <option value="TOEFL">TOEFL</option>
              <option value="SAT">SAT</option>
              <option value="ACT">ACT</option>
           </select>
 
-          <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" />
-          <button id="addExamBtn" class="profile-add" type="button">Add</button>
+          <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" data-i18n-placeholder="profile.placeholder.score" />
+          <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
         </div>
         
         <div id="examError" class="profile-error"></div>
@@ -216,22 +224,22 @@ const LAYOUT_HTML = `
 
       <section class="profile-block" id="languagesBlock">
         <div class="profile-block-head">
-            <h3>Languages</h3>
+            <h3 data-i18n="profile.languages">Languages</h3>
         </div>
 
         <div class="lang-add-grid lang-add-grid--compact">
             <div>
-            <span class="mini-label">Language</span>
+            <span class="mini-label" data-i18n="profile.language">Language</span>
             <select id="langCode" class="profile-input"></select>
             </div>
 
             <div>
-            <span class="mini-label">Type</span>
+            <span class="mini-label" data-i18n="profile.type">Type</span>
             <select id="langKind" class="profile-input"></select>
             </div>
 
             <div id="cefrContainer" style="display:none">
-            <span class="mini-label">CEFR</span>
+            <span class="mini-label" data-i18n="profile.cefr">CEFR</span>
             <select id="langCefr" class="profile-input">
                 <option value="1">A1</option>
                 <option value="2">A2</option>
@@ -243,20 +251,21 @@ const LAYOUT_HTML = `
             </div>
 
             <div id="examContainer" style="display:none">
-            <span class="mini-label">Exam</span>
+            <span class="mini-label" data-i18n="profile.exam">Exam</span>
             <select id="langExam" class="profile-input"></select>
             </div>
 
             <div id="scoreContainer" style="display:none">
-            <span class="mini-label">Score</span>
+            <span class="mini-label" data-i18n="profile.score">Score</span>
             <input id="langExamScore"
                     type="text"
                     inputmode="decimal"
                     class="profile-input"
-                    placeholder="Score (e.g. 7.5)" />
+                    placeholder="Score (e.g. 7.5)"
+                    data-i18n-placeholder="profile.placeholder.lang_score" />
             </div>
 
-            <button id="langAddBtn" class="profile-add" type="button">Add</button>
+            <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
         </div>
 
         <div id="langList" class="lang-list"></div>
@@ -279,14 +288,14 @@ function initMobileMenu() {
     const closeMenu = () => {
         navbar.classList.remove("is-menu-open");
         menuBtn.setAttribute("aria-expanded", "false");
-        menuBtn.setAttribute("aria-label", "Open menu");
+        menuBtn.setAttribute("aria-label", t("nav.open_menu", "Open menu"));
         menuBtn.textContent = "☰";
     };
 
     const openMenu = () => {
         navbar.classList.add("is-menu-open");
         menuBtn.setAttribute("aria-expanded", "true");
-        menuBtn.setAttribute("aria-label", "Close menu");
+        menuBtn.setAttribute("aria-label", t("nav.close_menu", "Close menu"));
         menuBtn.textContent = "✕";
     };
 
@@ -313,6 +322,27 @@ function initMobileMenu() {
     } else if (typeof media.addListener === "function") {
         media.addListener(onViewportChange);
     }
+}
+
+function initLanguageSwitcher() {
+    const languageSelect = document.getElementById("languageSelect");
+    if (!languageSelect) return;
+    if (languageSelect.dataset.bound === "1") {
+        languageSelect.value = getCurrentLanguage();
+        return;
+    }
+    languageSelect.dataset.bound = "1";
+    languageSelect.value = getCurrentLanguage();
+
+    languageSelect.addEventListener("change", () => {
+        const next = String(languageSelect.value || "").trim().toLowerCase();
+        setLanguage(next || "eng", { persist: true, emit: false });
+        window.location.reload();
+    });
+
+    window.addEventListener("languageChanged", () => {
+        languageSelect.value = getCurrentLanguage();
+    });
 }
 
 // 🔥 1. Функция загрузки (теперь берет строку, а не файл)
@@ -345,6 +375,8 @@ export async function loadGlobalLayout() {
         }
 
         initMobileMenu();
+        initLanguageSwitcher();
+        applyTranslations(document);
 
         // Запускаем логику профиля
         initProfileUI();
@@ -397,10 +429,9 @@ function initProfileUI() {
     const syncThemeButton = () => {
         if (!themeToggleBtn) return;
         const theme = getCurrentTheme();
-        const nextTheme = theme === "dark" ? "light" : "dark";
         themeToggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
-        themeToggleBtn.title = `Switch to ${nextTheme} theme`;
-        themeToggleBtn.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+        themeToggleBtn.title = t("nav.switch_theme", "Switch theme");
+        themeToggleBtn.setAttribute("aria-label", t("nav.switch_theme", "Switch theme"));
         syncNavbarLogo(theme);
     };
     syncThemeButton();
@@ -426,12 +457,12 @@ function initProfileUI() {
         if (next === prev) return;
         profile.interests = next;
         saveProfile(profile);
-        if (notify) showToast("Interests saved", "success");
+        if (notify) showToast(t("profile.interests_saved", "Interests saved"), "success");
     };
 
     const populateMajors = () => {
         if (!profileMajorSelect) return;
-        profileMajorSelect.innerHTML = `<option value="">Undecided / Any</option>`;
+        profileMajorSelect.innerHTML = `<option value="">${escapeHtml(t("profile.option.major_any", "Undecided / Any"))}</option>`;
         MAJOR_OPTIONS.forEach(m => {
             const opt = document.createElement("option");
             opt.value = m;
@@ -444,7 +475,7 @@ function initProfileUI() {
     // --- ЛОГИКА 2: Динамические экзамены ---
     const populateExamSelect = () => {
         if (!examNameSelect) return;
-        examNameSelect.innerHTML = `<option value="" disabled selected>Select Exam</option>`;
+        examNameSelect.innerHTML = `<option value="" disabled selected>${escapeHtml(t("profile.option.select_exam", "Select Exam"))}</option>`;
 
         const seen = new Set();
         Object.keys(EXAM_CONFIG).forEach((examKey) => {
@@ -495,7 +526,7 @@ function initProfileUI() {
         studyModeSelect.addEventListener("change", () => {
             profile.studyMode = studyModeSelect.value;
             saveProfile(profile);
-            showToast("Preference saved", "success"); // Можно без тоста, чтобы не спамить
+            showToast(t("profile.preference_saved", "Preference saved"), "success"); // Можно без тоста, чтобы не спамить
         });
     }
 
@@ -504,7 +535,7 @@ function initProfileUI() {
             const raw = String(profileFundingTypeSelect.value || "").trim().toLowerCase();
             profile.fundingType = (raw === "grant" || raw === "paid") ? raw : "any";
             saveProfile(profile);
-            showToast("Preference saved", "success");
+            showToast(t("profile.preference_saved", "Preference saved"), "success");
         });
     }
 
@@ -560,18 +591,18 @@ function initProfileUI() {
                 const newName = nameInput.value.trim();
                 const validName = /^[A-Za-z0-9 ]+$/;
                 if (newName.length < 3 || newName.length > 16) {
-                    showToast("Name length must be 3-16 chars", "error");
+                    showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
                     return;
                 }
                 if (!validName.test(newName)) {
-                    showToast("Invalid symbols in name", "error");
+                    showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
                     return;
                 }
                 profile.name = newName;
                 saveProfile(profile);
                 nameDisplay.textContent = newName;
                 profileUsernameDiv.classList.remove("is-editing");
-                showToast("Nickname updated!", "success");
+                showToast(t("profile.nickname_updated", "Nickname updated!"), "success");
             }
         };
     }
@@ -583,25 +614,25 @@ function initProfileUI() {
             if (!rawVal) {
                 profile.budget = "";
                 saveProfile(profile);
-                showToast("Budget cleared", "success");
+                showToast(t("profile.budget_cleared", "Budget cleared"), "success");
                 return;
             }
             if (rawVal.includes(".") || rawVal.includes(",")) {
-                showToast("Integers only (no dots/commas)", "error");
+                showToast(t("profile.budget_integers_only", "Integers only (no dots/commas)"), "error");
                 return;
             }
             const val = Number(rawVal);
             if (isNaN(val)) {
-                showToast("Budget must be a number", "error");
+                showToast(t("profile.budget_must_number", "Budget must be a number"), "error");
                 return;
             }
             if (val < 1 || val > 1000000) {
-                showToast("Limit: 1 - 1,000,000 USD", "error");
+                showToast(t("profile.budget_limit", "Limit: 1 - 1,000,000 USD"), "error");
                 return;
             }
             profile.budget = val;
             saveProfile(profile);
-            showToast("Budget saved!", "success");
+            showToast(t("profile.budget_saved", "Budget saved!"), "success");
         };
     }
 
@@ -611,13 +642,13 @@ function initProfileUI() {
             if (!rawVal) {
                 profile.gpa = "";
                 saveProfile(profile);
-                showToast("GPA cleared", "success");
+                showToast(t("profile.gpa_cleared", "GPA cleared"), "success");
                 return;
             }
 
             const val = Number(rawVal);
             if (!Number.isFinite(val)) {
-                showToast("GPA must be a number", "error");
+                showToast(t("profile.gpa_must_number", "GPA must be a number"), "error");
                 return;
             }
 
@@ -627,13 +658,13 @@ function initProfileUI() {
             const step = Number.isFinite(Number(cfg?.step)) ? Number(cfg.step) : 1;
 
             if (val < min || val > max) {
-                showToast(`GPA must be between ${min} and ${max}%`, "error");
+                showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}%`), "error");
                 return;
             }
             if (step > 0) {
                 const k = (val - min) / step;
                 if (Math.abs(k - Math.round(k)) > 1e-9) {
-                    showToast(`GPA must use step ${step}`, "error");
+                    showToast(tFormat("profile.gpa_step", { step }, `GPA must use step ${step}`), "error");
                     return;
                 }
             }
@@ -641,7 +672,7 @@ function initProfileUI() {
             profile.gpa = Number((Math.round(val * 1000) / 1000));
             saveProfile(profile);
             if (gpaInput) gpaInput.value = String(profile.gpa);
-            showToast("GPA saved", "success");
+            showToast(t("profile.gpa_saved", "GPA saved"), "success");
         };
     }
 
@@ -674,18 +705,18 @@ function initProfileUI() {
 
 
             if (!name) {
-                showToast("Please select an exam", "error");
+                showToast(t("profile.exam_select_required", "Please select an exam"), "error");
                 return;
             }
             if (isNaN(score)) {
-                showToast("Invalid score format", "error");
+                showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
                 return;
             }
 
             // 1. Проверка на целые числа (кроме IELTS)
             if (name !== "IELTS") {
                 if (!Number.isInteger(score)) {
-                    showToast(`${name} score must be an integer (e.g. 1400)`, "error");
+                    showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
                     return;
                 }
             }
@@ -693,7 +724,7 @@ function initProfileUI() {
             // 2. Проверка IELTS (шаг 0.5)
             if (name === "IELTS") {
                 if (score % 0.5 !== 0) {
-                    showToast("IELTS score must end with .0 or .5", "error");
+                    showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
                     return;
                 }
             }
@@ -718,10 +749,10 @@ function initProfileUI() {
 
                 if (existingIndex !== -1) {
                 profile.exams[existingIndex].score = json.score;
-                showToast(`Updated ${examLabel} to ${json.score}`, "success");
+                showToast(tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`), "success");
                 } else {
                 profile.exams.push({ exam: examId, score: json.score });
-                showToast(`Added ${examLabel}`, "success");
+                showToast(tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`), "success");
                 }
 
                 
@@ -749,7 +780,7 @@ function initProfileUI() {
                 profile.exams.splice(idx, 1);
                 saveProfile(profile);
                 renderProfileData();
-                showToast("Exam removed", "success");
+                showToast(t("profile.exam_removed", "Exam removed"), "success");
             }
         };
     }
@@ -760,9 +791,9 @@ function initProfileUI() {
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
                         <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam))}</span>
-                        <span class="profile-exam-score">Score: ${escapeHtml(String(ex.score))}</span>
+                        <span class="profile-exam-score">${escapeHtml(tFormat("profile.exam_score_label", { score: String(ex.score) }, `Score: ${String(ex.score)}`))}</span>
                     </div>
-                    <button data-idx="${i}" class="profile-delete">Delete</button>
+                    <button data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
                 </div>
             `).join("");
         }

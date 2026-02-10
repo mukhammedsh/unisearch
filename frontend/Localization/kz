@@ -1,0 +1,341 @@
+meta.display_name: Kazakh
+meta.code: kz
+about.bio.docs: Тестілеу мен интерфейске көмектесті, бейнеқұжаттама мен презентацияға жауапты.
+about.bio.lead: Барлық код пен барлық идеялардың іске асуына жауапты. Команда капитаны ретінде жоба бойынша негізгі шешімдерді қабылдайды.
+about.bio.planning: Мәтіндік құжаттамаға, идеялар мен жақсартулардың көп бөлігіне, сондай-ақ сайттың көптеген тестіне жауап береді.
+about.contact.email: Email
+about.contact.github: GitHub
+about.contact_kicker: Байланыс
+about.contact_title: Бізбен байланысыңыз
+about.email_note: Жоба сұрақтары үшін негізгі байланыс.
+about.eyebrow: Біз туралы
+about.github_note: Код, коммиттер және жоба жаңартулары.
+about.lead: UniSearch студенттер үшін студенттер жасаған жоба. Мақсатымыз — университет таңдауды түсінікті, жеңіл және практикалық ету.
+about.meta.docs: 15 жаста, Жаңаөзен №5 мектеп-гимназиясының оқушысы.
+about.meta.lead: 15 жаста, Жаңаөзен Білім-Инновация лицейінің оқушысы.
+about.meta.planning: 14 жаста, Жаңаөзен Білім-Инновация лицейінің оқушысы.
+about.role.docs: Құжаттама және презентация маманы
+about.role.lead: Бас әзірлеуші және жоба архитекторы
+about.role.planning: Жоспарлау және құжаттама ассистенті
+about.team_kicker: Біздің команда
+about.team_title: Негізгі қатысушылар
+about.title: Біз UniSearch студенттік командамыз.
+footer.copyright: © 2026 UniSearch
+guide.academic_exams.title: Академиялық емтихандар
+guide.admission.p1: Admission track — белгілі бір түсу жолы. Бір университетте талаптары мен құны әртүрлі бірнеше трек болуы мүмкін.
+guide.admission.p2: Requirements — ең төменгі шек. Real Average (Admitted) көбіне нақты бәсекелестік деңгейін жақсы көрсетеді.
+guide.admission.p3: Тіл ережесі нақты: mode any — бір дәлел жеткілікті, mode all — барлық шарт орындалуы керек.
+guide.admission.p4: Трек деңгейіндегі шәкіртақы мен aid нақты қаржылық нәтижеге қатты әсер етуі мүмкін.
+guide.admission.title: Admission track терминдері
+guide.exam_basics.p1: Қабылдау әдетте екі бөлек бағытты бағалайды: академиялық дайындық және тілдік дайындық.
+guide.exam_basics.p2: Әртүрлі елдер мен маршруттарда әртүрлі емтихандар қолданылады: SAT, ACT, AP, IB, ұлттық немесе ішкі емтихандар.
+guide.exam_basics.p3: Тіл сертификаттары халықаралық талапкерлер үшін өте маңызды және трекке қарай ерекшеленеді.
+guide.exam_basics.p4: Стратегия: алдымен минималды талаптарды жабыңыз, кейін орташа қабылданған деңгейге ұмтылыңыз, соңында өтінімдерді тәуекел бойынша бөліңіз.
+guide.exam_basics.title: Емтихан негіздері (қабылдау)
+guide.eyebrow: UniSearch нұсқаулығы
+guide.glossary.title: Глоссарий
+guide.intro: Бұл бетте UniSearch-тегі негізгі терминдер түсіндіріледі: {fit} ранжирлеу логикасы, {chance} ықтималдық, қабылдау тректері, балл түрлері, тіл дәлелдері және бюджет логикасы.
+guide.language_exams.title: Тіл емтихандары
+guide.loading_language_config: Тіл емтиханы конфигурациясы жүктелуде
+guide.ml.p1: ML — Machine Learning. UniSearch-те ол admission ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.
+guide.ml.p2: Профильдегі interests өрісіне еркін мәтін жаза аласыз. Интерфейс/профиль тілі ағылшын емес болса, backend бұл мәтінді алдымен self-hosted LibreTranslate арқылы ағылшын тіліне аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.
+guide.ml.p3: Метадерек мәтіні университет атауы, орналасуы, бағдарламалар, сондай-ақ description мен tags өрістерінен құралады.
+guide.ml.p4: Бағалау алдында қысқа терминдер мен қысқартулар (ict, gamedev, ui/ux, genai) қалыпқа келтіріледі.
+guide.ml.p5: Interests толтырылғанда гибрид формула қолданылады: final_score = 0.7 * hard_score + 0.3 * ml_score. Толтырылмаса, сұрыптау тек rule-based.
+guide.ml.title: UniSearch-тегі ML (нені білдіреді)
+guide.muted.academic: UniSearch matching жүйесінде қолданылатын академиялық баллдар туралы түсінікті сипаттама.
+guide.muted.language: Тректер бойынша қабылданатын тіл дәлелдерінің түсінікті сипаттамасы.
+guide.nav.academic_exams: Академиялық емтихандар
+guide.nav.admission: Қабылдау
+guide.nav.exam_basics: Емтихан негіздері
+guide.nav.glossary: Глоссарий
+guide.nav.language_exams: Тіл емтихандары
+guide.title: UniSearch-ті қолдану және бағаларды түсіну
+guide.unichance.p1: {chance} университет пен трек бойынша 0-ден 100-ге дейін ықтималдық бағасын береді. Бұл кепілдік емес, шешім қабылдауға көмек.
+guide.unichance.p2: Баға профиль және трек деректерінен құралады: минималды талаптар, қабылданғандардың орташа балы, тіл ережелері, acceptance және бюджет сәйкестігі.
+guide.unichance.p3: Түсіндіру: 80-100 жоғары мүмкіндік, 60-79 жақсы, 40-59 орташа, 40-тан төмен — төмен мүмкіндік.
+guide.unichance.p4: Best Track бөлімі бір университет ішіндегі ең күшті жолды көрсетіп, жақсырақ балама табуға көмектеседі.
+guide.unichance.title: {chance} (қабылдану ықтималдығы 0-100)
+guide.unifit.p1: {fit} — Universities бетінде AI Smart Sort таңдалғанда қолданылатын ранжирлеу режимі. Ол тек танымал атауларды емес, шынайы нұсқаларды алға қояды.
+guide.unifit.p2: Бюджет/бедел слайдері салмақтарды өзгертеді, бірақ шектеулерді елемейді: профильге сай келмейтін тректер бедел басымдығында да айыпталады.
+guide.unifit.p3: Трек деректері бар болса, модель әр тректі бөлек бағалайды. Сондықтан жалпы рангі төмендеу университет сізге жақсырақ сәйкесуі мүмкін.
+guide.unifit.p4: {fit} нәтижесі динамикалық: емтихан, тіл, бюджет өзгерсе, тізім реті бірден жаңарады.
+guide.unifit.title: {fit} (AI ақылды сұрыптау)
+home.feature.ai_desc: {fit} нұсқаларды сәйкес келуіне қарай сұрыптайды, ал {chance} әр трек бойынша түсу ықтималдығын бағалайды.
+home.feature.ai_title: {fit} + {chance} AI
+home.feature.data_desc: Infomatrix үшін жасалған жоба: субъективтілікті азайту үшін құрылымдалған JSON деректері мен алгоритмдер қолданамыз.
+home.feature.data_title: Дерекке негізделген шешім
+home.feature.finance_desc: Нақты шығынды көріңіз. Жүйе merit-based және need-based көмекті көрсетіп, бюджетіңізге сай университеттерді бөледі.
+home.feature.finance_title: Қаржылық айқындық
+home.hero.desc: UniSearch — талаптар, шығындар және мүмкіндіктерді бір жерде салыстырып, университет табуға арналған ыңғайлы платформа.
+home.hero.rankings: Рейтингті көру
+home.hero.start: Іздеуді бастау
+home.hero.title: AI көмегімен армандаған университетіңізді табыңыз
+home.hero.title_html: AI көмегімен армандаған университетіңізді <span class="text-gradient"><span class="ai-gold">табыңыз</span></span>
+home.stats.countries: Елдер
+home.stats.open_source: Ашық код
+home.stats.ranking_chance: Рейтинг + Мүмкіндік
+home.stats.top_universities: Үздік университеттер
+home.why: Неге UniSearch?
+nav.about: Біз туралы
+nav.close_menu: Мәзірді жабу
+nav.guide: Нұсқаулық
+nav.home: Басты бет
+nav.lang.eng: ENG
+nav.lang.kz: KZ
+nav.lang.rus: RUS
+nav.language: Тіл
+nav.open_menu: Мәзірді ашу
+nav.profile: Профиль
+nav.rankings: Рейтингтер
+nav.switch_theme: Тақырыпты ауыстыру
+nav.universities: Университеттер
+profile.add: Қосу
+profile.budget_cleared: Бюджет тазартылды
+profile.budget_integers_only: Тек бүтін сандар (үтір/нүктесіз)
+profile.budget_limit: Шек: 1 - 1,000,000 USD
+profile.budget_must_number: Бюджет сан болуы керек
+profile.budget_saved: Бюджет сақталды!
+profile.cefr: CEFR
+profile.delete: Өшіру
+profile.exam: Емтихан
+profile.exam_added: {exam} қосылды
+profile.exam_ielts_step: IELTS балы .0 немесе .5 мәнімен аяқталуы керек
+profile.exam_integer_required: {exam} балы бүтін сан болуы керек (мысалы, 1400)
+profile.exam_invalid_score: Балл форматы қате
+profile.exam_removed: Емтихан өшірілді
+profile.exam_score_label: Балл: {score}
+profile.exam_select_required: Емтиханды таңдаңыз
+profile.exam_updated: {exam} жаңартылды: {score}
+profile.gpa_cleared: GPA тазартылды
+profile.gpa_must_number: GPA сан болуы керек
+profile.gpa_range: GPA {min} және {max}% арасында болуы керек
+profile.gpa_saved: GPA сақталды
+profile.gpa_step: GPA қадамы {step} болуы керек
+profile.hint.budget_range: Ауқым: 1 - 1,000,000
+profile.hint.gpa: GPA пайызбен сақталады және admission matching үшін қолданылады.
+profile.hint.interests: Ұсыныстарды сізге бейімдеу үшін қолданылады.
+profile.interests_saved: Қызығушылықтар сақталды
+profile.label.budget: Жылдық жалпы бюджет (USD)
+profile.label.exams: Емтихандар (тізім, міндетті емес)
+profile.label.funding_type: Қаржыландыру түрі
+profile.label.gpa: GPA (пайыз)
+profile.label.interests: Университет қызығушылықтары (AI)
+profile.label.major: Негізгі мамандық
+profile.label.study_mode: Оқу форматы
+profile.language: Тіл
+profile.languages: Тілдер
+profile.name_invalid_length: Атау ұзындығы 3-16 таңба болуы керек
+profile.name_invalid_symbols: Атауда рұқсат етілмеген таңбалар бар
+profile.nickname_updated: Лақап ат жаңартылды!
+profile.option.funding_any: Кез келген (грант + ақылы)
+profile.option.funding_grant: Тек грант
+profile.option.funding_paid: Тек ақылы
+profile.option.major_any: Белгісіз / Кез келген
+profile.option.select_exam: Емтиханды таңдаңыз
+profile.option.study_mode_any: Кез келген (барлық формат)
+profile.option.study_mode_hybrid: Гибрид
+profile.option.study_mode_oncampus: Кампус (On-campus)
+profile.option.study_mode_online: Онлайн / қашықтан
+profile.placeholder.budget: мысалы, 20000
+profile.placeholder.gpa: мысалы, 92
+profile.placeholder.interests: Өзіңізге ұнайтын университетті сипаттаңыз: бағдарламалар, зерттеу, орналасу, кампус түрі және мақсаттар.
+profile.placeholder.lang_score: Балл (мысалы, 7.5)
+profile.placeholder.score: Балл
+profile.preference_saved: Баптау сақталды
+profile.score: Балл
+profile.type: Түрі
+profile.unit.gpa: % (0-ден 100-ге дейін)
+profile.unit.usd_year: USD / жыл
+ranking.acceptance: Қабылдау деңгейі
+ranking.failed: Рейтингті жүктеу сәтсіз аяқталды.
+ranking.loading: Рейтинг жүктелуде
+ranking.subtitle: Академиялық бедел және зерттеу ықпалы бойынша үздік университеттер (2025)
+ranking.title: Әлемдік университет рейтингтері
+title.about: Біз туралы | UniSearch
+title.guide: Нұсқаулық | UniSearch
+title.index: UniSearch - AI университет іздеу
+title.ranking: Әлемдік рейтингтер | UniSearch
+title.universities: Университеттер | UniSearch
+title.university: Университет | UniSearch
+universities.all_cities: Барлық қалалар
+universities.any_state: Кез келген штат
+universities.badge.acceptance: Қабылдау деңгейі: {value}%
+universities.badge.aid_available: 🎓 Көмек бар
+universities.badge.aid_likely: 🎓 Грант/көмек ықтимал (бюджет айыппұлы жоқ)
+universities.badge.below_requirements: ⚠️ Талаптан төмен
+universities.badge.over_budget: 💰 Бюджеттен жоғары
+universities.badge.over_budget_aid: 💸 Бюджеттен жоғары • Көмек бар
+universities.badge.requirements_met: ✅ Талаптар орындалды
+universities.card.est_cost_year: Болжамды құн/жыл
+universities.city: Қала
+universities.cost_per_year: Жылдық құны (USD)
+universities.country: Ел
+universities.filter: Сүзгі
+universities.found_prefix: Табылды
+universities.found_suffix: университет
+universities.global: Жаһандық
+universities.loading: Университеттер жүктелуде
+universities.pagination.next: Келесі
+universities.pagination.prev: Артқа
+universities.reset: Тазалау
+universities.search_placeholder: Университетті іздеу...
+universities.select_country_first: Алдымен елді таңдаңыз
+universities.slider.balanced: Теңгерімді (50/50)
+universities.slider.budget: Бюджет 💰
+universities.slider.budget_priority: Бюджет басымдығы
+universities.slider.focus_budget: Бюджетке фокус ({value}%)
+universities.slider.focus_prestige: Беделге фокус ({value}%)
+universities.slider.prestige: Бедел 🏆
+universities.slider.prestige_priority: Бедел басымдығы
+universities.sort_ai: ✨ {fit}: AI ақылды сұрыптау
+universities.sort_cost_asc: Құны өсу ретімен
+universities.sort_cost_desc: Құны кему ретімен
+universities.sort_name_asc: Атауы А-Я
+universities.sort_strategy: Сұрыптау стратегиясы
+universities.state.empty: Университет табылмады.
+universities.state.failed: Деректерді жүктеу сәтсіз аяқталды.
+universities.state.ml_unavailable: Machine Learning қолжетімсіз. Тек rule-based сұрыптау қолданылуда.
+universities.state_region: Штат / Аймақ
+universities.view_list: Тізім
+universities.view_map: Карта
+university.about_campus: Университет және кампус
+university.ask_placeholder: Қабылдау, шәкіртақы, жатақхана, дедлайн туралы сұраңыз...
+university.available_majors: Қолжетімді мамандықтар
+university.back_to_list: Тізімге оралу
+university.chat_assistant: Чат көмекшісі
+university.clear: Тазалау
+university.discounts_scholarships: Жеңілдіктер мен шәкіртақылар
+university.entry_requirements: Қабылдау талаптары
+university.error_loading: Деректерді жүктеу қатесі.
+university.error_no_id: Қате: ID көрсетілмеген.
+university.loading: Университет деректері жүктелуде
+university.loading_scholarships: Шәкіртақылар жүктелуде
+university.mode_auto: Режим: Авто
+university.model.auto: Авто
+university.model.fallback: Резерв модель
+university.model.gemini: Gemini
+university.model.local: Жергілікті fallback
+university.model_label: Модель:
+university.overview: Шолу
+university.per_year: жылына
+university.price_from: {price} бастап / жыл
+university.send: Жіберу
+university.show_on_map: Картада көрсету
+university.tab.admission: Қабылдау
+university.tab.costs: Құны
+university.tab.general: Жалпы
+university.tab.programs: Бағдарламалар
+university.total_cost_calculator: Жалпы құн калькуляторы
+university.total_estimated_cost: Болжамды жалпы құн
+university.visit_website: Ресми сайтқа өту
+
+# Added localization coverage keys
+common.loading: Жүктелуде
+guide.academic.act: ACT — көптеген университеттер қолданатын стандартталған түсу емтиханы; English, Mathematics, Reading және Science Reasoning бөлімдерін қамтиды.
+guide.academic.aptotal: AP Total бірнеше Advanced Placement пәндері бойынша жиынтық нәтижені көрсетеді.
+guide.academic.default: Бұл UniSearch дерекқорындағы бір немесе бірнеше admission track қолданатын академиялық көрсеткіш.
+guide.academic.gpa: GPA мектептегі жиынтық үлгерімді көрсетеді және жиі академиялық тұрақтылықтың базалық индикаторы ретінде қолданылады.
+guide.academic.ibdiploma: IB Diploma балы — көптеген халықаралық қабылдау жүйелерінде қолданылатын International Baccalaureate Diploma жалпы нәтижесі.
+guide.academic.intro: Төменде UniSearch admission track сәйкестендіруі мен ұсыныс сапасы үшін қазір қолданатын академиялық емтихандар берілген.
+guide.academic.nuettotal: Бұл кейбір институционалдық қабылдау жолдарында қолданылатын біріктірілген түсу тесті балы.
+guide.academic.sat: SAT — бакалавриатқа түсуге арналған стандартталған емтихан; evidence-based reading, writing және mathematics бағыттарына негізделген.
+guide.academic.unt: UNT (Unified National Testing) — Қазақстандағы ұлттық емтихан, бакалавриатқа түсу жолдарының көбінде қолданылады.
+guide.glossary.admission_track: Университетке түсудің нақты жолы (мысалы, direct, exam-based немесе scholarship path).
+guide.glossary.chance: Профиль мен талаптарға сүйеніп, трек деңгейінде есептелетін түсу ықтималдығының AI бағасы (0-100).
+guide.glossary.fit: Бедел, қаржылық қолжетімділік және түсу шынайылығын теңестіретін AI ранжирлеу режимі.
+guide.glossary.intro: Бұл глоссарий UniSearch терминдерін нақтылап, пайдаланушыларға ранжирлеу мен ықтималдық нәтижелерін бірдей түсіндіруге көмектеседі.
+guide.glossary.language_requirements: Тілдік дәлелдің қабылданатын түрлері: native, CEFR немесе тіл емтиханы.
+guide.glossary.match_score: {fit} ішкі ранжирлеу балы; балл жоғары болған сайын профиліңізге сәйкестік жоғары.
+guide.glossary.mode_all: Тізімдегі барлық тіл талаптарын орындау қажет.
+guide.glossary.mode_any: Тізімдегі тіл нұсқаларының кемінде біреуін орындау жеткілікті.
+guide.glossary.requirements: Трек бойынша қарастырылу үшін қажет минималды баллдар.
+guide.glossary.stats_avg: Осы трек бойынша қабылданған студенттердің типтік баллдары.
+guide.glossary.swr: Stale-While-Revalidate: алдымен кэштегі дерек көрсетіледі, кейін фондық жаңарту жасалып, өзгеріс болса жаңартылады.
+guide.glossary.term.admission_track: Admission Track
+guide.glossary.term.language_requirements: Language Requirements
+guide.glossary.term.match_score: Match Score
+guide.glossary.term.mode_all: Mode = all
+guide.glossary.term.mode_any: Mode = any
+guide.glossary.term.requirements: Requirements
+guide.glossary.term.stats_avg: Stats Avg
+guide.glossary.term.swr: SWR Cache
+guide.language.by_code: Бұл емтихан {code} тіліндегі admission track үшін тіл дәлелі ретінде қолданылады.
+guide.language.cambridge: Cambridge English qualifications CEFR деңгейлеріне сай практикалық ағылшын тілін бағалайды.
+guide.language.default: Бұл тіл емтиханы бағдарлама тілінде оқуға дайындықты растау үшін қолданылады.
+guide.language.det: Duolingo English Test — көптеген университет қабылдайтын онлайн адаптивті ағылшын емтиханы.
+guide.language.dutch: NT2 — нидерланд тілін екінші тіл ретінде бағалайтын емтихан, нидерланд тілінде оқуға дайындығын растайды.
+guide.language.french: Бұл емтихандар француз тілін бағалайды және француз тіліндегі академиялық eligibility үшін қолданылады.
+guide.language.german: TestDaF пен DSH — неміс тіліндегі тректер үшін жиі талап етілетін емтихандар.
+guide.language.hsk: HSK қытай тілін академиялық және ресми қолдану деңгейінде бағалайды.
+guide.language.ielts: IELTS академиялық контекстегі ағылшын тілін listening, reading, writing және speaking бойынша бағалайды.
+guide.language.jlpt: JLPT жапон тілін стандартты деңгейлер бойынша бағалайды.
+guide.language.pte: PTE Academic — халықаралық қабылдауда қолданылатын компьютерлік ағылшын емтиханы.
+guide.language.toefl: TOEFL академиялық ағылшын деңгейін өлшейді және университеттерде кең қабылданады.
+guide.language.topik: TOPIK корей тілін бағалайды және корей тілінде оқуға дайындығын растау үшін қолданылады.
+guide.loading_exam_config: Емтихан конфигурациясы жүктелуде
+guide.scale_text: UniSearch жүйесінде бұл балл {min}-{max} шкаласы бойынша енгізіледі.
+home.mockup.grant_available: ✅ Грант қолжетімді
+home.mockup.location: Кембридж, АҚШ
+languages.error.choose_cefr: CEFR деңгейін таңдаңыз
+languages.error.choose_exam: Емтиханды таңдаңыз
+languages.error.choose_language_type: Тілді және түрін таңдаңыз
+languages.error.enter_score: Балл енгізіңіз
+languages.error.save_failed: Тілді сақтау сәтсіз аяқталды
+languages.no_exams: Емтихан жоқ
+languages.removed: Өшірілді
+languages.saved: Тіл сақталды
+languages.select_exam: Емтиханды таңдаңыз
+languages.select_type: Түрін таңдаңыз
+profile.action.close: Жабу
+profile.action.edit_name: Атын өзгерту
+profile.action.save_budget: Бюджетті сақтау
+profile.action.save_gpa: GPA сақтау
+roi.avg_hint_all_graduates: Барлық түлектер бойынша орташа мән көрсетілді.
+roi.avg_hint_all_majors: Барлық мамандықтар бойынша есептелген орташа мән көрсетілді.
+roi.context.default: ROI университет түлектері бойынша қолжетімді деректерге сүйеніп есептелді.
+roi.context.fallback_major: {major} бағыты бойынша нақты дерек жоқ.
+roi.context.matched_major: Есеп {major} бағыты бойынша осы университет түлектерінің деректеріне негізделген.
+roi.context.missing_major: Дәл ROI көру үшін профайлдан Major таңдаңыз.
+roi.estimated_salary: Түлектің болжамды жалақысы
+roi.explain: Бұл көрсеткіш алғашқы жылдық жалақыңыз оқу құнының бір жылын неше рет жабатынын көрсетеді.
+roi.formula: Формула: Avg. Graduate Salary / Annual Tuition Cost
+roi.label.high_investment: Жоғары инвестиция
+roi.per_year_early: жылына (карьераның бастапқы кезеңі)
+roi.score: ROI Score
+roi.tip: Кеңес:
+roi.title: ROI болжамы (инвестиция қайтарымы)
+roi.what_is: ROI деген не?
+tour.back: Артқа
+tour.finish: Аяқтау
+tour.next: Келесі
+tour.open_profile: Профайлды ашу
+tour.skip: Өткізу
+tour.step1.desc: Бұл бет университеттерді локация, оқу құны және профайлға сәйкестік бойынша тез shortlist жасауға көмектеседі.
+tour.step1.kicker: Қош келдіңіз
+tour.step1.point1: Сол жақ панельдегі іздеу мен фильтрлерді қолданыңыз.
+tour.step1.point2: Жоғарғы оң жақта List және Map режимдерін ауыстырыңыз.
+tour.step1.point3: Жекелендірілген сұрыптау үшін {fit} қолданыңыз.
+tour.step1.title: Университеттерді тезірек табыңыз
+tour.step2.desc: Профайл деректері ұсыныстар мен түсу ықтималдығы бағасының дәлдігін арттырады.
+tour.step2.kicker: 1-қадам
+tour.step2.point1: Бюджет, major және GPA қосыңыз.
+tour.step2.point2: Емтихан мен тіл нәтижелерін қосыңыз.
+tour.step2.point3: Бұл {fit} және {chance} сапасын арттырады.
+tour.step2.title: Алдымен профайлды толтырыңыз
+tour.step3.desc: Алдымен кең таңдаңыз, кейін ел, қала, баға диапазоны, оқу деңгейі және қаржыландыру түрі бойынша тарылтыңыз.
+tour.step3.kicker: 2-қадам
+tour.step3.point1: Құнның min/max мәнін слайдермен реттеңіз.
+tour.step3.point2: Қаржылық жоспарлау үшін grant/paid фильтрін қолданыңыз.
+tour.step3.point3: Географиялық кластерлерді көру үшін картаны қолданыңыз.
+tour.step3.title: Фильтрацияны стратегиялық қолданыңыз
+tour.step4.desc: Әр трек бойынша қабылдау, қаржы және талаптарды көру үшін карта/карточканы ашыңыз.
+tour.step4.kicker: 3-қадам
+tour.step4.point1: Деталь бетінде {chance} нәтижесін трек бойынша қараңыз.
+tour.step4.point2: Талаптар мен қаржыландыруды көру үшін Admission және Costs бөлімдерін тексеріңіз.
+tour.step4.point3: Өтінім бермес бұрын жылдық шығын мен шәкіртақыларды салыстырыңыз.
+tour.step4.title: Детальдарды ашып, тректерді салыстырыңыз
+unifit.warning.cancel: Бас тарту
+unifit.warning.confirm: Түсіндім
+unifit.warning.desc: Профайлда емтихан немесе тілдік дәлел болғанда UniFit жақсырақ жұмыс істейді. Онсыз AI-сұрыптау дәлдігі төмендеуі мүмкін.
+unifit.warning.title: Профайл дерегі жеткіліксіз

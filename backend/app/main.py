@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.settings import APP_VERSION, FRONTEND_ORIGIN
-from app.routers import root, universities, exams, languages, mentor
+from app.routers import root, universities, exams, languages
 
 
 logging.basicConfig(
@@ -67,7 +67,6 @@ app.include_router(root.router)
 app.include_router(universities.router)
 app.include_router(exams.router)
 app.include_router(languages.router)
-app.include_router(mentor.router)
 
 
 if __name__ == "__main__":

@@ -22,10 +22,16 @@ class ApiValidationTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
-    def test_mentor_rejects_blank_question(self):
+    def test_ai_sort_rejects_too_long_locale(self):
         response = self.client.post(
-            "/mentor/ask",
-            json={"question": "   ", "profile": {}},
+            "/universities/ai-sort",
+            json={
+                "profile": {
+                    "locale": "x" * 40,
+                },
+                "page": 1,
+                "limit": 20,
+            },
         )
         self.assertEqual(response.status_code, 422)
 

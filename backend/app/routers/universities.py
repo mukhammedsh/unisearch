@@ -30,6 +30,19 @@ def _etag_matches(if_none_match: str, etag: str) -> bool:
     return target in candidates or target_weak in candidates
 
 
+def _request_client_key(request: Optional[Request]) -> str:
+    if request is None:
+        return "unknown"
+    xff = str(request.headers.get("x-forwarded-for", "")).strip()
+    if xff:
+        first = xff.split(",")[0].strip()
+        if first:
+            return first
+    if request.client and request.client.host:
+        return str(request.client.host)
+    return "unknown"
+
+
 def _ai_sort_cache_key(payload: UniversitiesAiSortRequest) -> str:
     raw = payload.model_dump(exclude_none=True)
     raw.pop("page", None)
@@ -123,7 +136,7 @@ def list_universities(
 
 
 @router.post("/universities/ai-sort")
-def list_universities_ai_sort(payload: UniversitiesAiSortRequest, response: Response = None):
+def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Request, response: Response = None):
     profile = to_profile_dict(payload.profile)
     q = payload.q
     country = payload.country
@@ -173,6 +186,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, response: Resp
             profile=profile,
             ai_balance=ai_balance,
             funding_type=funding_type,
+            translation_client_key=_request_client_key(request),
         )
         _ai_sort_cache_set(cache_key, sorted_items)
 

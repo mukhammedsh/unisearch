@@ -88,6 +88,43 @@ class AiScoringTests(unittest.TestCase):
         self.assertTrue(bool(match.get("mlUnavailable")))
         self.assertEqual("Machine Learning unavailable", str(match.get("mlWarning", "")))
 
+    def test_ai_sort_uses_translated_interest_text_for_ml_query(self):
+        items = [
+            {
+                "id": "u1",
+                "name": "University One",
+                "rank": 100,
+                "finance": {"total_cost_year_usd": 30000, "financial_aid": {"merit_based": False, "need_based": False}},
+                "academics": {"acceptance_rate_percent": 45},
+                "admission_tracks": [
+                    {
+                        "id": "default",
+                        "label": "Default",
+                        "requirements": {},
+                        "stats_avg": {},
+                        "scholarships": [],
+                    }
+                ],
+            }
+        ]
+        profile = {"budget": 40000, "interests": "хочу ai", "locale": "rus"}
+        fake_ml = Mock()
+        fake_ml.predict_relevance.return_value = {"u1": 0.5}
+
+        with patch(
+            "app.services.ai_scoring.translate_interest_text_for_ml",
+            return_value={"text": "i want artificial intelligence", "translated": True, "source": "ru", "reason": "translated"},
+        ), patch(
+            "app.services.ai_scoring.get_ml_runtime_status",
+            return_value={"available": True, "message": ""},
+        ), patch(
+            "app.services.ai_scoring.get_ml_recommender",
+            return_value=fake_ml,
+        ):
+            sort_universities_ai(items, profile=profile, ai_balance=50, funding_type="any")
+
+        fake_ml.predict_relevance.assert_called_once_with("i want artificial intelligence")
+
     def test_estimate_uni_chance_returns_valid_shape(self):
         university = {
             "id": "demo-u",

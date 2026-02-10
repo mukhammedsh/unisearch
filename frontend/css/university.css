@@ -735,159 +735,6 @@
 }
 
 /* =========================================
-   UNIMENTOR CHAT
-   ========================================= */
-.mentor-panel {
-  border: 1px solid #e4d8ff;
-  border-radius: 12px;
-  background: #f8fafc;
-  padding: 12px;
-}
-
-.mentor-disabled {
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 10px;
-  font-size: 13px;
-}
-
-.mentor-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.mentor-mode-badge {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--accent);
-  background: #f5f0ff;
-  border: 1px solid #d8c9ff;
-  border-radius: 999px;
-  padding: 4px 10px;
-}
-
-.mentor-mode-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #334155;
-  font-weight: 600;
-}
-
-.mentor-mode-select {
-  min-width: 170px;
-  height: 34px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.mentor-messages {
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  border-radius: 10px;
-  min-height: 220px;
-  max-height: 420px;
-  overflow-y: auto;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mentor-msg {
-  max-width: 90%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-size: 13px;
-  line-height: 1.45;
-  border: 1px solid transparent;
-}
-
-.mentor-msg--assistant {
-  background: #f5f0ff;
-  border-color: #d8c9ff;
-  color: var(--accent);
-  align-self: flex-start;
-}
-
-.mentor-msg--user {
-  background: #f3f4f6;
-  border-color: #e5e7eb;
-  color: #111827;
-  align-self: flex-end;
-}
-
-.mentor-sources {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.mentor-sources a {
-  text-decoration: none;
-  font-size: 11px;
-  background: #fff;
-  border: 1px solid #cbd5e1;
-  border-radius: 999px;
-  padding: 3px 8px;
-  color: var(--accent);
-}
-
-.mentor-options {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.mentor-option-btn {
-  border: 1px solid #d8c9ff;
-  background: #f8f3ff;
-  color: var(--accent);
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 11px;
-  line-height: 1.2;
-  cursor: pointer;
-}
-
-.mentor-option-btn:hover {
-  background: #f5f0ff;
-}
-
-.mentor-input-row {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 8px;
-}
-
-@media (max-width: 680px) {
-  .mentor-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .mentor-mode-label {
-    justify-content: space-between;
-  }
-  .mentor-mode-select {
-    min-width: 0;
-    flex: 1;
-  }
-  .mentor-input-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =========================================
    TRACK CARDS (ADMISSIONS)
    ========================================= */
 .track-card {
@@ -1170,7 +1017,6 @@
 }
 
 :root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .mentor-panel,
 :root[data-theme="dark"] .finance-card,
 :root[data-theme="dark"] .total-price-card,
 :root[data-theme="dark"] .scholarship-card {
@@ -1185,43 +1031,17 @@
 }
 
 :root[data-theme="dark"] .chance-title,
-:root[data-theme="dark"] .mentor-mode-badge,
 :root[data-theme="dark"] .price-header,
-:root[data-theme="dark"] .finance-track-name,
-:root[data-theme="dark"] .mentor-msg--assistant {
+:root[data-theme="dark"] .finance-track-name {
   color: var(--text);
 }
 
 :root[data-theme="dark"] .chance-sub,
 :root[data-theme="dark"] .chance-foot,
-:root[data-theme="dark"] .mentor-mode-label,
 :root[data-theme="dark"] .price-sub,
 :root[data-theme="dark"] .finance-total small,
 :root[data-theme="dark"] .finance-grant-list {
   color: var(--muted);
-}
-
-:root[data-theme="dark"] .mentor-messages {
-  background: #141414;
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .mentor-msg--assistant {
-  background: #222222;
-  border-color: #3a3a3a;
-}
-
-:root[data-theme="dark"] .mentor-msg--user {
-  background: #2c2c2c;
-  border-color: #454545;
-  color: #e8e8e8;
-}
-
-:root[data-theme="dark"] .mentor-sources a,
-:root[data-theme="dark"] .mentor-option-btn {
-  background: #171717;
-  border-color: var(--line);
-  color: var(--accent);
 }
 
 :root[data-theme="dark"] .finance-header,
@@ -1274,20 +1094,6 @@
 :root[data-theme="dark"] .track-card:hover,
 :root[data-theme="dark"] .roi-box:hover {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
-}
-
-:root[data-theme="dark"] .mentor-option-btn:hover {
-  background: #222222;
-}
-.mentor-mode-label .custom-select-wrapper {
-  min-width: 170px;
-}
-
-.mentor-mode-label .custom-select-trigger {
-  min-height: 34px;
-  padding: 7px 10px;
-  font-size: 12px;
-  font-weight: 700;
 }
 
 :root[data-theme="dark"] .program-card {
@@ -1533,54 +1339,4 @@
 
 :root[data-theme="dark"] .finance-card [style*="color:#555"] {
   color: #c3c3c3 !important;
-}
-
-:root[data-theme="dark"] .mentor-mode-select,
-:root[data-theme="dark"] .mentor-mode-label .custom-select-trigger,
-:root[data-theme="dark"] .mentor-mode-label .custom-options {
-  background: #171717;
-  border-color: #3f3f3f;
-  color: #ededed;
-}
-
-:root[data-theme="dark"] .mentor-mode-badge,
-:root[data-theme="dark"] #mentorModeBadge {
-  background: #222222 !important;
-  border-color: #3a3a3a !important;
-  color: #e2e2e2 !important;
-}
-
-:root[data-theme="dark"] .mentor-mode-label .custom-option {
-  color: #ededed;
-}
-
-:root[data-theme="dark"] .mentor-mode-label .custom-option:hover {
-  background-color: #222222;
-  color: #d4d4d4;
-}
-
-:root[data-theme="dark"] .mentor-mode-label .custom-select-trigger {
-  background: #171717 !important;
-  color: #ededed !important;
-}
-
-:root[data-theme="dark"] .mentor-mode-label .custom-select-trigger span {
-  color: #ededed !important;
-}
-
-:root[data-theme="dark"] #mentorModeSelect + .custom-select-trigger,
-:root[data-theme="dark"] #mentorModeSelect ~ .custom-options {
-  background: #171717 !important;
-  border-color: #3f3f3f !important;
-  color: #ededed !important;
-}
-
-:root[data-theme="dark"] #mentorModeSelect + .custom-select-trigger span,
-:root[data-theme="dark"] #mentorModeSelect ~ .custom-options .custom-option {
-  color: #ededed !important;
-}
-
-:root[data-theme="dark"] .mentor-mode-label .custom-option.selected {
-  background: rgba(87, 21, 219, 0.14) !important;
-  color: var(--accent) !important;
 }

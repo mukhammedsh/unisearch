@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
-  <title>University | UniSearch</title>
+  <title data-i18n="title.university">University | UniSearch</title>
   <script src="theme-init.js"></script>
 
   <link rel="stylesheet" href="css/style.css" />
@@ -16,7 +16,7 @@
     <div class="d-container">
       <div id="detailState" class="d-state"></div>
       <div id="detailLoading" class="d-loading-overlay" aria-hidden="true">
-        <div class="d-loading-spinner" role="status" aria-label="Loading university details"></div>
+        <div class="d-loading-spinner" role="status" aria-label="Loading university details" data-i18n-aria-label="university.loading"></div>
       </div>
 
       <section id="detailCard" class="d-card" style="display:none;">
@@ -29,13 +29,13 @@
         <div class="d-head">
           <div style="flex-grow: 1;"> <div style="display:flex; align-items:center; gap: 10px;">
                 <h1 id="detailName" class="d-title">University Name</h1>
-                <a id="detailWebsite" href="#" target="_blank" class="d-site-link" title="Visit Official Website">
+                <a id="detailWebsite" href="#" target="_blank" class="d-site-link" title="Visit Official Website" data-i18n-title="university.visit_website">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                     </svg>
                 </a>
-                <a id="detailMapLink" href="#" class="d-site-link" title="Show on map" style="display:none;">
+                <a id="detailMapLink" href="#" class="d-site-link" title="Show on map" style="display:none;" data-i18n-title="university.show_on_map">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 21s-7-4.35-7-11a7 7 0 1 1 14 0c0 6.65-7 11-7 11z"></path>
                         <circle cx="12" cy="10" r="2.5"></circle>
@@ -44,24 +44,21 @@
             </div>
             <div id="detailLocation" class="d-location">Location</div>
           </div>
-          <a class="d-back" href="universities.html">Back to list</a>
+          <a class="d-back" href="universities.html" data-i18n="university.back_to_list">Back to list</a>
         </div>
 
         <div class="d-tabs">
           <button class="d-tab-btn active" data-tab="tab-general">
-            <span class="icon">📄</span> General
+            <span class="icon">📄</span> <span data-i18n="university.tab.general">General</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-programs">
-            <span class="icon">🎓</span> Programs
+            <span class="icon">🎓</span> <span data-i18n="university.tab.programs">Programs</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-admission">
-            <span class="icon">📝</span> Admission
+            <span class="icon">📝</span> <span data-i18n="university.tab.admission">Admission</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-finance">
-            <span class="icon">💲</span> Costs
-          </button>
-          <button class="d-tab-btn" data-tab="tab-mentor">
-            <span class="icon">🤖</span> <span data-ai-name="mentor">UniMentor</span>
+            <span class="icon">💲</span> <span data-i18n="university.tab.costs">Costs</span>
           </button>
         </div>
 
@@ -69,38 +66,38 @@
           
           <div id="tab-general" class="d-tab-pane active">
             <div class="d-box">
-              <div class="d-box-title">About & Campus</div>
+              <div class="d-box-title" data-i18n="university.about_campus">About & Campus</div>
               <div id="detailExtra" class="d-box-text"></div>
             </div>
             <div class="d-box" style="margin-top: 20px;">
-               <div class="d-box-title">Overview</div>
+               <div class="d-box-title" data-i18n="university.overview">Overview</div>
                <div id="detailRecommendations" class="d-box-text"></div>
             </div>
           </div>
 
           <div id="tab-programs" class="d-tab-pane">
             <div class="d-box">
-              <div class="d-box-title">Available Majors</div>
+              <div class="d-box-title" data-i18n="university.available_majors">Available Majors</div>
               <div id="detailPrograms" class="d-box-text"></div>
             </div>
           </div>
 
           <div id="tab-admission" class="d-tab-pane">
             <div class="d-box">
-              <div class="d-box-title">Entry Requirements</div>
+              <div class="d-box-title" data-i18n="university.entry_requirements">Entry Requirements</div>
               <div id="detailRequirements" class="d-box-text"></div>
             </div>
           </div>
 
           <div id="tab-finance" class="d-tab-pane">
              <div class="d-box finance-box">
-              <div class="d-box-title">Total Cost Calculator</div>
+              <div class="d-box-title" data-i18n="university.total_cost_calculator">Total Cost Calculator</div>
               
               <div class="finance-summary-container">
                   <div class="finance-summary-left">
-                     <h3 style="margin:0 0 10px 0; font-size:16px;">Discounts & Scholarships</h3>
+                     <h3 style="margin:0 0 10px 0; font-size:16px;" data-i18n="university.discounts_scholarships">Discounts & Scholarships</h3>
                      <div id="detailScholarshipInfo" class="scholarship-card">
-                        <div class="center-loading center-loading--compact" role="status" aria-label="Loading scholarships">
+                        <div class="center-loading center-loading--compact" role="status" aria-label="Loading scholarships" data-i18n-aria-label="university.loading_scholarships">
                           <div class="center-loading-spinner center-loading-spinner--sm" aria-hidden="true"></div>
                         </div>
                      </div>
@@ -108,45 +105,15 @@
                   
                   <div class="finance-summary-right">
                      <div class="total-price-card">
-                        <div class="price-header">Total Estimated Cost</div>
+                        <div class="price-header" data-i18n="university.total_estimated_cost">Total Estimated Cost</div>
                         <div class="price-big" id="detailPrice"></div>
-                        <div class="price-sub">per year</div>
+                        <div class="price-sub" data-i18n="university.per_year">per year</div>
                      </div>
                   </div>
               </div>
 
               <div id="detailFinance" class="finance-list-full"></div>
               
-            </div>
-          </div>
-
-          <div id="tab-mentor" class="d-tab-pane">
-            <div class="d-box">
-              <div class="d-box-title"><span id="mentorAssistantName" data-ai-name="mentor">UniMentor</span> Chat Assistant</div>
-              <p class="guide-muted" style="margin-bottom:10px;">Ask questions about this university. Answers combine our database and optional online references.</p>
-              <div id="mentorPanel" class="mentor-panel">
-                <div id="mentorDisabledNote" class="mentor-disabled" style="display:none;">
-                  <strong data-ai-name="mentor">UniMentor</strong> is disabled in config.
-                </div>
-                <div class="mentor-toolbar">
-                  <div id="mentorModeBadge" class="mentor-mode-badge">Mode: Auto</div>
-                  <label class="mentor-mode-label">
-                    Model:
-                    <select id="mentorModeSelect" class="profile-input mentor-mode-select">
-                      <option value="auto">Auto</option>
-                      <option value="gemini">Gemini</option>
-                      <option value="fallback">Fallback model</option>
-                      <option value="local">Local fallback</option>
-                    </select>
-                  </label>
-                </div>
-                <div id="mentorMessages" class="mentor-messages"></div>
-                <div class="mentor-input-row">
-                  <input id="mentorInput" type="text" class="profile-input" placeholder="Ask about admission, scholarships, housing, deadlines..." />
-                  <button id="mentorSendBtn" class="profile-add" type="button">Send</button>
-                  <button id="mentorClearBtn" class="profile-delete" type="button">Clear</button>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -160,7 +127,7 @@
 
   <footer class="site-footer">
     <div class="container footer-content">
-        <p>© 2026 UniSearch</p>
+        <p data-i18n="footer.copyright">© 2026 UniSearch</p>
         
         <div class="social-links">
             <a href="https://github.com/muxlex/unisearch" target="_blank">

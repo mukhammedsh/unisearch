@@ -76,6 +76,7 @@ class ProfilePayload(BaseModel):
     gpa: Optional[float] = Field(default=None, ge=0, le=100)
     major: str = Field(default="", max_length=120)
     interests: Optional[str] = Field(default=None, max_length=1200)
+    locale: Optional[str] = Field(default=None, max_length=16)
     studyMode: str = Field(default="", max_length=40)
     fundingType: str = Field(default="", max_length=20)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
@@ -86,9 +87,9 @@ class ProfilePayload(BaseModel):
     def _normalize_text_fields(cls, value: Any) -> str:
         return _strip_or_empty(value)
 
-    @field_validator("interests", mode="before")
+    @field_validator("interests", "locale", mode="before")
     @classmethod
-    def _normalize_optional_interests(cls, value: Any) -> Optional[str]:
+    def _normalize_optional_text(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
 
 
@@ -134,29 +135,6 @@ class ProfileOnlyRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     profile: ProfilePayload = Field(default_factory=ProfilePayload)
-
-
-class MentorAskRequest(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
-    question: str = Field(min_length=1, max_length=1200)
-    university_id: str = Field(default="", max_length=128)
-    online: bool = True
-    profile: ProfilePayload = Field(default_factory=ProfilePayload)
-    mode: Literal["auto", "gemini", "fallback", "local"] = "auto"
-
-    @field_validator("question", mode="before")
-    @classmethod
-    def _normalize_question(cls, value: Any) -> str:
-        out = _strip_or_empty(value)
-        if not out:
-            raise ValueError("question is required")
-        return out
-
-    @field_validator("university_id", mode="before")
-    @classmethod
-    def _normalize_university_id(cls, value: Any) -> str:
-        return _strip_or_empty(value)
 
 
 class ExamValidateRequest(BaseModel):

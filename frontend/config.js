@@ -10,13 +10,4 @@ window.APP_VERSION = "2.1.1";
 window.AI_FUNCTIONS = {
   fit: "UniFit",
   chance: "UniChance",
-  mentor: "UniMentor",
-};
-
-// UniMentor frontend settings.
-window.UNIMENTOR_CONFIG = {
-  enabled: true,
-  online: true,
-  // Default UI mode: auto | gemini | fallback | local
-  mode: "auto",
 };

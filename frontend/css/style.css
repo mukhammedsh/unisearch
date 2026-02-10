@@ -197,13 +197,10 @@ body {
   :root.theme-animating .track-card,
   :root.theme-animating .roi-box,
   :root.theme-animating .chance-panel,
-  :root.theme-animating .mentor-panel,
   :root.theme-animating .finance-card,
   :root.theme-animating .total-price-card,
   :root.theme-animating .scholarship-card,
-  :root.theme-animating .mentor-messages,
-  :root.theme-animating .mentor-msg--assistant,
-  :root.theme-animating .mentor-msg--user {
+  :root.theme-animating .program-card {
     transition:
       background-color 0.2s ease,
       color 0.2s ease,
@@ -312,6 +309,33 @@ html, body {
 .theme-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.lang-switch-wrap {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 6px;
+}
+
+.lang-switch {
+  height: 38px;
+  min-width: 76px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0 10px;
+  margin-right: 8px;
+}
+
+.lang-switch:hover {
+  border-color: var(--accent);
 }
 
 .menu-btn {
@@ -949,6 +973,8 @@ html, body {
   
   .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
   .navbar-right { gap: 6px; }
+  .lang-switch-wrap { display: none; }
+  .lang-switch { width: 72px; min-width: 72px; height: 34px; margin-right: 0; }
   .login-btn { padding: 8px 14px; font-size: 13px; }
   .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
   .menu-btn { display: none; }
@@ -994,6 +1020,13 @@ html, body {
   .navbar-right {
     margin-left: auto;
     gap: 6px;
+  }
+
+  .lang-switch {
+    width: 64px;
+    min-width: 64px;
+    padding: 0 8px;
+    font-size: 11px;
   }
 
   .menu-btn {
