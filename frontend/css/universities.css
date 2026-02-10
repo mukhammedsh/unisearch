@@ -148,24 +148,6 @@
   --u-loading-top: 86px;
 }
 
-.u-content::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--u-loading-top);
-  bottom: 0;
-  background: var(--u-loading-dim);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1000;
-  transition: opacity 0.2s ease;
-}
-
-.u-content.is-loading::before {
-  opacity: 1;
-}
-
 .u-top {
   display: flex;
   justify-content: space-between;
@@ -678,12 +660,50 @@
    MAP VIEW CONTAINER
    ========================================= */
 .u-map-container {
+  position: relative;
   width: 100%;
   height: 600px;
   border-radius: 16px;
   border: 1px solid var(--line);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   z-index: 1;
+  overflow: hidden;
+}
+
+.u-map-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--u-loading-dim);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 800;
+  transition: opacity 0.2s ease;
+}
+
+.u-map-container::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  margin-top: -28px;
+  border-radius: 50%;
+  border: 8px solid #c5cad3;
+  border-top-color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  animation: uSpinnerRotate 0.9s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 801;
+  transition: opacity 0.2s ease;
+}
+
+.u-content.is-loading-map .u-map-container::before,
+.u-content.is-loading-map .u-map-container::after {
+  opacity: 1;
 }
 
 /* =========================================

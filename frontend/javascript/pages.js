@@ -471,10 +471,14 @@ export function initUniversitiesPage() {
 
     function setUniversitiesLoading(isLoading) {
         if (!el.loading) return;
-        el.loading.classList.toggle("is-visible", !!isLoading);
-        el.loading.setAttribute("aria-hidden", isLoading ? "false" : "true");
+        const mapMode = state.viewMode === "map";
+        const useMapOverlay = !!isLoading && mapMode;
+        const showDefaultOverlay = !!isLoading && !mapMode;
+        el.loading.classList.toggle("is-visible", showDefaultOverlay);
+        el.loading.setAttribute("aria-hidden", showDefaultOverlay ? "false" : "true");
         if (el.content) {
-            el.content.classList.toggle("is-loading", !!isLoading);
+            el.content.classList.toggle("is-loading", showDefaultOverlay);
+            el.content.classList.toggle("is-loading-map", useMapOverlay);
         }
     }
 
