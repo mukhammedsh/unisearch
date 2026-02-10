@@ -37,7 +37,7 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Noto Sans", "Segoe UI", Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
   padding-top: 70px;
@@ -250,6 +250,14 @@ html, body {
   align-items: center;
 }
 
+.lang-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-right: 8px;
+}
+
 .navbar-center{
   gap: 30px;
   padding: 0 30px;
@@ -312,12 +320,15 @@ html, body {
 }
 
 .lang-switch-wrap {
+  display: block;
+  width: auto;
+  text-align: center;
   font-size: 11px;
   color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-right: 6px;
+  margin-right: 0;
 }
 
 .lang-switch {
@@ -331,11 +342,44 @@ html, body {
   font-size: 12px;
   cursor: pointer;
   padding: 0 10px;
-  margin-right: 8px;
+  margin-right: 0;
 }
 
 .lang-switch:hover {
   border-color: var(--accent);
+}
+
+.navbar-right .lang-control .custom-select-wrapper {
+  width: 64px;
+  margin-right: 0;
+}
+
+.navbar-right .lang-control .custom-select-trigger {
+  min-height: 34px;
+  padding: 6px 24px 6px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.navbar-right .lang-control .custom-select-trigger::after {
+  right: 8px;
+}
+
+.navbar-right .lang-control .custom-options {
+  left: 50%;
+  right: auto;
+  min-width: 170px;
+  width: max-content;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-options {
+  transform: translateX(-50%) translateY(0);
+}
+
+.navbar-right .lang-control .custom-option {
+  white-space: nowrap;
 }
 
 .menu-btn {
@@ -962,7 +1006,7 @@ html, body {
 
   body {
     margin: 0;
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: "Noto Sans", "Segoe UI", Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     padding-top: 0;
@@ -973,8 +1017,10 @@ html, body {
   
   .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
   .navbar-right { gap: 6px; }
+  .lang-control { margin-right: 6px; gap: 0; }
   .lang-switch-wrap { display: none; }
-  .lang-switch { width: 72px; min-width: 72px; height: 34px; margin-right: 0; }
+  .lang-switch { width: 64px; min-width: 64px; height: 34px; margin-right: 0; }
+  .navbar-right .lang-control .custom-select-wrapper { margin-right: 0; }
   .login-btn { padding: 8px 14px; font-size: 13px; }
   .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
   .menu-btn { display: none; }

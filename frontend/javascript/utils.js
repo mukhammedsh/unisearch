@@ -774,6 +774,7 @@ export function getFlagImg(countryName) {
 export function initCustomSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return;
+    const isLanguageSelect = selectId === "languageSelect";
     let wrapper = select.parentNode;
     const alreadyWrapped = wrapper && wrapper.classList.contains("custom-select-wrapper");
 
@@ -793,6 +794,10 @@ export function initCustomSelect(selectId) {
         trigger.classList.add("custom-select-trigger");
         wrapper.appendChild(trigger);
     }
+    if (isLanguageSelect) {
+        wrapper.classList.add("custom-select-wrapper--language");
+        trigger.classList.add("custom-select-trigger--language");
+    }
 
     let customOptions = wrapper.querySelector(".custom-options");
     if (!customOptions) {
@@ -807,6 +812,11 @@ export function initCustomSelect(selectId) {
         const val = selectedOption.value;
         const text = selectedOption.text;
         const flag = getFlagImg(val);
+        if (isLanguageSelect) {
+            const shortLabel = ({ eng: "EN", rus: "RU", kz: "KZ" }[String(val || "").toLowerCase()] || String(val || "").toUpperCase() || text);
+            trigger.innerHTML = `<div style="display:flex; align-items:center; gap:6px;">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
+            return;
+        }
         if (flag) {
             trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${escapeHtml(text)}</span></div>`;
         } else {

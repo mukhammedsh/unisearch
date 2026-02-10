@@ -105,13 +105,15 @@ const LAYOUT_HTML = `
 
   <div class="navbar-right">
     <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">☰</button>
+    <div class="lang-control">
+      <label class="lang-switch-wrap" for="languageSelect" data-i18n="nav.language">Language</label>
+      <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
+        <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
+        <option value="rus" data-i18n="nav.lang.rus">Русский</option>
+        <option value="kz" data-i18n="nav.lang.kz">Қазақша</option>
+      </select>
+    </div>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">🌙</button>
-    <label class="lang-switch-wrap" for="languageSelect" data-i18n="nav.language">Language</label>
-    <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
-      <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
-      <option value="rus" data-i18n="nav.lang.rus">Русский</option>
-      <option value="kz" data-i18n="nav.lang.kz">Қазақша</option>
-    </select>
     <button class="login-btn" id="profileBtn" data-i18n="nav.profile">Profile</button>
   </div>
 </header>
