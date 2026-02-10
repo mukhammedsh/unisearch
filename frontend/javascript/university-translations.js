@@ -456,6 +456,122 @@ const UNIVERSITY_NAMES = {
   },
 };
 
+const TRACK_LABELS = {
+  rus: {
+    aptitude_assessment: "Оценка способностей",
+    direct_admission_sat: "Прямое поступление (SAT)",
+    direct_admission_sat_abay_kunanbayev_grant: "Прямое поступление (SAT) - Грант имени Абая Кунанбаева",
+    direct_entry: "Прямое зачисление",
+    direct_entry_excellence_scholarship_grant: "Прямое зачисление - Стипендия Excellence (Грант)",
+    engineering_track: "Инженерный трек",
+    engineering_track_president_s_scholarship_grant: "Инженерный трек - Президентская стипендия (Грант)",
+    entrance_exam: "Вступительный экзамен",
+    foundation_nuet: "Подготовительная программа (NUET)",
+    foundation_nuet_state_grant_grant: "Подготовительная программа (NUET) - Государственный грант (Грант)",
+    general_admission: "Общее поступление",
+    general_admission_pearson_scholarship_grant: "Общее поступление - Стипендия Pearson (Грант)",
+    harvard_college: "Гарвардский колледж",
+    harvard_college_financial_aid_grant: "Гарвардский колледж - Финансовая помощь (Грант)",
+    international_admission: "Международное поступление",
+    international_admission_asean_scholarship_grant: "Международное поступление - Стипендия ASEAN (Грант)",
+    international_admission_kaist_scholarship_grant: "Международное поступление - Стипендия KAIST (Грант)",
+    international_admissions: "Международное поступление",
+    international_admissions_admission_scholarship_grant: "Международное поступление - Стипендия при поступлении (Грант)",
+    international_admissions_glo_harmony_grant: "Международное поступление - Glo-Harmony (Грант)",
+    international_track: "Международный трек",
+    international_track_chinese_govt_scholarship_grant: "Международный трек - Стипендия правительства Китая (Грант)",
+    international_ug: "Международный бакалавриат",
+    international_ug_melbourne_intl_scholarship_grant: "Международный бакалавриат - Стипендия Melbourne Intl (Грант)",
+    kyoto_iup: "Kyoto iUP",
+    kyoto_iup_iup_scholarship_grant: "Kyoto iUP - Стипендия iUP (Грант)",
+    numerus_clausus: "Numerus Clausus",
+    numerus_clausus_justus_louise_van_effen_grant: "Numerus Clausus - Стипендия Justus & Louise van Effen (Грант)",
+    paid_admission: "Платное поступление",
+    peak_english_track: "PEAK (англоязычный трек)",
+    peak_english_track_utokyo_scholarship_grant: "PEAK (англоязычный трек) - Стипендия UTokyo (Грант)",
+    regular_action: "Основной набор",
+    regular_action_need_based_aid_grant: "Основной набор - Поддержка по финансовой потребности (Грант)",
+    standard_admission: "Стандартное поступление",
+    standard_admission_need_based_aid_grant: "Стандартное поступление - Поддержка по финансовой потребности (Грант)",
+    state_grant: "Государственный грант",
+    state_rector_grant: "Государственный/ректорский грант",
+    unt_paid: "UNT (платное)",
+    general_tuition: "Общая стоимость обучения",
+    no_matching_track: "Нет подходящего трека",
+    no_tracks_for_selected_funding_type: "Нет треков для выбранного типа финансирования",
+  },
+  kz: {
+    aptitude_assessment: "Қабілетті бағалау",
+    direct_admission_sat: "Тікелей қабылдау (SAT)",
+    direct_admission_sat_abay_kunanbayev_grant: "Тікелей қабылдау (SAT) - Абай Құнанбайұлы гранты",
+    direct_entry: "Тікелей қабылдау",
+    direct_entry_excellence_scholarship_grant: "Тікелей қабылдау - Excellence стипендиясы (Грант)",
+    engineering_track: "Инженерлік трек",
+    engineering_track_president_s_scholarship_grant: "Инженерлік трек - Президент стипендиясы (Грант)",
+    entrance_exam: "Кіру емтиханы",
+    foundation_nuet: "Дайындық бағдарламасы (NUET)",
+    foundation_nuet_state_grant_grant: "Дайындық бағдарламасы (NUET) - Мемлекеттік грант (Грант)",
+    general_admission: "Жалпы қабылдау",
+    general_admission_pearson_scholarship_grant: "Жалпы қабылдау - Pearson стипендиясы (Грант)",
+    harvard_college: "Гарвард колледжі",
+    harvard_college_financial_aid_grant: "Гарвард колледжі - Қаржылық көмек (Грант)",
+    international_admission: "Халықаралық қабылдау",
+    international_admission_asean_scholarship_grant: "Халықаралық қабылдау - ASEAN стипендиясы (Грант)",
+    international_admission_kaist_scholarship_grant: "Халықаралық қабылдау - KAIST стипендиясы (Грант)",
+    international_admissions: "Халықаралық қабылдау",
+    international_admissions_admission_scholarship_grant: "Халықаралық қабылдау - Қабылдау стипендиясы (Грант)",
+    international_admissions_glo_harmony_grant: "Халықаралық қабылдау - Glo-Harmony (Грант)",
+    international_track: "Халықаралық трек",
+    international_track_chinese_govt_scholarship_grant: "Халықаралық трек - Қытай үкіметі стипендиясы (Грант)",
+    international_ug: "Халықаралық бакалавриат",
+    international_ug_melbourne_intl_scholarship_grant: "Халықаралық бакалавриат - Melbourne Intl стипендиясы (Грант)",
+    kyoto_iup: "Kyoto iUP",
+    kyoto_iup_iup_scholarship_grant: "Kyoto iUP - iUP стипендиясы (Грант)",
+    numerus_clausus: "Numerus Clausus",
+    numerus_clausus_justus_louise_van_effen_grant: "Numerus Clausus - Justus & Louise van Effen стипендиясы (Грант)",
+    paid_admission: "Ақылы қабылдау",
+    peak_english_track: "PEAK (ағылшын трегі)",
+    peak_english_track_utokyo_scholarship_grant: "PEAK (ағылшын трегі) - UTokyo стипендиясы (Грант)",
+    regular_action: "Негізгі қабылдау",
+    regular_action_need_based_aid_grant: "Негізгі қабылдау - Қажеттілікке негізделген көмек (Грант)",
+    standard_admission: "Стандартты қабылдау",
+    standard_admission_need_based_aid_grant: "Стандартты қабылдау - Қажеттілікке негізделген көмек (Грант)",
+    state_grant: "Мемлекеттік грант",
+    state_rector_grant: "Мемлекеттік/ректор гранты",
+    unt_paid: "UNT (ақылы)",
+    general_tuition: "Жалпы оқу құны",
+    no_matching_track: "Сәйкес трек табылмады",
+    no_tracks_for_selected_funding_type: "Таңдалған қаржыландыру түрі бойынша тректер жоқ",
+  },
+};
+
+const TRACK_LABEL_FALLBACK_REPLACE = {
+  rus: [
+    ["Need-based Aid", "Поддержка по финансовой потребности"],
+    ["Financial Aid", "Финансовая помощь"],
+    ["Scholarship", "Стипендия"],
+    ["Admission", "Поступление"],
+    ["Track", "Трек"],
+    ["Grant", "Грант"],
+    ["Paid", "Платное"],
+    ["International UG", "Международный бакалавриат"],
+    ["International Admissions", "Международное поступление"],
+    ["International Admission", "Международное поступление"],
+  ],
+  kz: [
+    ["Need-based Aid", "Қажеттілікке негізделген көмек"],
+    ["Financial Aid", "Қаржылық көмек"],
+    ["Scholarship", "Стипендия"],
+    ["Admission", "Қабылдау"],
+    ["Track", "Трек"],
+    ["Grant", "Грант"],
+    ["Paid", "Ақылы"],
+    ["International UG", "Халықаралық бакалавриат"],
+    ["International Admissions", "Халықаралық қабылдау"],
+    ["International Admission", "Халықаралық қабылдау"],
+  ],
+};
+
 function getLangPack() {
   const lang = getCurrentLanguage();
   return TRANSLATIONS[lang] || null;
@@ -629,6 +745,26 @@ export function translateAdmissionText(value, fallback = "") {
   const rules = ADMISSION_REPLACE[lang] || [];
   let out = raw;
   rules.forEach(([from, to]) => {
+    out = replaceInsensitive(out, from, to);
+  });
+  return out;
+}
+
+export function translateTrackLabel(value, fallback = "") {
+  const raw = String(value || "").trim();
+  if (!raw) return String(fallback || "");
+  const lang = getCurrentLanguage();
+  if (lang === "eng") return raw;
+
+  const map = TRACK_LABELS[lang] || null;
+  if (map) {
+    const exact = map[keyify(raw)];
+    if (exact) return exact;
+  }
+
+  let out = translateAdmissionText(raw, raw);
+  const fallbackRules = TRACK_LABEL_FALLBACK_REPLACE[lang] || [];
+  fallbackRules.forEach(([from, to]) => {
     out = replaceInsensitive(out, from, to);
   });
   return out;

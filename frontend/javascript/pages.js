@@ -24,10 +24,11 @@ import {
 } from "./utils.js";
 
 import { setupTabs } from "./components.js";
-import { getCurrentLanguage, t, tFormat } from "./i18n.js";
+import { t, tFormat } from "./i18n.js";
 import {
   translateAdmissionText,
   translateDataValue,
+  translateTrackLabel,
   translateTemplate,
   translateUniversityDescription,
   translateUniversityName,
@@ -102,30 +103,7 @@ function trUniversityDescription(u) {
 function trTrackLabel(label) {
   const raw = String(label || "").trim();
   if (!raw) return "";
-  const lang = getCurrentLanguage();
-  if (lang === "eng") return raw;
-
-  const pairs = lang === "rus"
-    ? [
-        ["Regular Action", "Основной набор"],
-        ["Need-based Aid", "Поддержка по финансовой потребности"],
-        ["Merit Scholarship", "Стипендия за достижения"],
-        ["Grant", "Грант"],
-        ["Paid", "Платное"],
-      ]
-    : [
-        ["Regular Action", "Негізгі қабылдау"],
-        ["Need-based Aid", "Қаржылық қажеттілікке негізделген қолдау"],
-        ["Merit Scholarship", "Жетістікке арналған шәкіртақы"],
-        ["Grant", "Грант"],
-        ["Paid", "Ақылы"],
-      ];
-
-  let out = raw;
-  pairs.forEach(([src, dst]) => {
-    out = out.replaceAll(src, dst);
-  });
-  return out;
+  return translateTrackLabel(raw, raw);
 }
 
 function trTrackDescription(universityId, trackId, value) {
