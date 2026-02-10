@@ -274,7 +274,7 @@ export function initUniversitiesPage() {
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
         sort: normalizeSortMode(savedState.sort || "uni_ai"), ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
-        viewMode: savedState.viewMode || "list", page: 1, limit: 12,
+        viewMode: savedState.viewMode || "list", page: 1, limit: 15,
     };
     if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
     state.max_tuition = Math.min(MAX_TUITION, state.max_tuition);
@@ -1245,6 +1245,7 @@ export function initUniversitiesPage() {
 
         // “Есть ли вообще aid/grants”
         const aidAnyFallback =
+        (u.aid_any !== undefined ? !!u.aid_any : false) ||
         !!(u.finance?.financial_aid?.merit_based || u.finance?.financial_aid?.need_based) ||
         (Array.isArray(u.admission_tracks) && (
             u.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0) ||

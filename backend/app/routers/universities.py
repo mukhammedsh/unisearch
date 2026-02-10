@@ -95,6 +95,7 @@ def list_universities(
     sort: str = "name_asc",
     page: int = Query(1, ge=1),
     limit: int = Query(200, ge=1, le=2000),
+    fields: str = Query("card", pattern="^(card|full)$"),
     response: Response = None,
 ):
     if response is not None:
@@ -117,6 +118,7 @@ def list_universities(
         sort=sort,
         page=page,
         limit=limit,
+        response_mode=fields,
     )
 
 
@@ -163,6 +165,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, response: Resp
             page=1,
             limit=200,
             paginate=False,
+            response_mode="full",
         )
 
         sorted_items = ai_scoring_service.sort_universities_ai(
@@ -190,7 +193,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, response: Resp
         response.headers["X-AI-Sort-Cache"] = "HIT" if cache_hit else "MISS"
 
     return {
-        "items": page_items,
+        "items": [uni_service.to_university_card(row) for row in page_items],
         "count": len(page_items),
         "total": total,
         "page": page,

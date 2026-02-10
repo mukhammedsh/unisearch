@@ -64,6 +64,16 @@ def _to_float(x: Any) -> Optional[float]:
         return None
 
 
+def _to_bool(x: Any) -> bool:
+    if isinstance(x, bool):
+        return x
+    if isinstance(x, (int, float)):
+        return x != 0
+    if isinstance(x, str):
+        return x.strip().lower() in {"1", "true", "yes", "y", "on"}
+    return bool(x)
+
+
 _CANONICAL_MAJORS = [
     "computer science",
     "engineering",
@@ -286,6 +296,84 @@ def _get_university_acceptance_rate(u: Dict[str, Any]) -> Optional[float]:
     return None
 
 
+def _has_any_aid(u: Dict[str, Any]) -> bool:
+    finance = u.get("finance")
+    if isinstance(finance, dict):
+        aid = finance.get("financial_aid")
+        if isinstance(aid, dict):
+            if _to_bool(aid.get("merit_based")) or _to_bool(aid.get("need_based")):
+                return True
+
+    tracks = u.get("admission_tracks")
+    if not isinstance(tracks, list):
+        return False
+
+    for track in tracks:
+        if not isinstance(track, dict):
+            continue
+        if _safe_lower(track.get("funding_type")) == "grant":
+            return True
+        scholarships = track.get("scholarships")
+        if isinstance(scholarships, list) and len(scholarships) > 0:
+            return True
+    return False
+
+
+def to_university_card(u: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(u, dict):
+        return {}
+
+    location = u.get("location")
+    location_obj = location if isinstance(location, dict) else {}
+    finance = u.get("finance")
+    finance_obj = finance if isinstance(finance, dict) else {}
+    aid = finance_obj.get("financial_aid")
+    aid_obj = aid if isinstance(aid, dict) else {}
+    coordinates = u.get("coordinates")
+    coordinates_obj = coordinates if isinstance(coordinates, dict) else {}
+
+    out: Dict[str, Any] = {
+        "id": u.get("id"),
+        "name": u.get("name"),
+        "rank": u.get("rank"),
+        "website": u.get("website"),
+        "location": {
+            "country": location_obj.get("country"),
+            "city": location_obj.get("city"),
+            "state": location_obj.get("state"),
+        },
+        "finance": {
+            "total_cost_year_usd": finance_obj.get("total_cost_year_usd"),
+            "financial_aid": {
+                "merit_based": _to_bool(aid_obj.get("merit_based")),
+                "need_based": _to_bool(aid_obj.get("need_based")),
+            },
+        },
+        "academics": {
+            "acceptance_rate_percent": _get_university_acceptance_rate(u),
+        },
+        "aid_any": _has_any_aid(u),
+    }
+
+    lat = _to_float(coordinates_obj.get("lat"))
+    lon = _to_float(coordinates_obj.get("lon"))
+    if lat is not None and lon is not None:
+        out["coordinates"] = {"lat": lat, "lon": lon}
+
+    match_data = u.get("matchData")
+    if isinstance(match_data, dict):
+        out["matchData"] = match_data
+
+    return out
+
+
+def _project_universities(items: List[Dict[str, Any]], response_mode: str) -> List[Dict[str, Any]]:
+    mode = _safe_lower(response_mode)
+    if mode == "card":
+        return [to_university_card(u) for u in items]
+    return items
+
+
 def _safe_compare_lte(value: Optional[float], threshold: float) -> bool:
     if value is None:
         return False
@@ -441,6 +529,7 @@ def list_universities(
     page: int = 1,
     limit: int = 200,
     paginate: bool = True,
+    response_mode: str = "full",
 ) -> Dict[str, Any]:
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
@@ -543,9 +632,10 @@ def list_universities(
 
     total = len(items)
     if not paginate:
+        view_items = _project_universities(items, response_mode=response_mode)
         return {
-            "items": items,
-            "count": total,
+            "items": view_items,
+            "count": len(view_items),
             "total": total,
             "page": 1,
             "limit": total,
@@ -555,10 +645,11 @@ def list_universities(
     start = (page - 1) * limit
     end = start + limit
     page_items = items[start:end] if start < total else []
+    view_items = _project_universities(page_items, response_mode=response_mode)
 
     return {
-        "items": page_items,
-        "count": len(page_items),
+        "items": view_items,
+        "count": len(view_items),
         "total": total,
         "page": page,
         "limit": limit,
