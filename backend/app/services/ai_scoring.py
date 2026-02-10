@@ -81,6 +81,17 @@ def _mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional
     return None
 
 
+def _mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[float]:
+    if not isinstance(finance, dict):
+        return None
+    for key in ("total_cost_year_usd_by_mode", "total_cost_by_mode_year_usd", "mode_total_cost_year_usd"):
+        val = _mode_value_from_map(finance.get(key), mode)
+        amount = _to_num(val)
+        if amount is not None and amount >= 0:
+            return float(amount)
+    return None
+
+
 def _track_study_mode(university: Dict[str, Any], track: Dict[str, Any]) -> str:
     mode = track.get("study_mode")
     if isinstance(mode, list):
@@ -151,11 +162,15 @@ def _effective_track_cost_with_mode(university: Dict[str, Any], track: Dict[str,
         for source in (track_fin, uni_fin):
             mode_breakdown = _mode_breakdown_from_finance(source, "online")
             mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
-            if mode_tuition is not None and mode_tuition > 0:
+            if mode_tuition is not None and mode_tuition >= 0:
                 return max(0.0, float(mode_tuition)), "online_tuition_only"
-        if tuition is not None and tuition > 0:
+        if tuition is not None and tuition >= 0:
             return max(0.0, float(tuition)), "online_tuition_only"
-        return max(0.0, total), "online_fallback_total"
+        for source in (track_fin, uni_fin):
+            mode_total = _mode_total_from_finance(source, "online")
+            if mode_total is not None and mode_total >= 0:
+                return max(0.0, float(mode_total)), "online_mode_total"
+        return 0.0, "online_missing_tuition"
 
     return max(0.0, total), "on-campus_exact"
 

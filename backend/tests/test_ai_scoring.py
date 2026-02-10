@@ -308,5 +308,31 @@ class AiScoringTests(unittest.TestCase):
         self.assertGreater(online_aff, oncampus_aff)
         self.assertGreaterEqual(int(chance_online.get("overallChance", 0)), int(chance_oncampus.get("overallChance", 0)))
 
+    def test_ai_sort_online_without_tuition_does_not_fallback_to_oncampus_total(self):
+        items = [
+            {
+                "id": "u-online-missing",
+                "name": "Online Missing Tuition University",
+                "rank": 100,
+                "finance": {
+                    "total_cost_year_usd": 30000,
+                    "costs_breakdown_year_usd": {
+                        "Housing_Dorm": 20000,
+                        "Food": 10000,
+                    },
+                    "financial_aid": {"merit_based": False, "need_based": False},
+                },
+                "academics": {"acceptance_rate_percent": 50},
+                "admission_tracks": [{"id": "t1", "label": "Default", "requirements": {}, "stats_avg": {}}],
+            }
+        ]
+        profile = {"budget": 1000, "studyMode": "Online"}
+
+        result = sort_universities_ai(items, profile=profile, ai_balance=50, funding_type="any")
+        match = result[0].get("matchData", {})
+
+        self.assertAlmostEqual(0.0, float(match.get("costYearUSD", 0.0)), places=6)
+        self.assertEqual("online_missing_tuition", str(match.get("costMode")))
+
 if __name__ == "__main__":
     unittest.main()

@@ -150,6 +150,21 @@ function modeBreakdownFromFinance(financeData, modeRaw) {
   return null;
 }
 
+function modeTotalFromFinance(financeData, modeRaw) {
+  const f = financeData && typeof financeData === "object" ? financeData : {};
+  const maps = [
+    f.total_cost_year_usd_by_mode,
+    f.total_cost_by_mode_year_usd,
+    f.mode_total_cost_year_usd,
+  ];
+  for (const map of maps) {
+    const v = modeValueFromMap(map, modeRaw);
+    const n = Number(v);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return null;
+}
+
 function extractTuitionCostFromBreakdown(breakdown) {
   if (!breakdown || typeof breakdown !== "object") return null;
   for (const [key, val] of Object.entries(breakdown)) {
@@ -176,7 +191,9 @@ function modeAwareAnnualCost(financeData, preferredModeRaw = "any") {
     const exactTuition = extractTuitionCostFromBreakdown(exactModeBreakdown);
     if (Number.isFinite(exactTuition) && exactTuition >= 0) return exactTuition;
     if (Number.isFinite(tuition) && tuition >= 0) return tuition;
-    return total;
+    const exactModeTotal = modeTotalFromFinance(f, "online");
+    if (Number.isFinite(exactModeTotal) && exactModeTotal >= 0) return exactModeTotal;
+    return 0;
   }
   return total;
 }
@@ -194,7 +211,9 @@ function modeAwareBreakdown(financeData, preferredModeRaw = "any") {
     if (Number.isFinite(exactTuition) && exactTuition >= 0) return { Tuition: exactTuition };
     const tuition = extractTuitionCostFromBreakdown(fallback);
     if (Number.isFinite(tuition) && tuition >= 0) return { Tuition: tuition };
-    return { Total: modeAwareAnnualCost(f, "online") };
+    const exactModeTotal = modeTotalFromFinance(f, "online");
+    if (Number.isFinite(exactModeTotal) && exactModeTotal >= 0) return { Tuition: exactModeTotal };
+    return {};
   }
 
   return fallback;

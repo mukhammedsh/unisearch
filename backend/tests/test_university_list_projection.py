@@ -87,6 +87,23 @@ class UniversityListProjectionTests(unittest.TestCase):
         self.assertIsInstance(row, dict)
         self.assertAlmostEqual(12000.0, float(((row.get("finance") or {}).get("total_cost_year_usd")) or 0.0), places=6)
 
+    def test_card_mode_online_uses_mode_total_when_tuition_missing(self):
+        items, _ = self._mock_data()
+        item = copy.deepcopy(items[0])
+        item["finance"]["costs_breakdown_year_usd"] = {"Housing_Dorm": 11000, "Food": 5000}
+        row = uni_service.to_university_card(item, format_preference="Online")
+        self.assertIsInstance(row, dict)
+        self.assertAlmostEqual(17000.0, float(((row.get("finance") or {}).get("total_cost_year_usd")) or 0.0), places=6)
+
+    def test_card_mode_online_returns_zero_when_online_price_unknown(self):
+        items, _ = self._mock_data()
+        item = copy.deepcopy(items[0])
+        item["finance"]["costs_breakdown_year_usd"] = {"Housing_Dorm": 11000, "Food": 5000}
+        item["finance"]["total_cost_year_usd_by_mode"] = {}
+        row = uni_service.to_university_card(item, format_preference="Online")
+        self.assertIsInstance(row, dict)
+        self.assertAlmostEqual(0.0, float(((row.get("finance") or {}).get("total_cost_year_usd")) or 0.0), places=6)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -109,6 +109,17 @@ def _mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional
     return None
 
 
+def _mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[float]:
+    if not isinstance(finance, dict):
+        return None
+    for key in ("total_cost_year_usd_by_mode", "total_cost_by_mode_year_usd", "mode_total_cost_year_usd"):
+        val = _mode_value_from_map(finance.get(key), mode)
+        amount = _to_float(val)
+        if amount is not None and amount >= 0:
+            return float(amount)
+    return None
+
+
 def _extract_tuition_cost(breakdown: Dict[str, Any]) -> Optional[float]:
     if not isinstance(breakdown, dict):
         return None
@@ -132,11 +143,14 @@ def _effective_university_cost(u: Dict[str, Any], format_preference: Any = "any"
     if mode == "online":
         mode_breakdown = _mode_breakdown_from_finance(finance, "online")
         mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
-        if mode_tuition is not None and mode_tuition > 0:
+        if mode_tuition is not None and mode_tuition >= 0:
             return max(0.0, mode_tuition)
-        if tuition is not None and tuition > 0:
+        if tuition is not None and tuition >= 0:
             return max(0.0, tuition)
-        return max(0.0, total)
+        mode_total = _mode_total_from_finance(finance, "online")
+        if mode_total is not None and mode_total >= 0:
+            return max(0.0, mode_total)
+        return 0.0
 
     return max(0.0, total)
 
