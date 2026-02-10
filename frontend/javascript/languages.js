@@ -41,9 +41,17 @@ function getLangLabel(cfg, code) {
   return item?.name || item?.label || code;
 }
 
+function getLocalizedKindLabel(kindId, fallback = "") {
+  const kind = normalizeKind(kindId);
+  if (kind === KIND_NATIVE) return t("languages.kind.native", "Native");
+  if (kind === KIND_CEFR) return t("languages.kind.cefr", "CEFR");
+  if (kind === KIND_EXAM) return t("languages.kind.exam", "Exam");
+  return String(fallback || kindId || "");
+}
+
 function getKindLabel(cfg, kindId) {
   const item = (cfg.proof_kinds || []).find(x => x.id === kindId);
-  return item?.label || kindId;
+  return getLocalizedKindLabel(kindId, item?.label || kindId);
 }
 
 function getExamList(cfg, langCode) {
@@ -156,7 +164,7 @@ export function initLanguagesPanel() {
       (cfg.proof_kinds || []).forEach(k => {
         const opt = document.createElement("option");
         opt.value = k.id;      // <-- ВАЖНО: native/cefr/exam
-        opt.textContent = k.label;
+        opt.textContent = getLocalizedKindLabel(k.id, k.label);
         if (opt.value === current) opt.selected = true;
         langKind.appendChild(opt);
       });
@@ -188,7 +196,7 @@ export function initLanguagesPanel() {
       list.forEach(ex => {
         const opt = document.createElement("option");
         opt.value = ex.id;
-        opt.textContent = ex.label;
+        opt.textContent = getExamDisplayName(ex.id, { langCode: code });
         if (opt.value === current) placeholder.selected = false;
         if (opt.value === current) opt.selected = true;
         langExam.appendChild(opt);
@@ -212,7 +220,7 @@ export function initLanguagesPanel() {
         if (e.kind === KIND_CEFR) meta = ` — ${escapeHtml(CEFR_LABEL[e.level] || String(e.level))}`;
         if (e.kind === KIND_EXAM) {
           const exObj = getExam(cfg, e.code, e.exam);
-          const exLabel = escapeHtml(exObj?.label || getExamDisplayName(e.exam, { langCode: e.code }));
+          const exLabel = escapeHtml(getExamDisplayName(e.exam, { langCode: e.code }));
           meta = ` — ${exLabel}: ${escapeHtml(String(e.score))}`;
         }
 
@@ -324,11 +332,12 @@ export function initLanguagesPanel() {
 
         const examType = String(exObj.type || "").trim().toLowerCase();
         if (examType === "int" && !Number.isInteger(score)) {
+          const examLabel = getExamDisplayName(examId, { langCode: code });
           showToast(
             tFormat(
               "languages.error.integer_required",
-              { exam: exObj.label || getExamDisplayName(examId, { langCode: code }) },
-              `${exObj.label || getExamDisplayName(examId, { langCode: code })} requires an integer score`
+              { exam: examLabel },
+              `${examLabel} requires an integer score`
             ),
             "error"
           );
@@ -336,13 +345,27 @@ export function initLanguagesPanel() {
         }
 
         if (score < exObj.min || score > exObj.max) {
-          showToast(`Score must be ${exObj.min} - ${exObj.max}`, "error");
+          showToast(
+            tFormat(
+              "languages.error.score_range",
+              { min: exObj.min, max: exObj.max },
+              `Score must be ${exObj.min} - ${exObj.max}`
+            ),
+            "error"
+          );
           return;
         }
 
         const step = Number(exObj.step ?? 1);
         if (!isMultipleOfStep(score, Number(exObj.min), step)) {
-          showToast(`Step is ${step} (e.g. ${exObj.min}, ${exObj.min + step}, ...)`, "error");
+          showToast(
+            tFormat(
+              "languages.error.step_hint",
+              { step, first: exObj.min, second: Number(exObj.min) + step },
+              `Step is ${step} (e.g. ${exObj.min}, ${Number(exObj.min) + step}, ...)`
+            ),
+            "error"
+          );
           return;
         }
 

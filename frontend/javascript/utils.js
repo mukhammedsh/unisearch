@@ -467,6 +467,98 @@ const EXAM_LABEL_OVERRIDES = {
   TOPIK_Level: "TOPIK Level",
 };
 
+const EXAM_LABELS_I18N = {
+  eng: {
+    SAT: "SAT",
+    ACT: "ACT",
+    GPA: "GPA",
+    UNT: "UNT (Kazakhstan)",
+    NUETTOTAL: "NUET Total",
+    APTOTAL: "AP Total",
+    IBDIPLOMA: "IB Diploma",
+    IELTS: "IELTS Academic",
+    TOEFLIBT0120: "TOEFL iBT Total (0-120, legacy)",
+    TOEFLIBT16: "TOEFL iBT Band (1-6, since Jan 21, 2026)",
+    DET: "Duolingo English Test (DET)",
+    PTE: "PTE Academic",
+    CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced",
+    TESTDAFTDN: "TestDaF (TDN level)",
+    DSHLEVEL: "DSH level",
+    DELFDALFLEVEL: "DELF/DALF level",
+    TCFTOTAL: "TCF total score",
+    NT2PROGRAMMEII: "NT2 Programme II",
+    HSKLEVEL: "HSK level",
+    JLPTLEVEL: "JLPT level",
+    TOPIKLEVEL: "TOPIK level",
+  },
+  rus: {
+    SAT: "SAT",
+    ACT: "ACT",
+    GPA: "GPA",
+    UNT: "ЕНТ",
+    NUETTOTAL: "NUET (общий балл)",
+    APTOTAL: "AP (общий балл)",
+    IBDIPLOMA: "Диплом IB",
+    IELTS: "IELTS (академический модуль)",
+    TOEFLIBT0120: "TOEFL iBT общий балл (0-120, старая шкала)",
+    TOEFLIBT16: "TOEFL iBT шкала 1-6 (с 21 янв 2026)",
+    DET: "Тест Duolingo по английскому (DET)",
+    PTE: "PTE Academic (академический)",
+    CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced (продвинутый уровень)",
+    TESTDAFTDN: "TestDaF (уровень TDN)",
+    DSHLEVEL: "DSH уровень",
+    DELFDALFLEVEL: "DELF/DALF уровень",
+    TCFTOTAL: "TCF (общий балл)",
+    NT2PROGRAMMEII: "NT2 Programme II (программа II)",
+    HSKLEVEL: "HSK уровень",
+    JLPTLEVEL: "JLPT уровень",
+    TOPIKLEVEL: "TOPIK уровень",
+  },
+  kz: {
+    SAT: "SAT",
+    ACT: "ACT",
+    GPA: "GPA",
+    UNT: "ҰБТ",
+    NUETTOTAL: "NUET (жалпы балл)",
+    APTOTAL: "AP (жалпы балл)",
+    IBDIPLOMA: "IB дипломы",
+    IELTS: "IELTS (академиялық модуль)",
+    TOEFLIBT0120: "TOEFL iBT жалпы балл (0-120, ескі шкала)",
+    TOEFLIBT16: "TOEFL iBT 1-6 шкаласы (2026 ж. 21 қаңтардан)",
+    DET: "Duolingo ағылшын тілі тесті (DET)",
+    PTE: "PTE Academic (академиялық)",
+    CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced (жоғары деңгей)",
+    TESTDAFTDN: "TestDaF (TDN деңгейі)",
+    DSHLEVEL: "DSH деңгейі",
+    DELFDALFLEVEL: "DELF/DALF деңгейі",
+    TCFTOTAL: "TCF (жалпы балл)",
+    NT2PROGRAMMEII: "NT2 Programme II (II бағдарлама)",
+    HSKLEVEL: "HSK деңгейі",
+    JLPTLEVEL: "JLPT деңгейі",
+    TOPIKLEVEL: "TOPIK деңгейі",
+  },
+};
+
+function _localizedExamLabel(examId, locale = "") {
+  const lang = normalizeUiLanguageForApi(locale) || getUiLanguageForApi();
+  const pack = EXAM_LABELS_I18N[lang] || EXAM_LABELS_I18N.eng;
+  const fallbackPack = EXAM_LABELS_I18N.eng;
+
+  const candidates = [
+    canonicalExamKey(examId),
+    canonicalExamKey(canonicalizeExamId(examId)),
+    canonicalExamKey(String(examId || "").toUpperCase()),
+  ].filter(Boolean);
+
+  for (const key of candidates) {
+    if (pack[key]) return pack[key];
+  }
+  for (const key of candidates) {
+    if (fallbackPack[key]) return fallbackPack[key];
+  }
+  return "";
+}
+
 function humanizeExamId(examId) {
   const s = String(examId || "").trim();
   if (!s) return "";
@@ -510,6 +602,10 @@ export function getExamDisplayName(examId, opts = {}) {
   const raw = String(examId || "").trim();
   if (!raw) return "";
   const id = canonicalizeExamId(raw);
+  const uiLocale = String(opts?.locale || opts?.lang || opts?.uiLang || "").trim();
+
+  const localized = _localizedExamLabel(id || raw, uiLocale);
+  if (localized) return localized;
 
   const langLabel = getLangExamLabel(raw, opts.langCode || "");
   if (langLabel) return langLabel;

@@ -2659,9 +2659,10 @@ export function initGuidePage() {
                 <section class="guide-subsection">
                     <h4>${escapeHtml(title)} (${escapeHtml(code.toUpperCase())})</h4>
                     <ul class="guide-list">
-                        ${arr.map((ex) => `
-                            <li><strong>${escapeHtml(ex?.label || getExamDisplayName(ex?.id, { langCode: code }))}.</strong> ${escapeHtml(describeLanguageExam(ex?.id, code, ex, ex?.label || ""))}</li>
-                        `).join("")}
+                        ${arr.map((ex) => {
+                            const examLabel = getExamDisplayName(ex?.id, { langCode: code });
+                            return `<li><strong>${escapeHtml(examLabel)}.</strong> ${escapeHtml(describeLanguageExam(ex?.id, code, ex, examLabel))}</li>`;
+                        }).join("")}
                     </ul>
                 </section>
             `;

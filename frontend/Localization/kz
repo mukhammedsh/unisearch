@@ -244,7 +244,7 @@ guide.glossary.admission_track: Университетке түсудің нақ
 guide.glossary.chance: Профиль мен талаптарға сүйеніп, трек деңгейінде есептелетін түсу ықтималдығының AI бағасы (0-100).
 guide.glossary.fit: Бедел, қаржылық қолжетімділік және түсу шынайылығын теңестіретін AI ранжирлеу режимі.
 guide.glossary.intro: Бұл глоссарий UniSearch терминдерін нақтылап, пайдаланушыларға ранжирлеу мен ықтималдық нәтижелерін бірдей түсіндіруге көмектеседі.
-guide.glossary.language_requirements: Тілдік дәлелдің қабылданатын түрлері: native, CEFR немесе тіл емтиханы.
+guide.glossary.language_requirements: Тілдік дәлелдің қабылданатын түрлері: ана тілі, CEFR немесе тіл емтиханы.
 guide.glossary.match_score: {fit} ішкі ранжирлеу балы; балл жоғары болған сайын профиліңізге сәйкестік жоғары.
 guide.glossary.mode_all: Тізімдегі барлық тіл талаптарын орындау қажет.
 guide.glossary.mode_any: Тізімдегі тіл нұсқаларының кемінде біреуін орындау жеткілікті.
@@ -284,8 +284,13 @@ languages.error.save_failed: Тілді сақтау сәтсіз аяқталд
 languages.no_exams: Емтихан жоқ
 languages.removed: Өшірілді
 languages.saved: Тіл сақталды
+languages.kind.native: Ана тілі
+languages.kind.cefr: CEFR
+languages.kind.exam: Емтихан
 languages.select_exam: Емтиханды таңдаңыз
 languages.select_type: Түрін таңдаңыз
+languages.error.score_range: Балл {min} - {max} аралығында болуы керек
+languages.error.step_hint: Қадам {step} (мысалы, {first}, {second}, ...)
 profile.action.close: Жабу
 profile.action.edit_name: Атын өзгерту
 profile.action.save_budget: Бюджетті сақтау

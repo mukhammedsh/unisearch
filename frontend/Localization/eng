@@ -284,8 +284,13 @@ languages.error.save_failed: Failed to save language
 languages.no_exams: No exams
 languages.removed: Removed
 languages.saved: Language saved
+languages.kind.native: Native
+languages.kind.cefr: CEFR
+languages.kind.exam: Exam
 languages.select_exam: Select exam
 languages.select_type: Select type
+languages.error.score_range: Score must be {min} - {max}
+languages.error.step_hint: Step is {step} (e.g. {first}, {second}, ...)
 profile.action.close: Close
 profile.action.edit_name: Edit Name
 profile.action.save_budget: Save Budget

@@ -244,7 +244,7 @@ guide.glossary.admission_track: Конкретный путь поступлен
 guide.glossary.chance: AI-вероятность (0-100) вашего поступления, рассчитываемая по треку на основе профиля и требований.
 guide.glossary.fit: AI-режим ранжирования, который балансирует престиж, финансовую доступность и реалистичность поступления.
 guide.glossary.intro: Этот глоссарий определяет точные термины UniSearch, чтобы пользователи одинаково интерпретировали ранжирование и вероятности.
-guide.glossary.language_requirements: Допустимые подтверждения языка: native, CEFR или языковой экзамен.
+guide.glossary.language_requirements: Допустимые подтверждения языка: родной язык, CEFR или языковой экзамен.
 guide.glossary.match_score: Внутренний балл ранжирования {fit}; чем выше, тем лучше соответствие вашему профилю.
 guide.glossary.mode_all: Нужно выполнить все перечисленные языковые требования.
 guide.glossary.mode_any: Достаточно выполнить хотя бы один из перечисленных языковых вариантов.
@@ -284,8 +284,13 @@ languages.error.save_failed: Не удалось сохранить язык
 languages.no_exams: Экзаменов нет
 languages.removed: Удалено
 languages.saved: Язык сохранен
+languages.kind.native: Родной
+languages.kind.cefr: CEFR
+languages.kind.exam: Экзамен
 languages.select_exam: Выберите экзамен
 languages.select_type: Выберите тип
+languages.error.score_range: Балл должен быть в диапазоне {min} - {max}
+languages.error.step_hint: Шаг {step} (например, {first}, {second}, ...)
 profile.action.close: Закрыть
 profile.action.edit_name: Изменить имя
 profile.action.save_budget: Сохранить бюджет
