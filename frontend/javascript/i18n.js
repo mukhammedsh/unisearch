@@ -35,9 +35,9 @@ const DICT = {
     "nav.close_menu": "Close menu",
     "nav.switch_theme": "Switch theme",
     "nav.language": "Language",
-    "nav.lang.eng": "ENG",
-    "nav.lang.rus": "RUS",
-    "nav.lang.kz": "KZ",
+    "nav.lang.eng": "English (US)",
+    "nav.lang.rus": "Русский",
+    "nav.lang.kz": "Қазақша",
 
     "home.hero.title": "Find your dream university with AI Power",
     "home.hero.title_html": "Find your dream university with <span class=\"text-gradient\"><span class=\"ai-gold\">AI Power</span></span>",
@@ -461,9 +461,9 @@ const DICT = {
     "nav.close_menu": "Закрыть меню",
     "nav.switch_theme": "Сменить тему",
     "nav.language": "Язык",
-    "nav.lang.eng": "ENG",
-    "nav.lang.rus": "RUS",
-    "nav.lang.kz": "KZ",
+    "nav.lang.eng": "English (US)",
+    "nav.lang.rus": "Русский",
+    "nav.lang.kz": "Қазақша",
 
     "home.hero.title": "Найдите университет мечты с AI",
     "home.hero.title_html": "Найдите университет мечты с <span class=\"text-gradient\"><span class=\"ai-gold\">AI</span></span>",
@@ -732,9 +732,9 @@ const DICT = {
     "nav.close_menu": "Мәзірді жабу",
     "nav.switch_theme": "Тақырыпты ауыстыру",
     "nav.language": "Тіл",
-    "nav.lang.eng": "ENG",
-    "nav.lang.rus": "RUS",
-    "nav.lang.kz": "KZ",
+    "nav.lang.eng": "English (US)",
+    "nav.lang.rus": "Русский",
+    "nav.lang.kz": "Қазақша",
 
     "home.hero.title": "AI көмегімен армандаған университетіңізді табыңыз",
     "home.hero.title_html": "AI көмегімен армандаған университетіңізді <span class=\"text-gradient\"><span class=\"ai-gold\">табыңыз</span></span>",
@@ -1065,7 +1065,7 @@ async function _loadLocalizationPacks() {
 
           const code = String(parsed["meta.code"] || "").trim();
           const navKey = lang === LANG_ENG ? "nav.lang.eng" : (lang === LANG_RUS ? "nav.lang.rus" : "nav.lang.kz");
-          if (code) DICT[lang][navKey] = code.toUpperCase();
+          if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
         } catch (e) {
           // keep built-in fallback pack
         }

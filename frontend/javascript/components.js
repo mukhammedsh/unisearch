@@ -108,9 +108,9 @@ const LAYOUT_HTML = `
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">🌙</button>
     <label class="lang-switch-wrap" for="languageSelect" data-i18n="nav.language">Language</label>
     <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
-      <option value="eng" data-i18n="nav.lang.eng">ENG</option>
-      <option value="rus" data-i18n="nav.lang.rus">RUS</option>
-      <option value="kz" data-i18n="nav.lang.kz">KZ</option>
+      <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
+      <option value="rus" data-i18n="nav.lang.rus">Русский</option>
+      <option value="kz" data-i18n="nav.lang.kz">Қазақша</option>
     </select>
     <button class="login-btn" id="profileBtn" data-i18n="nav.profile">Profile</button>
   </div>
@@ -376,6 +376,7 @@ export async function loadGlobalLayout() {
         initMobileMenu();
         initLanguageSwitcher();
         applyTranslations(document);
+        if (typeof initCustomSelect === "function") initCustomSelect("languageSelect");
 
         // Запускаем логику профиля
         initProfileUI();

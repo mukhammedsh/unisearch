@@ -661,10 +661,18 @@ const COUNTRY_CODES = {
   "Australia": "au", "China": "cn", "Singapore": "sg", "Germany": "de", "Netherlands": "nl"
 };
 
+const LANGUAGE_FLAG_CODES = {
+  eng: "us",
+  rus: "ru",
+  kz: "kz",
+};
+
 export function getFlagImg(countryName) {
-  const code = COUNTRY_CODES[countryName];
+  const raw = String(countryName || "").trim();
+  if (!raw) return "";
+  const code = COUNTRY_CODES[raw] || COUNTRY_CODES[raw.toUpperCase()] || COUNTRY_CODES[raw.toLowerCase()] || LANGUAGE_FLAG_CODES[raw.toLowerCase()];
   if (!code) return "";
-  return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${code}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">`;
+  return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${escapeHtml(raw)}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">`;
 }
 
 export function initCustomSelect(selectId) {

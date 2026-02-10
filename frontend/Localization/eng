@@ -81,9 +81,9 @@ nav.about: About Us
 nav.close_menu: Close menu
 nav.guide: Guide
 nav.home: Home
-nav.lang.eng: ENG
-nav.lang.kz: KZ
-nav.lang.rus: RUS
+nav.lang.eng: English (US)
+nav.lang.kz: Қазақша
+nav.lang.rus: Русский
 nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
