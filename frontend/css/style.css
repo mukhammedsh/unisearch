@@ -252,9 +252,7 @@ html, body {
 
 .lang-control {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 3px;
   margin-right: 8px;
 }
 
@@ -310,6 +308,11 @@ html, body {
   height: 38px;
   border-radius: 10px;
   margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
   cursor: pointer;
   font-size: 16px;
 }
@@ -333,7 +336,8 @@ html, body {
 
 .lang-switch {
   height: 38px;
-  min-width: 76px;
+  width: 72px;
+  min-width: 72px;
   border-radius: 10px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
@@ -350,20 +354,36 @@ html, body {
 }
 
 .navbar-right .lang-control .custom-select-wrapper {
-  width: 64px;
+  width: 72px;
   margin-right: 0;
 }
 
 .navbar-right .lang-control .custom-select-trigger {
-  min-height: 34px;
-  padding: 6px 24px 6px 8px;
+  width: 72px;
+  min-height: 38px;
+  padding: 0 24px 0 8px;
   border-radius: 10px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
+  justify-content: flex-start;
+  background: var(--surface-soft);
 }
 
 .navbar-right .lang-control .custom-select-trigger::after {
+  width: 8px;
+  height: 5px;
+  position: absolute;
   right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.navbar-right .lang-control .custom-select-trigger--language span {
+  display: inline;
 }
 
 .navbar-right .lang-control .custom-options {
@@ -1017,10 +1037,15 @@ html, body {
   
   .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
   .navbar-right { gap: 6px; }
-  .lang-control { margin-right: 6px; gap: 0; }
+  .lang-control { margin-right: 6px; }
   .lang-switch-wrap { display: none; }
-  .lang-switch { width: 64px; min-width: 64px; height: 34px; margin-right: 0; }
+  .lang-switch { width: 62px; min-width: 62px; height: 34px; margin-right: 0; }
   .navbar-right .lang-control .custom-select-wrapper { margin-right: 0; }
+  .navbar-right .lang-control .custom-select-wrapper,
+  .navbar-right .lang-control .custom-select-trigger {
+    width: 62px;
+    min-height: 34px;
+  }
   .login-btn { padding: 8px 14px; font-size: 13px; }
   .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
   .menu-btn { display: none; }
@@ -1069,8 +1094,8 @@ html, body {
   }
 
   .lang-switch {
-    width: 64px;
-    min-width: 64px;
+    width: 62px;
+    min-width: 62px;
     padding: 0 8px;
     font-size: 11px;
   }

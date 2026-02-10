@@ -106,7 +106,6 @@ const LAYOUT_HTML = `
   <div class="navbar-right">
     <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">☰</button>
     <div class="lang-control">
-      <label class="lang-switch-wrap" for="languageSelect" data-i18n="nav.language">Language</label>
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
         <option value="rus" data-i18n="nav.lang.rus">Русский</option>

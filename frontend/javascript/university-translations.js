@@ -1,4 +1,4 @@
-import { getCurrentLanguage } from "./i18n.js";
+import { getCurrentLanguage, t } from "./i18n.js";
 
 function keyify(value) {
   return String(value || "")
@@ -409,53 +409,6 @@ const TRANSLATIONS = {
   },
 };
 
-const UNIVERSITY_NAMES = {
-  rus: {
-    "mit-usa-cambridge": "Массачусетский технологический институт (MIT)",
-    "imperial-college-london-uk": "Имперский колледж Лондона",
-    "stanford-university-usa-ca": "Стэнфордский университет",
-    "harvard-usa-cambridge": "Гарвардский университет",
-    "eth-zurich-ch-zurich": "Швейцарская высшая техническая школа Цюриха (ETH Zurich)",
-    "national-university-of-singapore-sg-singapore": "Национальный университет Сингапура (NUS)",
-    "epfl-ch-lausanne": "Федеральная политехническая школа Лозанны (EPFL)",
-    "technical-university-of-munich-de-munich": "Технический университет Мюнхена (TUM)",
-    "university-of-toronto-ca-toronto": "Университет Торонто",
-    "cuhk-hk-shatin": "Китайский университет Гонконга (CUHK)",
-    "university-of-tokyo-jp-tokyo": "Токийский университет",
-    "seoul-national-university-kr-seoul": "Сеульский национальный университет",
-    "delft-university-of-technology-nl-delft": "Делфтский технический университет",
-    "kaist-kr-daejeon": "Корейский передовой институт науки и технологий (KAIST)",
-    "tsinghua-university-cn-beijing": "Университет Цинхуа",
-    "nazarbayev-university-kaz-astana": "Назарбаев Университет",
-    "kyoto-university-jp-kyoto": "Киотский университет",
-    "university-of-melbourne-au-melbourne": "Мельбурнский университет",
-    "suleyman-demirel-university-kaz-kaskelen": "Университет имени Сулеймана Демиреля",
-    "astana-it-university-kaz-astana": "Астана IT университет",
-  },
-  kz: {
-    "mit-usa-cambridge": "Массачусетс технологиялық институты (MIT)",
-    "imperial-college-london-uk": "Лондон империялық колледжі",
-    "stanford-university-usa-ca": "Стэнфорд университеті",
-    "harvard-usa-cambridge": "Гарвард университеті",
-    "eth-zurich-ch-zurich": "Цюрих федералдық технология институты (ETH Zurich)",
-    "national-university-of-singapore-sg-singapore": "Сингапур ұлттық университеті (NUS)",
-    "epfl-ch-lausanne": "Лозанна федералдық политехникалық мектебі (EPFL)",
-    "technical-university-of-munich-de-munich": "Мюнхен техникалық университеті (TUM)",
-    "university-of-toronto-ca-toronto": "Торонто университеті",
-    "cuhk-hk-shatin": "Гонконг қытай университеті (CUHK)",
-    "university-of-tokyo-jp-tokyo": "Токио университеті",
-    "seoul-national-university-kr-seoul": "Сеул ұлттық университеті",
-    "delft-university-of-technology-nl-delft": "Делфт технология университеті",
-    "kaist-kr-daejeon": "Кореяның озық ғылым және технология институты (KAIST)",
-    "tsinghua-university-cn-beijing": "Цинхуа университеті",
-    "nazarbayev-university-kaz-astana": "Назарбаев Университеті",
-    "kyoto-university-jp-kyoto": "Киото университеті",
-    "university-of-melbourne-au-melbourne": "Мельбурн университеті",
-    "suleyman-demirel-university-kaz-kaskelen": "Сүлейман Демирел университеті",
-    "astana-it-university-kaz-astana": "Астана IT университеті",
-  },
-};
-
 const TRACK_LABELS = {
   rus: {
     aptitude_assessment: "Оценка способностей",
@@ -652,11 +605,11 @@ export function translateTemplate(key, fallback = "", params = {}) {
 }
 
 export function translateUniversityName(id, fallback = "") {
-  const lang = getCurrentLanguage();
   const uniId = String(id || "").trim();
   if (!uniId) return String(fallback || "");
-  const map = UNIVERSITY_NAMES[lang] || null;
-  return (map && map[uniId]) ? map[uniId] : String(fallback || "");
+  const key = `university.name.${uniId}`;
+  const translated = String(t(key, "") || "").trim();
+  return translated || String(fallback || "");
 }
 
 export function translateUniversityDescription(university, fallback = "") {

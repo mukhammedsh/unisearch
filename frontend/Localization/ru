@@ -343,3 +343,23 @@ unifit.warning.cancel: Отмена
 unifit.warning.confirm: Понял(а)
 unifit.warning.desc: UniFit работает лучше, когда в профиле есть экзамены или языковые подтверждения. Без них AI-ранжирование может быть менее точным.
 unifit.warning.title: Недостаточно данных профиля
+university.name.mit-usa-cambridge: Массачусетский технологический институт (MIT)
+university.name.imperial-college-london-uk: Имперский колледж Лондона
+university.name.stanford-university-usa-ca: Стэнфордский университет
+university.name.harvard-usa-cambridge: Гарвардский университет
+university.name.eth-zurich-ch-zurich: Швейцарская высшая техническая школа Цюриха (ETH Zurich)
+university.name.national-university-of-singapore-sg-singapore: Национальный университет Сингапура (NUS)
+university.name.epfl-ch-lausanne: Федеральная политехническая школа Лозанны (EPFL)
+university.name.technical-university-of-munich-de-munich: Технический университет Мюнхена (TUM)
+university.name.university-of-toronto-ca-toronto: Университет Торонто
+university.name.cuhk-hk-shatin: Китайский университет Гонконга (CUHK)
+university.name.university-of-tokyo-jp-tokyo: Токийский университет
+university.name.seoul-national-university-kr-seoul: Сеульский национальный университет
+university.name.delft-university-of-technology-nl-delft: Делфтский технический университет
+university.name.kaist-kr-daejeon: Корейский передовой институт науки и технологий (KAIST)
+university.name.tsinghua-university-cn-beijing: Университет Цинхуа
+university.name.nazarbayev-university-kaz-astana: Назарбаев Университет
+university.name.kyoto-university-jp-kyoto: Киотский университет
+university.name.university-of-melbourne-au-melbourne: Мельбурнский университет
+university.name.suleyman-demirel-university-kaz-kaskelen: Университет имени Сулеймана Демиреля
+university.name.astana-it-university-kaz-astana: Астана IT университет
