@@ -134,7 +134,6 @@ profile.option.funding_paid: Paid only
 profile.option.major_any: Undecided / Any
 profile.option.select_exam: Select Exam
 profile.option.study_mode_any: Any (All formats)
-profile.option.study_mode_hybrid: Hybrid (Blended)
 profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
 profile.placeholder.budget: e.g. 20000

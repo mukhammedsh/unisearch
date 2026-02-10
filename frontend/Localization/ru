@@ -134,7 +134,6 @@ profile.option.funding_paid: Только платно
 profile.option.major_any: Не определился / Любая
 profile.option.select_exam: Выберите экзамен
 profile.option.study_mode_any: Любой (все форматы)
-profile.option.study_mode_hybrid: Гибридный
 profile.option.study_mode_oncampus: Очный (On-campus)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, 20000

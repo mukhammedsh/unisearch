@@ -157,7 +157,6 @@ const LAYOUT_HTML = `
            <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
            <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
            <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
-           <option value="Hybrid" data-i18n="profile.option.study_mode_hybrid">Hybrid (Blended)</option>
         </select>
       </div>
 

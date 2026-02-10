@@ -244,5 +244,69 @@ class AiScoringTests(unittest.TestCase):
 
         self.assertGreater(int(chance_better.get("overallChance", 0)), int(chance_worse.get("overallChance", 0)))
 
+    def test_ai_sort_online_mode_uses_tuition_only_cost(self):
+        items = [
+            {
+                "id": "u-online",
+                "name": "Online Cost University",
+                "rank": 100,
+                "finance": {
+                    "total_cost_year_usd": 30000,
+                    "total_cost_year_usd_by_mode": {"online": 17000},
+                    "costs_breakdown_year_usd": {
+                        "Tuition": 10000,
+                        "Housing_Dorm": 15000,
+                        "Food": 5000,
+                    },
+                    "financial_aid": {"merit_based": False, "need_based": False},
+                },
+                "academics": {"acceptance_rate_percent": 50},
+                "admission_tracks": [{"id": "t1", "label": "Default", "requirements": {}, "stats_avg": {}}],
+            }
+        ]
+        profile = {"budget": 12000, "studyMode": "Online"}
+
+        result = sort_universities_ai(items, profile=profile, ai_balance=50, funding_type="any")
+        match = result[0].get("matchData", {})
+
+        self.assertAlmostEqual(10000.0, float(match.get("costYearUSD", 0.0)), places=6)
+        self.assertAlmostEqual(10000.0, float(match.get("finalPrice", 0.0)), places=6)
+        self.assertEqual("online_tuition_only", str(match.get("costMode")))
+
+    def test_estimate_uni_chance_online_mode_increases_affordability(self):
+        university = {
+            "id": "u-chance-online",
+            "name": "Chance Online University",
+            "rank": 150,
+            "finance": {
+                "total_cost_year_usd": 30000,
+                "costs_breakdown_year_usd": {
+                    "Tuition": 10000,
+                    "Housing_Dorm": 15000,
+                    "Food": 5000,
+                },
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 40},
+            "admission_tracks": [
+                {
+                    "id": "track-1",
+                    "label": "Default",
+                    "requirements": {"GPA": 80},
+                    "stats_avg": {"GPA": 90},
+                }
+            ],
+        }
+        profile_oncampus = {"gpa": 85, "budget": 12000, "studyMode": "On-campus"}
+        profile_online = {"gpa": 85, "budget": 12000, "studyMode": "Online"}
+
+        chance_oncampus = estimate_uni_chance(university, profile_oncampus)
+        chance_online = estimate_uni_chance(university, profile_online)
+
+        oncampus_aff = int(((chance_oncampus.get("tracks") or [{}])[0].get("details") or {}).get("affordability", 0))
+        online_aff = int(((chance_online.get("tracks") or [{}])[0].get("details") or {}).get("affordability", 0))
+        self.assertGreater(online_aff, oncampus_aff)
+        self.assertGreaterEqual(int(chance_online.get("overallChance", 0)), int(chance_oncampus.get("overallChance", 0)))
+
 if __name__ == "__main__":
     unittest.main()

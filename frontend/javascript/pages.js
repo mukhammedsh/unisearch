@@ -119,6 +119,87 @@ function trProgramName(value) {
   return translateProgramName(raw, raw);
 }
 
+function normalizeStudyModeForCost(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw || raw === "any") return "any";
+  if (raw === "on-campus" || raw === "on campus" || raw === "campus" || raw === "in-person" || raw === "offline" || raw === "hybrid" || raw === "blended" || raw === "mixed") return "on-campus";
+  if (raw === "online" || raw === "distance" || raw === "remote" || raw === "online / distance") return "online";
+  return "any";
+}
+
+function modeValueFromMap(modeMap, modeRaw) {
+  if (!modeMap || typeof modeMap !== "object") return null;
+  const target = normalizeStudyModeForCost(modeRaw);
+  for (const [k, v] of Object.entries(modeMap)) {
+    if (normalizeStudyModeForCost(k) === target) return v;
+  }
+  return null;
+}
+
+function modeBreakdownFromFinance(financeData, modeRaw) {
+  const f = financeData && typeof financeData === "object" ? financeData : {};
+  const maps = [
+    f.costs_breakdown_year_usd_by_mode,
+    f.costs_breakdown_by_mode_year_usd,
+    f.mode_costs_breakdown_year_usd,
+  ];
+  for (const map of maps) {
+    const v = modeValueFromMap(map, modeRaw);
+    if (v && typeof v === "object") return v;
+  }
+  return null;
+}
+
+function extractTuitionCostFromBreakdown(breakdown) {
+  if (!breakdown || typeof breakdown !== "object") return null;
+  for (const [key, val] of Object.entries(breakdown)) {
+    const k = String(key || "").toLowerCase().replace(/[^a-z]/g, "");
+    if (!k.includes("tuition")) continue;
+    const n = Number(val);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return null;
+}
+
+function modeAwareAnnualCost(financeData, preferredModeRaw = "any") {
+  const f = financeData && typeof financeData === "object" ? financeData : {};
+  const mode = normalizeStudyModeForCost(preferredModeRaw);
+  const totalRaw = Number(f.total_cost_year_usd);
+  const total = Number.isFinite(totalRaw) && totalRaw >= 0 ? totalRaw : 0;
+  const breakdown = (f.costs_breakdown_year_usd && typeof f.costs_breakdown_year_usd === "object")
+    ? f.costs_breakdown_year_usd
+    : {};
+  const tuition = extractTuitionCostFromBreakdown(breakdown);
+
+  if (mode === "online") {
+    const exactModeBreakdown = modeBreakdownFromFinance(f, "online");
+    const exactTuition = extractTuitionCostFromBreakdown(exactModeBreakdown);
+    if (Number.isFinite(exactTuition) && exactTuition >= 0) return exactTuition;
+    if (Number.isFinite(tuition) && tuition >= 0) return tuition;
+    return total;
+  }
+  return total;
+}
+
+function modeAwareBreakdown(financeData, preferredModeRaw = "any") {
+  const f = financeData && typeof financeData === "object" ? financeData : {};
+  const mode = normalizeStudyModeForCost(preferredModeRaw);
+  const fallback = (f.costs_breakdown_year_usd && typeof f.costs_breakdown_year_usd === "object")
+    ? f.costs_breakdown_year_usd
+    : {};
+
+  if (mode === "online") {
+    const exact = modeBreakdownFromFinance(f, "online");
+    const exactTuition = extractTuitionCostFromBreakdown(exact);
+    if (Number.isFinite(exactTuition) && exactTuition >= 0) return { Tuition: exactTuition };
+    const tuition = extractTuitionCostFromBreakdown(fallback);
+    if (Number.isFinite(tuition) && tuition >= 0) return { Tuition: tuition };
+    return { Total: modeAwareAnnualCost(f, "online") };
+  }
+
+  return fallback;
+}
+
 function normalizeFundingPreference(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (raw === "grant" || raw === "paid") return raw;
@@ -1474,12 +1555,14 @@ export async function initUniversityPage() {
     const translatedName = trUniversityName(u);
     const translatedCity = trCity(u?.location?.city || "");
     const translatedCountry = trCountry(u?.location?.country || "");
+    const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
+    const annualCostForTrack = (track) => modeAwareAnnualCost((track && track.finance_override) || u.finance || {}, profileStudyMode);
     setTxt("detailName", translatedName); 
     setTxt("detailLocation", u.location ? `${translatedCity}, ${translatedCountry}` : "—");
     
-    let minPrice = u.finance?.total_cost_year_usd || 0;
+    let minPrice = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
     if (u.admission_tracks) {
-        const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0);
+        const prices = u.admission_tracks.map((t) => annualCostForTrack(t));
         if (prices.length > 0) minPrice = Math.min(...prices);
     }
     setTxt("detailPrice", tFormat("university.price_from", { price: moneyUSD(minPrice) }, `from ${moneyUSD(minPrice)} / year`));
@@ -2014,7 +2097,7 @@ export async function initUniversityPage() {
                 }
                 
                 const trackPriceOverride = track.finance_override?.total_cost_year_usd;
-                const trackPrice = trackPriceOverride ?? u.finance?.total_cost_year_usd ?? 0;
+                const trackPrice = annualCostForTrack(track);
                 const isGrantTrack = getTrackFundingType(track) === "grant";
                 const trackPriceTitle = isGrantTrack
                     ? (trackPriceOverride != null ? translateWord("est_net_cost", "Est. Net Cost") : translateWord("base_cost_before_grant", "Base Cost (before grant)"))
@@ -2158,9 +2241,9 @@ export async function initUniversityPage() {
 
         // Блок цены
         if (priceBig) {
-            let minTotal = u.finance.total_cost_year_usd || 0;
+            let minTotal = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
             if (u.admission_tracks) {
-                const prices = u.admission_tracks.map(t => t.finance_override?.total_cost_year_usd || u.finance?.total_cost_year_usd || 0).filter(p => p > 0);
+                const prices = u.admission_tracks.map((t) => annualCostForTrack(t)).filter((p) => p > 0);
                 if (prices.length > 0) minTotal = Math.min(...prices);
             }
             priceBig.innerHTML = `<span style="font-size:0.5em; color:#64748b; vertical-align:middle; margin-right:4px;">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`;
@@ -2174,8 +2257,8 @@ export async function initUniversityPage() {
 
             tracks.forEach(track => {
                 const fData = track.finance_override || u.finance;
-                const total = fData.total_cost_year_usd;
-                const breakdown = fData.costs_breakdown_year_usd || {};
+                const total = modeAwareAnnualCost(fData || {}, profileStudyMode);
+                const breakdown = modeAwareBreakdown(fData || {}, profileStudyMode);
 
                 let barHTML = `<div class="cost-progress-bar" style="height:8px; display:flex; border-radius:4px; overflow:hidden; background:#e5e7eb;">`;
                 let legendHTML = `<div class="cost-legend">`;
@@ -2186,7 +2269,8 @@ export async function initUniversityPage() {
                 if (Object.keys(breakdown).length > 0) {
                     for (const [key, val] of Object.entries(breakdown)) {
                         const color = colors[i % colors.length];
-                        const percent = (val / total) * 100;
+                        const numericVal = Number(val) || 0;
+                        const percent = total > 0 ? ((numericVal / total) * 100) : 0;
                         barHTML += `<div style="width:${percent}%; background:${color};" title="${escapeHtml(String(key))}"></div>`;
                         legendHTML += `
                             <div style="display:flex; align-items:center; font-size:13px; margin-bottom:6px;">
@@ -2194,7 +2278,7 @@ export async function initUniversityPage() {
                                     <span style="width:8px; height:8px; border-radius:50%; background:${color}; flex-shrink:0;"></span>
                                     <span style="color:#555;">${escapeHtml(String(key)).replace(/_/g, " ")}</span>
                                 </div>
-                                <span style="font-weight:700; color:#111; margin-left:12px;">${moneyUSD(val)}</span>
+                                <span style="font-weight:700; color:#111; margin-left:12px;">${moneyUSD(numericVal)}</span>
                             </div>
                         `;
                         i++;

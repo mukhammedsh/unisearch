@@ -38,12 +38,130 @@ def _normalize_funding_preference(value: Any) -> str:
     return "any"
 
 
+def _normalize_study_mode(value: Any) -> str:
+    raw = str(value or "").strip().lower()
+    if not raw or raw == "any":
+        return "any"
+    if raw in ("on-campus", "on campus", "campus", "offline", "in-person", "hybrid", "blended", "mixed"):
+        return "on-campus"
+    if raw in ("online", "distance", "remote", "online / distance"):
+        return "online"
+    return "any"
+
+
 def _get_track_funding_type(track: Dict[str, Any]) -> str:
     raw_type = str(track.get("funding_type", "")).strip().lower()
     if raw_type in ("grant", "paid"):
         return raw_type
     badge = str(track.get("track_badge", "")).strip().lower()
     return "grant" if re.search(r"grant|scholar", badge) else "paid"
+
+
+def _normalize_cost_key(key: Any) -> str:
+    return re.sub(r"[^a-z]", "", str(key or "").strip().lower())
+
+
+def _mode_value_from_map(mode_map: Any, mode: str) -> Any:
+    if not isinstance(mode_map, dict):
+        return None
+    target = _normalize_study_mode(mode)
+    for key, value in mode_map.items():
+        if _normalize_study_mode(key) == target:
+            return value
+    return None
+
+
+def _mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[Dict[str, Any]]:
+    if not isinstance(finance, dict):
+        return None
+    for key in ("costs_breakdown_year_usd_by_mode", "costs_breakdown_by_mode_year_usd", "mode_costs_breakdown_year_usd"):
+        val = _mode_value_from_map(finance.get(key), mode)
+        if isinstance(val, dict):
+            return val
+    return None
+
+
+def _track_study_mode(university: Dict[str, Any], track: Dict[str, Any]) -> str:
+    mode = track.get("study_mode")
+    if isinstance(mode, list):
+        mode = next((x for x in mode if x), "")
+    normalized = _normalize_study_mode(mode)
+    if normalized != "any":
+        return normalized
+
+    formats = ((university.get("academics") or {}).get("formats")) if isinstance(university, dict) else None
+    if isinstance(formats, list) and formats:
+        one = _normalize_study_mode(formats[0] if len(formats) == 1 else "")
+        if one != "any":
+            return one
+    return "any"
+
+
+def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict[str, Any]:
+    track_fin = track.get("finance_override") if isinstance(track.get("finance_override"), dict) else {}
+    uni_fin = university.get("finance") if isinstance(university.get("finance"), dict) else {}
+    total = _to_num(track_fin.get("total_cost_year_usd"))
+    if total is None:
+        total = _to_num(uni_fin.get("total_cost_year_usd"))
+    breakdown = track_fin.get("costs_breakdown_year_usd")
+    if not isinstance(breakdown, dict):
+        breakdown = uni_fin.get("costs_breakdown_year_usd")
+    if not isinstance(breakdown, dict):
+        breakdown = {}
+    return {
+        "total": max(0.0, float(total or 0.0)),
+        "breakdown": breakdown,
+        "track_finance": track_fin,
+        "university_finance": uni_fin,
+    }
+
+
+def _extract_tuition_cost(breakdown: Dict[str, Any]) -> Optional[float]:
+    if not isinstance(breakdown, dict):
+        return None
+    for key, value in breakdown.items():
+        if "tuition" in _normalize_cost_key(key):
+            amount = _to_num(value)
+            if amount is not None and amount >= 0:
+                return float(amount)
+    return None
+
+
+def _effective_cost_mode(preferred_mode: Any, track_mode: Any) -> str:
+    pref = _normalize_study_mode(preferred_mode)
+    if pref != "any":
+        return pref
+    mode = _normalize_study_mode(track_mode)
+    return mode if mode != "any" else "on-campus"
+
+
+def _effective_track_cost_with_mode(university: Dict[str, Any], track: Dict[str, Any], preferred_mode: Any = "any") -> Tuple[float, str]:
+    finance = _finance_for_cost(university, track)
+    total = float(finance.get("total") or 0.0)
+    breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
+    tuition = _extract_tuition_cost(breakdown)
+    mode = _effective_cost_mode(preferred_mode, _track_study_mode(university, track))
+    track_fin = finance.get("track_finance") if isinstance(finance.get("track_finance"), dict) else {}
+    uni_fin = finance.get("university_finance") if isinstance(finance.get("university_finance"), dict) else {}
+
+    if mode == "on-campus":
+        return max(0.0, total), "on-campus_exact"
+
+    if mode == "online":
+        for source in (track_fin, uni_fin):
+            mode_breakdown = _mode_breakdown_from_finance(source, "online")
+            mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
+            if mode_tuition is not None and mode_tuition > 0:
+                return max(0.0, float(mode_tuition)), "online_tuition_only"
+        if tuition is not None and tuition > 0:
+            return max(0.0, float(tuition)), "online_tuition_only"
+        return max(0.0, total), "online_fallback_total"
+
+    return max(0.0, total), "on-campus_exact"
+
+
+def _effective_track_cost(university: Dict[str, Any], track: Dict[str, Any], preferred_mode: Any = "any") -> float:
+    return _effective_track_cost_with_mode(university, track, preferred_mode=preferred_mode)[0]
 
 
 def _language_config() -> Dict[str, Any]:
@@ -409,16 +527,20 @@ def _acceptance_score(university: Dict[str, Any], mode: str = "sort") -> float:
     return _clamp01(math.sqrt(_clamp(ar, 1.0 if mode != "sort" else 0.0, 100.0) / 100.0))
 
 
-def _track_cost(university: Dict[str, Any], track: Dict[str, Any]) -> float:
-    t = _to_num((((track.get("finance_override") or {}).get("total_cost_year_usd"))))
-    if t is not None:
-        return max(0.0, t)
-    u = _to_num((((university.get("finance") or {}).get("total_cost_year_usd"))))
-    return max(0.0, u or 0.0)
+def _track_cost(university: Dict[str, Any], track: Dict[str, Any], preferred_mode: Any = "any") -> float:
+    return _effective_track_cost(university, track, preferred_mode=preferred_mode)
 
 
-def _affordability_score(university: Dict[str, Any], track: Dict[str, Any], budget: Optional[float], aid_eligible: bool, aid_any: bool, mode: str = "sort") -> float:
-    cost = _track_cost(university, track)
+def _affordability_score(
+    university: Dict[str, Any],
+    track: Dict[str, Any],
+    budget: Optional[float],
+    aid_eligible: bool,
+    aid_any: bool,
+    mode: str = "sort",
+    preferred_mode: Any = "any",
+) -> float:
+    cost = _track_cost(university, track, preferred_mode=preferred_mode)
     if budget is None or budget <= 0:
         return 0.55 if mode == "sort" else 0.6
     if cost <= 0:
@@ -494,6 +616,12 @@ def sort_universities_ai(
     lang_cfg = _language_config()
     ctx = _build_user_context(profile, lang_cfg)
     pref = _normalize_funding_preference(funding_type or profile.get("fundingType") or profile.get("funding_type") or "any")
+    preferred_mode = _normalize_study_mode(
+        profile.get("studyMode")
+        or profile.get("study_mode")
+        or profile.get("format")
+        or "any"
+    )
     w_prestige = _clamp01((_to_num(ai_balance) or 50.0) / 100.0)
     w_budget = 1.0 - w_prestige
     rank_score = _rank_score_factory(items)
@@ -609,8 +737,16 @@ def sort_universities_ai(
                 admit *= (0.12 + 0.88 * gap_penalty)
                 admit = _clamp01(admit)
 
-            cost = _track_cost(row, track)
-            aff = _affordability_score(row, track, ctx["budget"], aid_eligible=aid_eligible, aid_any=aid_any, mode="sort")
+            cost, cost_mode = _effective_track_cost_with_mode(row, track, preferred_mode=preferred_mode)
+            aff = _affordability_score(
+                row,
+                track,
+                ctx["budget"],
+                aid_eligible=aid_eligible,
+                aid_any=aid_any,
+                mode="sort",
+                preferred_mode=preferred_mode,
+            )
             pref_score = _clamp01(w_prestige * rank_score(row.get("rank")) + w_budget * aff)
 
             grant_bonus = _clamp01(0.70 + 0.30 * best_scholar_potential) if aid_eligible else (_clamp01(0.40 + 0.20 * best_scholar_potential) if aid_any else 0.0)
@@ -649,6 +785,7 @@ def sort_universities_ai(
                 "mlQueryTranslated": bool(translation_meta.get("translated")),
                 "mlQuerySource": str(translation_meta.get("source") or ""),
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
+                "costMode": cost_mode,
             }
             candidate = {"score": final_score, "matchData": match_data}
             if best is None or float(candidate["score"]) > float(best["score"]):
@@ -681,6 +818,12 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
     lang_cfg = _language_config()
     ctx = _build_user_context(profile, lang_cfg)
     funding_type = _normalize_funding_preference(profile.get("fundingType") or profile.get("funding_type") or "any")
+    preferred_mode = _normalize_study_mode(
+        profile.get("studyMode")
+        or profile.get("study_mode")
+        or profile.get("format")
+        or "any"
+    )
 
     tracks = university.get("admission_tracks")
     if not isinstance(tracks, list) or not tracks:
@@ -742,7 +885,15 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         language = float(fit.get("langScore", 0.0))
         selectivity = _acceptance_score(university, mode="chance")
         aid_any = bool((((university.get("finance") or {}).get("financial_aid") or {}).get("merit_based"))) or bool((((university.get("finance") or {}).get("financial_aid") or {}).get("need_based"))) or bool(track.get("scholarships"))
-        affordability = _affordability_score(university, track, ctx["budget"], aid_eligible=False, aid_any=aid_any, mode="chance")
+        affordability = _affordability_score(
+            university,
+            track,
+            ctx["budget"],
+            aid_eligible=False,
+            aid_any=aid_any,
+            mode="chance",
+            preferred_mode=preferred_mode,
+        )
         scholarship_boost = 0.08 if bool(track.get("scholarships")) else 0.0
 
         base = _clamp01((academic * 0.53) + (language * 0.24) + (selectivity * 0.13) + (affordability * 0.10))
@@ -790,6 +941,12 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
 def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
     user_major = str(profile.get("major") or "").strip()
+    preferred_mode = _normalize_study_mode(
+        profile.get("studyMode")
+        or profile.get("study_mode")
+        or profile.get("format")
+        or "any"
+    )
 
     outcomes = university.get("outcomes", {}) if isinstance(university, dict) else {}
     if not isinstance(outcomes, dict):
@@ -855,16 +1012,14 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
         context_type = "no_salary_data"
         salary_used = 0.0
 
-    annual_cost = _to_num(((university.get("finance") or {}).get("total_cost_year_usd"))) or 0.0
+    annual_cost = _effective_track_cost(university, {}, preferred_mode=preferred_mode)
     tracks = university.get("admission_tracks")
     if isinstance(tracks, list) and tracks:
         prices = []
         for track in tracks:
             if not isinstance(track, dict):
                 continue
-            cost = _to_num(((track.get("finance_override") or {}).get("total_cost_year_usd")))
-            if cost is None:
-                cost = annual_cost
+            cost = _track_cost(university, track, preferred_mode=preferred_mode)
             if cost is not None and cost > 0:
                 prices.append(cost)
         if prices:

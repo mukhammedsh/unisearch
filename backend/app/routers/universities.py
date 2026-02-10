@@ -207,7 +207,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
         response.headers["X-AI-Sort-Cache"] = "HIT" if cache_hit else "MISS"
 
     return {
-        "items": [uni_service.to_university_card(row) for row in page_items],
+        "items": [uni_service.to_university_card(row, format_preference=fmt) for row in page_items],
         "count": len(page_items),
         "total": total,
         "page": page,

@@ -19,6 +19,14 @@ class UniversityListProjectionTests(unittest.TestCase):
                 "description": "Long description should not be returned in card mode.",
                 "finance": {
                     "total_cost_year_usd": 28000,
+                    "total_cost_year_usd_by_mode": {
+                        "online": 17000,
+                    },
+                    "costs_breakdown_year_usd": {
+                        "Tuition": 12000,
+                        "Housing_Dorm": 11000,
+                        "Food": 5000,
+                    },
                     "financial_aid": {"merit_based": True, "need_based": False},
                 },
                 "academics": {
@@ -72,6 +80,12 @@ class UniversityListProjectionTests(unittest.TestCase):
         self.assertIsInstance(row, dict)
         self.assertIn("description", row)
         self.assertIn("admission_tracks", row)
+
+    def test_card_mode_uses_tuition_only_cost_for_online_format(self):
+        items, meta = self._mock_data()
+        row = uni_service.to_university_card(items[0], format_preference="Online")
+        self.assertIsInstance(row, dict)
+        self.assertAlmostEqual(12000.0, float(((row.get("finance") or {}).get("total_cost_year_usd")) or 0.0), places=6)
 
 
 if __name__ == "__main__":

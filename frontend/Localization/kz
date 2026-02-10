@@ -134,7 +134,6 @@ profile.option.funding_paid: Тек ақылы
 profile.option.major_any: Белгісіз / Кез келген
 profile.option.select_exam: Емтиханды таңдаңыз
 profile.option.study_mode_any: Кез келген (барлық формат)
-profile.option.study_mode_hybrid: Гибрид
 profile.option.study_mode_oncampus: Кампус (On-campus)
 profile.option.study_mode_online: Онлайн / қашықтан
 profile.placeholder.budget: мысалы, 20000

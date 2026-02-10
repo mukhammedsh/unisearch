@@ -74,6 +74,73 @@ def _to_bool(x: Any) -> bool:
     return bool(x)
 
 
+def _normalize_study_mode(value: Any) -> str:
+    raw = _safe_lower(value)
+    if not raw or raw == "any":
+        return "any"
+    if raw in {"on-campus", "on campus", "campus", "offline", "in-person", "hybrid", "blended", "mixed"}:
+        return "on-campus"
+    if raw in {"online", "distance", "remote", "online / distance"}:
+        return "online"
+    return "any"
+
+
+def _normalize_cost_key(key: Any) -> str:
+    return re.sub(r"[^a-z]", "", str(key or "").strip().lower())
+
+
+def _mode_value_from_map(mode_map: Any, mode: str) -> Any:
+    if not isinstance(mode_map, dict):
+        return None
+    target = _normalize_study_mode(mode)
+    for key, value in mode_map.items():
+        if _normalize_study_mode(key) == target:
+            return value
+    return None
+
+
+def _mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[Dict[str, Any]]:
+    if not isinstance(finance, dict):
+        return None
+    for key in ("costs_breakdown_year_usd_by_mode", "costs_breakdown_by_mode_year_usd", "mode_costs_breakdown_year_usd"):
+        val = _mode_value_from_map(finance.get(key), mode)
+        if isinstance(val, dict):
+            return val
+    return None
+
+
+def _extract_tuition_cost(breakdown: Dict[str, Any]) -> Optional[float]:
+    if not isinstance(breakdown, dict):
+        return None
+    for key, value in breakdown.items():
+        if "tuition" in _normalize_cost_key(key):
+            amount = _to_float(value)
+            if amount is not None and amount >= 0:
+                return amount
+    return None
+
+
+def _effective_university_cost(u: Dict[str, Any], format_preference: Any = "any") -> float:
+    mode = _normalize_study_mode(format_preference)
+    finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
+    total = _to_float(finance.get("total_cost_year_usd")) or 0.0
+    breakdown = finance.get("costs_breakdown_year_usd")
+    if not isinstance(breakdown, dict):
+        breakdown = {}
+    tuition = _extract_tuition_cost(breakdown)
+
+    if mode == "online":
+        mode_breakdown = _mode_breakdown_from_finance(finance, "online")
+        mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
+        if mode_tuition is not None and mode_tuition > 0:
+            return max(0.0, mode_tuition)
+        if tuition is not None and tuition > 0:
+            return max(0.0, tuition)
+        return max(0.0, total)
+
+    return max(0.0, total)
+
+
 _CANONICAL_MAJORS = [
     "computer science",
     "engineering",
@@ -319,7 +386,7 @@ def _has_any_aid(u: Dict[str, Any]) -> bool:
     return False
 
 
-def to_university_card(u: Dict[str, Any]) -> Dict[str, Any]:
+def to_university_card(u: Dict[str, Any], format_preference: Any = "any") -> Dict[str, Any]:
     if not isinstance(u, dict):
         return {}
 
@@ -343,7 +410,7 @@ def to_university_card(u: Dict[str, Any]) -> Dict[str, Any]:
             "state": location_obj.get("state"),
         },
         "finance": {
-            "total_cost_year_usd": finance_obj.get("total_cost_year_usd"),
+            "total_cost_year_usd": _effective_university_cost(u, format_preference=format_preference),
             "financial_aid": {
                 "merit_based": _to_bool(aid_obj.get("merit_based")),
                 "need_based": _to_bool(aid_obj.get("need_based")),
@@ -367,10 +434,10 @@ def to_university_card(u: Dict[str, Any]) -> Dict[str, Any]:
     return out
 
 
-def _project_universities(items: List[Dict[str, Any]], response_mode: str) -> List[Dict[str, Any]]:
+def _project_universities(items: List[Dict[str, Any]], response_mode: str, format_preference: Any = "any") -> List[Dict[str, Any]]:
     mode = _safe_lower(response_mode)
     if mode == "card":
-        return [to_university_card(u) for u in items]
+        return [to_university_card(u, format_preference=format_preference) for u in items]
     return items
 
 
@@ -386,7 +453,7 @@ def _safe_compare_gte(value: Optional[float], threshold: float) -> bool:
     return value >= threshold
 
 
-def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
+def _apply_sort(items: List[Dict[str, Any]], sort: str, format_preference: Any = "any") -> List[Dict[str, Any]]:
     sort = (sort or "").strip()
 
     def get_val(u, path):
@@ -396,9 +463,9 @@ def _apply_sort(items: List[Dict[str, Any]], sort: str) -> List[Dict[str, Any]]:
         return sorted(items, key=lambda u: _safe_lower(u.get("name")))
 
     if sort == "tuition_asc":
-        return sorted(items, key=lambda u: get_val(u, ["finance", "total_cost_year_usd"]))
+        return sorted(items, key=lambda u: _effective_university_cost(u, format_preference=format_preference))
     if sort == "tuition_desc":
-        return sorted(items, key=lambda u: get_val(u, ["finance", "total_cost_year_usd"]), reverse=True)
+        return sorted(items, key=lambda u: _effective_university_cost(u, format_preference=format_preference), reverse=True)
 
     if sort == "acceptance_asc":
         return sorted(items, key=lambda u: (_get_university_acceptance_rate(u) or 0.0))
@@ -531,6 +598,7 @@ def list_universities(
     paginate: bool = True,
     response_mode: str = "full",
 ) -> Dict[str, Any]:
+    mode_pref = _normalize_study_mode(format or "any")
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
 
@@ -598,7 +666,7 @@ def list_universities(
     if user_budget is not None:
         filtered = []
         for u, m in pairs:
-            cost = _to_float(_get_nested(u, ["finance", "total_cost_year_usd"])) or 999999.0
+            cost = _effective_university_cost(u, format_preference=mode_pref) or 999999.0
             fa = _get_nested(u, ["finance", "financial_aid"], {})
             aid = fa.get("merit_based") or fa.get("need_based")
             if cost <= user_budget or aid:
@@ -609,13 +677,13 @@ def list_universities(
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_gte(_to_float(_get_nested(u, ["finance", "total_cost_year_usd"])), min_tuition)
+            if _safe_compare_gte(_effective_university_cost(u, format_preference=mode_pref), min_tuition)
         ]
     if max_tuition is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_lte(_to_float(_get_nested(u, ["finance", "total_cost_year_usd"])), max_tuition)
+            if _safe_compare_lte(_effective_university_cost(u, format_preference=mode_pref), max_tuition)
         ]
 
     if min_acceptance is not None:
@@ -628,11 +696,11 @@ def list_universities(
         pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
 
     items = [u for (u, _) in pairs]
-    items = _apply_sort(items, sort)
+    items = _apply_sort(items, sort, format_preference=mode_pref)
 
     total = len(items)
     if not paginate:
-        view_items = _project_universities(items, response_mode=response_mode)
+        view_items = _project_universities(items, response_mode=response_mode, format_preference=mode_pref)
         return {
             "items": view_items,
             "count": len(view_items),
@@ -645,7 +713,7 @@ def list_universities(
     start = (page - 1) * limit
     end = start + limit
     page_items = items[start:end] if start < total else []
-    view_items = _project_universities(page_items, response_mode=response_mode)
+    view_items = _project_universities(page_items, response_mode=response_mode, format_preference=mode_pref)
 
     return {
         "items": view_items,
