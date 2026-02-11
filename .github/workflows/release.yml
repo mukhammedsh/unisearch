@@ -1,0 +1,69 @@
+name: Release Artifacts And Container
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare variables
+        id: vars
+        shell: bash
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          OWNER_LC="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "owner_lc=${OWNER_LC}" >> "$GITHUB_OUTPUT"
+
+      - name: Build zip artifacts for release
+        shell: bash
+        run: |
+          mkdir -p release
+          zip -r "release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip" frontend
+          zip -r "release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip" \
+            backend/app \
+            backend/data \
+            backend/requirements.txt \
+            backend/requirements-dev.txt \
+            backend/.env.example
+
+      - name: Upload zip artifacts to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          files: |
+            release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip
+            release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push backend image to GHCR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ steps.vars.outputs.owner_lc }}/unisearch-backend:${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ steps.vars.outputs.owner_lc }}/unisearch-backend:${{ steps.vars.outputs.version }}
+            ghcr.io/${{ steps.vars.outputs.owner_lc }}/unisearch-backend:latest
