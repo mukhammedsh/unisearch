@@ -168,9 +168,9 @@ const DICT = {
     "ranking.failed": "Failed to load rankings.",
 
     "about.eyebrow": "About Us",
-    "about.title": "We are the student team behind UniSearch.",
+    "about.title": "We are the abiturient team behind UniSearch.",
     "about.lead":
-      "UniSearch is built by students for students. Our goal is to make university discovery clearer, easier, and more practical for real application planning.",
+      "UniSearch is built by abiturients for abiturients. Our goal is to make university discovery clearer, easier, and more practical for real application planning.",
     "about.contact_kicker": "Contact Blocks",
     "about.contact_title": "Contact us",
     "about.contact.email": "Email",
@@ -623,9 +623,9 @@ const DICT = {
     "ranking.failed": "Не удалось загрузить рейтинг.",
 
     "about.eyebrow": "О нас",
-    "about.title": "Мы студенческая команда UniSearch.",
+    "about.title": "Мы команда абитуриентов UniSearch.",
     "about.lead":
-      "UniSearch создан студентами для студентов. Наша цель — сделать выбор университета более понятным, простым и практичным.",
+      "UniSearch создан абитуриентами для абитуриентов. Наша цель — сделать выбор университета более понятным, простым и практичным.",
     "about.contact_kicker": "Контакты",
     "about.contact_title": "Свяжитесь с нами",
     "about.contact.email": "Email",
@@ -936,9 +936,9 @@ const DICT = {
     "ranking.failed": "Рейтингті жүктеу сәтсіз аяқталды.",
 
     "about.eyebrow": "Біз туралы",
-    "about.title": "Біз UniSearch студенттік командамыз.",
+    "about.title": "Біз UniSearch талапкерлер командасымыз.",
     "about.lead":
-      "UniSearch студенттер үшін студенттер жасаған жоба. Мақсатымыз — университет таңдауды түсінікті, жеңіл және практикалық ету.",
+      "UniSearch талапкерлер үшін талапкерлер жасаған жоба. Мақсатымыз — университет таңдауды түсінікті, жеңіл және практикалық ету.",
     "about.contact_kicker": "Байланыс",
     "about.contact_title": "Бізбен байланысыңыз",
     "about.contact.email": "Email",

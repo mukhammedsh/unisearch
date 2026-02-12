@@ -10,7 +10,7 @@ about.contact_title: Contact us
 about.email_note: Main contact for project questions.
 about.eyebrow: About Us
 about.github_note: Code, commits, and project updates.
-about.lead: UniSearch is built by students for students. Our goal is to make university discovery clearer, easier, and more practical for real application planning.
+about.lead: UniSearch is built by abiturients for abiturients. Our goal is to make university discovery clearer, easier, and more practical for real application planning.
 about.meta.docs: 15 years old, student in Zhanaozen School-Gymnasium No. 5.
 about.meta.lead: 15 years old, student in Zhanaozen Bilim-Innovation Lyceum.
 about.meta.planning: 14 years old, student in Zhanaozen Bilim-Innovation Lyceum.
@@ -19,7 +19,7 @@ about.role.lead: Lead Developer and Project Architect
 about.role.planning: Planning and Documentation Assistant
 about.team_kicker: Our Team
 about.team_title: Core contributors
-about.title: We are the student team behind UniSearch.
+about.title: We are the abiturient team behind UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
 guide.admission.p1: An admission track is a specific pathway into a program. One university can publish multiple tracks with different requirements and costs.
