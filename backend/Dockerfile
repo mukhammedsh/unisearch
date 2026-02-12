@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY backend/app /app/app
 COPY backend/data /app/data
+COPY backend/worker.py /app/worker.py
 
 EXPOSE 8000
 

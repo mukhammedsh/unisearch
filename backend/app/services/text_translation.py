@@ -6,7 +6,8 @@ from typing import Any, Dict, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request as UrlRequest, urlopen
 
-from app.core.security import SlidingWindowRateLimiter
+from app.core.redis_store import cache_get_json, cache_set_json
+from app.core.security import build_rate_limiter
 from app.core.settings import (
     LIBRETRANSLATE_API_KEY,
     LIBRETRANSLATE_URL,
@@ -25,9 +26,11 @@ from app.core.settings import (
 
 _TRANSLATION_CACHE: Dict[str, Dict[str, Any]] = {}
 _TRANSLATION_CACHE_LOCK = threading.Lock()
-_TRANSLATION_RATE_LIMITER = SlidingWindowRateLimiter(
+_TRANSLATION_REDIS_KEY_PREFIX = "translation:ml-interest"
+_TRANSLATION_RATE_LIMITER = build_rate_limiter(
     limit=ML_INTEREST_TRANSLATION_RATE_LIMIT_REQUESTS,
     window_seconds=ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC,
+    redis_key_prefix="translation:rate-limit",
 )
 _PROVIDER_BACKOFF_UNTIL = 0.0
 _PROVIDER_BACKOFF_LOCK = threading.Lock()
@@ -61,6 +64,15 @@ def _cache_key(provider: str, source_lang: str, target_lang: str, text: str) -> 
 
 
 def _cache_get(key: str) -> Optional[Dict[str, Any]]:
+    redis_row = cache_get_json(f"{_TRANSLATION_REDIS_KEY_PREFIX}:{key}")
+    if isinstance(redis_row, dict):
+        return {
+            "text": str(redis_row.get("text") or ""),
+            "translated": bool(redis_row.get("translated")),
+            "source": str(redis_row.get("source") or ""),
+            "provider": str(redis_row.get("provider") or ""),
+        }
+
     now = time.time()
     with _TRANSLATION_CACHE_LOCK:
         stale = [
@@ -83,14 +95,23 @@ def _cache_get(key: str) -> Optional[Dict[str, Any]]:
 
 
 def _cache_set(key: str, value: Dict[str, Any]) -> None:
+    row = {
+        "text": str(value.get("text") or ""),
+        "translated": bool(value.get("translated")),
+        "source": str(value.get("source") or ""),
+        "provider": str(value.get("provider") or ""),
+    }
+    cache_set_json(
+        f"{_TRANSLATION_REDIS_KEY_PREFIX}:{key}",
+        row,
+        ttl_seconds=ML_INTEREST_TRANSLATION_CACHE_TTL_SEC,
+    )
+
     now = time.time()
     with _TRANSLATION_CACHE_LOCK:
         _TRANSLATION_CACHE[key] = {
             "ts": now,
-            "text": str(value.get("text") or ""),
-            "translated": bool(value.get("translated")),
-            "source": str(value.get("source") or ""),
-            "provider": str(value.get("provider") or ""),
+            **row,
         }
         if len(_TRANSLATION_CACHE) <= ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS:
             return

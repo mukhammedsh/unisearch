@@ -1,3 +1,4 @@
+import hashlib
 import json
 import threading
 import time
@@ -5,6 +6,8 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 
+from app.core.redis_store import cache_get_json, cache_set_json
+from app.core.settings import REDIS_CACHE_TTL_SEC
 from app.schemas import ProfileOnlyRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
@@ -89,6 +92,12 @@ def _ai_sort_cache_set(key: str, items: List[Dict[str, Any]]) -> None:
             _AI_SORT_CACHE.pop(stale, None)
 
 
+def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
+    raw = json.dumps(payload, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()
+    return f"{namespace}:{digest}"
+
+
 @router.get("/universities")
 def list_universities(
     q: Optional[str] = None,
@@ -111,9 +120,38 @@ def list_universities(
     fields: str = Query("card", pattern="^(card|full)$"),
     response: Response = None,
 ):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=60"
-    return uni_service.list_universities(
+    cache_payload = {
+        "q": q,
+        "country": country,
+        "city": city,
+        "region": region,
+        "major": major,
+        "study_level": study_level,
+        "funding_type": funding_type,
+        "format": format,
+        "user_budget": user_budget,
+        "min_tuition": min_tuition,
+        "max_tuition": max_tuition,
+        "min_acceptance": min_acceptance,
+        "max_acceptance": max_acceptance,
+        "size": size,
+        "sort": sort,
+        "page": page,
+        "limit": limit,
+        "fields": fields,
+    }
+    redis_cache_key = _cache_key("api:universities:list", cache_payload)
+
+    use_redis_cache = limit <= 500
+    if use_redis_cache:
+        cached = cache_get_json(redis_cache_key)
+        if isinstance(cached, dict):
+            if response is not None:
+                response.headers["Cache-Control"] = "public, max-age=60"
+                response.headers["X-Redis-Cache"] = "HIT"
+            return cached
+
+    result = uni_service.list_universities(
         q=q,
         country=country,
         city=city,
@@ -133,6 +171,14 @@ def list_universities(
         limit=limit,
         response_mode=fields,
     )
+
+    if use_redis_cache:
+        cache_set_json(redis_cache_key, result, ttl_seconds=max(1, int(REDIS_CACHE_TTL_SEC)))
+
+    if response is not None:
+        response.headers["Cache-Control"] = "public, max-age=60"
+        response.headers["X-Redis-Cache"] = "MISS" if use_redis_cache else "BYPASS"
+    return result
 
 
 @router.post("/universities/ai-sort")
@@ -271,13 +317,33 @@ def get_university_roi(
 
 @router.get("/locations")
 def get_locations(response: Response = None):
+    cached = cache_get_json("api:locations")
+    if isinstance(cached, dict):
+        if response is not None:
+            response.headers["Cache-Control"] = "public, max-age=300"
+            response.headers["X-Redis-Cache"] = "HIT"
+        return cached
+
+    data = uni_service.get_locations()
+    cache_set_json("api:locations", data if isinstance(data, dict) else {}, ttl_seconds=300)
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300"
-    return uni_service.get_locations()
+        response.headers["X-Redis-Cache"] = "MISS"
+    return data
 
 
 @router.get("/stats")
 def get_stats(response: Response = None):
+    cached = cache_get_json("api:stats")
+    if isinstance(cached, dict):
+        if response is not None:
+            response.headers["Cache-Control"] = "public, max-age=120"
+            response.headers["X-Redis-Cache"] = "HIT"
+        return cached
+
+    data = uni_service.get_stats()
+    cache_set_json("api:stats", data if isinstance(data, dict) else {}, ttl_seconds=120)
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=120"
-    return uni_service.get_stats()
+        response.headers["X-Redis-Cache"] = "MISS"
+    return data

@@ -5,8 +5,11 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.settings import APP_VERSION, FRONTEND_ORIGIN
+from app.core.observability import setup_observability
+from app.core.settings import APP_VERSION, AUTO_WARMUP_ON_STARTUP, FRONTEND_ORIGIN
+from app.core.task_queue import enqueue_warmup_task
 from app.routers import root, universities, exams, languages
+from app.services.background_tasks import warmup_runtime
 
 
 logging.basicConfig(
@@ -16,6 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger("unisearch.api")
 
 app = FastAPI(title="UniSearch AI API", version=APP_VERSION)
+setup_observability(app)
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,6 +34,7 @@ app.add_middleware(
         "X-RateLimit-Remaining",
         "X-RateLimit-Window",
         "Retry-After",
+        "X-Redis-Cache",
     ],
 )
 
@@ -62,6 +67,30 @@ async def request_metrics(request: Request, call_next):
         duration_ms,
     )
     return response
+
+
+@app.on_event("startup")
+async def startup_runtime_warmup():
+    if not AUTO_WARMUP_ON_STARTUP:
+        return
+
+    enqueue_result = enqueue_warmup_task(trigger="startup")
+    if enqueue_result.get("enqueued"):
+        logger.info(
+            "warmup_enqueued queue=%s job_id=%s",
+            enqueue_result.get("queue"),
+            enqueue_result.get("job_id"),
+        )
+        return
+
+    # Queue can be unavailable in local/dev setups; keep cold start reliable.
+    sync_result = warmup_runtime(trigger="startup_sync")
+    logger.info(
+        "warmup_sync_fallback ok=%s duration_ms=%s reason=%s",
+        sync_result.get("ok"),
+        sync_result.get("duration_ms"),
+        enqueue_result.get("reason"),
+    )
 
 app.include_router(root.router)
 app.include_router(universities.router)

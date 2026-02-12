@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance - 2.1.1 (Infomatrix 2026)
+# UniSearch / UniFit / UniChance - 2.1.2 (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app for university selection using:
@@ -30,10 +30,15 @@ Pipeline:
 If translation is unavailable, backend safely falls back to raw text and still returns results.
 
 ### Translation safeguards
-- in-memory cache (TTL + max items)
-- per-client sliding-window rate limit
+- Redis-backed cache (with in-memory fallback)
+- Redis-backed sliding-window rate limit (with in-memory fallback)
 - provider failure backoff
 - short request timeout
+
+## Performance services (2.1.2)
+- Redis for API/cache and shared rate-limit state
+- Queue + worker (`RQ`) for background warmup tasks
+- Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
 ### Backend translation env (`backend/.env`)
 ```env
@@ -51,6 +56,21 @@ ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC=60
 ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 ```
 
+### Backend infra env (`backend/.env`)
+```env
+APP_VERSION=2.1.2
+REDIS_URL=redis://127.0.0.1:6379/0
+REDIS_PREFIX=unisearch
+REDIS_CACHE_TTL_SEC=60
+QUEUE_ENABLED=1
+QUEUE_NAME=unisearch-default
+AUTO_WARMUP_ON_STARTUP=1
+METRICS_ENABLED=1
+METRICS_PATH=/metrics
+SENTRY_DSN=
+SENTRY_TRACES_SAMPLE_RATE=0.0
+```
+
 ## API overview
 - `GET /universities`
 - `POST /universities/ai-sort`
@@ -66,6 +86,9 @@ ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 - `POST /languages/validate`
 - `GET /health`
 - `GET /ready`
+- `GET /ops/runtime`
+- `POST /ops/warmup`
+- `GET /metrics`
 
 ## Run locally
 ### 1) Backend
@@ -76,6 +99,16 @@ venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
+
+Optional worker (for queue jobs):
+```bash
+cd backend
+python worker.py
+```
+Worker purpose:
+- executes background jobs from queue (`RQ`)
+- currently used for runtime warmup task (`POST /ops/warmup`)
+- keeps HTTP requests fast by moving heavy/preload work out of request path
 
 ### 2) Frontend
 ```bash
@@ -89,6 +122,26 @@ Open:
 - `http://127.0.0.1:5501/university.html`
 - `http://127.0.0.1:5501/ranking.html`
 - `http://127.0.0.1:5501/guide.html`
+
+### 3) Full stack with Redis + worker (Docker)
+```bash
+docker compose up --build
+```
+
+## Render deployment notes
+- `Cron Job` on Render is not Redis and not a worker. It only runs commands on schedule.
+- For this architecture in Render use:
+1. `Key Value` service (Valkey/Redis-compatible) for `REDIS_URL`.
+2. `Web Service` for backend API.
+3. `Background Worker` service that runs `python backend/worker.py`.
+4. Optional `Cron Job` to call `POST /ops/warmup` periodically.
+
+Recommended env for both backend and worker:
+```env
+REDIS_URL=<render-key-value-internal-url>
+QUEUE_ENABLED=1
+QUEUE_NAME=unisearch-default
+```
 
 ## Tests
 ```bash
@@ -110,10 +163,10 @@ What happens automatically on release publish:
 
 How to trigger:
 1. Push all changes to `main`.
-2. Create and push a tag (example `v2.1.1`):
+2. Create and push a tag (example `v2.1.2`):
    ```bash
-   git tag v2.1.1
-   git push origin v2.1.1
+   git tag v2.1.2
+   git push origin v2.1.2
    ```
 3. In GitHub, open Releases and publish a release for that tag.
 4. Wait for the workflow `Release Artifacts And Container` to finish.
@@ -126,9 +179,12 @@ backend/
     core/
       env.py
       files.py
+      observability.py
       paths.py
+      redis_store.py
       security.py
       settings.py
+      task_queue.py
     routers/
       root.py
       universities.py
@@ -141,6 +197,7 @@ backend/
       text_translation.py
       universities.py
       exams.py
+      background_tasks.py
       languages.py
       ml_scoring.py
   data/
@@ -171,6 +228,8 @@ frontend/
     eng
     ru
     kz
+
+docker-compose.yml
 ```
 
 ## Notes
