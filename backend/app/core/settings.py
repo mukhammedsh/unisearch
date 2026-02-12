@@ -4,11 +4,50 @@ from app.core.env import load_local_env
 
 load_local_env()
 
-FRONTEND_ORIGIN = os.getenv(
-    "FRONTEND_ORIGIN",
+_LOCAL_FRONTEND_ORIGINS = (
     "http://127.0.0.1:5501",
+    "http://localhost:5501",
+    "http://127.0.0.1:5510",
+    "http://localhost:5510",
 )
-APP_VERSION = os.getenv("APP_VERSION", "2.1.2").strip() or "2.1.2"
+
+
+def _normalize_origin(value: str) -> str:
+    return value.strip().rstrip("/")
+
+
+def _parse_frontend_origins() -> list[str]:
+    raw_multi = os.getenv("FRONTEND_ORIGINS", "").strip()
+    raw_single = os.getenv("FRONTEND_ORIGIN", "").strip()
+
+    if raw_multi:
+        candidates = [part for part in raw_multi.split(",")]
+    elif raw_single:
+        candidates = [raw_single]
+        # Keep local Playwright runs deterministic when legacy single-origin
+        # config points to the default frontend port.
+        if _normalize_origin(raw_single) in {"http://127.0.0.1:5501", "http://localhost:5501"}:
+            candidates.extend(_LOCAL_FRONTEND_ORIGINS)
+    else:
+        candidates = list(_LOCAL_FRONTEND_ORIGINS)
+
+    normalized_candidates = {_normalize_origin(str(value)) for value in candidates if str(value).strip()}
+    if normalized_candidates & {"http://127.0.0.1:5501", "http://localhost:5501"}:
+        candidates.extend(_LOCAL_FRONTEND_ORIGINS)
+
+    origins: list[str] = []
+    for value in candidates:
+        origin = _normalize_origin(str(value))
+        if origin and origin not in origins:
+            origins.append(origin)
+
+    return origins or [str(_LOCAL_FRONTEND_ORIGINS[0])]
+
+
+FRONTEND_ORIGINS = _parse_frontend_origins()
+# Backward-compatible single-origin export for old imports.
+FRONTEND_ORIGIN = FRONTEND_ORIGINS[0]
+APP_VERSION = os.getenv("APP_VERSION", "2.2.0").strip() or "2.2.0"
 
 
 def _env_bool(name: str, default: str = "0") -> bool:

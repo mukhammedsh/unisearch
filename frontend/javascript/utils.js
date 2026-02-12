@@ -734,7 +734,10 @@ export function saveFilters(state) {
         min_tuition: state.min_tuition,
         max_tuition: state.max_tuition,
         sort: state.sort,
-        ai_balance: state.ai_balance,
+        practice_vs_science: state.practice_vs_science,
+        social_vs_hardcore: state.social_vs_hardcore,
+        budget_vs_prestige: state.budget_vs_prestige,
+        city_vs_campus: state.city_vs_campus,
         viewMode: state.viewMode || "list"
     };
     localStorage.setItem(FILTERS_KEY, JSON.stringify(dataToSave));

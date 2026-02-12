@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.observability import setup_observability
-from app.core.settings import APP_VERSION, AUTO_WARMUP_ON_STARTUP, FRONTEND_ORIGIN
+from app.core.settings import APP_VERSION, AUTO_WARMUP_ON_STARTUP, FRONTEND_ORIGINS
 from app.routers import root, universities, exams, languages
 from app.services.background_tasks import warmup_runtime
 
@@ -22,7 +22,7 @@ setup_observability(app)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_ORIGIN],
+    allow_origins=FRONTEND_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=[

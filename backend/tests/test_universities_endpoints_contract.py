@@ -1,0 +1,112 @@
+import unittest
+
+from fastapi.testclient import TestClient
+
+from app.main import app
+
+
+class UniversitiesEndpointsContractTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.client = TestClient(app)
+
+    def _first_university_id(self) -> str:
+        response = self.client.get("/universities?limit=1&fields=card")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        items = data.get("items") or []
+        self.assertTrue(items)
+        return str((items[0] or {}).get("id") or "")
+
+    def test_list_locations_and_stats_contracts(self):
+        list_response = self.client.get("/universities?limit=5&fields=card&sort=name_asc")
+        self.assertEqual(list_response.status_code, 200)
+        self.assertIn("Cache-Control", list_response.headers)
+        list_data = list_response.json()
+        for key in ("items", "count", "total", "page", "limit", "sort"):
+            self.assertIn(key, list_data)
+        self.assertIsInstance(list_data.get("items"), list)
+        self.assertLessEqual(int(list_data.get("count", 0)), 5)
+
+        locations = self.client.get("/locations")
+        self.assertEqual(locations.status_code, 200)
+        self.assertIsInstance(locations.json(), dict)
+
+        stats = self.client.get("/stats")
+        self.assertEqual(stats.status_code, 200)
+        stats_data = stats.json()
+        self.assertGreater(int(stats_data.get("universities_total", 0)), 0)
+        self.assertGreater(int(stats_data.get("countries_total", 0)), 0)
+
+    def test_university_detail_supports_etag(self):
+        university_id = self._first_university_id()
+        self.assertTrue(university_id)
+
+        first = self.client.get(f"/universities/{university_id}")
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(university_id, first.json().get("id"))
+        etag = str(first.headers.get("ETag") or "")
+        self.assertTrue(etag)
+
+        second = self.client.get(
+            f"/universities/{university_id}",
+            headers={"If-None-Match": etag},
+        )
+        self.assertEqual(second.status_code, 304)
+
+    def test_ai_sort_uni_chance_and_roi_contracts(self):
+        university_id = self._first_university_id()
+        profile = {
+            "locale": "eng",
+            "budget": 30000,
+            "gpa": 92,
+            "major": "Computer Science",
+            "interests": "ai and robotics",
+            "studyMode": "On-campus",
+            "fundingType": "any",
+            "exams": [{"exam": "SAT", "score": 1420}],
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
+        }
+
+        ai_sort = self.client.post(
+            "/universities/ai-sort",
+            json={
+                "profile": profile,
+                "practice_vs_science": 55,
+                "social_vs_hardcore": 50,
+                "budget_vs_prestige": 60,
+                "city_vs_campus": 45,
+                "page": 1,
+                "limit": 10,
+            },
+        )
+        self.assertEqual(ai_sort.status_code, 200)
+        ai_data = ai_sort.json()
+        for key in ("items", "count", "total", "page", "limit", "sort", "warnings"):
+            self.assertIn(key, ai_data)
+        self.assertIsInstance(ai_data.get("items"), list)
+        self.assertLessEqual(int(ai_data.get("count", 0)), 10)
+
+        uni_chance = self.client.post(
+            f"/universities/{university_id}/uni-chance",
+            json={"profile": profile},
+        )
+        self.assertEqual(uni_chance.status_code, 200)
+        chance_data = uni_chance.json()
+        self.assertIn("overallChance", chance_data)
+        self.assertIn("tracks", chance_data)
+        self.assertTrue(0 <= int(chance_data.get("overallChance", 0)) <= 100)
+
+        roi = self.client.post(
+            f"/universities/{university_id}/roi",
+            json={"profile": profile},
+        )
+        self.assertEqual(roi.status_code, 200)
+        roi_data = roi.json()
+        for key in ("roi_value", "roi_label", "roi_tone", "context_type"):
+            self.assertIn(key, roi_data)
+        self.assertGreaterEqual(float(roi_data.get("roi_value", 0.0)), 0.0)
+
+
+if __name__ == "__main__":
+    unittest.main()

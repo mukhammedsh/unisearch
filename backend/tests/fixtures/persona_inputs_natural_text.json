@@ -1,0 +1,22 @@
+[
+  {
+    "id": "ru_typos_mixed",
+    "locale": "rus",
+    "text": "Ищу univercity в Cambrdge с AI/ML, gamedev и ui/ux, budget где-то 20 000."
+  },
+  {
+    "id": "kz_colloquial",
+    "locale": "kz",
+    "text": "Маған practical data eng және fintech бағыты керек, online болса тіпті жақсы."
+  },
+  {
+    "id": "eng_short_forms",
+    "locale": "eng",
+    "text": "Want ict + genai + hci, maybe full stack and startup ecosystem."
+  },
+  {
+    "id": "mixed_symbols",
+    "locale": "rus",
+    "text": "Нужен CS вуз; ui/ux, AI, cv, ds... город не принципиален :)"
+  }
+]

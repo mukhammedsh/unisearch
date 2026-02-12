@@ -197,7 +197,12 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     min_acceptance = payload.min_acceptance
     max_acceptance = payload.max_acceptance
     size = payload.size
+    practice_vs_science = payload.practice_vs_science
+    social_vs_hardcore = payload.social_vs_hardcore
+    budget_vs_prestige = payload.budget_vs_prestige
+    city_vs_campus = payload.city_vs_campus
     ai_balance = payload.ai_balance
+    admission_bias = payload.admission_bias
     page = payload.page
     limit = payload.limit
 
@@ -213,7 +218,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             region=region,
             major=major,
             study_level=study_level,
-            funding_type=funding_type,
+            funding_type=None,
             format=fmt,
             min_tuition=min_tuition,
             max_tuition=max_tuition,
@@ -230,7 +235,12 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
         sorted_items = ai_scoring_service.sort_universities_ai(
             base.get("items", []),
             profile=profile,
+            practice_vs_science=practice_vs_science,
+            social_vs_hardcore=social_vs_hardcore,
+            budget_vs_prestige=budget_vs_prestige,
+            city_vs_campus=city_vs_campus,
             ai_balance=ai_balance,
+            admission_bias=admission_bias,
             funding_type=funding_type,
             translation_client_key=_request_client_key(request),
         )

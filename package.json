@@ -1,0 +1,15 @@
+{
+  "name": "unisearch-tests",
+  "private": true,
+  "version": "2.2.0",
+  "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
+  "scripts": {
+    "test:backend": "cd backend && python -m unittest discover tests -v",
+    "test:e2e:pr": "playwright test --project=chromium --config=playwright.local.config.js",
+    "test:e2e:nightly": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:all": "npm run test:backend && npm run test:e2e:pr"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}

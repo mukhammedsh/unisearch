@@ -41,7 +41,7 @@ guide.ml.p1: ML means Machine Learning. In UniSearch, ML is an additional person
 guide.ml.p2: You can write free-text preferences in Profile (interests). Backend always translates this text to US English via self-hosted LibreTranslate before ML scoring, then compares it against university metadata using TF-IDF and cosine similarity.
 guide.ml.p3: Metadata text is built from university name, location, and program names, and is also enriched with description and tags.
 guide.ml.p4: Before scoring, common short words and abbreviations are normalized (for example: ict, gamedev, ui/ux, genai) to improve matching quality.
-guide.ml.p5: When interests are provided, UniFit uses a hybrid formula: final_score = 0.7 * hard_score + 0.3 * ml_score. If interests are empty, sorting stays rule-based.
+guide.ml.p5: When interests are provided, ML is still calculated and returned in matchData.mlScore, but final ranking order is controlled by the weighted UniFit formula (PreferenceMismatch + AdmissionRisk). This keeps behavior deterministic while preserving personalization telemetry.
 guide.ml.title: ML in UniSearch (What it means)
 guide.muted.academic: Plain-language explanations of the academic scores used in UniSearch admission matching.
 guide.muted.language: Plain-language explanations of accepted language proofs across tracks.
@@ -56,8 +56,8 @@ guide.unichance.p2: The estimate is calculated from profile and track data: mini
 guide.unichance.p3: Suggested interpretation: 80-100 high chance, 60-79 good chance, 40-59 moderate chance, below 40 low chance.
 guide.unichance.p4: The Best Track output highlights the strongest path inside one university and helps find alternatives with better fit.
 guide.unichance.title: {chance} (0-100 Admission Probability)
-guide.unifit.p1: {fit} is the ranking mode used in the Universities page when sort is set to AI Smart Sort. It prioritizes realistic options, not only famous names. The score combines academic feasibility from your profile, financial fit from budget and yearly costs, and prestige signals such as rank and selectivity.
-guide.unifit.p2: The budget-prestige slider changes weighting, but it does not ignore constraints. Even with prestige priority, tracks that are far outside your profile are penalized. With budget priority, academically suitable options still rank above cheap but unrealistic choices.
+guide.unifit.p1: {fit} ranks universities by combining preference distance and admission probability. Focus/Atmosphere/Location sliders define PreferenceMismatch, while Finance switches admission mode (GrantChance vs GeneralChance). Final order uses FinalScore = 0.6 * PreferenceMismatch + 0.4 * AdmissionRisk (lower is better).
+guide.unifit.p2: Missing exam evidence is treated as conditional, not automatic fail. University cards explain recommendation reasons with prioritized badges: first "Conditional / Exam Needed", then vibe match ("Your Vibe" / "Top Match"), then finance path ("Likely Grant" or "Paid Admission").
 guide.unifit.p3: The model evaluates admission tracks separately when track data exists. That is why one university can look stronger than another for a specific student even if overall rank is lower.
 guide.unifit.p4: Because your profile can change, {fit} results are intentionally dynamic. Updating exam scores, languages, or budget should immediately affect ordering.
 guide.unifit.title: {fit} (AI Smart Sort)
@@ -160,6 +160,16 @@ title.university: University | UniSearch
 universities.all_cities: All Cities
 universities.any_state: Any State
 universities.badge.acceptance: Acceptance: {value}%
+universities.badge.conditional_exam_needed: 📝 Conditional / Exam Needed
+universities.badge.top_match: ⭐ Top Match
+universities.badge.your_vibe: 🔥 Your Vibe
+universities.badge.likely_grant: 🎓 Likely Grant
+universities.badge.paid_admission: 💼 Paid Admission
+universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
+universities.why.top_match: This university is a strong preference match for your current slider setup.
+universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
+universities.why.likely_grant: In grant-priority mode, this university has a strong grant admission chance.
+universities.why.paid_admission: In willing-to-pay mode, this university has a strong general admission chance.
 universities.badge.aid_available: 🎓 Aid Available
 universities.badge.aid_likely: 🎓 Grant/Aid Likely (no budget penalty)
 universities.badge.below_requirements: ⚠️ Below Requirements
@@ -180,13 +190,29 @@ universities.pagination.prev: Prev
 universities.reset: Reset
 universities.search_placeholder: Search university...
 universities.select_country_first: Select country first
-universities.slider.balanced: Balanced (50/50)
-universities.slider.budget: Budget 💰
-universities.slider.budget_priority: Strict Budget Priority
-universities.slider.focus_budget: Focus on Budget ({value}%)
-universities.slider.focus_prestige: Focus on Prestige ({value}%)
-universities.slider.prestige: Prestige 🏆
-universities.slider.prestige_priority: Top Prestige Priority
+universities.tradeoff.focus: Focus
+universities.tradeoff.focus.left: Career & Practice
+universities.tradeoff.focus.right: Science & Research
+universities.tradeoff.atmosphere: Atmosphere
+universities.tradeoff.atmosphere.left: Social & Events
+universities.tradeoff.atmosphere.right: Hardcore Study
+universities.tradeoff.finance: Finance
+universities.tradeoff.finance.left: Budget & Grants
+universities.tradeoff.finance.right: Prestige & Comfort
+universities.tradeoff.location: Location
+universities.tradeoff.location.left: Big City Life
+universities.tradeoff.location.right: Cozy Campus
+universities.tradeoff.balanced: Balanced (50/50)
+universities.help.open: Show explanation
+universities.help.country: Filters universities by country. Works together with city and region selectors.
+universities.help.state_region: Narrows results inside the selected country. Useful for large countries with many cities.
+universities.help.city: Shows universities in a specific city after country/region is selected.
+universities.help.cost_per_year: Sets min/max annual cost filter. The list includes only universities inside this range.
+universities.help.sort_strategy: UniFit uses your profile and sliders. Other options sort alphabetically or by cost only.
+universities.help.tradeoff.focus: Shifts between applied career-practice orientation and science-research orientation.
+universities.help.tradeoff.atmosphere: Shifts between social campus life and academically intense study environment.
+universities.help.tradeoff.finance: Controls admission mode: left prioritizes grant chance, right prioritizes general/paid admission chance.
+universities.help.tradeoff.location: Shifts between preference for big-city lifestyle and cozy campus-style locations.
 universities.sort_ai: ✨ {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low

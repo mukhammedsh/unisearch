@@ -10,12 +10,12 @@ class ApiValidationTests(unittest.TestCase):
     def setUpClass(cls):
         cls.client = TestClient(app)
 
-    def test_ai_sort_rejects_invalid_ai_balance(self):
+    def test_ai_sort_rejects_invalid_budget_vs_prestige(self):
         response = self.client.post(
             "/universities/ai-sort",
             json={
                 "profile": {},
-                "ai_balance": 101,
+                "budget_vs_prestige": 101,
                 "page": 1,
                 "limit": 20,
             },
@@ -29,6 +29,42 @@ class ApiValidationTests(unittest.TestCase):
                 "profile": {
                     "locale": "x" * 40,
                 },
+                "page": 1,
+                "limit": 20,
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test_ai_sort_rejects_invalid_social_vs_hardcore(self):
+        response = self.client.post(
+            "/universities/ai-sort",
+            json={
+                "profile": {},
+                "social_vs_hardcore": 101,
+                "page": 1,
+                "limit": 20,
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test_ai_sort_rejects_invalid_tradeoff_slider(self):
+        response = self.client.post(
+            "/universities/ai-sort",
+            json={
+                "profile": {},
+                "practice_vs_science": 101,
+                "page": 1,
+                "limit": 20,
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test_ai_sort_rejects_invalid_city_vs_campus(self):
+        response = self.client.post(
+            "/universities/ai-sort",
+            json={
+                "profile": {},
+                "city_vs_campus": 101,
                 "page": 1,
                 "limit": 20,
             },

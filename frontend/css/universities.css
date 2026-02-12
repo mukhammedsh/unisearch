@@ -109,6 +109,64 @@
   font-weight: 700;
 }
 
+.u-label-with-help {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.u-info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.u-info {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: #5715db;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.u-tooltip {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(300px, 74vw);
+  background: #101010;
+  color: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  z-index: 20;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.u-info-wrap:hover .u-tooltip,
+.u-info-wrap:focus-within .u-tooltip,
+.u-info-wrap.is-open .u-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .u-input,
 .u-select {
   width: 100%;
@@ -315,7 +373,30 @@
     outline: none;
 }
 
-#uniFitSlider {
+.u-label--between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.u-label--subtle {
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tradeoff-field + .tradeoff-field {
+  margin-top: 14px;
+}
+
+.tradeoff-caption {
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.tradeoff-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -328,13 +409,13 @@
   outline: none;
 }
 
-#uniFitSlider::-webkit-slider-runnable-track {
+.tradeoff-slider::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 999px;
   background: var(--slider-track-inactive);
 }
 
-#uniFitSlider::-webkit-slider-thumb {
+.tradeoff-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
@@ -347,20 +428,20 @@
   margin-top: -6px;
 }
 
-#uniFitSlider::-moz-range-track {
+.tradeoff-slider::-moz-range-track {
   height: 6px;
   border-radius: 999px;
   background: var(--slider-track-inactive);
   border: none;
 }
 
-#uniFitSlider::-moz-range-progress {
+.tradeoff-slider::-moz-range-progress {
   height: 6px;
   border-radius: 999px;
   background: var(--slider-track-active);
 }
 
-#uniFitSlider::-moz-range-thumb {
+.tradeoff-slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -840,6 +921,13 @@
   color: var(--accent);
 }
 
+.uni-why {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
 .uni-pill {
   display: inline-flex;
   align-items: center;
@@ -1298,6 +1386,17 @@
   color: var(--muted);
 }
 
+:root[data-theme="dark"] .u-info {
+  background: #1b1b1b;
+  color: #b894ff;
+  border-color: #3a3a3a;
+}
+
+:root[data-theme="dark"] .u-tooltip {
+  background: #0e0e0e;
+  color: #f1f1f1;
+}
+
 :root[data-theme="dark"] .u-found {
   color: #f0f0f0;
 }
@@ -1311,30 +1410,30 @@
 }
 
 :root[data-theme="dark"] .dual-slider-container input[type="range"]::-webkit-slider-thumb,
-:root[data-theme="dark"] #uniFitSlider::-webkit-slider-thumb {
+:root[data-theme="dark"] .tradeoff-slider::-webkit-slider-thumb {
   border-color: #121212;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 :root[data-theme="dark"] .dual-slider-container input[type="range"]::-moz-range-thumb,
-:root[data-theme="dark"] #uniFitSlider::-moz-range-thumb {
+:root[data-theme="dark"] .tradeoff-slider::-moz-range-thumb {
   border-color: #121212;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-:root[data-theme="dark"] #uniFitSlider {
+:root[data-theme="dark"] .tradeoff-slider {
   background: transparent;
 }
 
-:root[data-theme="dark"] #uniFitSlider::-moz-range-track {
+:root[data-theme="dark"] .tradeoff-slider::-moz-range-track {
   background: #303030;
 }
 
-:root[data-theme="dark"] #uniFitSlider::-webkit-slider-runnable-track {
+:root[data-theme="dark"] .tradeoff-slider::-webkit-slider-runnable-track {
   background: #303030;
 }
 
-:root[data-theme="dark"] #uniFitSlider::-moz-range-progress {
+:root[data-theme="dark"] .tradeoff-slider::-moz-range-progress {
   background: var(--accent);
 }
 
@@ -1375,6 +1474,10 @@
 
 :root[data-theme="dark"] .uni-card .uni-badge strong {
   color: #f2f2f2;
+}
+
+:root[data-theme="dark"] .uni-card .uni-why {
+  color: #b6b6b6;
 }
 
 :root[data-theme="dark"] .uni-card .uni-price {

@@ -213,3 +213,8 @@ __marimo__/
 # Privacy database data
 firebase-key.json
 firebase-key
+
+# Node / Playwright artifacts
+node_modules/
+playwright-report/
+test-results/

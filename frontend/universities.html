@@ -42,21 +42,39 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="countrySelect" data-i18n="universities.country">Country</label>
+            <label class="u-label u-label-with-help" for="countrySelect">
+              <span>🌍 <span data-i18n="universities.country">Country</span></span>
+              <span class="u-info-wrap">
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                <span class="u-tooltip" data-i18n="universities.help.country">Filters universities by country. Works together with city and region selectors.</span>
+              </span>
+            </label>
             <select id="countrySelect" class="u-select">
               <option value="" data-i18n="universities.global">🌍 Global</option>
             </select>
           </div>
 
           <div class="u-field" id="stateDiv" style="display: none;">
-            <label class="u-label" for="stateSelect" data-i18n="universities.state_region">State / Region</label>
+            <label class="u-label u-label-with-help" for="stateSelect">
+              <span>🗺️ <span data-i18n="universities.state_region">State / Region</span></span>
+              <span class="u-info-wrap">
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                <span class="u-tooltip" data-i18n="universities.help.state_region">Narrows results inside the selected country. Useful for large countries with many cities.</span>
+              </span>
+            </label>
             <select id="stateSelect" class="u-select">
               <option value="" data-i18n="universities.any_state">Any State</option>
             </select>
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="citySelect" data-i18n="universities.city">City</label>
+            <label class="u-label u-label-with-help" for="citySelect">
+              <span>🏙️ <span data-i18n="universities.city">City</span></span>
+              <span class="u-info-wrap">
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                <span class="u-tooltip" data-i18n="universities.help.city">Shows universities in a specific city after country/region is selected.</span>
+              </span>
+            </label>
             <select id="citySelect" class="u-select" disabled>
               <option value="" data-i18n="universities.select_country_first">Select country first</option>
             </select>
@@ -65,7 +83,13 @@
           <div class="u-sep"></div>
 
           <div class="u-field">
-            <label class="u-label" data-i18n="universities.cost_per_year">Cost per year (USD)</label>
+            <label class="u-label u-label-with-help">
+              <span>💵 <span data-i18n="universities.cost_per_year">Cost per year (USD)</span></span>
+              <span class="u-info-wrap">
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                <span class="u-tooltip" data-i18n="universities.help.cost_per_year">Sets min/max annual cost filter. The list includes only universities inside this range.</span>
+              </span>
+            </label>
             
             <div class="budget-control-wrapper">
                 <div class="budget-inputs">
@@ -88,7 +112,13 @@
           </div>
 
           <div class="u-field">
-            <label class="u-label" for="sortSelect" data-i18n="universities.sort_strategy">Sort Strategy</label>
+            <label class="u-label u-label-with-help" for="sortSelect">
+              <span>🤖 <span data-i18n="universities.sort_strategy">Sort Strategy</span></span>
+              <span class="u-info-wrap">
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                <span class="u-tooltip" data-i18n="universities.help.sort_strategy">UniFit uses your profile and sliders. Other options sort alphabetically or by cost only.</span>
+              </span>
+            </label>
             <select id="sortSelect" class="u-select">
               <option value="uni_ai" data-i18n="universities.sort_ai">✨ UniFit: AI Smart Sort</option>
               <option value="name_asc" data-i18n="universities.sort_name_asc">Name A-Z</option>
@@ -98,13 +128,76 @@
           </div>
 
           <div class="u-field" id="aiSliderContainer">
-            <label class="u-label" style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <span data-i18n="universities.slider.budget">Budget 💰</span>
-                <span data-i18n="universities.slider.prestige">Prestige 🏆</span>
-            </label>
-            <input type="range" id="uniFitSlider" min="0" max="100" value="50" style="width:100%; cursor:pointer;">
-            <div style="font-size: 11px; color: #666; text-align: center; margin-top: 6px; font-weight:600;">
-                <span id="sliderLabel" data-i18n="universities.slider.balanced">Balanced (50/50)</span>
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span>🧭 <span data-i18n="universities.tradeoff.focus">Focus</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.focus">Shifts between applied career-practice orientation and science-research orientation.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.focus.left">Career & Practice</span>
+                <span data-i18n="universities.tradeoff.focus.right">Science & Research</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="focusSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="focusLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span>📚 <span data-i18n="universities.tradeoff.atmosphere">Atmosphere</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.atmosphere">Shifts between social campus life and academically intense study environment.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.atmosphere.left">Social & Events</span>
+                <span data-i18n="universities.tradeoff.atmosphere.right">Hardcore Study</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="atmosphereSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="atmosphereLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span>💰 <span data-i18n="universities.tradeoff.finance">Finance</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.finance">Controls admission mode: left prioritizes grant chance, right prioritizes general/paid admission chance.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.finance.left">Budget & Grants</span>
+                <span data-i18n="universities.tradeoff.finance.right">Prestige & Comfort</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="financeSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="financeLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span>📍 <span data-i18n="universities.tradeoff.location">Location</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.location">Shifts between preference for big-city lifestyle and cozy campus-style locations.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.location.left">Big City Life</span>
+                <span data-i18n="universities.tradeoff.location.right">Cozy Campus</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="locationSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="locationLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
             </div>
           </div>
 

@@ -6,6 +6,13 @@ from app.services import languages as languages_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 from app.services.text_translation import translate_interest_text_for_ml
 
+_UI_BADGE_THRESHOLDS = {
+    "your_vibe_max_mismatch": 0.14,
+    "top_match_max_mismatch": 0.22,
+    "likely_grant_min_chance_pct": 65,
+    "paid_admission_min_chance_pct": 45,
+}
+
 
 def _to_num(value: Any) -> Optional[float]:
     try:
@@ -17,6 +24,13 @@ def _to_num(value: Any) -> Optional[float]:
         return None
     except Exception:
         return None
+
+
+def _to_num_default(value: Any, default: float) -> float:
+    parsed = _to_num(value)
+    if parsed is None:
+        return float(default)
+    return float(parsed)
 
 
 def _clamp(value: float, lo: float, hi: float) -> float:
@@ -338,11 +352,11 @@ def _score_requirement(user: Any, min_val: Any, avg_val: Any, higher_is_better: 
     av = _to_num(avg_val)
 
     if mn is None:
-        return {"score": 0.60 if mode == "sort" else 0.65, "pass": True, "gap": 0.0}
+        return {"score": 0.60 if mode == "sort" else 0.65, "pass": True, "gap": 0.0, "conditional": False}
     if u is None:
         if mode == "sort":
-            return {"score": 0.42, "pass": True, "gap": 0.0}
-        return {"score": 0.20, "pass": False, "gap": 1.0}
+            return {"score": 0.42, "pass": True, "gap": 0.0, "conditional": True}
+        return {"score": 0.55, "pass": True, "gap": 0.0, "conditional": True}
 
     uu = u if higher_is_better else (-u)
     mm = mn if higher_is_better else (-mn)
@@ -353,15 +367,15 @@ def _score_requirement(user: Any, min_val: Any, avg_val: Any, higher_is_better: 
         denom = max(abs(mm), 1e-9)
         ratio = _clamp01(uu / denom)
         if mode == "sort":
-            return {"score": 0.5 * ratio, "pass": False, "gap": _clamp01((mm - uu) / denom)}
-        return {"score": _clamp(0.05 + 0.45 * ratio, 0.02, 0.5), "pass": False, "gap": _clamp01((mm - uu) / denom)}
+            return {"score": 0.5 * ratio, "pass": False, "gap": _clamp01((mm - uu) / denom), "conditional": False}
+        return {"score": _clamp(0.05 + 0.45 * ratio, 0.02, 0.5), "pass": False, "gap": _clamp01((mm - uu) / denom), "conditional": False}
 
     if uu <= aa:
         t = _clamp01((uu - mm) / max(aa - mm, 1e-9))
-        return {"score": (0.50 + 0.25 * t) if mode == "sort" else (0.55 + 0.25 * t), "pass": True, "gap": 0.0}
+        return {"score": (0.50 + 0.25 * t) if mode == "sort" else (0.55 + 0.25 * t), "pass": True, "gap": 0.0, "conditional": False}
 
     t = _clamp01((uu - aa) / max(abs(aa) * (0.15 if mode == "sort" else 0.2), 1e-9))
-    return {"score": (0.75 + 0.25 * t) if mode == "sort" else (0.80 + 0.20 * t), "pass": True, "gap": 0.0}
+    return {"score": (0.75 + 0.25 * t) if mode == "sort" else (0.80 + 0.20 * t), "pass": True, "gap": 0.0, "conditional": False}
 
 
 def _collect_language_requirements(track: Dict[str, Any]) -> Dict[str, Any]:
@@ -402,7 +416,7 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
         state = {}
 
     if bool(lang_rule.get("accept_native")) and bool(state.get("native")):
-        return {"score": 1.0, "pass": True, "gap": 0.0}
+        return {"score": 1.0, "pass": True, "gap": 0.0, "conditional": False}
 
     candidates: List[Dict[str, Any]] = []
 
@@ -438,41 +452,68 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
     if not candidates:
         has_thresholds = (min_cefr is not None) or bool(req)
         if has_thresholds:
-            return {"score": 0.15, "pass": False, "gap": 1.0}
-        return {"score": 0.55 if mode == "sort" else 0.30, "pass": mode == "sort", "gap": 1.0 if mode != "sort" else 0.0}
+            if mode == "chance":
+                return {"score": 0.55, "pass": True, "gap": 0.0, "conditional": True}
+            return {"score": 0.15, "pass": False, "gap": 1.0, "conditional": True}
+        return {
+            "score": 0.55 if mode == "sort" else 0.30,
+            "pass": mode == "sort",
+            "gap": 1.0 if mode != "sort" else 0.0,
+            "conditional": False,
+        }
 
     best_score = max((x.get("score", 0.0) for x in candidates), default=0.0)
     passed = any(bool(x.get("pass")) for x in candidates)
     min_gap = min((x.get("gap", 1.0) for x in candidates), default=1.0)
-    return {"score": _clamp01(float(best_score)), "pass": passed, "gap": 0.0 if passed else float(min_gap)}
+    is_conditional = all(bool(x.get("conditional")) for x in candidates)
+    return {
+        "score": _clamp01(float(best_score)),
+        "pass": passed,
+        "gap": 0.0 if passed else float(min_gap),
+        "conditional": is_conditional,
+    }
 
 
 def _score_language_bundle(track: Dict[str, Any], user_languages: Dict[str, Any], lang_cfg: Dict[str, Any], mode: str = "sort") -> Dict[str, Any]:
     bundle = _collect_language_requirements(track)
     rules = [x for x in bundle.get("items", []) if isinstance(x, dict)]
     if not rules:
-        return {"score": 0.72 if mode != "sort" else 0.70, "pass": True, "hardFails": 0}
+        return {"score": 0.72 if mode != "sort" else 0.70, "pass": True, "hardFails": 0, "conditionalCount": 0}
 
     if bundle.get("mode") == "any":
         options = [_score_single_language_rule(rule, user_languages, lang_cfg, mode=mode) for rule in rules]
         options.sort(key=lambda x: -float(x.get("score", 0.0)))
-        best = options[0] if options else {"score": 0.15, "pass": False, "hardFails": 1}
-        return {"score": float(best.get("score", 0.0)), "pass": bool(best.get("pass")), "hardFails": 0 if bool(best.get("pass")) else 1}
+        best = options[0] if options else {"score": 0.15, "pass": False, "hardFails": 1, "conditional": True}
+        return {
+            "score": float(best.get("score", 0.0)),
+            "pass": bool(best.get("pass")),
+            "hardFails": 0 if bool(best.get("pass")) else 1,
+            "conditionalCount": 1 if bool(best.get("conditional")) else 0,
+        }
 
     total = 0.0
     count = 0
     pass_all = True
     hard_fails = 0
     worst_gap = 0.0
+    conditional_count = 0
     for rule in rules:
         row = _score_single_language_rule(rule, user_languages, lang_cfg, mode=mode)
         total += float(row.get("score", 0.0))
         count += 1
+        if bool(row.get("conditional")):
+            conditional_count += 1
         if not bool(row.get("pass")):
             pass_all = False
             hard_fails += 1
             worst_gap = max(worst_gap, float(row.get("gap", 0.0)))
-    return {"score": (total / count) if count else 0.2, "pass": pass_all, "hardFails": hard_fails, "gap": worst_gap}
+    return {
+        "score": (total / count) if count else 0.2,
+        "pass": pass_all,
+        "hardFails": hard_fails,
+        "gap": worst_gap,
+        "conditionalCount": conditional_count,
+    }
 
 
 def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_languages: Dict[str, Any], lang_cfg: Dict[str, Any], mode: str = "sort") -> Dict[str, Any]:
@@ -490,6 +531,7 @@ def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_language
     req_count = 0
     missing_evidence = False
     worst_gap = 0.0
+    conditional_count = 0
 
     for exam_id, min_val in req.items():
         if has_structured_lang and _is_language_exam_key(exam_id):
@@ -500,6 +542,8 @@ def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_language
         avg_val = avg.get(exam_id) if exam_id in avg else None
         higher = _is_higher_better(exam_id)
         rr = _score_requirement(user, min_val, avg_val, higher_is_better=higher, mode=mode)
+        if bool(rr.get("conditional")):
+            conditional_count += 1
         w = _exam_weight(exam_id, mode=mode)
         weighted += float(rr.get("score", 0.0)) * w
         weights += w
@@ -509,6 +553,7 @@ def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_language
             worst_gap = max(worst_gap, float(rr.get("gap", 0.0)))
 
     lang = _score_language_bundle(track, user_languages, lang_cfg, mode=mode)
+    conditional_count += int(lang.get("conditionalCount", 0) or 0)
     lang_items_count = len(_collect_language_requirements(track).get("items", []))
     fail_count = hard_fails + (0 if bool(lang.get("pass")) else max(1, int(lang.get("hardFails", 1))))
     total_constraints = req_count + (1 if lang_items_count > 0 else 0)
@@ -522,6 +567,8 @@ def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_language
         "worstGap": worst_gap,
         "missingEvidence": missing_evidence,
         "failRatio": fail_ratio,
+        "conditional": conditional_count > 0,
+        "conditionalRequirements": conditional_count,
     }
 
 
@@ -620,26 +667,217 @@ def _chance_level(chance_pct: float) -> Dict[str, str]:
     return {"id": "low", "label": "Low chance"}
 
 
+def _preference01(value: Any, fallback: float = 50.0) -> float:
+    return _clamp01(_to_num_default(value, fallback) / 100.0)
+
+
+def _factor01(value: Any, fallback: float = 0.5) -> float:
+    parsed = _to_num(value)
+    if parsed is None:
+        return _clamp01(fallback)
+    if parsed > 1.0:
+        parsed = parsed / 100.0
+    return _clamp01(float(parsed))
+
+
+def _acceptance_percent(university: Dict[str, Any]) -> Optional[float]:
+    academics = university.get("academics")
+    if not isinstance(academics, dict):
+        academics = {}
+    direct = _to_num(academics.get("acceptance_rate_percent"))
+    if direct is not None:
+        return _clamp(float(direct), 0.0, 100.0)
+    programs = academics.get("programs")
+    if not isinstance(programs, list):
+        return None
+    vals = []
+    for row in programs:
+        if not isinstance(row, dict):
+            continue
+        v = _to_num(row.get("acceptance_rate_percent"))
+        if v is not None:
+            vals.append(_clamp(float(v), 0.0, 100.0))
+    if not vals:
+        return None
+    return float(sum(vals) / len(vals))
+
+
+def _fallback_practice_vs_science(university: Dict[str, Any]) -> float:
+    text = " ".join(
+        [
+            str(university.get("name") or ""),
+            str(university.get("description") or ""),
+            str((((university.get("academics") or {}).get("focus_areas")) or "")),
+        ]
+    ).lower()
+    research_tokens = ("research", "science", "laboratory", "fundamental", "theory", "phd")
+    practice_tokens = ("practice", "industry", "internship", "applied", "career", "startup")
+    score = 0.5 + (0.06 * sum(1 for token in research_tokens if token in text)) - (0.06 * sum(1 for token in practice_tokens if token in text))
+    rank = _to_num(university.get("rank"))
+    if rank is not None and rank <= 10:
+        score += 0.05
+    return _clamp01(score)
+
+
+def _fallback_social_vs_hardcore(university: Dict[str, Any]) -> float:
+    acceptance = _acceptance_percent(university)
+    strictness = 0.55 if acceptance is None else _clamp01(1.0 - (acceptance / 100.0))
+    rank = _to_num(university.get("rank"))
+    rank_boost = 0.0
+    if rank is not None and rank > 0:
+        rank_boost = _clamp01(1.0 - ((rank - 1.0) / 200.0)) * 0.18
+    return _clamp01(0.30 + 0.60 * strictness + rank_boost)
+
+
+def _fallback_budget_vs_prestige(university: Dict[str, Any]) -> float:
+    finance = university.get("finance")
+    finance = finance if isinstance(finance, dict) else {}
+    cost = _to_num(finance.get("total_cost_year_usd"))
+    cost_norm = 0.45 if cost is None else _clamp01(float(cost) / 100000.0)
+    rank = _to_num(university.get("rank"))
+    rank_prestige = 0.5
+    if rank is not None and rank > 0:
+        rank_prestige = _clamp01(1.0 - ((rank - 1.0) / 120.0))
+    return _clamp01(0.50 * cost_norm + 0.50 * rank_prestige)
+
+
+def _fallback_city_vs_campus(university: Dict[str, Any]) -> float:
+    city = str((((university.get("location") or {}).get("city")) or "")).strip().lower()
+    if not city:
+        return 0.5
+    mega_cities = {
+        "london",
+        "tokyo",
+        "seoul",
+        "singapore",
+        "beijing",
+        "toronto",
+        "cambridge",
+        "zurich",
+        "melbourne",
+        "hong kong",
+    }
+    medium_cities = {"astana", "munich", "kyoto", "daejeon", "delft", "lausanne"}
+    if city in mega_cities:
+        return 0.18
+    if city in medium_cities:
+        return 0.42
+    return 0.60
+
+
+def _extract_university_factors(university: Dict[str, Any]) -> Dict[str, float]:
+    raw = university.get("factors")
+    raw = raw if isinstance(raw, dict) else {}
+    return {
+        "practice_vs_science": _factor01(raw.get("practice_vs_science"), _fallback_practice_vs_science(university)),
+        "social_vs_hardcore": _factor01(raw.get("social_vs_hardcore"), _fallback_social_vs_hardcore(university)),
+        "budget_vs_prestige": _factor01(raw.get("budget_vs_prestige"), _fallback_budget_vs_prestige(university)),
+        "city_vs_campus": _factor01(raw.get("city_vs_campus"), _fallback_city_vs_campus(university)),
+    }
+
+
+def _distance_breakdown(user_pref: Dict[str, float], uni_factors: Dict[str, float]) -> Tuple[float, Dict[str, float]]:
+    deltas = {
+        "practice_vs_science": abs(float(user_pref["practice_vs_science"]) - float(uni_factors["practice_vs_science"])),
+        "social_vs_hardcore": abs(float(user_pref["social_vs_hardcore"]) - float(uni_factors["social_vs_hardcore"])),
+        "budget_vs_prestige": abs(float(user_pref["budget_vs_prestige"]) - float(uni_factors["budget_vs_prestige"])),
+        "city_vs_campus": abs(float(user_pref["city_vs_campus"]) - float(uni_factors["city_vs_campus"])),
+    }
+    total_distance = float(sum(deltas.values()))
+    return total_distance, deltas
+
+
+def _build_ui_badge_hints(
+    *,
+    preference_mismatch: Any,
+    conditional: Any,
+    conditional_requirements: Any,
+    selected_chance_type: Any,
+    grant_chance: Any,
+    general_chance: Any,
+) -> Dict[str, Any]:
+    mismatch01 = _clamp01(_to_num_default(preference_mismatch, 1.0))
+    conditional_count = max(0, int(_to_num_default(conditional_requirements, 0.0)))
+    show_conditional = bool(conditional) and conditional_count > 0
+    selected_type = str(selected_chance_type or "").strip().lower()
+    grant_pct = _clamp(_to_num_default(grant_chance, 0.0), 0.0, 100.0)
+    general_pct = _clamp(_to_num_default(general_chance, 0.0), 0.0, 100.0)
+
+    vibe = ""
+    if mismatch01 <= float(_UI_BADGE_THRESHOLDS["your_vibe_max_mismatch"]):
+        vibe = "your_vibe"
+    elif mismatch01 <= float(_UI_BADGE_THRESHOLDS["top_match_max_mismatch"]):
+        vibe = "top_match"
+
+    finance = ""
+    if selected_type == "grant" and grant_pct >= float(_UI_BADGE_THRESHOLDS["likely_grant_min_chance_pct"]):
+        finance = "likely_grant"
+    elif selected_type == "general" and general_pct >= float(_UI_BADGE_THRESHOLDS["paid_admission_min_chance_pct"]):
+        finance = "paid_admission"
+
+    return {
+        "showConditionalExamNeeded": show_conditional,
+        "vibe": vibe,
+        "finance": finance,
+        "priorityOrder": [
+            "conditional_exam_needed",
+            "your_vibe",
+            "top_match",
+            "likely_grant",
+            "paid_admission",
+        ],
+        "metrics": {
+            "preferenceMismatch": round(mismatch01, 4),
+            "conditionalRequirements": conditional_count,
+            "selectedChanceType": selected_type,
+            "grantChance": int(round(grant_pct)),
+            "generalChance": int(round(general_pct)),
+        },
+        "thresholds": dict(_UI_BADGE_THRESHOLDS),
+    }
+
+
 def sort_universities_ai(
     items: List[Dict[str, Any]],
     profile: Optional[Dict[str, Any]] = None,
+    practice_vs_science: Any = None,
+    social_vs_hardcore: Any = None,
+    budget_vs_prestige: Any = None,
+    city_vs_campus: Any = None,
     ai_balance: Any = 50,
+    admission_bias: Any = 50,
     funding_type: Any = "any",
     translation_client_key: str = "",
 ) -> List[Dict[str, Any]]:
     profile = profile if isinstance(profile, dict) else {}
     lang_cfg = _language_config()
     ctx = _build_user_context(profile, lang_cfg)
-    pref = _normalize_funding_preference(funding_type or profile.get("fundingType") or profile.get("funding_type") or "any")
     preferred_mode = _normalize_study_mode(
         profile.get("studyMode")
         or profile.get("study_mode")
         or profile.get("format")
         or "any"
     )
-    w_prestige = _clamp01((_to_num(ai_balance) or 50.0) / 100.0)
-    w_budget = 1.0 - w_prestige
+    user_pref = {
+        "practice_vs_science": _preference01(practice_vs_science, 50.0),
+        "social_vs_hardcore": _preference01(
+            social_vs_hardcore if social_vs_hardcore is not None else admission_bias,
+            50.0,
+        ),
+        "budget_vs_prestige": _preference01(
+            budget_vs_prestige if budget_vs_prestige is not None else ai_balance,
+            50.0,
+        ),
+        "city_vs_campus": _preference01(city_vs_campus, 50.0),
+    }
+    finance_pref = float(user_pref["budget_vs_prestige"])
     rank_score = _rank_score_factory(items)
+    profile_any = dict(profile)
+    profile_any["fundingType"] = "any"
+    profile_any["funding_type"] = "any"
+    profile_grant = dict(profile)
+    profile_grant["fundingType"] = "grant"
+    profile_grant["funding_type"] = "grant"
     interest_text_raw = str(profile.get("interests") or "").strip()
     locale_hint = (
         profile.get("locale")
@@ -679,12 +917,37 @@ def sort_universities_ai(
         if not isinstance(row, dict):
             continue
         row_id = str(row.get("id") or "").strip()
+        uni_factors = _extract_university_factors(row)
+        total_distance, distance_deltas = _distance_breakdown(user_pref, uni_factors)
+        preference_mismatch = _clamp01(
+            (
+                float(distance_deltas.get("practice_vs_science", 0.0))
+                + float(distance_deltas.get("social_vs_hardcore", 0.0))
+                + float(distance_deltas.get("city_vs_campus", 0.0))
+            )
+            / 3.0
+        )
+        chance_general = estimate_uni_chance(row, profile_any)
+        chance_grant = estimate_uni_chance(row, profile_grant)
+        general_chance01 = _clamp01((_to_num(chance_general.get("overallChance")) or 0.0) / 100.0)
+        grant_chance01 = _clamp01((_to_num(chance_grant.get("overallChance")) or 0.0) / 100.0)
+        if finance_pref < 0.5:
+            selected_chance01 = grant_chance01
+            selected_chance_type = "grant"
+        elif finance_pref > 0.5:
+            selected_chance01 = general_chance01
+            selected_chance_type = "general"
+        else:
+            selected_chance01 = _clamp01((grant_chance01 + general_chance01) / 2.0)
+            selected_chance_type = "balanced"
+        admission_risk = _clamp01(1.0 - selected_chance01)
+        final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
+        hard_score = _clamp01(1.0 - preference_mismatch)
 
         tracks = row.get("admission_tracks")
         if not isinstance(tracks, list) or not tracks:
             tracks = [{"id": "default", "label": "Standard", "requirements": {}, "stats_avg": {}, "scholarships": []}]
         tracks = [t for t in tracks if isinstance(t, dict)]
-        tracks = tracks if pref == "any" else [t for t in tracks if _get_track_funding_type(t) == pref]
 
         if not tracks:
             item = dict(row)
@@ -695,6 +958,28 @@ def sort_universities_ai(
                 "grantName": "",
                 "trackLabel": "No matching track",
                 "missingRequiredEvidence": True,
+                "hardScore": hard_score,
+                "finalScore": final_score,
+                "mlScore": float(ml_scores_by_id.get(row_id, 0.0)) if use_ml else 0.0,
+                "distanceScore": _clamp01(1.0 - preference_mismatch),
+                "totalDistance": total_distance,
+                "distanceDeltas": distance_deltas,
+                "preferenceMismatch": preference_mismatch,
+                "admissionRisk": admission_risk,
+                "selectedChance": int(round(selected_chance01 * 100.0)),
+                "selectedChanceType": selected_chance_type,
+                "grantChance": int(round(grant_chance01 * 100.0)),
+                "generalChance": int(round(general_chance01 * 100.0)),
+                "uiBadgeHints": _build_ui_badge_hints(
+                    preference_mismatch=preference_mismatch,
+                    conditional=False,
+                    conditional_requirements=0,
+                    selected_chance_type=selected_chance_type,
+                    grant_chance=int(round(grant_chance01 * 100.0)),
+                    general_chance=int(round(general_chance01 * 100.0)),
+                ),
+                "factors": uni_factors,
+                "userPreferences": user_pref,
                 "mlEnabled": bool(interest_text),
                 "mlApplied": use_ml,
                 "mlAvailable": ml_available,
@@ -704,7 +989,8 @@ def sort_universities_ai(
                 "mlQuerySource": str(translation_meta.get("source") or ""),
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
             }
-            item["__ai_score"] = 0.0
+            item["__ai_score"] = final_score
+            item["__distance"] = preference_mismatch
             enriched.append(item)
             continue
 
@@ -762,17 +1048,10 @@ def sort_universities_ai(
                 mode="sort",
                 preferred_mode=preferred_mode,
             )
-            pref_score = _clamp01(w_prestige * rank_score(row.get("rank")) + w_budget * aff)
-
-            grant_bonus = _clamp01(0.70 + 0.30 * best_scholar_potential) if aid_eligible else (_clamp01(0.40 + 0.20 * best_scholar_potential) if aid_any else 0.0)
-            gate = admit ** 1.15
-            hard_score = _clamp01(gate * (0.58 * pref_score + 0.32 * admit + 0.10 * grant_bonus))
             if use_ml:
                 ml_score = float(ml_scores_by_id.get(row_id, 0.0))
-                final_score = _clamp01((0.7 * hard_score) + (0.3 * ml_score))
             else:
                 ml_score = 0.0
-                final_score = hard_score
 
             amount = _to_num((eligible_scholar or {}).get("amount")) if isinstance(eligible_scholar, dict) else None
             final_price = max(0.0, cost - amount) if (aid_eligible and amount is not None) else cost
@@ -786,12 +1065,38 @@ def sort_universities_ai(
                 "admitChance": admit,
                 "meetMinRequirements": bool(fit.get("hardPassAll")),
                 "missingRequiredEvidence": bool(fit.get("missingEvidence")),
+                "conditional": bool(fit.get("conditional")),
+                "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
                 "costYearUSD": cost,
                 "grantPotential": best_scholar_potential,
                 "grantEligible": aid_eligible,
                 "hardScore": hard_score,
+                "distanceScore": _clamp01(1.0 - preference_mismatch),
+                "totalDistance": total_distance,
+                "distanceDeltas": distance_deltas,
+                "preferenceMismatch": preference_mismatch,
+                "admissionRisk": admission_risk,
+                "selectedChance": int(round(selected_chance01 * 100.0)),
+                "selectedChanceType": selected_chance_type,
+                "grantChance": int(round(grant_chance01 * 100.0)),
+                "generalChance": int(round(general_chance01 * 100.0)),
+                "uiBadgeHints": _build_ui_badge_hints(
+                    preference_mismatch=preference_mismatch,
+                    conditional=bool(fit.get("conditional")),
+                    conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
+                    selected_chance_type=selected_chance_type,
+                    grant_chance=int(round(grant_chance01 * 100.0)),
+                    general_chance=int(round(general_chance01 * 100.0)),
+                ),
+                "factors": uni_factors,
+                "userPreferences": user_pref,
                 "mlScore": ml_score,
                 "finalScore": final_score,
+                "legacySignals": {
+                    "admitChance": admit,
+                    "affordability": aff,
+                    "rankScore": rank_score(row.get("rank")),
+                },
                 "mlEnabled": bool(interest_text),
                 "mlApplied": use_ml,
                 "mlAvailable": ml_available,
@@ -802,18 +1107,21 @@ def sort_universities_ai(
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
                 "costMode": cost_mode,
             }
-            candidate = {"score": final_score, "matchData": match_data}
+            candidate = {"score": admit, "matchData": match_data}
             if best is None or float(candidate["score"]) > float(best["score"]):
                 best = candidate
 
         item = dict(row)
         item["matchData"] = (best or {}).get("matchData", {})
-        item["__ai_score"] = float((best or {}).get("score", 0.0))
+        item["__ai_score"] = final_score
+        item["__distance"] = preference_mismatch
         enriched.append(item)
 
     enriched.sort(
         key=lambda u: (
-            -float(u.get("__ai_score", 0.0)),
+            float(u.get("__ai_score", 1.0)),
+            float(u.get("__distance", 1.0)),
+            -float(_to_num(((u.get("matchData") or {}).get("selectedChance"))) or 0.0),
             float(_to_num(u.get("rank")) or 999999.0),
             -float(_to_num(((u.get("matchData") or {}).get("admitChance"))) or 0.0),
             float(_to_num(((u.get("matchData") or {}).get("finalPrice"))) or 1e18),
@@ -824,6 +1132,7 @@ def sort_universities_ai(
     for row in enriched:
         cleaned = dict(row)
         cleaned.pop("__ai_score", None)
+        cleaned.pop("__distance", None)
         out.append(cleaned)
     return out
 
@@ -864,7 +1173,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                     "trackLabel": str(track.get("label") or f"Track {idx + 1}"),
                     "chancePercent": 0,
                     "level": _chance_level(0),
-                    "details": {"academic": 0, "language": 0, "selectivity": 0, "affordability": 0, "feasibilityGate": 0},
+                    "conditional": True,
+                    "details": {"academic": 0, "language": 0, "selectivity": 0, "affordability": 0, "feasibilityGate": 0, "conditionalRequirements": 0},
                 }
             )
         best = per_track[0] if per_track else {"trackKey": "default", "trackId": "default", "trackLabel": "General admission"}
@@ -876,6 +1186,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             "bestTrackLabel": best.get("trackLabel"),
             "tracks": per_track,
             "missingEvidence": True,
+            "conditional": True,
             "fundingType": funding_type,
         }
 
@@ -888,6 +1199,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             "bestTrackLabel": "No tracks for selected funding type",
             "tracks": [],
             "missingEvidence": False,
+            "conditional": False,
             "fundingType": funding_type,
         }
 
@@ -923,12 +1235,14 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                 "trackLabel": str(track.get("label") or f"Track {idx + 1}"),
                 "chancePercent": chance_pct,
                 "level": _chance_level(chance_pct),
+                "conditional": bool(fit.get("conditional")),
                 "details": {
                     "academic": int(round(academic * 100.0)),
                     "language": int(round(language * 100.0)),
                     "selectivity": int(round(selectivity * 100.0)),
                     "affordability": int(round(affordability * 100.0)),
                     "feasibilityGate": int(round(feasibility_gate * 100.0)),
+                    "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
                 },
             }
         )
@@ -949,6 +1263,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         "bestTrackLabel": best.get("trackLabel"),
         "tracks": per_track,
         "missingEvidence": False,
+        "conditional": bool(best.get("conditional")),
         "fundingType": funding_type,
     }
 

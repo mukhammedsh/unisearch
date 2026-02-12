@@ -183,7 +183,49 @@
       "Urban",
       "Innovation"
     ],
-    "description_source": "https://www.mit.edu/about/"
+    "description_source": "https://www.mit.edu/about/",
+    "factors": {
+      "practice_vs_science": 0.9544,
+      "social_vs_hardcore": 0.9583,
+      "budget_vs_prestige": 0.9548,
+      "city_vs_campus": 0.9949
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Massachusetts+Institute+of+Technology&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Cambridge&count=10&language=en&format=json&countryCode=US",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I63966007",
+          "display_name": "Massachusetts Institute of Technology",
+          "country_code": "US",
+          "works_count": 327876,
+          "cited_by_count": 59834964,
+          "h_index": 2197
+        },
+        "city": {
+          "name": "Cambridge",
+          "country_code": "US",
+          "admin1": "Massachusetts",
+          "population": 110402,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 4.0,
+        "total_cost_year_usd": 89340.0,
+        "derived_signals": {
+          "research_signal_raw": 14.552983679731032,
+          "strictness_0_1": 0.96,
+          "research_norm_0_1": 0.954384,
+          "tuition_norm_0_1": 0.955076,
+          "city_population_norm_0_1": 0.005098
+        }
+      }
+    }
   },
   {
     "id": "imperial-college-london-uk",
@@ -344,7 +386,49 @@
       "Innovation",
       "Global"
     ],
-    "description_source": "https://www.imperial.ac.uk/about/introduction-to-imperial/"
+    "description_source": "https://www.imperial.ac.uk/about/introduction-to-imperial/",
+    "factors": {
+      "practice_vs_science": 0.9382,
+      "social_vs_hardcore": 0.8835,
+      "budget_vs_prestige": 0.8485,
+      "city_vs_campus": 0.5277
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Imperial+College+London&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=London&count=10&language=en&format=json&countryCode=GB",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I47508984",
+          "display_name": "Imperial College London",
+          "country_code": "GB",
+          "works_count": 360012,
+          "cited_by_count": 38250240,
+          "h_index": 1518
+        },
+        "city": {
+          "name": "London",
+          "country_code": "GB",
+          "admin1": "England",
+          "population": 8961989,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 14.0,
+        "total_cost_year_usd": 75000.0,
+        "derived_signals": {
+          "research_signal_raw": 14.306564732136643,
+          "strictness_0_1": 0.86,
+          "research_norm_0_1": 0.938224,
+          "tuition_norm_0_1": 0.788744,
+          "city_population_norm_0_1": 0.472276
+        }
+      }
+    }
   },
   {
     "id": "stanford-university-usa-ca",
@@ -500,7 +584,49 @@
       "Interdisciplinary",
       "Innovation"
     ],
-    "description_source": "https://www.stanford.edu/about/"
+    "description_source": "https://www.stanford.edu/about/",
+    "factors": {
+      "practice_vs_science": 0.9732,
+      "social_vs_hardcore": 0.964,
+      "budget_vs_prestige": 0.9893,
+      "city_vs_campus": 1.0
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Stanford+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Stanford&count=10&language=en&format=json&countryCode=US",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "country_code": "US",
+          "works_count": 489938,
+          "cited_by_count": 78125466,
+          "h_index": 2394
+        },
+        "city": {
+          "name": "Stanford",
+          "country_code": "US",
+          "admin1": "California",
+          "population": 13809,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 4.0,
+        "total_cost_year_usd": 93213.0,
+        "derived_signals": {
+          "research_signal_raw": 14.839796758667728,
+          "strictness_0_1": 0.96,
+          "research_norm_0_1": 0.973193,
+          "tuition_norm_0_1": 1.0,
+          "city_population_norm_0_1": 0.0
+        }
+      }
+    }
   },
   {
     "id": "harvard-usa-cambridge",
@@ -659,7 +785,49 @@
       "Interdisciplinary",
       "Prestige"
     ],
-    "description_source": "https://www.harvard.edu/about/"
+    "description_source": "https://www.harvard.edu/about/",
+    "factors": {
+      "practice_vs_science": 1.0,
+      "social_vs_hardcore": 0.979,
+      "budget_vs_prestige": 0.9562,
+      "city_vs_campus": 0.9949
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Harvard+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Cambridge&count=10&language=en&format=json&countryCode=US",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "country_code": "US",
+          "works_count": 673604,
+          "cited_by_count": 136265668,
+          "h_index": 2721
+        },
+        "city": {
+          "name": "Cambridge",
+          "country_code": "US",
+          "admin1": "Massachusetts",
+          "population": 110402,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 3.0,
+        "total_cost_year_usd": 86926.0,
+        "derived_signals": {
+          "research_signal_raw": 15.2485665284868,
+          "strictness_0_1": 0.97,
+          "research_norm_0_1": 1.0,
+          "tuition_norm_0_1": 0.927076,
+          "city_population_norm_0_1": 0.005098
+        }
+      }
+    }
   },
   {
     "id": "eth-zurich-ch-zurich",
@@ -831,7 +999,49 @@
       "Innovation",
       "Europe"
     ],
-    "description_source": "https://ethz.ch/en/the-eth-zurich/profile.html"
+    "description_source": "https://ethz.ch/en/the-eth-zurich/profile.html",
+    "factors": {
+      "practice_vs_science": 0.9104,
+      "social_vs_hardcore": 0.8331,
+      "budget_vs_prestige": 0.5103,
+      "city_vs_campus": 0.9827
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=ETH+Zurich&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Zurich&count=10&language=en&format=json&countryCode=CH",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I35440088",
+          "display_name": "ETH Zurich",
+          "country_code": "CH",
+          "works_count": 228056,
+          "cited_by_count": 24784763,
+          "h_index": 1105
+        },
+        "city": {
+          "name": "Zurich",
+          "country_code": "CH",
+          "admin1": "Zurich",
+          "population": 341730,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 20.0,
+        "total_cost_year_usd": 28000.0,
+        "derived_signals": {
+          "research_signal_raw": 13.882218417906085,
+          "strictness_0_1": 0.8,
+          "research_norm_0_1": 0.910395,
+          "tuition_norm_0_1": 0.243583,
+          "city_population_norm_0_1": 0.017307
+        }
+      }
+    }
   },
   {
     "id": "national-university-of-singapore-sg-singapore",
@@ -991,7 +1201,49 @@
       "Sustainability",
       "Global"
     ],
-    "description_source": "https://www.nus.edu.sg/about"
+    "description_source": "https://www.nus.edu.sg/about",
+    "factors": {
+      "practice_vs_science": 0.9112,
+      "social_vs_hardcore": 0.9244,
+      "budget_vs_prestige": 0.5385,
+      "city_vs_campus": 0.7031
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=National+University+of+Singapore&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Singapore&count=10&language=en&format=json&countryCode=SG",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I165932596",
+          "display_name": "National University of Singapore",
+          "country_code": "SG",
+          "works_count": 264149,
+          "cited_by_count": 23242636,
+          "h_index": 1059
+        },
+        "city": {
+          "name": "Singapore",
+          "country_code": "SG",
+          "admin1": null,
+          "population": 5638676,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 7.0,
+        "total_cost_year_usd": 32000.0,
+        "derived_signals": {
+          "research_signal_raw": 13.895148444807933,
+          "strictness_0_1": 0.93,
+          "research_norm_0_1": 0.911243,
+          "tuition_norm_0_1": 0.289979,
+          "city_population_norm_0_1": 0.296875
+        }
+      }
+    }
   },
   {
     "id": "epfl-ch-lausanne",
@@ -1113,7 +1365,49 @@
       "Startups",
       "Innovation"
     ],
-    "description_source": "https://www.epfl.ch/about/"
+    "description_source": "https://www.epfl.ch/about/",
+    "factors": {
+      "practice_vs_science": 0.377,
+      "social_vs_hardcore": 0.6731,
+      "budget_vs_prestige": 0.2761,
+      "city_vs_campus": 0.9934
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=EPFL&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Lausanne&count=10&language=en&format=json&countryCode=CH",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I4210100659",
+          "display_name": "Formation Continue UNIL-EPFL",
+          "country_code": "CH",
+          "works_count": 114,
+          "cited_by_count": 1469,
+          "h_index": 18
+        },
+        "city": {
+          "name": "Lausanne",
+          "country_code": "CH",
+          "admin1": "Vaud",
+          "population": 139111,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 20.0,
+        "total_cost_year_usd": 25000.0,
+        "derived_signals": {
+          "research_signal_raw": 5.748900931688494,
+          "strictness_0_1": 0.8,
+          "research_norm_0_1": 0.377013,
+          "tuition_norm_0_1": 0.208785,
+          "city_population_norm_0_1": 0.006613
+        }
+      }
+    }
   },
   {
     "id": "technical-university-of-munich-de-munich",
@@ -1226,7 +1520,49 @@
       "Industry Links",
       "Innovation"
     ],
-    "description_source": "https://www.tum.de/en/about-tum"
+    "description_source": "https://www.tum.de/en/about-tum",
+    "factors": {
+      "practice_vs_science": 0.8956,
+      "social_vs_hardcore": 0.7937,
+      "budget_vs_prestige": 0.4417,
+      "city_vs_campus": 0.9342
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Technical+University+of+Munich&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Munich&count=10&language=en&format=json&countryCode=DE",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I62916508",
+          "display_name": "Technical University of Munich",
+          "country_code": "DE",
+          "works_count": 211867,
+          "cited_by_count": 17266888,
+          "h_index": 969
+        },
+        "city": {
+          "name": "Munich",
+          "country_code": "DE",
+          "admin1": "Bavaria",
+          "population": 1260391,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 25.0,
+        "total_cost_year_usd": 19000.0,
+        "derived_signals": {
+          "research_signal_raw": 13.65604660956595,
+          "strictness_0_1": 0.75,
+          "research_norm_0_1": 0.895563,
+          "tuition_norm_0_1": 0.13919,
+          "city_population_norm_0_1": 0.065793
+        }
+      }
+    }
   },
   {
     "id": "university-of-toronto-ca-toronto",
@@ -1385,7 +1721,49 @@
       "Engineering",
       "Global"
     ],
-    "description_source": "https://www.utoronto.ca/about-u-of-t"
+    "description_source": "https://www.utoronto.ca/about-u-of-t",
+    "factors": {
+      "practice_vs_science": 0.9598,
+      "social_vs_hardcore": 0.8829,
+      "budget_vs_prestige": 0.7667,
+      "city_vs_campus": 0.8635
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=University+of+Toronto&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Toronto&count=10&language=en&format=json&countryCode=CA",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "country_code": "CA",
+          "works_count": 524859,
+          "cited_by_count": 54706183,
+          "h_index": 1712
+        },
+        "city": {
+          "name": "Toronto",
+          "country_code": "CA",
+          "admin1": "Ontario",
+          "population": 2600000,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 15.0,
+        "total_cost_year_usd": 62000.0,
+        "derived_signals": {
+          "research_signal_raw": 14.635454275528769,
+          "strictness_0_1": 0.85,
+          "research_norm_0_1": 0.959792,
+          "tuition_norm_0_1": 0.637955,
+          "city_population_norm_0_1": 0.136497
+        }
+      }
+    }
   },
   {
     "id": "cuhk-hk-shatin",
@@ -1551,7 +1929,49 @@
       "Business",
       "Asia"
     ],
-    "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
+    "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
+    "factors": {
+      "practice_vs_science": 0.8896,
+      "social_vs_hardcore": 0.8619,
+      "budget_vs_prestige": 0.5393,
+      "city_vs_campus": 0.9746
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Chinese+University+of+Hong+Kong&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Sha+Tin&count=10&language=en&format=json&countryCode=HK",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I177725633",
+          "display_name": "Chinese University of Hong Kong",
+          "country_code": "HK",
+          "works_count": 184594,
+          "cited_by_count": 15648638,
+          "h_index": 1012
+        },
+        "city": {
+          "name": "Shatin",
+          "country_code": "HK",
+          "admin1": "Sha Tin",
+          "population": 495200,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 15.0,
+        "total_cost_year_usd": 33354.0,
+        "derived_signals": {
+          "research_signal_raw": 13.565119809076334,
+          "strictness_0_1": 0.85,
+          "research_norm_0_1": 0.8896,
+          "tuition_norm_0_1": 0.305685,
+          "city_population_norm_0_1": 0.025407
+        }
+      }
+    }
   },
   {
     "id": "university-of-tokyo-jp-tokyo",
@@ -1729,7 +2149,49 @@
       "Life Sciences",
       "Global"
     ],
-    "description_source": "https://www.u-tokyo.ac.jp/en/about/overview.html"
+    "description_source": "https://www.u-tokyo.ac.jp/en/about/overview.html",
+    "factors": {
+      "practice_vs_science": 0.9482,
+      "social_vs_hardcore": 0.8445,
+      "budget_vs_prestige": 0.4419,
+      "city_vs_campus": 0.487
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=University+of+Tokyo&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=10&language=en&format=json&countryCode=JP",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I74801974",
+          "display_name": "The University of Tokyo",
+          "country_code": "JP",
+          "works_count": 482374,
+          "cited_by_count": 43795758,
+          "h_index": 1343
+        },
+        "city": {
+          "name": "Tokyo",
+          "country_code": "JP",
+          "admin1": "Tokyo",
+          "population": 9733276,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 20.0,
+        "total_cost_year_usd": 16000.0,
+        "derived_signals": {
+          "research_signal_raw": 14.45830158484377,
+          "strictness_0_1": 0.8,
+          "research_norm_0_1": 0.948174,
+          "tuition_norm_0_1": 0.104393,
+          "city_population_norm_0_1": 0.512984
+        }
+      }
+    }
   },
   {
     "id": "seoul-national-university-kr-seoul",
@@ -1926,7 +2388,49 @@
       "Comprehensive",
       "Global"
     ],
-    "description_source": "https://en.snu.ac.kr/about/overview"
+    "description_source": "https://en.snu.ac.kr/about/overview",
+    "factors": {
+      "practice_vs_science": 0.9023,
+      "social_vs_hardcore": 0.8657,
+      "budget_vs_prestige": 0.4166,
+      "city_vs_campus": 0.4545
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Seoul+National+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Seoul&count=10&language=en&format=json&countryCode=KR",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I139264467",
+          "display_name": "Seoul National University",
+          "country_code": "KR",
+          "works_count": 233186,
+          "cited_by_count": 20045791,
+          "h_index": 933
+        },
+        "city": {
+          "name": "Seoul",
+          "country_code": "KR",
+          "admin1": "Seoul",
+          "population": 10349312,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 15.0,
+        "total_cost_year_usd": 15000.0,
+        "derived_signals": {
+          "research_signal_raw": 13.758544967940823,
+          "strictness_0_1": 0.85,
+          "research_norm_0_1": 0.902284,
+          "tuition_norm_0_1": 0.092793,
+          "city_population_norm_0_1": 0.545497
+        }
+      }
+    }
   },
   {
     "id": "delft-university-of-technology-nl-delft",
@@ -2086,7 +2590,49 @@
       "Sustainability",
       "Europe"
     ],
-    "description_source": "https://www.tudelft.nl/en/about-tu-delft"
+    "description_source": "https://www.tudelft.nl/en/about-tu-delft",
+    "factors": {
+      "practice_vs_science": 0.87,
+      "social_vs_hardcore": 0.821,
+      "budget_vs_prestige": 0.5498,
+      "city_vs_campus": 0.9957
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Delft+University+of+Technology&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Delft&count=10&language=en&format=json&countryCode=NL",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I98358874",
+          "display_name": "Delft University of Technology",
+          "country_code": "NL",
+          "works_count": 165026,
+          "cited_by_count": 10169179,
+          "h_index": 754
+        },
+        "city": {
+          "name": "Delft",
+          "country_code": "NL",
+          "admin1": "South Holland",
+          "population": 95060,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 20.0,
+        "total_cost_year_usd": 36000.0,
+        "derived_signals": {
+          "research_signal_raw": 13.266296261674217,
+          "strictness_0_1": 0.8,
+          "research_norm_0_1": 0.870003,
+          "tuition_norm_0_1": 0.336376,
+          "city_population_norm_0_1": 0.004288
+        }
+      }
+    }
   },
   {
     "id": "kaist-kr-daejeon",
@@ -2252,7 +2798,49 @@
       "Startups",
       "Innovation"
     ],
-    "description_source": "https://www.kaist.ac.kr/en/html/kaist/010101.html"
+    "description_source": "https://www.kaist.ac.kr/en/html/kaist/010101.html",
+    "factors": {
+      "practice_vs_science": 0.8534,
+      "social_vs_hardcore": 0.851,
+      "budget_vs_prestige": 0.3901,
+      "city_vs_campus": 0.9232
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=KAIST&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Daejeon&count=10&language=en&format=json&countryCode=KR",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I157485424",
+          "display_name": "Korea Advanced Institute of Science and Technology",
+          "country_code": "KR",
+          "works_count": 109759,
+          "cited_by_count": 8518198,
+          "h_index": 653
+        },
+        "city": {
+          "name": "Daejeon",
+          "country_code": "KR",
+          "admin1": "Daejeon",
+          "population": 1469543,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 15.0,
+        "total_cost_year_usd": 14000.0,
+        "derived_signals": {
+          "research_signal_raw": 13.013441853496488,
+          "strictness_0_1": 0.85,
+          "research_norm_0_1": 0.853421,
+          "tuition_norm_0_1": 0.081194,
+          "city_population_norm_0_1": 0.076832
+        }
+      }
+    }
   },
   {
     "id": "tsinghua-university-cn-beijing",
@@ -2430,7 +3018,49 @@
       "Interdisciplinary",
       "Asia"
     ],
-    "description_source": "https://www.tsinghua.edu.cn/en/About.htm"
+    "description_source": "https://www.tsinghua.edu.cn/en/About.htm",
+    "factors": {
+      "practice_vs_science": 0.928,
+      "social_vs_hardcore": 0.9644,
+      "budget_vs_prestige": 0.3886,
+      "city_vs_campus": 0.0
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Tsinghua+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Beijing&count=10&language=en&format=json&countryCode=CN",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I99065089",
+          "display_name": "Tsinghua University",
+          "country_code": "CN",
+          "works_count": 355835,
+          "cited_by_count": 30831585,
+          "h_index": 1128
+        },
+        "city": {
+          "name": "Beijing",
+          "country_code": "CN",
+          "admin1": "Beijing",
+          "population": 18960744,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 2.0,
+        "total_cost_year_usd": 9500.0,
+        "derived_signals": {
+          "research_signal_raw": 14.15016708592855,
+          "strictness_0_1": 0.98,
+          "research_norm_0_1": 0.927967,
+          "tuition_norm_0_1": 0.028998,
+          "city_population_norm_0_1": 1.0
+        }
+      }
+    }
   },
   {
     "id": "nazarbayev-university-kaz-astana",
@@ -2700,7 +3330,49 @@
       "Kazakhstan",
       "Innovation"
     ],
-    "description_source": "https://nu.edu.kz/about-us"
+    "description_source": "https://nu.edu.kz/about-us",
+    "factors": {
+      "practice_vs_science": 0.6904,
+      "social_vs_hardcore": 0.7671,
+      "budget_vs_prestige": 0.3631,
+      "city_vs_campus": 0.9825
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Nazarbayev+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Astana&count=10&language=en&format=json&countryCode=KZ",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I60559429",
+          "display_name": "Nazarbayev University",
+          "country_code": "KZ",
+          "works_count": 13894,
+          "cited_by_count": 372854,
+          "h_index": 173
+        },
+        "city": {
+          "name": "Astana",
+          "country_code": "KZ",
+          "admin1": "Astana",
+          "population": 345604,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 20.0,
+        "total_cost_year_usd": 19500.0,
+        "derived_signals": {
+          "research_signal_raw": 10.527080256194296,
+          "strictness_0_1": 0.8,
+          "research_norm_0_1": 0.690365,
+          "tuition_norm_0_1": 0.14499,
+          "city_population_norm_0_1": 0.017512
+        }
+      }
+    }
   },
   {
     "id": "kyoto-university-jp-kyoto",
@@ -2868,7 +3540,49 @@
       "Japan",
       "Fundamental Research"
     ],
-    "description_source": "https://www.kyoto-u.ac.jp/en/about/profile"
+    "description_source": "https://www.kyoto-u.ac.jp/en/about/profile",
+    "factors": {
+      "practice_vs_science": 0.9235,
+      "social_vs_hardcore": 0.872,
+      "budget_vs_prestige": 0.4355,
+      "city_vs_campus": 0.9235
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Kyoto+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kyoto&count=10&language=en&format=json&countryCode=JP",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I22299242",
+          "display_name": "Kyoto University",
+          "country_code": "JP",
+          "works_count": 337624,
+          "cited_by_count": 28280872,
+          "h_index": 1077
+        },
+        "city": {
+          "name": "Kyoto",
+          "country_code": "JP",
+          "admin1": "Kyoto",
+          "population": 1463723,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 15.0,
+        "total_cost_year_usd": 16500.0,
+        "derived_signals": {
+          "research_signal_raw": 14.081669428798003,
+          "strictness_0_1": 0.85,
+          "research_norm_0_1": 0.923475,
+          "tuition_norm_0_1": 0.110192,
+          "city_population_norm_0_1": 0.076525
+        }
+      }
+    }
   },
   {
     "id": "university-of-melbourne-au-melbourne",
@@ -3045,7 +3759,49 @@
       "Interdisciplinary",
       "Global"
     ],
-    "description_source": "https://about.unimelb.edu.au/"
+    "description_source": "https://about.unimelb.edu.au/",
+    "factors": {
+      "practice_vs_science": 0.9243,
+      "social_vs_hardcore": 0.6973,
+      "budget_vs_prestige": 0.6829,
+      "city_vs_campus": 0.7412
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=University+of+Melbourne&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Melbourne&count=10&language=en&format=json&countryCode=AU",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I165779595",
+          "display_name": "The University of Melbourne",
+          "country_code": "AU",
+          "works_count": 326889,
+          "cited_by_count": 28612017,
+          "h_index": 1219
+        },
+        "city": {
+          "name": "Melbourne",
+          "country_code": "AU",
+          "admin1": "Victoria",
+          "population": 4917750,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 40.0,
+        "total_cost_year_usd": 52000.0,
+        "derived_signals": {
+          "research_signal_raw": 14.094742269964962,
+          "strictness_0_1": 0.6,
+          "research_norm_0_1": 0.924332,
+          "tuition_norm_0_1": 0.521963,
+          "city_population_norm_0_1": 0.258825
+        }
+      }
+    }
   },
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
@@ -3215,7 +3971,49 @@
       "Applied Learning",
       "Regional Impact"
     ],
-    "description_source": "https://sdu.edu.kz/language/en/why-sdu/"
+    "description_source": "https://sdu.edu.kz/language/en/why-sdu/",
+    "factors": {
+      "practice_vs_science": 0.6228,
+      "social_vs_hardcore": 0.4669,
+      "budget_vs_prestige": 0.2596,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Suleyman+Demirel+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kaskelen&count=10&language=en&format=json&countryCode=KZ",
+        "wikidata_population_query": "https://query.wikidata.org/sparql?format=json&query=SELECT+%3Fpopulation+WHERE+%7B%0A++%3Fcity+rdfs%3Alabel+%22Kaskelen%22%40en%3B%0A++++++++wdt%3AP17+wd%3AQ232.%0A++OPTIONAL+%7B+%3Fcity+wdt%3AP1082+%3Fpopulation.+%7D%0A%7D%0ALIMIT+10"
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I4210120897",
+          "display_name": "Suleyman Demirel University",
+          "country_code": "KZ",
+          "works_count": 9891,
+          "cited_by_count": 74788,
+          "h_index": 84
+        },
+        "city": {
+          "name": "Kaskelen",
+          "country_code": "KZ",
+          "admin1": "Almaty Oblysy",
+          "population": null,
+          "population_wikidata_fallback": 58418.0
+        },
+        "admissions_acceptance_percent_avg": 60.0,
+        "total_cost_year_usd": 8500.0,
+        "derived_signals": {
+          "research_signal_raw": 9.49742930566042,
+          "strictness_0_1": 0.4,
+          "research_norm_0_1": 0.622841,
+          "tuition_norm_0_1": 0.017399,
+          "city_population_norm_0_1": 0.002354
+        }
+      }
+    }
   },
   {
     "id": "astana-it-university-kaz-astana",
@@ -3393,6 +4191,48 @@
       "Innovation",
       "Industry Projects"
     ],
-    "description_source": "https://astanait.edu.kz/en/university/mission/"
+    "description_source": "https://astanait.edu.kz/en/university/mission/",
+    "factors": {
+      "practice_vs_science": 0.0,
+      "social_vs_hardcore": 0.49,
+      "budget_vs_prestige": 0.0,
+      "city_vs_campus": 0.9825
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-02-12T13:30:28Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Astana+IT+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Astana&count=10&language=en&format=json&countryCode=KZ",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I4405257690",
+          "display_name": "Astana IT University",
+          "country_code": "KZ",
+          "works_count": 0,
+          "cited_by_count": 0,
+          "h_index": 0
+        },
+        "city": {
+          "name": "Astana",
+          "country_code": "KZ",
+          "admin1": "Astana",
+          "population": 345604,
+          "population_wikidata_fallback": null
+        },
+        "admissions_acceptance_percent_avg": 30.0,
+        "total_cost_year_usd": 7000.0,
+        "derived_signals": {
+          "research_signal_raw": 0.0,
+          "strictness_0_1": 0.7,
+          "research_norm_0_1": 0.0,
+          "tuition_norm_0_1": 0.0,
+          "city_population_norm_0_1": 0.017512
+        }
+      }
+    }
   }
 ]

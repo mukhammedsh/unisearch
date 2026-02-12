@@ -1,16 +1,59 @@
-# UniSearch / UniFit / UniChance - 2.1.2 (Infomatrix 2026)
+# UniSearch / UniFit / UniChance - 2.2.0 (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app for university selection using:
 - structured university data,
 - profile-based filtering,
-- `UniFit` ranking (prestige/budget/admission-feasibility balance),
+- `UniFit` ranking with 4 trade-off sliders:
+  - Focus: `Career & Practice` <-> `Science & Research`
+  - Atmosphere: `Social & Events` <-> `Hardcore Study`
+  - Finance: `Budget & Grants` <-> `Prestige & Comfort`
+  - Location: `Big City Life` <-> `Cozy Campus`
 - `UniChance` probability (0-100 estimated admission chance).
+
+### UniFit ranking logic (current)
+- `Finance` slider is a mode switch for admission probability:
+  - left side (`Budget & Grants`) uses `GrantChance`
+  - right side (`Prestige & Comfort`) uses `GeneralChance`
+- `PreferenceMismatch` is calculated from Focus + Atmosphere + Location.
+- `AdmissionRisk = 1 - SelectedChance`.
+- Final ranking score:
+  - `FinalScore = 0.6 * PreferenceMismatch + 0.4 * AdmissionRisk`
+  - lower score means better rank.
+- Missing exam data is treated as **conditional** (not auto-fail): ranking/chance use available evidence and keep such options visible.
+- University card badges explain recommendation reasons with strict priority:
+  - `Conditional / Exam Needed`
+  - `Your Vibe` / `Top Match`
+  - `Likely Grant` / `Paid Admission`
+- Backend includes `matchData.uiBadgeHints` so card tag rendering stays deterministic across clients.
 
 ## Core architecture
 - Frontend: Vanilla JS + HTML/CSS (`frontend/`)
 - Backend: FastAPI (`backend/app/`)
 - Data: JSON datasets (`backend/data/*.json`)
+
+## University Factor Data Provenance
+UniFit slider factors in `backend/data/universities.json` are generated from traceable data, not manual estimates.
+
+Current factor refresh pipeline:
+- `OpenAlex Institutions API`:
+  - `works_count`, `cited_by_count`, `h_index` -> research signal.
+- `Open-Meteo Geocoding API`:
+  - city population -> `city_vs_campus` signal.
+- `Wikidata SPARQL` fallback:
+  - city population when Open-Meteo has no population value.
+- local objective fields:
+  - average acceptance rate from program entries,
+  - total yearly cost (`finance.total_cost_year_usd`).
+
+Each university now includes:
+- `factors`: normalized values used by sliders (`0.0..1.0`),
+- `factors_meta`: source query URLs, raw metrics, derived normalized signals, and `computed_at`.
+
+To refresh factors from internet sources:
+```bash
+python backend/scripts/refresh_university_factors.py
+```
 
 Business logic is backend-first:
 - `POST /universities/ai-sort`
@@ -24,8 +67,7 @@ Pipeline:
 1. User writes interests in any supported UI language.
 2. Backend detects locale/source and translates to English via self-hosted LibreTranslate.
 3. Backend computes TF-IDF + cosine similarity against university metadata.
-4. Final hybrid score (if interests exist):
-   - `final_score = 0.7 * hard_score + 0.3 * ml_score`
+4. UniFit ranking combines slider mismatch + admission risk (`FinalScore = 0.6 * PreferenceMismatch + 0.4 * AdmissionRisk`); ML is attached as an additional relevance signal in `matchData.mlScore` and diagnostics.
 
 If translation is unavailable, backend safely falls back to raw text and still returns results.
 
@@ -35,7 +77,7 @@ If translation is unavailable, backend safely falls back to raw text and still r
 - provider failure backoff
 - short request timeout
 
-## Performance services (2.1.2)
+## Performance services (2.2.0)
 - Redis for API/cache and shared rate-limit state
 - Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
@@ -57,7 +99,10 @@ ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 
 ### Backend infra env (`backend/.env`)
 ```env
-APP_VERSION=2.1.2
+APP_VERSION=2.2.0
+FRONTEND_ORIGIN=http://127.0.0.1:5501
+# Optional multi-origin override (comma-separated):
+# FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
 REDIS_URL=redis://127.0.0.1:6379/0
 REDIS_PREFIX=unisearch
 REDIS_CACHE_TTL_SEC=60
@@ -128,12 +173,104 @@ REDIS_URL=<render-key-value-internal-url>
 AUTO_WARMUP_ON_STARTUP=1
 ```
 
-## Tests
+## Testing Strategy
+The test stack is split into two deterministic layers:
+
+1. Backend `unittest` suites for API contracts, validation, algorithms, and regression invariants.
+2. Frontend Playwright E2E suites for realistic user journeys using natural, human-like input patterns.
+
+Coverage target for this phase is **Critical + Algo**:
+- critical API routes and UI flows,
+- UniFit / UniChance / ROI algorithm invariants,
+- profile, language, and exam validation behavior,
+- multi-user smoke for scoring endpoints.
+
+## Test Suites
+- Backend unit/integration (`backend/tests/`):
+  - existing algorithm and search tests,
+  - new API contract tests (`/health`, `/ready`, `/ops/*`, `/universities*`, `/exams/*`, `/languages/*`),
+  - persona-based regression (`fixtures/personas.json`),
+  - extended payload validation and concurrency smoke.
+- Frontend E2E (`tests/e2e/`):
+  - smoke home page / layout,
+  - realistic profile editing and persistence,
+  - AI sort flow on universities list,
+  - university detail flow (UniChance + ROI recomputation),
+  - language validation UI flow,
+  - i18n switching for `eng/rus/kz`.
+
+## Run Tests Locally
+Prerequisites:
+- Python 3.12+
+- Node.js 20+
+
+Install dependencies:
 ```bash
-cd backend
-set PYTHONPATH=.
-python -m unittest discover tests -v
+pip install -r backend/requirements.txt
+pip install -r backend/requirements-dev.txt
+npm install
+npx playwright install chromium
 ```
+
+Run backend tests:
+```bash
+npm run test:backend
+```
+
+Run E2E PR suite (Chromium only):
+```bash
+npm run test:e2e:pr
+```
+
+Run full nightly browser matrix locally:
+```bash
+npm run test:e2e:nightly
+```
+
+Run Chromium E2E on isolated local test port (`5510`) with deterministic local stack:
+```bash
+npx playwright test --project=chromium --config=playwright.local.config.js
+```
+
+Run backend + PR E2E together:
+```bash
+npm run test:all
+```
+
+## CI Test Policy
+Workflow: `.github/workflows/tests.yml`
+
+- PR / push (`main`):
+  - `backend-tests`
+  - `e2e-pr` (Chromium only)
+- Nightly (`cron`):
+  - `nightly-full` (Chromium + Firefox + WebKit)
+
+Playwright reports/artifacts are uploaded from CI jobs.
+
+## Synthetic User Personas
+Persona fixtures live in:
+- `backend/tests/fixtures/personas.json`
+- `backend/tests/fixtures/persona_inputs_natural_text.json`
+
+These fixtures model realistic input:
+- multilingual text (`eng/rus/kz`) and mixed-language phrases,
+- abbreviations and colloquial wording (`ict`, `gamedev`, `ui/ux`, etc.),
+- noisy inputs and minor typos,
+- mixed numeric formats and partial profile evidence.
+
+No personal user data is used in automated tests.
+
+## Troubleshooting Tests
+- If E2E cannot connect to backend:
+  - verify backend starts at `http://127.0.0.1:8000/health`.
+  - if frontend runs on non-default test port, allow it via `FRONTEND_ORIGINS` (e.g. include `http://127.0.0.1:5510`).
+- If E2E cannot open frontend:
+  - verify static server is available at `http://127.0.0.1:5501/index.html`.
+- If browser binaries are missing:
+  - run `npx playwright install chromium` (or full browser set for nightly).
+- If translation provider/network is unavailable in tests:
+  - E2E runs are configured with `ML_INTEREST_TRANSLATION_ENABLED=0` for deterministic behavior.
 
 ## GitHub Release + Packages (GHCR)
 This repository is configured to publish both release assets and a backend container image when a GitHub Release is published.
@@ -148,10 +285,10 @@ What happens automatically on release publish:
 
 How to trigger:
 1. Push all changes to `main`.
-2. Create and push a tag (example `v2.1.2`):
+2. Create and push a tag (example `v2.2.0`):
    ```bash
-   git tag v2.1.2
-   git push origin v2.1.2
+   git tag v2.2.0
+   git push origin v2.2.0
    ```
 3. In GitHub, open Releases and publish a release for that tag.
 4. Wait for the workflow `Release Artifacts And Container` to finish.
@@ -190,6 +327,9 @@ backend/
     languages.json
     cities.json
   tests/
+    fixtures/
+      personas.json
+      persona_inputs_natural_text.json
 
 frontend/
   index.html
@@ -214,6 +354,19 @@ frontend/
     kz
 
 docker-compose.yml
+playwright.config.js
+package.json
+tests/
+  e2e/
+    helpers/
+      personas.js
+      selectors.js
+    smoke-home.spec.js
+    profile-natural-input.spec.js
+    universities-ai-sort-flow.spec.js
+    university-detail-chance-roi.spec.js
+    languages-validation-flow.spec.js
+    i18n-switching.spec.js
 ```
 
 ## Notes

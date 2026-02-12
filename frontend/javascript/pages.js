@@ -400,6 +400,11 @@ export function initUniversitiesPage() {
         if (!Number.isFinite(n)) return fallback;
         return Math.max(0, Math.min(MAX_TUITION, Math.round(n)));
     };
+    const clampPercent = (value, fallback = 50) => {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return fallback;
+        return Math.max(0, Math.min(100, Math.round(n)));
+    };
 
     const el = {
         qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
@@ -407,7 +412,12 @@ export function initUniversitiesPage() {
         minInput: $("minCostInput"), maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
-        slider: $("uniFitSlider"), sliderLabel: $("sliderLabel"), resetBtn: $("resetFiltersBtn"),
+        sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
+        focusSlider: $("focusSlider"), focusLabel: $("focusLabel"),
+        atmosphereSlider: $("atmosphereSlider"), atmosphereLabel: $("atmosphereLabel"),
+        financeSlider: $("financeSlider"), financeLabel: $("financeLabel"),
+        locationSlider: $("locationSlider"), locationLabel: $("locationLabel"),
+        resetBtn: $("resetFiltersBtn"),
         content: document.querySelector(".u-content"),
         list: $("universitiesList"), mapContainer: $("mapContainer"), total: $("totalCount"), 
         state: $("listState"), pagination: $("pagination"),
@@ -421,6 +431,51 @@ export function initUniversitiesPage() {
     };
 
     if (!el.list) return;
+
+    const initInfoTooltips = () => {
+        const wraps = Array.from(document.querySelectorAll(".u-info-wrap"));
+        if (!wraps.length) return;
+
+        const closeAll = () => wraps.forEach((w) => w.classList.remove("is-open"));
+        document.addEventListener("click", (evt) => {
+            if (!(evt.target instanceof Element)) return;
+            if (evt.target.closest(".u-info-wrap")) return;
+            closeAll();
+        });
+
+        wraps.forEach((wrap) => {
+            const btn = wrap.querySelector(".u-info");
+            if (!btn) return;
+            let holdTimer = null;
+
+            btn.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                const willOpen = !wrap.classList.contains("is-open");
+                closeAll();
+                if (willOpen) wrap.classList.add("is-open");
+            });
+
+            btn.addEventListener("touchstart", (evt) => {
+                evt.stopPropagation();
+                holdTimer = window.setTimeout(() => {
+                    closeAll();
+                    wrap.classList.add("is-open");
+                }, 420);
+            }, { passive: true });
+
+            const clearHold = () => {
+                if (holdTimer) {
+                    window.clearTimeout(holdTimer);
+                    holdTimer = null;
+                }
+            };
+
+            btn.addEventListener("touchend", clearHold, { passive: true });
+            btn.addEventListener("touchcancel", clearHold, { passive: true });
+        });
+    };
+    initInfoTooltips();
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -438,7 +493,17 @@ export function initUniversitiesPage() {
         funding_type: getProfileFundingQueryValue(),
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
-        sort: normalizeSortMode(savedState.sort || "uni_ai"), ai_balance: savedState.ai_balance !== undefined ? savedState.ai_balance : 50, 
+        sort: normalizeSortMode(savedState.sort || "uni_ai"),
+        practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
+        social_vs_hardcore: clampPercent(
+            savedState.social_vs_hardcore !== undefined ? savedState.social_vs_hardcore : savedState.admission_bias,
+            50
+        ),
+        budget_vs_prestige: clampPercent(
+            savedState.budget_vs_prestige !== undefined ? savedState.budget_vs_prestige : savedState.ai_balance,
+            50
+        ),
+        city_vs_campus: clampPercent(savedState.city_vs_campus, 50),
         viewMode: savedState.viewMode || "list", page: 1, limit: 15,
     };
     if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
@@ -850,7 +915,52 @@ export function initUniversitiesPage() {
         updateSliderVisibility();
         refetch();
     });
-    el.slider?.addEventListener("input", () => { state.ai_balance = parseInt(el.slider.value); updateSliderLabel(); refetch(); });
+
+    const bindTradeoffSlider = (sliderEl, stateKey, leftTextKey, leftTextFallback, rightTextKey, rightTextFallback, labelEl) => {
+        if (!sliderEl) return;
+        sliderEl.addEventListener("input", () => {
+            state[stateKey] = clampPercent(sliderEl.value, 50);
+            updateTradeoffLabel(labelEl, state[stateKey], leftTextKey, leftTextFallback, rightTextKey, rightTextFallback);
+            refetch();
+        });
+    };
+
+    bindTradeoffSlider(
+        el.focusSlider,
+        "practice_vs_science",
+        "universities.tradeoff.focus.left",
+        "Career & Practice",
+        "universities.tradeoff.focus.right",
+        "Science & Research",
+        el.focusLabel
+    );
+    bindTradeoffSlider(
+        el.atmosphereSlider,
+        "social_vs_hardcore",
+        "universities.tradeoff.atmosphere.left",
+        "Social & Events",
+        "universities.tradeoff.atmosphere.right",
+        "Hardcore Study",
+        el.atmosphereLabel
+    );
+    bindTradeoffSlider(
+        el.financeSlider,
+        "budget_vs_prestige",
+        "universities.tradeoff.finance.left",
+        "Budget & Grants",
+        "universities.tradeoff.finance.right",
+        "Prestige & Comfort",
+        el.financeLabel
+    );
+    bindTradeoffSlider(
+        el.locationSlider,
+        "city_vs_campus",
+        "universities.tradeoff.location.left",
+        "Big City Life",
+        "universities.tradeoff.location.right",
+        "Cozy Campus",
+        el.locationLabel
+    );
 
     el.resetBtn?.addEventListener("click", () => {
         Object.assign(state, {
@@ -863,7 +973,10 @@ export function initUniversitiesPage() {
             min_tuition: 0,
             max_tuition: MAX_TUITION,
             sort: "uni_ai",
-            ai_balance: 50,
+            practice_vs_science: 50,
+            social_vs_hardcore: 50,
+            budget_vs_prestige: 50,
+            city_vs_campus: 50,
             page: 1
         });
         saveFilters(state);
@@ -911,7 +1024,7 @@ export function initUniversitiesPage() {
     });
     window.addEventListener("languageChanged", () => {
         applyAISortOptionLabel();
-        updateSliderLabel();
+        updateTradeoffLabels();
         fetchAndRender();
     });
 
@@ -1009,19 +1122,64 @@ export function initUniversitiesPage() {
     }
 
     function updateSliderVisibility() {
+        if (el.sortStrategyInfoWrap) {
+            const showSortInfo = state.sort === "uni_ai";
+            el.sortStrategyInfoWrap.style.display = showSortInfo ? "" : "none";
+            el.sortStrategyInfoWrap.setAttribute("aria-hidden", showSortInfo ? "false" : "true");
+            if (!showSortInfo) el.sortStrategyInfoWrap.classList.remove("is-open");
+        }
         if (!el.sliderContainer) return;
-        if (state.sort === "uni_ai") { el.sliderContainer.style.display = "block"; updateSliderLabel(); } 
+        if (state.sort === "uni_ai") {
+            el.sliderContainer.style.display = "block";
+            updateTradeoffLabels();
+        } 
         else { el.sliderContainer.style.display = "none"; }
     }
-    function updateSliderLabel() {
-        if (!el.sliderLabel) return;
-        const val = state.ai_balance;
-        let text = t("universities.slider.balanced", "Balanced (50/50)");
-        if (val <= 20) text = t("universities.slider.budget_priority", "Strict Budget Priority");
-        else if (val >= 80) text = t("universities.slider.prestige_priority", "Top Prestige Priority");
-        else if (val < 50) text = tFormat("universities.slider.focus_budget", { value: 100 - val }, `Focus on Budget (${100 - val}%)`);
-        else text = tFormat("universities.slider.focus_prestige", { value: val }, `Focus on Prestige (${val}%)`);
-        el.sliderLabel.textContent = text;
+
+    function updateTradeoffLabel(labelEl, value, leftTextKey, leftTextFallback, rightTextKey, rightTextFallback) {
+        if (!labelEl) return;
+        const val = clampPercent(value, 50);
+        const leftText = t(leftTextKey, leftTextFallback);
+        const rightText = t(rightTextKey, rightTextFallback);
+        let text = t("universities.tradeoff.balanced", "Balanced (50/50)");
+        if (val < 50) text = `${leftText} (${100 - val}%)`;
+        else if (val > 50) text = `${rightText} (${val}%)`;
+        labelEl.textContent = text;
+    }
+
+    function updateTradeoffLabels() {
+        updateTradeoffLabel(
+            el.focusLabel,
+            state.practice_vs_science,
+            "universities.tradeoff.focus.left",
+            "Career & Practice",
+            "universities.tradeoff.focus.right",
+            "Science & Research"
+        );
+        updateTradeoffLabel(
+            el.atmosphereLabel,
+            state.social_vs_hardcore,
+            "universities.tradeoff.atmosphere.left",
+            "Social & Events",
+            "universities.tradeoff.atmosphere.right",
+            "Hardcore Study"
+        );
+        updateTradeoffLabel(
+            el.financeLabel,
+            state.budget_vs_prestige,
+            "universities.tradeoff.finance.left",
+            "Budget & Grants",
+            "universities.tradeoff.finance.right",
+            "Prestige & Comfort"
+        );
+        updateTradeoffLabel(
+            el.locationLabel,
+            state.city_vs_campus,
+            "universities.tradeoff.location.left",
+            "Big City Life",
+            "universities.tradeoff.location.right",
+            "Cozy Campus"
+        );
     }
     
     function buildParams(forApi = false) {
@@ -1051,7 +1209,10 @@ export function initUniversitiesPage() {
             if (forApi && isAiSort) { p.set("limit", "100"); p.set("page", "1"); } 
             else { p.set("page", String(state.page)); p.set("limit", String(state.limit)); }
         }
-        if (state.ai_balance !== undefined && state.ai_balance !== null) p.set("ai_balance", String(state.ai_balance));
+        if (state.practice_vs_science !== undefined && state.practice_vs_science !== null) p.set("practice_vs_science", String(state.practice_vs_science));
+        if (state.social_vs_hardcore !== undefined && state.social_vs_hardcore !== null) p.set("social_vs_hardcore", String(state.social_vs_hardcore));
+        if (state.budget_vs_prestige !== undefined && state.budget_vs_prestige !== null) p.set("budget_vs_prestige", String(state.budget_vs_prestige));
+        if (state.city_vs_campus !== undefined && state.city_vs_campus !== null) p.set("city_vs_campus", String(state.city_vs_campus));
         if (state.viewMode) p.set("view", state.viewMode);
         if (!forApi && focusUniId) p.set("focus_uni", focusUniId);
         return p;
@@ -1061,7 +1222,10 @@ export function initUniversitiesPage() {
         const profile = loadProfileForApi();
         const payload = {
             profile,
-            ai_balance: state.ai_balance,
+            practice_vs_science: state.practice_vs_science,
+            social_vs_hardcore: state.social_vs_hardcore,
+            budget_vs_prestige: state.budget_vs_prestige,
+            city_vs_campus: state.city_vs_campus,
             page: state.page,
             limit: state.limit,
         };
@@ -1103,7 +1267,10 @@ export function initUniversitiesPage() {
         }
         const studyLevelSelect = $("studyLevelSelect");
         if (studyLevelSelect) studyLevelSelect.value = state.study_level || "";
-        if(el.slider) el.slider.value = state.ai_balance;
+        if (el.focusSlider) el.focusSlider.value = state.practice_vs_science;
+        if (el.atmosphereSlider) el.atmosphereSlider.value = state.social_vs_hardcore;
+        if (el.financeSlider) el.financeSlider.value = state.budget_vs_prestige;
+        if (el.locationSlider) el.locationSlider.value = state.city_vs_campus;
         if (el.minSlider) el.minSlider.value = state.min_tuition;
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
         if (el.minInput) el.minInput.value = state.min_tuition;
@@ -1113,6 +1280,7 @@ export function initUniversitiesPage() {
 
         ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect"].forEach(id => initCustomSelect(id));
         updateSliderVisibility();
+        updateTradeoffLabels();
     }
 
     function updateLocationLogic(country) {
@@ -1178,9 +1346,12 @@ export function initUniversitiesPage() {
         if(sp.has("min_tuition")) state.min_tuition = clampTuition(sp.get("min_tuition"), state.min_tuition);
         if(sp.has("max_tuition")) state.max_tuition = clampTuition(sp.get("max_tuition"), state.max_tuition);
         if(sp.has("sort")) state.sort = normalizeSortMode(sp.get("sort"));
-        if(sp.has("ai_balance")) {
-            const ab = Number(sp.get("ai_balance"));
-            if (Number.isFinite(ab)) state.ai_balance = Math.max(0, Math.min(100, Math.round(ab)));
+        if (sp.has("practice_vs_science")) state.practice_vs_science = clampPercent(sp.get("practice_vs_science"), state.practice_vs_science);
+        if (sp.has("social_vs_hardcore")) state.social_vs_hardcore = clampPercent(sp.get("social_vs_hardcore"), state.social_vs_hardcore);
+        if (sp.has("budget_vs_prestige")) state.budget_vs_prestige = clampPercent(sp.get("budget_vs_prestige"), state.budget_vs_prestige);
+        if (sp.has("city_vs_campus")) state.city_vs_campus = clampPercent(sp.get("city_vs_campus"), state.city_vs_campus);
+        if (!sp.has("budget_vs_prestige") && sp.has("ai_balance")) {
+            state.budget_vs_prestige = clampPercent(sp.get("ai_balance"), state.budget_vs_prestige);
         }
         if(sp.has("page")) {
             const page = Number(sp.get("page"));
@@ -1431,68 +1602,58 @@ export function initUniversitiesPage() {
         baseCost;
 
         let badgesHTML = "";
-
-        // “Есть ли вообще aid/grants”
-        const aidAnyFallback =
-        (u.aid_any !== undefined ? !!u.aid_any : false) ||
-        !!(u.finance?.financial_aid?.merit_based || u.finance?.financial_aid?.need_based) ||
-        (Array.isArray(u.admission_tracks) && (
-            u.admission_tracks.some(t => Array.isArray(t?.scholarships) && t.scholarships.length > 0) ||
-            u.admission_tracks.some(t => String(t?.funding_type || "").toLowerCase() === "grant")
-        ));
-
-        const aidAny =
-        (match.aidAny !== undefined) ? !!match.aidAny :
-        ((match.aidAvailable !== undefined) ? !!match.aidAvailable : aidAnyFallback);
-
-        // “Юзер проходит на грант/aid по требованиям”
-        const aidEligible =
-        (match.aidEligible !== undefined) ? !!match.aidEligible :
-        ((match.grantEligible !== undefined) ? !!match.grantEligible : !!match.grantName);
-
-        // ВАЖНО: если aidEligible=true, ты сам писал “no budget penalty”
-        // значит overBudget считаем только когда aidEligible=false
-        const overBudget = (myBudget > 0 && cost > myBudget && !aidEligible);
+        let whyText = "";
+        const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
+        const preferenceMismatch = Number(match.preferenceMismatch);
+        const grantChance = Number(match.grantChance);
+        const generalChance = Number(match.generalChance);
+        const selectedChanceType = String(match.selectedChanceType || "").toLowerCase();
+        const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
+        const hintedFinance = String(badgeHints.finance || "").toLowerCase();
+        const financePref = Number(state.budget_vs_prestige);
+        const inGrantMode = selectedChanceType ? selectedChanceType === "grant" : financePref < 50;
+        const inPaidMode = selectedChanceType ? selectedChanceType === "general" : financePref > 50;
+        const conditionalCount = Number(match.conditionalRequirements || 0);
+        const hasConditionalExamWarning = (badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0);
+        const hasVeryHighVibeMatch = hintedVibe === "your_vibe" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch <= 0.14);
+        const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
+        const likelyGrant = hintedFinance === "likely_grant" || (!hintedFinance && inGrantMode && Number.isFinite(grantChance) && grantChance >= 65);
+        const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
 
         const badges = [];
 
-        if (match.meetMinRequirements) {
+        // Priority 1: warning on missing exam evidence (conditional, not fail)
+        if (hasConditionalExamWarning) {
             badges.push(
-                `<span class="uni-pill uni-pill--neutral">${escapeHtml(t("universities.badge.requirements_met", "✅ Requirements Met"))}</span>`
+                `<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.conditional_exam_needed", "📝 Conditional / Exam Needed"))}</span>`
             );
-        } else if (match.trackLabel) {
-            badges.push(
-                `<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.below_requirements", "⚠️ Below Requirements"))}</span>`
-            );
+            whyText = t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional.");
         }
 
+        // Priority 2: highlight vibe fit from Focus/Atmosphere/Location distance
+        if (hasVeryHighVibeMatch) {
+            badges.push(
+                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.your_vibe", "🔥 Your Vibe"))}</span>`
+            );
+            if (!whyText) whyText = t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders.");
+        } else if (hasHighVibeMatch) {
+            badges.push(
+                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.top_match", "⭐ Top Match"))}</span>`
+            );
+            if (!whyText) whyText = t("universities.why.top_match", "This university is a strong preference match for your current slider setup.");
+        }
 
-        // Grant/Aid badges
-        if (match.grantName) {
-        badges.push(
-            `<span class="uni-pill uni-pill--success">🏆 ${escapeHtml(match.grantName)}</span>`
-        );
-        } else if (overBudget) {
-        if (aidEligible) {
+        // Priority 3: financial route tag from finance slider mode + chance
+        if (likelyGrant) {
             badges.push(
-            `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_likely", "🎓 Grant/Aid Likely (no budget penalty)"))}</span>`
+                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.likely_grant", "🎓 Likely Grant"))}</span>`
             );
-        } else if (aidAny) {
+            if (!whyText) whyText = t("universities.why.likely_grant", "In grant-priority mode, this university has a strong grant admission chance.");
+        } else if (paidAdmission) {
             badges.push(
-            `<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.over_budget_aid", "💸 Over Budget • Aid Available"))}</span>`
+                `<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.paid_admission", "💼 Paid Admission"))}</span>`
             );
-        } else {
-            badges.push(
-            `<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget", "💰 Over Budget"))}</span>`
-            );
-        }
-        } else {
-        // Не over budget
-        if (aidAny) {
-            badges.push(
-            `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🎓 Aid Available"))}</span>`
-            );
-        }
+            if (!whyText) whyText = t("universities.why.paid_admission", "In willing-to-pay mode, this university has a strong general admission chance.");
         }
 
         // Fallback: acceptance
@@ -1525,6 +1686,7 @@ export function initUniversitiesPage() {
                         <h3 class="uni-title">${escapeHtml(name)}</h3>
             <div class="uni-loc" style="margin-bottom:8px;">📍 ${locString}</div> 
             <div class="uni-badge" style="margin-top:auto; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
+            ${whyText ? `<div class="uni-why">${escapeHtml(whyText)}</div>` : ""}
             </div>
         </article>
         `;
@@ -2240,7 +2402,7 @@ export async function initUniversityPage() {
     renderAdmissionTab();
     window.addEventListener("profileUpdated", async () => {
         admissionTrackFilter = readAdmissionTrackFilterFromProfile();
-        await recomputeUniChance();
+        await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
         renderAdmissionTab();
     });
 

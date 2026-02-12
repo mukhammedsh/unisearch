@@ -14,6 +14,7 @@ import {
   getCurrentTheme,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
+import { translateProgramName } from "./university-translations.js";
 
 function syncNavbarLogo(themeOverride = "") {
     const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
@@ -467,7 +468,7 @@ function initProfileUI() {
         MAJOR_OPTIONS.forEach(m => {
             const opt = document.createElement("option");
             opt.value = m;
-            opt.textContent = m;
+            opt.textContent = translateProgramName(m, m);
             profileMajorSelect.appendChild(opt);
         });
     };

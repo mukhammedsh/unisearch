@@ -110,7 +110,12 @@ class UniversitiesAiSortRequest(BaseModel):
     min_acceptance: Optional[float] = Field(default=None, ge=0, le=100)
     max_acceptance: Optional[float] = Field(default=None, ge=0, le=100)
     size: Optional[str] = Field(default=None, max_length=40)
+    practice_vs_science: int = Field(default=50, ge=0, le=100)
+    social_vs_hardcore: int = Field(default=50, ge=0, le=100)
+    budget_vs_prestige: int = Field(default=50, ge=0, le=100)
+    city_vs_campus: int = Field(default=50, ge=0, le=100)
     ai_balance: int = Field(default=50, ge=0, le=100)
+    admission_bias: int = Field(default=50, ge=0, le=100)
     page: int = Field(default=1, ge=1)
     limit: int = Field(default=200, ge=1, le=2000)
 
