@@ -68,13 +68,14 @@ home.feature.data_title: Data-Driven Decisions
 home.feature.finance_desc: See the real cost. Our system highlights Merit-based and Need-based aid opportunities, flagging universities that fit your wallet.
 home.feature.finance_title: Financial Clarity
 home.hero.desc: UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
-home.hero.rankings: View Rankings
+home.hero.rankings: View Ranking
 home.hero.start: Start Matching
 home.hero.title: Find your dream university with AI Power
 home.hero.title_html: Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
 home.stats.countries: Countries
 home.stats.open_source: Open Source
 home.stats.ranking_chance: Ranking + Chance
+home.stats.ai_short_html: <span class="ai-gold">AI</span>
 home.stats.top_universities: Top Universities
 home.why: Why use UniSearch?
 nav.about: About Us
@@ -87,7 +88,7 @@ nav.lang.rus: Русский
 nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
-nav.rankings: Rankings
+nav.rankings: Ranking
 nav.switch_theme: Switch theme
 nav.universities: Universities
 profile.add: Add
@@ -147,14 +148,14 @@ profile.type: Type
 profile.unit.gpa: % (0 to 100)
 profile.unit.usd_year: USD / year
 ranking.acceptance: Acceptance
-ranking.failed: Failed to load rankings.
-ranking.loading: Loading rankings
+ranking.failed: Failed to load ranking.
+ranking.loading: Loading ranking
 ranking.subtitle: Top universities ranked by academic prestige and research impact (2025)
-ranking.title: Global University Rankings
+ranking.title: Global University Ranking
 title.about: About Us | UniSearch
 title.guide: Guide | UniSearch
 title.index: UniSearch - AI University Finder
-title.ranking: Global Rankings | UniSearch
+title.ranking: Global Ranking | UniSearch
 title.universities: Universities | UniSearch
 title.university: University | UniSearch
 universities.all_cities: All Cities
@@ -278,6 +279,7 @@ university.name.astana-it-university-kaz-astana: Astana IT University
 
 # Added localization coverage keys
 common.loading: Loading
+common.ai_short: AI
 guide.academic.act: ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.
 guide.academic.aptotal: AP Total reflects combined performance across multiple Advanced Placement subjects.
 guide.academic.default: This is an academic metric used by one or more admission tracks in the UniSearch dataset.

@@ -73,7 +73,7 @@ const TRANSLATIONS = {
     tag: {
       research: "исследования",
       stem: "STEM",
-      ai: "AI",
+      ai: "ИИ",
       robotics: "робототехника",
       startups: "стартапы",
       urban: "городская среда",
@@ -272,7 +272,7 @@ const TRANSLATIONS = {
     tag: {
       research: "зерттеу",
       stem: "STEM",
-      ai: "AI",
+      ai: "ЖИ",
       robotics: "робототехника",
       startups: "стартаптар",
       urban: "қалалық",

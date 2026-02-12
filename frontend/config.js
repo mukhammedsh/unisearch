@@ -4,7 +4,7 @@ window.API_BASE_URL =
     ? "http://127.0.0.1:8000"
     : "https://unisearch-bsjl.onrender.com";
 
-window.APP_VERSION = "2.2.0";
+window.APP_VERSION = "2.2.1";
 
 // AI function display names (change these names in one place).
 window.AI_FUNCTIONS = {

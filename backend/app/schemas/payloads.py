@@ -97,6 +97,7 @@ class UniversitiesAiSortRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     profile: ProfilePayload = Field(default_factory=ProfilePayload)
+    lang: Optional[str] = Field(default=None, max_length=16)
     q: Optional[str] = Field(default=None, max_length=200)
     country: Optional[str] = Field(default=None, max_length=80)
     city: Optional[str] = Field(default=None, max_length=80)
@@ -121,6 +122,7 @@ class UniversitiesAiSortRequest(BaseModel):
 
     @field_validator(
         "q",
+        "lang",
         "country",
         "city",
         "region",

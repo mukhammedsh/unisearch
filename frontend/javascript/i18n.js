@@ -21,13 +21,13 @@ const DICT = {
     "title.index": "UniSearch - AI University Finder",
     "title.universities": "Universities | UniSearch",
     "title.university": "University | UniSearch",
-    "title.ranking": "Global Rankings | UniSearch",
+    "title.ranking": "Global Ranking | UniSearch",
     "title.about": "About Us | UniSearch",
     "title.guide": "Guide | UniSearch",
 
     "nav.home": "Home",
     "nav.universities": "Universities",
-    "nav.rankings": "Rankings",
+    "nav.rankings": "Ranking",
     "nav.guide": "Guide",
     "nav.about": "About Us",
     "nav.profile": "Profile",
@@ -44,11 +44,12 @@ const DICT = {
     "home.hero.desc":
       "UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.",
     "home.hero.start": "Start Matching",
-    "home.hero.rankings": "View Rankings",
+    "home.hero.rankings": "View Ranking",
     "home.stats.top_universities": "Top Universities",
     "home.stats.countries": "Countries",
     "home.stats.open_source": "Open Source",
     "home.stats.ranking_chance": "Ranking + Chance",
+    "home.stats.ai_short_html": "<span class=\"ai-gold\">AI</span>",
     "home.why": "Why use UniSearch?",
     "home.feature.ai_title": "{fit} + {chance} AI",
     "home.feature.ai_desc":
@@ -161,11 +162,11 @@ const DICT = {
     "university.visit_website": "Visit Official Website",
     "university.show_on_map": "Show on map",
 
-    "ranking.title": "Global University Rankings",
+    "ranking.title": "Global University Ranking",
     "ranking.subtitle": "Top universities ranked by academic prestige and research impact (2025)",
-    "ranking.loading": "Loading rankings",
+    "ranking.loading": "Loading ranking",
     "ranking.acceptance": "Acceptance",
-    "ranking.failed": "Failed to load rankings.",
+    "ranking.failed": "Failed to load ranking.",
 
     "about.eyebrow": "About Us",
     "about.title": "We are the abiturient team behind UniSearch.",
@@ -332,6 +333,7 @@ const DICT = {
     "guide.muted.academic": "Plain-language explanations of the academic scores used in UniSearch admission matching.",
     "guide.muted.language": "Plain-language explanations of accepted language proofs across tracks.",
     "common.loading": "Loading",
+    "common.ai_short": "AI",
 
     "tour.skip": "Skip",
     "tour.back": "Back",
@@ -475,16 +477,16 @@ const DICT = {
     "profile.delete": "Delete",
   },
   rus: {
-    "title.index": "UniSearch - AI подбор университета",
+    "title.index": "UniSearch - ИИ подбор университета",
     "title.universities": "Университеты | UniSearch",
     "title.university": "Университет | UniSearch",
-    "title.ranking": "Глобальные рейтинги | UniSearch",
+    "title.ranking": "Глобальный рейтинг университетов | UniSearch",
     "title.about": "О нас | UniSearch",
     "title.guide": "Гайд | UniSearch",
 
     "nav.home": "Главная",
     "nav.universities": "Университеты",
-    "nav.rankings": "Рейтинги",
+    "nav.rankings": "Рейтинг",
     "nav.guide": "Гайд",
     "nav.about": "О нас",
     "nav.profile": "Профиль",
@@ -496,18 +498,19 @@ const DICT = {
     "nav.lang.rus": "Русский",
     "nav.lang.kz": "Қазақша",
 
-    "home.hero.title": "Найдите университет мечты с AI",
-    "home.hero.title_html": "Найдите университет мечты с <span class=\"text-gradient\"><span class=\"ai-gold\">AI</span></span>",
+    "home.hero.title": "Найдите университет мечты с помощью ИИ",
+    "home.hero.title_html": "Найдите университет мечты с <span class=\"text-gradient\"><span class=\"ai-gold\">помощью ИИ</span></span>",
     "home.hero.desc":
       "UniSearch — удобная платформа для поиска университетов: сравнивайте требования, стоимость и возможности в одном месте.",
     "home.hero.start": "Начать подбор",
-    "home.hero.rankings": "Смотреть рейтинги",
+    "home.hero.rankings": "Смотреть рейтинг",
     "home.stats.top_universities": "Топ университеты",
     "home.stats.countries": "Страны",
     "home.stats.open_source": "Открытый код",
     "home.stats.ranking_chance": "Рейтинг + Шанс",
+    "home.stats.ai_short_html": "<span class=\"ai-gold\">ИИ</span>",
     "home.why": "Почему UniSearch?",
-    "home.feature.ai_title": "{fit} + {chance} AI",
+    "home.feature.ai_title": "{fit} + {chance} ИИ",
     "home.feature.ai_desc":
       "{fit} ранжирует варианты по соответствию, а {chance} оценивает вероятность поступления по каждому треку.",
     "home.feature.finance_title": "Финансовая прозрачность",
@@ -528,7 +531,7 @@ const DICT = {
     "universities.select_country_first": "Сначала выберите страну",
     "universities.cost_per_year": "Стоимость в год (USD)",
     "universities.sort_strategy": "Стратегия сортировки",
-    "universities.sort_ai": "✨ {fit}: AI умная сортировка",
+    "universities.sort_ai": "✨ {fit}: ИИ-умная сортировка",
     "universities.sort_name_asc": "Название А-Я",
     "universities.sort_cost_asc": "Цена по возрастанию",
     "universities.sort_cost_desc": "Цена по убыванию",
@@ -656,7 +659,7 @@ const DICT = {
     "guide.nav.academic_exams": "Академические экзамены",
     "guide.nav.language_exams": "Языковые экзамены",
     "guide.nav.glossary": "Глоссарий",
-    "guide.unifit.title": "{fit} (AI умная сортировка)",
+    "guide.unifit.title": "{fit} (ИИ умная сортировка)",
     "guide.unifit.p1":
       "{fit} ранжирует вузы по сочетанию дистанции предпочтений и вероятности поступления. Ползунки Фокус/Атмосфера/Локация формируют PreferenceMismatch, а Финансы переключают режим вероятности (GrantChance или GeneralChance). Итоговый порядок считает FinalScore = 0.6 * PreferenceMismatch + 0.4 * AdmissionRisk (меньше = лучше).",
     "guide.unifit.p2":
@@ -706,6 +709,10 @@ const DICT = {
     "guide.academic_exams.title": "Академические экзамены",
     "guide.language_exams.title": "Языковые экзамены",
     "guide.glossary.title": "Глоссарий",
+    "guide.glossary.fit":
+      "ИИ-режим ранжирования, который балансирует престиж, финансовую доступность и реалистичность поступления.",
+    "guide.glossary.chance":
+      "ИИ-вероятность (0-100) вашего поступления, рассчитываемая по треку на основе профиля и требований.",
     "guide.loading_language_config": "Загрузка конфигурации языковых экзаменов",
     "guide.muted.academic": "Объяснения академических баллов, которые используются в matching UniSearch.",
     "guide.muted.language": "Объяснения языковых подтверждений, принимаемых на треках.",
@@ -726,7 +733,8 @@ const DICT = {
     "profile.option.funding_paid": "Только платно",
     "profile.label.major": "Планируемая специальность",
     "profile.option.major_any": "Не определился / Любая",
-    "profile.label.interests": "Интересы по университету (AI)",
+    "profile.label.interests": "Интересы по университету (ИИ)",
+    "common.ai_short": "ИИ",
     "profile.placeholder.interests":
       "Опишите идеальный университет: программы, исследования, локацию, тип кампуса и цели.",
     "profile.hint.interests": "Используется для персонализации ваших рекомендаций.",
@@ -786,18 +794,20 @@ const DICT = {
     "profile.exam_removed": "Экзамен удален",
     "profile.exam_score_label": "Балл: {score}",
     "profile.delete": "Удалить",
+    "unifit.warning.desc":
+      "UniFit работает лучше, когда в профиле есть экзамены или языковые подтверждения. Без них ИИ-сортировка может быть менее точной.",
   },
   kz: {
-    "title.index": "UniSearch - AI университет іздеу",
+    "title.index": "UniSearch - ЖИ арқылы университет іздеу",
     "title.universities": "Университеттер | UniSearch",
     "title.university": "Университет | UniSearch",
-    "title.ranking": "Әлемдік рейтингтер | UniSearch",
+    "title.ranking": "Әлемдік рейтинг | UniSearch",
     "title.about": "Біз туралы | UniSearch",
     "title.guide": "Нұсқаулық | UniSearch",
 
     "nav.home": "Басты бет",
     "nav.universities": "Университеттер",
-    "nav.rankings": "Рейтингтер",
+    "nav.rankings": "Рейтинг",
     "nav.guide": "Нұсқаулық",
     "nav.about": "Біз туралы",
     "nav.profile": "Профиль",
@@ -809,8 +819,8 @@ const DICT = {
     "nav.lang.rus": "Русский",
     "nav.lang.kz": "Қазақша",
 
-    "home.hero.title": "AI көмегімен армандаған университетіңізді табыңыз",
-    "home.hero.title_html": "AI көмегімен армандаған университетіңізді <span class=\"text-gradient\"><span class=\"ai-gold\">табыңыз</span></span>",
+    "home.hero.title": "Армандаған университетіңізді ЖИ көмегімен табыңыз",
+    "home.hero.title_html": "Армандаған университетіңізді <span class=\"text-gradient\"><span class=\"ai-gold\">ЖИ көмегімен</span></span> табыңыз",
     "home.hero.desc":
       "UniSearch — талаптар, шығындар және мүмкіндіктерді бір жерде салыстырып, университет табуға арналған ыңғайлы платформа.",
     "home.hero.start": "Іздеуді бастау",
@@ -819,13 +829,14 @@ const DICT = {
     "home.stats.countries": "Елдер",
     "home.stats.open_source": "Ашық код",
     "home.stats.ranking_chance": "Рейтинг + Мүмкіндік",
+    "home.stats.ai_short_html": "<span class=\"ai-gold\">ЖИ</span>",
     "home.why": "Неге UniSearch?",
-    "home.feature.ai_title": "{fit} + {chance} AI",
+    "home.feature.ai_title": "{fit} + {chance} ЖИ",
     "home.feature.ai_desc":
       "{fit} нұсқаларды сәйкес келуіне қарай сұрыптайды, ал {chance} әр трек бойынша түсу ықтималдығын бағалайды.",
     "home.feature.finance_title": "Қаржылық айқындық",
     "home.feature.finance_desc":
-      "Нақты шығынды көріңіз. Жүйе merit-based және need-based көмекті көрсетіп, бюджетіңізге сай университеттерді бөледі.",
+      "Нақты шығынды көріңіз. Жүйе шәкіртақылар мен қаржылық көмекті көрсетіп, бюджетіңізге сай университеттерді бөліп береді.",
     "home.feature.data_title": "Дерекке негізделген шешім",
     "home.feature.data_desc":
       "Infomatrix үшін жасалған жоба: субъективтілікті азайту үшін құрылымдалған JSON деректері мен алгоритмдер қолданамыз.",
@@ -841,13 +852,13 @@ const DICT = {
     "universities.select_country_first": "Алдымен елді таңдаңыз",
     "universities.cost_per_year": "Жылдық құны (USD)",
     "universities.sort_strategy": "Сұрыптау стратегиясы",
-    "universities.sort_ai": "✨ {fit}: AI ақылды сұрыптау",
+    "universities.sort_ai": "✨ {fit}: ЖИ негізіндегі ақылды сұрыптау",
     "universities.sort_name_asc": "Атауы А-Я",
     "universities.sort_cost_asc": "Құны өсу ретімен",
     "universities.sort_cost_desc": "Құны кему ретімен",
     "universities.search_placeholder": "Университетті іздеу...",
-    "universities.found_prefix": "Табылды",
-    "universities.found_suffix": "университет",
+    "universities.found_prefix": "",
+    "universities.found_suffix": "университет табылды.",
     "universities.view_list": "Тізім",
     "universities.view_map": "Карта",
     "universities.loading": "Университеттер жүктелуде",
@@ -869,14 +880,14 @@ const DICT = {
     "universities.help.state_region": "Таңдалған ел ішіндегі нәтижені тарылтады. Қаласы көп елдерге ыңғайлы.",
     "universities.help.city": "Ел/аймақ таңдалғаннан кейін нақты қаладағы университеттерді көрсетеді.",
     "universities.help.cost_per_year": "Жылдық бағаның минимум/максимум шегін қояды. Тізімде осы диапазондағы университеттер ғана қалады.",
-    "universities.help.sort_strategy": "UniFit профиль мен слайдерлерді қолданады. Басқа режимдер тек атау не баға бойынша сұрыптайды.",
+    "universities.help.sort_strategy": "UniFit профиліңіз бен слайдерлерді қолданады. Қалған режимдер тек атау немесе баға бойынша сұрыптайды.",
     "universities.help.tradeoff.focus": "Қолданбалы мансаптық бағыт пен ғылыми-зерттеу бағыты арасындағы басымдықты ауыстырады.",
     "universities.help.tradeoff.atmosphere": "Белсенді әлеуметтік орта мен қарқынды оқу ортасы арасындағы басымдықты ауыстырады.",
     "universities.help.tradeoff.finance": "Ықтималдық режимін ауыстырады: сол жақта грант шансы, оң жақта жалпы/ақылы түсу шансы басым.",
     "universities.help.tradeoff.location": "Үлкен қала өмірі мен жайлы кампус форматы арасындағы қалауды ауыстырады.",
     "universities.state.empty": "Университет табылмады.",
     "universities.state.failed": "Деректерді жүктеу сәтсіз аяқталды.",
-    "universities.state.ml_unavailable": "Machine Learning қолжетімсіз. Тек rule-based сұрыптау қолданылуда.",
+    "universities.state.ml_unavailable": "ML модулі қолжетімсіз. Тек ереже-негізіндегі сұрыптау қолданылады.",
     "universities.card.est_cost_year": "Болжамды құн/жыл",
     "universities.badge.requirements_met": "✅ Талаптар орындалды",
     "universities.badge.below_requirements": "⚠️ Талаптан төмен",
@@ -920,7 +931,7 @@ const DICT = {
     "university.model.auto": "Авто",
     "university.model.gemini": "Gemini",
     "university.model.fallback": "Резерв модель",
-    "university.model.local": "Жергілікті fallback",
+    "university.model.local": "Жергілікті резерв модель",
     "university.ask_placeholder": "Қабылдау, шәкіртақы, жатақхана, дедлайн туралы сұраңыз...",
     "university.send": "Жіберу",
     "university.clear": "Тазалау",
@@ -929,7 +940,7 @@ const DICT = {
     "university.visit_website": "Ресми сайтқа өту",
     "university.show_on_map": "Картада көрсету",
 
-    "ranking.title": "Әлемдік университет рейтингтері",
+    "ranking.title": "Әлемдік университет рейтингі",
     "ranking.subtitle": "Академиялық бедел және зерттеу ықпалы бойынша үздік университеттер (2025)",
     "ranking.loading": "Рейтинг жүктелуде",
     "ranking.acceptance": "Қабылдау деңгейі",
@@ -969,7 +980,7 @@ const DICT = {
     "guide.nav.academic_exams": "Академиялық емтихандар",
     "guide.nav.language_exams": "Тіл емтихандары",
     "guide.nav.glossary": "Глоссарий",
-    "guide.unifit.title": "{fit} (AI ақылды сұрыптау)",
+    "guide.unifit.title": "{fit} (ЖИ ақылды сұрыптау)",
     "guide.unifit.p1":
       "{fit} университеттерді preference distance пен түсу ықтималдығын біріктіріп сұрыптайды. Фокус/Атмосфера/Орналасу слайдерлері PreferenceMismatch есептейді, ал Қаржы ықтималдық режимін ауыстырады (GrantChance немесе GeneralChance). Қорытынды реттік көрсеткіш: FinalScore = 0.6 * PreferenceMismatch + 0.4 * AdmissionRisk (төмені жақсы).",
     "guide.unifit.p2":
@@ -997,16 +1008,16 @@ const DICT = {
     "guide.unichance.p3":
       "Түсіндіру: 80-100 жоғары мүмкіндік, 60-79 жақсы, 40-59 орташа, 40-тан төмен — төмен мүмкіндік.",
     "guide.unichance.p4":
-      "Best Track бөлімі бір университет ішіндегі ең күшті жолды көрсетіп, жақсырақ балама табуға көмектеседі.",
-    "guide.admission.title": "Admission track терминдері",
+      "«Үздік трек» бөлімі университет ішіндегі ең мықты жолды көрсетіп, жақсырақ баламаларды табуға көмектеседі.",
+    "guide.admission.title": "Қабылдау трегі терминдері",
     "guide.admission.p1":
-      "Admission track — белгілі бір түсу жолы. Бір университетте талаптары мен құны әртүрлі бірнеше трек болуы мүмкін.",
+      "Қабылдау трегі — бағдарламаға түсудің нақты жолы. Бір университетте талаптары мен құны әртүрлі бірнеше трек болуы мүмкін.",
     "guide.admission.p2":
-      "Requirements — ең төменгі шек. Real Average (Admitted) көбіне нақты бәсекелестік деңгейін жақсы көрсетеді.",
+      "Талаптар — ең төменгі өту шегі. Real Average (Admitted) көбіне нақты бәсекелестік деңгейін жақсырақ көрсетеді.",
     "guide.admission.p3":
       "Тіл ережесі нақты: mode any — бір дәлел жеткілікті, mode all — барлық шарт орындалуы керек.",
     "guide.admission.p4":
-      "Трек деңгейіндегі шәкіртақы мен aid нақты қаржылық нәтижеге қатты әсер етуі мүмкін.",
+      "Трек деңгейіндегі шәкіртақылар мен қаржылық көмек оқу құнының нақты нәтижесіне қатты әсер етеді.",
     "guide.exam_basics.title": "Емтихан негіздері (қабылдау)",
     "guide.exam_basics.p1":
       "Қабылдау әдетте екі бөлек бағытты бағалайды: академиялық дайындық және тілдік дайындық.",
@@ -1019,8 +1030,12 @@ const DICT = {
     "guide.academic_exams.title": "Академиялық емтихандар",
     "guide.language_exams.title": "Тіл емтихандары",
     "guide.glossary.title": "Глоссарий",
+    "guide.glossary.fit":
+      "Бедел, қаржылық қолжетімділік және түсу шынайылығын теңестіретін ЖИ ранжирлеу режимі.",
+    "guide.glossary.chance":
+      "Профиль мен талаптарға сүйеніп, трек деңгейінде есептелетін түсу ықтималдығының ЖИ бағасы (0-100).",
     "guide.loading_language_config": "Тіл емтиханы конфигурациясы жүктелуде",
-    "guide.muted.academic": "UniSearch matching жүйесінде қолданылатын академиялық баллдар туралы түсінікті сипаттама.",
+    "guide.muted.academic": "UniSearch алгоритмінде қолданылатын академиялық баллдар туралы түсінікті түсіндірмелер.",
     "guide.muted.language": "Тректер бойынша қабылданатын тіл дәлелдерінің түсінікті сипаттамасы.",
 
     "footer.copyright": "© 2026 UniSearch",
@@ -1031,7 +1046,7 @@ const DICT = {
     "profile.hint.budget_range": "Ауқым: 1 - 1,000,000",
     "profile.label.study_mode": "Оқу форматы",
     "profile.option.study_mode_any": "Кез келген (барлық формат)",
-    "profile.option.study_mode_oncampus": "Кампус (On-campus)",
+    "profile.option.study_mode_oncampus": "Кампус форматы (күндізгі)",
     "profile.option.study_mode_online": "Онлайн / қашықтан",
     "profile.label.funding_type": "Қаржыландыру түрі",
     "profile.option.funding_any": "Кез келген (грант + ақылы)",
@@ -1039,7 +1054,8 @@ const DICT = {
     "profile.option.funding_paid": "Тек ақылы",
     "profile.label.major": "Негізгі мамандық",
     "profile.option.major_any": "Белгісіз / Кез келген",
-    "profile.label.interests": "Университет қызығушылықтары (AI)",
+    "profile.label.interests": "Университет қызығушылықтары (ЖИ)",
+    "common.ai_short": "ЖИ",
     "profile.placeholder.interests":
       "Өзіңізге ұнайтын университетті сипаттаңыз: бағдарламалар, зерттеу, орналасу, кампус түрі және мақсаттар.",
     "profile.hint.interests": "Ұсыныстарды сізге бейімдеу үшін қолданылады.",
@@ -1099,6 +1115,8 @@ const DICT = {
     "profile.exam_removed": "Емтихан өшірілді",
     "profile.exam_score_label": "Балл: {score}",
     "profile.delete": "Өшіру",
+    "unifit.warning.desc":
+      "Профильде емтихан немесе тілдік дәлел болса, UniFit дәлірек жұмыс істейді. Онсыз ЖИ-сұрыптау дәлдігі төмендеуі мүмкін.",
   },
 };
 

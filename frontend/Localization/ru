@@ -60,21 +60,22 @@ guide.unifit.p1: {fit} ранжирует вузы по сочетанию ди�
 guide.unifit.p2: Отсутствующие экзамены считаются условными, а не автоматическим отказом. Карточки вузов объясняют причину рекомендации приоритетными тегами: сначала «Условно / Нужен экзамен», затем совпадение по вайбу («Твой вайб» / «Отличное совпадение»), затем финансовый путь («Вероятен грант» или «Платное поступление»).
 guide.unifit.p3: При наличии данных оценка считается по каждому треку отдельно. Поэтому вуз с меньшим общим рангом может быть лучше именно для вашего профиля.
 guide.unifit.p4: Результаты {fit} динамические: изменение экзаменов, языков или бюджета сразу влияет на порядок.
-guide.unifit.title: {fit} (AI умная сортировка)
+guide.unifit.title: {fit} (ИИ умная сортировка)
 home.feature.ai_desc: {fit} ранжирует варианты по соответствию, а {chance} оценивает вероятность поступления по каждому треку.
-home.feature.ai_title: {fit} + {chance} AI
+home.feature.ai_title: {fit} + {chance} ИИ
 home.feature.data_desc: Проект для Infomatrix: используем структурированные JSON-данные и алгоритмы, чтобы снизить субъективность выбора.
 home.feature.data_title: Решения на данных
 home.feature.finance_desc: Смотрите реальную стоимость. Система выделяет стипендии и финансовую помощь и показывает университеты, которые соответствуют вашему бюджету.
 home.feature.finance_title: Финансовая прозрачность
 home.hero.desc: UniSearch — удобная платформа для поиска университетов: сравнивайте требования, стоимость и возможности в одном месте.
-home.hero.rankings: Смотреть рейтинги
+home.hero.rankings: Смотреть рейтинг
 home.hero.start: Начать подбор
-home.hero.title: Найдите университет мечты с AI
-home.hero.title_html: Найдите университет мечты с <span class="text-gradient"><span class="ai-gold">AI</span></span>
+home.hero.title: Найдите университет мечты с помощью ИИ
+home.hero.title_html: Найдите университет мечты с <span class="text-gradient"><span class="ai-gold">помощью ИИ</span></span>
 home.stats.countries: Страны
 home.stats.open_source: Открытый код
 home.stats.ranking_chance: Рейтинг + Шанс
+home.stats.ai_short_html: <span class="ai-gold">ИИ</span>
 home.stats.top_universities: Топ-университеты
 home.why: Почему UniSearch?
 nav.about: О нас
@@ -87,7 +88,7 @@ nav.lang.rus: Русский
 nav.language: Язык
 nav.open_menu: Открыть меню
 nav.profile: Профиль
-nav.rankings: Рейтинги
+nav.rankings: Рейтинг
 nav.switch_theme: Сменить тему
 nav.universities: Университеты
 profile.add: Добавить
@@ -120,7 +121,7 @@ profile.label.budget: Общий бюджет в год (USD)
 profile.label.exams: Экзамены (список, необязательно)
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: GPA (в процентах)
-profile.label.interests: Интересы по университету (AI)
+profile.label.interests: Интересы по университету (ИИ)
 profile.label.major: Планируемая специальность
 profile.label.study_mode: Предпочтительный формат обучения
 profile.language: Язык
@@ -153,8 +154,8 @@ ranking.subtitle: Топ университетов по академическ�
 ranking.title: Глобальный рейтинг университетов
 title.about: О нас | UniSearch
 title.guide: Гайд | UniSearch
-title.index: UniSearch - AI подбор университета
-title.ranking: Глобальные рейтинги | UniSearch
+title.index: UniSearch - ИИ подбор университета
+title.ranking: Глобальный рейтинг университетов | UniSearch
 title.universities: Университеты | UniSearch
 title.university: Университет | UniSearch
 universities.all_cities: Все города
@@ -213,7 +214,7 @@ universities.help.tradeoff.focus: Сдвигает акцент между пр�
 universities.help.tradeoff.atmosphere: Сдвигает акцент между активной социальной жизнью и интенсивной учебной средой.
 universities.help.tradeoff.finance: Переключает режим вероятности: слева приоритет шанса гранта, справа приоритет общего/платного поступления.
 universities.help.tradeoff.location: Сдвигает предпочтение между большим городом и более камерным кампусным форматом.
-universities.sort_ai: ✨ {fit}: AI-умная сортировка
+universities.sort_ai: ✨ {fit}: ИИ-умная сортировка
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
@@ -257,6 +258,7 @@ university.visit_website: Открыть официальный сайт
 
 # Added localization coverage keys
 common.loading: Загрузка
+common.ai_short: ИИ
 guide.academic.act: ACT — стандартизированный вступительный экзамен, включающий разделы по английскому, математике, чтению и научному мышлению.
 guide.academic.aptotal: AP Total отражает суммарный результат по нескольким предметам Advanced Placement.
 guide.academic.default: Это академический показатель, который используется одним или несколькими треками поступления в датасете UniSearch.
@@ -267,8 +269,8 @@ guide.academic.nuettotal: Это суммарный вступительный �
 guide.academic.sat: SAT — стандартизированный экзамен для поступления на бакалавриат, ориентированный на чтение, письмо и математику.
 guide.academic.unt: UNT (Unified National Testing) — национальный экзамен Казахстана, используемый во многих маршрутах поступления на бакалавриат.
 guide.glossary.admission_track: Конкретный путь поступления в университет (например, прямой, экзаменационный или стипендиальный трек).
-guide.glossary.chance: AI-вероятность (0-100) вашего поступления, рассчитываемая по треку на основе профиля и требований.
-guide.glossary.fit: AI-режим ранжирования, который балансирует престиж, финансовую доступность и реалистичность поступления.
+guide.glossary.chance: ИИ-вероятность (0-100) вашего поступления, рассчитываемая по треку на основе профиля и требований.
+guide.glossary.fit: ИИ-режим ранжирования, который балансирует престиж, финансовую доступность и реалистичность поступления.
 guide.glossary.intro: Этот глоссарий фиксирует ключевые термины UniSearch, чтобы пользователи одинаково интерпретировали ранжирование и вероятности.
 guide.glossary.language_requirements: Допустимые подтверждения языка: родной язык, CEFR или языковой экзамен.
 guide.glossary.match_score: Внутренний балл ранжирования {fit}; чем выше, тем лучше соответствие вашему профилю.
@@ -367,7 +369,7 @@ tour.step4.point3: Сравнивайте годовую стоимость и �
 tour.step4.title: Открывайте детали и сравнивайте треки
 unifit.warning.cancel: Отмена
 unifit.warning.confirm: Понял(а)
-unifit.warning.desc: UniFit работает лучше, когда в профиле есть экзамены или языковые подтверждения. Без них AI-сортировка может быть менее точной.
+unifit.warning.desc: UniFit работает лучше, когда в профиле есть экзамены или языковые подтверждения. Без них ИИ-сортировка может быть менее точной.
 unifit.warning.title: Недостаточно данных профиля
 university.name.mit-usa-cambridge: Массачусетский технологический институт (MIT)
 university.name.imperial-college-london-uk: Имперский колледж Лондона

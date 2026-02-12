@@ -4,7 +4,8 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 def _normalize(value: Any) -> str:
     text = str(value or "").strip().lower()
-    text = re.sub(r"[^a-z0-9]+", " ", text)
+    # Keep unicode letters/digits so RU/KZ localized search tokens are preserved.
+    text = re.sub(r"[^\w]+", " ", text, flags=re.UNICODE)
     return re.sub(r"\s+", " ", text).strip()
 
 
@@ -72,6 +73,7 @@ def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
         ("city", 4.0),
         ("country", 3.0),
         ("state", 3.0),
+        ("description", 2.0),
     ]
 
     weighted_token_sets: List[Tuple[float, List[str]]] = []
@@ -85,6 +87,7 @@ def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
         full_chunks.append(norm)
 
     list_fields: List[Tuple[str, float]] = [
+        ("tags", 2.5),
         ("major_exact", 4.0),
         ("majors", 3.0),
         ("program_names", 3.0),

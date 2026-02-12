@@ -24,7 +24,7 @@ import {
 } from "./utils.js";
 
 import { setupTabs } from "./components.js";
-import { t, tFormat } from "./i18n.js";
+import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import {
   translateAdmissionText,
   translateDataValue,
@@ -480,7 +480,7 @@ export function initUniversitiesPage() {
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
         const aiOpt = el.sortSelect.querySelector('option[value="uni_ai"]');
-        if (aiOpt) aiOpt.textContent = tFormat("universities.sort_ai", { fit: aiName("fit") }, `✨ ${aiName("fit")}: AI Smart Sort`);
+        if (aiOpt) aiOpt.textContent = tFormat("universities.sort_ai", { fit: aiName("fit") }, `✨ ${aiName("fit")}: ${t("common.ai_short", "AI")} Smart Sort`);
     };
     applyAISortOptionLabel();
 
@@ -527,6 +527,7 @@ export function initUniversitiesPage() {
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     let hasInitialListPaint = false;
+    let uniFitWarningShownInSession = false;
 
     const hasProfileEvidence = (profile) => {
         const exams = Array.isArray(profile?.exams) ? profile.exams : [];
@@ -787,6 +788,7 @@ export function initUniversitiesPage() {
     };
 
     const showUniFitWarning = () => new Promise((resolve) => {
+        uniFitWarningShownInSession = true;
         const modal = ensureUniFitWarningModal();
         const okBtn = modal.querySelector("[data-action='confirm']");
         const cancelEls = modal.querySelectorAll("[data-action='cancel']");
@@ -915,6 +917,12 @@ export function initUniversitiesPage() {
         updateSliderVisibility();
         refetch();
     });
+
+    const shouldShowUniFitWarning = () => {
+        if (state.sort !== "uni_ai") return false;
+        if (uniFitWarningShownInSession) return false;
+        return !hasProfileEvidence(loadProfile());
+    };
 
     const bindTradeoffSlider = (sliderEl, stateKey, leftTextKey, leftTextFallback, rightTextKey, rightTextFallback, labelEl) => {
         if (!sliderEl) return;
@@ -1184,6 +1192,8 @@ export function initUniversitiesPage() {
     
     function buildParams(forApi = false) {
         const p = new URLSearchParams();
+        const uiLang = getCurrentLanguage();
+        if (uiLang) p.set("lang", uiLang);
         state.funding_type = getProfileFundingQueryValue();
         if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
         if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
@@ -1220,8 +1230,10 @@ export function initUniversitiesPage() {
 
     function buildAiSortPayload() {
         const profile = loadProfileForApi();
+        const uiLang = getCurrentLanguage();
         const payload = {
             profile,
+            lang: uiLang,
             practice_vs_science: state.practice_vs_science,
             social_vs_hardcore: state.social_vs_hardcore,
             budget_vs_prestige: state.budget_vs_prestige,
@@ -1566,7 +1578,12 @@ export function initUniversitiesPage() {
             setUniversitiesLoading(false);
             if (firstVisitTourPending) {
                 firstVisitTourPending = false;
-                window.setTimeout(() => { showUniversitiesTour(); }, 120);
+                window.setTimeout(async () => {
+                    await showUniversitiesTour();
+                    if (shouldShowUniFitWarning()) {
+                        await showUniFitWarning();
+                    }
+                }, 120);
             }
         }
         }
@@ -2190,7 +2207,7 @@ export async function initUniversityPage() {
             <div class="chance-panel">
               <div class="chance-head">
                 <div>
-                  <div class="chance-title">${escapeHtml(aiName("chance"))} AI - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
+                  <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
                   <div class="chance-sub">${escapeHtml(translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context."))}</div>
                 </div>
                 <div class="chance-percent ${tone.cls}">${chance}%</div>

@@ -46,6 +46,30 @@ def _request_client_key(request: Optional[Request]) -> str:
     return "unknown"
 
 
+def _request_locale_hint(request: Optional[Request]) -> str:
+    if request is None:
+        return ""
+    raw = str(request.headers.get("accept-language", "")).strip()
+    if not raw:
+        return ""
+    return raw.split(",")[0].strip().lower()
+
+
+def _normalize_search_lang(value: Any) -> str:
+    raw = str(value or "").strip().lower()
+    if raw.startswith("ru") or raw == "rus":
+        return "rus"
+    if raw.startswith("kk") or raw.startswith("kz") or raw == "kaz":
+        return "kz"
+    return "eng"
+
+
+def _resolve_search_lang(explicit_lang: Any, request: Optional[Request]) -> str:
+    if str(explicit_lang or "").strip():
+        return _normalize_search_lang(explicit_lang)
+    return _normalize_search_lang(_request_locale_hint(request))
+
+
 def _ai_sort_cache_key(payload: UniversitiesAiSortRequest) -> str:
     raw = payload.model_dump(exclude_none=True)
     raw.pop("page", None)
@@ -118,8 +142,11 @@ def list_universities(
     page: int = Query(1, ge=1),
     limit: int = Query(200, ge=1, le=2000),
     fields: str = Query("card", pattern="^(card|full)$"),
+    lang: Optional[str] = Query(None, max_length=16),
+    request: Request = None,
     response: Response = None,
 ):
+    search_lang = _resolve_search_lang(lang, request)
     cache_payload = {
         "q": q,
         "country": country,
@@ -139,6 +166,7 @@ def list_universities(
         "page": page,
         "limit": limit,
         "fields": fields,
+        "search_lang": search_lang,
     }
     redis_cache_key = _cache_key("api:universities:list", cache_payload)
 
@@ -170,6 +198,7 @@ def list_universities(
         page=page,
         limit=limit,
         response_mode=fields,
+        search_lang=search_lang,
     )
 
     if use_redis_cache:
@@ -207,6 +236,8 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     limit = payload.limit
 
     cache_key = _ai_sort_cache_key(payload)
+    search_lang = _resolve_search_lang(payload.lang, request)
+    client_key = _request_client_key(request)
     sorted_items = _ai_sort_cache_get(cache_key)
     cache_hit = sorted_items is not None
 
@@ -230,6 +261,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             limit=200,
             paginate=False,
             response_mode="full",
+            search_lang=search_lang,
         )
 
         sorted_items = ai_scoring_service.sort_universities_ai(
@@ -242,7 +274,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             ai_balance=ai_balance,
             admission_bias=admission_bias,
             funding_type=funding_type,
-            translation_client_key=_request_client_key(request),
+            translation_client_key=client_key,
         )
         _ai_sort_cache_set(cache_key, sorted_items)
 

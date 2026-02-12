@@ -13,6 +13,8 @@ class UniversitySearchTests(unittest.TestCase):
                 "id": "u-cs",
                 "name": "Cambridge Tech",
                 "location": {"country": "USA", "city": "Cambridge", "state": "MA"},
+                "description": "Strong in AI research and robotics labs.",
+                "tags": ["research", "robotics", "ai"],
                 "academics": {
                     "programs": [
                         {
@@ -28,6 +30,8 @@ class UniversitySearchTests(unittest.TestCase):
                 "id": "u-biz",
                 "name": "Boston Business School",
                 "location": {"country": "USA", "city": "Boston", "state": "MA"},
+                "description": "Known for entrepreneurship and startup incubators.",
+                "tags": ["business", "startups"],
                 "academics": {
                     "programs": [
                         {
@@ -61,10 +65,78 @@ class UniversitySearchTests(unittest.TestCase):
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual(["u-cs"], ids)
 
+    def test_query_matches_description_tokens(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(q="entrepreneurship", paginate=False)
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["u-biz"], ids)
+
     def test_query_allows_small_typo_for_city(self):
         items, meta = self._mock_data()
         with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
             result = uni_service.list_universities(q="Cambrdge", paginate=False)
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["u-cs"], ids)
+
+    def test_query_matches_russian_city_when_search_lang_is_rus(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(
+                q="Бостон",
+                paginate=False,
+                search_lang="rus",
+            )
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["u-biz"], ids)
+
+    def test_query_matches_russian_major_when_search_lang_is_rus(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(
+                q="инженерия",
+                paginate=False,
+                search_lang="rus",
+            )
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["u-cs"], ids)
+
+    def test_query_matches_russian_tag_when_search_lang_is_rus(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(
+                q="исследования",
+                paginate=False,
+                search_lang="rus",
+            )
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["u-cs"], ids)
+
+    def test_query_with_russian_text_does_not_match_in_english_mode(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(
+                q="Бостон",
+                paginate=False,
+                search_lang="eng",
+            )
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual([], ids)
+
+    def test_query_matches_kazakh_major_when_search_lang_is_kz(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(
+                q="компьютерлік ғылымдар",
+                paginate=False,
+                search_lang="kz",
+            )
 
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual(["u-cs"], ids)
