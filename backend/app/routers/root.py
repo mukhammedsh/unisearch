@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException
 
 from app.core.redis_store import redis_runtime_status
 from app.core.settings import APP_VERSION
-from app.core.task_queue import enqueue_warmup_task, queue_runtime_status
 from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services import universities as universities_service
@@ -37,7 +36,6 @@ def ready():
         raise HTTPException(status_code=503, detail="Exams dataset is not loaded")
 
     redis_status = redis_runtime_status(force_check=True)
-    queue_status = queue_runtime_status()
     return {
         "status": "ready",
         "version": APP_VERSION,
@@ -46,7 +44,6 @@ def ready():
         "languages_total": len(language_cfg.get("languages", [])),
         "exams_total": exams_total,
         "redis": redis_status,
-        "queue": queue_status,
     }
 
 
@@ -56,26 +53,13 @@ def runtime_status():
         "status": "ok",
         "version": APP_VERSION,
         "redis": redis_runtime_status(force_check=True),
-        "queue": queue_runtime_status(),
     }
 
 
 @router.post("/ops/warmup")
-def enqueue_runtime_warmup(sync_fallback: bool = True):
-    queued = enqueue_warmup_task(trigger="ops")
-    if queued.get("enqueued"):
-        return {
-            "status": "queued",
-            "queue": queued.get("queue"),
-            "job_id": queued.get("job_id"),
-        }
-
-    if not sync_fallback:
-        raise HTTPException(status_code=503, detail=f"Queue unavailable: {queued.get('reason')}")
-
-    sync_result = warmup_runtime(trigger="ops_sync_fallback")
+def runtime_warmup():
+    sync_result = warmup_runtime(trigger="ops_sync")
     return {
-        "status": "sync_fallback",
-        "queue_reason": queued.get("reason"),
+        "status": "sync",
         "result": sync_result,
     }

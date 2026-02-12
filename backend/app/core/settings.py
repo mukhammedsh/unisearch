@@ -30,8 +30,6 @@ try:
 except Exception:
     REDIS_OPERATION_TIMEOUT_SEC = 0.35
 
-QUEUE_ENABLED = _env_bool("QUEUE_ENABLED", "1")
-QUEUE_NAME = os.getenv("QUEUE_NAME", "unisearch-default").strip() or "unisearch-default"
 AUTO_WARMUP_ON_STARTUP = _env_bool("AUTO_WARMUP_ON_STARTUP", "1")
 
 METRICS_ENABLED = _env_bool("METRICS_ENABLED", "1")

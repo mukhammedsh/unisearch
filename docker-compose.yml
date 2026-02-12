@@ -17,26 +17,10 @@ services:
       FRONTEND_ORIGIN: http://127.0.0.1:5501
       APP_VERSION: 2.1.2
       REDIS_URL: redis://redis:6379/0
-      QUEUE_ENABLED: "1"
-      QUEUE_NAME: unisearch-default
       AUTO_WARMUP_ON_STARTUP: "1"
       METRICS_ENABLED: "1"
     ports:
       - "8000:8000"
-    depends_on:
-      - redis
-
-  worker:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    container_name: unisearch-worker
-    command: ["python", "worker.py"]
-    environment:
-      APP_VERSION: 2.1.2
-      REDIS_URL: redis://redis:6379/0
-      QUEUE_ENABLED: "1"
-      QUEUE_NAME: unisearch-default
     depends_on:
       - redis
 

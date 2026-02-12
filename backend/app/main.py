@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.observability import setup_observability
 from app.core.settings import APP_VERSION, AUTO_WARMUP_ON_STARTUP, FRONTEND_ORIGIN
-from app.core.task_queue import enqueue_warmup_task
 from app.routers import root, universities, exams, languages
 from app.services.background_tasks import warmup_runtime
 
@@ -74,22 +73,11 @@ async def startup_runtime_warmup():
     if not AUTO_WARMUP_ON_STARTUP:
         return
 
-    enqueue_result = enqueue_warmup_task(trigger="startup")
-    if enqueue_result.get("enqueued"):
-        logger.info(
-            "warmup_enqueued queue=%s job_id=%s",
-            enqueue_result.get("queue"),
-            enqueue_result.get("job_id"),
-        )
-        return
-
-    # Queue can be unavailable in local/dev setups; keep cold start reliable.
     sync_result = warmup_runtime(trigger="startup_sync")
     logger.info(
-        "warmup_sync_fallback ok=%s duration_ms=%s reason=%s",
+        "warmup_sync ok=%s duration_ms=%s",
         sync_result.get("ok"),
         sync_result.get("duration_ms"),
-        enqueue_result.get("reason"),
     )
 
 app.include_router(root.router)

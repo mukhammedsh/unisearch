@@ -37,7 +37,6 @@ If translation is unavailable, backend safely falls back to raw text and still r
 
 ## Performance services (2.1.2)
 - Redis for API/cache and shared rate-limit state
-- Queue + worker (`RQ`) for background warmup tasks
 - Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
 ### Backend translation env (`backend/.env`)
@@ -62,8 +61,6 @@ APP_VERSION=2.1.2
 REDIS_URL=redis://127.0.0.1:6379/0
 REDIS_PREFIX=unisearch
 REDIS_CACHE_TTL_SEC=60
-QUEUE_ENABLED=1
-QUEUE_NAME=unisearch-default
 AUTO_WARMUP_ON_STARTUP=1
 METRICS_ENABLED=1
 METRICS_PATH=/metrics
@@ -100,16 +97,6 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-Optional worker (for queue jobs):
-```bash
-cd backend
-python worker.py
-```
-Worker purpose:
-- executes background jobs from queue (`RQ`)
-- currently used for runtime warmup task (`POST /ops/warmup`)
-- keeps HTTP requests fast by moving heavy/preload work out of request path
-
 ### 2) Frontend
 ```bash
 cd frontend
@@ -123,24 +110,22 @@ Open:
 - `http://127.0.0.1:5501/ranking.html`
 - `http://127.0.0.1:5501/guide.html`
 
-### 3) Full stack with Redis + worker (Docker)
+### 3) Full stack with Redis (Docker)
 ```bash
 docker compose up --build
 ```
 
 ## Render deployment notes
-- `Cron Job` on Render is not Redis and not a worker. It only runs commands on schedule.
+- `Cron Job` on Render is not Redis. It only runs commands on schedule.
 - For this architecture in Render use:
 1. `Key Value` service (Valkey/Redis-compatible) for `REDIS_URL`.
 2. `Web Service` for backend API.
-3. `Background Worker` service that runs `python backend/worker.py`.
-4. Optional `Cron Job` to call `POST /ops/warmup` periodically.
+3. Optional `Cron Job` to call `POST /ops/warmup` periodically.
 
-Recommended env for both backend and worker:
+Recommended env for backend:
 ```env
 REDIS_URL=<render-key-value-internal-url>
-QUEUE_ENABLED=1
-QUEUE_NAME=unisearch-default
+AUTO_WARMUP_ON_STARTUP=1
 ```
 
 ## Tests
@@ -184,7 +169,6 @@ backend/
       redis_store.py
       security.py
       settings.py
-      task_queue.py
     routers/
       root.py
       universities.py

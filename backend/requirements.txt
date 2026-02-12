@@ -4,6 +4,5 @@ pydantic==2.12.5
 typing_extensions==4.15.0
 scikit-learn==1.5.2
 redis==5.2.1
-rq==1.16.2
 prometheus-fastapi-instrumentator==7.1.0
 sentry-sdk==2.20.0
