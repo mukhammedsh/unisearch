@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import file_mtime
 from app.core.paths import DATA_PATH, CITIES_PATH
+from app.services import search as search_service
 
 
 def _num_or_none(x: Any) -> Optional[float]:
@@ -615,10 +616,18 @@ def list_universities(
     mode_pref = _normalize_study_mode(format or "any")
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
+    search_scores: Dict[str, float] = {}
 
     if q:
-        qq = _safe_lower(q)
-        pairs = [(u, m) for (u, m) in pairs if qq in m.get("name", "")]
+        scored_pairs = []
+        for u, m in pairs:
+            score = search_service.score_query(m, q)
+            if score is None:
+                continue
+            uid = str(u.get("id", "")).strip() or f"@{id(u)}"
+            search_scores[uid] = float(score)
+            scored_pairs.append((u, m))
+        pairs = scored_pairs
 
     if region:
         reg = _safe_lower(region)
@@ -710,7 +719,16 @@ def list_universities(
         pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
 
     items = [u for (u, _) in pairs]
-    items = _apply_sort(items, sort, format_preference=mode_pref)
+    if q and sort == "name_asc":
+        items = sorted(
+            items,
+            key=lambda u: (
+                -(search_scores.get(str(u.get("id", "")).strip() or f"@{id(u)}", 0.0)),
+                _safe_lower(u.get("name")),
+            ),
+        )
+    else:
+        items = _apply_sort(items, sort, format_preference=mode_pref)
 
     total = len(items)
     if not paginate:
