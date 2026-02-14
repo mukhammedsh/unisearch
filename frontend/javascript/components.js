@@ -558,7 +558,7 @@ function initProfileUI() {
         if (!profileInterestsLangWarning) return;
         const enabled = Boolean(status && status.enabled);
         const available = Boolean(status && status.available);
-        const shouldShow = enabled && !available;
+        const shouldShow = !enabled || !available;
         profileInterestsLangWarning.hidden = !shouldShow;
         profileInterestsLangWarning.textContent = t(
             "profile.warning.interests_english_only",
