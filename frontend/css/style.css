@@ -674,14 +674,14 @@ html, body {
 
 .profile-interests-warning{
   margin-top: 6px;
-  color: #d21e1e;
+  color: #b45309;
   font-size: 12px;
   line-height: 1.35;
   font-weight: 600;
 }
 
 :root[data-theme="dark"] .profile-interests-warning{
-  color: #ff9f9f;
+  color: #fbbf24;
 }
 
 .profile-interests-status{

@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "2.2.2",
+  "version": "2.2.4",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "test:backend": "cd backend && python -m unittest discover tests -v",

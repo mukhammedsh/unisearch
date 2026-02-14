@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance - 2.2.2 (Infomatrix 2026)
+# UniSearch / UniFit / UniChance - 2.2.4 (Infomatrix 2026)
 
 ## What this project is
 UniSearch is a full-stack web app for university selection using:
@@ -11,7 +11,7 @@ UniSearch is a full-stack web app for university selection using:
   - Location: `Big City Life` <-> `Cozy Campus`
 - `UniChance` probability (0-100 estimated admission chance).
 
-## What's new in 2.2.2
+## What's new in 2.2.4
 - language fixes across `eng/rus/kz` UI texts
 - `AI` naming normalized in RU/KZ (`ИИ` / `ЖИ`)
 - search updated to language-adaptive mode (`eng`/`rus`/`kz`) instead of auto-translation
@@ -95,7 +95,7 @@ If translation is unavailable, backend safely falls back to raw text and still r
 - provider failure backoff
 - short request timeout
 
-## Performance services (2.2.2)
+## Performance services (2.2.4)
 - Redis for API/cache and shared rate-limit state
 - Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
@@ -117,7 +117,7 @@ ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 
 ### Backend infra env (`backend/.env`)
 ```env
-APP_VERSION=2.2.2
+APP_VERSION=2.2.4
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override (comma-separated):
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -340,10 +340,10 @@ What happens automatically on release publish:
 
 How to trigger:
 1. Push all changes to `main`.
-2. Create and push a tag (example `v2.2.2`):
+2. Create and push a tag (example `v2.2.4`):
    ```bash
-   git tag v2.2.2
-   git push origin v2.2.2
+   git tag v2.2.4
+   git push origin v2.2.4
    ```
 3. In GitHub, open Releases and publish a release for that tag.
 4. Wait for the workflow `Release Artifacts And Container` to finish.
