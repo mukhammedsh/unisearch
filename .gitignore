@@ -218,3 +218,6 @@ firebase-key
 node_modules/
 playwright-report/
 test-results/
+
+# Local presentation sandbox (keep locally, do not commit)
+temp_presentation_3/
