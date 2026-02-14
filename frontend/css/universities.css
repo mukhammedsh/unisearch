@@ -376,12 +376,29 @@
 .u-label--between {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .u-label--subtle {
   margin-bottom: 10px;
   font-size: 12px;
   color: var(--muted);
+}
+
+.tradeoff-field .u-label--subtle.u-label--between > span {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+
+.tradeoff-field .u-label--subtle.u-label--between > span:first-child {
+  text-align: left;
+}
+
+.tradeoff-field .u-label--subtle.u-label--between > span:last-child {
+  text-align: right;
 }
 
 .tradeoff-field + .tradeoff-field {
@@ -1366,6 +1383,16 @@
   .u-tour-actions .u-tour-btn,
   .u-tour-actions-right .u-tour-btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .tradeoff-field .u-label--subtle.u-label--between {
+    gap: 8px;
+  }
+
+  .tradeoff-field .u-label--subtle.u-label--between > span {
+    font-size: 11px;
   }
 }
 
