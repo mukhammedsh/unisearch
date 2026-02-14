@@ -56,6 +56,7 @@ async function setRangeValue(page, elementId, value) {
       if (!el) return false;
       el.value = String(nextValue);
       el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
       return true;
     },
     { id: elementId, nextValue: value }

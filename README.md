@@ -160,6 +160,27 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
+### 1.5) Optional: run LibreTranslate (for profile interests translation)
+If `ML_INTEREST_TRANSLATION_ENABLED=1`, backend expects a running translation service at:
+`LIBRETRANSLATE_URL=http://127.0.0.1:5000/translate`
+
+Option A (recommended, Docker):
+```bash
+docker run -d --name unisearch-libretranslate -p 5000:5000 libretranslate/libretranslate
+```
+
+Health check:
+```bash
+curl http://127.0.0.1:5000/languages
+```
+
+If Docker is not installed, install Docker Desktop first (Windows), then run the command above.
+
+Option B (disable translation in local dev):
+```env
+ML_INTEREST_TRANSLATION_ENABLED=0
+```
+
 ### 2) Frontend
 ```bash
 cd frontend
@@ -177,6 +198,22 @@ Open:
 ```bash
 docker compose up --build
 ```
+
+## Render: where to host translation service
+For production on Render, run LibreTranslate as a separate web service (recommended), then point backend to it.
+
+1. Create a new Render Web Service from Docker image `libretranslate/libretranslate`.
+2. Deploy it and copy its public URL.
+3. In backend service env, set:
+```env
+ML_INTEREST_TRANSLATION_ENABLED=1
+LIBRETRANSLATE_URL=https://<your-libretranslate-service>.onrender.com/translate
+```
+4. Redeploy backend.
+
+Notes:
+- Keep backend and translator as separate services.
+- If you do not want to maintain translator infra on Render, set `ML_INTEREST_TRANSLATION_ENABLED=0`.
 
 ## Render deployment notes
 - `Cron Job` on Render is not Redis. It only runs commands on schedule.

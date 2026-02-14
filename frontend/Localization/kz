@@ -119,7 +119,7 @@ profile.hint.budget_range: Ауқым: 1 - 1,000,000
 profile.hint.gpa: GPA пайызбен сақталады және түсу ықтималдығын есептеуде қолданылады.
 profile.hint.interests: Ұсыныстарды сізге бейімдеу үшін қолданылады.
 profile.interests_saved: Қызығушылықтар сақталды
-profile.label.budget: Жылдық жалпы бюджет (USD)
+profile.label.budget: Жалпы бюджет (USD / жыл)
 profile.label.exams: Емтихандар (тізім, міндетті емес)
 profile.label.funding_type: Қаржыландыру түрі
 profile.label.gpa: GPA (пайыз)
@@ -181,7 +181,7 @@ universities.badge.over_budget_aid: 💸 Бюджеттен жоғары • К�
 universities.badge.requirements_met: ✅ Талаптар орындалды
 universities.card.est_cost_year: Болжамды құн/жыл
 universities.city: Қала
-universities.cost_per_year: Жылдық құны (USD)
+universities.cost_per_year: Құны (USD / жыл)
 universities.country: Ел
 universities.filter: Сүзгі
 universities.found_prefix: 

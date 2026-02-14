@@ -119,7 +119,7 @@ profile.hint.budget_range: Диапазон: 1 - 1,000,000
 profile.hint.gpa: GPA хранится в процентах и используется при расчете вероятности поступления.
 profile.hint.interests: Используется для персонализации ваших рекомендаций.
 profile.interests_saved: Интересы сохранены
-profile.label.budget: Общий бюджет в год (USD)
+profile.label.budget: Общий бюджет (USD / год)
 profile.label.exams: Экзамены (список, необязательно)
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: GPA (в процентах)
@@ -181,7 +181,7 @@ universities.badge.over_budget_aid: 💸 Выше бюджета • Есть п
 universities.badge.requirements_met: ✅ Требования выполнены
 universities.card.est_cost_year: Примерная цена/год
 universities.city: Город
-universities.cost_per_year: Стоимость в год (USD)
+universities.cost_per_year: Стоимость (USD / год)
 universities.country: Страна
 universities.filter: Фильтр
 universities.found_prefix: Найдено

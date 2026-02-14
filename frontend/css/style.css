@@ -420,6 +420,46 @@ html, body {
   color: var(--accent);
 }
 
+/* Auto-compact navbar layout when one-row navigation does not fit */
+.navbar.is-compact {
+  height: auto;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.navbar.is-compact .navbar-left {
+  order: 1;
+  width: 100%;
+  flex: 0 0 100%;
+  justify-content: center;
+}
+
+.navbar.is-compact .navbar-left > a {
+  justify-content: center;
+}
+
+.navbar.is-compact .navbar-right {
+  order: 2;
+  width: 100%;
+  flex: 0 0 100%;
+  justify-content: center;
+  margin-left: 0;
+  gap: 8px;
+}
+
+.navbar.is-compact .navbar-center {
+  order: 3;
+  width: 100%;
+  flex: 0 0 100%;
+  margin: 5px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--line);
+  justify-content: center;
+  gap: 15px;
+}
+
 /* ===== Profile Modal ===== */
 .profile-modal {
   position: fixed;
@@ -617,6 +657,42 @@ html, body {
 
 .profile-add:hover{
   background: var(--accent-strong);
+}
+
+.profile-add--small{
+  padding: 9px 13px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.profile-interests-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-interests-warning{
+  margin-top: 6px;
+  color: #d21e1e;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+:root[data-theme="dark"] .profile-interests-warning{
+  color: #ff9f9f;
+}
+
+.profile-interests-status{
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803d;
+  transform: translateY(-3px);
+}
+
+.profile-interests-status.is-dirty{
+  color: #b45309;
 }
 
 .profile-error{
@@ -1020,7 +1096,7 @@ html, body {
     height: auto;
     padding: 10px 15px;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 10px;
   }
 
@@ -1032,19 +1108,38 @@ html, body {
     padding-top: 0;
   }
 
-  .navbar-left { order: 1; width: auto; flex: 0 0 auto; }
+  .navbar-left {
+    order: 1;
+    width: 100%;
+    flex: 0 0 100%;
+    justify-content: center;
+  }
+  .navbar-left > a { justify-content: center; }
   .logo { height: 32px; }
   
-  .navbar-right { order: 2; width: auto; flex: 0 0 auto; }
-  .navbar-right { gap: 6px; }
+  .navbar-right {
+    order: 2;
+    width: 100%;
+    flex: 0 0 100%;
+    justify-content: center;
+    margin-left: 0;
+    gap: 6px;
+  }
   .lang-control { margin-right: 6px; }
   .lang-switch-wrap { display: none; }
-  .lang-switch { width: 62px; min-width: 62px; height: 34px; margin-right: 0; }
+  .lang-switch { width: 68px; min-width: 68px; height: 34px; margin-right: 0; }
   .navbar-right .lang-control .custom-select-wrapper { margin-right: 0; }
   .navbar-right .lang-control .custom-select-wrapper,
   .navbar-right .lang-control .custom-select-trigger {
-    width: 62px;
+    width: 68px;
     min-height: 34px;
+  }
+  .navbar-right .lang-control .custom-select-trigger {
+    padding: 0 18px 0 6px;
+    font-size: 11px;
+  }
+  .navbar-right .lang-control .custom-select-trigger::after {
+    right: 6px;
   }
   .login-btn { padding: 8px 14px; font-size: 13px; }
   .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
@@ -1066,8 +1161,23 @@ html, body {
   .profile-body{ padding: 12px 16px 16px; }
 
   .profile-exam-form{ grid-template-columns: 1fr; }
-  .profile-budget{ grid-template-columns: 1fr; }
-  .profile-unit{ width: fit-content; }
+  .profile-budget{
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 8px;
+    row-gap: 8px;
+  }
+  .profile-budget .profile-input{
+    min-width: 0;
+  }
+  .profile-budget .profile-save-btn{
+    width: 34px;
+    height: 34px;
+  }
+  .profile-budget .profile-unit{
+    grid-column: 1 / -1;
+    width: fit-content;
+    padding: 8px 10px;
+  }
 
   .profile-name-input {
     min-width: 0;
@@ -1089,14 +1199,15 @@ html, body {
 
 @media (max-width: 599px) {
   .navbar-right {
-    margin-left: auto;
+    margin-left: 0;
+    justify-content: center;
     gap: 6px;
   }
 
   .lang-switch {
-    width: 62px;
-    min-width: 62px;
-    padding: 0 8px;
+    width: 68px;
+    min-width: 68px;
+    padding: 0 6px;
     font-size: 11px;
   }
 

@@ -1,7 +1,9 @@
 import math
+import logging
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from app.core.settings import ML_INTEREST_TRANSLATION_DEBUG
 from app.services import languages as languages_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 from app.services.text_translation import translate_interest_text_for_ml
@@ -12,6 +14,14 @@ _UI_BADGE_THRESHOLDS = {
     "likely_grant_min_chance_pct": 65,
     "paid_admission_min_chance_pct": 45,
 }
+_LOGGER = logging.getLogger("unisearch.ai_scoring")
+
+
+def _preview_text(value: Any, max_len: int = 180) -> str:
+    raw = str(value or "").replace("\n", " ").strip()
+    if len(raw) <= max_len:
+        return raw
+    return f"{raw[:max_len]}..."
 
 
 def _to_num(value: Any) -> Optional[float]:
@@ -895,6 +905,19 @@ def sort_universities_ai(
         else {"text": "", "translated": False, "source": "auto", "reason": "empty", "provider": "none"}
     )
     interest_text = str(translation_meta.get("text") or "").strip()
+    if ML_INTEREST_TRANSLATION_DEBUG:
+        _LOGGER.info(
+            "translation_flow interests_raw_len=%s raw_preview=%r locale_hint=%r translated=%s source=%s provider=%s reason=%s cache_hit=%s translated_preview=%r",
+            len(interest_text_raw),
+            _preview_text(interest_text_raw),
+            str(locale_hint or ""),
+            bool(translation_meta.get("translated")),
+            str(translation_meta.get("source") or ""),
+            str(translation_meta.get("provider") or ""),
+            str(translation_meta.get("reason") or ""),
+            bool(translation_meta.get("cacheHit")),
+            _preview_text(interest_text),
+        )
 
     ml_scores_by_id: Dict[str, float] = {}
     ml_status = get_ml_runtime_status() if interest_text else {"available": False, "message": ""}
@@ -988,6 +1011,12 @@ def sort_universities_ai(
                 "mlQueryTranslated": bool(translation_meta.get("translated")),
                 "mlQuerySource": str(translation_meta.get("source") or ""),
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
+                "mlQueryProvider": str(translation_meta.get("provider") or ""),
+                "mlQueryCacheHit": bool(translation_meta.get("cacheHit")),
+                "mlQueryProviderError": str(translation_meta.get("error") or ""),
+                "mlQueryInputPreview": _preview_text(interest_text_raw),
+                "mlQueryOutputPreview": _preview_text(interest_text),
+                "mlQueryOutputLength": len(interest_text),
             }
             item["__ai_score"] = final_score
             item["__distance"] = preference_mismatch
@@ -1105,6 +1134,12 @@ def sort_universities_ai(
                 "mlQueryTranslated": bool(translation_meta.get("translated")),
                 "mlQuerySource": str(translation_meta.get("source") or ""),
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
+                "mlQueryProvider": str(translation_meta.get("provider") or ""),
+                "mlQueryCacheHit": bool(translation_meta.get("cacheHit")),
+                "mlQueryProviderError": str(translation_meta.get("error") or ""),
+                "mlQueryInputPreview": _preview_text(interest_text_raw),
+                "mlQueryOutputPreview": _preview_text(interest_text),
+                "mlQueryOutputLength": len(interest_text),
                 "costMode": cost_mode,
             }
             candidate = {"score": admit, "matchData": match_data}

@@ -50,6 +50,12 @@ function bindThemeUiSync() {
 }
 
 const LAYOUT_CACHE_KEY = "unisearch_layout_cache_v1";
+const TRANSLATION_STATUS_CACHE_TTL_MS = 60_000;
+let __translationStatusCache = {
+    ts: 0,
+    data: null,
+    inFlight: null,
+};
 
 function hashString(input) {
     let hash = 0;
@@ -142,13 +148,12 @@ const LAYOUT_HTML = `
     <div class="profile-body">
       
       <div class="profile-field">
-        <label class="profile-label" data-i18n="profile.label.budget">Total Budget per year (USD)</label>
+        <label class="profile-label" data-i18n="profile.label.budget">Total Budget (USD / year)</label>
         <div class="profile-budget">
           <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
           <button id="saveBudgetBtn" class="icon-btn profile-save-btn" title="Save Budget" data-i18n-title="profile.action.save_budget">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </button>
-          <span class="profile-unit" data-i18n="profile.unit.usd_year">USD / year</span>
         </div>
         <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 1 - 1,000,000</div>
       </div>
@@ -188,6 +193,16 @@ const LAYOUT_HTML = `
           placeholder="Describe your ideal university: programs, research, location, campus style, and goals."
           data-i18n-placeholder="profile.placeholder.interests"
         ></textarea>
+        <div
+          id="profileInterestsLangWarning"
+          class="profile-interests-warning"
+          hidden
+          data-i18n="profile.warning.interests_english_only"
+        >Translation is unavailable. Please write interests in English.</div>
+        <div class="profile-interests-actions">
+          <span id="profileInterestsSaveState" class="profile-interests-status">Saved</span>
+          <button id="saveInterestsBtn" class="profile-add profile-add--small" type="button" data-i18n="profile.action.save_interests">Save</button>
+        </div>
         <div class="profile-hint" data-i18n="profile.hint.interests">Used to personalize your recommendations.</div>
       </div>
 
@@ -325,6 +340,57 @@ function initMobileMenu() {
     }
 }
 
+function syncAdaptiveNavbarLayout() {
+    const navbar = document.querySelector(".navbar");
+    const left = document.querySelector(".navbar-left");
+    const center = document.querySelector(".navbar-center");
+    const right = document.querySelector(".navbar-right");
+    if (!navbar || !left || !center || !right) return;
+
+    // Mobile/tablet layout is handled via CSS media rules.
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        navbar.classList.remove("is-compact");
+        return;
+    }
+
+    navbar.classList.remove("is-compact");
+
+    const navStyle = window.getComputedStyle(navbar);
+    const navPadLeft = Number.parseFloat(navStyle.paddingLeft || "0") || 0;
+    const navPadRight = Number.parseFloat(navStyle.paddingRight || "0") || 0;
+    const availableWidth = Math.max(0, navbar.clientWidth - navPadLeft - navPadRight);
+
+    const leftWidth = left.getBoundingClientRect().width || 0;
+    const rightWidth = right.getBoundingClientRect().width || 0;
+    const centerWidth = Math.max(center.scrollWidth || 0, center.getBoundingClientRect().width || 0);
+    const requiredWidth = Math.ceil(leftWidth + centerWidth + rightWidth);
+
+    if (requiredWidth > availableWidth + 1) {
+        navbar.classList.add("is-compact");
+    }
+}
+
+let __adaptiveNavbarBound = false;
+function initAdaptiveNavbarLayout() {
+    syncAdaptiveNavbarLayout();
+    if (__adaptiveNavbarBound) return;
+    __adaptiveNavbarBound = true;
+
+    let rafId = 0;
+    const scheduleSync = () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(() => {
+            rafId = 0;
+            syncAdaptiveNavbarLayout();
+        });
+    };
+
+    window.addEventListener("resize", scheduleSync);
+    window.addEventListener("orientationchange", scheduleSync);
+    window.addEventListener("languageChanged", scheduleSync);
+    window.addEventListener("load", scheduleSync);
+}
+
 function initLanguageSwitcher() {
     const languageSelect = document.getElementById("languageSelect");
     if (!languageSelect) return;
@@ -344,6 +410,36 @@ function initLanguageSwitcher() {
     window.addEventListener("languageChanged", () => {
         languageSelect.value = getCurrentLanguage();
     });
+}
+
+async function fetchTranslationRuntimeStatus(force = false) {
+    const now = Date.now();
+    if (!force && __translationStatusCache.data && (now - __translationStatusCache.ts) < TRANSLATION_STATUS_CACHE_TTL_MS) {
+        return __translationStatusCache.data;
+    }
+    if (__translationStatusCache.inFlight) {
+        return __translationStatusCache.inFlight;
+    }
+    __translationStatusCache.inFlight = (async () => {
+        try {
+            const res = await fetch(`${API_BASE}/ops/translation-status`, {
+                cache: "no-store",
+                headers: { "Accept": "application/json" },
+            });
+            if (!res.ok) throw new Error(`translation-status http ${res.status}`);
+            const data = await res.json();
+            __translationStatusCache.ts = Date.now();
+            __translationStatusCache.data = data && typeof data === "object" ? data : null;
+            return __translationStatusCache.data;
+        } catch (e) {
+            __translationStatusCache.ts = Date.now();
+            __translationStatusCache.data = null;
+            return null;
+        } finally {
+            __translationStatusCache.inFlight = null;
+        }
+    })();
+    return __translationStatusCache.inFlight;
 }
 
 // 🔥 1. Функция загрузки (теперь берет строку, а не файл)
@@ -379,6 +475,7 @@ export async function loadGlobalLayout() {
         initLanguageSwitcher();
         applyTranslations(document);
         if (typeof initCustomSelect === "function") initCustomSelect("languageSelect");
+        initAdaptiveNavbarLayout();
 
         // Запускаем логику профиля
         initProfileUI();
@@ -422,6 +519,9 @@ function initProfileUI() {
     const examList = document.getElementById("examList");
     const profileMajorSelect = document.getElementById("profileMajorSelect");
     const profileInterestsInput = document.getElementById("profileInterestsInput");
+    const saveInterestsBtn = document.getElementById("saveInterestsBtn");
+    const profileInterestsSaveState = document.getElementById("profileInterestsSaveState");
+    const profileInterestsLangWarning = document.getElementById("profileInterestsLangWarning");
 
     const editNameBtn = document.getElementById("editNameBtn");
     const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
@@ -452,13 +552,38 @@ function initProfileUI() {
     });
     
     let profile = loadProfile(); 
+    let interestsDirty = false;
+    const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
+    const renderInterestsTranslationWarning = (status) => {
+        if (!profileInterestsLangWarning) return;
+        const enabled = Boolean(status && status.enabled);
+        const available = Boolean(status && status.available);
+        const shouldShow = enabled && !available;
+        profileInterestsLangWarning.hidden = !shouldShow;
+        profileInterestsLangWarning.textContent = t(
+            "profile.warning.interests_english_only",
+            "Translation is unavailable. Please write interests in English.",
+        );
+    };
+    const setInterestsSaveState = (isDirty) => {
+        interestsDirty = !!isDirty;
+        if (!profileInterestsSaveState) return;
+        profileInterestsSaveState.textContent = isDirty
+            ? t("profile.interests_unsaved", "Unsaved changes")
+            : t("profile.interests_saved_state", "Saved");
+        profileInterestsSaveState.classList.toggle("is-dirty", !!isDirty);
+    };
     const syncInterestsToProfile = (notify = false) => {
         if (!profileInterestsInput) return;
-        const next = String(profileInterestsInput.value || "").trim().slice(0, 1200);
+        const next = getInterestsDraft();
         const prev = String(profile.interests || "");
-        if (next === prev) return;
+        if (next === prev) {
+            setInterestsSaveState(false);
+            return;
+        }
         profile.interests = next;
         saveProfile(profile);
+        setInterestsSaveState(false);
         if (notify) showToast(t("profile.interests_saved", "Interests saved"), "success");
     };
 
@@ -514,6 +639,8 @@ function initProfileUI() {
         if (profileFundingTypeSelect) profileFundingTypeSelect.value = profile.fundingType || "any";
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
+        setInterestsSaveState(false);
+        renderInterestsTranslationWarning(__translationStatusCache.data);
         renderProfileData();
     };
 
@@ -542,12 +669,20 @@ function initProfileUI() {
     }
 
     if (profileInterestsInput) {
-        profileInterestsInput.addEventListener("blur", () => syncInterestsToProfile(false));
-        profileInterestsInput.addEventListener("change", () => syncInterestsToProfile(true));
+        profileInterestsInput.addEventListener("input", () => {
+            setInterestsSaveState(getInterestsDraft() !== String(profile.interests || ""));
+        });
+    }
+
+    if (saveInterestsBtn) {
+        saveInterestsBtn.addEventListener("click", () => syncInterestsToProfile(true));
     }
 
     if (openBtn) openBtn.onclick = () => { 
         resetFields();
+        void fetchTranslationRuntimeStatus(false).then((status) => {
+            renderInterestsTranslationWarning(status);
+        });
         window.dispatchEvent(new Event("profileModalOpened"));
         modal.classList.add("is-open"); 
         modal.style.display = "flex";
@@ -564,7 +699,7 @@ function initProfileUI() {
     
     const close = () => { 
         if (!modal.classList.contains("is-open")) return;
-        syncInterestsToProfile(false);
+        if (interestsDirty) syncInterestsToProfile(false);
 
         // 1. Сначала возвращаем фокус на кнопку открытия (чтобы не было ошибки aria-hidden)
         if (openBtn) openBtn.focus();
@@ -581,101 +716,151 @@ function initProfileUI() {
     if (closeBtn) closeBtn.onclick = close;
     if (backdrop) backdrop.onclick = close;
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    window.addEventListener("languageChanged", () => {
+        if (!modal.classList.contains("is-open")) return;
+        renderInterestsTranslationWarning(__translationStatusCache.data);
+    });
 
     // Редактирование имени
-    if (editNameBtn && profileUsernameDiv) {
+    if (editNameBtn && profileUsernameDiv && nameInput) {
+        const commitProfileName = () => {
+            const newName = nameInput.value.trim();
+            const validName = /^[A-Za-z0-9 ]+$/;
+            if (newName.length < 3 || newName.length > 16) {
+                showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
+                return false;
+            }
+            if (!validName.test(newName)) {
+                showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
+                return false;
+            }
+            profile.name = newName;
+            saveProfile(profile);
+            nameDisplay.textContent = newName;
+            profileUsernameDiv.classList.remove("is-editing");
+            showToast(t("profile.nickname_updated", "Nickname updated!"), "success");
+            return true;
+        };
+
         editNameBtn.onclick = () => {
             const isEditing = profileUsernameDiv.classList.contains("is-editing");
             if (!isEditing) {
                 profileUsernameDiv.classList.add("is-editing");
                 nameInput.focus();
-            } else {
-                const newName = nameInput.value.trim();
-                const validName = /^[A-Za-z0-9 ]+$/;
-                if (newName.length < 3 || newName.length > 16) {
-                    showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
-                    return;
-                }
-                if (!validName.test(newName)) {
-                    showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
-                    return;
-                }
-                profile.name = newName;
-                saveProfile(profile);
-                nameDisplay.textContent = newName;
-                profileUsernameDiv.classList.remove("is-editing");
-                showToast(t("profile.nickname_updated", "Nickname updated!"), "success");
+                return;
             }
+            commitProfileName();
         };
+
+        nameInput.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            if (!profileUsernameDiv.classList.contains("is-editing")) return;
+            e.preventDefault();
+            commitProfileName();
+        });
     }
 
-    // Сохранение бюджета
-    if (saveBudgetBtn) {
-        saveBudgetBtn.onclick = () => {
-            const rawVal = budgetInput.value;
-            if (!rawVal) {
-                profile.budget = "";
-                saveProfile(profile);
-                showToast(t("profile.budget_cleared", "Budget cleared"), "success");
-                return;
-            }
-            if (rawVal.includes(".") || rawVal.includes(",")) {
-                showToast(t("profile.budget_integers_only", "Integers only (no dots/commas)"), "error");
-                return;
-            }
-            const val = Number(rawVal);
-            if (isNaN(val)) {
-                showToast(t("profile.budget_must_number", "Budget must be a number"), "error");
-                return;
-            }
-            if (val < 1 || val > 1000000) {
-                showToast(t("profile.budget_limit", "Limit: 1 - 1,000,000 USD"), "error");
-                return;
-            }
-            profile.budget = val;
+    const saveBudgetValue = (notify = true) => {
+        if (!budgetInput) return true;
+        const rawVal = String(budgetInput.value || "").trim();
+        if (!rawVal) {
+            if (profile.budget === "") return true;
+            profile.budget = "";
             saveProfile(profile);
-            showToast(t("profile.budget_saved", "Budget saved!"), "success");
-        };
+            if (notify) showToast(t("profile.budget_cleared", "Budget cleared"), "success");
+            return true;
+        }
+        if (rawVal.includes(".") || rawVal.includes(",")) {
+            showToast(t("profile.budget_integers_only", "Integers only (no dots/commas)"), "error");
+            return false;
+        }
+        const val = Number(rawVal);
+        if (!Number.isFinite(val)) {
+            showToast(t("profile.budget_must_number", "Budget must be a number"), "error");
+            return false;
+        }
+        if (val < 1 || val > 1000000) {
+            showToast(t("profile.budget_limit", "Limit: 1 - 1,000,000 USD"), "error");
+            return false;
+        }
+        const current = Number(profile.budget);
+        if (Number.isFinite(current) && current === val) {
+            budgetInput.value = String(val);
+            return true;
+        }
+        profile.budget = val;
+        saveProfile(profile);
+        budgetInput.value = String(val);
+        if (notify) showToast(t("profile.budget_saved", "Budget saved!"), "success");
+        return true;
+    };
+
+    const saveGpaValue = (notify = true) => {
+        if (!gpaInput) return true;
+        const rawVal = String(gpaInput.value || "").trim();
+        if (!rawVal) {
+            if (profile.gpa === "") return true;
+            profile.gpa = "";
+            saveProfile(profile);
+            if (notify) showToast(t("profile.gpa_cleared", "GPA cleared"), "success");
+            return true;
+        }
+
+        const val = Number(rawVal);
+        if (!Number.isFinite(val)) {
+            showToast(t("profile.gpa_must_number", "GPA must be a number"), "error");
+            return false;
+        }
+
+        const cfg = EXAM_CONFIG?.GPA || { min: 0, max: 100, step: 1 };
+        const min = Number.isFinite(Number(cfg?.min)) ? Number(cfg.min) : 0;
+        const max = Number.isFinite(Number(cfg?.max)) ? Number(cfg.max) : 100;
+        const step = Number.isFinite(Number(cfg?.step)) ? Number(cfg.step) : 1;
+
+        if (val < min || val > max) {
+            showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}%`), "error");
+            return false;
+        }
+        if (step > 0) {
+            const k = (val - min) / step;
+            if (Math.abs(k - Math.round(k)) > 1e-9) {
+                showToast(tFormat("profile.gpa_step", { step }, `GPA must use step ${step}`), "error");
+                return false;
+            }
+        }
+
+        const normalized = Number((Math.round(val * 1000) / 1000));
+        const current = Number(profile.gpa);
+        if (Number.isFinite(current) && Math.abs(current - normalized) <= 1e-9) {
+            gpaInput.value = String(normalized);
+            return true;
+        }
+        profile.gpa = normalized;
+        saveProfile(profile);
+        gpaInput.value = String(normalized);
+        if (notify) showToast(t("profile.gpa_saved", "GPA saved"), "success");
+        return true;
+    };
+
+    if (saveBudgetBtn) saveBudgetBtn.onclick = () => { saveBudgetValue(true); };
+    if (saveGpaBtn) saveGpaBtn.onclick = () => { saveGpaValue(true); };
+
+    if (budgetInput) {
+        budgetInput.addEventListener("blur", () => { saveBudgetValue(false); });
+        budgetInput.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            e.preventDefault();
+            saveBudgetValue(true);
+        });
     }
 
-    if (saveGpaBtn) {
-        saveGpaBtn.onclick = () => {
-            const rawVal = (gpaInput?.value || "").trim();
-            if (!rawVal) {
-                profile.gpa = "";
-                saveProfile(profile);
-                showToast(t("profile.gpa_cleared", "GPA cleared"), "success");
-                return;
-            }
-
-            const val = Number(rawVal);
-            if (!Number.isFinite(val)) {
-                showToast(t("profile.gpa_must_number", "GPA must be a number"), "error");
-                return;
-            }
-
-            const cfg = EXAM_CONFIG?.GPA || { min: 0, max: 100, step: 1 };
-            const min = Number.isFinite(Number(cfg?.min)) ? Number(cfg.min) : 0;
-            const max = Number.isFinite(Number(cfg?.max)) ? Number(cfg.max) : 100;
-            const step = Number.isFinite(Number(cfg?.step)) ? Number(cfg.step) : 1;
-
-            if (val < min || val > max) {
-                showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}%`), "error");
-                return;
-            }
-            if (step > 0) {
-                const k = (val - min) / step;
-                if (Math.abs(k - Math.round(k)) > 1e-9) {
-                    showToast(tFormat("profile.gpa_step", { step }, `GPA must use step ${step}`), "error");
-                    return;
-                }
-            }
-
-            profile.gpa = Number((Math.round(val * 1000) / 1000));
-            saveProfile(profile);
-            if (gpaInput) gpaInput.value = String(profile.gpa);
-            showToast(t("profile.gpa_saved", "GPA saved"), "success");
-        };
+    if (gpaInput) {
+        gpaInput.addEventListener("blur", () => { saveGpaValue(false); });
+        gpaInput.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            e.preventDefault();
+            saveGpaValue(true);
+        });
     }
 
     // 🔥 ЛОГИКА ДОБАВЛЕНИЯ / ОБНОВЛЕНИЯ ЭКЗАМЕНА

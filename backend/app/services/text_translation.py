@@ -1,5 +1,6 @@
 import hashlib
 import json
+import logging
 import threading
 import time
 from typing import Any, Dict, Optional
@@ -11,6 +12,7 @@ from app.core.security import build_rate_limiter
 from app.core.settings import (
     LIBRETRANSLATE_API_KEY,
     LIBRETRANSLATE_URL,
+    ML_INTEREST_TRANSLATION_DEBUG,
     ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS,
     ML_INTEREST_TRANSLATION_CACHE_TTL_SEC,
     ML_INTEREST_TRANSLATION_ENABLED,
@@ -34,6 +36,24 @@ _TRANSLATION_RATE_LIMITER = build_rate_limiter(
 )
 _PROVIDER_BACKOFF_UNTIL = 0.0
 _PROVIDER_BACKOFF_LOCK = threading.Lock()
+_LOGGER = logging.getLogger("unisearch.translation")
+_PROVIDER_STATUS_CACHE: Dict[str, Any] = {"ts": 0.0, "value": None}
+_PROVIDER_STATUS_CACHE_LOCK = threading.Lock()
+_PROVIDER_STATUS_CACHE_TTL_SEC = 20.0
+
+
+def _preview_text(value: Any, max_len: int = 180) -> str:
+    raw = str(value or "").replace("\n", " ").strip()
+    if len(raw) <= max_len:
+        return raw
+    return f"{raw[:max_len]}..."
+
+
+def _debug_log(event: str, **fields: Any) -> None:
+    if not ML_INTEREST_TRANSLATION_DEBUG:
+        return
+    payload = {k: fields.get(k) for k in sorted(fields.keys())}
+    _LOGGER.info("translation_debug %s %s", event, payload)
 
 
 def _normalize_source_hint(value: Any) -> str:
@@ -165,6 +185,27 @@ def _http_post_json(url: str, body: Dict[str, Any], timeout_sec: float) -> Dict[
         raise RuntimeError(f"Translator invalid JSON: {e}") from e
 
 
+def _http_get_json(url: str, timeout_sec: float) -> Any:
+    req = UrlRequest(
+        url,
+        headers={
+            "Accept": "application/json",
+            "User-Agent": "UniSearch-Translator/1.0",
+        },
+        method="GET",
+    )
+    try:
+        with urlopen(req, timeout=max(0.25, float(timeout_sec))) as r:
+            raw = r.read().decode("utf-8", errors="ignore")
+        return json.loads(raw)
+    except HTTPError as e:
+        raise RuntimeError(f"Translator HTTP {e.code}") from e
+    except URLError as e:
+        raise RuntimeError(f"Translator network error: {getattr(e, 'reason', e)}") from e
+    except json.JSONDecodeError as e:
+        raise RuntimeError(f"Translator invalid JSON: {e}") from e
+
+
 def _libretranslate_request(text: str, source_lang: str, target_lang: str) -> str:
     if not LIBRETRANSLATE_URL:
         raise RuntimeError("LIBRETRANSLATE_URL is not configured")
@@ -187,13 +228,96 @@ def _libretranslate_request(text: str, source_lang: str, target_lang: str) -> st
     return out
 
 
+def _libretranslate_languages_url() -> str:
+    base = str(LIBRETRANSLATE_URL or "").strip()
+    if not base:
+        return ""
+    if base.endswith("/translate"):
+        return f"{base[:-len('/translate')]}/languages"
+    return f"{base.rstrip('/')}/languages"
+
+
+def _libretranslate_provider_available(timeout_sec: float = 1.2) -> Dict[str, Any]:
+    url = _libretranslate_languages_url()
+    if not url:
+        return {"available": False, "reason": "url_missing", "error": "LIBRETRANSLATE_URL is not configured"}
+    try:
+        payload = _http_get_json(url, timeout_sec=timeout_sec)
+        is_ok = isinstance(payload, list)
+        return {
+            "available": bool(is_ok),
+            "reason": "ok" if is_ok else "unexpected_response",
+            "languagesCount": len(payload) if isinstance(payload, list) else 0,
+        }
+    except Exception as exc:
+        return {
+            "available": False,
+            "reason": "provider_error",
+            "error": str(exc),
+        }
+
+
+def get_translation_runtime_status(force_check: bool = False) -> Dict[str, Any]:
+    provider = str(ML_INTEREST_TRANSLATION_PROVIDER or "none").strip().lower() or "none"
+    status = {
+        "enabled": bool(ML_INTEREST_TRANSLATION_ENABLED),
+        "provider": provider,
+        "target": str(ML_INTEREST_TRANSLATION_TARGET or "en").strip().lower() or "en",
+        "source": str(ML_INTEREST_TRANSLATION_SOURCE or "auto").strip().lower() or "auto",
+        "urlConfigured": bool(str(LIBRETRANSLATE_URL or "").strip()),
+        "available": False,
+        "reason": "",
+        "error": "",
+    }
+    if not status["enabled"]:
+        status["reason"] = "disabled"
+        return status
+    if provider != "libretranslate":
+        status["reason"] = "provider_not_supported"
+        return status
+
+    now = time.time()
+    if not force_check:
+        with _PROVIDER_STATUS_CACHE_LOCK:
+            cached = _PROVIDER_STATUS_CACHE.get("value")
+            ts = float(_PROVIDER_STATUS_CACHE.get("ts") or 0.0)
+            if isinstance(cached, dict) and (now - ts) < _PROVIDER_STATUS_CACHE_TTL_SEC:
+                out = dict(status)
+                out.update(cached)
+                return out
+
+    if _provider_in_backoff():
+        result = {
+            "available": False,
+            "reason": "provider_backoff",
+            "error": "",
+        }
+    else:
+        result = _libretranslate_provider_available(timeout_sec=min(1.5, ML_INTEREST_TRANSLATION_TIMEOUT_SEC))
+
+    with _PROVIDER_STATUS_CACHE_LOCK:
+        _PROVIDER_STATUS_CACHE["ts"] = time.time()
+        _PROVIDER_STATUS_CACHE["value"] = dict(result)
+
+    out = dict(status)
+    out.update(result)
+    return out
+
+
 def translate_interest_text_for_ml(
     text: Any,
     source_hint: Any = "",
     client_key: str = "",
 ) -> Dict[str, Any]:
     raw = str(text or "").strip()
+    _debug_log(
+        "request_received",
+        source_hint=str(source_hint or ""),
+        text_preview=_preview_text(raw),
+        text_len=len(raw),
+    )
     if not raw:
+        _debug_log("skip_empty")
         return {
             "text": "",
             "translated": False,
@@ -209,6 +333,12 @@ def translate_interest_text_for_ml(
     provider = str(ML_INTEREST_TRANSLATION_PROVIDER or "none").strip().lower()
     target = str(ML_INTEREST_TRANSLATION_TARGET or "en").strip().lower() or "en"
     if not ML_INTEREST_TRANSLATION_ENABLED or provider != "libretranslate":
+        _debug_log(
+            "skip_disabled",
+            provider=provider,
+            detected_source=detected_source,
+            enabled=bool(ML_INTEREST_TRANSLATION_ENABLED),
+        )
         return {
             "text": raw,
             "translated": False,
@@ -218,6 +348,7 @@ def translate_interest_text_for_ml(
             "cacheHit": False,
         }
     if _provider_in_backoff():
+        _debug_log("skip_provider_backoff", provider=provider, detected_source=detected_source)
         return {
             "text": raw,
             "translated": False,
@@ -233,11 +364,24 @@ def translate_interest_text_for_ml(
         out = dict(cached)
         out["reason"] = "cache_hit"
         out["cacheHit"] = True
+        _debug_log(
+            "cache_hit",
+            provider=provider,
+            detected_source=detected_source,
+            translated=bool(out.get("translated")),
+            out_preview=_preview_text(out.get("text")),
+        )
         return out
 
     limiter_key = str(client_key or "global").strip() or "global"
     allowed, _, retry_after = _TRANSLATION_RATE_LIMITER.check(limiter_key)
     if not allowed:
+        _debug_log(
+            "skip_rate_limited",
+            provider=provider,
+            detected_source=detected_source,
+            retry_after=max(1, int(round(retry_after))),
+        )
         return {
             "text": raw,
             "translated": False,
@@ -250,14 +394,22 @@ def translate_interest_text_for_ml(
 
     try:
         translated_text = _libretranslate_request(raw, source_lang or "auto", target)
-    except Exception:
+    except Exception as exc:
         _provider_set_backoff()
+        _debug_log(
+            "provider_error",
+            provider=provider,
+            detected_source=detected_source,
+            error=str(exc),
+            text_preview=_preview_text(raw),
+        )
         return {
             "text": raw,
             "translated": False,
             "source": detected_source,
             "provider": provider,
             "reason": "provider_error",
+            "error": str(exc),
             "cacheHit": False,
         }
 
@@ -269,5 +421,13 @@ def translate_interest_text_for_ml(
         "reason": "translated",
         "cacheHit": False,
     }
+    _debug_log(
+        "translated",
+        provider=provider,
+        detected_source=detected_source,
+        translated=bool(out.get("translated")),
+        in_preview=_preview_text(raw),
+        out_preview=_preview_text(translated_text),
+    )
     _cache_set(cache_key, out)
     return out

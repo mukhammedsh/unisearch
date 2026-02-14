@@ -119,7 +119,7 @@ profile.hint.budget_range: Range: 1 - 1,000,000
 profile.hint.gpa: GPA is stored as percent and used in admission matching.
 profile.hint.interests: Used to personalize your recommendations.
 profile.interests_saved: Interests saved
-profile.label.budget: Total Budget per year (USD)
+profile.label.budget: Total Budget (USD / year)
 profile.label.exams: Exams (list, optional)
 profile.label.funding_type: Preferred Funding Type
 profile.label.gpa: GPA (Percent)
@@ -181,7 +181,7 @@ universities.badge.over_budget_aid: 💸 Over Budget • Aid Available
 universities.badge.requirements_met: ✅ Requirements Met
 universities.card.est_cost_year: Est. Cost/Year
 universities.city: City
-universities.cost_per_year: Cost per year (USD)
+universities.cost_per_year: Cost (USD / year)
 universities.country: Country
 universities.filter: Filter
 universities.found_prefix: Found

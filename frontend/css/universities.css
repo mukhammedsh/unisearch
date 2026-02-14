@@ -813,6 +813,7 @@
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
+  position: relative;
   box-shadow: 0 6px 18px rgba(0, 0, 0, .05);
   cursor: pointer;
   transition: transform .15s ease, box-shadow .15s ease;
@@ -828,6 +829,7 @@
 
 .uni-media {
   height: 112px;
+  flex: 0 0 112px;
   position: relative;
   background-color: #f0f0f0;
   border-bottom: 1px solid #eee;
@@ -910,6 +912,7 @@
   flex-direction: column;
   gap: 6px;
   flex: 1 1 auto;
+  min-height: 0;
 }
 
 .uni-title {
@@ -951,16 +954,16 @@
 
 .uni-badge {
   margin-top: 2px;
-  padding: 7px 8px;
+  padding: 6px 7px;
   border-radius: 12px;
   background: rgba(87, 21, 219, .06);
   border: 1px solid rgba(87, 21, 219, .12);
   color: rgba(0, 0, 0, .70);
-  font-size: 11.5px;
+  font-size: 10.5px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  min-height: 42px;
+  gap: 5px;
+  min-height: 0;
   align-content: flex-start;
 }
 
@@ -985,18 +988,31 @@
 .uni-pill {
   display: inline-flex;
   align-items: flex-start;
-  padding: 3px 7px;
+  padding: 2px 6px;
   border-radius: 6px;
-  font-size: 11.5px;
+  font-size: 10.5px;
   font-weight: 700;
   border: 1px solid transparent;
   margin-bottom: 0;
-  line-height: 1.25;
+  line-height: 1.2;
   width: auto;
   max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
   text-overflow: clip;
+}
+
+.uni-card-link-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
+.uni-card-link-overlay:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 .uni-acceptance .uni-pill {
@@ -1219,9 +1235,12 @@
   box-shadow: none;
   border: none;
   border-radius: 0;
+  height: auto;
+  min-height: 0;
 }
 
 .map-card-wrapper .uni-media {
+  flex-basis: 140px;
   height: 140px;
 }
 

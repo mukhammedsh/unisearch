@@ -461,6 +461,26 @@ export function initUniversitiesPage() {
         btnList: $("viewListBtn"), btnMap: $("viewMapBtn"),
         loading: $("universitiesLoading")
     };
+    const isTranslationDebugEnabled = true;
+    const previewText = (value, maxLen = 180) => {
+        const raw = String(value || "").replace(/\s+/g, " ").trim();
+        if (raw.length <= maxLen) return raw;
+        return `${raw.slice(0, maxLen)}...`;
+    };
+    const logTranslationDebug = (stage, details = {}) => {
+        if (!isTranslationDebugEnabled) return;
+        try {
+            console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
+            Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
+            console.groupEnd();
+        } catch (e) {
+            // ignore logging errors
+        }
+    };
+    logTranslationDebug("debug mode enabled", {
+        alwaysOn: true,
+        note: "ML + translation debug is always logged on Universities page load.",
+    });
 
     const getProfileFundingQueryValue = () => {
         const profile = loadProfile();
@@ -966,6 +986,10 @@ export function initUniversitiesPage() {
         sliderEl.addEventListener("input", () => {
             state[stateKey] = clampPercent(sliderEl.value, 50);
             updateTradeoffLabel(labelEl, state[stateKey], leftTextKey, leftTextFallback, rightTextKey, rightTextFallback);
+        });
+        sliderEl.addEventListener("change", () => {
+            state[stateKey] = clampPercent(sliderEl.value, 50);
+            updateTradeoffLabel(labelEl, state[stateKey], leftTextKey, leftTextFallback, rightTextKey, rightTextFallback);
             refetch();
         });
     };
@@ -1268,6 +1292,7 @@ export function initUniversitiesPage() {
     function buildAiSortPayload() {
         const profile = loadProfileForApi();
         const uiLang = getCurrentLanguage();
+        const isMapMode = state.viewMode === "map";
         const payload = {
             profile,
             lang: uiLang,
@@ -1275,8 +1300,8 @@ export function initUniversitiesPage() {
             social_vs_hardcore: state.social_vs_hardcore,
             budget_vs_prestige: state.budget_vs_prestige,
             city_vs_campus: state.city_vs_campus,
-            page: state.page,
-            limit: state.limit,
+            page: isMapMode ? 1 : state.page,
+            limit: isMapMode ? 200 : state.limit,
         };
         state.funding_type = getProfileFundingQueryValue();
         if (state.q) payload.q = state.q;
@@ -1292,6 +1317,13 @@ export function initUniversitiesPage() {
         const mode = String(profile?.studyMode || "").trim();
         if (major) payload.major = major;
         if (mode && mode.toLowerCase() !== "any") payload.format = mode;
+        logTranslationDebug("ai-sort payload", {
+            viewMode: state.viewMode,
+            uiLang,
+            localeInProfile: profile?.locale || profile?.language || profile?.lang || "",
+            interestsRawLength: String(profile?.interests || "").trim().length,
+            interestsRawPreview: previewText(profile?.interests || ""),
+        });
         return payload;
     }
 
@@ -1425,7 +1457,14 @@ export function initUniversitiesPage() {
     async function fetchUniversities(apiParams) {
         const key = apiParams.toString();
         const now = Date.now();
+        logTranslationDebug("non-ai request start", {
+            query: key,
+            reason: "sort is not uni_ai or AI fallback path",
+        });
         if (lastFetchKey === key && lastFetchPayload && (now - lastFetchAt) < CACHE_TTL_MS) {
+            logTranslationDebug("non-ai request cache hit (frontend memory)", {
+                ageMs: now - lastFetchAt,
+            });
             return lastFetchPayload;
         }
 
@@ -1455,6 +1494,11 @@ export function initUniversitiesPage() {
             items: data.items || [],
             total: data.total || 0,
         };
+        logTranslationDebug("non-ai response received", {
+            httpStatus: res.status,
+            apiItems: payload.items.length,
+            total: payload.total,
+        });
         lastFetchKey = key;
         lastFetchPayload = payload;
         lastFetchAt = now;
@@ -1464,7 +1508,16 @@ export function initUniversitiesPage() {
     async function fetchUniversitiesAiSort(payload) {
         const key = JSON.stringify(payload);
         const now = Date.now();
+        const payloadInterests = String(payload?.profile?.interests || "").trim();
+        logTranslationDebug("request start", {
+            cacheCandidateKeyLength: key.length,
+            interestsRawLength: payloadInterests.length,
+            interestsRawPreview: previewText(payloadInterests),
+        });
         if (lastAiFetchKey === key && lastAiFetchPayload && (now - lastAiFetchAt) < CACHE_TTL_MS) {
+            logTranslationDebug("request cache hit (frontend memory)", {
+                ageMs: now - lastAiFetchAt,
+            });
             return lastAiFetchPayload;
         }
 
@@ -1500,6 +1553,26 @@ export function initUniversitiesPage() {
             total: data.total || 0,
             warnings: Array.isArray(data.warnings) ? data.warnings : [],
         };
+        const probe = parsed.items[0] || {};
+        const match = (probe && typeof probe === "object") ? (probe.matchData || {}) : {};
+        logTranslationDebug("response received", {
+            httpStatus: res.status,
+            apiItems: parsed.items.length,
+            apiWarnings: parsed.warnings,
+            mlQueryTranslated: Boolean(match.mlQueryTranslated),
+            mlQuerySource: String(match.mlQuerySource || ""),
+            mlQueryTranslationReason: String(match.mlQueryTranslationReason || ""),
+            mlQueryProvider: String(match.mlQueryProvider || ""),
+            mlQueryCacheHit: Boolean(match.mlQueryCacheHit),
+            mlQueryProviderError: String(match.mlQueryProviderError || ""),
+            mlQueryInputPreview: String(match.mlQueryInputPreview || ""),
+            mlQueryOutputPreview: String(match.mlQueryOutputPreview || ""),
+            mlQueryOutputLength: Number(match.mlQueryOutputLength || 0),
+            mlApplied: Boolean(match.mlApplied),
+            mlAvailable: Boolean(match.mlAvailable),
+            mlUnavailable: Boolean(match.mlUnavailable),
+            mlWarning: String(match.mlWarning || ""),
+        });
         lastAiFetchKey = key;
         lastAiFetchPayload = parsed;
         lastAiFetchAt = now;
@@ -1547,6 +1620,11 @@ export function initUniversitiesPage() {
 
     async function fetchAndRender() {
         const runSeq = ++fetchRunSeq;
+        logTranslationDebug("fetch cycle start", {
+            runSeq,
+            viewMode: state.viewMode,
+            sort: state.sort,
+        });
         setUniversitiesLoading(true);
         if (el.state && state.viewMode === 'list') el.state.textContent = "";
         if (state.viewMode === 'list') el.list.innerHTML = "";
@@ -1557,9 +1635,9 @@ export function initUniversitiesPage() {
         setUrlParams(urlParams);
 
         try {
-        const isAiSort = (state.sort === "uni_ai") && state.viewMode === "list";
+        const isAiSort = (state.sort === "uni_ai");
         if (isAiSort) {
-            const canUseFallback = !hasInitialListPaint && state.page === 1;
+            const canUseFallback = state.viewMode === "list" && !hasInitialListPaint && state.page === 1;
             if (!canUseFallback) {
                 try {
                     const aiData = await fetchUniversitiesAiSort(buildAiSortPayload());
@@ -1603,7 +1681,7 @@ export function initUniversitiesPage() {
             aiPromise.then((lateAiData) => {
                 if (!lateAiData || lateAiData.__aborted) return;
                 if (runSeq !== fetchRunSeq) return;
-                if (state.sort !== "uni_ai" || state.viewMode !== "list") return;
+                if (state.sort !== "uni_ai") return;
                 renderFetchedData(lateAiData);
             });
             return;
@@ -1759,6 +1837,7 @@ export function initUniversitiesPage() {
         const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
         const loadingAttr = idx < 4 ? "eager" : "lazy";
         const fetchPriorityAttr = idx < 2 ? "high" : "auto";
+        const detailHref = `university.html?id=${encodeURIComponent(id)}`;
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media">
@@ -1773,6 +1852,7 @@ export function initUniversitiesPage() {
             ${badgesHTML ? `<div class="uni-badge">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why">${escapeHtml(whyText)}</div>` : ""}
             </div>
+            <a class="uni-card-link-overlay" href="${detailHref}" aria-label="${escapeHtml(name)}"></a>
         </article>
         `;
     }

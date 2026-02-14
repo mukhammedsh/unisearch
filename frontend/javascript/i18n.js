@@ -75,7 +75,7 @@ const DICT = {
     "universities.all_cities": "All Cities",
     "universities.any_state": "Any State",
     "universities.select_country_first": "Select country first",
-    "universities.cost_per_year": "Cost per year (USD)",
+    "universities.cost_per_year": "Cost (USD / year)",
     "universities.sort_strategy": "Sort Strategy",
     "universities.sort_ai": "✨ {fit}: AI Smart Sort",
     "universities.sort_name_asc": "Name A-Z",
@@ -401,7 +401,7 @@ const DICT = {
 
     "footer.copyright": "© 2026 UniSearch",
 
-    "profile.label.budget": "Total Budget per year (USD)",
+    "profile.label.budget": "Total Budget (USD / year)",
     "profile.placeholder.budget": "e.g. 20000",
     "profile.unit.usd_year": "USD / year",
     "profile.hint.budget_range": "Range: 1 - 1,000,000",
@@ -419,6 +419,7 @@ const DICT = {
     "profile.placeholder.interests":
       "Describe your ideal university: programs, research, location, campus style, and goals.",
     "profile.hint.interests": "Used to personalize your recommendations.",
+    "profile.warning.interests_english_only": "Translation is unavailable. Please write interests in English.",
     "profile.label.gpa": "GPA (Percent)",
     "profile.placeholder.gpa": "e.g. 92",
     "profile.unit.gpa": "% (0 to 100)",
@@ -438,6 +439,7 @@ const DICT = {
     "profile.action.close": "Close",
     "profile.action.save_budget": "Save Budget",
     "profile.action.save_gpa": "Save GPA",
+    "profile.action.save_interests": "Save",
 
     "languages.select_type": "Select type",
     "languages.no_exams": "No exams",
@@ -458,6 +460,8 @@ const DICT = {
 
     "profile.preference_saved": "Preference saved",
     "profile.interests_saved": "Interests saved",
+    "profile.interests_saved_state": "Saved",
+    "profile.interests_unsaved": "Unsaved changes",
     "profile.name_invalid_length": "Name length must be 3-16 chars",
     "profile.name_invalid_symbols": "Invalid symbols in name",
     "profile.nickname_updated": "Nickname updated!",
@@ -537,7 +541,7 @@ const DICT = {
     "universities.all_cities": "Все города",
     "universities.any_state": "Любой штат",
     "universities.select_country_first": "Сначала выберите страну",
-    "universities.cost_per_year": "Стоимость в год (USD)",
+    "universities.cost_per_year": "Стоимость (USD / год)",
     "universities.sort_strategy": "Стратегия сортировки",
     "universities.sort_ai": "✨ {fit}: ИИ-умная сортировка",
     "universities.sort_name_asc": "Название А-Я",
@@ -729,7 +733,7 @@ const DICT = {
 
     "footer.copyright": "© 2026 UniSearch",
 
-    "profile.label.budget": "Общий бюджет в год (USD)",
+    "profile.label.budget": "Общий бюджет (USD / год)",
     "profile.placeholder.budget": "например, 20000",
     "profile.unit.usd_year": "USD / год",
     "profile.hint.budget_range": "Диапазон: 1 - 1,000,000",
@@ -748,6 +752,7 @@ const DICT = {
     "profile.placeholder.interests":
       "Опишите идеальный университет: программы, исследования, локацию, тип кампуса и цели.",
     "profile.hint.interests": "Используется для персонализации ваших рекомендаций.",
+    "profile.warning.interests_english_only": "Перевод недоступен. Пожалуйста, пишите интересы на английском.",
     "profile.label.gpa": "GPA (в процентах)",
     "profile.placeholder.gpa": "например, 92",
     "profile.unit.gpa": "% (от 0 до 100)",
@@ -763,6 +768,7 @@ const DICT = {
     "profile.cefr": "CEFR",
     "profile.exam": "Экзамен",
     "profile.score": "Балл",
+    "profile.action.save_interests": "Сохранить",
     "languages.select_type": "Выберите тип",
     "languages.no_exams": "Экзаменов нет",
     "languages.select_exam": "Выберите экзамен",
@@ -782,6 +788,8 @@ const DICT = {
 
     "profile.preference_saved": "Предпочтение сохранено",
     "profile.interests_saved": "Интересы сохранены",
+    "profile.interests_saved_state": "Сохранено",
+    "profile.interests_unsaved": "Есть несохраненные изменения",
     "profile.name_invalid_length": "Длина имени: 3-16 символов",
     "profile.name_invalid_symbols": "Недопустимые символы в имени",
     "profile.nickname_updated": "Ник обновлен!",
@@ -863,7 +871,7 @@ const DICT = {
     "universities.all_cities": "Барлық қалалар",
     "universities.any_state": "Кез келген штат",
     "universities.select_country_first": "Алдымен елді таңдаңыз",
-    "universities.cost_per_year": "Жылдық құны (USD)",
+    "universities.cost_per_year": "Құны (USD / жыл)",
     "universities.sort_strategy": "Сұрыптау стратегиясы",
     "universities.sort_ai": "✨ {fit}: ЖИ негізіндегі ақылды сұрыптау",
     "universities.sort_name_asc": "Атауы А-Я",
@@ -1055,7 +1063,7 @@ const DICT = {
 
     "footer.copyright": "© 2026 UniSearch",
 
-    "profile.label.budget": "Жылдық жалпы бюджет (USD)",
+    "profile.label.budget": "Жалпы бюджет (USD / жыл)",
     "profile.placeholder.budget": "мысалы, 20000",
     "profile.unit.usd_year": "USD / жыл",
     "profile.hint.budget_range": "Ауқым: 1 - 1,000,000",
@@ -1074,6 +1082,7 @@ const DICT = {
     "profile.placeholder.interests":
       "Өзіңізге ұнайтын университетті сипаттаңыз: бағдарламалар, зерттеу, орналасу, кампус түрі және мақсаттар.",
     "profile.hint.interests": "Ұсыныстарды сізге бейімдеу үшін қолданылады.",
+    "profile.warning.interests_english_only": "Аударма қолжетімсіз. Interests өрісін ағылшын тілінде жазыңыз.",
     "profile.label.gpa": "GPA (пайыз)",
     "profile.placeholder.gpa": "мысалы, 92",
     "profile.unit.gpa": "% (0-ден 100-ге дейін)",
@@ -1089,6 +1098,7 @@ const DICT = {
     "profile.cefr": "CEFR",
     "profile.exam": "Емтихан",
     "profile.score": "Балл",
+    "profile.action.save_interests": "Сақтау",
     "languages.select_type": "Түрін таңдаңыз",
     "languages.no_exams": "Емтихан жоқ",
     "languages.select_exam": "Емтиханды таңдаңыз",
@@ -1108,6 +1118,8 @@ const DICT = {
 
     "profile.preference_saved": "Баптау сақталды",
     "profile.interests_saved": "Қызығушылықтар сақталды",
+    "profile.interests_saved_state": "Сақталды",
+    "profile.interests_unsaved": "Сақталмаған өзгерістер бар",
     "profile.name_invalid_length": "Атау ұзындығы 3-16 таңба болуы керек",
     "profile.name_invalid_symbols": "Атауда рұқсат етілмеген таңбалар бар",
     "profile.nickname_updated": "Лақап ат жаңартылды!",
