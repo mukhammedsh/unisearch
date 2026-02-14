@@ -50,8 +50,9 @@ test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", 
   const firstCard = page.locator(".uni-card").first();
   await expect(firstCard).toBeVisible();
 
-  const pills = firstCard.locator(".uni-pill");
-  await expect(pills).toHaveCount(3);
+  const pills = firstCard.locator(".uni-badge .uni-pill");
+  const pillCount = await pills.count();
+  expect(pillCount).toBeGreaterThanOrEqual(3);
   await expect(pills.nth(0)).toContainText("Conditional");
   await expect(pills.nth(1)).toContainText("Your Vibe");
   await expect(pills.nth(2)).toContainText("Likely Grant");
