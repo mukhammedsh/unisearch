@@ -696,10 +696,56 @@ export function getUiLanguageForApi() {
 
 export function loadProfileForApi() {
   const profile = loadProfile();
-  return {
+  const payload = {
     ...profile,
     locale: getUiLanguageForApi(),
   };
+
+  const budget = Number(profile?.budget);
+  if (Number.isFinite(budget) && budget >= 0) payload.budget = budget;
+  else delete payload.budget;
+
+  const gpa = Number(profile?.gpa);
+  if (Number.isFinite(gpa) && gpa >= 0) payload.gpa = gpa;
+  else delete payload.gpa;
+
+  payload.exams = (Array.isArray(profile?.exams) ? profile.exams : [])
+    .map((row) => {
+      const id = String(row?.id || row?.exam || "").trim();
+      const score = Number(row?.score);
+      if (!id || !Number.isFinite(score)) return null;
+      return { id, score };
+    })
+    .filter(Boolean);
+
+  payload.languages = (Array.isArray(profile?.languages) ? profile.languages : [])
+    .map((row) => {
+      const code = String(row?.code || row?.lang || "").trim();
+      const kind = String(row?.kind || "").trim().toLowerCase();
+      if (!code || !kind) return null;
+      if (kind === "native") return { code, kind: "native" };
+      if (kind === "cefr") {
+        const level = Number(row?.level);
+        if (!Number.isInteger(level) || level < 1 || level > 6) return null;
+        return { code, kind: "cefr", level };
+      }
+      if (kind === "exam") {
+        const exam = String(row?.exam || row?.examId || "").trim();
+        const score = Number(row?.score);
+        if (!exam || !Number.isFinite(score)) return null;
+        return { code, kind: "exam", exam, score };
+      }
+      return null;
+    })
+    .filter(Boolean);
+
+  if (!String(payload.interests || "").trim()) delete payload.interests;
+  if (!String(payload.major || "").trim()) delete payload.major;
+  if (!String(payload.name || "").trim()) delete payload.name;
+  if (!String(payload.studyMode || "").trim()) payload.studyMode = "Any";
+  if (!String(payload.fundingType || "").trim()) payload.fundingType = "any";
+
+  return payload;
 }
 
 const FALLBACK_LANG_LIMITS = {

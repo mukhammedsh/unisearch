@@ -50,6 +50,14 @@
     max-width: 480px;
 }
 
+.hero-note {
+    margin: -12px 0 24px;
+    max-width: 520px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #666;
+}
+
 .hero-buttons {
     display: flex;
     gap: 15px;
@@ -339,6 +347,7 @@
 }
 
 :root[data-theme="dark"] .hero-desc,
+:root[data-theme="dark"] .hero-note,
 :root[data-theme="dark"] .feature-box p,
 :root[data-theme="dark"] .stat-item p {
     color: var(--text-muted);

@@ -1,6 +1,6 @@
 meta.display_name: English
 meta.code: eng
-about.bio.docs: Assisted with testing and user interface, responsible for video documentation and presentation.
+about.bio.docs: Assisted with testing, user interface, and translation into Russian and Kazakh; responsible for video documentation and presentation.
 about.bio.lead: Responsible for all code and the implementation of all ideas. He is the team captain and makes decisions on the project.
 about.bio.planning: Responsible for the text documentation, most of the ideas & improvements, and numerous tests of the site.
 about.contact.email: Email
@@ -68,11 +68,13 @@ home.feature.data_title: Data-Driven Decisions
 home.feature.finance_desc: See the real cost. Our system highlights Merit-based and Need-based aid opportunities, flagging universities that fit your wallet.
 home.feature.finance_title: Financial Clarity
 home.hero.desc: UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
+home.scope.bachelor_only: Current recommendations and analytics cover bachelor's degree tracks only.
 home.hero.rankings: View Ranking
 home.hero.start: Start Matching
 home.hero.title: Find your dream university with AI Power
 home.hero.title_html: Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
 home.stats.countries: Countries
+home.stats.open_source_value: Full
 home.stats.open_source: Open Source
 home.stats.ranking_chance: Ranking + Chance
 home.stats.ai_short_html: <span class="ai-gold">AI</span>
@@ -147,7 +149,7 @@ profile.score: Score
 profile.type: Type
 profile.unit.gpa: % (0 to 100)
 profile.unit.usd_year: USD / year
-ranking.acceptance: Acceptance
+ranking.acceptance: Acceptance Rate
 ranking.failed: Failed to load ranking.
 ranking.loading: Loading ranking
 ranking.subtitle: Top universities ranked by academic prestige and research impact (2025)
@@ -160,7 +162,7 @@ title.universities: Universities | UniSearch
 title.university: University | UniSearch
 universities.all_cities: All Cities
 universities.any_state: Any State
-universities.badge.acceptance: Acceptance: {value}%
+universities.badge.acceptance: Acceptance Rate: {value}%
 universities.badge.conditional_exam_needed: 📝 Conditional / Exam Needed
 universities.badge.top_match: ⭐ Top Match
 universities.badge.your_vibe: 🔥 Your Vibe
@@ -228,6 +230,7 @@ universities.view_map: Map View
 university.about_campus: About & Campus
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
+university.programs_scope_note: Programs and admission data on this page currently cover bachelor's degree tracks only.
 university.back_to_list: Back to list
 university.chat_assistant: Chat Assistant
 university.clear: Clear

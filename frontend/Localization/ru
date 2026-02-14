@@ -1,6 +1,6 @@
 meta.display_name: Russian
 meta.code: rus
-about.bio.docs: Помогал с тестированием и интерфейсом, отвечает за видеодокументацию и презентацию.
+about.bio.docs: Помогал с тестированием и интерфейсом, с переводом на русский и казахский, отвечает за видеодокументацию и презентацию.
 about.bio.lead: Отвечает за весь код и реализацию всех идей. Является капитаном команды и принимает ключевые решения по проекту.
 about.bio.planning: Отвечает за текстовую документацию, большинство идей и улучшений, а также за многочисленные тесты сайта.
 about.contact.email: Email
@@ -68,11 +68,13 @@ home.feature.data_title: Решения на данных
 home.feature.finance_desc: Смотрите реальную стоимость. Система выделяет стипендии и финансовую помощь и показывает университеты, которые соответствуют вашему бюджету.
 home.feature.finance_title: Финансовая прозрачность
 home.hero.desc: UniSearch — удобная платформа для поиска университетов: сравнивайте требования, стоимость и возможности в одном месте.
+home.scope.bachelor_only: Сейчас рекомендации и аналитика покрывают только программы бакалавриата.
 home.hero.rankings: Смотреть рейтинг
 home.hero.start: Начать подбор
 home.hero.title: Найдите университет мечты с помощью ИИ
 home.hero.title_html: Найдите университет мечты с <span class="text-gradient"><span class="ai-gold">помощью ИИ</span></span>
 home.stats.countries: Страны
+home.stats.open_source_value: Полный
 home.stats.open_source: Открытый код
 home.stats.ranking_chance: Рейтинг + Шанс
 home.stats.ai_short_html: <span class="ai-gold">ИИ</span>
@@ -228,6 +230,7 @@ universities.view_map: Карта
 university.about_campus: О вузе и кампусе
 university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
+university.programs_scope_note: Программы и данные о поступлении на этой странице сейчас охватывают только бакалавриат.
 university.back_to_list: Назад к списку
 university.chat_assistant: Чат-ассистент
 university.clear: Очистить

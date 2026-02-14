@@ -1,6 +1,6 @@
 meta.display_name: Kazakh
 meta.code: kz
-about.bio.docs: Тестілеу мен интерфейске көмектесті, бейнеқұжаттама мен презентацияға жауапты.
+about.bio.docs: Тестілеу мен интерфейске, сондай-ақ орыс және қазақ тілдеріне аударуға көмектесті, бейнеқұжаттама мен презентацияға жауапты.
 about.bio.lead: Барлық код пен барлық идеялардың іске асуына жауапты. Команда капитаны ретінде жоба бойынша негізгі шешімдерді қабылдайды.
 about.bio.planning: Мәтіндік құжаттамаға, идеялар мен жақсартулардың көп бөлігіне, сондай-ақ сайттың көптеген тестіне жауап береді.
 about.contact.email: Email
@@ -68,11 +68,13 @@ home.feature.data_title: Дерекке негізделген шешім
 home.feature.finance_desc: Нақты шығынды көріңіз. Жүйе шәкіртақылар мен қаржылық көмекті көрсетіп, бюджетіңізге сай университеттерді бөліп береді.
 home.feature.finance_title: Қаржылық айқындық
 home.hero.desc: UniSearch — талаптар, шығындар және мүмкіндіктерді бір жерде салыстырып, университет табуға арналған ыңғайлы платформа.
+home.scope.bachelor_only: Қазір ұсыныстар мен аналитика тек бакалавриат бағдарламаларын қамтиды.
 home.hero.rankings: Рейтингті көру
 home.hero.start: Іздеуді бастау
 home.hero.title: Армандаған университетіңізді ЖИ көмегімен табыңыз
 home.hero.title_html: Армандаған университетіңізді <span class="text-gradient"><span class="ai-gold">ЖИ көмегімен</span></span> табыңыз
 home.stats.countries: Елдер
+home.stats.open_source_value: Толық
 home.stats.open_source: Ашық код
 home.stats.ranking_chance: Рейтинг + Мүмкіндік
 home.stats.ai_short_html: <span class="ai-gold">ЖИ</span>
@@ -228,6 +230,7 @@ universities.view_map: Карта
 university.about_campus: Университет және кампус
 university.ask_placeholder: Қабылдау, шәкіртақы, жатақхана, дедлайн туралы сұраңыз...
 university.available_majors: Қолжетімді мамандықтар
+university.programs_scope_note: Бұл беттегі бағдарламалар мен қабылдау деректері әзірге тек бакалавриатқа қатысты.
 university.back_to_list: Тізімге оралу
 university.chat_assistant: Чат көмекшісі
 university.clear: Тазалау

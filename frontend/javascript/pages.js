@@ -119,6 +119,43 @@ function trProgramName(value) {
   return translateProgramName(raw, raw);
 }
 
+function ruPlural(n, one, few, many) {
+  const abs = Math.abs(Number(n)) % 100;
+  const last = abs % 10;
+  if (abs > 10 && abs < 20) return many;
+  if (last > 1 && last < 5) return few;
+  if (last === 1) return one;
+  return many;
+}
+
+function localizeDuration(rawValue) {
+  const raw = String(rawValue || "").trim();
+  if (!raw) return raw;
+
+  const lang = getCurrentLanguage();
+  if (lang === "eng") return raw;
+
+  if (lang === "rus") {
+    return raw
+      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "год", "года", "лет")}`)
+      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "месяц", "месяца", "месяцев")}`)
+      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "неделя", "недели", "недель")}`)
+      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "день", "дня", "дней")}`)
+      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "семестр", "семестра", "семестров")}`);
+  }
+
+  if (lang === "kz") {
+    return raw
+      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, "$1 жыл")
+      .replace(/\b(\d+)\s*months?\b/gi, "$1 ай")
+      .replace(/\b(\d+)\s*weeks?\b/gi, "$1 апта")
+      .replace(/\b(\d+)\s*days?\b/gi, "$1 күн")
+      .replace(/\b(\d+)\s*semesters?\b/gi, "$1 семестр");
+  }
+
+  return raw;
+}
+
 function normalizeStudyModeForCost(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (!raw || raw === "any") return "any";
@@ -1524,10 +1561,19 @@ export function initUniversitiesPage() {
         if (isAiSort) {
             const canUseFallback = !hasInitialListPaint && state.page === 1;
             if (!canUseFallback) {
-                const aiData = await fetchUniversitiesAiSort(buildAiSortPayload());
-                if (aiData?.__aborted) return;
-                if (runSeq !== fetchRunSeq) return;
-                renderFetchedData(aiData);
+                try {
+                    const aiData = await fetchUniversitiesAiSort(buildAiSortPayload());
+                    if (aiData?.__aborted) return;
+                    if (runSeq !== fetchRunSeq) return;
+                    renderFetchedData(aiData);
+                } catch (err) {
+                    if (err?.name === "AbortError") return;
+                    console.warn("AI sort failed, fallback list is used.", err);
+                    const fallbackData = await fetchUniversities(buildFallbackListParams(apiParams));
+                    if (fallbackData?.__aborted) return;
+                    if (runSeq !== fetchRunSeq) return;
+                    renderFetchedData(fallbackData);
+                }
                 return;
             }
 
@@ -1601,8 +1647,10 @@ export function initUniversitiesPage() {
         if (countryRaw) {
             const flagHtml = getFlagImg(countryRaw);
             locString = cityRaw 
-                ? `<div style="display:flex; align-items:center; gap:6px;">${cityText}, ${flagHtml} ${countryText}</div>`
-                : `<div style="display:flex; align-items:center; gap:6px;">${flagHtml} ${countryText}</div>`;
+                ? `<span class="uni-loc-line">${cityText}, ${flagHtml} ${countryText}</span>`
+                : `<span class="uni-loc-line">${flagHtml} ${countryText}</span>`;
+        } else if (cityRaw) {
+            locString = `<span class="uni-loc-line">${cityText}</span>`;
         }
         const match = u.matchData || {};
 
@@ -1636,8 +1684,21 @@ export function initUniversitiesPage() {
         const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
         const likelyGrant = hintedFinance === "likely_grant" || (!hintedFinance && inGrantMode && Number.isFinite(grantChance) && grantChance >= 65);
         const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
+        const meetsMinRequirements = match.meetMinRequirements === true;
+        const belowRequirements = match.meetMinRequirements === false;
+        const aidAny = !!(match.aidAny || match.aidEligible || nested(u, ["finance", "financial_aid", "merit_based"], false) || nested(u, ["finance", "financial_aid", "need_based"], false));
+        const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
+        const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);
 
         const badges = [];
+        const acc = u.academics?.acceptance_rate_percent;
+        const acceptanceLabel = escapeHtml(
+            tFormat(
+                "universities.badge.acceptance",
+                { value: String(acc ?? "—") },
+                `Acceptance Rate: ${String(acc ?? "—")}%`
+            )
+        );
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
@@ -1673,15 +1734,21 @@ export function initUniversitiesPage() {
             if (!whyText) whyText = t("universities.why.paid_admission", "In willing-to-pay mode, this university has a strong general admission chance.");
         }
 
-        // Fallback: acceptance
-        if (badges.length === 0) {
-        const acc = u.academics?.acceptance_rate_percent;
-        badges.push(
-            `<span class="uni-pill uni-pill--neutral">${escapeHtml(tFormat("universities.badge.acceptance", { value: String(acc ?? "—") }, `Acceptance: ${String(acc ?? "—")}%`))}</span>`
-        );
+        // Status tags: requirements + budget + aid.
+        if (belowRequirements) {
+            badges.push(`<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.below_requirements", "⚠️ Below Requirements"))}</span>`);
+        } else if (meetsMinRequirements) {
+            badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.requirements_met", "✅ Requirements Met"))}</span>`);
         }
 
-        badgesHTML = badges.join(" ");
+        if (overBudget) {
+            if (aidAny) badges.push(`<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget_aid", "💸 Over Budget • Aid Available"))}</span>`);
+            else badges.push(`<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget", "💰 Over Budget"))}</span>`);
+        } else if (aidAny) {
+            badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🎓 Aid Available"))}</span>`);
+        }
+
+        badgesHTML = badges.slice(0, 4).join(" ");
 
         
         // ROI УБРАН ПОЛНОСТЬЮ
@@ -1701,8 +1768,9 @@ export function initUniversitiesPage() {
             </div>
             <div class="uni-body">
                         <h3 class="uni-title">${escapeHtml(name)}</h3>
-            <div class="uni-loc" style="margin-bottom:8px;">📍 ${locString}</div> 
-            <div class="uni-badge" style="margin-top:auto; min-height:24px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">${badgesHTML}</div>
+            <div class="uni-loc">📍 ${locString}</div>
+            <div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${acceptanceLabel}</span></div>
+            ${badgesHTML ? `<div class="uni-badge">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why">${escapeHtml(whyText)}</div>` : ""}
             </div>
         </article>
@@ -1860,7 +1928,7 @@ export async function initUniversityPage() {
         const campusSize = escapeHtml(translateDataValue("campus_size", campusSizeRaw, campusSizeRaw));
         recDiv.innerHTML = `
             <div class="d-kv"><span>${escapeHtml(translateWord("global_rank", "Global Rank"))}</span>${rankHtml}</div>
-            <div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance"))}</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
+            <div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
             <div class="d-kv" style="border-bottom:none;"><span>${escapeHtml(translateWord("campus_size", "Campus Size"))}</span><span>${campusSize}</span></div>
         `;
     }
@@ -1923,6 +1991,7 @@ export async function initUniversityPage() {
             if (typeof value === "boolean") return value ? "Yes" : "No";
             if (String(key) === "acceptance_rate_percent") return `${value}%`;
             if (String(key) === "study_mode") return trStudyMode(String(value));
+            if (String(key) === "duration") return localizeDuration(value);
             return String(value);
         };
 
@@ -2664,7 +2733,7 @@ export async function initRankingPage() {
                     </div>
                 </div>
                 <div class="rank-badge">
-                    ${escapeHtml(t("ranking.acceptance", "Acceptance"))}: <b>${u.academics.acceptance_rate_percent}%</b>
+                    ${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}: <b>${u.academics.acceptance_rate_percent}%</b>
                 </div>
             </a>
             `;

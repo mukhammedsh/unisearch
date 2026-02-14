@@ -17,6 +17,18 @@ UniSearch is a full-stack web app for university selection using:
 - search updated to language-adaptive mode (`eng`/`rus`/`kz`) instead of auto-translation
 - search scoring expanded to include university `description` and `tags`
 
+## Planned
+- Split backend architecture into microservices.
+- Migrate data storage to PostgreSQL.
+- Add Google-based authentication.
+- Build a mobile frontend application.
+- Improve and expand university data quality/coverage.
+- Add per-aspect university rating with 5-star UI and half-star support (0 to 10 scale).
+- Enforce one rating per university per account (user can update their rating later).
+- Buy and configure a custom production domain.
+- Add overall university reviews with star score + text review.
+- Add university gallery (photos/media).
+
 ### UniFit ranking logic (current)
 - `Finance` slider is a mode switch for admission probability:
   - left side (`Budget & Grants`) uses `GrantChance`
@@ -35,7 +47,7 @@ UniSearch is a full-stack web app for university selection using:
 
 ## Core architecture
 - Frontend: Vanilla JS + HTML/CSS (`frontend/`)
-- Backend: FastAPI (`backend/app/`)
+- Backend: FastAPI (`backend/app/`) - **monolithic backend** (modular monolith, not microservices)
 - Data: JSON datasets (`backend/data/*.json`)
 
 ## University Factor Data Provenance

@@ -43,10 +43,13 @@ const DICT = {
     "home.hero.title_html": "Find your dream university with <span class=\"text-gradient\"><span class=\"ai-gold\">AI Power</span></span>",
     "home.hero.desc":
       "UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.",
+    "home.scope.bachelor_only":
+      "Current recommendations and analytics cover bachelor's degree tracks only.",
     "home.hero.start": "Start Matching",
     "home.hero.rankings": "View Ranking",
     "home.stats.top_universities": "Top Universities",
     "home.stats.countries": "Countries",
+    "home.stats.open_source_value": "Full",
     "home.stats.open_source": "Open Source",
     "home.stats.ranking_chance": "Ranking + Chance",
     "home.stats.ai_short_html": "<span class=\"ai-gold\">AI</span>",
@@ -117,7 +120,7 @@ const DICT = {
     "universities.badge.over_budget_aid": "💸 Over Budget • Aid Available",
     "universities.badge.over_budget": "💰 Over Budget",
     "universities.badge.aid_available": "🎓 Aid Available",
-    "universities.badge.acceptance": "Acceptance: {value}%",
+    "universities.badge.acceptance": "Acceptance Rate: {value}%",
     "universities.badge.conditional_exam_needed": "📝 Conditional / Exam Needed",
     "universities.badge.top_match": "⭐ Top Match",
     "universities.badge.your_vibe": "🔥 Your Vibe",
@@ -140,6 +143,8 @@ const DICT = {
     "university.about_campus": "About & Campus",
     "university.overview": "Overview",
     "university.available_majors": "Available Majors",
+    "university.programs_scope_note":
+      "Programs and admission data on this page currently cover bachelor's degree tracks only.",
     "university.entry_requirements": "Entry Requirements",
     "university.total_cost_calculator": "Total Cost Calculator",
     "university.discounts_scholarships": "Discounts & Scholarships",
@@ -165,7 +170,7 @@ const DICT = {
     "ranking.title": "Global University Ranking",
     "ranking.subtitle": "Top universities ranked by academic prestige and research impact (2025)",
     "ranking.loading": "Loading ranking",
-    "ranking.acceptance": "Acceptance",
+    "ranking.acceptance": "Acceptance Rate",
     "ranking.failed": "Failed to load ranking.",
 
     "about.eyebrow": "About Us",
@@ -190,7 +195,7 @@ const DICT = {
       "Responsible for the text documentation, most of the ideas & improvements, and numerous tests of the site.",
     "about.meta.planning": "14 years old, student in Zhanaozen Bilim-Innovation Lyceum.",
     "about.bio.docs":
-      "Assisted with testing and user interface, responsible for video documentation and presentation.",
+      "Assisted with testing, user interface, and translation into Russian and Kazakh; responsible for video documentation and presentation.",
     "about.meta.docs": "15 years old, student in Zhanaozen School-Gymnasium No. 5.",
 
     "guide.eyebrow": "UniSearch Guide",
@@ -502,10 +507,13 @@ const DICT = {
     "home.hero.title_html": "Найдите университет мечты с <span class=\"text-gradient\"><span class=\"ai-gold\">помощью ИИ</span></span>",
     "home.hero.desc":
       "UniSearch — удобная платформа для поиска университетов: сравнивайте требования, стоимость и возможности в одном месте.",
+    "home.scope.bachelor_only":
+      "Сейчас рекомендации и аналитика покрывают только программы бакалавриата.",
     "home.hero.start": "Начать подбор",
     "home.hero.rankings": "Смотреть рейтинг",
     "home.stats.top_universities": "Топ университеты",
     "home.stats.countries": "Страны",
+    "home.stats.open_source_value": "Полный",
     "home.stats.open_source": "Открытый код",
     "home.stats.ranking_chance": "Рейтинг + Шанс",
     "home.stats.ai_short_html": "<span class=\"ai-gold\">ИИ</span>",
@@ -597,6 +605,8 @@ const DICT = {
     "university.about_campus": "О вузе и кампусе",
     "university.overview": "Обзор",
     "university.available_majors": "Доступные специальности",
+    "university.programs_scope_note":
+      "Программы и данные о поступлении на этой странице сейчас охватывают только бакалавриат.",
     "university.entry_requirements": "Входные требования",
     "university.total_cost_calculator": "Калькулятор общей стоимости",
     "university.discounts_scholarships": "Скидки и стипендии",
@@ -647,7 +657,7 @@ const DICT = {
       "Отвечает за текстовую документацию, большинство идей и улучшений, а также за многочисленные тесты сайта.",
     "about.meta.planning": "14 лет, ученик Жанаозенского лицея Білім-Инновация.",
     "about.bio.docs":
-      "Помогал с тестированием и интерфейсом, отвечает за видеодокументацию и презентацию.",
+      "Помогал с тестированием и интерфейсом, с переводом на русский и казахский, отвечает за видеодокументацию и презентацию.",
     "about.meta.docs": "15 лет, ученик Жанаозенской школы-гимназии №5.",
 
     "guide.eyebrow": "Гайд UniSearch",
@@ -823,10 +833,13 @@ const DICT = {
     "home.hero.title_html": "Армандаған университетіңізді <span class=\"text-gradient\"><span class=\"ai-gold\">ЖИ көмегімен</span></span> табыңыз",
     "home.hero.desc":
       "UniSearch — талаптар, шығындар және мүмкіндіктерді бір жерде салыстырып, университет табуға арналған ыңғайлы платформа.",
+    "home.scope.bachelor_only":
+      "Қазір ұсыныстар мен аналитика тек бакалавриат бағдарламаларын қамтиды.",
     "home.hero.start": "Іздеуді бастау",
     "home.hero.rankings": "Рейтингті көру",
     "home.stats.top_universities": "Үздік университеттер",
     "home.stats.countries": "Елдер",
+    "home.stats.open_source_value": "Толық",
     "home.stats.open_source": "Ашық код",
     "home.stats.ranking_chance": "Рейтинг + Мүмкіндік",
     "home.stats.ai_short_html": "<span class=\"ai-gold\">ЖИ</span>",
@@ -918,6 +931,8 @@ const DICT = {
     "university.about_campus": "Университет және кампус",
     "university.overview": "Шолу",
     "university.available_majors": "Қолжетімді мамандықтар",
+    "university.programs_scope_note":
+      "Бұл беттегі бағдарламалар мен қабылдау деректері әзірге тек бакалавриатқа қатысты.",
     "university.entry_requirements": "Қабылдау талаптары",
     "university.total_cost_calculator": "Жалпы құн калькуляторы",
     "university.discounts_scholarships": "Жеңілдіктер мен шәкіртақылар",
@@ -968,7 +983,7 @@ const DICT = {
       "Мәтіндік құжаттамаға, идеялар мен жақсартулардың көп бөлігіне, сондай-ақ сайттың көптеген тестіне жауап береді.",
     "about.meta.planning": "14 жаста, Жаңаөзен Білім-Инновация лицейінің оқушысы.",
     "about.bio.docs":
-      "Тестілеу мен интерфейске көмектесті, бейнеқұжаттама мен презентацияға жауапты.",
+      "Тестілеу мен интерфейске, сондай-ақ орыс және қазақ тілдеріне аударуға көмектесті, бейнеқұжаттама мен презентацияға жауапты.",
     "about.meta.docs": "15 жаста, Жаңаөзен №5 мектеп-гимназиясының оқушысы.",
 
     "guide.eyebrow": "UniSearch нұсқаулығы",
