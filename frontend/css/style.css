@@ -619,9 +619,13 @@ html, body {
 
 .profile-budget {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
   align-items: center;
+}
+
+.profile-budget--with-unit {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .profile-unit{
@@ -665,6 +669,16 @@ html, body {
   font-size: 13px;
 }
 
+.profile-add--secondary{
+  background: var(--surface-soft);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+}
+
+.profile-add--secondary:hover{
+  background: var(--line);
+}
+
 .profile-interests-actions{
   display: flex;
   justify-content: space-between;
@@ -693,6 +707,83 @@ html, body {
 
 .profile-interests-status.is-dirty{
   color: #b45309;
+}
+
+.profile-actions{
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.profile-save-state{
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.profile-save-state.is-dirty{
+  color: #b45309;
+}
+
+#saveProfileBtn[disabled]{
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.profile-confirm-modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10010;
+}
+
+.profile-confirm-modal.is-open{
+  display: flex;
+}
+
+.profile-confirm-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.profile-confirm-card{
+  position: relative;
+  z-index: 1;
+  width: min(560px, 92vw);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+  display: grid;
+  gap: 12px;
+}
+
+.profile-confirm-card h3{
+  margin: 0;
+  font-size: 18px;
+}
+
+.profile-confirm-card p{
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.profile-confirm-actions{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .profile-error{
@@ -892,15 +983,6 @@ html, body {
 
 @keyframes fadeOut {
   to { transform: translateX(100%); opacity: 0; }
-}
-
-/* --- Стили для кнопки сохранения бюджета --- */
-.profile-save-btn {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-}
-.profile-save-btn:hover {
-  background: rgba(16, 185, 129, 0.2);
 }
 
 /* ===== Hero ===== */
@@ -1162,21 +1244,32 @@ html, body {
 
   .profile-exam-form{ grid-template-columns: 1fr; }
   .profile-budget{
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     column-gap: 8px;
     row-gap: 8px;
+  }
+  .profile-budget--with-unit{
+    grid-template-columns: minmax(0, 1fr);
   }
   .profile-budget .profile-input{
     min-width: 0;
   }
-  .profile-budget .profile-save-btn{
-    width: 34px;
-    height: 34px;
-  }
-  .profile-budget .profile-unit{
+  .profile-budget--with-unit .profile-unit{
     grid-column: 1 / -1;
     width: fit-content;
     padding: 8px 10px;
+  }
+  .profile-actions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .profile-confirm-actions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .profile-confirm-actions .profile-delete,
+  .profile-confirm-actions .profile-add{
+    width: 100%;
   }
 
   .profile-name-input {

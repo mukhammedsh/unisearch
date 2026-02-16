@@ -119,6 +119,7 @@ profile.hint.budget_range: Диапазон: 1 - 1,000,000
 profile.hint.gpa: GPA хранится в процентах и используется при расчете вероятности поступления.
 profile.hint.interests: Используется для персонализации ваших рекомендаций.
 profile.interests_saved: Интересы сохранены
+profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет (USD / год)
 profile.label.exams: Экзамены (список, необязательно)
 profile.label.funding_type: Предпочтительный тип финансирования
@@ -141,10 +142,17 @@ profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, 20000
 profile.placeholder.gpa: например, 92
-profile.placeholder.interests: Опишите идеальный университет: программы, исследования, локацию, тип кампуса и цели.
+profile.placeholder.interests: Пишите только то, что ищете (программы, исследования, локация). Не перечисляйте то, что не ищете.
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено
+profile.state.saved: Сохранено
+profile.state.unsaved: Есть несохраненные изменения
+profile.unsaved.title: Несохраненные изменения
+profile.unsaved.message: В профиле есть несохраненные изменения. Что сделать?
+profile.unsaved.discard: Закрыть без сохранения
+profile.unsaved.cancel: Отмена
+profile.unsaved.save_close: Сохранить и закрыть
 profile.score: Балл
 profile.type: Тип
 profile.unit.gpa: % (от 0 до 100)
@@ -315,6 +323,7 @@ languages.error.save_failed: Не удалось сохранить язык
 languages.no_exams: Экзаменов нет
 languages.removed: Удалено
 languages.saved: Язык сохранен
+languages.added: Язык добавлен
 languages.kind.native: Родной
 languages.kind.cefr: CEFR
 languages.kind.exam: Экзамен
@@ -326,6 +335,7 @@ profile.action.close: Закрыть
 profile.action.edit_name: Изменить имя
 profile.action.save_budget: Сохранить бюджет
 profile.action.save_gpa: Сохранить GPA
+profile.action.save_all: Сохранить профиль
 roi.avg_hint_all_graduates: Показано среднее по всем выпускникам.
 roi.avg_hint_all_majors: Показано вычисленное среднее по всем специальностям.
 roi.context.default: ROI рассчитан на основе доступных данных о выпускниках университета.

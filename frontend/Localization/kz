@@ -119,6 +119,7 @@ profile.hint.budget_range: Ауқым: 1 - 1,000,000
 profile.hint.gpa: GPA пайызбен сақталады және түсу ықтималдығын есептеуде қолданылады.
 profile.hint.interests: Ұсыныстарды сізге бейімдеу үшін қолданылады.
 profile.interests_saved: Қызығушылықтар сақталды
+profile.saved_all: Профиль сақталды
 profile.label.budget: Жалпы бюджет (USD / жыл)
 profile.label.exams: Емтихандар (тізім, міндетті емес)
 profile.label.funding_type: Қаржыландыру түрі
@@ -141,10 +142,17 @@ profile.option.study_mode_oncampus: Кампус форматы (күндізг�
 profile.option.study_mode_online: Онлайн / қашықтан
 profile.placeholder.budget: мысалы, 20000
 profile.placeholder.gpa: мысалы, 92
-profile.placeholder.interests: Өзіңізге ұнайтын университетті сипаттаңыз: бағдарламалар, зерттеу, орналасу, кампус түрі және мақсаттар.
+profile.placeholder.interests: Тек іздейтін нәрселеріңізді жазыңыз (бағдарламалар, зерттеу, орналасу). Іздемейтін нәрселерді жазбаңыз.
 profile.placeholder.lang_score: Балл (мысалы, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Баптау сақталды
+profile.state.saved: Сақталды
+profile.state.unsaved: Сақталмаған өзгерістер бар
+profile.unsaved.title: Сақталмаған өзгерістер
+profile.unsaved.message: Профильде сақталмаған өзгерістер бар. Не істейміз?
+profile.unsaved.discard: Сақтамай жабу
+profile.unsaved.cancel: Бас тарту
+profile.unsaved.save_close: Сақтап жабу
 profile.score: Балл
 profile.type: Түрі
 profile.unit.gpa: % (0-ден 100-ге дейін)
@@ -315,6 +323,7 @@ languages.error.save_failed: Тілді сақтау сәтсіз аяқталд
 languages.no_exams: Емтихан жоқ
 languages.removed: Өшірілді
 languages.saved: Тіл сақталды
+languages.added: Тіл қосылды
 languages.kind.native: Ана тілі
 languages.kind.cefr: CEFR
 languages.kind.exam: Емтихан
@@ -326,6 +335,7 @@ profile.action.close: Жабу
 profile.action.edit_name: Атын өзгерту
 profile.action.save_budget: Бюджетті сақтау
 profile.action.save_gpa: GPA сақтау
+profile.action.save_all: Профильді сақтау
 roi.avg_hint_all_graduates: Барлық түлектер бойынша орташа мән көрсетілді.
 roi.avg_hint_all_majors: Барлық мамандықтар бойынша есептелген орташа мән көрсетілді.
 roi.context.default: ROI университет түлектері бойынша қолжетімді деректерге сүйеніп есептелді.

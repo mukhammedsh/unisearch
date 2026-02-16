@@ -119,6 +119,7 @@ profile.hint.budget_range: Range: 1 - 1,000,000
 profile.hint.gpa: GPA is stored as percent and used in admission matching.
 profile.hint.interests: Used to personalize your recommendations.
 profile.interests_saved: Interests saved
+profile.saved_all: Profile saved
 profile.label.budget: Total Budget (USD / year)
 profile.label.exams: Exams (list, optional)
 profile.label.funding_type: Preferred Funding Type
@@ -141,10 +142,17 @@ profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
 profile.placeholder.budget: e.g. 20000
 profile.placeholder.gpa: e.g. 92
-profile.placeholder.interests: Describe your ideal university: programs, research, location, campus style, and goals.
+profile.placeholder.interests: Write only what you want to find (programs, research, location). Do not list what you do not want.
 profile.placeholder.lang_score: Score (e.g. 7.5)
 profile.placeholder.score: Score
 profile.preference_saved: Preference saved
+profile.state.saved: Saved
+profile.state.unsaved: Unsaved changes
+profile.unsaved.title: Unsaved Changes
+profile.unsaved.message: You have unsaved profile changes. What do you want to do?
+profile.unsaved.discard: Close without saving
+profile.unsaved.cancel: Cancel
+profile.unsaved.save_close: Save and close
 profile.score: Score
 profile.type: Type
 profile.unit.gpa: % (0 to 100)
@@ -336,6 +344,7 @@ languages.error.save_failed: Failed to save language
 languages.no_exams: No exams
 languages.removed: Removed
 languages.saved: Language saved
+languages.added: Language added
 languages.kind.native: Native
 languages.kind.cefr: CEFR
 languages.kind.exam: Exam
@@ -347,6 +356,7 @@ profile.action.close: Close
 profile.action.edit_name: Edit Name
 profile.action.save_budget: Save Budget
 profile.action.save_gpa: Save GPA
+profile.action.save_all: Save Profile
 roi.avg_hint_all_graduates: Showing average for all graduates.
 roi.avg_hint_all_majors: Showing computed average across all majors.
 roi.context.default: ROI is based on available university outcomes data.

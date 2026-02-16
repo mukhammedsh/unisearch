@@ -151,9 +151,6 @@ const LAYOUT_HTML = `
         <label class="profile-label" data-i18n="profile.label.budget">Total Budget (USD / year)</label>
         <div class="profile-budget">
           <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
-          <button id="saveBudgetBtn" class="icon-btn profile-save-btn" title="Save Budget" data-i18n-title="profile.action.save_budget">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </button>
         </div>
         <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 1 - 1,000,000</div>
       </div>
@@ -190,7 +187,7 @@ const LAYOUT_HTML = `
           class="profile-input"
           rows="4"
           maxlength="1200"
-          placeholder="Describe your ideal university: programs, research, location, campus style, and goals."
+          placeholder="Write only what you want to find (programs, research, location). Do not list what you do not want."
           data-i18n-placeholder="profile.placeholder.interests"
         ></textarea>
         <div
@@ -199,20 +196,13 @@ const LAYOUT_HTML = `
           hidden
           data-i18n="profile.warning.interests_english_only"
         >Translation is unavailable. Please write interests in English.</div>
-        <div class="profile-interests-actions">
-          <span id="profileInterestsSaveState" class="profile-interests-status">Saved</span>
-          <button id="saveInterestsBtn" class="profile-add profile-add--small" type="button" data-i18n="profile.action.save_interests">Save</button>
-        </div>
         <div class="profile-hint" data-i18n="profile.hint.interests">Used to personalize your recommendations.</div>
       </div>
 
       <div class="profile-field">
         <label class="profile-label" data-i18n="profile.label.gpa">GPA (Percent)</label>
-        <div class="profile-budget">
+        <div class="profile-budget profile-budget--with-unit">
           <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" data-i18n-placeholder="profile.placeholder.gpa" />
-          <button id="saveGpaBtn" class="icon-btn profile-save-btn" title="Save GPA" data-i18n-title="profile.action.save_gpa">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </button>
           <span class="profile-unit" data-i18n="profile.unit.gpa">% (0 to 100)</span>
         </div>
         <div class="profile-hint" data-i18n="profile.hint.gpa">GPA is stored as percent and used in admission matching.</div>
@@ -287,6 +277,24 @@ const LAYOUT_HTML = `
         <div id="langList" class="lang-list"></div>
         </section>
 
+      <div class="profile-actions">
+        <span id="profileSaveState" class="profile-save-state" data-i18n="profile.state.saved">Saved</span>
+        <button id="saveProfileBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.action.save_all">Save Profile</button>
+      </div>
+
+  </div>
+</div>
+
+<div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
+  <div class="profile-confirm-backdrop" data-close="unsaved"></div>
+  <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle">
+    <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
+    <p data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
+    <div class="profile-confirm-actions">
+      <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
+      <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
+      <button id="profileSaveAndCloseBtn" class="profile-add" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
+    </div>
   </div>
 </div>
 
@@ -486,13 +494,13 @@ export async function loadGlobalLayout() {
 }
 
 let __profileInited = false;
-// 🔥 2. Логика профиля
 function initProfileUI() {
-    if (__profileInited) return;   // ✅ не инициализируем 2 раза
+    if (__profileInited) return;
     __profileInited = true;
+
     const modal = document.getElementById("profileModal");
     if (!modal) {
-        console.error("❌ initProfileUI: Modal not found in DOM!");
+        console.error("initProfileUI: profile modal is missing");
         return;
     }
 
@@ -501,16 +509,22 @@ function initProfileUI() {
     if (modal.dataset.bound === "1") return;
     modal.dataset.bound = "1";
 
+    const unsavedModal = document.getElementById("profileUnsavedModal");
+    const unsavedBackdrop = unsavedModal?.querySelector(".profile-confirm-backdrop");
+    const discardBtn = document.getElementById("profileDiscardBtn");
+    const cancelCloseBtn = document.getElementById("profileCancelCloseBtn");
+    const saveAndCloseBtn = document.getElementById("profileSaveAndCloseBtn");
+
     const openBtn = document.getElementById("profileBtn");
     const closeBtn = document.getElementById("profileCloseBtn");
     const backdrop = modal.querySelector(".profile-backdrop");
-    
+
     const nameInput = document.getElementById("profileNameInput");
     const budgetInput = document.getElementById("budgetInput");
     const gpaInput = document.getElementById("gpaInput");
     const nameDisplay = document.getElementById("profileNameDisplay");
     const themeToggleBtn = document.getElementById("themeToggleBtn");
-    
+
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
     const profileFundingTypeSelect = document.getElementById("profileFundingTypeSelect");
@@ -519,13 +533,11 @@ function initProfileUI() {
     const examList = document.getElementById("examList");
     const profileMajorSelect = document.getElementById("profileMajorSelect");
     const profileInterestsInput = document.getElementById("profileInterestsInput");
-    const saveInterestsBtn = document.getElementById("saveInterestsBtn");
-    const profileInterestsSaveState = document.getElementById("profileInterestsSaveState");
     const profileInterestsLangWarning = document.getElementById("profileInterestsLangWarning");
+    const saveProfileBtn = document.getElementById("saveProfileBtn");
+    const profileSaveState = document.getElementById("profileSaveState");
 
     const editNameBtn = document.getElementById("editNameBtn");
-    const saveBudgetBtn = document.getElementById("saveBudgetBtn"); 
-    const saveGpaBtn = document.getElementById("saveGpaBtn");
     const profileUsernameDiv = document.querySelector(".profile-username");
 
     const syncThemeButton = (themeOverride = "") => {
@@ -550,10 +562,80 @@ function initProfileUI() {
         syncNavbarLogo();
         syncThemeButton();
     });
-    
-    let profile = loadProfile(); 
-    let interestsDirty = false;
+
+    const normalizeFundingType = (value) => {
+        const raw = String(value || "").trim().toLowerCase();
+        return (raw === "grant" || raw === "paid") ? raw : "any";
+    };
+
+    const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
+
+    const ensureProfileShape = (raw) => {
+        const out = raw && typeof raw === "object" ? { ...raw } : {};
+        if (!Array.isArray(out.exams)) out.exams = [];
+        if (!Array.isArray(out.languages)) out.languages = [];
+        out.name = String(out.name || "User").trim() || "User";
+        out.budget = out.budget === null || out.budget === undefined ? "" : out.budget;
+        out.gpa = out.gpa === null || out.gpa === undefined ? "" : out.gpa;
+        out.major = String(out.major || "").trim();
+        out.interests = String(out.interests || "").trim().slice(0, 1200);
+        out.studyMode = String(out.studyMode || "Any").trim() || "Any";
+        out.fundingType = normalizeFundingType(out.fundingType || out.funding_type || "any");
+        return out;
+    };
+
+    const stableProfileSignature = (raw) => {
+        const p = ensureProfileShape(raw);
+        const exams = (Array.isArray(p.exams) ? p.exams : [])
+            .map((row) => {
+                const exam = String(row?.exam || row?.id || "").trim();
+                const score = Number(row?.score);
+                if (!exam || !Number.isFinite(score)) return null;
+                return { exam: canonicalizeExamId(exam), score };
+            })
+            .filter(Boolean)
+            .sort((a, b) => String(a.exam).localeCompare(String(b.exam)));
+
+        const languages = (Array.isArray(p.languages) ? p.languages : [])
+            .map((row) => {
+                const code = String(row?.code || row?.lang || "").trim().toLowerCase();
+                const kind = String(row?.kind || "").trim().toLowerCase();
+                if (!code || !kind) return null;
+                if (kind === "native") return { code, kind };
+                if (kind === "cefr") {
+                    const level = Number(row?.level);
+                    if (!Number.isInteger(level)) return null;
+                    return { code, kind, level };
+                }
+                if (kind === "exam") {
+                    const exam = String(row?.exam || row?.examId || "").trim();
+                    const score = Number(row?.score);
+                    if (!exam || !Number.isFinite(score)) return null;
+                    return { code, kind, exam, score };
+                }
+                return null;
+            })
+            .filter(Boolean)
+            .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+
+        return JSON.stringify({
+            name: String(p.name || "").trim(),
+            budget: String(p.budget ?? "").trim(),
+            gpa: String(p.gpa ?? "").trim(),
+            major: String(p.major || "").trim(),
+            interests: String(p.interests || "").trim(),
+            studyMode: String(p.studyMode || "Any").trim() || "Any",
+            fundingType: normalizeFundingType(p.fundingType),
+            exams,
+            languages,
+        });
+    };
+
+    let profile = ensureProfileShape(loadProfile());
+    let savedSignature = "";
+
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
+
     const renderInterestsTranslationWarning = (status) => {
         if (!profileInterestsLangWarning) return;
         const enabled = Boolean(status && status.enabled);
@@ -565,32 +647,39 @@ function initProfileUI() {
             "Translation is unavailable. Please write interests in English.",
         );
     };
-    const setInterestsSaveState = (isDirty) => {
-        interestsDirty = !!isDirty;
-        if (!profileInterestsSaveState) return;
-        profileInterestsSaveState.textContent = isDirty
-            ? t("profile.interests_unsaved", "Unsaved changes")
-            : t("profile.interests_saved_state", "Saved");
-        profileInterestsSaveState.classList.toggle("is-dirty", !!isDirty);
-    };
-    const syncInterestsToProfile = (notify = false) => {
-        if (!profileInterestsInput) return;
-        const next = getInterestsDraft();
-        const prev = String(profile.interests || "");
-        if (next === prev) {
-            setInterestsSaveState(false);
-            return;
+
+    const refreshSaveState = () => {
+        const isDirty = stableProfileSignature(profile) !== savedSignature;
+        if (profileSaveState) {
+            profileSaveState.textContent = isDirty
+                ? t("profile.state.unsaved", "Unsaved changes")
+                : t("profile.state.saved", "Saved");
+            profileSaveState.classList.toggle("is-dirty", isDirty);
         }
-        profile.interests = next;
-        saveProfile(profile);
-        setInterestsSaveState(false);
-        if (notify) showToast(t("profile.interests_saved", "Interests saved"), "success");
+        if (saveProfileBtn) saveProfileBtn.disabled = !isDirty;
+        return isDirty;
+    };
+
+    const setProfileDraft = (next, options = {}) => {
+        profile = ensureProfileShape(next);
+        if (options.markAsSaved) {
+            savedSignature = stableProfileSignature(profile);
+        }
+        refreshSaveState();
+    };
+
+    window.__unisearchProfileDraft = {
+        isActive: () => modal.classList.contains("is-open"),
+        get: () => cloneProfile(profile),
+        set: (nextProfile) => {
+            setProfileDraft(nextProfile);
+        },
     };
 
     const populateMajors = () => {
         if (!profileMajorSelect) return;
         profileMajorSelect.innerHTML = `<option value="">${escapeHtml(t("profile.option.major_any", "Undecided / Any"))}</option>`;
-        MAJOR_OPTIONS.forEach(m => {
+        MAJOR_OPTIONS.forEach((m) => {
             const opt = document.createElement("option");
             opt.value = m;
             opt.textContent = translateProgramName(m, m);
@@ -599,7 +688,6 @@ function initProfileUI() {
     };
     populateMajors();
 
-    // --- ЛОГИКА 2: Динамические экзамены ---
     const populateExamSelect = () => {
         if (!examNameSelect) return;
         examNameSelect.innerHTML = `<option value="" disabled selected>${escapeHtml(t("profile.option.select_exam", "Select Exam"))}</option>`;
@@ -617,199 +705,70 @@ function initProfileUI() {
             opt.textContent = getExamDisplayName(normalized || examKey);
             examNameSelect.appendChild(opt);
         });
-        
-        // Обновляем кастомный селект, если он есть
+
         if (typeof initCustomSelect === "function") initCustomSelect("examNameSelect");
     };
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect();
     }
-
     window.addEventListener("examConfigLoaded", populateExamSelect);
 
-    const resetFields = () => {
-        profile = loadProfile(); 
-        if(nameInput) nameInput.value = profile.name;
-        if(nameDisplay) nameDisplay.textContent = profile.name;
-        if(budgetInput) budgetInput.value = profile.budget || "";
-        if(gpaInput) gpaInput.value = (profile.gpa === "" || profile.gpa === null || profile.gpa === undefined) ? "" : String(profile.gpa);
-        if(profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
-        if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
-        if (profileFundingTypeSelect) profileFundingTypeSelect.value = profile.fundingType || "any";
-        if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
-        if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
-        setInterestsSaveState(false);
-        renderInterestsTranslationWarning(__translationStatusCache.data);
-        renderProfileData();
-    };
-
-    if (profileMajorSelect) {
-        profileMajorSelect.addEventListener("change", () => {
-            profile.major = profileMajorSelect.value;
-            saveProfile(profile);
-        });
-    }
-
-    if (studyModeSelect) {
-        studyModeSelect.addEventListener("change", () => {
-            profile.studyMode = studyModeSelect.value;
-            saveProfile(profile);
-            showToast(t("profile.preference_saved", "Preference saved"), "success"); // Можно без тоста, чтобы не спамить
-        });
-    }
-
-    if (profileFundingTypeSelect) {
-        profileFundingTypeSelect.addEventListener("change", () => {
-            const raw = String(profileFundingTypeSelect.value || "").trim().toLowerCase();
-            profile.fundingType = (raw === "grant" || raw === "paid") ? raw : "any";
-            saveProfile(profile);
-            showToast(t("profile.preference_saved", "Preference saved"), "success");
-        });
-    }
-
-    if (profileInterestsInput) {
-        profileInterestsInput.addEventListener("input", () => {
-            setInterestsSaveState(getInterestsDraft() !== String(profile.interests || ""));
-        });
-    }
-
-    if (saveInterestsBtn) {
-        saveInterestsBtn.addEventListener("click", () => syncInterestsToProfile(true));
-    }
-
-    if (openBtn) openBtn.onclick = () => { 
-        resetFields();
-        void fetchTranslationRuntimeStatus(false).then((status) => {
-            renderInterestsTranslationWarning(status);
-        });
-        window.dispatchEvent(new Event("profileModalOpened"));
-        modal.classList.add("is-open"); 
-        modal.style.display = "flex";
-        modal.removeAttribute("aria-hidden");
-        
-        // Инициализируем стиль для ВСЕХ селектов в профиле
-        if (typeof initCustomSelect === "function") {
-            initCustomSelect("examNameSelect");
-            initCustomSelect("studyModeSelect");    // <--- ДОБАВЛЕНО
-            initCustomSelect("profileFundingTypeSelect");
-            initCustomSelect("profileMajorSelect"); // <--- ДОБАВЛЕНО
+    const syncInputsToDraft = () => {
+        if (nameInput) {
+            const nextName = String(nameInput.value || "").trim();
+            profile.name = nextName || "User";
         }
+        if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
+        if (gpaInput) profile.gpa = String(gpaInput.value || "").trim();
+        if (studyModeSelect) profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
+        if (profileFundingTypeSelect) profile.fundingType = normalizeFundingType(profileFundingTypeSelect.value);
+        if (profileMajorSelect) profile.major = String(profileMajorSelect.value || "").trim();
+        if (profileInterestsInput) profile.interests = getInterestsDraft();
+        profile = ensureProfileShape(profile);
     };
-    
-    const close = () => { 
-        if (!modal.classList.contains("is-open")) return;
-        if (interestsDirty) syncInterestsToProfile(false);
 
-        // 1. Сначала возвращаем фокус на кнопку открытия (чтобы не было ошибки aria-hidden)
-        if (openBtn) openBtn.focus();
-
-        // 2. Затем скрываем окно
-        modal.classList.remove("is-open"); 
-        modal.style.display = "none"; 
-        modal.setAttribute("aria-hidden", "true");
-        window.dispatchEvent(new Event("profileModalClosed"));
-        
-        resetFields(); 
-    };
-    
-    if (closeBtn) closeBtn.onclick = close;
-    if (backdrop) backdrop.onclick = close;
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
-    window.addEventListener("languageChanged", () => {
-        if (!modal.classList.contains("is-open")) return;
-        renderInterestsTranslationWarning(__translationStatusCache.data);
-    });
-
-    // Редактирование имени
-    if (editNameBtn && profileUsernameDiv && nameInput) {
-        const commitProfileName = () => {
-            const newName = nameInput.value.trim();
-            const validName = /^[A-Za-z0-9 ]+$/;
-            if (newName.length < 3 || newName.length > 16) {
-                showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
-                return false;
-            }
-            if (!validName.test(newName)) {
-                showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
-                return false;
-            }
-            profile.name = newName;
-            saveProfile(profile);
-            nameDisplay.textContent = newName;
-            profileUsernameDiv.classList.remove("is-editing");
-            showToast(t("profile.nickname_updated", "Nickname updated!"), "success");
-            return true;
-        };
-
-        editNameBtn.onclick = () => {
-            const isEditing = profileUsernameDiv.classList.contains("is-editing");
-            if (!isEditing) {
-                profileUsernameDiv.classList.add("is-editing");
-                nameInput.focus();
-                return;
-            }
-            commitProfileName();
-        };
-
-        nameInput.addEventListener("keydown", (e) => {
-            if (e.key !== "Enter") return;
-            if (!profileUsernameDiv.classList.contains("is-editing")) return;
-            e.preventDefault();
-            commitProfileName();
-        });
-    }
-
-    const saveBudgetValue = (notify = true) => {
-        if (!budgetInput) return true;
-        const rawVal = String(budgetInput.value || "").trim();
-        if (!rawVal) {
-            if (profile.budget === "") return true;
-            profile.budget = "";
-            saveProfile(profile);
-            if (notify) showToast(t("profile.budget_cleared", "Budget cleared"), "success");
-            return true;
+    const validateNameInput = () => {
+        const nextName = String(nameInput?.value || "").trim();
+        const validName = /^[A-Za-z0-9 ]+$/;
+        if (nextName.length < 3 || nextName.length > 16) {
+            showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
+            return { ok: false, value: "" };
         }
+        if (!validName.test(nextName)) {
+            showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
+            return { ok: false, value: "" };
+        }
+        return { ok: true, value: nextName };
+    };
+
+    const validateBudgetInput = () => {
+        const rawVal = String(budgetInput?.value || "").trim();
+        if (!rawVal) return { ok: true, value: "" };
         if (rawVal.includes(".") || rawVal.includes(",")) {
             showToast(t("profile.budget_integers_only", "Integers only (no dots/commas)"), "error");
-            return false;
+            return { ok: false, value: "" };
         }
         const val = Number(rawVal);
         if (!Number.isFinite(val)) {
             showToast(t("profile.budget_must_number", "Budget must be a number"), "error");
-            return false;
+            return { ok: false, value: "" };
         }
         if (val < 1 || val > 1000000) {
             showToast(t("profile.budget_limit", "Limit: 1 - 1,000,000 USD"), "error");
-            return false;
+            return { ok: false, value: "" };
         }
-        const current = Number(profile.budget);
-        if (Number.isFinite(current) && current === val) {
-            budgetInput.value = String(val);
-            return true;
-        }
-        profile.budget = val;
-        saveProfile(profile);
-        budgetInput.value = String(val);
-        if (notify) showToast(t("profile.budget_saved", "Budget saved!"), "success");
-        return true;
+        return { ok: true, value: val };
     };
 
-    const saveGpaValue = (notify = true) => {
-        if (!gpaInput) return true;
-        const rawVal = String(gpaInput.value || "").trim();
-        if (!rawVal) {
-            if (profile.gpa === "") return true;
-            profile.gpa = "";
-            saveProfile(profile);
-            if (notify) showToast(t("profile.gpa_cleared", "GPA cleared"), "success");
-            return true;
-        }
+    const validateGpaInput = () => {
+        const rawVal = String(gpaInput?.value || "").trim();
+        if (!rawVal) return { ok: true, value: "" };
 
         const val = Number(rawVal);
         if (!Number.isFinite(val)) {
             showToast(t("profile.gpa_must_number", "GPA must be a number"), "error");
-            return false;
+            return { ok: false, value: "" };
         }
 
         const cfg = EXAM_CONFIG?.GPA || { min: 0, max: 100, step: 1 };
@@ -819,161 +778,21 @@ function initProfileUI() {
 
         if (val < min || val > max) {
             showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}%`), "error");
-            return false;
+            return { ok: false, value: "" };
         }
         if (step > 0) {
             const k = (val - min) / step;
             if (Math.abs(k - Math.round(k)) > 1e-9) {
                 showToast(tFormat("profile.gpa_step", { step }, `GPA must use step ${step}`), "error");
-                return false;
+                return { ok: false, value: "" };
             }
         }
-
-        const normalized = Number((Math.round(val * 1000) / 1000));
-        const current = Number(profile.gpa);
-        if (Number.isFinite(current) && Math.abs(current - normalized) <= 1e-9) {
-            gpaInput.value = String(normalized);
-            return true;
-        }
-        profile.gpa = normalized;
-        saveProfile(profile);
-        gpaInput.value = String(normalized);
-        if (notify) showToast(t("profile.gpa_saved", "GPA saved"), "success");
-        return true;
+        return { ok: true, value: Number(Math.round(val * 1000) / 1000) };
     };
 
-    if (saveBudgetBtn) saveBudgetBtn.onclick = () => { saveBudgetValue(true); };
-    if (saveGpaBtn) saveGpaBtn.onclick = () => { saveGpaValue(true); };
-
-    if (budgetInput) {
-        budgetInput.addEventListener("blur", () => { saveBudgetValue(false); });
-        budgetInput.addEventListener("keydown", (e) => {
-            if (e.key !== "Enter") return;
-            e.preventDefault();
-            saveBudgetValue(true);
-        });
-    }
-
-    if (gpaInput) {
-        gpaInput.addEventListener("blur", () => { saveGpaValue(false); });
-        gpaInput.addEventListener("keydown", (e) => {
-            if (e.key !== "Enter") return;
-            e.preventDefault();
-            saveGpaValue(true);
-        });
-    }
-
-    // 🔥 ЛОГИКА ДОБАВЛЕНИЯ / ОБНОВЛЕНИЯ ЭКЗАМЕНА
-    if (addExamBtn) {
-        addExamBtn.onclick = async () => {
-            const name = examNameSelect.value;
-            const rawScore = examScoreInput.value;
-            const score = parseFloat(rawScore);
-
-            const cfg = EXAM_CONFIG?.[name];
-            if (cfg) {
-            const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
-            const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
-            const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
-
-            if (Number.isFinite(min) && score < min) { showToast(`Min for ${name} is ${min}`, "error"); return; }
-            if (Number.isFinite(max) && score > max) { showToast(`Max for ${name} is ${max}`, "error"); return; }
-
-            if (Number.isFinite(step) && step > 0) {
-                const base = Number.isFinite(min) ? min : 0;
-                const k = (score - base) / step;
-                const diff = Math.abs(k - Math.round(k));
-                if (diff > 1e-9) {
-                showToast(`${name} score must use step ${step}`, "error");
-                return;
-                }
-            }
-            }
-
-
-            if (!name) {
-                showToast(t("profile.exam_select_required", "Please select an exam"), "error");
-                return;
-            }
-            if (isNaN(score)) {
-                showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
-                return;
-            }
-
-            // 1. Проверка на целые числа (кроме IELTS)
-            if (name !== "IELTS") {
-                if (!Number.isInteger(score)) {
-                    showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
-                    return;
-                }
-            }
-
-            // 2. Проверка IELTS (шаг 0.5)
-            if (name === "IELTS") {
-                if (score % 0.5 !== 0) {
-                    showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
-                    return;
-                }
-            }
-
-            // 3. Отправка на сервер и сохранение
-            try {
-                const res = await fetch(`${API_BASE}/exams/validate`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({ exam: name, score: score })
-                });
-                const json = await res.json();
-                
-                if(!res.ok) throw new Error(json.detail || "Error");
-                
-                // 🔥 НОВАЯ ЛОГИКА: Ищем дубликат
-                const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
-                const examLabel = getExamDisplayName(examId || name);
-                const existingIndex = profile.exams.findIndex(e =>
-                    canonicalizeExamId(e.exam ?? e.id ?? "") === examId
-                );
-
-                if (existingIndex !== -1) {
-                profile.exams[existingIndex].score = json.score;
-                showToast(tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`), "success");
-                } else {
-                profile.exams.push({ exam: examId, score: json.score });
-                showToast(tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`), "success");
-                }
-
-                
-                saveProfile(profile);
-                renderProfileData();
-                
-                // Сброс полей
-                examScoreInput.value = "";
-                examNameSelect.value = ""; 
-                // Обновляем красивый селект (сбрасываем выбор)
-                if (typeof initCustomSelect === "function") {
-                    initCustomSelect("examNameSelect");
-                }
-
-            } catch(e) {
-                showToast(e.message, "error");
-            }
-        };
-    }
-
-    if (examList) {
-        examList.onclick = (e) => {
-            if (e.target.tagName === "BUTTON") {
-                const idx = e.target.dataset.idx;
-                profile.exams.splice(idx, 1);
-                saveProfile(profile);
-                renderProfileData();
-                showToast(t("profile.exam_removed", "Exam removed"), "success");
-            }
-        };
-    }
-
-    function renderProfileData() {
-        if(examList) {
+    const renderProfileData = () => {
+        if (!Array.isArray(profile.exams)) profile.exams = [];
+        if (examList) {
             examList.innerHTML = profile.exams.map((ex, i) => `
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
@@ -984,9 +803,346 @@ function initProfileUI() {
                 </div>
             `).join("");
         }
-    }
-}
+    };
 
+    const applyDraftToInputs = () => {
+        if (nameInput) nameInput.value = profile.name;
+        if (nameDisplay) nameDisplay.textContent = profile.name;
+        if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
+        if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
+        if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+        if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
+        if (profileFundingTypeSelect) profileFundingTypeSelect.value = normalizeFundingType(profile.fundingType);
+        if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
+        if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
+        renderInterestsTranslationWarning(__translationStatusCache.data);
+        renderProfileData();
+        refreshSaveState();
+    };
+
+    const resetFields = () => {
+        const savedProfile = ensureProfileShape(loadProfile());
+        setProfileDraft(savedProfile, { markAsSaved: true });
+        applyDraftToInputs();
+    };
+
+    const saveAllProfileChanges = (notify = true) => {
+        syncInputsToDraft();
+
+        const nameCheck = validateNameInput();
+        if (!nameCheck.ok) return false;
+        const budgetCheck = validateBudgetInput();
+        if (!budgetCheck.ok) return false;
+        const gpaCheck = validateGpaInput();
+        if (!gpaCheck.ok) return false;
+
+        profile.name = nameCheck.value;
+        profile.budget = budgetCheck.value;
+        profile.gpa = gpaCheck.value;
+        profile.interests = getInterestsDraft();
+        profile.studyMode = String(studyModeSelect?.value || profile.studyMode || "Any").trim() || "Any";
+        profile.fundingType = normalizeFundingType(profileFundingTypeSelect?.value || profile.fundingType || "any");
+        profile.major = String(profileMajorSelect?.value || profile.major || "").trim();
+        profile = ensureProfileShape(profile);
+
+        if (nameDisplay) nameDisplay.textContent = profile.name;
+        if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
+        if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
+
+        saveProfile(profile);
+        savedSignature = stableProfileSignature(profile);
+        refreshSaveState();
+
+        if (notify) showToast(t("profile.saved_all", "Profile saved"), "success");
+        return true;
+    };
+
+    const closeUnsavedDialog = (focusCloseButton = false) => {
+        if (!unsavedModal) return;
+        unsavedModal.classList.remove("is-open");
+        unsavedModal.setAttribute("aria-hidden", "true");
+        unsavedModal.style.display = "none";
+        if (focusCloseButton && closeBtn) closeBtn.focus();
+    };
+
+    const closeImmediately = () => {
+        if (!modal.classList.contains("is-open")) return;
+
+        closeUnsavedDialog(false);
+        if (openBtn) openBtn.focus();
+
+        modal.classList.remove("is-open");
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+        window.dispatchEvent(new Event("profileModalClosed"));
+        resetFields();
+    };
+
+    const openUnsavedDialog = () => {
+        if (!unsavedModal) return;
+        unsavedModal.style.display = "flex";
+        unsavedModal.classList.add("is-open");
+        unsavedModal.setAttribute("aria-hidden", "false");
+    };
+
+    const requestClose = () => {
+        if (!modal.classList.contains("is-open")) return;
+        syncInputsToDraft();
+        if (!refreshSaveState()) {
+            closeImmediately();
+            return;
+        }
+        openUnsavedDialog();
+    };
+
+    if (profileMajorSelect) {
+        profileMajorSelect.addEventListener("change", () => {
+            profile.major = profileMajorSelect.value;
+            refreshSaveState();
+        });
+    }
+
+    if (studyModeSelect) {
+        studyModeSelect.addEventListener("change", () => {
+            profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
+            refreshSaveState();
+        });
+    }
+
+    if (profileFundingTypeSelect) {
+        profileFundingTypeSelect.addEventListener("change", () => {
+            profile.fundingType = normalizeFundingType(profileFundingTypeSelect.value);
+            refreshSaveState();
+        });
+    }
+
+    if (profileInterestsInput) {
+        profileInterestsInput.addEventListener("input", () => {
+            profile.interests = getInterestsDraft();
+            refreshSaveState();
+        });
+    }
+
+    if (nameInput) {
+        nameInput.addEventListener("input", () => {
+            const next = String(nameInput.value || "").trim();
+            profile.name = next || "User";
+            if (nameDisplay) nameDisplay.textContent = profile.name;
+            refreshSaveState();
+        });
+    }
+
+    if (budgetInput) {
+        budgetInput.addEventListener("input", () => {
+            profile.budget = String(budgetInput.value || "").trim();
+            refreshSaveState();
+        });
+        budgetInput.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            e.preventDefault();
+            saveAllProfileChanges(true);
+        });
+    }
+
+    if (gpaInput) {
+        gpaInput.addEventListener("input", () => {
+            profile.gpa = String(gpaInput.value || "").trim();
+            refreshSaveState();
+        });
+        gpaInput.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            e.preventDefault();
+            saveAllProfileChanges(true);
+        });
+    }
+
+    if (saveProfileBtn) {
+        saveProfileBtn.addEventListener("click", () => {
+            saveAllProfileChanges(true);
+        });
+    }
+
+    if (openBtn) openBtn.onclick = () => {
+        resetFields();
+        void fetchTranslationRuntimeStatus(false).then((status) => {
+            renderInterestsTranslationWarning(status);
+        });
+        window.dispatchEvent(new Event("profileModalOpened"));
+        modal.classList.add("is-open");
+        modal.style.display = "flex";
+        modal.removeAttribute("aria-hidden");
+
+        if (typeof initCustomSelect === "function") {
+            initCustomSelect("examNameSelect");
+            initCustomSelect("studyModeSelect");
+            initCustomSelect("profileFundingTypeSelect");
+            initCustomSelect("profileMajorSelect");
+        }
+    };
+
+    if (closeBtn) closeBtn.onclick = requestClose;
+    if (backdrop) backdrop.onclick = requestClose;
+
+    discardBtn?.addEventListener("click", () => {
+        closeImmediately();
+    });
+    cancelCloseBtn?.addEventListener("click", () => {
+        closeUnsavedDialog(true);
+    });
+    saveAndCloseBtn?.addEventListener("click", () => {
+        if (!saveAllProfileChanges(false)) {
+            closeUnsavedDialog(true);
+            return;
+        }
+        closeImmediately();
+    });
+    unsavedBackdrop?.addEventListener("click", () => {
+        closeUnsavedDialog(true);
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        if (unsavedModal?.classList.contains("is-open")) {
+            closeUnsavedDialog(true);
+            return;
+        }
+        requestClose();
+    });
+
+    window.addEventListener("languageChanged", () => {
+        if (!modal.classList.contains("is-open")) return;
+        renderInterestsTranslationWarning(__translationStatusCache.data);
+        refreshSaveState();
+    });
+
+    if (editNameBtn && profileUsernameDiv && nameInput) {
+        editNameBtn.onclick = () => {
+            const isEditing = profileUsernameDiv.classList.contains("is-editing");
+            if (!isEditing) {
+                profileUsernameDiv.classList.add("is-editing");
+                nameInput.focus();
+                return;
+            }
+            profileUsernameDiv.classList.remove("is-editing");
+            const nextName = String(nameInput.value || "").trim();
+            profile.name = nextName || "User";
+            if (nameDisplay) nameDisplay.textContent = profile.name;
+            refreshSaveState();
+        };
+
+        nameInput.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            if (!profileUsernameDiv.classList.contains("is-editing")) return;
+            e.preventDefault();
+            profileUsernameDiv.classList.remove("is-editing");
+            const nextName = String(nameInput.value || "").trim();
+            profile.name = nextName || "User";
+            if (nameDisplay) nameDisplay.textContent = profile.name;
+            refreshSaveState();
+        });
+    }
+
+    if (addExamBtn) {
+        addExamBtn.onclick = async () => {
+            const name = examNameSelect.value;
+            const rawScore = examScoreInput.value;
+            const score = parseFloat(rawScore);
+
+            const cfg = EXAM_CONFIG?.[name];
+            if (cfg) {
+                const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
+                const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
+                const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
+
+                if (Number.isFinite(min) && score < min) { showToast(`Min for ${name} is ${min}`, "error"); return; }
+                if (Number.isFinite(max) && score > max) { showToast(`Max for ${name} is ${max}`, "error"); return; }
+
+                if (Number.isFinite(step) && step > 0) {
+                    const base = Number.isFinite(min) ? min : 0;
+                    const k = (score - base) / step;
+                    const diff = Math.abs(k - Math.round(k));
+                    if (diff > 1e-9) {
+                        showToast(`${name} score must use step ${step}`, "error");
+                        return;
+                    }
+                }
+            }
+
+            if (!name) {
+                showToast(t("profile.exam_select_required", "Please select an exam"), "error");
+                return;
+            }
+            if (Number.isNaN(score)) {
+                showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
+                return;
+            }
+
+            if (name !== "IELTS" && !Number.isInteger(score)) {
+                showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
+                return;
+            }
+
+            if (name === "IELTS" && (score % 0.5 !== 0)) {
+                showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/exams/validate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ exam: name, score }),
+                });
+                const json = await res.json();
+                if (!res.ok) throw new Error(json.detail || "Error");
+
+                const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
+                const examLabel = getExamDisplayName(examId || name);
+                if (!Array.isArray(profile.exams)) profile.exams = [];
+                const existingIndex = profile.exams.findIndex((e) =>
+                    canonicalizeExamId(e.exam ?? e.id ?? "") === examId
+                );
+
+                if (existingIndex !== -1) {
+                    profile.exams[existingIndex].score = json.score;
+                    showToast(tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`), "success");
+                } else {
+                    profile.exams.push({ exam: examId, score: json.score });
+                    showToast(tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`), "success");
+                }
+
+                profile = ensureProfileShape(profile);
+                refreshSaveState();
+                renderProfileData();
+
+                examScoreInput.value = "";
+                examNameSelect.value = "";
+                if (typeof initCustomSelect === "function") {
+                    initCustomSelect("examNameSelect");
+                }
+            } catch (e) {
+                showToast(e.message, "error");
+            }
+        };
+    }
+
+    if (examList) {
+        examList.onclick = (e) => {
+            if (e.target.tagName !== "BUTTON") return;
+            const idx = Number(e.target.dataset.idx);
+            if (!Number.isFinite(idx)) return;
+            if (!Array.isArray(profile.exams)) profile.exams = [];
+
+            profile.exams.splice(idx, 1);
+            profile = ensureProfileShape(profile);
+            refreshSaveState();
+            renderProfileData();
+            showToast(t("profile.exam_removed", "Exam removed"), "success");
+        };
+    }
+
+    resetFields();
+}
 // Вспомогательная функция для табов
 export function setupTabs() {
   const buttons = document.querySelectorAll(".d-tab-btn");
@@ -1003,3 +1159,4 @@ export function setupTabs() {
     });
   });
 }
+

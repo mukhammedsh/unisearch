@@ -87,6 +87,32 @@ function normalizeProfile(p) {
   return prof;
 }
 
+function getProfileDraftBridge() {
+  const bridge = window.__unisearchProfileDraft;
+  if (!bridge || typeof bridge !== "object") return null;
+  if (typeof bridge.get !== "function" || typeof bridge.set !== "function") return null;
+  if (typeof bridge.isActive === "function" && !bridge.isActive()) return null;
+  return bridge;
+}
+
+function loadEditableProfile() {
+  const bridge = getProfileDraftBridge();
+  if (bridge) {
+    return normalizeProfile(bridge.get());
+  }
+  return normalizeProfile(loadProfile());
+}
+
+function saveEditableProfile(profile) {
+  const bridge = getProfileDraftBridge();
+  const next = normalizeProfile(profile);
+  if (bridge) {
+    bridge.set(next);
+    return;
+  }
+  saveProfile(next);
+}
+
 function normalizeLangEntry(e) {
   if (!e || typeof e !== "object") return null;
   const code = String(e.code || e.lang || "").trim().toLowerCase();
@@ -204,12 +230,12 @@ export function initLanguagesPanel() {
     }
 
     function renderList() {
-      const prof = normalizeProfile(loadProfile());
+      const prof = loadEditableProfile();
       const arr = prof.languages.map(normalizeLangEntry).filter(Boolean);
 
       if (JSON.stringify(prof.languages) !== JSON.stringify(arr)) {
         prof.languages = arr; // подчистим мусор
-        saveProfile(prof);
+        saveEditableProfile(prof);
       }
 
       langList.innerHTML = arr.map((e, idx) => {
@@ -288,7 +314,7 @@ export function initLanguagesPanel() {
     });
 
     async function addLanguage() {
-      const prof = normalizeProfile(loadProfile());
+      const prof = loadEditableProfile();
       prof.languages = prof.languages.map(normalizeLangEntry).filter(Boolean);
 
       const code = String(langCode.value || "").trim().toLowerCase();
@@ -398,10 +424,10 @@ export function initLanguagesPanel() {
         if (existsIdx >= 0) prof.languages[existsIdx] = entry;
         else prof.languages.push(entry);
 
-        saveProfile(prof);
+        saveEditableProfile(prof);
         renderList();
         if (entry.kind === KIND_EXAM) langExamScore.value = "";
-        showToast(t("languages.saved", "Language saved"), "success");
+        showToast(t("languages.added", "Language added"), "success");
         return;
       } catch (e) {
         showToast(e.message || t("languages.error.save_failed", "Failed to save language"), "error");
@@ -414,11 +440,11 @@ export function initLanguagesPanel() {
       const idx = Number(btn.dataset.idx);
       if (!Number.isFinite(idx)) return;
 
-      const prof = normalizeProfile(loadProfile());
+      const prof = loadEditableProfile();
       prof.languages = prof.languages.map(normalizeLangEntry).filter(Boolean);
 
       prof.languages.splice(idx, 1);
-      saveProfile(prof);
+      saveEditableProfile(prof);
       renderList();
       showToast(t("languages.removed", "Removed"), "success");
     });
