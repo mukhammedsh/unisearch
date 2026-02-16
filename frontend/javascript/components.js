@@ -635,6 +635,12 @@ function initProfileUI() {
     let savedSignature = "";
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
+    const getNameDraft = () => String(nameInput?.value || "").trim();
+    const isUsernameDraftDirty = () => Boolean(
+        profileUsernameDiv?.classList.contains("is-editing")
+        && getNameDraft() !== String(profile.name || "").trim(),
+    );
+    const isProfileDirty = () => stableProfileSignature(profile) !== savedSignature;
 
     const renderInterestsTranslationWarning = (status) => {
         if (!profileInterestsLangWarning) return;
@@ -649,14 +655,16 @@ function initProfileUI() {
     };
 
     const refreshSaveState = () => {
-        const isDirty = stableProfileSignature(profile) !== savedSignature;
+        const profileDirty = isProfileDirty();
+        const usernameDirty = isUsernameDraftDirty();
+        const isDirty = profileDirty || usernameDirty;
         if (profileSaveState) {
             profileSaveState.textContent = isDirty
                 ? t("profile.state.unsaved", "Unsaved changes")
                 : t("profile.state.saved", "Saved");
             profileSaveState.classList.toggle("is-dirty", isDirty);
         }
-        if (saveProfileBtn) saveProfileBtn.disabled = !isDirty;
+        if (saveProfileBtn) saveProfileBtn.disabled = !profileDirty;
         return isDirty;
     };
 
@@ -715,10 +723,6 @@ function initProfileUI() {
     window.addEventListener("examConfigLoaded", populateExamSelect);
 
     const syncInputsToDraft = () => {
-        if (nameInput) {
-            const nextName = String(nameInput.value || "").trim();
-            profile.name = nextName || "User";
-        }
         if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
         if (gpaInput) profile.gpa = String(gpaInput.value || "").trim();
         if (studyModeSelect) profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
@@ -728,18 +732,39 @@ function initProfileUI() {
         profile = ensureProfileShape(profile);
     };
 
-    const validateNameInput = () => {
-        const nextName = String(nameInput?.value || "").trim();
+    const commitProfileName = (notify = true) => {
+        const nextName = getNameDraft();
+        const currentName = String(profile.name || "").trim();
+        if (nextName === currentName) {
+            if (nameInput) nameInput.value = currentName;
+            if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+            refreshSaveState();
+            return true;
+        }
         const validName = /^[A-Za-z0-9 ]+$/;
         if (nextName.length < 3 || nextName.length > 16) {
             showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
-            return { ok: false, value: "" };
+            return false;
         }
         if (!validName.test(nextName)) {
             showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
-            return { ok: false, value: "" };
+            return false;
         }
-        return { ok: true, value: nextName };
+
+        const persisted = ensureProfileShape(loadProfile());
+        persisted.name = nextName;
+        saveProfile(persisted);
+
+        profile.name = nextName;
+        if (nameDisplay) nameDisplay.textContent = nextName;
+        if (nameInput) nameInput.value = nextName;
+        if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+
+        savedSignature = stableProfileSignature(ensureProfileShape(loadProfile()));
+        refreshSaveState();
+
+        if (notify) showToast(t("profile.nickname_updated", "Nickname updated!"), "success");
+        return true;
     };
 
     const validateBudgetInput = () => {
@@ -829,14 +854,11 @@ function initProfileUI() {
     const saveAllProfileChanges = (notify = true) => {
         syncInputsToDraft();
 
-        const nameCheck = validateNameInput();
-        if (!nameCheck.ok) return false;
         const budgetCheck = validateBudgetInput();
         if (!budgetCheck.ok) return false;
         const gpaCheck = validateGpaInput();
         if (!gpaCheck.ok) return false;
 
-        profile.name = nameCheck.value;
         profile.budget = budgetCheck.value;
         profile.gpa = gpaCheck.value;
         profile.interests = getInterestsDraft();
@@ -845,7 +867,6 @@ function initProfileUI() {
         profile.major = String(profileMajorSelect?.value || profile.major || "").trim();
         profile = ensureProfileShape(profile);
 
-        if (nameDisplay) nameDisplay.textContent = profile.name;
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
 
@@ -923,15 +944,6 @@ function initProfileUI() {
         });
     }
 
-    if (nameInput) {
-        nameInput.addEventListener("input", () => {
-            const next = String(nameInput.value || "").trim();
-            profile.name = next || "User";
-            if (nameDisplay) nameDisplay.textContent = profile.name;
-            refreshSaveState();
-        });
-    }
-
     if (budgetInput) {
         budgetInput.addEventListener("input", () => {
             profile.budget = String(budgetInput.value || "").trim();
@@ -990,7 +1002,12 @@ function initProfileUI() {
         closeUnsavedDialog(true);
     });
     saveAndCloseBtn?.addEventListener("click", () => {
-        if (!saveAllProfileChanges(false)) {
+        syncInputsToDraft();
+        if (isUsernameDraftDirty() && !commitProfileName(false)) {
+            closeUnsavedDialog(true);
+            return;
+        }
+        if (isProfileDirty() && !saveAllProfileChanges(false)) {
             closeUnsavedDialog(true);
             return;
         }
@@ -1023,21 +1040,17 @@ function initProfileUI() {
                 nameInput.focus();
                 return;
             }
-            profileUsernameDiv.classList.remove("is-editing");
-            const nextName = String(nameInput.value || "").trim();
-            profile.name = nextName || "User";
-            if (nameDisplay) nameDisplay.textContent = profile.name;
-            refreshSaveState();
+            commitProfileName(true);
         };
 
         nameInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             if (!profileUsernameDiv.classList.contains("is-editing")) return;
             e.preventDefault();
-            profileUsernameDiv.classList.remove("is-editing");
-            const nextName = String(nameInput.value || "").trim();
-            profile.name = nextName || "User";
-            if (nameDisplay) nameDisplay.textContent = profile.name;
+            commitProfileName(true);
+        });
+        nameInput.addEventListener("input", () => {
+            if (!profileUsernameDiv.classList.contains("is-editing")) return;
             refreshSaveState();
         });
     }
