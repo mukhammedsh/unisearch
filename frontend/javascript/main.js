@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isUniversitiesPage = path.includes("universities.html") || document.getElementById("universitiesList");
 
   if (badge && window.APP_VERSION) {
-    badge.textContent = `${window.APP_VERSION} • Infomatrix 2026`;
+    badge.textContent = `${window.APP_VERSION} • QOL (Quality of Life)`;
   }
 
   if (isUniversitiesPage) {
