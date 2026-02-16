@@ -15,10 +15,10 @@ What happens automatically on release publish:
 
 How to trigger:
 1. Push all changes to `main`.
-2. Create and push a tag (example `v2.4.0`):
+2. Create and push a tag (example `v2.4.1`):
    ```bash
-   git tag v2.4.0
-   git push origin v2.4.0
+   git tag v2.4.1
+   git push origin v2.4.1
    ```
 3. In GitHub, open Releases and publish a release for that tag.
 4. Wait for the workflow `Release Artifacts And Container` to finish.

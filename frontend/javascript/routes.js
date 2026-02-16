@@ -36,7 +36,7 @@ export function usePrettyUrls() {
 }
 
 export function routeHome(queryOrParams = "") {
-  return withQuery(usePrettyUrls() ? "/index" : "index.html", queryOrParams);
+  return withQuery(usePrettyUrls() ? "/" : "index.html", queryOrParams);
 }
 
 export function routeUniversities(queryOrParams = "") {

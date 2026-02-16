@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance - 2.4.0 (QOL - Quality of Life)
+# UniSearch / UniFit / UniChance - 2.4.1 (QOL - Quality of Life)
 
 ## What this project is
 UniSearch is a full-stack web app for university selection using:
@@ -11,15 +11,19 @@ UniSearch is a full-stack web app for university selection using:
   - Location: `Big City Life` <-> `Cozy Campus`
 - `UniChance` probability (0-100 estimated admission chance).
 
-## What's new in 2.4.0 (QOL - Quality of Life)
+## What's new in 2.4.1 (QOL - Quality of Life)
 - added clean URL routing for deployed frontend:
-  - `/index` (home)
+  - `/` (home)
   - `/universities`
   - `/universities/:id`
   - `/ranking`, `/guide`, `/about`
 - kept backward compatibility for local/dev and old links:
   - `.html` routes still work
+  - `/index` still resolves to home
   - `university.html?id=...` still works
+- moved frontend runtime config to deploy-time environment file (`frontend/env.js`):
+  - no hardcoded hosting domain in frontend code
+  - backend URL and pretty URL mode can be changed via hosting env variables
 - profile UX upgrades from 2.3.x are preserved:
   - one global Save button for all profile edits
   - unsaved-changes close flow (`Discard`, `Cancel`, `Save and close`)
@@ -103,7 +107,7 @@ If translation is unavailable, backend safely falls back to raw text and still r
 - provider failure backoff
 - short request timeout
 
-## Performance services (2.4.0)
+## Performance services (2.4.1)
 - Redis for API/cache and shared rate-limit state
 - Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
@@ -125,7 +129,7 @@ ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 
 ### Backend infra env (`backend/.env`)
 ```env
-APP_VERSION=2.4.0
+APP_VERSION=2.4.1
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override (comma-separated):
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -204,71 +208,87 @@ Open:
 
 Notes for local frontend:
 - local `python -m http.server` does not support rewrites, so `.html` routes are expected in local dev
-- production/demo hosts can use clean routes (`/index`, `/universities`, `/ranking`, `/universities/:id`) with rewrite rules
-- clean route mode is controlled by `window.APP_USE_PRETTY_URLS` in `frontend/config.js` (auto-enabled outside localhost)
+- production/demo hosts can use clean routes (`/`, `/universities`, `/ranking`, `/universities/:id`) with rewrite rules
+- clean route mode is controlled by runtime env (`window.__UNISEARCH_ENV__.APP_USE_PRETTY_URLS`) and auto-enabled outside localhost
 
 ### 3) Full stack with Redis (Docker)
 ```bash
 docker compose up --build
 ```
 
-## Render: where to host translation service
-For production on Render, run LibreTranslate as a separate web service (recommended), then point backend to it.
+## Hosting compatibility (any platform)
+UniSearch is not tied to Render and can be deployed on any hosting:
+- VPS + Nginx/Caddy
+- Docker host
+- Render, Railway, Fly.io
+- split frontend/static host + backend/API host
 
-1. Create a new Render Web Service from Docker image `libretranslate/libretranslate`.
-2. Deploy it and copy its public URL.
-3. In backend service env, set:
+## Frontend runtime env (no hardcoded domain)
+Frontend reads runtime config from `frontend/env.js` (loaded before `config.js`).
+
+Set host environment variables:
 ```env
-ML_INTEREST_TRANSLATION_ENABLED=1
-LIBRETRANSLATE_URL=https://<your-libretranslate-service>.onrender.com/translate
-```
-4. Redeploy backend.
+UNISEARCH_API_BASE_URL=https://api.example.com
+# or use reverse proxy on same domain:
+# UNISEARCH_API_BASE_URL=/api
 
-Notes:
-- Keep backend and translator as separate services.
-- If you do not want to maintain translator infra on Render, set `ML_INTEREST_TRANSLATION_ENABLED=0`.
-
-## Render deployment notes
-- `Cron Job` on Render is not Redis. It only runs commands on schedule.
-- For this architecture in Render use:
-1. `Key Value` service (Valkey/Redis-compatible) for `REDIS_URL`.
-2. `Web Service` for backend API.
-3. Optional `Cron Job` to call `POST /ops/warmup` periodically.
-
-Recommended env for backend:
-```env
-REDIS_URL=<render-key-value-internal-url>
-AUTO_WARMUP_ON_STARTUP=1
+UNISEARCH_USE_PRETTY_URLS=true
 ```
 
-## Render: pretty URLs for frontend demo
-If your frontend demo is hosted as a **Render Static Site**, configure rewrite rules so clean routes map to existing HTML files.
+Generate deploy-time env file:
+```bash
+npm run build:frontend-env
+```
 
+This writes `frontend/env.js` with `window.__UNISEARCH_ENV__`, so you can switch backend/frontend domains only through hosting env settings without editing source files.
+
+## Pretty URL rewrites (any static host)
 Target clean routes:
-- `/index` (home)
+- `/` (home)
 - `/universities`
 - `/universities/:id`
 - `/ranking`
 - `/guide`
 - `/about`
 
-Route rules to add in Render (`Static Site -> Redirects/Rewrites`):
-1. Source: `/` -> Destination: `/index.html` -> Action: `Rewrite`
-2. Source: `/index` -> Destination: `/index.html` -> Action: `Rewrite`
-3. Source: `/universities` -> Destination: `/universities.html` -> Action: `Rewrite`
-4. Source: `/universities/:id` -> Destination: `/university.html` -> Action: `Rewrite`
-5. Source: `/ranking` -> Destination: `/ranking.html` -> Action: `Rewrite`
-6. Source: `/guide` -> Destination: `/guide.html` -> Action: `Rewrite`
-7. Source: `/about` -> Destination: `/about.html` -> Action: `Rewrite`
+Rewrite rules:
+1. Source: `/` -> Destination: `/index.html`
+2. Source: `/universities` -> Destination: `/universities.html`
+3. Source: `/universities/:id` -> Destination: `/university.html`
+4. Source: `/ranking` -> Destination: `/ranking.html`
+5. Source: `/guide` -> Destination: `/guide.html`
+6. Source: `/about` -> Destination: `/about.html`
+7. Optional legacy support: `/index` -> `/index.html`
 
 Verification after deploy:
-1. Open `https://<your-demo-domain>/universities`
-2. Open a detail page `https://<your-demo-domain>/universities/<uuid>`
-3. Ensure navbar links show clean paths (`/index`, `/ranking`, `/guide`, `/about`) without `.html`
+1. Open `https://<your-domain>/universities`
+2. Open a detail page `https://<your-domain>/universities/<uuid>`
+3. Ensure navbar links show clean paths (`/`, `/ranking`, `/guide`, `/about`) without `.html`
 
 Important:
-- this routing works server-side only when rewrite rules are configured
-- in local development without rewrites, app keeps `.html` compatibility
+- rewrites are configured on hosting/web server side
+- local `python -m http.server` does not support rewrites
+- app keeps `.html` compatibility for local/dev and legacy links
+
+## Render example (optional)
+Render is just one deployment option.
+
+For backend + Redis on Render:
+1. `Key Value` service for `REDIS_URL`.
+2. `Web Service` for backend API.
+3. Optional `Cron Job` to call `POST /ops/warmup`.
+
+For frontend on Render Static Site:
+- configure the rewrite rules from the previous section in `Static Site -> Redirects/Rewrites`.
+
+For translation service on Render (optional):
+1. Deploy `libretranslate/libretranslate` as separate Web Service.
+2. Set backend env:
+```env
+ML_INTEREST_TRANSLATION_ENABLED=1
+LIBRETRANSLATE_URL=https://<your-libretranslate-service>.onrender.com/translate
+```
+3. If translation service is not used, set `ML_INTEREST_TRANSLATION_ENABLED=0`.
 
 ## Testing Strategy
 The test stack is split into two deterministic layers:

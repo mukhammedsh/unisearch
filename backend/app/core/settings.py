@@ -47,7 +47,7 @@ def _parse_frontend_origins() -> list[str]:
 FRONTEND_ORIGINS = _parse_frontend_origins()
 # Backward-compatible single-origin export for old imports.
 FRONTEND_ORIGIN = FRONTEND_ORIGINS[0]
-APP_VERSION = os.getenv("APP_VERSION", "2.4.0").strip() or "2.4.0"
+APP_VERSION = os.getenv("APP_VERSION", "2.4.1").strip() or "2.4.1"
 
 
 def _env_bool(name: str, default: str = "0") -> bool:
