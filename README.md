@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance - 2.3.0 (QOL - Quality of Life)
+# UniSearch / UniFit / UniChance - 2.4.0 (QOL - Quality of Life)
 
 ## What this project is
 UniSearch is a full-stack web app for university selection using:
@@ -11,10 +11,19 @@ UniSearch is a full-stack web app for university selection using:
   - Location: `Big City Life` <-> `Cozy Campus`
 - `UniChance` probability (0-100 estimated admission chance).
 
-## What's new in 2.3.0 (QOL - Quality of Life)
-- profile UX upgraded: one global Save button for all profile edits
-- unsaved-changes close flow added (`Discard`, `Cancel`, `Save and close`)
-- profile editing behavior made more consistent across fields
+## What's new in 2.4.0 (QOL - Quality of Life)
+- added clean URL routing for deployed frontend:
+  - `/index` (home)
+  - `/universities`
+  - `/universities/:id`
+  - `/ranking`, `/guide`, `/about`
+- kept backward compatibility for local/dev and old links:
+  - `.html` routes still work
+  - `university.html?id=...` still works
+- profile UX upgrades from 2.3.x are preserved:
+  - one global Save button for all profile edits
+  - unsaved-changes close flow (`Discard`, `Cancel`, `Save and close`)
+  - more consistent profile field behavior
 
 ## Planned
 - Split backend architecture into microservices.
@@ -94,7 +103,7 @@ If translation is unavailable, backend safely falls back to raw text and still r
 - provider failure backoff
 - short request timeout
 
-## Performance services (2.3.0)
+## Performance services (2.4.0)
 - Redis for API/cache and shared rate-limit state
 - Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
@@ -116,7 +125,7 @@ ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 
 ### Backend infra env (`backend/.env`)
 ```env
-APP_VERSION=2.3.0
+APP_VERSION=2.4.0
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override (comma-separated):
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -193,6 +202,11 @@ Open:
 - `http://127.0.0.1:5501/ranking.html`
 - `http://127.0.0.1:5501/guide.html`
 
+Notes for local frontend:
+- local `python -m http.server` does not support rewrites, so `.html` routes are expected in local dev
+- production/demo hosts can use clean routes (`/index`, `/universities`, `/ranking`, `/universities/:id`) with rewrite rules
+- clean route mode is controlled by `window.APP_USE_PRETTY_URLS` in `frontend/config.js` (auto-enabled outside localhost)
+
 ### 3) Full stack with Redis (Docker)
 ```bash
 docker compose up --build
@@ -226,6 +240,35 @@ Recommended env for backend:
 REDIS_URL=<render-key-value-internal-url>
 AUTO_WARMUP_ON_STARTUP=1
 ```
+
+## Render: pretty URLs for frontend demo
+If your frontend demo is hosted as a **Render Static Site**, configure rewrite rules so clean routes map to existing HTML files.
+
+Target clean routes:
+- `/index` (home)
+- `/universities`
+- `/universities/:id`
+- `/ranking`
+- `/guide`
+- `/about`
+
+Route rules to add in Render (`Static Site -> Redirects/Rewrites`):
+1. Source: `/` -> Destination: `/index.html` -> Action: `Rewrite`
+2. Source: `/index` -> Destination: `/index.html` -> Action: `Rewrite`
+3. Source: `/universities` -> Destination: `/universities.html` -> Action: `Rewrite`
+4. Source: `/universities/:id` -> Destination: `/university.html` -> Action: `Rewrite`
+5. Source: `/ranking` -> Destination: `/ranking.html` -> Action: `Rewrite`
+6. Source: `/guide` -> Destination: `/guide.html` -> Action: `Rewrite`
+7. Source: `/about` -> Destination: `/about.html` -> Action: `Rewrite`
+
+Verification after deploy:
+1. Open `https://<your-demo-domain>/universities`
+2. Open a detail page `https://<your-demo-domain>/universities/<uuid>`
+3. Ensure navbar links show clean paths (`/index`, `/ranking`, `/guide`, `/about`) without `.html`
+
+Important:
+- this routing works server-side only when rewrite rules are configured
+- in local development without rewrites, app keeps `.html` compatibility
 
 ## Testing Strategy
 The test stack is split into two deterministic layers:
@@ -326,27 +369,6 @@ No personal user data is used in automated tests.
 - If translation provider/network is unavailable in tests:
   - E2E runs are configured with `ML_INTEREST_TRANSLATION_ENABLED=0` for deterministic behavior.
 
-## GitHub Release + Packages (GHCR)
-This repository is configured to publish both release assets and a backend container image when a GitHub Release is published.
-
-What happens automatically on release publish:
-- uploads `unisearch-frontend-vX.Y.Z.zip` to the release
-- uploads `unisearch-backend-vX.Y.Z.zip` to the release
-- publishes backend image to:
-  - `ghcr.io/<owner>/unisearch-backend:vX.Y.Z`
-  - `ghcr.io/<owner>/unisearch-backend:X.Y.Z`
-  - `ghcr.io/<owner>/unisearch-backend:latest`
-
-How to trigger:
-1. Push all changes to `main`.
-2. Create and push a tag (example `v2.3.0`):
-   ```bash
-   git tag v2.3.0
-   git push origin v2.3.0
-   ```
-3. In GitHub, open Releases and publish a release for that tag.
-4. Wait for the workflow `Release Artifacts And Container` to finish.
-
 ## Repository layout
 ```text
 backend/
@@ -398,6 +420,7 @@ frontend/
     main.js
     pages.js
     components.js
+    routes.js
     utils.js
     i18n.js
     university-translations.js

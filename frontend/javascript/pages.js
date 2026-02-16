@@ -25,6 +25,7 @@ import {
 
 import { setupTabs } from "./components.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
+import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "./routes.js";
 import {
   translateAdmissionText,
   translateDataValue,
@@ -1059,7 +1060,7 @@ export function initUniversitiesPage() {
     el.list.addEventListener("click", (e) => {
         const card = e.target.closest("[data-uni-id]");
         if (!card || e.target.tagName === "A") return;
-        window.location.href = `university.html?id=${encodeURIComponent(card.getAttribute("data-uni-id"))}`;
+        window.location.href = routeUniversityDetail(card.getAttribute("data-uni-id"));
     });
 
     el.btnList?.addEventListener("click", () => { switchView("list", true); });
@@ -1837,7 +1838,10 @@ export function initUniversitiesPage() {
         const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
         const loadingAttr = idx < 4 ? "eager" : "lazy";
         const fetchPriorityAttr = idx < 2 ? "high" : "auto";
-        const detailHref = `university.html?id=${encodeURIComponent(id)}`;
+        const detailHref = routeUniversityDetail(id);
+        const safeName = escapeHtml(name);
+        const safeWhyText = escapeHtml(whyText || "");
+        const overlayTitle = whyText ? `${name}. ${whyText}` : String(name || "");
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media">
@@ -1846,13 +1850,13 @@ export function initUniversitiesPage() {
             <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
             </div>
             <div class="uni-body">
-                        <h3 class="uni-title">${escapeHtml(name)}</h3>
+                        <h3 class="uni-title" title="${safeName}">${safeName}</h3>
             <div class="uni-loc">📍 ${locString}</div>
             <div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${acceptanceLabel}</span></div>
             ${badgesHTML ? `<div class="uni-badge">${badgesHTML}</div>` : ""}
-            ${whyText ? `<div class="uni-why">${escapeHtml(whyText)}</div>` : ""}
+            ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
             </div>
-            <a class="uni-card-link-overlay" href="${detailHref}" aria-label="${escapeHtml(name)}"></a>
+            <a class="uni-card-link-overlay" href="${detailHref}" aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
         </article>
         `;
     }
@@ -1877,8 +1881,7 @@ export function initUniversitiesPage() {
 // PAGE: UNIVERSITY DETAILS (Детальная)
 // =====================================
 export async function initUniversityPage() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  const id = extractUniversityIdFromLocation(window.location);
   const stateEl = document.getElementById("detailState");
   const cardEl = document.getElementById("detailCard");
   const loadingEl = document.getElementById("detailLoading");
@@ -1945,7 +1948,7 @@ export async function initUniversityPage() {
         p.set("focus_uni", String(u.id || id));
         if (u.location?.country) p.set("country", String(u.location.country));
         if (u.location?.city) p.set("city", String(u.location.city));
-        mapBtn.href = `universities.html?${p.toString()}`;
+        mapBtn.href = routeUniversities(p);
         mapBtn.style.display = "inline-flex";
     }
     let uniChance = null;
@@ -2799,7 +2802,7 @@ export async function initRankingPage() {
             const uniName = trUniversityName(u);
 
             return `
-            <a href="university.html?id=${encodeURIComponent(u.id)}" class="rank-card">
+            <a href="${routeUniversityDetail(u.id)}" class="rank-card">
                 <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">

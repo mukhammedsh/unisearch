@@ -1519,6 +1519,16 @@
     min-height: 0;
   }
 
+  /* On touch devices there is no reliable hover tooltip, so show full text. */
+  .uni-title,
+  .uni-why {
+    min-height: 0;
+    display: block;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: initial;
+    overflow: visible;
+  }
+
   .u-filter-card {
     padding: 12px 10px;
   }

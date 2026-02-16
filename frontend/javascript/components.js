@@ -15,6 +15,7 @@ import {
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 import { translateProgramName } from "./university-translations.js";
+import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
 
 function syncNavbarLogo(themeOverride = "") {
     const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
@@ -90,7 +91,7 @@ function writeLayoutCache(html, hash) {
 const LAYOUT_HTML = `
 <header class="navbar">
   <div class="navbar-left">
-    <a href="index.html" style="display: flex; align-items: center;">
+    <a href="${routeHome()}" data-route="home" style="display: flex; align-items: center;">
       <img
         src="images/whitelogo.png"
         data-logo-light="images/whitelogo.png"
@@ -103,11 +104,11 @@ const LAYOUT_HTML = `
   </div>
 
   <nav class="navbar-center" id="primaryNav">
-    <a href="index.html" data-link="home" data-i18n="nav.home">Home</a>
-    <a href="universities.html" data-link="universities" data-i18n="nav.universities">Universities</a>
-    <a href="ranking.html" data-link="ranking" data-i18n="nav.rankings">Rankings</a>
-    <a href="guide.html" data-link="guide" data-i18n="nav.guide">Guide</a>
-    <a href="about.html" data-link="about" data-i18n="nav.about">About Us</a>
+    <a href="${routeHome()}" data-route="home" data-link="home" data-i18n="nav.home">Home</a>
+    <a href="${routeUniversities()}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
+    <a href="${routeRanking()}" data-route="ranking" data-link="ranking" data-i18n="nav.rankings">Rankings</a>
+    <a href="${routeGuide()}" data-route="guide" data-link="guide" data-i18n="nav.guide">Guide</a>
+    <a href="${routeAbout()}" data-route="about" data-link="about" data-i18n="nav.about">About Us</a>
   </nav>
 
   <div class="navbar-right">

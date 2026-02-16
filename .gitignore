@@ -221,3 +221,6 @@ test-results/
 
 # Local presentation sandbox (keep locally, do not commit)
 temp_presentation_3/
+
+# Local Kotlin playground (keep locally, do not commit)
+kotlin-learning/

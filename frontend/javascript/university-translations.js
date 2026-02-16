@@ -646,8 +646,20 @@ export function translateUniversityName(id, fallback = "") {
 
 export function translateUniversityDescription(university, fallback = "") {
   const lang = getCurrentLanguage();
-  if (lang === "eng") return String(fallback || "");
+  const sourceDescription = String(fallback || "");
+  if (lang === "eng") return sourceDescription;
+
   const u = university && typeof university === "object" ? university : {};
+  const uniId = String(u.id || "").trim();
+  if (uniId) {
+    const key = `university.description.${uniId}`;
+    const localized = String(t(key, "") || "").trim();
+    if (localized) return localized;
+  }
+
+  // Keep full source context if specific localization is missing.
+  if (sourceDescription) return sourceDescription;
+
   const name = translateUniversityName(u.id, String(u.name || fallback || ""));
   const city = translateDataValue("city", u?.location?.city || "", String(u?.location?.city || ""));
   const country = translateDataValue("country", u?.location?.country || "", String(u?.location?.country || ""));

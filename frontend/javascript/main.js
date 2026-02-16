@@ -4,6 +4,7 @@ import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePag
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, initI18n } from "./i18n.js";
+import { applyRouteLinks, isGuidePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
 
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)
   await loadGlobalLayout();
+  applyRouteLinks(document);
 
   applyAINameConfig();
   applyTranslations(document);
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const badge = document.querySelector(".hero-badge");
   const path = window.location.pathname;
-  const isUniversitiesPage = path.includes("universities.html") || document.getElementById("universitiesList");
+  const isUniversitiesPage = isUniversitiesListPath(path) || document.getElementById("universitiesList");
 
   if (badge && window.APP_VERSION) {
     badge.textContent = `${window.APP_VERSION} • QOL (Quality of Life)`;
@@ -65,15 +67,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 1200);
     ensureCityDatabase();
     initUniversitiesPage();
-  } else if (path.includes("guide.html") || document.getElementById("guidePage")) {
+  } else if (isGuidePath(path) || document.getElementById("guidePage")) {
     ensureExamConfig();
     ensureLanguageConfig();
     initGuidePage();
-  } else if (path.includes("university.html") || document.getElementById("detailCard")) {
+  } else if (isUniversityDetailPath(path) || document.getElementById("detailCard")) {
     ensureExamConfig();
     ensureLanguageConfig();
     initUniversityPage();
-  } else if (path.includes("ranking.html") || document.getElementById("rankingList")) {
+  } else if (isRankingPath(path) || document.getElementById("rankingList")) {
     ensureExamConfig();
     ensureLanguageConfig();
     initRankingPage();
