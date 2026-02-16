@@ -40,7 +40,7 @@
   margin: 0 auto;
   padding: 0 18px;
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
   gap: 18px;
 }
 
@@ -215,7 +215,8 @@
 }
 
 .u-search {
-  flex-grow: 1;
+  flex: 1 1 360px;
+  min-width: 0;
   margin: 0;
   position: relative;
 }
@@ -255,6 +256,8 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  min-width: 0;
+  flex: 0 1 auto;
 }
 
 .u-found {
@@ -475,6 +478,7 @@
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .view-btn {
@@ -1365,9 +1369,45 @@
   }
 }
 
+@media (max-width: 1180px) {
+  .u-layout {
+    grid-template-columns: 272px minmax(0, 1fr);
+    gap: 16px;
+    padding: 0 14px;
+  }
+
+  .u-controls {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 681px) {
+  .u-filter-card {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 10px;
+  }
+
+  .u-filter-title,
+  .u-sep,
+  #aiSliderContainer {
+    grid-column: 1 / -1;
+  }
+
+  .u-sep {
+    margin: 2px 0;
+  }
+
+  .u-field {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 980px) {
   .u-layout {
     grid-template-columns: 1fr;
+    padding: 0 12px;
   }
 
   .u-filter-card {
@@ -1378,24 +1418,15 @@
   .u-grid {
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
-}
 
-@media (max-width: 560px) {
-  .u-grid {
-    grid-template-columns: 1fr;
+  .u-top {
+    gap: 12px;
   }
 
-  .uni-card {
-    height: auto;
-    min-height: 0;
-  }
-
-  .u-search {
-    max-width: 100%;
-  }
-
-  .uni-badge {
-    min-height: 0;
+  .u-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
   }
 }
 
@@ -1403,29 +1434,41 @@
   .u-top {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+  }
+
+  .u-search {
+    flex: 0 0 auto;
+    width: 100%;
   }
 
   .u-controls {
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .u-found {
+    white-space: normal;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    min-width: 0;
+    font-size: 13px;
+  }
+
+  .view-toggles {
+    justify-self: end;
   }
 
   .u-map-container {
-    height: 400px;
+    height: 380px;
   }
 
   .u-content {
-    --u-loading-top: 132px;
-  }
-}
-
-@media (max-width: 600px) {
-  .u-grid {
-    grid-template-columns: 1fr; /* Одна колонка на всю ширину */
-  }
-  
-  /* Сайдбар с фильтрами убираем из сетки и ставим сверху */
-  .u-layout {
-    grid-template-columns: 1fr;
+    --u-loading-top: 150px;
   }
 }
 
@@ -1462,7 +1505,68 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 560px) {
+  .u-layout {
+    padding: 0 10px;
+  }
+
+  .u-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uni-card {
+    height: auto;
+    min-height: 0;
+  }
+
+  .u-filter-card {
+    padding: 12px 10px;
+  }
+
+  .u-search input {
+    font-size: 15px;
+    padding: 12px 12px 12px 40px;
+  }
+
+  .uni-badge {
+    min-height: 0;
+  }
+
+  .u-content {
+    --u-loading-top: 168px;
+  }
+}
+
+@media (max-width: 430px) {
+  .u-controls {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .u-found {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .view-toggles {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .view-btn {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .u-map-container {
+    height: 300px;
+  }
+
+  .u-content {
+    --u-loading-top: 196px;
+  }
+
   .tradeoff-field .u-label--subtle.u-label--between {
     gap: 8px;
   }

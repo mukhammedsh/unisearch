@@ -1353,3 +1353,57 @@ html, body {
     text-align: left;
   }
 }
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .navbar {
+    padding: 0 18px;
+  }
+
+  .navbar-center {
+    gap: 18px;
+    padding: 0 14px;
+  }
+
+  .logo {
+    height: 36px;
+  }
+
+  .theme-btn {
+    margin-right: 6px;
+  }
+
+  .login-btn {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 700px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .social-links {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    left: 10px;
+    right: 10px;
+    bottom: 12px;
+  }
+
+  .toast {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
