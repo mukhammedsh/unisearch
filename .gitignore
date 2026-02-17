@@ -224,3 +224,6 @@ temp_presentation_3/
 
 # Local Kotlin playground (keep locally, do not commit)
 kotlin-learning/
+
+# Local maintainer-only release notes
+MAINTAINER_RELEASE.md

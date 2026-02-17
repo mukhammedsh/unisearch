@@ -12,22 +12,25 @@ UniSearch is a full-stack web app for university selection using:
 - `UniChance` probability (0-100 estimated admission chance).
 
 ## What's new in v2.5.0
-- added clean URL routing for deployed frontend:
-  - `/` (home)
-  - `/universities`
-  - `/universities/:id`
-  - `/ranking`, `/guide`, `/about`
-- kept backward compatibility for local/dev and old links:
-  - `.html` routes still work
-  - `/index` still resolves to home
-  - `university.html?id=...` still works
-- moved frontend runtime config to deploy-time environment file (`frontend/env.js`):
-  - no hardcoded hosting domain in frontend code
-  - backend URL and pretty URL mode can be changed via hosting env variables
-- profile UX upgrades from 2.3.x are preserved:
-  - one global Save button for all profile edits
-  - unsaved-changes close flow (`Discard`, `Cancel`, `Save and close`)
-  - more consistent profile field behavior
+- profile save flow was unified and stabilized:
+  - one global `Save Profile` action for core profile fields
+  - pressing `Enter` in profile input flow now saves consistently
+  - username edits are persisted together with profile changes (regression fixed)
+  - unsaved-changes close modal is active (`Close without saving`, `Cancel`, `Save and close`)
+- profile persistence is more resilient:
+  - if `localStorage` is blocked/unavailable, profile and filters keep working via in-memory fallback
+- mobile/tablet UX pass completed for key pages (including `university.html`):
+  - reduced horizontal overflow on 390px and 820px viewports
+  - responsive improvements for university detail layout, tabs, and finance/ROI blocks
+- routing and deploy stability upgrades:
+  - clean URL routes for deployed frontend (`/`, `/universities`, `/universities/:id`, `/ranking`, `/guide`, `/about`)
+  - backward compatibility kept for `.html` routes, `/index`, and `university.html?id=...`
+  - runtime frontend config moved to deploy-time `frontend/env.js` (no hardcoded host domain)
+  - root `<base href="/">` added on pages to prevent blank detail page on nested routes
+- QA coverage increased with new Playwright checks:
+  - `tests/e2e/mobile-tablet-overflow.spec.js`
+  - `tests/e2e/profile-enter-save.spec.js`
+  - `tests/e2e/profile-storage-fallback.spec.js`
 
 ## Planned
 - Split backend architecture into microservices.
