@@ -665,7 +665,7 @@ function initProfileUI() {
                 : t("profile.state.saved", "Saved");
             profileSaveState.classList.toggle("is-dirty", isDirty);
         }
-        if (saveProfileBtn) saveProfileBtn.disabled = !profileDirty;
+        if (saveProfileBtn) saveProfileBtn.disabled = !isDirty;
         return isDirty;
     };
 
@@ -953,6 +953,9 @@ function initProfileUI() {
         budgetInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
+            if (isUsernameDraftDirty() && !commitProfileName(false)) {
+                return;
+            }
             saveAllProfileChanges(true);
         });
     }
@@ -965,12 +968,18 @@ function initProfileUI() {
         gpaInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
+            if (isUsernameDraftDirty() && !commitProfileName(false)) {
+                return;
+            }
             saveAllProfileChanges(true);
         });
     }
 
     if (saveProfileBtn) {
         saveProfileBtn.addEventListener("click", () => {
+            if (isUsernameDraftDirty() && !commitProfileName(false)) {
+                return;
+            }
             saveAllProfileChanges(true);
         });
     }

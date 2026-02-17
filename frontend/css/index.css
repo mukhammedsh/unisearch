@@ -61,6 +61,7 @@
 .hero-buttons {
     display: flex;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
 .btn-primary {
@@ -317,6 +318,18 @@
 }
 
 @media (max-width: 600px) {
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+
     .features-section {
         padding: 56px 12px;
     }

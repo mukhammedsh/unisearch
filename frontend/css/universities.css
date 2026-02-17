@@ -1231,7 +1231,8 @@
 
 .custom-map-popup .leaflet-popup-content {
   margin: 0 !important;
-  width: 300px !important;
+  width: min(300px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
 }
 
 /* Карточка внутри попапа */
@@ -1246,6 +1247,11 @@
 .map-card-wrapper .uni-media {
   flex-basis: 140px;
   height: 140px;
+}
+
+.map-card-wrapper .uni-title,
+.map-card-wrapper .uni-why {
+  overflow-wrap: anywhere;
 }
 
 /* Кнопка закрытия попапа */
@@ -1536,6 +1542,16 @@
   .u-search input {
     font-size: 15px;
     padding: 12px 12px 12px 40px;
+  }
+
+  .custom-map-popup .leaflet-popup-content {
+    width: min(272px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  .map-card-wrapper .uni-media {
+    flex-basis: 120px;
+    height: 120px;
   }
 
   .uni-badge {

@@ -1,4 +1,4 @@
-# UniSearch / UniFit / UniChance - 2.4.1 (QOL - Quality of Life)
+# UniSearch / UniFit / UniChance - v2.5.0
 
 ## What this project is
 UniSearch is a full-stack web app for university selection using:
@@ -11,7 +11,7 @@ UniSearch is a full-stack web app for university selection using:
   - Location: `Big City Life` <-> `Cozy Campus`
 - `UniChance` probability (0-100 estimated admission chance).
 
-## What's new in 2.4.1 (QOL - Quality of Life)
+## What's new in v2.5.0
 - added clean URL routing for deployed frontend:
   - `/` (home)
   - `/universities`
@@ -107,7 +107,7 @@ If translation is unavailable, backend safely falls back to raw text and still r
 - provider failure backoff
 - short request timeout
 
-## Performance services (2.4.1)
+## Performance services (v2.5.0)
 - Redis for API/cache and shared rate-limit state
 - Observability: Prometheus metrics (`/metrics`) + optional Sentry
 
@@ -129,7 +129,7 @@ ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 
 ### Backend infra env (`backend/.env`)
 ```env
-APP_VERSION=2.4.1
+APP_VERSION=2.5.0
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override (comma-separated):
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510

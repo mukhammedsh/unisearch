@@ -1158,6 +1158,14 @@ export function initUniversitiesPage() {
         markersLayer.clearLayers();
         markersByUniId = new Map();
         const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
+        const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
+        const popupOptions = {
+            minWidth: isCompactViewport ? 220 : 280,
+            maxWidth: isCompactViewport ? 280 : 320,
+            className: "custom-map-popup",
+            autoPan: isCompactViewport,
+            keepInView: isCompactViewport
+        };
         const newMarkers = [];
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
@@ -1170,7 +1178,7 @@ export function initUniversitiesPage() {
                     uniRank: Number.isFinite(rankValue) ? rankValue : 999999
                 });
                 const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
-                marker.bindPopup(cardHTML, { minWidth: 280, maxWidth: 320, className: 'custom-map-popup', autoPan: false });
+                marker.bindPopup(cardHTML, popupOptions);
                 marker.on('click', function(e) { this.setZIndexOffset(1000); mapInstance.flyTo(e.target.getLatLng(), 16, { animate: true, duration: 3.0, easeLinearity: 0.1 }); setTimeout(() => { if (!marker.getPopup().isOpen()) marker.openPopup(); }, 100); });
                 newMarkers.push(marker);
                 markersByUniId.set(uniId, marker);
@@ -2532,17 +2540,17 @@ export async function initUniversityPage() {
 
                 tracksHTML += `
                 <div class="track-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:20px; margin-bottom:16px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
-                        <div>
+                    <div class="track-head">
+                        <div class="track-head-main">
                             <h4 style="margin:0 0 4px 0; font-size:18px; color:#5d17ea;">${escapeHtml(trTrackLabel(String(track.label || translateWord("track", "Track"))))}</h4>
                             ${renderTrackFundingBadge(track)}
                             ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
                             <p style="margin:8px 0 0; font-size:13px; color:#555; line-height:1.5;">${escapeHtml(trTrackDescription(u.id, track.id, String(track.description || ""))).replace(/\n/g, "<br>")}</p>
                         </div>
-                        <div style="text-align:right;">
-                            <div style="font-size:12px; color:#666;">${trackPriceTitle}</div>
-                            <div style="font-size:16px; font-weight:800; color:#111;">${moneyUSD(trackPrice)}</div>
+                        <div class="track-price">
+                            <div class="track-price-label">${trackPriceTitle}</div>
+                            <div class="track-price-value">${moneyUSD(trackPrice)}</div>
                         </div>
                     </div>
                     
@@ -2724,19 +2732,19 @@ export async function initUniversityPage() {
                     
                     ${roiContent}
 
-                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;">
-                        <div style="flex:1; min-width:200px;">
-                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">${escapeHtml(t("roi.estimated_salary", "Est. Graduate Salary"))}</div>
-                            <div style="font-size:24px; font-weight:800; color:#111;">${moneyUSD(userSalary)}</div>
-                            <div style="font-size:11px; color:#999;">${escapeHtml(t("roi.per_year_early", "per year (early career)"))}</div>
+                    <div class="roi-metrics-row">
+                        <div class="roi-metric">
+                            <div class="roi-metric-label">${escapeHtml(t("roi.estimated_salary", "Est. Graduate Salary"))}</div>
+                            <div class="roi-metric-value">${moneyUSD(userSalary)}</div>
+                            <div class="roi-metric-note">${escapeHtml(t("roi.per_year_early", "per year (early career)"))}</div>
                         </div>
-                        <div style="width:1px; height:50px; background:#eee; display:none; @media(min-width:600px){display:block;}"></div>
-                        <div style="flex:1; min-width:200px;">
-                            <div style="font-size:12px; color:#666; text-transform:uppercase; font-weight:700;">${escapeHtml(t("roi.score", "ROI Score"))}</div>
-                            <div style="font-size:32px; font-weight:900; color:${roiColor};">
+                        <div class="roi-metrics-divider"></div>
+                        <div class="roi-metric">
+                            <div class="roi-metric-label">${escapeHtml(t("roi.score", "ROI Score"))}</div>
+                            <div class="roi-metric-value roi-metric-value--accent" style="color:${roiColor};">
                                 ${roiValue}x
                             </div>
-                            <div style="font-size:11px; color:${roiColor}; font-weight:600;">
+                            <div class="roi-metric-note" style="color:${roiColor}; font-weight:600;">
                                 ${roiLabel}
                             </div>
                         </div>

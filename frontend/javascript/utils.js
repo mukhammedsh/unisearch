@@ -235,6 +235,7 @@ const PROFILE_STORAGE_KEY = "unisearch_profile";
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 const API_LANG_DEFAULT = "eng";
 const API_LANG_SUPPORTED = new Set(["eng", "rus", "kz"]);
+let __profileMemoryFallback = null;
 // 🔥 ДОБАВЛЕНО: Новые поля в дефолтном профиле
 const PROFILE_DEFAULTS = { 
     name: "User", 
@@ -252,10 +253,11 @@ export let EXAM_CONFIG = {
         "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
         "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
         "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
+        "IELTS": {"min": 0, "max": 9, "type": "float", "step": 0.5},
+        "TOEFL": {"min": 0, "max": 120, "type": "int", "step": 1},
         "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
         "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
         "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
-        "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1},
         "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
     };
 
@@ -282,6 +284,8 @@ async function loadExamConfig() {
           "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
           "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
           "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
+          "IELTS": {"min": 0, "max": 9, "type": "float", "step": 0.5},
+          "TOEFL": {"min": 0, "max": 120, "type": "int", "step": 1},
           "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
           "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
           "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
@@ -649,17 +653,30 @@ export function removeToast(toast) {
 
 // --- Управление профилем ---
 export function loadProfile() {
+  const readMemoryFallback = () => {
+    if (!__profileMemoryFallback || typeof __profileMemoryFallback !== "object") return null;
+    return normalizeProfile(__profileMemoryFallback);
+  };
+
   try {
     const s = localStorage.getItem(PROFILE_STORAGE_KEY);
-    const raw = s ? JSON.parse(s) : {};
+    if (!s) {
+      const fromMemory = readMemoryFallback();
+      if (fromMemory) return fromMemory;
+      return normalizeProfile({});
+    }
+    const raw = JSON.parse(s);
     const normalized = normalizeProfile(raw);
 
     // optional: если хочешь автоматически почистить localStorage от мусора
     // localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
 
+    __profileMemoryFallback = normalized;
     return normalized;
   } catch (e) {
-    return { ...PROFILE_DEFAULTS };
+    const fromMemory = readMemoryFallback();
+    if (fromMemory) return fromMemory;
+    return normalizeProfile({});
   }
 }
 
@@ -759,13 +776,19 @@ const FALLBACK_LANG_LIMITS = {
 
 export function saveProfile(p) {
   const normalized = normalizeProfile(p);
-  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
+  __profileMemoryFallback = normalized;
+  try {
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
+  } catch (e) {
+    console.warn("Failed to persist profile in localStorage; using in-memory fallback.", e);
+  }
   window.dispatchEvent(new Event("profileUpdated"));
 }
 
 
 /* --- Сохранение фильтров (ОЧИЩЕНО) --- */
 const FILTERS_KEY = "unisearch_filters";
+let __filtersMemoryFallback = {};
 
 export function saveFilters(state) {
     if (!state) return;
@@ -786,16 +809,27 @@ export function saveFilters(state) {
         city_vs_campus: state.city_vs_campus,
         viewMode: state.viewMode || "list"
     };
-    localStorage.setItem(FILTERS_KEY, JSON.stringify(dataToSave));
+    __filtersMemoryFallback = { ...dataToSave };
+    try {
+        localStorage.setItem(FILTERS_KEY, JSON.stringify(dataToSave));
+    } catch (e) {
+        console.warn("Failed to persist filters in localStorage; using in-memory fallback.", e);
+    }
 }
 
 export function loadFilters() {
     try {
         const saved = localStorage.getItem(FILTERS_KEY);
-        return saved ? JSON.parse(saved) : {};
+        if (!saved) return { ...__filtersMemoryFallback };
+        const parsed = JSON.parse(saved);
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+            return { ...__filtersMemoryFallback };
+        }
+        __filtersMemoryFallback = { ...parsed };
+        return parsed;
     } catch (e) {
-        console.error("Error loading filters", e);
-        return {};
+        console.warn("Error loading filters; using in-memory fallback.", e);
+        return { ...__filtersMemoryFallback };
     }
 }
 

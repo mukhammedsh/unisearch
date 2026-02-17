@@ -38,7 +38,7 @@ test("detail page renders UniChance/ROI and recomputes after profile update", as
       response.url().includes("/roi") &&
       response.request().method() === "POST"
   );
-  await page.click(selectors.saveBudgetBtn);
+  await page.click(selectors.saveProfileBtn);
   expect((await uniChanceRefresh).status()).toBe(200);
   expect((await roiRefresh).status()).toBe(200);
 

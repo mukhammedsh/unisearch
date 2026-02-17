@@ -12,12 +12,8 @@ test("profile accepts realistic user input and persists after reload", async ({ 
 
   await page.click(selectors.editNameBtn);
   await page.fill(selectors.nameInput, "Aruzhan Dev");
-  await page.click(selectors.editNameBtn);
-
   await page.fill(selectors.budgetInput, "23000");
-  await page.click(selectors.saveBudgetBtn);
   await page.fill(selectors.gpaInput, "95");
-  await page.click(selectors.saveGpaBtn);
 
   await setNativeSelect(page, "studyModeSelect", "On-campus");
   await setNativeSelect(page, "profileFundingTypeSelect", "grant");
@@ -42,6 +38,8 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await page.click(selectors.addExamBtn);
   expect((await examValidateResponse).status()).toBe(200);
   await expect(page.locator(selectors.examList)).toContainText("SAT");
+
+  await page.click(selectors.saveProfileBtn);
 
   await page.click(selectors.profileCloseBtn);
   await page.reload();
