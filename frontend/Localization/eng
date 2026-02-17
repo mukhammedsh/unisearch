@@ -108,7 +108,11 @@ profile.exam_integer_required: {exam} score must be an integer (e.g. 1400)
 profile.exam_invalid_score: Invalid score format
 profile.exam_removed: Exam removed
 profile.exam_score_label: Score: {score}
+profile.exam_score_min: Min for {exam} is {min}
+profile.exam_score_max: Max for {exam} is {max}
+profile.exam_score_step: {exam} score must use step {step}
 profile.exam_select_required: Please select an exam
+profile.exam_validate_failed: Failed to validate exam score (code: {code})
 profile.exam_updated: Updated {exam} to {score}
 profile.gpa_cleared: GPA cleared
 profile.gpa_must_number: GPA must be a number
@@ -118,6 +122,7 @@ profile.gpa_step: GPA must use step {step}
 profile.hint.budget_range: Range: 1 - 1,000,000
 profile.hint.gpa: GPA is stored as percent and used in admission matching.
 profile.hint.interests: Used to personalize your recommendations.
+profile.warning.interests_english_only: Translation is unavailable. Please write interests in English.
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget (USD / year)
@@ -341,6 +346,7 @@ languages.error.choose_exam: Choose exam
 languages.error.choose_language_type: Choose language and type
 languages.error.enter_score: Enter score
 languages.error.save_failed: Failed to save language
+languages.error.save_failed_code: Failed to save language (code: {code})
 languages.no_exams: No exams
 languages.removed: Removed
 languages.saved: Language saved
@@ -352,6 +358,7 @@ languages.select_exam: Select exam
 languages.select_type: Select type
 languages.error.score_range: Score must be {min} - {max}
 languages.error.step_hint: Step is {step} (e.g. {first}, {second}, ...)
+languages.error.integer_required: {exam} requires an integer score
 profile.action.close: Close
 profile.action.edit_name: Edit Name
 profile.action.save_budget: Save Budget

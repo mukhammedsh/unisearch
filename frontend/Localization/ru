@@ -23,7 +23,7 @@ about.title: Мы команда абитуриентов UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Трек поступления — это конкретный путь поступления на программу. У одного университета может быть несколько треков с разными требованиями и стоимостью.
-guide.admission.p2: Requirements — это минимальный порог допуска. Показатель Real Average (Admitted) чаще лучше отражает реальную конкуренцию.
+guide.admission.p2: Поле «Requirements» показывает минимальный порог допуска. Метрика «Real Average (Admitted)» обычно лучше отражает реальный уровень конкуренции.
 guide.admission.p3: Языковые правила задаются явно: mode any — достаточно одного подтверждения, mode all — нужно выполнить все перечисленные условия.
 guide.admission.p4: Стипендии и финансовая помощь на уровне трека могут заметно менять итоговую стоимость обучения.
 guide.admission.title: Термины треков поступления
@@ -37,8 +37,8 @@ guide.glossary.title: Глоссарий
 guide.intro: На этой странице объясняются ключевые термины UniSearch: логика ранжирования {fit}, вероятность {chance}, треки поступления, типы баллов, языковые подтверждения и поведение бюджета.
 guide.language_exams.title: Языковые экзамены
 guide.loading_language_config: Загрузка конфигурации языковых экзаменов
-guide.ml.p1: ML — это Machine Learning. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.
-guide.ml.p2: Вы можете указать текстовые интересы в профиле. Перед ML-оценкой backend всегда переводит этот текст на американский английский (US English) через self-hosted LibreTranslate, затем сравнивает его с метаданными вузов через TF-IDF и cosine similarity.
+guide.ml.p1: ML — это машинное обучение. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.
+guide.ml.p2: Вы можете указать текстовые интересы в профиле. Перед ML-оценкой сервер переводит этот текст на американский английский (US English) через локально размещенный LibreTranslate, затем сравнивает его с метаданными вузов с помощью TF-IDF и cosine similarity.
 guide.ml.p3: Текст метаданных формируется из названия вуза, локации, программ, а также description и tags.
 guide.ml.p4: Перед скорингом короткие термины и аббревиатуры нормализуются (например ict, gamedev, ui/ux, genai).
 guide.ml.p5: Если интересы заполнены, ML всё равно вычисляется и возвращается в matchData.mlScore, но итоговый порядок ранжирования задаётся взвешенной формулой UniFit (PreferenceMismatch + AdmissionRisk). Это сохраняет детерминированность и персонализацию.
@@ -108,7 +108,11 @@ profile.exam_integer_required: Баллы {exam} должны быть целы�
 profile.exam_invalid_score: Неверный формат балла
 profile.exam_removed: Экзамен удален
 profile.exam_score_label: Балл: {score}
+profile.exam_score_min: Минимальный балл для {exam}: {min}
+profile.exam_score_max: Максимальный балл для {exam}: {max}
+profile.exam_score_step: Для {exam} требуется шаг {step}
 profile.exam_select_required: Выберите экзамен
+profile.exam_validate_failed: Не удалось проверить балл экзамена (код: {code})
 profile.exam_updated: Обновлено: {exam} = {score}
 profile.gpa_cleared: GPA очищен
 profile.gpa_must_number: GPA должен быть числом
@@ -118,6 +122,7 @@ profile.gpa_step: Шаг GPA должен быть {step}
 profile.hint.budget_range: Диапазон: 1 - 1,000,000
 profile.hint.gpa: GPA хранится в процентах и используется при расчете вероятности поступления.
 profile.hint.interests: Используется для персонализации ваших рекомендаций.
+profile.warning.interests_english_only: Перевод недоступен. Пожалуйста, пишите интересы на английском.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет (USD / год)
@@ -320,6 +325,7 @@ languages.error.choose_exam: Выберите экзамен
 languages.error.choose_language_type: Выберите язык и тип
 languages.error.enter_score: Введите балл
 languages.error.save_failed: Не удалось сохранить язык
+languages.error.save_failed_code: Не удалось сохранить язык (код: {code})
 languages.no_exams: Экзаменов нет
 languages.removed: Удалено
 languages.saved: Язык сохранен
@@ -331,6 +337,7 @@ languages.select_exam: Выберите экзамен
 languages.select_type: Выберите тип
 languages.error.score_range: Балл должен быть в диапазоне {min} - {max}
 languages.error.step_hint: Шаг {step} (например, {first}, {second}, ...)
+languages.error.integer_required: Для {exam} требуется целый балл
 profile.action.close: Закрыть
 profile.action.edit_name: Изменить имя
 profile.action.save_budget: Сохранить бюджет

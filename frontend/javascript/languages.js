@@ -430,7 +430,16 @@ export function initLanguagesPanel() {
         showToast(t("languages.added", "Language added"), "success");
         return;
       } catch (e) {
-        showToast(e.message || t("languages.error.save_failed", "Failed to save language"), "error");
+        const rawCode = String(e?.code || e?.name || "save_failed").trim();
+        const safeCode = rawCode.replace(/\s+/g, "_").slice(0, 64) || "save_failed";
+        showToast(
+          tFormat(
+            "languages.error.save_failed_code",
+            { code: safeCode },
+            t("languages.error.save_failed", "Failed to save language")
+          ),
+          "error"
+        );
       }
     }
 

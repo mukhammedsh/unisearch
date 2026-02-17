@@ -467,6 +467,7 @@ const DICT = {
     "languages.error.step_hint": "Step is {step} (e.g. {first}, {second}, ...)",
     "languages.error.integer_required": "{exam} requires an integer score",
     "languages.error.save_failed": "Failed to save language",
+    "languages.error.save_failed_code": "Failed to save language (code: {code})",
 
     "profile.preference_saved": "Preference saved",
     "profile.interests_saved": "Interests saved",
@@ -493,6 +494,10 @@ const DICT = {
     "profile.exam_added": "Added {exam}",
     "profile.exam_removed": "Exam removed",
     "profile.exam_score_label": "Score: {score}",
+    "profile.exam_score_min": "Min for {exam} is {min}",
+    "profile.exam_score_max": "Max for {exam} is {max}",
+    "profile.exam_score_step": "{exam} score must use step {step}",
+    "profile.exam_validate_failed": "Failed to validate exam score (code: {code})",
     "profile.delete": "Delete",
   },
   rus: {
@@ -694,9 +699,9 @@ const DICT = {
       "Результаты {fit} динамические: изменение экзаменов, языков или бюджета сразу влияет на порядок.",
     "guide.ml.title": "ML в UniSearch (что это значит)",
     "guide.ml.p1":
-      "ML — это Machine Learning. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.",
+      "ML — это машинное обучение. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.",
     "guide.ml.p2":
-      "Вы можете указать текстовые интересы в профиле. Перед ML-оценкой backend всегда переводит этот текст на американский английский (US English) через self-hosted LibreTranslate, затем сравнивает его с метаданными вузов через TF-IDF и cosine similarity.",
+      "Вы можете указать текстовые интересы в профиле. Перед ML-оценкой сервер переводит этот текст на американский английский (US English) через локально размещенный LibreTranslate, затем сравнивает его с метаданными вузов с помощью TF-IDF и cosine similarity.",
     "guide.ml.p3":
       "Текст метаданных формируется из названия вуза, локации, программ, а также description и tags.",
     "guide.ml.p4":
@@ -716,7 +721,7 @@ const DICT = {
     "guide.admission.p1":
       "Admission track — это конкретный путь поступления. У одного вуза может быть несколько треков с разными требованиями и стоимостью.",
     "guide.admission.p2":
-      "Requirements — минимальный порог допуска. Real Average (Admitted) часто лучше отражает практическую конкурентность.",
+      "Поле «Requirements» показывает минимальный порог допуска. Метрика «Real Average (Admitted)» обычно лучше отражает реальный уровень конкуренции.",
     "guide.admission.p3":
       "Языковые правила обрабатываются явно: mode any — достаточно одного доказательства, mode all — нужно выполнить все условия.",
     "guide.admission.p4":
@@ -805,6 +810,7 @@ const DICT = {
     "languages.error.step_hint": "Шаг {step} (например, {first}, {second}, ...)",
     "languages.error.integer_required": "Для {exam} требуется целый балл",
     "languages.error.save_failed": "Не удалось сохранить язык",
+    "languages.error.save_failed_code": "Не удалось сохранить язык (код: {code})",
 
     "profile.preference_saved": "Предпочтение сохранено",
     "profile.interests_saved": "Интересы сохранены",
@@ -831,6 +837,10 @@ const DICT = {
     "profile.exam_added": "Добавлен {exam}",
     "profile.exam_removed": "Экзамен удален",
     "profile.exam_score_label": "Балл: {score}",
+    "profile.exam_score_min": "Минимальный балл для {exam}: {min}",
+    "profile.exam_score_max": "Максимальный балл для {exam}: {max}",
+    "profile.exam_score_step": "Для {exam} требуется шаг {step}",
+    "profile.exam_validate_failed": "Не удалось проверить балл экзамена (код: {code})",
     "profile.delete": "Удалить",
     "unifit.warning.desc":
       "UniFit работает лучше, когда в профиле есть экзамены или языковые подтверждения. Без них ИИ-сортировка может быть менее точной.",
@@ -1034,9 +1044,9 @@ const DICT = {
       "{fit} нәтижесі динамикалық: емтихан, тіл, бюджет өзгерсе, тізім реті бірден жаңарады.",
     "guide.ml.title": "UniSearch-тегі ML (нені білдіреді)",
     "guide.ml.p1":
-      "ML — Machine Learning. UniSearch-те ол admission ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.",
+      "ML — машиналық оқыту. UniSearch-те ML қабылдау ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.",
     "guide.ml.p2":
-      "Профильдегі interests өрісіне еркін мәтін жаза аласыз. ML бағалауына дейін backend бұл мәтінді әрқашан self-hosted LibreTranslate арқылы америкалық ағылшынға (US English) аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.",
+      "Профильдегі қызығушылықтар өрісіне еркін мәтін жаза аласыз. ML бағалауына дейін сервер бұл мәтінді локалды орналастырылған LibreTranslate арқылы америкалық ағылшынға (US English) аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity көмегімен салыстырады.",
     "guide.ml.p3":
       "Метадерек мәтіні университет атауы, орналасуы, бағдарламалар, сондай-ақ description мен tags өрістерінен құралады.",
     "guide.ml.p4":
@@ -1056,7 +1066,7 @@ const DICT = {
     "guide.admission.p1":
       "Қабылдау трегі — бағдарламаға түсудің нақты жолы. Бір университетте талаптары мен құны әртүрлі бірнеше трек болуы мүмкін.",
     "guide.admission.p2":
-      "Талаптар — ең төменгі өту шегі. Real Average (Admitted) көбіне нақты бәсекелестік деңгейін жақсырақ көрсетеді.",
+      "«Requirements» өрісі ең төменгі өту шегін көрсетеді. «Real Average (Admitted)» метрикасы көбіне нақты бәсекелестік деңгейін жақсырақ көрсетеді.",
     "guide.admission.p3":
       "Тіл ережесі нақты: mode any — бір дәлел жеткілікті, mode all — барлық шарт орындалуы керек.",
     "guide.admission.p4":
@@ -1145,6 +1155,7 @@ const DICT = {
     "languages.error.step_hint": "Қадам {step} (мысалы, {first}, {second}, ...)",
     "languages.error.integer_required": "{exam} үшін бүтін балл қажет",
     "languages.error.save_failed": "Тілді сақтау сәтсіз аяқталды",
+    "languages.error.save_failed_code": "Тілді сақтау сәтсіз аяқталды (код: {code})",
 
     "profile.preference_saved": "Баптау сақталды",
     "profile.interests_saved": "Қызығушылықтар сақталды",
@@ -1171,6 +1182,10 @@ const DICT = {
     "profile.exam_added": "{exam} қосылды",
     "profile.exam_removed": "Емтихан өшірілді",
     "profile.exam_score_label": "Балл: {score}",
+    "profile.exam_score_min": "{exam} үшін ең төменгі балл: {min}",
+    "profile.exam_score_max": "{exam} үшін ең жоғары балл: {max}",
+    "profile.exam_score_step": "{exam} үшін {step} қадамы қажет",
+    "profile.exam_validate_failed": "Емтихан балын тексеру сәтсіз аяқталды (код: {code})",
     "profile.delete": "Өшіру",
     "unifit.warning.desc":
       "Профильде емтихан немесе тілдік дәлел болса, UniFit дәлірек жұмыс істейді. Онсыз ЖИ-сұрыптау дәлдігі төмендеуі мүмкін.",

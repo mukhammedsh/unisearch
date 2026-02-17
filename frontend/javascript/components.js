@@ -1077,15 +1077,42 @@ function initProfileUI() {
                 const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
                 const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
 
-                if (Number.isFinite(min) && score < min) { showToast(`Min for ${name} is ${min}`, "error"); return; }
-                if (Number.isFinite(max) && score > max) { showToast(`Max for ${name} is ${max}`, "error"); return; }
+                if (Number.isFinite(min) && score < min) {
+                    showToast(
+                        tFormat(
+                            "profile.exam_score_min",
+                            { exam: name, min },
+                            `Min for ${name} is ${min}`
+                        ),
+                        "error"
+                    );
+                    return;
+                }
+                if (Number.isFinite(max) && score > max) {
+                    showToast(
+                        tFormat(
+                            "profile.exam_score_max",
+                            { exam: name, max },
+                            `Max for ${name} is ${max}`
+                        ),
+                        "error"
+                    );
+                    return;
+                }
 
                 if (Number.isFinite(step) && step > 0) {
                     const base = Number.isFinite(min) ? min : 0;
                     const k = (score - base) / step;
                     const diff = Math.abs(k - Math.round(k));
                     if (diff > 1e-9) {
-                        showToast(`${name} score must use step ${step}`, "error");
+                        showToast(
+                            tFormat(
+                                "profile.exam_score_step",
+                                { exam: name, step },
+                                `${name} score must use step ${step}`
+                            ),
+                            "error"
+                        );
                         return;
                     }
                 }
@@ -1116,8 +1143,26 @@ function initProfileUI() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ exam: name, score }),
                 });
-                const json = await res.json();
-                if (!res.ok) throw new Error(json.detail || "Error");
+                let json = {};
+                try {
+                    json = await res.json();
+                } catch (e) {
+                    json = {};
+                }
+                if (!res.ok) {
+                    const rawDetail = json && (json.detail || json.message || json.error);
+                    const code = String(
+                        typeof rawDetail === "string" && rawDetail.trim()
+                            ? rawDetail
+                            : (Array.isArray(rawDetail) ? "validation_error" : `http_${res.status}`)
+                    )
+                        .trim()
+                        .replace(/\s+/g, "_")
+                        .slice(0, 64);
+                    const err = new Error("exam_validate_failed");
+                    err.code = code || "unknown";
+                    throw err;
+                }
 
                 const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
                 const examLabel = getExamDisplayName(examId || name);
@@ -1144,7 +1189,16 @@ function initProfileUI() {
                     initCustomSelect("examNameSelect");
                 }
             } catch (e) {
-                showToast(e.message, "error");
+                const rawCode = String(e?.code || e?.name || "unknown").trim();
+                const safeCode = rawCode.replace(/\s+/g, "_").slice(0, 64) || "unknown";
+                showToast(
+                    tFormat(
+                        "profile.exam_validate_failed",
+                        { code: safeCode },
+                        `Failed to validate exam score (code: ${safeCode})`
+                    ),
+                    "error"
+                );
             }
         };
     }

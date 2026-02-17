@@ -56,6 +56,9 @@ jobs:
       - name: Install node dependencies
         run: npm install
 
+      - name: Run i18n consistency checks
+        run: npm run check:i18n
+
       - name: Install Playwright browser (Chromium)
         run: npx playwright install --with-deps chromium
 
@@ -96,6 +99,9 @@ jobs:
 
       - name: Install node dependencies
         run: npm install
+
+      - name: Run i18n consistency checks
+        run: npm run check:i18n
 
       - name: Install Playwright browsers (all nightly targets)
         run: npx playwright install --with-deps chromium firefox webkit

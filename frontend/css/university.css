@@ -152,6 +152,7 @@
   align-items: flex-start;
   gap: 10px;
   min-width: 0;
+  flex-wrap: wrap;
 }
 
 .d-head-links {
@@ -159,6 +160,7 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .d-title {
@@ -168,7 +170,9 @@
   color: var(--text);
   line-height: 1.2;
   min-width: 0;
+  flex: 1 1 320px;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .d-location {
@@ -533,6 +537,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
+  min-width: 0;
+}
+
+.d-tab-btn span:last-child {
+  min-width: 0;
 }
 
 .d-tab-btn:hover {
@@ -565,8 +575,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   background: #f5f0ff;
   color: var(--accent);
   border-radius: 50%;
@@ -1012,6 +1022,12 @@
   .finance-summary-right {
     flex: 0 0 260px;
   }
+
+  .d-site-link {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1019,7 +1035,9 @@
   .d-cover { height: 200px; }
   .d-head { flex-direction: column; gap: 15px; }
   .d-head-main { width: 100%; }
-  .d-title-row { flex-wrap: wrap; align-items: center; }
+  .d-title-row { width: 100%; align-items: flex-start; }
+  .d-title { flex-basis: 100%; }
+  .d-head-links { width: 100%; justify-content: flex-start; }
   .d-back { width: 100%; text-align: center; padding: 12px; background-color: #f3e8ff; }
   .d-grid { column-count: 1; }
   
@@ -1033,10 +1051,24 @@
   }
   .d-tab-btn {
     flex: 0 0 auto;
-    white-space: nowrap;
+    max-width: min(78vw, 280px);
+    white-space: normal;
+    line-height: 1.2;
     scroll-snap-align: start;
-    padding: 9px 14px;
+    padding: 10px 14px;
     font-size: 13px;
+  }
+  .d-tab-btn span:last-child {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-align: left;
+  }
+  .d-site-link {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
   }
   
   .finance-grid-new { grid-template-columns: 1fr; }
@@ -1204,7 +1236,8 @@
   }
 
   .d-tab-btn {
-    padding: 8px 12px;
+    max-width: 86vw;
+    padding: 9px 12px;
     gap: 6px;
   }
 }

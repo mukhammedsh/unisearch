@@ -23,7 +23,7 @@ about.title: Біз UniSearch талапкерлер командасымыз.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Академиялық емтихандар
 guide.admission.p1: Қабылдау трегі — бағдарламаға түсудің нақты жолы. Бір университетте талаптары мен құны әртүрлі бірнеше трек болуы мүмкін.
-guide.admission.p2: Талаптар — ең төменгі өту шегі. Real Average (Admitted) көбіне нақты бәсекелестік деңгейін жақсырақ көрсетеді.
+guide.admission.p2: «Requirements» өрісі ең төменгі өту шегін көрсетеді. «Real Average (Admitted)» метрикасы көбіне нақты бәсекелестік деңгейін жақсырақ көрсетеді.
 guide.admission.p3: Тіл ережелері нақты беріледі: mode any — бір дәлел жеткілікті, mode all — барлық көрсетілген талаптарды орындау керек.
 guide.admission.p4: Трек деңгейіндегі шәкіртақылар мен қаржылық көмек оқу құнының нақты нәтижесіне қатты әсер етеді.
 guide.admission.title: Қабылдау трегі терминдері
@@ -37,8 +37,8 @@ guide.glossary.title: Глоссарий
 guide.intro: Бұл бетте UniSearch-тегі негізгі терминдер түсіндіріледі: {fit} ранжирлеу логикасы, {chance} ықтималдық, қабылдау тректері, балл түрлері, тіл дәлелдері және бюджет логикасы.
 guide.language_exams.title: Тіл емтихандары
 guide.loading_language_config: Тіл емтиханы конфигурациясы жүктелуде
-guide.ml.p1: ML (Machine Learning) UniSearch-те қабылдау ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.
-guide.ml.p2: Профильдегі қызығушылықтар өрісіне еркін мәтін жаза аласыз. ML бағалауына дейін backend бұл мәтінді self-hosted LibreTranslate арқылы америкалық ағылшынға (US English) аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity арқылы салыстырады.
+guide.ml.p1: ML — машиналық оқыту. UniSearch-те ML қабылдау ережелерін алмастырмайды, тек қосымша жекелендіру сигналы ретінде қолданылады.
+guide.ml.p2: Профильдегі қызығушылықтар өрісіне еркін мәтін жаза аласыз. ML бағалауына дейін сервер бұл мәтінді локалды орналастырылған LibreTranslate арқылы америкалық ағылшынға (US English) аударады, содан кейін университет метадеректерімен TF-IDF және cosine similarity көмегімен салыстырады.
 guide.ml.p3: Метадерек мәтіні университет атауы, орналасуы, бағдарламалар, сондай-ақ сипаттама мен тегтер өрістерінен құралады.
 guide.ml.p4: Бағалау алдында қысқа терминдер мен қысқартулар (ict, gamedev, ui/ux, genai) қалыпқа келтіріледі.
 guide.ml.p5: Interests берілсе де, ML matchData.mlScore ішінде есептеліп қайтарылады, бірақ финалдық сұрыптау ретін UniFit-тің салмақталған формуласы (PreferenceMismatch + AdmissionRisk) анықтайды. Бұл нәтижені детерминалды және түсінікті етеді.
@@ -108,7 +108,11 @@ profile.exam_integer_required: {exam} балы бүтін сан болуы ке
 profile.exam_invalid_score: Балл форматы қате
 profile.exam_removed: Емтихан өшірілді
 profile.exam_score_label: Балл: {score}
+profile.exam_score_min: {exam} үшін ең төменгі балл: {min}
+profile.exam_score_max: {exam} үшін ең жоғары балл: {max}
+profile.exam_score_step: {exam} үшін {step} қадамы қажет
 profile.exam_select_required: Емтиханды таңдаңыз
+profile.exam_validate_failed: Емтихан балын тексеру сәтсіз аяқталды (код: {code})
 profile.exam_updated: {exam} жаңартылды: {score}
 profile.gpa_cleared: GPA тазартылды
 profile.gpa_must_number: GPA сан болуы керек
@@ -118,6 +122,7 @@ profile.gpa_step: GPA қадамы {step} болуы керек
 profile.hint.budget_range: Ауқым: 1 - 1,000,000
 profile.hint.gpa: GPA пайызбен сақталады және түсу ықтималдығын есептеуде қолданылады.
 profile.hint.interests: Ұсыныстарды сізге бейімдеу үшін қолданылады.
+profile.warning.interests_english_only: Аударма қолжетімсіз. Interests өрісін ағылшын тілінде жазыңыз.
 profile.interests_saved: Қызығушылықтар сақталды
 profile.saved_all: Профиль сақталды
 profile.label.budget: Жалпы бюджет (USD / жыл)
@@ -320,6 +325,7 @@ languages.error.choose_exam: Емтиханды таңдаңыз
 languages.error.choose_language_type: Тілді және түрін таңдаңыз
 languages.error.enter_score: Балл енгізіңіз
 languages.error.save_failed: Тілді сақтау сәтсіз аяқталды
+languages.error.save_failed_code: Тілді сақтау сәтсіз аяқталды (код: {code})
 languages.no_exams: Емтихан жоқ
 languages.removed: Өшірілді
 languages.saved: Тіл сақталды
@@ -331,6 +337,7 @@ languages.select_exam: Емтиханды таңдаңыз
 languages.select_type: Түрін таңдаңыз
 languages.error.score_range: Балл {min} - {max} аралығында болуы керек
 languages.error.step_hint: Қадам {step} (мысалы, {first}, {second}, ...)
+languages.error.integer_required: {exam} үшін бүтін балл қажет
 profile.action.close: Жабу
 profile.action.edit_name: Атын өзгерту
 profile.action.save_budget: Бюджетті сақтау
@@ -362,7 +369,7 @@ tour.step1.point1: Сол жақ панельдегі іздеу мен филь
 tour.step1.point2: Жоғарғы оң жақта «Тізім» және «Карта» режимдерін ауыстырыңыз.
 tour.step1.point3: Жекелендірілген сұрыптау үшін {fit} қолданыңыз.
 tour.step1.title: Университеттерді тезірек табыңыз
-tour.step2.desc: Профайл деректері ұсыныстар мен түсу ықтималдығы бағасының дәлдігін арттырады.
+tour.step2.desc: Профиль деректері ұсыныстар мен түсу ықтималдығы бағасының дәлдігін арттырады.
 tour.step2.kicker: 1-қадам
 tour.step2.point1: Бюджет, мамандық және GPA қосыңыз.
 tour.step2.point2: Емтихан мен тіл нәтижелерін қосыңыз.
