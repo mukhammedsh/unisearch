@@ -3,7 +3,7 @@ import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
-import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
+import { applyTranslations, initI18n } from "./i18n.js";
 import { applyRouteLinks, isGuidePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
@@ -64,7 +64,6 @@ function maybeWakeBackend() {
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
   initTheme();
-  maybeWakeBackend();
   const i18nInitPromise = initI18n().catch((e) => {
     console.warn("i18n init failed, using built-in fallback pack:", e);
   });
@@ -74,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Render core layout first, then finish i18n in background.
   await loadGlobalLayout();
   await i18nInitPromise;
-  window.dispatchEvent(new CustomEvent("languageChanged", { detail: { language: getCurrentLanguage() } }));
+  window.dispatchEvent(new CustomEvent("languageChanged"));
   applyRouteLinks(document);
 
   applyAINameConfig();
@@ -95,6 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       ensureExamConfig();
       ensureLanguageConfig();
     }, 1200);
+    window.setTimeout(() => {
+      maybeWakeBackend();
+    }, 1400);
     ensureCityDatabase();
     initUniversitiesPage();
   } else if (isGuidePath(path) || document.getElementById("guidePage")) {
