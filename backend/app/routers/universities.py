@@ -262,6 +262,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             paginate=False,
             response_mode="full",
             search_lang=search_lang,
+            localize_output=False,
         )
 
         sorted_items = ai_scoring_service.sort_universities_ai(
@@ -295,7 +296,14 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
         response.headers["X-AI-Sort-Cache"] = "HIT" if cache_hit else "MISS"
 
     return {
-        "items": [uni_service.to_university_card(row, format_preference=fmt) for row in page_items],
+        "items": [
+            uni_service.to_university_card(
+                row,
+                format_preference=fmt,
+                search_lang=search_lang,
+            )
+            for row in page_items
+        ],
         "count": len(page_items),
         "total": total,
         "page": page,
@@ -305,18 +313,41 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     }
 
 
+@router.get("/universities/translations")
+def get_universities_translations(
+    lang: Optional[str] = Query(None, max_length=16),
+    request: Request = None,
+    response: Response = None,
+):
+    search_lang = _resolve_search_lang(lang, request)
+    if response is not None:
+        response.headers["Cache-Control"] = "public, max-age=300"
+    return uni_service.get_university_translation_bundle(search_lang)
+
+
 @router.get("/universities/{university_id}")
-def get_university(university_id: str, request: Request, response: Response = None):
-    u = uni_service.get_university_by_id(university_id)
+def get_university(
+    university_id: str,
+    lang: Optional[str] = Query(None, max_length=16),
+    request: Request = None,
+    response: Response = None,
+):
+    search_lang = _resolve_search_lang(lang, request)
+    u = uni_service.get_university_by_id(
+        university_id,
+        search_lang=search_lang,
+        localized=True,
+    )
     if u is None:
         raise HTTPException(status_code=404, detail="University not found")
 
-    etag = uni_service.get_university_etag(university_id)
+    etag = uni_service.get_university_etag(university_id, search_lang=search_lang)
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=120"
         response.headers["ETag"] = etag
 
-    if _etag_matches(request.headers.get("if-none-match", ""), etag):
+    request_if_none_match = request.headers.get("if-none-match", "") if request is not None else ""
+    if _etag_matches(request_if_none_match, etag):
         return Response(status_code=304, headers={
             "Cache-Control": "public, max-age=300, stale-while-revalidate=120",
             "ETag": etag,

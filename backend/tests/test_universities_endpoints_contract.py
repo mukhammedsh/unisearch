@@ -54,6 +54,26 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         )
         self.assertEqual(second.status_code, 304)
 
+    def test_university_detail_localizes_response_by_lang(self):
+        response = self.client.get("/universities/astana-it-university-kaz-astana?lang=rus")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("Астана IT университет", data.get("name"))
+        location = data.get("location") or {}
+        self.assertEqual("Казахстан", location.get("country"))
+        self.assertEqual("Астана", location.get("city"))
+
+    def test_university_translations_endpoint_contract(self):
+        response = self.client.get("/universities/translations?lang=kz")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("kz", data.get("lang"))
+        self.assertIn("data", data)
+        payload = data.get("data") or {}
+        self.assertIn("groups", payload)
+        self.assertIn("program_names", payload)
+        self.assertIn("track_labels", payload)
+
     def test_ai_sort_uni_chance_and_roi_contracts(self):
         university_id = self._first_university_id()
         profile = {

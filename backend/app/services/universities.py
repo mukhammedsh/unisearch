@@ -1,11 +1,11 @@
+import copy
 import hashlib
 import json
-from pathlib import Path
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import file_mtime
-from app.core.paths import DATA_PATH, CITIES_PATH
+from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
 from app.services import search as search_service
 
 
@@ -59,6 +59,276 @@ def _normalize_search_lang(value: Any) -> str:
     if raw.startswith("kk") or raw.startswith("kz") or raw == "kaz":
         return SEARCH_LANG_KZ
     return SEARCH_LANG_ENG
+
+
+_UNI_TRANSLATIONS_CACHE: Dict[str, Any] = {"mtime": None, "data": {}}
+
+
+def _keyify(value: Any) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", _safe_lower(value)).strip("_")
+
+
+def _load_university_translations_raw() -> Dict[str, Any]:
+    mtime = file_mtime(UNIVERSITIES_TRANSLATIONS_PATH)
+    if mtime is None:
+        _UNI_TRANSLATIONS_CACHE["mtime"] = None
+        _UNI_TRANSLATIONS_CACHE["data"] = {}
+        return {}
+
+    if mtime != _UNI_TRANSLATIONS_CACHE.get("mtime"):
+        try:
+            with open(UNIVERSITIES_TRANSLATIONS_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if not isinstance(data, dict):
+                data = {}
+        except Exception:
+            data = {}
+        _UNI_TRANSLATIONS_CACHE["mtime"] = mtime
+        _UNI_TRANSLATIONS_CACHE["data"] = data
+
+    cached = _UNI_TRANSLATIONS_CACHE.get("data")
+    return cached if isinstance(cached, dict) else {}
+
+
+def _translation_lang_pack(search_lang: Any) -> Dict[str, Any]:
+    lang = _normalize_search_lang(search_lang)
+    data = _load_university_translations_raw()
+    langs = data.get("languages") if isinstance(data.get("languages"), dict) else {}
+    pack = langs.get(lang)
+    return pack if isinstance(pack, dict) else {}
+
+
+def _translation_group(search_lang: Any, group: str) -> Dict[str, str]:
+    pack = _translation_lang_pack(search_lang)
+    groups = pack.get("groups") if isinstance(pack.get("groups"), dict) else {}
+    group_map = groups.get(group)
+    return group_map if isinstance(group_map, dict) else {}
+
+
+def _replace_insensitive(text: str, search: str, replacement: str) -> str:
+    src = str(search or "")
+    if not src:
+        return str(text or "")
+    escaped = re.escape(src)
+    return re.sub(escaped, lambda _: str(replacement or ""), str(text or ""), flags=re.IGNORECASE)
+
+
+def _translate_group_value(group: str, value: Any, search_lang: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return raw
+    if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
+        return raw
+    group_map = _translation_group(search_lang, group)
+    return str(group_map.get(_keyify(raw), raw))
+
+
+def _translate_program_name(value: Any, search_lang: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return raw
+    if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
+        return raw
+    pack = _translation_lang_pack(search_lang)
+    table = pack.get("program_names") if isinstance(pack.get("program_names"), dict) else {}
+    return str(table.get(_keyify(raw), raw))
+
+
+def _translate_admission_text(value: Any, search_lang: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return raw
+    if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
+        return raw
+    pack = _translation_lang_pack(search_lang)
+    exact = pack.get("admission_exact") if isinstance(pack.get("admission_exact"), dict) else {}
+    if raw in exact:
+        return str(exact[raw])
+    rules = pack.get("admission_replace") if isinstance(pack.get("admission_replace"), list) else []
+    out = raw
+    for rule in rules:
+        if not (isinstance(rule, list) or isinstance(rule, tuple)) or len(rule) < 2:
+            continue
+        out = _replace_insensitive(out, str(rule[0]), str(rule[1]))
+    return out
+
+
+def _translate_track_label(value: Any, search_lang: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return raw
+    if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
+        return raw
+    pack = _translation_lang_pack(search_lang)
+    table = pack.get("track_labels") if isinstance(pack.get("track_labels"), dict) else {}
+    direct = table.get(_keyify(raw))
+    if direct:
+        return str(direct)
+    out = _translate_admission_text(raw, search_lang)
+    fallback_rules = (
+        pack.get("track_label_fallback_replace")
+        if isinstance(pack.get("track_label_fallback_replace"), list)
+        else []
+    )
+    for rule in fallback_rules:
+        if not (isinstance(rule, list) or isinstance(rule, tuple)) or len(rule) < 2:
+            continue
+        out = _replace_insensitive(out, str(rule[0]), str(rule[1]))
+    return out
+
+
+def _translate_university_name(university_id: Any, fallback: Any, search_lang: Any) -> str:
+    fallback_text = str(fallback or "").strip()
+    uid = str(university_id or "").strip()
+    if not uid:
+        return fallback_text
+    pack = _translation_lang_pack(search_lang)
+    names = pack.get("university_names") if isinstance(pack.get("university_names"), dict) else {}
+    translated = str(names.get(uid, "")).strip()
+    return translated or fallback_text
+
+
+def _translate_university_description(university: Dict[str, Any], search_lang: Any) -> str:
+    u = university if isinstance(university, dict) else {}
+    source = str(u.get("description") or "").strip()
+    lang = _normalize_search_lang(search_lang)
+    if lang == SEARCH_LANG_ENG:
+        return source
+
+    uid = str(u.get("id") or "").strip()
+    pack = _translation_lang_pack(lang)
+    desc_map = (
+        pack.get("university_descriptions")
+        if isinstance(pack.get("university_descriptions"), dict)
+        else {}
+    )
+    if uid:
+        localized = str(desc_map.get(uid, "")).strip()
+        if localized:
+            return localized
+
+    if source:
+        return source
+
+    templates = pack.get("templates") if isinstance(pack.get("templates"), dict) else {}
+    tpl_with_tags = str(templates.get("desc_with_tags") or "{name} — university in {city}, {country}. Strengths: {tags}.")
+    tpl_no_tags = str(templates.get("desc_no_tags") or "{name} — university in {city}, {country}.")
+
+    name = _translate_university_name(uid, str(u.get("name") or ""), lang)
+    location = u.get("location") if isinstance(u.get("location"), dict) else {}
+    city = _translate_group_value("city", location.get("city"), lang)
+    country = _translate_group_value("country", location.get("country"), lang)
+    tags = [str(x or "").strip() for x in (u.get("tags") or []) if str(x or "").strip()]
+    tags_localized = [_translate_group_value("tag", x, lang) for x in tags][:4]
+
+    template = tpl_with_tags if tags_localized else tpl_no_tags
+    return (
+        template
+        .replace("{name}", name or str(u.get("name") or ""))
+        .replace("{city}", city or str(location.get("city") or ""))
+        .replace("{country}", country or str(location.get("country") or ""))
+        .replace("{tags}", ", ".join(tags_localized))
+    )
+
+
+def _translate_maybe_list(value: Any, translator) -> Any:
+    if isinstance(value, list):
+        return [translator(x) for x in value]
+    if value is None:
+        return value
+    return translator(value)
+
+
+def _localize_university_payload(university: Dict[str, Any], search_lang: Any) -> Dict[str, Any]:
+    if not isinstance(university, dict):
+        return {}
+    lang = _normalize_search_lang(search_lang)
+    if lang == SEARCH_LANG_ENG:
+        return copy.deepcopy(university)
+
+    u = copy.deepcopy(university)
+    uid = str(u.get("id") or "").strip()
+    u["name"] = _translate_university_name(uid, u.get("name"), lang)
+    u["description"] = _translate_university_description(u, lang)
+
+    location = u.get("location")
+    if isinstance(location, dict):
+        location["country"] = _translate_group_value("country", location.get("country"), lang)
+        location["city"] = _translate_group_value("city", location.get("city"), lang)
+        location["state"] = _translate_group_value("state", location.get("state"), lang)
+
+    tags = u.get("tags")
+    if isinstance(tags, list):
+        u["tags"] = [_translate_group_value("tag", tag, lang) for tag in tags]
+
+    student_life = u.get("student_life")
+    if isinstance(student_life, dict):
+        student_life["size"] = _translate_group_value("campus_size", student_life.get("size"), lang)
+
+    academics = u.get("academics")
+    if isinstance(academics, dict):
+        if isinstance(academics.get("majors"), list):
+            academics["majors"] = [_translate_program_name(x, lang) for x in academics.get("majors", [])]
+        if isinstance(academics.get("study_levels"), list):
+            academics["study_levels"] = [
+                _translate_group_value("study_level", x, lang) for x in academics.get("study_levels", [])
+            ]
+        if isinstance(academics.get("formats"), list):
+            academics["formats"] = [
+                _translate_group_value("study_mode", x, lang) for x in academics.get("formats", [])
+            ]
+        programs = academics.get("programs")
+        if isinstance(programs, list):
+            for p in programs:
+                if not isinstance(p, dict):
+                    continue
+                p["name"] = _translate_program_name(p.get("name"), lang)
+                p["study_levels"] = _translate_maybe_list(
+                    p.get("study_levels"),
+                    lambda x: _translate_group_value("study_level", x, lang),
+                )
+                p["study_mode"] = _translate_maybe_list(
+                    p.get("study_mode"),
+                    lambda x: _translate_group_value("study_mode", x, lang),
+                )
+                p["language"] = _translate_maybe_list(
+                    p.get("language"),
+                    lambda x: _translate_group_value("language", x, lang),
+                )
+
+    tracks = u.get("admission_tracks")
+    if isinstance(tracks, list):
+        for track in tracks:
+            if not isinstance(track, dict):
+                continue
+            track["label"] = _translate_track_label(track.get("label"), lang)
+            track["track_badge"] = _translate_admission_text(track.get("track_badge"), lang)
+            track["description"] = _translate_admission_text(track.get("description"), lang)
+            if isinstance(track.get("study_mode"), (str, list)):
+                track["study_mode"] = _translate_maybe_list(
+                    track.get("study_mode"),
+                    lambda x: _translate_group_value("study_mode", x, lang),
+                )
+            if isinstance(track.get("extra_requirements"), list):
+                track["extra_requirements"] = [
+                    _translate_admission_text(x, lang) for x in track.get("extra_requirements", [])
+                ]
+
+            lang_reqs = track.get("language_requirements")
+            if isinstance(lang_reqs, list):
+                for row in lang_reqs:
+                    if not isinstance(row, dict):
+                        continue
+                    row["code"] = _translate_group_value("language", row.get("code"), lang)
+
+            scholarships = track.get("scholarships")
+            if isinstance(scholarships, list):
+                for scholarship in scholarships:
+                    if not isinstance(scholarship, dict):
+                        continue
+                    scholarship["name"] = _translate_admission_text(scholarship.get("name"), lang)
+
+    return u
 
 
 _COUNTRY_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
@@ -332,55 +602,18 @@ _TAG_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
     },
 }
 
-_LOCALIZATION_FILE_BY_LANG: Dict[str, Path] = {
-    SEARCH_LANG_RUS: Path(__file__).resolve().parents[3] / "frontend" / "Localization" / "ru",
-    SEARCH_LANG_KZ: Path(__file__).resolve().parents[3] / "frontend" / "Localization" / "kz",
-}
-
-_LOCALIZED_UNI_NAME_CACHE: Dict[str, Dict[str, Any]] = {
-    SEARCH_LANG_RUS: {"mtime": None, "by_id": {}},
-    SEARCH_LANG_KZ: {"mtime": None, "by_id": {}},
-}
-
-
 def _load_localized_university_names(search_lang: str) -> Dict[str, str]:
     lang = _normalize_search_lang(search_lang)
     if lang not in (SEARCH_LANG_RUS, SEARCH_LANG_KZ):
         return {}
-    path = _LOCALIZATION_FILE_BY_LANG.get(lang)
-    if path is None:
-        return {}
-    cache = _LOCALIZED_UNI_NAME_CACHE[lang]
-    try:
-        mtime = path.stat().st_mtime
-    except OSError:
-        cache["mtime"] = None
-        cache["by_id"] = {}
-        return {}
-    if cache.get("mtime") == mtime:
-        return cache.get("by_id") or {}
-
+    pack = _translation_lang_pack(lang)
+    names = pack.get("university_names") if isinstance(pack.get("university_names"), dict) else {}
     out: Dict[str, str] = {}
-    try:
-        with path.open("r", encoding="utf-8") as f:
-            for raw_line in f:
-                line = raw_line.strip()
-                if not line or line.startswith("#"):
-                    continue
-                if not line.startswith("university.name."):
-                    continue
-                key, sep, value = line.partition(":")
-                if not sep:
-                    continue
-                uni_id = str(key[len("university.name."):]).strip()
-                uni_name = str(value).strip()
-                if uni_id and uni_name:
-                    out[uni_id] = uni_name
-    except OSError:
-        out = {}
-
-    cache["mtime"] = mtime
-    cache["by_id"] = out
+    for uni_id, uni_name in names.items():
+        key = str(uni_id or "").strip()
+        value = str(uni_name or "").strip()
+        if key and value:
+            out[key] = value
     return out
 
 
@@ -871,10 +1104,16 @@ def _has_any_aid(u: Dict[str, Any]) -> bool:
     return False
 
 
-def to_university_card(u: Dict[str, Any], format_preference: Any = "any") -> Dict[str, Any]:
+def to_university_card(
+    u: Dict[str, Any],
+    format_preference: Any = "any",
+    search_lang: Optional[str] = None,
+) -> Dict[str, Any]:
     if not isinstance(u, dict):
         return {}
 
+    lang = _normalize_search_lang(search_lang)
+    uid = str(u.get("id") or "").strip()
     location = u.get("location")
     location_obj = location if isinstance(location, dict) else {}
     finance = u.get("finance")
@@ -884,15 +1123,25 @@ def to_university_card(u: Dict[str, Any], format_preference: Any = "any") -> Dic
     coordinates = u.get("coordinates")
     coordinates_obj = coordinates if isinstance(coordinates, dict) else {}
 
+    name_value = str(u.get("name") or "")
+    country_value = location_obj.get("country")
+    city_value = location_obj.get("city")
+    state_value = location_obj.get("state")
+    if lang != SEARCH_LANG_ENG:
+        name_value = _translate_university_name(uid, name_value, lang)
+        country_value = _translate_group_value("country", country_value, lang)
+        city_value = _translate_group_value("city", city_value, lang)
+        state_value = _translate_group_value("state", state_value, lang)
+
     out: Dict[str, Any] = {
         "id": u.get("id"),
-        "name": u.get("name"),
+        "name": name_value,
         "rank": u.get("rank"),
         "website": u.get("website"),
         "location": {
-            "country": location_obj.get("country"),
-            "city": location_obj.get("city"),
-            "state": location_obj.get("state"),
+            "country": country_value,
+            "city": city_value,
+            "state": state_value,
         },
         "finance": {
             "total_cost_year_usd": _effective_university_cost(u, format_preference=format_preference),
@@ -919,11 +1168,19 @@ def to_university_card(u: Dict[str, Any], format_preference: Any = "any") -> Dic
     return out
 
 
-def _project_universities(items: List[Dict[str, Any]], response_mode: str, format_preference: Any = "any") -> List[Dict[str, Any]]:
+def _project_universities(
+    items: List[Dict[str, Any]],
+    response_mode: str,
+    format_preference: Any = "any",
+    search_lang: Optional[str] = None,
+) -> List[Dict[str, Any]]:
     mode = _safe_lower(response_mode)
     if mode == "card":
-        return [to_university_card(u, format_preference=format_preference) for u in items]
-    return items
+        return [to_university_card(u, format_preference=format_preference, search_lang=search_lang) for u in items]
+    lang = _normalize_search_lang(search_lang)
+    if lang == SEARCH_LANG_ENG:
+        return items
+    return [_localize_university_payload(u, search_lang=lang) for u in items]
 
 
 def _safe_compare_lte(value: Optional[float], threshold: float) -> bool:
@@ -1019,18 +1276,42 @@ def get_universities_with_meta() -> Tuple[List[Dict[str, Any]], List[Dict[str, A
     return _UNI_CACHE["data"], _UNI_CACHE["meta"]
 
 
-def get_university_by_id(university_id: str) -> Optional[Dict[str, Any]]:
+def get_university_by_id(
+    university_id: str,
+    search_lang: Optional[str] = None,
+    localized: bool = False,
+) -> Optional[Dict[str, Any]]:
     _load_universities_cached()
-    return _UNI_CACHE["by_id"].get(str(university_id))
+    item = _UNI_CACHE["by_id"].get(str(university_id))
+    if item is None:
+        return None
+    if not localized:
+        return item
+    return _localize_university_payload(item, search_lang)
 
 
-def get_university_etag(university_id: str) -> str:
+def get_university_etag(university_id: str, search_lang: Optional[str] = None) -> str:
     _load_universities_cached()
     mtime = _UNI_CACHE.get("mtime")
     mtime_key = "none" if mtime is None else str(mtime)
     uid = str(university_id or "").strip()
-    digest = hashlib.sha1(f"{mtime_key}:{uid}".encode("utf-8")).hexdigest()
+    lang = _normalize_search_lang(search_lang)
+    tr_mtime = file_mtime(UNIVERSITIES_TRANSLATIONS_PATH)
+    tr_key = "none" if tr_mtime is None else str(tr_mtime)
+    digest = hashlib.sha1(f"{mtime_key}:{tr_key}:{uid}:{lang}".encode("utf-8")).hexdigest()
     return f"\"{digest}\""
+
+
+def get_university_translation_bundle(search_lang: Optional[str] = None) -> Dict[str, Any]:
+    lang = _normalize_search_lang(search_lang)
+    raw = _load_university_translations_raw()
+    langs = raw.get("languages") if isinstance(raw.get("languages"), dict) else {}
+    pack = langs.get(lang) if isinstance(langs.get(lang), dict) else {}
+    return {
+        "lang": lang,
+        "schema_version": raw.get("schema_version", 1),
+        "data": pack if isinstance(pack, dict) else {},
+    }
 
 
 _LOC_CACHE = {"mtime": None, "data": {}}
@@ -1083,6 +1364,7 @@ def list_universities(
     paginate: bool = True,
     response_mode: str = "full",
     search_lang: Optional[str] = None,
+    localize_output: bool = True,
 ) -> Dict[str, Any]:
     lang = _normalize_search_lang(search_lang)
     mode_pref = _normalize_study_mode(format or "any")
@@ -1211,8 +1493,14 @@ def list_universities(
         items = _apply_sort(items, sort, format_preference=mode_pref)
 
     total = len(items)
+    output_lang = lang if localize_output else SEARCH_LANG_ENG
     if not paginate:
-        view_items = _project_universities(items, response_mode=response_mode, format_preference=mode_pref)
+        view_items = _project_universities(
+            items,
+            response_mode=response_mode,
+            format_preference=mode_pref,
+            search_lang=output_lang,
+        )
         return {
             "items": view_items,
             "count": len(view_items),
@@ -1225,7 +1513,12 @@ def list_universities(
     start = (page - 1) * limit
     end = start + limit
     page_items = items[start:end] if start < total else []
-    view_items = _project_universities(page_items, response_mode=response_mode, format_preference=mode_pref)
+    view_items = _project_universities(
+        page_items,
+        response_mode=response_mode,
+        format_preference=mode_pref,
+        search_lang=output_lang,
+    )
 
     return {
         "items": view_items,

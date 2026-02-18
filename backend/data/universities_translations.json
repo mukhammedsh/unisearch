@@ -1,0 +1,1416 @@
+{
+  "schema_version": 1,
+  "generated_from": {
+    "university_translations_js": "frontend/javascript/university-translations.js",
+    "localization_files": [
+      "frontend/Localization/eng",
+      "frontend/Localization/ru",
+      "frontend/Localization/kz"
+    ]
+  },
+  "languages": {
+    "eng": {
+      "university_names": {
+        "mit-usa-cambridge": "Massachusetts Institute of Technology (MIT)",
+        "imperial-college-london-uk": "Imperial College London",
+        "stanford-university-usa-ca": "Stanford University",
+        "harvard-usa-cambridge": "Harvard University",
+        "eth-zurich-ch-zurich": "ETH Zurich",
+        "national-university-of-singapore-sg-singapore": "National University of Singapore (NUS)",
+        "epfl-ch-lausanne": "EPFL",
+        "technical-university-of-munich-de-munich": "Technical University of Munich (TUM)",
+        "university-of-toronto-ca-toronto": "University of Toronto",
+        "cuhk-hk-shatin": "The Chinese University of Hong Kong (CUHK)",
+        "university-of-tokyo-jp-tokyo": "University of Tokyo",
+        "seoul-national-university-kr-seoul": "Seoul National University",
+        "delft-university-of-technology-nl-delft": "Delft University of Technology",
+        "kaist-kr-daejeon": "KAIST",
+        "tsinghua-university-cn-beijing": "Tsinghua University",
+        "nazarbayev-university-kaz-astana": "Nazarbayev University",
+        "kyoto-university-jp-kyoto": "Kyoto University",
+        "university-of-melbourne-au-melbourne": "University of Melbourne",
+        "suleyman-demirel-university-kaz-kaskelen": "Suleyman Demirel University",
+        "astana-it-university-kaz-astana": "Astana IT University"
+      },
+      "university_descriptions": {}
+    },
+    "rus": {
+      "groups": {
+        "country": {
+          "usa": "США",
+          "uk": "Великобритания",
+          "switzerland": "Швейцария",
+          "singapore": "Сингапур",
+          "germany": "Германия",
+          "canada": "Канада",
+          "hong_kong": "Гонконг",
+          "japan": "Япония",
+          "south_korea": "Южная Корея",
+          "netherlands": "Нидерланды",
+          "china": "Китай",
+          "kazakhstan": "Казахстан",
+          "australia": "Австралия"
+        },
+        "city": {
+          "astana": "Астана",
+          "beijing": "Пекин",
+          "cambridge": "Кембридж",
+          "daejeon": "Тэджон",
+          "delft": "Делфт",
+          "kaskelen": "Каскелен",
+          "kyoto": "Киото",
+          "lausanne": "Лозанна",
+          "london": "Лондон",
+          "melbourne": "Мельбурн",
+          "munich": "Мюнхен",
+          "seoul": "Сеул",
+          "sha_tin": "Ша-Тин",
+          "singapore": "Сингапур",
+          "stanford": "Стэнфорд",
+          "tokyo": "Токио",
+          "toronto": "Торонто",
+          "zurich": "Цюрих"
+        },
+        "state": {
+          "bavaria": "Бавария",
+          "ca": "Калифорния",
+          "ma": "Массачусетс",
+          "massachusetts": "Массачусетс",
+          "ontario": "Онтарио",
+          "vaud": "Во",
+          "victoria": "Виктория"
+        },
+        "language": {
+          "english": "Английский",
+          "german": "Немецкий",
+          "french": "Французский",
+          "korean": "Корейский",
+          "chinese": "Китайский"
+        },
+        "study_level": {
+          "bachelor": "Бакалавриат",
+          "master": "Магистратура",
+          "phd": "Докторантура",
+          "foundation": "Подготовительный курс"
+        },
+        "study_mode": {
+          "on_campus": "Очно (кампус)"
+        },
+        "campus_size": {
+          "small": "Небольшой",
+          "medium": "Средний",
+          "large": "Большой"
+        },
+        "tag": {
+          "research": "исследования",
+          "stem": "STEM",
+          "ai": "ИИ",
+          "robotics": "робототехника",
+          "startups": "стартапы",
+          "urban": "городская среда",
+          "innovation": "инновации",
+          "engineering": "инженерия",
+          "computing": "компьютерные науки",
+          "medicine": "медицина",
+          "sustainability": "устойчивое развитие",
+          "interdisciplinary": "междисциплинарность",
+          "policy": "политика",
+          "business": "бизнес",
+          "data_science": "наука о данных",
+          "life_sciences": "науки о жизни",
+          "semiconductors": "полупроводники",
+          "mobility": "мобильность",
+          "aerospace": "аэрокосмос",
+          "biomedical": "биомедицина",
+          "cybersecurity": "кибербезопасность",
+          "software_engineering": "программная инженерия",
+          "ict": "ICT",
+          "public_university": "государственный университет",
+          "private_university": "частный университет",
+          "comprehensive": "комплексный университет",
+          "global": "глобальный",
+          "academic_freedom": "академическая свобода",
+          "applied_learning": "практико-ориентированное обучение",
+          "asia": "Азия",
+          "bilingual": "двуязычие",
+          "collegiate": "колледжная система",
+          "cybersec": "кибербезопасность",
+          "data": "данные",
+          "design": "дизайн",
+          "english_medium": "обучение на английском",
+          "entrepreneurship": "предпринимательство",
+          "europe": "Европа",
+          "fundamental_research": "фундаментальные исследования",
+          "health_sciences": "науки о здоровье",
+          "industry_links": "связи с индустрией",
+          "industry_projects": "индустриальные проекты",
+          "it": "IT",
+          "japan": "Япония",
+          "kazakhstan": "Казахстан",
+          "liberal_arts": "свободные искусства",
+          "manufacturing": "производство",
+          "multilingual": "многоязычие",
+          "national_university": "национальный университет",
+          "natural_sciences": "естественные науки",
+          "prestige": "престиж",
+          "public_policy": "государственная политика",
+          "regional_impact": "региональное влияние",
+          "science_and_technology": "наука и технологии",
+          "silicon_valley": "Кремниевая долина"
+        }
+      },
+      "words": {
+        "levels": "уровней",
+        "program": "Программа",
+        "track": "Трек",
+        "not_specified": "Не указано",
+        "acceptance_rate": "Коэффициент приема",
+        "study_levels": "Уровни обучения",
+        "duration": "Длительность",
+        "language": "Язык",
+        "study_mode": "Формат обучения",
+        "no_program_data": "Нет данных по программам.",
+        "global_rank": "Глобальный рейтинг",
+        "campus_size": "Размер кампуса",
+        "campus_size_info_title": "Как интерпретировать размер кампуса",
+        "campus_size_info_small": "Small: до 500 000 м² (до 50 га)",
+        "campus_size_info_medium": "Medium: 500 000-2 000 000 м² (50-200 га)",
+        "campus_size_info_large": "Large: более 2 000 000 м² (200+ га)",
+        "campus_size_info_note": "Диапазоны ориентировочные и нужны для удобного сравнения.",
+        "focus_tags": "Ключевые теги",
+        "total_students": "Всего студентов",
+        "study_formats": "Форматы обучения",
+        "level_word": "уровень",
+        "admission_probability_title": "Вероятность поступления",
+        "admission_probability_sub": "Оценка построена на вашем профиле, минимальных требованиях, языковых правилах, селективности и финансовом контексте.",
+        "best_track": "Лучший трек",
+        "general_admission": "Общее поступление",
+        "high_chance": "Высокий шанс",
+        "good_chance": "Хороший шанс",
+        "moderate_chance": "Средний шанс",
+        "low_chance": "Низкий шанс",
+        "add_profile_evidence": "Добавьте экзамены или языковые подтверждения в профиле, чтобы получить более надежную оценку {chance} для этого университета.",
+        "no_admission_tracks_data": "Нет данных по конкретным трекам поступления.",
+        "track_filter": "Фильтр треков",
+        "from_profile": "из профиля",
+        "showing_tracks": "Показано {shown} из {total} треков",
+        "filter_any": "Любой",
+        "filter_grant": "Грант",
+        "filter_paid": "Платное",
+        "for_all_majors": "Для всех специальностей",
+        "est_net_cost": "Оценка чистой стоимости",
+        "base_cost_before_grant": "Базовая стоимость (до гранта)",
+        "est_cost": "Оценка стоимости",
+        "academic_exams": "Академические экзамены",
+        "language_exams": "Языковые экзамены",
+        "not_available": "Нет данных",
+        "extra_requirements": "Дополнительные требования",
+        "available_grants_aid": "Доступные гранты и помощь",
+        "cover": "Покрытие",
+        "need_based_aid": "Поддержка по финансовой потребности",
+        "merit_scholarship": "Стипендия за достижения",
+        "requires": "Требуется",
+        "no_specific_requirements_listed": "Конкретные требования не указаны",
+        "minimum_to_apply": "Минимум для подачи",
+        "real_average_admitted": "Реальный средний (зачисленные)",
+        "none": "Нет",
+        "no_tracks_selected_filter": "По выбранному фильтру треки не найдены.",
+        "language_track_rules": "Языковые правила трека",
+        "lang_mode_any": "Достаточно одного подтверждения языка",
+        "lang_mode_all": "Требуются все перечисленные языковые подтверждения",
+        "native_accepted": "Носитель языка принимается",
+        "min_cefr": "Минимум CEFR",
+        "typical": "Типичный уровень",
+        "exam_minimums": "Минимумы по экзаменам",
+        "typical_admitted": "Типичные баллы зачисленных",
+        "merit_based_scholarships_available": "Доступны стипендии за достижения",
+        "no_merit_based_scholarships": "Нет стипендий за достижения",
+        "need_based_financial_aid": "Доступна финансовая помощь по потребности",
+        "no_need_based_aid": "Нет помощи по финансовой потребности",
+        "from": "от",
+        "general_tuition": "Общая стоимость обучения",
+        "available_scholarships": "Доступные стипендии",
+        "total_per_year": "Итого / год"
+      },
+      "templates": {
+        "desc_with_tags": "{name} — университет в {city}, {country}. Сильные стороны: {tags}.",
+        "desc_no_tags": "{name} — университет в {city}, {country}."
+      },
+      "track_labels": {
+        "aptitude_assessment": "Оценка способностей",
+        "direct_admission_sat": "Прямое поступление (SAT)",
+        "direct_admission_sat_abay_kunanbayev_grant": "Прямое поступление (SAT) - Грант имени Абая Кунанбаева",
+        "direct_entry": "Прямое зачисление",
+        "direct_entry_excellence_scholarship_grant": "Прямое зачисление - Стипендия Excellence (Грант)",
+        "engineering_track": "Инженерный трек",
+        "engineering_track_president_s_scholarship_grant": "Инженерный трек - Президентская стипендия (Грант)",
+        "entrance_exam": "Вступительный экзамен",
+        "foundation_nuet": "Подготовительная программа (NUET)",
+        "foundation_nuet_state_grant_grant": "Подготовительная программа (NUET) - Государственный грант (Грант)",
+        "general_admission": "Общее поступление",
+        "general_admission_pearson_scholarship_grant": "Общее поступление - Стипендия Pearson (Грант)",
+        "harvard_college": "Гарвардский колледж",
+        "harvard_college_financial_aid_grant": "Гарвардский колледж - Финансовая помощь (Грант)",
+        "international_admission": "Международное поступление",
+        "international_admission_asean_scholarship_grant": "Международное поступление - Стипендия ASEAN (Грант)",
+        "international_admission_kaist_scholarship_grant": "Международное поступление - Стипендия KAIST (Грант)",
+        "international_admissions": "Международное поступление",
+        "international_admissions_admission_scholarship_grant": "Международное поступление - Стипендия при поступлении (Грант)",
+        "international_admissions_glo_harmony_grant": "Международное поступление - Glo-Harmony (Грант)",
+        "international_track": "Международный трек",
+        "international_track_chinese_govt_scholarship_grant": "Международный трек - Стипендия правительства Китая (Грант)",
+        "international_ug": "Международный бакалавриат",
+        "international_ug_melbourne_intl_scholarship_grant": "Международный бакалавриат - Стипендия Melbourne Intl (Грант)",
+        "kyoto_iup": "Kyoto iUP",
+        "kyoto_iup_iup_scholarship_grant": "Kyoto iUP - Стипендия iUP (Грант)",
+        "numerus_clausus": "Numerus Clausus",
+        "numerus_clausus_justus_louise_van_effen_grant": "Numerus Clausus - Стипендия Justus & Louise van Effen (Грант)",
+        "paid_admission": "Платное поступление",
+        "peak_english_track": "PEAK (англоязычный трек)",
+        "peak_english_track_utokyo_scholarship_grant": "PEAK (англоязычный трек) - Стипендия UTokyo (Грант)",
+        "regular_action": "Основной набор",
+        "regular_action_need_based_aid_grant": "Основной набор - Поддержка по финансовой потребности (Грант)",
+        "standard_admission": "Стандартное поступление",
+        "standard_admission_need_based_aid_grant": "Стандартное поступление - Поддержка по финансовой потребности (Грант)",
+        "state_grant": "Государственный грант",
+        "state_rector_grant": "Государственный/ректорский грант",
+        "unt_paid": "UNT (платное)",
+        "general_tuition": "Общая стоимость обучения",
+        "no_matching_track": "Нет подходящего трека",
+        "no_tracks_for_selected_funding_type": "Нет треков для выбранного типа финансирования"
+      },
+      "program_names": {
+        "agriculture": "Сельское хозяйство",
+        "aerospace_engineering": "Аэрокосмическая инженерия",
+        "architecture": "Архитектура",
+        "business": "Бизнес",
+        "business_information_systems": "Бизнес-информационные системы",
+        "computer_science": "Компьютерные науки",
+        "computer_science_bcomp": "Компьютерные науки (BComp)",
+        "computer_science_computing_and_software_systems_major": "Компьютерные науки (специализация «Вычислительные и программные системы»)",
+        "computer_science_and_engineering": "Компьютерные науки и инженерия",
+        "computer_science_and_engineering_6_3": "Компьютерные науки и инженерия (6-3)",
+        "computer_science_and_engineering_graduate": "Компьютерные науки и инженерия (магистратура/докторантура)",
+        "computer_science_and_technology": "Компьютерные науки и технологии",
+        "computing_beng_meng": "Вычислительная техника (BEng/MEng)",
+        "design": "Дизайн",
+        "economics": "Экономика",
+        "education": "Образование",
+        "electrical_engineering_and_computer_science_6_2_6_5": "Электротехника и компьютерные науки (6-2/6-5)",
+        "engineering": "Инженерия",
+        "engineering_digital_infrastructure_engineering_systems_major": "Инженерия (специализация «Инженерные системы цифровой инфраструктуры»)",
+        "environmental_sciences_peak": "Экологические науки (PEAK)",
+        "foundation_year": "Подготовительный год",
+        "humanities": "Гуманитарные науки",
+        "informatics": "Информатика",
+        "information_systems": "Информационные системы",
+        "japan_in_east_asia_peak": "Япония в Восточной Азии (PEAK)",
+        "kyoto_iup_preparatory_course": "Подготовительный курс Kyoto iUP",
+        "kyoto_iup_undergraduate_program": "Программа бакалавриата Kyoto iUP",
+        "law": "Право",
+        "life_sciences": "Науки о жизни",
+        "mechanical_and_aerospace_engineering": "Машиностроение и аэрокосмическая инженерия",
+        "mechanical_engineering": "Машиностроение",
+        "mathematics": "Математика",
+        "medicine": "Медицина",
+        "natural_sciences": "Естественные науки",
+        "physics": "Физика",
+        "psychology": "Психология",
+        "software_engineering": "Программная инженерия",
+        "social_sciences": "Социальные науки"
+      },
+      "track_label_fallback_replace": [
+        [
+          "Need-based Aid",
+          "Поддержка по финансовой потребности"
+        ],
+        [
+          "Financial Aid",
+          "Финансовая помощь"
+        ],
+        [
+          "Scholarship",
+          "Стипендия"
+        ],
+        [
+          "Admission",
+          "Поступление"
+        ],
+        [
+          "Track",
+          "Трек"
+        ],
+        [
+          "Grant",
+          "Грант"
+        ],
+        [
+          "Paid",
+          "Платное"
+        ],
+        [
+          "International UG",
+          "Международный бакалавриат"
+        ],
+        [
+          "International Admissions",
+          "Международное поступление"
+        ],
+        [
+          "International Admission",
+          "Международное поступление"
+        ]
+      ],
+      "admission_replace": [
+        [
+          "Application fee",
+          "Регистрационный сбор"
+        ],
+        [
+          "non-refundable",
+          "невозвратный"
+        ],
+        [
+          "fee waiver available",
+          "возможна льгота по оплате"
+        ],
+        [
+          "submitted by school",
+          "подается школой"
+        ],
+        [
+          "submitted electronically",
+          "подается в электронном виде"
+        ],
+        [
+          "submitted online",
+          "подается онлайн"
+        ],
+        [
+          "submitted",
+          "подан"
+        ],
+        [
+          "online",
+          "онлайн"
+        ],
+        [
+          "passport",
+          "паспорт"
+        ],
+        [
+          "national ID",
+          "удостоверение личности"
+        ],
+        [
+          "certificate",
+          "сертификат"
+        ],
+        [
+          "diploma",
+          "диплом"
+        ],
+        [
+          "transcript",
+          "транскрипт"
+        ],
+        [
+          "transcripts",
+          "транскрипты"
+        ],
+        [
+          "recommendation letter",
+          "рекомендательное письмо"
+        ],
+        [
+          "recommendations",
+          "рекомендации"
+        ],
+        [
+          "school report",
+          "школьный отчет"
+        ],
+        [
+          "personal statement",
+          "мотивационное эссе"
+        ],
+        [
+          "motivation letter",
+          "мотивационное письмо"
+        ],
+        [
+          "interview",
+          "интервью"
+        ],
+        [
+          "entrance examination",
+          "вступительный экзамен"
+        ],
+        [
+          "proof of English language proficiency",
+          "подтверждение уровня английского языка"
+        ],
+        [
+          "English language test report",
+          "результат языкового теста по английскому"
+        ],
+        [
+          "upload",
+          "загрузите"
+        ],
+        [
+          "documents",
+          "документы"
+        ],
+        [
+          "document",
+          "документ"
+        ],
+        [
+          "if required",
+          "если требуется"
+        ],
+        [
+          "if applicable",
+          "если применимо"
+        ],
+        [
+          "high school",
+          "старшая школа"
+        ],
+        [
+          "secondary school",
+          "средняя школа"
+        ],
+        [
+          "university",
+          "университет"
+        ],
+        [
+          "academic",
+          "академический"
+        ],
+        [
+          "results",
+          "результаты"
+        ],
+        [
+          "grade",
+          "оценка"
+        ],
+        [
+          "midyear",
+          "промежуточный"
+        ],
+        [
+          "final",
+          "финальный"
+        ],
+        [
+          "expected",
+          "ожидаемый"
+        ],
+        [
+          "official",
+          "официальный"
+        ],
+        [
+          "copy",
+          "копия"
+        ],
+        [
+          "curriculum vitae",
+          "резюме (CV)"
+        ],
+        [
+          "resume",
+          "резюме"
+        ],
+        [
+          "language proficiency",
+          "уровень владения языком"
+        ],
+        [
+          "financial sponsor",
+          "финансовый спонсор"
+        ],
+        [
+          "enrollment certificate",
+          "справка о зачислении"
+        ],
+        [
+          "registration form",
+          "регистрационная форма"
+        ],
+        [
+          "medical report",
+          "медицинский отчет"
+        ],
+        [
+          "statement of criminal records or offence",
+          "заявление о судимости/правонарушениях"
+        ],
+        [
+          "Upper secondary school-leaving certificate",
+          "аттестат о завершении старшей школы"
+        ]
+      ],
+      "admission_exact": {
+        "3x4 photos (6 pcs.)": "Фотографии 3x4 (6 шт.)",
+        "Academic transcripts": "Академические транскрипты",
+        "Additional documents if required by program (personal statement/portfolio/aptitude test results)": "Дополнительные документы при требовании программы (мотивационное эссе/портфолио/результаты теста способностей)",
+        "Additional supporting documents (e.g., ISPT certificate, achievements)": "Дополнительные подтверждающие документы (например, сертификат ISPT, достижения)",
+        "Additional test score reports if submitted (e.g., IELTS/TOEFL/AP/ACT/SAT)": "Дополнительные отчеты с результатами тестов при наличии (например, IELTS/TOEFL/AP/ACT/SAT)",
+        "Admissions fee payment and pre-registration form": "Оплата вступительного сбора и форма предварительной регистрации",
+        "Admissions fee receipt": "Квитанция об оплате вступительного сбора",
+        "Admissions test (course-dependent)": "Вступительный тест (зависит от программы)",
+        "All-years transcripts (elementary through high school, as applicable)": "Транскрипты за все годы обучения (с начальной по старшую школу, где применимо)",
+        "Applicant nationality proof (passport or nationality certificate/ID)": "Подтверждение гражданства заявителя (паспорт или свидетельство/удостоверение о гражданстве)",
+        "Application fee": "Регистрационный сбор",
+        "Application fee (fee waiver available)": "Регистрационный сбор (возможна льгота по оплате)",
+        "Application fee (non-refundable for direct international applicants)": "Регистрационный сбор (невозвратный для прямых международных заявителей)",
+        "Application fee (non-refundable)": "Регистрационный сбор (невозвратный)",
+        "Application fee (paid online)": "Регистрационный сбор (оплата онлайн)",
+        "Apply in Studielink for the numerus-fixus program by the deadline": "Подайте заявку в Studielink на программу numerus fixus до установленного срока",
+        "Apply through the Kyoto iUP Online Application System": "Подача через онлайн-систему Kyoto iUP",
+        "At least one recommendation via the online system": "Как минимум одна рекомендация через онлайн-систему",
+        "Certificate of (expected) graduation": "Справка об окончании (или ожидаемом окончании) обучения",
+        "Certificate of graduation (Form A)": "Справка об окончании обучения (форма A)",
+        "Certificate of university admission (if required)": "Справка о зачислении в университет (если требуется)",
+        "Common Application or Coalition Application with personal essay": "Common Application или Coalition Application с личным эссе",
+        "Common Application plus Stanford Questions (short essays)": "Common Application плюс Stanford Questions (короткие эссе)",
+        "Complete the matching & selection steps (matching questionnaire, online student experience, cognitive skills test, teamwork assignment)": "Пройдите этапы matching и отбора (опрос matching, онлайн-опыт студента, тест когнитивных навыков, командное задание)",
+        "Complete the TU Delft application in OSIRIS if you have a non-Dutch diploma": "Заполните заявку TU Delft в OSIRIS, если у вас не нидерландский диплом",
+        "Copy of passport or national ID (proof of nationality)": "Копия паспорта или национального удостоверения личности (подтверждение гражданства)",
+        "Curriculum vitae": "Резюме (CV)",
+        "Curriculum vitae (resume)": "Резюме (CV)",
+        "Diploma (original)": "Диплом (оригинал)",
+        "Diploma/certificate and transcript": "Диплом/сертификат и транскрипт",
+        "Documents prepared in English or with English translation": "Документы, оформленные на английском языке или с переводом на английский",
+        "English language test report (if required)": "Отчет о результате теста по английскому языку (если требуется)",
+        "English proficiency certificate if available (IELTS/TOEFL/APTIS/Duolingo/Interpress)": "Сертификат владения английским языком при наличии (IELTS/TOEFL/APTIS/Duolingo/Interpress)",
+        "English proficiency evaluation form (Form C)": "Форма оценки уровня английского языка (форма C)",
+        "Enrollment certificate showing study periods": "Справка об обучении с указанием периодов обучения",
+        "Entrance examination (reduced or comprehensive) if required by certificate": "Вступительный экзамен (сокращенный или полный), если это требуется типом аттестата",
+        "Essay (Form D)": "Эссе (форма D)",
+        "Evaluation form submitted by school (Form B)": "Оценочная форма, подаваемая школой (форма B)",
+        "Final or expected graduation certificate": "Справка об окончании или ожидаемом окончании обучения",
+        "Final school report (for admitted students only)": "Итоговый школьный отчет (только для зачисленных студентов)",
+        "Final upper-secondary school certificate and transcripts by the stated deadline": "Итоговый аттестат старшей школы и транскрипты в указанный срок",
+        "Financial sponsor form and sponsor income/employment certificate": "Форма финансового спонсора и справка о доходе/занятости спонсора",
+        "French language certificate (if required)": "Сертификат по французскому языку (если требуется)",
+        "German language certificate (if required)": "Сертификат по немецкому языку (если требуется)",
+        "Grade sheets from the last two years of upper secondary school": "Табели/ведомости оценок за последние два года старшей школы",
+        "Harvard College Questions/supplement (short-answer questions)": "Harvard College Questions/дополнение (вопросы с короткими ответами)",
+        "High school examination result slip (final or most recent)": "Лист результатов школьных экзаменов (итоговый или самый свежий)",
+        "High school graduation or expected graduation certificate": "Аттестат об окончании школы или справка об ожидаемом окончании",
+        "High school/university transcripts": "Школьные/университетские транскрипты",
+        "Higher education entrance qualification for Bachelor’s programs": "Документ о праве поступления в высшее образование для программ бакалавриата",
+        "Identity photo": "Фотография на документы",
+        "IELTS/TOEFL certificate uploaded in personal account": "Сертификат IELTS/TOEFL, загруженный в личный кабинет",
+        "Interview (course-dependent)": "Интервью (зависит от программы)",
+        "Interview with the Dean": "Собеседование с деканом",
+        "Language proficiency evidence (Korean/English test scores or proof of instruction language)": "Подтверждение языковой компетенции (результаты тестов по корейскому/английскому или подтверждение языка обучения)",
+        "Letter of recommendation": "Рекомендательное письмо",
+        "Medical report or doctor’s memo if a medical condition/disability is declared": "Медицинское заключение или записка врача, если заявлено заболевание/инвалидность",
+        "Midyear grades (February Updates & Notes Form)": "Оценки за середину года (форма February Updates & Notes)",
+        "Midyear school report": "Школьный отчет за середину года",
+        "MIT short-answer essays (multiple prompts)": "Короткие эссе MIT (несколько заданий)",
+        "Motivation letter in English": "Мотивационное письмо на английском языке",
+        "Motivational letter": "Мотивационное письмо",
+        "Official English proficiency test scores (if applicable)": "Официальные результаты теста на знание английского языка (если применимо)",
+        "Official high school (and university, if applicable) transcripts": "Официальные транскрипты из школы (и университета, если применимо)",
+        "Official high school transcript": "Официальный школьный транскрипт",
+        "Official high school transcript submitted by school": "Официальный школьный транскрипт, поданный школой",
+        "Official secondary school transcripts": "Официальные транскрипты из средней школы",
+        "Official standardized examination results": "Официальные результаты стандартизированных экзаменов",
+        "One academic reference (UCAS)": "Одна академическая рекомендация (UCAS)",
+        "One recommendation letter (submitted electronically)": "Одно рекомендательное письмо (подается в электронном виде)",
+        "Online application form": "Онлайн-форма заявки",
+        "Online application via eApply": "Онлайн-заявка через eApply",
+        "Online application with required document uploads": "Онлайн-заявка с загрузкой обязательных документов",
+        "Online application with supporting documentation upload": "Онлайн-заявка с загрузкой подтверждающих документов",
+        "Online application with supporting documents uploaded": "Онлайн-заявка с загруженными подтверждающими документами",
+        "Online interview with faculty": "Онлайн-интервью с факультетом",
+        "Online registration form submitted and application fee paid": "Подана онлайн-форма регистрации и оплачен регистрационный сбор",
+        "Other documentary evidence of achievements (if applicable)": "Иные документальные подтверждения достижений (если применимо)",
+        "Passport": "Паспорт",
+        "Passport (or birth certificate if no passport)": "Паспорт (или свидетельство о рождении при отсутствии паспорта)",
+        "Passport copy": "Копия паспорта",
+        "Passport or entry permit copy": "Копия паспорта или разрешения на въезд",
+        "Passport or identity document": "Паспорт или документ, удостоверяющий личность",
+        "Passport pages (applicant and parents; visa/entry stamps if applicable)": "Страницы паспорта (заявителя и родителей; визы/штампы о въезде, если применимо)",
+        "Passport photo and copy of passport/ID": "Фото для паспорта и копия паспорта/удостоверения личности",
+        "Payment receipt (examination fee)": "Квитанция об оплате (экзаменационный сбор)",
+        "Personal statement": "Мотивационное эссе",
+        "Personal statement and study plan (online)": "Мотивационное эссе и учебный план (онлайн)",
+        "Placement test in English or IELTS 5.5+ waiver": "Распределительный тест по английскому или освобождение при IELTS 5.5+",
+        "Proof of English language proficiency": "Подтверждение уровня английского языка",
+        "Proof of English language proficiency (if required)": "Подтверждение уровня английского языка (если требуется)",
+        "Proof of school education / academic career": "Подтверждение школьного образования / академического пути",
+        "Public examination results": "Результаты государственных экзаменов",
+        "Recommendation letter submitted online": "Рекомендательное письмо, поданное онлайн",
+        "Register on the admission platform": "Зарегистрируйтесь на платформе поступления",
+        "Scanned copy of passport or national ID": "Скан-копия паспорта или национального удостоверения личности",
+        "School profile (if applicable)": "Профиль школы (если применимо)",
+        "School report and counselor recommendation": "Школьный отчет и рекомендация консультанта",
+        "School report with counselor recommendation and high school transcript": "Школьный отчет с рекомендацией консультанта и школьным транскриптом",
+        "School reports from the last three school years": "Школьные отчеты за последние три учебных года",
+        "Secondary school certificate/diploma with academic performance (or school certificate per NU template)": "Аттестат/диплом о среднем образовании с академической успеваемостью (или школьная справка по шаблону NU)",
+        "Secondary School Report with counselor recommendation and school profile": "Отчет Secondary School Report с рекомендацией консультанта и профилем школы",
+        "Secondary school transcripts (or most recent results if final not yet available)": "Транскрипты из средней школы (или самые свежие результаты, если итоговые пока недоступны)",
+        "Signed declaration of consent": "Подписанное заявление о согласии",
+        "Standardized test results (national/regional exams or SAT/ACT/A-Level/AP/IB, etc.)": "Результаты стандартизированных тестов (национальные/региональные экзамены или SAT/ACT/A-Level/AP/IB и т. д.)",
+        "Standardized test results if requested (e.g., SAT/ACT/IB/AP)": "Результаты стандартизированных тестов по запросу (например, SAT/ACT/IB/AP)",
+        "Statement of criminal records or offence if declared": "Заявление о судимости или правонарушении, если применимо",
+        "Submit documents electronically via applicant portals or testing authorities": "Подайте документы в электронном виде через порталы абитуриента или тестовые организации",
+        "Supplementary application/profile/personal statement for some programs": "Дополнительная заявка/профиль/мотивационное эссе для некоторых программ",
+        "Tertiary transcripts if previous university study": "Транскрипты из вуза при наличии предыдущего обучения в университете",
+        "Transcripts from prior higher-education institutions (if applicable)": "Транскрипты из ранее посещавшихся вузов (если применимо)",
+        "Transcripts or academic documentation for all secondary and postsecondary studies": "Транскрипты или академические документы по всем уровням среднего и послесреднего образования",
+        "Two academic teacher recommendations": "Две академические рекомендации от преподавателей",
+        "Two recommendation letters (submitted via the system)": "Два рекомендательных письма (подаются через систему)",
+        "Two teacher recommendations": "Две рекомендации от преподавателей",
+        "Two teacher recommendations (one math/science, one humanities/social science/language)": "Две рекомендации от преподавателей (одна по математике/естественным наукам, одна по гуманитарным/социальным наукам/языкам)",
+        "UCAS application with personal statement": "Заявка UCAS с мотивационным эссе",
+        "University academic transcripts if currently/previously enrolled": "Университетские транскрипты при текущем/предыдущем обучении",
+        "Upload authentic documents to TUMonline": "Загрузите подлинные документы в TUMonline",
+        "Upper secondary school-leaving certificate": "Аттестат о завершении старшей школы",
+        "Valid test certificates as required by category": "Действительные сертификаты тестов согласно категории"
+      },
+      "university_names": {
+        "mit-usa-cambridge": "Массачусетский технологический институт (MIT)",
+        "imperial-college-london-uk": "Имперский колледж Лондона",
+        "stanford-university-usa-ca": "Стэнфордский университет",
+        "harvard-usa-cambridge": "Гарвардский университет",
+        "eth-zurich-ch-zurich": "Швейцарская высшая техническая школа Цюриха (ETH Zurich)",
+        "national-university-of-singapore-sg-singapore": "Национальный университет Сингапура (NUS)",
+        "epfl-ch-lausanne": "Федеральная политехническая школа Лозанны (EPFL)",
+        "technical-university-of-munich-de-munich": "Технический университет Мюнхена (TUM)",
+        "university-of-toronto-ca-toronto": "Университет Торонто",
+        "cuhk-hk-shatin": "Китайский университет Гонконга (CUHK)",
+        "university-of-tokyo-jp-tokyo": "Токийский университет",
+        "seoul-national-university-kr-seoul": "Сеульский национальный университет",
+        "delft-university-of-technology-nl-delft": "Делфтский технический университет",
+        "kaist-kr-daejeon": "Корейский передовой институт науки и технологий (KAIST)",
+        "tsinghua-university-cn-beijing": "Университет Цинхуа",
+        "nazarbayev-university-kaz-astana": "Назарбаев Университет",
+        "kyoto-university-jp-kyoto": "Киотский университет",
+        "university-of-melbourne-au-melbourne": "Мельбурнский университет",
+        "suleyman-demirel-university-kaz-kaskelen": "Университет имени Сулеймана Демиреля",
+        "astana-it-university-kaz-astana": "Астана IT университет"
+      },
+      "university_descriptions": {
+        "mit-usa-cambridge": "MIT — частный исследовательский университет в Кембридже (штат Массачусетс), известный сильными школами в науке и инженерии и практико-ориентированным обучением. Экосистема университета тесно связана с лабораториями, индустрией и стартап-средой вокруг Kendall Square. Ключевые направления: искусственный интеллект, робототехника, компьютерные науки, энергетические системы и исследования передовых материалов.",
+        "imperial-college-london-uk": "Imperial College London — научно-ориентированный университет с сильными направлениями в инженерии, медицине, естественных науках и бизнесе. Расположенный в центре Лондона, он сочетает высокую исследовательскую интенсивность с тесными связями с больницами, индустрией и предпринимательскими сетями. Ключевые области: ИИ, биоинженерия, медицинские инновации, климатические технологии и передовые вычисления.",
+        "stanford-university-usa-ca": "Стэнфордский университет — частный исследовательский университет в Калифорнии с широким академическим профилем и сильной междисциплинарной культурой. Расположение в Кремниевой долине обеспечивает тесные связи с технологическими компаниями, стартапами и венчурной экосистемой. Основные сильные стороны: компьютерные науки, ИИ, инженерия, медицина и предпринимательство.",
+        "harvard-usa-cambridge": "Гарвардский университет — исследовательский университет в Кембридже (Массачусетс) с долгой академической историей и глобальным влиянием. Он объединяет бакалаврские и магистерско-докторские школы в области гуманитарных и естественных наук, медицины, права, бизнеса и государственной политики. Университет делает акцент на строгой академической подготовке, междисциплинарных исследованиях и международном сотрудничестве.",
+        "eth-zurich-ch-zurich": "ETH Zurich — университет науки и технологий международного уровня, сильный в инженерии и естественных науках. Он сочетает фундаментальные исследования с практическими инновациями и сотрудничеством между академией и индустрией. Высокоимпактные направления: робототехника, ИИ, наука о данных, климатические исследования и энергетические системы.",
+        "national-university-of-singapore-sg-singapore": "NUS — комплексный исследовательский университет Сингапура с выраженной глобальной и азиатской ориентацией. Он поддерживает междисциплинарное обучение и прикладные исследования, связанные с государственным сектором, индустрией и региональным развитием. Приоритетные направления: вычисления, инженерия, биомедицинские науки, устойчивое развитие и предпринимательство.",
+        "epfl-ch-lausanne": "EPFL — один из ведущих швейцарских технических университетов в Лозанне, ориентированный на образование, исследования и инновации. Кампусы университета объединяют международное сообщество и сильные партнерства с лабораториями, стартапами и индустрией. Исследовательские сильные стороны: цифровые технологии, ИИ, робототехника, науки о жизни и энергетические системы.",
+        "technical-university-of-munich-de-munich": "TUM — немецкий исследовательский университет с сильными школами инженерии, естественных наук, медицины и менеджмента. Он известен предпринимательской культурой и активным трансфером технологий с индустриальными и стартап-партнерами. Ключевые фокусы: ИИ, мобильность, аэрокосмос, энергетика и медицинские технологии.",
+        "university-of-toronto-ca-toronto": "Университет Торонто — крупный государственный исследовательский университет с кампусами в Торонто и соседних регионах. Он предлагает широкий спектр программ в науке, инженерии, медицине, бизнесе, гуманитарных и социальных науках. Университет тесно ассоциируется с высоким исследовательским вкладом, городскими партнерствами и международным разнообразием студентов.",
+        "cuhk-hk-shatin": "CUHK — комплексный университет Гонконга с колледжной системой и двуязычной академической средой. Он сочетает китайское культурное наследие с глобальной исследовательской ориентацией в медицине, инженерии, бизнесе и социальных науках. Университет делает акцент на целостном развитии личности, инновациях и междисциплинарном сотрудничестве.",
+        "university-of-tokyo-jp-tokyo": "Токийский университет — ведущий национальный университет с широкими сильными направлениями в естественных науках, инженерии, медицине и гуманитарных дисциплинах. Он известен исследовательско-ориентированным обучением и сотрудничеством с передовыми лабораториями и институтами. Ключевые области: ИИ, робототехника, материалы, науки о жизни и исследования государственной политики.",
+        "seoul-national-university-kr-seoul": "Сеульский национальный университет — флагманский государственный исследовательский университет Южной Кореи с комплексным набором академических областей. Его школы и институты обеспечивают высокий уровень исследований в инженерии, медицине, естественных и социальных науках. Университет имеет сильное национальное влияние и расширяющееся глобальное исследовательское сотрудничество.",
+        "delft-university-of-technology-nl-delft": "TU Delft — технический университет Нидерландов, ориентированный на инженерию, дизайн и технологии для решения общественных вызовов. Его исследования и обучение подчеркивают практический эффект через лаборатории, прототипы и сотрудничество с индустрией. Ключевые домены: аэрокосмос, гражданская инфраструктура, робототехника, устойчивое развитие и цифровая инженерия.",
+        "kaist-kr-daejeon": "KAIST — исследовательский университет науки и технологий в Тэджоне с сильной ориентацией на инновации и стартапы. Он фокусируется на продвинутой подготовке бакалавров и магистров/докторантов, связанной с национальными и глобальными технологическими приоритетами. Базовые сильные стороны: ИИ, полупроводники, робототехника, материалы и системы мобильности будущего.",
+        "tsinghua-university-cn-beijing": "Университет Цинхуа — комплексный исследовательский университет в Пекине с прочной базой в инженерии и науке. Он расширил направления в государственной политике, менеджменте, архитектуре и междисциплинарных исследовательских программах. Университет известен высокой исследовательской интенсивностью в ИИ, передовом производстве, материалах и климатических технологиях.",
+        "nazarbayev-university-kaz-astana": "Назарбаев Университет — автономный исследовательский университет в Астане с обучением на английском языке и международными партнерствами. Его школы охватывают инженерию, естественные науки, медицину, государственную политику и бизнес с акцентом на современные исследовательские стандарты. Приоритетные направления: энергетика, цифровые технологии, наука о данных и задачи регионального развития.",
+        "kyoto-university-jp-kyoto": "Киотский университет — национальный исследовательский университет, известный академической свободой и сильной традицией фундаментальных исследований. Он обладает широкими компетенциями в естественных науках, инженерии, медицине и междисциплинарных исследованиях. Университетская среда поддерживает независимый научный поиск и долгосрочные открытия.",
+        "university-of-melbourne-au-melbourne": "Мельбурнский университет — государственный исследовательский университет с крупным городским кампусом в Мельбурне. Он предлагает широкий спектр программ: от инженерии и вычислительных наук до наук о здоровье, бизнеса, права и искусств. Университет известен международной вовлеченностью, сильными траекториями магистратуры и докторантуры и междисциплинарной исследовательской культурой.",
+        "suleyman-demirel-university-kaz-kaskelen": "Университет имени Сулеймана Демиреля — частный университет Казахстана с программами в IT, инженерии, образовании, бизнесе и праве. Кампус делает акцент на практической подготовке, многоязычном обучении и развитии студентов в современной академической среде. Университет расширяет прикладные исследования и индустриально-ориентированные инициативы для потребностей регионального рынка труда.",
+        "astana-it-university-kaz-astana": "Астана IT университет — университет Казахстана, ориентированный на цифровую трансформацию и ICT-образование. Его академическая модель делает акцент на программной инженерии, кибербезопасности, технологиях данных и проектах в связке с индустрией. Университет рассматривает предпринимательство и практические инновации как базовые элементы подготовки студентов."
+      }
+    },
+    "kz": {
+      "groups": {
+        "country": {
+          "usa": "АҚШ",
+          "uk": "Ұлыбритания",
+          "switzerland": "Швейцария",
+          "singapore": "Сингапур",
+          "germany": "Германия",
+          "canada": "Канада",
+          "hong_kong": "Гонконг",
+          "japan": "Жапония",
+          "south_korea": "Оңтүстік Корея",
+          "netherlands": "Нидерланд",
+          "china": "Қытай",
+          "kazakhstan": "Қазақстан",
+          "australia": "Аустралия"
+        },
+        "city": {
+          "astana": "Астана",
+          "beijing": "Бейжің",
+          "cambridge": "Кембридж",
+          "daejeon": "Тэджон",
+          "delft": "Делфт",
+          "kaskelen": "Қаскелең",
+          "kyoto": "Киото",
+          "lausanne": "Лозанна",
+          "london": "Лондон",
+          "melbourne": "Мельбурн",
+          "munich": "Мюнхен",
+          "seoul": "Сеул",
+          "sha_tin": "Ша-Тин",
+          "singapore": "Сингапур",
+          "stanford": "Стэнфорд",
+          "tokyo": "Токио",
+          "toronto": "Торонто",
+          "zurich": "Цюрих"
+        },
+        "state": {
+          "bavaria": "Бавария",
+          "ca": "Калифорния",
+          "ma": "Массачусетс",
+          "massachusetts": "Массачусетс",
+          "ontario": "Онтарио",
+          "vaud": "Во",
+          "victoria": "Виктория"
+        },
+        "language": {
+          "english": "Ағылшын",
+          "german": "Неміс",
+          "french": "Француз",
+          "korean": "Кәріс",
+          "chinese": "Қытай"
+        },
+        "study_level": {
+          "bachelor": "Бакалавриат",
+          "master": "Магистратура",
+          "phd": "Докторантура",
+          "foundation": "Дайындық бағдарламасы"
+        },
+        "study_mode": {
+          "on_campus": "Кампуста"
+        },
+        "campus_size": {
+          "small": "Шағын",
+          "medium": "Орташа",
+          "large": "Үлкен"
+        },
+        "tag": {
+          "research": "зерттеу",
+          "stem": "STEM",
+          "ai": "ЖИ",
+          "robotics": "робототехника",
+          "startups": "стартаптар",
+          "urban": "қалалық",
+          "innovation": "инновация",
+          "engineering": "инженерия",
+          "computing": "есептеу технологиялары",
+          "medicine": "медицина",
+          "sustainability": "тұрақты даму",
+          "interdisciplinary": "пәнаралық",
+          "policy": "саясат",
+          "business": "бизнес",
+          "data_science": "деректер ғылымы",
+          "life_sciences": "өмір туралы ғылымдар",
+          "semiconductors": "жартылай өткізгіштер",
+          "mobility": "мобильділік",
+          "aerospace": "аэроғарыш",
+          "biomedical": "биомедицина",
+          "cybersecurity": "киберқауіпсіздік",
+          "software_engineering": "бағдарламалық инженерия",
+          "ict": "ICT",
+          "public_university": "мемлекеттік университет",
+          "private_university": "жекеменшік университет",
+          "comprehensive": "жан-жақты университет",
+          "global": "жаһандық",
+          "academic_freedom": "академиялық еркіндік",
+          "applied_learning": "практикалық оқу",
+          "asia": "Азия",
+          "bilingual": "екітілді",
+          "collegiate": "колледждік жүйе",
+          "cybersec": "киберқауіпсіздік",
+          "data": "деректер",
+          "design": "дизайн",
+          "english_medium": "ағылшын тілінде оқу",
+          "entrepreneurship": "кәсіпкерлік",
+          "europe": "Еуропа",
+          "fundamental_research": "іргелі зерттеу",
+          "health_sciences": "денсаулық ғылымдары",
+          "industry_links": "индустриямен байланыс",
+          "industry_projects": "индустриялық жобалар",
+          "it": "IT",
+          "japan": "Жапония",
+          "kazakhstan": "Қазақстан",
+          "liberal_arts": "еркін өнер",
+          "manufacturing": "өндіріс",
+          "multilingual": "көптілді",
+          "national_university": "ұлттық университет",
+          "natural_sciences": "жаратылыстану",
+          "prestige": "бедел",
+          "public_policy": "мемлекеттік саясат",
+          "regional_impact": "өңірлік әсер",
+          "science_and_technology": "ғылым және технология",
+          "silicon_valley": "Кремний алқабы"
+        }
+      },
+      "words": {
+        "levels": "деңгей",
+        "program": "Бағдарлама",
+        "track": "Трек",
+        "not_specified": "Көрсетілмеген",
+        "acceptance_rate": "Қабылдау көрсеткіші",
+        "study_levels": "Оқу деңгейлері",
+        "duration": "Ұзақтығы",
+        "language": "Тіл",
+        "study_mode": "Оқу форматы",
+        "no_program_data": "Бағдарламалар туралы дерек жоқ.",
+        "global_rank": "Жаһандық рейтинг",
+        "campus_size": "Кампус көлемі",
+        "campus_size_info_title": "Кампус өлшемін қалай түсінуге болады",
+        "campus_size_info_small": "Small: 500 000 м² дейін (50 га дейін)",
+        "campus_size_info_medium": "Medium: 500 000-2 000 000 м² (50-200 га)",
+        "campus_size_info_large": "Large: 2 000 000 м²-ден жоғары (200+ га)",
+        "campus_size_info_note": "Бұл шамамен алынған диапазондар, салыстыруға ыңғайлы болу үшін берілген.",
+        "focus_tags": "Негізгі тегтер",
+        "total_students": "Студент саны",
+        "study_formats": "Оқу форматтары",
+        "level_word": "деңгей",
+        "admission_probability_title": "Түсу ықтималдығы",
+        "admission_probability_sub": "Бағалау профиліңізге, минималды талаптарға, тіл ережелеріне, селективтілікке және қаржылық контекстке негізделген.",
+        "best_track": "Ең жақсы трек",
+        "general_admission": "Жалпы қабылдау",
+        "high_chance": "Жоғары мүмкіндік",
+        "good_chance": "Жақсы мүмкіндік",
+        "moderate_chance": "Орташа мүмкіндік",
+        "low_chance": "Төмен мүмкіндік",
+        "add_profile_evidence": "Осы университет үшін {chance} бағасының сенімді болуы үшін профайлға емтихан не тілдік дәлел қосыңыз.",
+        "no_admission_tracks_data": "Нақты қабылдау тректері бойынша дерек жоқ.",
+        "track_filter": "Трек фильтрі",
+        "from_profile": "профайлдан",
+        "showing_tracks": "{total} тректің {shown}-і көрсетілді",
+        "filter_any": "Кез келген",
+        "filter_grant": "Грант",
+        "filter_paid": "Ақылы",
+        "for_all_majors": "Барлық мамандықтарға",
+        "est_net_cost": "Таза құн бағасы",
+        "base_cost_before_grant": "Негізгі құн (грантқа дейін)",
+        "est_cost": "Құн бағасы",
+        "academic_exams": "Академиялық емтихандар",
+        "language_exams": "Тіл емтихандары",
+        "not_available": "Дерек жоқ",
+        "extra_requirements": "Қосымша талаптар",
+        "available_grants_aid": "Қолжетімді гранттар мен көмек",
+        "cover": "Қамту",
+        "need_based_aid": "Қаржылық қажеттілікке негізделген көмек",
+        "merit_scholarship": "Жетістікке арналған шәкіртақы",
+        "requires": "Талап етіледі",
+        "no_specific_requirements_listed": "Нақты талаптар көрсетілмеген",
+        "minimum_to_apply": "Өтінім беру минимумы",
+        "real_average_admitted": "Нақты орташа (қабылданғандар)",
+        "none": "Жоқ",
+        "no_tracks_selected_filter": "Таңдалған фильтр бойынша трек табылмады.",
+        "language_track_rules": "Тректегі тіл ережелері",
+        "lang_mode_any": "Бір тілдік дәлел жеткілікті",
+        "lang_mode_all": "Барлық көрсетілген тілдік дәлелдер қажет",
+        "native_accepted": "Ана тілі ретінде қабылданады",
+        "min_cefr": "CEFR минимумы",
+        "typical": "Типтік деңгей",
+        "exam_minimums": "Емтихан минимумдары",
+        "typical_admitted": "Қабылданғандардың типтік балы",
+        "merit_based_scholarships_available": "Жетістікке арналған шәкіртақылар бар",
+        "no_merit_based_scholarships": "Жетістікке арналған шәкіртақылар жоқ",
+        "need_based_financial_aid": "Қаржылық қажеттілікке негізделген көмек бар",
+        "no_need_based_aid": "Қаржылық қажеттілікке көмек жоқ",
+        "from": "бастап",
+        "general_tuition": "Жалпы оқу құны",
+        "available_scholarships": "Қолжетімді шәкіртақылар",
+        "total_per_year": "Жалпы / жыл"
+      },
+      "templates": {
+        "desc_with_tags": "{name} — {city}, {country} қаласындағы университет. Күшті бағыттары: {tags}.",
+        "desc_no_tags": "{name} — {city}, {country} қаласындағы университет."
+      },
+      "track_labels": {
+        "aptitude_assessment": "Қабілетті бағалау",
+        "direct_admission_sat": "Тікелей қабылдау (SAT)",
+        "direct_admission_sat_abay_kunanbayev_grant": "Тікелей қабылдау (SAT) - Абай Құнанбайұлы гранты",
+        "direct_entry": "Тікелей қабылдау",
+        "direct_entry_excellence_scholarship_grant": "Тікелей қабылдау - Excellence стипендиясы (Грант)",
+        "engineering_track": "Инженерлік трек",
+        "engineering_track_president_s_scholarship_grant": "Инженерлік трек - Президент стипендиясы (Грант)",
+        "entrance_exam": "Кіру емтиханы",
+        "foundation_nuet": "Дайындық бағдарламасы (NUET)",
+        "foundation_nuet_state_grant_grant": "Дайындық бағдарламасы (NUET) - Мемлекеттік грант (Грант)",
+        "general_admission": "Жалпы қабылдау",
+        "general_admission_pearson_scholarship_grant": "Жалпы қабылдау - Pearson стипендиясы (Грант)",
+        "harvard_college": "Гарвард колледжі",
+        "harvard_college_financial_aid_grant": "Гарвард колледжі - Қаржылық көмек (Грант)",
+        "international_admission": "Халықаралық қабылдау",
+        "international_admission_asean_scholarship_grant": "Халықаралық қабылдау - ASEAN стипендиясы (Грант)",
+        "international_admission_kaist_scholarship_grant": "Халықаралық қабылдау - KAIST стипендиясы (Грант)",
+        "international_admissions": "Халықаралық қабылдау",
+        "international_admissions_admission_scholarship_grant": "Халықаралық қабылдау - Қабылдау стипендиясы (Грант)",
+        "international_admissions_glo_harmony_grant": "Халықаралық қабылдау - Glo-Harmony (Грант)",
+        "international_track": "Халықаралық трек",
+        "international_track_chinese_govt_scholarship_grant": "Халықаралық трек - Қытай үкіметі стипендиясы (Грант)",
+        "international_ug": "Халықаралық бакалавриат",
+        "international_ug_melbourne_intl_scholarship_grant": "Халықаралық бакалавриат - Melbourne Intl стипендиясы (Грант)",
+        "kyoto_iup": "Kyoto iUP",
+        "kyoto_iup_iup_scholarship_grant": "Kyoto iUP - iUP стипендиясы (Грант)",
+        "numerus_clausus": "Numerus Clausus",
+        "numerus_clausus_justus_louise_van_effen_grant": "Numerus Clausus - Justus & Louise van Effen стипендиясы (Грант)",
+        "paid_admission": "Ақылы қабылдау",
+        "peak_english_track": "PEAK (ағылшын трегі)",
+        "peak_english_track_utokyo_scholarship_grant": "PEAK (ағылшын трегі) - UTokyo стипендиясы (Грант)",
+        "regular_action": "Негізгі қабылдау",
+        "regular_action_need_based_aid_grant": "Негізгі қабылдау - Қажеттілікке негізделген көмек (Грант)",
+        "standard_admission": "Стандартты қабылдау",
+        "standard_admission_need_based_aid_grant": "Стандартты қабылдау - Қажеттілікке негізделген көмек (Грант)",
+        "state_grant": "Мемлекеттік грант",
+        "state_rector_grant": "Мемлекеттік/ректор гранты",
+        "unt_paid": "UNT (ақылы)",
+        "general_tuition": "Жалпы оқу құны",
+        "no_matching_track": "Сәйкес трек табылмады",
+        "no_tracks_for_selected_funding_type": "Таңдалған қаржыландыру түрі бойынша тректер жоқ"
+      },
+      "program_names": {
+        "agriculture": "Ауыл шаруашылығы",
+        "aerospace_engineering": "Аэроғарыш инженериясы",
+        "architecture": "Сәулет",
+        "business": "Бизнес",
+        "business_information_systems": "Бизнес-ақпараттық жүйелер",
+        "computer_science": "Компьютерлік ғылымдар",
+        "computer_science_bcomp": "Компьютерлік ғылымдар (BComp)",
+        "computer_science_computing_and_software_systems_major": "Компьютерлік ғылымдар (Есептеу және бағдарламалық жүйелер бағыты)",
+        "computer_science_and_engineering": "Компьютерлік ғылымдар және инженерия",
+        "computer_science_and_engineering_6_3": "Компьютерлік ғылымдар және инженерия (6-3)",
+        "computer_science_and_engineering_graduate": "Компьютерлік ғылымдар және инженерия (магистратура/докторантура)",
+        "computer_science_and_technology": "Компьютерлік ғылымдар және технологиялар",
+        "computing_beng_meng": "Есептеу техникасы (BEng/MEng)",
+        "design": "Дизайн",
+        "economics": "Экономика",
+        "education": "Білім беру",
+        "electrical_engineering_and_computer_science_6_2_6_5": "Электротехника және компьютерлік ғылымдар (6-2/6-5)",
+        "engineering": "Инженерия",
+        "engineering_digital_infrastructure_engineering_systems_major": "Инженерия (Цифрлық инфрақұрылым инженерлік жүйелері бағыты)",
+        "environmental_sciences_peak": "Экологиялық ғылымдар (PEAK)",
+        "foundation_year": "Дайындық жылы",
+        "humanities": "Гуманитарлық ғылымдар",
+        "informatics": "Информатика",
+        "information_systems": "Ақпараттық жүйелер",
+        "japan_in_east_asia_peak": "Шығыс Азиядағы Жапония (PEAK)",
+        "kyoto_iup_preparatory_course": "Kyoto iUP дайындық курсы",
+        "kyoto_iup_undergraduate_program": "Kyoto iUP бакалавриат бағдарламасы",
+        "law": "Құқық",
+        "life_sciences": "Өмір туралы ғылымдар",
+        "mechanical_and_aerospace_engineering": "Машина жасау және аэроғарыш инженериясы",
+        "mechanical_engineering": "Машина жасау",
+        "mathematics": "Математика",
+        "medicine": "Медицина",
+        "natural_sciences": "Жаратылыстану ғылымдары",
+        "physics": "Физика",
+        "psychology": "Психология",
+        "software_engineering": "Бағдарламалық инженерия",
+        "social_sciences": "Әлеуметтік ғылымдар"
+      },
+      "track_label_fallback_replace": [
+        [
+          "Need-based Aid",
+          "Қажеттілікке негізделген көмек"
+        ],
+        [
+          "Financial Aid",
+          "Қаржылық көмек"
+        ],
+        [
+          "Scholarship",
+          "Стипендия"
+        ],
+        [
+          "Admission",
+          "Қабылдау"
+        ],
+        [
+          "Track",
+          "Трек"
+        ],
+        [
+          "Grant",
+          "Грант"
+        ],
+        [
+          "Paid",
+          "Ақылы"
+        ],
+        [
+          "International UG",
+          "Халықаралық бакалавриат"
+        ],
+        [
+          "International Admissions",
+          "Халықаралық қабылдау"
+        ],
+        [
+          "International Admission",
+          "Халықаралық қабылдау"
+        ]
+      ],
+      "admission_replace": [
+        [
+          "Application fee",
+          "Өтінім ақысы"
+        ],
+        [
+          "non-refundable",
+          "қайтарылмайды"
+        ],
+        [
+          "fee waiver available",
+          "ақыдан босату мүмкін"
+        ],
+        [
+          "submitted by school",
+          "мектеп арқылы жіберіледі"
+        ],
+        [
+          "submitted electronically",
+          "электронды түрде жіберіледі"
+        ],
+        [
+          "submitted online",
+          "онлайн жіберіледі"
+        ],
+        [
+          "submitted",
+          "жіберілген"
+        ],
+        [
+          "online",
+          "онлайн"
+        ],
+        [
+          "passport",
+          "паспорт"
+        ],
+        [
+          "national ID",
+          "жеке куәлік"
+        ],
+        [
+          "certificate",
+          "сертификат"
+        ],
+        [
+          "diploma",
+          "диплом"
+        ],
+        [
+          "transcript",
+          "транскрипт"
+        ],
+        [
+          "transcripts",
+          "транскрипттер"
+        ],
+        [
+          "recommendation letter",
+          "ұсыныс хат"
+        ],
+        [
+          "recommendations",
+          "ұсыныстар"
+        ],
+        [
+          "school report",
+          "мектеп есебі"
+        ],
+        [
+          "personal statement",
+          "мотивациялық эссе"
+        ],
+        [
+          "motivation letter",
+          "мотивациялық хат"
+        ],
+        [
+          "interview",
+          "сұхбат"
+        ],
+        [
+          "entrance examination",
+          "кіру емтиханы"
+        ],
+        [
+          "proof of English language proficiency",
+          "ағылшын тілі деңгейін дәлелдеу"
+        ],
+        [
+          "English language test report",
+          "ағылшын тілі тестінің нәтижесі"
+        ],
+        [
+          "upload",
+          "жүктеңіз"
+        ],
+        [
+          "documents",
+          "құжаттар"
+        ],
+        [
+          "document",
+          "құжат"
+        ],
+        [
+          "if required",
+          "қажет болса"
+        ],
+        [
+          "if applicable",
+          "қолданылса"
+        ],
+        [
+          "high school",
+          "жоғары сынып мектебі"
+        ],
+        [
+          "secondary school",
+          "орта мектеп"
+        ],
+        [
+          "university",
+          "университет"
+        ],
+        [
+          "academic",
+          "академиялық"
+        ],
+        [
+          "results",
+          "нәтижелер"
+        ],
+        [
+          "grade",
+          "баға"
+        ],
+        [
+          "midyear",
+          "аралық кезең"
+        ],
+        [
+          "final",
+          "қорытынды"
+        ],
+        [
+          "expected",
+          "күтілетін"
+        ],
+        [
+          "official",
+          "ресми"
+        ],
+        [
+          "copy",
+          "көшірме"
+        ],
+        [
+          "curriculum vitae",
+          "резюме (CV)"
+        ],
+        [
+          "resume",
+          "резюме"
+        ],
+        [
+          "language proficiency",
+          "тіл деңгейі"
+        ],
+        [
+          "financial sponsor",
+          "қаржылық демеуші"
+        ],
+        [
+          "enrollment certificate",
+          "оқуға тіркелу анықтамасы"
+        ],
+        [
+          "registration form",
+          "тіркеу формасы"
+        ],
+        [
+          "medical report",
+          "медициналық есеп"
+        ],
+        [
+          "statement of criminal records or offence",
+          "соттылық/құқық бұзушылық туралы мәлімдеме"
+        ],
+        [
+          "Upper secondary school-leaving certificate",
+          "жоғары сыныпты аяқтау аттестаты"
+        ]
+      ],
+      "admission_exact": {
+        "3x4 photos (6 pcs.)": "3x4 фотосурет (6 дана)",
+        "Academic transcripts": "Академиялық транскрипттер",
+        "Additional documents if required by program (personal statement/portfolio/aptitude test results)": "Бағдарлама талап етсе, қосымша құжаттар (мотивациялық эссе/портфолио/қабілет тесті нәтижелері)",
+        "Additional supporting documents (e.g., ISPT certificate, achievements)": "Қосымша растайтын құжаттар (мысалы, ISPT сертификаты, жетістіктер)",
+        "Additional test score reports if submitted (e.g., IELTS/TOEFL/AP/ACT/SAT)": "Қосымша тест нәтижелері туралы есептер (ұсынылса; мысалы, IELTS/TOEFL/AP/ACT/SAT)",
+        "Admissions fee payment and pre-registration form": "Қабылдау жарнасын төлеу және алдын ала тіркеу нысаны",
+        "Admissions fee receipt": "Қабылдау жарнасының төлем түбіртегі",
+        "Admissions test (course-dependent)": "Қабылдау тесті (бағдарламаға байланысты)",
+        "All-years transcripts (elementary through high school, as applicable)": "Барлық оқу жылдарының транскрипттері (қолданылатын жағдайда бастауыштан жоғары сыныпқа дейін)",
+        "Applicant nationality proof (passport or nationality certificate/ID)": "Үміткердің азаматтығын растайтын құжат (паспорт немесе азаматтық туралы куәлік/жеке куәлік)",
+        "Application fee": "Өтінім ақысы",
+        "Application fee (fee waiver available)": "Өтінім ақысы (ақыдан босату мүмкін)",
+        "Application fee (non-refundable for direct international applicants)": "Өтінім ақысы (тікелей халықаралық үміткерлер үшін қайтарылмайды)",
+        "Application fee (non-refundable)": "Өтінім ақысы (қайтарылмайды)",
+        "Application fee (paid online)": "Өтінім ақысы (онлайн төленеді)",
+        "Apply in Studielink for the numerus-fixus program by the deadline": "Мерзіміне дейін Studielink арқылы numerus fixus бағдарламасына өтініш беріңіз",
+        "Apply through the Kyoto iUP Online Application System": "Kyoto iUP онлайн өтінім жүйесі арқылы өтініш беріңіз",
+        "At least one recommendation via the online system": "Онлайн жүйе арқылы кемінде бір ұсыным",
+        "Certificate of (expected) graduation": "Оқуды аяқтау (күтілетін) туралы анықтама",
+        "Certificate of graduation (Form A)": "Оқуды аяқтау туралы анықтама (A нысаны)",
+        "Certificate of university admission (if required)": "Университетке қабылданғаны туралы анықтама (қажет болса)",
+        "Common Application or Coalition Application with personal essay": "Common Application немесе Coalition Application жеке эссемен бірге",
+        "Common Application plus Stanford Questions (short essays)": "Common Application және Stanford Questions (қысқа эсселер)",
+        "Complete the matching & selection steps (matching questionnaire, online student experience, cognitive skills test, teamwork assignment)": "Matching және іріктеу кезеңдерін толық аяқтаңыз (matching сауалнамасы, онлайн student experience, когнитивті дағдылар тесті, командалық тапсырма)",
+        "Complete the TU Delft application in OSIRIS if you have a non-Dutch diploma": "Егер сізде нидерландтық емес диплом болса, TU Delft өтінімін OSIRIS жүйесінде аяқтаңыз",
+        "Copy of passport or national ID (proof of nationality)": "Паспорттың немесе ұлттық жеке куәліктің көшірмесі (азаматтықты растау)",
+        "Curriculum vitae": "Түйіндеме (CV)",
+        "Curriculum vitae (resume)": "Түйіндеме (CV)",
+        "Diploma (original)": "Диплом (түпнұсқа)",
+        "Diploma/certificate and transcript": "Диплом/сертификат және транскрипт",
+        "Documents prepared in English or with English translation": "Ағылшын тілінде дайындалған немесе ағылшын тіліне аудармасы бар құжаттар",
+        "English language test report (if required)": "Ағылшын тілі тестінің нәтижесі туралы есеп (қажет болса)",
+        "English proficiency certificate if available (IELTS/TOEFL/APTIS/Duolingo/Interpress)": "Бар болса, ағылшын тілі деңгейін растайтын сертификат (IELTS/TOEFL/APTIS/Duolingo/Interpress)",
+        "English proficiency evaluation form (Form C)": "Ағылшын тілі деңгейін бағалау нысаны (C нысаны)",
+        "Enrollment certificate showing study periods": "Оқу кезеңдері көрсетілген оқу орнынан анықтама",
+        "Entrance examination (reduced or comprehensive) if required by certificate": "Аттестат түріне қарай талап етілсе, кіру емтиханы (қысқартылған немесе толық)",
+        "Essay (Form D)": "Эссе (D нысаны)",
+        "Evaluation form submitted by school (Form B)": "Мектеп жіберетін бағалау нысаны (B нысаны)",
+        "Final or expected graduation certificate": "Оқуды аяқтау туралы қорытынды немесе күтілетін анықтама",
+        "Final school report (for admitted students only)": "Қорытынды мектеп есебі (тек қабылданған студенттер үшін)",
+        "Final upper-secondary school certificate and transcripts by the stated deadline": "Көрсетілген мерзімге дейін жоғары сыныпты аяқтау туралы аттестат және транскрипттер",
+        "Financial sponsor form and sponsor income/employment certificate": "Қаржылық демеуші нысаны және демеушінің табысы/жұмыспен қамтылуы туралы анықтама",
+        "French language certificate (if required)": "Француз тілі сертификаты (қажет болса)",
+        "German language certificate (if required)": "Неміс тілі сертификаты (қажет болса)",
+        "Grade sheets from the last two years of upper secondary school": "Жоғары сыныптың соңғы екі жылындағы бағалар ведомосы",
+        "Harvard College Questions/supplement (short-answer questions)": "Harvard College Questions/қосымша (қысқа жауапты сұрақтар)",
+        "High school examination result slip (final or most recent)": "Мектеп емтихандары нәтижелерінің парағы (қорытынды немесе ең соңғы)",
+        "High school graduation or expected graduation certificate": "Мектепті бітіргені немесе күтілетін бітіру туралы анықтама",
+        "High school/university transcripts": "Мектеп/университет транскрипттері",
+        "Higher education entrance qualification for Bachelor’s programs": "Бакалавриат бағдарламаларына арналған жоғары білімге түсу құқығын растайтын құжат",
+        "Identity photo": "Құжатқа арналған фото",
+        "IELTS/TOEFL certificate uploaded in personal account": "Жеке кабинетке жүктелген IELTS/TOEFL сертификаты",
+        "Interview (course-dependent)": "Сұхбат (бағдарламаға байланысты)",
+        "Interview with the Dean": "Деканмен сұхбат",
+        "Language proficiency evidence (Korean/English test scores or proof of instruction language)": "Тіл деңгейін растау (корей/ағылшын тест нәтижелері немесе оқыту тілін растайтын құжат)",
+        "Letter of recommendation": "Ұсыныс хат",
+        "Medical report or doctor’s memo if a medical condition/disability is declared": "Егер медициналық жағдай/мүгедектік көрсетілсе, медициналық қорытынды немесе дәрігердің анықтамасы",
+        "Midyear grades (February Updates & Notes Form)": "Жыл ортасындағы бағалар (February Updates & Notes Form)",
+        "Midyear school report": "Жыл ортасындағы мектеп есебі",
+        "MIT short-answer essays (multiple prompts)": "MIT қысқа жауапты эсселері (бірнеше тапсырма)",
+        "Motivation letter in English": "Ағылшын тіліндегі мотивациялық хат",
+        "Motivational letter": "Мотивациялық хат",
+        "Official English proficiency test scores (if applicable)": "Ағылшын тілі деңгейі тестінің ресми нәтижелері (қолданылса)",
+        "Official high school (and university, if applicable) transcripts": "Ресми мектеп (және қолданылса, университет) транскрипттері",
+        "Official high school transcript": "Ресми мектеп транскрипті",
+        "Official high school transcript submitted by school": "Мектеп ұсынатын ресми мектеп транскрипті",
+        "Official secondary school transcripts": "Орта мектептің ресми транскрипттері",
+        "Official standardized examination results": "Стандартталған емтихандардың ресми нәтижелері",
+        "One academic reference (UCAS)": "Бір академиялық ұсыным (UCAS)",
+        "One recommendation letter (submitted electronically)": "Бір ұсыным хат (электронды түрде жіберіледі)",
+        "Online application form": "Онлайн өтінім нысаны",
+        "Online application via eApply": "eApply арқылы онлайн өтінім",
+        "Online application with required document uploads": "Міндетті құжаттарды жүктеумен онлайн өтінім",
+        "Online application with supporting documentation upload": "Растайтын құжаттарды жүктеумен онлайн өтінім",
+        "Online application with supporting documents uploaded": "Растайтын құжаттары жүктелген онлайн өтінім",
+        "Online interview with faculty": "Факультетпен онлайн сұхбат",
+        "Online registration form submitted and application fee paid": "Онлайн тіркеу нысаны жіберіліп, өтінім ақысы төленген",
+        "Other documentary evidence of achievements (if applicable)": "Жетістіктерді растайтын өзге құжаттар (қолданылса)",
+        "Passport": "Паспорт",
+        "Passport (or birth certificate if no passport)": "Паспорт (немесе паспорт жоқ болса, туу туралы куәлік)",
+        "Passport copy": "Паспорт көшірмесі",
+        "Passport or entry permit copy": "Паспорттың немесе кіруге рұқсат құжатының көшірмесі",
+        "Passport or identity document": "Паспорт немесе жеке басын куәландыратын құжат",
+        "Passport pages (applicant and parents; visa/entry stamps if applicable)": "Паспорт беттері (үміткер мен ата-анасы; қолданылса виза/кіру мөрлері)",
+        "Passport photo and copy of passport/ID": "Фото және паспорт/жеке куәлік көшірмесі",
+        "Payment receipt (examination fee)": "Төлем түбіртегі (емтихан ақысы)",
+        "Personal statement": "Жеке эссе",
+        "Personal statement and study plan (online)": "Жеке эссе және оқу жоспары (онлайн)",
+        "Placement test in English or IELTS 5.5+ waiver": "Ағылшын тілі бойынша placement test немесе IELTS 5.5+ болғанда босату",
+        "Proof of English language proficiency": "Ағылшын тілі деңгейін растау",
+        "Proof of English language proficiency (if required)": "Ағылшын тілі деңгейін растау (қажет болса)",
+        "Proof of school education / academic career": "Мектеп білімі/академиялық жолын растайтын құжат",
+        "Public examination results": "Мемлекеттік емтихан нәтижелері",
+        "Recommendation letter submitted online": "Онлайн жіберілген ұсыным хат",
+        "Register on the admission platform": "Қабылдау платформасында тіркеліңіз",
+        "Scanned copy of passport or national ID": "Паспорттың немесе ұлттық жеке куәліктің скан-көшірмесі",
+        "School profile (if applicable)": "Мектеп профайлы (қолданылса)",
+        "School report and counselor recommendation": "Мектеп есебі және кеңесшінің ұсынымы",
+        "School report with counselor recommendation and high school transcript": "Кеңесшінің ұсынымы және мектеп транскрипті бар мектеп есебі",
+        "School reports from the last three school years": "Соңғы үш оқу жылындағы мектеп есептері",
+        "Secondary school certificate/diploma with academic performance (or school certificate per NU template)": "Үлгерімі көрсетілген орта білім туралы аттестат/диплом (немесе NU үлгісі бойынша мектеп анықтамасы)",
+        "Secondary School Report with counselor recommendation and school profile": "Кеңесшінің ұсынымы мен мектеп профайлы бар Secondary School Report",
+        "Secondary school transcripts (or most recent results if final not yet available)": "Орта мектеп транскрипттері (немесе қорытынды әлі жоқ болса, ең соңғы нәтижелер)",
+        "Signed declaration of consent": "Қол қойылған келісім декларациясы",
+        "Standardized test results (national/regional exams or SAT/ACT/A-Level/AP/IB, etc.)": "Стандартталған тест нәтижелері (ұлттық/аймақтық емтихандар немесе SAT/ACT/A-Level/AP/IB және т.б.)",
+        "Standardized test results if requested (e.g., SAT/ACT/IB/AP)": "Сұралған жағдайда стандартталған тест нәтижелері (мысалы, SAT/ACT/IB/AP)",
+        "Statement of criminal records or offence if declared": "Егер көрсетілсе, соттылық немесе құқық бұзушылық туралы мәлімдеме",
+        "Submit documents electronically via applicant portals or testing authorities": "Құжаттарды үміткер порталдары немесе тест ұйымдары арқылы электронды түрде жіберіңіз",
+        "Supplementary application/profile/personal statement for some programs": "Кейбір бағдарламалар үшін қосымша өтінім/профайл/жеке эссе",
+        "Tertiary transcripts if previous university study": "Бұрын университетте оқыған болса, ЖОО транскрипттері",
+        "Transcripts from prior higher-education institutions (if applicable)": "Бұрын оқыған ЖОО-лардан транскрипттер (қолданылса)",
+        "Transcripts or academic documentation for all secondary and postsecondary studies": "Орта және ортадан кейінгі білімнің барлық кезеңі бойынша транскрипттер немесе академиялық құжаттар",
+        "Two academic teacher recommendations": "Екі академиялық оқытушының ұсынымы",
+        "Two recommendation letters (submitted via the system)": "Екі ұсыным хат (жүйе арқылы жіберіледі)",
+        "Two teacher recommendations": "Екі оқытушының ұсынымы",
+        "Two teacher recommendations (one math/science, one humanities/social science/language)": "Екі оқытушының ұсынымы (бірі математика/жаратылыстану, бірі гуманитарлық/әлеуметтік ғылымдар/тіл)",
+        "UCAS application with personal statement": "UCAS өтінімі жеке эссемен бірге",
+        "University academic transcripts if currently/previously enrolled": "Қазір/бұрын тіркелген болса, университеттің академиялық транскрипттері",
+        "Upload authentic documents to TUMonline": "Түпнұсқа құжаттарды TUMonline жүйесіне жүктеңіз",
+        "Upper secondary school-leaving certificate": "Жоғары сыныпты аяқтау туралы аттестат",
+        "Valid test certificates as required by category": "Санат талаптарына сай жарамды тест сертификаттары"
+      },
+      "university_names": {
+        "mit-usa-cambridge": "Массачусетс технологиялық институты (MIT)",
+        "imperial-college-london-uk": "Лондон империялық колледжі",
+        "stanford-university-usa-ca": "Стэнфорд университеті",
+        "harvard-usa-cambridge": "Гарвард университеті",
+        "eth-zurich-ch-zurich": "Цюрих федералдық технология институты (ETH Zurich)",
+        "national-university-of-singapore-sg-singapore": "Сингапур ұлттық университеті (NUS)",
+        "epfl-ch-lausanne": "Лозанна федералдық политехникалық мектебі (EPFL)",
+        "technical-university-of-munich-de-munich": "Мюнхен техникалық университеті (TUM)",
+        "university-of-toronto-ca-toronto": "Торонто университеті",
+        "cuhk-hk-shatin": "Гонконг қытай университеті (CUHK)",
+        "university-of-tokyo-jp-tokyo": "Токио университеті",
+        "seoul-national-university-kr-seoul": "Сеул ұлттық университеті",
+        "delft-university-of-technology-nl-delft": "Делфт технология университеті",
+        "kaist-kr-daejeon": "Кореяның озық ғылым және технология институты (KAIST)",
+        "tsinghua-university-cn-beijing": "Цинхуа университеті",
+        "nazarbayev-university-kaz-astana": "Назарбаев Университеті",
+        "kyoto-university-jp-kyoto": "Киото университеті",
+        "university-of-melbourne-au-melbourne": "Мельбурн университеті",
+        "suleyman-demirel-university-kaz-kaskelen": "Сүлейман Демирел университеті",
+        "astana-it-university-kaz-astana": "Астана IT университеті"
+      },
+      "university_descriptions": {
+        "mit-usa-cambridge": "MIT — Кембриджде (Массачусетс) орналасқан, ғылым, инженерия және практикалық оқытуымен танымал жекеменшік зерттеу университеті. Университет экожүйесі Kendall Square маңындағы зертханалармен, индустриямен және стартап ортамен тығыз байланысқан. Негізгі мықты бағыттары: жасанды интеллект, робототехника, компьютерлік ғылымдар, энергетикалық жүйелер және озық материалдар зерттеуі.",
+        "imperial-college-london-uk": "Imperial College London — инженерия, медицина, жаратылыстану және бизнес бағыттары күшті, ғылымға басымдық беретін университет. Лондонның орталығында орналасқан бұл университет жоғары зерттеу қарқынын ауруханалармен, индустриямен және кәсіпкерлік желілерімен берік байланыспен ұштастырады. Негізгі салалар: ЖИ, биоинженерия, денсаулық сақтау инновациялары, климат технологиялары және озық есептеу.",
+        "stanford-university-usa-ca": "Стэнфорд университеті — Калифорниядағы академиялық портфелі кең және пәнаралық мәдениеті қалыптасқан жекеменшік зерттеу университеті. Кремний алқабында орналасуы технологиялық компаниялармен, стартаптармен және венчурлік экожүйемен тығыз байланыс орнатуға мүмкіндік береді. Басты мықты жақтары: компьютерлік ғылымдар, ЖИ, инженерия, медицина және кәсіпкерлік.",
+        "harvard-usa-cambridge": "Гарвард университеті — Кембриджде (Массачусетс) орналасқан, ұзақ академиялық тарихы мен жаһандық ықпалы бар зерттеу университеті. Университет бакалавриат пен магистратура/докторантура мектептерін гуманитарлық және жаратылыстану ғылымдары, медицина, құқық, бизнес және мемлекеттік саясат бағыттарында біріктіреді. Негізгі басымдығы: қатаң академиялық даярлық, пәнаралық зерттеу және халықаралық ынтымақтастық.",
+        "eth-zurich-ch-zurich": "ETH Zurich — инженерия мен жаратылыстану ғылымдары бойынша халықаралық деңгейде мойындалған ғылым және технология университеті. Ол іргелі зерттеуді практикалық инновациямен және академия мен индустрия арасындағы ынтымақтастықпен ұштастырады. Әсері жоғары бағыттар: робототехника, ЖИ, деректер ғылымы, климат зерттеулері және энергетикалық жүйелер.",
+        "national-university-of-singapore-sg-singapore": "NUS — Сингапурдағы жаһандық және азиялық бағдарды қатар ұстанатын жан-жақты зерттеу университеті. Ол мемлекет, индустрия және өңірлік даму қажеттіліктерімен байланысты пәнаралық оқу мен қолданбалы зерттеуді қолдайды. Басым бағыттары: есептеу, инженерия, биомедициналық ғылымдар, тұрақты даму және кәсіпкерлік.",
+        "epfl-ch-lausanne": "EPFL — Лозаннадағы білім, зерттеу және инновацияға бағытталған Швейцарияның жетекші техникалық университеттерінің бірі. Университет кампустары халықаралық қауымдастықты біріктіріп, зертханалармен, стартаптармен және индустриямен берік серіктестік орнатқан. Зерттеудегі мықты бағыттары: цифрлық технологиялар, ЖИ, робототехника, өмір туралы ғылымдар және энергетикалық жүйелер.",
+        "technical-university-of-munich-de-munich": "TUM — инженерия, жаратылыстану ғылымдары, медицина және менеджмент мектептері мықты Германияның зерттеу университеті. Университет кәсіпкерлік мәдениетімен және индустрия мен стартап серіктестерімен белсенді технология трансферімен танымал. Негізгі фокус бағыттары: ЖИ, мобильділік, аэроғарыш, энергетика және денсаулық сақтау технологиялары.",
+        "university-of-toronto-ca-toronto": "Торонто университеті — Торонто қаласында және жақын өңірлерде кампустары бар ірі мемлекеттік зерттеу университеті. Ол ғылым, инженерия, медицина, бизнес, гуманитарлық және әлеуметтік ғылымдар бойынша кең бағдарламалар ұсынады. Университет жоғары зерттеу нәтижелерімен, қалалық серіктестіктерімен және халықаралық студенттік әртүрлілігімен ерекшеленеді.",
+        "cuhk-hk-shatin": "CUHK — Гонконгтағы колледждік жүйесі және екітілді академиялық ортасы бар жан-жақты университет. Ол қытай мәдени мұрасын медицина, инженерия, бизнес және әлеуметтік ғылымдардағы жаһандық зерттеу бағдарымен ұштастырады. Университет тұлғаны жан-жақты дамытуға, инновацияға және пәнаралық ынтымақтастыққа басымдық береді.",
+        "university-of-tokyo-jp-tokyo": "Токио университеті — ғылым, инженерия, медицина және гуманитарлық салаларда кең ауқымды мықты бағыттары бар жетекші ұлттық университет. Ол зерттеуге негізделген оқытуымен және озық зертханалар мен институттармен ынтымақтастығымен танымал. Негізгі салалар: ЖИ, робототехника, материалтану, өмір туралы ғылымдар және мемлекеттік саясат зерттеулері.",
+        "seoul-national-university-kr-seoul": "Сеул ұлттық университеті — Оңтүстік Кореядағы академиялық бағыттары жан-жақты флагмандық мемлекеттік зерттеу университеті. Оның мектептері мен институттары инженерия, медицина, жаратылыстану және әлеуметтік ғылымдарда жоғары деңгейлі зерттеу жүргізеді. Университеттің ұлттық ықпалы жоғары және жаһандық зерттеу ынтымақтастығы тұрақты түрде кеңеюде.",
+        "delft-university-of-technology-nl-delft": "TU Delft — Нидерландтағы қоғам алдындағы күрделі міндеттерді шешуге бағытталған инженерия, дизайн және технология университеті. Университеттің зерттеуі мен оқытуы зертханалар, прототиптер және индустриямен серіктестік арқылы практикалық әсерге басымдық береді. Негізгі домендері: аэроғарыш, азаматтық инфрақұрылым, робототехника, тұрақты даму және цифрлық инженерия.",
+        "kaist-kr-daejeon": "KAIST — Тэджон қаласындағы инновация мен стартапқа айқын бағдар ұстанатын ғылым және технология зерттеу университеті. Ол ұлттық және жаһандық технологиялық басымдықтармен байланысқан бакалавриат пен магистратура/докторантураның терең даярлығына көңіл бөледі. Негізгі мықты жақтары: ЖИ, жартылай өткізгіштер, робототехника, материалдар және болашақ мобильділік жүйелері.",
+        "tsinghua-university-cn-beijing": "Цинхуа университеті — Пекиндегі инженерия мен ғылымда берік негізі бар жан-жақты зерттеу университеті. Университет мемлекеттік саясат, менеджмент, сәулет және пәнаралық зерттеу бағдарламалары бағытында едәуір кеңейді. Ол ЖИ, озық өндіріс, материалдар және климатқа қатысты технологиялардағы жоғары зерттеу қарқынымен танылған.",
+        "nazarbayev-university-kaz-astana": "Назарбаев Университеті — Астанада орналасқан, ағылшын тілінде оқытатын және халықаралық серіктестіктері бар автономды зерттеу университеті. Оның мектептері инженерия, ғылым, медицина, мемлекеттік саясат және бизнесті қамтып, заманауи зерттеу стандарттарына басымдық береді. Басым бағыттары: энергетика, цифрлық технологиялар, деректер ғылымы және өңірлік даму міндеттері.",
+        "kyoto-university-jp-kyoto": "Киото университеті — академиялық еркіндігімен және іргелі зерттеудің мықты дәстүрімен танылған ұлттық зерттеу университеті. Ол жаратылыстану ғылымдары, инженерия, медицина және пәнаралық зерттеу салаларында кең мүмкіндіктерге ие. Университет ортасы тәуелсіз ғылыми ізденісті және ұзақ мерзімді ғылыми жаңалықтарды қолдайды.",
+        "university-of-melbourne-au-melbourne": "Мельбурн университеті — Мельбурн қаласындағы ірі урбан кампусы бар зерттеуге қарқынды мемлекеттік университет. Ол инженерия мен есептеу салаларынан бастап денсаулық сақтау ғылымдарына, бизнеске, құқыққа және өнерге дейін кең бағдарламалар ұсынады. Университет халықаралық қатысуымен, магистратура/докторантура бағыттарының күштілігімен және пәнаралық зерттеу мәдениетімен танымал.",
+        "suleyman-demirel-university-kaz-kaskelen": "Сүлейман Демирел университеті — Қазақстандағы IT, инженерия, білім беру, бизнес және құқық бағыттарында бағдарламалары бар жекеменшік университет. Кампус заманауи академиялық ортада практикалық даярлыққа, көптілді оқытуға және студенттің дамуына басымдық береді. Университет өңірлік еңбек нарығының сұранысына сай қолданбалы зерттеулер мен индустрияға бағытталған бастамаларды кеңейтіп келеді.",
+        "astana-it-university-kaz-astana": "Астана IT университеті — цифрлық трансформация мен ICT-білімге бағытталған Қазақстан университеті. Оның академиялық моделі бағдарламалық инженерияға, киберқауіпсіздікке, деректер технологияларына және индустриямен байланысқан жобаларға басымдық береді. Университет студент даярлығында кәсіпкерлік пен практикалық инновацияны негізгі элемент ретінде қарастырады."
+      }
+    }
+  }
+}

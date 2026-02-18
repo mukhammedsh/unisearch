@@ -3,7 +3,8 @@ import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
-import { applyTranslations, initI18n } from "./i18n.js";
+import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
+import { initUniversityTranslations } from "./university-translations.js";
 import { applyRouteLinks, isGuidePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
@@ -70,9 +71,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   initGlobalApiLoadingIndicator();
   registerServiceWorker();
 
-  // Render core layout first, then finish i18n in background.
-  await loadGlobalLayout();
+  // Ensure language + university translation packs are ready before UI render.
   await i18nInitPromise;
+  await initUniversityTranslations().catch((e) => {
+    console.warn("university translations init failed, using local fallback pack:", e);
+  });
+  await loadGlobalLayout();
   window.dispatchEvent(new CustomEvent("languageChanged"));
   applyRouteLinks(document);
 
@@ -217,7 +221,8 @@ async function initHomePageStats() {
       renderHomeCoverage(dataStats.universities_total, dataStats.countries_total);
       return;
     }
-    const resUni = await fetch(`${API_BASE}/universities?limit=1`);
+    const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
+    const resUni = await fetch(`${API_BASE}/universities?limit=1&lang=${encodeURIComponent(uiLang)}`);
     const dataUni = await resUni.json();
 
     const resLoc = await fetch(`${API_BASE}/locations`);

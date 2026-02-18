@@ -381,28 +381,32 @@ function writeDetailCache(cache) {
   }
 }
 
-function getDetailCacheEntry(universityId) {
+function getDetailCacheEntry(universityId, lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
+  const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
   if (!key) return null;
+  const cacheKey = `${key}::${normalizedLang}`;
   const cache = readDetailCache();
-  const entry = cache[key];
+  const entry = cache[cacheKey];
   if (!entry || typeof entry !== "object" || !entry.data || typeof entry.data !== "object") {
     return null;
   }
   return {
-    key,
+    key: cacheKey,
     data: entry.data,
     etag: String(entry.etag || ""),
     ts: Number(entry.ts) || 0,
   };
 }
 
-function setDetailCacheEntry(universityId, data, etag = "") {
+function setDetailCacheEntry(universityId, data, etag = "", lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
+  const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
   if (!key || !data || typeof data !== "object") return;
+  const cacheKey = `${key}::${normalizedLang}`;
 
   const cache = readDetailCache();
-  cache[key] = {
+  cache[cacheKey] = {
     data,
     etag: String(etag || ""),
     ts: Date.now(),
@@ -419,20 +423,23 @@ function setDetailCacheEntry(universityId, data, etag = "") {
   writeDetailCache(cache);
 }
 
-function touchDetailCacheEntry(universityId) {
+function touchDetailCacheEntry(universityId, lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
+  const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
   if (!key) return;
+  const cacheKey = `${key}::${normalizedLang}`;
   const cache = readDetailCache();
-  if (!cache[key] || typeof cache[key] !== "object") return;
-  cache[key].ts = Date.now();
+  if (!cache[cacheKey] || typeof cache[cacheKey] !== "object") return;
+  cache[cacheKey].ts = Date.now();
   writeDetailCache(cache);
 }
 
 async function fetchUniversityDetailCached(universityId) {
   const key = String(universityId || "").trim();
+  const lang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
   if (!key) throw new Error("University ID is required");
 
-  const cached = getDetailCacheEntry(key);
+  const cached = getDetailCacheEntry(key, lang);
   const age = cached ? (Date.now() - cached.ts) : Number.POSITIVE_INFINITY;
 
   if (cached && age < DETAIL_CACHE_TTL_MS) {
@@ -445,17 +452,18 @@ async function fetchUniversityDetailCached(universityId) {
   }
 
   try {
-    const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(key)}`, { headers });
+    const qs = new URLSearchParams({ lang }).toString();
+    const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(key)}?${qs}`, { headers });
 
     if (res.status === 304 && cached?.data) {
-      touchDetailCacheEntry(key);
+      touchDetailCacheEntry(key, lang);
       return cached.data;
     }
     if (!res.ok) throw new Error("Backend error");
 
     const data = await res.json();
     const etag = res.headers.get("ETag") || "";
-    setDetailCacheEntry(key, data, etag);
+    setDetailCacheEntry(key, data, etag, lang);
     return data;
   } catch (err) {
     if (cached?.data) return cached.data;
@@ -2900,7 +2908,8 @@ export async function initRankingPage() {
 
     try {
         // Запрашиваем 200 вузов
-        const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc`);
+        const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
+        const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc&lang=${encodeURIComponent(uiLang)}`);
         if (!res.ok) throw new Error("Error loading ranking");
         const data = await res.json();
         let items = data.items || [];

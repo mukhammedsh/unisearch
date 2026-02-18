@@ -281,26 +281,6 @@ university.total_cost_calculator: Total Cost Calculator
 university.total_estimated_cost: Total Estimated Cost
 university.visit_website: Visit Official Website
 
-university.name.mit-usa-cambridge: Massachusetts Institute of Technology (MIT)
-university.name.imperial-college-london-uk: Imperial College London
-university.name.stanford-university-usa-ca: Stanford University
-university.name.harvard-usa-cambridge: Harvard University
-university.name.eth-zurich-ch-zurich: ETH Zurich
-university.name.national-university-of-singapore-sg-singapore: National University of Singapore (NUS)
-university.name.epfl-ch-lausanne: EPFL
-university.name.technical-university-of-munich-de-munich: Technical University of Munich (TUM)
-university.name.university-of-toronto-ca-toronto: University of Toronto
-university.name.cuhk-hk-shatin: The Chinese University of Hong Kong (CUHK)
-university.name.university-of-tokyo-jp-tokyo: University of Tokyo
-university.name.seoul-national-university-kr-seoul: Seoul National University
-university.name.delft-university-of-technology-nl-delft: Delft University of Technology
-university.name.kaist-kr-daejeon: KAIST
-university.name.tsinghua-university-cn-beijing: Tsinghua University
-university.name.nazarbayev-university-kaz-astana: Nazarbayev University
-university.name.kyoto-university-jp-kyoto: Kyoto University
-university.name.university-of-melbourne-au-melbourne: University of Melbourne
-university.name.suleyman-demirel-university-kaz-kaskelen: Suleyman Demirel University
-university.name.astana-it-university-kaz-astana: Astana IT University
 
 # Added localization coverage keys
 common.loading: Loading
