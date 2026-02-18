@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-02-16-1";
+const SW_VERSION = "2026-02-17-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -69,11 +69,9 @@ function normalizeApiPath(pathname) {
 
 function isStaticRequest(request, url) {
   if (url.origin !== self.location.origin) return false;
-  if (url.pathname.startsWith("/Localization/")) return true;
-  if (request.destination === "script" || request.destination === "style" || request.destination === "document") {
-    return true;
-  }
-  return /\.(?:css|js|mjs|html)$/i.test(url.pathname);
+  // Keep localization packs cached for instant language switching,
+  // but avoid caching core HTML/JS/CSS to reduce startup fragility.
+  return url.pathname.startsWith("/Localization/");
 }
 
 self.addEventListener("fetch", (event) => {

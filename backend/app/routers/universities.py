@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 
 from app.core.redis_store import cache_get_json, cache_set_json
-from app.core.settings import REDIS_CACHE_TTL_SEC
+from app.core.settings import AI_SORT_CACHE_TTL_SEC, REDIS_CACHE_TTL_SEC
 from app.schemas import ProfileOnlyRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
@@ -15,7 +15,7 @@ from app.services import ai_scoring as ai_scoring_service
 
 
 router = APIRouter()
-_AI_SORT_CACHE_TTL_SEC = 45.0
+_AI_SORT_CACHE_TTL_SEC = max(15.0, float(AI_SORT_CACHE_TTL_SEC))
 _AI_SORT_CACHE_MAX_ITEMS = 48
 _AI_SORT_CACHE: Dict[str, Dict[str, Any]] = {}
 _AI_SORT_CACHE_LOCK = threading.Lock()

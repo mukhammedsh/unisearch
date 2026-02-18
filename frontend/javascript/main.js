@@ -3,8 +3,11 @@ import { loadGlobalLayout } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
-import { applyTranslations, initI18n } from "./i18n.js";
+import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
 import { applyRouteLinks, isGuidePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
+
+const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
+const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -36,15 +39,42 @@ function applyAINameConfig() {
   });
 }
 
+function maybeWakeBackend() {
+  const now = Date.now();
+  try {
+    const lastRaw = sessionStorage.getItem(BACKEND_WAKE_PING_KEY);
+    const last = Number(lastRaw || 0);
+    if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
+    sessionStorage.setItem(BACKEND_WAKE_PING_KEY, String(now));
+  } catch (e) {
+    // ignore
+  }
+
+  const pingUrl = `${API_BASE}/health?warmup=1&t=${now}`;
+  fetch(pingUrl, {
+    method: "GET",
+    cache: "no-store",
+    keepalive: true,
+    headers: { Accept: "application/json" },
+  }).catch(() => {
+    // non-blocking warmup request
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
   initTheme();
-  await initI18n();
+  maybeWakeBackend();
+  const i18nInitPromise = initI18n().catch((e) => {
+    console.warn("i18n init failed, using built-in fallback pack:", e);
+  });
   initGlobalApiLoadingIndicator();
   registerServiceWorker();
 
-  // 1) Вставляет navbar + profile modal и вешает все обработчики (включая Languages)
+  // Render core layout first, then finish i18n in background.
   await loadGlobalLayout();
+  await i18nInitPromise;
+  window.dispatchEvent(new CustomEvent("languageChanged", { detail: { language: getCurrentLanguage() } }));
   applyRouteLinks(document);
 
   applyAINameConfig();

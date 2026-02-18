@@ -46,6 +46,15 @@ class RootAndOpsApiTests(unittest.TestCase):
         self.assertIn("ok", result)
         self.assertIn("duration_ms", result)
 
+    def test_health_warmup_flag_runs_runtime_warmup(self):
+        health = self.client.get("/health?warmup=1")
+        self.assertEqual(health.status_code, 200)
+        data = health.json()
+        self.assertEqual("ok", data.get("status"))
+        warmup = data.get("warmup") or {}
+        self.assertIn("ok", warmup)
+        self.assertIn("duration_ms", warmup)
+
     def test_cors_allows_local_frontend_ports(self):
         configured = tuple(FRONTEND_ORIGINS)
         self.assertGreater(len(configured), 0)

@@ -9,6 +9,7 @@ const LANG_FILE_BY_CODE = {
   [LANG_RUS]: "Localization/ru",
   [LANG_KZ]: "Localization/kz",
 };
+const I18N_PACK_FETCH_TIMEOUT_MS = 4000;
 
 const HTML_LANG_MAP = {
   [LANG_ENG]: "en",
@@ -1250,20 +1251,47 @@ function _parseLocalizationFile(content) {
   return out;
 }
 
+async function _fetchLocalizationText(file, timeoutMs) {
+  const controller = typeof AbortController === "function" ? new AbortController() : null;
+  let timeoutId = 0;
+  const fetchPromise = fetch(file, {
+    cache: "no-store",
+    ...(controller ? { signal: controller.signal } : {}),
+  })
+    .then((res) => (res.ok ? res.text() : ""))
+    .catch(() => "");
+
+  const timeoutPromise = new Promise((resolve) => {
+    timeoutId = setTimeout(() => {
+      try {
+        controller?.abort();
+      } catch (e) {
+        // ignore
+      }
+      resolve("");
+    }, timeoutMs);
+  });
+
+  try {
+    return await Promise.race([fetchPromise, timeoutPromise]);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 async function _loadLocalizationPacks() {
   if (__packsLoaded) return;
   if (__packsLoadPromise) return __packsLoadPromise;
 
   __packsLoadPromise = (async () => {
     const langs = [LANG_ENG, LANG_RUS, LANG_KZ];
-    await Promise.all(
+    await Promise.allSettled(
       langs.map(async (lang) => {
         const file = LANG_FILE_BY_CODE[lang];
         if (!file) return;
         try {
-          const res = await fetch(file, { cache: "no-store" });
-          if (!res.ok) return;
-          const raw = await res.text();
+          const raw = await _fetchLocalizationText(file, I18N_PACK_FETCH_TIMEOUT_MS);
+          if (!raw) return;
           const parsed = _parseLocalizationFile(raw);
           if (!parsed || typeof parsed !== "object") return;
           DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
@@ -1277,7 +1305,10 @@ async function _loadLocalizationPacks() {
       })
     );
     __packsLoaded = true;
-  })();
+  })().catch(() => {
+    // keep built-in fallback packs
+    __packsLoaded = true;
+  });
 
   return __packsLoadPromise;
 }

@@ -52,6 +52,8 @@ function bindThemeUiSync() {
 
 const LAYOUT_CACHE_KEY = "unisearch_layout_cache_v1";
 const TRANSLATION_STATUS_CACHE_TTL_MS = 60_000;
+const PROFILE_DRAFT_TRANSFER_KEY = "unisearch_profile_draft_transfer_v1";
+const PROFILE_DRAFT_TRANSFER_TTL_MS = 5 * 60_000;
 let __translationStatusCache = {
     ts: 0,
     data: null,
@@ -84,6 +86,56 @@ function writeLayoutCache(html, hash) {
         localStorage.setItem(LAYOUT_CACHE_KEY, JSON.stringify({ html, hash, ts: Date.now() }));
     } catch (e) {
         // ignore
+    }
+}
+
+function persistProfileDraftForReload(reason = "reload", nextLanguage = "") {
+    try {
+        const draftApi = window.__unisearchProfileDraft;
+        if (!draftApi || typeof draftApi.get !== "function") return;
+
+        const draft = draftApi.get();
+        if (!draft || typeof draft !== "object") return;
+
+        const payload = {
+            ts: Date.now(),
+            path: String(window.location.pathname || ""),
+            reason: String(reason || "reload"),
+            nextLanguage: String(nextLanguage || "").trim().toLowerCase(),
+            active: typeof draftApi.isActive === "function" ? Boolean(draftApi.isActive()) : false,
+            draft,
+        };
+        sessionStorage.setItem(PROFILE_DRAFT_TRANSFER_KEY, JSON.stringify(payload));
+    } catch (e) {
+        // ignore
+    }
+}
+
+function consumeProfileDraftAfterReload() {
+    try {
+        const raw = sessionStorage.getItem(PROFILE_DRAFT_TRANSFER_KEY);
+        if (!raw) return null;
+        sessionStorage.removeItem(PROFILE_DRAFT_TRANSFER_KEY);
+
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") return null;
+        if (!parsed.draft || typeof parsed.draft !== "object") return null;
+
+        const ts = Number(parsed.ts);
+        if (!Number.isFinite(ts)) return null;
+        if ((Date.now() - ts) > PROFILE_DRAFT_TRANSFER_TTL_MS) return null;
+
+        const path = String(parsed.path || "");
+        if (path !== String(window.location.pathname || "")) return null;
+
+        return parsed;
+    } catch (e) {
+        try {
+            sessionStorage.removeItem(PROFILE_DRAFT_TRANSFER_KEY);
+        } catch (err) {
+            // ignore
+        }
+        return null;
     }
 }
 
@@ -412,6 +464,7 @@ function initLanguageSwitcher() {
 
     languageSelect.addEventListener("change", () => {
         const next = String(languageSelect.value || "").trim().toLowerCase();
+        persistProfileDraftForReload("language_switch", next || "eng");
         setLanguage(next || "eng", { persist: true, emit: false });
         window.location.reload();
     });
@@ -633,6 +686,10 @@ function initProfileUI() {
     };
 
     let profile = ensureProfileShape(loadProfile());
+    const transferredDraftPayload = consumeProfileDraftAfterReload();
+    let transferredProfileDraft = transferredDraftPayload?.draft
+        ? ensureProfileShape(transferredDraftPayload.draft)
+        : null;
     let savedSignature = "";
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
@@ -846,7 +903,16 @@ function initProfileUI() {
         refreshSaveState();
     };
 
-    const resetFields = () => {
+    const resetFields = (options = {}) => {
+        const preferTransferred = options.preferTransferred !== false;
+        const consumeTransferred = options.consumeTransferred !== false;
+        if (preferTransferred && transferredProfileDraft) {
+            setProfileDraft(ensureProfileShape(transferredProfileDraft));
+            applyDraftToInputs();
+            if (consumeTransferred) transferredProfileDraft = null;
+            return;
+        }
+
         const savedProfile = ensureProfileShape(loadProfile());
         setProfileDraft(savedProfile, { markAsSaved: true });
         applyDraftToInputs();
@@ -985,7 +1051,7 @@ function initProfileUI() {
     }
 
     if (openBtn) openBtn.onclick = () => {
-        resetFields();
+        resetFields({ preferTransferred: true, consumeTransferred: true });
         void fetchTranslationRuntimeStatus(false).then((status) => {
             renderInterestsTranslationWarning(status);
         });
@@ -1218,7 +1284,7 @@ function initProfileUI() {
         };
     }
 
-    resetFields();
+    resetFields({ preferTransferred: true, consumeTransferred: false });
 }
 // Вспомогательная функция для табов
 export function setupTabs() {

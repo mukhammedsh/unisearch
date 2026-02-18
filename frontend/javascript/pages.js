@@ -573,7 +573,7 @@ export function initUniversitiesPage() {
     let focusUniDone = false;
 
     const CACHE_TTL_MS = 30000;
-    const AI_FAST_FALLBACK_MS = 900;
+    const AI_FAST_FALLBACK_MS = 450;
     let lastFetchKey = "";
     let lastFetchPayload = null;
     let lastFetchAt = 0;

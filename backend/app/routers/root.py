@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.core.redis_store import redis_runtime_status
 from app.core.settings import APP_VERSION
@@ -17,8 +17,11 @@ def root():
 
 
 @router.get("/health")
-def health():
-    return {"status": "ok", "version": APP_VERSION}
+def health(warmup: bool = Query(False)):
+    payload = {"status": "ok", "version": APP_VERSION}
+    if warmup:
+        payload["warmup"] = warmup_runtime(trigger="health")
+    return payload
 
 
 @router.get("/ready")
