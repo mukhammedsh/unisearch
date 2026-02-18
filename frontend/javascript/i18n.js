@@ -60,7 +60,7 @@ const DICT = {
       "{fit} ranks options by fit, while {chance} estimates your admission probability for each university track.",
     "home.feature.finance_title": "Financial Clarity",
     "home.feature.finance_desc":
-      "See the real cost. Our system highlights Merit-based and Need-based aid opportunities, flagging universities that fit your wallet.",
+      "See tuition and study costs, plus grant or discount options when they are available in the data.",
     "home.feature.data_title": "Data-Driven Decisions",
     "home.feature.data_desc":
       "Built for the Infomatrix competition, we use structured JSON data and algorithms to eliminate bias in university selection.",
@@ -502,7 +502,7 @@ const DICT = {
     "profile.delete": "Delete",
   },
   rus: {
-    "title.index": "UniSearch - ИИ подбор университета",
+    "title.index": "UniSearch - ИИ-подбор университета",
     "title.universities": "Университеты | UniSearch",
     "title.university": "Университет | UniSearch",
     "title.ranking": "Глобальный рейтинг университетов | UniSearch",
@@ -531,7 +531,7 @@ const DICT = {
       "Сейчас рекомендации и аналитика покрывают только программы бакалавриата.",
     "home.hero.start": "Начать подбор",
     "home.hero.rankings": "Смотреть рейтинг",
-    "home.stats.top_universities": "Топ университеты",
+    "home.stats.top_universities": "Топ-университеты",
     "home.stats.countries": "Страны",
     "home.stats.open_source_value": "Полный",
     "home.stats.open_source": "Открытый код",
@@ -543,7 +543,7 @@ const DICT = {
       "{fit} ранжирует варианты по соответствию, а {chance} оценивает вероятность поступления по каждому треку.",
     "home.feature.finance_title": "Финансовая прозрачность",
     "home.feature.finance_desc":
-      "Смотрите реальную стоимость. Система выделяет merit-based и need-based помощь и показывает университеты под ваш бюджет.",
+      "Смотрите стоимость обучения, а также варианты грантов и скидок, если такие опции доступны. Это помогает оценить бюджет.",
     "home.feature.data_title": "Решения на данных",
     "home.feature.data_desc":
       "Проект для Infomatrix: используем структурированные JSON-данные и алгоритмы, чтобы снизить субъективность выбора.",
@@ -697,7 +697,7 @@ const DICT = {
     "guide.unifit.p3":
       "При наличии данных оценка считается по каждому треку отдельно. Поэтому вуз с меньшим общим рангом может быть лучше именно для вашего профиля.",
     "guide.unifit.p4":
-      "Результаты {fit} динамические: изменение экзаменов, языков или бюджета сразу влияет на порядок.",
+      "Если вы измените профиль, список пересчитается. Это нормально: подбор всегда опирается на ваши текущие данные.",
     "guide.ml.title": "ML в UniSearch (что это значит)",
     "guide.ml.p1":
       "ML — это машинное обучение. В UniSearch ML используется как дополнительный персонализирующий сигнал, а не замена правил поступления.",
@@ -717,7 +717,7 @@ const DICT = {
     "guide.unichance.p3":
       "Практическая интерпретация: 80-100 высокий шанс, 60-79 хороший, 40-59 средний, ниже 40 низкий.",
     "guide.unichance.p4":
-      "Блок Best Track показывает самый сильный путь внутри вуза и помогает найти более подходящие альтернативы.",
+      "Смотрите блок «Лучший трек»: он подсказывает, где у вас самый сильный вариант внутри вуза.",
     "guide.admission.title": "Термины admission track",
     "guide.admission.p1":
       "Admission track — это конкретный путь поступления. У одного вуза может быть несколько треков с разными требованиями и стоимостью.",
@@ -888,7 +888,7 @@ const DICT = {
       "{fit} нұсқаларды сәйкес келуіне қарай сұрыптайды, ал {chance} әр трек бойынша түсу ықтималдығын бағалайды.",
     "home.feature.finance_title": "Қаржылық айқындық",
     "home.feature.finance_desc":
-      "Нақты шығынды көріңіз. Жүйе шәкіртақылар мен қаржылық көмекті көрсетіп, бюджетіңізге сай университеттерді бөліп береді.",
+      "Оқу құнын және деректерде бар грант не жеңілдік нұсқаларын көріңіз. Бұл бюджетіңізді бағалауға көмектеседі.",
     "home.feature.data_title": "Дерекке негізделген шешім",
     "home.feature.data_desc":
       "Infomatrix үшін жасалған жоба: субъективтілікті азайту үшін құрылымдалған JSON деректері мен алгоритмдер қолданамыз.",

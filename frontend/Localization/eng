@@ -22,50 +22,50 @@ about.team_title: Core contributors
 about.title: We are the abiturient team behind UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
-guide.admission.p1: An admission track is a specific pathway into a program. One university can publish multiple tracks with different requirements and costs.
-guide.admission.p2: Requirements are minimum thresholds for eligibility. Real Average (Admitted) is often a better practical target where available.
-guide.admission.p3: Language rules are explicit: in mode any, one listed proof is enough; in mode all, every listed requirement must be satisfied.
-guide.admission.p4: Track-level scholarships and aid can change financial viability. Compare gross and effective cost when shortlisting.
-guide.admission.title: Admission Track Terms
-guide.exam_basics.p1: Admissions usually evaluate academic preparation and language readiness as separate dimensions.
-guide.exam_basics.p2: Domestic and international pathways can use different exam families (SAT, ACT, AP, IB, national exams, or institution-specific alternatives).
-guide.exam_basics.p3: Language certificates are especially important for international applicants and can differ by track.
-guide.exam_basics.p4: For strategy: confirm minimums, then target typical admitted levels, then distribute applications by risk level.
+guide.admission.p1: An admission track is one concrete way to enter the same university.
+guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with typical admitted scores.
+guide.admission.p3: Mode any means one language proof is enough. Mode all means every listed proof is required.
+guide.admission.p4: Scholarships and aid can noticeably reduce total cost, so always check track details.
+guide.admission.title: How to read admission tracks
+guide.exam_basics.p1: Admissions usually need two parts: academic scores and language proof.
+guide.exam_basics.p2: Requirements differ by country and university, so check each track directly.
+guide.exam_basics.p3: Language requirements are especially important for international programs.
+guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
 guide.exam_basics.title: Exam Basics (Admissions)
 guide.eyebrow: UniSearch Guide
 guide.glossary.title: Glossary
-guide.intro: This page explains key terms used in UniSearch: {fit} ranking logic, {chance} probability, admission tracks, score types, language proofs, and budget behavior.
+guide.intro: This page explains, in plain language, what profile data we use and how to read your results.
 guide.language_exams.title: Language Exams
 guide.loading_language_config: Loading language exam config
-guide.ml.p1: ML means Machine Learning. In UniSearch, ML is an additional personalization signal inside AI sorting, not a replacement for admission rules.
-guide.ml.p2: You can write free-text preferences in Profile (interests). Backend always translates this text to US English via self-hosted LibreTranslate before ML scoring, then compares it against university metadata using TF-IDF and cosine similarity.
-guide.ml.p3: Metadata text is built from university name, location, and program names, and is also enriched with description and tags.
-guide.ml.p4: Before scoring, common short words and abbreviations are normalized (for example: ict, gamedev, ui/ux, genai) to improve matching quality.
-guide.ml.p5: When interests are provided, ML is still calculated and returned in matchData.mlScore, but final ranking order is controlled by the weighted UniFit formula (PreferenceMismatch + AdmissionRisk). This keeps behavior deterministic while preserving personalization telemetry.
-guide.ml.title: ML in UniSearch (What it means)
-guide.muted.academic: Plain-language explanations of the academic scores used in UniSearch admission matching.
-guide.muted.language: Plain-language explanations of accepted language proofs across tracks.
+guide.ml.p1: In the Interests field, write what matters to you: major, city, budget, scholarships, campus style, and so on.
+guide.ml.p2: The system compares this text with university and program descriptions.
+guide.ml.p3: More specific interests usually give better recommendations.
+guide.ml.p4: You can keep it short, for example: computer science, scholarships, USA.
+guide.ml.p5: Interests help sort options, but they do not replace official university requirements.
+guide.ml.title: How interests are used
+guide.muted.academic: Short explanations of academic exams used in requirements.
+guide.muted.language: Short explanations of language exams and certificates.
 guide.nav.academic_exams: Academic Exams
 guide.nav.admission: Admission
 guide.nav.exam_basics: Exam Basics
 guide.nav.glossary: Glossary
 guide.nav.language_exams: Language Exams
-guide.title: How to use UniSearch and understand scores
-guide.unichance.p1: {chance} provides an estimate from 0 to 100 for each university and, when available, for each admission track. It is decision support, not a guarantee.
-guide.unichance.p2: The estimate is calculated from profile and track data: minimum requirements, typical admitted scores, language rules, acceptance context, and affordability.
-guide.unichance.p3: Suggested interpretation: 80-100 high chance, 60-79 good chance, 40-59 moderate chance, below 40 low chance.
-guide.unichance.p4: The Best Track output highlights the strongest path inside one university and helps find alternatives with better fit.
-guide.unichance.title: {chance} (0-100 Admission Probability)
-guide.unifit.p1: {fit} ranks universities by combining preference distance and admission probability. Focus/Atmosphere/Location sliders define PreferenceMismatch, while Finance switches admission mode (GrantChance vs GeneralChance). Final order uses FinalScore = 0.6 * PreferenceMismatch + 0.4 * AdmissionRisk (lower is better).
-guide.unifit.p2: Missing exam evidence is treated as conditional, not automatic fail. University cards explain recommendation reasons with prioritized badges: first "Conditional / Exam Needed", then vibe match ("Your Vibe" / "Top Match"), then finance path ("Likely Grant" or "Paid Admission").
-guide.unifit.p3: The model evaluates admission tracks separately when track data exists. That is why one university can look stronger than another for a specific student even if overall rank is lower.
-guide.unifit.p4: Because your profile can change, {fit} results are intentionally dynamic. Updating exam scores, languages, or budget should immediately affect ordering.
-guide.unifit.title: {fit} (AI Smart Sort)
-home.feature.ai_desc: {fit} ranks options by fit, while {chance} estimates your admission probability for each university track.
+guide.title: How UniSearch works in simple words
+guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
+guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
+guide.unichance.p3: Easy reading: 80-100 high, 60-79 good, 40-59 medium, below 40 low.
+guide.unichance.p4: Check Best Track to see where your chance is strongest inside that university.
+guide.unichance.title: {chance} (estimated admission chance 0-100)
+guide.unifit.p1: {fit} builds a university list for you. It uses your filters, budget, preferred locations, and profile data.
+guide.unifit.p2: If exam or language data is missing, you still see options, but we mark that extra proof may be needed.
+guide.unifit.p3: One university can have several admission tracks. We check each track separately, so your best option may be inside a lower-ranked university.
+guide.unifit.p4: When you update profile data, the order updates too. This is expected: results always reflect your current information.
+guide.unifit.title: {fit} (smart sorting)
+home.feature.ai_desc: {fit} helps sort options for you, and {chance} shows an estimated admission chance.
 home.feature.ai_title: {fit} + {chance} AI
-home.feature.data_desc: Built for the Infomatrix competition, we use structured JSON data and algorithms to eliminate bias in university selection.
-home.feature.data_title: Data-Driven Decisions
-home.feature.finance_desc: See the real cost. Our system highlights Merit-based and Need-based aid opportunities, flagging universities that fit your wallet.
+home.feature.data_desc: We gather requirements, costs, and scholarships in one place so it is easier to compare universities.
+home.feature.data_title: Simple Comparison
+home.feature.finance_desc: See tuition and study costs, plus grant or discount options when they are available in the data.
 home.feature.finance_title: Financial Clarity
 home.hero.desc: UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
 home.scope.bachelor_only: Current recommendations and analytics cover bachelor's degree tracks only.
@@ -73,14 +73,14 @@ home.hero.rankings: View Ranking
 home.hero.start: Start Matching
 home.hero.title: Find your dream university with AI Power
 home.hero.title_html: Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
-home.journey.kicker: Decision-ready in minutes
+home.journey.kicker: University matching
 home.journey.title: Choose your ideal university
-home.journey.desc: Compare requirements, costs, and admission chances in one focused flow.
-home.journey.step1.title: Fill profile once
+home.journey.desc: Compare requirements, costs, and admission chances in one place.
+home.journey.step1.title: Fill your profile
 home.journey.step1.desc: Add budget, GPA, exams, and languages for accurate matching.
-home.journey.step2.title: Tune filters fast
-home.journey.step2.desc: Narrow options by country, city, and cost range in a couple of clicks.
-home.journey.step3.title: Compare tracks clearly
+home.journey.step2.title: Set filters
+home.journey.step2.desc: Select country, city, and cost range.
+home.journey.step3.title: Compare tracks
 home.journey.step3.desc: Open university cards to review admission paths, cost, and scholarship potential.
 home.stats.countries: Countries
 home.stats.open_source_value: Full
@@ -174,7 +174,7 @@ profile.unit.usd_year: USD / year
 ranking.acceptance: Acceptance Rate
 ranking.failed: Failed to load ranking.
 ranking.loading: Loading ranking
-ranking.subtitle: Top universities ranked by academic prestige and research impact (2025)
+ranking.subtitle: Popular universities by study quality and opportunities (2025)
 ranking.title: Global University Ranking
 title.about: About Us | UniSearch
 title.guide: Guide | UniSearch
@@ -233,11 +233,11 @@ universities.help.country: Filters universities by country. Works together with 
 universities.help.state_region: Narrows results inside the selected country. Useful for large countries with many cities.
 universities.help.city: Shows universities in a specific city after country/region is selected.
 universities.help.cost_per_year: Sets min/max annual cost filter. The list includes only universities inside this range.
-universities.help.sort_strategy: UniFit uses your profile and sliders. Other options sort alphabetically or by cost only.
-universities.help.tradeoff.focus: Shifts between applied career-practice orientation and science-research orientation.
-universities.help.tradeoff.atmosphere: Shifts between social campus life and academically intense study environment.
-universities.help.tradeoff.finance: Controls admission mode: left prioritizes grant chance, right prioritizes general/paid admission chance.
-universities.help.tradeoff.location: Shifts between preference for big-city lifestyle and cozy campus-style locations.
+universities.help.sort_strategy: {fit} sorts using your profile. Other modes sort only by name or cost.
+universities.help.tradeoff.focus: Choose whether you want more practice-oriented study or more theory and research.
+universities.help.tradeoff.atmosphere: Choose between active student life and a calmer study-focused environment.
+universities.help.tradeoff.finance: Left side favors grant-focused options. Right side also favors paid options.
+universities.help.tradeoff.location: Left side favors big cities. Right side favors smaller and quieter campuses.
 universities.sort_ai: ✨ {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
@@ -315,16 +315,16 @@ guide.academic.nuettotal: This is a combined entrance test score used in specifi
 guide.academic.sat: SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics.
 guide.academic.unt: UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways.
 guide.glossary.admission_track: A specific way to apply to a university (e.g., direct, exam-based, scholarship path).
-guide.glossary.chance: AI probability (0-100) of your admission, computed per track from your profile and requirements.
-guide.glossary.fit: AI ranking mode that balances prestige, affordability, and admission feasibility.
-guide.glossary.intro: This glossary defines the exact terms used throughout UniSearch so users can interpret ranking and probability outputs consistently.
+guide.glossary.chance: {chance} is an estimated admission chance based on your data.
+guide.glossary.fit: {fit} is the smart sorting mode based on your profile.
+guide.glossary.intro: Short definitions of the terms you see on the site.
 guide.glossary.language_requirements: Accepted proof of language ability: native, CEFR, or language exam.
-guide.glossary.match_score: Internal {fit} ranking score; higher means a better fit for your profile.
+guide.glossary.match_score: A service score that shows how well a university fits your profile.
 guide.glossary.mode_all: You must satisfy every listed language requirement.
 guide.glossary.mode_any: You need to satisfy at least one listed language option.
 guide.glossary.requirements: Minimum scores to be considered for a track.
 guide.glossary.stats_avg: Typical scores of admitted students on that track.
-guide.glossary.swr: Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed.
+guide.glossary.swr: Cache behavior: we first show saved data, then refresh it in the background.
 guide.glossary.term.admission_track: Admission Track
 guide.glossary.term.language_requirements: Language Requirements
 guide.glossary.term.match_score: Match Score
@@ -332,7 +332,7 @@ guide.glossary.term.mode_all: Mode = all
 guide.glossary.term.mode_any: Mode = any
 guide.glossary.term.requirements: Requirements
 guide.glossary.term.stats_avg: Stats Avg
-guide.glossary.term.swr: SWR Cache
+guide.glossary.term.swr: Data Cache
 guide.language.by_code: This exam is used as language proof for {code}-language admission tracks.
 guide.language.cambridge: Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.
 guide.language.default: This language proficiency exam is used to verify readiness for study in the program language.
@@ -381,7 +381,7 @@ roi.context.matched_major: Calculation based on {major} graduates from this univ
 roi.context.missing_major: Select your Major in Profile to see precise ROI for your field.
 roi.estimated_salary: Est. Graduate Salary
 roi.explain: It calculates how many times your first annual salary covers the cost of one year of education.
-roi.formula: Formula: Avg. Graduate Salary / Annual Tuition Cost
+roi.formula: Simple idea: compare average graduate salary with the cost of one study year.
 roi.label.high_investment: High Investment
 roi.per_year_early: per year (early career)
 roi.score: ROI Score
@@ -393,7 +393,7 @@ tour.finish: Finish
 tour.next: Next
 tour.open_profile: Open Profile
 tour.skip: Skip
-tour.step1.desc: This page helps you quickly shortlist universities by location, tuition, and fit for your profile.
+tour.step1.desc: This page helps you quickly pick universities by country, cost, and your profile.
 tour.step1.kicker: Welcome
 tour.step1.point1: Use search + filters in the left panel.
 tour.step1.point2: Switch between List and Map view on the top right.
@@ -419,5 +419,5 @@ tour.step4.point3: Compare yearly cost and scholarships before applying.
 tour.step4.title: Open details and compare tracks
 unifit.warning.cancel: Cancel
 unifit.warning.confirm: Okay I understand
-unifit.warning.desc: UniFit works best when your profile includes exam scores or language evidence. Without them, the AI ranking may be less accurate.
+unifit.warning.desc: UniFit is more accurate when your profile includes exam or language scores.
 unifit.warning.title: Limited Profile Data
