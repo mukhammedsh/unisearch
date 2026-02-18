@@ -161,6 +161,8 @@
   gap: 8px;
   flex-shrink: 0;
   flex-wrap: wrap;
+  order: 0;
+  margin-top: 2px;
 }
 
 .d-title {
@@ -170,7 +172,8 @@
   color: var(--text);
   line-height: 1.2;
   min-width: 0;
-  flex: 1 1 320px;
+  flex: 0 1 auto;
+  max-width: min(100%, 760px);
   overflow-wrap: anywhere;
   word-break: break-word;
 }
