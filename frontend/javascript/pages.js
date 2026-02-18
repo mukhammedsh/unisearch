@@ -65,6 +65,42 @@ function safePathSegment(raw) {
 }
 
 const MOBILE_IMAGE_MAX_WIDTH = 640;
+let rankingBadgeResizeBound = false;
+let rankingBadgeResizeRaf = 0;
+
+function fitRankingBadgeText(container) {
+  if (!container) return;
+  const badges = Array.from(container.querySelectorAll(".rank-badge"));
+  badges.forEach((badge) => {
+    const baseSize = 13;
+    const minSize = 9;
+    let size = baseSize;
+    badge.style.fontSize = `${baseSize}px`;
+    badge.style.whiteSpace = "nowrap";
+
+    // Keep single-line badge text, shrinking only as much as needed.
+    while (badge.scrollWidth > badge.clientWidth && size > minSize) {
+      size -= 0.25;
+      badge.style.fontSize = `${size.toFixed(2)}px`;
+    }
+  });
+}
+
+function ensureRankingBadgeResizeHandler() {
+  if (rankingBadgeResizeBound) return;
+  const onViewportChange = () => {
+    if (rankingBadgeResizeRaf) cancelAnimationFrame(rankingBadgeResizeRaf);
+    rankingBadgeResizeRaf = requestAnimationFrame(() => {
+      rankingBadgeResizeRaf = 0;
+      const listEl = document.getElementById("rankingList");
+      if (!listEl) return;
+      fitRankingBadgeText(listEl);
+    });
+  };
+  window.addEventListener("resize", onViewportChange, { passive: true });
+  window.addEventListener("orientationchange", onViewportChange, { passive: true });
+  rankingBadgeResizeBound = true;
+}
 
 function trCountry(value) {
   return translateDataValue("country", value, value);
@@ -2860,6 +2896,7 @@ export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
     if (!listEl) return;
     window.addEventListener("languageChanged", () => { initRankingPage(); }, { once: true });
+    ensureRankingBadgeResizeHandler();
 
     try {
         // Запрашиваем 200 вузов
@@ -2910,6 +2947,7 @@ export async function initRankingPage() {
         }).join("");
 
         listEl.innerHTML = html;
+        requestAnimationFrame(() => fitRankingBadgeText(listEl));
 
     } catch (err) {
         console.error(err);

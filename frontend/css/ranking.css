@@ -67,6 +67,7 @@
 .rank-logo {
     width: 64px;
     height: 64px;
+    flex: 0 0 64px;
     border-radius: 12px;
     margin-right: 20px;
     background: #fff;
@@ -74,9 +75,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
+    padding: 6px;
+    overflow: hidden;
 }
-.rank-logo img { width: 100%; height: 100%; object-fit: contain; }
+.rank-logo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
+    border-radius: 8px;
+}
 
 .rank-info { flex-grow: 1; }
 .rank-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
@@ -89,6 +99,8 @@
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
+    white-space: nowrap;
+    line-height: 1.15;
 }
 
 .rank-source {
@@ -140,6 +152,7 @@
     .rank-logo {
         width: 48px;
         height: 48px;
+        flex: 0 0 48px;
         margin-right: 10px;
         border-radius: 10px;
     }
