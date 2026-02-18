@@ -79,14 +79,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   applyAINameConfig();
   applyTranslations(document);
   initLanguagesPanel();
-
-  const badge = document.querySelector(".hero-badge");
+  
   const path = window.location.pathname;
   const isUniversitiesPage = isUniversitiesListPath(path) || document.getElementById("universitiesList");
-
-  if (badge && window.APP_VERSION) {
-    badge.textContent = `${window.APP_VERSION} • QOL (Quality of Life)`;
-  }
 
   if (isUniversitiesPage) {
     // Keep universities first paint focused on list data; preload configs shortly after.
@@ -120,20 +115,106 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.addEventListener("languageChanged", () => {
     applyAINameConfig();
     applyTranslations(document);
+    const uniStat = document.getElementById("stat-uni");
+    const countryStat = document.getElementById("stat-countries");
+    if (uniStat && countryStat) {
+      renderHomeCoverage(uniStat.dataset.count || uniStat.textContent, countryStat.dataset.count || countryStat.textContent);
+    }
   });
 });
+
+function resolveUiLang() {
+  const htmlLang = String(document.documentElement.getAttribute("lang") || "").trim().toLowerCase();
+  if (htmlLang.startsWith("ru")) return "rus";
+  if (htmlLang.startsWith("kk") || htmlLang.startsWith("kz")) return "kz";
+  return "eng";
+}
+
+function normalizeCount(value, fallback = 0) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(0, Math.round(n));
+}
+
+function formatCountForUi(value, lang) {
+  const locale = lang === "rus" ? "ru-RU" : (lang === "kz" ? "kk-KZ" : "en-US");
+  try {
+    return new Intl.NumberFormat(locale).format(normalizeCount(value, 0));
+  } catch (e) {
+    return String(normalizeCount(value, 0));
+  }
+}
+
+function getRuPluralCategory(count) {
+  const n = Math.abs(normalizeCount(count, 0));
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return "one";
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "few";
+  return "many";
+}
+
+function getCountNoun(kind, count, lang) {
+  const n = normalizeCount(count, 0);
+  if (kind === "countries") {
+    if (lang === "rus") {
+      const cat = getRuPluralCategory(n);
+      if (cat === "one") return "страна";
+      if (cat === "few") return "страны";
+      return "стран";
+    }
+    if (lang === "kz") return "ел";
+    return n === 1 ? "country" : "countries";
+  }
+
+  if (kind === "universities") {
+    if (lang === "rus") {
+      const cat = getRuPluralCategory(n);
+      if (cat === "one") return "университет";
+      if (cat === "few") return "университета";
+      return "университетов";
+    }
+    if (lang === "kz") return "университет";
+    return n === 1 ? "university" : "universities";
+  }
+
+  return "";
+}
+
+function renderHomeCoverage(universitiesTotal, countriesTotal) {
+  const uniStat = document.getElementById("stat-uni");
+  const countryStat = document.getElementById("stat-countries");
+  const uniLabel = document.getElementById("stat-uni-label");
+  const countryLabel = document.getElementById("stat-country-label");
+  if (!uniStat || !countryStat || !uniLabel || !countryLabel) return;
+
+  const uniCount = normalizeCount(universitiesTotal, normalizeCount(uniStat.dataset.count || uniStat.textContent || 0, 0));
+  const countryCount = normalizeCount(countriesTotal, normalizeCount(countryStat.dataset.count || countryStat.textContent || 0, 0));
+  const lang = resolveUiLang();
+
+  uniStat.dataset.count = String(uniCount);
+  countryStat.dataset.count = String(countryCount);
+  uniStat.textContent = formatCountForUi(uniCount, lang);
+  countryStat.textContent = formatCountForUi(countryCount, lang);
+  uniLabel.textContent = getCountNoun("universities", uniCount, lang);
+  countryLabel.textContent = getCountNoun("countries", countryCount, lang);
+}
 
 async function initHomePageStats() {
   const uniStat = document.getElementById("stat-uni");
   const countryStat = document.getElementById("stat-countries");
   if (!uniStat || !countryStat) return;
 
+  renderHomeCoverage(
+    normalizeCount(uniStat.dataset.count || uniStat.textContent || 0, 0),
+    normalizeCount(countryStat.dataset.count || countryStat.textContent || 0, 0)
+  );
+
   try {
     const resStats = await fetch(`${API_BASE}/stats`);
     if (resStats.ok) {
       const dataStats = await resStats.json();
-      if (dataStats.universities_total) uniStat.textContent = dataStats.universities_total + "+";
-      if (dataStats.countries_total) countryStat.textContent = dataStats.countries_total;
+      renderHomeCoverage(dataStats.universities_total, dataStats.countries_total);
       return;
     }
     const resUni = await fetch(`${API_BASE}/universities?limit=1`);
@@ -142,9 +223,7 @@ async function initHomePageStats() {
     const resLoc = await fetch(`${API_BASE}/locations`);
     const dataLoc = await resLoc.json();
 
-    if (dataUni.total) uniStat.textContent = dataUni.total + "+";
-    const countryCount = Object.keys(dataLoc).length;
-    if (countryCount) countryStat.textContent = countryCount;
+    renderHomeCoverage(dataUni.total, Object.keys(dataLoc || {}).length);
   } catch (e) {
     console.error("Failed to load stats:", e);
   }

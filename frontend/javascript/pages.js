@@ -1905,6 +1905,49 @@ export async function initUniversityPage() {
     return;
   }
 
+  const initDetailInfoTooltips = () => {
+    const wraps = Array.from(document.querySelectorAll(".d-info-wrap"));
+    if (!wraps.length) return;
+
+    const closeAll = () => wraps.forEach((w) => w.classList.remove("is-open"));
+    document.addEventListener("click", (evt) => {
+      if (!(evt.target instanceof Element)) return;
+      if (evt.target.closest(".d-info-wrap")) return;
+      closeAll();
+    });
+
+    wraps.forEach((wrap) => {
+      const btn = wrap.querySelector(".d-info");
+      if (!btn) return;
+
+      let holdTimer = null;
+      btn.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const willOpen = !wrap.classList.contains("is-open");
+        closeAll();
+        if (willOpen) wrap.classList.add("is-open");
+      });
+
+      btn.addEventListener("touchstart", (evt) => {
+        evt.stopPropagation();
+        holdTimer = window.setTimeout(() => {
+          closeAll();
+          wrap.classList.add("is-open");
+        }, 420);
+      }, { passive: true });
+
+      const clearHold = () => {
+        if (holdTimer) {
+          window.clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+      };
+      btn.addEventListener("touchend", clearHold, { passive: true });
+      btn.addEventListener("touchcancel", clearHold, { passive: true });
+    });
+  };
+
   try {
     setDetailLoading(true);
     if (stateEl) stateEl.textContent = "";
@@ -2017,11 +2060,33 @@ export async function initUniversityPage() {
         
         const campusSizeRaw = String(u.student_life?.size || "Medium");
         const campusSize = escapeHtml(translateDataValue("campus_size", campusSizeRaw, campusSizeRaw));
+        const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
+        const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
+        const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m² (up to 50 ha)"));
+        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000-2,000,000 m² (50-200 ha)"));
+        const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 m² (200+ ha)"));
+        const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
         recDiv.innerHTML = `
             <div class="d-kv"><span>${escapeHtml(translateWord("global_rank", "Global Rank"))}</span>${rankHtml}</div>
             <div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
-            <div class="d-kv" style="border-bottom:none;"><span>${escapeHtml(translateWord("campus_size", "Campus Size"))}</span><span>${campusSize}</span></div>
+            <div class="d-kv" style="border-bottom:none;">
+              <span class="d-kv-label">
+                ${campusSizeLabel}
+                <span class="d-info-wrap">
+                  <button type="button" class="d-info" aria-label="${campusSizeInfoTitle}" title="${campusSizeInfoTitle}">i</button>
+                  <span class="d-tooltip" role="tooltip">
+                    <strong>${campusSizeInfoTitle}</strong>
+                    <span>${campusSizeInfoSmall}</span>
+                    <span>${campusSizeInfoMedium}</span>
+                    <span>${campusSizeInfoLarge}</span>
+                    <span>${campusSizeInfoNote}</span>
+                  </span>
+                </span>
+              </span>
+              <span>${campusSize}</span>
+            </div>
         `;
+        initDetailInfoTooltips();
     }
 
     const extraDiv = document.getElementById("detailExtra");

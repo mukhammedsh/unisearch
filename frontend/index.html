@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <base href="/" />
+  <base href="./" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.index">UniSearch - AI University Finder</title>
   <script src="javascript/theme-init.js"></script>
@@ -19,7 +19,6 @@
 
   <section class="hero-section">
       <div class="hero-text">
-          <span class="hero-badge">v2.5.0</span>
           <h1 class="hero-title" data-i18n-html="home.hero.title_html">
               Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
           </h1>
@@ -65,24 +64,50 @@
   </section>
 
   <section class="stats-section">
-      <div class="stats-grid">
-        <div class="stat-item">
-            <h3 id="stat-uni">20+</h3>
-            <p data-i18n="home.stats.top_universities">Top Universities</p>
-        </div>
-        <div class="stat-item">
-            <h3 id="stat-countries">13</h3>
-            <p data-i18n="home.stats.countries">Countries</p>
-        </div>
-        <div class="stat-item">
-            <h3 data-i18n="home.stats.open_source_value">Full</h3>
-            <p data-i18n="home.stats.open_source">Open Source</p>
-        </div>
-        <div class="stat-item">
-            <h3 data-i18n-html="home.stats.ai_short_html"><span class="ai-gold">AI</span></h3>
-            <p data-i18n="home.stats.ranking_chance">Ranking + Chance</p>
-        </div>
-    </div>
+      <div class="home-journey-grid">
+          <article class="home-journey-card home-journey-card--live">
+              <p class="home-journey-kicker" data-i18n="home.journey.kicker">Decision-ready in minutes</p>
+              <h2 class="home-journey-title" data-i18n="home.journey.title">Build your shortlist with confidence</h2>
+              <p class="home-journey-desc" data-i18n="home.journey.desc">
+                  Compare requirements, costs, and admission chances in one focused flow.
+              </p>
+              <div class="home-journey-live">
+                  <div class="home-live-item">
+                      <span id="stat-uni" class="home-live-value">20</span>
+                      <span id="stat-uni-label" class="home-live-label">universities</span>
+                  </div>
+                  <span class="home-live-divider" aria-hidden="true"></span>
+                  <div class="home-live-item">
+                      <span id="stat-countries" class="home-live-value">13</span>
+                      <span id="stat-country-label" class="home-live-label">countries</span>
+                  </div>
+              </div>
+          </article>
+
+          <article class="home-journey-card">
+              <div class="home-journey-step">1</div>
+              <h3 data-i18n="home.journey.step1.title">Fill profile once</h3>
+              <p data-i18n="home.journey.step1.desc">
+                  Add budget, GPA, exams, and languages for accurate matching.
+              </p>
+          </article>
+
+          <article class="home-journey-card">
+              <div class="home-journey-step">2</div>
+              <h3 data-i18n="home.journey.step2.title">Tune filters fast</h3>
+              <p data-i18n="home.journey.step2.desc">
+                  Narrow options by country, city, and cost range in a couple of clicks.
+              </p>
+          </article>
+
+          <article class="home-journey-card">
+              <div class="home-journey-step">3</div>
+              <h3 data-i18n="home.journey.step3.title">Compare tracks clearly</h3>
+              <p data-i18n="home.journey.step3.desc">
+                  Open university cards to review admission paths, cost, and scholarship potential.
+              </p>
+          </article>
+      </div>
   </section>
 
   <section class="features-section">

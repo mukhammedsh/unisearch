@@ -73,6 +73,15 @@ home.hero.rankings: View Ranking
 home.hero.start: Start Matching
 home.hero.title: Find your dream university with AI Power
 home.hero.title_html: Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
+home.journey.kicker: Decision-ready in minutes
+home.journey.title: Choose your ideal university
+home.journey.desc: Compare requirements, costs, and admission chances in one focused flow.
+home.journey.step1.title: Fill profile once
+home.journey.step1.desc: Add budget, GPA, exams, and languages for accurate matching.
+home.journey.step2.title: Tune filters fast
+home.journey.step2.desc: Narrow options by country, city, and cost range in a couple of clicks.
+home.journey.step3.title: Compare tracks clearly
+home.journey.step3.desc: Open university cards to review admission paths, cost, and scholarship potential.
 home.stats.countries: Countries
 home.stats.open_source_value: Full
 home.stats.open_source: Open Source

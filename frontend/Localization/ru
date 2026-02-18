@@ -73,6 +73,15 @@ home.hero.rankings: Смотреть рейтинг
 home.hero.start: Начать подбор
 home.hero.title: Найдите университет мечты с помощью ИИ
 home.hero.title_html: Найдите университет мечты с <span class="text-gradient"><span class="ai-gold">помощью ИИ</span></span>
+home.journey.kicker: Решение за несколько минут
+home.journey.title: Выбери идеальный университет
+home.journey.desc: Сравнивайте требования, стоимость и шанс поступления в одном понятном потоке.
+home.journey.step1.title: Заполните профиль один раз
+home.journey.step1.desc: Добавьте бюджет, GPA, экзамены и языки, чтобы подбор стал точнее.
+home.journey.step2.title: Быстро настройте фильтры
+home.journey.step2.desc: Сузьте варианты по стране, городу и диапазону стоимости за пару кликов.
+home.journey.step3.title: Сравнивайте треки по делу
+home.journey.step3.desc: Открывайте карточки вузов и проверяйте пути поступления, стоимость и стипендии.
 home.stats.countries: Страны
 home.stats.open_source_value: Полный
 home.stats.open_source: Открытый код

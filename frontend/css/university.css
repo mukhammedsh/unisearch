@@ -82,7 +82,7 @@
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 6px 18px rgba(0,0,0,.05);
 }
 
@@ -312,8 +312,78 @@
   font-size: 14px;
 }
 .d-kv:last-child { border-bottom: 0; }
-.d-kv span:first-child { color: var(--muted); font-weight: 700; }
-.d-kv span:last-child { color: var(--text); font-weight: 800; }
+.d-kv > span:first-child { color: var(--muted); font-weight: 700; }
+.d-kv > span:last-child { color: var(--text); font-weight: 800; }
+
+.d-kv-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.d-info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.d-info {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: #5715db;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.d-tooltip {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  width: min(320px, 76vw);
+  background: #101010;
+  color: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  z-index: 30;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.d-tooltip strong {
+  display: block;
+  margin-bottom: 7px;
+}
+
+.d-tooltip span {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.d-tooltip span:last-child {
+  margin-bottom: 0;
+  color: #d1d5db;
+}
+
+.d-info-wrap:hover .d-tooltip,
+.d-info-wrap:focus-within .d-tooltip,
+.d-info-wrap.is-open .d-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* =========================================
    PROGRAM CARDS
@@ -1269,6 +1339,22 @@
 
 :root[data-theme="dark"] .uni-description-source a {
   color: #9bb8ff;
+}
+
+:root[data-theme="dark"] .d-info {
+  background: #1a1a1a;
+  border-color: #4a4a4a;
+  color: #b48cff;
+}
+
+:root[data-theme="dark"] .d-tooltip {
+  background: #f4f4f5;
+  color: #18181b;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="dark"] .d-tooltip span:last-child {
+  color: #3f3f46;
 }
 
 :root[data-theme="dark"] .d-tabs {

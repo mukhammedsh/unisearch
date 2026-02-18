@@ -457,6 +457,7 @@ function initLanguageSwitcher() {
     if (!languageSelect) return;
     if (languageSelect.dataset.bound === "1") {
         languageSelect.value = getCurrentLanguage();
+        initCustomSelect("languageSelect");
         return;
     }
     languageSelect.dataset.bound = "1";
@@ -471,6 +472,7 @@ function initLanguageSwitcher() {
 
     window.addEventListener("languageChanged", () => {
         languageSelect.value = getCurrentLanguage();
+        initCustomSelect("languageSelect");
     });
 }
 

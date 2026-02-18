@@ -70,6 +70,11 @@ const TRANSLATIONS = {
     study_mode: {
       on_campus: "Очно (кампус)",
     },
+    campus_size: {
+      small: "Небольшой",
+      medium: "Средний",
+      large: "Большой",
+    },
     tag: {
       research: "исследования",
       stem: "STEM",
@@ -146,6 +151,11 @@ const TRANSLATIONS = {
       no_program_data: "Нет данных по программам.",
       global_rank: "Глобальный рейтинг",
       campus_size: "Размер кампуса",
+      campus_size_info_title: "Как интерпретировать размер кампуса",
+      campus_size_info_small: "Small: до 500 000 м² (до 50 га)",
+      campus_size_info_medium: "Medium: 500 000-2 000 000 м² (50-200 га)",
+      campus_size_info_large: "Large: более 2 000 000 м² (200+ га)",
+      campus_size_info_note: "Диапазоны ориентировочные и нужны для удобного сравнения.",
       focus_tags: "Ключевые теги",
       total_students: "Всего студентов",
       study_formats: "Форматы обучения",
@@ -269,6 +279,11 @@ const TRANSLATIONS = {
     study_mode: {
       on_campus: "Кампуста",
     },
+    campus_size: {
+      small: "Шағын",
+      medium: "Орташа",
+      large: "Үлкен",
+    },
     tag: {
       research: "зерттеу",
       stem: "STEM",
@@ -345,6 +360,11 @@ const TRANSLATIONS = {
       no_program_data: "Бағдарламалар туралы дерек жоқ.",
       global_rank: "Жаһандық рейтинг",
       campus_size: "Кампус көлемі",
+      campus_size_info_title: "Кампус өлшемін қалай түсінуге болады",
+      campus_size_info_small: "Small: 500 000 м² дейін (50 га дейін)",
+      campus_size_info_medium: "Medium: 500 000-2 000 000 м² (50-200 га)",
+      campus_size_info_large: "Large: 2 000 000 м²-ден жоғары (200+ га)",
+      campus_size_info_note: "Бұл шамамен алынған диапазондар, салыстыруға ыңғайлы болу үшін берілген.",
       focus_tags: "Негізгі тегтер",
       total_students: "Студент саны",
       study_formats: "Оқу форматтары",

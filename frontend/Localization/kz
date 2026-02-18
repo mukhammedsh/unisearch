@@ -73,6 +73,15 @@ home.hero.rankings: Рейтингті көру
 home.hero.start: Іздеуді бастау
 home.hero.title: Армандаған университетіңізді ЖИ көмегімен табыңыз
 home.hero.title_html: Армандаған университетіңізді <span class="text-gradient"><span class="ai-gold">ЖИ көмегімен</span></span> табыңыз
+home.journey.kicker: Шешім қабылдауға бірнеше минут
+home.journey.title: Өзіңе мінсіз университетті таңда
+home.journey.desc: Талаптар, шығын және түсу ықтималдығын бір ағында салыстырыңыз.
+home.journey.step1.title: Профильді бір рет толтырыңыз
+home.journey.step1.desc: Бюджет, GPA, емтихан және тіл деректерін қосып, сәйкестікті дәлірек етіңіз.
+home.journey.step2.title: Фильтрлерді жылдам баптаңыз
+home.journey.step2.desc: Ел, қала және баға диапазоны бойынша нұсқаларды бірнеше қадамда тарылтыңыз.
+home.journey.step3.title: Тректерді нақты салыстырыңыз
+home.journey.step3.desc: Университет карточкаларын ашып, түсу жолдарын, құнын және шәкіртақы мүмкіндігін қараңыз.
 home.stats.countries: Елдер
 home.stats.open_source_value: Толық
 home.stats.open_source: Ашық код
