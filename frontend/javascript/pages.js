@@ -1159,12 +1159,17 @@ export function initUniversitiesPage() {
         markersByUniId = new Map();
         const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
+        const mapViewportHeight = Number(el.mapContainer?.clientHeight || 0);
+        const popupMaxHeight = Math.max(220, mapViewportHeight - (isCompactViewport ? 28 : 40));
         const popupOptions = {
             minWidth: isCompactViewport ? 220 : 280,
             maxWidth: isCompactViewport ? 280 : 320,
+            maxHeight: popupMaxHeight,
             className: "custom-map-popup",
-            autoPan: isCompactViewport,
-            keepInView: isCompactViewport
+            autoPan: true,
+            keepInView: true,
+            autoPanPaddingTopLeft: L.point(20, 20),
+            autoPanPaddingBottomRight: L.point(20, 20)
         };
         const newMarkers = [];
         items.forEach(u => {
@@ -1179,7 +1184,18 @@ export function initUniversitiesPage() {
                 });
                 const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
                 marker.bindPopup(cardHTML, popupOptions);
-                marker.on('click', function(e) { this.setZIndexOffset(1000); mapInstance.flyTo(e.target.getLatLng(), 16, { animate: true, duration: 3.0, easeLinearity: 0.1 }); setTimeout(() => { if (!marker.getPopup().isOpen()) marker.openPopup(); }, 100); });
+                marker.on('click', function(e) {
+                    const clickedMarker = this;
+                    clickedMarker.setZIndexOffset(1000);
+                    mapInstance.once('moveend', () => {
+                        if (!clickedMarker.getPopup().isOpen()) clickedMarker.openPopup();
+                    });
+                    mapInstance.flyTo(e.target.getLatLng(), 16, {
+                        animate: true,
+                        duration: 1.0,
+                        easeLinearity: 0.2
+                    });
+                });
                 newMarkers.push(marker);
                 markersByUniId.set(uniId, marker);
             }
@@ -1190,11 +1206,11 @@ export function initUniversitiesPage() {
             if (target) {
                 focusUniDone = true;
                 const latLng = target.getLatLng();
-                mapInstance.flyTo(latLng, 14, { animate: true, duration: 1.2 });
-                setTimeout(() => {
+                mapInstance.once('moveend', () => {
                     target.setZIndexOffset(1200);
                     target.openPopup();
-                }, 700);
+                });
+                mapInstance.flyTo(latLng, 14, { animate: true, duration: 1.2 });
             }
         }
     }
@@ -1997,8 +2013,6 @@ export async function initUniversityPage() {
         const p = new URLSearchParams();
         p.set("view", "map");
         p.set("focus_uni", String(u.id || id));
-        if (u.location?.country) p.set("country", String(u.location.country));
-        if (u.location?.city) p.set("city", String(u.location.city));
         mapBtn.href = routeUniversities(p);
         mapBtn.style.display = "inline-flex";
     }
