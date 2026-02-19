@@ -3,7 +3,7 @@ meta.code: rus
 about.bio.docs: Помогал с тестированием и интерфейсом, с переводом на русский и казахский, отвечает за видеодокументацию и презентацию.
 about.bio.lead: Отвечает за весь код и реализацию всех идей. Является капитаном команды и принимает ключевые решения по проекту.
 about.bio.planning: Отвечает за текстовую документацию, большинство идей и улучшений, а также за многочисленные тесты сайта.
-about.contact.email: Email
+about.contact.email: Эл. почта
 about.contact.github: GitHub
 about.contact_kicker: Контакты
 about.contact_title: Свяжитесь с нами
@@ -23,8 +23,8 @@ about.title: Мы команда абитуриентов UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Трек поступления - это конкретный путь поступления в один и тот же университет.
-guide.admission.p2: Requirements - это минимальные требования. Для надежного плана сравнивайте себя еще и с типичными баллами поступивших.
-guide.admission.p3: Mode any: достаточно одного языкового подтверждения. Mode all: нужны все перечисленные подтверждения.
+guide.admission.p2: Требования — это минимальный порог. Для надежного плана сравнивайте себя и с типичными баллами зачисленных.
+guide.admission.p3: Языковое правило: в одних треках достаточно одного подтверждения, а в других нужны все перечисленные подтверждения.
 guide.admission.p4: Стипендии и помощь могут заметно снизить итоговую стоимость, поэтому проверяйте это в каждом треке.
 guide.admission.title: Как читать треки поступления
 guide.exam_basics.p1: Обычно для поступления нужны две части: академические баллы и подтверждение языка.
@@ -93,7 +93,7 @@ nav.about: О нас
 nav.close_menu: Закрыть меню
 nav.guide: Гайд
 nav.home: Главная
-nav.lang.eng: English (US)
+nav.lang.eng: Английский (США)
 nav.lang.kz: Қазақша
 nav.lang.rus: Русский
 nav.language: Язык
@@ -292,7 +292,7 @@ guide.academic.ibdiploma: Балл IB Diploma — это общий резуль
 guide.academic.intro: Ниже перечислены академические экзамены, которые UniSearch использует для сопоставления треков поступления и повышения качества рекомендаций.
 guide.academic.nuettotal: Это суммарный вступительный тестовый балл, используемый в отдельных институциональных маршрутах поступления.
 guide.academic.sat: SAT — стандартизированный экзамен для поступления на бакалавриат, ориентированный на чтение, письмо и математику.
-guide.academic.unt: UNT (Unified National Testing) — национальный экзамен Казахстана, используемый во многих маршрутах поступления на бакалавриат.
+guide.academic.unt: UNT (Единое национальное тестирование) — национальный экзамен Казахстана, используемый во многих маршрутах поступления на бакалавриат.
 guide.glossary.admission_track: Конкретный путь поступления в университет (например, прямой, экзаменационный или стипендиальный трек).
 guide.glossary.chance: {chance} - примерный шанс поступления по вашим данным.
 guide.glossary.fit: {fit} - умная сортировка университетов под ваш профиль.
@@ -307,8 +307,8 @@ guide.glossary.swr: Кэш: сначала показываются уже за�
 guide.glossary.term.admission_track: Трек поступления
 guide.glossary.term.language_requirements: Языковые требования
 guide.glossary.term.match_score: Оценка соответствия
-guide.glossary.term.mode_all: Режим = all
-guide.glossary.term.mode_any: Режим = any
+guide.glossary.term.mode_all: Режим: все варианты
+guide.glossary.term.mode_any: Режим: любой вариант
 guide.glossary.term.requirements: Требования
 guide.glossary.term.stats_avg: Средний балл (зачисленные)
 guide.glossary.term.swr: Кэш данных
@@ -342,6 +342,18 @@ languages.added: Язык добавлен
 languages.kind.native: Родной
 languages.kind.cefr: CEFR
 languages.kind.exam: Экзамен
+languages.name.kk: Казахский
+languages.name.kz: Казахский
+languages.name.ru: Русский
+languages.name.en: Английский
+languages.name.de: Немецкий
+languages.name.fr: Французский
+languages.name.nl: Нидерландский
+languages.name.zh: Китайский
+languages.name.ja: Японский
+languages.name.ko: Корейский
+languages.name.es: Испанский
+languages.name.it: Итальянский
 languages.select_exam: Выберите экзамен
 languages.select_type: Выберите тип
 languages.error.score_range: Балл должен быть в диапазоне {min} - {max}
@@ -361,12 +373,20 @@ roi.context.missing_major: Выберите специальность в про
 roi.estimated_salary: Оценочная зарплата выпускника
 roi.explain: Показывает, во сколько раз ваша первая годовая зарплата покрывает стоимость одного года обучения.
 roi.formula: Простая логика: сравниваем среднюю зарплату выпускника со стоимостью одного года обучения.
+roi.label.excellent_return: Отличная отдача
+roi.label.positive_return: Положительная отдача
 roi.label.high_investment: Высокие инвестиции
 roi.per_year_early: в год (ранний этап карьеры)
 roi.score: Оценка ROI
 roi.tip: Совет:
 roi.title: Оценочный ROI (окупаемость инвестиций)
 roi.what_is: Что такое ROI?
+cost_item_tuition: Обучение
+cost_item_housing_dorm: Проживание (общежитие)
+cost_item_housing_rent: Проживание (аренда)
+cost_item_food: Питание
+cost_item_books_transport_misc: Учебные материалы, транспорт и прочее
+cost_item_insurance_transport_misc: Страховка, транспорт и прочее
 tour.back: Назад
 tour.finish: Завершить
 tour.next: Далее

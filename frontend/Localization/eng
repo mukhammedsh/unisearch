@@ -343,6 +343,18 @@ languages.added: Language added
 languages.kind.native: Native
 languages.kind.cefr: CEFR
 languages.kind.exam: Exam
+languages.name.kk: Kazakh
+languages.name.kz: Kazakh
+languages.name.ru: Russian
+languages.name.en: English
+languages.name.de: German
+languages.name.fr: French
+languages.name.nl: Dutch
+languages.name.zh: Chinese
+languages.name.ja: Japanese
+languages.name.ko: Korean
+languages.name.es: Spanish
+languages.name.it: Italian
 languages.select_exam: Select exam
 languages.select_type: Select type
 languages.error.score_range: Score must be {min} - {max}
@@ -362,12 +374,20 @@ roi.context.missing_major: Select your Major in Profile to see precise ROI for y
 roi.estimated_salary: Est. Graduate Salary
 roi.explain: It calculates how many times your first annual salary covers the cost of one year of education.
 roi.formula: Simple idea: compare average graduate salary with the cost of one study year.
+roi.label.excellent_return: Excellent Return
+roi.label.positive_return: Positive Return
 roi.label.high_investment: High Investment
 roi.per_year_early: per year (early career)
 roi.score: ROI Score
 roi.tip: Tip:
 roi.title: Estimated ROI (Return on Investment)
 roi.what_is: What is ROI?
+cost_item_tuition: Tuition
+cost_item_housing_dorm: Housing (Dorm)
+cost_item_housing_rent: Housing (Rent)
+cost_item_food: Food
+cost_item_books_transport_misc: Books, Transport and Misc
+cost_item_insurance_transport_misc: Insurance, Transport and Misc
 tour.back: Back
 tour.finish: Finish
 tour.next: Next

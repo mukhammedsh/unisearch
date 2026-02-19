@@ -38,7 +38,9 @@ function normalizeKind(kindRaw) {
 
 function getLangLabel(cfg, code) {
   const item = (cfg.languages || []).find(x => x.code === code);
-  return item?.name || item?.label || code;
+  const normalizedCode = String(code || "").trim().toLowerCase();
+  const fallback = item?.native_name || item?.name || item?.label || normalizedCode || code;
+  return t(`languages.name.${normalizedCode}`, fallback);
 }
 
 function getLocalizedKindLabel(kindId, fallback = "") {

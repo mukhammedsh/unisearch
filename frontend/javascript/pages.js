@@ -161,6 +161,45 @@ function trProgramName(value) {
   return translateProgramName(raw, raw);
 }
 
+function normalizeTranslationKey(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
+function translateCostBreakdownLabel(rawKey) {
+  const key = normalizeTranslationKey(rawKey);
+  const fallback = String(rawKey || "")
+    .replace(/_/g, " ")
+    .trim();
+  if (!key) return fallback;
+  return translateWord(`cost_item_${key}`, fallback);
+}
+
+function localizeRoiLabel(rawLabel, tone = "") {
+  const value = String(rawLabel || "").trim().toLowerCase();
+  const toneValue = String(tone || "").trim().toLowerCase();
+
+  if (value.includes("excellent")) {
+    return t("roi.label.excellent_return", "Excellent Return");
+  }
+  if (value.includes("positive")) {
+    return t("roi.label.positive_return", "Positive Return");
+  }
+  if (value.includes("high investment")) {
+    return t("roi.label.high_investment", "High Investment");
+  }
+  if (toneValue === "excellent") {
+    return t("roi.label.excellent_return", "Excellent Return");
+  }
+  if (toneValue === "good") {
+    return t("roi.label.positive_return", "Positive Return");
+  }
+  return t("roi.label.high_investment", "High Investment");
+}
+
 function ruPlural(n, one, few, many) {
   const abs = Math.abs(Number(n)) % 100;
   const last = abs % 10;
@@ -2746,12 +2785,13 @@ export async function initUniversityPage() {
                         const color = colors[i % colors.length];
                         const numericVal = Number(val) || 0;
                         const percent = total > 0 ? ((numericVal / total) * 100) : 0;
-                        barHTML += `<div style="width:${percent}%; background:${color};" title="${escapeHtml(String(key))}"></div>`;
+                        const localizedCostLabel = translateCostBreakdownLabel(key);
+                        barHTML += `<div style="width:${percent}%; background:${color};" title="${escapeHtml(localizedCostLabel)}"></div>`;
                         legendHTML += `
                             <div style="display:flex; align-items:center; font-size:13px; margin-bottom:6px;">
                                 <div style="display:flex; align-items:center; gap:6px;">
                                     <span style="width:8px; height:8px; border-radius:50%; background:${color}; flex-shrink:0;"></span>
-                                    <span style="color:#555;">${escapeHtml(String(key)).replace(/_/g, " ")}</span>
+                                    <span style="color:#555;">${escapeHtml(localizedCostLabel)}</span>
                                 </div>
                                 <span style="font-weight:700; color:#111; margin-left:12px;">${moneyUSD(numericVal)}</span>
                             </div>
@@ -2760,7 +2800,7 @@ export async function initUniversityPage() {
                     }
                 } else {
                     barHTML += `<div style="width:100%; background:#3b82f6;"></div>`;
-                    legendHTML += `<div style="font-size:13px;">Tuition: <b>${moneyUSD(total)}</b></div>`;
+                    legendHTML += `<div style="font-size:13px;">${escapeHtml(translateCostBreakdownLabel("Tuition"))}: <b>${moneyUSD(total)}</b></div>`;
                 }
                 barHTML += `</div>`;
                 legendHTML += `</div>`;
@@ -2794,12 +2834,12 @@ export async function initUniversityPage() {
 
             // ROI block is calculated on backend.
             const roi = uniRoi || {};
-            const roiTitle = escapeHtml(String(roi.title || t("roi.title", "Estimated ROI (Return on Investment)")));
+            const roiTitle = escapeHtml(t("roi.title", String(roi.title || "Estimated ROI (Return on Investment)")));
             const roiValueNum = Number(roi.roi_value);
             const roiValue = Number.isFinite(roiValueNum) ? roiValueNum.toFixed(1) : "0.0";
             const userSalary = Number(roi.salary_used_usd) || 0;
-            const roiLabel = escapeHtml(String(roi.roi_label || t("roi.label.high_investment", "High Investment")));
             const roiTone = String(roi.roi_tone || "warn");
+            const roiLabel = escapeHtml(localizeRoiLabel(roi.roi_label, roiTone));
             const roiColor = (roiTone === "excellent" || roiTone === "good") ? "#059669" : "#d97706";
             const roiContextType = String(roi.context_type || "");
             const userMajor = escapeHtml(String(roi.user_major || ""));
