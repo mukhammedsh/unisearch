@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <base href="./" />
+  <script>
+    (function initBaseHref() {
+      var path = String(window.location.pathname || "");
+      var isPrettyUniversityDetail = /^\/universities\/[^/]+\/?$/.test(path);
+      var base = document.createElement("base");
+      base.setAttribute("href", isPrettyUniversityDetail ? "/" : "./");
+      document.head.appendChild(base);
+    })();
+  </script>
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.university">University | UniSearch</title>
   <script src="javascript/theme-init.js"></script>
