@@ -27,6 +27,10 @@ UniSearch is a full-stack web app for university selection using:
   - backward compatibility kept for `.html` routes, `/index`, and `university.html?id=...`
   - runtime frontend config moved to deploy-time `frontend/env.js` (no hardcoded host domain)
   - root `<base href="/">` added on pages to prevent blank detail page on nested routes
+- university media assets moved to backend:
+  - university logos/backgrounds are stored in `backend/data/university_assets/` and served by backend static route `/universities/assets/*`
+  - naming was standardized from `mobile` to `small` for reduced-size variants
+  - list/ranking cards now use `small` images on all devices by default, while university detail page always requests full-size images for better quality
 - QA coverage increased with new Playwright checks:
   - `tests/e2e/mobile-tablet-overflow.spec.js`
   - `tests/e2e/profile-enter-save.spec.js`
@@ -63,7 +67,21 @@ UniSearch is a full-stack web app for university selection using:
 ## Core architecture
 - Frontend: Vanilla JS + HTML/CSS (`frontend/`)
 - Backend: FastAPI (`backend/app/`) - **monolithic backend** (modular monolith, not microservices)
-- Data: JSON datasets (`backend/data/*.json`)
+- Data:
+  - JSON datasets (`backend/data/*.json`)
+  - university media assets (`backend/data/university_assets/*`)
+
+## University media assets (current)
+- Storage location: `backend/data/university_assets/`
+- Folders:
+  - `logos/` (full size)
+  - `logos-small/` (reduced size)
+  - `thumbnails/` (full size)
+  - `thumbnails-small/` (reduced size)
+- Served by backend static route: `/universities/assets/{folder}/{filename}`
+- Frontend usage policy:
+  - universities list and ranking: reduced-size `small` assets by default
+  - university detail page: full-size assets by default
 
 ## University Factor Data Provenance
 UniFit slider factors in `backend/data/universities.json` are generated from traceable data, not manual estimates.
@@ -151,6 +169,7 @@ SENTRY_TRACES_SAMPLE_RATE=0.0
 - `GET /universities`
 - `POST /universities/ai-sort`
 - `GET /universities/{id}`
+- `GET /universities/assets/{folder}/{filename}`
 - `POST /universities/{id}/uni-chance`
 - `POST /universities/{id}/roi`
 - `GET /locations`
@@ -426,6 +445,11 @@ backend/
     exams.json
     languages.json
     cities.json
+    university_assets/
+      logos/
+      logos-small/
+      thumbnails/
+      thumbnails-small/
   tests/
     fixtures/
       personas.json

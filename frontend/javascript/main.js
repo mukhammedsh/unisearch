@@ -71,7 +71,7 @@ function initHomeMockupMedia() {
   const uniId = encodeURIComponent(rawUniId);
   const base = String(API_BASE || "").trim().replace(/\/+$/, "");
   const thumbFull = `${base}/universities/assets/thumbnails/${uniId}.jpg`;
-  const logoMobile = `${base}/universities/assets/logos-mobile/${uniId}.png`;
+  const logoSmall = `${base}/universities/assets/logos-small/${uniId}.png`;
   const logoFull = `${base}/universities/assets/logos/${uniId}.png`;
 
   document.documentElement.style.setProperty("--home-mockup-thumb-url", `url("${thumbFull}")`);
@@ -79,7 +79,7 @@ function initHomeMockupMedia() {
   const logo = document.querySelector(`img[data-home-uni-logo="${rawUniId}"]`);
   if (!(logo instanceof HTMLImageElement)) return;
 
-  logo.src = logoMobile;
+  logo.src = logoSmall;
   logo.onerror = () => {
     if (logo.dataset.full !== "1") {
       logo.dataset.full = "1";

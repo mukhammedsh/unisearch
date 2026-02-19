@@ -58,9 +58,9 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         university_id = self._first_university_id()
         self.assertTrue(university_id)
 
-        logo_mobile = self.client.get(f"/universities/assets/logos-mobile/{university_id}.png")
-        self.assertEqual(logo_mobile.status_code, 200)
-        self.assertIn("image/", str(logo_mobile.headers.get("content-type") or ""))
+        logo_small = self.client.get(f"/universities/assets/logos-small/{university_id}.png")
+        self.assertEqual(logo_small.status_code, 200)
+        self.assertIn("image/", str(logo_small.headers.get("content-type") or ""))
 
         thumb_full = self.client.get(f"/universities/assets/thumbnails/{university_id}.jpg")
         self.assertEqual(thumb_full.status_code, 200)
