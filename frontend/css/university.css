@@ -87,7 +87,10 @@
 }
 
 .d-cover {
-  height: 300px;
+  aspect-ratio: 16 / 8.1; /* ~90% of full 16:9 height */
+  height: auto;
+  min-height: 220px;
+  max-height: 560px;
   position: relative;
   background-color: #333;
   background-size: cover;
@@ -1105,7 +1108,10 @@
 
 @media (max-width: 768px) {
   .d-container { padding: 0 10px; }
-  .d-cover { height: 200px; }
+  .d-cover {
+    min-height: 180px;
+    max-height: 420px;
+  }
   .d-head { flex-direction: column; gap: 15px; }
   .d-head-main { width: 100%; }
   .d-title-row { width: 100%; align-items: flex-start; }
