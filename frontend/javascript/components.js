@@ -21,7 +21,7 @@ function syncNavbarLogo(themeOverride = "") {
     const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
     if (!navbarLogo) return;
     const theme = (themeOverride || getCurrentTheme() || "light").toLowerCase();
-    const nextLogo = theme === "dark" ? "images/darklogo.png" : "images/whitelogo.png";
+    const nextLogo = theme === "dark" ? "/images/darklogo.png" : "/images/whitelogo.png";
     if (!nextLogo) return;
     if (navbarLogo.getAttribute("src") !== nextLogo) {
         navbarLogo.dataset.fallback = "0";
@@ -145,10 +145,10 @@ const LAYOUT_HTML = `
   <div class="navbar-left">
     <a href="${routeHome()}" data-route="home" style="display: flex; align-items: center;">
       <img
-        src="images/whitelogo.png"
-        data-logo-light="images/whitelogo.png"
-        data-logo-dark="images/darklogo.png"
-        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='images/minilogo.png';}"
+        src="/images/whitelogo.png"
+        data-logo-light="/images/whitelogo.png"
+        data-logo-dark="/images/darklogo.png"
+        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='/images/minilogo.png';}"
         alt="Logo"
         class="logo"
       />

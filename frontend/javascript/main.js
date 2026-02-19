@@ -87,7 +87,7 @@ function initHomeMockupMedia() {
       return;
     }
     logo.onerror = null;
-    logo.src = "images/minilogo.png";
+    logo.src = "/images/minilogo.png";
   };
 }
 

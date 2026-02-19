@@ -5,9 +5,9 @@ const LANG_RUS = "rus";
 const LANG_KZ = "kz";
 const SUPPORTED_LANGS = new Set([LANG_ENG, LANG_RUS, LANG_KZ]);
 const LANG_FILE_BY_CODE = {
-  [LANG_ENG]: "Localization/eng",
-  [LANG_RUS]: "Localization/ru",
-  [LANG_KZ]: "Localization/kz",
+  [LANG_ENG]: "/Localization/eng",
+  [LANG_RUS]: "/Localization/ru",
+  [LANG_KZ]: "/Localization/kz",
 };
 const I18N_PACK_FETCH_TIMEOUT_MS = 4000;
 
