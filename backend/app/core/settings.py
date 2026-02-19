@@ -47,7 +47,7 @@ def _parse_frontend_origins() -> list[str]:
 FRONTEND_ORIGINS = _parse_frontend_origins()
 # Backward-compatible single-origin export for old imports.
 FRONTEND_ORIGIN = FRONTEND_ORIGINS[0]
-APP_VERSION = os.getenv("APP_VERSION", "2.5.0").strip() or "2.5.0"
+APP_VERSION = os.getenv("APP_VERSION", "2.5.1").strip() or "2.5.1"
 
 
 def _env_bool(name: str, default: str = "0") -> bool:
@@ -115,3 +115,4 @@ try:
     ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC = int(os.getenv("ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC", "20"))
 except Exception:
     ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC = 20
+

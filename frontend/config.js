@@ -8,7 +8,7 @@
   // Non-local fallback expects reverse-proxy /api (or provide API_BASE_URL via env.js).
   w.API_BASE_URL = apiBaseFromEnv || (isLocal ? "http://127.0.0.1:8000" : "/api");
 
-  w.APP_VERSION = "2.5.0";
+  w.APP_VERSION = "2.5.1";
 
   const prettyRaw = env.APP_USE_PRETTY_URLS;
   if (typeof prettyRaw === "boolean") {
@@ -26,3 +26,4 @@ window.AI_FUNCTIONS = {
   fit: "UniFit",
   chance: "UniChance",
 };
+

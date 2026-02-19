@@ -15,7 +15,7 @@ services:
     container_name: unisearch-backend
     environment:
       FRONTEND_ORIGIN: http://127.0.0.1:5501
-      APP_VERSION: 2.5.0
+      APP_VERSION: 2.5.1
       REDIS_URL: redis://redis:6379/0
       AUTO_WARMUP_ON_STARTUP: "1"
       METRICS_ENABLED: "1"
@@ -26,3 +26,4 @@ services:
 
 volumes:
   redis_data:
+

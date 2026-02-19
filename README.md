@@ -123,7 +123,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.5.0
+APP_VERSION=2.5.1
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -318,3 +318,4 @@ tests/
 ## Notes
 - Default fallback language remains English when unsupported locale is detected.
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
+
