@@ -13,7 +13,7 @@ const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   try {
-    await navigator.serviceWorker.register("./sw.js", { scope: "./" });
+    await navigator.serviceWorker.register("/sw.js", { scope: "/" });
   } catch (e) {
     console.warn("Service worker registration failed:", e);
   }
