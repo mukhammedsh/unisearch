@@ -4,8 +4,10 @@ import uuid
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.core.observability import setup_observability
+from app.core.paths import UNIVERSITY_ASSETS_DIR
 from app.core.settings import APP_VERSION, AUTO_WARMUP_ON_STARTUP, FRONTEND_ORIGINS
 from app.routers import root, universities, exams, languages
 from app.services.background_tasks import warmup_runtime
@@ -35,6 +37,12 @@ app.add_middleware(
         "Retry-After",
         "X-Redis-Cache",
     ],
+)
+
+app.mount(
+    "/universities/assets",
+    StaticFiles(directory=str(UNIVERSITY_ASSETS_DIR)),
+    name="university-assets",
 )
 
 

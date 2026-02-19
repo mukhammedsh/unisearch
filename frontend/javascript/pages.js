@@ -64,7 +64,12 @@ function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
 }
 
-const MOBILE_IMAGE_MAX_WIDTH = 640;
+function buildApiUrl(path) {
+  const base = String(API_BASE || "").trim().replace(/\/+$/, "");
+  const suffix = String(path || "").replace(/^\/+/, "");
+  return `${base}/${suffix}`;
+}
+
 let rankingBadgeResizeBound = false;
 let rankingBadgeResizeRaf = 0;
 
@@ -312,33 +317,18 @@ function fundingPreferenceToQueryValue(value) {
   return normalized === "any" ? "" : normalized;
 }
 
-function shouldUseOptimizedImages() {
-  try {
-    const viewport = window.innerWidth || 9999;
-    return viewport <= MOBILE_IMAGE_MAX_WIDTH;
-  } catch (e) {
-    return (window.innerWidth || 1024) <= MOBILE_IMAGE_MAX_WIDTH;
-  }
-}
-
 function uniThumbnailSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const forceFull = !!opts.forceFull;
-  const forceOptimized = !!opts.forceOptimized;
-  if (!forceFull && (forceOptimized || shouldUseOptimizedImages())) {
-    return `images/thumbnails-mobile/${safeId}.jpg`;
-  }
-  return `images/thumbnails/${safeId}.jpg`;
+  const folder = forceFull ? "thumbnails" : "thumbnails-mobile";
+  return buildApiUrl(`universities/assets/${folder}/${safeId}.jpg`);
 }
 
 function uniLogoSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const forceFull = !!opts.forceFull;
-  const forceOptimized = !!opts.forceOptimized;
-  if (!forceFull && (forceOptimized || shouldUseOptimizedImages())) {
-    return `images/logos-mobile/${safeId}.png`;
-  }
-  return `images/logos/${safeId}.png`;
+  const folder = forceFull ? "logos" : "logos-mobile";
+  return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
 }
 
 const DETAIL_CACHE_KEY = "unisearch_detail_cache_v1";
@@ -2033,12 +2023,12 @@ export async function initUniversityPage() {
     setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
     const coverEl = document.getElementById("detailCover");
-    if (coverEl) coverEl.style.backgroundImage = `url('${uniThumbnailSrc(uniId)}')`;
+    if (coverEl) coverEl.style.backgroundImage = `url('${uniThumbnailSrc(uniId, { forceFull: true })}')`;
 
     const logoEl = document.getElementById("detailLogo");
     if (logoEl) {
         const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
-        logoEl.innerHTML = `<img src="${uniLogoSrc(uniId)}" alt="Logo" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${uniLogoSrc(uniId, { forceFull: true })}';}else{this.style.display='none'; this.parentNode.textContent='${initialsText}';}" style="width:100%; height:100%; object-fit:contain;">`;
+        logoEl.innerHTML = `<img src="${uniLogoSrc(uniId, { forceFull: true })}" alt="Logo" onerror="if(!this.dataset.mobile){this.dataset.mobile='1';this.src='${uniLogoSrc(uniId)}';}else{this.style.display='none'; this.parentNode.textContent='${initialsText}';}" style="width:100%; height:100%; object-fit:contain;">`;
     }
 
     const siteBtn = document.getElementById("detailWebsite");

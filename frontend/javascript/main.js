@@ -62,6 +62,35 @@ function maybeWakeBackend() {
   });
 }
 
+function initHomeMockupMedia() {
+  const card = document.querySelector(".mockup-card[data-home-uni-id]");
+  if (!(card instanceof HTMLElement)) return;
+
+  const rawUniId = String(card.getAttribute("data-home-uni-id") || "").trim();
+  if (!rawUniId) return;
+  const uniId = encodeURIComponent(rawUniId);
+  const base = String(API_BASE || "").trim().replace(/\/+$/, "");
+  const thumbFull = `${base}/universities/assets/thumbnails/${uniId}.jpg`;
+  const logoMobile = `${base}/universities/assets/logos-mobile/${uniId}.png`;
+  const logoFull = `${base}/universities/assets/logos/${uniId}.png`;
+
+  document.documentElement.style.setProperty("--home-mockup-thumb-url", `url("${thumbFull}")`);
+
+  const logo = document.querySelector(`img[data-home-uni-logo="${rawUniId}"]`);
+  if (!(logo instanceof HTMLImageElement)) return;
+
+  logo.src = logoMobile;
+  logo.onerror = () => {
+    if (logo.dataset.full !== "1") {
+      logo.dataset.full = "1";
+      logo.src = logoFull;
+      return;
+    }
+    logo.onerror = null;
+    logo.src = "images/minilogo.png";
+  };
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("🚀 UniSearch JS Loaded");
   initTheme();
@@ -83,6 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   applyAINameConfig();
   applyTranslations(document);
   initLanguagesPanel();
+  initHomeMockupMedia();
   
   const path = window.location.pathname;
   const isUniversitiesPage = isUniversitiesListPath(path) || document.getElementById("universitiesList");

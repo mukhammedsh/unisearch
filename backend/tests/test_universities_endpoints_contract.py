@@ -54,6 +54,18 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         )
         self.assertEqual(second.status_code, 304)
 
+    def test_university_assets_are_served_from_backend(self):
+        university_id = self._first_university_id()
+        self.assertTrue(university_id)
+
+        logo_mobile = self.client.get(f"/universities/assets/logos-mobile/{university_id}.png")
+        self.assertEqual(logo_mobile.status_code, 200)
+        self.assertIn("image/", str(logo_mobile.headers.get("content-type") or ""))
+
+        thumb_full = self.client.get(f"/universities/assets/thumbnails/{university_id}.jpg")
+        self.assertEqual(thumb_full.status_code, 200)
+        self.assertIn("image/", str(thumb_full.headers.get("content-type") or ""))
+
     def test_university_detail_localizes_response_by_lang(self):
         response = self.client.get("/universities/astana-it-university-kaz-astana?lang=rus")
         self.assertEqual(response.status_code, 200)

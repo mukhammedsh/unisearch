@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-02-18-2";
+const SW_VERSION = "2026-02-19-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -34,17 +34,19 @@ self.addEventListener("activate", (event) => {
 });
 
 function isImageRequest(request, url) {
-  if (url.origin !== self.location.origin) return false;
   const path = url.pathname.toLowerCase();
+  const normalizedPath = normalizeApiPath(path);
+
+  if (normalizedPath.startsWith("/universities/assets/")) {
+    return true;
+  }
+
+  if (url.origin !== self.location.origin) return false;
+
   if (request.destination === "image") {
     return path.includes("/images/");
   }
-  return (
-    path.includes("/images/logos/") ||
-    path.includes("/images/logos-mobile/") ||
-    path.includes("/images/thumbnails/") ||
-    path.includes("/images/thumbnails-mobile/")
-  );
+  return false;
 }
 
 function isApiRequest(request, url) {
