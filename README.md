@@ -14,6 +14,8 @@ Core capabilities:
 - University translation packs are served by backend (`/universities/translations`).
 - University media assets (logos/backgrounds) are stored in backend and served by API static route.
 - Media variant naming is standardized to `small` (reduced size) and full size.
+- Frontend static assets (CSS/JS/images/localization packs) use root-absolute paths where needed to stay stable on pretty URLs (e.g. `/universities/:id`).
+- Service worker is registered from `/sw.js` with root scope to avoid nested-route cache routing issues.
 - Frontend image policy:
   - list/ranking cards: use `small` assets by default on all devices
   - university detail page: use full-size assets for better quality
@@ -225,6 +227,23 @@ Workflow: `.github/workflows/tests.yml`
 - Works with any standard setup: VPS + reverse proxy, Docker hosts, or managed platforms.
 - For non-local deployments, frontend can use clean routes (`/`, `/universities`, `/universities/:id`, `/ranking`, `/guide`, `/about`) if host rewrite rules are configured.
 - Local `python -m http.server` does not provide rewrite support, so `.html` routes are used in local dev.
+
+## Troubleshooting static asset 404 / MIME errors
+If you see browser errors like:
+- `Refused to apply style ... MIME type ('text/html' | 'text/plain')`
+- `Refused to execute script ... MIME type ...`
+- repeated `404` for `/css/*`, `/javascript/*`, `/images/*`, `/Localization/*`
+
+check the following:
+- Local dev root:
+  - run frontend server from `frontend/` directory
+  - command: `python -m http.server 5501`
+- Route rewrites:
+  - ensure pretty URL rewrites map detail route to `university.html`
+- Browser cache:
+  - unregister service worker for the site
+  - clear site data/cache
+  - hard reload (`Ctrl+Shift+R`)
 
 ## Repository layout
 ```text
