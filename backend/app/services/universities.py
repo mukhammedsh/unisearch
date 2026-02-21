@@ -1104,6 +1104,32 @@ def _has_any_aid(u: Dict[str, Any]) -> bool:
     return False
 
 
+def _rank_meta_from_university(u: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(u, dict):
+        return {}
+    prov = u.get("fact_provenance")
+    if not isinstance(prov, dict):
+        return {}
+    facts = prov.get("facts")
+    if not isinstance(facts, dict):
+        return {}
+    rank_fact = facts.get("rank")
+    if not isinstance(rank_fact, dict):
+        return {}
+
+    out = {
+        "source": str(rank_fact.get("source") or ""),
+        "source_url": str(rank_fact.get("source_url") or ""),
+        "external_reference": str(rank_fact.get("external_reference") or ""),
+        "status": str(rank_fact.get("status") or ""),
+        "verified_at": str(rank_fact.get("verified_at") or ""),
+        "is_official_external_rank": bool(rank_fact.get("is_official_external_rank")),
+    }
+    if not any(bool(str(v).strip()) for k, v in out.items() if k != "is_official_external_rank"):
+        return {}
+    return out
+
+
 def to_university_card(
     u: Dict[str, Any],
     format_preference: Any = "any",
@@ -1155,6 +1181,9 @@ def to_university_card(
         },
         "aid_any": _has_any_aid(u),
     }
+    rank_meta = _rank_meta_from_university(u)
+    if rank_meta:
+        out["rank_meta"] = rank_meta
 
     lat = _to_float(coordinates_obj.get("lat"))
     lon = _to_float(coordinates_obj.get("lon"))

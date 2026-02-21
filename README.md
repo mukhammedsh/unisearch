@@ -9,6 +9,14 @@ Core capabilities:
 - ROI estimate per university
 - multilingual UI (`eng`, `rus`, `kz`) with backend-driven localization
 
+## Release 2.5.1 (2026-02-21)
+- Added ranking source transparency: each ranking card can now show source, source type, and verification date.
+- Added localized ranking source UX for `eng`, `rus`, and `kz`.
+- Improved university dataset quality for ranking/admission fields and added fact provenance metadata.
+- Added data maintenance tooling:
+  - `backend/scripts/audit_universities_data.py`
+  - `backend/scripts/refresh_fact_provenance.py`
+
 ## Current highlights
 - Backend-first architecture for business logic and data delivery.
 - University translation packs are served by backend (`/universities/translations`).

@@ -28,7 +28,11 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         },
         {
           "name": "Electrical Engineering and Computer Science (6-2/6-5)",
@@ -42,11 +46,25 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science and Engineering (6-3)",
+        "Electrical Engineering and Computer Science (6-2/6-5)"
+      ],
+      "acceptance_rate_percent": 4.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business"
       ]
     },
     "finance": {
@@ -56,6 +74,10 @@
         "Housing_Dorm": 13614,
         "Food": 7650,
         "Books_Transport_Misc": 3766
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": true
       }
     },
     "outcomes": {
@@ -225,6 +247,46 @@
           "city_population_norm_0_1": 0.005098
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 1,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 89340.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.eecs.mit.edu/academics/undergraduate-programs/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 4.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://mitadmissions.org/apply/firstyear/essays-activities-academics/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -256,12 +318,26 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus",
         "Online"
+      ],
+      "majors": [
+        "Computing (BEng/MEng)"
+      ],
+      "acceptance_rate_percent": 14.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine",
+        "natural sciences"
       ]
     },
     "finance": {
@@ -271,6 +347,10 @@
         "Housing_Dorm": 13000,
         "Food": 6000,
         "Books_Transport_Misc": 3500
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -386,7 +466,7 @@
       "Innovation",
       "Global"
     ],
-    "description_source": "https://www.imperial.ac.uk/about/introduction-to-imperial/",
+    "description_source": "https://www.imperial.ac.uk/about/",
     "factors": {
       "practice_vs_science": 0.9382,
       "social_vs_hardcore": 0.8835,
@@ -428,6 +508,48 @@
           "city_population_norm_0_1": 0.472276
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine",
+      "natural sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 2,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 75000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/ug/beng-meng-computing/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 14.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -459,11 +581,24 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science"
+      ],
+      "acceptance_rate_percent": 4.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine"
       ]
     },
     "finance": {
@@ -473,6 +608,10 @@
         "Housing_Dorm": 13000,
         "Food": 8000,
         "Books_Transport_Misc": 5982
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": true
       }
     },
     "outcomes": {
@@ -626,6 +765,47 @@
           "city_population_norm_0_1": 0.0
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 3,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 93213.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://majors.stanford.edu/majors/computer-science",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 4.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://admission.stanford.edu/apply/first-year/apply.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -657,12 +837,27 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus",
         "Online"
+      ],
+      "majors": [
+        "Computer Science"
+      ],
+      "acceptance_rate_percent": 3.0,
+      "major_tags": [
+        "computer science",
+        "business",
+        "medicine",
+        "law",
+        "social sciences",
+        "humanities"
       ]
     },
     "finance": {
@@ -672,6 +867,10 @@
         "Housing_Dorm": 13532,
         "Food": 8598,
         "Books_Transport_Misc": 5476
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": true
       }
     },
     "outcomes": {
@@ -827,6 +1026,49 @@
           "city_population_norm_0_1": 0.005098
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "business",
+      "medicine",
+      "law",
+      "social sciences",
+      "humanities"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 4,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 86926.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://seas.harvard.edu/computer-science",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 3.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://college.harvard.edu/admissions/apply/first-year-applicants",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -858,11 +1100,23 @@
           "language": [
             "German"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science"
+      ],
+      "acceptance_rate_percent": 20.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "natural sciences"
       ]
     },
     "finance": {
@@ -872,6 +1126,10 @@
         "Housing_Rent": 13000,
         "Food": 9000,
         "Insurance_Transport_Misc": 4200
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -999,7 +1257,7 @@
       "Innovation",
       "Europe"
     ],
-    "description_source": "https://ethz.ch/en/the-eth-zurich/profile.html",
+    "description_source": "https://ethz.ch/en/the-eth-zurich/portrait.html",
     "factors": {
       "practice_vs_science": 0.9104,
       "social_vs_hardcore": 0.8331,
@@ -1041,6 +1299,46 @@
           "city_population_norm_0_1": 0.017307
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "natural sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 5,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 28000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://inf.ethz.ch/studies.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 20.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/how-to-apply.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -1072,11 +1370,24 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science (BComp)"
+      ],
+      "acceptance_rate_percent": 7.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "life sciences"
       ]
     },
     "finance": {
@@ -1086,6 +1397,10 @@
         "Housing_Dorm": 6000,
         "Food": 4000,
         "Books_Transport_Misc": 2000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -1243,6 +1558,47 @@
           "city_population_norm_0_1": 0.296875
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "life sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 6,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 32000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.comp.nus.edu.sg/programmes/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 7.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://nus.edu.sg/oam/docs/default-source/supporting-documents-guides/supporting-documents-guide-%28cat-d_international-students-with-international-qualifications%29.pdf?sfvrsn=a4ed34_4",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -1274,11 +1630,24 @@
           "language": [
             "French"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science"
+      ],
+      "acceptance_rate_percent": 20.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "life sciences",
+        "education"
       ]
     },
     "finance": {
@@ -1288,6 +1657,10 @@
         "Housing_Rent": 13200,
         "Food": 8000,
         "Insurance_Transport_Misc": 2000
+      },
+      "financial_aid": {
+        "merit_based": false,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -1407,6 +1780,47 @@
           "city_population_norm_0_1": 0.006613
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "life sciences",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 7,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 25000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 20.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/how-to-apply/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -1439,11 +1853,25 @@
             "German",
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Informatics"
+      ],
+      "acceptance_rate_percent": 25.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine",
+        "natural sciences"
       ]
     },
     "finance": {
@@ -1453,6 +1881,10 @@
         "Housing_Dorm": 8000,
         "Food": 3500,
         "Books_Transport_Misc": 1000
+      },
+      "financial_aid": {
+        "merit_based": false,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -1562,6 +1994,48 @@
           "city_population_norm_0_1": 0.065793
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine",
+      "natural sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 8,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 19000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 25.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://www.tum.de/en/studies/application/application-info-portal/document-requirements",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -1593,12 +2067,27 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus",
         "Online"
+      ],
+      "majors": [
+        "Computer Science"
+      ],
+      "acceptance_rate_percent": 15.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine",
+        "social sciences",
+        "humanities"
       ]
     },
     "finance": {
@@ -1608,6 +2097,10 @@
         "Housing_Dorm": 11000,
         "Food": 4000,
         "Books_Transport_Misc": 2000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -1763,6 +2256,49 @@
           "city_population_norm_0_1": 0.136497
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine",
+      "social sciences",
+      "humanities"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 9,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 62000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://web.cs.toronto.edu/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 15.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://future.utoronto.ca/required-documents",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -1794,11 +2330,27 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science and Engineering"
+      ],
+      "acceptance_rate_percent": 15.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine",
+        "social sciences",
+        "education"
       ]
     },
     "finance": {
@@ -1808,6 +2360,10 @@
         "Housing_Dorm": 2200,
         "Food": 5800,
         "Books_Transport_Misc": 2354
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -1900,7 +2456,7 @@
     "verified_sources": [
       {
         "topic": "language_requirements",
-        "url": "https://admission.cuhk.edu.hk/apply/other-qualifications/"
+        "url": "https://admission.cuhk.edu.hk/application/overseas-other-qualifications-non-local-international-team/requirements/"
       },
       {
         "topic": "extra_requirements",
@@ -1971,6 +2527,49 @@
           "city_population_norm_0_1": 0.025407
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine",
+      "social sciences",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 10,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 33354.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.cse.cuhk.edu.hk/about/department/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 15.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://admission.cuhk.edu.hk/international/faq.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -2002,7 +2601,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "natural sciences"
+          ]
         },
         {
           "name": "Japan in East Asia (PEAK)",
@@ -2016,11 +2618,28 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "humanities"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Environmental Sciences (PEAK)",
+        "Japan in East Asia (PEAK)"
+      ],
+      "acceptance_rate_percent": 20.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "medicine",
+        "social sciences",
+        "humanities",
+        "life sciences",
+        "education"
       ]
     },
     "finance": {
@@ -2030,6 +2649,10 @@
         "Housing_Dorm": 6000,
         "Food": 4000,
         "Books_Transport_Misc": 1000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -2120,7 +2743,7 @@
     "verified_sources": [
       {
         "topic": "extra_requirements",
-        "url": "https://peak.c.u-tokyo.ac.jp/apply/l3/l4/Step3.html"
+        "url": "https://peak.c.u-tokyo.ac.jp/apply/l3/Vcms3_00000253.html"
       },
       {
         "topic": "extra_requirements",
@@ -2128,7 +2751,7 @@
       },
       {
         "topic": "extra_requirements",
-        "url": "https://peak.c.u-tokyo.ac.jp/apply/l3/l4/Step5.html"
+        "url": "https://peak.c.u-tokyo.ac.jp/apply/l3/documents.html"
       },
       {
         "topic": "programs",
@@ -2149,7 +2772,7 @@
       "Life Sciences",
       "Global"
     ],
-    "description_source": "https://www.u-tokyo.ac.jp/en/about/overview.html",
+    "description_source": "https://www.u-tokyo.ac.jp/en/about/numbers.html",
     "factors": {
       "practice_vs_science": 0.9482,
       "social_vs_hardcore": 0.8445,
@@ -2191,6 +2814,50 @@
           "city_population_norm_0_1": 0.512984
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "medicine",
+      "social sciences",
+      "humanities",
+      "life sciences",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 11,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 16000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 20.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://peak.c.u-tokyo.ac.jp/apply/l3/Vcms3_00000253.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -2221,7 +2888,11 @@
             "Korean",
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         },
         {
           "name": "Computer Science and Engineering (Graduate)",
@@ -2235,11 +2906,27 @@
             "Korean",
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science and Engineering",
+        "Computer Science and Engineering (Graduate)"
+      ],
+      "acceptance_rate_percent": 15.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "medicine",
+        "natural sciences",
+        "social sciences"
       ]
     },
     "finance": {
@@ -2249,6 +2936,10 @@
         "Housing_Dorm": 5000,
         "Food": 4000,
         "Books_Transport_Misc": 1000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -2363,7 +3054,7 @@
     "verified_sources": [
       {
         "topic": "language_requirements",
-        "url": "https://admission.snu.ac.kr/international/faq"
+        "url": "https://en.snu.ac.kr/admission/overview/faq/admission"
       },
       {
         "topic": "extra_requirements",
@@ -2371,11 +3062,11 @@
       },
       {
         "topic": "programs",
-        "url": "https://cse.snu.ac.kr/en/academics"
+        "url": "https://en.snu.ac.kr/academics/programs/undergraduate"
       },
       {
         "topic": "formats",
-        "url": "https://cse.snu.ac.kr/en/academics"
+        "url": "https://en.snu.ac.kr/academics/programs/undergraduate"
       }
     ],
     "description": "Seoul National University is a flagship public research university in South Korea with comprehensive academic fields. Its schools and institutes support high-level research in engineering, medicine, natural sciences, and social sciences. The university has strong national impact and increasing global research collaboration.",
@@ -2388,7 +3079,7 @@
       "Comprehensive",
       "Global"
     ],
-    "description_source": "https://en.snu.ac.kr/about/overview",
+    "description_source": "https://en.snu.ac.kr/about/overview/vision",
     "factors": {
       "practice_vs_science": 0.9023,
       "social_vs_hardcore": 0.8657,
@@ -2430,6 +3121,48 @@
           "city_population_norm_0_1": 0.545497
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "medicine",
+      "natural sciences",
+      "social sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 12,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 15000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://en.snu.ac.kr/academics/programs/undergraduate",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 15.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/01/AdmissionsforUndergraduate_Fall2025.pdf",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -2461,7 +3194,11 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         },
         {
           "name": "Aerospace Engineering",
@@ -2475,11 +3212,25 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science and Engineering",
+        "Aerospace Engineering"
+      ],
+      "acceptance_rate_percent": 20.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "design",
+        "education"
       ]
     },
     "finance": {
@@ -2489,6 +3240,10 @@
         "Housing_Dorm": 10000,
         "Food": 5000,
         "Books_Transport_Misc": 2000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -2632,6 +3387,47 @@
           "city_population_norm_0_1": 0.004288
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "design",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 13,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 36000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 20.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://www.scribd.com/document/880887339/Regulation-Matching-Selection-Criteria-Procedure-BSc-Computer-Science-Engineering-TUD25-26",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -2663,7 +3459,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         },
         {
           "name": "Mechanical Engineering",
@@ -2677,11 +3476,24 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science",
+        "Mechanical Engineering"
+      ],
+      "acceptance_rate_percent": 15.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business"
       ]
     },
     "finance": {
@@ -2691,6 +3503,10 @@
         "Housing_Dorm": 2500,
         "Food": 3500,
         "Books_Transport_Misc": 1000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -2798,7 +3614,7 @@
       "Startups",
       "Innovation"
     ],
-    "description_source": "https://www.kaist.ac.kr/en/html/kaist/010101.html",
+    "description_source": "https://www.kaist.ac.kr/en/html/kaist/01.html",
     "factors": {
       "practice_vs_science": 0.8534,
       "social_vs_hardcore": 0.851,
@@ -2840,6 +3656,46 @@
           "city_population_norm_0_1": 0.076832
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 14,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 14000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://engineering.kaist.ac.kr/education/department",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 15.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025%20%28including%20fee%20waiver%29_v.2.pdf",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -2872,7 +3728,10 @@
             "English",
             "Chinese"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         },
         {
           "name": "Mechanical Engineering",
@@ -2887,11 +3746,26 @@
             "English",
             "Chinese"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science and Technology",
+        "Mechanical Engineering"
+      ],
+      "acceptance_rate_percent": 2.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "social sciences",
+        "architecture"
       ]
     },
     "finance": {
@@ -2901,6 +3775,10 @@
         "Housing_Dorm": 2000,
         "Food": 2000,
         "Books_Transport_Misc": 1000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -3060,6 +3938,48 @@
           "city_population_norm_0_1": 1.0
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "social sciences",
+      "architecture"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 15,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 9500.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://international.join-tsinghua.edu.cn/Divisions1.htm",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 2.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://international.join-tsinghua.edu.cn/List-of-Uploading-Documents-in-the-Online-Application-System.pdf",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -3091,7 +4011,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         },
         {
           "name": "Mechanical and Aerospace Engineering",
@@ -3105,7 +4028,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ]
         },
         {
           "name": "Foundation Year",
@@ -3117,11 +4043,28 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "education"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Computer Science",
+        "Mechanical and Aerospace Engineering",
+        "Foundation Year"
+      ],
+      "acceptance_rate_percent": 20.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine",
+        "social sciences",
+        "education"
       ]
     },
     "finance": {
@@ -3131,6 +4074,10 @@
         "Housing_Dorm": 1800,
         "Food": 2200,
         "Books_Transport_Misc": 500
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -3297,15 +4244,15 @@
     "verified_sources": [
       {
         "topic": "undergraduate_requirements",
-        "url": "https://nu.edu.kz/admissions/requirements"
+        "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
       },
       {
         "topic": "nufyp_nuet_threshold",
-        "url": "https://nu.edu.kz/admissions/undergraduate-admissions/nazarbayev-university-foundation-year-programme-nufyp"
+        "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
       },
       {
         "topic": "extra_requirements",
-        "url": "https://old.nu.edu.kz/admissions/undergraduate-eng"
+        "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
       },
       {
         "topic": "programs",
@@ -3330,7 +4277,7 @@
       "Kazakhstan",
       "Innovation"
     ],
-    "description_source": "https://nu.edu.kz/about-us",
+    "description_source": "https://nu.edu.kz/about/",
     "factors": {
       "practice_vs_science": 0.6904,
       "social_vs_hardcore": 0.7671,
@@ -3372,6 +4319,49 @@
           "city_population_norm_0_1": 0.017512
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine",
+      "social sciences",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 16,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 19500.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 20.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -3401,7 +4391,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "education"
+          ]
         },
         {
           "name": "Kyoto iUP Undergraduate Program",
@@ -3413,11 +4406,24 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Kyoto iUP Preparatory Course",
+        "Kyoto iUP Undergraduate Program"
+      ],
+      "acceptance_rate_percent": 15.0,
+      "major_tags": [
+        "engineering",
+        "medicine",
+        "natural sciences"
       ]
     },
     "finance": {
@@ -3427,6 +4433,10 @@
         "Housing_Rent": 5500,
         "Food": 4200,
         "Books_Transport_Misc": 2000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -3582,6 +4592,46 @@
           "city_population_norm_0_1": 0.076525
         }
       }
+    },
+    "major_focus": [
+      "engineering",
+      "medicine",
+      "natural sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 17,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 16500.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 15.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://www.iup.kyoto-u.ac.jp/apply/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -3613,7 +4663,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         },
         {
           "name": "Engineering (Digital Infrastructure Engineering Systems major)",
@@ -3627,12 +4680,27 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ]
         }
       ],
       "formats": [
         "On-campus",
         "Online"
+      ],
+      "majors": [
+        "Computer Science (Computing and Software Systems major)",
+        "Engineering (Digital Infrastructure Engineering Systems major)"
+      ],
+      "acceptance_rate_percent": 40.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "medicine",
+        "law"
       ]
     },
     "finance": {
@@ -3642,6 +4710,10 @@
         "Housing_Dorm": 13000,
         "Food": 5000,
         "Books_Transport_Misc": 2000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -3801,6 +4873,48 @@
           "city_population_norm_0_1": 0.258825
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "medicine",
+      "law"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 18,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 52000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 40.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://study.unimelb.edu.au/how-to-apply/your-online-application",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -3832,7 +4946,10 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         },
         {
           "name": "Business Information Systems",
@@ -3846,11 +4963,27 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "business"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Information Systems",
+        "Business Information Systems"
+      ],
+      "acceptance_rate_percent": 60.0,
+      "major_tags": [
+        "computer science",
+        "business",
+        "engineering",
+        "law",
+        "education"
       ]
     },
     "finance": {
@@ -3860,6 +4993,10 @@
         "Housing_Dorm": 1200,
         "Food": 1300,
         "Books_Transport_Misc": 500
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -3942,7 +5079,7 @@
     "verified_sources": [
       {
         "topic": "english_entry_level",
-        "url": "https://sdu.edu.kz/language/ru/preparatory-school/entry-requirements-for-bachelors-degree/"
+        "url": "https://sdu.edu.kz/en/international-admissions/"
       },
       {
         "topic": "extra_requirements",
@@ -3971,7 +5108,7 @@
       "Applied Learning",
       "Regional Impact"
     ],
-    "description_source": "https://sdu.edu.kz/language/en/why-sdu/",
+    "description_source": "https://sdu.edu.kz/why/",
     "factors": {
       "practice_vs_science": 0.6228,
       "social_vs_hardcore": 0.4669,
@@ -4013,6 +5150,48 @@
           "city_population_norm_0_1": 0.002354
         }
       }
+    },
+    "major_focus": [
+      "computer science",
+      "business",
+      "engineering",
+      "law",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 19,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 8500.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://sdu.edu.kz/en/information-system-example/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 60.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://sdu.edu.kz/en/international-admissions/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
+        }
+      }
     }
   },
   {
@@ -4043,7 +5222,11 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
         },
         {
           "name": "Computer Science",
@@ -4056,11 +5239,25 @@
           "language": [
             "English"
           ],
-          "study_mode": "On-campus"
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
         }
       ],
       "formats": [
         "On-campus"
+      ],
+      "majors": [
+        "Software Engineering",
+        "Computer Science"
+      ],
+      "acceptance_rate_percent": 30.0,
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "business",
+        "education"
       ]
     },
     "finance": {
@@ -4070,6 +5267,10 @@
         "Housing_Dorm": 1000,
         "Food": 500,
         "Books_Transport_Misc": 300
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
       }
     },
     "outcomes": {
@@ -4231,6 +5432,47 @@
           "research_norm_0_1": 0.0,
           "tuition_norm_0_1": 0.0,
           "city_population_norm_0_1": 0.017512
+        }
+      }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "education"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 20,
+          "unit": "position",
+          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "external_reference": "QS World University Rankings",
+          "is_official_external_rank": false,
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived_prestige_order",
+          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 7000.0,
+          "unit": "usd_per_year",
+          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source_url": "https://astanait.edu.kz/en/software-engineering-2/",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "curated"
+        },
+        "acceptance_rate_percent": {
+          "value": 30.0,
+          "unit": "percent",
+          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
+          "source_url": "https://admission.astanait.edu.kz/paid_basis",
+          "verified_at": "2026-02-21",
+          "confidence": "medium",
+          "status": "derived"
         }
       }
     }

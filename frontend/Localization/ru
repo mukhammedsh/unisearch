@@ -174,6 +174,17 @@ profile.unit.usd_year: USD / год
 ranking.acceptance: Коэффициент приема
 ranking.failed: Не удалось загрузить рейтинг.
 ranking.loading: Загрузка рейтинга
+ranking.source_label: Источник: {source}
+ranking.source_status_label: Тип: {status}
+ranking.source_verified_label: Проверено: {date}
+ranking.source_status.estimated: Оценка модели
+ranking.source_status.inferred: Оценка модели
+ranking.source_status.mixed: Смешанный источник
+ranking.source_status.official: Официальный рейтинг
+ranking.source_status.curated: Проверено вручную
+ranking.source_status.derived: Оценка модели
+ranking.source_status.derived_prestige_order: Оценка модели
+ranking.source_tooltip: Источник: {source} | Тип: {status} | Проверено: {verified_at}
 ranking.subtitle: Популярные университеты по качеству обучения и возможностям (2025)
 ranking.title: Глобальный рейтинг университетов
 title.about: О нас | UniSearch
