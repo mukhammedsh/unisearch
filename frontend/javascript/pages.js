@@ -348,7 +348,7 @@ function normalizeSortMode(value) {
   if (raw === "uni_ai" || raw === "name_asc" || raw === "tuition_asc" || raw === "tuition_desc") {
     return raw;
   }
-  return "uni_ai";
+  return "name_asc";
 }
 
 function fundingPreferenceToQueryValue(value) {
@@ -624,7 +624,7 @@ export function initUniversitiesPage() {
         funding_type: getProfileFundingQueryValue(),
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
-        sort: normalizeSortMode(savedState.sort || "uni_ai"),
+        sort: normalizeSortMode(savedState.sort || "name_asc"),
         practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
         social_vs_hardcore: clampPercent(
             savedState.social_vs_hardcore !== undefined ? savedState.social_vs_hardcore : savedState.admission_bias,
@@ -1115,7 +1115,7 @@ export function initUniversitiesPage() {
             funding_type: getProfileFundingQueryValue(),
             min_tuition: 0,
             max_tuition: MAX_TUITION,
-            sort: "uni_ai",
+            sort: "name_asc",
             practice_vs_science: 50,
             social_vs_hardcore: 50,
             budget_vs_prestige: 50,
@@ -1440,7 +1440,7 @@ export function initUniversitiesPage() {
             state.sort = normalizeSortMode(state.sort);
             el.sortSelect.value = state.sort;
             if (el.sortSelect.value !== state.sort) {
-                state.sort = "uni_ai";
+                state.sort = "name_asc";
                 el.sortSelect.value = state.sort;
             }
         }

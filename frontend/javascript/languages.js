@@ -173,7 +173,7 @@ export function initLanguagesPanel() {
       (cfg.languages || []).forEach(l => {
         const opt = document.createElement("option");
         opt.value = l.code;
-        opt.textContent = l.name || l.label || l.code;
+        opt.textContent = getLangLabel(cfg, l.code);
         if (opt.value === current) opt.selected = true;
         langCode.appendChild(opt);
       });
