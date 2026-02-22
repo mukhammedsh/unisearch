@@ -38,9 +38,22 @@ import {
   translateWord,
 } from "./university-translations.js";
 import { bindInfoTooltips } from "./tooltip.js";
+import {
+  applyPercentWidths,
+  clusterMarkerLogoHtml,
+  getTrackFundingType,
+  mapMarkerLogoHtml,
+  readAdmissionTrackFilterFromProfile,
+  renderExamGroup,
+  renderLanguageRequirements,
+  renderTrackChanceChip,
+  renderTrackFundingBadge,
+  renderUniChanceSummary,
+  splitExamEntries,
+  trackLookupKey,
+} from "./university-detail-helpers.js";
 
 const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
-const MAP_MARKER_IMG_ONERROR = "if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();";
 
 function normalizeUrl(raw) {
   const s = String(raw || "").trim();
@@ -65,16 +78,6 @@ function safeUrl(raw) {
 
 function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
-}
-
-function mapMarkerLogoHtml(logoUrl) {
-  const safeLogoUrl = escapeHtml(logoUrl);
-  return `<div class="map-marker-container"><img class="marker-img-inner" src="${safeLogoUrl}" alt="" loading="lazy" decoding="async" onerror="${MAP_MARKER_IMG_ONERROR}"></div>`;
-}
-
-function clusterMarkerLogoHtml(logoUrl, extraCount) {
-  const count = Number.isFinite(Number(extraCount)) ? Number(extraCount) : 0;
-  return `<div class="cluster-node-fix">${mapMarkerLogoHtml(logoUrl)}<div class="cluster-badge">+${count}</div></div>`;
 }
 
 function buildApiUrl(path) {
@@ -389,218 +392,11 @@ const DETAIL_CACHE_MAX_ITEMS = 24;
 const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 let __detailProfileUpdatedHandler = null;
 let __detailLanguageChangedHandler = null;
+let __universitiesProfileUpdatedHandler = null;
+let __universitiesLanguageChangedHandler = null;
+let __rankingLanguageChangedHandler = null;
 let __guideExternalUpdateHandler = null;
 let __guideHashChangeHandler = null;
-
-function applyPercentWidths(rootEl) {
-  if (!rootEl) return;
-  rootEl.querySelectorAll("[data-width-pct]").forEach((node) => {
-    const raw = Number(node.getAttribute("data-width-pct"));
-    const pct = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
-    node.style.setProperty("--fill-width", `${pct}%`);
-  });
-}
-
-function isLanguageExam(examKey) {
-  const key = String(examKey || "").toUpperCase();
-  return (
-    key.includes("IELTS") ||
-    key.includes("TOEFL") ||
-    key.includes("DET") ||
-    key.includes("DUOLINGO") ||
-    key.includes("PTE") ||
-    key.includes("CAMBRIDGE") ||
-    key.includes("TESTDAF") ||
-    key.includes("DSH") ||
-    key.includes("DELF") ||
-    key.includes("DALF") ||
-    key.includes("TCF") ||
-    key.includes("TEF") ||
-    key.includes("NT2") ||
-    key.includes("HSK") ||
-    key.includes("JLPT") ||
-    key.includes("TOPIK")
-  );
-}
-
-function formatExamScore(examKey, score) {
-  const key = String(examKey || "").toUpperCase();
-  if (key === "GPA") return `${score}%`;
-  if (key.includes("JLPT")) return `N${score}`;
-  if (key.includes("TOPIK") || key.includes("HSK") || key.includes("TESTDAF") || key.includes("DSH")) {
-    return `${translateWord("level_word", "Level")} ${score}`;
-  }
-  return String(score);
-}
-
-function splitExamEntries(obj) {
-  const lang = [];
-  const acad = [];
-  for (const [k, v] of Object.entries(obj || {})) {
-    if (v === null || v === undefined) continue;
-    (isLanguageExam(k) ? lang : acad).push([k, v]);
-  }
-  return { lang, acad };
-}
-
-function examGroupToneClass(color) {
-  if (color === "#2563eb") return "track-exam-group--info";
-  if (color === "#047857") return "track-exam-group--success";
-  return "track-exam-group--neutral";
-}
-
-function renderExamGroup(title, pairs, color) {
-  if (!pairs.length) return "";
-  const toneClass = examGroupToneClass(color);
-  return `
-      <div class="track-exam-group ${toneClass}">
-      <div class="track-exam-group-title">
-          ${title}
-      </div>
-      <div class="track-exam-group-list">
-          ${pairs.map(([exam, score]) => `
-          <div><strong>${escapeHtml(getExamDisplayName(exam))}:</strong> ${escapeHtml(formatExamScore(exam, score))}</div>
-          `).join("")}
-      </div>
-      </div>
-  `;
-}
-
-function cefrLabel(id) {
-  const n = Number(id);
-  if (n === 1) return "A1";
-  if (n === 2) return "A2";
-  if (n === 3) return "B1";
-  if (n === 4) return "B2";
-  if (n === 5) return "C1";
-  if (n === 6) return "C2";
-  return String(id);
-}
-
-function renderLanguageRequirements(track) {
-  const list = Array.isArray(track?.language_requirements) ? track.language_requirements : [];
-  if (!list.length) return "";
-
-  const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
-  const modeText = mode === "any"
-    ? translateWord("lang_mode_any", "Any one language proof is enough")
-    : translateWord("lang_mode_all", "All listed language proofs are required");
-
-  return `
-      <div class="track-lang-rules">
-        <div class="track-lang-rules-title">
-          ${escapeHtml(translateWord("language_track_rules", "LANGUAGE TRACK RULES"))}
-        </div>
-        <div class="track-lang-rules-mode">${escapeHtml(modeText)}</div>
-        <div class="track-lang-rules-list">
-          ${list.map((lr) => {
-            const code = String(lr?.code || "").toUpperCase();
-            const nativeOk = !!lr?.accept_native;
-            const minCefr = lr?.min_cefr != null ? cefrLabel(lr.min_cefr) : null;
-            const recCefr = lr?.recommended_cefr != null ? cefrLabel(lr.recommended_cefr) : null;
-            const reqPairs = Object.entries(lr?.requirements || {});
-            const avgPairs = Object.entries(lr?.stats_avg || {});
-
-            return `
-              <div class="track-lang-rule-card">
-                <div class="track-lang-rule-head">
-                  <span class="track-lang-rule-code">
-                    ${escapeHtml(code || "LANG")}
-                  </span>
-                  ${nativeOk ? `<span class="track-lang-rule-native">${escapeHtml(translateWord("native_accepted", "Native accepted"))}</span>` : ""}
-                </div>
-                ${(minCefr || recCefr) ? `
-                  <div class="track-lang-rule-cefr">
-                    ${minCefr ? `<span><strong>${escapeHtml(translateWord("min_cefr", "Min CEFR"))}:</strong> ${escapeHtml(minCefr)}</span>` : ""}
-                    ${(minCefr && recCefr) ? `<span> • </span>` : ""}
-                    ${recCefr ? `<span><strong>${escapeHtml(translateWord("typical", "Typical"))}:</strong> ${escapeHtml(recCefr)}</span>` : ""}
-                  </div>
-                ` : ""}
-                ${reqPairs.length ? `
-                  <div class="track-lang-rule-requirements">
-                    <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
-                    ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
-                  </div>
-                ` : ""}
-                ${avgPairs.length ? `
-                  <div class="track-lang-rule-average">
-                    <strong>${escapeHtml(translateWord("typical_admitted", "Typical admitted"))}:</strong>
-                    ${avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")}
-                  </div>
-                ` : ""}
-              </div>
-            `;
-          }).join("")}
-        </div>
-      </div>
-  `;
-}
-
-function trackLookupKey(track, idx) {
-  const id = String(track?.id || "").trim();
-  if (id) return id;
-  const label = String(track?.label || "").trim();
-  if (label) return `label:${label}`;
-  return `track:${idx}`;
-}
-
-function chanceTone(chance) {
-  const value = Number(chance) || 0;
-  if (value >= 80) return { cls: "chance-high", label: translateWord("high_chance", "High chance") };
-  if (value >= 60) return { cls: "chance-good", label: translateWord("good_chance", "Good chance") };
-  if (value >= 40) return { cls: "chance-medium", label: translateWord("moderate_chance", "Moderate chance") };
-  return { cls: "chance-low", label: translateWord("low_chance", "Low chance") };
-}
-
-function renderUniChanceSummary(uniChance) {
-  if (!uniChance) return "";
-  const chance = Number(uniChance.overallChance) || 0;
-  const tone = chanceTone(chance);
-  return `
-      <div class="chance-panel">
-        <div class="chance-head">
-          <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-            <div class="chance-sub">${escapeHtml(translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context."))}</div>
-          </div>
-          <div class="chance-percent ${tone.cls}">${chance}%</div>
-        </div>
-        <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
-        <div class="chance-foot">${escapeHtml(translateWord("best_track", "Best track"))}: <strong>${escapeHtml(trTrackLabel(uniChance.bestTrackLabel || translateWord("general_admission", "General admission")))}</strong> • ${escapeHtml(tone.label)}</div>
-      </div>
-  `;
-}
-
-function renderTrackChanceChip(trackChance) {
-  if (!trackChance) return "";
-  const chance = Number(trackChance.chancePercent) || 0;
-  const tone = chanceTone(chance);
-  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
-}
-
-function renderTrackFundingBadge(track) {
-  const rawType = String(track?.funding_type || "").trim().toLowerCase();
-  const badgeRaw = String(track?.track_badge || "").trim();
-  if (!rawType && !badgeRaw) return "";
-  const isGrant = rawType === "grant" || /grant|scholar/i.test(badgeRaw);
-  const fallback = isGrant ? translateWord("filter_grant", "Grant") : translateWord("filter_paid", "Paid");
-  const text = badgeRaw ? trTrackLabel(translateAdmissionText(badgeRaw, badgeRaw)) : fallback;
-  const cls = isGrant ? "track-funding-badge--grant" : "track-funding-badge--paid";
-  return `<span class="track-funding-badge ${cls}">${escapeHtml(text)}</span>`;
-}
-
-function getTrackFundingType(track) {
-  const rawType = String(track?.funding_type || "").trim().toLowerCase();
-  if (rawType === "grant" || rawType === "paid") return rawType;
-  const badgeRaw = String(track?.track_badge || "").trim().toLowerCase();
-  return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
-}
-
-function readAdmissionTrackFilterFromProfile() {
-  const profile = loadProfile();
-  const pref = normalizeFundingPreference(profile?.fundingType || profile?.funding_type || "any");
-  return pref === "any" ? "all" : pref;
-}
 
 function bindGuideExternalUpdates(handler) {
   if (__guideExternalUpdateHandler) {
@@ -809,6 +605,14 @@ export function initUniversitiesPage() {
     };
 
     if (!el.list) return;
+    if (__universitiesProfileUpdatedHandler) {
+        window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
+        __universitiesProfileUpdatedHandler = null;
+    }
+    if (__universitiesLanguageChangedHandler) {
+        window.removeEventListener("languageChanged", __universitiesLanguageChangedHandler);
+        __universitiesLanguageChangedHandler = null;
+    }
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
 
@@ -1362,18 +1166,20 @@ export function initUniversitiesPage() {
         el.maxSlider.value = val; state.max_tuition = val; fillTrack(); refetch();
     });
 
-    fetchAndRender(); 
-    window.addEventListener("profileUpdated", () => {
+    fetchAndRender();
+    __universitiesProfileUpdatedHandler = () => {
         state.funding_type = getProfileFundingQueryValue();
         state.page = 1;
         saveFilters(state);
         fetchAndRender();
-    });
-    window.addEventListener("languageChanged", () => {
+    };
+    window.addEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
+    __universitiesLanguageChangedHandler = () => {
         applyAISortOptionLabel();
         updateTradeoffLabels();
         fetchAndRender();
-    });
+    };
+    window.addEventListener("languageChanged", __universitiesLanguageChangedHandler);
 
     function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
@@ -2932,7 +2738,16 @@ export async function initUniversityPage() {
 export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
     if (!listEl) return;
-    window.addEventListener("languageChanged", () => { initRankingPage(); }, { once: true });
+    if (__rankingLanguageChangedHandler) {
+        window.removeEventListener("languageChanged", __rankingLanguageChangedHandler);
+        __rankingLanguageChangedHandler = null;
+    }
+    const onRankingLanguageChanged = () => {
+        __rankingLanguageChangedHandler = null;
+        initRankingPage();
+    };
+    __rankingLanguageChangedHandler = onRankingLanguageChanged;
+    window.addEventListener("languageChanged", onRankingLanguageChanged, { once: true });
     ensureRankingBadgeResizeHandler();
     const rankStatusSemanticMap = {
         official: "official",
