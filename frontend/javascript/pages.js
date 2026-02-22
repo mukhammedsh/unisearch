@@ -88,6 +88,16 @@ function buildApiUrl(path) {
 
 let rankingBadgeResizeBound = false;
 let rankingBadgeResizeRaf = 0;
+let rankingFetchController = null;
+const RANK_STATUS_SEMANTIC_MAP = {
+  official: "official",
+  curated: "curated",
+  mixed: "mixed",
+  estimated: "estimated",
+  inferred: "estimated",
+  derived: "estimated",
+  derived_prestige_order: "estimated",
+};
 
 function fitRankingBadgeText(container) {
   if (!container) return;
@@ -2749,20 +2759,18 @@ export async function initRankingPage() {
     __rankingLanguageChangedHandler = onRankingLanguageChanged;
     window.addEventListener("languageChanged", onRankingLanguageChanged, { once: true });
     ensureRankingBadgeResizeHandler();
-    const rankStatusSemanticMap = {
-        official: "official",
-        curated: "curated",
-        mixed: "mixed",
-        estimated: "estimated",
-        inferred: "estimated",
-        derived: "estimated",
-        derived_prestige_order: "estimated",
-    };
+    if (rankingFetchController) {
+        rankingFetchController.abort();
+    }
+    const controller = new AbortController();
+    rankingFetchController = controller;
 
     try {
         // Запрашиваем 200 вузов
         const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
-        const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc&lang=${encodeURIComponent(uiLang)}`);
+        const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc&lang=${encodeURIComponent(uiLang)}`, {
+            signal: controller.signal,
+        });
         if (!res.ok) throw new Error("Error loading ranking");
         const data = await res.json();
         let items = data.items || [];
@@ -2773,7 +2781,7 @@ export async function initRankingPage() {
             const rankSource = String(rankMeta.source || "").trim();
             const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
             const rankVerifiedAt = String(rankMeta.verified_at || "").trim();
-            const rankStatusKey = rankStatusSemanticMap[rankStatusRaw] || rankStatusRaw;
+            const rankStatusKey = RANK_STATUS_SEMANTIC_MAP[rankStatusRaw] || rankStatusRaw;
             const rankStatusFallback = rankStatusRaw.replaceAll("_", " ");
             const rankStatusLocalized = rankStatusRaw
                 ? t(`ranking.source_status.${rankStatusKey}`, rankStatusFallback)
@@ -2852,8 +2860,13 @@ export async function initRankingPage() {
         requestAnimationFrame(() => fitRankingBadgeText(listEl));
 
     } catch (err) {
+        if (err?.name === "AbortError") return;
         console.error(err);
         listEl.innerHTML = `<div class="rank-error">${escapeHtml(t("ranking.failed", "Failed to load rankings."))}</div>`;
+    } finally {
+        if (rankingFetchController === controller) {
+            rankingFetchController = null;
+        }
     }
 }
 

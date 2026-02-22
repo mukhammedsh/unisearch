@@ -1149,6 +1149,16 @@ html, body {
   color: var(--accent);
 }
 
+.custom-option.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.custom-option.is-disabled:hover {
+  background-color: transparent;
+  color: var(--text);
+}
+
 .custom-select-trigger-content {
   display: flex;
   align-items: center;

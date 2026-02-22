@@ -845,6 +845,7 @@ const LANGUAGE_FLAG_CODES = {
   rus: "ru",
   kz: "kz",
 };
+const FLAG_IMG_HTML_CACHE = new Map();
 
 let __customSelectGlobalClickBound = false;
 function bindCustomSelectGlobalClick() {
@@ -862,9 +863,15 @@ function bindCustomSelectGlobalClick() {
 export function getFlagImg(countryName) {
   const raw = String(countryName || "").trim();
   if (!raw) return "";
-  const code = COUNTRY_CODES[raw] || COUNTRY_CODES[raw.toUpperCase()] || COUNTRY_CODES[raw.toLowerCase()] || LANGUAGE_FLAG_CODES[raw.toLowerCase()];
+  const lower = raw.toLowerCase();
+  const code = COUNTRY_CODES[raw] || COUNTRY_CODES[raw.toUpperCase()] || COUNTRY_CODES[lower] || LANGUAGE_FLAG_CODES[lower];
   if (!code) return "";
-  return `<img class="flag-icon-inline" src="https://flagcdn.com/24x18/${code}.png" alt="${escapeHtml(raw)}">`;
+  const cacheKey = `${code}|${raw}`;
+  const cached = FLAG_IMG_HTML_CACHE.get(cacheKey);
+  if (cached) return cached;
+  const html = `<img class="flag-icon-inline" src="https://flagcdn.com/24x18/${code}.png" alt="${escapeHtml(raw)}">`;
+  FLAG_IMG_HTML_CACHE.set(cacheKey, html);
+  return html;
 }
 
 export function initCustomSelect(selectId) {
@@ -903,6 +910,14 @@ export function initCustomSelect(selectId) {
         wrapper.appendChild(customOptions);
     }
 
+    const syncSelectedOptionState = () => {
+        const currentValue = String(select.value || "");
+        customOptions.querySelectorAll(".custom-option").forEach((node) => {
+            const value = String(node.getAttribute("data-value") || "");
+            node.classList.toggle("selected", value === currentValue);
+        });
+    };
+
     function updateTrigger() {
         const selectedOption = select.options[select.selectedIndex];
         if (!selectedOption) return;
@@ -922,9 +937,12 @@ export function initCustomSelect(selectId) {
     }
 
     customOptions.innerHTML = "";
+    const optionsFragment = document.createDocumentFragment();
     for (const option of select.options) {
         const div = document.createElement("div");
         div.classList.add("custom-option");
+        div.setAttribute("data-value", String(option.value || ""));
+        if (option.disabled) div.classList.add("is-disabled");
         const val = option.value;
         const text = option.text;
         const flag = getFlagImg(val);
@@ -932,30 +950,47 @@ export function initCustomSelect(selectId) {
         else div.textContent = text;
 
         if (option.selected) div.classList.add("selected");
+        optionsFragment.appendChild(div);
+    }
+    customOptions.appendChild(optionsFragment);
 
-        div.addEventListener("click", () => {
-            select.value = val;
-            select.dispatchEvent(new Event("change"));
-            updateTrigger();
+    if (customOptions.dataset.bound !== "1") {
+        customOptions.dataset.bound = "1";
+        customOptions.addEventListener("click", (e) => {
+            const target = e.target;
+            if (!(target instanceof Element)) return;
+            const optionEl = target.closest(".custom-option");
+            if (!(optionEl instanceof Element) || !customOptions.contains(optionEl)) return;
+            if (optionEl.classList.contains("is-disabled")) return;
+
+            const nextValue = String(optionEl.getAttribute("data-value") || "");
+            const changed = String(select.value || "") !== nextValue;
+            select.value = nextValue;
+            if (changed) select.dispatchEvent(new Event("change"));
+            else {
+                updateTrigger();
+                syncSelectedOptionState();
+            }
             wrapper.classList.remove("open");
-            wrapper.querySelectorAll(".custom-option").forEach(el => el.classList.remove("selected"));
-            div.classList.add("selected");
         });
-        customOptions.appendChild(div);
     }
 
     if (wrapper.dataset.bound !== "1") {
         wrapper.dataset.bound = "1";
         trigger.addEventListener("click", (e) => {
             e.stopPropagation();
-            document.querySelectorAll(".custom-select-wrapper").forEach(w => { if (w !== wrapper) w.classList.remove("open"); });
+            document.querySelectorAll(".custom-select-wrapper.open").forEach(w => { if (w !== wrapper) w.classList.remove("open"); });
             wrapper.classList.toggle("open");
         });
 
-        select.addEventListener("change", () => updateTrigger());
+        select.addEventListener("change", () => {
+            updateTrigger();
+            syncSelectedOptionState();
+        });
     }
 
     updateTrigger();
+    syncSelectedOptionState();
 }
 
 export function getLangExamLimits(examId, LANG_CONFIG) {
