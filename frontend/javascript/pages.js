@@ -40,6 +40,7 @@ import {
 import { bindInfoTooltips } from "./tooltip.js";
 
 const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
+const MAP_MARKER_IMG_ONERROR = "if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();";
 
 function normalizeUrl(raw) {
   const s = String(raw || "").trim();
@@ -64,6 +65,16 @@ function safeUrl(raw) {
 
 function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
+}
+
+function mapMarkerLogoHtml(logoUrl) {
+  const safeLogoUrl = escapeHtml(logoUrl);
+  return `<div class="map-marker-container"><img class="marker-img-inner" src="${safeLogoUrl}" alt="" loading="lazy" decoding="async" onerror="${MAP_MARKER_IMG_ONERROR}"></div>`;
+}
+
+function clusterMarkerLogoHtml(logoUrl, extraCount) {
+  const count = Number.isFinite(Number(extraCount)) ? Number(extraCount) : 0;
+  return `<div class="cluster-node-fix">${mapMarkerLogoHtml(logoUrl)}<div class="cluster-badge">+${count}</div></div>`;
 }
 
 function buildApiUrl(path) {
@@ -1390,9 +1401,8 @@ export function initUniversitiesPage() {
                 const fallbackId = markers[0]?.options?.uniId || "default";
                 const bestId = (best && best.id) ? best.id : fallbackId;
                 const logoUrl = uniLogoSrc(bestId);
-                const safeLogoUrl = escapeHtml(logoUrl);
                 return L.divIcon({
-                    html: `<div class="cluster-node-fix"><div class="map-marker-container"><img class="marker-img-inner" src="${safeLogoUrl}" alt="" loading="lazy" decoding="async" onerror="if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();"></div><div class="cluster-badge">+${count - 1}</div></div>`,
+                    html: clusterMarkerLogoHtml(logoUrl, count - 1),
                     className: "cluster-icon-container",
                     iconSize: [44, 44],
                     iconAnchor: [22, 22],
@@ -1425,10 +1435,9 @@ export function initUniversitiesPage() {
         items.forEach(u => {
             if (u.coordinates?.lat && u.coordinates?.lon) {
                 const uniId = String(u.id || "");
-                const logoUrl = escapeHtml(uniLogoSrc(uniId));
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
-                    html: `<div class="map-marker-container"><img class="marker-img-inner" src="${logoUrl}" alt="" loading="lazy" decoding="async" onerror="if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();"></div>`,
+                    html: mapMarkerLogoHtml(uniLogoSrc(uniId)),
                     iconSize: [44, 44],
                     iconAnchor: [22, 22],
                     popupAnchor: [0, -24],
