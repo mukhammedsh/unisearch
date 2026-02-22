@@ -389,6 +389,8 @@ const DETAIL_CACHE_MAX_ITEMS = 24;
 const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 let __detailProfileUpdatedHandler = null;
 let __detailLanguageChangedHandler = null;
+let __guideExternalUpdateHandler = null;
+let __guideHashChangeHandler = null;
 
 function applyPercentWidths(rootEl) {
   if (!rootEl) return;
@@ -598,6 +600,26 @@ function readAdmissionTrackFilterFromProfile() {
   const profile = loadProfile();
   const pref = normalizeFundingPreference(profile?.fundingType || profile?.funding_type || "any");
   return pref === "any" ? "all" : pref;
+}
+
+function bindGuideExternalUpdates(handler) {
+  if (__guideExternalUpdateHandler) {
+    window.removeEventListener("languageChanged", __guideExternalUpdateHandler);
+    window.removeEventListener("examConfigLoaded", __guideExternalUpdateHandler);
+    window.removeEventListener("languageConfigLoaded", __guideExternalUpdateHandler);
+  }
+  __guideExternalUpdateHandler = handler;
+  window.addEventListener("languageChanged", __guideExternalUpdateHandler);
+  window.addEventListener("examConfigLoaded", __guideExternalUpdateHandler);
+  window.addEventListener("languageConfigLoaded", __guideExternalUpdateHandler);
+}
+
+function bindGuideHashChange(handler) {
+  if (__guideHashChangeHandler) {
+    window.removeEventListener("hashchange", __guideHashChangeHandler);
+  }
+  __guideHashChangeHandler = handler;
+  window.addEventListener("hashchange", __guideHashChangeHandler);
 }
 
 function hasSeenUniversitiesTour() {
@@ -3229,13 +3251,11 @@ export function initGuidePage() {
         });
     });
 
-    window.addEventListener("hashchange", () => {
+    bindGuideHashChange(() => {
         activateSection(String(window.location.hash || "").replace("#", ""), false);
     });
 
     renderAll();
     activateSection(String(window.location.hash || "").replace("#", ""), false);
-    window.addEventListener("languageChanged", renderAll);
-    window.addEventListener("examConfigLoaded", renderAll);
-    window.addEventListener("languageConfigLoaded", renderAll);
+    bindGuideExternalUpdates(renderAll);
 }
