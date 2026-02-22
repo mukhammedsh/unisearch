@@ -864,7 +864,7 @@ export function getFlagImg(countryName) {
   if (!raw) return "";
   const code = COUNTRY_CODES[raw] || COUNTRY_CODES[raw.toUpperCase()] || COUNTRY_CODES[raw.toLowerCase()] || LANGUAGE_FLAG_CODES[raw.toLowerCase()];
   if (!code) return "";
-  return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${escapeHtml(raw)}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">`;
+  return `<img class="flag-icon-inline" src="https://flagcdn.com/24x18/${code}.png" alt="${escapeHtml(raw)}">`;
 }
 
 export function initCustomSelect(selectId) {
@@ -911,11 +911,11 @@ export function initCustomSelect(selectId) {
         const flag = getFlagImg(val);
         if (isLanguageSelect) {
             const shortLabel = ({ eng: "EN", rus: "RU", kz: "KZ" }[String(val || "").toLowerCase()] || String(val || "").toUpperCase() || text);
-            trigger.innerHTML = `<div style="display:flex; align-items:center; gap:6px;">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
+            trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
             return;
         }
         if (flag) {
-            trigger.innerHTML = `<div style="display:flex; align-items:center; gap:10px;">${flag} <span>${escapeHtml(text)}</span></div>`;
+            trigger.innerHTML = `<div class="custom-select-trigger-content">${flag} <span>${escapeHtml(text)}</span></div>`;
         } else {
             trigger.innerHTML = `<span>${escapeHtml(text)}</span>`;
         }

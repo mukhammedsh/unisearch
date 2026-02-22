@@ -251,6 +251,11 @@ html, body {
   align-items: center;
 }
 
+.navbar-logo-link {
+  display: flex;
+  align-items: center;
+}
+
 .lang-control {
   display: flex;
   align-items: center;
@@ -618,6 +623,10 @@ html, body {
   box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.16);
 }
 
+.profile-input--select {
+  cursor: pointer;
+}
+
 .profile-budget {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -883,6 +892,10 @@ html, body {
   align-items: end;
 }
 
+.profile-lang-conditional {
+  display: none;
+}
+
 .lang-actions{
   display:flex;
   justify-content:flex-end;
@@ -1136,12 +1149,30 @@ html, body {
   color: var(--accent);
 }
 
+.custom-select-trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-select-trigger-content--compact {
+  gap: 6px;
+}
+
 .custom-option img, .custom-select-trigger img {
   width: 20px;
   height: 15px;
   object-fit: cover;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.flag-icon-inline {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* Основной блок футера */

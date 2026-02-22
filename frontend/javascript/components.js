@@ -144,7 +144,7 @@ function consumeProfileDraftAfterReload() {
 const LAYOUT_HTML = `
 <header class="navbar">
   <div class="navbar-left">
-    <a href="${routeHome()}" data-route="home" style="display: flex; align-items: center;">
+    <a href="${routeHome()}" data-route="home" class="navbar-logo-link">
       <img
         src="/images/whitelogo.png"
         data-logo-light="/images/whitelogo.png"
@@ -211,7 +211,7 @@ const LAYOUT_HTML = `
 
       <div class="profile-field">
         <label class="profile-label" data-i18n="profile.label.study_mode">Preferred Study Mode</label>
-        <select id="studyModeSelect" class="profile-input" style="cursor:pointer;">
+        <select id="studyModeSelect" class="profile-input profile-input--select">
            <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
            <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
            <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
@@ -220,7 +220,7 @@ const LAYOUT_HTML = `
 
       <div class="profile-field">
         <label class="profile-label" data-i18n="profile.label.funding_type">Preferred Funding Type</label>
-        <select id="profileFundingTypeSelect" class="profile-input" style="cursor:pointer;">
+        <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
            <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
            <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
            <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
@@ -229,7 +229,7 @@ const LAYOUT_HTML = `
 
       <div class="profile-field">
         <label class="profile-label" data-i18n="profile.label.major">Intended Major</label>
-        <select id="profileMajorSelect" class="profile-input" style="cursor:pointer;">
+        <select id="profileMajorSelect" class="profile-input profile-input--select">
            <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
         </select>
       </div>
@@ -266,7 +266,7 @@ const LAYOUT_HTML = `
         <label class="profile-label" data-i18n="profile.label.exams">Exams (list, optional)</label>
         
         <div class="profile-exam-form">
-          <select id="examNameSelect" class="profile-input" style="cursor:pointer;">
+          <select id="examNameSelect" class="profile-input profile-input--select">
              <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
              <option value="IELTS">IELTS</option>
              <option value="TOEFL">TOEFL</option>
@@ -298,7 +298,7 @@ const LAYOUT_HTML = `
             <select id="langKind" class="profile-input"></select>
             </div>
 
-            <div id="cefrContainer" style="display:none">
+            <div id="cefrContainer" class="profile-lang-conditional">
             <span class="mini-label" data-i18n="profile.cefr">CEFR</span>
             <select id="langCefr" class="profile-input">
                 <option value="1">A1</option>
@@ -310,12 +310,12 @@ const LAYOUT_HTML = `
             </select>
             </div>
 
-            <div id="examContainer" style="display:none">
+            <div id="examContainer" class="profile-lang-conditional">
             <span class="mini-label" data-i18n="profile.exam">Exam</span>
             <select id="langExam" class="profile-input"></select>
             </div>
 
-            <div id="scoreContainer" style="display:none">
+            <div id="scoreContainer" class="profile-lang-conditional">
             <span class="mini-label" data-i18n="profile.score">Score</span>
             <input id="langExamScore"
                     type="text"
