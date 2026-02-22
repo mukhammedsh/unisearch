@@ -1277,33 +1277,14 @@
     height: 44px !important;
     background: #ffffff;
     border: 2px solid var(--accent);
-    border-radius: 50%;
+    border-radius: 50% !important;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    
+    overflow: hidden !important;
+    position: relative;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    
-    /* 🔥 КИЛЛЕР-ФИЧА: Обрезает всё, что не влезло в круг */
-    overflow: hidden !important; 
-    position: relative;
     box-sizing: border-box;
-}
-
-.map-marker-container {
-    width: 44px !important;
-    height: 44px !important;
-    background: #ffffff;
-    border: 2px solid var(--accent);
-    border-radius: 50% !important; /* Круг */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    overflow: hidden !important; /* Жесткая обрезка */
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    /* Устраняет баг скругления в некоторых браузерах */
     -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 

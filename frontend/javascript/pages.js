@@ -379,6 +379,216 @@ const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 let __detailProfileUpdatedHandler = null;
 let __detailLanguageChangedHandler = null;
 
+function applyPercentWidths(rootEl) {
+  if (!rootEl) return;
+  rootEl.querySelectorAll("[data-width-pct]").forEach((node) => {
+    const raw = Number(node.getAttribute("data-width-pct"));
+    const pct = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
+    node.style.setProperty("--fill-width", `${pct}%`);
+  });
+}
+
+function isLanguageExam(examKey) {
+  const key = String(examKey || "").toUpperCase();
+  return (
+    key.includes("IELTS") ||
+    key.includes("TOEFL") ||
+    key.includes("DET") ||
+    key.includes("DUOLINGO") ||
+    key.includes("PTE") ||
+    key.includes("CAMBRIDGE") ||
+    key.includes("TESTDAF") ||
+    key.includes("DSH") ||
+    key.includes("DELF") ||
+    key.includes("DALF") ||
+    key.includes("TCF") ||
+    key.includes("TEF") ||
+    key.includes("NT2") ||
+    key.includes("HSK") ||
+    key.includes("JLPT") ||
+    key.includes("TOPIK")
+  );
+}
+
+function formatExamScore(examKey, score) {
+  const key = String(examKey || "").toUpperCase();
+  if (key === "GPA") return `${score}%`;
+  if (key.includes("JLPT")) return `N${score}`;
+  if (key.includes("TOPIK") || key.includes("HSK") || key.includes("TESTDAF") || key.includes("DSH")) {
+    return `${translateWord("level_word", "Level")} ${score}`;
+  }
+  return String(score);
+}
+
+function splitExamEntries(obj) {
+  const lang = [];
+  const acad = [];
+  for (const [k, v] of Object.entries(obj || {})) {
+    if (v === null || v === undefined) continue;
+    (isLanguageExam(k) ? lang : acad).push([k, v]);
+  }
+  return { lang, acad };
+}
+
+function examGroupToneClass(color) {
+  if (color === "#2563eb") return "track-exam-group--info";
+  if (color === "#047857") return "track-exam-group--success";
+  return "track-exam-group--neutral";
+}
+
+function renderExamGroup(title, pairs, color) {
+  if (!pairs.length) return "";
+  const toneClass = examGroupToneClass(color);
+  return `
+      <div class="track-exam-group ${toneClass}">
+      <div class="track-exam-group-title">
+          ${title}
+      </div>
+      <div class="track-exam-group-list">
+          ${pairs.map(([exam, score]) => `
+          <div><strong>${escapeHtml(getExamDisplayName(exam))}:</strong> ${escapeHtml(formatExamScore(exam, score))}</div>
+          `).join("")}
+      </div>
+      </div>
+  `;
+}
+
+function cefrLabel(id) {
+  const n = Number(id);
+  if (n === 1) return "A1";
+  if (n === 2) return "A2";
+  if (n === 3) return "B1";
+  if (n === 4) return "B2";
+  if (n === 5) return "C1";
+  if (n === 6) return "C2";
+  return String(id);
+}
+
+function renderLanguageRequirements(track) {
+  const list = Array.isArray(track?.language_requirements) ? track.language_requirements : [];
+  if (!list.length) return "";
+
+  const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
+  const modeText = mode === "any"
+    ? translateWord("lang_mode_any", "Any one language proof is enough")
+    : translateWord("lang_mode_all", "All listed language proofs are required");
+
+  return `
+      <div class="track-lang-rules">
+        <div class="track-lang-rules-title">
+          ${escapeHtml(translateWord("language_track_rules", "LANGUAGE TRACK RULES"))}
+        </div>
+        <div class="track-lang-rules-mode">${escapeHtml(modeText)}</div>
+        <div class="track-lang-rules-list">
+          ${list.map((lr) => {
+            const code = String(lr?.code || "").toUpperCase();
+            const nativeOk = !!lr?.accept_native;
+            const minCefr = lr?.min_cefr != null ? cefrLabel(lr.min_cefr) : null;
+            const recCefr = lr?.recommended_cefr != null ? cefrLabel(lr.recommended_cefr) : null;
+            const reqPairs = Object.entries(lr?.requirements || {});
+            const avgPairs = Object.entries(lr?.stats_avg || {});
+
+            return `
+              <div class="track-lang-rule-card">
+                <div class="track-lang-rule-head">
+                  <span class="track-lang-rule-code">
+                    ${escapeHtml(code || "LANG")}
+                  </span>
+                  ${nativeOk ? `<span class="track-lang-rule-native">${escapeHtml(translateWord("native_accepted", "Native accepted"))}</span>` : ""}
+                </div>
+                ${(minCefr || recCefr) ? `
+                  <div class="track-lang-rule-cefr">
+                    ${minCefr ? `<span><strong>${escapeHtml(translateWord("min_cefr", "Min CEFR"))}:</strong> ${escapeHtml(minCefr)}</span>` : ""}
+                    ${(minCefr && recCefr) ? `<span> • </span>` : ""}
+                    ${recCefr ? `<span><strong>${escapeHtml(translateWord("typical", "Typical"))}:</strong> ${escapeHtml(recCefr)}</span>` : ""}
+                  </div>
+                ` : ""}
+                ${reqPairs.length ? `
+                  <div class="track-lang-rule-requirements">
+                    <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
+                    ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
+                  </div>
+                ` : ""}
+                ${avgPairs.length ? `
+                  <div class="track-lang-rule-average">
+                    <strong>${escapeHtml(translateWord("typical_admitted", "Typical admitted"))}:</strong>
+                    ${avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")}
+                  </div>
+                ` : ""}
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+  `;
+}
+
+function trackLookupKey(track, idx) {
+  const id = String(track?.id || "").trim();
+  if (id) return id;
+  const label = String(track?.label || "").trim();
+  if (label) return `label:${label}`;
+  return `track:${idx}`;
+}
+
+function chanceTone(chance) {
+  const value = Number(chance) || 0;
+  if (value >= 80) return { cls: "chance-high", label: translateWord("high_chance", "High chance") };
+  if (value >= 60) return { cls: "chance-good", label: translateWord("good_chance", "Good chance") };
+  if (value >= 40) return { cls: "chance-medium", label: translateWord("moderate_chance", "Moderate chance") };
+  return { cls: "chance-low", label: translateWord("low_chance", "Low chance") };
+}
+
+function renderUniChanceSummary(uniChance) {
+  if (!uniChance) return "";
+  const chance = Number(uniChance.overallChance) || 0;
+  const tone = chanceTone(chance);
+  return `
+      <div class="chance-panel">
+        <div class="chance-head">
+          <div>
+            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
+            <div class="chance-sub">${escapeHtml(translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context."))}</div>
+          </div>
+          <div class="chance-percent ${tone.cls}">${chance}%</div>
+        </div>
+        <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
+        <div class="chance-foot">${escapeHtml(translateWord("best_track", "Best track"))}: <strong>${escapeHtml(trTrackLabel(uniChance.bestTrackLabel || translateWord("general_admission", "General admission")))}</strong> • ${escapeHtml(tone.label)}</div>
+      </div>
+  `;
+}
+
+function renderTrackChanceChip(trackChance) {
+  if (!trackChance) return "";
+  const chance = Number(trackChance.chancePercent) || 0;
+  const tone = chanceTone(chance);
+  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
+}
+
+function renderTrackFundingBadge(track) {
+  const rawType = String(track?.funding_type || "").trim().toLowerCase();
+  const badgeRaw = String(track?.track_badge || "").trim();
+  if (!rawType && !badgeRaw) return "";
+  const isGrant = rawType === "grant" || /grant|scholar/i.test(badgeRaw);
+  const fallback = isGrant ? translateWord("filter_grant", "Grant") : translateWord("filter_paid", "Paid");
+  const text = badgeRaw ? trTrackLabel(translateAdmissionText(badgeRaw, badgeRaw)) : fallback;
+  const cls = isGrant ? "track-funding-badge--grant" : "track-funding-badge--paid";
+  return `<span class="track-funding-badge ${cls}">${escapeHtml(text)}</span>`;
+}
+
+function getTrackFundingType(track) {
+  const rawType = String(track?.funding_type || "").trim().toLowerCase();
+  if (rawType === "grant" || rawType === "paid") return rawType;
+  const badgeRaw = String(track?.track_badge || "").trim().toLowerCase();
+  return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
+}
+
+function readAdmissionTrackFilterFromProfile() {
+  const profile = loadProfile();
+  const pref = normalizeFundingPreference(profile?.fundingType || profile?.funding_type || "any");
+  return pref === "any" ? "all" : pref;
+}
+
 function hasSeenUniversitiesTour() {
   try {
     return localStorage.getItem(UNIVERSITIES_TOUR_SEEN_KEY) === "1";
@@ -2305,213 +2515,7 @@ export async function initUniversityPage() {
         }
         applyPercentWidths(progDiv);
     }
-
-    function isLanguageExam(examKey) {
-        const k = String(examKey || "").toUpperCase();
-        return (
-            k.includes("IELTS") ||
-            k.includes("TOEFL") ||
-            k.includes("DET") ||
-            k.includes("DUOLINGO") ||
-            k.includes("PTE") ||
-            k.includes("CAMBRIDGE") ||
-            k.includes("TESTDAF") ||
-            k.includes("DSH") ||
-            k.includes("DELF") ||
-            k.includes("DALF") ||
-            k.includes("TCF") ||
-            k.includes("TEF") ||
-            k.includes("NT2") ||
-            k.includes("HSK") ||
-            k.includes("JLPT") ||
-            k.includes("TOPIK")
-        );
-        }
-
-        function formatExamScore(examKey, score) {
-        const k = String(examKey || "").toUpperCase();
-        // В твоей базе GPA в процентах
-        if (k === "GPA") return `${score}%`;
-        if (k.includes("JLPT")) return `N${score}`;
-        if (k.includes("TOPIK") || k.includes("HSK") || k.includes("TESTDAF") || k.includes("DSH")) return `${translateWord("level_word", "Level")} ${score}`;
-        return String(score);
-        }
-
-        function splitExamEntries(obj) {
-        const lang = [];
-        const acad = [];
-        for (const [k, v] of Object.entries(obj || {})) {
-            if (v === null || v === undefined) continue;
-            (isLanguageExam(k) ? lang : acad).push([k, v]);
-        }
-        return { lang, acad };
-        }
-
-        function applyPercentWidths(rootEl) {
-        if (!rootEl) return;
-        rootEl.querySelectorAll("[data-width-pct]").forEach((node) => {
-            const raw = Number(node.getAttribute("data-width-pct"));
-            const pct = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
-            node.style.setProperty("--fill-width", `${pct}%`);
-        });
-        }
-
-        function renderExamGroup(title, pairs, color) {
-        if (!pairs.length) return "";
-        let toneClass = "track-exam-group--neutral";
-        if (color === "#2563eb") toneClass = "track-exam-group--info";
-        if (color === "#047857") toneClass = "track-exam-group--success";
-        return `
-            <div class="track-exam-group ${toneClass}">
-            <div class="track-exam-group-title">
-                ${title}
-            </div>
-            <div class="track-exam-group-list">
-                ${pairs.map(([exam, score]) => `
-                <div><strong>${escapeHtml(getExamDisplayName(exam))}:</strong> ${escapeHtml(formatExamScore(exam, score))}</div>
-                `).join("")}
-            </div>
-            </div>
-        `;
-        }
-
-        function cefrLabel(id) {
-        const n = Number(id);
-        if (n === 1) return "A1";
-        if (n === 2) return "A2";
-        if (n === 3) return "B1";
-        if (n === 4) return "B2";
-        if (n === 5) return "C1";
-        if (n === 6) return "C2";
-        return String(id);
-        }
-
-        function renderLanguageRequirements(track) {
-        const list = Array.isArray(track?.language_requirements) ? track.language_requirements : [];
-        if (!list.length) return "";
-
-        const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
-        const modeText = mode === "any"
-            ? translateWord("lang_mode_any", "Any one language proof is enough")
-            : translateWord("lang_mode_all", "All listed language proofs are required");
-
-        return `
-            <div class="track-lang-rules">
-              <div class="track-lang-rules-title">
-                ${escapeHtml(translateWord("language_track_rules", "LANGUAGE TRACK RULES"))}
-              </div>
-              <div class="track-lang-rules-mode">${escapeHtml(modeText)}</div>
-              <div class="track-lang-rules-list">
-                ${list.map(lr => {
-                    const code = String(lr?.code || "").toUpperCase();
-                    const nativeOk = !!lr?.accept_native;
-                    const minCefr = lr?.min_cefr != null ? cefrLabel(lr.min_cefr) : null;
-                    const recCefr = lr?.recommended_cefr != null ? cefrLabel(lr.recommended_cefr) : null;
-
-                    const reqPairs = Object.entries(lr?.requirements || {});
-                    const avgPairs = Object.entries(lr?.stats_avg || {});
-
-                    return `
-                      <div class="track-lang-rule-card">
-                        <div class="track-lang-rule-head">
-                          <span class="track-lang-rule-code">
-                            ${escapeHtml(code || "LANG")}
-                          </span>
-                          ${nativeOk ? `<span class="track-lang-rule-native">${escapeHtml(translateWord("native_accepted", "Native accepted"))}</span>` : ""}
-                        </div>
-                        ${(minCefr || recCefr) ? `
-                          <div class="track-lang-rule-cefr">
-                            ${minCefr ? `<span><strong>${escapeHtml(translateWord("min_cefr", "Min CEFR"))}:</strong> ${escapeHtml(minCefr)}</span>` : ""}
-                            ${(minCefr && recCefr) ? `<span> • </span>` : ""}
-                            ${recCefr ? `<span><strong>${escapeHtml(translateWord("typical", "Typical"))}:</strong> ${escapeHtml(recCefr)}</span>` : ""}
-                          </div>
-                        ` : ""}
-                        ${reqPairs.length ? `
-                          <div class="track-lang-rule-requirements">
-                            <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
-                            ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
-                          </div>
-                        ` : ""}
-                        ${avgPairs.length ? `
-                          <div class="track-lang-rule-average">
-                            <strong>${escapeHtml(translateWord("typical_admitted", "Typical admitted"))}:</strong>
-                            ${avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")}
-                          </div>
-                        ` : ""}
-                      </div>
-                    `;
-                }).join("")}
-              </div>
-            </div>
-        `;
-        }
-
-        function trackLookupKey(track, idx) {
-        const id = String(track?.id || "").trim();
-        if (id) return id;
-        const label = String(track?.label || "").trim();
-        if (label) return `label:${label}`;
-        return `track:${idx}`;
-        }
-
-        function chanceTone(chance) {
-        const c = Number(chance) || 0;
-        if (c >= 80) return { cls: "chance-high", label: translateWord("high_chance", "High chance") };
-        if (c >= 60) return { cls: "chance-good", label: translateWord("good_chance", "Good chance") };
-        if (c >= 40) return { cls: "chance-medium", label: translateWord("moderate_chance", "Moderate chance") };
-        return { cls: "chance-low", label: translateWord("low_chance", "Low chance") };
-        }
-
-        function renderUniChanceSummary() {
-        if (!uniChance) return "";
-        const chance = Number(uniChance.overallChance) || 0;
-        const tone = chanceTone(chance);
-        return `
-            <div class="chance-panel">
-              <div class="chance-head">
-                <div>
-                  <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-                  <div class="chance-sub">${escapeHtml(translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context."))}</div>
-                </div>
-                <div class="chance-percent ${tone.cls}">${chance}%</div>
-              </div>
-              <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
-              <div class="chance-foot">${escapeHtml(translateWord("best_track", "Best track"))}: <strong>${escapeHtml(trTrackLabel(uniChance.bestTrackLabel || translateWord("general_admission", "General admission")))}</strong> • ${escapeHtml(tone.label)}</div>
-            </div>
-        `;
-        }
-
-        function renderTrackChanceChip(trackChance) {
-        if (!trackChance) return "";
-        const chance = Number(trackChance.chancePercent) || 0;
-        const tone = chanceTone(chance);
-        return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
-        }
-
-        function renderTrackFundingBadge(track) {
-        const rawType = String(track?.funding_type || "").trim().toLowerCase();
-        const badgeRaw = String(track?.track_badge || "").trim();
-        if (!rawType && !badgeRaw) return "";
-        const isGrant = rawType === "grant" || /grant|scholar/i.test(badgeRaw);
-        const fallback = isGrant ? translateWord("filter_grant", "Grant") : translateWord("filter_paid", "Paid");
-        const text = badgeRaw ? trTrackLabel(translateAdmissionText(badgeRaw, badgeRaw)) : fallback;
-        const cls = isGrant ? "track-funding-badge--grant" : "track-funding-badge--paid";
-        return `<span class="track-funding-badge ${cls}">${escapeHtml(text)}</span>`;
-        }
-
-        function getTrackFundingType(track) {
-        const rawType = String(track?.funding_type || "").trim().toLowerCase();
-        if (rawType === "grant" || rawType === "paid") return rawType;
-        const badgeRaw = String(track?.track_badge || "").trim().toLowerCase();
-        return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
-        }
-
-        const readAdmissionTrackFilterFromProfile = () => {
-            const profile = loadProfile();
-            const pref = normalizeFundingPreference(profile?.fundingType || profile?.funding_type || "any");
-            return pref === "any" ? "all" : pref;
-        };
-        let admissionTrackFilter = readAdmissionTrackFilterFromProfile();
+    let admissionTrackFilter = readAdmissionTrackFilterFromProfile();
 
 
     // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
@@ -2540,7 +2544,7 @@ export async function initUniversityPage() {
                 ? "admission-filter-pill--grant"
                 : (admissionTrackFilter === "paid" ? "admission-filter-pill--paid" : "admission-filter-pill--any");
 
-            let tracksHTML = warningHTML + renderUniChanceSummary();
+            let tracksHTML = warningHTML + renderUniChanceSummary(uniChance);
             tracksHTML += `
             <div class="admission-filter-row">
                 <span class="admission-filter-label">${escapeHtml(translateWord("track_filter", "Track Filter"))}:</span>
