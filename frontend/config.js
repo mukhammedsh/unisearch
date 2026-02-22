@@ -10,6 +10,14 @@
 
   w.APP_VERSION = "2.5.1";
 
+  const debugRaw = env.APP_DEBUG;
+  if (typeof debugRaw === "boolean") {
+    w.APP_DEBUG = debugRaw;
+  } else {
+    const debugText = String(debugRaw ?? "").trim().toLowerCase();
+    w.APP_DEBUG = ["1", "true", "yes", "on"].includes(debugText);
+  }
+
   const prettyRaw = env.APP_USE_PRETTY_URLS;
   if (typeof prettyRaw === "boolean") {
     w.APP_USE_PRETTY_URLS = prettyRaw;

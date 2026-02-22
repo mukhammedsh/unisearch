@@ -91,6 +91,7 @@
 .rank-info { flex-grow: 1; }
 .rank-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
 .rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; }
+.rank-loc-text { margin-left: 1px; }
 
 .rank-badge {
     background: #f3f4f6;
@@ -112,6 +113,21 @@
     padding: 5px 12px;
     border-radius: 20px;
     border: 1px solid #eee;
+}
+
+.rank-source--meta {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.rank-error {
+    padding: 20px;
+    text-align: center;
+    color: #dc2626;
+    font-weight: 700;
+    border-radius: 12px;
+    border: 1px solid #fecdd3;
+    background: #fff1f2;
 }
 .rank-source a {
     color: #5d17ea;
@@ -240,4 +256,10 @@
 
 :root[data-theme="dark"] .rank-badge b {
     color: #f2f2f2;
+}
+
+:root[data-theme="dark"] .rank-error {
+    color: #fca5a5;
+    border-color: #7f1d1d;
+    background: #2a1114;
 }

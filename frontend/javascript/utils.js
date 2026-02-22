@@ -276,7 +276,6 @@ async function loadExamConfig() {
       // 2) { version, exams: { ... } }
       EXAM_CONFIG = raw?.exams ? raw.exams : raw;
 
-      console.log("✅ Exam config loaded:", EXAM_CONFIG);
       window.dispatchEvent(new Event("examConfigLoaded"));
     } catch (error) {
       console.error("❌ Error loading exam config:", error);
@@ -311,7 +310,6 @@ async function loadLanguageConfig() {
       const response = await fetch(`${API_BASE}/languages/config`);
       if (!response.ok) throw new Error("Failed to load language config");
       LANG_CONFIG = await response.json();
-      console.log("✅ Language config loaded:", LANG_CONFIG);
       window.dispatchEvent(new Event("languageConfigLoaded"));
     } catch (error) {
       console.error("❌ Error loading language config:", error);
@@ -339,7 +337,6 @@ async function loadCityDatabase() {
 
       const data = await response.json();
       CITY_OPTIONS_BY_COUNTRY = data;
-      console.log("✅ База городов успешно загружена");
       window.dispatchEvent(new Event("citiesLoaded"));
     } catch (error) {
       console.error("❌ Ошибка при загрузке городов:", error);
@@ -658,7 +655,7 @@ export function removeToast(toast) {
 export function loadProfile() {
   const readMemoryFallback = () => {
     if (!__profileMemoryFallback || typeof __profileMemoryFallback !== "object") return null;
-    return normalizeProfile(__profileMemoryFallback);
+    return normalizeProfileData(__profileMemoryFallback);
   };
 
   try {
@@ -666,10 +663,10 @@ export function loadProfile() {
     if (!s) {
       const fromMemory = readMemoryFallback();
       if (fromMemory) return fromMemory;
-      return normalizeProfile({});
+      return normalizeProfileData({});
     }
     const raw = JSON.parse(s);
-    const normalized = normalizeProfile(raw);
+    const normalized = normalizeProfileData(raw);
 
     // optional: если хочешь автоматически почистить localStorage от мусора
     // localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
@@ -679,7 +676,7 @@ export function loadProfile() {
   } catch (e) {
     const fromMemory = readMemoryFallback();
     if (fromMemory) return fromMemory;
-    return normalizeProfile({});
+    return normalizeProfileData({});
   }
 }
 
@@ -778,7 +775,7 @@ const FALLBACK_LANG_LIMITS = {
 };
 
 export function saveProfile(p) {
-  const normalized = normalizeProfile(p);
+  const normalized = normalizeProfileData(p);
   __profileMemoryFallback = normalized;
   try {
     localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(normalized));
@@ -849,6 +846,19 @@ const LANGUAGE_FLAG_CODES = {
   kz: "kz",
 };
 
+let __customSelectGlobalClickBound = false;
+function bindCustomSelectGlobalClick() {
+  if (__customSelectGlobalClickBound || typeof document === "undefined") return;
+  __customSelectGlobalClickBound = true;
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    document.querySelectorAll(".custom-select-wrapper.open").forEach((wrapper) => {
+      if (!wrapper.contains(target)) wrapper.classList.remove("open");
+    });
+  });
+}
+
 export function getFlagImg(countryName) {
   const raw = String(countryName || "").trim();
   if (!raw) return "";
@@ -860,6 +870,7 @@ export function getFlagImg(countryName) {
 export function initCustomSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return;
+    bindCustomSelectGlobalClick();
     const isLanguageSelect = selectId === "languageSelect";
     let wrapper = select.parentNode;
     const alreadyWrapped = wrapper && wrapper.classList.contains("custom-select-wrapper");
@@ -941,7 +952,6 @@ export function initCustomSelect(selectId) {
             wrapper.classList.toggle("open");
         });
 
-        document.addEventListener("click", (e) => { if (!wrapper.contains(e.target)) wrapper.classList.remove("open"); });
         select.addEventListener("change", () => updateTrigger());
     }
 
@@ -1031,7 +1041,7 @@ function clampWithCfg(score, cfg) {
   return clamp(v, min, max);
 }
 
-function normalizeProfile(p) {
+export function normalizeProfileData(p) {
   const out = { ...PROFILE_DEFAULTS, ...(p || {}) };
   const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
   if (fundingRaw === "grant" || fundingRaw === "paid") out.fundingType = fundingRaw;

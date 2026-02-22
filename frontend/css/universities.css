@@ -1,6 +1,6 @@
 :root {
   --accent: #5715db;
-  --accent2: #5715db;
+  --accent2: var(--accent);
   --bg: #f6f7fb;
   --card: #ffffff;
   --text: #111;
@@ -13,8 +13,6 @@
 }
 
 :root[data-theme="dark"] {
-  --accent: #5715db;
-  --accent2: #5715db;
   --bg: #0f0f0f;
   --card: #1a1a1a;
   --text: #ededed;
@@ -22,7 +20,6 @@
   --line: #323232;
   --shadow: 0 14px 28px rgba(0, 0, 0, .45);
   --slider-track-inactive: #303030;
-  --slider-track-active: #5715db;
   --u-loading-dim: rgba(0, 0, 0, 0.34);
 }
 
@@ -1313,9 +1310,9 @@
 .marker-img-inner {
     width: 100%;
     height: 100%;
-    background-size: contain; /* Логотип виден целиком */
-    background-repeat: no-repeat;
-    background-position: center;
+    object-fit: contain; /* Логотип виден целиком */
+    object-position: center;
+    display: block;
     /* Внутренний отступ (чтобы лого не касалось границ) */
     transform: scale(0.85); 
 }

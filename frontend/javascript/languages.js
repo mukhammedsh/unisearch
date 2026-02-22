@@ -3,6 +3,7 @@ import {
   API_BASE,
   LANG_CONFIG,
   loadProfile,
+  normalizeProfileData,
   saveProfile,
   showToast,
   initCustomSelect,
@@ -83,12 +84,6 @@ function isMultipleOfStep(score, min, step) {
   return Math.abs(k - Math.round(k)) < 1e-9;
 }
 
-function normalizeProfile(p) {
-  const prof = p && typeof p === "object" ? p : {};
-  if (!Array.isArray(prof.languages)) prof.languages = [];
-  return prof;
-}
-
 function getProfileDraftBridge() {
   const bridge = window.__unisearchProfileDraft;
   if (!bridge || typeof bridge !== "object") return null;
@@ -100,14 +95,14 @@ function getProfileDraftBridge() {
 function loadEditableProfile() {
   const bridge = getProfileDraftBridge();
   if (bridge) {
-    return normalizeProfile(bridge.get());
+    return normalizeProfileData(bridge.get());
   }
-  return normalizeProfile(loadProfile());
+  return normalizeProfileData(loadProfile());
 }
 
 function saveEditableProfile(profile) {
   const bridge = getProfileDraftBridge();
-  const next = normalizeProfile(profile);
+  const next = normalizeProfileData(profile);
   if (bridge) {
     bridge.set(next);
     return;

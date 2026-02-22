@@ -81,7 +81,6 @@ body {
 
 /* Global API loader for backend requests */
 .global-api-loader {
-  display: none !important;
   position: fixed;
   top: 84px;
   right: 18px;
@@ -95,6 +94,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 13000;
+  visibility: hidden;
   opacity: 0;
   transform: translateY(-8px) scale(0.96);
   pointer-events: none;
@@ -102,6 +102,7 @@ body {
 }
 
 .global-api-loader.is-visible {
+  visibility: visible;
   opacity: 1;
   transform: translateY(0) scale(1);
 }

@@ -92,7 +92,6 @@ function initHomeMockupMedia() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("🚀 UniSearch JS Loaded");
   initTheme();
   const i18nInitPromise = initI18n().catch((e) => {
     console.warn("i18n init failed, using built-in fallback pack:", e);

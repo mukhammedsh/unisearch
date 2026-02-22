@@ -3,10 +3,12 @@ import path from "node:path";
 
 const apiBase = String(process.env.UNISEARCH_API_BASE_URL || "").trim();
 const prettyRaw = String(process.env.UNISEARCH_USE_PRETTY_URLS || "").trim();
+const debugRaw = String(process.env.UNISEARCH_APP_DEBUG || "").trim();
 
 const payload = {
   API_BASE_URL: apiBase,
   APP_USE_PRETTY_URLS: prettyRaw,
+  APP_DEBUG: debugRaw,
 };
 
 const target = path.resolve(process.cwd(), "frontend", "env.js");

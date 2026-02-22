@@ -1,6 +1,7 @@
 /* 2. components.js - Элементы интерфейса */
 import {
   loadProfile,
+  normalizeProfileData,
   saveProfile,
   initCustomSelect,
   EXAM_CONFIG,
@@ -14,7 +15,7 @@ import {
   getCurrentTheme,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
-import { translateProgramName } from "./university-translations.js";
+import { initUniversityTranslations, translateProgramName } from "./university-translations.js";
 import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
 
 function syncNavbarLogo(themeOverride = "") {
@@ -463,11 +464,26 @@ function initLanguageSwitcher() {
     languageSelect.dataset.bound = "1";
     languageSelect.value = getCurrentLanguage();
 
-    languageSelect.addEventListener("change", () => {
-        const next = String(languageSelect.value || "").trim().toLowerCase();
-        persistProfileDraftForReload("language_switch", next || "eng");
-        setLanguage(next || "eng", { persist: true, emit: false });
-        window.location.reload();
+    languageSelect.addEventListener("change", async () => {
+        if (languageSelect.dataset.loading === "1") return;
+        languageSelect.dataset.loading = "1";
+        languageSelect.disabled = true;
+
+        try {
+            const next = String(languageSelect.value || "").trim().toLowerCase();
+            const nextLang = next || "eng";
+            setLanguage(nextLang, { persist: true, emit: false });
+            try {
+                await initUniversityTranslations();
+            } catch (e) {
+                // keep fallback localization when translation endpoint is unavailable
+            }
+            applyTranslations(document);
+            window.dispatchEvent(new CustomEvent("languageChanged", { detail: { language: nextLang } }));
+        } finally {
+            languageSelect.disabled = false;
+            languageSelect.dataset.loading = "0";
+        }
     });
 
     window.addEventListener("languageChanged", () => {
@@ -510,7 +526,6 @@ async function fetchTranslationRuntimeStatus(force = false) {
 export async function loadGlobalLayout() {
     if (document.getElementById("profileModal")) return;
     try {
-        console.log("Injecting Layout HTML...");
         const currentHash = hashString(LAYOUT_HTML);
         const cached = readLayoutCache();
         const htmlToInject = (cached && cached.hash === currentHash) ? cached.html : LAYOUT_HTML;
@@ -627,9 +642,7 @@ function initProfileUI() {
     const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
 
     const ensureProfileShape = (raw) => {
-        const out = raw && typeof raw === "object" ? { ...raw } : {};
-        if (!Array.isArray(out.exams)) out.exams = [];
-        if (!Array.isArray(out.languages)) out.languages = [];
+        const out = normalizeProfileData(raw);
         out.name = String(out.name || "User").trim() || "User";
         out.budget = out.budget === null || out.budget === undefined ? "" : out.budget;
         out.gpa = out.gpa === null || out.gpa === undefined ? "" : out.gpa;
@@ -1288,20 +1301,24 @@ function initProfileUI() {
 
     resetFields({ preferTransferred: true, consumeTransferred: false });
 }
-// Вспомогательная функция для табов
+let __tabsBound = false;
 export function setupTabs() {
-  const buttons = document.querySelectorAll(".d-tab-btn");
-  const panes = document.querySelectorAll(".d-tab-pane");
+  const tabsRoot = document.querySelector(".d-tabs");
+  if (!tabsRoot) return;
+  if (__tabsBound) return;
+  __tabsBound = true;
 
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
-      panes.forEach(p => p.classList.remove("active"));
-      btn.classList.add("active");
-      const tabId = btn.getAttribute("data-tab");
-      const targetPane = document.getElementById(tabId);
-      if (targetPane) targetPane.classList.add("active");
-    });
+  tabsRoot.addEventListener("click", (e) => {
+    const btn = e.target instanceof Element ? e.target.closest(".d-tab-btn") : null;
+    if (!btn || !tabsRoot.contains(btn)) return;
+    const buttons = document.querySelectorAll(".d-tab-btn");
+    const panes = document.querySelectorAll(".d-tab-pane");
+    buttons.forEach((b) => b.classList.remove("active"));
+    panes.forEach((p) => p.classList.remove("active"));
+    btn.classList.add("active");
+    const tabId = btn.getAttribute("data-tab");
+    const targetPane = tabId ? document.getElementById(tabId) : null;
+    if (targetPane) targetPane.classList.add("active");
   });
 }
 
