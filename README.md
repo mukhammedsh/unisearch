@@ -322,6 +322,9 @@ tests/
 ## Changelog
 ### 2.5.3 (2026-02-24) - bugfix release
 - Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).
+- Unified universities page loading UX:
+  - removed duplicate top-right purple global API loader on universities list page;
+  - kept central white loading spinner visible until delayed `UniFit` response is applied (fallback -> late AI update flow).
 - Improved RU user-facing copy in university badges/tooltips (financial aid phrasing and consistent `вы` tone).
 - Reworked university card badge sizing logic to count-based scenarios (`0..6` supported by CSS classes):
   - `uni-badge--count-1` ... `uni-badge--count-6`
