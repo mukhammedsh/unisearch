@@ -202,15 +202,15 @@ universities.badge.acceptance: Коэффициент приема: {value}%
 universities.badge.conditional_exam_needed: 📝 Условно / Нужен экзамен
 universities.badge.top_match: ⭐ Отличное совпадение
 universities.badge.your_vibe: 🔥 Ваш вайб
-universities.badge.likely_grant: 🎓 Вероятен грант
+universities.badge.likely_grant: 💲 Вероятен грант
 universities.badge.paid_admission: 💼 Платное поступление
 universities.why.conditional_exam_needed: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
 universities.why.top_match: Этот вуз хорошо совпадает с вашими текущими настройками ползунков.
 universities.why.your_vibe: Этот вуз очень точно совпадает с вашими предпочтениями по фокусу, атмосфере и локации.
 universities.why.likely_grant: В режиме приоритета гранта у этого вуза высокий шанс поступления на грант.
 universities.why.paid_admission: Если вы готовы рассматривать платное обучение, у этого вуза высокий общий шанс поступления.
-universities.badge.aid_available: 🎓 Доступна финансовая помощь
-universities.badge.aid_likely: 🎓 Вероятен грант или финансовая помощь (без штрафа по бюджету)
+universities.badge.aid_available: 🤝 Доступна финансовая помощь
+universities.badge.aid_likely: 💲 Вероятен грант или финансовая помощь (без штрафа по бюджету)
 universities.badge.below_requirements: ⚠️ Ниже требований
 universities.badge.over_budget: 💰 Выше бюджета
 universities.badge.over_budget_aid: 💸 Выше бюджета • Есть помощь нуждающимся

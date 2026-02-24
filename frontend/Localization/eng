@@ -202,15 +202,15 @@ universities.badge.acceptance: Acceptance Rate: {value}%
 universities.badge.conditional_exam_needed: 📝 Conditional / Exam Needed
 universities.badge.top_match: ⭐ Top Match
 universities.badge.your_vibe: 🔥 Your Vibe
-universities.badge.likely_grant: 🎓 Likely Grant
+universities.badge.likely_grant: 💲 Likely Grant
 universities.badge.paid_admission: 💼 Paid Admission
 universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
 universities.why.top_match: This university is a strong preference match for your current slider setup.
 universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
 universities.why.likely_grant: In grant-priority mode, this university has a strong grant admission chance.
 universities.why.paid_admission: In willing-to-pay mode, this university has a strong general admission chance.
-universities.badge.aid_available: 🎓 Aid Available
-universities.badge.aid_likely: 🎓 Grant/Aid Likely (no budget penalty)
+universities.badge.aid_available: 🤝 Aid Available
+universities.badge.aid_likely: 💲 Grant/Aid Likely (no budget penalty)
 universities.badge.below_requirements: ⚠️ Below Requirements
 universities.badge.over_budget: 💰 Over Budget
 universities.badge.over_budget_aid: 💸 Over Budget • Aid Available

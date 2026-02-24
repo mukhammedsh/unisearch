@@ -202,15 +202,15 @@ universities.badge.acceptance: Қабылдау көрсеткіші: {value}%
 universities.badge.conditional_exam_needed: 📝 Шартты / Емтихан керек
 universities.badge.top_match: ⭐ Керемет сәйкестік
 universities.badge.your_vibe: 🔥 Сенің вайбың
-universities.badge.likely_grant: 🎓 Грант ықтимал
+universities.badge.likely_grant: 💲 Грант ықтимал
 universities.badge.paid_admission: 💼 Ақылы түсу
 universities.why.conditional_exam_needed: Кейбір міндетті емтихан деректері жоқ, сондықтан нәтиже шартты болып белгіленді.
 universities.why.top_match: Бұл университет сіздің қазіргі слайдер баптауыңызбен жақсы сәйкес келеді.
 universities.why.your_vibe: Бұл университет сіздің Фокус, Атмосфера және Орналасу таңдауыңызға өте жақсы сәйкес келеді.
 universities.why.likely_grant: Грант басымдығы режимінде бұл университетте грантпен түсу ықтималдығы жоғары.
 universities.why.paid_admission: Ақылы түсу режимінде бұл университетте жалпы түсу ықтималдығы жоғары.
-universities.badge.aid_available: 🎓 Көмек бар
-universities.badge.aid_likely: 🎓 Грант/көмек ықтимал (бюджет айыппұлы жоқ)
+universities.badge.aid_available: 🤝 Көмек бар
+universities.badge.aid_likely: 💲 Грант/көмек ықтимал (бюджет айыппұлы жоқ)
 universities.badge.below_requirements: ⚠️ Талаптан төмен
 universities.badge.over_budget: 💰 Бюджеттен жоғары
 universities.badge.over_budget_aid: 💸 Бюджеттен жоғары • Көмек бар

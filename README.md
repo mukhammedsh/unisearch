@@ -331,6 +331,7 @@ tests/
   - more tags now use compact presets instead of aggressive global text shrinking.
 - Added robust i18n badge layout validation for `eng`, `rus`, `kz` to ensure badges stay inside the badge container.
 - Added/updated E2E coverage for badge priority, count-based classes (`0..5`), and multilingual layout behavior.
+- Changed repeating study emoji
 
 ### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
 - Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).

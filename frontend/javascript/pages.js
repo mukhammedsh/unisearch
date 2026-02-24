@@ -1929,7 +1929,7 @@ export function initUniversitiesPage() {
         // Priority 3: financial route tag from finance slider mode + chance
         if (likelyGrant) {
             badges.push(
-                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.likely_grant", "🎓 Likely Grant"))}</span>`
+                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.likely_grant", "💲 Likely Grant"))}</span>`
             );
             if (!whyText) whyText = t("universities.why.likely_grant", "In grant-priority mode, this university has a strong grant admission chance.");
         } else if (paidAdmission) {
@@ -1950,7 +1950,7 @@ export function initUniversitiesPage() {
             if (aidAny) badges.push(`<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget_aid", "💸 Over Budget • Aid Available"))}</span>`);
             else badges.push(`<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget", "💰 Over Budget"))}</span>`);
         } else if (aidAny) {
-            badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🎓 Aid Available"))}</span>`);
+            badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🤝 Aid Available"))}</span>`);
         }
 
         const badgeCountClass = `uni-badge--count-${Math.min(Math.max(badges.length, 1), 6)}`;
