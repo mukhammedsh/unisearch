@@ -123,7 +123,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.5.1
+APP_VERSION=2.5.3
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -320,6 +320,15 @@ tests/
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
 ## Changelog
+### 2.5.3 (2026-02-24) - bugfix release
+- Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).
+- Improved RU user-facing copy in university badges/tooltips (financial aid phrasing and consistent `вы` tone).
+- Reworked university card badge sizing logic to count-based scenarios (`0..6` supported by CSS classes):
+  - `uni-badge--count-1` ... `uni-badge--count-6`
+  - more tags now use compact presets instead of aggressive global text shrinking.
+- Added robust i18n badge layout validation for `eng`, `rus`, `kz` to ensure badges stay inside the badge container.
+- Added/updated E2E coverage for badge priority, count-based classes (`0..5`), and multilingual layout behavior.
+
 ### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
 - Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).
 - Restored expected universities default sort behavior: AI sort is used by default when profile evidence exists.

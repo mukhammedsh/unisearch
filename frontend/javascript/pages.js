@@ -1954,7 +1954,9 @@ export function initUniversitiesPage() {
             badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🎓 Aid Available"))}</span>`);
         }
 
-        badgesHTML = badges.slice(0, 4).join(" ");
+        const badgeCountClass = `uni-badge--count-${Math.min(Math.max(badges.length, 1), 6)}`;
+        const badgeContainerClass = `uni-badge ${badgeCountClass}`;
+        badgesHTML = badges.join(" ");
 
         
         // ROI УБРАН ПОЛНОСТЬЮ
@@ -1980,7 +1982,7 @@ export function initUniversitiesPage() {
                         <h3 class="uni-title" title="${safeName}">${safeName}</h3>
             <div class="uni-loc">📍 ${locString}</div>
             <div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${acceptanceLabel}</span></div>
-            ${badgesHTML ? `<div class="uni-badge">${badgesHTML}</div>` : ""}
+            ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
             </div>
             <a class="uni-card-link-overlay" href="${detailHref}" aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>

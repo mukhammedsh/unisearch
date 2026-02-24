@@ -46,7 +46,7 @@ test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", 
     });
   });
 
-  await page.goto("/universities.html");
+  await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
   const firstCard = page.locator(".uni-card").first();
   await expect(firstCard).toBeVisible();
 
@@ -94,4 +94,212 @@ test("UniFit card badges still work when backend hints are missing (frontend fal
   await expect(firstCard).toBeVisible();
   await expect(firstCard.locator(".uni-pill")).toContainText(["Top Match", "Paid Admission"]);
   await expect(firstCard.locator(".uni-why")).toContainText("strong");
+});
+
+test("UniFit card keeps all badges and switches to compact mode when badge count is above 4", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    const items = [
+      {
+        id: "mit-usa-cambridge",
+        name: "Dense Badge University",
+        rank: 7,
+        location: { country: "USA", city: "Boston" },
+        finance: {
+          total_cost_year_usd: 98000,
+          financial_aid: { merit_based: true, need_based: true },
+        },
+        academics: { acceptance_rate_percent: 17 },
+        matchData: {
+          finalPrice: 98000,
+          preferenceMismatch: 0.08,
+          selectedChanceType: "grant",
+          grantChance: 90,
+          generalChance: 40,
+          conditional: true,
+          conditionalRequirements: 2,
+          meetMinRequirements: false,
+          aidAny: true,
+          uiBadgeHints: {
+            showConditionalExamNeeded: true,
+            vibe: "your_vibe",
+            finance: "likely_grant",
+          },
+        },
+      },
+    ];
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse(items)),
+    });
+  });
+
+  await page.goto("/universities.html");
+  const firstCard = page.locator(".uni-card").first();
+  await expect(firstCard).toBeVisible();
+
+  const badgeBox = firstCard.locator(".uni-badge");
+  await expect(badgeBox).toHaveClass(/uni-badge--count-5/);
+
+  const pills = firstCard.locator(".uni-badge .uni-pill");
+  await expect(pills).toHaveCount(5);
+  await expect(pills.nth(0)).toContainText("Conditional");
+  await expect(pills.nth(1)).toContainText("Your Vibe");
+  await expect(pills.nth(2)).toContainText("Likely Grant");
+  await expect(pills.nth(3)).toContainText("Below Requirements");
+  await expect(pills.nth(4)).toContainText("Over Budget");
+});
+
+test("UniFit card badge logic caps at 5 computed status badges", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    const items = [
+      {
+        id: "mit-usa-cambridge",
+        name: "Max Badge University",
+        rank: 9,
+        location: { country: "USA", city: "Boston" },
+        finance: {
+          total_cost_year_usd: 96000,
+          financial_aid: { merit_based: true, need_based: true },
+        },
+        academics: { acceptance_rate_percent: 15 },
+        matchData: {
+          finalPrice: 96000,
+          preferenceMismatch: 0.08,
+          selectedChanceType: "grant",
+          grantChance: 95,
+          generalChance: 50,
+          conditional: true,
+          conditionalRequirements: 2,
+          meetMinRequirements: false,
+          aidAny: true,
+          uiBadgeHints: {
+            showConditionalExamNeeded: true,
+            vibe: "your_vibe",
+            finance: "likely_grant",
+          },
+        },
+      },
+    ];
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse(items)),
+    });
+  });
+
+  await page.goto("/universities.html");
+  const pills = page.locator(".uni-card").first().locator(".uni-badge .uni-pill");
+  await expect(pills).toHaveCount(5);
+});
+
+test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    const base = {
+      location: { country: "USA", city: "Boston" },
+      finance: { total_cost_year_usd: 30000, financial_aid: { merit_based: false, need_based: false } },
+      academics: { acceptance_rate_percent: 40 },
+      matchData: {
+        finalPrice: 30000,
+        conditional: false,
+        conditionalRequirements: 0,
+        grantChance: 10,
+        generalChance: 10,
+        selectedChanceType: "general",
+      },
+    };
+
+    const items = [
+      {
+        ...base,
+        id: "mit-usa-cambridge",
+        name: "Count 0",
+      },
+      {
+        ...base,
+        id: "harvard-usa-cambridge",
+        name: "Count 1",
+        matchData: {
+          ...base.matchData,
+          preferenceMismatch: 0.18, // Top Match
+        },
+      },
+      {
+        ...base,
+        id: "stanford-university-usa-ca",
+        name: "Count 2",
+        matchData: {
+          ...base.matchData,
+          preferenceMismatch: 0.18, // Top Match
+          generalChance: 70, // Paid Admission
+        },
+      },
+      {
+        ...base,
+        id: "eth-zurich-ch-zurich",
+        name: "Count 3",
+        matchData: {
+          ...base.matchData,
+          preferenceMismatch: 0.08, // Your Vibe
+          selectedChanceType: "grant",
+          grantChance: 80, // Likely Grant
+          conditional: true, // Conditional
+          conditionalRequirements: 1,
+        },
+      },
+      {
+        ...base,
+        id: "epfl-ch-lausanne",
+        name: "Count 4",
+        matchData: {
+          ...base.matchData,
+          preferenceMismatch: 0.08, // Your Vibe
+          selectedChanceType: "grant",
+          grantChance: 80, // Likely Grant
+          conditional: true, // Conditional
+          conditionalRequirements: 1,
+          meetMinRequirements: true, // Requirements Met
+        },
+      },
+      {
+        ...base,
+        id: "technical-university-of-munich-de-munich",
+        name: "Count 5",
+        finance: { total_cost_year_usd: 90000, financial_aid: { merit_based: true, need_based: true } },
+        matchData: {
+          ...base.matchData,
+          finalPrice: 90000, // Over budget
+          preferenceMismatch: 0.08, // Your Vibe
+          selectedChanceType: "grant",
+          grantChance: 80, // Likely Grant
+          conditional: true, // Conditional
+          conditionalRequirements: 1,
+          meetMinRequirements: false, // Below requirements
+          aidAny: true,
+        },
+      },
+    ];
+
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse(items)),
+    });
+  });
+
+  await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
+  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]')).toBeVisible();
+
+  await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-badge")).toHaveCount(0);
+  await expect(page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-1/);
+  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-2/);
+  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-3/);
+  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-4/);
+  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-5/);
 });

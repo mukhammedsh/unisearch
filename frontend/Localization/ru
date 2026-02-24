@@ -201,19 +201,19 @@ universities.any_state: Любой штат
 universities.badge.acceptance: Коэффициент приема: {value}%
 universities.badge.conditional_exam_needed: 📝 Условно / Нужен экзамен
 universities.badge.top_match: ⭐ Отличное совпадение
-universities.badge.your_vibe: 🔥 Твой вайб
+universities.badge.your_vibe: 🔥 Ваш вайб
 universities.badge.likely_grant: 🎓 Вероятен грант
 universities.badge.paid_admission: 💼 Платное поступление
 universities.why.conditional_exam_needed: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
 universities.why.top_match: Этот вуз хорошо совпадает с вашими текущими настройками ползунков.
-universities.why.your_vibe: Этот вуз очень точно совпадает с вашими предпочтениями по Фокусу, Атмосфере и Локации.
+universities.why.your_vibe: Этот вуз очень точно совпадает с вашими предпочтениями по фокусу, атмосфере и локации.
 universities.why.likely_grant: В режиме приоритета гранта у этого вуза высокий шанс поступления на грант.
-universities.why.paid_admission: В режиме готовности платить у этого вуза высокий общий шанс поступления.
-universities.badge.aid_available: 🎓 Доступна помощь
-universities.badge.aid_likely: 🎓 Вероятен грант/помощь (без штрафа по бюджету)
+universities.why.paid_admission: Если вы готовы рассматривать платное обучение, у этого вуза высокий общий шанс поступления.
+universities.badge.aid_available: 🎓 Доступна финансовая помощь
+universities.badge.aid_likely: 🎓 Вероятен грант или финансовая помощь (без штрафа по бюджету)
 universities.badge.below_requirements: ⚠️ Ниже требований
 universities.badge.over_budget: 💰 Выше бюджета
-universities.badge.over_budget_aid: 💸 Выше бюджета • Есть помощь
+universities.badge.over_budget_aid: 💸 Выше бюджета • Есть помощь нуждающимся
 universities.badge.requirements_met: ✅ Требования выполнены
 universities.card.est_cost_year: Примерная цена/год
 universities.city: Город
@@ -250,7 +250,7 @@ universities.help.cost_per_year: Задает минимальную и макс
 universities.help.sort_strategy: UniFit сортирует под ваш профиль. Другие режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
 universities.help.tradeoff.atmosphere: Помогает выбрать между активной студенческой жизнью и более спокойной учебной средой.
-universities.help.tradeoff.finance: Слева упор на варианты с грантом, справа - на варианты, где готовы рассматривать и платное обучение.
+universities.help.tradeoff.finance: Слева упор на варианты с грантом, справа - на варианты, где вы готовы рассматривать и платное обучение.
 universities.help.tradeoff.location: Слева ближе крупные города, справа - более компактные и спокойные кампусы.
 universities.sort_ai: ✨ {fit}: ИИ-умная сортировка
 universities.sort_cost_asc: Цена по возрастанию
