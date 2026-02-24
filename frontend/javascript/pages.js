@@ -89,15 +89,6 @@ function buildApiUrl(path) {
 let rankingBadgeResizeBound = false;
 let rankingBadgeResizeRaf = 0;
 let rankingFetchController = null;
-const RANK_STATUS_SEMANTIC_MAP = {
-  official: "official",
-  curated: "curated",
-  mixed: "mixed",
-  estimated: "estimated",
-  inferred: "estimated",
-  derived: "estimated",
-  derived_prestige_order: "estimated",
-};
 
 function fitRankingBadgeText(container) {
   if (!container) return;
@@ -2779,45 +2770,6 @@ export async function initRankingPage() {
 
         const html = items.map((u, index) => {
             const rank = u.rank || (index + 1);
-            const rankMeta = (u && typeof u.rank_meta === "object") ? u.rank_meta : {};
-            const rankSource = String(rankMeta.source || "").trim();
-            const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
-            const rankVerifiedAt = String(rankMeta.verified_at || "").trim();
-            const rankStatusKey = RANK_STATUS_SEMANTIC_MAP[rankStatusRaw] || rankStatusRaw;
-            const rankStatusFallback = rankStatusRaw.replaceAll("_", " ");
-            const rankStatusLocalized = rankStatusRaw
-                ? t(`ranking.source_status.${rankStatusKey}`, rankStatusFallback)
-                : "";
-            const rankMetaTitle = rankSource
-                ? tFormat(
-                    "ranking.source_tooltip",
-                    {
-                        source: rankSource,
-                        status: rankStatusLocalized || "—",
-                        verified_at: rankVerifiedAt || "—",
-                    },
-                    `Source: ${rankSource} | Type: ${rankStatusLocalized || "—"} | Checked: ${rankVerifiedAt || "—"}`
-                )
-                : "";
-            const rankSourceParts = [];
-            if (rankSource) {
-                rankSourceParts.push(
-                    tFormat("ranking.source_label", { source: rankSource }, `Source: ${rankSource}`)
-                );
-            }
-            if (rankStatusLocalized) {
-                rankSourceParts.push(
-                    tFormat("ranking.source_status_label", { status: rankStatusLocalized }, `Type: ${rankStatusLocalized}`)
-                );
-            }
-            if (rankVerifiedAt) {
-                rankSourceParts.push(
-                    tFormat("ranking.source_verified_label", { date: rankVerifiedAt }, `Checked: ${rankVerifiedAt}`)
-                );
-            }
-            const rankSourceLine = rankSource
-                ? `<div class="rank-source rank-source--meta">${escapeHtml(rankSourceParts.join(" • "))}</div>`
-                : "";
             
             // Цвета для топ-3
             let rankClass = "";
@@ -2839,7 +2791,7 @@ export async function initRankingPage() {
             return `
             <a href="${routeUniversityDetail(u.id)}" class="rank-card">
                 <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
-                <div class="rank-num ${rankClass}" title="${escapeHtml(rankMetaTitle)}">#${rank}</div>
+                <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">
                     <img src="${logoSrc}" alt="${initials(uniName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(uniName)}';}">
                 </div>
@@ -2849,7 +2801,6 @@ export async function initRankingPage() {
                         ${flag} 
                         <span class="rank-loc-text">${cityText}, ${countryText}</span>
                     </div>
-                    ${rankSourceLine}
                 </div>
                 <div class="rank-badge">
                     ${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}: <b>${u.academics.acceptance_rate_percent}%</b>

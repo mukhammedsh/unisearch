@@ -332,6 +332,7 @@ tests/
 - Added robust i18n badge layout validation for `eng`, `rus`, `kz` to ensure badges stay inside the badge container.
 - Added/updated E2E coverage for badge priority, count-based classes (`0..5`), and multilingual layout behavior.
 - Changed repeating study emoji
+- Ranking page UX cleanup: removed `Source / Type / Checked` meta line and tooltip from ranking cards for end users (metadata remains in backend data).
 
 ### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
 - Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).
