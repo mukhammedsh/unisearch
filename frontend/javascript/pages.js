@@ -1806,12 +1806,11 @@ export function initUniversitiesPage() {
             if (runSeq !== fetchRunSeq) return;
             renderFetchedData(fallbackData);
 
-            aiPromise.then((lateAiData) => {
-                if (!lateAiData || lateAiData.__aborted) return;
-                if (runSeq !== fetchRunSeq) return;
-                if (state.sort !== "uni_ai") return;
-                renderFetchedData(lateAiData);
-            });
+            const lateAiData = await aiPromise;
+            if (!lateAiData || lateAiData.__aborted) return;
+            if (runSeq !== fetchRunSeq) return;
+            if (state.sort !== "uni_ai") return;
+            renderFetchedData(lateAiData);
             return;
         }
 

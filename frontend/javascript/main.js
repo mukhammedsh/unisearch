@@ -93,10 +93,14 @@ function initHomeMockupMedia() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   initTheme();
+  const path = window.location.pathname;
+  const isUniversitiesPage = Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList"));
   const i18nInitPromise = initI18n().catch((e) => {
     console.warn("i18n init failed, using built-in fallback pack:", e);
   });
-  initGlobalApiLoadingIndicator();
+  if (!isUniversitiesPage) {
+    initGlobalApiLoadingIndicator();
+  }
   registerServiceWorker();
 
   // Ensure language + university translation packs are ready before UI render.
@@ -113,9 +117,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initLanguagesPanel();
   initHomeMockupMedia();
   
-  const path = window.location.pathname;
-  const isUniversitiesPage = isUniversitiesListPath(path) || document.getElementById("universitiesList");
-
   if (isUniversitiesPage) {
     // Keep universities first paint focused on list data; preload configs shortly after.
     window.setTimeout(() => {
