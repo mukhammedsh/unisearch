@@ -201,6 +201,8 @@
 .d-location {
   color: var(--muted);
   font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .d-back {
@@ -247,6 +249,7 @@
   font-size: 13px;
   line-height: 1.45;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .d-box-text {
@@ -329,6 +332,7 @@
 .d-kv {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 10px;
   padding: 10px 0;
   border-bottom: 1px dashed rgba(0,0,0,.10);
@@ -336,8 +340,21 @@
 }
 .d-kv:last-child { border-bottom: 0; }
 .d-kv--last { border-bottom: 0; }
-.d-kv > span:first-child { color: var(--muted); font-weight: 700; }
-.d-kv > span:last-child { color: var(--text); font-weight: 800; }
+.d-kv > span:first-child {
+  color: var(--muted);
+  font-weight: 700;
+  flex: 1 1 55%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.d-kv > span:last-child {
+  color: var(--text);
+  font-weight: 800;
+  text-align: right;
+  flex: 1 1 45%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 
 .d-rank-emphasis {
   color: var(--text);
@@ -391,6 +408,7 @@
   transform: translateY(-4px);
   pointer-events: none;
   transition: opacity 0.18s ease, transform 0.18s ease;
+  overflow-wrap: anywhere;
 }
 
 .d-tooltip strong {
@@ -658,6 +676,15 @@
   color: white;
   border-color: var(--accent);
   box-shadow: 0 4px 10px rgba(87, 21, 219, 0.2);
+}
+
+.d-back:focus-visible,
+.d-tab-btn:focus-visible,
+.d-site-link:focus-visible,
+.d-info:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(87, 21, 219, 0.22);
 }
 
 .d-tab-pane {
@@ -1502,7 +1529,7 @@
 
 .cost-legend-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
   border: 1px solid #e5e7eb;
@@ -1514,6 +1541,7 @@
 .cost-legend-label-wrap {
   display: inline-flex;
   align-items: center;
+  flex: 1 1 auto;
   min-width: 0;
   gap: 8px;
 }
@@ -1529,6 +1557,7 @@
   color: #334155;
   font-size: 12px;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .cost-legend-value {
@@ -1536,6 +1565,7 @@
   font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .cost-legend-single {

@@ -7,15 +7,7 @@ Core capabilities:
 - AI ranking (`UniFit`) with preference sliders
 - admission probability estimate (`UniChance`)
 - ROI estimate per university
-- multilingual UI (`eng`, `rus`, `kz`) with backend-driven localization
-
-## Release 2.5.1 (2026-02-21)
-- Added ranking source transparency: each ranking card can now show source, source type, and verification date.
-- Added localized ranking source UX for `eng`, `rus`, and `kz`.
-- Improved university dataset quality for ranking/admission fields and added fact provenance metadata.
-- Added data maintenance tooling:
-  - `backend/scripts/audit_universities_data.py`
-  - `backend/scripts/refresh_fact_provenance.py`
+- multilingual UI (`eng`, `ru`, `kz`) with backend-driven localization
 
 ## Current highlights
 - Backend-first architecture for business logic and data delivery.
@@ -327,3 +319,19 @@ tests/
 - Default fallback language remains English when unsupported locale is detected.
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
+## Changelog
+### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
+- Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).
+- Restored expected universities default sort behavior: AI sort is used by default when profile evidence exists.
+- Improved keyboard accessibility with clear `:focus-visible` states on key interactive controls.
+- Improved long-text wrapping in ranking/university cards and tooltips to avoid layout breaks on narrow viewports.
+- Updated minor EN/RU copy consistency.
+- Validation: `npm run test:e2e:pr` passes (18/18).
+
+### 2.5.1 (2026-02-21)
+- Added ranking source transparency: each ranking card can now show source, source type, and verification date.
+- Added localized ranking source UX for `eng`, `ru`, and `kz`.
+- Improved university dataset quality for ranking/admission fields and added fact provenance metadata.
+- Added data maintenance tooling:
+  - `backend/scripts/audit_universities_data.py`
+  - `backend/scripts/refresh_fact_provenance.py`

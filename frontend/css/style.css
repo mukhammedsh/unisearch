@@ -214,6 +214,11 @@ a {
   color: inherit;
 }
 
+:where(a[href], button, input, select, textarea, [role="button"], .custom-select-trigger):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 html, body {
   overflow-x: hidden; /* ⛔️ Главный фикс: запрещает скролл влево-вправо */
   width: 100%;        /* Гарантирует, что сайт не шире окна */

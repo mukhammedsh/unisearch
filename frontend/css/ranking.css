@@ -88,7 +88,7 @@
     border-radius: 8px;
 }
 
-.rank-info { flex-grow: 1; }
+.rank-info { flex-grow: 1; min-width: 0; }
 .rank-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
 .rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; }
 .rank-loc-text { margin-left: 1px; }
@@ -109,10 +109,14 @@
     font-size: 13px;
     color: #888;
     background: #f9f9f9;
-    display: inline-block;
+    display: block;
+    max-width: 100%;
     padding: 5px 12px;
     border-radius: 20px;
     border: 1px solid #eee;
+    line-height: 1.35;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .rank-source--meta {

@@ -981,6 +981,17 @@ function initProfileUI() {
         resetFields();
     };
 
+    const closeForLanguageSwitch = () => {
+        if (!modal.classList.contains("is-open")) return;
+        syncInputsToDraft();
+        transferredProfileDraft = ensureProfileShape(profile);
+        closeUnsavedDialog(false);
+        modal.classList.remove("is-open");
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+        window.dispatchEvent(new Event("profileModalClosed"));
+    };
+
     const openUnsavedDialog = () => {
         if (!unsavedModal) return;
         unsavedModal.style.display = "flex";
@@ -1119,8 +1130,7 @@ function initProfileUI() {
 
     window.addEventListener("languageChanged", () => {
         if (!modal.classList.contains("is-open")) return;
-        renderInterestsTranslationWarning(__translationStatusCache.data);
-        refreshSaveState();
+        closeForLanguageSwitch();
     });
 
     if (editNameBtn && profileUsernameDiv && nameInput) {

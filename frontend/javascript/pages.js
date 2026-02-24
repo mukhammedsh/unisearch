@@ -614,6 +614,12 @@ export function initUniversitiesPage() {
         return fundingPreferenceToQueryValue(profile?.fundingType || profile?.funding_type || "any");
     };
 
+    function hasProfileEvidence(profile) {
+        const exams = Array.isArray(profile?.exams) ? profile.exams : [];
+        const langs = Array.isArray(profile?.languages) ? profile.languages : [];
+        return exams.length > 0 || langs.length > 0;
+    }
+
     if (!el.list) return;
     if (__universitiesProfileUpdatedHandler) {
         window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
@@ -634,6 +640,7 @@ export function initUniversitiesPage() {
     applyAISortOptionLabel();
 
     const savedState = loadFilters();
+    const defaultSortMode = hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc";
     const initialMin = clampTuition(savedState.min_tuition, 0);
     const initialMax = clampTuition(savedState.max_tuition, MAX_TUITION);
     const state = {
@@ -642,7 +649,7 @@ export function initUniversitiesPage() {
         funding_type: getProfileFundingQueryValue(),
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
-        sort: normalizeSortMode(savedState.sort || "name_asc"),
+        sort: normalizeSortMode(savedState.sort || defaultSortMode),
         practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
         social_vs_hardcore: clampPercent(
             savedState.social_vs_hardcore !== undefined ? savedState.social_vs_hardcore : savedState.admission_bias,
@@ -677,12 +684,6 @@ export function initUniversitiesPage() {
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     let hasInitialListPaint = false;
     let uniFitWarningShownInSession = false;
-
-    const hasProfileEvidence = (profile) => {
-        const exams = Array.isArray(profile?.exams) ? profile.exams : [];
-        const langs = Array.isArray(profile?.languages) ? profile.languages : [];
-        return exams.length > 0 || langs.length > 0;
-    };
 
     function setUniversitiesLoading(isLoading) {
         if (!el.loading) return;
@@ -1470,7 +1471,7 @@ export function initUniversitiesPage() {
             state.sort = normalizeSortMode(state.sort);
             el.sortSelect.value = state.sort;
             if (el.sortSelect.value !== state.sort) {
-                state.sort = "name_asc";
+                state.sort = defaultSortMode;
                 el.sortSelect.value = state.sort;
             }
         }
