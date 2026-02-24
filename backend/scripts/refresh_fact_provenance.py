@@ -5,6 +5,11 @@ Adds/updates `fact_provenance` for:
 - rank
 - tuition_total_cost_year_usd
 - acceptance_rate_percent
+
+Rank behavior:
+- if `rank_meta.status == official`, rank fact is written as official external QS rank.
+- if `rank_meta.status in {excluded, not_listed}`, rank fact is preserved as non-official with that status.
+- otherwise rank fact falls back to internal derived prestige order metadata.
 """
 
 from __future__ import annotations
@@ -50,6 +55,42 @@ def _pick_source_url(university: Dict[str, Any], preferred_topics: List[str]) ->
 
 def _rank_fact(university: Dict[str, Any], verified_at: str) -> Dict[str, Any]:
     value = _safe_num(university.get("rank"))
+    rank_meta = university.get("rank_meta") if isinstance(university.get("rank_meta"), dict) else {}
+    meta_status = str(rank_meta.get("status") or "").strip().lower()
+    meta_source = str(rank_meta.get("source") or "").strip()
+    meta_source_url = str(rank_meta.get("source_url") or "").strip()
+    meta_note = str(rank_meta.get("note") or "").strip()
+    meta_verified_at = str(rank_meta.get("verified_at") or "").strip()
+    effective_verified_at = meta_verified_at or verified_at
+
+    if meta_status == "official":
+        return {
+            "value": int(value) if value is not None else None,
+            "unit": "position",
+            "source": meta_source or "QS World University Rankings 2026",
+            "source_url": meta_source_url or "https://www.topuniversities.com/world-university-rankings",
+            "external_reference": "QS World University Rankings 2026",
+            "is_official_external_rank": True,
+            "verified_at": effective_verified_at,
+            "confidence": "high",
+            "status": "official",
+            "method": meta_note or "Direct value from published QS WUR 2026 table.",
+        }
+
+    if meta_status in ("excluded", "not_listed"):
+        return {
+            "value": int(value) if value is not None else None,
+            "unit": "position",
+            "source": meta_source or "QS World University Rankings 2026",
+            "source_url": meta_source_url or "https://www.topuniversities.com/world-university-rankings",
+            "external_reference": "QS World University Rankings 2026",
+            "is_official_external_rank": False,
+            "verified_at": effective_verified_at,
+            "confidence": "medium",
+            "status": meta_status,
+            "method": meta_note or "Fallback internal position for sorting; university is not in published QS WUR 2026 table.",
+        }
+
     return {
         "value": int(value) if value is not None else None,
         "unit": "position",
@@ -57,7 +98,7 @@ def _rank_fact(university: Dict[str, Any], verified_at: str) -> Dict[str, Any]:
         "source_url": "https://www.topuniversities.com/world-university-rankings",
         "external_reference": "QS World University Rankings",
         "is_official_external_rank": False,
-        "verified_at": verified_at,
+        "verified_at": effective_verified_at,
         "confidence": "medium",
         "status": "derived_prestige_order",
         "method": (
@@ -127,7 +168,7 @@ def main() -> None:
     parser.add_argument("--data", default=str(DEFAULT_DATA_PATH), help="Path to universities.json")
     parser.add_argument(
         "--verified-at",
-        default="2026-02-21",
+        default="2026-02-24",
         help="Verification date in YYYY-MM-DD format",
     )
     args = parser.parse_args()

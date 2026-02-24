@@ -259,14 +259,14 @@
         "rank": {
           "value": 1,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 89340.0,
@@ -287,6 +287,13 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
@@ -522,14 +529,14 @@
         "rank": {
           "value": 2,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 75000.0,
@@ -550,6 +557,13 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
@@ -778,14 +792,14 @@
         "rank": {
           "value": 3,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 93213.0,
@@ -806,12 +820,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "harvard-usa-cambridge",
     "name": "Harvard University",
-    "rank": 4,
+    "rank": 5,
     "student_count": 25266,
     "location": {
       "country": "USA",
@@ -1039,16 +1060,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 4,
+          "value": 5,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 86926.0,
@@ -1069,12 +1090,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "eth-zurich-ch-zurich",
     "name": "ETH Zurich",
-    "rank": 5,
+    "rank": 7,
     "student_count": 26198,
     "location": {
       "country": "Switzerland",
@@ -1309,16 +1337,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 5,
+          "value": 7,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 28000.0,
@@ -1339,12 +1367,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "national-university-of-singapore-sg-singapore",
     "name": "National University of Singapore (NUS)",
-    "rank": 6,
+    "rank": 8,
     "student_count": 38000,
     "location": {
       "country": "Singapore",
@@ -1569,16 +1604,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 6,
+          "value": 8,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 32000.0,
@@ -1599,12 +1634,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "epfl-ch-lausanne",
     "name": "EPFL",
-    "rank": 7,
+    "rank": 22,
     "student_count": 12574,
     "location": {
       "country": "Switzerland",
@@ -1791,16 +1833,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 7,
+          "value": 22,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 25000.0,
@@ -1821,12 +1863,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "technical-university-of-munich-de-munich",
     "name": "Technical University of Munich (TUM)",
-    "rank": 8,
+    "rank": 22,
     "student_count": 52580,
     "location": {
       "country": "Germany",
@@ -2006,16 +2055,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 8,
+          "value": 22,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 19000.0,
@@ -2036,12 +2085,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "university-of-toronto-ca-toronto",
     "name": "University of Toronto",
-    "rank": 9,
+    "rank": 29,
     "student_count": 102431,
     "location": {
       "country": "Canada",
@@ -2269,16 +2325,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 9,
+          "value": 29,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 62000.0,
@@ -2299,12 +2355,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "cuhk-hk-shatin",
     "name": "The Chinese University of Hong Kong (CUHK)",
-    "rank": 10,
+    "rank": 32,
     "student_count": 22021,
     "location": {
       "country": "Hong Kong",
@@ -2540,16 +2603,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 10,
+          "value": 32,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 33354.0,
@@ -2570,12 +2633,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "university-of-tokyo-jp-tokyo",
     "name": "University of Tokyo",
-    "rank": 11,
+    "rank": 36,
     "student_count": 28585,
     "location": {
       "country": "Japan",
@@ -2828,16 +2898,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 11,
+          "value": 36,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 16000.0,
@@ -2858,12 +2928,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "seoul-national-university-kr-seoul",
     "name": "Seoul National University",
-    "rank": 12,
+    "rank": 38,
     "student_count": 30323,
     "location": {
       "country": "South Korea",
@@ -3133,16 +3210,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 12,
+          "value": 38,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 15000.0,
@@ -3163,12 +3240,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "delft-university-of-technology-nl-delft",
     "name": "Delft University of Technology",
-    "rank": 13,
+    "rank": 47,
     "student_count": 27265,
     "location": {
       "country": "Netherlands",
@@ -3398,16 +3482,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 13,
+          "value": 47,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 36000.0,
@@ -3428,12 +3512,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "kaist-kr-daejeon",
     "name": "KAIST",
-    "rank": 14,
+    "rank": 1001,
     "student_count": 10951,
     "location": {
       "country": "South Korea",
@@ -3666,16 +3757,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 14,
+          "value": 1001,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.qs.com/rankings-by-subject-to-halt-due-to-manipulation-by-kaist/",
+          "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
+          "verified_at": "2026-02-24",
           "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "status": "excluded",
+          "method": "Fallback rank=1001 used for internal sorting because this university is excluded in QS WUR 2026."
         },
         "tuition_total_cost_year_usd": {
           "value": 14000.0,
@@ -3696,12 +3787,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.qs.com/rankings-by-subject-to-halt-due-to-manipulation-by-kaist/",
+      "status": "excluded",
+      "verified_at": "2026-02-24",
+      "note": "Excluded from QS WUR 2026 publication due to documented manipulation issue."
     }
   },
   {
     "id": "tsinghua-university-cn-beijing",
     "name": "Tsinghua University",
-    "rank": 15,
+    "rank": 17,
     "student_count": 59270,
     "location": {
       "country": "China",
@@ -3950,16 +4048,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 15,
+          "value": 17,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 9500.0,
@@ -3980,12 +4078,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "nazarbayev-university-kaz-astana",
     "name": "Nazarbayev University",
-    "rank": 16,
+    "rank": 1001,
     "student_count": 7089,
     "location": {
       "country": "Kazakhstan",
@@ -4332,16 +4437,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 16,
+          "value": 1001,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
+          "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
+          "verified_at": "2026-02-24",
           "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "status": "not_listed",
+          "method": "Fallback rank=1001 used for internal sorting because this university is not_listed in QS WUR 2026."
         },
         "tuition_total_cost_year_usd": {
           "value": 19500.0,
@@ -4362,12 +4467,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "not_listed",
+      "verified_at": "2026-02-24",
+      "note": "Not listed in QS WUR 2026 published table."
     }
   },
   {
     "id": "kyoto-university-jp-kyoto",
     "name": "Kyoto University",
-    "rank": 17,
+    "rank": 57,
     "student_count": 22958,
     "location": {
       "country": "Japan",
@@ -4602,16 +4714,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 17,
+          "value": 57,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 16500.0,
@@ -4632,12 +4744,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "university-of-melbourne-au-melbourne",
     "name": "University of Melbourne",
-    "rank": 18,
+    "rank": 19,
     "student_count": 54000,
     "location": {
       "country": "Australia",
@@ -4885,16 +5004,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 18,
+          "value": 19,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
-          "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-02-24",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 52000.0,
@@ -4915,12 +5034,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "official",
+      "verified_at": "2026-02-24",
+      "note": "Official QS WUR 2026 rank value."
     }
   },
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
     "name": "Suleyman Demirel University",
-    "rank": 19,
+    "rank": 1001,
     "student_count": 8500,
     "location": {
       "country": "Kazakhstan",
@@ -5162,16 +5288,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 19,
+          "value": 1001,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
+          "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
+          "verified_at": "2026-02-24",
           "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "status": "not_listed",
+          "method": "Fallback rank=1001 used for internal sorting because this university is not_listed in QS WUR 2026."
         },
         "tuition_total_cost_year_usd": {
           "value": 8500.0,
@@ -5192,12 +5318,19 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "not_listed",
+      "verified_at": "2026-02-24",
+      "note": "Not listed in QS WUR 2026 published table."
     }
   },
   {
     "id": "astana-it-university-kaz-astana",
     "name": "Astana IT University",
-    "rank": 20,
+    "rank": 1001,
     "student_count": 5426,
     "location": {
       "country": "Kazakhstan",
@@ -5445,16 +5578,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 20,
+          "value": 1001,
           "unit": "position",
-          "source": "UniSearch prestige normalization model (QS-seeded)",
+          "source": "QS World University Rankings 2026",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
-          "external_reference": "QS World University Rankings",
+          "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-02-21",
+          "verified_at": "2026-02-24",
           "confidence": "medium",
-          "status": "derived_prestige_order",
-          "method": "Relative prestige order within UniSearch dataset, seeded by QS references and normalized for internal comparison."
+          "status": "not_listed",
+          "method": "Fallback rank=1001 used for internal sorting because this university is not_listed in QS WUR 2026."
         },
         "tuition_total_cost_year_usd": {
           "value": 7000.0,
@@ -5475,6 +5608,13 @@
           "status": "derived"
         }
       }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "status": "not_listed",
+      "verified_at": "2026-02-24",
+      "note": "Not listed in QS WUR 2026 published table."
     }
   }
 ]

@@ -333,6 +333,7 @@ tests/
 - Added/updated E2E coverage for badge priority, count-based classes (`0..5`), and multilingual layout behavior.
 - Changed repeating study emoji
 - Ranking page UX cleanup: removed `Source / Type / Checked` meta line and tooltip from ranking cards for end users (metadata remains in backend data).
+- Data truth pass (universities dataset): updated rank facts to QS WUR 2026 where officially published, added explicit `rank_meta` statuses (`official` / `excluded` / `not_listed`), and refreshed rank provenance for auditability.
 
 ### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
 - Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).
