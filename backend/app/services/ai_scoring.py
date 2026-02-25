@@ -920,8 +920,13 @@ def sort_universities_ai(
         )
 
     ml_scores_by_id: Dict[str, float] = {}
-    ml_status = get_ml_runtime_status() if interest_text else {"available": False, "message": ""}
+    ml_status = (
+        get_ml_runtime_status()
+        if interest_text
+        else {"available": False, "message": "", "mode": "disabled", "reason": "empty_interest"}
+    )
     ml_available = bool(ml_status.get("available"))
+    ml_runtime_mode = str(ml_status.get("mode") or "unavailable")
     ml_unavailable_warning = bool(interest_text) and not ml_available
     ml_warning_message = str(ml_status.get("message") or "") if ml_unavailable_warning else ""
     use_ml = bool(interest_text) and ml_available
@@ -932,6 +937,7 @@ def sort_universities_ai(
             ml_scores_by_id = {}
             use_ml = False
             ml_available = False
+            ml_runtime_mode = "unavailable"
             ml_unavailable_warning = bool(interest_text)
             ml_warning_message = "Machine Learning unavailable"
 
@@ -964,7 +970,16 @@ def sort_universities_ai(
             selected_chance01 = _clamp01((grant_chance01 + general_chance01) / 2.0)
             selected_chance_type = "balanced"
         admission_risk = _clamp01(1.0 - selected_chance01)
-        final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
+        row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
+        if use_ml:
+            semantic_penalty = _clamp01(1.0 - row_ml_score)
+            final_score = _clamp01(
+                (0.50 * preference_mismatch)
+                + (0.35 * admission_risk)
+                + (0.15 * semantic_penalty)
+            )
+        else:
+            final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
         hard_score = _clamp01(1.0 - preference_mismatch)
 
         tracks = row.get("admission_tracks")
@@ -983,7 +998,11 @@ def sort_universities_ai(
                 "missingRequiredEvidence": True,
                 "hardScore": hard_score,
                 "finalScore": final_score,
-                "mlScore": float(ml_scores_by_id.get(row_id, 0.0)) if use_ml else 0.0,
+                "mlScore": row_ml_score,
+                "mlMode": ml_runtime_mode if use_ml else "disabled",
+                "mlSemanticScore": row_ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
+                "mlLexicalScore": row_ml_score if (use_ml and ml_runtime_mode == "tfidf") else 0.0,
+                "semanticSignalWeight": 0.15 if use_ml else 0.0,
                 "distanceScore": _clamp01(1.0 - preference_mismatch),
                 "totalDistance": total_distance,
                 "distanceDeltas": distance_deltas,
@@ -1008,6 +1027,8 @@ def sort_universities_ai(
                 "mlAvailable": ml_available,
                 "mlUnavailable": ml_unavailable_warning,
                 "mlWarning": ml_warning_message,
+                "mlReason": str(ml_status.get("reason") or ""),
+                "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
                 "mlQueryTranslated": bool(translation_meta.get("translated")),
                 "mlQuerySource": str(translation_meta.get("source") or ""),
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
@@ -1077,10 +1098,7 @@ def sort_universities_ai(
                 mode="sort",
                 preferred_mode=preferred_mode,
             )
-            if use_ml:
-                ml_score = float(ml_scores_by_id.get(row_id, 0.0))
-            else:
-                ml_score = 0.0
+            ml_score = row_ml_score
 
             amount = _to_num((eligible_scholar or {}).get("amount")) if isinstance(eligible_scholar, dict) else None
             final_price = max(0.0, cost - amount) if (aid_eligible and amount is not None) else cost
@@ -1120,6 +1138,10 @@ def sort_universities_ai(
                 "factors": uni_factors,
                 "userPreferences": user_pref,
                 "mlScore": ml_score,
+                "mlMode": ml_runtime_mode if use_ml else "disabled",
+                "mlSemanticScore": ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
+                "mlLexicalScore": ml_score if (use_ml and ml_runtime_mode == "tfidf") else 0.0,
+                "semanticSignalWeight": 0.15 if use_ml else 0.0,
                 "finalScore": final_score,
                 "legacySignals": {
                     "admitChance": admit,
@@ -1131,6 +1153,8 @@ def sort_universities_ai(
                 "mlAvailable": ml_available,
                 "mlUnavailable": ml_unavailable_warning,
                 "mlWarning": ml_warning_message,
+                "mlReason": str(ml_status.get("reason") or ""),
+                "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
                 "mlQueryTranslated": bool(translation_meta.get("translated")),
                 "mlQuerySource": str(translation_meta.get("source") or ""),
                 "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),

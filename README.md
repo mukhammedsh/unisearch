@@ -159,6 +159,49 @@ ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC=60
 ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
 ```
 
+Semantic ML ranking:
+```env
+ML_SEMANTIC_EMBEDDINGS_ENABLED=1
+ML_SEMANTIC_EMBEDDINGS_MODEL=intfloat/multilingual-e5-base
+ML_SEMANTIC_EMBEDDINGS_DEVICE=cpu
+ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE=32
+# auto | on | off
+ML_SEMANTIC_EMBEDDINGS_E5_PREFIX=auto
+```
+
+Semantic ranking runtime behavior:
+- Primary backend: sentence embeddings (`sentence-transformers`) over university metadata.
+- Fallback backend: TF-IDF cosine similarity if semantic backend is disabled or unavailable.
+- Exposed runtime modes: `semantic`, `tfidf`, `unavailable`.
+- In AI sort (`/universities/ai-sort`), semantic signal participates in final UniFit score:
+  - ML available: `finalScore = 0.50*preferenceMismatch + 0.35*admissionRisk + 0.15*(1-mlScore)`
+  - ML unavailable: `finalScore = 0.60*preferenceMismatch + 0.40*admissionRisk`
+
+`ML_SEMANTIC_EMBEDDINGS_*` reference:
+- `ML_SEMANTIC_EMBEDDINGS_ENABLED` (default `1`)
+  - Enables semantic embeddings backend.
+  - If `0`, service uses TF-IDF fallback only.
+- `ML_SEMANTIC_EMBEDDINGS_MODEL` (default `intfloat/multilingual-e5-base`)
+  - Hugging Face model id loaded by `SentenceTransformer`.
+  - Change this to test a different semantic model.
+- `ML_SEMANTIC_EMBEDDINGS_DEVICE` (default `cpu`)
+  - Inference device passed to `SentenceTransformer`.
+  - Typical values: `cpu`, `cuda` (if GPU runtime is available).
+- `ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE` (default `32`)
+  - Batch size for corpus embedding generation.
+  - Larger values can improve throughput but increase RAM/VRAM usage.
+- `ML_SEMANTIC_EMBEDDINGS_E5_PREFIX` (default `auto`)
+  - Controls E5 query/passage prefix formatting:
+    - `auto`: add prefixes only for E5-like models.
+    - `on`: always add `query:` / `passage:`.
+    - `off`: never add prefixes.
+
+Render deployment notes for semantic ranking:
+- First startup may need to load/download model artifacts; expect slower cold start than TF-IDF-only mode.
+- If outbound access to model registry is restricted, semantic init can fail and service automatically falls back to TF-IDF.
+- If you need the fastest startup and deterministic behavior, set `ML_SEMANTIC_EMBEDDINGS_ENABLED=0`.
+- Keep backend memory budget aligned with selected embedding model size.
+
 ### Frontend runtime env
 Frontend reads runtime config from `frontend/env.js` (generated at deploy time):
 
@@ -334,6 +377,12 @@ tests/
 - Changed repeating study emoji
 - Ranking page UX cleanup: removed `Source / Type / Checked` meta line and tooltip from ranking cards for end users (metadata remains in backend data).
 - Data truth pass (universities dataset): updated rank facts to QS WUR 2026 where officially published, added explicit `rank_meta` statuses (`official` / `excluded` / `not_listed`), and refreshed rank provenance for auditability.
+- Upgraded ML relevance layer:
+  - sentence-embeddings semantic matching (multilingual E5) is now primary with TF-IDF fallback;
+  - university semantic corpus now includes richer metadata (including admission track labels/descriptions/modes/extra requirements);
+  - runtime ML status now reports backend mode/reason/model (`semantic` / `tfidf` / `unavailable`);
+  - UniFit `matchData` now includes `mlMode`, `mlSemanticScore`, `mlLexicalScore`, and `semanticSignalWeight`;
+  - semantic signal now contributes to final UniFit ranking score.
 
 ### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
 - Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).

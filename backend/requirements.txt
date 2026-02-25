@@ -3,6 +3,7 @@ uvicorn==0.40.0
 pydantic==2.12.5
 typing_extensions==4.15.0
 scikit-learn==1.5.2
+sentence-transformers==3.2.1
 redis==5.2.1
 prometheus-fastapi-instrumentator==7.1.0
 sentry-sdk==2.20.0

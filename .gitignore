@@ -192,6 +192,18 @@ cython_debug/
 #  you could uncomment the following to ignore the entire vscode folder
 .vscode/
 
+# JetBrains IDEs
+.idea/
+*.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local temp artifacts
+.tmp_test/
+
 # Ruff stuff:
 .ruff_cache/
 

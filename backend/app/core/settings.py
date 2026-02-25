@@ -116,3 +116,16 @@ try:
 except Exception:
     ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC = 20
 
+
+ML_SEMANTIC_EMBEDDINGS_ENABLED = _env_bool("ML_SEMANTIC_EMBEDDINGS_ENABLED", "1")
+ML_SEMANTIC_EMBEDDINGS_MODEL = os.getenv(
+    "ML_SEMANTIC_EMBEDDINGS_MODEL",
+    "intfloat/multilingual-e5-base",
+).strip() or "intfloat/multilingual-e5-base"
+ML_SEMANTIC_EMBEDDINGS_DEVICE = os.getenv("ML_SEMANTIC_EMBEDDINGS_DEVICE", "cpu").strip().lower() or "cpu"
+try:
+    ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE = int(os.getenv("ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE", "32"))
+except Exception:
+    ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE = 32
+ML_SEMANTIC_EMBEDDINGS_E5_PREFIX = os.getenv("ML_SEMANTIC_EMBEDDINGS_E5_PREFIX", "auto").strip().lower() or "auto"
+
