@@ -2867,22 +2867,13 @@ export function initGuidePage() {
     const languageWrap = document.getElementById("guideLanguageExams");
     const glossaryWrap = document.getElementById("guideGlossary");
 
-    const fitName = aiName("fit");
-    const chanceName = aiName("chance");
-    const gloss = [
-        { term: fitName, desc: t("guide.glossary.fit", "AI ranking mode that balances prestige, affordability, and admission feasibility.") },
-        { term: chanceName, desc: t("guide.glossary.chance", "AI probability (0-100) of your admission, computed per track from your profile and requirements.") },
-        { term: t("guide.glossary.term.swr", "SWR Cache"), desc: t("guide.glossary.swr", "Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed.") },
-        { term: t("guide.glossary.term.admission_track", "Admission Track"), desc: t("guide.glossary.admission_track", "A specific way to apply to a university (e.g., direct, exam-based, scholarship path).") },
-        { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Minimum scores to be considered for a track.") },
-        { term: t("guide.glossary.term.stats_avg", "Stats Avg"), desc: t("guide.glossary.stats_avg", "Typical scores of admitted students on that track.") },
-        { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam.") },
-        { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "You need to satisfy at least one listed language option.") },
-        { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "You must satisfy every listed language requirement.") },
-        { term: t("guide.glossary.term.match_score", "Match Score"), desc: tFormat("guide.glossary.match_score", { fit: fitName }, `Internal ${fitName} ranking score; higher means a better fit for your profile.`) },
-    ];
-
     const normalizeExamId = (value) => String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const stableExamSortKey = (value) => {
+        const raw = String(value || "").trim();
+        if (!raw) return "";
+        const canonical = canonicalizeExamId(raw);
+        return normalizeExamId(canonical || raw) || normalizeExamId(raw);
+    };
     const scoreScaleText = (cfg) => {
         const min = Number(cfg?.min);
         const max = Number(cfg?.max);
@@ -2897,22 +2888,31 @@ export function initGuidePage() {
         </div>
     `;
 
-    const academicExamDescriptions = {
-        SAT: t("guide.academic.sat", "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics."),
-        ACT: t("guide.academic.act", "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning."),
-        GPA: t("guide.academic.gpa", "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency."),
-        UNT: t("guide.academic.unt", "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways."),
-        NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
-        APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
-        IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
-    };
+    function withExamLabel(description, examLabel) {
+        const desc = String(description || "").trim();
+        const label = String(examLabel || "").trim();
+        if (!label) return desc;
+        if (!desc) return label;
+        if (desc.toLocaleLowerCase().startsWith(label.toLocaleLowerCase())) return desc;
+        return tFormat("guide.exam_desc_with_label", { exam: label, desc }, `${label} — ${desc}`);
+    }
 
-    function describeAcademicExam(id, cfg) {
+    function describeAcademicExam(id, cfg, labelText = "") {
         const normalized = normalizeExamId(id);
-        const base = academicExamDescriptions[normalized]
+        const descriptions = {
+            SAT: t("guide.academic.sat", "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics."),
+            ACT: t("guide.academic.act", "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning."),
+            GPA: t("guide.academic.gpa", "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency."),
+            UNT: t("guide.academic.unt", "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways."),
+            NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
+            APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
+            IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
+        };
+        const base = descriptions[normalized]
             || t("guide.academic.default", "This is an academic metric used by one or more admission tracks in the UniSearch dataset.");
         const scale = scoreScaleText(cfg);
-        return `${base}${scale ? ` ${scale}` : ""}`.trim();
+        const text = `${base}${scale ? ` ${scale}` : ""}`.trim();
+        return withExamLabel(text, labelText);
     }
 
     function describeLanguageExam(examId, langCode, cfg, labelText = "") {
@@ -2948,11 +2948,67 @@ export function initGuidePage() {
         }
 
         const scale = scoreScaleText(cfg);
-        return `${base}${scale ? ` ${scale}` : ""}`.trim();
+        const text = `${base}${scale ? ` ${scale}` : ""}`.trim();
+        return withExamLabel(text, labelText);
+    }
+
+    function glossaryEntries() {
+        const fitName = aiName("fit");
+        const chanceName = aiName("chance");
+        return [
+            {
+                term: fitName,
+                desc: tFormat("guide.glossary.fit", { fit: fitName }, `${fitName} is the smart sorting mode based on your profile.`),
+            },
+            {
+                term: chanceName,
+                desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is an estimated admission chance based on your data.`),
+            },
+            {
+                term: t("guide.glossary.term.swr", "SWR Cache"),
+                desc: t("guide.glossary.swr", "Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed."),
+            },
+            {
+                term: t("guide.glossary.term.admission_track", "Admission Track"),
+                desc: t("guide.glossary.admission_track", "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)."),
+            },
+            {
+                term: t("guide.glossary.term.requirements", "Requirements"),
+                desc: t("guide.glossary.requirements", "Minimum scores to be considered for a track."),
+            },
+            {
+                term: t("guide.glossary.term.stats_avg", "Stats Avg"),
+                desc: t("guide.glossary.stats_avg", "Typical scores of admitted students on that track."),
+            },
+            {
+                term: t("guide.glossary.term.language_requirements", "Language Requirements"),
+                desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam."),
+            },
+            {
+                term: t("guide.glossary.term.mode_any", "Mode = any"),
+                desc: t("guide.glossary.mode_any", "You need to satisfy at least one listed language option."),
+            },
+            {
+                term: t("guide.glossary.term.mode_all", "Mode = all"),
+                desc: t("guide.glossary.mode_all", "You must satisfy every listed language requirement."),
+            },
+            {
+                term: t("guide.glossary.term.match_score", "Match Score"),
+                desc: tFormat("guide.glossary.match_score", { fit: fitName }, `Internal ${fitName} ranking score; higher means a better fit for your profile.`),
+            },
+        ];
+    }
+
+    function getLanguageTitle(code, fallback = "") {
+        const normalized = String(code || "").trim().toLowerCase();
+        const fallbackLabel = String(fallback || "").trim() || String(code || "").toUpperCase();
+        if (!normalized) return fallbackLabel;
+        return t(`languages.name.${normalized}`, fallbackLabel);
     }
 
     function renderGlossary() {
         if (!glossaryWrap) return;
+        const gloss = glossaryEntries();
         const lines = gloss.map((g) => `<li><strong>${escapeHtml(g.term)}:</strong> ${escapeHtml(g.desc)}</li>`).join("");
         glossaryWrap.innerHTML = `
             <p>${escapeHtml(t("guide.glossary.intro", "This glossary defines the exact terms used throughout UniSearch so users can interpret ranking and probability outputs consistently."))}</p>
@@ -2981,16 +3037,23 @@ export function initGuidePage() {
                 seen.add(key);
                 return true;
             })
-            .sort((a, b) => getExamDisplayName(a[0]).localeCompare(getExamDisplayName(b[0])));
+            .sort((a, b) => {
+                const left = stableExamSortKey(a[0]);
+                const right = stableExamSortKey(b[0]);
+                const byKey = left.localeCompare(right);
+                if (byKey !== 0) return byKey;
+                return String(a[0] || "").localeCompare(String(b[0] || ""));
+            });
 
         if (!exams.length) {
             academicWrap.innerHTML = guideLoadingMarkup(t("guide.loading_exam_config", "Loading exam config"));
             return;
         }
 
-        const items = exams.map(([id, cfg]) =>
-            `<li><strong>${escapeHtml(getExamDisplayName(id))}.</strong> ${escapeHtml(describeAcademicExam(id, cfg))}</li>`
-        ).join("");
+        const items = exams.map(([id, cfg]) => {
+            const examLabel = getExamDisplayName(id, { locale: getCurrentLanguage() });
+            return `<li>${escapeHtml(describeAcademicExam(id, cfg, examLabel))}</li>`;
+        }).join("");
         academicWrap.innerHTML = `
             <p>${escapeHtml(t("guide.academic.intro", "The following academic exams are currently used by UniSearch for admission track matching and recommendation quality."))}</p>
             <ul class="guide-list">${items}</ul>
@@ -3012,15 +3075,22 @@ export function initGuidePage() {
         languageWrap.innerHTML = codes.map((code) => {
             const arr = Array.isArray(groups[code]) ? groups[code] : [];
             if (!arr.length) return "";
-            const title = nameByCode[code] || code.toUpperCase();
+            const title = getLanguageTitle(code, nameByCode[code] || code.toUpperCase());
+            const sortedArr = [...arr].sort((a, b) => {
+                const left = stableExamSortKey(a?.id);
+                const right = stableExamSortKey(b?.id);
+                const byKey = left.localeCompare(right);
+                if (byKey !== 0) return byKey;
+                return String(a?.id || "").localeCompare(String(b?.id || ""));
+            });
 
             return `
                 <section class="guide-subsection">
                     <h4>${escapeHtml(title)} (${escapeHtml(code.toUpperCase())})</h4>
                     <ul class="guide-list">
-                        ${arr.map((ex) => {
-                            const examLabel = getExamDisplayName(ex?.id, { langCode: code });
-                            return `<li><strong>${escapeHtml(examLabel)}.</strong> ${escapeHtml(describeLanguageExam(ex?.id, code, ex, examLabel))}</li>`;
+                        ${sortedArr.map((ex) => {
+                            const examLabel = getExamDisplayName(ex?.id, { langCode: code, locale: getCurrentLanguage() });
+                            return `<li>${escapeHtml(describeLanguageExam(ex?.id, code, ex, examLabel))}</li>`;
                         }).join("")}
                     </ul>
                 </section>

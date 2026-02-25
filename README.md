@@ -363,7 +363,7 @@ tests/
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
 ## Changelog
-### 2.5.4 (2026-02-25) - loading UX fix
+### 2.5.4 (2026-02-25) - UI/UX and guide i18n follow-up
 - Fixed white loading spinner behavior on universities page while waiting for delayed `UniFit` response.
 - During list loading, the list/state/pagination are hidden until loading finishes (same "full loading" feel as initial load).
 - During map loading, existing markers/popups are cleared, top counter is reset to `0`, and only the dimmed loading state is visible.
@@ -376,6 +376,18 @@ tests/
 - Grant track visuals: made grant pills in Admissions/Costs noticeably greener for clearer finance context.
 - About page copy corrected in `eng`/`ru`/`kz`: updated team roles so responsibilities do not overlap (`text documentation` vs `video documentation`).
 - Fixed profile i18n refresh on runtime language switch: profile modal labels/selects now retranslate without cache clear or hard reload.
+- Profile username inline editor now uses the same accent focus ring behavior as other profile inputs.
+- Guide ML section now explicitly shows the "translation unavailable, write interests in English" note, with example copy aligned across `eng`/`ru`/`kz`.
+- Guide wording polish in Exam Basics: corrected language-proof phrasing in `ru`/`kz` (and aligned `eng` wording to "proof of language proficiency").
+- Guide rendering lifecycle hardened:
+  - glossary/exam sections now fully recompute on `languageChanged` and config load events;
+  - removed mixed-language artifacts and unresolved placeholder output in glossary.
+- Guide exam lists are now stably ordered by canonical exam id, so Academic and Language exam order is identical across all UI languages.
+- Guide language headers now use localized language names from i18n keys (`languages.name.*`) instead of raw config labels.
+- Guide exam descriptions now include localized exam titles consistently (not only list headers).
+- Profile exam/language editor UX:
+  - when user selects an already-saved record, action button switches from `Add` to localized `Edit`;
+  - language overwrite now shows localized `Language updated` toast instead of `Language added`.
 
 ### 2.5.3 (2026-02-24) - bugfix release
 - Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).

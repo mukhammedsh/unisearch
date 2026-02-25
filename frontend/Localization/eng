@@ -30,12 +30,13 @@ guide.admission.p2: Requirements are minimum thresholds. For safer planning, als
 guide.admission.p3: Mode any means one language proof is enough. Mode all means every listed proof is required.
 guide.admission.p4: Scholarships and aid can noticeably reduce total cost, so always check track details.
 guide.admission.title: How to read admission tracks
-guide.exam_basics.p1: Admissions usually need two parts: academic scores and language proof.
+guide.exam_basics.p1: Admissions usually need two parts: academic scores and proof of language proficiency.
 guide.exam_basics.p2: Requirements differ by country and university, so check each track directly.
 guide.exam_basics.p3: Language requirements are especially important for international programs.
 guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
 guide.exam_basics.title: Exam Basics (Admissions)
 guide.eyebrow: UniSearch Guide
+guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Glossary
 guide.intro: This page explains, in plain language, what profile data we use and how to read your results.
 guide.language_exams.title: Language Exams
@@ -43,7 +44,7 @@ guide.loading_language_config: Loading language exam config
 guide.ml.p1: In the Interests field, write what matters to you: major, city, budget, scholarships, campus style, and so on.
 guide.ml.p2: The system compares this text with university and program descriptions.
 guide.ml.p3: More specific interests usually give better recommendations.
-guide.ml.p4: You can keep it short, for example: computer science, scholarships, USA.
+guide.ml.p4: Keep it short. Example in English: computer science, scholarships, USA.
 guide.ml.p5: Interests help sort options, but they do not replace official university requirements.
 guide.ml.title: How interests are used
 guide.muted.academic: Short explanations of academic exams used in requirements.
@@ -106,6 +107,7 @@ nav.rankings: Ranking
 nav.switch_theme: Switch theme
 nav.universities: Universities
 profile.add: Add
+profile.edit: Edit
 profile.budget_cleared: Budget cleared
 profile.budget_integers_only: Integers only (no dots/commas)
 profile.budget_limit: Limit: 0 - 1,000,000 USD
@@ -357,6 +359,7 @@ languages.no_exams: No exams
 languages.removed: Removed
 languages.saved: Language saved
 languages.added: Language added
+languages.updated: Language updated
 languages.kind.native: Native
 languages.kind.cefr: CEFR
 languages.kind.exam: Exam

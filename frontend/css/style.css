@@ -548,8 +548,14 @@ html, body {
   padding: 8px 10px;
   font-size: 16px;
   min-width: 180px;
+  outline: none;
   background: var(--surface);
   color: var(--text);
+}
+
+.profile-name-input:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.16);
 }
 
 .profile-username.is-editing #profileNameDisplay{

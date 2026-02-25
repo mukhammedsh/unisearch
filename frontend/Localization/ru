@@ -30,12 +30,13 @@ guide.admission.p2: Требования — это минимальный по�
 guide.admission.p3: Языковое правило: в одних треках достаточно одного подтверждения, а в других нужны все перечисленные подтверждения.
 guide.admission.p4: Стипендии и помощь могут заметно снизить итоговую стоимость, поэтому проверяйте это в каждом треке.
 guide.admission.title: Как читать треки поступления
-guide.exam_basics.p1: Обычно для поступления нужны две части: академические баллы и подтверждение языка.
+guide.exam_basics.p1: Обычно для поступления нужны две части: академические баллы и подтверждение знания языка.
 guide.exam_basics.p2: У стран и вузов разные требования, поэтому смотрите условия конкретного трека, а не только название вуза.
 guide.exam_basics.p3: Для зарубежных программ языковые требования особенно важны.
 guide.exam_basics.p4: Практичный план: сначала закрыть минимумы, потом усилить баллы для более сильных вариантов.
 guide.exam_basics.title: Основы экзаменов (поступление)
 guide.eyebrow: Гайд UniSearch
+guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Глоссарий
 guide.intro: Здесь простым языком объяснено, какие данные мы берем из профиля и как читать результаты подбора.
 guide.language_exams.title: Языковые экзамены
@@ -43,7 +44,7 @@ guide.loading_language_config: Загрузка конфигурации язы�
 guide.ml.p1: В поле «Интересы» напишите, что для вас важно: направление, город, бюджет, гранты, формат обучения и т.д.
 guide.ml.p2: Система сравнивает ваш текст с описаниями университетов и программ.
 guide.ml.p3: Чем конкретнее вы пишете интересы, тем точнее рекомендации.
-guide.ml.p4: Можно писать коротко, например: computer science, scholarships, USA.
+guide.ml.p4: Можно писать коротко. Пример на английском: computer science, scholarships, USA.
 guide.ml.p5: Интересы помогают отсортировать варианты, но не заменяют официальные требования университета.
 guide.ml.title: Как учитываются интересы
 guide.muted.academic: Короткие объяснения экзаменов, которые встречаются в требованиях.
@@ -106,6 +107,7 @@ nav.rankings: Рейтинг
 nav.switch_theme: Сменить тему
 nav.universities: Университеты
 profile.add: Добавить
+profile.edit: Изменить
 profile.budget_cleared: Бюджет очищен
 profile.budget_integers_only: Только целые числа (без точек и запятых)
 profile.budget_limit: Лимит: 0 - 1,000,000 USD
@@ -356,6 +358,7 @@ languages.no_exams: Экзаменов нет
 languages.removed: Удалено
 languages.saved: Язык сохранен
 languages.added: Язык добавлен
+languages.updated: Язык обновлен
 languages.kind.native: Родной
 languages.kind.cefr: CEFR
 languages.kind.exam: Экзамен

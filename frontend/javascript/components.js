@@ -851,12 +851,24 @@ function initProfileUI() {
         });
 
         if (typeof initCustomSelect === "function") initCustomSelect("examNameSelect");
+        refreshExamActionButton();
     };
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect();
     }
     window.addEventListener("examConfigLoaded", populateExamSelect);
+
+    function refreshExamActionButton() {
+        if (!addExamBtn || !examNameSelect) return;
+        const selected = canonicalizeExamId(examNameSelect.value);
+        const hasExisting = !!selected && Array.isArray(profile.exams)
+            && profile.exams.some((e) => canonicalizeExamId(e.exam ?? e.id ?? "") === selected);
+        const key = hasExisting ? "profile.edit" : "profile.add";
+        const fallback = hasExisting ? "Edit" : "Add";
+        addExamBtn.setAttribute("data-i18n", key);
+        addExamBtn.textContent = t(key, fallback);
+    }
 
     const retranslateProfileUi = () => {
         const selectedExam = examNameSelect ? String(examNameSelect.value || "") : "";
@@ -878,6 +890,7 @@ function initProfileUI() {
         applyTranslations(modal);
         if (unsavedModal) applyTranslations(unsavedModal);
         applyDraftToInputs();
+        refreshExamActionButton();
 
         if (selectedLangCode && prevLangCode) selectedLangCode.value = prevLangCode;
         if (selectedLangKind && prevLangKind) selectedLangKind.value = prevLangKind;
@@ -1002,6 +1015,7 @@ function initProfileUI() {
                 </div>
             `).join("");
         }
+        refreshExamActionButton();
     };
 
     const applyDraftToInputs = () => {
@@ -1033,6 +1047,10 @@ function initProfileUI() {
         setProfileDraft(savedProfile, { markAsSaved: true });
         applyDraftToInputs();
     };
+
+    if (examNameSelect) {
+        examNameSelect.addEventListener("change", refreshExamActionButton);
+    }
 
     const saveAllProfileChanges = (notify = true) => {
         syncInputsToDraft();

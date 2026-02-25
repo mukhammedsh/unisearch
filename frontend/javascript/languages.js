@@ -162,6 +162,46 @@ export function initLanguagesPanel() {
       if (scoreContainer) scoreContainer.style.display = (kindId === KIND_EXAM) ? "block" : "none";
     }
 
+    function findExistingEntryIndex(entries, draft) {
+      const list = Array.isArray(entries) ? entries : [];
+      const item = draft && typeof draft === "object" ? draft : null;
+      if (!item?.code || !item?.kind) return -1;
+      if (item.kind === KIND_EXAM) {
+        if (!item.exam) return -1;
+        return list.findIndex((x) =>
+          x.code === item.code && x.kind === item.kind && x.exam === item.exam
+        );
+      }
+      return list.findIndex((x) =>
+        x.code === item.code && x.kind === item.kind
+      );
+    }
+
+    function getDraftEntryFromUI() {
+      const code = String(langCode.value || "").trim().toLowerCase();
+      const kind = normalizeKind(langKind.value);
+      if (!code || !kind) return null;
+      if (kind === KIND_EXAM) {
+        const exam = String(langExam.value || "").trim();
+        if (!exam) return null;
+        return { code, kind, exam };
+      }
+      return { code, kind };
+    }
+
+    function refreshLangActionButton() {
+      const prof = loadEditableProfile();
+      const entries = (Array.isArray(prof.languages) ? prof.languages : [])
+        .map(normalizeLangEntry)
+        .filter(Boolean);
+      const draft = getDraftEntryFromUI();
+      const isUpdate = findExistingEntryIndex(entries, draft) >= 0;
+      const key = isUpdate ? "profile.edit" : "profile.add";
+      const fallback = isUpdate ? "Edit" : "Add";
+      langAddBtn.setAttribute("data-i18n", key);
+      langAddBtn.textContent = t(key, fallback);
+    }
+
     function populateLangCode() {
       const current = String(langCode.value || "").trim().toLowerCase();
       langCode.innerHTML = "";
@@ -257,6 +297,7 @@ export function initLanguagesPanel() {
           </div>
         `;
       }).join("");
+      refreshLangActionButton();
     }
 
     function refreshExamLimits() {
@@ -280,22 +321,29 @@ export function initLanguagesPanel() {
     initCustomSelect("langExam");
 
     renderList();
+    refreshLangActionButton();
 
     // ---------- listeners ----------
     langCode.addEventListener("change", () => {
       populateLangExam();
       initCustomSelect("langExam");
       refreshExamLimits();
+      refreshLangActionButton();
     });
 
     langKind.addEventListener("change", () => {
       setUIByKind(langKind.value);
       refreshExamLimits();
+      refreshLangActionButton();
     });
 
     langExam.addEventListener("change", () => {
       refreshExamLimits();
+      refreshLangActionButton();
     });
+
+    langCefr.addEventListener("change", refreshLangActionButton);
+    window.addEventListener("languageChanged", refreshLangActionButton);
 
     langExamScore.addEventListener("input", () => {
       if (langKind.value !== KIND_EXAM) return;
@@ -418,13 +466,19 @@ export function initLanguagesPanel() {
           );
         }
 
-        if (existsIdx >= 0) prof.languages[existsIdx] = entry;
+        const isUpdate = existsIdx >= 0;
+        if (isUpdate) prof.languages[existsIdx] = entry;
         else prof.languages.push(entry);
 
         saveEditableProfile(prof);
         renderList();
         if (entry.kind === KIND_EXAM) langExamScore.value = "";
-        showToast(t("languages.added", "Language added"), "success");
+        showToast(
+          isUpdate
+            ? t("languages.updated", "Language updated")
+            : t("languages.added", "Language added"),
+          "success"
+        );
         return;
       } catch (e) {
         const rawCode = String(e?.code || e?.name || "save_failed").trim();
@@ -466,6 +520,7 @@ export function initLanguagesPanel() {
       initCustomSelect("langCefr");
       initCustomSelect("langExam");
       refreshExamLimits();
+      refreshLangActionButton();
     });
   };
 

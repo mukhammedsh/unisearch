@@ -30,12 +30,13 @@ guide.admission.p2: Талаптар — өтінім беру үшін қаже
 guide.admission.p3: Тіл ережесі: кей тректе бір дәлел жеткілікті, ал кей тректе тізімдегі барлық дәлел қажет.
 guide.admission.p4: Шәкіртақы мен көмек жалпы шығынды азайтуы мүмкін, сондықтан әр тректі бөлек тексеріңіз.
 guide.admission.title: Қабылдау тректерін қалай оқу керек
-guide.exam_basics.p1: Әдетте түсу үшін екі нәрсе керек: академиялық балл және тілдік дәлел.
+guide.exam_basics.p1: Әдетте түсу үшін екі нәрсе керек: академиялық балл және тіл білімін растау.
 guide.exam_basics.p2: Талаптар ел мен университетке қарай өзгереді, сондықтан әр тректің шартын тікелей қараңыз.
 guide.exam_basics.p3: Халықаралық бағдарламаларда тіл талабы өте маңызды.
 guide.exam_basics.p4: Қарапайым стратегия: алдымен минимумды жабыңыз, кейін мықты нұсқалар үшін баллды күшейтіңіз.
 guide.exam_basics.title: Емтихан негіздері (қабылдау)
 guide.eyebrow: UniSearch нұсқаулығы
+guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Терминдер сөздігі
 guide.intro: Бұл бетте профиліңізден қандай деректер қолданылатыны және нәтижені қалай оқу керегі қарапайым тілмен түсіндіріледі.
 guide.language_exams.title: Тіл емтихандары
@@ -43,7 +44,7 @@ guide.loading_language_config: Тіл емтиханы конфигурация�
 guide.ml.p1: Қызығушылықтар өрісіне өзіңізге маңыздыны жазыңыз: мамандық, қала, бюджет, грант, кампус түрі.
 guide.ml.p2: Жүйе бұл мәтінді университет пен бағдарлама сипаттамаларымен салыстырады.
 guide.ml.p3: Неғұрлым нақты жазсаңыз, ұсыныс соғұрлым дәл болады.
-guide.ml.p4: Қысқа жазуға да болады, мысалы: computer science, scholarships, USA.
+guide.ml.p4: Қысқа да жазуға болады. Ағылшынша мысал: computer science, scholarships, USA.
 guide.ml.p5: Бұл тек сұрыптауға көмектеседі, университеттің ресми талаптарын алмастырмайды.
 guide.ml.title: Қызығушылықтар қалай ескеріледі
 guide.muted.academic: Талаптарда кездесетін академиялық емтихандардың қысқа түсіндірмесі.
@@ -106,6 +107,7 @@ nav.rankings: Рейтинг
 nav.switch_theme: Тақырыпты ауыстыру
 nav.universities: Университеттер
 profile.add: Қосу
+profile.edit: Өзгерту
 profile.budget_cleared: Бюджет тазартылды
 profile.budget_integers_only: Тек бүтін сандар (үтір/нүктесіз)
 profile.budget_limit: Шек: 0 - 1,000,000 USD
@@ -356,6 +358,7 @@ languages.no_exams: Емтихан жоқ
 languages.removed: Өшірілді
 languages.saved: Тіл сақталды
 languages.added: Тіл қосылды
+languages.updated: Тіл жаңартылды
 languages.kind.native: Ана тілі
 languages.kind.cefr: CEFR
 languages.kind.exam: Емтихан
