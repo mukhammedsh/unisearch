@@ -2501,7 +2501,7 @@ export async function initUniversityPage() {
                 }
 
                 tracksHTML += `
-                <div class="track-card">
+                <div class="track-card${isGrantTrack ? " track-card--grant" : ""}">
                     <div class="track-head">
                         <div class="track-head-main">
                             <h4 class="track-title">${escapeHtml(trTrackLabel(String(track.label || translateWord("track", "Track"))))}</h4>
@@ -2582,6 +2582,7 @@ export async function initUniversityPage() {
             let financeHTML = "";
 
             tracks.forEach(track => {
+                const isGrantTrack = getTrackFundingType(track) === "grant";
                 const fData = track.finance_override || u.finance;
                 const total = modeAwareAnnualCost(fData || {}, profileStudyMode);
                 const breakdown = modeAwareBreakdown(fData || {}, profileStudyMode);
@@ -2618,10 +2619,10 @@ export async function initUniversityPage() {
                 legendHTML += `</div>`;
 
                 financeHTML += `
-                <div class="finance-card">
+                <div class="finance-card${isGrantTrack ? " finance-card--grant" : ""}">
                     <div class="finance-header">
                         <div class="finance-track-name">${escapeHtml(trTrackLabel(String(track.label || translateWord("general_tuition", "General Tuition"))))}</div>
-                        <div class="finance-total">
+                        <div class="finance-total${isGrantTrack ? " finance-total--grant" : ""}">
                             <small>${escapeHtml(translateWord("total_per_year", "Total / Year"))}</small>
                             <span>${moneyUSD(total)}</span>
                         </div>

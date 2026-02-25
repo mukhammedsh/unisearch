@@ -913,6 +913,10 @@
    TRACK CARDS (ADMISSIONS)
    ========================================= */
 .track-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
 }
@@ -920,6 +924,11 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(87, 21, 219, 0.08) !important;
   border-color: var(--accent) !important;
+}
+
+.track-card--grant {
+  background: #ecfdf5;
+  border-color: #86efac;
 }
 
 .track-head {
@@ -942,6 +951,21 @@
 .track-price {
   text-align: right;
   flex: 0 0 auto;
+}
+
+.track-card--grant .track-price {
+  background: #d1fae5;
+  border: 1px solid #86efac;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.track-card--grant .track-price-label {
+  color: #065f46;
+}
+
+.track-card--grant .track-price-value {
+  color: #065f46;
 }
 
 .track-price-label {
@@ -1415,6 +1439,37 @@
   flex-direction: column;
 }
 
+.finance-card--grant {
+  background: #ecfdf5;
+  border-color: #86efac;
+}
+
+.finance-card--grant .finance-header {
+  background: #dcfce7;
+  border-bottom-color: #86efac;
+}
+
+.finance-card--grant .finance-body {
+  background: #ecfdf5;
+}
+
+.finance-card--grant .finance-footer {
+  background: #dcfce7;
+  border-top-color: #86efac;
+}
+
+.finance-card--grant .cost-legend-row {
+  background: #d1fae5;
+  border-color: #86efac;
+}
+
+.finance-card--grant .cost-legend-single {
+  background: #d1fae5;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
 .finance-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(0,0,0,0.08);
@@ -1445,6 +1500,18 @@
 .finance-total { text-align: right; }
 .finance-total small { display: block; font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
 .finance-total span { font-size: 20px; font-weight: 900; color: var(--accent); }
+
+.finance-total--grant {
+  background: #d1fae5;
+  border: 1px solid #86efac;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.finance-total--grant small,
+.finance-total--grant span {
+  color: #065f46;
+}
 
 .finance-body { padding: 20px; }
 
@@ -1665,8 +1732,16 @@
 }
 
 .roi-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px;
     transition: transform 0.2s;
     overflow-wrap: anywhere;
+}
+
+.finance-grid-new + .roi-box {
+    margin-top: 20px;
 }
 
 .roi-title {
@@ -1961,6 +2036,35 @@
   border-color: var(--line);
 }
 
+:root[data-theme="dark"] .finance-card--grant {
+  background: #13251d;
+  border-color: #2f6b4f;
+}
+
+:root[data-theme="dark"] .finance-card--grant .finance-header {
+  background: #163728;
+  border-bottom-color: #2f6b4f;
+}
+
+:root[data-theme="dark"] .finance-card--grant .finance-body {
+  background: #13251d;
+}
+
+:root[data-theme="dark"] .finance-card--grant .finance-footer {
+  background: #163728;
+  border-top-color: #2f6b4f;
+}
+
+:root[data-theme="dark"] .finance-card--grant .cost-legend-row {
+  background: #163728;
+  border-color: #2f6b4f;
+}
+
+:root[data-theme="dark"] .finance-card--grant .cost-legend-single {
+  background: #163728;
+  border-color: #2f6b4f;
+}
+
 :root[data-theme="dark"] .chance-warning {
   background: #2a1f12;
   border-color: #4b3a1d;
@@ -1979,6 +2083,16 @@
 :root[data-theme="dark"] .finance-total small,
 :root[data-theme="dark"] .finance-grant-list {
   color: var(--muted);
+}
+
+:root[data-theme="dark"] .finance-total--grant {
+  background: #163728;
+  border-color: #2f6b4f;
+}
+
+:root[data-theme="dark"] .finance-total--grant small,
+:root[data-theme="dark"] .finance-total--grant span {
+  color: #dcfce7;
 }
 
 :root[data-theme="dark"] .finance-header,
@@ -2082,8 +2196,27 @@
 
 :root[data-theme="dark"] .track-card,
 :root[data-theme="dark"] .roi-box {
+  background: #161616;
   border-color: #3f3f3f !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+:root[data-theme="dark"] .track-card--grant {
+  background: #13251d !important;
+  border-color: #2f6b4f !important;
+}
+
+:root[data-theme="dark"] .track-card--grant .track-price {
+  background: #163728;
+  border-color: #2f6b4f;
+}
+
+:root[data-theme="dark"] .track-card--grant .track-price-label {
+  color: #bbf7d0;
+}
+
+:root[data-theme="dark"] .track-card--grant .track-price-value {
+  color: #dcfce7;
 }
 
 :root[data-theme="dark"] .track-card:hover,
@@ -2241,6 +2374,11 @@
   background: #161616 !important;
   border-color: #3f3f3f !important;
   color: #e2e2e2 !important;
+}
+
+:root[data-theme="dark"] #detailRequirements .track-card.track-card--grant {
+  background: #13251d !important;
+  border-color: #2f6b4f !important;
 }
 
 :root[data-theme="dark"] .track-title {
