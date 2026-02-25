@@ -363,6 +363,11 @@ tests/
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
 ## Changelog
+### 2.5.4 (2026-02-25) - loading UX fix
+- Fixed white loading spinner behavior on universities page while waiting for delayed `UniFit` response.
+- During list loading, the list/state/pagination are hidden until loading finishes (same "full loading" feel as initial load).
+- During map loading, existing markers/popups are cleared, top counter is reset to `0`, and only the dimmed loading state is visible.
+
 ### 2.5.3 (2026-02-24) - bugfix release
 - Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).
 - Unified universities page loading UX:

@@ -833,6 +833,13 @@
   opacity: 1;
 }
 
+.u-content.is-loading #listState,
+.u-content.is-loading #universitiesList,
+.u-content.is-loading #pagination {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* =========================================
    UNIVERSITY CARD
    ========================================= */

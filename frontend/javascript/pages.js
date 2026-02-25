@@ -1311,6 +1311,16 @@ export function initUniversitiesPage() {
         }
     }
 
+    function resetMapResults() {
+        if (mapInstance && typeof mapInstance.closePopup === "function") {
+            mapInstance.closePopup();
+        }
+        if (markersLayer) {
+            markersLayer.clearLayers();
+        }
+        markersByUniId = new Map();
+    }
+
     function updateSliderVisibility() {
         if (el.sortStrategyInfoWrap) {
             const showSortInfo = state.sort === "uni_ai";
@@ -1745,8 +1755,13 @@ export function initUniversitiesPage() {
             sort: state.sort,
         });
         setUniversitiesLoading(true);
-        if (el.state && state.viewMode === 'list') el.state.textContent = "";
+        if (el.total) el.total.textContent = "0";
+        if (el.state) {
+            el.state.textContent = "";
+            el.state.classList.remove("u-state-warning");
+        }
         if (state.viewMode === 'list') el.list.innerHTML = "";
+        if (state.viewMode === "map") resetMapResults();
         if (el.pagination) el.pagination.innerHTML = "";
 
         const urlParams = buildParams(false);
