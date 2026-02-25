@@ -858,6 +858,44 @@ function initProfileUI() {
     }
     window.addEventListener("examConfigLoaded", populateExamSelect);
 
+    const retranslateProfileUi = () => {
+        const selectedExam = examNameSelect ? String(examNameSelect.value || "") : "";
+        const selectedLangCode = document.getElementById("langCode");
+        const selectedLangKind = document.getElementById("langKind");
+        const selectedLangCefr = document.getElementById("langCefr");
+        const selectedLangExam = document.getElementById("langExam");
+        const prevLangCode = selectedLangCode ? String(selectedLangCode.value || "") : "";
+        const prevLangKind = selectedLangKind ? String(selectedLangKind.value || "") : "";
+        const prevLangCefr = selectedLangCefr ? String(selectedLangCefr.value || "") : "";
+        const prevLangExam = selectedLangExam ? String(selectedLangExam.value || "") : "";
+
+        populateMajors();
+        populateExamSelect();
+        if (examNameSelect && selectedExam) {
+            examNameSelect.value = selectedExam;
+        }
+
+        applyTranslations(modal);
+        if (unsavedModal) applyTranslations(unsavedModal);
+        applyDraftToInputs();
+
+        if (selectedLangCode && prevLangCode) selectedLangCode.value = prevLangCode;
+        if (selectedLangKind && prevLangKind) selectedLangKind.value = prevLangKind;
+        if (selectedLangCefr && prevLangCefr) selectedLangCefr.value = prevLangCefr;
+        if (selectedLangExam && prevLangExam) selectedLangExam.value = prevLangExam;
+
+        if (typeof initCustomSelect === "function") {
+            initCustomSelect("examNameSelect");
+            initCustomSelect("studyModeSelect");
+            initCustomSelect("profileFundingTypeSelect");
+            initCustomSelect("profileMajorSelect");
+            if (selectedLangCode) initCustomSelect("langCode");
+            if (selectedLangKind) initCustomSelect("langKind");
+            if (selectedLangCefr) initCustomSelect("langCefr");
+            if (selectedLangExam) initCustomSelect("langExam");
+        }
+    };
+
     const syncInputsToDraft = () => {
         if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
         if (gpaInput) profile.gpa = String(gpaInput.value || "").trim();
@@ -1209,8 +1247,7 @@ function initProfileUI() {
     });
 
     window.addEventListener("languageChanged", () => {
-        if (!modal.classList.contains("is-open")) return;
-        closeForLanguageSwitch();
+        retranslateProfileUi();
     });
 
     if (editNameBtn && profileUsernameDiv && nameInput) {

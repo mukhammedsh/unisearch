@@ -1,8 +1,8 @@
 meta.display_name: English
 meta.code: eng
-about.bio.docs: Assisted with testing, user interface, and translation into Russian and Kazakh; responsible for video documentation and presentation.
+about.bio.docs: Responsible for video documentation and presentation.
 about.bio.lead: Responsible for all code and implementation of key ideas. Acts as team captain and makes key project decisions.
-about.bio.planning: Responsible for the text documentation, most of the ideas & improvements, and numerous tests of the site.
+about.bio.planning: Fully responsible for the text documentation, most of the ideas & improvements, and numerous tests of the site.
 about.contact.email: Email
 about.contact.github: GitHub
 about.contact_kicker: Contact
@@ -17,9 +17,9 @@ about.meta.planning: 14 years old, student in Zhanaozen Bilim-Innovation Lyceum.
 about.name.docs: Malikov Elzhan
 about.name.lead: Shabdaluly Mukhammed
 about.name.planning: Rashidov Yerbolat
-about.role.docs: Documentation and Presentation Specialist
+about.role.docs: Video Documentation and Presentation Specialist
 about.role.lead: Lead Developer and Project Architect
-about.role.planning: Planning and Documentation Assistant
+about.role.planning: Planning and Text Documentation Specialist
 about.team_kicker: Our Team
 about.team_title: Core contributors
 about.title: We are the abiturient team behind UniSearch.

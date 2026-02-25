@@ -869,9 +869,9 @@
 }
 
 .admission-filter-pill--grant {
-  color: #166534;
-  background: rgba(22, 163, 74, 0.12);
-  border-color: rgba(22, 163, 74, 0.35);
+  color: #065f46;
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.55);
 }
 
 .admission-filter-pill--paid {
@@ -898,9 +898,9 @@
 }
 
 .track-funding-badge--grant {
-  color: #166534;
-  background: rgba(22, 163, 74, 0.12);
-  border-color: rgba(22, 163, 74, 0.35);
+  color: #065f46;
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.55);
 }
 
 .track-funding-badge--paid {
@@ -2175,9 +2175,9 @@
 
 :root[data-theme="dark"] .admission-filter-pill--grant,
 :root[data-theme="dark"] .track-funding-badge--grant {
-  color: #86efac;
-  background: rgba(34, 197, 94, 0.18);
-  border-color: rgba(34, 197, 94, 0.45);
+  color: #bbf7d0;
+  background: rgba(34, 197, 94, 0.3);
+  border-color: rgba(74, 222, 128, 0.6);
 }
 
 :root[data-theme="dark"] .admission-filter-pill--paid,

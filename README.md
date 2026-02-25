@@ -373,6 +373,9 @@ tests/
 - Profile budget UX:
   - budget validation now allows `0` (range `0..1,000,000`);
   - added a subtle dismissible hint when budget is below `$1000`, with quick action to switch funding preference to `Grant only`.
+- Grant track visuals: made grant pills in Admissions/Costs noticeably greener for clearer finance context.
+- About page copy corrected in `eng`/`ru`/`kz`: updated team roles so responsibilities do not overlap (`text documentation` vs `video documentation`).
+- Fixed profile i18n refresh on runtime language switch: profile modal labels/selects now retranslate without cache clear or hard reload.
 
 ### 2.5.3 (2026-02-24) - bugfix release
 - Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).
