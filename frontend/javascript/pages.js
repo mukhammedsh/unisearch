@@ -2802,9 +2802,24 @@ export async function initRankingPage() {
             const cityText = escapeHtml(trCity(String(u.location.city || "")));
             const countryText = escapeHtml(trCountry(String(u.location.country || "")));
             const uniName = trUniversityName(u);
+            const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
+            const rankSource = String(rankMeta.source || "").trim();
+            const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
+            const rankStatusLabel = rankStatusRaw
+                ? t(`ranking.source_status.${rankStatusRaw}`, rankStatusRaw)
+                : "—";
+            const rankVerifiedAt = String(rankMeta.verified_at || "").trim() || "—";
+            const sourceTooltip = rankSource
+                ? tFormat(
+                    "ranking.source_tooltip",
+                    { source: rankSource, status: rankStatusLabel, verified_at: rankVerifiedAt },
+                    `Source: ${rankSource} | Type: ${rankStatusLabel} | Checked: ${rankVerifiedAt}`
+                )
+                : "";
+            const sourceTitleAttr = sourceTooltip ? ` title="${escapeHtml(sourceTooltip)}"` : "";
 
             return `
-            <a href="${routeUniversityDetail(u.id)}" class="rank-card">
+            <a href="${routeUniversityDetail(u.id)}" class="rank-card"${sourceTitleAttr}>
                 <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
                 <div class="rank-num ${rankClass}">#${rank}</div>
                 <div class="rank-logo">

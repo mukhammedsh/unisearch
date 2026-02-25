@@ -108,7 +108,7 @@ nav.universities: Universities
 profile.add: Add
 profile.budget_cleared: Budget cleared
 profile.budget_integers_only: Integers only (no dots/commas)
-profile.budget_limit: Limit: 1 - 1,000,000 USD
+profile.budget_limit: Limit: 0 - 1,000,000 USD
 profile.budget_must_number: Budget must be a number
 profile.budget_saved: Budget saved!
 profile.cefr: CEFR
@@ -131,7 +131,10 @@ profile.gpa_must_number: GPA must be a number
 profile.gpa_range: GPA must be between {min} and {max}%
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
-profile.hint.budget_range: Range: 1 - 1,000,000
+profile.hint.budget_range: Range: 0 - 1,000,000
+profile.hint.low_budget_grant: Budget is under $1000. Maybe you need Grant only.
+profile.hint.low_budget_grant_action: Set Grant only
+profile.hint.dismiss: Dismiss hint
 profile.hint.gpa: GPA is stored as percent and used in admission matching.
 profile.hint.interests: Used to personalize your recommendations.
 profile.warning.interests_english_only: Translation is unavailable. Please write interests in English.

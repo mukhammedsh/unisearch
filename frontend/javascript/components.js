@@ -206,7 +206,7 @@ const LAYOUT_HTML = `
         <div class="profile-budget">
           <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
         </div>
-        <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 1 - 1,000,000</div>
+        <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0 - 1,000,000</div>
       </div>
 
       <div class="profile-field">
@@ -225,6 +225,13 @@ const LAYOUT_HTML = `
            <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
            <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
         </select>
+        <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
+          <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">Budget is under $1000. Maybe you need Grant only.</span>
+          <div class="profile-budget-grant-hint__actions">
+            <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">Set Grant only</button>
+            <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint">×</button>
+          </div>
+        </div>
       </div>
 
       <div class="profile-field">
@@ -599,6 +606,9 @@ function initProfileUI() {
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
     const profileFundingTypeSelect = document.getElementById("profileFundingTypeSelect");
+    const lowBudgetGrantHint = document.getElementById("profileLowBudgetGrantHint");
+    const lowBudgetGrantApplyBtn = document.getElementById("profileLowBudgetGrantApply");
+    const lowBudgetGrantDismissBtn = document.getElementById("profileLowBudgetGrantDismiss");
     const examScoreInput = document.getElementById("examScoreInput");
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
@@ -706,6 +716,7 @@ function initProfileUI() {
         ? ensureProfileShape(transferredDraftPayload.draft)
         : null;
     let savedSignature = "";
+    let lowBudgetGrantHintDismissed = false;
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
     const getNameDraft = () => String(nameInput?.value || "").trim();
@@ -727,6 +738,57 @@ function initProfileUI() {
         );
     };
 
+    const parseBudgetDraftValue = () => {
+        const raw = String(budgetInput?.value || profile?.budget || "").trim();
+        if (!raw) return null;
+        if (raw.includes(".") || raw.includes(",")) return null;
+        const value = Number(raw);
+        if (!Number.isFinite(value) || value < 0) return null;
+        return value;
+    };
+
+    const shouldShowLowBudgetGrantHint = () => {
+        const budgetValue = parseBudgetDraftValue();
+        if (budgetValue === null) return false;
+        if (budgetValue >= 1000) return false;
+        const fundingType = normalizeFundingType(profileFundingTypeSelect?.value || profile?.fundingType || "any");
+        return fundingType !== "grant";
+    };
+
+    const renderLowBudgetGrantHint = () => {
+        if (!lowBudgetGrantHint) return;
+
+        const shouldShow = shouldShowLowBudgetGrantHint();
+        if (!shouldShow) {
+            lowBudgetGrantHintDismissed = false;
+            lowBudgetGrantHint.hidden = true;
+            return;
+        }
+
+        if (lowBudgetGrantHintDismissed) {
+            lowBudgetGrantHint.hidden = true;
+            return;
+        }
+
+        const textEl = lowBudgetGrantHint.querySelector(".profile-budget-grant-hint__text");
+        if (textEl) {
+            textEl.textContent = t(
+                "profile.hint.low_budget_grant",
+                "Budget is under $1000. Maybe you need Grant only.",
+            );
+        }
+        if (lowBudgetGrantApplyBtn) {
+            lowBudgetGrantApplyBtn.textContent = t("profile.hint.low_budget_grant_action", "Set Grant only");
+        }
+        if (lowBudgetGrantDismissBtn) {
+            const dismissTitle = t("profile.hint.dismiss", "Dismiss hint");
+            lowBudgetGrantDismissBtn.title = dismissTitle;
+            lowBudgetGrantDismissBtn.setAttribute("aria-label", dismissTitle);
+        }
+
+        lowBudgetGrantHint.hidden = false;
+    };
+
     const refreshSaveState = () => {
         const profileDirty = isProfileDirty();
         const usernameDirty = isUsernameDraftDirty();
@@ -738,6 +800,7 @@ function initProfileUI() {
             profileSaveState.classList.toggle("is-dirty", isDirty);
         }
         if (saveProfileBtn) saveProfileBtn.disabled = !isDirty;
+        renderLowBudgetGrantHint();
         return isDirty;
     };
 
@@ -852,8 +915,8 @@ function initProfileUI() {
             showToast(t("profile.budget_must_number", "Budget must be a number"), "error");
             return { ok: false, value: "" };
         }
-        if (val < 1 || val > 1000000) {
-            showToast(t("profile.budget_limit", "Limit: 1 - 1,000,000 USD"), "error");
+        if (val < 0 || val > 1000000) {
+            showToast(t("profile.budget_limit", "Limit: 0 - 1,000,000 USD"), "error");
             return { ok: false, value: "" };
         }
         return { ok: true, value: val };
@@ -1026,6 +1089,7 @@ function initProfileUI() {
     if (profileFundingTypeSelect) {
         profileFundingTypeSelect.addEventListener("change", () => {
             profile.fundingType = normalizeFundingType(profileFundingTypeSelect.value);
+            lowBudgetGrantHintDismissed = false;
             refreshSaveState();
         });
     }
@@ -1040,6 +1104,7 @@ function initProfileUI() {
     if (budgetInput) {
         budgetInput.addEventListener("input", () => {
             profile.budget = String(budgetInput.value || "").trim();
+            lowBudgetGrantHintDismissed = false;
             refreshSaveState();
         });
         budgetInput.addEventListener("keydown", (e) => {
@@ -1051,6 +1116,21 @@ function initProfileUI() {
             saveAllProfileChanges(true);
         });
     }
+
+    lowBudgetGrantDismissBtn?.addEventListener("click", () => {
+        lowBudgetGrantHintDismissed = true;
+        renderLowBudgetGrantHint();
+    });
+
+    lowBudgetGrantApplyBtn?.addEventListener("click", () => {
+        if (!profileFundingTypeSelect) return;
+        lowBudgetGrantHintDismissed = true;
+        profileFundingTypeSelect.value = "grant";
+        if (typeof initCustomSelect === "function") {
+            initCustomSelect("profileFundingTypeSelect");
+        }
+        profileFundingTypeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    });
 
     if (gpaInput) {
         gpaInput.addEventListener("input", () => {

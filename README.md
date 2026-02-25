@@ -367,6 +367,12 @@ tests/
 - Fixed white loading spinner behavior on universities page while waiting for delayed `UniFit` response.
 - During list loading, the list/state/pagination are hidden until loading finishes (same "full loading" feel as initial load).
 - During map loading, existing markers/popups are cleared, top counter is reset to `0`, and only the dimmed loading state is visible.
+- University detail header alignment fix: website/map quick-action buttons are now aligned to the title row (not visually dropped lower on desktop).
+- Ranking card UX update: removed visible rank-source meta pill for end users and moved rank provenance to hover tooltip (`title`) from `rank_meta`.
+- Guide typography cleanup: removed paragraph spacing in narrative sections (kept spacing behavior for Academic Exams, Language Exams, and Glossary blocks).
+- Profile budget UX:
+  - budget validation now allows `0` (range `0..1,000,000`);
+  - added a subtle dismissible hint when budget is below `$1000`, with quick action to switch funding preference to `Grant only`.
 
 ### 2.5.3 (2026-02-24) - bugfix release
 - Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).

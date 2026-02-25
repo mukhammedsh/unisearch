@@ -169,7 +169,7 @@
 
 .d-title-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   min-width: 0;
   flex-wrap: wrap;
@@ -182,11 +182,11 @@
   flex-shrink: 0;
   flex-wrap: wrap;
   order: 0;
-  margin-top: 2px;
+  margin-top: 0;
 }
 
 .d-title {
-  margin: 0 0 6px 0;
+  margin: 0;
   font-size: 24px;
   font-weight: 1000;
   color: var(--text);
@@ -199,6 +199,7 @@
 }
 
 .d-location {
+  margin-top: 6px;
   color: var(--muted);
   font-weight: 700;
   line-height: 1.35;

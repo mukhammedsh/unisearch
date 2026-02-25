@@ -658,6 +658,70 @@ html, body {
   color: var(--text-muted);
 }
 
+.profile-budget-grant-hint{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #f5d58b;
+  border-radius: 10px;
+  background: #fff8e6;
+  color: #8a5208;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.profile-budget-grant-hint[hidden]{
+  display: none !important;
+}
+
+.profile-budget-grant-hint__text{
+  flex: 1 1 auto;
+}
+
+.profile-budget-grant-hint__actions{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.profile-budget-grant-hint__cta{
+  border: 1px solid rgba(87, 21, 219, 0.28);
+  background: rgba(87, 21, 219, 0.08);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-budget-grant-hint__cta:hover{
+  background: rgba(87, 21, 219, 0.14);
+}
+
+.profile-budget-grant-hint__dismiss{
+  width: 22px;
+  height: 22px;
+  border: 1px solid #e7d2a1;
+  border-radius: 999px;
+  background: #fff;
+  color: #9a6a18;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile-budget-grant-hint__dismiss:hover{
+  background: #fff3d4;
+}
+
 .profile-exam-form{
   display: grid;
   grid-template-columns: 1.2fr 0.8fr auto;
@@ -711,6 +775,24 @@ html, body {
 
 :root[data-theme="dark"] .profile-interests-warning{
   color: #fbbf24;
+}
+
+:root[data-theme="dark"] .profile-budget-grant-hint{
+  border-color: #5a4a24;
+  background: #2a2418;
+  color: #f5c76c;
+}
+
+:root[data-theme="dark"] .profile-budget-grant-hint__cta{
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(167, 139, 250, 0.14);
+  color: #d8b4fe;
+}
+
+:root[data-theme="dark"] .profile-budget-grant-hint__dismiss{
+  border-color: #6b572b;
+  background: #1f1b13;
+  color: #f5c76c;
 }
 
 .profile-interests-status{
@@ -1305,6 +1387,13 @@ html, body {
     grid-column: 1 / -1;
     width: fit-content;
     padding: 8px 10px;
+  }
+  .profile-budget-grant-hint{
+    flex-wrap: wrap;
+  }
+  .profile-budget-grant-hint__actions{
+    width: 100%;
+    justify-content: flex-start;
   }
   .profile-actions{
     flex-direction: column;

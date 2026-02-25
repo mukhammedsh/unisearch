@@ -107,6 +107,10 @@
   margin-bottom: 0;
 }
 
+.guide-section:not(#guide-academic-exams):not(#guide-language-exams):not(#guide-glossary) .guide-doc p{
+  margin: 0;
+}
+
 .guide-grid{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

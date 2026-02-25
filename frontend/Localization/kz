@@ -108,7 +108,7 @@ nav.universities: Университеттер
 profile.add: Қосу
 profile.budget_cleared: Бюджет тазартылды
 profile.budget_integers_only: Тек бүтін сандар (үтір/нүктесіз)
-profile.budget_limit: Шек: 1 - 1,000,000 USD
+profile.budget_limit: Шек: 0 - 1,000,000 USD
 profile.budget_must_number: Бюджет сан болуы керек
 profile.budget_saved: Бюджет сақталды!
 profile.cefr: CEFR
@@ -131,7 +131,10 @@ profile.gpa_must_number: GPA сан болуы керек
 profile.gpa_range: GPA {min}% және {max}% арасында болуы керек
 profile.gpa_saved: GPA сақталды
 profile.gpa_step: GPA қадамы {step} болуы керек
-profile.hint.budget_range: Ауқым: 1 - 1,000,000
+profile.hint.budget_range: Ауқым: 0 - 1,000,000
+profile.hint.low_budget_grant: Бюджет $1000-нан төмен. Мүмкін, «Тек грант» таңдаған дұрыс.
+profile.hint.low_budget_grant_action: «Тек грант» таңдау
+profile.hint.dismiss: Кеңесті жабу
 profile.hint.gpa: GPA пайызбен сақталады және түсу ықтималдығын есептеуде қолданылады.
 profile.hint.interests: Ұсыныстарды сізге бейімдеу үшін қолданылады.
 profile.warning.interests_english_only: Аударма қолжетімсіз. Қызығушылықтар өрісін ағылшын тілінде жазыңыз.

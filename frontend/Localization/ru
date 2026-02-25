@@ -108,7 +108,7 @@ nav.universities: Университеты
 profile.add: Добавить
 profile.budget_cleared: Бюджет очищен
 profile.budget_integers_only: Только целые числа (без точек и запятых)
-profile.budget_limit: Лимит: 1 - 1,000,000 USD
+profile.budget_limit: Лимит: 0 - 1,000,000 USD
 profile.budget_must_number: Бюджет должен быть числом
 profile.budget_saved: Бюджет сохранен!
 profile.cefr: CEFR
@@ -131,7 +131,10 @@ profile.gpa_must_number: GPA должен быть числом
 profile.gpa_range: GPA должен быть от {min} до {max}%
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
-profile.hint.budget_range: Диапазон: 1 - 1,000,000
+profile.hint.budget_range: Диапазон: 0 - 1,000,000
+profile.hint.low_budget_grant: Бюджет меньше $1000. Возможно, вам лучше выбрать «Только грант».
+profile.hint.low_budget_grant_action: Выбрать «Только грант»
+profile.hint.dismiss: Скрыть подсказку
 profile.hint.gpa: GPA хранится в процентах и используется при расчете вероятности поступления.
 profile.hint.interests: Используется для персонализации ваших рекомендаций.
 profile.warning.interests_english_only: Перевод недоступен. Пожалуйста, пишите интересы на английском.
