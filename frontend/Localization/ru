@@ -54,6 +54,23 @@ guide.nav.admission: Поступление
 guide.nav.exam_basics: Основы экзаменов
 guide.nav.glossary: Глоссарий
 guide.nav.language_exams: Языковые экзамены
+guide.nav.tags: Теги
+guide.tags.title: Теги
+guide.tags.intro: Теги на карточке помогают быстро понять, почему университет подходит вам или где есть риск.
+guide.tags.standard_title: Обычные теги
+guide.tags.standard.acceptance: Коэффициент приема: показывается, когда доступны данные о коэффициенте приема.
+guide.tags.standard.aid_available: Финансовая помощь доступна: показывается, если доступна помощь по заслугам или по финансовой потребности.
+guide.tags.standard.over_budget: Выше бюджета: показывается, если примерная стоимость за год выше вашего бюджета в профиле.
+guide.tags.standard.over_budget_aid: Выше бюджета • Помощь доступна: показывается, если стоимость выше бюджета, но есть финансовая помощь.
+guide.tags.ai_note: Эти теги работают только при выборе UniFit как стратегии сортировки.
+guide.tags.ai_title: ИИ-теги
+guide.tags.ai.conditional: Условно / Нужен экзамен: показывается, когда для трека не хватает обязательного экзаменационного подтверждения.
+guide.tags.ai.your_vibe: Ваш вайб: показывается при очень сильном совпадении предпочтений (фокус, атмосфера, локация).
+guide.tags.ai.top_match: Отличное совпадение: показывается при сильном совпадении предпочтений.
+guide.tags.ai.likely_grant: Вероятен грант: показывается при высоком шансе поступления на грант.
+guide.tags.ai.paid_admission: Платное поступление: показывается при высоком общем шансе поступления на платный трек.
+guide.tags.ai.requirements_met: Требования выполнены: показывается, когда минимальные требования выполнены.
+guide.tags.ai.below_requirements: Ниже требований: показывается, когда минимальные требования не выполнены.
 guide.title: Как пользоваться UniSearch простыми словами
 guide.unichance.p1: {chance} показывает примерный шанс поступления. Это ориентир, а не гарантия.
 guide.unichance.p2: Оценка строится на ваших данных: баллы, язык, бюджет и требования выбранного трека.
@@ -262,6 +279,7 @@ universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
 universities.sort_strategy: Стратегия сортировки
+universities.sort_hint_ai_tags: ИИ-теги полностью доступны только при сортировке UniFit.
 universities.state.empty: Университеты не найдены.
 universities.state.failed: Не удалось загрузить данные.
 universities.state.ml_unavailable: Модуль машинного обучения недоступен. Используется только ранжирование по правилам.

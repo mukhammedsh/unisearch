@@ -568,6 +568,7 @@ export function initUniversitiesPage() {
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
+        sortAiTagsHint: $("sortAiTagsHint"),
         focusSlider: $("focusSlider"), focusLabel: $("focusLabel"),
         atmosphereSlider: $("atmosphereSlider"), atmosphereLabel: $("atmosphereLabel"),
         financeSlider: $("financeSlider"), financeLabel: $("financeLabel"),
@@ -1327,6 +1328,11 @@ export function initUniversitiesPage() {
             el.sortStrategyInfoWrap.style.display = showSortInfo ? "" : "none";
             el.sortStrategyInfoWrap.setAttribute("aria-hidden", showSortInfo ? "false" : "true");
             if (!showSortInfo) el.sortStrategyInfoWrap.classList.remove("is-open");
+        }
+        if (el.sortAiTagsHint) {
+            const showAiTagsHint = state.sort !== "uni_ai";
+            el.sortAiTagsHint.style.display = showAiTagsHint ? "" : "none";
+            el.sortAiTagsHint.setAttribute("aria-hidden", showAiTagsHint ? "false" : "true");
         }
         if (!el.sliderContainer) return;
         if (state.sort === "uni_ai") {

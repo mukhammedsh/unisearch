@@ -54,6 +54,23 @@ guide.nav.admission: Admission
 guide.nav.exam_basics: Exam Basics
 guide.nav.glossary: Glossary
 guide.nav.language_exams: Language Exams
+guide.nav.tags: Tags
+guide.tags.title: Tags
+guide.tags.intro: Card tags help you quickly read why a university looks good or risky for your profile.
+guide.tags.standard_title: Standard Tags
+guide.tags.standard.acceptance: Acceptance Rate: shown when acceptance data is available.
+guide.tags.standard.aid_available: Aid Available: shown when merit-based or need-based aid is present.
+guide.tags.standard.over_budget: Over Budget: shown when estimated annual cost is above your profile budget.
+guide.tags.standard.over_budget_aid: Over Budget • Aid Available: shown when cost is above budget but aid exists.
+guide.tags.ai_note: Tags that work only when UniFit selected as sort strategy.
+guide.tags.ai_title: AI Tags
+guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.
+guide.tags.ai.your_vibe: Your Vibe: shown for very strong preference match (focus, atmosphere, location).
+guide.tags.ai.top_match: Top Match: shown for strong preference match.
+guide.tags.ai.likely_grant: Likely Grant: shown when grant-oriented chance is strong.
+guide.tags.ai.paid_admission: Paid Admission: shown when general admission chance is strong in paid route.
+guide.tags.ai.requirements_met: Requirements Met: shown when minimum requirements are satisfied.
+guide.tags.ai.below_requirements: Below Requirements: shown when minimum requirements are not satisfied.
 guide.title: How UniSearch works in simple words
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
 guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
@@ -262,6 +279,7 @@ universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
 universities.sort_strategy: Sort Strategy
+universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
 universities.state.empty: No universities found.
 universities.state.failed: Failed to load data.
 universities.state.ml_unavailable: Machine Learning unavailable. Using rule-based ranking only.

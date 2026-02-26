@@ -54,6 +54,23 @@ guide.nav.admission: Қабылдау
 guide.nav.exam_basics: Емтихан негіздері
 guide.nav.glossary: Терминдер сөздігі
 guide.nav.language_exams: Тіл емтихандары
+guide.nav.tags: Тегтер
+guide.tags.title: Тегтер
+guide.tags.intro: Карточкадағы тегтер университеттің неге сізге сай келетінін немесе қай жерде тәуекел барын тез түсінуге көмектеседі.
+guide.tags.standard_title: Қалыпты тегтер
+guide.tags.standard.acceptance: Қабылдау көрсеткіші: қабылдау көрсеткіші туралы дерек бар кезде көрсетіледі.
+guide.tags.standard.aid_available: Қаржылық көмек бар: merit-based немесе need-based көмек болса көрсетіледі.
+guide.tags.standard.over_budget: Бюджеттен жоғары: жылдық болжамды құн профиліңіздегі бюджеттен жоғары болса көрсетіледі.
+guide.tags.standard.over_budget_aid: Бюджеттен жоғары • Көмек бар: құн бюджеттен жоғары, бірақ қаржылық көмек бар болса көрсетіледі.
+guide.tags.ai_note: Бұл тегтер тек UniFit сұрыптау стратегиясы таңдалғанда жұмыс істейді.
+guide.tags.ai_title: ЖИ-тегтер
+guide.tags.ai.conditional: Шартты / Емтихан керек: трек бойынша міндетті емтихан дәлелі толық емес кезде көрсетіледі.
+guide.tags.ai.your_vibe: Сенің вайбың: таңдауларыңызбен өте жоғары сәйкестік болғанда көрсетіледі (фокус, атмосфера, орналасу).
+guide.tags.ai.top_match: Керемет сәйкестік: таңдауларыңызбен жоғары сәйкестік болғанда көрсетіледі.
+guide.tags.ai.likely_grant: Грант ықтимал: грантқа түсу ықтималдығы жоғары болғанда көрсетіледі.
+guide.tags.ai.paid_admission: Ақылы түсу: ақылы трек бойынша жалпы түсу ықтималдығы жоғары болғанда көрсетіледі.
+guide.tags.ai.requirements_met: Талаптар орындалды: минималды талаптар орындалғанда көрсетіледі.
+guide.tags.ai.below_requirements: Талаптан төмен: минималды талаптар орындалмағанда көрсетіледі.
 guide.title: UniSearch-ті қарапайым тілмен түсіну
 guide.unichance.p1: {chance} түсу мүмкіндігін шамамен көрсетеді. Бұл кепілдік емес, бағдар.
 guide.unichance.p2: Бағалау сіздің деректеріңізге сүйенеді: балл, тіл, бюджет және таңдалған трек талаптары.
@@ -262,6 +279,7 @@ universities.sort_cost_asc: Құны өсу ретімен
 universities.sort_cost_desc: Құны кему ретімен
 universities.sort_name_asc: Атауы А-Я
 universities.sort_strategy: Сұрыптау стратегиясы
+universities.sort_hint_ai_tags: ЖИ-тегтер толық тек UniFit сұрыптауында қолжетімді.
 universities.state.empty: Университет табылмады.
 universities.state.failed: Деректерді жүктеу сәтсіз аяқталды.
 universities.state.ml_unavailable: ML модулі қолжетімсіз. Тек ереже-негізіндегі сұрыптау қолданылады.

@@ -387,6 +387,8 @@ tests/
 - Guide exam descriptions now include localized exam titles consistently (not only list headers).
 - Guide localization cleanup (`ru`/`kz`): removed leftover mixed English phrasing in Academic/Language exam descriptions and normalized UNT naming (`ЕНТ` / `ҰБТ`) in guide text.
 - Hash-route stability fix for guide sections: refreshing URLs like `/#guide-academic-exams` now preserves section intent by routing to the Guide page with the same hash.
+- Universities sort UX hint: when sort strategy is not `UniFit`, a localized hint explains that smart AI tags are fully available only with `UniFit`.
+- Guide received a new `Tags` section with localized explanations of standard vs AI tags, including when each tag appears.
 - Profile exam/language editor UX:
   - when user selects an already-saved record, action button switches from `Add` to localized `Edit`;
   - language overwrite now shows localized `Language updated` toast instead of `Language added`.

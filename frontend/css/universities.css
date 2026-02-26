@@ -208,6 +208,13 @@
   margin: 14px 0;
 }
 
+.u-sort-ai-hint {
+  margin: 7px 0 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
 /* =========================================
    MAIN CONTENT AREA (TOP BAR)
    ========================================= */
