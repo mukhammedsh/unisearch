@@ -74,9 +74,9 @@ guide.tags.ai.below_requirements: Талаптан төмен: минималд�
 guide.title: UniSearch-ті қарапайым тілмен түсіну
 guide.unichance.p1: {chance} түсу мүмкіндігін шамамен көрсетеді. Бұл кепілдік емес, бағдар.
 guide.unichance.p2: Бағалау сіздің деректеріңізге сүйенеді: балл, тіл, бюджет және таңдалған трек талаптары.
-guide.unichance.p3: Оқу оңай: 80-100 жоғары, 60-79 жақсы, 40-59 орташа, 40-тан төмен төмен.
+guide.unichance.p3: Оқу оңай: 80‑100 жоғары, 60‑79 жақсы, 40‑59 орташа, 40-тан төмен төмен.
 guide.unichance.p4: «Үздік трек» бөлімін қараңыз: университет ішіндегі ең мықты нұсқаңызды көрсетеді.
-guide.unichance.title: {chance} (түсу мүмкіндігі 0-100)
+guide.unichance.title: {chance} (түсу мүмкіндігі 0‑100)
 guide.unifit.p1: {fit} сізге лайық университеттер тізімін жасайды. Ол сүзгілерді, бюджетіңізді, қалауларыңызды және профиль деректерін ескереді.
 guide.unifit.p2: Емтихан не тіл дерегі жетпесе де, нұсқалар көрсетіледі, бірақ қосымша дәлел керек болуы мүмкін деп белгі қоямыз.
 guide.unifit.p3: Бір университетте бірнеше қабылдау трегі болады. Әр тректі бөлек тексереміз, сондықтан кейде төменірек рейтингтегі университет сізге жақсырақ болуы мүмкін.
@@ -127,7 +127,7 @@ profile.add: Қосу
 profile.edit: Өзгерту
 profile.budget_cleared: Бюджет тазартылды
 profile.budget_integers_only: Тек бүтін сандар (үтір/нүктесіз)
-profile.budget_limit: Шек: 0 - 1,000,000 USD
+profile.budget_limit: Шек: 0‑1,000,000 USD
 profile.budget_must_number: Бюджет сан болуы керек
 profile.budget_saved: Бюджет сақталды!
 profile.cefr: CEFR
@@ -150,7 +150,7 @@ profile.gpa_must_number: GPA сан болуы керек
 profile.gpa_range: GPA {min}% және {max}% арасында болуы керек
 profile.gpa_saved: GPA сақталды
 profile.gpa_step: GPA қадамы {step} болуы керек
-profile.hint.budget_range: Ауқым: 0 - 1,000,000
+profile.hint.budget_range: Ауқым: 0‑1,000,000
 profile.hint.low_budget_grant: Бюджет $1000-нан төмен. Мүмкін, «Тек грант» таңдаған дұрыс.
 profile.hint.low_budget_grant_action: «Тек грант» таңдау
 profile.hint.dismiss: Кеңесті жабу
@@ -168,7 +168,7 @@ profile.label.major: Негізгі мамандық
 profile.label.study_mode: Оқу форматы
 profile.language: Тіл
 profile.languages: Тілдер
-profile.name_invalid_length: Атау ұзындығы 3-16 таңба болуы керек
+profile.name_invalid_length: Атау ұзындығы 3‑16 таңба болуы керек
 profile.name_invalid_symbols: Атауда рұқсат етілмеген таңбалар бар
 profile.nickname_updated: Лақап ат жаңартылды!
 profile.option.funding_any: Кез келген (грант + ақылы)
@@ -363,7 +363,7 @@ guide.language.pte: Халықаралық қабылдауда қолданыл
 guide.language.toefl: Академиялық ағылшын деңгейін өлшейді және университеттерде кең қабылданады.
 guide.language.topik: TOPIK корей тілін бағалайды және корей тілінде оқуға дайындығын растау үшін қолданылады.
 guide.loading_exam_config: Емтихан конфигурациясы жүктелуде
-guide.scale_text: UniSearch жүйесінде бұл балл {min}-{max} шкаласы бойынша енгізіледі.
+guide.scale_text: UniSearch жүйесінде бұл балл {min}‑{max} шкаласы бойынша енгізіледі.
 home.mockup.grant_available: ✅ Грант қолжетімді
 home.mockup.location: Кембридж, АҚШ
 languages.error.choose_cefr: CEFR деңгейін таңдаңыз

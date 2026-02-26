@@ -379,8 +379,15 @@ export function debounce(fn, ms = 250) {
   };
 }
 
+export function stabilizeNumericRanges(text) {
+  return String(text || "").replace(/(\d[\d\s.,]*)\s*-\s*(\d[\d\s.,]*)/g, (_, left, right) => {
+    return `${String(left || "").trimEnd()}\u2011${String(right || "").trimStart()}`;
+  });
+}
+
 export function escapeHtml(str) {
-  return String(str ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+  const normalized = stabilizeNumericRanges(String(str ?? ""));
+  return normalized.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 
 export function nested(obj, path, fallback = null) {
@@ -453,8 +460,8 @@ const EXAM_LABEL_OVERRIDES = {
   AP_Total: "AP Total",
   IB_Diploma: "IB Diploma",
   IELTS: "IELTS Academic",
-  TOEFL_iBT_0_120: "TOEFL iBT (0-120)",
-  TOEFL_iBT_1_6: "TOEFL iBT (1-6)",
+  TOEFL_iBT_0_120: "TOEFL iBT (0‑120)",
+  TOEFL_iBT_1_6: "TOEFL iBT (1‑6)",
   DET: "Duolingo English Test (DET)",
   PTE: "PTE Academic",
   Cambridge_C1_Advanced: "Cambridge C1 Advanced",
@@ -479,8 +486,8 @@ const EXAM_LABELS_I18N = {
     APTOTAL: "AP Total",
     IBDIPLOMA: "IB Diploma",
     IELTS: "IELTS Academic",
-    TOEFLIBT0120: "TOEFL iBT Total (0-120, legacy)",
-    TOEFLIBT16: "TOEFL iBT Band (1-6, since Jan 21, 2026)",
+    TOEFLIBT0120: "TOEFL iBT Total (0‑120, legacy)",
+    TOEFLIBT16: "TOEFL iBT Band (1‑6, since Jan 21, 2026)",
     DET: "Duolingo English Test (DET)",
     PTE: "PTE Academic",
     CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced",
@@ -503,8 +510,8 @@ const EXAM_LABELS_I18N = {
     APTOTAL: "AP (общий балл)",
     IBDIPLOMA: "Диплом IB",
     IELTS: "IELTS (академический модуль)",
-    TOEFLIBT0120: "TOEFL iBT общий балл (0-120, старая шкала)",
-    TOEFLIBT16: "TOEFL iBT шкала 1-6 (с 21 янв 2026)",
+    TOEFLIBT0120: "TOEFL iBT общий балл (0‑120, старая шкала)",
+    TOEFLIBT16: "TOEFL iBT шкала 1‑6 (с 21 янв 2026)",
     DET: "Тест Duolingo по английскому (DET)",
     PTE: "PTE Academic (академический)",
     CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced (продвинутый уровень)",
@@ -527,8 +534,8 @@ const EXAM_LABELS_I18N = {
     APTOTAL: "AP (жалпы балл)",
     IBDIPLOMA: "IB дипломы",
     IELTS: "IELTS (академиялық модуль)",
-    TOEFLIBT0120: "TOEFL iBT жалпы балл (0-120, ескі шкала)",
-    TOEFLIBT16: "TOEFL iBT 1-6 шкаласы (2026 ж. 21 қаңтардан)",
+    TOEFLIBT0120: "TOEFL iBT жалпы балл (0‑120, ескі шкала)",
+    TOEFLIBT16: "TOEFL iBT 1‑6 шкаласы (2026 ж. 21 қаңтардан)",
     DET: "Duolingo ағылшын тілі тесті (DET)",
     PTE: "PTE Academic (академиялық)",
     CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced (жоғары деңгей)",

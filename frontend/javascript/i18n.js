@@ -65,6 +65,12 @@ function setHtmlLang(lang) {
   document.documentElement.setAttribute("lang", htmlLang);
 }
 
+function stabilizeNumericRanges(text) {
+  return String(text || "").replace(/(\d[\d\s.,]*)\s*-\s*(\d[\d\s.,]*)/g, (_, left, right) => {
+    return `${String(left || "").trimEnd()}\u2011${String(right || "").trimStart()}`;
+  });
+}
+
 function _parseLocalizationFile(content) {
   const out = {};
   const rows = String(content || "").split(/\r?\n/);
@@ -149,14 +155,14 @@ export function getCurrentLanguage() {
 
 export function t(key, fallback = "") {
   const k = String(key || "").trim();
-  if (!k) return String(fallback || "");
+  if (!k) return stabilizeNumericRanges(String(fallback || ""));
   const active = DICT[currentLang] || {};
   const en = DICT[LANG_ENG] || {};
   const value = active[k];
-  if (value !== undefined && value !== null) return String(value);
+  if (value !== undefined && value !== null) return stabilizeNumericRanges(String(value));
   const enValue = en[k];
-  if (enValue !== undefined && enValue !== null) return String(enValue);
-  return String(fallback || "");
+  if (enValue !== undefined && enValue !== null) return stabilizeNumericRanges(String(enValue));
+  return stabilizeNumericRanges(String(fallback || ""));
 }
 
 export function tFormat(key, params = {}, fallback = "") {
@@ -165,7 +171,7 @@ export function tFormat(key, params = {}, fallback = "") {
   Object.keys(map).forEach((paramKey) => {
     out = out.replaceAll(`{${paramKey}}`, String(map[paramKey]));
   });
-  return out;
+  return stabilizeNumericRanges(out);
 }
 
 function applyTokenSubstitutions(text) {
@@ -175,7 +181,7 @@ function applyTokenSubstitutions(text) {
   const chance = String(ai.chance || "UniChance");
   out = out.replaceAll("{fit}", fit);
   out = out.replaceAll("{chance}", chance);
-  return out;
+  return stabilizeNumericRanges(out);
 }
 
 export function applyTranslations(root = document) {

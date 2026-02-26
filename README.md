@@ -363,7 +363,7 @@ tests/
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
 ## Changelog
-### 2.5.5 (2026-02-26) - i18n completeness and fallback consistency
+### 2.5.5 (2026-02-26) - i18n completeness, fallback consistency, and range-wrap stability
 - Closed missing backend-driven translation gaps in `backend/data/universities_translations.json` for `ru` and `kz`:
   - added `groups.study_mode.online`
   - added missing `groups.tag` keys used by dataset and UI rendering:
@@ -381,6 +381,13 @@ tests/
   - `frontend/universities.html`
 - Synced stale JS fallback strings in `frontend/javascript/pages.js` with `eng` localization keys (tour, UniFit warning, ROI helper copy, ranking error, glossary terms/descriptions).
 - Removed non-i18n placeholder shorthand in universities cost input fallback (`150k` -> `150000`) to keep neutral numeric fallback while translations initialize.
+- Fixed awkward line breaks for numeric ranges in UI copy (e.g. `3‑16`, `80‑100`, `0‑100`, `500,000‑2,000,000`):
+  - updated localized strings and fallback texts to use non-breaking hyphen (`U+2011`) in user-facing range values;
+  - updated guide and profile fallback copy where ranges can appear during early render;
+  - updated backend translation payload text where range labels are rendered in cards/tooltips.
+- Added defensive runtime normalization for range punctuation:
+  - i18n path now stabilizes numeric ranges returned by `t()`/`tFormat()`;
+  - HTML escaping path normalizes numeric ranges before output, reducing future regression risk for newly added content.
 - Validation status:
   - `npm run check:i18n` passed
   - `tests/e2e/i18n-pages-smoke.spec.js` passed on Chromium

@@ -206,7 +206,7 @@ const LAYOUT_HTML = `
         <div class="profile-budget">
           <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
         </div>
-        <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0 - 1,000,000</div>
+        <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0‑1,000,000</div>
       </div>
 
       <div class="profile-field">
@@ -930,7 +930,7 @@ function initProfileUI() {
         }
         const validName = /^[A-Za-z0-9 ]+$/;
         if (nextName.length < 3 || nextName.length > 16) {
-            showToast(t("profile.name_invalid_length", "Name length must be 3-16 chars"), "error");
+            showToast(t("profile.name_invalid_length", "Name length must be 3‑16 chars"), "error");
             return false;
         }
         if (!validName.test(nextName)) {
@@ -967,7 +967,7 @@ function initProfileUI() {
             return { ok: false, value: "" };
         }
         if (val < 0 || val > 1000000) {
-            showToast(t("profile.budget_limit", "Limit: 0 - 1,000,000 USD"), "error");
+            showToast(t("profile.budget_limit", "Limit: 0‑1,000,000 USD"), "error");
             return { ok: false, value: "" };
         }
         return { ok: true, value: val };

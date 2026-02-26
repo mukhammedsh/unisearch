@@ -2159,7 +2159,7 @@ export async function initUniversityPage() {
         const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
         const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
         const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m² (up to 50 ha)"));
-        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000-2,000,000 m² (50-200 ha)"));
+        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000‑2,000,000 m² (50‑200 ha)"));
         const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 m² (200+ ha)"));
         const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
         recDiv.innerHTML = `
@@ -2885,7 +2885,7 @@ export function initGuidePage() {
         const max = Number(cfg?.max);
         if (!Number.isFinite(min) || !Number.isFinite(max)) return "";
         if (min === max) return "";
-        return tFormat("guide.scale_text", { min, max }, `In UniSearch, this score is entered on a ${min}-${max} scale.`);
+        return tFormat("guide.scale_text", { min, max }, `In UniSearch, this score is entered on a ${min}\u2011${max} scale.`);
     };
 
     const guideLoadingMarkup = (label) => `

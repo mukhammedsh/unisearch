@@ -74,9 +74,9 @@ guide.tags.ai.below_requirements: Ниже требований: показыв�
 guide.title: Как пользоваться UniSearch простыми словами
 guide.unichance.p1: {chance} показывает примерный шанс поступления. Это ориентир, а не гарантия.
 guide.unichance.p2: Оценка строится на ваших данных: баллы, язык, бюджет и требования выбранного трека.
-guide.unichance.p3: Читать просто: 80-100 высокий шанс, 60-79 хороший, 40-59 средний, ниже 40 низкий.
+guide.unichance.p3: Читать просто: 80‑100 высокий шанс, 60‑79 хороший, 40‑59 средний, ниже 40 низкий.
 guide.unichance.p4: Смотрите блок «Лучший трек»: он подсказывает, где у вас самый сильный вариант внутри вуза.
-guide.unichance.title: {chance} (оценка шанса поступления 0-100)
+guide.unichance.title: {chance} (оценка шанса поступления 0‑100)
 guide.unifit.p1: {fit} собирает список вузов под вас. Мы учитываем фильтры, бюджет, выбранные города и данные профиля.
 guide.unifit.p2: Если в профиле не хватает экзаменов или языка, мы все равно показываем варианты, но помечаем, что могут понадобиться дополнительные подтверждения.
 guide.unifit.p3: У одного вуза может быть несколько треков поступления. Мы проверяем каждый трек отдельно, поэтому ваш лучший вариант может быть даже не в самом высоком рейтинге.
@@ -127,7 +127,7 @@ profile.add: Добавить
 profile.edit: Изменить
 profile.budget_cleared: Бюджет очищен
 profile.budget_integers_only: Только целые числа (без точек и запятых)
-profile.budget_limit: Лимит: 0 - 1,000,000 USD
+profile.budget_limit: Лимит: 0‑1,000,000 USD
 profile.budget_must_number: Бюджет должен быть числом
 profile.budget_saved: Бюджет сохранен!
 profile.cefr: CEFR
@@ -150,7 +150,7 @@ profile.gpa_must_number: GPA должен быть числом
 profile.gpa_range: GPA должен быть от {min} до {max}%
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
-profile.hint.budget_range: Диапазон: 0 - 1,000,000
+profile.hint.budget_range: Диапазон: 0‑1,000,000
 profile.hint.low_budget_grant: Бюджет меньше $1000. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
@@ -168,7 +168,7 @@ profile.label.major: Планируемая специальность
 profile.label.study_mode: Предпочтительный формат обучения
 profile.language: Язык
 profile.languages: Языки
-profile.name_invalid_length: Длина имени: 3-16 символов
+profile.name_invalid_length: Длина имени: 3‑16 символов
 profile.name_invalid_symbols: Недопустимые символы в имени
 profile.nickname_updated: Ник обновлен!
 profile.option.funding_any: Любой (грант + платно)
@@ -363,7 +363,7 @@ guide.language.pte: Компьютерный экзамен по английс�
 guide.language.toefl: Измеряет академическое владение английским и широко принимается университетами.
 guide.language.topik: TOPIK оценивает владение корейским и используется для подтверждения готовности к обучению на корейском.
 guide.loading_exam_config: Загрузка конфигурации экзаменов
-guide.scale_text: В UniSearch этот балл вводится по шкале {min}-{max}.
+guide.scale_text: В UniSearch этот балл вводится по шкале {min}‑{max}.
 home.mockup.grant_available: ✅ Грант доступен
 home.mockup.location: Кембридж, США
 languages.error.choose_cefr: Выберите уровень CEFR
