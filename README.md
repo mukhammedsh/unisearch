@@ -385,6 +385,8 @@ tests/
 - Guide exam lists are now stably ordered by canonical exam id, so Academic and Language exam order is identical across all UI languages.
 - Guide language headers now use localized language names from i18n keys (`languages.name.*`) instead of raw config labels.
 - Guide exam descriptions now include localized exam titles consistently (not only list headers).
+- Guide localization cleanup (`ru`/`kz`): removed leftover mixed English phrasing in Academic/Language exam descriptions and normalized UNT naming (`ЕНТ` / `ҰБТ`) in guide text.
+- Hash-route stability fix for guide sections: refreshing URLs like `/#guide-academic-exams` now preserves section intent by routing to the Guide page with the same hash.
 - Profile exam/language editor UX:
   - when user selects an already-saved record, action button switches from `Add` to localized `Edit`;
   - language overwrite now shows localized `Language updated` toast instead of `Language added`.
