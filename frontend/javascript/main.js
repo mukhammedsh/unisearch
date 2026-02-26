@@ -5,7 +5,7 @@ import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, en
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isGuidePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
+import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
@@ -92,8 +92,16 @@ function initHomeMockupMedia() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  initTheme();
   const path = window.location.pathname;
+  const hash = String(window.location.hash || "").trim();
+  const isGuideSectionHash = /^#guide-[a-z0-9-]+$/i.test(hash);
+  if (isHomePath(path) && isGuideSectionHash) {
+    const target = `${routeGuide()}${hash}`;
+    window.location.replace(target);
+    return;
+  }
+
+  initTheme();
   const isUniversitiesPage = Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList"));
   const i18nInitPromise = initI18n().catch((e) => {
     console.warn("i18n init failed, using built-in fallback pack:", e);
