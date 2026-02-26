@@ -100,7 +100,8 @@
           "foundation": "Подготовительный курс"
         },
         "study_mode": {
-          "on_campus": "Очно (кампус)"
+          "on_campus": "Очно (кампус)",
+          "online": "Онлайн / дистанционно"
         },
         "campus_size": {
           "small": "Небольшой",
@@ -116,8 +117,14 @@
           "urban": "городская среда",
           "innovation": "инновации",
           "engineering": "инженерия",
+          "computer_science": "компьютерные науки",
           "computing": "компьютерные науки",
+          "law": "право",
           "medicine": "медицина",
+          "social_sciences": "социальные науки",
+          "humanities": "гуманитарные науки",
+          "education": "образование",
+          "architecture": "архитектура",
           "sustainability": "устойчивое развитие",
           "interdisciplinary": "междисциплинарность",
           "policy": "политика",
@@ -801,7 +808,8 @@
           "foundation": "Дайындық бағдарламасы"
         },
         "study_mode": {
-          "on_campus": "Кампуста"
+          "on_campus": "Кампуста",
+          "online": "Онлайн / қашықтан"
         },
         "campus_size": {
           "small": "Шағын",
@@ -817,8 +825,14 @@
           "urban": "қалалық",
           "innovation": "инновация",
           "engineering": "инженерия",
+          "computer_science": "компьютерлік ғылымдар",
           "computing": "есептеу технологиялары",
+          "law": "құқық",
           "medicine": "медицина",
+          "social_sciences": "әлеуметтік ғылымдар",
+          "humanities": "гуманитарлық ғылымдар",
+          "education": "білім беру",
+          "architecture": "сәулет",
           "sustainability": "тұрақты даму",
           "interdisciplinary": "пәнаралық",
           "policy": "саясат",

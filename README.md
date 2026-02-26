@@ -363,6 +363,28 @@ tests/
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
 ## Changelog
+### 2.5.5 (2026-02-26) - i18n completeness and fallback consistency
+- Closed missing backend-driven translation gaps in `backend/data/universities_translations.json` for `ru` and `kz`:
+  - added `groups.study_mode.online`
+  - added missing `groups.tag` keys used by dataset and UI rendering:
+    - `computer_science`
+    - `law`
+    - `social_sciences`
+    - `humanities`
+    - `education`
+    - `architecture`
+- Synced stale fallback texts in page templates with canonical `frontend/Localization/eng` values to avoid mixed/old copy during localization-pack delays:
+  - `frontend/about.html`
+  - `frontend/guide.html`
+  - `frontend/index.html`
+  - `frontend/ranking.html`
+  - `frontend/universities.html`
+- Synced stale JS fallback strings in `frontend/javascript/pages.js` with `eng` localization keys (tour, UniFit warning, ROI helper copy, ranking error, glossary terms/descriptions).
+- Removed non-i18n placeholder shorthand in universities cost input fallback (`150k` -> `150000`) to keep neutral numeric fallback while translations initialize.
+- Validation status:
+  - `npm run check:i18n` passed
+  - `tests/e2e/i18n-pages-smoke.spec.js` passed on Chromium
+
 ### 2.5.4 (2026-02-25) - UI/UX and guide i18n follow-up
 - Fixed white loading spinner behavior on universities page while waiting for delayed `UniFit` response.
 - During list loading, the list/state/pagination are hidden until loading finishes (same "full loading" feel as initial load).

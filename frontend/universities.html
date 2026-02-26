@@ -47,7 +47,7 @@
               <span>🌍 <span data-i18n="universities.country">Country</span></span>
             </label>
             <select id="countrySelect" class="u-select">
-              <option value="" data-i18n="universities.global">🌍 Global</option>
+              <option value="" data-i18n="universities.global">Global</option>
             </select>
           </div>
 
@@ -80,7 +80,7 @@
                 <div class="budget-inputs">
                     <input id="minCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="0" />
                     <span style="color:#aaa; font-weight:bold;">—</span>
-                    <input id="maxCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="150k" />
+                    <input id="maxCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="150000" />
                 </div>
 
                 <div class="dual-slider-container">
@@ -101,12 +101,12 @@
               <span>🤖 <span data-i18n="universities.sort_strategy">Sort Strategy</span></span>
               <span class="u-info-wrap">
                 <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
-                <span class="u-tooltip" data-i18n="universities.help.sort_strategy">UniFit sorts using your profile. Other modes sort only by name or cost.</span>
+                <span class="u-tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
               </span>
             </label>
             <select id="sortSelect" class="u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
-              <option value="uni_ai" data-i18n="universities.sort_ai">✨ UniFit: Smart Sort</option>
+              <option value="uni_ai" data-i18n="universities.sort_ai">✨ {fit}: AI Smart Sort</option>
               <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
               <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
             </select>

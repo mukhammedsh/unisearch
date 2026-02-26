@@ -738,7 +738,7 @@ export function initUniversitiesPage() {
             {
                 kicker: t("tour.step1.kicker", "Welcome"),
                 title: t("tour.step1.title", "Find universities faster"),
-                desc: t("tour.step1.desc", "This page helps you quickly shortlist universities by location, tuition, and fit for your profile."),
+                desc: t("tour.step1.desc", "This page helps you quickly pick universities by country, cost, and your profile."),
                 points: [
                     t("tour.step1.point1", "Use search + filters in the left panel."),
                     t("tour.step1.point2", "Switch between List and Map view on the top right."),
@@ -917,7 +917,7 @@ export function initUniversitiesPage() {
                 <div class="unifit-warning-icon">!</div>
                 <div class="unifit-warning-content">
                     <h3 id="unifitWarningTitle">${escapeHtml(t("unifit.warning.title", "Limited Profile Data"))}</h3>
-                    <p>${escapeHtml(t("unifit.warning.desc", "UniFit works best when your profile includes exam scores or language evidence. Without them, the AI ranking may be less accurate."))}</p>
+                    <p>${escapeHtml(t("unifit.warning.desc", "UniFit is more accurate when your profile includes exam or language scores."))}</p>
                 </div>
                 <div class="unifit-warning-actions">
                     <button class="unifit-warning-btn unifit-warning-confirm" data-action="confirm" type="button">${escapeHtml(t("unifit.warning.confirm", "Okay I understand"))}</button>
@@ -2701,7 +2701,7 @@ export async function initUniversityPage() {
                     <h3 class="roi-title">${roiTitle}</h3>
                     <p class="roi-description">
                         <b>${escapeHtml(t("roi.what_is", "What is ROI?"))}</b> ${escapeHtml(t("roi.explain", "It calculates how many times your first annual salary covers the cost of one year of education."))}
-                        <br><i>${escapeHtml(t("roi.formula", "Formula: Avg. Graduate Salary / Annual Tuition Cost"))}</i>
+                        <br><i>${escapeHtml(t("roi.formula", "Simple idea: compare average graduate salary with the cost of one study year."))}</i>
                     </p>
                     
                     ${roiContent}
@@ -2852,7 +2852,7 @@ export async function initRankingPage() {
     } catch (err) {
         if (err?.name === "AbortError") return;
         console.error(err);
-        listEl.innerHTML = `<div class="rank-error">${escapeHtml(t("ranking.failed", "Failed to load rankings."))}</div>`;
+        listEl.innerHTML = `<div class="rank-error">${escapeHtml(t("ranking.failed", "Failed to load ranking."))}</div>`;
     } finally {
         if (rankingFetchController === controller) {
             rankingFetchController = null;
@@ -2971,8 +2971,8 @@ export function initGuidePage() {
                 desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is an estimated admission chance based on your data.`),
             },
             {
-                term: t("guide.glossary.term.swr", "SWR Cache"),
-                desc: t("guide.glossary.swr", "Stale-While-Revalidate: show cached data instantly, then refresh in background and update if changed."),
+                term: t("guide.glossary.term.swr", "Data Cache"),
+                desc: t("guide.glossary.swr", "Cache behavior: we first show saved data, then refresh it in the background."),
             },
             {
                 term: t("guide.glossary.term.admission_track", "Admission Track"),
@@ -3017,7 +3017,7 @@ export function initGuidePage() {
         const gloss = glossaryEntries();
         const lines = gloss.map((g) => `<li><strong>${escapeHtml(g.term)}:</strong> ${escapeHtml(g.desc)}</li>`).join("");
         glossaryWrap.innerHTML = `
-            <p>${escapeHtml(t("guide.glossary.intro", "This glossary defines the exact terms used throughout UniSearch so users can interpret ranking and probability outputs consistently."))}</p>
+            <p>${escapeHtml(t("guide.glossary.intro", "Short definitions of the terms you see on the site."))}</p>
             <ul class="guide-list">${lines}</ul>
         `;
     }
