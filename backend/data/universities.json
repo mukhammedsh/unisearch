@@ -3,7 +3,6 @@
     "id": "mit-usa-cambridge",
     "name": "Massachusetts Institute of Technology (MIT)",
     "rank": 1,
-    "student_count": 11934,
     "location": {
       "country": "USA",
       "city": "Cambridge",
@@ -23,7 +22,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 4,
           "duration": "4 years",
           "language": [
             "English"
@@ -41,7 +39,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 4,
           "duration": "4 years",
           "language": [
             "English"
@@ -60,11 +57,9 @@
         "Computer Science and Engineering (6‑3)",
         "Electrical Engineering and Computer Science (6‑2/6‑5)"
       ],
-      "acceptance_rate_percent": 4.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business"
+        "engineering"
       ]
     },
     "finance": {
@@ -80,9 +75,7 @@
         "need_based": true
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 110000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "mit_regular",
@@ -90,10 +83,6 @@
         "requirements": {
           "SAT": 1500,
           "GPA": 98
-        },
-        "stats_avg": {
-          "SAT": 1560,
-          "GPA": 100
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -103,9 +92,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.5
-            },
-            "stats_avg": {
-              "IELTS": 8.0
             }
           }
         ],
@@ -128,10 +114,6 @@
           "SAT": 1500,
           "GPA": 98.0
         },
-        "stats_avg": {
-          "SAT": 1560,
-          "GPA": 100.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -140,9 +122,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.5
-            },
-            "stats_avg": {
-              "IELTS": 8.0
             }
           }
         ],
@@ -195,27 +174,20 @@
         "url": "https://www.eecs.mit.edu/academics/undergraduate-programs/"
       }
     ],
-    "description": "MIT is a private research university in Cambridge, Massachusetts, known for science, engineering, and hands-on learning. Its ecosystem connects closely with labs, industry, and startup activity around Kendall Square. Core strengths include artificial intelligence, robotics, computing, energy systems, and advanced materials research.",
-    "tags": [
-      "Research",
-      "STEM",
-      "AI",
-      "Robotics",
-      "Startups",
-      "Urban",
-      "Innovation"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.mit.edu/about/",
     "factors": {
-      "practice_vs_science": 0.9544,
-      "social_vs_hardcore": 0.9583,
-      "budget_vs_prestige": 0.9548,
+      "practice_vs_science": 0.9549,
+      "social_vs_hardcore": 0.9797,
+      "budget_vs_prestige": 0.955,
+      "city_vs_outside_city": 0.9949,
       "city_vs_campus": 0.9949
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Massachusetts+Institute+of+Technology&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Cambridge&count=10&language=en&format=json&countryCode=US",
@@ -226,9 +198,9 @@
           "id": "https://openalex.org/I63966007",
           "display_name": "Massachusetts Institute of Technology",
           "country_code": "US",
-          "works_count": 327876,
-          "cited_by_count": 59834964,
-          "h_index": 2197
+          "works_count": 337112,
+          "cited_by_count": 61346232,
+          "h_index": 2228
         },
         "city": {
           "name": "Cambridge",
@@ -237,12 +209,16 @@
           "population": 110402,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 4.0,
+        "rank": {
+          "position": 1.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 89340.0,
         "derived_signals": {
-          "research_signal_raw": 14.552983679731032,
-          "strictness_0_1": 0.96,
-          "research_norm_0_1": 0.954384,
+          "research_signal_raw": 14.577279125375393,
+          "hardcore_signal_0_1": 0.979704,
+          "research_norm_0_1": 0.954898,
+          "official_rank_norm_0_1": 0.0,
           "tuition_norm_0_1": 0.955076,
           "city_population_norm_0_1": 0.005098
         }
@@ -250,8 +226,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -276,15 +251,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 4.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://mitadmissions.org/apply/firstyear/essays-activities-academics/",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -300,7 +266,6 @@
     "id": "imperial-college-london-uk",
     "name": "Imperial College London",
     "rank": 2,
-    "student_count": 23248,
     "location": {
       "country": "UK",
       "city": "London",
@@ -320,7 +285,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 14,
           "duration": "3‑4 years",
           "language": [
             "English"
@@ -338,13 +302,8 @@
       "majors": [
         "Computing (BEng/MEng)"
       ],
-      "acceptance_rate_percent": 14.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "business",
-        "medicine",
-        "natural sciences"
+        "computer science"
       ]
     },
     "finance": {
@@ -360,9 +319,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 68000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "imperial_eng",
@@ -370,10 +327,6 @@
         "requirements": {
           "SAT": 1450,
           "GPA": 92
-        },
-        "stats_avg": {
-          "SAT": 1510,
-          "GPA": 98
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -383,9 +336,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.0
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -406,10 +356,6 @@
           "SAT": 1450,
           "GPA": 98.0
         },
-        "stats_avg": {
-          "SAT": 1510,
-          "GPA": 98.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -418,9 +364,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.0
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -463,27 +406,20 @@
         "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/ug/beng-meng-computing/"
       }
     ],
-    "description": "Imperial College London is a science-focused university with strengths in engineering, medicine, natural sciences, and business. Located in central London, it combines research intensity with strong links to hospitals, industry, and entrepreneurship networks. Key areas include AI, bioengineering, health innovation, climate technologies, and advanced computing.",
-    "tags": [
-      "Research",
-      "Engineering",
-      "Medicine",
-      "AI",
-      "Urban",
-      "Innovation",
-      "Global"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.imperial.ac.uk/about/",
     "factors": {
-      "practice_vs_science": 0.9382,
-      "social_vs_hardcore": 0.8835,
-      "budget_vs_prestige": 0.8485,
+      "practice_vs_science": 0.9389,
+      "social_vs_hardcore": 0.9627,
+      "budget_vs_prestige": 0.8488,
+      "city_vs_outside_city": 0.5277,
       "city_vs_campus": 0.5277
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Imperial+College+London&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=London&count=10&language=en&format=json&countryCode=GB",
@@ -494,9 +430,9 @@
           "id": "https://openalex.org/I47508984",
           "display_name": "Imperial College London",
           "country_code": "GB",
-          "works_count": 360012,
-          "cited_by_count": 38250240,
-          "h_index": 1518
+          "works_count": 370991,
+          "cited_by_count": 39417221,
+          "h_index": 1520
         },
         "city": {
           "name": "London",
@@ -505,23 +441,23 @@
           "population": 8961989,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 14.0,
+        "rank": {
+          "position": 2.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 75000.0,
         "derived_signals": {
-          "research_signal_raw": 14.306564732136643,
-          "strictness_0_1": 0.86,
-          "research_norm_0_1": 0.938224,
+          "research_signal_raw": 14.332302708826003,
+          "hardcore_signal_0_1": 0.962661,
+          "research_norm_0_1": 0.938851,
+          "official_rank_norm_0_1": 0.017857,
           "tuition_norm_0_1": 0.788744,
           "city_population_norm_0_1": 0.472276
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "business",
-      "medicine",
-      "natural sciences"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -546,15 +482,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 14.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -570,7 +497,6 @@
     "id": "stanford-university-usa-ca",
     "name": "Stanford University",
     "rank": 3,
-    "student_count": 17469,
     "location": {
       "country": "USA",
       "city": "Stanford",
@@ -590,7 +516,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 4,
           "duration": "4 years",
           "language": [
             "English"
@@ -607,12 +532,8 @@
       "majors": [
         "Computer Science"
       ],
-      "acceptance_rate_percent": 4.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "business",
-        "medicine"
+        "computer science"
       ]
     },
     "finance": {
@@ -628,9 +549,7 @@
         "need_based": true
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 105000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "stanford_standard",
@@ -638,10 +557,6 @@
         "requirements": {
           "SAT": 1500,
           "GPA": 96
-        },
-        "stats_avg": {
-          "SAT": 1550,
-          "GPA": 99
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -651,9 +566,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.5
-            },
-            "stats_avg": {
-              "IELTS": 8.0
             }
           }
         ],
@@ -674,10 +586,6 @@
           "SAT": 1500,
           "GPA": 96
         },
-        "stats_avg": {
-          "SAT": 1550,
-          "GPA": 99
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -686,9 +594,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.5
-            },
-            "stats_avg": {
-              "IELTS": 8.0
             }
           }
         ],
@@ -727,27 +632,20 @@
         "url": "https://majors.stanford.edu/majors/computer-science"
       }
     ],
-    "description": "Stanford is a private research university in California with a broad academic portfolio and strong interdisciplinary culture. Its location in Silicon Valley supports close ties with technology companies, startups, and venture ecosystems. Major strengths include computer science, AI, engineering, medicine, and entrepreneurship.",
-    "tags": [
-      "Research",
-      "Silicon Valley",
-      "AI",
-      "Engineering",
-      "Startups",
-      "Interdisciplinary",
-      "Innovation"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.stanford.edu/about/",
     "factors": {
-      "practice_vs_science": 0.9732,
-      "social_vs_hardcore": 0.964,
-      "budget_vs_prestige": 0.9893,
+      "practice_vs_science": 0.9749,
+      "social_vs_hardcore": 0.9691,
+      "budget_vs_prestige": 0.99,
+      "city_vs_outside_city": 1.0,
       "city_vs_campus": 1.0
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Stanford+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Stanford&count=10&language=en&format=json&countryCode=US",
@@ -758,9 +656,9 @@
           "id": "https://openalex.org/I97018004",
           "display_name": "Stanford University",
           "country_code": "US",
-          "works_count": 489938,
-          "cited_by_count": 78125466,
-          "h_index": 2394
+          "works_count": 510346,
+          "cited_by_count": 82239409,
+          "h_index": 2436
         },
         "city": {
           "name": "Stanford",
@@ -769,22 +667,23 @@
           "population": 13809,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 4.0,
+        "rank": {
+          "position": 3.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 93213.0,
         "derived_signals": {
-          "research_signal_raw": 14.839796758667728,
-          "strictness_0_1": 0.96,
-          "research_norm_0_1": 0.973193,
+          "research_signal_raw": 14.88234720872767,
+          "hardcore_signal_0_1": 0.969054,
+          "research_norm_0_1": 0.974882,
+          "official_rank_norm_0_1": 0.035714,
           "tuition_norm_0_1": 1.0,
           "city_population_norm_0_1": 0.0
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "business",
-      "medicine"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -809,15 +708,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 4.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://admission.stanford.edu/apply/first-year/apply.html",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -833,7 +723,6 @@
     "id": "harvard-usa-cambridge",
     "name": "Harvard University",
     "rank": 5,
-    "student_count": 25266,
     "location": {
       "country": "USA",
       "city": "Cambridge",
@@ -853,7 +742,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 3,
           "duration": "4 years",
           "language": [
             "English"
@@ -871,14 +759,8 @@
       "majors": [
         "Computer Science"
       ],
-      "acceptance_rate_percent": 3.0,
       "major_tags": [
-        "computer science",
-        "business",
-        "medicine",
-        "law",
-        "social sciences",
-        "humanities"
+        "computer science"
       ]
     },
     "finance": {
@@ -894,9 +776,7 @@
         "need_based": true
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 95000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "harvard_college",
@@ -904,10 +784,6 @@
         "requirements": {
           "SAT": 1520,
           "GPA": 98
-        },
-        "stats_avg": {
-          "SAT": 1570,
-          "GPA": 100
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -917,9 +793,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.5
-            },
-            "stats_avg": {
-              "IELTS": 8.0
             }
           }
         ],
@@ -943,10 +816,6 @@
           "SAT": 1520,
           "GPA": 98
         },
-        "stats_avg": {
-          "SAT": 1570,
-          "GPA": 100
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -955,9 +824,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.5
-            },
-            "stats_avg": {
-              "IELTS": 8.0
             }
           }
         ],
@@ -995,27 +861,20 @@
         "url": "https://seas.harvard.edu/computer-science"
       }
     ],
-    "description": "Harvard University is a research university in Cambridge, Massachusetts, with a long academic history and global reach. It brings together undergraduate and graduate schools across arts and sciences, medicine, law, business, and public policy. The university emphasizes rigorous scholarship, interdisciplinary research, and international collaboration.",
-    "tags": [
-      "Research",
-      "Liberal Arts",
-      "Medicine",
-      "Policy",
-      "Global",
-      "Interdisciplinary",
-      "Prestige"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.harvard.edu/about/",
     "factors": {
       "practice_vs_science": 1.0,
-      "social_vs_hardcore": 0.979,
+      "social_vs_hardcore": 0.9607,
       "budget_vs_prestige": 0.9562,
+      "city_vs_outside_city": 0.9949,
       "city_vs_campus": 0.9949
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Harvard+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Cambridge&count=10&language=en&format=json&countryCode=US",
@@ -1026,9 +885,9 @@
           "id": "https://openalex.org/I136199984",
           "display_name": "Harvard University",
           "country_code": "US",
-          "works_count": 673604,
-          "cited_by_count": 136265668,
-          "h_index": 2721
+          "works_count": 687013,
+          "cited_by_count": 138788991,
+          "h_index": 2742
         },
         "city": {
           "name": "Cambridge",
@@ -1037,24 +896,23 @@
           "population": 110402,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 3.0,
+        "rank": {
+          "position": 5.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 86926.0,
         "derived_signals": {
-          "research_signal_raw": 15.2485665284868,
-          "strictness_0_1": 0.97,
+          "research_signal_raw": 15.265792253216786,
+          "hardcore_signal_0_1": 0.960714,
           "research_norm_0_1": 1.0,
+          "official_rank_norm_0_1": 0.071429,
           "tuition_norm_0_1": 0.927076,
           "city_population_norm_0_1": 0.005098
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "business",
-      "medicine",
-      "law",
-      "social sciences",
-      "humanities"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -1079,15 +937,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 3.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://college.harvard.edu/admissions/apply/first-year-applicants",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -1103,7 +952,6 @@
     "id": "eth-zurich-ch-zurich",
     "name": "ETH Zurich",
     "rank": 7,
-    "student_count": 26198,
     "location": {
       "country": "Switzerland",
       "city": "Zurich",
@@ -1123,7 +971,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 20,
           "duration": "3 years",
           "language": [
             "German"
@@ -1140,11 +987,8 @@
       "majors": [
         "Computer Science"
       ],
-      "acceptance_rate_percent": 20.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "natural sciences"
+        "computer science"
       ]
     },
     "finance": {
@@ -1160,18 +1004,13 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 95000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "eth_exam",
         "label": "Direct Entry",
         "requirements": {
           "GPA": 90
-        },
-        "stats_avg": {
-          "GPA": 96
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -1181,10 +1020,6 @@
             "accept_native": true,
             "min_cefr": 5,
             "requirements": {
-              "TestDaF_TDN": 4,
-              "DSH_Level": 3
-            },
-            "stats_avg": {
               "TestDaF_TDN": 4,
               "DSH_Level": 3
             },
@@ -1213,9 +1048,6 @@
         "requirements": {
           "GPA": 98.0
         },
-        "stats_avg": {
-          "GPA": 98.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -1224,10 +1056,6 @@
             "accept_native": true,
             "min_cefr": 5,
             "requirements": {
-              "TestDaF_TDN": 4,
-              "DSH_Level": 3
-            },
-            "stats_avg": {
               "TestDaF_TDN": 4,
               "DSH_Level": 3
             },
@@ -1275,27 +1103,20 @@
         "url": "https://inf.ethz.ch/studies.html"
       }
     ],
-    "description": "ETH Zurich is a science and technology university with international standing in engineering and natural sciences. It combines foundational research with practical innovation and collaboration across academia and industry. High-impact areas include robotics, AI, data science, climate research, and energy systems.",
-    "tags": [
-      "Research",
-      "Engineering",
-      "Natural Sciences",
-      "AI",
-      "Robotics",
-      "Innovation",
-      "Europe"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://ethz.ch/en/the-eth-zurich/portrait.html",
     "factors": {
-      "practice_vs_science": 0.9104,
-      "social_vs_hardcore": 0.8331,
-      "budget_vs_prestige": 0.5103,
+      "practice_vs_science": 0.9105,
+      "social_vs_hardcore": 0.9008,
+      "budget_vs_prestige": 0.5104,
+      "city_vs_outside_city": 0.9827,
       "city_vs_campus": 0.9827
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=ETH+Zurich&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Zurich&count=10&language=en&format=json&countryCode=CH",
@@ -1306,9 +1127,9 @@
           "id": "https://openalex.org/I35440088",
           "display_name": "ETH Zurich",
           "country_code": "CH",
-          "works_count": 228056,
-          "cited_by_count": 24784763,
-          "h_index": 1105
+          "works_count": 232494,
+          "cited_by_count": 25251629,
+          "h_index": 1119
         },
         "city": {
           "name": "Zurich",
@@ -1317,21 +1138,23 @@
           "population": 341730,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 20.0,
+        "rank": {
+          "position": 7.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 28000.0,
         "derived_signals": {
-          "research_signal_raw": 13.882218417906085,
-          "strictness_0_1": 0.8,
-          "research_norm_0_1": 0.910395,
+          "research_signal_raw": 13.900181627112827,
+          "hardcore_signal_0_1": 0.900816,
+          "research_norm_0_1": 0.910544,
+          "official_rank_norm_0_1": 0.107143,
           "tuition_norm_0_1": 0.243583,
           "city_population_norm_0_1": 0.017307
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "natural sciences"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -1356,15 +1179,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 20.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/how-to-apply.html",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -1380,7 +1194,6 @@
     "id": "national-university-of-singapore-sg-singapore",
     "name": "National University of Singapore (NUS)",
     "rank": 8,
-    "student_count": 38000,
     "location": {
       "country": "Singapore",
       "city": "Singapore",
@@ -1400,7 +1213,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 7,
           "duration": "4 years",
           "language": [
             "English"
@@ -1417,12 +1229,8 @@
       "majors": [
         "Computer Science (BComp)"
       ],
-      "acceptance_rate_percent": 7.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "business",
-        "life sciences"
+        "computer science"
       ]
     },
     "finance": {
@@ -1438,9 +1246,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 55000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "nus_intl",
@@ -1448,10 +1254,6 @@
         "requirements": {
           "SAT": 1450,
           "GPA": 95
-        },
-        "stats_avg": {
-          "SAT": 1530,
-          "GPA": 99
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -1461,9 +1263,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.0
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -1488,10 +1287,6 @@
           "SAT": 1550.0,
           "GPA": 95
         },
-        "stats_avg": {
-          "SAT": 1550.0,
-          "GPA": 99
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -1500,9 +1295,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.0
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -1541,27 +1333,20 @@
         "url": "https://www.comp.nus.edu.sg/programmes/"
       }
     ],
-    "description": "NUS is a comprehensive research university in Singapore with a strong global and Asian orientation. It supports cross-disciplinary study and applied research connected to government, industry, and regional development. Priority areas include computing, engineering, biomedical sciences, sustainability, and entrepreneurship.",
-    "tags": [
-      "Research",
-      "Asia",
-      "Computing",
-      "Engineering",
-      "Biomedical",
-      "Sustainability",
-      "Global"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.nus.edu.sg/about",
     "factors": {
-      "practice_vs_science": 0.9112,
-      "social_vs_hardcore": 0.9244,
+      "practice_vs_science": 0.9113,
+      "social_vs_hardcore": 0.8913,
       "budget_vs_prestige": 0.5385,
+      "city_vs_outside_city": 0.7031,
       "city_vs_campus": 0.7031
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=National+University+of+Singapore&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Singapore&count=10&language=en&format=json&countryCode=SG",
@@ -1572,9 +1357,9 @@
           "id": "https://openalex.org/I165932596",
           "display_name": "National University of Singapore",
           "country_code": "SG",
-          "works_count": 264149,
-          "cited_by_count": 23242636,
-          "h_index": 1059
+          "works_count": 268933,
+          "cited_by_count": 23670786,
+          "h_index": 1066
         },
         "city": {
           "name": "Singapore",
@@ -1583,22 +1368,23 @@
           "population": 5638676,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 7.0,
+        "rank": {
+          "position": 8.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 32000.0,
         "derived_signals": {
-          "research_signal_raw": 13.895148444807933,
-          "strictness_0_1": 0.93,
-          "research_norm_0_1": 0.911243,
+          "research_signal_raw": 13.911544498945116,
+          "hardcore_signal_0_1": 0.89133,
+          "research_norm_0_1": 0.911289,
+          "official_rank_norm_0_1": 0.125,
           "tuition_norm_0_1": 0.289979,
           "city_population_norm_0_1": 0.296875
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "business",
-      "life sciences"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -1623,15 +1409,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 7.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://nus.edu.sg/oam/docs/default-source/supporting-documents-guides/supporting-documents-guide-%28cat-d_international-students-with-international-qualifications%29.pdf?sfvrsn=a4ed34_4",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -1647,7 +1424,6 @@
     "id": "epfl-ch-lausanne",
     "name": "EPFL",
     "rank": 22,
-    "student_count": 12574,
     "location": {
       "country": "Switzerland",
       "city": "Lausanne",
@@ -1667,7 +1443,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 20,
           "duration": "3 years",
           "language": [
             "French"
@@ -1684,12 +1459,8 @@
       "majors": [
         "Computer Science"
       ],
-      "acceptance_rate_percent": 20.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "life sciences",
-        "education"
+        "computer science"
       ]
     },
     "finance": {
@@ -1705,18 +1476,13 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 92000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "epfl_exam",
         "label": "Entrance Exam",
         "requirements": {
           "GPA": 85
-        },
-        "stats_avg": {
-          "GPA": 92
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -1727,9 +1493,6 @@
             "min_cefr": 4,
             "requirements": {
               "DELF_DALF_Level": 4
-            },
-            "stats_avg": {
-              "DELF_DALF_Level": 5
             },
             "notes": "EPFL requires French B2 minimum (C1 strongly recommended)."
           }
@@ -1770,27 +1533,20 @@
         "url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/"
       }
     ],
-    "description": "EPFL is a leading Swiss technical university in Lausanne focused on education, research, and innovation. Its campuses host an international community and strong partnerships with laboratories, startups, and industry. Research strengths include digital technologies, AI, robotics, life sciences, and energy systems.",
-    "tags": [
-      "Research",
-      "Engineering",
-      "AI",
-      "Robotics",
-      "Life Sciences",
-      "Startups",
-      "Innovation"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.epfl.ch/about/",
     "factors": {
-      "practice_vs_science": 0.377,
-      "social_vs_hardcore": 0.6731,
-      "budget_vs_prestige": 0.2761,
+      "practice_vs_science": 0.3849,
+      "social_vs_hardcore": 0.517,
+      "budget_vs_prestige": 0.2792,
+      "city_vs_outside_city": 0.9934,
       "city_vs_campus": 0.9934
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=EPFL&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Lausanne&count=10&language=en&format=json&countryCode=CH",
@@ -1801,9 +1557,9 @@
           "id": "https://openalex.org/I4210100659",
           "display_name": "Formation Continue UNIL-EPFL",
           "country_code": "CH",
-          "works_count": 114,
-          "cited_by_count": 1469,
-          "h_index": 18
+          "works_count": 143,
+          "cited_by_count": 1593,
+          "h_index": 19
         },
         "city": {
           "name": "Lausanne",
@@ -1812,22 +1568,23 @@
           "population": 139111,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 20.0,
+        "rank": {
+          "position": 22.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 25000.0,
         "derived_signals": {
-          "research_signal_raw": 5.748900931688494,
-          "strictness_0_1": 0.8,
-          "research_norm_0_1": 0.377013,
+          "research_signal_raw": 5.8757954255597795,
+          "hardcore_signal_0_1": 0.516955,
+          "research_norm_0_1": 0.384899,
+          "official_rank_norm_0_1": 0.375,
           "tuition_norm_0_1": 0.208785,
           "city_population_norm_0_1": 0.006613
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "life sciences",
-      "education"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -1852,15 +1609,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 20.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/how-to-apply/",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -1876,7 +1624,6 @@
     "id": "technical-university-of-munich-de-munich",
     "name": "Technical University of Munich (TUM)",
     "rank": 22,
-    "student_count": 52580,
     "location": {
       "country": "Germany",
       "city": "Munich",
@@ -1896,7 +1643,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 25,
           "duration": "3 years",
           "language": [
             "German",
@@ -1914,13 +1660,8 @@
       "majors": [
         "Informatics"
       ],
-      "acceptance_rate_percent": 25.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "business",
-        "medicine",
-        "natural sciences"
+        "computer science"
       ]
     },
     "finance": {
@@ -1936,18 +1677,13 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 65000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "tum_aptitude",
         "label": "Aptitude Assessment",
         "requirements": {
           "GPA": 80
-        },
-        "stats_avg": {
-          "GPA": 90
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -1957,9 +1693,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -1991,27 +1724,20 @@
         "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
       }
     ],
-    "description": "TUM is a German research university with strong schools in engineering, natural sciences, medicine, and management. It is known for an entrepreneurial culture and active technology transfer with industry and startup partners. Key focus areas include AI, mobility, aerospace, energy, and health technologies.",
-    "tags": [
-      "Research",
-      "Engineering",
-      "AI",
-      "Entrepreneurship",
-      "Mobility",
-      "Industry Links",
-      "Innovation"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.tum.de/en/about-tum",
     "factors": {
-      "practice_vs_science": 0.8956,
-      "social_vs_hardcore": 0.7937,
-      "budget_vs_prestige": 0.4417,
+      "practice_vs_science": 0.896,
+      "social_vs_hardcore": 0.747,
+      "budget_vs_prestige": 0.4419,
+      "city_vs_outside_city": 0.9342,
       "city_vs_campus": 0.9342
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Technical+University+of+Munich&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Munich&count=10&language=en&format=json&countryCode=DE",
@@ -2022,9 +1748,9 @@
           "id": "https://openalex.org/I62916508",
           "display_name": "Technical University of Munich",
           "country_code": "DE",
-          "works_count": 211867,
-          "cited_by_count": 17266888,
-          "h_index": 969
+          "works_count": 217129,
+          "cited_by_count": 17709798,
+          "h_index": 978
         },
         "city": {
           "name": "Munich",
@@ -2033,23 +1759,23 @@
           "population": 1260391,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 25.0,
+        "rank": {
+          "position": 22.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 19000.0,
         "derived_signals": {
-          "research_signal_raw": 13.65604660956595,
-          "strictness_0_1": 0.75,
-          "research_norm_0_1": 0.895563,
+          "research_signal_raw": 13.678682112487596,
+          "hardcore_signal_0_1": 0.746966,
+          "research_norm_0_1": 0.896035,
+          "official_rank_norm_0_1": 0.375,
           "tuition_norm_0_1": 0.13919,
           "city_population_norm_0_1": 0.065793
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "business",
-      "medicine",
-      "natural sciences"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -2074,15 +1800,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 25.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://www.tum.de/en/studies/application/application-info-portal/document-requirements",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -2098,7 +1815,6 @@
     "id": "university-of-toronto-ca-toronto",
     "name": "University of Toronto",
     "rank": 29,
-    "student_count": 102431,
     "location": {
       "country": "Canada",
       "city": "Toronto",
@@ -2118,7 +1834,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
@@ -2136,14 +1851,8 @@
       "majors": [
         "Computer Science"
       ],
-      "acceptance_rate_percent": 15.0,
       "major_tags": [
-        "computer science",
-        "engineering",
-        "business",
-        "medicine",
-        "social sciences",
-        "humanities"
+        "computer science"
       ]
     },
     "finance": {
@@ -2159,9 +1868,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 55000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "uoft_general",
@@ -2169,10 +1876,6 @@
         "requirements": {
           "SAT": 1300,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1480,
-          "GPA": 94
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -2182,9 +1885,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -2206,10 +1906,6 @@
           "SAT": 1300,
           "GPA": 99.0
         },
-        "stats_avg": {
-          "SAT": 1480,
-          "GPA": 99.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -2218,9 +1914,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -2260,27 +1953,20 @@
         "url": "https://web.cs.toronto.edu/"
       }
     ],
-    "description": "The University of Toronto is a major public research university with campuses in Toronto and nearby regions. It offers extensive programs across science, engineering, medicine, business, humanities, and social sciences. The university is strongly associated with research output, urban partnerships, and international student diversity.",
-    "tags": [
-      "Research",
-      "Public University",
-      "Urban",
-      "AI",
-      "Medicine",
-      "Engineering",
-      "Global"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.utoronto.ca/about-u-of-t",
     "factors": {
-      "practice_vs_science": 0.9598,
-      "social_vs_hardcore": 0.8829,
-      "budget_vs_prestige": 0.7667,
+      "practice_vs_science": 0.9601,
+      "social_vs_hardcore": 0.707,
+      "budget_vs_prestige": 0.7668,
+      "city_vs_outside_city": 0.8635,
       "city_vs_campus": 0.8635
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=University+of+Toronto&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Toronto&count=10&language=en&format=json&countryCode=CA",
@@ -2291,9 +1977,9 @@
           "id": "https://openalex.org/I185261750",
           "display_name": "University of Toronto",
           "country_code": "CA",
-          "works_count": 524859,
-          "cited_by_count": 54706183,
-          "h_index": 1712
+          "works_count": 538634,
+          "cited_by_count": 55757208,
+          "h_index": 1735
         },
         "city": {
           "name": "Toronto",
@@ -2302,24 +1988,23 @@
           "population": 2600000,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 15.0,
+        "rank": {
+          "position": 29.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 62000.0,
         "derived_signals": {
-          "research_signal_raw": 14.635454275528769,
-          "strictness_0_1": 0.85,
-          "research_norm_0_1": 0.959792,
+          "research_signal_raw": 14.656037173152356,
+          "hardcore_signal_0_1": 0.707026,
+          "research_norm_0_1": 0.960057,
+          "official_rank_norm_0_1": 0.5,
           "tuition_norm_0_1": 0.637955,
           "city_population_norm_0_1": 0.136497
         }
       }
     },
     "major_focus": [
-      "computer science",
-      "engineering",
-      "business",
-      "medicine",
-      "social sciences",
-      "humanities"
+      "computer science"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -2344,15 +2029,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 15.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://future.utoronto.ca/required-documents",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -2368,7 +2044,6 @@
     "id": "cuhk-hk-shatin",
     "name": "The Chinese University of Hong Kong (CUHK)",
     "rank": 32,
-    "student_count": 22021,
     "location": {
       "country": "Hong Kong",
       "city": "Sha Tin",
@@ -2388,7 +2063,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
@@ -2406,14 +2080,9 @@
       "majors": [
         "Computer Science and Engineering"
       ],
-      "acceptance_rate_percent": 15.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business",
-        "medicine",
-        "social sciences",
-        "education"
+        "engineering"
       ]
     },
     "finance": {
@@ -2429,9 +2098,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 42000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "cuhk_intl",
@@ -2439,10 +2106,6 @@
         "requirements": {
           "SAT": 1300,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1450,
-          "GPA": 93
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -2453,10 +2116,6 @@
             "requirements": {
               "IELTS": 6.5,
               "TOEFL_iBT_0_120": 80
-            },
-            "stats_avg": {
-              "IELTS": 7.0,
-              "TOEFL_iBT_0_120": 100
             },
             "notes": "CUHK accepts TOEFL iBT 80 (old scale) or 47 (new scale from Jan 21, 2026); section minimums also apply."
           }
@@ -2480,10 +2139,6 @@
           "SAT": 1500.0,
           "GPA": 85
         },
-        "stats_avg": {
-          "SAT": 1500.0,
-          "GPA": 93
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -2493,10 +2148,6 @@
             "requirements": {
               "IELTS": 6.5,
               "TOEFL_iBT_0_120": 80
-            },
-            "stats_avg": {
-              "IELTS": 7.0,
-              "TOEFL_iBT_0_120": 100
             },
             "notes": "CUHK accepts TOEFL iBT 80 (old scale) or 47 (new scale from Jan 21, 2026); section minimums also apply."
           }
@@ -2538,27 +2189,20 @@
         "url": "https://www.cse.cuhk.edu.hk/about/department/"
       }
     ],
-    "description": "CUHK is a comprehensive university in Hong Kong with a collegiate system and bilingual academic environment. It combines Chinese cultural heritage with global research orientation across medicine, engineering, business, and social sciences. The university emphasizes whole-person education, innovation, and interdisciplinary collaboration.",
-    "tags": [
-      "Research",
-      "Collegiate",
-      "Bilingual",
-      "Medicine",
-      "Engineering",
-      "Business",
-      "Asia"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
     "factors": {
-      "practice_vs_science": 0.8896,
-      "social_vs_hardcore": 0.8619,
-      "budget_vs_prestige": 0.5393,
+      "practice_vs_science": 0.891,
+      "social_vs_hardcore": 0.6465,
+      "budget_vs_prestige": 0.5398,
+      "city_vs_outside_city": 0.9746,
       "city_vs_campus": 0.9746
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Chinese+University+of+Hong+Kong&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Sha+Tin&count=10&language=en&format=json&countryCode=HK",
@@ -2569,9 +2213,9 @@
           "id": "https://openalex.org/I177725633",
           "display_name": "Chinese University of Hong Kong",
           "country_code": "HK",
-          "works_count": 184594,
-          "cited_by_count": 15648638,
-          "h_index": 1012
+          "works_count": 188870,
+          "cited_by_count": 16378980,
+          "h_index": 1049
         },
         "city": {
           "name": "Shatin",
@@ -2580,12 +2224,16 @@
           "population": 495200,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 15.0,
+        "rank": {
+          "position": 32.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 33354.0,
         "derived_signals": {
-          "research_signal_raw": 13.565119809076334,
-          "strictness_0_1": 0.85,
-          "research_norm_0_1": 0.8896,
+          "research_signal_raw": 13.60132336115671,
+          "hardcore_signal_0_1": 0.646471,
+          "research_norm_0_1": 0.890967,
+          "official_rank_norm_0_1": 0.553571,
           "tuition_norm_0_1": 0.305685,
           "city_population_norm_0_1": 0.025407
         }
@@ -2593,11 +2241,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business",
-      "medicine",
-      "social sciences",
-      "education"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -2622,15 +2266,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 15.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://admission.cuhk.edu.hk/international/faq.html",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -2646,7 +2281,6 @@
     "id": "university-of-tokyo-jp-tokyo",
     "name": "University of Tokyo",
     "rank": 36,
-    "student_count": 28585,
     "location": {
       "country": "Japan",
       "city": "Tokyo",
@@ -2666,15 +2300,11 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 20,
           "duration": "4 years",
           "language": [
             "English"
           ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "natural sciences"
-          ]
+          "study_mode": "On-campus"
         },
         {
           "name": "Japan in East Asia (PEAK)",
@@ -2683,15 +2313,11 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 20,
           "duration": "4 years",
           "language": [
             "English"
           ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "humanities"
-          ]
+          "study_mode": "On-campus"
         }
       ],
       "formats": [
@@ -2701,16 +2327,7 @@
         "Environmental Sciences (PEAK)",
         "Japan in East Asia (PEAK)"
       ],
-      "acceptance_rate_percent": 20.0,
-      "major_tags": [
-        "computer science",
-        "engineering",
-        "medicine",
-        "social sciences",
-        "humanities",
-        "life sciences",
-        "education"
-      ]
+      "major_tags": []
     },
     "finance": {
       "total_cost_year_usd": 16000,
@@ -2725,9 +2342,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 45000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "utokyo_peak",
@@ -2735,10 +2350,6 @@
         "requirements": {
           "SAT": 1350,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1450,
-          "GPA": 93
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -2748,9 +2359,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.0
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -2775,10 +2383,6 @@
           "SAT": 1500.0,
           "GPA": 85
         },
-        "stats_avg": {
-          "SAT": 1500.0,
-          "GPA": 93
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -2787,9 +2391,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 7.0
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -2832,27 +2433,20 @@
         "url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html"
       }
     ],
-    "description": "The University of Tokyo is a leading national university with broad strengths across sciences, engineering, medicine, and humanities. It is known for research-driven education and collaboration across advanced laboratories and institutes. Major areas include AI, robotics, materials, life sciences, and public policy research.",
-    "tags": [
-      "Research",
-      "National University",
-      "Engineering",
-      "AI",
-      "Robotics",
-      "Life Sciences",
-      "Global"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.u-tokyo.ac.jp/en/about/numbers.html",
     "factors": {
-      "practice_vs_science": 0.9482,
-      "social_vs_hardcore": 0.8445,
-      "budget_vs_prestige": 0.4419,
+      "practice_vs_science": 0.948,
+      "social_vs_hardcore": 0.6328,
+      "budget_vs_prestige": 0.4418,
+      "city_vs_outside_city": 0.487,
       "city_vs_campus": 0.487
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=University+of+Tokyo&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=10&language=en&format=json&countryCode=JP",
@@ -2863,9 +2457,9 @@
           "id": "https://openalex.org/I74801974",
           "display_name": "The University of Tokyo",
           "country_code": "JP",
-          "works_count": 482374,
-          "cited_by_count": 43795758,
-          "h_index": 1343
+          "works_count": 488270,
+          "cited_by_count": 44444747,
+          "h_index": 1355
         },
         "city": {
           "name": "Tokyo",
@@ -2874,26 +2468,22 @@
           "population": 9733276,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 20.0,
+        "rank": {
+          "position": 36.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 16000.0,
         "derived_signals": {
-          "research_signal_raw": 14.45830158484377,
-          "strictness_0_1": 0.8,
-          "research_norm_0_1": 0.948174,
+          "research_signal_raw": 14.471241899629744,
+          "hardcore_signal_0_1": 0.632829,
+          "research_norm_0_1": 0.947952,
+          "official_rank_norm_0_1": 0.625,
           "tuition_norm_0_1": 0.104393,
           "city_population_norm_0_1": 0.512984
         }
       }
     },
-    "major_focus": [
-      "computer science",
-      "engineering",
-      "medicine",
-      "social sciences",
-      "humanities",
-      "life sciences",
-      "education"
-    ],
+    "major_focus": [],
     "fact_provenance": {
       "schema_version": 1,
       "facts": {
@@ -2917,15 +2507,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 20.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://peak.c.u-tokyo.ac.jp/apply/l3/Vcms3_00000253.html",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -2941,7 +2522,6 @@
     "id": "seoul-national-university-kr-seoul",
     "name": "Seoul National University",
     "rank": 38,
-    "student_count": 30323,
     "location": {
       "country": "South Korea",
       "city": "Seoul",
@@ -2959,7 +2539,6 @@
           "study_levels": [
             "Bachelor"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "Korean",
@@ -2977,7 +2556,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "Korean",
@@ -2997,13 +2575,9 @@
         "Computer Science and Engineering",
         "Computer Science and Engineering (Graduate)"
       ],
-      "acceptance_rate_percent": 15.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "medicine",
-        "natural sciences",
-        "social sciences"
+        "engineering"
       ]
     },
     "finance": {
@@ -3019,9 +2593,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 46000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "snu_global",
@@ -3029,10 +2601,6 @@
         "requirements": {
           "SAT": 1300,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1480,
-          "GPA": 95
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -3043,10 +2611,6 @@
             "requirements": {
               "IELTS": 6.0,
               "TOEFL_iBT_0_120": 80
-            },
-            "stats_avg": {
-              "IELTS": 6.5,
-              "TOEFL_iBT_0_120": 90
             }
           },
           {
@@ -3054,9 +2618,6 @@
             "accept_native": true,
             "requirements": {
               "TOPIK_Level": 3
-            },
-            "stats_avg": {
-              "TOPIK_Level": 4
             }
           }
         ],
@@ -3081,10 +2642,6 @@
           "SAT": 1300,
           "GPA": 95.0
         },
-        "stats_avg": {
-          "SAT": 1480,
-          "GPA": 95.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -3094,10 +2651,6 @@
             "requirements": {
               "IELTS": 6.0,
               "TOEFL_iBT_0_120": 80
-            },
-            "stats_avg": {
-              "IELTS": 6.5,
-              "TOEFL_iBT_0_120": 90
             }
           },
           {
@@ -3105,9 +2658,6 @@
             "accept_native": true,
             "requirements": {
               "TOPIK_Level": 3
-            },
-            "stats_avg": {
-              "TOPIK_Level": 4
             }
           }
         ],
@@ -3146,27 +2696,20 @@
         "url": "https://en.snu.ac.kr/academics/programs/undergraduate"
       }
     ],
-    "description": "Seoul National University is a flagship public research university in South Korea with comprehensive academic fields. Its schools and institutes support high-level research in engineering, medicine, natural sciences, and social sciences. The university has strong national impact and increasing global research collaboration.",
-    "tags": [
-      "Research",
-      "Public University",
-      "Engineering",
-      "Medicine",
-      "Asia",
-      "Comprehensive",
-      "Global"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://en.snu.ac.kr/about/overview/vision",
     "factors": {
-      "practice_vs_science": 0.9023,
-      "social_vs_hardcore": 0.8657,
-      "budget_vs_prestige": 0.4166,
+      "practice_vs_science": 0.9021,
+      "social_vs_hardcore": 0.5926,
+      "budget_vs_prestige": 0.4165,
+      "city_vs_outside_city": 0.4545,
       "city_vs_campus": 0.4545
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Seoul+National+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Seoul&count=10&language=en&format=json&countryCode=KR",
@@ -3177,9 +2720,9 @@
           "id": "https://openalex.org/I139264467",
           "display_name": "Seoul National University",
           "country_code": "KR",
-          "works_count": 233186,
-          "cited_by_count": 20045791,
-          "h_index": 933
+          "works_count": 236743,
+          "cited_by_count": 20307477,
+          "h_index": 942
         },
         "city": {
           "name": "Seoul",
@@ -3188,12 +2731,16 @@
           "population": 10349312,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 15.0,
+        "rank": {
+          "position": 38.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 15000.0,
         "derived_signals": {
-          "research_signal_raw": 13.758544967940823,
-          "strictness_0_1": 0.85,
-          "research_norm_0_1": 0.902284,
+          "research_signal_raw": 13.771766951314909,
+          "hardcore_signal_0_1": 0.592567,
+          "research_norm_0_1": 0.902132,
+          "official_rank_norm_0_1": 0.660714,
           "tuition_norm_0_1": 0.092793,
           "city_population_norm_0_1": 0.545497
         }
@@ -3201,10 +2748,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "medicine",
-      "natural sciences",
-      "social sciences"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -3229,15 +2773,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 15.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/01/AdmissionsforUndergraduate_Fall2025.pdf",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -3253,7 +2788,6 @@
     "id": "delft-university-of-technology-nl-delft",
     "name": "Delft University of Technology",
     "rank": 47,
-    "student_count": 27265,
     "location": {
       "country": "Netherlands",
       "city": "Delft",
@@ -3273,7 +2807,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 20,
           "duration": "3 years",
           "language": [
             "English"
@@ -3291,7 +2824,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 20,
           "duration": "3 years",
           "language": [
             "English"
@@ -3309,12 +2841,9 @@
         "Computer Science and Engineering",
         "Aerospace Engineering"
       ],
-      "acceptance_rate_percent": 20.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "design",
-        "education"
+        "engineering"
       ]
     },
     "finance": {
@@ -3330,18 +2859,13 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 58000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "tudelft_numerus",
         "label": "Numerus Clausus",
         "requirements": {
           "GPA": 80
-        },
-        "stats_avg": {
-          "GPA": 92
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -3351,9 +2875,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -3372,9 +2893,6 @@
         "requirements": {
           "GPA": 95.0
         },
-        "stats_avg": {
-          "GPA": 95.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -3383,9 +2901,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -3419,27 +2934,20 @@
         "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/"
       }
     ],
-    "description": "TU Delft is a technical university in the Netherlands focused on engineering, design, and technology for societal challenges. Its research and education emphasize practical impact through laboratories, prototypes, and collaboration with industry. Prominent domains include aerospace, civil infrastructure, robotics, sustainability, and digital engineering.",
-    "tags": [
-      "Research",
-      "Engineering",
-      "Design",
-      "Aerospace",
-      "Robotics",
-      "Sustainability",
-      "Europe"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.tudelft.nl/en/about-tu-delft",
     "factors": {
-      "practice_vs_science": 0.87,
-      "social_vs_hardcore": 0.821,
-      "budget_vs_prestige": 0.5498,
+      "practice_vs_science": 0.8703,
+      "social_vs_hardcore": 0.4898,
+      "budget_vs_prestige": 0.5499,
+      "city_vs_outside_city": 0.9957,
       "city_vs_campus": 0.9957
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Delft+University+of+Technology&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Delft&count=10&language=en&format=json&countryCode=NL",
@@ -3450,9 +2958,9 @@
           "id": "https://openalex.org/I98358874",
           "display_name": "Delft University of Technology",
           "country_code": "NL",
-          "works_count": 165026,
-          "cited_by_count": 10169179,
-          "h_index": 754
+          "works_count": 168450,
+          "cited_by_count": 10380749,
+          "h_index": 763
         },
         "city": {
           "name": "Delft",
@@ -3461,12 +2969,16 @@
           "population": 95060,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 20.0,
+        "rank": {
+          "position": 47.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 36000.0,
         "derived_signals": {
-          "research_signal_raw": 13.266296261674217,
-          "strictness_0_1": 0.8,
-          "research_norm_0_1": 0.870003,
+          "research_signal_raw": 13.285557076942368,
+          "hardcore_signal_0_1": 0.489842,
+          "research_norm_0_1": 0.870283,
+          "official_rank_norm_0_1": 0.821429,
           "tuition_norm_0_1": 0.336376,
           "city_population_norm_0_1": 0.004288
         }
@@ -3474,9 +2986,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "design",
-      "education"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -3501,15 +3011,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 20.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://www.scribd.com/document/880887339/Regulation-Matching-Selection-Criteria-Procedure-BSc-Computer-Science-Engineering-TUD25-26",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -3525,7 +3026,6 @@
     "id": "kaist-kr-daejeon",
     "name": "KAIST",
     "rank": 1001,
-    "student_count": 10951,
     "location": {
       "country": "South Korea",
       "city": "Daejeon",
@@ -3545,7 +3045,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
@@ -3562,7 +3061,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
@@ -3580,11 +3078,9 @@
         "Computer Science",
         "Mechanical Engineering"
       ],
-      "acceptance_rate_percent": 15.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business"
+        "engineering"
       ]
     },
     "finance": {
@@ -3600,9 +3096,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 50000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "kaist_intl",
@@ -3610,10 +3104,6 @@
         "requirements": {
           "SAT": 1350,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1500,
-          "GPA": 94
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -3623,9 +3113,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -3646,10 +3133,6 @@
           "SAT": 1350,
           "GPA": 85.0
         },
-        "stats_avg": {
-          "SAT": 1500,
-          "GPA": 94.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -3658,9 +3141,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.5
             }
           }
         ],
@@ -3695,27 +3175,20 @@
         "url": "https://engineering.kaist.ac.kr/education/department"
       }
     ],
-    "description": "KAIST is a science and technology research university in Daejeon with a strong innovation and startup orientation. It focuses on advanced graduate and undergraduate training linked to national and global technology priorities. Core strengths include AI, semiconductors, robotics, materials, and future mobility systems.",
-    "tags": [
-      "Research",
-      "Science and Technology",
-      "AI",
-      "Semiconductors",
-      "Robotics",
-      "Startups",
-      "Innovation"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.kaist.ac.kr/en/html/kaist/01.html",
     "factors": {
-      "practice_vs_science": 0.8534,
-      "social_vs_hardcore": 0.851,
+      "practice_vs_science": 0.8535,
+      "social_vs_hardcore": 0.6591,
       "budget_vs_prestige": 0.3901,
+      "city_vs_outside_city": 0.9232,
       "city_vs_campus": 0.9232
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=KAIST&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Daejeon&count=10&language=en&format=json&countryCode=KR",
@@ -3726,9 +3199,9 @@
           "id": "https://openalex.org/I157485424",
           "display_name": "Korea Advanced Institute of Science and Technology",
           "country_code": "KR",
-          "works_count": 109759,
-          "cited_by_count": 8518198,
-          "h_index": 653
+          "works_count": 112066,
+          "cited_by_count": 8647214,
+          "h_index": 659
         },
         "city": {
           "name": "Daejeon",
@@ -3737,12 +3210,16 @@
           "population": 1469543,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 15.0,
+        "rank": {
+          "position": null,
+          "status": "excluded"
+        },
         "total_cost_year_usd": 14000.0,
         "derived_signals": {
-          "research_signal_raw": 13.013441853496488,
-          "strictness_0_1": 0.85,
-          "research_norm_0_1": 0.853421,
+          "research_signal_raw": 13.0296081711236,
+          "hardcore_signal_0_1": 0.659083,
+          "research_norm_0_1": 0.853517,
+          "official_rank_norm_0_1": null,
           "tuition_norm_0_1": 0.081194,
           "city_population_norm_0_1": 0.076832
         }
@@ -3750,8 +3227,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -3776,15 +3252,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 15.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025%20%28including%20fee%20waiver%29_v.2.pdf",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -3800,7 +3267,6 @@
     "id": "tsinghua-university-cn-beijing",
     "name": "Tsinghua University",
     "rank": 17,
-    "student_count": 59270,
     "location": {
       "country": "China",
       "city": "Beijing",
@@ -3820,7 +3286,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 2,
           "duration": "4 years",
           "language": [
             "English",
@@ -3838,7 +3303,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 2,
           "duration": "4 years",
           "language": [
             "English",
@@ -3857,13 +3321,9 @@
         "Computer Science and Technology",
         "Mechanical Engineering"
       ],
-      "acceptance_rate_percent": 2.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business",
-        "social sciences",
-        "architecture"
+        "engineering"
       ]
     },
     "finance": {
@@ -3879,9 +3339,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 35000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "tsinghua_intl",
@@ -3889,10 +3347,6 @@
         "requirements": {
           "SAT": 1300,
           "GPA": 88
-        },
-        "stats_avg": {
-          "SAT": 1460,
-          "GPA": 95
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -3902,9 +3356,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -3930,10 +3381,6 @@
           "SAT": 1300,
           "GPA": 95.0
         },
-        "stats_avg": {
-          "SAT": 1460,
-          "GPA": 95.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -3942,9 +3389,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -3984,27 +3428,20 @@
         "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
       }
     ],
-    "description": "Tsinghua University is a comprehensive research university in Beijing with strong foundations in engineering and science. It has expanded across public policy, management, architecture, and interdisciplinary research programs. The university is recognized for high research intensity in AI, advanced manufacturing, materials, and climate-related technologies.",
-    "tags": [
-      "Research",
-      "Engineering",
-      "AI",
-      "Manufacturing",
-      "Policy",
-      "Interdisciplinary",
-      "Asia"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.tsinghua.edu.cn/en/About.htm",
     "factors": {
-      "practice_vs_science": 0.928,
-      "social_vs_hardcore": 0.9644,
+      "practice_vs_science": 0.9279,
+      "social_vs_hardcore": 0.8104,
       "budget_vs_prestige": 0.3886,
+      "city_vs_outside_city": 0.0,
       "city_vs_campus": 0.0
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Tsinghua+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Beijing&count=10&language=en&format=json&countryCode=CN",
@@ -4015,9 +3452,9 @@
           "id": "https://openalex.org/I99065089",
           "display_name": "Tsinghua University",
           "country_code": "CN",
-          "works_count": 355835,
-          "cited_by_count": 30831585,
-          "h_index": 1128
+          "works_count": 361476,
+          "cited_by_count": 31325674,
+          "h_index": 1137
         },
         "city": {
           "name": "Beijing",
@@ -4026,12 +3463,16 @@
           "population": 18960744,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 2.0,
+        "rank": {
+          "position": 17.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 9500.0,
         "derived_signals": {
-          "research_signal_raw": 14.15016708592855,
-          "strictness_0_1": 0.98,
-          "research_norm_0_1": 0.927967,
+          "research_signal_raw": 14.164812238770612,
+          "hardcore_signal_0_1": 0.810403,
+          "research_norm_0_1": 0.927879,
+          "official_rank_norm_0_1": 0.285714,
           "tuition_norm_0_1": 0.028998,
           "city_population_norm_0_1": 1.0
         }
@@ -4039,10 +3480,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business",
-      "social sciences",
-      "architecture"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -4067,15 +3505,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 2.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://international.join-tsinghua.edu.cn/List-of-Uploading-Documents-in-the-Online-Application-System.pdf",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -4091,7 +3520,6 @@
     "id": "nazarbayev-university-kaz-astana",
     "name": "Nazarbayev University",
     "rank": 1001,
-    "student_count": 7089,
     "location": {
       "country": "Kazakhstan",
       "city": "Astana",
@@ -4111,7 +3539,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
@@ -4128,7 +3555,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
@@ -4143,15 +3569,11 @@
           "study_levels": [
             "Foundation"
           ],
-          "acceptance_rate_percent": 30,
           "duration": "1 year",
           "language": [
             "English"
           ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "education"
-          ]
+          "study_mode": "On-campus"
         }
       ],
       "formats": [
@@ -4162,14 +3584,9 @@
         "Mechanical and Aerospace Engineering",
         "Foundation Year"
       ],
-      "acceptance_rate_percent": 20.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business",
-        "medicine",
-        "social sciences",
-        "education"
+        "engineering"
       ]
     },
     "finance": {
@@ -4185,9 +3602,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 13000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "nu_direct",
@@ -4197,9 +3612,10 @@
           "GPA": 80
         },
         "stats_avg": {
-          "SAT": 1380,
-          "GPA": 90
+          "SAT": 1475
         },
+        "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+        "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average SAT = 1475 (embedded statistics deck on the official statistics FAQ page).",
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -4211,9 +3627,10 @@
               "TOEFL_iBT_0_120": 79
             },
             "stats_avg": {
-              "IELTS": 7.0,
-              "TOEFL_iBT_0_120": 95
-            }
+              "IELTS": 7.4
+            },
+            "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+            "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average IELTS = 7.4 (embedded statistics deck on the official statistics FAQ page)."
           }
         ],
         "language_requirements_mode": "any",
@@ -4237,9 +3654,10 @@
           "GPA": 80
         },
         "stats_avg": {
-          "SAT": 1450.0,
-          "GPA": 90
+          "SAT": 1475
         },
+        "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+        "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average SAT = 1475 (embedded statistics deck on the official statistics FAQ page).",
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -4251,9 +3669,10 @@
               "TOEFL_iBT_0_120": 79
             },
             "stats_avg": {
-              "IELTS": 7.0,
-              "TOEFL_iBT_0_120": 95
-            }
+              "IELTS": 7.4
+            },
+            "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+            "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average IELTS = 7.4 (embedded statistics deck on the official statistics FAQ page)."
           }
         ],
         "language_requirements_mode": "any",
@@ -4278,8 +3697,10 @@
           "NUET": 130
         },
         "stats_avg": {
-          "NUET": 135
+          "NUET": 148.2
         },
+        "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+        "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: NUFYP average NUET = 148.2 (embedded statistics deck on the official statistics FAQ page).",
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -4290,8 +3711,10 @@
               "IELTS": 5.5
             },
             "stats_avg": {
-              "IELTS": 6.0
-            }
+              "IELTS": 6.6
+            },
+            "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+            "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: NUFYP average IELTS = 6.6 (embedded statistics deck on the official statistics FAQ page)."
           }
         ],
         "language_requirements_mode": "any",
@@ -4314,8 +3737,10 @@
           "NUET": 130.0
         },
         "stats_avg": {
-          "NUET": 135.0
+          "NUET": 148.2
         },
+        "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+        "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: NUFYP average NUET = 148.2 (embedded statistics deck on the official statistics FAQ page).",
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -4326,8 +3751,10 @@
               "IELTS": 5.5
             },
             "stats_avg": {
-              "IELTS": 6.0
-            }
+              "IELTS": 6.6
+            },
+            "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+            "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: NUFYP average IELTS = 6.6 (embedded statistics deck on the official statistics FAQ page)."
           }
         ],
         "language_requirements_mode": "any",
@@ -4356,6 +3783,14 @@
         "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
       },
       {
+        "topic": "average_admitted_scores",
+        "url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/"
+      },
+      {
+        "topic": "average_admitted_scores_embed",
+        "url": "https://docs.google.com/presentation/d/e/2PACX-1vSU23sLSpSEl0xMggfl4ao9vP4YVQMoTU6PmH_5MhBIEyW1wPYQkrst0D0FIbRzZw/pubembed?start=false&loop=false&delayms=3000"
+      },
+      {
         "topic": "extra_requirements",
         "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
       },
@@ -4372,27 +3807,20 @@
         "url": "https://nu.edu.kz/admissions/programs/"
       }
     ],
-    "description": "Nazarbayev University is an autonomous research university in Astana with English-medium education and international partnerships. Its schools span engineering, sciences, medicine, public policy, and business, with emphasis on modern research standards. Priority areas include energy, digital technologies, data science, and regional development challenges.",
-    "tags": [
-      "Research",
-      "English-medium",
-      "Engineering",
-      "Data Science",
-      "Public Policy",
-      "Kazakhstan",
-      "Innovation"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://nu.edu.kz/about/",
     "factors": {
-      "practice_vs_science": 0.6904,
-      "social_vs_hardcore": 0.7671,
-      "budget_vs_prestige": 0.3631,
+      "practice_vs_science": 0.6913,
+      "social_vs_hardcore": 0.5861,
+      "budget_vs_prestige": 0.3635,
+      "city_vs_outside_city": 0.9825,
       "city_vs_campus": 0.9825
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Nazarbayev+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Astana&count=10&language=en&format=json&countryCode=KZ",
@@ -4403,9 +3831,9 @@
           "id": "https://openalex.org/I60559429",
           "display_name": "Nazarbayev University",
           "country_code": "KZ",
-          "works_count": 13894,
-          "cited_by_count": 372854,
-          "h_index": 173
+          "works_count": 14206,
+          "cited_by_count": 385479,
+          "h_index": 175
         },
         "city": {
           "name": "Astana",
@@ -4414,12 +3842,16 @@
           "population": 345604,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 20.0,
+        "rank": {
+          "position": null,
+          "status": "not_listed"
+        },
         "total_cost_year_usd": 19500.0,
         "derived_signals": {
-          "research_signal_raw": 10.527080256194296,
-          "strictness_0_1": 0.8,
-          "research_norm_0_1": 0.690365,
+          "research_signal_raw": 10.553216422193561,
+          "hardcore_signal_0_1": 0.586084,
+          "research_norm_0_1": 0.691298,
+          "official_rank_norm_0_1": null,
           "tuition_norm_0_1": 0.14499,
           "city_population_norm_0_1": 0.017512
         }
@@ -4427,11 +3859,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business",
-      "medicine",
-      "social sciences",
-      "education"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -4456,15 +3884,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 20.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -4480,7 +3899,6 @@
     "id": "kyoto-university-jp-kyoto",
     "name": "Kyoto University",
     "rank": 57,
-    "student_count": 22958,
     "location": {
       "country": "Japan",
       "city": "Kyoto",
@@ -4498,30 +3916,22 @@
           "study_levels": [
             "Foundation"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "6 months",
           "language": [
             "English"
           ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "education"
-          ]
+          "study_mode": "On-campus"
         },
         {
           "name": "Kyoto iUP Undergraduate Program",
           "study_levels": [
             "Bachelor"
           ],
-          "acceptance_rate_percent": 15,
           "duration": "4 years",
           "language": [
             "English"
           ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "engineering"
-          ]
+          "study_mode": "On-campus"
         }
       ],
       "formats": [
@@ -4531,12 +3941,7 @@
         "Kyoto iUP Preparatory Course",
         "Kyoto iUP Undergraduate Program"
       ],
-      "acceptance_rate_percent": 15.0,
-      "major_tags": [
-        "engineering",
-        "medicine",
-        "natural sciences"
-      ]
+      "major_tags": []
     },
     "finance": {
       "total_cost_year_usd": 16500,
@@ -4551,9 +3956,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 42000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "kyoto_iup",
@@ -4561,10 +3964,6 @@
         "requirements": {
           "SAT": 1350,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1430,
-          "GPA": 92
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -4574,9 +3973,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -4600,10 +3996,6 @@
           "SAT": 1350,
           "GPA": 90.0
         },
-        "stats_avg": {
-          "SAT": 1430,
-          "GPA": 92.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -4612,9 +4004,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -4652,27 +4041,20 @@
         "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html"
       }
     ],
-    "description": "Kyoto University is a national research university known for academic freedom and a strong fundamental research tradition. It has broad strengths in natural sciences, engineering, medicine, and interdisciplinary scholarship. The university environment supports independent inquiry and long-term scientific discovery.",
-    "tags": [
-      "Research",
-      "Academic Freedom",
-      "Natural Sciences",
-      "Engineering",
-      "Medicine",
-      "Japan",
-      "Fundamental Research"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://www.kyoto-u.ac.jp/en/about/profile",
     "factors": {
-      "practice_vs_science": 0.9235,
-      "social_vs_hardcore": 0.872,
-      "budget_vs_prestige": 0.4355,
+      "practice_vs_science": 0.9238,
+      "social_vs_hardcore": 0.4157,
+      "budget_vs_prestige": 0.4356,
+      "city_vs_outside_city": 0.9235,
       "city_vs_campus": 0.9235
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Kyoto+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kyoto&count=10&language=en&format=json&countryCode=JP",
@@ -4683,9 +4065,9 @@
           "id": "https://openalex.org/I22299242",
           "display_name": "Kyoto University",
           "country_code": "JP",
-          "works_count": 337624,
-          "cited_by_count": 28280872,
-          "h_index": 1077
+          "works_count": 345113,
+          "cited_by_count": 28897828,
+          "h_index": 1091
         },
         "city": {
           "name": "Kyoto",
@@ -4694,22 +4076,22 @@
           "population": 1463723,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 15.0,
+        "rank": {
+          "position": 57.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 16500.0,
         "derived_signals": {
-          "research_signal_raw": 14.081669428798003,
-          "strictness_0_1": 0.85,
-          "research_norm_0_1": 0.923475,
+          "research_signal_raw": 14.102073964697654,
+          "hardcore_signal_0_1": 0.415696,
+          "research_norm_0_1": 0.92377,
+          "official_rank_norm_0_1": 1.0,
           "tuition_norm_0_1": 0.110192,
           "city_population_norm_0_1": 0.076525
         }
       }
     },
-    "major_focus": [
-      "engineering",
-      "medicine",
-      "natural sciences"
-    ],
+    "major_focus": [],
     "fact_provenance": {
       "schema_version": 1,
       "facts": {
@@ -4733,15 +4115,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 15.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://www.iup.kyoto-u.ac.jp/apply/",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -4757,7 +4130,6 @@
     "id": "university-of-melbourne-au-melbourne",
     "name": "University of Melbourne",
     "rank": 19,
-    "student_count": 54000,
     "location": {
       "country": "Australia",
       "city": "Melbourne",
@@ -4777,7 +4149,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 40,
           "duration": "3 years",
           "language": [
             "English"
@@ -4794,7 +4165,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 40,
           "duration": "3 years",
           "language": [
             "English"
@@ -4813,13 +4183,9 @@
         "Computer Science (Computing and Software Systems major)",
         "Engineering (Digital Infrastructure Engineering Systems major)"
       ],
-      "acceptance_rate_percent": 40.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business",
-        "medicine",
-        "law"
+        "engineering"
       ]
     },
     "finance": {
@@ -4835,9 +4201,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 49000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "melb_intl",
@@ -4845,10 +4209,6 @@
         "requirements": {
           "SAT": 1350,
           "GPA": 85
-        },
-        "stats_avg": {
-          "SAT": 1420,
-          "GPA": 92
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -4858,9 +4218,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -4884,10 +4241,6 @@
           "SAT": 1350,
           "GPA": 96.0
         },
-        "stats_avg": {
-          "SAT": 1420,
-          "GPA": 96.0
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -4896,9 +4249,6 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5
-            },
-            "stats_avg": {
-              "IELTS": 7.0
             }
           }
         ],
@@ -4940,27 +4290,20 @@
         "url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure"
       }
     ],
-    "description": "The University of Melbourne is a research-intensive public university with a major urban campus in Melbourne. It offers broad programs from engineering and computing to health sciences, business, law, and arts. The university is known for international engagement, strong graduate pathways, and interdisciplinary research culture.",
-    "tags": [
-      "Research",
-      "Public University",
-      "Urban",
-      "Engineering",
-      "Health Sciences",
-      "Interdisciplinary",
-      "Global"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://about.unimelb.edu.au/",
     "factors": {
-      "practice_vs_science": 0.9243,
-      "social_vs_hardcore": 0.6973,
-      "budget_vs_prestige": 0.6829,
+      "practice_vs_science": 0.9245,
+      "social_vs_hardcore": 0.7892,
+      "budget_vs_prestige": 0.683,
+      "city_vs_outside_city": 0.7412,
       "city_vs_campus": 0.7412
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=University+of+Melbourne&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Melbourne&count=10&language=en&format=json&countryCode=AU",
@@ -4971,9 +4314,9 @@
           "id": "https://openalex.org/I165779595",
           "display_name": "The University of Melbourne",
           "country_code": "AU",
-          "works_count": 326889,
-          "cited_by_count": 28612017,
-          "h_index": 1219
+          "works_count": 333513,
+          "cited_by_count": 29124182,
+          "h_index": 1237
         },
         "city": {
           "name": "Melbourne",
@@ -4982,12 +4325,16 @@
           "population": 4917750,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 40.0,
+        "rank": {
+          "position": 19.0,
+          "status": "official"
+        },
         "total_cost_year_usd": 52000.0,
         "derived_signals": {
-          "research_signal_raw": 14.094742269964962,
-          "strictness_0_1": 0.6,
-          "research_norm_0_1": 0.924332,
+          "research_signal_raw": 14.112831619827478,
+          "hardcore_signal_0_1": 0.789228,
+          "research_norm_0_1": 0.924474,
+          "official_rank_norm_0_1": 0.321429,
           "tuition_norm_0_1": 0.521963,
           "city_population_norm_0_1": 0.258825
         }
@@ -4995,10 +4342,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business",
-      "medicine",
-      "law"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -5023,15 +4367,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 40.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://study.unimelb.edu.au/how-to-apply/your-online-application",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -5047,7 +4382,6 @@
     "id": "suleyman-demirel-university-kaz-kaskelen",
     "name": "Suleyman Demirel University",
     "rank": 1001,
-    "student_count": 8500,
     "location": {
       "country": "Kazakhstan",
       "city": "Kaskelen",
@@ -5067,7 +4401,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 60,
           "duration": "4 years",
           "language": [
             "English"
@@ -5084,7 +4417,6 @@
             "Master",
             "PhD"
           ],
-          "acceptance_rate_percent": 60,
           "duration": "4 years",
           "language": [
             "English"
@@ -5103,13 +4435,9 @@
         "Information Systems",
         "Business Information Systems"
       ],
-      "acceptance_rate_percent": 60.0,
       "major_tags": [
         "computer science",
-        "business",
-        "engineering",
-        "law",
-        "education"
+        "business"
       ]
     },
     "finance": {
@@ -5125,9 +4453,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 9500
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "sdu_unt_paid",
@@ -5135,10 +4461,6 @@
         "requirements": {
           "UNT": 50,
           "GPA": 60
-        },
-        "stats_avg": {
-          "UNT": 85,
-          "GPA": 75
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -5171,10 +4493,6 @@
         "requirements": {
           "UNT": 105.0,
           "GPA": 80
-        },
-        "stats_avg": {
-          "UNT": 115.0,
-          "GPA": 90
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -5224,27 +4542,20 @@
         "url": "https://sdu.edu.kz/en/information-system-example/"
       }
     ],
-    "description": "Suleyman Demirel University is a private university in Kazakhstan with programs in IT, engineering, education, business, and law. The campus emphasizes practical training, multilingual learning, and student development in a modern academic setting. It continues to expand applied research and industry-oriented initiatives for regional workforce needs.",
-    "tags": [
-      "Private University",
-      "Kazakhstan",
-      "IT",
-      "Engineering",
-      "Multilingual",
-      "Applied Learning",
-      "Regional Impact"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://sdu.edu.kz/why/",
     "factors": {
-      "practice_vs_science": 0.6228,
-      "social_vs_hardcore": 0.4669,
-      "budget_vs_prestige": 0.2596,
+      "practice_vs_science": 0.6244,
+      "social_vs_hardcore": 0.556,
+      "budget_vs_prestige": 0.2602,
+      "city_vs_outside_city": 0.9976,
       "city_vs_campus": 0.9976
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Suleyman+Demirel+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kaskelen&count=10&language=en&format=json&countryCode=KZ",
@@ -5255,9 +4566,9 @@
           "id": "https://openalex.org/I4210120897",
           "display_name": "Suleyman Demirel University",
           "country_code": "KZ",
-          "works_count": 9891,
-          "cited_by_count": 74788,
-          "h_index": 84
+          "works_count": 10211,
+          "cited_by_count": 77789,
+          "h_index": 86
         },
         "city": {
           "name": "Kaskelen",
@@ -5266,12 +4577,16 @@
           "population": null,
           "population_wikidata_fallback": 58418.0
         },
-        "admissions_acceptance_percent_avg": 60.0,
+        "rank": {
+          "position": null,
+          "status": "not_listed"
+        },
         "total_cost_year_usd": 8500.0,
         "derived_signals": {
-          "research_signal_raw": 9.49742930566042,
-          "strictness_0_1": 0.4,
-          "research_norm_0_1": 0.622841,
+          "research_signal_raw": 9.531731873825079,
+          "hardcore_signal_0_1": 0.555973,
+          "research_norm_0_1": 0.624385,
+          "official_rank_norm_0_1": null,
           "tuition_norm_0_1": 0.017399,
           "city_population_norm_0_1": 0.002354
         }
@@ -5279,10 +4594,7 @@
     },
     "major_focus": [
       "computer science",
-      "business",
-      "engineering",
-      "law",
-      "education"
+      "business"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -5307,15 +4619,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 60.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://sdu.edu.kz/en/international-admissions/",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },
@@ -5331,7 +4634,6 @@
     "id": "astana-it-university-kaz-astana",
     "name": "Astana IT University",
     "rank": 1001,
-    "student_count": 5426,
     "location": {
       "country": "Kazakhstan",
       "city": "Astana",
@@ -5350,7 +4652,6 @@
             "Bachelor",
             "Master"
           ],
-          "acceptance_rate_percent": 30,
           "duration": "3 years",
           "language": [
             "English"
@@ -5367,7 +4668,6 @@
             "Bachelor",
             "Master"
           ],
-          "acceptance_rate_percent": 30,
           "duration": "3 years",
           "language": [
             "English"
@@ -5385,12 +4685,9 @@
         "Software Engineering",
         "Computer Science"
       ],
-      "acceptance_rate_percent": 30.0,
       "major_tags": [
         "computer science",
-        "engineering",
-        "business",
-        "education"
+        "engineering"
       ]
     },
     "finance": {
@@ -5406,9 +4703,7 @@
         "need_based": false
       }
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 11000
-    },
+    "outcomes": {},
     "admission_tracks": [
       {
         "id": "aitu_unt_grant",
@@ -5416,10 +4711,6 @@
         "requirements": {
           "UNT": 125.0,
           "GPA": 70
-        },
-        "stats_avg": {
-          "UNT": 125.0,
-          "GPA": 85
         },
         "scholarships": [],
         "study_mode": "On-campus",
@@ -5432,10 +4723,6 @@
             "requirements": {
               "IELTS": 5.0,
               "TOEFL_iBT_0_120": 46
-            },
-            "stats_avg": {
-              "IELTS": 5.5,
-              "TOEFL_iBT_0_120": 60
             },
             "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46‑59 to CEFR B1."
           }
@@ -5458,10 +4745,6 @@
           "UNT": 75,
           "GPA": 65
         },
-        "stats_avg": {
-          "UNT": 90,
-          "GPA": 75
-        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements_mode": "any",
@@ -5473,10 +4756,6 @@
             "requirements": {
               "IELTS": 5.0,
               "TOEFL_iBT_0_120": 46
-            },
-            "stats_avg": {
-              "IELTS": 5.5,
-              "TOEFL_iBT_0_120": 60
             },
             "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46‑59 to CEFR B1."
           }
@@ -5515,27 +4794,20 @@
         "url": "https://astanait.edu.kz/en/software-engineering-2/"
       }
     ],
-    "description": "Astana IT University is a Kazakhstan university focused on digital transformation and ICT education. Its academic model emphasizes software engineering, cybersecurity, data technologies, and industry-linked projects. The university positions entrepreneurship and practical innovation as core elements of student training.",
-    "tags": [
-      "ICT",
-      "Software Engineering",
-      "Cybersecurity",
-      "Data",
-      "Kazakhstan",
-      "Innovation",
-      "Industry Projects"
-    ],
+    "description": "",
+    "tags": [],
     "description_source": "https://astanait.edu.kz/en/university/mission/",
     "factors": {
       "practice_vs_science": 0.0,
-      "social_vs_hardcore": 0.49,
+      "social_vs_hardcore": 0.275,
       "budget_vs_prestige": 0.0,
+      "city_vs_outside_city": 0.9825,
       "city_vs_campus": 0.9825
     },
     "factors_meta": {
       "version": "internet_v1",
-      "computed_at": "2026-02-12T13:30:28Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding (city population), admissions selectivity, and tuition.",
+      "computed_at": "2026-03-11T15:43:22Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Astana+IT+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Astana&count=10&language=en&format=json&countryCode=KZ",
@@ -5557,12 +4829,16 @@
           "population": 345604,
           "population_wikidata_fallback": null
         },
-        "admissions_acceptance_percent_avg": 30.0,
+        "rank": {
+          "position": null,
+          "status": "not_listed"
+        },
         "total_cost_year_usd": 7000.0,
         "derived_signals": {
           "research_signal_raw": 0.0,
-          "strictness_0_1": 0.7,
+          "hardcore_signal_0_1": 0.275,
           "research_norm_0_1": 0.0,
+          "official_rank_norm_0_1": null,
           "tuition_norm_0_1": 0.0,
           "city_population_norm_0_1": 0.017512
         }
@@ -5570,9 +4846,7 @@
     },
     "major_focus": [
       "computer science",
-      "engineering",
-      "business",
-      "education"
+      "engineering"
     ],
     "fact_provenance": {
       "schema_version": 1,
@@ -5597,15 +4871,6 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
-        },
-        "acceptance_rate_percent": {
-          "value": 30.0,
-          "unit": "percent",
-          "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-          "source_url": "https://admission.astanait.edu.kz/paid_basis",
-          "verified_at": "2026-02-21",
-          "confidence": "medium",
-          "status": "derived"
         }
       }
     },

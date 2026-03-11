@@ -8,7 +8,7 @@
   // Non-local fallback expects reverse-proxy /api (or provide API_BASE_URL via env.js).
   w.API_BASE_URL = apiBaseFromEnv || (isLocal ? "http://127.0.0.1:8000" : "/api");
 
-  w.APP_VERSION = "2.5.3";
+  w.APP_VERSION = "2.5.7";
 
   const debugRaw = env.APP_DEBUG;
   if (typeof debugRaw === "boolean") {

@@ -26,7 +26,7 @@ about.title: We are the abiturient team behind UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
 guide.admission.p1: An admission track is one concrete way to enter the same university.
-guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with typical admitted scores.
+guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.
 guide.admission.p3: Mode any means one language proof is enough. Mode all means every listed proof is required.
 guide.admission.p4: Scholarships and aid can noticeably reduce total cost, so always check track details.
 guide.admission.title: How to read admission tracks
@@ -206,11 +206,13 @@ ranking.source_status.estimated: Model estimate
 ranking.source_status.inferred: Model estimate
 ranking.source_status.mixed: Mixed source
 ranking.source_status.official: Official ranking
+ranking.source_status.excluded: Excluded from published ranking
+ranking.source_status.not_listed: Not listed in published ranking
 ranking.source_status.curated: Manually reviewed
 ranking.source_status.derived: Model estimate
 ranking.source_status.derived_prestige_order: Model estimate
 ranking.source_tooltip: Source: {source} | Type: {status} | Checked: {verified_at}
-ranking.subtitle: Popular universities by study quality and opportunities (2025)
+ranking.subtitle: Popular universities by study quality and opportunities (2026)
 ranking.title: Global University Ranking
 title.about: About Us | UniSearch
 title.guide: Guide | UniSearch
@@ -261,8 +263,8 @@ universities.tradeoff.finance: Finance
 universities.tradeoff.finance.left: Budget & Grants
 universities.tradeoff.finance.right: Prestige & Comfort
 universities.tradeoff.location: Location
-universities.tradeoff.location.left: Big City Life
-universities.tradeoff.location.right: Cozy Campus
+universities.tradeoff.location.left: Study in City
+universities.tradeoff.location.right: Study Outside City
 universities.tradeoff.balanced: Balanced (50/50)
 universities.help.open: Show explanation
 universities.help.country: Filters universities by country. Works together with city and region selectors.
@@ -273,7 +275,7 @@ universities.help.sort_strategy: {fit} sorts using your profile. Other modes sor
 universities.help.tradeoff.focus: Choose whether you want more practice-oriented study or more theory and research.
 universities.help.tradeoff.atmosphere: Choose between active student life and a calmer study-focused environment.
 universities.help.tradeoff.finance: Left side favors grant-focused options. Right side also favors paid options.
-universities.help.tradeoff.location: Left side favors big cities. Right side favors smaller and quieter campuses.
+universities.help.tradeoff.location: Left side favors universities with urban campuses. Right side favors universities outside major cities (suburban/rural campuses).
 universities.sort_ai: ✨ {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
@@ -322,6 +324,34 @@ university.visit_website: Visit Official Website
 # Added localization coverage keys
 common.loading: Loading
 common.ai_short: AI
+common.placeholder_unknown: {field} unknown
+placeholder.field.university_name: University name
+placeholder.field.location: Location
+placeholder.field.official_website: Official website
+placeholder.field.global_rank: Global rank
+placeholder.field.description: Description
+placeholder.field.program_name: Program name
+placeholder.field.programs: Programs
+placeholder.field.admission_tracks: Admission tracks
+placeholder.field.applicable_majors: Applicable majors
+placeholder.field.track_name: Track name
+placeholder.field.track_description: Track description
+placeholder.field.minimum_requirements: Minimum requirements
+placeholder.field.scholarships: Scholarships
+placeholder.field.merit_scholarships: Merit-based scholarships
+placeholder.field.need_based_aid: Need-based aid
+placeholder.field.cost: Cost
+placeholder.field.total_cost: Total cost
+placeholder.field.cost_breakdown: Cost breakdown
+placeholder.field.financial_aid: Financial aid
+placeholder.field.roi_score: ROI score
+placeholder.field.estimated_salary: Estimated salary
+placeholder.field.language_requirements: Language requirements
+placeholder.field.admission_probability: Admission probability
+placeholder.field.best_track: Best track
+placeholder.field.verification_date: Verification date
+placeholder.field.universities_count: Universities count
+placeholder.field.countries_count: Countries count
 guide.academic.act: ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.
 guide.academic.aptotal: AP Total reflects combined performance across multiple Advanced Placement subjects.
 guide.academic.default: This is an academic metric used by one or more admission tracks in the UniSearch dataset.
@@ -340,7 +370,7 @@ guide.glossary.match_score: A service score that shows how well a university fit
 guide.glossary.mode_all: You must satisfy every listed language requirement.
 guide.glossary.mode_any: You need to satisfy at least one listed language option.
 guide.glossary.requirements: Minimum scores to be considered for a track.
-guide.glossary.stats_avg: Typical scores of admitted students on that track.
+guide.glossary.stats_avg: Average scores of admitted students on that track.
 guide.glossary.swr: Cache behavior: we first show saved data, then refresh it in the background.
 guide.glossary.term.admission_track: Admission Track
 guide.glossary.term.language_requirements: Language Requirements
@@ -348,7 +378,7 @@ guide.glossary.term.match_score: Match Score
 guide.glossary.term.mode_all: Mode = all
 guide.glossary.term.mode_any: Mode = any
 guide.glossary.term.requirements: Requirements
-guide.glossary.term.stats_avg: Stats Avg
+guide.glossary.term.stats_avg: Average (Admitted)
 guide.glossary.term.swr: Data Cache
 guide.language.by_code: This exam is used as language proof for {code}-language admission tracks.
 guide.language.cambridge: Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.
@@ -459,3 +489,5 @@ unifit.warning.cancel: Cancel
 unifit.warning.confirm: Okay I understand
 unifit.warning.desc: UniFit is more accurate when your profile includes exam or language scores.
 unifit.warning.title: Limited Profile Data
+average_admitted_unavailable: No verified average admitted data published.
+roi.context.no_salary_data: No verified graduate salary data published for this university.

@@ -26,7 +26,7 @@ about.title: Мы команда абитуриентов UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Трек поступления - это конкретный путь поступления в один и тот же университет.
-guide.admission.p2: Требования — это минимальный порог. Для надежного плана сравнивайте себя и с типичными баллами зачисленных.
+guide.admission.p2: Требования — это минимальный порог. Для надежного плана сравнивайте себя и со средними баллами зачисленных.
 guide.admission.p3: Языковое правило: в одних треках достаточно одного подтверждения, а в других нужны все перечисленные подтверждения.
 guide.admission.p4: Стипендии и помощь могут заметно снизить итоговую стоимость, поэтому проверяйте это в каждом треке.
 guide.admission.title: Как читать треки поступления
@@ -206,11 +206,13 @@ ranking.source_status.estimated: Оценка модели
 ranking.source_status.inferred: Оценка модели
 ranking.source_status.mixed: Смешанный источник
 ranking.source_status.official: Официальный рейтинг
+ranking.source_status.excluded: Исключен из опубликованного рейтинга
+ranking.source_status.not_listed: Не входит в опубликованный рейтинг
 ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
 ranking.source_tooltip: Источник: {source} | Тип: {status} | Проверено: {verified_at}
-ranking.subtitle: Популярные университеты по качеству обучения и возможностям (2025)
+ranking.subtitle: Популярные университеты по качеству обучения и возможностям (2026)
 ranking.title: Глобальный рейтинг университетов
 title.about: О нас | UniSearch
 title.guide: Гайд | UniSearch
@@ -261,8 +263,8 @@ universities.tradeoff.finance: Финансы
 universities.tradeoff.finance.left: Бюджет и гранты
 universities.tradeoff.finance.right: Престиж и комфорт
 universities.tradeoff.location: Локация
-universities.tradeoff.location.left: Жизнь в большом городе
-universities.tradeoff.location.right: Уютный кампус
+universities.tradeoff.location.left: Учеба в городе
+universities.tradeoff.location.right: Учеба за городом
 universities.tradeoff.balanced: Сбалансировано (50/50)
 universities.help.open: Показать объяснение
 universities.help.country: Фильтрует университеты по стране. Работает вместе с выбором региона и города.
@@ -273,7 +275,7 @@ universities.help.sort_strategy: UniFit сортирует под ваш про�
 universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
 universities.help.tradeoff.atmosphere: Помогает выбрать между активной студенческой жизнью и более спокойной учебной средой.
 universities.help.tradeoff.finance: Слева упор на варианты с грантом, справа - на варианты, где вы готовы рассматривать и платное обучение.
-universities.help.tradeoff.location: Слева ближе крупные города, справа - более компактные и спокойные кампусы.
+universities.help.tradeoff.location: Слева упор на университеты с городскими кампусами, справа — на университеты за пределами крупных городов (пригород/загородные кампусы).
 universities.sort_ai: ✨ {fit}: ИИ-умная сортировка
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
@@ -321,6 +323,34 @@ university.visit_website: Открыть официальный сайт
 # Added localization coverage keys
 common.loading: Загрузка
 common.ai_short: ИИ
+common.placeholder_unknown: {field}: нет данных
+placeholder.field.university_name: Название университета
+placeholder.field.location: Локация
+placeholder.field.official_website: Официальный сайт
+placeholder.field.global_rank: Глобальный рейтинг
+placeholder.field.description: Описание
+placeholder.field.program_name: Название программы
+placeholder.field.programs: Программы
+placeholder.field.admission_tracks: Треки поступления
+placeholder.field.applicable_majors: Подходящие специальности
+placeholder.field.track_name: Название трека
+placeholder.field.track_description: Описание трека
+placeholder.field.minimum_requirements: Минимальные требования
+placeholder.field.scholarships: Стипендии
+placeholder.field.merit_scholarships: Академические стипендии
+placeholder.field.need_based_aid: Финансовая помощь по нуждаемости
+placeholder.field.cost: Стоимость
+placeholder.field.total_cost: Общая стоимость
+placeholder.field.cost_breakdown: Структура стоимости
+placeholder.field.financial_aid: Финансовая помощь
+placeholder.field.roi_score: Показатель ROI
+placeholder.field.estimated_salary: Оценочная зарплата
+placeholder.field.language_requirements: Языковые требования
+placeholder.field.admission_probability: Вероятность поступления
+placeholder.field.best_track: Лучший трек
+placeholder.field.verification_date: Дата проверки
+placeholder.field.universities_count: Количество университетов
+placeholder.field.countries_count: Количество стран
 guide.academic.act: ACT — стандартизированный вступительный экзамен, включающий разделы по английскому, математике, чтению и научному мышлению.
 guide.academic.aptotal: Показывает суммарный результат по нескольким предметам программы углубленного уровня (AP).
 guide.academic.default: Это академический показатель, который используется одним или несколькими треками поступления в датасете UniSearch.
@@ -339,7 +369,7 @@ guide.glossary.match_score: Служебная оценка того, наско
 guide.glossary.mode_all: Нужно выполнить все перечисленные языковые требования.
 guide.glossary.mode_any: Достаточно выполнить хотя бы один из перечисленных языковых вариантов.
 guide.glossary.requirements: Минимальные баллы, необходимые для рассмотрения по треку.
-guide.glossary.stats_avg: Типичные баллы зачисленных студентов по этому треку.
+guide.glossary.stats_avg: Средние баллы зачисленных студентов по этому треку.
 guide.glossary.swr: Кэш: сначала показываются уже загруженные данные, потом они обновляются в фоне.
 guide.glossary.term.admission_track: Трек поступления
 guide.glossary.term.language_requirements: Языковые требования
@@ -458,3 +488,10 @@ unifit.warning.cancel: Отмена
 unifit.warning.confirm: Понял(а)
 unifit.warning.desc: UniFit работает точнее, когда в профиле есть результаты экзаменов или языков.
 unifit.warning.title: Недостаточно данных профиля
+average_admitted_unavailable: Нет подтвержденных данных о средних баллах зачисленных.
+ Ð´Ð°Ð½Ð½ÑÑ
+ Ð¾ ÑÑÐµÐ´Ð½Ð¸Ñ
+ Ð±Ð°Ð»Ð»Ð°Ñ
+ Ð·Ð°ÑÐ¸ÑÐ»ÐµÐ½Ð½ÑÑ
+.
+roi.context.no_salary_data: Для этого университета нет подтвержденных данных о зарплатах выпускников.

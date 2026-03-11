@@ -192,43 +192,23 @@ def _translate_university_description(university: Dict[str, Any], search_lang: A
     u = university if isinstance(university, dict) else {}
     source = str(u.get("description") or "").strip()
     lang = _normalize_search_lang(search_lang)
-    if lang == SEARCH_LANG_ENG:
-        return source
-
     uid = str(u.get("id") or "").strip()
     pack = _translation_lang_pack(lang)
-    desc_map = (
-        pack.get("university_descriptions")
-        if isinstance(pack.get("university_descriptions"), dict)
-        else {}
-    )
-    if uid:
-        localized = str(desc_map.get(uid, "")).strip()
-        if localized:
-            return localized
 
     if source:
+        if lang == SEARCH_LANG_ENG:
+            return source
+        desc_map = (
+            pack.get("university_descriptions")
+            if isinstance(pack.get("university_descriptions"), dict)
+            else {}
+        )
+        if uid:
+            localized = str(desc_map.get(uid, "")).strip()
+            if localized:
+                return localized
         return source
-
-    templates = pack.get("templates") if isinstance(pack.get("templates"), dict) else {}
-    tpl_with_tags = str(templates.get("desc_with_tags") or "{name} — university in {city}, {country}. Strengths: {tags}.")
-    tpl_no_tags = str(templates.get("desc_no_tags") or "{name} — university in {city}, {country}.")
-
-    name = _translate_university_name(uid, str(u.get("name") or ""), lang)
-    location = u.get("location") if isinstance(u.get("location"), dict) else {}
-    city = _translate_group_value("city", location.get("city"), lang)
-    country = _translate_group_value("country", location.get("country"), lang)
-    tags = [str(x or "").strip() for x in (u.get("tags") or []) if str(x or "").strip()]
-    tags_localized = [_translate_group_value("tag", x, lang) for x in tags][:4]
-
-    template = tpl_with_tags if tags_localized else tpl_no_tags
-    return (
-        template
-        .replace("{name}", name or str(u.get("name") or ""))
-        .replace("{city}", city or str(location.get("city") or ""))
-        .replace("{country}", country or str(location.get("country") or ""))
-        .replace("{tags}", ", ".join(tags_localized))
-    )
+    return ""
 
 
 def _translate_maybe_list(value: Any, translator) -> Any:
@@ -244,7 +224,9 @@ def _localize_university_payload(university: Dict[str, Any], search_lang: Any) -
         return {}
     lang = _normalize_search_lang(search_lang)
     if lang == SEARCH_LANG_ENG:
-        return copy.deepcopy(university)
+        u = copy.deepcopy(university)
+        u["description"] = _translate_university_description(u, lang)
+        return u
 
     u = copy.deepcopy(university)
     uid = str(u.get("id") or "").strip()

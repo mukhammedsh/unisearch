@@ -73,13 +73,23 @@ Reference data:
 
 ## Run locally
 ### 1) Backend
+Use Python `3.12.x` (recommended for stable dependency compatibility).
+
 ```bash
 cd backend
-python -m venv venv
-venv\Scripts\activate
+python -m venv .venv
+# Windows (PowerShell):
+.\.venv\Scripts\Activate.ps1
+# macOS/Linux:
+# source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+python -m uvicorn app.main:app --reload --port 8000
 ```
+
+Notes:
+- `.venv/` is local per developer and is ignored by Git.
+- If project path was moved/renamed and CLI launchers break, recreate env:
+  `deactivate` -> remove `.venv` -> `python -m venv .venv` -> reinstall requirements.
 
 ### 2) Frontend
 ```bash
@@ -123,7 +133,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.5.3
+APP_VERSION=2.5.7
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -363,6 +373,46 @@ tests/
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
 
 ## Changelog
+### 2.5.7 (2026-03-11) - explicit unknown placeholders, truth-safe frontend fallbacks, and no generated university copy
+- Synchronized runtime/package version to `2.5.7` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
+- Preserved restored ranking data in `backend/data/universities.json`:
+  - `16` universities remain `official`,
+  - `1` remains `excluded`,
+  - `3` remain `not_listed`;
+  - frontend no longer presents internal fallback positions as if they were official published ranks.
+- Removed backend-generated university description fallback text:
+  - when `description` is empty, API now returns empty description instead of template-generated copy.
+- Added field-specific unknown placeholders across backend-driven frontend rendering:
+  - university cards,
+  - university detail header/overview/programs/admission/finance/ROI blocks,
+  - ranking page cards,
+  - homepage live coverage counters.
+- Replaced misleading negative assumptions caused by missing backend fields:
+  - missing `financial_aid.merit_based` / `financial_aid.need_based` no longer render as explicit "no aid";
+  - missing admission requirements no longer render as "None";
+  - missing finance breakdown no longer renders as invented tuition-only breakdown.
+- Added a reusable localization-aware placeholder helper for unknown backend fields and wired new translation keys for `eng`, `ru`, and `kz`.
+- Hardened truth audit / factor refresh behavior:
+  - factor refresh no longer persists stale acceptance-derived raw metrics;
+  - social/academic intensity in `factors_meta` is now documented as a UniSearch proxy signal rather than an official university fact;
+  - dataset audit passes with `0` errors and `0` warnings after refresh.
+
+### 2.5.6 (2026-03-11) - UniFit location semantics, verified factor refresh, and flag quality fixes
+- Synchronized project runtime/package version to `2.5.6` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
+- UniFit location tradeoff was clarified end-to-end:
+  - dataset and factor refresh pipeline now store canonical `city_vs_outside_city` while keeping backward-compatible `city_vs_campus`;
+  - backend fallback logic no longer uses invented hardcoded city buckets and instead derives the location factor only from traceable city population metrics already stored in `factors_meta`;
+  - UI wording was updated from generic "life" phrasing to study/campus-oriented wording.
+- Refreshed `backend/data/universities.json` from traceable external sources via `backend/scripts/refresh_university_factors.py`:
+  - `20/20` OpenAlex institution matches;
+  - `20/20` city population matches using Open-Meteo/Wikidata;
+  - dataset audit passed without errors or warnings.
+- Universities-page UniFit controls received spacing cleanup between slider titles and their left/right extremes for better readability.
+- Country flags were migrated to SVG for higher fidelity and then visually tuned back toward the previous compact style:
+  - restored rectangular appearance with reduced rounding;
+  - removed image cropping by switching from `cover` to `contain`;
+  - adjusted sizing so flags remain visible in university/ranking location rows and custom selects.
+
 ### 2.5.5 (2026-02-26) - i18n completeness, fallback consistency, and range-wrap stability
 - Closed missing backend-driven translation gaps in `backend/data/universities_translations.json` for `ru` and `kz`:
   - added `groups.study_mode.online`

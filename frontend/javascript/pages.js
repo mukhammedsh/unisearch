@@ -35,6 +35,8 @@ import {
   translateTemplate,
   translateUniversityDescription,
   translateUniversityName,
+  translateUnknownField,
+  translateUnknownWord,
   translateWord,
 } from "./university-translations.js";
 import { bindInfoTooltips } from "./tooltip.js";
@@ -176,6 +178,25 @@ function trProgramName(value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
   return translateProgramName(raw, raw);
+}
+
+function unknownFieldText(fieldKey, fallbackField) {
+  return translateUnknownWord(fieldKey, fallbackField);
+}
+
+function unknownLabelText(fieldLabel, fallbackField = "") {
+  return translateUnknownField(fieldLabel, fallbackField);
+}
+
+function textOrUnknown(value, fieldKey, fallbackField) {
+  const text = String(value ?? "").trim();
+  return text || unknownFieldText(fieldKey, fallbackField);
+}
+
+function moneyOrUnknown(value, fieldKey, fallbackField) {
+  return Number.isFinite(Number(value))
+    ? moneyUSD(value)
+    : unknownFieldText(fieldKey, fallbackField);
 }
 
 function normalizeTranslationKey(value) {
@@ -1110,9 +1131,9 @@ export function initUniversitiesPage() {
         el.locationSlider,
         "city_vs_campus",
         "universities.tradeoff.location.left",
-        "Big City Life",
+        "Study in City",
         "universities.tradeoff.location.right",
-        "Cozy Campus",
+        "Study Outside City",
         el.locationLabel
     );
 
@@ -1382,9 +1403,9 @@ export function initUniversitiesPage() {
             el.locationLabel,
             state.city_vs_campus,
             "universities.tradeoff.location.left",
-            "Big City Life",
+            "Study in City",
             "universities.tradeoff.location.right",
-            "Cozy Campus"
+            "Study Outside City"
         );
     }
     
@@ -1855,12 +1876,12 @@ export function initUniversitiesPage() {
     // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
-        const name = trUniversityName(u);
+        const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
         const countryRaw = nested(u, ["location", "country"], "");
         const cityRaw = nested(u, ["location", "city"], "");
         const cityText = escapeHtml(trCity(cityRaw));
         const countryText = escapeHtml(trCountry(countryRaw));
-        let locString = cityText;
+        let locString = `<span class="uni-loc-line">${escapeHtml(unknownFieldText("placeholder.field.location", "Location"))}</span>`;
         if (countryRaw) {
             const flagHtml = getFlagImg(countryRaw);
             locString = cityRaw 
@@ -1908,14 +1929,15 @@ export function initUniversitiesPage() {
         const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);
 
         const badges = [];
-        const acc = u.academics?.acceptance_rate_percent;
-        const acceptanceLabel = escapeHtml(
-            tFormat(
+        const acc = Number(u?.academics?.acceptance_rate_percent);
+        const acceptanceText = Number.isFinite(acc)
+            ? tFormat(
                 "universities.badge.acceptance",
-                { value: String(acc ?? "—") },
-                `Acceptance Rate: ${String(acc ?? "—")}%`
+                { value: String(Math.round(acc * 100) / 100) },
+                `Acceptance Rate: ${Math.round(acc * 100) / 100}%`
             )
-        );
+            : unknownFieldText("acceptance_rate", "Acceptance Rate");
+        const acceptanceHtml = `<div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${escapeHtml(acceptanceText)}</span></div>`;
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
@@ -1986,13 +2008,13 @@ export function initUniversitiesPage() {
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
-            <div class="uni-price"><small>${escapeHtml(t("universities.card.est_cost_year", "Est. Cost/Year"))}</small><b>${moneyUSD(cost)}</b></div>
+            <div class="uni-price"><small>${escapeHtml(t("universities.card.est_cost_year", "Est. Cost/Year"))}</small><b>${escapeHtml(moneyOrUnknown(cost, "placeholder.field.cost", "Cost"))}</b></div>
             <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
             </div>
             <div class="uni-body">
                         <h3 class="uni-title" title="${safeName}">${safeName}</h3>
             <div class="uni-loc">📍 ${locString}</div>
-            <div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${acceptanceLabel}</span></div>
+            ${acceptanceHtml}
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
             </div>
@@ -2053,21 +2075,38 @@ export async function initUniversityPage() {
     const uniId = String(u.id || id);
 
     // 1. Шапка
-    const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = val || "—"; };
-    const translatedName = trUniversityName(u);
+    const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = String(val ?? "").trim(); };
+    const translatedName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
     const translatedCity = trCity(u?.location?.city || "");
     const translatedCountry = trCountry(u?.location?.country || "");
     const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
     const annualCostForTrack = (track) => modeAwareAnnualCost((track && track.finance_override) || u.finance || {}, profileStudyMode);
     setTxt("detailName", translatedName); 
-    setTxt("detailLocation", u.location ? `${translatedCity}, ${translatedCountry}` : "—");
+    const detailLocationEl = document.getElementById("detailLocation");
+    if (detailLocationEl) {
+        const locationParts = [translatedCity, translatedCountry].filter((part) => String(part || "").trim().length > 0);
+        const detailFlag = getFlagImg(u?.location?.country || "");
+        if (locationParts.length) {
+            const locationText = escapeHtml(locationParts.join(", "));
+            detailLocationEl.innerHTML = detailFlag
+                ? `<span class="d-location-emoji" aria-hidden="true">📍</span><span class="d-location-line">${detailFlag}<span>${locationText}</span></span>`
+                : `<span class="d-location-emoji" aria-hidden="true">📍</span><span>${locationText}</span>`;
+        } else {
+            detailLocationEl.textContent = unknownFieldText("placeholder.field.location", "Location");
+        }
+    }
     
     let minPrice = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
     if (u.admission_tracks) {
         const prices = u.admission_tracks.map((t) => annualCostForTrack(t));
         if (prices.length > 0) minPrice = Math.min(...prices);
     }
-    setTxt("detailPrice", tFormat("university.price_from", { price: moneyUSD(minPrice) }, `from ${moneyUSD(minPrice)} / year`));
+    setTxt(
+        "detailPrice",
+        Number.isFinite(Number(minPrice))
+            ? tFormat("university.price_from", { price: moneyUSD(minPrice) }, `from ${moneyUSD(minPrice)} / year`)
+            : unknownFieldText("placeholder.field.cost", "Cost")
+    );
     setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
     const coverEl = document.getElementById("detailCover");
@@ -2080,14 +2119,20 @@ export async function initUniversityPage() {
     }
 
     const siteBtn = document.getElementById("detailWebsite");
-    if (siteBtn && u.website) {
+    if (siteBtn) {
         const safeWebsite = safeUrl(u.website);
         if (safeWebsite) {
             siteBtn.href = safeWebsite;
             siteBtn.style.display = "inline-flex";
+            siteBtn.classList.remove("d-site-link--disabled");
+            siteBtn.removeAttribute("aria-disabled");
+            siteBtn.title = t("university.visit_website", "Visit Official Website");
         } else {
             siteBtn.removeAttribute("href");
-            siteBtn.style.display = "none";
+            siteBtn.style.display = "inline-flex";
+            siteBtn.classList.add("d-site-link--disabled");
+            siteBtn.setAttribute("aria-disabled", "true");
+            siteBtn.title = unknownFieldText("placeholder.field.official_website", "Official website");
         }
     }
     const mapBtn = document.getElementById("detailMapLink");
@@ -2147,15 +2192,24 @@ export async function initUniversityPage() {
         const acceptanceRate = Number.isFinite(acceptanceDirect)
             ? acceptanceDirect
             : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
-        let rankHtml = "<span>—</span>";
-        if (u.rank) {
-            let trophy = "";
-            if (u.rank === 1) trophy = "🥇 "; else if (u.rank === 2) trophy = "🥈 "; else if (u.rank === 3) trophy = "🥉 ";
-            rankHtml = `<span class="d-rank-emphasis">${trophy}#${u.rank}</span>`;
+        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
+        const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
+        const officialRank = Number.isFinite(Number(u?.rank)) && Number(u.rank) > 0 && rankStatus === "official";
+        const acceptanceDisplay = acceptanceRate === null
+            ? unknownFieldText("acceptance_rate", "Acceptance Rate")
+            : `${Math.round(acceptanceRate * 100) / 100}%`;
+        const acceptanceRow = `<div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span><span>${escapeHtml(acceptanceDisplay)}</span></div>`;
+        let rankHtml = `<span>${escapeHtml(unknownFieldText("placeholder.field.global_rank", "Global Rank"))}</span>`;
+        if (officialRank) {
+            rankHtml = `<span class="d-rank-emphasis">#${u.rank}</span>`;
+        } else if (rankStatus) {
+            rankHtml = `<span>${escapeHtml(t(`ranking.source_status.${rankStatus}`, rankStatus))}</span>`;
         }
-        
-        const campusSizeRaw = String(u.student_life?.size || "Medium");
-        const campusSize = escapeHtml(translateDataValue("campus_size", campusSizeRaw, campusSizeRaw));
+
+        const campusSizeRaw = typeof u.student_life?.size === "string" ? String(u.student_life.size).trim() : "";
+        const campusSize = campusSizeRaw
+            ? escapeHtml(translateDataValue("campus_size", campusSizeRaw, campusSizeRaw))
+            : escapeHtml(unknownFieldText("campus_size", "Campus Size"));
         const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
         const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
         const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m² (up to 50 ha)"));
@@ -2164,7 +2218,7 @@ export async function initUniversityPage() {
         const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
         recDiv.innerHTML = `
             <div class="d-kv"><span>${escapeHtml(translateWord("global_rank", "Global Rank"))}</span>${rankHtml}</div>
-            <div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span><span>${acceptanceRate === null ? "—" : `${Math.round(acceptanceRate * 100) / 100}%`}</span></div>
+            ${acceptanceRow}
             <div class="d-kv d-kv--last">
               <span class="d-kv-label">
                 ${campusSizeLabel}
@@ -2190,7 +2244,7 @@ export async function initUniversityPage() {
          const translatedDescription = trUniversityDescription(u);
          const description = translatedDescription
             ? `<p class="uni-description">${escapeHtml(String(translatedDescription)).replace(/\n/g, "<br>")}</p>`
-            : "";
+            : `<p class="uni-description uni-description--placeholder">${escapeHtml(unknownFieldText("placeholder.field.description", "Description"))}</p>`;
          const tags = Array.isArray(u.tags)
             ? u.tags.map((t) => String(t || "").trim()).filter(Boolean)
             : (typeof u.tags === "string" ? u.tags.split(",").map((t) => t.trim()).filter(Boolean) : []);
@@ -2203,17 +2257,26 @@ export async function initUniversityPage() {
                     </div>
                 </div>
               `
-            : "";
-         const studentCount = u.student_count ? new Intl.NumberFormat('en-US').format(u.student_count) : "—";
+            : `
+                <div class="uni-tags-wrap">
+                    <div class="uni-tags-title">${escapeHtml(translateWord("focus_tags", "Focus Tags"))}</div>
+                    <div class="uni-tags-list">
+                        <span class="uni-tag uni-tag--placeholder">${escapeHtml(unknownFieldText("focus_tags", "Focus Tags"))}</span>
+                    </div>
+                </div>
+              `;
+         const studentCount = Number.isFinite(Number(u?.student_count))
+            ? new Intl.NumberFormat("en-US").format(Number(u.student_count))
+            : unknownFieldText("total_students", "Total Students");
          const formats = Array.isArray(u.academics?.formats)
-            ? u.academics.formats.map((x) => escapeHtml(trStudyMode(String(x)))).join(", ")
-            : escapeHtml(trStudyMode("On-campus"));
+            ? u.academics.formats.map((x) => escapeHtml(trStudyMode(String(x)))).filter(Boolean).join(", ")
+            : "";
          
          extraDiv.innerHTML = `
             ${description}
             ${tagsHtml}
-            <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${studentCount}</span></div>
-            <div class="d-kv d-kv--last"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(trStudyMode("On-campus"))}</span></div>
+            <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
+            <div class="d-kv d-kv--last"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(unknownFieldText("study_formats", "Study Formats"))}</span></div>
          `;
     }
 
@@ -2230,7 +2293,7 @@ export async function initUniversityPage() {
                 .replace(/\b\w/g, (c) => c.toUpperCase());
 
         const formatProgramValue = (key, value) => {
-            if (value === null || value === undefined || value === "") return "—";
+            if (value === null || value === undefined || value === "") return "";
             if (Array.isArray(value)) {
                 return value.map((x) => {
                     const raw = String(x);
@@ -2252,7 +2315,7 @@ export async function initUniversityPage() {
             progDiv.innerHTML = `
                 <div class="program-list">
                     ${programs.map((program, idx) => {
-                        const renderValueCell = (key, rawValue, formattedValue) => {
+                        const renderValueCell = (label, key, rawValue, formattedValue) => {
                             if (Array.isArray(rawValue) && rawValue.length) {
                                 const translatedItems = rawValue.map((item) => {
                                     const raw = String(item);
@@ -2284,21 +2347,21 @@ export async function initUniversityPage() {
                                         </div>
                                     `;
                                 }
-                                return `<span class="program-card-value program-card-value--empty">${escapeHtml(translateWord("not_specified", "Not specified"))}</span>`;
+                                return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
                             }
-                            if (formattedValue === "—") {
-                                return `<span class="program-card-value program-card-value--empty">${escapeHtml(translateWord("not_specified", "Not specified"))}</span>`;
+                            if (!String(formattedValue || "").trim()) {
+                                return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
                             }
                             return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
                         };
 
                         const rows = [
-                            {
+                            ...(Number.isFinite(Number(program.acceptance_rate_percent)) ? [{
                                 label: translateWord("acceptance_rate", "Acceptance Rate"),
                                 key: "acceptance_rate_percent",
                                 rawValue: program.acceptance_rate_percent,
                                 value: formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent),
-                            },
+                            }] : []),
                             {
                                 label: translateWord("study_levels", "Study Levels"),
                                 key: "study_levels",
@@ -2346,19 +2409,19 @@ export async function initUniversityPage() {
                                 <div class="program-card-head">
                                     <span class="program-card-index">${escapeHtml(translateWord("program", "Program"))} ${idx + 1}</span>
                                     <div class="program-card-meta">
-                                        ${durationMeta !== "—" ? `<span class="program-pill">${escapeHtml(durationMeta)}</span>` : ""}
-                                        ${modeMeta !== "—" ? `<span class="program-pill">${escapeHtml(modeMeta)}</span>` : ""}
+                                        ${durationMeta ? `<span class="program-pill">${escapeHtml(durationMeta)}</span>` : ""}
+                                        ${modeMeta ? `<span class="program-pill">${escapeHtml(modeMeta)}</span>` : ""}
                                         ${levelsMeta ? `<span class="program-pill">${escapeHtml(levelsMeta)}</span>` : ""}
                                     </div>
                                 </div>
                                 <div class="program-card-title">
-                                    ${escapeHtml(trProgramName(program.name || `${translateWord("program", "Program")} ${idx + 1}`))}
+                                    ${escapeHtml(trProgramName(program.name || "") || unknownFieldText("placeholder.field.program_name", "Program name"))}
                                 </div>
                                 <div class="program-card-rows">
                                     ${allRows.map((row) => `
                                         <div class="program-card-row">
                                             <span class="program-card-label">${escapeHtml(row.label)}</span>
-                                            ${renderValueCell(row.key, row.rawValue, row.value)}
+                                            ${renderValueCell(row.label, row.key, row.rawValue, row.value)}
                                         </div>
                                     `).join("")}
                                 </div>
@@ -2367,12 +2430,15 @@ export async function initUniversityPage() {
                     }).join("")}
                 </div>
             `;
-        } else if (u.academics?.majors) {
-            progDiv.innerHTML = u.academics.majors
-                .map(m => `<span class="program-major-chip">${escapeHtml(trProgramName(String(m)))}</span>`)
-                .join(" ");
         } else {
-            progDiv.innerHTML = `<div class="program-empty">${escapeHtml(translateWord("no_program_data", "No program data available."))}</div>`;
+            const majors = Array.isArray(u?.academics?.majors)
+                ? u.academics.majors
+                    .map((m) => String(m || "").trim())
+                    .filter(Boolean)
+                : [];
+            progDiv.innerHTML = majors.length
+                ? majors.map((m) => `<span class="program-major-chip">${escapeHtml(trProgramName(m))}</span>`).join(" ")
+                : `<div class="program-empty">${escapeHtml(unknownFieldText("placeholder.field.programs", "Programs"))}</div>`;
         }
         applyPercentWidths(progDiv);
     }
@@ -2387,7 +2453,7 @@ export async function initUniversityPage() {
             ? `<div class="chance-warning">${escapeHtml(translateTemplate("add_profile_evidence", "Add exam scores or language evidence in your profile to unlock a reliable {chance} estimate for this university.", { chance: aiName("chance") }))}</div>`
             : "";
         if (!u.admission_tracks || u.admission_tracks.length === 0) {
-            reqDiv.innerHTML = `${warningHTML}<div class="admission-empty-state">${escapeHtml(translateWord("no_admission_tracks_data", "No specific admission tracks data."))}</div>`;
+            reqDiv.innerHTML = `${warningHTML}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_tracks", "Admission tracks"))}</div>`;
         } else {
             const tracks = Array.isArray(u.admission_tracks) ? u.admission_tracks : [];
             const filteredEntries = tracks
@@ -2423,7 +2489,7 @@ export async function initUniversityPage() {
                         ).join("")}
                     </div>`;
                 } else {
-                    majorsBadge = `<span class="track-major-all">${escapeHtml(translateWord("for_all_majors", "For all majors"))}</span>`;
+                    majorsBadge = `<span class="track-major-all">${escapeHtml(unknownFieldText("placeholder.field.applicable_majors", "Applicable majors"))}</span>`;
                 }
                 
                 const trackPriceOverride = track.finance_override?.total_cost_year_usd;
@@ -2432,6 +2498,7 @@ export async function initUniversityPage() {
                 const trackPriceTitle = isGrantTrack
                     ? (trackPriceOverride != null ? translateWord("est_net_cost", "Est. Net Cost") : translateWord("base_cost_before_grant", "Base Cost (before grant)"))
                     : translateWord("est_cost", "Est. Cost");
+                const trackPriceText = moneyOrUnknown(trackPrice, "placeholder.field.cost", "Cost");
 
                 // Требования
                 const reqSplit = splitExamEntries(track.requirements || {});
@@ -2449,7 +2516,7 @@ export async function initUniversityPage() {
                     renderExamGroup(translateWord("academic_exams", "ACADEMIC EXAMS"), avgSplit.acad, "#047857") +
                     renderExamGroup(translateWord("language_exams", "LANGUAGE EXAMS"), avgSplit.lang, "#047857");
                 } else {
-                avgList = `<div class="track-muted-italic">${escapeHtml(translateWord("not_available", "Not available"))}</div>`;
+                avgList = `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
                 }
 
                 const languageReqInfo = renderLanguageRequirements(track);
@@ -2463,7 +2530,12 @@ export async function initUniversityPage() {
                         </ul>
                     </div>
                     `
-                    : "";
+                    : `
+                    <div class="track-extra-req">
+                        <div class="track-extra-req-title">${escapeHtml(translateWord("extra_requirements", "Extra Requirements"))}</div>
+                        <div class="track-muted-italic">${escapeHtml(unknownFieldText("extra_requirements", "Extra Requirements"))}</div>
+                    </div>
+                    `;
 
                 // Гранты
                 let grantsInfo = "";
@@ -2504,31 +2576,40 @@ export async function initUniversityPage() {
                             }).join("")}
                         </div>
                     </div>`;
+                } else {
+                    grantsInfo = `
+                    <div class="track-grants">
+                        <div class="track-grants-title">${escapeHtml(translateWord("available_grants_aid", "AVAILABLE GRANTS & AID"))}:</div>
+                        <div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.scholarships", "Scholarships"))}</div>
+                    </div>`;
                 }
+
+                const trackDescription = trTrackDescription(u.id, track.id, String(track.description || ""));
+                const trackLabel = trTrackLabel(String(track.label || "")) || unknownFieldText("placeholder.field.track_name", "Track name");
 
                 tracksHTML += `
                 <div class="track-card${isGrantTrack ? " track-card--grant" : ""}">
                     <div class="track-head">
                         <div class="track-head-main">
-                            <h4 class="track-title">${escapeHtml(trTrackLabel(String(track.label || translateWord("track", "Track"))))}</h4>
+                            <h4 class="track-title">${escapeHtml(trackLabel)}</h4>
                             ${renderTrackFundingBadge(track)}
                             ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
-                            <p class="track-desc">${escapeHtml(trTrackDescription(u.id, track.id, String(track.description || ""))).replace(/\n/g, "<br>")}</p>
+                            <p class="track-desc">${escapeHtml(trackDescription || unknownFieldText("placeholder.field.track_description", "Track description")).replace(/\n/g, "<br>")}</p>
                         </div>
                         <div class="track-price">
                             <div class="track-price-label">${trackPriceTitle}</div>
-                            <div class="track-price-value">${moneyUSD(trackPrice)}</div>
+                            <div class="track-price-value">${escapeHtml(trackPriceText)}</div>
                         </div>
                     </div>
                     
                     <div class="track-stats-grid">
                         <div class="track-stats-box track-stats-box--min">
                             <div class="track-stats-title">${escapeHtml(translateWord("minimum_to_apply", "Minimum To Apply"))}</div>
-                            <div class="track-stats-values">${minList || escapeHtml(translateWord("none", "None"))}</div>
+                            <div class="track-stats-values">${minList || escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>
                         </div>
                         <div class="track-stats-box track-stats-box--avg">
-                            <div class="track-stats-title track-stats-title--avg">${escapeHtml(translateWord("real_average_admitted", "Real Average (Admitted)"))}</div>
+                            <div class="track-stats-title track-stats-title--avg">${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}</div>
                             <div class="track-stats-values">${avgList}</div>
                         </div>
                     </div>
@@ -2562,12 +2643,18 @@ export async function initUniversityPage() {
         // Блок скидок
         if (scholDiv) {
             const fa = u.finance.financial_aid || {};
-            const meritHtml = fa.merit_based 
-                ? `<div class="scholarship-line scholarship-line--positive"><span class="scholarship-line-icon">✅</span> ${escapeHtml(translateWord("merit_based_scholarships_available", "Merit-based scholarships available"))}</div>` 
-                : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">❌</span> ${escapeHtml(translateWord("no_merit_based_scholarships", "No merit-based scholarships"))}</div>`;
-            const needHtml = fa.need_based 
-                ? `<div class="scholarship-line scholarship-line--positive"><span class="scholarship-line-icon">✅</span> ${escapeHtml(translateWord("need_based_financial_aid", "Need-based financial aid"))}</div>` 
-                : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">❌</span> ${escapeHtml(translateWord("no_need_based_aid", "No need-based aid"))}</div>`;
+            const hasMerit = typeof fa.merit_based === "boolean";
+            const hasNeed = typeof fa.need_based === "boolean";
+            const meritHtml = hasMerit
+                ? (fa.merit_based
+                    ? `<div class="scholarship-line scholarship-line--positive"><span class="scholarship-line-icon">✅</span> ${escapeHtml(translateWord("merit_based_scholarships_available", "Merit-based scholarships available"))}</div>`
+                    : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">❌</span> ${escapeHtml(translateWord("no_merit_based_scholarships", "No merit-based scholarships"))}</div>`)
+                : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">?</span> ${escapeHtml(unknownFieldText("placeholder.field.merit_scholarships", "Merit-based scholarships"))}</div>`;
+            const needHtml = hasNeed
+                ? (fa.need_based
+                    ? `<div class="scholarship-line scholarship-line--positive"><span class="scholarship-line-icon">✅</span> ${escapeHtml(translateWord("need_based_financial_aid", "Need-based financial aid"))}</div>`
+                    : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">❌</span> ${escapeHtml(translateWord("no_need_based_aid", "No need-based aid"))}</div>`)
+                : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">?</span> ${escapeHtml(unknownFieldText("placeholder.field.need_based_aid", "Need-based aid"))}</div>`;
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
@@ -2578,7 +2665,9 @@ export async function initUniversityPage() {
                 const prices = u.admission_tracks.map((t) => annualCostForTrack(t)).filter((p) => p > 0);
                 if (prices.length > 0) minTotal = Math.min(...prices);
             }
-            priceBig.innerHTML = `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`;
+            priceBig.innerHTML = Number.isFinite(Number(minTotal))
+                ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`
+                : escapeHtml(unknownFieldText("placeholder.field.cost", "Cost"));
         }
         
         // Карточки треков
@@ -2592,6 +2681,7 @@ export async function initUniversityPage() {
                 const fData = track.finance_override || u.finance;
                 const total = modeAwareAnnualCost(fData || {}, profileStudyMode);
                 const breakdown = modeAwareBreakdown(fData || {}, profileStudyMode);
+                const totalText = moneyOrUnknown(total, "placeholder.field.total_cost", "Total cost");
 
                 let barHTML = `<div class="cost-progress-bar">`;
                 let legendHTML = `<div class="cost-legend">`;
@@ -2599,7 +2689,7 @@ export async function initUniversityPage() {
                 const colorClasses = ["cost-color-1", "cost-color-2", "cost-color-3", "cost-color-4", "cost-color-5"];
                 let i = 0;
 
-                if (Object.keys(breakdown).length > 0) {
+                if (Object.keys(breakdown).length > 0 && Number.isFinite(Number(total)) && Number(total) > 0) {
                     for (const [key, val] of Object.entries(breakdown)) {
                         const colorClass = colorClasses[i % colorClasses.length];
                         const numericVal = Number(val) || 0;
@@ -2619,7 +2709,7 @@ export async function initUniversityPage() {
                     }
                 } else {
                     barHTML += `<div class="cost-progress-segment cost-color-1" data-width-pct="100"></div>`;
-                    legendHTML += `<div class="cost-legend-single">${escapeHtml(translateCostBreakdownLabel("Tuition"))}: <b>${moneyUSD(total)}</b></div>`;
+                    legendHTML += `<div class="cost-legend-single">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
                 }
                 barHTML += `</div>`;
                 legendHTML += `</div>`;
@@ -2627,10 +2717,10 @@ export async function initUniversityPage() {
                 financeHTML += `
                 <div class="finance-card${isGrantTrack ? " finance-card--grant" : ""}">
                     <div class="finance-header">
-                        <div class="finance-track-name">${escapeHtml(trTrackLabel(String(track.label || translateWord("general_tuition", "General Tuition"))))}</div>
+                        <div class="finance-track-name">${escapeHtml(trTrackLabel(String(track.label || "")) || unknownFieldText("placeholder.field.track_name", "Track name"))}</div>
                         <div class="finance-total${isGrantTrack ? " finance-total--grant" : ""}">
                             <small>${escapeHtml(translateWord("total_per_year", "Total / Year"))}</small>
-                            <span>${moneyUSD(total)}</span>
+                            <span>${escapeHtml(totalText)}</span>
                         </div>
                     </div>
                     
@@ -2646,7 +2736,12 @@ export async function initUniversityPage() {
                                 ${track.scholarships.map(s => `<li>${escapeHtml(translateAdmissionText(String(s.name || ""), String(s.name || "")))}</li>`).join("")}
                             </ul>
                         </div>
-                    ` : ''}
+                    ` : `
+                        <div class="finance-footer">
+                            <div class="finance-grant-title">${escapeHtml(translateWord("available_scholarships", "Available Scholarships"))}:</div>
+                            <div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.scholarships", "Scholarships"))}</div>
+                        </div>
+                    `}
                 </div>
                 `;
             });
@@ -2655,7 +2750,10 @@ export async function initUniversityPage() {
             const roi = uniRoi || {};
             const roiTitle = escapeHtml(t("roi.title", String(roi.title || "Estimated ROI (Return on Investment)")));
             const roiValueNum = Number(roi.roi_value);
-            const roiValue = Number.isFinite(roiValueNum) ? roiValueNum.toFixed(1) : "0.0";
+            const roiHasSalaryData = String(roi.context_type || "") !== "no_salary_data" && (Number(roi.salary_used_usd) || 0) > 0;
+            const roiValue = roiHasSalaryData && Number.isFinite(roiValueNum)
+                ? roiValueNum.toFixed(1)
+                : escapeHtml(unknownFieldText("placeholder.field.roi_score", "ROI score"));
             const userSalary = Number(roi.salary_used_usd) || 0;
             const roiTone = String(roi.roi_tone || "warn");
             const roiLabel = escapeHtml(localizeRoiLabel(roi.roi_label, roiTone));
@@ -2709,17 +2807,17 @@ export async function initUniversityPage() {
                     <div class="roi-metrics-row">
                         <div class="roi-metric">
                             <div class="roi-metric-label">${escapeHtml(t("roi.estimated_salary", "Est. Graduate Salary"))}</div>
-                            <div class="roi-metric-value">${moneyUSD(userSalary)}</div>
+                            <div class="roi-metric-value">${roiHasSalaryData ? moneyUSD(userSalary) : escapeHtml(unknownFieldText("placeholder.field.estimated_salary", "Estimated salary"))}</div>
                             <div class="roi-metric-note">${escapeHtml(t("roi.per_year_early", "per year (early career)"))}</div>
                         </div>
                         <div class="roi-metrics-divider"></div>
                         <div class="roi-metric">
                             <div class="roi-metric-label">${escapeHtml(t("roi.score", "ROI Score"))}</div>
                             <div class="roi-metric-value roi-metric-value--accent ${roiToneClass}">
-                                ${roiValue}x
+                                ${roiHasSalaryData ? `${roiValue}x` : roiValue}
                             </div>
                             <div class="roi-metric-note roi-metric-note--tone ${roiToneClass}">
-                                ${roiLabel}
+                                ${roiHasSalaryData ? roiLabel : escapeHtml(unknownFieldText("placeholder.field.roi_score", "ROI score"))}
                             </div>
                         </div>
                     </div>
@@ -2728,6 +2826,16 @@ export async function initUniversityPage() {
 
             finDiv.innerHTML = `<div class="finance-grid-new">${financeHTML}</div>` + roiBlock;
             applyPercentWidths(finDiv);
+        }
+    } else {
+        if (scholDiv) {
+            scholDiv.innerHTML = `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">?</span> ${escapeHtml(unknownFieldText("placeholder.field.financial_aid", "Financial aid"))}</div>`;
+        }
+        if (priceBig) {
+            priceBig.textContent = unknownFieldText("placeholder.field.cost", "Cost");
+        }
+        if (finDiv) {
+            finDiv.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
         }
     }
 
@@ -2760,6 +2868,66 @@ export async function initUniversityPage() {
 // =====================================
 // PAGE: RANKING (Исправлена сортировка)
 // =====================================
+function toFiniteNumber(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+}
+
+function buildNormalizedRankingItems(items) {
+    const rows = Array.isArray(items) ? items : [];
+
+    const compareNullableAsc = (a, b) => {
+        const aMiss = a === null || a === undefined;
+        const bMiss = b === null || b === undefined;
+        if (aMiss && bMiss) return 0;
+        if (aMiss) return 1;
+        if (bMiss) return -1;
+        return a - b;
+    };
+    const compareNullableDesc = (a, b) => compareNullableAsc(b, a);
+
+    const scored = rows.map((u, index) => {
+        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
+        const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
+        const rawRank = toFiniteNumber(u?.rank);
+        const hasOfficialRank = rankStatus === "official" && rawRank !== null && rawRank > 0;
+        const nameKey = String(u?.name || u?.id || "").trim().toLowerCase();
+
+        return {
+            item: u,
+            index,
+            nameKey,
+            rawRank,
+            hasOfficialRank,
+        };
+    });
+
+    const official = scored
+        .filter((row) => row.hasOfficialRank)
+        .sort((a, b) => {
+            const byRank = compareNullableAsc(a.rawRank, b.rawRank);
+            if (byRank !== 0) return byRank;
+            const byName = a.nameKey.localeCompare(b.nameKey);
+            if (byName !== 0) return byName;
+            return a.index - b.index;
+        });
+
+    const unranked = scored
+        .filter((row) => !row.hasOfficialRank)
+        .sort((a, b) => {
+            const byName = a.nameKey.localeCompare(b.nameKey);
+            if (byName !== 0) return byName;
+            return a.index - b.index;
+        });
+
+    const ordered = [...official, ...unranked];
+    return ordered.map((row) => ({
+        ...row.item,
+        rank_display: row.hasOfficialRank ? row.rawRank : null,
+        rank_is_official: row.hasOfficialRank,
+    }));
+}
+
 export async function initRankingPage() {
     const listEl = document.getElementById("rankingList");
     if (!listEl) return;
@@ -2788,16 +2956,17 @@ export async function initRankingPage() {
         });
         if (!res.ok) throw new Error("Error loading ranking");
         const data = await res.json();
-        let items = data.items || [];
+        let items = buildNormalizedRankingItems(data.items || []);
 
         const html = items.map((u, index) => {
-            const rank = u.rank || (index + 1);
-            
+            const rank = Number(u.rank_display);
+            const hasOfficialRank = u?.rank_is_official === true && Number.isFinite(rank) && rank > 0;
+
             // Цвета для топ-3
             let rankClass = "";
-            if (rank === 1) rankClass = "rank-1";
-            else if (rank === 2) rankClass = "rank-2";
-            else if (rank === 3) rankClass = "rank-3";
+            if (hasOfficialRank && rank === 1) rankClass = "rank-1";
+            else if (hasOfficialRank && rank === 2) rankClass = "rank-2";
+            else if (hasOfficialRank && rank === 3) rankClass = "rank-3";
 
             const logoSrc = uniLogoSrc(u.id);
             const logoSrcFull = uniLogoSrc(u.id, { forceFull: true });
@@ -2805,17 +2974,20 @@ export async function initRankingPage() {
             const thumbSrcFull = uniThumbnailSrc(u.id, { forceFull: true });
             const loadingAttr = index < 4 ? "eager" : "lazy";
             const fetchPriorityAttr = index < 2 ? "high" : "auto";
-            const flag = getFlagImg(u.location.country);
-            const cityText = escapeHtml(trCity(String(u.location.city || "")));
-            const countryText = escapeHtml(trCountry(String(u.location.country || "")));
-            const uniName = trUniversityName(u);
+            const cityRaw = String(u?.location?.city || "");
+            const countryRaw = String(u?.location?.country || "");
+            const flag = getFlagImg(countryRaw);
+            const cityText = escapeHtml(trCity(cityRaw));
+            const countryText = escapeHtml(trCountry(countryRaw));
+            const uniName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
             const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
             const rankSource = String(rankMeta.source || "").trim();
             const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
             const rankStatusLabel = rankStatusRaw
                 ? t(`ranking.source_status.${rankStatusRaw}`, rankStatusRaw)
-                : "—";
-            const rankVerifiedAt = String(rankMeta.verified_at || "").trim() || "—";
+                : unknownFieldText("placeholder.field.global_rank", "Global Rank");
+            const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
+                || unknownFieldText("placeholder.field.verification_date", "Verification date");
             const sourceTooltip = rankSource
                 ? tFormat(
                     "ranking.source_tooltip",
@@ -2824,23 +2996,31 @@ export async function initRankingPage() {
                 )
                 : "";
             const sourceTitleAttr = sourceTooltip ? ` title="${escapeHtml(sourceTooltip)}"` : "";
+            const rankDisplay = hasOfficialRank ? `#${rank}` : escapeHtml(rankStatusLabel);
+            const rankBadge = escapeHtml(
+                tFormat("ranking.source_status_label", { status: rankStatusLabel }, `Type: ${rankStatusLabel}`)
+            );
+            const locationText = (cityRaw || countryRaw)
+                ? `${cityText}${countryRaw ? `, ${countryText}` : ""}`
+                : escapeHtml(unknownFieldText("placeholder.field.location", "Location"));
 
             return `
             <a href="${routeUniversityDetail(u.id)}" class="rank-card"${sourceTitleAttr}>
                 <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
-                <div class="rank-num ${rankClass}">#${rank}</div>
+                <div class="rank-num ${rankClass}${hasOfficialRank ? "" : " rank-num--meta"}">${rankDisplay}</div>
                 <div class="rank-logo">
                     <img src="${logoSrc}" alt="${initials(uniName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(uniName)}';}">
                 </div>
                 <div class="rank-info">
                     <div class="rank-title">${escapeHtml(uniName)}</div>
                     <div class="rank-loc">
-                        ${flag} 
-                        <span class="rank-loc-text">${cityText}, ${countryText}</span>
+                        <span class="rank-loc-emoji" aria-hidden="true">📍</span>
+                        ${countryRaw ? `${flag} ` : ""}
+                        <span class="rank-loc-text">${locationText}</span>
                     </div>
                 </div>
                 <div class="rank-badge">
-                    ${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}: <b>${u.academics.acceptance_rate_percent}%</b>
+                    ${rankBadge}
                 </div>
             </a>
             `;
@@ -2983,8 +3163,8 @@ export function initGuidePage() {
                 desc: t("guide.glossary.requirements", "Minimum scores to be considered for a track."),
             },
             {
-                term: t("guide.glossary.term.stats_avg", "Stats Avg"),
-                desc: t("guide.glossary.stats_avg", "Typical scores of admitted students on that track."),
+                term: t("guide.glossary.term.stats_avg", "Average (Admitted)"),
+                desc: t("guide.glossary.stats_avg", "Average scores of admitted students on that track."),
             },
             {
                 term: t("guide.glossary.term.language_requirements", "Language Requirements"),

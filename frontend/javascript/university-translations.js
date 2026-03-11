@@ -98,6 +98,15 @@ export function translateTemplate(key, fallback = "", params = {}) {
   return out;
 }
 
+export function translateUnknownField(fieldLabel, fallback = "") {
+  const label = String(fieldLabel || fallback || "Data").trim() || String(fallback || "Data");
+  return translateTemplate("common.placeholder_unknown", "{field} unknown", { field: label });
+}
+
+export function translateUnknownWord(key, fallback = "") {
+  return translateUnknownField(translateWord(key, fallback), fallback);
+}
+
 export function translateUniversityName(id, fallback = "") {
   const uniId = String(id || "").trim();
   const fallbackText = String(fallback || "");
@@ -118,18 +127,7 @@ export function translateUniversityDescription(university, fallback = "") {
   if (lang === "eng") return source;
 
   const u = university && typeof university === "object" ? university : {};
-  const uniId = String(u.id || "").trim();
-
-  const pack = getPack();
-  const map = pack && typeof pack.university_descriptions === "object" ? pack.university_descriptions : null;
-  if (map && uniId && map[uniId]) return String(map[uniId]);
-
   if (source) return source;
-
-  const key = `university.description.${uniId}`;
-  const localized = String(t(key, "") || "").trim();
-  if (localized) return localized;
-
   return source;
 }
 

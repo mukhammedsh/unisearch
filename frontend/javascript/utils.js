@@ -876,7 +876,7 @@ export function getFlagImg(countryName) {
   const cacheKey = `${code}|${raw}`;
   const cached = FLAG_IMG_HTML_CACHE.get(cacheKey);
   if (cached) return cached;
-  const html = `<img class="flag-icon-inline" src="https://flagcdn.com/24x18/${code}.png" alt="${escapeHtml(raw)}">`;
+  const html = `<img class="flag-icon-inline" src="https://flagcdn.com/${code}.svg" width="24" height="15" loading="lazy" decoding="async" alt="${escapeHtml(raw)}">`;
   FLAG_IMG_HTML_CACHE.set(cacheKey, html);
   return html;
 }

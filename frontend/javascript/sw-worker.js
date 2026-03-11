@@ -1,5 +1,6 @@
-const SW_VERSION = "2026-02-19-3";
+const SW_VERSION = "2026-03-11-2";
 const CACHE_PREFIX = "unisearch";
+const FLAG_CDN_HOSTS = new Set(["flagcdn.com", "www.flagcdn.com"]);
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
 const API_CACHE = `${CACHE_PREFIX}-api-${SW_VERSION}`;
@@ -41,6 +42,10 @@ function isImageRequest(request, url) {
     return true;
   }
 
+  if (request.destination === "image" && FLAG_CDN_HOSTS.has(String(url.hostname || "").toLowerCase())) {
+    return true;
+  }
+
   if (url.origin !== self.location.origin) return false;
 
   if (request.destination === "image") {
@@ -73,7 +78,7 @@ function isStaticRequest(request, url) {
   if (url.origin !== self.location.origin) return false;
   // Keep localization packs cached for instant language switching,
   // but avoid caching core HTML/JS/CSS to reduce startup fragility.
-  return url.pathname.startsWith("/Localization/");
+  return url.pathname.startsWith("/Localization/") || url.pathname.startsWith("/frontend/Localization/");
 }
 
 self.addEventListener("fetch", (event) => {

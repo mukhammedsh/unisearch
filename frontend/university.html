@@ -3,15 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="/images/minilogo.png" type="image/png" onerror="this.onerror=null;this.href='images/minilogo.png';">
+  <script>
+    (function () {
+      const path = String(window.location.pathname || "/");
+      const baseHref = (path === "/frontend" || path.startsWith("/frontend/")) ? "/frontend/" : "/";
+      const base = document.createElement("base");
+      base.setAttribute("href", baseHref);
+      document.head.appendChild(base);
+    })();
+  </script>
+  <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.university">University | UniSearch</title>
-  <script src="/javascript/theme-init.js" onerror="this.onerror=null;this.src='javascript/theme-init.js';"></script>
+  <script src="javascript/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/style.css" onerror="this.onerror=null;this.href='css/style.css';" />
-  <link rel="stylesheet" href="/css/university.css" onerror="this.onerror=null;this.href='css/university.css';" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/university.css" />
 </head>
 
 <body data-page="university">
@@ -50,7 +59,7 @@
             </div>
             <div id="detailLocation" class="d-location">Location</div>
           </div>
-          <a class="d-back" href="/universities.html" data-route="universities" data-i18n="university.back_to_list">Back to list</a>
+          <a class="d-back" href="universities.html" data-route="universities" data-i18n="university.back_to_list">Back to list</a>
         </div>
 
         <div class="d-tabs">
@@ -129,9 +138,9 @@
     </div>
   </main>
 
-  <script src="/env.js" onerror="this.onerror=null;this.src='env.js';"></script>
-  <script src="/config.js" onerror="this.onerror=null;this.src='config.js';"></script>
-  <script type="module" src="/javascript/main.js" onerror="this.onerror=null;this.src='javascript/main.js';"></script>
+  <script src="env.js"></script>
+  <script src="config.js"></script>
+  <script type="module" src="javascript/main.js"></script>
 
   <footer class="site-footer">
     <div class="container footer-content">

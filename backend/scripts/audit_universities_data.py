@@ -92,16 +92,43 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
         yield "description_source", str(description_source).strip()
 
     verified = university.get("verified_sources")
-    if not isinstance(verified, list):
+    if isinstance(verified, list):
+        for idx, row in enumerate(verified):
+            if not isinstance(row, dict):
+                continue
+            url = row.get("url")
+            if not _is_non_empty_text(url):
+                continue
+            topic = str(row.get("topic") or f"topic_{idx}").strip()
+            yield f"verified_sources[{idx}]/{topic}", str(url).strip()
+
+    tracks = university.get("admission_tracks")
+    if not isinstance(tracks, list):
         return
-    for idx, row in enumerate(verified):
-        if not isinstance(row, dict):
+    for t_idx, track in enumerate(tracks):
+        if not isinstance(track, dict):
             continue
-        url = row.get("url")
-        if not _is_non_empty_text(url):
+        track_id = str(track.get("id") or f"track_{t_idx}").strip()
+        track_source_url = track.get("stats_avg_source_url")
+        if _is_non_empty_text(track_source_url):
+            yield (
+                f"admission_tracks[{t_idx}]/{track_id}/stats_avg_source_url",
+                str(track_source_url).strip(),
+            )
+
+        lang_reqs = track.get("language_requirements")
+        if not isinstance(lang_reqs, list):
             continue
-        topic = str(row.get("topic") or f"topic_{idx}").strip()
-        yield f"verified_sources[{idx}]/{topic}", str(url).strip()
+        for lr_idx, row in enumerate(lang_reqs):
+            if not isinstance(row, dict):
+                continue
+            code = str(row.get("code") or f"lang_{lr_idx}").strip()
+            source_url = row.get("stats_avg_source_url")
+            if _is_non_empty_text(source_url):
+                yield (
+                    f"admission_tracks[{t_idx}]/{track_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
+                    str(source_url).strip(),
+                )
 
 
 def _program_acceptance_values(academics: Dict[str, Any]) -> List[float]:
@@ -196,16 +223,32 @@ def audit_dataset(
             errors.append(f"{uid}: description_source must be valid http/https URL")
 
         description = row.get("description")
-        if not _is_non_empty_text(description) or len(str(description).strip()) < 30:
+        if _is_non_empty_text(description) and len(str(description).strip()) < 30:
             warnings.append(f"{uid}: description is very short")
 
         tags = row.get("tags")
-        if not isinstance(tags, list) or not tags:
-            warnings.append(f"{uid}: tags are missing or empty")
+        if isinstance(tags, list) and tags:
+            warnings.append(f"{uid}: tags contain subjective metadata and should be reviewed")
+
+        student_count = row.get("student_count")
+        if student_count is not None:
+            warnings.append(f"{uid}: student_count is present without fact-level provenance")
+
+        outcomes = row.get("outcomes")
+        if isinstance(outcomes, dict) and outcomes.get("average_early_career_salary_usd") is not None:
+            warnings.append(f"{uid}: outcomes.average_early_career_salary_usd has no verified source field")
 
         major_focus = row.get("major_focus")
-        if not isinstance(major_focus, list) or not major_focus:
-            errors.append(f"{uid}: major_focus is missing or empty")
+        if major_focus is not None and not isinstance(major_focus, list):
+            errors.append(f"{uid}: major_focus must be a list when present")
+
+        factors_meta = row.get("factors_meta")
+        if isinstance(factors_meta, dict):
+            raw_metrics = factors_meta.get("raw_metrics")
+            if isinstance(raw_metrics, dict) and "admissions_acceptance_percent_avg" in raw_metrics:
+                warnings.append(
+                    f"{uid}: factors_meta.raw_metrics.admissions_acceptance_percent_avg should be removed"
+                )
 
         academics = row.get("academics")
         if not isinstance(academics, dict):
@@ -221,17 +264,17 @@ def audit_dataset(
                         continue
                     if not _is_non_empty_text(program.get("name")):
                         errors.append(f"{uid}: academics.programs[{p_idx}].name is empty")
-                    p_tags = program.get("major_tags")
-                    if not isinstance(p_tags, list) or not p_tags:
-                        errors.append(f"{uid}: academics.programs[{p_idx}].major_tags is missing or empty")
 
             acceptance = academics.get("acceptance_rate_percent")
-            if not isinstance(acceptance, (int, float)) or not (0.0 <= float(acceptance) <= 100.0):
-                errors.append(f"{uid}: academics.acceptance_rate_percent must be within [0, 100]")
+            if acceptance is not None:
+                if not isinstance(acceptance, (int, float)) or not (0.0 <= float(acceptance) <= 100.0):
+                    errors.append(f"{uid}: academics.acceptance_rate_percent must be within [0, 100]")
+                else:
+                    warnings.append(f"{uid}: academics.acceptance_rate_percent is derived data and should be reviewed")
 
             a_tags = academics.get("major_tags")
-            if not isinstance(a_tags, list) or not a_tags:
-                errors.append(f"{uid}: academics.major_tags is missing or empty")
+            if a_tags is not None and not isinstance(a_tags, list):
+                errors.append(f"{uid}: academics.major_tags must be a list when present")
 
         finance = row.get("finance")
         if not isinstance(finance, dict):
@@ -264,6 +307,22 @@ def audit_dataset(
                 f_type = str(track.get("funding_type") or "").strip().lower()
                 if f_type not in ("grant", "paid"):
                     warnings.append(f"{uid}: admission_tracks[{t_idx}].funding_type is '{f_type or 'empty'}'")
+                track_avg = track.get("stats_avg")
+                if isinstance(track_avg, dict) and track_avg and not _is_non_empty_text(track.get("stats_avg_source_url")):
+                    warnings.append(f"{uid}: admission_tracks[{t_idx}].stats_avg has no stats_avg_source_url")
+
+                lang_reqs = track.get("language_requirements")
+                if not isinstance(lang_reqs, list):
+                    continue
+                for lr_idx, lang_rule in enumerate(lang_reqs):
+                    if not isinstance(lang_rule, dict):
+                        errors.append(f"{uid}: admission_tracks[{t_idx}].language_requirements[{lr_idx}] must be object")
+                        continue
+                    lang_avg = lang_rule.get("stats_avg")
+                    if isinstance(lang_avg, dict) and lang_avg and not _is_non_empty_text(lang_rule.get("stats_avg_source_url")):
+                        warnings.append(
+                            f"{uid}: admission_tracks[{t_idx}].language_requirements[{lr_idx}].stats_avg has no stats_avg_source_url"
+                        )
 
         fact_provenance = row.get("fact_provenance")
         if not isinstance(fact_provenance, dict):
@@ -273,7 +332,7 @@ def audit_dataset(
             if not isinstance(facts, dict):
                 errors.append(f"{uid}: fact_provenance.facts must be object")
             else:
-                for fact_key in ("rank", "tuition_total_cost_year_usd", "acceptance_rate_percent"):
+                for fact_key in ("rank", "tuition_total_cost_year_usd"):
                     fact_row = facts.get(fact_key)
                     if not isinstance(fact_row, dict):
                         errors.append(f"{uid}: missing fact_provenance.facts.{fact_key}")
@@ -284,6 +343,8 @@ def audit_dataset(
                         errors.append(f"{uid}: fact_provenance.facts.{fact_key}.source is empty")
                     if not _is_non_empty_text(verified_at):
                         errors.append(f"{uid}: fact_provenance.facts.{fact_key}.verified_at is empty")
+                if "acceptance_rate_percent" in facts:
+                    warnings.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent is derived data and should be removed")
 
         if check_http:
             url_count = 0

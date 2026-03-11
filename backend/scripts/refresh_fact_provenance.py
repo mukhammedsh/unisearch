@@ -4,7 +4,6 @@
 Adds/updates `fact_provenance` for:
 - rank
 - tuition_total_cost_year_usd
-- acceptance_rate_percent
 
 Rank behavior:
 - if `rank_meta.status == official`, rank fact is written as official external QS rank.
@@ -126,24 +125,6 @@ def _tuition_fact(university: Dict[str, Any], verified_at: str) -> Dict[str, Any
     }
 
 
-def _acceptance_fact(university: Dict[str, Any], verified_at: str) -> Dict[str, Any]:
-    academics = university.get("academics") if isinstance(university.get("academics"), dict) else {}
-    value = _safe_num(academics.get("acceptance_rate_percent"))
-    source_url = _pick_source_url(
-        university,
-        preferred_topics=["programs", "undergraduate_requirements", "extra_requirements"],
-    )
-    return {
-        "value": value,
-        "unit": "percent",
-        "source": "Derived in UniSearch from program-level acceptance values and curated admissions data",
-        "source_url": source_url,
-        "verified_at": verified_at,
-        "confidence": "medium" if source_url else "low",
-        "status": "derived",
-    }
-
-
 def refresh_fact_provenance(payload: List[Dict[str, Any]], verified_at: str) -> int:
     changed = 0
     for row in payload:
@@ -154,7 +135,6 @@ def refresh_fact_provenance(payload: List[Dict[str, Any]], verified_at: str) -> 
             "facts": {
                 "rank": _rank_fact(row, verified_at),
                 "tuition_total_cost_year_usd": _tuition_fact(row, verified_at),
-                "acceptance_rate_percent": _acceptance_fact(row, verified_at),
             },
         }
         if row.get("fact_provenance") != new_obj:

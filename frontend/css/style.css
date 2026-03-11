@@ -1263,18 +1263,23 @@ html, body {
 }
 
 .custom-option img, .custom-select-trigger img {
-  width: 20px;
+  width: 24px;
   height: 15px;
-  object-fit: cover;
-  border-radius: 3px;
+  display: inline-block;
+  flex: 0 0 auto;
+  object-fit: contain;
+  border-radius: 1px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .flag-icon-inline {
-  width: 20px;
+  width: 24px;
   height: 15px;
-  object-fit: cover;
-  border-radius: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  flex: 0 0 auto;
+  object-fit: contain;
+  border-radius: 1px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 

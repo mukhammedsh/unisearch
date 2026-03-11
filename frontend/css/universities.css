@@ -412,6 +412,12 @@
   color: var(--muted);
 }
 
+.tradeoff-field .u-label--subtle.u-label--between {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
 .tradeoff-field .u-label--subtle.u-label--between > span {
   flex: 1 1 0;
   min-width: 0;
@@ -1688,6 +1694,8 @@
 
   .tradeoff-field .u-label--subtle.u-label--between {
     gap: 8px;
+    margin-top: 6px;
+    padding-top: 6px;
   }
 
   .tradeoff-field .u-label--subtle.u-label--between > span {

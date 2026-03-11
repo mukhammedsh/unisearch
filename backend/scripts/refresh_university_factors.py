@@ -141,28 +141,6 @@ def _minmax(values: Iterable[Optional[float]], default: float = 0.5) -> List[flo
     return out
 
 
-def _average_acceptance_percent(university: Dict[str, Any]) -> Optional[float]:
-    academics = university.get("academics")
-    academics = academics if isinstance(academics, dict) else {}
-    direct = _safe_num(academics.get("acceptance_rate_percent"))
-    if direct is not None:
-        return max(0.0, min(100.0, float(direct)))
-
-    programs = academics.get("programs")
-    if not isinstance(programs, list):
-        return None
-    vals: List[float] = []
-    for row in programs:
-        if not isinstance(row, dict):
-            continue
-        v = _safe_num(row.get("acceptance_rate_percent"))
-        if v is not None:
-            vals.append(max(0.0, min(100.0, float(v))))
-    if not vals:
-        return None
-    return sum(vals) / len(vals)
-
-
 def _openalex_candidate_score(
     candidate: Dict[str, Any],
     *,
@@ -366,6 +344,17 @@ def _research_signal(openalex: Optional[Dict[str, Any]]) -> Optional[float]:
     return float(sum(components))
 
 
+def _official_rank_position(university: Dict[str, Any]) -> Optional[float]:
+    rank_meta = university.get("rank_meta")
+    rank_meta = rank_meta if isinstance(rank_meta, dict) else {}
+    if str(rank_meta.get("status") or "").strip().lower() != "official":
+        return None
+    rank = _safe_num(university.get("rank"))
+    if rank is None or rank <= 0:
+        return None
+    return float(rank)
+
+
 def _median(values: Iterable[Optional[float]], default: float = 0.5) -> float:
     vals = sorted(float(v) for v in values if v is not None)
     if not vals:
@@ -412,9 +401,9 @@ def main() -> None:
 
         finance = university.get("finance")
         finance = finance if isinstance(finance, dict) else {}
-        acceptance = _average_acceptance_percent(university)
         tuition = _safe_num(finance.get("total_cost_year_usd"))
         research = _research_signal(openalex_row)
+        official_rank = _official_rank_position(university)
         population = _safe_num((geocode_row or {}).get("population"))
         if population is None:
             try:
@@ -431,7 +420,7 @@ def main() -> None:
                 "openalex_url": openalex_url,
                 "geocode": geocode_row,
                 "geocode_url": geocode_url,
-                "acceptance": acceptance,
+                "official_rank": official_rank,
                 "tuition": tuition,
                 "research": research,
                 "population": population,
@@ -443,19 +432,12 @@ def main() -> None:
     research_default = _median((row.get("research") for row in staged), default=0.5)
     population_default = _median((row.get("population") for row in staged), default=500_000.0)
     tuition_default = _median((row.get("tuition") for row in staged), default=0.0)
-    strictness_default = 0.5
+    hardcore_default = 0.5
 
     research_values = [row.get("research", research_default) for row in staged]
     population_values = [row.get("population", population_default) for row in staged]
     tuition_values = [row.get("tuition", tuition_default) for row in staged]
-    strictness_values = [
-        (
-            _clamp01(1.0 - (float(row["acceptance"]) / 100.0))
-            if row.get("acceptance") is not None
-            else strictness_default
-        )
-        for row in staged
-    ]
+    official_rank_values = [row.get("official_rank") for row in staged]
 
     research_norm = _minmax(
         [v if v is not None else research_default for v in research_values],
@@ -469,11 +451,16 @@ def main() -> None:
         [v if v is not None else tuition_default for v in tuition_values],
         default=0.5,
     )
+    rank_norm = _minmax(official_rank_values, default=hardcore_default)
+    hardcore_values = []
+    for idx, row in enumerate(staged):
+        rank_signal = 1.0 - rank_norm[idx] if row.get("official_rank") is not None else hardcore_default
+        hardcore_values.append(_clamp01((0.55 * rank_signal) + (0.45 * research_norm[idx])))
 
     for idx, row in enumerate(staged):
         university = row["university"]
         focus = _clamp01(research_norm[idx])
-        atmosphere = _clamp01((0.70 * strictness_values[idx]) + (0.30 * research_norm[idx]))
+        atmosphere = _clamp01(hardcore_values[idx])
         finance = _clamp01((0.60 * tuition_norm[idx]) + (0.40 * research_norm[idx]))
         location = _clamp01(1.0 - population_norm[idx])
 
@@ -482,18 +469,24 @@ def main() -> None:
         geocode = row.get("geocode")
         geocode = geocode if isinstance(geocode, dict) else {}
 
+        location_factor = round(location, 4)
         university["factors"] = {
             "practice_vs_science": round(focus, 4),
             "social_vs_hardcore": round(atmosphere, 4),
             "budget_vs_prestige": round(finance, 4),
-            "city_vs_campus": round(location, 4),
+            # Canonical axis: city life <-> outside-major-city life.
+            "city_vs_outside_city": location_factor,
+            # Backward-compatible alias for existing API/UI contracts.
+            "city_vs_campus": location_factor,
         }
         university["factors_meta"] = {
             "version": "internet_v1",
             "computed_at": now_iso,
             "method": (
                 "Deterministic mapping from OpenAlex (research metrics), "
-                "Open-Meteo geocoding (city population), admissions selectivity, and tuition."
+                "Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, "
+                "and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. "
+                "Location axis is computed as city-life(0.0) <-> outside-major-city(1.0)."
             ),
             "source_urls": {
                 "openalex_query": row.get("openalex_url", ""),
@@ -518,12 +511,20 @@ def main() -> None:
                     "population": geocode.get("population"),
                     "population_wikidata_fallback": row.get("wikidata_population"),
                 },
-                "admissions_acceptance_percent_avg": row.get("acceptance"),
+                "rank": {
+                    "position": row.get("official_rank"),
+                    "status": (
+                        str(((university.get("rank_meta") or {}).get("status")) or "").strip().lower()
+                        if isinstance(university.get("rank_meta"), dict)
+                        else ""
+                    ),
+                },
                 "total_cost_year_usd": row.get("tuition"),
                 "derived_signals": {
                     "research_signal_raw": row.get("research"),
-                    "strictness_0_1": round(strictness_values[idx], 6),
+                    "hardcore_signal_0_1": round(hardcore_values[idx], 6),
                     "research_norm_0_1": round(research_norm[idx], 6),
+                    "official_rank_norm_0_1": round(rank_norm[idx], 6) if row.get("official_rank") is not None else None,
                     "tuition_norm_0_1": round(tuition_norm[idx], 6),
                     "city_population_norm_0_1": round(population_norm[idx], 6),
                 },

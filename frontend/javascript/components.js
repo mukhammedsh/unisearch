@@ -18,11 +18,22 @@ import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "
 import { initUniversityTranslations, translateProgramName } from "./university-translations.js";
 import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
 
+function frontendStaticAsset(path = "") {
+    const cleanPath = String(path || "").replace(/^\/+/, "");
+    const currentPath = String(window.location.pathname || "");
+    const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
+    return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
+}
+
+const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.png");
+const NAV_LOGO_DARK = frontendStaticAsset("images/darklogo.png");
+const NAV_LOGO_FALLBACK = frontendStaticAsset("images/minilogo.png");
+
 function syncNavbarLogo(themeOverride = "") {
     const navbarLogo = document.querySelector(".logo[data-logo-light][data-logo-dark]");
     if (!navbarLogo) return;
     const theme = (themeOverride || getCurrentTheme() || "light").toLowerCase();
-    const nextLogo = theme === "dark" ? "/images/darklogo.png" : "/images/whitelogo.png";
+    const nextLogo = theme === "dark" ? NAV_LOGO_DARK : NAV_LOGO_LIGHT;
     if (!nextLogo) return;
     if (navbarLogo.getAttribute("src") !== nextLogo) {
         navbarLogo.dataset.fallback = "0";
@@ -146,10 +157,10 @@ const LAYOUT_HTML = `
   <div class="navbar-left">
     <a href="${routeHome()}" data-route="home" class="navbar-logo-link">
       <img
-        src="/images/whitelogo.png"
-        data-logo-light="/images/whitelogo.png"
-        data-logo-dark="/images/darklogo.png"
-        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='/images/minilogo.png';}"
+        src="${NAV_LOGO_LIGHT}"
+        data-logo-light="${NAV_LOGO_LIGHT}"
+        data-logo-dark="${NAV_LOGO_DARK}"
+        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='${NAV_LOGO_FALLBACK}';}"
         alt="Logo"
         class="logo"
       />
@@ -547,7 +558,8 @@ export async function loadGlobalLayout() {
         bindThemeUiSync();
 
         // Подсветка активной ссылки в меню
-        const currentPage = document.body.getAttribute('data-page');
+        const currentPageRaw = String(document.body.getAttribute('data-page') || "").trim().toLowerCase();
+        const currentPage = (currentPageRaw === "university") ? "universities" : currentPageRaw;
         if (currentPage) {
             document.querySelectorAll(".navbar-center a").forEach((link) => link.classList.remove("is-active"));
             const activeLink = document.querySelector(`.navbar-center a[data-link="${currentPage}"]`) || 

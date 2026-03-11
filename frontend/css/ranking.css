@@ -59,6 +59,13 @@
     color: #999;
     margin-right: 20px;
 }
+.rank-num--meta {
+    width: 92px;
+    font-size: 12px;
+    line-height: 1.2;
+    text-align: left;
+    color: #374151;
+}
 /* Цвета медалей для топ-3 */
 .rank-1 { color: #FFD700; text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5); font-size: 36px; }
 .rank-2 { color: #C0C0C0; text-shadow: 0 2px 10px rgba(192, 192, 192, 0.5); font-size: 34px; }
@@ -91,6 +98,7 @@
 .rank-info { flex-grow: 1; min-width: 0; }
 .rank-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
 .rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; }
+.rank-loc-emoji { flex: 0 0 auto; line-height: 1; }
 .rank-loc-text { margin-left: 1px; }
 
 .rank-badge {
@@ -266,4 +274,17 @@
     color: #fca5a5;
     border-color: #7f1d1d;
     background: #2a1114;
+}
+
+:root[data-theme="dark"] .rank-num--meta {
+    color: var(--text);
+}
+
+@media (max-width: 600px) {
+    .rank-num--meta {
+        width: 100%;
+        font-size: 12px;
+        margin-right: 0;
+        text-align: left;
+    }
 }

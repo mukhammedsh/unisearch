@@ -1,6 +1,6 @@
 import { aiName, escapeHtml, getExamDisplayName, loadProfile } from "./utils.js";
 import { t } from "./i18n.js";
-import { translateAdmissionText, translateTrackLabel, translateWord } from "./university-translations.js";
+import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
 const MAP_MARKER_IMG_ONERROR = "if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();";
 
@@ -101,7 +101,16 @@ function cefrLabel(id) {
 
 export function renderLanguageRequirements(track) {
   const list = Array.isArray(track?.language_requirements) ? track.language_requirements : [];
-  if (!list.length) return "";
+  if (!list.length) {
+    return `
+      <div class="track-lang-rules">
+        <div class="track-lang-rules-title">
+          ${escapeHtml(translateWord("language_track_rules", "LANGUAGE TRACK RULES"))}
+        </div>
+        <div class="track-muted-italic">${escapeHtml(translateUnknownWord("placeholder.field.language_requirements", "Language requirements"))}</div>
+      </div>
+    `;
+  }
 
   const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
   const modeText = mode === "any"
@@ -135,7 +144,7 @@ export function renderLanguageRequirements(track) {
                   <div class="track-lang-rule-cefr">
                     ${minCefr ? `<span><strong>${escapeHtml(translateWord("min_cefr", "Min CEFR"))}:</strong> ${escapeHtml(minCefr)}</span>` : ""}
                     ${(minCefr && recCefr) ? `<span> • </span>` : ""}
-                    ${recCefr ? `<span><strong>${escapeHtml(translateWord("typical", "Typical"))}:</strong> ${escapeHtml(recCefr)}</span>` : ""}
+                    ${recCefr ? `<span><strong>${escapeHtml(translateWord("recommended", "Recommended"))}:</strong> ${escapeHtml(recCefr)}</span>` : ""}
                   </div>
                 ` : ""}
                 ${reqPairs.length ? `
@@ -143,13 +152,18 @@ export function renderLanguageRequirements(track) {
                     <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
                     ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
                   </div>
-                ` : ""}
-                ${avgPairs.length ? `
-                  <div class="track-lang-rule-average">
-                    <strong>${escapeHtml(translateWord("typical_admitted", "Typical admitted"))}:</strong>
-                    ${avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")}
+                ` : `
+                  <div class="track-lang-rule-requirements">
+                    <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
+                    <div class="track-muted-italic">${escapeHtml(translateUnknownField(translateWord("exam_minimums", "Exam minimums"), "Exam minimums"))}</div>
                   </div>
-                ` : ""}
+                `}
+                <div class="track-lang-rule-average">
+                  <strong>${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}:</strong>
+                  ${avgPairs.length
+                    ? avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")
+                    : `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`}
+                </div>
               </div>
             `;
           }).join("")}
@@ -175,12 +189,44 @@ export function chanceTone(chance) {
 }
 
 export function renderUniChanceSummary(uniChance) {
-  if (!uniChance) return "";
-  const chance = Number(uniChance.overallChance) || 0;
+  if (!uniChance) {
+    const chanceTitle = translateWord("admission_probability_title", "Admission Probability");
+    return `
+      <div class="chance-panel">
+        <div class="chance-head">
+          <div>
+            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
+            <div class="chance-sub">${escapeHtml(translateUnknownField(chanceTitle, "Admission probability"))}</div>
+          </div>
+          <div class="chance-percent chance-low">?</div>
+        </div>
+        <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
+        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_track", "Best track"))}</div>
+      </div>
+    `;
+  }
+  const chanceRaw = Number(uniChance.overallChance);
+  if (!Number.isFinite(chanceRaw)) {
+    return `
+      <div class="chance-panel">
+        <div class="chance-head">
+          <div>
+            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
+            <div class="chance-sub">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>
+          </div>
+          <div class="chance-percent chance-low">?</div>
+        </div>
+        <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
+        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_track", "Best track"))}</div>
+      </div>
+    `;
+  }
+  const chance = chanceRaw;
   const tone = chanceTone(chance);
-  const defaultTrack = translateWord("general_admission", "General admission");
-  const bestTrackRaw = String(uniChance.bestTrackLabel || defaultTrack);
-  const bestTrackLabel = translateTrackLabel(bestTrackRaw, bestTrackRaw);
+  const bestTrackRaw = String(uniChance.bestTrackLabel || "").trim();
+  const bestTrackLabel = bestTrackRaw
+    ? translateTrackLabel(bestTrackRaw, bestTrackRaw)
+    : translateUnknownWord("placeholder.field.best_track", "Best track");
   return `
       <div class="chance-panel">
         <div class="chance-head">
@@ -197,8 +243,13 @@ export function renderUniChanceSummary(uniChance) {
 }
 
 export function renderTrackChanceChip(trackChance) {
-  if (!trackChance) return "";
-  const chance = Number(trackChance.chancePercent) || 0;
+  if (!trackChance) {
+    return `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
+  }
+  const chance = Number(trackChance.chancePercent);
+  if (!Number.isFinite(chance)) {
+    return `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
+  }
   const tone = chanceTone(chance);
   return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
 }

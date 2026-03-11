@@ -230,6 +230,11 @@ firebase-key
 node_modules/
 playwright-report/
 test-results/
+blob-report/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Local presentation sandbox (keep locally, do not commit)
 temp_presentation_3/

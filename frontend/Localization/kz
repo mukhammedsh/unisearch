@@ -26,7 +26,7 @@ about.title: Біз UniSearch талапкерлер командасымыз.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Академиялық емтихандар
 guide.admission.p1: Қабылдау трегі - бір университетке түсудің нақты жолы.
-guide.admission.p2: Талаптар — өтінім беру үшін қажет ең төменгі шек. Сенімді жоспар үшін қабылданғандардың типтік балдарымен де салыстырыңыз.
+guide.admission.p2: Талаптар — өтінім беру үшін қажет ең төменгі шек. Сенімді жоспар үшін қабылданғандардың орташа балдарымен де салыстырыңыз.
 guide.admission.p3: Тіл ережесі: кей тректе бір дәлел жеткілікті, ал кей тректе тізімдегі барлық дәлел қажет.
 guide.admission.p4: Шәкіртақы мен көмек жалпы шығынды азайтуы мүмкін, сондықтан әр тректі бөлек тексеріңіз.
 guide.admission.title: Қабылдау тректерін қалай оқу керек
@@ -206,11 +206,13 @@ ranking.source_status.estimated: Модель бағасы
 ranking.source_status.inferred: Модель бағасы
 ranking.source_status.mixed: Аралас дерек
 ranking.source_status.official: Ресми рейтинг
+ranking.source_status.excluded: Жарияланған рейтингтен шығарылған
+ranking.source_status.not_listed: Жарияланған рейтингте жоқ
 ranking.source_status.curated: Қолмен тексерілген
 ranking.source_status.derived: Модель бағасы
 ranking.source_status.derived_prestige_order: Модель бағасы
 ranking.source_tooltip: Дереккөз: {source} | Түрі: {status} | Тексерілді: {verified_at}
-ranking.subtitle: Оқу сапасы мен мүмкіндіктері бойынша танымал университеттер (2025)
+ranking.subtitle: Оқу сапасы мен мүмкіндіктері бойынша танымал университеттер (2026)
 ranking.title: Әлемдік университет рейтингі
 title.about: Біз туралы | UniSearch
 title.guide: Нұсқаулық | UniSearch
@@ -261,8 +263,8 @@ universities.tradeoff.finance: Қаржы
 universities.tradeoff.finance.left: Бюджет және гранттар
 universities.tradeoff.finance.right: Бедел және жайлылық
 universities.tradeoff.location: Орналасу
-universities.tradeoff.location.left: Үлкен қала өмірі
-universities.tradeoff.location.right: Жайлы кампус
+universities.tradeoff.location.left: Қалада оқу
+universities.tradeoff.location.right: Қала сыртында оқу
 universities.tradeoff.balanced: Теңгерімді (50/50)
 universities.help.open: Түсіндірмені көрсету
 universities.help.country: Университеттерді ел бойынша сүзеді. Қала және аймақ сүзгілерімен бірге жұмыс істейді.
@@ -273,7 +275,7 @@ universities.help.sort_strategy: {fit} профиліңізге қарап сұ�
 universities.help.tradeoff.focus: Практикаға жақын оқу мен теория/зерттеу бағытының арасын таңдауға көмектеседі.
 universities.help.tradeoff.atmosphere: Белсенді студенттік өмір мен тыныш оқу ортасының арасын таңдауға көмектеседі.
 universities.help.tradeoff.finance: Сол жақ грантқа жақын нұсқаларды күшейтеді, оң жақ ақылы нұсқаларды да күшейтеді.
-universities.help.tradeoff.location: Сол жақта ірі қалалар, оң жақта шағын әрі тыныш кампустар басым болады.
+universities.help.tradeoff.location: Сол жақ қалалық кампустары бар университеттерге, оң жақ ірі қаладан тыс (қала маңы/қала сыртындағы) кампустарға басымдық береді.
 universities.sort_ai: ✨ {fit}: ЖИ негізіндегі ақылды сұрыптау
 universities.sort_cost_asc: Құны өсу ретімен
 universities.sort_cost_desc: Құны кему ретімен
@@ -321,6 +323,34 @@ university.visit_website: Ресми сайтқа өту
 # Added localization coverage keys
 common.loading: Жүктелуде
 common.ai_short: ЖИ
+common.placeholder_unknown: {field}: дерек жоқ
+placeholder.field.university_name: Университет атауы
+placeholder.field.location: Орналасуы
+placeholder.field.official_website: Ресми сайт
+placeholder.field.global_rank: Әлемдік рейтинг
+placeholder.field.description: Сипаттама
+placeholder.field.program_name: Бағдарлама атауы
+placeholder.field.programs: Бағдарламалар
+placeholder.field.admission_tracks: Қабылдау тректері
+placeholder.field.applicable_majors: Қолданылатын мамандықтар
+placeholder.field.track_name: Трек атауы
+placeholder.field.track_description: Трек сипаттамасы
+placeholder.field.minimum_requirements: Минималды талаптар
+placeholder.field.scholarships: Стипендиялар
+placeholder.field.merit_scholarships: Merit-based стипендиялар
+placeholder.field.need_based_aid: Қаржылық қажеттілікке негізделген көмек
+placeholder.field.cost: Құны
+placeholder.field.total_cost: Жалпы құны
+placeholder.field.cost_breakdown: Құн құрылымы
+placeholder.field.financial_aid: Қаржылық көмек
+placeholder.field.roi_score: ROI көрсеткіші
+placeholder.field.estimated_salary: Болжамды жалақы
+placeholder.field.language_requirements: Тіл талаптары
+placeholder.field.admission_probability: Қабылдау ықтималдығы
+placeholder.field.best_track: Ең жақсы трек
+placeholder.field.verification_date: Тексеру күні
+placeholder.field.universities_count: Университеттер саны
+placeholder.field.countries_count: Елдер саны
 guide.academic.act: ACT — көптеген университеттер қолданатын стандартталған түсу емтиханы; ағылшын, математика, оқу және ғылыми ойлау бөлімдерін қамтиды.
 guide.academic.aptotal: Бірнеше AP пәндері бойынша жиынтық нәтижені көрсетеді.
 guide.academic.default: Бұл UniSearch дерекқорында бір немесе бірнеше қабылдау трегі қолданатын академиялық көрсеткіш.
@@ -339,7 +369,7 @@ guide.glossary.match_score: Университеттің профиліңізг�
 guide.glossary.mode_all: Тізімдегі барлық тіл талаптарын орындау қажет.
 guide.glossary.mode_any: Тізімдегі тіл нұсқаларының кемінде біреуін орындау жеткілікті.
 guide.glossary.requirements: Трек бойынша қарастырылу үшін қажет минималды баллдар.
-guide.glossary.stats_avg: Осы трек бойынша қабылданған студенттердің типтік баллдары.
+guide.glossary.stats_avg: Осы трек бойынша қабылданған студенттердің орташа баллдары.
 guide.glossary.swr: Кэш логикасы: алдымен сақталған дерек көрсетіледі, кейін фондық жаңарту жасалады.
 guide.glossary.term.admission_track: Қабылдау трегі
 guide.glossary.term.language_requirements: Тіл талаптары
@@ -458,3 +488,5 @@ unifit.warning.cancel: Бас тарту
 unifit.warning.confirm: Түсіндім
 unifit.warning.desc: UniFit профиліңізде емтихан не тіл балдары болса, дәлірек жұмыс істейді.
 unifit.warning.title: Профиль дерегі жеткіліксіз
+average_admitted_unavailable: Қабылданғандардың орташа балы туралы расталған дерек жоқ.
+roi.context.no_salary_data: Бұл университет бойынша түлектердің жалақысы туралы расталған дерек жоқ.

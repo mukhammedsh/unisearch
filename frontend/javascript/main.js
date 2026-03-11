@@ -4,16 +4,25 @@ import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePag
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
-import { initUniversityTranslations } from "./university-translations.js";
+import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
 import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 
+function frontendStaticAsset(path = "") {
+  const cleanPath = String(path || "").replace(/^\/+/, "");
+  const currentPath = String(window.location.pathname || "");
+  const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
+  return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
+}
+
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   try {
-    await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+    const swScriptUrl = frontendStaticAsset("sw.js");
+    const swScope = frontendStaticAsset("");
+    await navigator.serviceWorker.register(swScriptUrl, { scope: swScope.endsWith("/") ? swScope : `${swScope}/` });
   } catch (e) {
     console.warn("Service worker registration failed:", e);
   }
@@ -87,7 +96,7 @@ function initHomeMockupMedia() {
       return;
     }
     logo.onerror = null;
-    logo.src = "/images/minilogo.png";
+    logo.src = frontendStaticAsset("images/minilogo.png");
   };
 }
 
@@ -178,6 +187,12 @@ function normalizeCount(value, fallback = 0) {
   return Math.max(0, Math.round(n));
 }
 
+function parseCountOrNull(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return null;
+  return Math.max(0, Math.round(n));
+}
+
 function formatCountForUi(value, lang) {
   const locale = lang === "rus" ? "ru-RU" : (lang === "kz" ? "kk-KZ" : "en-US");
   try {
@@ -230,16 +245,29 @@ function renderHomeCoverage(universitiesTotal, countriesTotal) {
   const countryLabel = document.getElementById("stat-country-label");
   if (!uniStat || !countryStat || !uniLabel || !countryLabel) return;
 
-  const uniCount = normalizeCount(universitiesTotal, normalizeCount(uniStat.dataset.count || uniStat.textContent || 0, 0));
-  const countryCount = normalizeCount(countriesTotal, normalizeCount(countryStat.dataset.count || countryStat.textContent || 0, 0));
+  const uniCount = parseCountOrNull(universitiesTotal);
+  const countryCount = parseCountOrNull(countriesTotal);
   const lang = resolveUiLang();
 
-  uniStat.dataset.count = String(uniCount);
-  countryStat.dataset.count = String(countryCount);
-  uniStat.textContent = formatCountForUi(uniCount, lang);
-  countryStat.textContent = formatCountForUi(countryCount, lang);
-  uniLabel.textContent = getCountNoun("universities", uniCount, lang);
-  countryLabel.textContent = getCountNoun("countries", countryCount, lang);
+  if (uniCount === null) {
+    uniStat.dataset.count = "";
+    uniStat.textContent = "?";
+    uniLabel.textContent = translateUnknownWord("placeholder.field.universities_count", "Universities count");
+  } else {
+    uniStat.dataset.count = String(uniCount);
+    uniStat.textContent = formatCountForUi(uniCount, lang);
+    uniLabel.textContent = getCountNoun("universities", uniCount, lang);
+  }
+
+  if (countryCount === null) {
+    countryStat.dataset.count = "";
+    countryStat.textContent = "?";
+    countryLabel.textContent = translateUnknownWord("placeholder.field.countries_count", "Countries count");
+  } else {
+    countryStat.dataset.count = String(countryCount);
+    countryStat.textContent = formatCountForUi(countryCount, lang);
+    countryLabel.textContent = getCountNoun("countries", countryCount, lang);
+  }
 }
 
 async function initHomePageStats() {

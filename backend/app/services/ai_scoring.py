@@ -751,38 +751,39 @@ def _fallback_budget_vs_prestige(university: Dict[str, Any]) -> float:
     return _clamp01(0.50 * cost_norm + 0.50 * rank_prestige)
 
 
-def _fallback_city_vs_campus(university: Dict[str, Any]) -> float:
-    city = str((((university.get("location") or {}).get("city")) or "")).strip().lower()
-    if not city:
+def _fallback_city_vs_outside_city(university: Dict[str, Any]) -> float:
+    factors_meta = university.get("factors_meta")
+    factors_meta = factors_meta if isinstance(factors_meta, dict) else {}
+    raw_metrics = factors_meta.get("raw_metrics")
+    raw_metrics = raw_metrics if isinstance(raw_metrics, dict) else {}
+    city_meta = raw_metrics.get("city")
+    city_meta = city_meta if isinstance(city_meta, dict) else {}
+
+    population = _to_num(city_meta.get("population"))
+    if population is None:
+        population = _to_num(city_meta.get("population_wikidata_fallback"))
+    if population is None:
         return 0.5
-    mega_cities = {
-        "london",
-        "tokyo",
-        "seoul",
-        "singapore",
-        "beijing",
-        "toronto",
-        "cambridge",
-        "zurich",
-        "melbourne",
-        "hong kong",
-    }
-    medium_cities = {"astana", "munich", "kyoto", "daejeon", "delft", "lausanne"}
-    if city in mega_cities:
-        return 0.18
-    if city in medium_cities:
-        return 0.42
-    return 0.60
+
+    # Convert city population to location preference axis:
+    # 0.0 -> major city life, 1.0 -> outside major cities.
+    # Uses only traceable numeric city-population metrics from factors_meta.
+    max_reference_population = 20_000_000.0
+    city_intensity = _clamp01(math.log1p(max(0.0, float(population))) / math.log1p(max_reference_population))
+    return _clamp01(1.0 - city_intensity)
 
 
 def _extract_university_factors(university: Dict[str, Any]) -> Dict[str, float]:
     raw = university.get("factors")
     raw = raw if isinstance(raw, dict) else {}
+    location_factor_raw = raw.get("city_vs_outside_city")
+    if location_factor_raw is None:
+        location_factor_raw = raw.get("city_vs_campus")
     return {
         "practice_vs_science": _factor01(raw.get("practice_vs_science"), _fallback_practice_vs_science(university)),
         "social_vs_hardcore": _factor01(raw.get("social_vs_hardcore"), _fallback_social_vs_hardcore(university)),
         "budget_vs_prestige": _factor01(raw.get("budget_vs_prestige"), _fallback_budget_vs_prestige(university)),
-        "city_vs_campus": _factor01(raw.get("city_vs_campus"), _fallback_city_vs_campus(university)),
+        "city_vs_campus": _factor01(location_factor_raw, _fallback_city_vs_outside_city(university)),
     }
 
 

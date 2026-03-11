@@ -203,7 +203,23 @@
   color: var(--muted);
   font-weight: 700;
   line-height: 1.35;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
   overflow-wrap: anywhere;
+}
+
+.d-location-emoji {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.d-location-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .d-back {
@@ -328,6 +344,10 @@
   transform: translateY(-1px);
   box-shadow: 0 8px 14px rgba(87, 21, 219, 0.16);
   background: #f8f4ff;
+}
+.uni-tag--placeholder,
+.uni-description--placeholder {
+  color: #6b7280;
 }
 
 .d-kv {
@@ -717,6 +737,11 @@
   background: var(--accent);
   color: white;
   border-color: var(--accent);
+}
+.d-site-link--disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  cursor: default;
 }
 
 /* =========================================
