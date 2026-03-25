@@ -184,6 +184,43 @@ class OfficialFactsSyncTests(unittest.TestCase):
                 for topic, urls in expected_by_topic.items():
                     self.assertEqual(urls, self._topic_urls(row, topic), uid)
 
+    def test_every_dataset_acceptance_rate_is_catalog_backed_with_full_provenance(self):
+        catalog = self._load_catalog()
+        universities = self._load_universities()
+        catalog_rows = (catalog.get("universities") or {})
+
+        for row in universities:
+            uid = str(row.get("id") or "").strip()
+            academics = row.get("academics") or {}
+            if academics.get("acceptance_rate_percent") is None:
+                continue
+
+            self.assertIn(uid, catalog_rows, uid)
+            payload = (catalog_rows.get(uid) or {}).get("acceptance_rate_percent")
+            self.assertIsInstance(payload, dict, uid)
+
+            expected_rate = round(float(payload.get("value")), 2)
+            self.assertEqual(expected_rate, round(float(academics.get("acceptance_rate_percent")), 2), uid)
+
+            meta = academics.get("acceptance_rate_percent_meta")
+            self.assertIsInstance(meta, dict, uid)
+
+            facts = ((row.get("fact_provenance") or {}).get("facts") or {})
+            fact = facts.get("acceptance_rate_percent")
+            self.assertIsInstance(fact, dict, uid)
+
+            for field in ("source", "source_url", "verified_at", "status", "confidence", "method"):
+                self.assertTrue(meta.get(field), f"{uid}:{field}")
+                self.assertEqual(payload.get(field), meta.get(field), uid)
+                self.assertEqual(payload.get(field), fact.get(field), uid)
+
+            if payload.get("basis") is not None:
+                self.assertEqual(payload.get("basis"), meta.get("basis"), uid)
+                self.assertEqual(payload.get("basis"), fact.get("basis"), uid)
+
+            self.assertEqual(expected_rate, round(float(fact.get("value")), 2), uid)
+            self.assertEqual([payload.get("source_url")], self._topic_urls(row, "acceptance_rate"), uid)
+
 
 if __name__ == "__main__":
     unittest.main()

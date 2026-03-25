@@ -9,23 +9,56 @@ Core capabilities:
 - ROI estimate per university
 - multilingual UI (`eng`, `ru`, `kz`) with backend-driven localization
 
+## Quick start
+If you just want the project running locally:
+
+1. Start the backend:
+   ```bash
+   cd backend
+   python -m venv .venv
+   # Windows (PowerShell)
+   .\.venv\Scripts\Activate.ps1
+   # macOS/Linux
+   # source .venv/bin/activate
+   pip install -r requirements.txt
+   python -m uvicorn app.main:app --reload --port 8000
+   ```
+2. Start the frontend in a second terminal:
+   ```bash
+   cd frontend
+   python -m http.server 5501
+   ```
+3. Open `http://127.0.0.1:5501/index.html`
+4. If you changed curated official facts, sync and audit before committing:
+   ```bash
+   python backend/scripts/apply_official_facts.py --verified-at 2026-03-25
+   python backend/scripts/audit_universities_data.py
+   python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
+   ```
+
+## Read me by task
+- First local launch: see [Run locally](#run-locally)
+- Runtime and env vars: see [Environment configuration](#environment-configuration)
+- Curated data workflow: see [Data maintenance and provenance](#data-maintenance-and-provenance)
+- Tests and CI: see [Testing](#testing) and [CI policy](#ci-policy)
+- Release history: see [CHANGELOG.md](CHANGELOG.md)
+
 ## Current highlights
 - Backend-first architecture for business logic and data delivery.
 - University translation packs are served by backend (`/universities/translations`).
-- University media assets (logos/backgrounds) are stored in backend and served by API static route.
-- Media variant naming is standardized to `small` (reduced size) and full size.
-- Frontend static assets (CSS/JS/images/localization packs) use root-absolute paths where needed to stay stable on pretty URLs (e.g. `/universities/:id`).
-- Service worker is registered from `/sw.js` with root scope to avoid nested-route cache routing issues.
+- University media assets are stored in backend and served by API static routes.
+- Media variant naming is standardized to `small` and full-size variants.
+- Frontend static assets use root-absolute paths where needed to stay stable on pretty URLs like `/universities/:id`.
+- Service worker is registered from `/sw.js` with root scope to avoid nested-route cache issues.
 - Frontend image policy:
-  - list/ranking cards: use `small` assets by default on all devices
-  - university detail page: use full-size assets for better quality
+  - list/ranking cards use `small` assets by default
+  - university detail page uses full-size assets
 
 ## Architecture
-- Frontend: Vanilla JS + HTML/CSS (`frontend/`)
-- Backend: FastAPI (`backend/app/`)
-- Data and static assets:
-  - JSON datasets in `backend/data/*.json`
-  - university media in `backend/data/university_assets/*`
+- Frontend: Vanilla JS + HTML/CSS in `frontend/`
+- Backend: FastAPI in `backend/app/`
+- Data: JSON datasets in `backend/data/*.json`
+- University media: `backend/data/university_assets/*`
 
 ## University media assets
 Storage:
@@ -46,7 +79,7 @@ General:
 - `GET /`
 - `GET /health`
 - `GET /ready`
-- `GET /metrics` (if enabled)
+- `GET /metrics` when enabled
 
 Operations:
 - `GET /ops/runtime`
@@ -73,7 +106,7 @@ Reference data:
 
 ## Run locally
 ### 1) Backend
-Use Python `3.12.x` (recommended for stable dependency compatibility).
+Use Python `3.12.x` for the most predictable dependency behavior.
 
 ```bash
 cd backend
@@ -87,9 +120,8 @@ python -m uvicorn app.main:app --reload --port 8000
 ```
 
 Notes:
-- `.venv/` is local per developer and is ignored by Git.
-- If project path was moved/renamed and CLI launchers break, recreate env:
-  `deactivate` -> remove `.venv` -> `python -m venv .venv` -> reinstall requirements.
+- `.venv/` is local per developer and ignored by Git.
+- If the project path was moved or renamed and CLI launchers break, recreate the env from scratch.
 
 ### 2) Frontend
 ```bash
@@ -111,7 +143,7 @@ docker compose up --build
 ```
 
 ## Optional translation service (LibreTranslate)
-If `ML_INTEREST_TRANSLATION_ENABLED=1`, backend expects:
+If `ML_INTEREST_TRANSLATION_ENABLED=1`, the backend expects:
 - `LIBRETRANSLATE_URL=http://127.0.0.1:5000/translate`
 
 Docker example:
@@ -133,7 +165,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.5.7
+APP_VERSION=2.5.8
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -179,41 +211,15 @@ ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE=32
 ML_SEMANTIC_EMBEDDINGS_E5_PREFIX=auto
 ```
 
-Semantic ranking runtime behavior:
-- Primary backend: sentence embeddings (`sentence-transformers`) over university metadata.
-- Fallback backend: TF-IDF cosine similarity if semantic backend is disabled or unavailable.
+Semantic ranking behavior:
+- Primary backend: sentence embeddings over university metadata.
+- Fallback backend: TF-IDF cosine similarity if semantic mode is disabled or unavailable.
 - Exposed runtime modes: `semantic`, `tfidf`, `unavailable`.
-- In AI sort (`/universities/ai-sort`), semantic signal participates in final UniFit score:
-  - ML available: `finalScore = 0.50*preferenceMismatch + 0.35*admissionRisk + 0.15*(1-mlScore)`
-  - ML unavailable: `finalScore = 0.60*preferenceMismatch + 0.40*admissionRisk`
-
-`ML_SEMANTIC_EMBEDDINGS_*` reference:
-- `ML_SEMANTIC_EMBEDDINGS_ENABLED` (default `1`)
-  - Enables semantic embeddings backend.
-  - If `0`, service uses TF-IDF fallback only.
-- `ML_SEMANTIC_EMBEDDINGS_MODEL` (default `intfloat/multilingual-e5-base`)
-  - Hugging Face model id loaded by `SentenceTransformer`.
-  - Change this to test a different semantic model.
-- `ML_SEMANTIC_EMBEDDINGS_DEVICE` (default `cpu`)
-  - Inference device passed to `SentenceTransformer`.
-  - Typical values: `cpu`, `cuda` (if GPU runtime is available).
-- `ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE` (default `32`)
-  - Batch size for corpus embedding generation.
-  - Larger values can improve throughput but increase RAM/VRAM usage.
-- `ML_SEMANTIC_EMBEDDINGS_E5_PREFIX` (default `auto`)
-  - Controls E5 query/passage prefix formatting:
-    - `auto`: add prefixes only for E5-like models.
-    - `on`: always add `query:` / `passage:`.
-    - `off`: never add prefixes.
-
-Render deployment notes for semantic ranking:
-- First startup may need to load/download model artifacts; expect slower cold start than TF-IDF-only mode.
-- If outbound access to model registry is restricted, semantic init can fail and service automatically falls back to TF-IDF.
-- If you need the fastest startup and deterministic behavior, set `ML_SEMANTIC_EMBEDDINGS_ENABLED=0`.
-- Keep backend memory budget aligned with selected embedding model size.
+- In `/universities/ai-sort`, semantic signal participates in final UniFit score.
+- On fresh deploys, first startup may be slower while model artifacts load or download.
 
 ### Frontend runtime env
-Frontend reads runtime config from `frontend/env.js` (generated at deploy time):
+Frontend reads runtime config from `frontend/env.js` generated at deploy time:
 
 ```env
 UNISEARCH_API_BASE_URL=https://api.example.com
@@ -227,6 +233,35 @@ Generate `frontend/env.js`:
 ```bash
 npm run build:frontend-env
 ```
+
+## Data maintenance and provenance
+The project is intentionally conservative about university facts.
+
+Rules:
+- Use official university pages, official admissions pages, or official university-hosted PDFs/reports only.
+- Do not fill missing facts from aggregators, marketing retellings, or inferred heuristics when an official institution-wide source is missing.
+- `backend/data/official_facts.json` is the curated source of truth for verified optional facts added in recent cleanup passes.
+- `backend/data/universities.json` should be updated from the catalog through the sync script, not hand-edited first for those curated facts.
+
+Current curated workflow:
+1. Add or update verified facts in `backend/data/official_facts.json`
+2. Sync them into the dataset:
+   ```bash
+   python backend/scripts/apply_official_facts.py --verified-at 2026-03-25
+   ```
+3. Run dataset audit:
+   ```bash
+   python backend/scripts/audit_universities_data.py
+   ```
+4. Run HTTP source audit for touched URLs:
+   ```bash
+   python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
+   ```
+
+Useful references:
+- current admissions cleanup note: `docs/official_admissions_cleanup_2026-03-25.md`
+- previous official-facts cleanup note: `docs/official_facts_update_2026-03-12.md`
+- canonical release history: [CHANGELOG.md](CHANGELOG.md)
 
 ## Testing
 Prerequisites:
@@ -269,17 +304,17 @@ npm run test:all
 ## CI policy
 Workflow: `.github/workflows/tests.yml`
 
-- PR/push (`main`):
+- PR and push to `main`:
   - backend unit tests
-  - E2E PR suite (Chromium)
+  - E2E PR suite on Chromium
   - i18n consistency checks
 - Nightly schedule:
-  - full Playwright matrix (Chromium + Firefox + WebKit)
+  - full Playwright matrix on Chromium, Firefox, and WebKit
 
 ## Hosting notes
-- Works with any standard setup: VPS + reverse proxy, Docker hosts, or managed platforms.
-- For non-local deployments, frontend can use clean routes (`/`, `/universities`, `/universities/:id`, `/ranking`, `/guide`, `/about`) if host rewrite rules are configured.
-- Local `python -m http.server` does not provide rewrite support, so `.html` routes are used in local dev.
+- Works with standard setups like VPS + reverse proxy, Docker hosts, or managed platforms.
+- For non-local deployments, the frontend can use clean routes like `/`, `/universities`, `/universities/:id`, `/ranking`, `/guide`, and `/about` if rewrite rules are configured.
+- Local `python -m http.server` does not provide rewrites, so `.html` routes are used in local development.
 
 ## Troubleshooting static asset 404 / MIME errors
 If you see browser errors like:
@@ -287,16 +322,11 @@ If you see browser errors like:
 - `Refused to execute script ... MIME type ...`
 - repeated `404` for `/css/*`, `/javascript/*`, `/images/*`, `/Localization/*`
 
-check the following:
-- Local dev root:
-  - run frontend server from `frontend/` directory
-  - command: `python -m http.server 5501`
-- Route rewrites:
-  - ensure pretty URL rewrites map detail route to `university.html`
-- Browser cache:
-  - unregister service worker for the site
-  - clear site data/cache
-  - hard reload (`Ctrl+Shift+R`)
+Check the following:
+- Run the frontend server from `frontend/`
+- Use `python -m http.server 5501`
+- Ensure pretty-URL rewrites map detail routes to `university.html`
+- If needed, unregister the service worker, clear site data, and hard reload
 
 ## Repository layout
 ```text
@@ -329,6 +359,7 @@ backend/
       universities.py
   data/
     universities.json
+    official_facts.json
     universities_translations.json
     exams.json
     languages.json
@@ -339,6 +370,8 @@ backend/
       thumbnails/
       thumbnails-small/
   scripts/
+    apply_official_facts.py
+    audit_universities_data.py
     refresh_university_factors.py
   tests/
     fixtures/
@@ -359,6 +392,10 @@ frontend/
   Localization/
   scripts/
 
+docs/
+  official_admissions_cleanup_2026-03-25.md
+  official_facts_update_2026-03-12.md
+
 scripts/
   i18n-check.mjs
 
@@ -369,142 +406,14 @@ tests/
 ```
 
 ## Notes
-- Default fallback language remains English when unsupported locale is detected.
+- Default fallback language remains English when an unsupported locale is detected.
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
+- The recent cleanup passes intentionally favored missing values over unverified admissions facts.
 
 ## Changelog
-### 2.5.7 (2026-03-11) - explicit unknown placeholders, truth-safe frontend fallbacks, and no generated university copy
-- Synchronized runtime/package version to `2.5.7` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
-- Preserved restored ranking data in `backend/data/universities.json`:
-  - `16` universities remain `official`,
-  - `1` remains `excluded`,
-  - `3` remain `not_listed`;
-  - frontend no longer presents internal fallback positions as if they were official published ranks.
-- Removed backend-generated university description fallback text:
-  - when `description` is empty, API now returns empty description instead of template-generated copy.
-- Added field-specific unknown placeholders across backend-driven frontend rendering:
-  - university cards,
-  - university detail header/overview/programs/admission/finance/ROI blocks,
-  - ranking page cards,
-  - homepage live coverage counters.
-- Replaced misleading negative assumptions caused by missing backend fields:
-  - missing `financial_aid.merit_based` / `financial_aid.need_based` no longer render as explicit "no aid";
-  - missing admission requirements no longer render as "None";
-  - missing finance breakdown no longer renders as invented tuition-only breakdown.
-- Added a reusable localization-aware placeholder helper for unknown backend fields and wired new translation keys for `eng`, `ru`, and `kz`.
-- Hardened truth audit / factor refresh behavior:
-  - factor refresh no longer persists stale acceptance-derived raw metrics;
-  - social/academic intensity in `factors_meta` is now documented as a UniSearch proxy signal rather than an official university fact;
-  - dataset audit passes with `0` errors and `0` warnings after refresh.
+Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
-### 2.5.6 (2026-03-11) - UniFit location semantics, verified factor refresh, and flag quality fixes
-- Synchronized project runtime/package version to `2.5.6` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
-- UniFit location tradeoff was clarified end-to-end:
-  - dataset and factor refresh pipeline now store canonical `city_vs_outside_city` while keeping backward-compatible `city_vs_campus`;
-  - backend fallback logic no longer uses invented hardcoded city buckets and instead derives the location factor only from traceable city population metrics already stored in `factors_meta`;
-  - UI wording was updated from generic "life" phrasing to study/campus-oriented wording.
-- Refreshed `backend/data/universities.json` from traceable external sources via `backend/scripts/refresh_university_factors.py`:
-  - `20/20` OpenAlex institution matches;
-  - `20/20` city population matches using Open-Meteo/Wikidata;
-  - dataset audit passed without errors or warnings.
-- Universities-page UniFit controls received spacing cleanup between slider titles and their left/right extremes for better readability.
-- Country flags were migrated to SVG for higher fidelity and then visually tuned back toward the previous compact style:
-  - restored rectangular appearance with reduced rounding;
-  - removed image cropping by switching from `cover` to `contain`;
-  - adjusted sizing so flags remain visible in university/ranking location rows and custom selects.
-
-### 2.5.5 (2026-02-26) - i18n completeness, fallback consistency, and range-wrap stability
-- Closed missing backend-driven translation gaps in `backend/data/universities_translations.json` for `ru` and `kz`:
-  - added `groups.study_mode.online`
-  - added missing `groups.tag` keys used by dataset and UI rendering:
-    - `computer_science`
-    - `law`
-    - `social_sciences`
-    - `humanities`
-    - `education`
-    - `architecture`
-- Synced stale fallback texts in page templates with canonical `frontend/Localization/eng` values to avoid mixed/old copy during localization-pack delays:
-  - `frontend/about.html`
-  - `frontend/guide.html`
-  - `frontend/index.html`
-  - `frontend/ranking.html`
-  - `frontend/universities.html`
-- Synced stale JS fallback strings in `frontend/javascript/pages.js` with `eng` localization keys (tour, UniFit warning, ROI helper copy, ranking error, glossary terms/descriptions).
-- Removed non-i18n placeholder shorthand in universities cost input fallback (`150k` -> `150000`) to keep neutral numeric fallback while translations initialize.
-- Fixed awkward line breaks for numeric ranges in UI copy (e.g. `3‑16`, `80‑100`, `0‑100`, `500,000‑2,000,000`):
-  - updated localized strings and fallback texts to use non-breaking hyphen (`U+2011`) in user-facing range values;
-  - updated guide and profile fallback copy where ranges can appear during early render;
-  - updated backend translation payload text where range labels are rendered in cards/tooltips.
-- Added defensive runtime normalization for range punctuation:
-  - i18n path now stabilizes numeric ranges returned by `t()`/`tFormat()`;
-  - HTML escaping path normalizes numeric ranges before output, reducing future regression risk for newly added content.
-- Validation status:
-  - `npm run check:i18n` passed
-  - `tests/e2e/i18n-pages-smoke.spec.js` passed on Chromium
-
-### 2.5.4 (2026-02-25) - UI/UX and guide i18n follow-up
-- Fixed white loading spinner behavior on universities page while waiting for delayed `UniFit` response.
-- During list loading, the list/state/pagination are hidden until loading finishes (same "full loading" feel as initial load).
-- During map loading, existing markers/popups are cleared, top counter is reset to `0`, and only the dimmed loading state is visible.
-- University detail header alignment fix: website/map quick-action buttons are now aligned to the title row (not visually dropped lower on desktop).
-- Ranking card UX update: removed visible rank-source meta pill for end users and moved rank provenance to hover tooltip (`title`) from `rank_meta`.
-- Guide typography cleanup: removed paragraph spacing in narrative sections (kept spacing behavior for Academic Exams, Language Exams, and Glossary blocks).
-- Profile budget UX:
-  - budget validation now allows `0` (range `0..1,000,000`);
-  - added a subtle dismissible hint when budget is below `$1000`, with quick action to switch funding preference to `Grant only`.
-- Grant track visuals: made grant pills in Admissions/Costs noticeably greener for clearer finance context.
-- About page copy corrected in `eng`/`ru`/`kz`: updated team roles so responsibilities do not overlap (`text documentation` vs `video documentation`).
-- Fixed profile i18n refresh on runtime language switch: profile modal labels/selects now retranslate without cache clear or hard reload.
-- Profile username inline editor now uses the same accent focus ring behavior as other profile inputs.
-- Guide ML section now explicitly shows the "translation unavailable, write interests in English" note, with example copy aligned across `eng`/`ru`/`kz`.
-- Guide wording polish in Exam Basics: corrected language-proof phrasing in `ru`/`kz` (and aligned `eng` wording to "proof of language proficiency").
-- Guide rendering lifecycle hardened:
-  - glossary/exam sections now fully recompute on `languageChanged` and config load events;
-  - removed mixed-language artifacts and unresolved placeholder output in glossary.
-- Guide exam lists are now stably ordered by canonical exam id, so Academic and Language exam order is identical across all UI languages.
-- Guide language headers now use localized language names from i18n keys (`languages.name.*`) instead of raw config labels.
-- Guide exam descriptions now include localized exam titles consistently (not only list headers).
-- Guide localization cleanup (`ru`/`kz`): removed leftover mixed English phrasing in Academic/Language exam descriptions and normalized UNT naming (`ЕНТ` / `ҰБТ`) in guide text.
-- Hash-route stability fix for guide sections: refreshing URLs like `/#guide-academic-exams` now preserves section intent by routing to the Guide page with the same hash.
-- Universities sort UX hint: when sort strategy is not `UniFit`, a localized hint explains that smart AI tags are fully available only with `UniFit`.
-- Guide received a new `Tags` section with localized explanations of standard vs AI tags, including when each tag appears.
-- Profile exam/language editor UX:
-  - when user selects an already-saved record, action button switches from `Add` to localized `Edit`;
-  - language overwrite now shows localized `Language updated` toast instead of `Language added`.
-
-### 2.5.3 (2026-02-24) - bugfix release
-- Standardized project runtime/package version to `2.5.3` (`frontend/config.js`, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`).
-- Unified universities page loading UX:
-  - removed duplicate top-right purple global API loader on universities list page;
-  - kept central white loading spinner visible until delayed `UniFit` response is applied (fallback -> late AI update flow).
-- Improved RU user-facing copy in university badges/tooltips (financial aid phrasing and consistent `вы` tone).
-- Reworked university card badge sizing logic to count-based scenarios (`0..6` supported by CSS classes):
-  - `uni-badge--count-1` ... `uni-badge--count-6`
-  - more tags now use compact presets instead of aggressive global text shrinking.
-- Added robust i18n badge layout validation for `eng`, `rus`, `kz` to ensure badges stay inside the badge container.
-- Added/updated E2E coverage for badge priority, count-based classes (`0..5`), and multilingual layout behavior.
-- Changed repeating study emoji
-- Ranking page UX cleanup: removed `Source / Type / Checked` meta line and tooltip from ranking cards for end users (metadata remains in backend data).
-- Data truth pass (universities dataset): updated rank facts to QS WUR 2026 where officially published, added explicit `rank_meta` statuses (`official` / `excluded` / `not_listed`), and refreshed rank provenance for auditability.
-- Upgraded ML relevance layer:
-  - sentence-embeddings semantic matching (multilingual E5) is now primary with TF-IDF fallback;
-  - university semantic corpus now includes richer metadata (including admission track labels/descriptions/modes/extra requirements);
-  - runtime ML status now reports backend mode/reason/model (`semantic` / `tfidf` / `unavailable`);
-  - UniFit `matchData` now includes `mlMode`, `mlSemanticScore`, `mlLexicalScore`, and `semanticSignalWeight`;
-  - semantic signal now contributes to final UniFit ranking score.
-
-### 2.5.2 (2026-02-24) - non-breaking UI/UX + stability
-- Fixed profile modal draft persistence when switching language (draft is preserved, modal closes cleanly).
-- Restored expected universities default sort behavior: AI sort is used by default when profile evidence exists.
-- Improved keyboard accessibility with clear `:focus-visible` states on key interactive controls.
-- Improved long-text wrapping in ranking/university cards and tooltips to avoid layout breaks on narrow viewports.
-- Updated minor EN/RU copy consistency.
-- Validation: `npm run test:e2e:pr` passes (18/18).
-
-### 2.5.1 (2026-02-21)
-- Added ranking source transparency: each ranking card can now show source, source type, and verification date.
-- Added localized ranking source UX for `eng`, `ru`, and `kz`.
-- Improved university dataset quality for ranking/admission fields and added fact provenance metadata.
-- Added data maintenance tooling:
-  - `backend/scripts/audit_universities_data.py`
-  - `backend/scripts/refresh_fact_provenance.py`
+Latest release:
+- `2.5.8` on `2026-03-25`
+- focus: official facts stabilization, admissions-source cleanup, and stronger provenance sync checks
+- status: work in progress tester build, not a finalized release yet

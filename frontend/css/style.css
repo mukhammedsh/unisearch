@@ -589,6 +589,82 @@ html, body {
   color: var(--text-muted);
 }
 
+.profile-label-row{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-info-wrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.profile-info{
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.profile-info:hover,
+.profile-info:focus-visible{
+  outline: none;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(87, 21, 219, 0.08);
+}
+
+.profile-tooltip{
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  width: min(320px, 78vw);
+  background: #101010;
+  color: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  z-index: 40;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  overflow-wrap: anywhere;
+}
+
+.profile-tooltip strong{
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.profile-tooltip span{
+  display: block;
+}
+
+.profile-info-wrap:hover .profile-tooltip,
+.profile-info-wrap:focus-within .profile-tooltip,
+.profile-info-wrap.is-open .profile-tooltip{
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .profile-input{
   width: 100%;
   box-sizing: border-box;
@@ -753,6 +829,24 @@ html, body {
 
 :root[data-theme="dark"] .profile-interests-warning{
   color: #fbbf24;
+}
+
+:root[data-theme="dark"] .profile-info{
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #c9c9d6;
+}
+
+:root[data-theme="dark"] .profile-info:hover,
+:root[data-theme="dark"] .profile-info:focus-visible{
+  background: rgba(124, 92, 255, 0.16);
+  border-color: rgba(124, 92, 255, 0.36);
+  color: #d8cbff;
+}
+
+:root[data-theme="dark"] .profile-tooltip{
+  background: #18181c;
+  color: #f5f5f5;
 }
 
 :root[data-theme="dark"] .profile-budget-grant-hint{

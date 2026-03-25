@@ -17,6 +17,7 @@ import {
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 import { initUniversityTranslations, translateProgramName } from "./university-translations.js";
 import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
+import { bindInfoTooltips } from "./tooltip.js";
 
 function frontendStaticAsset(path = "") {
     const cleanPath = String(path || "").replace(/^\/+/, "");
@@ -253,7 +254,7 @@ const LAYOUT_HTML = `
       </div>
 
       <div class="profile-field">
-        <label class="profile-label" data-i18n="profile.label.interests">University Interests (AI)</label>
+        <label class="profile-label" data-i18n="profile.label.interests">What You Want in a University</label>
         <textarea
           id="profileInterestsInput"
           class="profile-input"
@@ -267,17 +268,33 @@ const LAYOUT_HTML = `
           class="profile-interests-warning"
           hidden
           data-i18n="profile.warning.interests_english_only"
-        >Translation is unavailable. Please write interests in English.</div>
-        <div class="profile-hint" data-i18n="profile.hint.interests">Used to personalize your recommendations.</div>
+        >If automatic translation is unavailable, write this field in English.</div>
+        <div class="profile-hint" data-i18n="profile.hint.interests">Write what matters to you in a university so UniSearch can sort results more personally.</div>
       </div>
 
       <div class="profile-field">
-        <label class="profile-label" data-i18n="profile.label.gpa">GPA (Percent)</label>
+        <div class="profile-label-row">
+          <label class="profile-label" for="gpaInput" data-i18n="profile.label.gpa">GPA (Percent)</label>
+          <span class="profile-info-wrap">
+            <button
+              type="button"
+              class="profile-info"
+              aria-label="How GPA works here"
+              title="How GPA works here"
+              data-i18n-aria-label="profile.gpa_info_title"
+              data-i18n-title="profile.gpa_info_title"
+            >i</button>
+            <span class="profile-tooltip" role="tooltip">
+              <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
+              <span data-i18n="profile.gpa_info_tooltip">Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.</span>
+            </span>
+          </span>
+        </div>
         <div class="profile-budget profile-budget--with-unit">
           <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" data-i18n-placeholder="profile.placeholder.gpa" />
           <span class="profile-unit" data-i18n="profile.unit.gpa">% (0 to 100)</span>
         </div>
-        <div class="profile-hint" data-i18n="profile.hint.gpa">GPA is stored as percent and used in admission matching.</div>
+        <div class="profile-hint" data-i18n="profile.hint.gpa">Use percent here. UniSearch uses it only as a normalized estimate for matching.</div>
       </div>
 
       <div class="profile-field">
@@ -595,6 +612,7 @@ function initProfileUI() {
     }
 
     modal.setAttribute("aria-hidden", "true");
+    bindInfoTooltips({ root: modal, wrapSelector: ".profile-info-wrap", buttonSelector: ".profile-info" });
 
     if (modal.dataset.bound === "1") return;
     modal.dataset.bound = "1";

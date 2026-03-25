@@ -42,7 +42,8 @@ guide.ml.p2: The system compares this text with university and program descripti
 guide.ml.p3: More specific interests usually give better recommendations.
 guide.ml.p4: Keep it short. Example in English: computer science, scholarships, USA.
 guide.ml.p5: Interests help sort options, but they do not replace official university requirements.
-guide.ml.title: How interests are used
+guide.ml.title: How your interests are used
+guide.nav.interests: Interests
 guide.muted.academic: Short explanations of academic exams used in requirements.
 guide.muted.language: Short explanations of language exams and certificates.
 guide.nav.academic_exams: Academic Exams
@@ -150,16 +151,18 @@ profile.hint.budget_range: Range: 0‑1,000,000
 profile.hint.low_budget_grant: Budget is under $1000. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
-profile.hint.gpa: GPA is stored as percent and used in admission matching.
-profile.hint.interests: Used to personalize your recommendations.
-profile.warning.interests_english_only: Translation is unavailable. Please write interests in English.
+profile.hint.gpa: Use percent here. UniSearch uses it only as a normalized estimate for matching.
+profile.gpa_info_title: How GPA works here
+profile.gpa_info_tooltip: Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.
+profile.hint.interests: Write what matters to you in a university so UniSearch can sort results more personally.
+profile.warning.interests_english_only: If automatic translation is unavailable, write this field in English.
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget (USD / year)
 profile.label.exams: Exams (list, optional)
 profile.label.funding_type: Preferred Funding Type
 profile.label.gpa: GPA (Percent)
-profile.label.interests: University Interests (AI)
+profile.label.interests: What You Want in a University
 profile.label.major: Intended Major
 profile.label.study_mode: Preferred Study Mode
 profile.language: Language
@@ -177,7 +180,7 @@ profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
 profile.placeholder.budget: e.g. 20000
 profile.placeholder.gpa: e.g. 92
-profile.placeholder.interests: Write only what you want to find (programs, research, location). Do not list what you do not want.
+profile.placeholder.interests: Example: computer science, scholarships, big city, strong internships
 profile.placeholder.lang_score: Score (e.g. 7.5)
 profile.placeholder.score: Score
 profile.preference_saved: Preference saved

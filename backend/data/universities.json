@@ -390,7 +390,21 @@
       ],
       "major_tags": [
         "computer science"
-      ]
+      ],
+      "acceptance_rate_percent": 9.89,
+      "acceptance_rate_percent_meta": {
+        "source": "Imperial College London Statistics Guide 2024-25",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Calculated from the official Imperial undergraduate applications and new admissions totals for 2024-25 entry (3,119 new admissions / 31,533 applications).",
+        "basis": {
+          "cycle": "2024-25 entry",
+          "applicants": 31533,
+          "admitted": 3119
+        }
+      }
     },
     "finance": {
       "total_cost_year_usd": 75000,
@@ -496,6 +510,10 @@
         "url": "https://www.imperial.ac.uk/admin-services/student-records-and-data/for-staff/student-statistics-public/"
       },
       {
+        "topic": "acceptance_rate",
+        "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf"
+      },
+      {
         "topic": "description",
         "url": "https://www.imperial.ac.uk/about/"
       },
@@ -596,6 +614,21 @@
           "confidence": "high",
           "status": "official",
           "method": "Direct student headcount published on the official Imperial student statistics page."
+        },
+        "acceptance_rate_percent": {
+          "value": 9.89,
+          "unit": "percent",
+          "source": "Imperial College London Statistics Guide 2024-25",
+          "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+          "verified_at": "2026-03-25",
+          "confidence": "medium",
+          "status": "official",
+          "method": "Calculated from the official Imperial undergraduate applications and new admissions totals for 2024-25 entry (3,119 new admissions / 31,533 applications).",
+          "basis": {
+            "cycle": "2024-25 entry",
+            "applicants": 31533,
+            "admitted": 3119
+          }
         }
       }
     },
@@ -2397,7 +2430,7 @@
       "acceptance_rate_percent": 74.33,
       "acceptance_rate_percent_meta": {
         "source": "University of Toronto Governing Council presentation",
-        "source_url": "https://governingcouncil.utoronto.ca/media/32171",
+        "source_url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
         "verified_at": "2026-03-16",
         "status": "official",
         "confidence": "medium",
@@ -2540,16 +2573,16 @@
         "url": "https://www.utoronto.ca/about-u-of-t"
       },
       {
-        "topic": "acceptance_rate",
-        "url": "https://governingcouncil.utoronto.ca/media/32171"
-      },
-      {
         "topic": "local_exam_requirements",
         "url": "https://future.utoronto.ca/requirements-canadian-high-schools"
       },
       {
         "topic": "student_count",
         "url": "https://www.utoronto.ca/about-u-of-t/quick-facts"
+      },
+      {
+        "topic": "acceptance_rate",
+        "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf"
       }
     ],
     "description": "U of T describes itself as a top research-intensive university focused on discovery, innovation, and global impact. Its faculties and divisions include Applied Science and Engineering, Arts and Science, Law, Management, Medicine, Education, and others across three campuses.",
@@ -2653,7 +2686,7 @@
           "value": 74.33,
           "unit": "percent",
           "source": "University of Toronto Governing Council presentation",
-          "source_url": "https://governingcouncil.utoronto.ca/media/32171",
+          "source_url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
           "verified_at": "2026-03-16",
           "confidence": "medium",
           "status": "official",
@@ -3023,7 +3056,21 @@
         "Environmental Sciences (PEAK)",
         "Japan in East Asia (PEAK)"
       ],
-      "major_tags": []
+      "major_tags": [],
+      "acceptance_rate_percent": 31.83,
+      "acceptance_rate_percent_meta": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official UTokyo undergraduate admissions counts (3,084 successful applicants / 9,688 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024 undergraduate programs",
+          "applicants": 9688,
+          "admitted": 3084
+        }
+      }
     },
     "finance": {
       "total_cost_year_usd": 16000,
@@ -3133,6 +3180,10 @@
         "url": "https://www.u-tokyo.ac.jp/en/about/numbers.html"
       },
       {
+        "topic": "acceptance_rate",
+        "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html"
+      },
+      {
         "topic": "description",
         "url": "https://www.u-tokyo.ac.jp/en/about/about.html"
       },
@@ -3232,6 +3283,21 @@
           "confidence": "high",
           "status": "official",
           "method": "Direct student enrollment published by the University of Tokyo."
+        },
+        "acceptance_rate_percent": {
+          "value": 31.83,
+          "unit": "percent",
+          "source": "UTokyo Applications and Admissions",
+          "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "verified_at": "2026-03-25",
+          "confidence": "high",
+          "status": "official",
+          "method": "Calculated from official UTokyo undergraduate admissions counts (3,084 successful applicants / 9,688 applicants).",
+          "basis": {
+            "cycle": "As of May 1, 2024 undergraduate programs",
+            "applicants": 9688,
+            "admitted": 3084
+          }
         }
       }
     },
@@ -4446,7 +4512,16 @@
       "major_tags": [
         "computer science",
         "engineering"
-      ]
+      ],
+      "acceptance_rate_percent": 21.0,
+      "acceptance_rate_percent_meta": {
+        "source": "Admissions Statistics on Nazarbayev University",
+        "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
+      }
     },
     "finance": {
       "total_cost_year_usd": 19500,
@@ -4670,6 +4745,10 @@
         "url": "https://nu.edu.kz/about/"
       },
       {
+        "topic": "acceptance_rate",
+        "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf"
+      },
+      {
         "topic": "description",
         "url": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf"
       },
@@ -4775,6 +4854,16 @@
           "confidence": "high",
           "status": "official",
           "method": "Direct student headcount published on the official Nazarbayev University About page."
+        },
+        "acceptance_rate_percent": {
+          "value": 21.0,
+          "unit": "percent",
+          "source": "Admissions Statistics on Nazarbayev University",
+          "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+          "verified_at": "2026-03-25",
+          "confidence": "medium",
+          "status": "official",
+          "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
         }
       }
     },

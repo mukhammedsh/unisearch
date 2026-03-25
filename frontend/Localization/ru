@@ -42,7 +42,8 @@ guide.ml.p2: Система сравнивает ваш текст с описа
 guide.ml.p3: Чем конкретнее вы пишете интересы, тем точнее рекомендации.
 guide.ml.p4: Можно писать коротко. Пример на английском: computer science, scholarships, USA.
 guide.ml.p5: Интересы помогают отсортировать варианты, но не заменяют официальные требования университета.
-guide.ml.title: Как учитываются интересы
+guide.ml.title: Как учитываются ваши интересы
+guide.nav.interests: Интересы
 guide.muted.academic: Короткие объяснения экзаменов, которые встречаются в требованиях.
 guide.muted.language: Короткие объяснения языковых экзаменов и сертификатов.
 guide.nav.academic_exams: Академические экзамены
@@ -150,16 +151,18 @@ profile.hint.budget_range: Диапазон: 0‑1,000,000
 profile.hint.low_budget_grant: Бюджет меньше $1000. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
-profile.hint.gpa: GPA хранится в процентах и используется при расчете вероятности поступления.
-profile.hint.interests: Используется для персонализации ваших рекомендаций.
-profile.warning.interests_english_only: Перевод недоступен. Пожалуйста, пишите интересы на английском.
+profile.hint.gpa: Здесь GPA нужно указывать в процентах. UniSearch использует это только как нормализованный ориентир для подбора.
+profile.gpa_info_title: Как GPA работает здесь
+profile.gpa_info_tooltip: Укажите GPA в процентах от 0 до 100. Это внутренний формат UniSearch для подбора и примерных оценок. Реальные университеты смотрят ваш оригинальный аттестат или transcript и шкалу оценивания в контексте школы.
+profile.hint.interests: Напишите, что для вас важно в университете, чтобы UniSearch точнее отсортировал результаты.
+profile.warning.interests_english_only: Если автоперевод недоступен, заполните это поле на английском.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет (USD / год)
 profile.label.exams: Экзамены (список, необязательно)
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: GPA (в процентах)
-profile.label.interests: Интересы по университету (ИИ)
+profile.label.interests: Что вы хотите от университета
 profile.label.major: Планируемая специальность
 profile.label.study_mode: Предпочтительный формат обучения
 profile.language: Язык
@@ -177,7 +180,7 @@ profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, 20000
 profile.placeholder.gpa: например, 92
-profile.placeholder.interests: Пишите только то, что ищете (программы, исследования, локация). Не перечисляйте то, что не ищете.
+profile.placeholder.interests: Например: computer science, scholarships, big city, strong internships
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено

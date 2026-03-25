@@ -42,7 +42,8 @@ guide.ml.p2: Жүйе бұл мәтінді университет пен бағ
 guide.ml.p3: Неғұрлым нақты жазсаңыз, ұсыныс соғұрлым дәл болады.
 guide.ml.p4: Қысқа да жазуға болады. Ағылшынша мысал: computer science, scholarships, USA.
 guide.ml.p5: Бұл тек сұрыптауға көмектеседі, университеттің ресми талаптарын алмастырмайды.
-guide.ml.title: Қызығушылықтар қалай ескеріледі
+guide.ml.title: Сіздің қызығушылықтарыңыз қалай ескеріледі
+guide.nav.interests: Қызығушылықтар
 guide.muted.academic: Талаптарда кездесетін академиялық емтихандардың қысқа түсіндірмесі.
 guide.muted.language: Тіл емтихандары мен сертификаттардың қысқа түсіндірмесі.
 guide.nav.academic_exams: Академиялық емтихандар
@@ -150,16 +151,18 @@ profile.hint.budget_range: Ауқым: 0‑1,000,000
 profile.hint.low_budget_grant: Бюджет $1000-нан төмен. Мүмкін, «Тек грант» таңдаған дұрыс.
 profile.hint.low_budget_grant_action: «Тек грант» таңдау
 profile.hint.dismiss: Кеңесті жабу
-profile.hint.gpa: GPA пайызбен сақталады және түсу ықтималдығын есептеуде қолданылады.
-profile.hint.interests: Ұсыныстарды сізге бейімдеу үшін қолданылады.
-profile.warning.interests_english_only: Аударма қолжетімсіз. Қызығушылықтар өрісін ағылшын тілінде жазыңыз.
+profile.hint.gpa: Мұнда GPA пайызбен енгізіледі. UniSearch оны тек іріктеу үшін нормаланған бағдар ретінде қолданады.
+profile.gpa_info_title: GPA мұнда қалай жұмыс істейді
+profile.gpa_info_tooltip: GPA-ды 0-ден 100-ге дейінгі пайызбен енгізіңіз. Бұл UniSearch ішіндегі іріктеу мен шамамен бағалау үшін ғана қолданылатын формат. Нақты университеттер сіздің түпнұсқа transcript не аттестатыңызды және бағалау шкаласын мектеп контекстінде қарайды.
+profile.hint.interests: UniSearch нәтижелерді сізге дәлірек сұрыптауы үшін университеттен не күтетініңізді жазыңыз.
+profile.warning.interests_english_only: Егер автоаударма қолжетімсіз болса, бұл өрісті ағылшын тілінде толтырыңыз.
 profile.interests_saved: Қызығушылықтар сақталды
 profile.saved_all: Профиль сақталды
 profile.label.budget: Жалпы бюджет (USD / жыл)
 profile.label.exams: Емтихандар (тізім, міндетті емес)
 profile.label.funding_type: Қаржыландыру түрі
 profile.label.gpa: GPA (пайыз)
-profile.label.interests: Университет қызығушылықтары (ЖИ)
+profile.label.interests: Университеттен не қалайсыз
 profile.label.major: Негізгі мамандық
 profile.label.study_mode: Оқу форматы
 profile.language: Тіл
@@ -177,7 +180,7 @@ profile.option.study_mode_oncampus: Кампус форматы (күндізг�
 profile.option.study_mode_online: Онлайн / қашықтан
 profile.placeholder.budget: мысалы, 20000
 profile.placeholder.gpa: мысалы, 92
-profile.placeholder.interests: Тек іздейтін нәрселеріңізді жазыңыз (бағдарламалар, зерттеу, орналасу). Іздемейтін нәрселерді жазбаңыз.
+profile.placeholder.interests: Мысалы: computer science, scholarships, big city, strong internships
 profile.placeholder.lang_score: Балл (мысалы, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Баптау сақталды

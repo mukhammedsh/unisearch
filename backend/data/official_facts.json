@@ -37,6 +37,20 @@
         "confidence": "high",
         "method": "Direct student headcount published on the official Imperial student statistics page."
       },
+      "acceptance_rate_percent": {
+        "value": 9.89,
+        "source": "Imperial College London Statistics Guide 2024-25",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Calculated from the official Imperial undergraduate applications and new admissions totals for 2024-25 entry (3,119 new admissions / 31,533 applications).",
+        "basis": {
+          "cycle": "2024-25 entry",
+          "applicants": 31533,
+          "admitted": 3119
+        }
+      },
       "description": {
         "value": "Imperial describes itself as a world-leading university for science, technology, engineering, medicine and business, using science across its London campuses and international network to tackle global challenges.",
         "source": "Imperial About",
@@ -176,6 +190,20 @@
         "status": "official",
         "confidence": "high",
         "method": "Direct student headcount published on U of T Quick Facts."
+      },
+      "acceptance_rate_percent": {
+        "value": 74.33,
+        "source": "University of Toronto Governing Council presentation",
+        "source_url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
+        "verified_at": "2026-03-16",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+        "basis": {
+          "cycle": "Fall 2024",
+          "applicants": 29528,
+          "admitted": 21949
+        }
       }
     },
     "cuhk-hk-shatin": {
@@ -202,6 +230,20 @@
         "status": "official",
         "confidence": "high",
         "method": "Direct student enrollment published by the University of Tokyo."
+      },
+      "acceptance_rate_percent": {
+        "value": 31.83,
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official UTokyo undergraduate admissions counts (3,084 successful applicants / 9,688 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024 undergraduate programs",
+          "applicants": 9688,
+          "admitted": 3084
+        }
       },
       "description": {
         "value": "UTokyo says it was established in 1877 as Japan's first national university and offers courses across essentially all academic disciplines while conducting research across the full spectrum of academic activity.",
@@ -401,6 +443,15 @@
         "status": "official",
         "confidence": "high",
         "method": "Direct student headcount published on the official Nazarbayev University About page."
+      },
+      "acceptance_rate_percent": {
+        "value": 21.0,
+        "source": "Admissions Statistics on Nazarbayev University",
+        "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
       },
       "description": {
         "value": "Official NU materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
