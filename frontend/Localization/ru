@@ -298,6 +298,52 @@ university.about_campus: О вузе и кампусе
 university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
 university.programs_scope_note: Программы и данные о поступлении на этой странице сейчас охватывают только бакалавриат.
+university.official_admissions_data: Официальные данные о поступлении
+university.official_admissions_note: UniSearch показывает только официально опубликованные метрики поступления. Если вуз не публикует коэффициент приёма, мы оставляем поле пустым, а не угадываем.
+university.admissions.university_wide: По университету
+university.admissions.program_level: По программам
+university.admissions.program_signals: Официальные сигналы по программам
+university.admissions.program_signals_note: Здесь могут быть коэффициент приёма, applicants/offers, вместимость, проходной порог, grade profile или verified-null, если вуз не публикует отдельную метрику по программе.
+university.admissions.checked: Проверено
+university.admissions.cycle: Цикл
+university.admissions.rows_count: Официальных строк: {count}
+university.admissions.no_university_rate: Вуз не публикует официальный общий коэффициент приёма.
+university.admissions.no_program_metrics: Отдельная официальная метрика по программам не опубликована.
+university.admissions.open_source: Открыть источник
+university.admissions.official_source: Официальный источник
+university.admissions.status.official_rate: Официальный коэффициент
+university.admissions.status.official_counts: Официальные counts
+university.admissions.status.official_signals: Официальные сигналы
+university.admissions.status.competition_ratio_only: Официальный competition ratio
+university.admissions.status.verified_null_only: Отдельно не публикуется
+university.admissions.status.no_official_source: Нет официального источника
+university.admissions.status.reviewed: Проверено по официальным материалам
+university.admissions.metric.acceptance_rate: Коэффициент приёма
+university.admissions.metric.capacity: Вместимость
+university.admissions.metric.entry_standard: Входной стандарт
+university.admissions.metric.cutoff: Проходной порог
+university.admissions.metric.counts: Applicants / offers
+university.admissions.metric.competition_ratio: Competition ratio
+university.admissions.metric.verified_null: Отдельно не публикуется
+university.admissions.metric.official_signal: Официальный сигнал
+university.admissions.signal.rate: Официальный коэффициент из опубликованных counts.
+university.admissions.signal.capacity: Официально опубликованная вместимость или число мест.
+university.admissions.signal.entry_standard: Официально опубликованный grade profile или входной стандарт.
+university.admissions.signal.cutoff: Официально опубликованный проходной порог или direct-admit cutoff.
+university.admissions.signal.counts: Официально опубликованные applicants, offers или admitted counts.
+university.admissions.signal.competition_ratio: Официально опубликованный сигнал в формате competition ratio.
+university.admissions.signal.verified_null: Отдельная официальная метрика по этой программе не публикуется.
+university.admissions.signal.official: Официально опубликованный admissions signal.
+university.admissions.counts.applicants: Applicants
+university.admissions.counts.admitted: Admitted
+university.admissions.counts.offers: Offers
+university.admissions.counts.enrolled: Enrolled
+university.admissions.counts.places: мест
+university.admissions.unit.points: баллов
+university.admissions.a_level: A-Level
+university.admissions.poly_gpa: Poly GPA
+university.admissions.range: Примерный диапазон
+university.admissions.supplementary_required: Нужна supplementary application
 university.back_to_list: Назад к списку
 university.chat_assistant: Чат-ассистент
 university.clear: Очистить

@@ -650,6 +650,171 @@
   text-align: center;
 }
 
+.admissions-overview,
+.admissions-programs-block {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #e7ddff;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(123, 63, 242, 0.05), rgba(123, 63, 242, 0.015));
+  box-shadow: 0 10px 24px rgba(36, 14, 79, 0.05);
+}
+
+.admissions-section-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: #241d3a;
+  margin-bottom: 6px;
+}
+
+.admissions-section-note {
+  margin: 0 0 14px;
+  color: #5f6b7d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admissions-summary-grid,
+.admissions-program-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.admissions-summary-card,
+.admissions-program-card {
+  border: 1px solid #e7def8;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 14px;
+  box-shadow: 0 8px 18px rgba(36, 14, 79, 0.05);
+}
+
+.admissions-summary-top,
+.admissions-program-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.admissions-summary-eyebrow {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  color: #667085;
+  margin-bottom: 6px;
+}
+
+.admissions-summary-value {
+  font-size: 24px;
+  font-weight: 1000;
+  color: #241d3a;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.admissions-summary-sub {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5d17ea;
+}
+
+.admissions-summary-note,
+.admissions-program-note {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #5f6b7d;
+}
+
+.admissions-summary-meta {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #677487;
+  font-weight: 700;
+}
+
+.admissions-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.admissions-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  border: 1px solid transparent;
+}
+
+.admissions-chip--accent {
+  background: #f2eaff;
+  color: #5d17ea;
+  border-color: #dccaff;
+}
+
+.admissions-chip--neutral {
+  background: #f8fafc;
+  color: #334155;
+  border-color: #d9e2ef;
+}
+
+.admissions-chip--muted {
+  background: #f3f4f6;
+  color: #667085;
+  border-color: #d5d8de;
+}
+
+.admissions-chip--warn {
+  background: #fff4e8;
+  color: #b45309;
+  border-color: #f6cf9d;
+}
+
+.admissions-chip--success {
+  background: #ebfff4;
+  color: #047857;
+  border-color: #b4efcb;
+}
+
+.admissions-source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #d9ccff;
+  background: #ffffff;
+  color: #5d17ea;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.admissions-source-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(93, 23, 234, 0.12);
+  background: #faf7ff;
+}
+
+.admissions-program-title {
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 900;
+  color: #241d3a;
+}
+
 /* =========================================
    TABS
    ========================================= */
@@ -2266,6 +2431,73 @@
 
 :root[data-theme="dark"] .program-card-title {
   color: #f3efff;
+}
+
+:root[data-theme="dark"] .admissions-overview,
+:root[data-theme="dark"] .admissions-programs-block {
+  border-color: rgba(154, 122, 255, 0.28);
+  background: linear-gradient(180deg, rgba(125, 60, 255, 0.14), rgba(125, 60, 255, 0.05));
+}
+
+:root[data-theme="dark"] .admissions-section-title,
+:root[data-theme="dark"] .admissions-summary-value,
+:root[data-theme="dark"] .admissions-program-title {
+  color: #f5f3ff;
+}
+
+:root[data-theme="dark"] .admissions-section-note,
+:root[data-theme="dark"] .admissions-summary-note,
+:root[data-theme="dark"] .admissions-program-note,
+:root[data-theme="dark"] .admissions-summary-meta,
+:root[data-theme="dark"] .admissions-summary-eyebrow {
+  color: rgba(237, 237, 237, 0.75);
+}
+
+:root[data-theme="dark"] .admissions-summary-card,
+:root[data-theme="dark"] .admissions-program-card {
+  border-color: rgba(154, 122, 255, 0.24);
+  background: rgba(17, 19, 24, 0.9);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+}
+
+:root[data-theme="dark"] .admissions-chip--accent {
+  background: rgba(125, 60, 255, 0.2);
+  border-color: rgba(188, 163, 255, 0.28);
+  color: #d9c7ff;
+}
+
+:root[data-theme="dark"] .admissions-chip--neutral {
+  background: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #e2e8f0;
+}
+
+:root[data-theme="dark"] .admissions-chip--muted {
+  background: rgba(107, 114, 128, 0.18);
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #d1d5db;
+}
+
+:root[data-theme="dark"] .admissions-chip--warn {
+  background: rgba(180, 83, 9, 0.2);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #fbbf24;
+}
+
+:root[data-theme="dark"] .admissions-chip--success {
+  background: rgba(4, 120, 87, 0.18);
+  border-color: rgba(52, 211, 153, 0.24);
+  color: #86efac;
+}
+
+:root[data-theme="dark"] .admissions-source-link {
+  background: rgba(24, 24, 32, 0.95);
+  border-color: rgba(188, 163, 255, 0.24);
+  color: #d9c7ff;
+}
+
+:root[data-theme="dark"] .admissions-source-link:hover {
+  background: rgba(36, 31, 54, 0.98);
 }
 
 :root[data-theme="dark"] .program-card-row {

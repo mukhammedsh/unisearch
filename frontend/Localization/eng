@@ -298,6 +298,52 @@ university.about_campus: About & Campus
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
 university.programs_scope_note: Programs and admission data on this page currently cover bachelor's degree tracks only.
+university.official_admissions_data: Official admissions data
+university.official_admissions_note: UniSearch shows only official published admissions metrics. If a university does not publish a rate, we keep it empty instead of guessing.
+university.admissions.university_wide: University-wide
+university.admissions.program_level: Program-level
+university.admissions.program_signals: Official program-level signals
+university.admissions.program_signals_note: These rows may be rate, applicants/offers, capacity, cutoff, grade profile, or verified-null when the university does not publish a separate program metric.
+university.admissions.checked: Checked
+university.admissions.cycle: Cycle
+university.admissions.rows_count: {count} official rows
+university.admissions.no_university_rate: No official university-wide acceptance rate published.
+university.admissions.no_program_metrics: No separate official program-level metric published.
+university.admissions.open_source: Open source
+university.admissions.official_source: Official source
+university.admissions.status.official_rate: Official rate
+university.admissions.status.official_counts: Official counts
+university.admissions.status.official_signals: Official signals
+university.admissions.status.competition_ratio_only: Official competition ratio
+university.admissions.status.verified_null_only: Not separately published
+university.admissions.status.no_official_source: No official source
+university.admissions.status.reviewed: Officially reviewed
+university.admissions.metric.acceptance_rate: Acceptance rate
+university.admissions.metric.capacity: Capacity
+university.admissions.metric.entry_standard: Entry standard
+university.admissions.metric.cutoff: Cutoff
+university.admissions.metric.counts: Applicants / offers
+university.admissions.metric.competition_ratio: Competition ratio
+university.admissions.metric.verified_null: Not separately published
+university.admissions.metric.official_signal: Official signal
+university.admissions.signal.rate: Official rate from published counts.
+university.admissions.signal.capacity: Official published capacity or places.
+university.admissions.signal.entry_standard: Official published grade profile or entry standard.
+university.admissions.signal.cutoff: Official published cutoff or direct-admit threshold.
+university.admissions.signal.counts: Official published applicants, offers, or admitted counts.
+university.admissions.signal.competition_ratio: Official published competition-ratio style signal.
+university.admissions.signal.verified_null: No separate official program-level metric published.
+university.admissions.signal.official: Official published admissions signal.
+university.admissions.counts.applicants: Applicants
+university.admissions.counts.admitted: Admitted
+university.admissions.counts.offers: Offers
+university.admissions.counts.enrolled: Enrolled
+university.admissions.counts.places: places
+university.admissions.unit.points: points
+university.admissions.a_level: A-Level
+university.admissions.poly_gpa: Poly GPA
+university.admissions.range: Approx. range
+university.admissions.supplementary_required: Supplementary required
 university.back_to_list: Back to list
 university.chat_assistant: Chat Assistant
 university.clear: Clear
