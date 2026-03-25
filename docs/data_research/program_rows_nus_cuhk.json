@@ -1,0 +1,89 @@
+[
+  {
+    "program_name": "Computer Science (BComp)",
+    "data_type": "entry_standard",
+    "scope": "program",
+    "metric_value": null,
+    "metric_unit": "grade_profile",
+    "counts": {
+      "a_level_10th_percentile": "AAA/A",
+      "a_level_90th_percentile": "AAA/A",
+      "polytechnic_gpa_10th_percentile": 3.81,
+      "polytechnic_gpa_90th_percentile": 3.98,
+      "cycle": "AY2025/2026"
+    },
+    "basis": "Official NUS indicative grade profile for the Common Computer Science Programmes bucket, used here as the closest official proxy for BComp Computer Science.",
+    "source_url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+    "source": "Indicative Grade Profile (AY2025/2026)",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Read the official NUS IGP tables for School of Computing and recorded the representative A-Level and Polytechnic grade profiles for the Common Computer Science Programmes row.",
+    "notes": "NUS publishes this as a representative grade profile, not an acceptance rate. The bucket is labeled 'Common Computer Science Programmes' on the official page."
+  },
+  {
+    "program_name": "Computer Science (BComp)",
+    "data_type": "capacity",
+    "scope": "program",
+    "metric_value": 893,
+    "metric_unit": "places",
+    "counts": {
+      "places": 893,
+      "cycle": "AY2025/2026"
+    },
+    "basis": "Official NUS programme intake for the Common Computer Science Programmes bucket, used here as the closest official program-level capacity proxy for BComp Computer Science.",
+    "source_url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+    "source": "Indicative Grade Profile (AY2025/2026)",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Read the official NUS IGP table of programme intake and recorded the intake for the Common Computer Science Programmes row.",
+    "notes": "This is programme intake, not acceptance rate. It is the official published places count for the relevant NUS Computing computer science intake bucket."
+  },
+  {
+    "program_name": "Computer Science and Engineering",
+    "data_type": "admission_grade_profile",
+    "scope": "program",
+    "metric_value": null,
+    "metric_unit": "weighted_total",
+    "counts": {
+      "upper_quartile_weighted_total": 44.5,
+      "median_weighted_total": 42.875,
+      "lower_quartile_weighted_total": 40.375,
+      "selection_principle": "Best 5",
+      "subject_weighting": {
+        "mathematics": "x 1.5",
+        "m1_or_m2": "x 1.75",
+        "biology_chemistry_physics_dat_ict": "x 1.5"
+      },
+      "cycle": "2025 Entry"
+    },
+    "basis": "Official CUHK JUPAS admission grades table for JS4412 Computer Science and Engineering.",
+    "source_url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Admission-Grades-2025.pdf",
+    "source": "Admission Grades of JUPAS Applicants (2025 Entry)",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Read the official CUHK JUPAS admission grades PDF and captured the UQ, median, and LQ weighted totals for JS4412 Computer Science and Engineering.",
+    "notes": "This is a selectivity proxy, not an acceptance rate. CUHK publishes the row for JUPAS applicants with a Best 5 selection principle and subject weighting."
+  },
+  {
+    "program_name": "Computer Science and Engineering",
+    "data_type": "capacity",
+    "scope": "program",
+    "metric_value": 113,
+    "metric_unit": "places",
+    "counts": {
+      "places": 113,
+      "cycle": "2026 Entry"
+    },
+    "basis": "Official CUHK projected enrolment for JS4412 Computer Science and Engineering.",
+    "source_url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Projected-Enrolment-2026.pdf",
+    "source": "Projected Enrolment of Undergraduate Programmes (2026 Entry)",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Read the official CUHK projected enrolment PDF and captured the projected enrolment figure for JS4412 Computer Science and Engineering.",
+    "notes": "This is an official places count, not an acceptance rate. CUHK presents it for the JUPAS route."
+  }
+]

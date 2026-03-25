@@ -1,0 +1,41 @@
+[
+  {
+    "program_name": "Computer Science",
+    "data_type": "capacity",
+    "scope": "program",
+    "metric_value": 3000,
+    "metric_unit": "places",
+    "counts": {
+      "applicants": null,
+      "admitted": null,
+      "offers": null,
+      "places": 3000,
+      "enrolled": null,
+      "cycle": "annual"
+    },
+    "basis": "EPFL limits the number of students in the first year of its Bachelor programs to 3000 from 2025 onward. This is the official admission capacity signal available for Computer Science; EPFL does not publish a public program-specific applicant/admit total for CS.",
+    "source_url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/",
+    "source": "EPFL Bachelor/CMS admission criteria & application",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "medium",
+    "method": "Direct official bachelor admission criteria page; used the published first-year capacity cap as the safest numeric selectivity signal because no public Computer Science applicant/admit totals are exposed.",
+    "notes": "The capacity cap applies to EPFL Bachelor programs overall, not a CS-only quota. It is still the only official numeric admission-control signal EPFL publishes for this program area."
+  },
+  {
+    "program_name": "Informatics",
+    "data_type": "entry_standard",
+    "scope": "program",
+    "metric_value": 84,
+    "metric_unit": null,
+    "counts": null,
+    "basis": "TUM Informatics uses a two-stage aptitude assessment. The official page states that applicants are directly admitted at 84 points or more in stage 1, invited to stage 2 with 73-83 points, and rejected at 72 points or less.",
+    "source_url": "https://www.cit.tum.de/en/cit/studium/studiengaenge/bachelor-informatik/",
+    "source": "Bachelor Informatik - TUM School of Computation, Information and Technology",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Direct official program page with published aptitude-assessment cutoff thresholds. This is an entry-standard signal rather than an acceptance rate.",
+    "notes": "TUM does not publish a public Informatics applicant/admit rate here, but the official threshold provides a strong program-specific selectivity signal."
+  }
+]

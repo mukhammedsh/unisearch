@@ -5,7 +5,10 @@
     "docs/data_research/structured_group_a_us_uk_admissions.json",
     "docs/data_research/structured_group_b_europe_canada_admissions.json",
     "docs/data_research/structured_group_c_east_asia_admissions.json",
-    "docs/data_research/structured_group_d_au_kz_admissions.json"
+    "docs/data_research/structured_group_d_au_kz_admissions.json",
+    "docs/data_research/program_rows_epfl_tum.json",
+    "docs/data_research/program_rows_nus_cuhk.json",
+    "docs/data_research/program_rows_kaist.json"
   ],
   "universities": {
     "mit-usa-cambridge": {
@@ -666,11 +669,11 @@
         ]
       },
       "program_level": {
-        "status": "official_counts",
-        "kind": null,
+        "status": "official_signals",
+        "kind": "program_level_signals",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "School annual reports can publish program tables with acceptance rate defined as admits divided by applicants, but only when a report explicitly provides the numerator and denominator or the formula.",
+        "notes": "EPFL publishes official program-level admission signals such as first-year capacity, but not a clean public Computer Science applicant/admit rate.",
         "sources": [
           {
             "url": "https://www.epfl.ch/about/presidency/wp-content/uploads/2022/05/EPFL-Self-assessment-report-2021-22-11.pdf",
@@ -679,10 +682,47 @@
           {
             "url": "https://www.epfl.ch/schools/cdm/wp-content/uploads/2018/11/CDM-Annual-Report-2013.pdf",
             "label": "EPFL annual report example with acceptance rate formulas"
+          },
+          {
+            "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/",
+            "label": "EPFL Bachelor/CMS admission criteria & application"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_capacity",
+          "data_type": "capacity",
+          "scope": "program",
+          "metric_value": 3000,
+          "metric_unit": "places",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "places": 3000,
+            "cycle": "annual"
+          },
+          "semantics": "EPFL limits the number of students in the first year of its Bachelor programs to 3000 from 2025 onward. This is the official admission capacity signal available for Computer Science; EPFL does not publish a public program-specific applicant/admit total for CS.",
+          "notes": "The capacity cap applies to EPFL Bachelor programs overall, not a CS-only quota. It is still the only official numeric admission-control signal EPFL publishes for this program area.",
+          "sources": [
+            {
+              "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/",
+              "label": "EPFL Bachelor/CMS admission criteria & application"
+            }
+          ],
+          "provenance": {
+            "source": "EPFL Bachelor/CMS admission criteria & application",
+            "source_url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Direct official bachelor admission criteria page; used the published first-year capacity cap as the safest numeric selectivity signal because no public Computer Science applicant/admit totals are exposed.",
+            "basis": {
+              "summary": "EPFL limits the number of students in the first year of its Bachelor programs to 3000 from 2025 onward. This is the official admission capacity signal available for Computer Science; EPFL does not publish a public program-specific applicant/admit total for CS."
+            }
+          }
+        }
+      ]
     },
     "technical-university-of-munich-de-munich": {
       "university_name": "Technical University of Munich (TUM)",
@@ -708,11 +748,11 @@
         ]
       },
       "program_level": {
-        "status": "official_counts",
-        "kind": null,
+        "status": "official_signals",
+        "kind": "program_level_signals",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "Program documents expose applicant counts and ratios, but the semantics are often closer to yield or offer-acceptance than classic acceptance rate.",
+        "notes": "TUM publishes official program-level entry thresholds for Informatics via the aptitude-assessment process, but not a public applicant/admit rate.",
         "sources": [
           {
             "url": "https://cms.mgt.tum.de/fileadmin/mgt.tum.de/downloads/BMT/MUC/DEGREE_PROGRAM_DOCUMENTATION/20230216_StuDoku_TeilA_BMT_eng.pdf",
@@ -721,10 +761,44 @@
           {
             "url": "https://www.tum.de/fileadmin/w00bfo/www/Studium/Studienangebot/Lesbare_Fassung/Bachelor/Aerospace_BA_Degree_Program_Documentation_31072024.pdf",
             "label": "TUM aerospace degree program documentation"
+          },
+          {
+            "url": "https://www.cit.tum.de/en/cit/studium/studiengaenge/bachelor-informatik/",
+            "label": "Bachelor Informatik - TUM School of Computation, Information and Technology"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Informatics",
+          "source_scope": "program_entry_standard",
+          "data_type": "entry_standard",
+          "scope": "program",
+          "metric_value": 84,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "TUM Informatics uses a two-stage aptitude assessment. The official page states that applicants are directly admitted at 84 points or more in stage 1, invited to stage 2 with 73-83 points, and rejected at 72 points or less.",
+          "notes": "TUM does not publish a public Informatics applicant/admit rate here, but the official threshold provides a strong program-specific selectivity signal.",
+          "sources": [
+            {
+              "url": "https://www.cit.tum.de/en/cit/studium/studiengaenge/bachelor-informatik/",
+              "label": "Bachelor Informatik - TUM School of Computation, Information and Technology"
+            }
+          ],
+          "provenance": {
+            "source": "Bachelor Informatik - TUM School of Computation, Information and Technology",
+            "source_url": "https://www.cit.tum.de/en/cit/studium/studiengaenge/bachelor-informatik/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Direct official program page with published aptitude-assessment cutoff thresholds. This is an entry-standard signal rather than an acceptance rate.",
+            "basis": {
+              "summary": "TUM Informatics uses a two-stage aptitude assessment. The official page states that applicants are directly admitted at 84 points or more in stage 1, invited to stage 2 with 73-83 points, and rejected at 72 points or less."
+            }
+          }
+        }
+      ]
     },
     "delft-university-of-technology-nl-delft": {
       "university_name": "TU Delft",
@@ -1009,21 +1083,93 @@
         "sources": []
       },
       "program_level": {
-        "status": "official_counts",
-        "kind": null,
+        "status": "official_signals",
+        "kind": "program_level_signals",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "Official materials support programme-level selectivity signals such as indicative grade profiles and programme places. The research note highlights NUS College as an example with 10,000 applications for 400 places.",
+        "notes": "NUS publishes official programme-level grade profiles and intake figures for the Common Computer Science Programmes bucket, but not a public acceptance rate.",
         "sources": [
           {
             "url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29"
           },
           {
             "url": "https://news.nus.edu.sg/nus-college-receives-record-10000-applications-for-400-places/"
+          },
+          {
+            "url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+            "label": "Indicative Grade Profile (AY2025/2026)"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science (BComp)",
+          "source_scope": "program_entry_standard",
+          "data_type": "entry_standard",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": "grade_profile",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "a_level_10th_percentile": "AAA/A",
+            "a_level_90th_percentile": "AAA/A",
+            "polytechnic_gpa_10th_percentile": 3.81,
+            "polytechnic_gpa_90th_percentile": 3.98,
+            "cycle": "AY2025/2026"
+          },
+          "semantics": "Official NUS indicative grade profile for the Common Computer Science Programmes bucket, used here as the closest official proxy for BComp Computer Science.",
+          "notes": "NUS publishes this as a representative grade profile, not an acceptance rate. The bucket is labeled 'Common Computer Science Programmes' on the official page.",
+          "sources": [
+            {
+              "url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+              "label": "Indicative Grade Profile (AY2025/2026)"
+            }
+          ],
+          "provenance": {
+            "source": "Indicative Grade Profile (AY2025/2026)",
+            "source_url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Read the official NUS IGP tables for School of Computing and recorded the representative A-Level and Polytechnic grade profiles for the Common Computer Science Programmes row.",
+            "basis": {
+              "summary": "Official NUS indicative grade profile for the Common Computer Science Programmes bucket, used here as the closest official proxy for BComp Computer Science."
+            }
+          }
+        },
+        {
+          "program_name": "Computer Science (BComp)",
+          "source_scope": "program_capacity",
+          "data_type": "capacity",
+          "scope": "program",
+          "metric_value": 893,
+          "metric_unit": "places",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "places": 893,
+            "cycle": "AY2025/2026"
+          },
+          "semantics": "Official NUS programme intake for the Common Computer Science Programmes bucket, used here as the closest official program-level capacity proxy for BComp Computer Science.",
+          "notes": "This is programme intake, not acceptance rate. It is the official published places count for the relevant NUS Computing computer science intake bucket.",
+          "sources": [
+            {
+              "url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+              "label": "Indicative Grade Profile (AY2025/2026)"
+            }
+          ],
+          "provenance": {
+            "source": "Indicative Grade Profile (AY2025/2026)",
+            "source_url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Read the official NUS IGP table of programme intake and recorded the intake for the Common Computer Science Programmes row.",
+            "basis": {
+              "summary": "Official NUS programme intake for the Common Computer Science Programmes bucket, used here as the closest official program-level capacity proxy for BComp Computer Science."
+            }
+          }
+        }
+      ]
     },
     "cuhk-hk-shatin": {
       "university_name": "The Chinese University of Hong Kong (CUHK)",
@@ -1036,11 +1182,11 @@
         "sources": []
       },
       "program_level": {
-        "status": "official_counts",
-        "kind": null,
+        "status": "official_signals",
+        "kind": "program_level_signals",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "Programme-specific requirements, admission grades for JUPAS applicants, projected enrolment, and press releases with admitted-count figures are available for selected routes such as JUPAS and SNDAS.",
+        "notes": "CUHK publishes official JUPAS admission-grade profiles and projected enrolment by programme, but not a public acceptance rate for Computer Science and Engineering.",
         "sources": [
           {
             "url": "https://admission.cuhk.edu.hk/application/jupas/programme-specific-requirements/"
@@ -1053,10 +1199,91 @@
           },
           {
             "url": "https://www.cpr.cuhk.edu.hk/en/press/cuhk-jupas-admission-2023/"
+          },
+          {
+            "url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Admission-Grades-2025.pdf",
+            "label": "Admission Grades of JUPAS Applicants (2025 Entry)"
+          },
+          {
+            "url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Projected-Enrolment-2026.pdf",
+            "label": "Projected Enrolment of Undergraduate Programmes (2026 Entry)"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science and Engineering",
+          "source_scope": "program_admission_grade_profile",
+          "data_type": "admission_grade_profile",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": "weighted_total",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "upper_quartile_weighted_total": 44.5,
+            "median_weighted_total": 42.88,
+            "lower_quartile_weighted_total": 40.38,
+            "selection_principle": "Best 5",
+            "subject_weighting": {
+              "mathematics": "x 1.5",
+              "m1_or_m2": "x 1.75",
+              "biology_chemistry_physics_dat_ict": "x 1.5"
+            },
+            "cycle": "2025 Entry"
+          },
+          "semantics": "Official CUHK JUPAS admission grades table for JS4412 Computer Science and Engineering.",
+          "notes": "This is a selectivity proxy, not an acceptance rate. CUHK publishes the row for JUPAS applicants with a Best 5 selection principle and subject weighting.",
+          "sources": [
+            {
+              "url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Admission-Grades-2025.pdf",
+              "label": "Admission Grades of JUPAS Applicants (2025 Entry)"
+            }
+          ],
+          "provenance": {
+            "source": "Admission Grades of JUPAS Applicants (2025 Entry)",
+            "source_url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Admission-Grades-2025.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Read the official CUHK JUPAS admission grades PDF and captured the UQ, median, and LQ weighted totals for JS4412 Computer Science and Engineering.",
+            "basis": {
+              "summary": "Official CUHK JUPAS admission grades table for JS4412 Computer Science and Engineering."
+            }
+          }
+        },
+        {
+          "program_name": "Computer Science and Engineering",
+          "source_scope": "program_capacity",
+          "data_type": "capacity",
+          "scope": "program",
+          "metric_value": 113,
+          "metric_unit": "places",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "places": 113,
+            "cycle": "2026 Entry"
+          },
+          "semantics": "Official CUHK projected enrolment for JS4412 Computer Science and Engineering.",
+          "notes": "This is an official places count, not an acceptance rate. CUHK presents it for the JUPAS route.",
+          "sources": [
+            {
+              "url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Projected-Enrolment-2026.pdf",
+              "label": "Projected Enrolment of Undergraduate Programmes (2026 Entry)"
+            }
+          ],
+          "provenance": {
+            "source": "Projected Enrolment of Undergraduate Programmes (2026 Entry)",
+            "source_url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Projected-Enrolment-2026.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Read the official CUHK projected enrolment PDF and captured the projected enrolment figure for JS4412 Computer Science and Engineering.",
+            "basis": {
+              "summary": "Official CUHK projected enrolment for JS4412 Computer Science and Engineering."
+            }
+          }
+        }
+      ]
     },
     "university-of-tokyo-jp-tokyo": {
       "university_name": "University of Tokyo",
@@ -1537,14 +1764,78 @@
         ]
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "non_declared_major_system",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "No department-level undergrad acceptance rate was found because KAIST does not admit by department in the way a program-level rate would require.",
-        "sources": []
+        "notes": "KAIST admits undergraduate students into a non-declared major system, so program-level Computer Science and Mechanical Engineering admissions are stored as verified-null rather than invented rates.",
+        "sources": [
+          {
+            "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+            "label": "KAIST Admission Guideline for International Applicants 2025"
+          }
+        ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "KAIST undergraduate admissions are non-declared at entry; the official admissions guide lists Computer Science as an academic program but states that students choose a major in their second year without additional admission procedures, and no public Computer Science applicant/admit totals are published.",
+          "notes": "Computer Science is listed as an undergraduate academic program, but KAIST does not publish a public program-level acceptance or competition rate for it.",
+          "sources": [
+            {
+              "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+              "label": "KAIST Admission Guideline for International Applicants 2025"
+            }
+          ],
+          "provenance": {
+            "source": "KAIST Admission Guideline for International Applicants 2025",
+            "source_url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official admissions materials do not expose a program-specific selection metric for Computer Science because KAIST admits freshmen undeclared and major selection happens later.",
+            "basis": {
+              "summary": "KAIST undergraduate admissions are non-declared at entry; the official admissions guide lists Computer Science as an academic program but states that students choose a major in their second year without additional admission procedures, and no public Computer Science applicant/admit totals are published."
+            }
+          }
+        },
+        {
+          "program_name": "Mechanical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "KAIST undergraduate admissions are non-declared at entry; the official admissions guide lists Mechanical Engineering as an academic program but states that students choose a major in their second year without additional admission procedures, and no public Mechanical Engineering applicant/admit totals are published.",
+          "notes": "Mechanical Engineering is listed as an undergraduate academic program, but KAIST does not publish a public program-level acceptance or competition rate for it.",
+          "sources": [
+            {
+              "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+              "label": "KAIST Admission Guideline for International Applicants 2025"
+            }
+          ],
+          "provenance": {
+            "source": "KAIST Admission Guideline for International Applicants 2025",
+            "source_url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official admissions materials do not expose a program-specific selection metric for Mechanical Engineering because KAIST admits freshmen undeclared and major selection happens later.",
+            "basis": {
+              "summary": "KAIST undergraduate admissions are non-declared at entry; the official admissions guide lists Mechanical Engineering as an academic program but states that students choose a major in their second year without additional admission procedures, and no public Mechanical Engineering applicant/admit totals are published."
+            }
+          }
+        }
+      ]
     },
     "tsinghua-university-cn-beijing": {
       "university_name": "Tsinghua University",

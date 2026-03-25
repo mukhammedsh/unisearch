@@ -1,0 +1,34 @@
+[
+  {
+    "program_name": "Computer Science",
+    "data_type": "verified-null",
+    "scope": "program",
+    "metric_value": null,
+    "metric_unit": null,
+    "counts": null,
+    "basis": "KAIST undergraduate admissions are non-declared at entry; the official admissions guide lists Computer Science as an academic program but states that students choose a major in their second year without additional admission procedures, and no public Computer Science applicant/admit totals are published.",
+    "source_url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+    "source": "KAIST Admission Guideline for International Applicants 2025",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Verified-null: official admissions materials do not expose a program-specific selection metric for Computer Science because KAIST admits freshmen undeclared and major selection happens later.",
+    "notes": "Computer Science is listed as an undergraduate academic program, but KAIST does not publish a public program-level acceptance or competition rate for it."
+  },
+  {
+    "program_name": "Mechanical Engineering",
+    "data_type": "verified-null",
+    "scope": "program",
+    "metric_value": null,
+    "metric_unit": null,
+    "counts": null,
+    "basis": "KAIST undergraduate admissions are non-declared at entry; the official admissions guide lists Mechanical Engineering as an academic program but states that students choose a major in their second year without additional admission procedures, and no public Mechanical Engineering applicant/admit totals are published.",
+    "source_url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guideline%20for%20International%20Applicants%202025.pdf",
+    "source": "KAIST Admission Guideline for International Applicants 2025",
+    "verified_at": "2026-03-25",
+    "status": "official",
+    "confidence": "high",
+    "method": "Verified-null: official admissions materials do not expose a program-specific selection metric for Mechanical Engineering because KAIST admits freshmen undeclared and major selection happens later.",
+    "notes": "Mechanical Engineering is listed as an undergraduate academic program, but KAIST does not publish a public program-level acceptance or competition rate for it."
+  }
+]
