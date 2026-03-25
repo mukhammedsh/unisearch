@@ -2013,7 +2013,7 @@ export function initUniversitiesPage() {
             </div>
             <div class="uni-body">
                         <h3 class="uni-title" title="${safeName}">${safeName}</h3>
-            <div class="uni-loc">📍 ${locString}</div>
+            <div class="uni-loc"><span class="uni-loc-emoji" aria-hidden="true">📍</span>${locString}</div>
             ${acceptanceHtml}
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}

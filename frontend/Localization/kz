@@ -191,6 +191,14 @@ profile.unsaved.message: Профильде сақталмаған өзгері�
 profile.unsaved.discard: Сақтамай жабу
 profile.unsaved.cancel: Бас тарту
 profile.unsaved.save_close: Сақтап жабу
+profile.reset.title: Профиль деректерін тазалау
+profile.reset.note: Бұл құрылғыда сақталған бюджет, GPA, емтихандар, тілдер, қызығушылықтар және профильдің басқа өрістерін өшіреді.
+profile.reset.cta: Деректерді өшіру
+profile.reset.confirm_title: Профильдің барлық дерегін өшіру керек пе?
+profile.reset.confirm_message: Бұл осы құрылғыдағы барлық сақталған профиль деректерін жойып, профильді бос мәндерге қайтарады.
+profile.reset.cancel: Бас тарту
+profile.reset.confirm: Деректерді өшіру
+profile.reset.done: Профиль деректері тазаланды
 profile.score: Балл
 profile.type: Түрі
 profile.unit.gpa: % (0-ден 100-ге дейін)
@@ -255,15 +263,15 @@ universities.select_country_first: Алдымен елді таңдаңыз
 universities.tradeoff.focus: Фокус
 universities.tradeoff.focus.left: Мансап және практика
 universities.tradeoff.focus.right: Ғылым және зерттеу
-universities.tradeoff.atmosphere: Атмосфера
-universities.tradeoff.atmosphere.left: Әлеуметтік өмір және іс-шаралар
-universities.tradeoff.atmosphere.right: Қарқынды оқу
-universities.tradeoff.finance: Қаржы
+universities.tradeoff.atmosphere: Оқу стилі
+universities.tradeoff.atmosphere.left: Көбірек әлеуметтік
+universities.tradeoff.atmosphere.right: Көбірек қарқынды
+universities.tradeoff.finance: Баға мен бедел
 universities.tradeoff.finance.left: Бюджет және гранттар
-universities.tradeoff.finance.right: Бедел және жайлылық
+universities.tradeoff.finance.right: Бедел және жоғарырақ баға
 universities.tradeoff.location: Орналасу
-universities.tradeoff.location.left: Қалада оқу
-universities.tradeoff.location.right: Қала сыртында оқу
+universities.tradeoff.location.left: Үлкен қала
+universities.tradeoff.location.right: Үлкен қаладан тыс
 universities.tradeoff.balanced: Теңгерімді (50/50)
 universities.help.open: Түсіндірмені көрсету
 universities.help.country: Университеттерді ел бойынша сүзеді. Қала және аймақ сүзгілерімен бірге жұмыс істейді.
@@ -272,9 +280,9 @@ universities.help.city: Ел/аймақ таңдалғаннан кейін на
 universities.help.cost_per_year: Жылдық бағаның минимум/максимум шегін қояды. Тізімде осы диапазондағы университеттер ғана қалады.
 universities.help.sort_strategy: {fit} профиліңізге қарап сұрыптайды. Басқа режимдер тек атау не баға бойынша сұрыптайды.
 universities.help.tradeoff.focus: Практикаға жақын оқу мен теория/зерттеу бағытының арасын таңдауға көмектеседі.
-universities.help.tradeoff.atmosphere: Белсенді студенттік өмір мен тыныш оқу ортасының арасын таңдауға көмектеседі.
-universities.help.tradeoff.finance: Сол жақ грантқа жақын нұсқаларды күшейтеді, оң жақ ақылы нұсқаларды да күшейтеді.
-universities.help.tradeoff.location: Сол жақ қалалық кампустары бар университеттерге, оң жақ ірі қаладан тыс (қала маңы/қала сыртындағы) кампустарға басымдық береді.
+universities.help.tradeoff.atmosphere: Бұл көбірек әлеуметтік студенттік орта мен академиялық тұрғыдан қарқынды ортаның арасындағы шамамен таңдауды көрсетеді.
+universities.help.tradeoff.finance: Сол жақ арзанырақ және грантқа қолайлы нұсқаларды күшейтеді, оң жақ бедел сигналы күштірек, бағасы жоғарырақ нұсқаларды көбірек ескереді.
+universities.help.tradeoff.location: Сол жақ ірі қалалардағы университеттерге, оң жақ ірі қалалардан тыс орналасқан университеттерге басымдық береді.
 universities.sort_ai: ✨ {fit}: ЖИ негізіндегі ақылды сұрыптау
 universities.sort_cost_asc: Құны өсу ретімен
 universities.sort_cost_desc: Құны кему ретімен

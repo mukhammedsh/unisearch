@@ -2,11 +2,16 @@
 (function initRuntimeConfig(w) {
   const env = (w.__UNISEARCH_ENV__ && typeof w.__UNISEARCH_ENV__ === "object") ? w.__UNISEARCH_ENV__ : {};
   const host = String(location.hostname || "").toLowerCase();
+  const port = String(location.port || "").trim();
   const isLocal = ["localhost", "127.0.0.1", "::1", "[::1]"].includes(host);
+  const isDevStaticHost = !isLocal && ["5501", "5510"].includes(port) && !!host;
 
   const apiBaseFromEnv = String(env.API_BASE_URL || "").trim();
-  // Non-local fallback expects reverse-proxy /api (or provide API_BASE_URL via env.js).
-  w.API_BASE_URL = apiBaseFromEnv || (isLocal ? "http://127.0.0.1:8000" : "/api");
+  // On local static serving, use the same host with backend port 8000.
+  // For production/non-dev hosts, keep reverse-proxy /api unless env.js overrides it.
+  w.API_BASE_URL = apiBaseFromEnv || (isLocal
+    ? "http://127.0.0.1:8000"
+    : (isDevStaticHost ? `${location.protocol}//${host}:8000` : "/api"));
 
   w.APP_VERSION = "2.5.8";
 

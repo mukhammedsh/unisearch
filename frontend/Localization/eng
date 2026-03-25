@@ -191,6 +191,14 @@ profile.unsaved.message: You have unsaved profile changes. What do you want to d
 profile.unsaved.discard: Close without saving
 profile.unsaved.cancel: Cancel
 profile.unsaved.save_close: Save and close
+profile.reset.title: Reset profile data
+profile.reset.note: Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.
+profile.reset.cta: Reset data
+profile.reset.confirm_title: Reset all profile data?
+profile.reset.confirm_message: This will remove all saved profile data on this device and set the profile back to empty values.
+profile.reset.cancel: Cancel
+profile.reset.confirm: Reset data
+profile.reset.done: Profile data reset
 profile.score: Score
 profile.type: Type
 profile.unit.gpa: % (0 to 100)
@@ -255,15 +263,15 @@ universities.select_country_first: Select country first
 universities.tradeoff.focus: Focus
 universities.tradeoff.focus.left: Career & Practice
 universities.tradeoff.focus.right: Science & Research
-universities.tradeoff.atmosphere: Atmosphere
-universities.tradeoff.atmosphere.left: Social & Events
-universities.tradeoff.atmosphere.right: Hardcore Study
-universities.tradeoff.finance: Finance
+universities.tradeoff.atmosphere: Study Style
+universities.tradeoff.atmosphere.left: More Social
+universities.tradeoff.atmosphere.right: More Intense
+universities.tradeoff.finance: Cost vs Prestige
 universities.tradeoff.finance.left: Budget & Grants
-universities.tradeoff.finance.right: Prestige & Comfort
+universities.tradeoff.finance.right: Prestige & Higher Cost
 universities.tradeoff.location: Location
-universities.tradeoff.location.left: Study in City
-universities.tradeoff.location.right: Study Outside City
+universities.tradeoff.location.left: Big City
+universities.tradeoff.location.right: Outside Big City
 universities.tradeoff.balanced: Balanced (50/50)
 universities.help.open: Show explanation
 universities.help.country: Filters universities by country. Works together with city and region selectors.
@@ -272,9 +280,9 @@ universities.help.city: Shows universities in a specific city after country/regi
 universities.help.cost_per_year: Sets min/max annual cost filter. The list includes only universities inside this range.
 universities.help.sort_strategy: {fit} sorts using your profile. Other modes sort only by name or cost.
 universities.help.tradeoff.focus: Choose whether you want more practice-oriented study or more theory and research.
-universities.help.tradeoff.atmosphere: Choose between active student life and a calmer study-focused environment.
-universities.help.tradeoff.finance: Left side favors grant-focused options. Right side also favors paid options.
-universities.help.tradeoff.location: Left side favors universities with urban campuses. Right side favors universities outside major cities (suburban/rural campuses).
+universities.help.tradeoff.atmosphere: Approximate preference between a more social student environment and a more academically intense one.
+universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals.
+universities.help.tradeoff.location: Left side favors universities in larger cities. Right side favors universities outside major cities.
 universities.sort_ai: ✨ {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low

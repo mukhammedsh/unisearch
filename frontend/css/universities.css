@@ -39,6 +39,7 @@
   display: grid;
   grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
   gap: 18px;
+  align-items: start;
 }
 
 /* =========================================
@@ -46,6 +47,7 @@
    ========================================= */
 .u-sidebar {
   min-width: 0;
+  align-self: start;
 }
 
 .u-filter-card {
@@ -221,6 +223,7 @@
 .u-content {
   min-width: 0;
   position: relative;
+  align-self: start;
   --u-loading-top: 86px;
 }
 
@@ -985,6 +988,13 @@
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.uni-loc-emoji {
+  display: inline-block;
+  flex: 0 0 auto;
+  line-height: 1;
+  transform: translateY(1px);
 }
 
 .uni-loc-line {

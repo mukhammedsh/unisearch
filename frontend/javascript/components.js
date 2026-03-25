@@ -371,6 +371,14 @@ const LAYOUT_HTML = `
         <button id="saveProfileBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.action.save_all">Save Profile</button>
       </div>
 
+      <div class="profile-reset-zone">
+        <div class="profile-reset-copy">
+          <strong data-i18n="profile.reset.title">Reset profile data</strong>
+          <span data-i18n="profile.reset.note">Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.</span>
+        </div>
+        <button id="resetProfileBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.cta">Reset data</button>
+      </div>
+
   </div>
 </div>
 
@@ -383,6 +391,18 @@ const LAYOUT_HTML = `
       <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
       <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
       <button id="profileSaveAndCloseBtn" class="profile-add" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
+    </div>
+  </div>
+</div>
+
+<div class="profile-confirm-modal" id="profileResetModal" aria-hidden="true">
+  <div class="profile-confirm-backdrop" data-close="reset"></div>
+  <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileResetTitle">
+    <h3 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h3>
+    <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
+    <div class="profile-confirm-actions">
+      <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.reset.cancel">Cancel</button>
+      <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
     </div>
   </div>
 </div>
@@ -622,6 +642,10 @@ function initProfileUI() {
     const discardBtn = document.getElementById("profileDiscardBtn");
     const cancelCloseBtn = document.getElementById("profileCancelCloseBtn");
     const saveAndCloseBtn = document.getElementById("profileSaveAndCloseBtn");
+    const resetModal = document.getElementById("profileResetModal");
+    const resetBackdrop = resetModal?.querySelector(".profile-confirm-backdrop");
+    const resetCancelBtn = document.getElementById("profileResetCancelBtn");
+    const resetConfirmBtn = document.getElementById("profileResetConfirmBtn");
 
     const openBtn = document.getElementById("profileBtn");
     const closeBtn = document.getElementById("profileCloseBtn");
@@ -646,6 +670,7 @@ function initProfileUI() {
     const profileInterestsInput = document.getElementById("profileInterestsInput");
     const profileInterestsLangWarning = document.getElementById("profileInterestsLangWarning");
     const saveProfileBtn = document.getElementById("saveProfileBtn");
+    const resetProfileBtn = document.getElementById("resetProfileBtn");
     const profileSaveState = document.getElementById("profileSaveState");
 
     const editNameBtn = document.getElementById("editNameBtn");
@@ -919,6 +944,7 @@ function initProfileUI() {
 
         applyTranslations(modal);
         if (unsavedModal) applyTranslations(unsavedModal);
+        if (resetModal) applyTranslations(resetModal);
         applyDraftToInputs();
         refreshExamActionButton();
 
@@ -1117,10 +1143,19 @@ function initProfileUI() {
         if (focusCloseButton && closeBtn) closeBtn.focus();
     };
 
+    const closeResetDialog = (focusResetButton = false) => {
+        if (!resetModal) return;
+        resetModal.classList.remove("is-open");
+        resetModal.setAttribute("aria-hidden", "true");
+        resetModal.style.display = "none";
+        if (focusResetButton && resetProfileBtn) resetProfileBtn.focus();
+    };
+
     const closeImmediately = () => {
         if (!modal.classList.contains("is-open")) return;
 
         closeUnsavedDialog(false);
+        closeResetDialog(false);
         if (openBtn) openBtn.focus();
 
         modal.classList.remove("is-open");
@@ -1135,6 +1170,7 @@ function initProfileUI() {
         syncInputsToDraft();
         transferredProfileDraft = ensureProfileShape(profile);
         closeUnsavedDialog(false);
+        closeResetDialog(false);
         modal.classList.remove("is-open");
         modal.style.display = "none";
         modal.setAttribute("aria-hidden", "true");
@@ -1146,6 +1182,13 @@ function initProfileUI() {
         unsavedModal.style.display = "flex";
         unsavedModal.classList.add("is-open");
         unsavedModal.setAttribute("aria-hidden", "false");
+    };
+
+    const openResetDialog = () => {
+        if (!resetModal) return;
+        resetModal.style.display = "flex";
+        resetModal.classList.add("is-open");
+        resetModal.setAttribute("aria-hidden", "false");
     };
 
     const requestClose = () => {
@@ -1242,6 +1285,23 @@ function initProfileUI() {
         });
     }
 
+    const resetProfileData = () => {
+        lowBudgetGrantHintDismissed = false;
+        transferredProfileDraft = null;
+        const emptyProfile = ensureProfileShape({});
+        saveProfile(emptyProfile);
+        setProfileDraft(emptyProfile, { markAsSaved: true });
+        applyDraftToInputs();
+        renderLowBudgetGrantHint();
+        closeResetDialog(false);
+        showToast(t("profile.reset.done", "Profile data reset"), "success");
+    };
+
+    resetProfileBtn?.addEventListener("click", () => {
+        syncInputsToDraft();
+        openResetDialog();
+    });
+
     if (openBtn) openBtn.onclick = () => {
         resetFields({ preferTransferred: true, consumeTransferred: true });
         void fetchTranslationRuntimeStatus(false).then((status) => {
@@ -1284,9 +1344,20 @@ function initProfileUI() {
     unsavedBackdrop?.addEventListener("click", () => {
         closeUnsavedDialog(true);
     });
+    resetBackdrop?.addEventListener("click", () => {
+        closeResetDialog(true);
+    });
+    resetCancelBtn?.addEventListener("click", () => {
+        closeResetDialog(true);
+    });
+    resetConfirmBtn?.addEventListener("click", resetProfileData);
 
     document.addEventListener("keydown", (e) => {
         if (e.key !== "Escape") return;
+        if (resetModal?.classList.contains("is-open")) {
+            closeResetDialog(true);
+            return;
+        }
         if (unsavedModal?.classList.contains("is-open")) {
             closeUnsavedDialog(true);
             return;

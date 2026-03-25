@@ -867,6 +867,18 @@ html, body {
   color: #f5c76c;
 }
 
+:root[data-theme="dark"] .profile-delete--danger{
+  border-color: rgba(248, 113, 113, 0.28);
+  background: rgba(127, 29, 29, 0.28);
+  color: #fecaca;
+}
+
+:root[data-theme="dark"] .profile-delete--danger:hover{
+  border-color: rgba(248, 113, 113, 0.42);
+  background: rgba(153, 27, 27, 0.38);
+  color: #fee2e2;
+}
+
 .profile-interests-status{
   font-size: 12px;
   font-weight: 700;
@@ -901,6 +913,46 @@ html, body {
 #saveProfileBtn[disabled]{
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.profile-reset-zone{
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.profile-reset-copy{
+  display: grid;
+  gap: 6px;
+  max-width: 420px;
+}
+
+.profile-reset-copy strong{
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.profile-reset-copy span{
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.profile-delete--danger{
+  border-color: rgba(185, 28, 28, 0.24);
+  background: #fff1f2;
+  color: #b91c1c;
+}
+
+.profile-delete--danger:hover{
+  border-color: #dc2626;
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .profile-confirm-modal{
@@ -1473,6 +1525,10 @@ html, body {
     justify-content: flex-start;
   }
   .profile-actions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .profile-reset-zone{
     flex-direction: column;
     align-items: stretch;
   }

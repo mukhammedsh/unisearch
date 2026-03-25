@@ -191,6 +191,14 @@ profile.unsaved.message: В профиле есть несохраненные �
 profile.unsaved.discard: Закрыть без сохранения
 profile.unsaved.cancel: Отмена
 profile.unsaved.save_close: Сохранить и закрыть
+profile.reset.title: Сбросить данные профиля
+profile.reset.note: Очищает бюджет, GPA, экзамены, языки, интересы и другие сохраненные поля профиля на этом устройстве.
+profile.reset.cta: Сбросить данные
+profile.reset.confirm_title: Сбросить все данные профиля?
+profile.reset.confirm_message: Это удалит все сохраненные данные профиля на этом устройстве и вернет профиль к пустым значениям.
+profile.reset.cancel: Отмена
+profile.reset.confirm: Сбросить данные
+profile.reset.done: Данные профиля сброшены
 profile.score: Балл
 profile.type: Тип
 profile.unit.gpa: % (от 0 до 100)
@@ -255,15 +263,15 @@ universities.select_country_first: Сначала выберите страну
 universities.tradeoff.focus: Фокус
 universities.tradeoff.focus.left: Карьера и практика
 universities.tradeoff.focus.right: Наука и исследования
-universities.tradeoff.atmosphere: Атмосфера
-universities.tradeoff.atmosphere.left: Социальность и ивенты
-universities.tradeoff.atmosphere.right: Интенсивная учеба
-universities.tradeoff.finance: Финансы
+universities.tradeoff.atmosphere: Стиль учебы
+universities.tradeoff.atmosphere.left: Более социально
+universities.tradeoff.atmosphere.right: Более интенсивно
+universities.tradeoff.finance: Цена и престиж
 universities.tradeoff.finance.left: Бюджет и гранты
-universities.tradeoff.finance.right: Престиж и комфорт
+universities.tradeoff.finance.right: Престиж и более высокая цена
 universities.tradeoff.location: Локация
-universities.tradeoff.location.left: Учеба в городе
-universities.tradeoff.location.right: Учеба за городом
+universities.tradeoff.location.left: Большой город
+universities.tradeoff.location.right: Вне большого города
 universities.tradeoff.balanced: Сбалансировано (50/50)
 universities.help.open: Показать объяснение
 universities.help.country: Фильтрует университеты по стране. Работает вместе с выбором региона и города.
@@ -272,9 +280,9 @@ universities.help.city: Показывает университеты в кон�
 universities.help.cost_per_year: Задает минимальную и максимальную стоимость за год. В выдаче остаются только университеты в этом диапазоне.
 universities.help.sort_strategy: UniFit сортирует под ваш профиль. Другие режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
-universities.help.tradeoff.atmosphere: Помогает выбрать между активной студенческой жизнью и более спокойной учебной средой.
-universities.help.tradeoff.finance: Слева упор на варианты с грантом, справа - на варианты, где вы готовы рассматривать и платное обучение.
-universities.help.tradeoff.location: Слева упор на университеты с городскими кампусами, справа — на университеты за пределами крупных городов (пригород/загородные кампусы).
+universities.help.tradeoff.atmosphere: Примерно показывает ваш выбор между более социальной студенческой средой и более академически интенсивной.
+universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие варианты ради более сильного сигнала престижа.
+universities.help.tradeoff.location: Слева приоритет у университетов в крупных городах, справа — у университетов за пределами крупных городов.
 universities.sort_ai: ✨ {fit}: ИИ-умная сортировка
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
