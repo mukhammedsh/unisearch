@@ -11,33 +11,18 @@
       "studyMode": "On-campus",
       "fundingType": "grant",
       "exams": [
-        { "exam": "SAT", "score": 1490 }
+        {
+          "exam": "SAT",
+          "score": 1490
+        }
       ],
       "languages": [
-        { "code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5 }
-      ]
-    },
-    "expectations": {
-      "min_items": 1,
-      "expect_missing_evidence": false
-    }
-  },
-  {
-    "id": "kz_business_online",
-    "locale": "kz",
-    "profile": {
-      "name": "Daniyar Finance",
-      "budget": 18000,
-      "gpa": 90,
-      "major": "Business",
-      "interests": "Маған finance және fintech бағдарламасы керек, online формат та жарайды, practical internship маңызды.",
-      "studyMode": "Online",
-      "fundingType": "paid",
-      "exams": [
-        { "exam": "UNT", "score": 125 }
-      ],
-      "languages": [
-        { "code": "en", "kind": "cefr", "level": 4 }
+        {
+          "code": "en",
+          "kind": "exam",
+          "exam": "IELTS",
+          "score": 7.5
+        }
       ]
     },
     "expectations": {
@@ -57,10 +42,16 @@
       "studyMode": "On-campus",
       "fundingType": "any",
       "exams": [
-        { "exam": "ACT", "score": 34 }
+        {
+          "exam": "ACT",
+          "score": 34
+        }
       ],
       "languages": [
-        { "code": "en", "kind": "native" }
+        {
+          "code": "en",
+          "kind": "native"
+        }
       ]
     },
     "expectations": {

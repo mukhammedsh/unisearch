@@ -2,25 +2,21 @@ const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 
 const LANG_ENG = "eng";
 const LANG_RUS = "rus";
-const LANG_KZ = "kz";
-const SUPPORTED_LANGS = new Set([LANG_ENG, LANG_RUS, LANG_KZ]);
+const SUPPORTED_LANGS = new Set([LANG_ENG, LANG_RUS]);
 const LANG_FILE_BY_CODE = {
   [LANG_ENG]: "Localization/eng",
   [LANG_RUS]: "Localization/ru",
-  [LANG_KZ]: "Localization/kz",
 };
 const I18N_PACK_FETCH_TIMEOUT_MS = 4000;
 
 const HTML_LANG_MAP = {
   [LANG_ENG]: "en",
   [LANG_RUS]: "ru",
-  [LANG_KZ]: "kk",
 };
 
 const DICT = {
   [LANG_ENG]: {},
   [LANG_RUS]: {},
-  [LANG_KZ]: {},
 };
 
 let currentLang = LANG_ENG;
@@ -33,7 +29,6 @@ function normalizeLang(value) {
   if (SUPPORTED_LANGS.has(raw)) return raw;
   if (raw.startsWith("en")) return LANG_ENG;
   if (raw.startsWith("ru")) return LANG_RUS;
-  if (raw.startsWith("kk") || raw.startsWith("kz")) return LANG_KZ;
   return "";
 }
 
@@ -120,7 +115,7 @@ async function _loadLocalizationPacks() {
   if (__packsLoadPromise) return __packsLoadPromise;
 
   __packsLoadPromise = (async () => {
-    const langs = [LANG_ENG, LANG_RUS, LANG_KZ];
+    const langs = [LANG_ENG, LANG_RUS];
     await Promise.allSettled(
       langs.map(async (lang) => {
         const file = LANG_FILE_BY_CODE[lang];
@@ -133,7 +128,7 @@ async function _loadLocalizationPacks() {
           DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
 
           const code = String(parsed["meta.code"] || "").trim();
-          const navKey = lang === LANG_ENG ? "nav.lang.eng" : (lang === LANG_RUS ? "nav.lang.rus" : "nav.lang.kz");
+          const navKey = lang === LANG_ENG ? "nav.lang.eng" : "nav.lang.rus";
           if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
         } catch (e) {
           // keep already loaded keys from localization files

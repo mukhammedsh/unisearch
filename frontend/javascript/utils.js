@@ -237,7 +237,7 @@ export function toggleTheme() {
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 const API_LANG_DEFAULT = "eng";
-const API_LANG_SUPPORTED = new Set(["eng", "rus", "kz"]);
+const API_LANG_SUPPORTED = new Set(["eng", "rus"]);
 let __profileMemoryFallback = null;
 // 🔥 ДОБАВЛЕНО: Новые поля в дефолтном профиле
 const PROFILE_DEFAULTS = { 
@@ -537,35 +537,6 @@ const EXAM_LABELS_I18N = {
     JLPTLEVEL: "JLPT уровень",
     TOPIKLEVEL: "TOPIK уровень",
   },
-  kz: {
-    SAT: "SAT",
-    ACT: "ACT",
-    GPA: "GPA",
-    UNT: "ҰБТ",
-    NUET: "NUET (жиынтық балл)",
-    NUETTOTAL: "NUET (жалпы балл)",
-    APTOTAL: "AP (жалпы балл)",
-    IBDIPLOMA: "IB дипломы",
-    ALEVELCERT: "A-Level сертификаты",
-    HKDSELEVEL: "HKDSE деңгейі",
-    SWISSMATURITYCERT: "Швейцария жетілу аттестаты",
-    GERMANABITURCERT: "Германия Abitur",
-    OSSDCERT: "OSSD (Ontario Secondary School Diploma)",
-    IELTS: "IELTS (академиялық модуль)",
-    TOEFLIBT0120: "TOEFL iBT жалпы балл (0‑120, ескі шкала)",
-    TOEFLIBT16: "TOEFL iBT 1‑6 шкаласы (2026 ж. 21 қаңтардан)",
-    DET: "Duolingo ағылшын тілі тесті (DET)",
-    PTE: "PTE Academic (академиялық)",
-    CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced (жоғары деңгей)",
-    TESTDAFTDN: "TestDaF (TDN деңгейі)",
-    DSHLEVEL: "DSH деңгейі",
-    DELFDALFLEVEL: "DELF/DALF деңгейі",
-    TCFTOTAL: "TCF (жалпы балл)",
-    NT2PROGRAMMEII: "NT2 Programme II (II бағдарлама)",
-    HSKLEVEL: "HSK деңгейі",
-    JLPTLEVEL: "JLPT деңгейі",
-    TOPIKLEVEL: "TOPIK деңгейі",
-  },
 };
 
 function _localizedExamLabel(examId, locale = "") {
@@ -711,7 +682,6 @@ function normalizeUiLanguageForApi(value) {
   if (API_LANG_SUPPORTED.has(raw)) return raw;
   if (raw.startsWith("en")) return "eng";
   if (raw.startsWith("ru")) return "rus";
-  if (raw.startsWith("kk") || raw.startsWith("kz")) return "kz";
   return "";
 }
 
@@ -868,7 +838,6 @@ const COUNTRY_CODES = {
 const LANGUAGE_FLAG_CODES = {
   eng: "us",
   rus: "ru",
-  kz: "kz",
 };
 const FLAG_IMG_HTML_CACHE = new Map();
 
@@ -950,7 +919,7 @@ export function initCustomSelect(selectId) {
         const text = selectedOption.text;
         const flag = getFlagImg(val);
         if (isLanguageSelect) {
-            const shortLabel = ({ eng: "EN", rus: "RU", kz: "KZ" }[String(val || "").toLowerCase()] || String(val || "").toUpperCase() || text);
+            const shortLabel = ({ eng: "EN", rus: "RU" }[String(val || "").toLowerCase()] || String(val || "").toUpperCase() || text);
             trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
             return;
         }

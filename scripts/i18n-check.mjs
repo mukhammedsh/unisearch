@@ -9,7 +9,6 @@ const LOCALIZATION_DIR = path.join(FRONTEND_DIR, "Localization");
 const LANG_FILES = {
   eng: path.join(LOCALIZATION_DIR, "eng"),
   rus: path.join(LOCALIZATION_DIR, "ru"),
-  kz: path.join(LOCALIZATION_DIR, "kz"),
 };
 const ALLOWED_EXTRA_KEY_PREFIXES = ["university.description."];
 
@@ -134,9 +133,7 @@ function main() {
 
   const engKeys = localization.eng;
   const missingInRu = sortedDiff(engKeys, localization.rus);
-  const missingInKz = sortedDiff(engKeys, localization.kz);
   const extraInRu = sortedDiff(localization.rus, engKeys).filter((key) => !isAllowedExtraKey(key));
-  const extraInKz = sortedDiff(localization.kz, engKeys).filter((key) => !isAllowedExtraKey(key));
   const usedKeys = extractUsedI18nKeys();
   const missingUsedInEng = sortedDiff(usedKeys, engKeys);
   const toastIssues = findHardcodedToastIssues();
@@ -144,25 +141,21 @@ function main() {
   const hasIssues =
     allDuplicates.length > 0 ||
     missingInRu.length > 0 ||
-    missingInKz.length > 0 ||
     extraInRu.length > 0 ||
-    extraInKz.length > 0 ||
     missingUsedInEng.length > 0 ||
     toastIssues.length > 0;
 
   if (hasIssues) {
     printList("Duplicate localization keys:", allDuplicates);
     printList("Missing keys in ru (vs eng):", missingInRu);
-    printList("Missing keys in kz (vs eng):", missingInKz);
     printList("Extra keys in ru (not in eng):", extraInRu);
-    printList("Extra keys in kz (not in eng):", extraInKz);
     printList("Used i18n keys missing in eng localization:", missingUsedInEng);
     printList("Hardcoded/non-localized toast usages:", toastIssues);
     process.exit(1);
   }
 
   console.log(
-    `i18n-check passed: eng=${engKeys.size}, ru=${localization.rus.size}, kz=${localization.kz.size}, used=${usedKeys.size}`
+    `i18n-check passed: eng=${engKeys.size}, ru=${localization.rus.size}, used=${usedKeys.size}`
   );
 }
 

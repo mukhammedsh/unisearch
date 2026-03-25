@@ -76,10 +76,10 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual("Астана", location.get("city"))
 
     def test_university_translations_endpoint_contract(self):
-        response = self.client.get("/universities/translations?lang=kz")
+        response = self.client.get("/universities/translations?lang=rus")
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual("kz", data.get("lang"))
+        self.assertEqual("rus", data.get("lang"))
         self.assertIn("data", data)
         payload = data.get("data") or {}
         self.assertIn("groups", payload)

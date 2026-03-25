@@ -49,15 +49,12 @@ def _norm_tag_key(value: Any) -> str:
 
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
-SEARCH_LANG_KZ = "kz"
 
 
 def _normalize_search_lang(value: Any) -> str:
     raw = _safe_lower(value)
     if raw.startswith("ru") or raw == "rus":
         return SEARCH_LANG_RUS
-    if raw.startswith("kk") or raw.startswith("kz") or raw == "kaz":
-        return SEARCH_LANG_KZ
     return SEARCH_LANG_ENG
 
 
@@ -329,21 +326,6 @@ _COUNTRY_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
         "kazakhstan": "Казахстан",
         "australia": "Австралия",
     },
-    SEARCH_LANG_KZ: {
-        "usa": "АҚШ",
-        "uk": "Ұлыбритания",
-        "switzerland": "Швейцария",
-        "singapore": "Сингапур",
-        "germany": "Германия",
-        "canada": "Канада",
-        "hong kong": "Гонконг",
-        "japan": "Жапония",
-        "south korea": "Оңтүстік Корея",
-        "netherlands": "Нидерланд",
-        "china": "Қытай",
-        "kazakhstan": "Қазақстан",
-        "australia": "Аустралия",
-    },
 }
 
 _CITY_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
@@ -368,40 +350,10 @@ _CITY_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
         "toronto": "Торонто",
         "zurich": "Цюрих",
     },
-    SEARCH_LANG_KZ: {
-        "astana": "Астана",
-        "boston": "Бостон",
-        "beijing": "Бейжің",
-        "cambridge": "Кембридж",
-        "daejeon": "Тэджон",
-        "delft": "Делфт",
-        "kaskelen": "Қаскелең",
-        "kyoto": "Киото",
-        "lausanne": "Лозанна",
-        "london": "Лондон",
-        "melbourne": "Мельбурн",
-        "munich": "Мюнхен",
-        "seoul": "Сеул",
-        "sha tin": "Ша-Тин",
-        "singapore": "Сингапур",
-        "stanford": "Стэнфорд",
-        "tokyo": "Токио",
-        "toronto": "Торонто",
-        "zurich": "Цюрих",
-    },
 }
 
 _STATE_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
     SEARCH_LANG_RUS: {
-        "bavaria": "Бавария",
-        "ca": "Калифорния",
-        "ma": "Массачусетс",
-        "massachusetts": "Массачусетс",
-        "ontario": "Онтарио",
-        "vaud": "Во",
-        "victoria": "Виктория",
-    },
-    SEARCH_LANG_KZ: {
         "bavaria": "Бавария",
         "ca": "Калифорния",
         "ma": "Массачусетс",
@@ -431,25 +383,6 @@ _MAJOR_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
         "life sciences": "науки о жизни",
         "education": "образование",
         "agriculture": "сельское хозяйство",
-    },
-    SEARCH_LANG_KZ: {
-        "computer science": "компьютерлік ғылымдар",
-        "engineering": "инженерия",
-        "business": "бизнес",
-        "medicine": "медицина",
-        "natural sciences": "жаратылыстану ғылымдары",
-        "economics": "экономика",
-        "physics": "физика",
-        "mathematics": "математика",
-        "law": "құқық",
-        "social sciences": "әлеуметтік ғылымдар",
-        "architecture": "сәулет",
-        "psychology": "психология",
-        "humanities": "гуманитарлық ғылымдар",
-        "design": "дизайн",
-        "life sciences": "өмір туралы ғылымдар",
-        "education": "білім беру",
-        "agriculture": "ауыл шаруашылығы",
     },
 }
 
@@ -494,41 +427,6 @@ _MAJOR_QUERY_ALIASES_BY_LANG: Dict[str, Dict[str, str]] = {
         "образование": "education",
         "сельское хозяйство": "agriculture",
     },
-    SEARCH_LANG_KZ: {
-        "компьютерлік ғылымдар": "computer science",
-        "информатика": "computer science",
-        "жасанды интеллект": "computer science",
-        "машиналық оқыту": "computer science",
-        "киберқауіпсіздік": "computer science",
-        "робототехника": "computer science",
-        "бағдарламалық инженерия": "computer science",
-        "деректер ғылымы": "computer science",
-        "ақпараттық жүйелер": "computer science",
-        "инженерия": "engineering",
-        "механикалық инженерия": "engineering",
-        "электр инженериясы": "engineering",
-        "аэроғарыш инженериясы": "engineering",
-        "бизнес": "business",
-        "менеджмент": "business",
-        "қаржы": "business",
-        "медицина": "medicine",
-        "биомедицина": "medicine",
-        "жаратылыстану ғылымдары": "natural sciences",
-        "биология": "natural sciences",
-        "химия": "natural sciences",
-        "экономика": "economics",
-        "физика": "physics",
-        "математика": "mathematics",
-        "құқық": "law",
-        "әлеуметтік ғылымдар": "social sciences",
-        "сәулет": "architecture",
-        "психология": "psychology",
-        "гуманитарлық ғылымдар": "humanities",
-        "дизайн": "design",
-        "өмір туралы ғылымдар": "life sciences",
-        "білім беру": "education",
-        "ауыл шаруашылығы": "agriculture",
-    },
 }
 
 _TAG_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
@@ -557,36 +455,11 @@ _TAG_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
         "software_engineering": "программная инженерия",
         "ict": "икт",
     },
-    SEARCH_LANG_KZ: {
-        "research": "зерттеу",
-        "stem": "stem",
-        "ai": "жи",
-        "robotics": "робототехника",
-        "startups": "стартаптар",
-        "urban": "қалалық",
-        "innovation": "инновация",
-        "engineering": "инженерия",
-        "computing": "есептеу технологиялары",
-        "medicine": "медицина",
-        "sustainability": "тұрақты даму",
-        "interdisciplinary": "пәнаралық",
-        "policy": "саясат",
-        "business": "бизнес",
-        "data_science": "деректер ғылымы",
-        "life_sciences": "өмір туралы ғылымдар",
-        "semiconductors": "жартылай өткізгіштер",
-        "mobility": "мобильділік",
-        "aerospace": "аэроғарыш",
-        "biomedical": "биомедицина",
-        "cybersecurity": "киберқауіпсіздік",
-        "software_engineering": "бағдарламалық инженерия",
-        "ict": "икт",
-    },
 }
 
 def _load_localized_university_names(search_lang: str) -> Dict[str, str]:
     lang = _normalize_search_lang(search_lang)
-    if lang not in (SEARCH_LANG_RUS, SEARCH_LANG_KZ):
+    if lang != SEARCH_LANG_RUS:
         return {}
     pack = _translation_lang_pack(lang)
     names = pack.get("university_names") if isinstance(pack.get("university_names"), dict) else {}
@@ -956,7 +829,6 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
     )
     uni_id = str(u.get("id", "")).strip()
     rus_names = _load_localized_university_names(SEARCH_LANG_RUS)
-    kz_names = _load_localized_university_names(SEARCH_LANG_KZ)
 
     country_key = _norm_space(_get_nested(u, ["location", "country"]))
     city_key = _norm_space(_get_nested(u, ["location", "city"]))
@@ -968,56 +840,37 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
     major_exact_rus = _uniq_non_empty(
         [_MAJOR_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(_safe_lower(x), "") for x in major_exact if x]
     )
-    major_exact_kz = _uniq_non_empty(
-        [_MAJOR_LOCALIZED_BY_LANG[SEARCH_LANG_KZ].get(_safe_lower(x), "") for x in major_exact if x]
-    )
     tags_rus = _uniq_non_empty(
         [_TAG_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(_norm_tag_key(x), "") for x in tag_keys if x]
-    )
-    tags_kz = _uniq_non_empty(
-        [_TAG_LOCALIZED_BY_LANG[SEARCH_LANG_KZ].get(_norm_tag_key(x), "") for x in tag_keys if x]
     )
     name_raw = _safe_lower(u.get("name"))
     city_raw = _safe_lower(_get_nested(u, ["location", "city"]))
     country_raw = _safe_lower(_get_nested(u, ["location", "country"]))
     name_rus = _safe_lower(rus_names.get(uni_id, ""))
-    name_kz = _safe_lower(kz_names.get(uni_id, ""))
     city_rus = _safe_lower(_CITY_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(city_key, ""))
-    city_kz = _safe_lower(_CITY_LOCALIZED_BY_LANG[SEARCH_LANG_KZ].get(city_key, ""))
     country_rus = _safe_lower(_COUNTRY_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(country_key, ""))
-    country_kz = _safe_lower(_COUNTRY_LOCALIZED_BY_LANG[SEARCH_LANG_KZ].get(country_key, ""))
     description_rus = _norm_space(
         f"{name_rus or name_raw} {city_rus or city_raw} {country_rus or country_raw} {' '.join(tags_rus)}"
-    )
-    description_kz = _norm_space(
-        f"{name_kz or name_raw} {city_kz or city_raw} {country_kz or country_raw} {' '.join(tags_kz)}"
     )
 
     return {
         "name": name_raw,
         "name_rus": name_rus,
-        "name_kz": name_kz,
         "country": _safe_lower(_get_nested(u, ["location", "country"])),
         "country_rus": country_rus,
-        "country_kz": country_kz,
         "city": _safe_lower(_get_nested(u, ["location", "city"])),
         "city_rus": city_rus,
-        "city_kz": city_kz,
         "state": _safe_lower(_get_nested(u, ["location", "state"])),
         "state_rus": _safe_lower(_STATE_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(state_key, "")),
-        "state_kz": _safe_lower(_STATE_LOCALIZED_BY_LANG[SEARCH_LANG_KZ].get(state_key, "")),
         "description": description,
         "description_rus": description_rus,
-        "description_kz": description_kz,
         "tags": [_safe_lower(x) for x in raw_tags if x],
         "tags_rus": [_safe_lower(x) for x in tags_rus if x],
-        "tags_kz": [_safe_lower(x) for x in tags_kz if x],
         "size": _safe_lower(_get_nested(u, ["student_life", "size"])),
         "majors": [_safe_lower(x) for x in majors if x],
         "program_names": [_safe_lower(x) for x in program_names if x],
         "major_exact": [_safe_lower(x) for x in major_exact if x],
         "major_exact_rus": [_safe_lower(x) for x in major_exact_rus if x],
-        "major_exact_kz": [_safe_lower(x) for x in major_exact_kz if x],
         "study_levels": [_safe_lower(x) for x in study_levels if x] + [_safe_lower(x) for x in program_levels if x],
         "formats": [_safe_lower(x) for x in formats if x] + [_safe_lower(x) for x in program_formats if x],
     }
@@ -1025,24 +878,23 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
 
 def _meta_for_search_lang(meta_row: Dict[str, Any], search_lang: str) -> Dict[str, Any]:
     lang = _normalize_search_lang(search_lang)
-    if lang == SEARCH_LANG_ENG:
+    if lang != SEARCH_LANG_RUS:
         return meta_row
 
-    suffix = "rus" if lang == SEARCH_LANG_RUS else "kz"
     out = dict(meta_row)
 
     def merged_text(*values: Any) -> str:
         vals = _uniq_non_empty([str(v or "").strip() for v in values if str(v or "").strip()])
         return " ".join(vals).strip()
 
-    out["name"] = merged_text(meta_row.get("name"), meta_row.get(f"name_{suffix}", ""))
-    out["country"] = merged_text(meta_row.get("country"), meta_row.get(f"country_{suffix}", ""))
-    out["city"] = merged_text(meta_row.get("city"), meta_row.get(f"city_{suffix}", ""))
-    out["state"] = merged_text(meta_row.get("state"), meta_row.get(f"state_{suffix}", ""))
-    out["description"] = merged_text(meta_row.get("description"), meta_row.get(f"description_{suffix}", ""))
-    out["tags"] = _uniq_non_empty(list(meta_row.get("tags", []) or []) + list(meta_row.get(f"tags_{suffix}", []) or []))
+    out["name"] = merged_text(meta_row.get("name"), meta_row.get("name_rus", ""))
+    out["country"] = merged_text(meta_row.get("country"), meta_row.get("country_rus", ""))
+    out["city"] = merged_text(meta_row.get("city"), meta_row.get("city_rus", ""))
+    out["state"] = merged_text(meta_row.get("state"), meta_row.get("state_rus", ""))
+    out["description"] = merged_text(meta_row.get("description"), meta_row.get("description_rus", ""))
+    out["tags"] = _uniq_non_empty(list(meta_row.get("tags", []) or []) + list(meta_row.get("tags_rus", []) or []))
 
-    localized_major_exact = list(meta_row.get(f"major_exact_{suffix}", []) or [])
+    localized_major_exact = list(meta_row.get("major_exact_rus", []) or [])
     out["major_exact"] = _uniq_non_empty(list(meta_row.get("major_exact", []) or []) + localized_major_exact)
     out["majors"] = _uniq_non_empty(list(meta_row.get("majors", []) or []) + localized_major_exact)
     out["program_names"] = _uniq_non_empty(list(meta_row.get("program_names", []) or []) + localized_major_exact)

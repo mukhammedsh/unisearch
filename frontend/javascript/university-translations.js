@@ -9,7 +9,6 @@ const CACHE = {
 function normalizeLang(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (raw.startsWith("ru") || raw === "rus") return "rus";
-  if (raw.startsWith("kk") || raw.startsWith("kz") || raw === "kaz") return "kz";
   return "eng";
 }
 

@@ -11,14 +11,14 @@ async function switchLanguage(page, value) {
   await page.waitForLoadState("domcontentloaded");
 }
 
-test("language switch updates UI labels for ru and kz locales", async ({ page }) => {
+test("language switch updates UI labels for eng and ru locales", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
   await page.waitForSelector("#languageSelect", { state: "attached" });
 
+  await switchLanguage(page, "eng");
+  await expect(page.locator(".navbar-center a[data-link='home']")).toContainText("Home");
+
   await switchLanguage(page, "rus");
   await expect(page.locator(".navbar-center a[data-link='home']")).toContainText("Главная");
-
-  await switchLanguage(page, "kz");
-  await expect(page.locator(".navbar-center a[data-link='home']")).toContainText("Басты бет");
 });

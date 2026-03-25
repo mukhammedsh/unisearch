@@ -7,7 +7,7 @@ Core capabilities:
 - AI ranking (`UniFit`) with preference sliders
 - admission probability estimate (`UniChance`)
 - ROI estimate per university
-- multilingual UI (`eng`, `ru`, `kz`) with backend-driven localization
+- multilingual UI (`eng`, `ru`) with backend-driven localization
 
 ## Quick start
 If you just want the project running locally:

@@ -197,7 +197,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 function resolveUiLang() {
   const htmlLang = String(document.documentElement.getAttribute("lang") || "").trim().toLowerCase();
   if (htmlLang.startsWith("ru")) return "rus";
-  if (htmlLang.startsWith("kk") || htmlLang.startsWith("kz")) return "kz";
   return "eng";
 }
 
@@ -214,7 +213,7 @@ function parseCountOrNull(value) {
 }
 
 function formatCountForUi(value, lang) {
-  const locale = lang === "rus" ? "ru-RU" : (lang === "kz" ? "kk-KZ" : "en-US");
+  const locale = lang === "rus" ? "ru-RU" : "en-US";
   try {
     return new Intl.NumberFormat(locale).format(normalizeCount(value, 0));
   } catch (e) {
@@ -240,7 +239,6 @@ function getCountNoun(kind, count, lang) {
       if (cat === "few") return "страны";
       return "стран";
     }
-    if (lang === "kz") return "ел";
     return n === 1 ? "country" : "countries";
   }
 
@@ -251,7 +249,6 @@ function getCountNoun(kind, count, lang) {
       if (cat === "few") return "университета";
       return "университетов";
     }
-    if (lang === "kz") return "университет";
     return n === 1 ? "university" : "universities";
   }
 

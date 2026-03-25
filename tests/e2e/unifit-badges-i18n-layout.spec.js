@@ -14,7 +14,6 @@ function makeAiSortResponse(items) {
 const locales = [
   { value: "eng", label: "English" },
   { value: "rus", label: "Russian" },
-  { value: "kz", label: "Kazakh" },
 ];
 
 for (const locale of locales) {
@@ -86,4 +85,3 @@ for (const locale of locales) {
     expect(overflow.vertical).toBeFalsy();
   });
 }
-

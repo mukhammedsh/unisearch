@@ -18,14 +18,6 @@ const LOCALES = [
     backToList: "Назад к списку",
     programsTab: "Программы",
   },
-  {
-    code: "kz",
-    home: "Басты бет",
-    filter: "Сүзгі",
-    searchPlaceholder: "Университетті іздеу...",
-    backToList: "Тізімге оралу",
-    programsTab: "Бағдарламалар",
-  },
 ];
 
 async function switchLanguage(page, langCode) {
@@ -38,7 +30,7 @@ async function switchLanguage(page, langCode) {
   await expect(page.locator("#languageSelect")).toHaveValue(langCode);
 }
 
-test("universities page updates key UI texts for eng/rus/kz", async ({ page }) => {
+test("universities page updates key UI texts for eng/rus", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/universities.html");
   await page.waitForSelector("#languageSelect", { state: "attached" });
@@ -51,7 +43,7 @@ test("universities page updates key UI texts for eng/rus/kz", async ({ page }) =
   }
 });
 
-test("university detail page updates key UI texts for eng/rus/kz", async ({ page }) => {
+test("university detail page updates key UI texts for eng/rus", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/university.html?id=suleyman-demirel-university-kaz-kaskelen");
   await page.waitForSelector("#languageSelect", { state: "attached" });

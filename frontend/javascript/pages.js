@@ -263,15 +263,6 @@ function localizeDuration(rawValue) {
       .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "семестр", "семестра", "семестров")}`);
   }
 
-  if (lang === "kz") {
-    return raw
-      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, "$1 жыл")
-      .replace(/\b(\d+)\s*months?\b/gi, "$1 ай")
-      .replace(/\b(\d+)\s*weeks?\b/gi, "$1 апта")
-      .replace(/\b(\d+)\s*days?\b/gi, "$1 күн")
-      .replace(/\b(\d+)\s*semesters?\b/gi, "$1 семестр");
-  }
-
   return raw;
 }
 

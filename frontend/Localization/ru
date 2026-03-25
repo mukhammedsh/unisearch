@@ -112,7 +112,6 @@ nav.close_menu: Закрыть меню
 nav.guide: Гайд
 nav.home: Главная
 nav.lang.eng: Английский (США)
-nav.lang.kz: Қазақша
 nav.lang.rus: Русский
 nav.language: Язык
 nav.open_menu: Открыть меню
@@ -422,8 +421,6 @@ languages.updated: Язык обновлен
 languages.kind.native: Родной
 languages.kind.cefr: CEFR
 languages.kind.exam: Экзамен
-languages.name.kk: Казахский
-languages.name.kz: Казахский
 languages.name.ru: Русский
 languages.name.en: Английский
 languages.name.de: Немецкий

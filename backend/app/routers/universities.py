@@ -59,8 +59,6 @@ def _normalize_search_lang(value: Any) -> str:
     raw = str(value or "").strip().lower()
     if raw.startswith("ru") or raw == "rus":
         return "rus"
-    if raw.startswith("kk") or raw.startswith("kz") or raw == "kaz":
-        return "kz"
     return "eng"
 
 

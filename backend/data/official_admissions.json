@@ -8,7 +8,8 @@
     "docs/data_research/structured_group_d_au_kz_admissions.json",
     "docs/data_research/program_rows_epfl_tum.json",
     "docs/data_research/program_rows_nus_cuhk.json",
-    "docs/data_research/program_rows_kaist.json"
+    "docs/data_research/program_rows_kaist.json",
+    "docs/data_research/program_rows_completion_final.json"
   ],
   "universities": {
     "mit-usa-cambridge": {
@@ -56,19 +57,82 @@
         }
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": "undergraduate_programs",
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "MIT does not publish undergraduate major-by-major acceptance data in the official sources listed in the research note.",
+        "notes": "Official undergraduate admission is reported institution-wide rather than by major, so UniSearch stores verified-null rows for the current programs instead of inventing major-level acceptance rates.",
         "sources": [
           {
             "url": "https://mitadmissions.org/apply/process/",
             "label": "Applicants apply to MIT as a whole, not to a particular major, department, or school."
+          },
+          {
+            "url": "https://mitadmissions.org/apply/process/",
+            "label": "MIT Admissions process overview"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science and Engineering (6?3)",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "MIT states that undergraduate applicants apply to the institute as a whole rather than to a particular major, department, or school, so it does not publish public major-level admit totals for Course 6 options.",
+          "notes": "Stored as verified-null because MIT does not publish a separate undergraduate admission rate or counts for Course 6-3.",
+          "sources": [
+            {
+              "url": "https://mitadmissions.org/apply/process/",
+              "label": "MIT Admissions process overview"
+            }
+          ],
+          "provenance": {
+            "source": "MIT Admissions process overview",
+            "source_url": "https://mitadmissions.org/apply/process/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: MIT official admissions materials explicitly describe institute-wide undergraduate admission rather than major-specific selection.",
+            "basis": {
+              "summary": "MIT states that undergraduate applicants apply to the institute as a whole rather than to a particular major, department, or school, so it does not publish public major-level admit totals for Course 6 options."
+            }
+          }
+        },
+        {
+          "program_name": "Electrical Engineering and Computer Science (6?2/6?5)",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "MIT states that undergraduate applicants apply to the institute as a whole rather than to a particular major, department, or school, so it does not publish public major-level admit totals for Course 6 options.",
+          "notes": "Stored as verified-null because MIT does not publish a separate undergraduate admission rate or counts for Course 6-2/6-5.",
+          "sources": [
+            {
+              "url": "https://mitadmissions.org/apply/process/",
+              "label": "MIT Admissions process overview"
+            }
+          ],
+          "provenance": {
+            "source": "MIT Admissions process overview",
+            "source_url": "https://mitadmissions.org/apply/process/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: MIT official admissions materials explicitly describe institute-wide undergraduate admission rather than major-specific selection.",
+            "basis": {
+              "summary": "MIT states that undergraduate applicants apply to the institute as a whole rather than to a particular major, department, or school, so it does not publish public major-level admit totals for Course 6 options."
+            }
+          }
+        }
+      ]
     },
     "stanford-university-usa-ca": {
       "university_name": "Stanford University",
@@ -113,19 +177,53 @@
         }
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": "undergraduate_programs",
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "Stanford does not publish undergraduate major-level acceptance data in the official sources listed in the research note. Graduate program dashboards exist, but they are outside the undergrad scope of this group.",
+        "notes": "Official undergraduate admission is reported institution-wide rather than by major, so UniSearch stores verified-null rows for the current programs instead of inventing major-level acceptance rates.",
         "sources": [
           {
             "url": "https://admission.stanford.edu/apply/first-year/apply.html",
             "label": "Stanford undergrad admission is university-wide rather than major-specific."
+          },
+          {
+            "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "label": "Stanford first-year application overview"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Stanford says first-year applicants apply to the university as a whole, not to an undergraduate major, so no public major-specific admit totals are published for Computer Science.",
+          "notes": "Stored as verified-null because Stanford does not publish a separate undergraduate Computer Science admission rate.",
+          "sources": [
+            {
+              "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+              "label": "Stanford first-year application overview"
+            }
+          ],
+          "provenance": {
+            "source": "Stanford first-year application overview",
+            "source_url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Stanford admissions materials describe university-wide undergraduate admission rather than major-specific selection.",
+            "basis": {
+              "summary": "Stanford says first-year applicants apply to the university as a whole, not to an undergraduate major, so no public major-specific admit totals are published for Computer Science."
+            }
+          }
+        }
+      ]
     },
     "harvard-usa-cambridge": {
       "university_name": "Harvard University",
@@ -168,19 +266,53 @@
         }
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": "undergraduate_concentrations",
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "Harvard does not publish undergraduate concentration-level acceptance data in the official sources listed in the research note because concentrations are declared after admission.",
+        "notes": "Official undergraduate admission is reported institution-wide rather than by major, so UniSearch stores verified-null rows for the current programs instead of inventing major-level acceptance rates.",
         "sources": [
           {
             "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
             "label": "Concentrations are declared after admission, not used as an undergraduate admissions selectivity unit."
+          },
+          {
+            "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+            "label": "Harvard concentration declaration overview"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Harvard concentrations are declared after admission, so Harvard does not publish public undergraduate concentration-level admit totals for Computer Science.",
+          "notes": "Stored as verified-null because Harvard admissions are not reported at the concentration level.",
+          "sources": [
+            {
+              "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+              "label": "Harvard concentration declaration overview"
+            }
+          ],
+          "provenance": {
+            "source": "Harvard concentration declaration overview",
+            "source_url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Harvard materials describe concentrations as post-admission choices rather than undergraduate admissions units.",
+            "basis": {
+              "summary": "Harvard concentrations are declared after admission, so Harvard does not publish public undergraduate concentration-level admit totals for Computer Science."
+            }
+          }
+        }
+      ]
     },
     "imperial-college-london-uk": {
       "university_name": "Imperial College London",
@@ -621,11 +753,11 @@
         ]
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "No public program-level applicant/admit ratio was located in the official sources reviewed.",
+        "notes": "Official program-level public selectivity data is not published for the reviewed current programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
         "sources": [
           {
             "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
@@ -634,10 +766,44 @@
           {
             "url": "https://ethz.ch/content/dam/ethz/main/news/eth-news/2024/09/240912-mm-semesterstart-ce/MM_ETH%20Zurich_Semester%20start%20Sep%202024.pdf",
             "label": "ETH Zurich semester start 2024 PDF"
+          },
+          {
+            "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+            "label": "ETH Zurich bachelor admission requirements"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "ETH Zurich publishes bachelor admission routes and qualification rules, but the reviewed official public materials do not publish program-specific applicants/admitted totals for Computer Science.",
+          "notes": "Stored as verified-null because no safe public Computer Science admission ratio was found in official ETH sources.",
+          "sources": [
+            {
+              "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+              "label": "ETH Zurich bachelor admission requirements"
+            }
+          ],
+          "provenance": {
+            "source": "ETH Zurich bachelor admission requirements",
+            "source_url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official ETH sources describe eligibility and routes, not program-level public admit counts.",
+            "basis": {
+              "summary": "ETH Zurich publishes bachelor admission routes and qualification rules, but the reviewed official public materials do not publish program-specific applicants/admitted totals for Computer Science."
+            }
+          }
+        }
+      ]
     },
     "epfl-ch-lausanne": {
       "university_name": "EPFL",
@@ -824,11 +990,11 @@
         ]
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "No public program-level applicants/admitted ratio was located in the official sources reviewed.",
+        "notes": "Official program-level public selectivity data is not published for the reviewed current programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
         "sources": [
           {
             "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
@@ -837,10 +1003,77 @@
           {
             "url": "https://ocw.tudelft.nl/programs/bachelor/industrial-design-engineering/",
             "label": "TU Delft industrial design engineering program page"
+          },
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
+            "label": "TU Delft OCW Computer Science and Engineering programme page"
+          },
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+            "label": "TU Delft OCW Aerospace Engineering programme page"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science and Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The official TU Delft Computer Science and Engineering programme page describes the bachelor programme, but the reviewed official public materials do not publish applicants/admitted totals or a clean admission ratio for the programme.",
+          "notes": "Stored as verified-null because TU Delft does not expose a safe public CSE applicant/admit ratio in the reviewed official sources.",
+          "sources": [
+            {
+              "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
+              "label": "TU Delft OCW Computer Science and Engineering programme page"
+            }
+          ],
+          "provenance": {
+            "source": "TU Delft OCW Computer Science and Engineering programme page",
+            "source_url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Verified-null: official programme page confirms the programme exists, but no public admission counts were found in the reviewed official sources.",
+            "basis": {
+              "summary": "The official TU Delft Computer Science and Engineering programme page describes the bachelor programme, but the reviewed official public materials do not publish applicants/admitted totals or a clean admission ratio for the programme."
+            }
+          }
+        },
+        {
+          "program_name": "Aerospace Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The official TU Delft Aerospace Engineering programme page describes the bachelor programme, but the reviewed official public materials do not publish applicants/admitted totals or a clean admission ratio for the programme.",
+          "notes": "Stored as verified-null because TU Delft does not expose a safe public Aerospace Engineering applicant/admit ratio in the reviewed official sources.",
+          "sources": [
+            {
+              "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+              "label": "TU Delft OCW Aerospace Engineering programme page"
+            }
+          ],
+          "provenance": {
+            "source": "TU Delft OCW Aerospace Engineering programme page",
+            "source_url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Verified-null: official programme page confirms the programme exists, but no public admission counts were found in the reviewed official sources.",
+            "basis": {
+              "summary": "The official TU Delft Aerospace Engineering programme page describes the bachelor programme, but the reviewed official public materials do not publish applicants/admitted totals or a clean admission ratio for the programme."
+            }
+          }
+        }
+      ]
     },
     "university-of-toronto-ca-toronto": {
       "university_name": "University of Toronto",
@@ -1724,11 +1957,11 @@
         "sources": []
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_disclosed",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "No public applicant/admit totals were found in the official materials reviewed.",
+        "notes": "Official SNU materials state that applicant counts and acceptance rate are not disclosed, so UniSearch stores verified-null rows for the current programs.",
         "sources": [
           {
             "url": "https://en.snu.ac.kr/admission/undergraduate/application"
@@ -1738,10 +1971,73 @@
           },
           {
             "url": "https://en.snu.ac.kr/admission/overview/faq/admission"
+          },
+          {
+            "url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+            "label": "SNU admissions FAQ"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science and Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "SNU official materials state that the number of applicants and the acceptance rate are not disclosed, and no public program-level admit table was found for Computer Science and Engineering.",
+          "notes": "Stored as verified-null because SNU does not publicly disclose program-level undergraduate acceptance counts.",
+          "sources": [
+            {
+              "url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+              "label": "SNU admissions FAQ"
+            }
+          ],
+          "provenance": {
+            "source": "SNU admissions FAQ",
+            "source_url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official SNU materials state that applicant counts and acceptance rate are not disclosed.",
+            "basis": {
+              "summary": "SNU official materials state that the number of applicants and the acceptance rate are not disclosed, and no public program-level admit table was found for Computer Science and Engineering."
+            }
+          }
+        },
+        {
+          "program_name": "Computer Science and Engineering (Graduate)",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed SNU official public materials did not provide a graduate program-level applicants/admitted table for Computer Science and Engineering, and the admissions FAQ notes that applicant counts and acceptance rate are not disclosed.",
+          "notes": "Stored as verified-null because no official public graduate Computer Science and Engineering admit counts were found.",
+          "sources": [
+            {
+              "url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+              "label": "SNU admissions FAQ"
+            }
+          ],
+          "provenance": {
+            "source": "SNU admissions FAQ",
+            "source_url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official SNU public admissions materials do not expose a program-level admit table for this program.",
+            "basis": {
+              "summary": "The reviewed SNU official public materials did not provide a graduate program-level applicants/admitted table for Computer Science and Engineering, and the admissions FAQ notes that applicant counts and acceptance rate are not disclosed."
+            }
+          }
+        }
+      ]
     },
     "kaist-kr-daejeon": {
       "university_name": "KAIST",
@@ -1862,6 +2158,10 @@
           },
           {
             "url": "https://mis.sem.tsinghua.edu.cn/ueditor/jsp/upload/file/20191125/1574643097042078803.pdf"
+          },
+          {
+            "url": "https://www.tsinghua.edu.cn/en/Admissions/International_Students1/Undergraduate_Programs.htm",
+            "label": "Tsinghua undergraduate programs overview"
           }
         ]
       },
@@ -1896,6 +2196,35 @@
               "places": 160
             }
           }
+        },
+        {
+          "program_name": "Mechanical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Tsinghua lists Mechanical Engineering among its undergraduate programs, but the reviewed stable official public sources did not provide a safe program-specific applicants/admitted table or capacity figure for this program.",
+          "notes": "Stored as verified-null because no stable official public Mechanical Engineering admission counts were retained in this pass.",
+          "sources": [
+            {
+              "url": "https://www.tsinghua.edu.cn/en/Admissions/International_Students1/Undergraduate_Programs.htm",
+              "label": "Tsinghua undergraduate programs overview"
+            }
+          ],
+          "provenance": {
+            "source": "Tsinghua undergraduate programs overview",
+            "source_url": "https://www.tsinghua.edu.cn/en/Admissions/International_Students1/Undergraduate_Programs.htm",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Verified-null: official Tsinghua public materials confirmed the program but did not expose a stable safe public selection metric in the reviewed sources.",
+            "basis": {
+              "summary": "Tsinghua lists Mechanical Engineering among its undergraduate programs, but the reviewed stable official public sources did not provide a safe program-specific applicants/admitted table or capacity figure for this program."
+            }
+          }
         }
       ]
     },
@@ -1924,6 +2253,10 @@
           },
           {
             "url": "https://www.i.kyoto-u.ac.jp/en/admission/application/"
+          },
+          {
+            "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
+            "label": "Kyoto iUP program overview"
           }
         ]
       },
@@ -1965,6 +2298,35 @@
               "admitted": 37
             }
           }
+        },
+        {
+          "program_name": "Kyoto iUP Preparatory Course",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Kyoto iUP describes the preparatory course as the first six months of the combined 4.5-year Kyoto iUP flow. Official public results are published for the combined Kyoto iUP admissions flow rather than as a separate preparatory-course admit table.",
+          "notes": "Stored as verified-null because Kyoto University publicly reports Kyoto iUP results for the combined flow rather than for the preparatory course separately.",
+          "sources": [
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
+              "label": "Kyoto iUP program overview"
+            }
+          ],
+          "provenance": {
+            "source": "Kyoto iUP program overview",
+            "source_url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Kyoto iUP materials describe the preparatory course as part of a combined admissions flow, not as a separately reported public selection unit.",
+            "basis": {
+              "summary": "Kyoto iUP describes the preparatory course as the first six months of the combined 4.5-year Kyoto iUP flow. Official public results are published for the combined Kyoto iUP admissions flow rather than as a separate preparatory-course admit table."
+            }
+          }
         }
       ]
     },
@@ -1992,11 +2354,11 @@
         ]
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "The official materials reviewed do not publish program-level applicant/admit counts suitable for an acceptance-rate field. They do publish course-specific entry standards, which should remain separate from selectivity.",
+        "notes": "Official program-level public selectivity data is not published for the reviewed current programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
         "sources": [
           {
             "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
@@ -2005,10 +2367,77 @@
           {
             "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
             "label": "Bachelor of Science entry requirements"
+          },
+          {
+            "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
+            "label": "University of Melbourne Bachelor of Science entry requirements"
+          },
+          {
+            "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
+            "label": "University of Melbourne ATAR guarantees"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science (Computing and Software Systems major)",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The official Melbourne materials reviewed publish degree-level entry standards such as ATAR guarantees and Bachelor of Science entry requirements, but not major-level applicants/admitted totals for the Computing and Software Systems major.",
+          "notes": "Stored as verified-null because the published official thresholds apply at the degree-entry level rather than as a major-specific admit table.",
+          "sources": [
+            {
+              "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
+              "label": "University of Melbourne Bachelor of Science entry requirements"
+            }
+          ],
+          "provenance": {
+            "source": "University of Melbourne Bachelor of Science entry requirements",
+            "source_url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Verified-null: official Melbourne materials expose entry standards but not a public major-level admission ratio for this major.",
+            "basis": {
+              "summary": "The official Melbourne materials reviewed publish degree-level entry standards such as ATAR guarantees and Bachelor of Science entry requirements, but not major-level applicants/admitted totals for the Computing and Software Systems major."
+            }
+          }
+        },
+        {
+          "program_name": "Engineering (Digital Infrastructure Engineering Systems major)",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The official Melbourne materials reviewed publish degree-level entry standards such as ATAR guarantees and course entry requirements, but not major-level applicants/admitted totals for the Digital Infrastructure Engineering Systems major.",
+          "notes": "Stored as verified-null because the published official thresholds apply at the course-entry level rather than as a major-specific admit table.",
+          "sources": [
+            {
+              "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
+              "label": "University of Melbourne ATAR guarantees"
+            }
+          ],
+          "provenance": {
+            "source": "University of Melbourne ATAR guarantees",
+            "source_url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Verified-null: official Melbourne materials expose entry standards but not a public major-level admission ratio for this major.",
+            "basis": {
+              "summary": "The official Melbourne materials reviewed publish degree-level entry standards such as ATAR guarantees and course entry requirements, but not major-level applicants/admitted totals for the Digital Infrastructure Engineering Systems major."
+            }
+          }
+        }
+      ]
     },
     "nazarbayev-university-kaz-astana": {
       "university_name": "Nazarbayev University",
@@ -2045,19 +2474,115 @@
         }
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "combined_undergraduate_application",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "The research note did not find a public undergraduate program-by-program applicant/admit table on the official admissions pages.",
+        "notes": "Official NU materials publish a combined undergraduate admissions flow rather than program-by-program public admit counts, so UniSearch stores verified-null rows for the current programs.",
         "sources": [
           {
             "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
             "label": "Admissions statistics on Nazarbayev University"
+          },
+          {
+            "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+            "label": "Admissions Statistics on Nazarbayev University"
+          },
+          {
+            "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+            "label": "Nazarbayev University regular admissions overview"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Computer Science.",
+          "notes": "Stored as verified-null because no official public Computer Science admit table was found.",
+          "sources": [
+            {
+              "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+              "label": "Admissions Statistics on Nazarbayev University"
+            }
+          ],
+          "provenance": {
+            "source": "Admissions Statistics on Nazarbayev University",
+            "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official NU materials provide a combined undergraduate admissions flow rather than major-specific public admit counts.",
+            "basis": {
+              "summary": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Computer Science."
+            }
+          }
+        },
+        {
+          "program_name": "Mechanical and Aerospace Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Mechanical and Aerospace Engineering.",
+          "notes": "Stored as verified-null because no official public Mechanical and Aerospace Engineering admit table was found.",
+          "sources": [
+            {
+              "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+              "label": "Admissions Statistics on Nazarbayev University"
+            }
+          ],
+          "provenance": {
+            "source": "Admissions Statistics on Nazarbayev University",
+            "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official NU materials provide a combined undergraduate admissions flow rather than major-specific public admit counts.",
+            "basis": {
+              "summary": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Mechanical and Aerospace Engineering."
+            }
+          }
+        },
+        {
+          "program_name": "Foundation Year",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Nazarbayev University states that since 2024 the NUFYP and undergraduate programs have a single application form, but the reviewed official materials do not publish a standalone public applicant/admit table for Foundation Year.",
+          "notes": "Stored as verified-null because the public official flow is combined rather than published as a separate Foundation Year admission ratio.",
+          "sources": [
+            {
+              "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+              "label": "Nazarbayev University regular admissions overview"
+            }
+          ],
+          "provenance": {
+            "source": "Nazarbayev University regular admissions overview",
+            "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official NU materials describe a combined foundation-undergraduate admissions flow rather than a standalone public Foundation Year admit table.",
+            "basis": {
+              "summary": "Nazarbayev University states that since 2024 the NUFYP and undergraduate programs have a single application form, but the reviewed official materials do not publish a standalone public applicant/admit table for Foundation Year."
+            }
+          }
+        }
+      ]
     },
     "suleyman-demirel-university-kaz-kaskelen": {
       "university_name": "Suleyman Demirel University",
@@ -2083,11 +2608,11 @@
         ]
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "The research note did not find a public course-level applicant/admit table suitable for an acceptance-rate field. The official materials focus on thresholds and process rules.",
+        "notes": "Official program-level public selectivity data is not published for the reviewed current programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
         "sources": [
           {
             "url": "https://sdu.edu.kz/en/admission-3-2/",
@@ -2096,10 +2621,73 @@
           {
             "url": "https://sdu.edu.kz/ru/admission/",
             "label": "SDU admission page"
+          },
+          {
+            "url": "https://sdu.edu.kz/en/admission-3-2/",
+            "label": "SDU admission overview"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Information Systems",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official SDU admissions materials focus on UNT thresholds, grant competition, and process rules, but do not publish program-specific applicants/admitted totals for Information Systems.",
+          "notes": "Stored as verified-null because no official public Information Systems admit counts were found.",
+          "sources": [
+            {
+              "url": "https://sdu.edu.kz/en/admission-3-2/",
+              "label": "SDU admission overview"
+            }
+          ],
+          "provenance": {
+            "source": "SDU admission overview",
+            "source_url": "https://sdu.edu.kz/en/admission-3-2/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official SDU materials publish thresholds and process rules rather than a public program-level admit table.",
+            "basis": {
+              "summary": "The reviewed official SDU admissions materials focus on UNT thresholds, grant competition, and process rules, but do not publish program-specific applicants/admitted totals for Information Systems."
+            }
+          }
+        },
+        {
+          "program_name": "Business Information Systems",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official SDU admissions materials focus on UNT thresholds, grant competition, and process rules, but do not publish program-specific applicants/admitted totals for Business Information Systems.",
+          "notes": "Stored as verified-null because no official public Business Information Systems admit counts were found.",
+          "sources": [
+            {
+              "url": "https://sdu.edu.kz/en/admission-3-2/",
+              "label": "SDU admission overview"
+            }
+          ],
+          "provenance": {
+            "source": "SDU admission overview",
+            "source_url": "https://sdu.edu.kz/en/admission-3-2/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official SDU materials publish thresholds and process rules rather than a public program-level admit table.",
+            "basis": {
+              "summary": "The reviewed official SDU admissions materials focus on UNT thresholds, grant competition, and process rules, but do not publish program-specific applicants/admitted totals for Business Information Systems."
+            }
+          }
+        }
+      ]
     },
     "astana-it-university-kaz-astana": {
       "university_name": "Astana IT University",
@@ -2125,11 +2713,11 @@
         ]
       },
       "program_level": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "notes": "The research note did not find a public program-level applicants/admit table. The official pages publish entrance-test thresholds and program-group subject requirements instead.",
+        "notes": "Official program-level public selectivity data is not published for the reviewed current programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
         "sources": [
           {
             "url": "https://astanait.edu.kz/en/bachelor/",
@@ -2138,10 +2726,73 @@
           {
             "url": "https://astanait.edu.kz/en/aitu-excellence-test/",
             "label": "AITU Excellence Test"
+          },
+          {
+            "url": "https://astanait.edu.kz/en/bachelor/",
+            "label": "AITU bachelor degree programs"
           }
         ]
       },
-      "programs": []
+      "programs": [
+        {
+          "program_name": "Software Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official AITU bachelor admissions materials publish entrance-test and subject-group requirements, but do not publish program-specific applicants/admitted totals for Software Engineering.",
+          "notes": "Stored as verified-null because no official public Software Engineering admit counts were found.",
+          "sources": [
+            {
+              "url": "https://astanait.edu.kz/en/bachelor/",
+              "label": "AITU bachelor degree programs"
+            }
+          ],
+          "provenance": {
+            "source": "AITU bachelor degree programs",
+            "source_url": "https://astanait.edu.kz/en/bachelor/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official AITU materials publish thresholds and programme-group requirements rather than a public program-level admit table.",
+            "basis": {
+              "summary": "The reviewed official AITU bachelor admissions materials publish entrance-test and subject-group requirements, but do not publish program-specific applicants/admitted totals for Software Engineering."
+            }
+          }
+        },
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official AITU bachelor admissions materials publish entrance-test and subject-group requirements, but do not publish program-specific applicants/admitted totals for Computer Science.",
+          "notes": "Stored as verified-null because no official public Computer Science admit counts were found.",
+          "sources": [
+            {
+              "url": "https://astanait.edu.kz/en/bachelor/",
+              "label": "AITU bachelor degree programs"
+            }
+          ],
+          "provenance": {
+            "source": "AITU bachelor degree programs",
+            "source_url": "https://astanait.edu.kz/en/bachelor/",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official AITU materials publish thresholds and programme-group requirements rather than a public program-level admit table.",
+            "basis": {
+              "summary": "The reviewed official AITU bachelor admissions materials publish entrance-test and subject-group requirements, but do not publish program-specific applicants/admitted totals for Computer Science."
+            }
+          }
+        }
+      ]
     }
   }
 }

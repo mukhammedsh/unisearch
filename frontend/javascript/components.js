@@ -182,7 +182,6 @@ const LAYOUT_HTML = `
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
         <option value="rus" data-i18n="nav.lang.rus">Русский</option>
-        <option value="kz" data-i18n="nav.lang.kz">Қазақша</option>
       </select>
     </div>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">🌙</button>
@@ -1564,4 +1563,3 @@ export function setupTabs() {
     if (targetPane) targetPane.classList.add("active");
   });
 }
-

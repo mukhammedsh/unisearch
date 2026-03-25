@@ -129,18 +129,6 @@ class UniversitySearchTests(unittest.TestCase):
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual([], ids)
 
-    def test_query_matches_kazakh_major_when_search_lang_is_kz(self):
-        items, meta = self._mock_data()
-        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
-            result = uni_service.list_universities(
-                q="компьютерлік ғылымдар",
-                paginate=False,
-                search_lang="kz",
-            )
-
-        ids = [x.get("id") for x in result.get("items", [])]
-        self.assertEqual(["u-cs"], ids)
-
 
 if __name__ == "__main__":
     unittest.main()

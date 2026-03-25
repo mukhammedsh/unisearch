@@ -1,26 +1,52 @@
 {
   "version": 2,
   "cefr": [
-    { "id": 1, "code": "A1", "label": "A1 (Beginner)" },
-    { "id": 2, "code": "A2", "label": "A2 (Elementary)" },
-    { "id": 3, "code": "B1", "label": "B1 (Intermediate)" },
-    { "id": 4, "code": "B2", "label": "B2 (Upper-Intermediate)" },
-    { "id": 5, "code": "C1", "label": "C1 (Advanced)" },
-    { "id": 6, "code": "C2", "label": "C2 (Proficient)" }
+    {
+      "id": 1,
+      "code": "A1",
+      "label": "A1 (Beginner)"
+    },
+    {
+      "id": 2,
+      "code": "A2",
+      "label": "A2 (Elementary)"
+    },
+    {
+      "id": 3,
+      "code": "B1",
+      "label": "B1 (Intermediate)"
+    },
+    {
+      "id": 4,
+      "code": "B2",
+      "label": "B2 (Upper-Intermediate)"
+    },
+    {
+      "id": 5,
+      "code": "C1",
+      "label": "C1 (Advanced)"
+    },
+    {
+      "id": 6,
+      "code": "C2",
+      "label": "C2 (Proficient)"
+    }
   ],
   "proof_kinds": [
-    { "id": "native", "label": "Native" },
-    { "id": "cefr", "label": "CEFR level" },
-    { "id": "exam", "label": "Certificate / Exam" }
+    {
+      "id": "native",
+      "label": "Native"
+    },
+    {
+      "id": "cefr",
+      "label": "CEFR level"
+    },
+    {
+      "id": "exam",
+      "label": "Certificate / Exam"
+    }
   ],
   "languages": [
-    {
-      "code": "kk",
-      "name": "Kazakh",
-      "native_name": "Қазақ тілі",
-      "script": "Cyrillic/Latin",
-      "notes": "Sometimes required as state language depending on university/program."
-    },
     {
       "code": "ru",
       "name": "Russian",
@@ -101,7 +127,10 @@
         "max": 9.0,
         "type": "float",
         "step": 0.5,
-        "decimals_allowed": [0, 5],
+        "decimals_allowed": [
+          0,
+          5
+        ],
         "notes": "IELTS uses whole or half bands (e.g., 6.0, 6.5, 7.0)."
       },
       {
@@ -120,7 +149,10 @@
         "max": 6.0,
         "type": "float",
         "step": 0.5,
-        "decimals_allowed": [0, 5],
+        "decimals_allowed": [
+          0,
+          5
+        ],
         "notes": "New 1–6 scale with 0.5 increments (score reports since Jan 21, 2026)."
       },
       {

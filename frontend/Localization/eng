@@ -112,7 +112,6 @@ nav.close_menu: Close menu
 nav.guide: Guide
 nav.home: Home
 nav.lang.eng: English (US)
-nav.lang.kz: Қазақша
 nav.lang.rus: Русский
 nav.language: Language
 nav.open_menu: Open menu
@@ -423,8 +422,6 @@ languages.updated: Language updated
 languages.kind.native: Native
 languages.kind.cefr: CEFR
 languages.kind.exam: Exam
-languages.name.kk: Kazakh
-languages.name.kz: Kazakh
 languages.name.ru: Russian
 languages.name.en: English
 languages.name.de: German

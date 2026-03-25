@@ -64,8 +64,6 @@ def _normalize_source_hint(value: Any) -> str:
         return "en"
     if raw in ("rus", "ru", "ru-ru") or raw.startswith("ru"):
         return "ru"
-    if raw in ("kk", "kz", "kaz", "kk-kz", "kz-kz") or raw.startswith("kk") or raw.startswith("kz"):
-        return "kk"
     return ""
 
 
