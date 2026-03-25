@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-03-25",
+  "university_id": "imperial-college-london-uk",
+  "university_name": "Imperial College London",
+  "source_note": "Official Imperial College London Statistics Guide 2023-24 undergraduate applications and admissions tables.",
+  "rows": [
+    {
+      "program_name": "Faculty of Engineering",
+      "source_scope": "undergraduate_faculty_level",
+      "acceptance_rate_percent": 11.34,
+      "counts": {
+        "applicants": 12730,
+        "admitted": 1444,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports Home/EU and Overseas applications received plus new admissions for the Faculty of Engineering. The rate here is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Faculty of Engineering undergraduate applications received for 2023-24 entry: 10,204 Home/EU and 2,526 Overseas; new admissions 1,163 Home/EU and 281 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (1,444 new admissions / 12,730 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 10204,
+          "overseas_applicants": 2526,
+          "home_eu_admitted": 1163,
+          "overseas_admitted": 281,
+          "reported_ratio": "8.8 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Aeronautics",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 9.98,
+      "counts": {
+        "applicants": 1282,
+        "admitted": 128,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Aeronautics. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Aeronautics undergraduate applications received for 2023-24 entry: 1,042 Home/EU and 240 Overseas; new admissions 113 Home/EU and 15 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (128 new admissions / 1,282 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 1042,
+          "overseas_applicants": 240,
+          "home_eu_admitted": 113,
+          "overseas_admitted": 15,
+          "reported_ratio": "10.0 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Bioengineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 21.15,
+      "counts": {
+        "applicants": 884,
+        "admitted": 187,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Bioengineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Bioengineering undergraduate applications received for 2023-24 entry: 672 Home/EU and 212 Overseas; new admissions 138 Home/EU and 49 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (187 new admissions / 884 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 672,
+          "overseas_applicants": 212,
+          "home_eu_admitted": 138,
+          "overseas_admitted": 49,
+          "reported_ratio": "4.7 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Chemical Engineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 18.2,
+      "counts": {
+        "applicants": 835,
+        "admitted": 152,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Chemical Engineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Chemical Engineering undergraduate applications received for 2023-24 entry: 611 Home/EU and 224 Overseas; new admissions 117 Home/EU and 35 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (152 new admissions / 835 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 611,
+          "overseas_applicants": 224,
+          "home_eu_admitted": 117,
+          "overseas_admitted": 35,
+          "reported_ratio": "5.5 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Civil & Environmental Engineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 22.72,
+      "counts": {
+        "applicants": 471,
+        "admitted": 107,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Civil & Environmental Engineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Civil & Environmental Engineering undergraduate applications received for 2023-24 entry: 364 Home/EU and 107 Overseas; new admissions 85 Home/EU and 22 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (107 new admissions / 471 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 364,
+          "overseas_applicants": 107,
+          "home_eu_admitted": 85,
+          "overseas_admitted": 22,
+          "reported_ratio": "4.3 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Computing (BEng/MEng)",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 5.04,
+      "counts": {
+        "applicants": 4010,
+        "admitted": 202,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Computing. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Computing undergraduate applications received for 2023-24 entry: 1,576 Home/EU and 2,434 Overseas; new admissions 78 Home/EU and 124 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (202 new admissions / 4,010 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 1576,
+          "overseas_applicants": 2434,
+          "home_eu_admitted": 78,
+          "overseas_admitted": 124,
+          "reported_ratio": "19.9 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Dyson School of Design Engineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 14.14,
+      "counts": {
+        "applicants": 707,
+        "admitted": 100,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for the Dyson School of Design Engineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Dyson School of Design Engineering undergraduate applications received for 2023-24 entry: 0 Home/EU and 707 Overseas; new admissions 0 Home/EU and 100 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (100 new admissions / 707 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 0,
+          "overseas_applicants": 707,
+          "home_eu_admitted": 0,
+          "overseas_admitted": 100,
+          "reported_ratio": "7.1 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Earth Science & Engineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 18.14,
+      "counts": {
+        "applicants": 474,
+        "admitted": 86,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Earth Science & Engineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Earth Science & Engineering undergraduate applications received for 2023-24 entry: 364 Home/EU and 110 Overseas; new admissions 78 Home/EU and 8 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (86 new admissions / 474 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 364,
+          "overseas_applicants": 110,
+          "home_eu_admitted": 78,
+          "overseas_admitted": 8,
+          "reported_ratio": "5.2 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Electrical & Electronic Engineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 12.19,
+      "counts": {
+        "applicants": 1469,
+        "admitted": 179,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Electrical & Electronic Engineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Electrical & Electronic Engineering undergraduate applications received for 2023-24 entry: 1,224 Home/EU and 245 Overseas; new admissions 149 Home/EU and 30 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (179 new admissions / 1,469 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 1224,
+          "overseas_applicants": 245,
+          "home_eu_admitted": 149,
+          "overseas_admitted": 30,
+          "reported_ratio": "7.8 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Materials",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 20.29,
+      "counts": {
+        "applicants": 611,
+        "admitted": 124,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Materials. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Materials undergraduate applications received for 2023-24 entry: 495 Home/EU and 116 Overseas; new admissions 97 Home/EU and 27 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (124 new admissions / 611 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 495,
+          "overseas_applicants": 116,
+          "home_eu_admitted": 97,
+          "overseas_admitted": 27,
+          "reported_ratio": "4.9 : 1"
+        }
+      }
+    },
+    {
+      "program_name": "Mechanical Engineering",
+      "source_scope": "undergraduate_department_level",
+      "acceptance_rate_percent": 9.01,
+      "counts": {
+        "applicants": 1987,
+        "admitted": 179,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "2023-24 entry"
+      },
+      "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Mechanical Engineering. The rate is derived from total new admissions divided by total applications received.",
+      "sources": [
+        {
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+          "claim": "Mechanical Engineering undergraduate applications received for 2023-24 entry: 1,744 Home/EU and 243 Overseas; new admissions 156 Home/EU and 23 Overseas."
+        }
+      ],
+      "provenance": {
+        "source": "Imperial College London Statistics Guide 2023-24",
+        "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (179 new admissions / 1,987 applications).",
+        "basis": {
+          "cycle": "2023-24 entry",
+          "home_eu_applicants": 1744,
+          "overseas_applicants": 243,
+          "home_eu_admitted": 156,
+          "overseas_admitted": 23,
+          "reported_ratio": "11.1 : 1"
+        }
+      }
+    }
+  ]
+}

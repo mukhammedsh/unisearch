@@ -1,0 +1,166 @@
+{
+  "status_date": "2026-03-25",
+  "scope": [
+    "University of Melbourne",
+    "Nazarbayev University",
+    "Suleyman Demirel University",
+    "Astana IT University"
+  ],
+  "universities": [
+    {
+      "university_id": "university-of-melbourne-au-melbourne",
+      "university_name": "University of Melbourne",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The official pages expose entry thresholds such as guaranteed ATARs, lowest selection ranks, prerequisites, and application pathways, but do not publish a public university-wide applicant/admit ratio.",
+        "sources": [
+          {
+            "label": "ATAR guarantees",
+            "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees"
+          },
+          {
+            "label": "Bachelor of Science entry requirements",
+            "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/"
+          },
+          {
+            "label": "Domestic mid-year applications",
+            "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/domestic-applications/applications/domestic-mid-year-applications"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "The official materials reviewed do not publish program-level applicant/admit counts suitable for an acceptance-rate field. They do publish course-specific entry standards, which should remain separate from selectivity.",
+        "sources": [
+          {
+            "label": "ATAR guarantees",
+            "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees"
+          },
+          {
+            "label": "Bachelor of Science entry requirements",
+            "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "nazarbayev-university-kaz-astana",
+      "university_name": "Nazarbayev University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "rate",
+        "acceptance_rate_percent": 21,
+        "counts": {
+          "applicants": 6911,
+          "admitted": 1480
+        },
+        "semantics": "The official undergraduate statistics PDF publishes a direct 2025 undergraduate admission rate. The research note states that since 2024 there is a single application for NUFYP and undergraduate programs, so the published rate reflects that combined admissions flow.",
+        "sources": [
+          {
+            "label": "Admissions statistics on Nazarbayev University",
+            "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf"
+          },
+          {
+            "label": "Regular Admissions",
+            "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
+          },
+          {
+            "label": "Admissions / general information",
+            "url": "https://nu.edu.kz/en/admissions/admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "The research note did not find a public undergraduate program-by-program applicant/admit table on the official admissions pages.",
+        "sources": [
+          {
+            "label": "Admissions statistics on Nazarbayev University",
+            "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "suleyman-demirel-university-kaz-kaskelen",
+      "university_name": "Suleyman Demirel University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The official pages expose admission rules based on UNT scores, interviews, special exams, and grant competition, but they do not publish a public university-wide applicant/admit total.",
+        "sources": [
+          {
+            "label": "Admission - SDU University",
+            "url": "https://sdu.edu.kz/en/admission-3-2/"
+          },
+          {
+            "label": "SDU admission page",
+            "url": "https://sdu.edu.kz/ru/admission/"
+          },
+          {
+            "label": "Transfer and re-admission regulations",
+            "url": "https://my.sdu.edu.kz/common/download/REGULATION-ON-TRANSFERRING-AND-RE-ADMISSION-OF-STUDENTS-AT-SULEYMAN-DEMIREL-UNIVERSITY.pdf"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "The research note did not find a public course-level applicant/admit table suitable for an acceptance-rate field. The official materials focus on thresholds and process rules.",
+        "sources": [
+          {
+            "label": "Admission - SDU University",
+            "url": "https://sdu.edu.kz/en/admission-3-2/"
+          },
+          {
+            "label": "SDU admission page",
+            "url": "https://sdu.edu.kz/ru/admission/"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "astana-it-university-kaz-astana",
+      "university_name": "Astana IT University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The official materials describe application flow, preliminary approval, original-document submission, entrance testing, and program-group requirements, but do not publish public applicant/admit totals.",
+        "sources": [
+          {
+            "label": "How to apply",
+            "url": "https://astanait.edu.kz/en/how-to-apply/"
+          },
+          {
+            "label": "Bachelor's Degree Programs",
+            "url": "https://astanait.edu.kz/en/bachelor/"
+          },
+          {
+            "label": "AITU Excellence Test",
+            "url": "https://astanait.edu.kz/en/aitu-excellence-test/"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "The research note did not find a public program-level applicants/admit table. The official pages publish entrance-test thresholds and program-group subject requirements instead.",
+        "sources": [
+          {
+            "label": "Bachelor's Degree Programs",
+            "url": "https://astanait.edu.kz/en/bachelor/"
+          },
+          {
+            "label": "AITU Excellence Test",
+            "url": "https://astanait.edu.kz/en/aitu-excellence-test/"
+          }
+        ]
+      }
+    }
+  ]
+}

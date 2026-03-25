@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-03-25",
+  "university_id": "university-of-toronto-ca-toronto",
+  "university_name": "University of Toronto",
+  "rows": [
+    {
+      "program_name": "Computer Science Admission Category (Faculty of Arts & Science)",
+      "source_scope": "arts_and_science_cs_admission_category",
+      "acceptance_rate_percent": null,
+      "counts": {
+        "applicants": null,
+        "admitted": null,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": null
+      },
+      "semantics": "Official Arts & Science pages describe Computer Science as an admission category with a supplementary application, required prerequisites in English and Calculus, and an approximate admission range in the low 90s. The page also states that admission to the category is not the same as enrolment in a program of study after first year.",
+      "sources": [
+        {
+          "url": "https://www.artsci.utoronto.ca/future/ready-apply/admission-categories/computer-science",
+          "claim": "Official Computer Science admission category page; supplementary application required and approximate admission range is low 90s."
+        },
+        {
+          "url": "https://www.artsci.utoronto.ca/future/contact-us/counsellor-resources",
+          "claim": "Official counsellor resource lists the Computer Science admission category recommended admission range and supplemental application requirement."
+        },
+        {
+          "url": "https://calendar.artsci.utoronto.ca/archived/9900calendar/prg_csc.htm",
+          "claim": "Official Academic Calendar page notes that admission requirements and first-year guarantees differ from actual program enrolment."
+        }
+      ],
+      "provenance": {
+        "source": "Faculty of Arts & Science Computer Science admission category page",
+        "source_url": "https://www.artsci.utoronto.ca/future/ready-apply/admission-categories/computer-science",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct official admission-category requirements page. No public applicant/admit totals were published, so no acceptance rate was derived.",
+        "basis": {
+          "approximate_admission_range": "low 90s",
+          "supplementary_application_required": true,
+          "prerequisites": [
+            "English",
+            "Calculus"
+          ],
+          "admission_is_not_program_enrolment": true
+        }
+      }
+    },
+    {
+      "program_name": "Faculty of Applied Science & Engineering First-Year Undergraduates",
+      "source_scope": "engineering_first_year_selectivity_total_2025",
+      "acceptance_rate_percent": 27.51,
+      "counts": {
+        "applicants": 16360,
+        "admitted": null,
+        "offers": 4500,
+        "places": null,
+        "enrolled": 1422,
+        "cycle": "2025"
+      },
+      "semantics": "The 2025 Engineering admissions update reports total applications, total offers of admission, and registrations for first-year undergraduates. Selectivity is computed as offers divided by applications, which is the faculty's own published metric family.",
+      "sources": [
+        {
+          "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+          "claim": "Official Engineering admissions update for the 2025 admissions cycle."
+        },
+        {
+          "url": "https://www.engineering.utoronto.ca/about/annual-reports/by-the-numbers-2025/chapter-8-data-sources-2025/",
+          "claim": "Official data-sources chapter explains that first-year selectivity is based on applications, offers, registrations, selectivity and yield."
+        }
+      ],
+      "provenance": {
+        "source": "Engineering Admissions Update 2025",
+        "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official faculty admissions counts (4,500 offers / 16,360 applications). The faculty source uses offers of admission rather than a separate admitted count.",
+        "basis": {
+          "cycle": "2025 admissions cycle",
+          "applicants": 16360,
+          "offers": 4500,
+          "enrolled": 1422,
+          "selectivity_formula": "offers / applicants"
+        }
+      }
+    },
+    {
+      "program_name": "Faculty of Applied Science & Engineering Domestic First-Year Undergraduates",
+      "source_scope": "engineering_first_year_selectivity_domestic_2025",
+      "acceptance_rate_percent": 21.65,
+      "counts": {
+        "applicants": 11633,
+        "admitted": null,
+        "offers": 2518,
+        "places": null,
+        "enrolled": 966,
+        "cycle": "2025"
+      },
+      "semantics": "The 2025 Engineering admissions update publishes domestic first-year applications, offers, and registrations. This row stores the domestic subset because the faculty reports it explicitly and it is more informative than a blended university-wide rate.",
+      "sources": [
+        {
+          "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+          "claim": "Official Engineering admissions update publishes domestic first-year applications, offers, and registrations."
+        }
+      ],
+      "provenance": {
+        "source": "Engineering Admissions Update 2025",
+        "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official domestic faculty admissions counts (2,518 offers / 11,633 applications).",
+        "basis": {
+          "cycle": "2025 admissions cycle",
+          "applicants": 11633,
+          "offers": 2518,
+          "enrolled": 966,
+          "selectivity_formula": "offers / applicants"
+        }
+      }
+    },
+    {
+      "program_name": "Faculty of Applied Science & Engineering International First-Year Undergraduates",
+      "source_scope": "engineering_first_year_selectivity_international_2025",
+      "acceptance_rate_percent": 41.93,
+      "counts": {
+        "applicants": 4727,
+        "admitted": null,
+        "offers": 1982,
+        "places": null,
+        "enrolled": 456,
+        "cycle": "2025"
+      },
+      "semantics": "The 2025 Engineering admissions update publishes international first-year applications, offers, and registrations. This is a separate official subset and should be stored independently from the domestic row.",
+      "sources": [
+        {
+          "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+          "claim": "Official Engineering admissions update publishes international first-year applications, offers, and registrations."
+        }
+      ],
+      "provenance": {
+        "source": "Engineering Admissions Update 2025",
+        "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official international faculty admissions counts (1,982 offers / 4,727 applications).",
+        "basis": {
+          "cycle": "2025 admissions cycle",
+          "applicants": 4727,
+          "offers": 1982,
+          "enrolled": 456,
+          "selectivity_formula": "offers / applicants"
+        }
+      }
+    },
+    {
+      "program_name": "Computer Engineering First-Year Class",
+      "source_scope": "engineering_first_year_program_class_2025",
+      "acceptance_rate_percent": null,
+      "counts": {
+        "applicants": null,
+        "admitted": null,
+        "offers": null,
+        "places": null,
+        "enrolled": 206,
+        "cycle": "2025"
+      },
+      "semantics": "The 2025 Engineering class profile publishes the incoming first-year class size by program, along with domestic/international composition and mean OSS average. This is program-level admissions composition, not a public program-level applicant/admit rate.",
+      "sources": [
+        {
+          "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+          "claim": "Official Engineering admissions update publishes the 2025 first-year class by program."
+        }
+      ],
+      "provenance": {
+        "source": "Engineering Admissions Update 2025",
+        "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct official first-year class profile by program.",
+        "basis": {
+          "cycle": "2025 first-year class",
+          "enrolled": 206,
+          "women": 92,
+          "domestic": 143,
+          "international": 63,
+          "mean_oss_avg": 96.3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-03-25",
+  "source_note": "Official program-level admissions research for Tsinghua University and Kyoto University.",
+  "universities": [
+    {
+      "university_id": "tsinghua-university-cn-beijing",
+      "university_name": "Tsinghua University",
+      "rows": [
+        {
+          "program_name": "Computer Science and Technology",
+          "source_scope": "undergraduate_department_capacity",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "applicants": null,
+            "admitted": null,
+            "offers": null,
+            "places": 160,
+            "enrolled": null,
+            "cycle": "annual"
+          },
+          "semantics": "The Department of Computer Science and Technology states that annual undergraduate enrollment is about 160 students. Students are admitted through the National College Entrance Examination and a special waiver channel, but the official page does not publish a public applicant total, so no acceptance rate can be derived.",
+          "sources": [
+            {
+              "url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Student_Admission.htm",
+              "label": "Tsinghua CS undergraduate student admission"
+            },
+            {
+              "url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Curriculum.htm",
+              "label": "Tsinghua CS undergraduate curriculum"
+            }
+          ],
+          "provenance": {
+            "source": "Student Admission - Department of Computer Science and Technology",
+            "source_url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Student_Admission.htm",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Direct annual undergraduate enrollment figure published by the department; no public applicant count is exposed, so the row is stored as capacity rather than an acceptance rate.",
+            "basis": {
+              "places": 160
+            }
+          }
+        }
+      ]
+    },
+    {
+      "university_id": "kyoto-university-jp-kyoto",
+      "university_name": "Kyoto University",
+      "rows": [
+        {
+          "program_name": "Kyoto iUP Undergraduate Program",
+          "source_scope": "combined_preparatory_and_undergraduate_flow",
+          "acceptance_rate_percent": 4.65,
+          "counts": {
+            "applicants": 795,
+            "admitted": 37,
+            "offers": null,
+            "places": null,
+            "enrolled": null,
+            "cycle": "October 2025 enrollment"
+          },
+          "semantics": "Kyoto iUP is a 4.5-year scholarship program combining a six-month preparatory course and four years of undergraduate study. Kyoto University publishes successful-applicant totals for the program as a whole. This is a program-level admissions flow, not a faculty-by-faculty major rate.",
+          "sources": [
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/news/000472",
+              "label": "Kyoto iUP October 2025 successful applicants announcement"
+            },
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
+              "label": "Kyoto iUP program overview"
+            },
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/faq/application/",
+              "label": "Kyoto iUP application FAQ"
+            }
+          ],
+          "provenance": {
+            "source": "Announcement of Successful Candidates for October 2025 Enrollment",
+            "source_url": "https://www.iup.kyoto-u.ac.jp/news/000472",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from official Kyoto iUP counts (37 successful applicants / 795 applicants).",
+            "basis": {
+              "cycle": "October 2025 enrollment",
+              "applicants": 795,
+              "admitted": 37
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

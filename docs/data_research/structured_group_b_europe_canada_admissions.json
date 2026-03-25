@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "source_note": "docs/data_research/group_b_europe_canada_official_admissions.md",
+  "generated_at": "2026-03-25",
+  "universities": [
+    {
+      "university_id": "eth-zurich-ch-zurich",
+      "university_name": "ETH Zurich",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "none",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official pages describe admission routes, entrance-exam paths, and a subset master's selectivity statement, but not a public university-wide applicants/admitted rate.",
+        "sources": [
+          {
+            "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+            "label": "ETH Zurich admission requirements"
+          },
+          {
+            "url": "https://ethz.ch/content/dam/ethz/main/news/eth-news/2024/09/240912-mm-semesterstart-ce/MM_ETH%20Zurich_Semester%20start%20Sep%202024.pdf",
+            "label": "ETH Zurich semester start 2024 PDF"
+          },
+          {
+            "url": "https://ethz.ch/staffnet/en/finance-and-controlling/facts-and-figures/students.html",
+            "label": "ETH Zurich students facts and figures"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "No public program-level applicant/admit ratio was located in the official sources reviewed.",
+        "sources": [
+          {
+            "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+            "label": "ETH Zurich admission requirements"
+          },
+          {
+            "url": "https://ethz.ch/content/dam/ethz/main/news/eth-news/2024/09/240912-mm-semesterstart-ce/MM_ETH%20Zurich_Semester%20start%20Sep%202024.pdf",
+            "label": "ETH Zurich semester start 2024 PDF"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "epfl-ch-lausanne",
+      "university_name": "EPFL",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "count_based",
+        "acceptance_rate_percent": null,
+        "counts": {
+          "application_totals": [
+            7362,
+            7764
+          ],
+          "note": "The official self-assessment report states SAC processed 7,362 and 7,764 applications and reports not-admitted shares for bachelor and master."
+        },
+        "semantics": "Public official materials support count-based selectivity analysis, but the public surface is mostly capacity and rules rather than a single canonical acceptance-rate page.",
+        "sources": [
+          {
+            "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/",
+            "label": "EPFL bachelor admission criteria and application"
+          },
+          {
+            "url": "https://www.epfl.ch/about/presidency/wp-content/uploads/2022/05/EPFL-Self-assessment-report-2021-22-11.pdf",
+            "label": "EPFL self-assessment report 2021-22"
+          },
+          {
+            "url": "https://www.epfl.ch/schools/cdm/wp-content/uploads/2018/11/CDM-Annual-Report-2013.pdf",
+            "label": "EPFL annual report example with acceptance rate formulas"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "School annual reports can publish program tables with acceptance rate defined as admits divided by applicants, but only when a report explicitly provides the numerator and denominator or the formula.",
+        "sources": [
+          {
+            "url": "https://www.epfl.ch/about/presidency/wp-content/uploads/2022/05/EPFL-Self-assessment-report-2021-22-11.pdf",
+            "label": "EPFL self-assessment report 2021-22"
+          },
+          {
+            "url": "https://www.epfl.ch/schools/cdm/wp-content/uploads/2018/11/CDM-Annual-Report-2013.pdf",
+            "label": "EPFL annual report example with acceptance rate formulas"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "technical-university-of-munich-de-munich",
+      "university_name": "Technical University of Munich (TUM)",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "count_based",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official program documentation publishes applicant counts and ratios, but the wording is inconsistent and can describe yield or place-acceptance rather than a clean applicants-to-admitted rate.",
+        "sources": [
+          {
+            "url": "https://www.tum.de/en/about-tum/facts-and-figures/tum-in-figures/students",
+            "label": "TUM facts and figures"
+          },
+          {
+            "url": "https://cms.mgt.tum.de/fileadmin/mgt.tum.de/downloads/BMT/MUC/DEGREE_PROGRAM_DOCUMENTATION/20230216_StuDoku_TeilA_BMT_eng.pdf",
+            "label": "TUM degree program documentation example"
+          },
+          {
+            "url": "https://www.tum.de/fileadmin/w00bfo/www/Studium/Studienangebot/Lesbare_Fassung/Bachelor/Aerospace_BA_Degree_Program_Documentation_31072024.pdf",
+            "label": "TUM aerospace degree program documentation"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "Program documents expose applicant counts and ratios, but the semantics are often closer to yield or offer-acceptance than classic acceptance rate.",
+        "sources": [
+          {
+            "url": "https://cms.mgt.tum.de/fileadmin/mgt.tum.de/downloads/BMT/MUC/DEGREE_PROGRAM_DOCUMENTATION/20230216_StuDoku_TeilA_BMT_eng.pdf",
+            "label": "TUM degree program documentation example"
+          },
+          {
+            "url": "https://www.tum.de/fileadmin/w00bfo/www/Studium/Studienangebot/Lesbare_Fassung/Bachelor/Aerospace_BA_Degree_Program_Documentation_31072024.pdf",
+            "label": "TUM aerospace degree program documentation"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "delft-university-of-technology-nl-delft",
+      "university_name": "TU Delft",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "none",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official materials confirm numerus fixus and selection for some bachelors, but no public applicants/admitted ratio was located.",
+        "sources": [
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+            "label": "TU Delft aerospace engineering program page"
+          },
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/industrial-design-engineering/",
+            "label": "TU Delft industrial design engineering program page"
+          },
+          {
+            "url": "https://www.tudelft.nl/en/about-tu-delft",
+            "label": "About TU Delft"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "No public program-level applicants/admitted ratio was located in the official sources reviewed.",
+        "sources": [
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+            "label": "TU Delft aerospace engineering program page"
+          },
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/industrial-design-engineering/",
+            "label": "TU Delft industrial design engineering program page"
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "university-of-toronto-ca-toronto",
+      "university_name": "University of Toronto",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "count_based",
+        "acceptance_rate_percent": 74.33,
+        "counts": {
+          "applicants": 29528,
+          "admitted": 21949,
+          "cycle": "Fall 2024",
+          "scope": "university-wide"
+        },
+        "semantics": "The Governing Council PDF gives distinct applicants and admitted counts for Fall 2024, while the Engineering annual report separately publishes selectivity and yield for first-year undergraduates.",
+        "sources": [
+          {
+            "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
+            "label": "University of Toronto Governing Council presentation"
+          },
+          {
+            "url": "https://www.utoronto.ca/about-u-of-t/quick-facts",
+            "label": "University of Toronto quick facts"
+          },
+          {
+            "url": "https://www.engineering.utoronto.ca/about/annual-reports/by-the-numbers-2023/chapter-1-undergraduate-studies/",
+            "label": "U of T Engineering by the numbers 2023"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "Faculty-level selectivity exists in separate official documents, but it should be treated separately from the university-wide number.",
+        "sources": [
+          {
+            "url": "https://www.engineering.utoronto.ca/about/annual-reports/by-the-numbers-2023/chapter-1-undergraduate-studies/",
+            "label": "U of T Engineering by the numbers 2023"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,404 @@
+{
+  "university_id": "university-of-tokyo-jp-tokyo",
+  "rows": [
+    {
+      "program_name": "PEAK Total",
+      "source_scope": "peak_program",
+      "acceptance_rate_percent": 19.56,
+      "counts": {
+        "applicants": 317,
+        "admitted": 62,
+        "offers": 62,
+        "places": null,
+        "enrolled": null,
+        "cycle": "September 2024 entry"
+      },
+      "semantics": "PEAK publishes admission statistics for its two undergraduate courses. The university states that admission offers, including conditional offers, were made to 62 applicants for September 2024 entry.",
+      "sources": [
+        {
+          "url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+          "label": "PEAK admission statistics 2024"
+        },
+        {
+          "url": "https://peak.c.u-tokyo.ac.jp/whypeak/documents/index.html",
+          "label": "PEAK admission statistics repository"
+        }
+      ],
+      "provenance": {
+        "source": "PEAK admission statistics 2024",
+        "source_url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official PEAK applicants and successful-applicant counts for September 2024 entry (62 successful applicants / 317 applicants).",
+        "basis": {
+          "cycle": "September 2024 entry",
+          "applicants": 317,
+          "admitted": 62,
+          "conditional_offers": 23
+        }
+      }
+    },
+    {
+      "program_name": "PEAK: Japan in East Asia",
+      "source_scope": "peak_program",
+      "acceptance_rate_percent": 17.82,
+      "counts": {
+        "applicants": 174,
+        "admitted": 31,
+        "offers": 31,
+        "places": null,
+        "enrolled": null,
+        "cycle": "September 2024 entry"
+      },
+      "semantics": "Official PEAK statistics report applicants and successful applicants for the Japan in East Asia course. The published successful-applicant total includes conditional offers in parenthesis.",
+      "sources": [
+        {
+          "url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+          "label": "PEAK admission statistics 2024"
+        },
+        {
+          "url": "https://peak.c.u-tokyo.ac.jp/whypeak/documents/index.html",
+          "label": "PEAK admission statistics repository"
+        }
+      ],
+      "provenance": {
+        "source": "PEAK admission statistics 2024",
+        "source_url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official PEAK course-level applicants and successful-applicant counts for Japan in East Asia (31 successful applicants / 174 applicants).",
+        "basis": {
+          "cycle": "September 2024 entry",
+          "applicants": 174,
+          "admitted": 31,
+          "conditional_offers": 11
+        }
+      }
+    },
+    {
+      "program_name": "PEAK: Environmental Sciences",
+      "source_scope": "peak_program",
+      "acceptance_rate_percent": 21.68,
+      "counts": {
+        "applicants": 143,
+        "admitted": 31,
+        "offers": 31,
+        "places": null,
+        "enrolled": null,
+        "cycle": "September 2024 entry"
+      },
+      "semantics": "Official PEAK statistics report applicants and successful applicants for the Environmental Sciences course. The published successful-applicant total includes conditional offers in parenthesis.",
+      "sources": [
+        {
+          "url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+          "label": "PEAK admission statistics 2024"
+        },
+        {
+          "url": "https://peak.c.u-tokyo.ac.jp/whypeak/documents/index.html",
+          "label": "PEAK admission statistics repository"
+        }
+      ],
+      "provenance": {
+        "source": "PEAK admission statistics 2024",
+        "source_url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official PEAK course-level applicants and successful-applicant counts for Environmental Sciences (31 successful applicants / 143 applicants).",
+        "basis": {
+          "cycle": "September 2024 entry",
+          "applicants": 143,
+          "admitted": 31,
+          "conditional_offers": 12
+        }
+      }
+    },
+    {
+      "program_name": "Humanities and Social Sciences I",
+      "source_scope": "undergraduate_division",
+      "acceptance_rate_percent": 35.17,
+      "counts": {
+        "applicants": 1143,
+        "admitted": 402,
+        "offers": null,
+        "places": null,
+        "enrolled": 423,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (402 successful applicants / 1,143 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 1143,
+          "admitted": 402,
+          "entrants_via_traditional_admission_and_recommendation": 413,
+          "entrants_via_other_forms_of_admission": 10,
+          "total_entrants": 423
+        }
+      }
+    },
+    {
+      "program_name": "Humanities and Social Sciences II",
+      "source_scope": "undergraduate_division",
+      "acceptance_rate_percent": 33.81,
+      "counts": {
+        "applicants": 1050,
+        "admitted": 355,
+        "offers": null,
+        "places": null,
+        "enrolled": 373,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (355 successful applicants / 1,050 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 1050,
+          "admitted": 355,
+          "entrants_via_traditional_admission_and_recommendation": 364,
+          "entrants_via_other_forms_of_admission": 9,
+          "total_entrants": 373
+        }
+      }
+    },
+    {
+      "program_name": "Humanities and Social Sciences III",
+      "source_scope": "undergraduate_division",
+      "acceptance_rate_percent": 30.97,
+      "counts": {
+        "applicants": 1521,
+        "admitted": 471,
+        "offers": null,
+        "places": null,
+        "enrolled": 516,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (471 successful applicants / 1,521 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 1521,
+          "admitted": 471,
+          "entrants_via_traditional_admission_and_recommendation": 484,
+          "entrants_via_other_forms_of_admission": 32,
+          "total_entrants": 516
+        }
+      }
+    },
+    {
+      "program_name": "Natural Sciences I",
+      "source_scope": "undergraduate_division",
+      "acceptance_rate_percent": 36.28,
+      "counts": {
+        "applicants": 3084,
+        "admitted": 1119,
+        "offers": null,
+        "places": null,
+        "enrolled": 1170,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (1,119 successful applicants / 3,084 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 3084,
+          "admitted": 1119,
+          "entrants_via_traditional_admission_and_recommendation": 1156,
+          "entrants_via_other_forms_of_admission": 14,
+          "total_entrants": 1170
+        }
+      }
+    },
+    {
+      "program_name": "Natural Sciences II",
+      "source_scope": "undergraduate_division",
+      "acceptance_rate_percent": 24.71,
+      "counts": {
+        "applicants": 2218,
+        "admitted": 548,
+        "offers": null,
+        "places": null,
+        "enrolled": 575,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (548 successful applicants / 2,218 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 2218,
+          "admitted": 548,
+          "entrants_via_traditional_admission_and_recommendation": 555,
+          "entrants_via_other_forms_of_admission": 20,
+          "total_entrants": 575
+        }
+      }
+    },
+    {
+      "program_name": "Natural Sciences III",
+      "source_scope": "undergraduate_division",
+      "acceptance_rate_percent": 23.56,
+      "counts": {
+        "applicants": 416,
+        "admitted": 98,
+        "offers": null,
+        "places": null,
+        "enrolled": 100,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (98 successful applicants / 416 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 416,
+          "admitted": 98,
+          "entrants_via_traditional_admission_and_recommendation": 100,
+          "entrants_via_other_forms_of_admission": 0,
+          "total_entrants": 100
+        }
+      }
+    },
+    {
+      "program_name": "Admission by recommendation",
+      "source_scope": "undergraduate_admission_route",
+      "acceptance_rate_percent": 35.55,
+      "counts": {
+        "applicants": 256,
+        "admitted": 91,
+        "offers": null,
+        "places": null,
+        "enrolled": null,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo lists admission by recommendation as a separate undergraduate admissions route on the Applications and Admissions page.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from the separate undergraduate route row published on the Applications and Admissions page (91 successful applicants / 256 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 256,
+          "admitted": 91
+        }
+      }
+    },
+    {
+      "program_name": "Undergraduate Total",
+      "source_scope": "undergraduate_total",
+      "acceptance_rate_percent": 31.83,
+      "counts": {
+        "applicants": 9688,
+        "admitted": 3084,
+        "offers": null,
+        "places": null,
+        "enrolled": 3157,
+        "cycle": "As of May 1, 2024"
+      },
+      "semantics": "UTokyo's Applications and Admissions page publishes the undergraduate total row across all divisions and admission routes, including PEAK as part of other forms of admission.",
+      "sources": [
+        {
+          "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "label": "UTokyo Applications and Admissions"
+        }
+      ],
+      "provenance": {
+        "source": "UTokyo Applications and Admissions",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from the total undergraduate applicants and successful-applicants row published on the Applications and Admissions page (3,084 successful applicants / 9,688 applicants).",
+        "basis": {
+          "cycle": "As of May 1, 2024",
+          "applicants": 9688,
+          "admitted": 3084,
+          "entrants_via_traditional_admission_and_recommendation": 3072,
+          "entrants_via_other_forms_of_admission": 85,
+          "total_entrants": 3157
+        }
+      }
+    }
+  ]
+}

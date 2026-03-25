@@ -102,6 +102,38 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
             topic = str(row.get("topic") or f"topic_{idx}").strip()
             yield f"verified_sources[{idx}]/{topic}", str(url).strip()
 
+    academics = university.get("academics")
+    if isinstance(academics, dict):
+        admissions = academics.get("admissions")
+        if isinstance(admissions, dict):
+            for section_key in ("university_wide", "program_level"):
+                section = admissions.get(section_key)
+                if not isinstance(section, dict):
+                    continue
+                sources = section.get("sources")
+                if isinstance(sources, list):
+                    for s_idx, source_row in enumerate(sources):
+                        if not isinstance(source_row, dict):
+                            continue
+                        url = source_row.get("url")
+                        if _is_non_empty_text(url):
+                            yield f"academics.admissions.{section_key}.sources[{s_idx}]", str(url).strip()
+            programs = admissions.get("programs")
+            if isinstance(programs, list):
+                for p_idx, program in enumerate(programs):
+                    if not isinstance(program, dict):
+                        continue
+                    name = str(program.get("program_name") or program.get("name") or f"program_{p_idx}").strip()
+                    sources = program.get("sources")
+                    if not isinstance(sources, list):
+                        continue
+                    for s_idx, source_row in enumerate(sources):
+                        if not isinstance(source_row, dict):
+                            continue
+                        url = source_row.get("url")
+                        if _is_non_empty_text(url):
+                            yield f"academics.admissions.programs[{p_idx}]/{name}/sources[{s_idx}]", str(url).strip()
+
     tracks = university.get("admission_tracks")
     if not isinstance(tracks, list):
         return
@@ -269,6 +301,59 @@ def audit_dataset(
             if acceptance is not None:
                 if not isinstance(acceptance, (int, float)) or not (0.0 <= float(acceptance) <= 100.0):
                     errors.append(f"{uid}: academics.acceptance_rate_percent must be within [0, 100]")
+
+            admissions = academics.get("admissions")
+            if admissions is not None and not isinstance(admissions, dict):
+                errors.append(f"{uid}: academics.admissions must be object when present")
+            elif isinstance(admissions, dict):
+                schema_version = admissions.get("schema_version")
+                if not isinstance(schema_version, int) or schema_version <= 0:
+                    errors.append(f"{uid}: academics.admissions.schema_version must be positive integer")
+                if not _is_non_empty_text(admissions.get("status_date")):
+                    errors.append(f"{uid}: academics.admissions.status_date is empty")
+
+                university_wide = admissions.get("university_wide")
+                if not isinstance(university_wide, dict):
+                    errors.append(f"{uid}: academics.admissions.university_wide must be object")
+                else:
+                    if not _is_non_empty_text(university_wide.get("status")):
+                        errors.append(f"{uid}: academics.admissions.university_wide.status is empty")
+                    uw_rate = university_wide.get("acceptance_rate_percent")
+                    if uw_rate is not None:
+                        if not isinstance(uw_rate, (int, float)) or not (0.0 <= float(uw_rate) <= 100.0):
+                            errors.append(f"{uid}: academics.admissions.university_wide.acceptance_rate_percent must be within [0, 100]")
+                        elif isinstance(acceptance, (int, float)) and round(float(uw_rate), 2) != round(float(acceptance), 2):
+                            errors.append(f"{uid}: academics.admissions.university_wide.acceptance_rate_percent does not match academics.acceptance_rate_percent")
+                    provenance = university_wide.get("provenance")
+                    if provenance is not None and not isinstance(provenance, dict):
+                        errors.append(f"{uid}: academics.admissions.university_wide.provenance must be object when present")
+                    elif isinstance(provenance, dict):
+                        if not _is_non_empty_text(provenance.get("source")):
+                            errors.append(f"{uid}: academics.admissions.university_wide.provenance.source is empty")
+                        if not _is_non_empty_text(provenance.get("verified_at")):
+                            errors.append(f"{uid}: academics.admissions.university_wide.provenance.verified_at is empty")
+
+                program_level = admissions.get("program_level")
+                if not isinstance(program_level, dict):
+                    errors.append(f"{uid}: academics.admissions.program_level must be object")
+                else:
+                    if not _is_non_empty_text(program_level.get("status")):
+                        errors.append(f"{uid}: academics.admissions.program_level.status is empty")
+                    pl_rate = program_level.get("acceptance_rate_percent")
+                    if pl_rate is not None and (not isinstance(pl_rate, (int, float)) or not (0.0 <= float(pl_rate) <= 100.0)):
+                        errors.append(f"{uid}: academics.admissions.program_level.acceptance_rate_percent must be within [0, 100]")
+
+                admissions_programs = admissions.get("programs")
+                if admissions_programs is not None and not isinstance(admissions_programs, list):
+                    errors.append(f"{uid}: academics.admissions.programs must be list when present")
+                elif isinstance(admissions_programs, list):
+                    for p_idx, program in enumerate(admissions_programs):
+                        if not isinstance(program, dict):
+                            errors.append(f"{uid}: academics.admissions.programs[{p_idx}] must be object")
+                            continue
+                        p_rate = program.get("acceptance_rate_percent")
+                        if p_rate is not None and (not isinstance(p_rate, (int, float)) or not (0.0 <= float(p_rate) <= 100.0)):
+                            errors.append(f"{uid}: academics.admissions.programs[{p_idx}].acceptance_rate_percent must be within [0, 100]")
 
             a_tags = academics.get("major_tags")
             if a_tags is not None and not isinstance(a_tags, list):

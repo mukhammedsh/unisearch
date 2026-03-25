@@ -24,8 +24,19 @@ Status:
     - University of Tokyo: `31.83%` from official undergraduate applicants and successful-applicants totals;
     - Nazarbayev University: `21.0%` from the official undergraduate admissions statistics PDF;
   - left the remaining universities with `acceptance_rate_percent = null` where no official institution-wide source was found, rather than filling heuristics or aggregator values.
+- Added a structured official admissions catalog and sync path:
+  - introduced `backend/data/official_admissions.json` as a richer admissions/selectivity catalog for all 20 universities;
+  - introduced `backend/scripts/apply_official_admissions.py` to populate `academics.admissions` in `backend/data/universities.json`;
+  - added `academics.admissions.university_wide`, `academics.admissions.program_level`, and `academics.admissions.programs` without breaking the existing flat acceptance-rate fields.
+- Filled the first official program-level admissions batch:
+  - Imperial College London now includes official Faculty of Engineering and department-level undergraduate rows, including `Computing (BEng/MEng)` at `5.04%`;
+  - University of Tokyo now includes official `PEAK` rows and undergraduate division rows with applicants/successful-applicants counts and derived rates;
+  - University of Toronto now includes official Arts & Science Computer Science admission-category metadata and Faculty of Engineering first-year selectivity rows using the faculty's own `offers / applicants` semantics;
+  - Kyoto University now includes the official `Kyoto iUP Undergraduate Program` row at `4.65%`;
+  - Tsinghua University now includes a conservative official `Computer Science and Technology` capacity row, while broken or unstable program sources were excluded.
 - Improved regression coverage for data integrity:
   - `backend/tests/test_official_facts_sync.py` now checks both catalog-to-dataset sync and the reverse condition that every dataset acceptance rate is catalog-backed with complete provenance metadata.
+  - `backend/tests/test_official_admissions_sync.py` now verifies catalog-to-dataset sync and flat/nested acceptance-rate consistency for the new admissions layer.
   - `backend/tests/test_exams_api.py` was previously expanded to cover the newer exam keys exposed by `/exams/config`.
 - Validation status for the recent cleanup passes:
   - `python backend/scripts/audit_universities_data.py` passes without errors;
@@ -35,3 +46,4 @@ Status:
 - Ongoing UX wording pass:
   - clarified that GPA percent is a UniSearch-only normalized estimate;
   - made the interests field and guide wording less technical for first-time student users.
+  - removed the duplicate GPA helper line under the input and disabled the native browser tooltip so only the custom tooltip remains.

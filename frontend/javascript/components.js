@@ -280,9 +280,7 @@ const LAYOUT_HTML = `
               type="button"
               class="profile-info"
               aria-label="How GPA works here"
-              title="How GPA works here"
               data-i18n-aria-label="profile.gpa_info_title"
-              data-i18n-title="profile.gpa_info_title"
             >i</button>
             <span class="profile-tooltip" role="tooltip">
               <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
@@ -294,7 +292,6 @@ const LAYOUT_HTML = `
           <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" data-i18n-placeholder="profile.placeholder.gpa" />
           <span class="profile-unit" data-i18n="profile.unit.gpa">% (0 to 100)</span>
         </div>
-        <div class="profile-hint" data-i18n="profile.hint.gpa">Use percent here. UniSearch uses it only as a normalized estimate for matching.</div>
       </div>
 
       <div class="profile-field">

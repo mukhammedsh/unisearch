@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-03-25",
+  "source_note": "docs/data_research/group_a_us_uk_official_admissions.md",
+  "universities": [
+    {
+      "university_id": "mit-usa-cambridge",
+      "university_name": "Massachusetts Institute of Technology (MIT)",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 4.5,
+        "counts": {
+          "applicants": null,
+          "admitted": null,
+          "enrolled": null,
+          "offers": null,
+          "places": null
+        },
+        "semantics": "MIT publishes first-year admissions figures for the institute as a whole. Applicants apply to MIT as a whole, not to a particular major, department, or school.",
+        "sources": [
+          {
+            "url": "https://facts.mit.edu/undergraduate-admissions/",
+            "claim": "MIT Facts publishes first-year admissions statistics, including applications and offers of admission."
+          },
+          {
+            "url": "https://mitadmissions.org/help/faq/admission-statistics/",
+            "claim": "MIT Admissions explains its admissions statistics and first-year admission context."
+          },
+          {
+            "url": "https://mitadmissions.org/apply/process/",
+            "claim": "MIT Admissions describes admission as institute-wide rather than major-specific."
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": "undergraduate_programs",
+        "notes": "MIT does not publish undergraduate major-by-major acceptance data in the official sources listed in the research note.",
+        "sources": [
+          {
+            "url": "https://mitadmissions.org/apply/process/",
+            "claim": "Applicants apply to MIT as a whole, not to a particular major, department, or school."
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "stanford-university-usa-ca",
+      "university_name": "Stanford University",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": {
+          "applicants": null,
+          "admitted": null,
+          "enrolled": null,
+          "offers": null,
+          "places": null
+        },
+        "semantics": "Stanford IRDS reports applicant, admit, and matriculant trends for first-time first-year admission. The Common Data Set page publishes applicants, admitted, and enrolled counts for first-year admission.",
+        "sources": [
+          {
+            "url": "https://irds.stanford.edu/data-findings/undergraduate-admission",
+            "claim": "Stanford IRDS publishes undergraduate admission trends."
+          },
+          {
+            "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "claim": "Stanford explains that first-year applicants apply to the university as a whole."
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": "undergraduate_programs",
+        "notes": "Stanford does not publish undergraduate major-level acceptance data in the official sources listed in the research note. Graduate program dashboards exist, but they are outside the undergrad scope of this group.",
+        "sources": [
+          {
+            "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "claim": "Stanford undergrad admission is university-wide rather than major-specific."
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "harvard-usa-cambridge",
+      "university_name": "Harvard University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": {
+          "applicants": null,
+          "admitted": null,
+          "enrolled": null,
+          "offers": null,
+          "places": null
+        },
+        "semantics": "Harvard publishes Applicants, Admitted, Admit Rate, and Yield Rate in its Fact Book and admissions statistics pages. Students declare concentrations only after admission, so there is no undergraduate admission-by-major selectivity to publish.",
+        "sources": [
+          {
+            "url": "https://college.harvard.edu/admissions/admissions-statistics",
+            "claim": "Harvard publishes college admissions statistics."
+          },
+          {
+            "url": "https://oira.harvard.edu/2023-24-fact-book/2023-24-fact-book-college-admissions/",
+            "claim": "Harvard OIRA Fact Book includes applicants, admitted, admit rate, and yield rate."
+          },
+          {
+            "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+            "claim": "Harvard explains that concentrations are declared after admission."
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": "undergraduate_concentrations",
+        "notes": "Harvard does not publish undergraduate concentration-level acceptance data in the official sources listed in the research note because concentrations are declared after admission.",
+        "sources": [
+          {
+            "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+            "claim": "Concentrations are declared after admission, not used as an undergraduate admissions selectivity unit."
+          }
+        ]
+      }
+    },
+    {
+      "university_id": "imperial-college-london-uk",
+      "university_name": "Imperial College London",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": {
+          "applicants": null,
+          "admitted": null,
+          "enrolled": null,
+          "offers": null,
+          "places": null
+        },
+        "semantics": "Imperial's transparency workbook covers the last five completed UCAS cycles and includes admissions rates, applicants, offers made, places confirmed, BMAT scores, and admissions rate by nationality. The university-wide figure is derived from official undergraduate applications received and new admissions totals.",
+        "sources": [
+          {
+            "url": "https://www.imperial.ac.uk/admin-services/strategic-planning/statistics/transparency-information/",
+            "claim": "Imperial transparency and statistics pages list undergraduate admissions data."
+          },
+          {
+            "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+            "claim": "Imperial's statistics guide includes undergraduate applications, admissions, and ratio tables."
+          }
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": "undergraduate_course_level",
+        "acceptance_rate_percent": null,
+        "counts": {
+          "applicants": null,
+          "admitted": null,
+          "enrolled": null,
+          "offers": null,
+          "places": null
+        },
+        "notes": "Imperial's course-level tables use applications received, new admissions, and applications:admissions ratio, with separate breakdowns by home/overseas and additional dimensions such as nationality and entry qualifications.",
+        "sources": [
+          {
+            "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+            "claim": "Imperial course-level tables include applications received, new admissions, and applications:admissions ratio."
+          }
+        ]
+      }
+    }
+  ]
+}

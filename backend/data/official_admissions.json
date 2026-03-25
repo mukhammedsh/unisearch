@@ -1,0 +1,1856 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-03-25",
+  "source_fragments": [
+    "docs/data_research/structured_group_a_us_uk_admissions.json",
+    "docs/data_research/structured_group_b_europe_canada_admissions.json",
+    "docs/data_research/structured_group_c_east_asia_admissions.json",
+    "docs/data_research/structured_group_d_au_kz_admissions.json"
+  ],
+  "universities": {
+    "mit-usa-cambridge": {
+      "university_name": "Massachusetts Institute of Technology (MIT)",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 4.56,
+        "counts": {
+          "cycle": "Class of 2029",
+          "applicants": 29281,
+          "admitted": 1334
+        },
+        "semantics": "MIT publishes first-year admissions figures for the institute as a whole. Applicants apply to MIT as a whole, not to a particular major, department, or school.",
+        "sources": [
+          {
+            "url": "https://mitadmissions.org/apply/process/stats/",
+            "label": "MIT Admissions Statistics"
+          },
+          {
+            "url": "https://facts.mit.edu/undergraduate-admissions/",
+            "label": "MIT Facts publishes first-year admissions statistics, including applications and offers of admission."
+          },
+          {
+            "url": "https://mitadmissions.org/help/faq/admission-statistics/",
+            "label": "MIT Admissions explains its admissions statistics and first-year admission context."
+          },
+          {
+            "url": "https://mitadmissions.org/apply/process/",
+            "label": "MIT Admissions describes admission as institute-wide rather than major-specific."
+          }
+        ],
+        "provenance": {
+          "source": "MIT Admissions Statistics",
+          "source_url": "https://mitadmissions.org/apply/process/stats/",
+          "verified_at": "2026-03-25",
+          "status": "official",
+          "confidence": "high",
+          "method": "Calculated from official MIT admissions counts (1,334 admitted / 29,281 applicants).",
+          "basis": {
+            "cycle": "Class of 2029",
+            "applicants": 29281,
+            "admitted": 1334
+          }
+        }
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": "undergraduate_programs",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "MIT does not publish undergraduate major-by-major acceptance data in the official sources listed in the research note.",
+        "sources": [
+          {
+            "url": "https://mitadmissions.org/apply/process/",
+            "label": "Applicants apply to MIT as a whole, not to a particular major, department, or school."
+          }
+        ]
+      },
+      "programs": []
+    },
+    "stanford-university-usa-ca": {
+      "university_name": "Stanford University",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 3.61,
+        "counts": {
+          "cycle": "Fall 2024 first-time first-year admission",
+          "applicants": 57326,
+          "admitted": 2067,
+          "enrolled": 1693
+        },
+        "semantics": "Stanford IRDS reports applicant, admit, and matriculant trends for first-time first-year admission. The Common Data Set page publishes applicants, admitted, and enrolled counts for first-year admission.",
+        "sources": [
+          {
+            "url": "https://ucomm.stanford.edu/cds/",
+            "label": "Stanford Common Data Set 2024-2025"
+          },
+          {
+            "url": "https://irds.stanford.edu/data-findings/undergraduate-admission",
+            "label": "Stanford IRDS publishes undergraduate admission trends."
+          },
+          {
+            "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "label": "Stanford explains that first-year applicants apply to the university as a whole."
+          }
+        ],
+        "provenance": {
+          "source": "Stanford Common Data Set 2024-2025",
+          "source_url": "https://ucomm.stanford.edu/cds/",
+          "verified_at": "2026-03-12",
+          "status": "official",
+          "confidence": "high",
+          "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+          "basis": {
+            "cycle": "Fall 2024 first-time first-year admission",
+            "applicants": 57326,
+            "admitted": 2067,
+            "enrolled": 1693
+          }
+        }
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": "undergraduate_programs",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Stanford does not publish undergraduate major-level acceptance data in the official sources listed in the research note. Graduate program dashboards exist, but they are outside the undergrad scope of this group.",
+        "sources": [
+          {
+            "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "label": "Stanford undergrad admission is university-wide rather than major-specific."
+          }
+        ]
+      },
+      "programs": []
+    },
+    "harvard-usa-cambridge": {
+      "university_name": "Harvard University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 4.18,
+        "counts": {
+          "cycle": "Class of 2028",
+          "applicants": 47893,
+          "admitted": 2003
+        },
+        "semantics": "Harvard publishes Applicants, Admitted, Admit Rate, and Yield Rate in its Fact Book and admissions statistics pages. Students declare concentrations only after admission, so there is no undergraduate admission-by-major selectivity to publish.",
+        "sources": [
+          {
+            "url": "https://college.harvard.edu/admissions/admissions-statistics",
+            "label": "Harvard publishes college admissions statistics."
+          },
+          {
+            "url": "https://oira.harvard.edu/2023-24-fact-book/2023-24-fact-book-college-admissions/",
+            "label": "Harvard OIRA Fact Book includes applicants, admitted, admit rate, and yield rate."
+          },
+          {
+            "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+            "label": "Harvard explains that concentrations are declared after admission."
+          }
+        ],
+        "provenance": {
+          "source": "Harvard College Admissions Statistics",
+          "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
+          "verified_at": "2026-03-12",
+          "status": "official",
+          "confidence": "high",
+          "method": "Calculated from official Harvard admissions counts (2,003 admitted / 47,893 applicants).",
+          "basis": {
+            "cycle": "Class of 2028",
+            "applicants": 47893,
+            "admitted": 2003
+          }
+        }
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": "undergraduate_concentrations",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Harvard does not publish undergraduate concentration-level acceptance data in the official sources listed in the research note because concentrations are declared after admission.",
+        "sources": [
+          {
+            "url": "https://college.harvard.edu/about/news/exploring-sophomore-concentration-declaration",
+            "label": "Concentrations are declared after admission, not used as an undergraduate admissions selectivity unit."
+          }
+        ]
+      },
+      "programs": []
+    },
+    "imperial-college-london-uk": {
+      "university_name": "Imperial College London",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 9.89,
+        "counts": {
+          "cycle": "2024-25 entry",
+          "applicants": 31533,
+          "admitted": 3119
+        },
+        "semantics": "Imperial's transparency workbook covers the last five completed UCAS cycles and includes admissions rates, applicants, offers made, places confirmed, BMAT scores, and admissions rate by nationality. The university-wide figure is derived from official undergraduate applications received and new admissions totals.",
+        "sources": [
+          {
+            "url": "https://www.imperial.ac.uk/admin-services/strategic-planning/statistics/transparency-information/",
+            "label": "Imperial transparency and statistics pages list undergraduate admissions data."
+          },
+          {
+            "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+            "label": "Imperial's statistics guide includes undergraduate applications, admissions, and ratio tables."
+          }
+        ],
+        "provenance": {
+          "source": "Imperial College London Statistics Guide 2024-25",
+          "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+          "verified_at": "2026-03-25",
+          "status": "official",
+          "confidence": "medium",
+          "method": "Calculated from the official Imperial undergraduate applications and new admissions totals for 2024-25 entry (3,119 new admissions / 31,533 applications).",
+          "basis": {
+            "cycle": "2024-25 entry",
+            "applicants": 31533,
+            "admitted": 3119
+          }
+        }
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": "undergraduate_course_level",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Imperial's course-level tables use applications received, new admissions, and applications:admissions ratio, with separate breakdowns by home/overseas and additional dimensions such as nationality and entry qualifications.",
+        "sources": [
+          {
+            "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/24-25-Statistics-Guide.pdf",
+            "label": "Imperial course-level tables include applications received, new admissions, and applications:admissions ratio."
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Faculty of Engineering",
+          "source_scope": "undergraduate_faculty_level",
+          "acceptance_rate_percent": 11.34,
+          "counts": {
+            "applicants": 12730,
+            "admitted": 1444,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports Home/EU and Overseas applications received plus new admissions for the Faculty of Engineering. The rate here is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Faculty of Engineering undergraduate applications received for 2023-24 entry: 10,204 Home/EU and 2,526 Overseas; new admissions 1,163 Home/EU and 281 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (1,444 new admissions / 12,730 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 10204,
+              "overseas_applicants": 2526,
+              "home_eu_admitted": 1163,
+              "overseas_admitted": 281,
+              "reported_ratio": "8.8 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Aeronautics",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 9.98,
+          "counts": {
+            "applicants": 1282,
+            "admitted": 128,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Aeronautics. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Aeronautics undergraduate applications received for 2023-24 entry: 1,042 Home/EU and 240 Overseas; new admissions 113 Home/EU and 15 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (128 new admissions / 1,282 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 1042,
+              "overseas_applicants": 240,
+              "home_eu_admitted": 113,
+              "overseas_admitted": 15,
+              "reported_ratio": "10.0 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Bioengineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 21.15,
+          "counts": {
+            "applicants": 884,
+            "admitted": 187,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Bioengineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Bioengineering undergraduate applications received for 2023-24 entry: 672 Home/EU and 212 Overseas; new admissions 138 Home/EU and 49 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (187 new admissions / 884 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 672,
+              "overseas_applicants": 212,
+              "home_eu_admitted": 138,
+              "overseas_admitted": 49,
+              "reported_ratio": "4.7 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Chemical Engineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 18.2,
+          "counts": {
+            "applicants": 835,
+            "admitted": 152,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Chemical Engineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Chemical Engineering undergraduate applications received for 2023-24 entry: 611 Home/EU and 224 Overseas; new admissions 117 Home/EU and 35 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (152 new admissions / 835 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 611,
+              "overseas_applicants": 224,
+              "home_eu_admitted": 117,
+              "overseas_admitted": 35,
+              "reported_ratio": "5.5 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Civil & Environmental Engineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 22.72,
+          "counts": {
+            "applicants": 471,
+            "admitted": 107,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Civil & Environmental Engineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Civil & Environmental Engineering undergraduate applications received for 2023-24 entry: 364 Home/EU and 107 Overseas; new admissions 85 Home/EU and 22 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (107 new admissions / 471 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 364,
+              "overseas_applicants": 107,
+              "home_eu_admitted": 85,
+              "overseas_admitted": 22,
+              "reported_ratio": "4.3 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Computing (BEng/MEng)",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 5.04,
+          "counts": {
+            "applicants": 4010,
+            "admitted": 202,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Computing. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Computing undergraduate applications received for 2023-24 entry: 1,576 Home/EU and 2,434 Overseas; new admissions 78 Home/EU and 124 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (202 new admissions / 4,010 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 1576,
+              "overseas_applicants": 2434,
+              "home_eu_admitted": 78,
+              "overseas_admitted": 124,
+              "reported_ratio": "19.9 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Dyson School of Design Engineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 14.14,
+          "counts": {
+            "applicants": 707,
+            "admitted": 100,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for the Dyson School of Design Engineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Dyson School of Design Engineering undergraduate applications received for 2023-24 entry: 0 Home/EU and 707 Overseas; new admissions 0 Home/EU and 100 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (100 new admissions / 707 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 0,
+              "overseas_applicants": 707,
+              "home_eu_admitted": 0,
+              "overseas_admitted": 100,
+              "reported_ratio": "7.1 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Earth Science & Engineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 18.14,
+          "counts": {
+            "applicants": 474,
+            "admitted": 86,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Earth Science & Engineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Earth Science & Engineering undergraduate applications received for 2023-24 entry: 364 Home/EU and 110 Overseas; new admissions 78 Home/EU and 8 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (86 new admissions / 474 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 364,
+              "overseas_applicants": 110,
+              "home_eu_admitted": 78,
+              "overseas_admitted": 8,
+              "reported_ratio": "5.2 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Electrical & Electronic Engineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 12.19,
+          "counts": {
+            "applicants": 1469,
+            "admitted": 179,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Electrical & Electronic Engineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Electrical & Electronic Engineering undergraduate applications received for 2023-24 entry: 1,224 Home/EU and 245 Overseas; new admissions 149 Home/EU and 30 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (179 new admissions / 1,469 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 1224,
+              "overseas_applicants": 245,
+              "home_eu_admitted": 149,
+              "overseas_admitted": 30,
+              "reported_ratio": "7.8 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Materials",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 20.29,
+          "counts": {
+            "applicants": 611,
+            "admitted": 124,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Materials. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Materials undergraduate applications received for 2023-24 entry: 495 Home/EU and 116 Overseas; new admissions 97 Home/EU and 27 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (124 new admissions / 611 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 495,
+              "overseas_applicants": 116,
+              "home_eu_admitted": 97,
+              "overseas_admitted": 27,
+              "reported_ratio": "4.9 : 1"
+            }
+          }
+        },
+        {
+          "program_name": "Mechanical Engineering",
+          "source_scope": "undergraduate_department_level",
+          "acceptance_rate_percent": 9.01,
+          "counts": {
+            "applicants": 1987,
+            "admitted": 179,
+            "cycle": "2023-24 entry"
+          },
+          "semantics": "Imperial's undergraduate guide reports department-level Home/EU and Overseas applications received plus new admissions for Mechanical Engineering. The rate is derived from total new admissions divided by total applications received.",
+          "sources": [
+            {
+              "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+              "label": "Mechanical Engineering undergraduate applications received for 2023-24 entry: 1,744 Home/EU and 243 Overseas; new admissions 156 Home/EU and 23 Overseas."
+            }
+          ],
+          "provenance": {
+            "source": "Imperial College London Statistics Guide 2023-24",
+            "source_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/planning/public/statistics-guides/23-24-Stats-Guide-FINAL.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Derived from official Imperial undergraduate applications received and new admissions totals for 2023-24 entry (179 new admissions / 1,987 applications).",
+            "basis": {
+              "cycle": "2023-24 entry",
+              "home_eu_applicants": 1744,
+              "overseas_applicants": 243,
+              "home_eu_admitted": 156,
+              "overseas_admitted": 23,
+              "reported_ratio": "11.1 : 1"
+            }
+          }
+        }
+      ]
+    },
+    "eth-zurich-ch-zurich": {
+      "university_name": "ETH Zurich",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "none",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official pages describe admission routes, entrance-exam paths, and a subset master's selectivity statement, but not a public university-wide applicants/admitted rate.",
+        "sources": [
+          {
+            "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+            "label": "ETH Zurich admission requirements"
+          },
+          {
+            "url": "https://ethz.ch/content/dam/ethz/main/news/eth-news/2024/09/240912-mm-semesterstart-ce/MM_ETH%20Zurich_Semester%20start%20Sep%202024.pdf",
+            "label": "ETH Zurich semester start 2024 PDF"
+          },
+          {
+            "url": "https://ethz.ch/staffnet/en/finance-and-controlling/facts-and-figures/students.html",
+            "label": "ETH Zurich students facts and figures"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "No public program-level applicant/admit ratio was located in the official sources reviewed.",
+        "sources": [
+          {
+            "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
+            "label": "ETH Zurich admission requirements"
+          },
+          {
+            "url": "https://ethz.ch/content/dam/ethz/main/news/eth-news/2024/09/240912-mm-semesterstart-ce/MM_ETH%20Zurich_Semester%20start%20Sep%202024.pdf",
+            "label": "ETH Zurich semester start 2024 PDF"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "epfl-ch-lausanne": {
+      "university_name": "EPFL",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "count_based",
+        "acceptance_rate_percent": null,
+        "counts": {
+          "application_totals": [
+            7362,
+            7764
+          ],
+          "note": "The official self-assessment report states SAC processed 7,362 and 7,764 applications and reports not-admitted shares for bachelor and master."
+        },
+        "semantics": "Public official materials support count-based selectivity analysis, but the public surface is mostly capacity and rules rather than a single canonical acceptance-rate page.",
+        "sources": [
+          {
+            "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/",
+            "label": "EPFL bachelor admission criteria and application"
+          },
+          {
+            "url": "https://www.epfl.ch/about/presidency/wp-content/uploads/2022/05/EPFL-Self-assessment-report-2021-22-11.pdf",
+            "label": "EPFL self-assessment report 2021-22"
+          },
+          {
+            "url": "https://www.epfl.ch/schools/cdm/wp-content/uploads/2018/11/CDM-Annual-Report-2013.pdf",
+            "label": "EPFL annual report example with acceptance rate formulas"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "School annual reports can publish program tables with acceptance rate defined as admits divided by applicants, but only when a report explicitly provides the numerator and denominator or the formula.",
+        "sources": [
+          {
+            "url": "https://www.epfl.ch/about/presidency/wp-content/uploads/2022/05/EPFL-Self-assessment-report-2021-22-11.pdf",
+            "label": "EPFL self-assessment report 2021-22"
+          },
+          {
+            "url": "https://www.epfl.ch/schools/cdm/wp-content/uploads/2018/11/CDM-Annual-Report-2013.pdf",
+            "label": "EPFL annual report example with acceptance rate formulas"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "technical-university-of-munich-de-munich": {
+      "university_name": "Technical University of Munich (TUM)",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "count_based",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official program documentation publishes applicant counts and ratios, but the wording is inconsistent and can describe yield or place-acceptance rather than a clean applicants-to-admitted rate.",
+        "sources": [
+          {
+            "url": "https://www.tum.de/en/about-tum/facts-and-figures/tum-in-figures/students",
+            "label": "TUM facts and figures"
+          },
+          {
+            "url": "https://cms.mgt.tum.de/fileadmin/mgt.tum.de/downloads/BMT/MUC/DEGREE_PROGRAM_DOCUMENTATION/20230216_StuDoku_TeilA_BMT_eng.pdf",
+            "label": "TUM degree program documentation example"
+          },
+          {
+            "url": "https://www.tum.de/fileadmin/w00bfo/www/Studium/Studienangebot/Lesbare_Fassung/Bachelor/Aerospace_BA_Degree_Program_Documentation_31072024.pdf",
+            "label": "TUM aerospace degree program documentation"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Program documents expose applicant counts and ratios, but the semantics are often closer to yield or offer-acceptance than classic acceptance rate.",
+        "sources": [
+          {
+            "url": "https://cms.mgt.tum.de/fileadmin/mgt.tum.de/downloads/BMT/MUC/DEGREE_PROGRAM_DOCUMENTATION/20230216_StuDoku_TeilA_BMT_eng.pdf",
+            "label": "TUM degree program documentation example"
+          },
+          {
+            "url": "https://www.tum.de/fileadmin/w00bfo/www/Studium/Studienangebot/Lesbare_Fassung/Bachelor/Aerospace_BA_Degree_Program_Documentation_31072024.pdf",
+            "label": "TUM aerospace degree program documentation"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "delft-university-of-technology-nl-delft": {
+      "university_name": "TU Delft",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "none",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official materials confirm numerus fixus and selection for some bachelors, but no public applicants/admitted ratio was located.",
+        "sources": [
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+            "label": "TU Delft aerospace engineering program page"
+          },
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/industrial-design-engineering/",
+            "label": "TU Delft industrial design engineering program page"
+          },
+          {
+            "url": "https://www.tudelft.nl/en/about-tu-delft",
+            "label": "About TU Delft"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "No public program-level applicants/admitted ratio was located in the official sources reviewed.",
+        "sources": [
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
+            "label": "TU Delft aerospace engineering program page"
+          },
+          {
+            "url": "https://ocw.tudelft.nl/programs/bachelor/industrial-design-engineering/",
+            "label": "TU Delft industrial design engineering program page"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "university-of-toronto-ca-toronto": {
+      "university_name": "University of Toronto",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "count_based",
+        "acceptance_rate_percent": 74.33,
+        "counts": {
+          "applicants": 29528,
+          "admitted": 21949,
+          "cycle": "Fall 2024",
+          "scope": "university-wide"
+        },
+        "semantics": "The Governing Council PDF gives distinct applicants and admitted counts for Fall 2024, while the Engineering annual report separately publishes selectivity and yield for first-year undergraduates.",
+        "sources": [
+          {
+            "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
+            "label": "University of Toronto Governing Council presentation"
+          },
+          {
+            "url": "https://www.utoronto.ca/about-u-of-t/quick-facts",
+            "label": "University of Toronto quick facts"
+          },
+          {
+            "url": "https://www.engineering.utoronto.ca/about/annual-reports/by-the-numbers-2023/chapter-1-undergraduate-studies/",
+            "label": "U of T Engineering by the numbers 2023"
+          }
+        ],
+        "provenance": {
+          "source": "University of Toronto Governing Council presentation",
+          "source_url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
+          "verified_at": "2026-03-16",
+          "status": "official",
+          "confidence": "medium",
+          "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+          "basis": {
+            "cycle": "Fall 2024",
+            "applicants": 29528,
+            "admitted": 21949
+          }
+        }
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Faculty-level selectivity exists in separate official documents, but it should be treated separately from the university-wide number.",
+        "sources": [
+          {
+            "url": "https://www.engineering.utoronto.ca/about/annual-reports/by-the-numbers-2023/chapter-1-undergraduate-studies/",
+            "label": "U of T Engineering by the numbers 2023"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science Admission Category (Faculty of Arts & Science)",
+          "source_scope": "arts_and_science_cs_admission_category",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Arts & Science pages describe Computer Science as an admission category with a supplementary application, required prerequisites in English and Calculus, and an approximate admission range in the low 90s. The page also states that admission to the category is not the same as enrolment in a program of study after first year.",
+          "sources": [
+            {
+              "url": "https://www.artsci.utoronto.ca/future/ready-apply/admission-categories/computer-science",
+              "label": "Official Computer Science admission category page; supplementary application required and approximate admission range is low 90s."
+            },
+            {
+              "url": "https://www.artsci.utoronto.ca/future/contact-us/counsellor-resources",
+              "label": "Official counsellor resource lists the Computer Science admission category recommended admission range and supplemental application requirement."
+            },
+            {
+              "url": "https://calendar.artsci.utoronto.ca/archived/9900calendar/prg_csc.htm",
+              "label": "Official Academic Calendar page notes that admission requirements and first-year guarantees differ from actual program enrolment."
+            }
+          ],
+          "provenance": {
+            "source": "Faculty of Arts & Science Computer Science admission category page",
+            "source_url": "https://www.artsci.utoronto.ca/future/ready-apply/admission-categories/computer-science",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Direct official admission-category requirements page. No public applicant/admit totals were published, so no acceptance rate was derived.",
+            "basis": {
+              "approximate_admission_range": "low 90s",
+              "supplementary_application_required": true,
+              "prerequisites": [
+                "English",
+                "Calculus"
+              ],
+              "admission_is_not_program_enrolment": true
+            }
+          }
+        },
+        {
+          "program_name": "Faculty of Applied Science & Engineering First-Year Undergraduates",
+          "source_scope": "engineering_first_year_selectivity_total_2025",
+          "acceptance_rate_percent": 27.51,
+          "counts": {
+            "applicants": 16360,
+            "offers": 4500,
+            "enrolled": 1422,
+            "cycle": 2025
+          },
+          "semantics": "The 2025 Engineering admissions update reports total applications, total offers of admission, and registrations for first-year undergraduates. Selectivity is computed as offers divided by applications, which is the faculty's own published metric family.",
+          "sources": [
+            {
+              "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+              "label": "Official Engineering admissions update for the 2025 admissions cycle."
+            },
+            {
+              "url": "https://www.engineering.utoronto.ca/about/annual-reports/by-the-numbers-2025/chapter-8-data-sources-2025/",
+              "label": "Official data-sources chapter explains that first-year selectivity is based on applications, offers, registrations, selectivity and yield."
+            }
+          ],
+          "provenance": {
+            "source": "Engineering Admissions Update 2025",
+            "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official_derived",
+            "confidence": "high",
+            "method": "Calculated from official faculty admissions counts (4,500 offers / 16,360 applications). The faculty source uses offers of admission rather than a separate admitted count.",
+            "basis": {
+              "cycle": "2025 admissions cycle",
+              "applicants": 16360,
+              "offers": 4500,
+              "enrolled": 1422,
+              "selectivity_formula": "offers / applicants"
+            }
+          }
+        },
+        {
+          "program_name": "Faculty of Applied Science & Engineering Domestic First-Year Undergraduates",
+          "source_scope": "engineering_first_year_selectivity_domestic_2025",
+          "acceptance_rate_percent": 21.65,
+          "counts": {
+            "applicants": 11633,
+            "offers": 2518,
+            "enrolled": 966,
+            "cycle": 2025
+          },
+          "semantics": "The 2025 Engineering admissions update publishes domestic first-year applications, offers, and registrations. This row stores the domestic subset because the faculty reports it explicitly and it is more informative than a blended university-wide rate.",
+          "sources": [
+            {
+              "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+              "label": "Official Engineering admissions update publishes domestic first-year applications, offers, and registrations."
+            }
+          ],
+          "provenance": {
+            "source": "Engineering Admissions Update 2025",
+            "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official_derived",
+            "confidence": "high",
+            "method": "Calculated from official domestic faculty admissions counts (2,518 offers / 11,633 applications).",
+            "basis": {
+              "cycle": "2025 admissions cycle",
+              "applicants": 11633,
+              "offers": 2518,
+              "enrolled": 966,
+              "selectivity_formula": "offers / applicants"
+            }
+          }
+        },
+        {
+          "program_name": "Faculty of Applied Science & Engineering International First-Year Undergraduates",
+          "source_scope": "engineering_first_year_selectivity_international_2025",
+          "acceptance_rate_percent": 41.93,
+          "counts": {
+            "applicants": 4727,
+            "offers": 1982,
+            "enrolled": 456,
+            "cycle": 2025
+          },
+          "semantics": "The 2025 Engineering admissions update publishes international first-year applications, offers, and registrations. This is a separate official subset and should be stored independently from the domestic row.",
+          "sources": [
+            {
+              "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+              "label": "Official Engineering admissions update publishes international first-year applications, offers, and registrations."
+            }
+          ],
+          "provenance": {
+            "source": "Engineering Admissions Update 2025",
+            "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official_derived",
+            "confidence": "high",
+            "method": "Calculated from official international faculty admissions counts (1,982 offers / 4,727 applications).",
+            "basis": {
+              "cycle": "2025 admissions cycle",
+              "applicants": 4727,
+              "offers": 1982,
+              "enrolled": 456,
+              "selectivity_formula": "offers / applicants"
+            }
+          }
+        },
+        {
+          "program_name": "Computer Engineering First-Year Class",
+          "source_scope": "engineering_first_year_program_class_2025",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "enrolled": 206,
+            "cycle": 2025
+          },
+          "semantics": "The 2025 Engineering class profile publishes the incoming first-year class size by program, along with domestic/international composition and mean OSS average. This is program-level admissions composition, not a public program-level applicant/admit rate.",
+          "sources": [
+            {
+              "url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+              "label": "Official Engineering admissions update publishes the 2025 first-year class by program."
+            }
+          ],
+          "provenance": {
+            "source": "Engineering Admissions Update 2025",
+            "source_url": "https://www.engineering.utoronto.ca/wp-content/uploads/sites/28/2025/12/10A-Report-3803-ADM-Admissions-Update-FC.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Direct official first-year class profile by program.",
+            "basis": {
+              "cycle": "2025 first-year class",
+              "enrolled": 206,
+              "women": 92,
+              "domestic": 143,
+              "international": 63,
+              "mean_oss_avg": 96.3
+            }
+          }
+        }
+      ]
+    },
+    "national-university-of-singapore-sg-singapore": {
+      "university_name": "National University of Singapore (NUS)",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No public university-wide applicants/admitted rate was found in the official materials reviewed. NUS publishes indicative grade profiles and programme places instead.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official materials support programme-level selectivity signals such as indicative grade profiles and programme places. The research note highlights NUS College as an example with 10,000 applications for 400 places.",
+        "sources": [
+          {
+            "url": "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29"
+          },
+          {
+            "url": "https://news.nus.edu.sg/nus-college-receives-record-10000-applications-for-400-places/"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "cuhk-hk-shatin": {
+      "university_name": "The Chinese University of Hong Kong (CUHK)",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No clean public university-wide applicants/admitted table was found. Official materials expose programme requirements, admission grades, projected enrolment, and route-specific admitted-count figures.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Programme-specific requirements, admission grades for JUPAS applicants, projected enrolment, and press releases with admitted-count figures are available for selected routes such as JUPAS and SNDAS.",
+        "sources": [
+          {
+            "url": "https://admission.cuhk.edu.hk/application/jupas/programme-specific-requirements/"
+          },
+          {
+            "url": "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Admission-Grades-2025.pdf"
+          },
+          {
+            "url": "https://admission.cuhk.edu.hk/wp-content/uploads/2024/02/Projected-Enrolment-2024.pdf"
+          },
+          {
+            "url": "https://www.cpr.cuhk.edu.hk/en/press/cuhk-jupas-admission-2023/"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "university-of-tokyo-jp-tokyo": {
+      "university_name": "University of Tokyo",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "acceptance_rate_percent",
+        "acceptance_rate_percent": 31.83,
+        "counts": {
+          "applicants": 9688,
+          "admitted": 3084,
+          "cycle": "As of May 1, 2024 undergraduate programs"
+        },
+        "semantics": "Official undergraduate applicants, successful applicants, and entrants counts by division support a university-wide acceptance-rate calculation.",
+        "sources": [
+          {
+            "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html"
+          },
+          {
+            "url": "https://www.u-tokyo.ac.jp/content/400019972.pdf"
+          }
+        ],
+        "provenance": {
+          "source": "UTokyo Applications and Admissions",
+          "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "verified_at": "2026-03-25",
+          "status": "official",
+          "confidence": "high",
+          "method": "Calculated from official UTokyo undergraduate admissions counts (3,084 successful applicants / 9,688 applicants).",
+          "basis": {
+            "cycle": "As of May 1, 2024 undergraduate programs",
+            "applicants": 9688,
+            "admitted": 3084
+          }
+        }
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The official pages also expose separate result pages for some graduate programs, so program-level counts can be stored when the source gives them explicitly.",
+        "sources": [
+          {
+            "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html"
+          },
+          {
+            "url": "https://gsp.c.u-tokyo.ac.jp/files/Admissions_results_2025.pdf"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "PEAK Total",
+          "source_scope": "peak_program",
+          "acceptance_rate_percent": 19.56,
+          "counts": {
+            "applicants": 317,
+            "admitted": 62,
+            "offers": 62,
+            "cycle": "September 2024 entry"
+          },
+          "semantics": "PEAK publishes admission statistics for its two undergraduate courses. The university states that admission offers, including conditional offers, were made to 62 applicants for September 2024 entry.",
+          "sources": [
+            {
+              "url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+              "label": "PEAK admission statistics 2024"
+            },
+            {
+              "url": "https://peak.c.u-tokyo.ac.jp/whypeak/documents/index.html",
+              "label": "PEAK admission statistics repository"
+            }
+          ],
+          "provenance": {
+            "source": "PEAK admission statistics 2024",
+            "source_url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from official PEAK applicants and successful-applicant counts for September 2024 entry (62 successful applicants / 317 applicants).",
+            "basis": {
+              "cycle": "September 2024 entry",
+              "applicants": 317,
+              "admitted": 62,
+              "conditional_offers": 23
+            }
+          }
+        },
+        {
+          "program_name": "PEAK: Japan in East Asia",
+          "source_scope": "peak_program",
+          "acceptance_rate_percent": 17.82,
+          "counts": {
+            "applicants": 174,
+            "admitted": 31,
+            "offers": 31,
+            "cycle": "September 2024 entry"
+          },
+          "semantics": "Official PEAK statistics report applicants and successful applicants for the Japan in East Asia course. The published successful-applicant total includes conditional offers in parenthesis.",
+          "sources": [
+            {
+              "url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+              "label": "PEAK admission statistics 2024"
+            },
+            {
+              "url": "https://peak.c.u-tokyo.ac.jp/whypeak/documents/index.html",
+              "label": "PEAK admission statistics repository"
+            }
+          ],
+          "provenance": {
+            "source": "PEAK admission statistics 2024",
+            "source_url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from official PEAK course-level applicants and successful-applicant counts for Japan in East Asia (31 successful applicants / 174 applicants).",
+            "basis": {
+              "cycle": "September 2024 entry",
+              "applicants": 174,
+              "admitted": 31,
+              "conditional_offers": 11
+            }
+          }
+        },
+        {
+          "program_name": "PEAK: Environmental Sciences",
+          "source_scope": "peak_program",
+          "acceptance_rate_percent": 21.68,
+          "counts": {
+            "applicants": 143,
+            "admitted": 31,
+            "offers": 31,
+            "cycle": "September 2024 entry"
+          },
+          "semantics": "Official PEAK statistics report applicants and successful applicants for the Environmental Sciences course. The published successful-applicant total includes conditional offers in parenthesis.",
+          "sources": [
+            {
+              "url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+              "label": "PEAK admission statistics 2024"
+            },
+            {
+              "url": "https://peak.c.u-tokyo.ac.jp/whypeak/documents/index.html",
+              "label": "PEAK admission statistics repository"
+            }
+          ],
+          "provenance": {
+            "source": "PEAK admission statistics 2024",
+            "source_url": "https://peak.c.u-tokyo.ac.jp/vcms_lf/PEAK_admissions_statistics_2024.pdf",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from official PEAK course-level applicants and successful-applicant counts for Environmental Sciences (31 successful applicants / 143 applicants).",
+            "basis": {
+              "cycle": "September 2024 entry",
+              "applicants": 143,
+              "admitted": 31,
+              "conditional_offers": 12
+            }
+          }
+        },
+        {
+          "program_name": "Humanities and Social Sciences I",
+          "source_scope": "undergraduate_division",
+          "acceptance_rate_percent": 35.17,
+          "counts": {
+            "applicants": 1143,
+            "admitted": 402,
+            "enrolled": 423,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (402 successful applicants / 1,143 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 1143,
+              "admitted": 402,
+              "entrants_via_traditional_admission_and_recommendation": 413,
+              "entrants_via_other_forms_of_admission": 10,
+              "total_entrants": 423
+            }
+          }
+        },
+        {
+          "program_name": "Humanities and Social Sciences II",
+          "source_scope": "undergraduate_division",
+          "acceptance_rate_percent": 33.81,
+          "counts": {
+            "applicants": 1050,
+            "admitted": 355,
+            "enrolled": 373,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (355 successful applicants / 1,050 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 1050,
+              "admitted": 355,
+              "entrants_via_traditional_admission_and_recommendation": 364,
+              "entrants_via_other_forms_of_admission": 9,
+              "total_entrants": 373
+            }
+          }
+        },
+        {
+          "program_name": "Humanities and Social Sciences III",
+          "source_scope": "undergraduate_division",
+          "acceptance_rate_percent": 30.97,
+          "counts": {
+            "applicants": 1521,
+            "admitted": 471,
+            "enrolled": 516,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (471 successful applicants / 1,521 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 1521,
+              "admitted": 471,
+              "entrants_via_traditional_admission_and_recommendation": 484,
+              "entrants_via_other_forms_of_admission": 32,
+              "total_entrants": 516
+            }
+          }
+        },
+        {
+          "program_name": "Natural Sciences I",
+          "source_scope": "undergraduate_division",
+          "acceptance_rate_percent": 36.28,
+          "counts": {
+            "applicants": 3084,
+            "admitted": 1119,
+            "enrolled": 1170,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (1,119 successful applicants / 3,084 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 3084,
+              "admitted": 1119,
+              "entrants_via_traditional_admission_and_recommendation": 1156,
+              "entrants_via_other_forms_of_admission": 14,
+              "total_entrants": 1170
+            }
+          }
+        },
+        {
+          "program_name": "Natural Sciences II",
+          "source_scope": "undergraduate_division",
+          "acceptance_rate_percent": 24.71,
+          "counts": {
+            "applicants": 2218,
+            "admitted": 548,
+            "enrolled": 575,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (548 successful applicants / 2,218 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 2218,
+              "admitted": 548,
+              "entrants_via_traditional_admission_and_recommendation": 555,
+              "entrants_via_other_forms_of_admission": 20,
+              "total_entrants": 575
+            }
+          }
+        },
+        {
+          "program_name": "Natural Sciences III",
+          "source_scope": "undergraduate_division",
+          "acceptance_rate_percent": 23.56,
+          "counts": {
+            "applicants": 416,
+            "admitted": 98,
+            "enrolled": 100,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo publishes undergraduate division tables with applicants, successful applicants, entrants via traditional admission and recommendation, entrants via other forms of admission, and total entrants.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from UTokyo undergraduate division counts published on the Applications and Admissions page (98 successful applicants / 416 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 416,
+              "admitted": 98,
+              "entrants_via_traditional_admission_and_recommendation": 100,
+              "entrants_via_other_forms_of_admission": 0,
+              "total_entrants": 100
+            }
+          }
+        },
+        {
+          "program_name": "Admission by recommendation",
+          "source_scope": "undergraduate_admission_route",
+          "acceptance_rate_percent": 35.55,
+          "counts": {
+            "applicants": 256,
+            "admitted": 91,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo lists admission by recommendation as a separate undergraduate admissions route on the Applications and Admissions page.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from the separate undergraduate route row published on the Applications and Admissions page (91 successful applicants / 256 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 256,
+              "admitted": 91
+            }
+          }
+        },
+        {
+          "program_name": "Undergraduate Total",
+          "source_scope": "undergraduate_total",
+          "acceptance_rate_percent": 31.83,
+          "counts": {
+            "applicants": 9688,
+            "admitted": 3084,
+            "enrolled": 3157,
+            "cycle": "As of May 1, 2024"
+          },
+          "semantics": "UTokyo's Applications and Admissions page publishes the undergraduate total row across all divisions and admission routes, including PEAK as part of other forms of admission.",
+          "sources": [
+            {
+              "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+              "label": "UTokyo Applications and Admissions"
+            }
+          ],
+          "provenance": {
+            "source": "UTokyo Applications and Admissions",
+            "source_url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from the total undergraduate applicants and successful-applicants row published on the Applications and Admissions page (3,084 successful applicants / 9,688 applicants).",
+            "basis": {
+              "cycle": "As of May 1, 2024",
+              "applicants": 9688,
+              "admitted": 3084,
+              "entrants_via_traditional_admission_and_recommendation": 3072,
+              "entrants_via_other_forms_of_admission": 85,
+              "total_entrants": 3157
+            }
+          }
+        }
+      ]
+    },
+    "seoul-national-university-kr-seoul": {
+      "university_name": "Seoul National University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official guides state that the number of applicants and acceptance rate will not be disclosed, and admission decisions are holistic.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "No public applicant/admit totals were found in the official materials reviewed.",
+        "sources": [
+          {
+            "url": "https://en.snu.ac.kr/admission/undergraduate/application"
+          },
+          {
+            "url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/07/Admissions_for_Undergraduate_Spring_2026.pdf"
+          },
+          {
+            "url": "https://en.snu.ac.kr/admission/overview/faq/admission"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "kaist-kr-daejeon": {
+      "university_name": "KAIST",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "competition_ratio_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official admission-track tables publish quota, applicants, and competition ratio, but KAIST recruits without departments and students choose a major later.",
+        "sources": [
+          {
+            "url": "https://admission.kaist.ac.kr/undergraduate/admission/rsub/2024"
+          },
+          {
+            "url": "https://admission.kaist.ac.kr/undergraduate/admission/rsub/2025"
+          },
+          {
+            "url": "https://admission.kaist.ac.kr/"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "No department-level undergrad acceptance rate was found because KAIST does not admit by department in the way a program-level rate would require.",
+        "sources": []
+      },
+      "programs": []
+    },
+    "tsinghua-university-cn-beijing": {
+      "university_name": "Tsinghua University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No clean public university-wide admit-rate table was found in the official materials reviewed.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official pages show divisional undergraduate recruitment, annual department intake, and some program-level admission ratios/counts.",
+        "sources": [
+          {
+            "url": "https://www.tsinghua.edu.cn/en/Admissions/International_Students1/Undergraduate_Programs.htm"
+          },
+          {
+            "url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Student_Admission.htm"
+          },
+          {
+            "url": "https://mis.sem.tsinghua.edu.cn/ueditor/jsp/upload/file/20191125/1574643097042078803.pdf"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science and Technology",
+          "source_scope": "undergraduate_department_capacity",
+          "acceptance_rate_percent": null,
+          "counts": {
+            "places": 160,
+            "cycle": "annual"
+          },
+          "semantics": "The Department of Computer Science and Technology states that annual undergraduate enrollment is about 160 students. Students are admitted through the National College Entrance Examination and a special waiver channel, but the official page does not publish a public applicant total, so no acceptance rate can be derived.",
+          "sources": [
+            {
+              "url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Student_Admission.htm",
+              "label": "Tsinghua CS undergraduate student admission"
+            },
+            {
+              "url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Curriculum.htm",
+              "label": "Tsinghua CS undergraduate curriculum"
+            }
+          ],
+          "provenance": {
+            "source": "Student Admission - Department of Computer Science and Technology",
+            "source_url": "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Student_Admission.htm",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "medium",
+            "method": "Direct annual undergraduate enrollment figure published by the department; no public applicant count is exposed, so the row is stored as capacity rather than an acceptance rate.",
+            "basis": {
+              "places": 160
+            }
+          }
+        }
+      ]
+    },
+    "kyoto-university-jp-kyoto": {
+      "university_name": "Kyoto University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No central university-wide acceptance-rate table was found in the official materials reviewed.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Kyoto publishes past-results tables with capacity, applicants, examinees, successful applicants, and enrollees for individual programs and graduate schools.",
+        "sources": [
+          {
+            "url": "https://www.ges.kyoto-u.ac.jp/en/admissions/past-results"
+          },
+          {
+            "url": "https://www.t.kyoto-u.ac.jp/en/admissions/graduate/exam1/result"
+          },
+          {
+            "url": "https://www.i.kyoto-u.ac.jp/en/admission/application/"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Kyoto iUP Undergraduate Program",
+          "source_scope": "combined_preparatory_and_undergraduate_flow",
+          "acceptance_rate_percent": 4.65,
+          "counts": {
+            "applicants": 795,
+            "admitted": 37,
+            "cycle": "October 2025 enrollment"
+          },
+          "semantics": "Kyoto iUP is a 4.5-year scholarship program combining a six-month preparatory course and four years of undergraduate study. Kyoto University publishes successful-applicant totals for the program as a whole. This is a program-level admissions flow, not a faculty-by-faculty major rate.",
+          "sources": [
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/news/000472",
+              "label": "Kyoto iUP October 2025 successful applicants announcement"
+            },
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
+              "label": "Kyoto iUP program overview"
+            },
+            {
+              "url": "https://www.iup.kyoto-u.ac.jp/faq/application/",
+              "label": "Kyoto iUP application FAQ"
+            }
+          ],
+          "provenance": {
+            "source": "Announcement of Successful Candidates for October 2025 Enrollment",
+            "source_url": "https://www.iup.kyoto-u.ac.jp/news/000472",
+            "verified_at": "2026-03-25",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from official Kyoto iUP counts (37 successful applicants / 795 applicants).",
+            "basis": {
+              "cycle": "October 2025 enrollment",
+              "applicants": 795,
+              "admitted": 37
+            }
+          }
+        }
+      ]
+    },
+    "university-of-melbourne-au-melbourne": {
+      "university_name": "University of Melbourne",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The official pages expose entry thresholds such as guaranteed ATARs, lowest selection ranks, prerequisites, and application pathways, but do not publish a public university-wide applicant/admit ratio.",
+        "sources": [
+          {
+            "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
+            "label": "ATAR guarantees"
+          },
+          {
+            "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
+            "label": "Bachelor of Science entry requirements"
+          },
+          {
+            "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/domestic-applications/applications/domestic-mid-year-applications",
+            "label": "Domestic mid-year applications"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The official materials reviewed do not publish program-level applicant/admit counts suitable for an acceptance-rate field. They do publish course-specific entry standards, which should remain separate from selectivity.",
+        "sources": [
+          {
+            "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
+            "label": "ATAR guarantees"
+          },
+          {
+            "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
+            "label": "Bachelor of Science entry requirements"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "nazarbayev-university-kaz-astana": {
+      "university_name": "Nazarbayev University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "rate",
+        "acceptance_rate_percent": 21,
+        "counts": {
+          "applicants": 6911,
+          "admitted": 1480
+        },
+        "semantics": "The official undergraduate statistics PDF publishes a direct 2025 undergraduate admission rate. The research note states that since 2024 there is a single application for NUFYP and undergraduate programs, so the published rate reflects that combined admissions flow.",
+        "sources": [
+          {
+            "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+            "label": "Admissions statistics on Nazarbayev University"
+          },
+          {
+            "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+            "label": "Regular Admissions"
+          },
+          {
+            "url": "https://nu.edu.kz/en/admissions/admissions",
+            "label": "Admissions / general information"
+          }
+        ],
+        "provenance": {
+          "source": "Admissions Statistics on Nazarbayev University",
+          "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+          "verified_at": "2026-03-25",
+          "status": "official",
+          "confidence": "medium",
+          "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
+        }
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The research note did not find a public undergraduate program-by-program applicant/admit table on the official admissions pages.",
+        "sources": [
+          {
+            "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+            "label": "Admissions statistics on Nazarbayev University"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "suleyman-demirel-university-kaz-kaskelen": {
+      "university_name": "Suleyman Demirel University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The official pages expose admission rules based on UNT scores, interviews, special exams, and grant competition, but they do not publish a public university-wide applicant/admit total.",
+        "sources": [
+          {
+            "url": "https://sdu.edu.kz/en/admission-3-2/",
+            "label": "Admission - SDU University"
+          },
+          {
+            "url": "https://sdu.edu.kz/ru/admission/",
+            "label": "SDU admission page"
+          },
+          {
+            "url": "https://my.sdu.edu.kz/common/download/REGULATION-ON-TRANSFERRING-AND-RE-ADMISSION-OF-STUDENTS-AT-SULEYMAN-DEMIREL-UNIVERSITY.pdf",
+            "label": "Transfer and re-admission regulations"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The research note did not find a public course-level applicant/admit table suitable for an acceptance-rate field. The official materials focus on thresholds and process rules.",
+        "sources": [
+          {
+            "url": "https://sdu.edu.kz/en/admission-3-2/",
+            "label": "Admission - SDU University"
+          },
+          {
+            "url": "https://sdu.edu.kz/ru/admission/",
+            "label": "SDU admission page"
+          }
+        ]
+      },
+      "programs": []
+    },
+    "astana-it-university-kaz-astana": {
+      "university_name": "Astana IT University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The official materials describe application flow, preliminary approval, original-document submission, entrance testing, and program-group requirements, but do not publish public applicant/admit totals.",
+        "sources": [
+          {
+            "url": "https://astanait.edu.kz/en/how-to-apply/",
+            "label": "How to apply"
+          },
+          {
+            "url": "https://astanait.edu.kz/en/bachelor/",
+            "label": "Bachelor's Degree Programs"
+          },
+          {
+            "url": "https://astanait.edu.kz/en/aitu-excellence-test/",
+            "label": "AITU Excellence Test"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The research note did not find a public program-level applicants/admit table. The official pages publish entrance-test thresholds and program-group subject requirements instead.",
+        "sources": [
+          {
+            "url": "https://astanait.edu.kz/en/bachelor/",
+            "label": "Bachelor's Degree Programs"
+          },
+          {
+            "url": "https://astanait.edu.kz/en/aitu-excellence-test/",
+            "label": "AITU Excellence Test"
+          }
+        ]
+      },
+      "programs": []
+    }
+  }
+}

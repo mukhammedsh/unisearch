@@ -1,0 +1,166 @@
+{
+  "status_date": "2026-03-25",
+  "scope": [
+    "national-university-of-singapore-sg-singapore",
+    "cuhk-hk-shatin",
+    "university-of-tokyo-jp-tokyo",
+    "seoul-national-university-kr-seoul",
+    "kaist-kr-daejeon",
+    "tsinghua-university-cn-beijing",
+    "kyoto-university-jp-kyoto"
+  ],
+  "universities": [
+    {
+      "university_id": "national-university-of-singapore-sg-singapore",
+      "university_name": "National University of Singapore (NUS)",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No public university-wide applicants/admitted rate was found in the official materials reviewed. NUS publishes indicative grade profiles and programme places instead.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "Official materials support programme-level selectivity signals such as indicative grade profiles and programme places. The research note highlights NUS College as an example with 10,000 applications for 400 places.",
+        "sources": [
+          "https://www.nus.edu.sg/oam/undergraduate-programmes/indicative-grade-profile-%28igp%29",
+          "https://news.nus.edu.sg/nus-college-receives-record-10000-applications-for-400-places/"
+        ]
+      }
+    },
+    {
+      "university_id": "cuhk-hk-shatin",
+      "university_name": "The Chinese University of Hong Kong (CUHK)",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No clean public university-wide applicants/admitted table was found. Official materials expose programme requirements, admission grades, projected enrolment, and route-specific admitted-count figures.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "Programme-specific requirements, admission grades for JUPAS applicants, projected enrolment, and press releases with admitted-count figures are available for selected routes such as JUPAS and SNDAS.",
+        "sources": [
+          "https://admission.cuhk.edu.hk/application/jupas/programme-specific-requirements/",
+          "https://admission.cuhk.edu.hk/wp-content/uploads/2025/05/Admission-Grades-2025.pdf",
+          "https://admission.cuhk.edu.hk/wp-content/uploads/2024/02/Projected-Enrolment-2024.pdf",
+          "https://www.cpr.cuhk.edu.hk/en/press/cuhk-jupas-admission-2023/"
+        ]
+      }
+    },
+    {
+      "university_id": "university-of-tokyo-jp-tokyo",
+      "university_name": "University of Tokyo",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "acceptance_rate_percent",
+        "acceptance_rate_percent": 31.83,
+        "counts": {
+          "applicants": 9688,
+          "admitted": 3084
+        },
+        "semantics": "Official undergraduate applicants, successful applicants, and entrants counts by division support a university-wide acceptance-rate calculation.",
+        "sources": [
+          "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "https://www.u-tokyo.ac.jp/content/400019972.pdf"
+        ]
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "The official pages also expose separate result pages for some graduate programs, so program-level counts can be stored when the source gives them explicitly.",
+        "sources": [
+          "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html",
+          "https://gsp.c.u-tokyo.ac.jp/files/Admissions_results_2025.pdf"
+        ]
+      }
+    },
+    {
+      "university_id": "seoul-national-university-kr-seoul",
+      "university_name": "Seoul National University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official guides state that the number of applicants and acceptance rate will not be disclosed, and admission decisions are holistic.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "No public applicant/admit totals were found in the official materials reviewed.",
+        "sources": [
+          "https://en.snu.ac.kr/admission/undergraduate/application",
+          "https://en.snu.ac.kr/webdata/uploads/eng/file/2025/07/Admissions_for_Undergraduate_Spring_2026.pdf",
+          "https://en.snu.ac.kr/admission/overview/faq/admission"
+        ]
+      }
+    },
+    {
+      "university_id": "kaist-kr-daejeon",
+      "university_name": "KAIST",
+      "university_wide": {
+        "status": "official_counts",
+        "kind": "competition_ratio_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official admission-track tables publish quota, applicants, and competition ratio, but KAIST recruits without departments and students choose a major later.",
+        "sources": [
+          "https://admission.kaist.ac.kr/undergraduate/admission/rsub/2024",
+          "https://admission.kaist.ac.kr/undergraduate/admission/rsub/2025",
+          "https://admission.kaist.ac.kr/"
+        ]
+      },
+      "program_level": {
+        "status": "no_official_source",
+        "notes": "No department-level undergrad acceptance rate was found because KAIST does not admit by department in the way a program-level rate would require.",
+        "sources": []
+      }
+    },
+    {
+      "university_id": "tsinghua-university-cn-beijing",
+      "university_name": "Tsinghua University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No clean public university-wide admit-rate table was found in the official materials reviewed.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "Official pages show divisional undergraduate recruitment, annual department intake, and some program-level admission ratios/counts.",
+        "sources": [
+          "https://www.tsinghua.edu.cn/en/Admissions/International_Students1/Undergraduate_Programs.htm",
+          "https://www.cs.tsinghua.edu.cn/csen/Education1/Undergraduate_Programs_/Student_Admission.htm",
+          "https://mis.sem.tsinghua.edu.cn/ueditor/jsp/upload/file/20191125/1574643097042078803.pdf"
+        ]
+      }
+    },
+    {
+      "university_id": "kyoto-university-jp-kyoto",
+      "university_name": "Kyoto University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "No central university-wide acceptance-rate table was found in the official materials reviewed.",
+        "sources": []
+      },
+      "program_level": {
+        "status": "official_counts",
+        "notes": "Kyoto publishes past-results tables with capacity, applicants, examinees, successful applicants, and enrollees for individual programs and graduate schools.",
+        "sources": [
+          "https://www.ges.kyoto-u.ac.jp/en/admissions/past-results",
+          "https://www.t.kyoto-u.ac.jp/en/admissions/graduate/exam1/result",
+          "https://www.i.kyoto-u.ac.jp/en/admission/application/"
+        ]
+      }
+    }
+  ]
+}
