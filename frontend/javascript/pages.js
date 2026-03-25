@@ -1929,8 +1929,8 @@ export function initUniversitiesPage() {
         const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);
 
         const badges = [];
-        const acc = Number(u?.academics?.acceptance_rate_percent);
-        const acceptanceText = Number.isFinite(acc)
+        const acc = toFiniteNumber(u?.academics?.acceptance_rate_percent);
+        const acceptanceText = acc !== null
             ? tFormat(
                 "universities.badge.acceptance",
                 { value: String(Math.round(acc * 100) / 100) },
@@ -2182,19 +2182,20 @@ export async function initUniversityPage() {
     // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
-        const acceptanceDirect = Number(u?.academics?.acceptance_rate_percent);
+        const acceptanceDirect = toFiniteNumber(u?.academics?.acceptance_rate_percent);
         const acceptanceValues = (Array.isArray(u?.academics?.programs) ? u.academics.programs : [])
-            .map((p) => Number(p?.acceptance_rate_percent))
-            .filter((v) => Number.isFinite(v));
+            .map((p) => toFiniteNumber(p?.acceptance_rate_percent))
+            .filter((v) => v !== null);
         const acceptanceComputed = acceptanceValues.length
             ? (acceptanceValues.reduce((sum, v) => sum + v, 0) / acceptanceValues.length)
             : NaN;
-        const acceptanceRate = Number.isFinite(acceptanceDirect)
+        const acceptanceRate = acceptanceDirect !== null
             ? acceptanceDirect
             : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
         const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
         const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
-        const officialRank = Number.isFinite(Number(u?.rank)) && Number(u.rank) > 0 && rankStatus === "official";
+        const rankValue = toFiniteNumber(u?.rank);
+        const officialRank = rankValue !== null && rankValue > 0 && rankStatus === "official";
         const acceptanceDisplay = acceptanceRate === null
             ? unknownFieldText("acceptance_rate", "Acceptance Rate")
             : `${Math.round(acceptanceRate * 100) / 100}%`;
@@ -2265,8 +2266,9 @@ export async function initUniversityPage() {
                     </div>
                 </div>
               `;
-         const studentCount = Number.isFinite(Number(u?.student_count))
-            ? new Intl.NumberFormat("en-US").format(Number(u.student_count))
+         const studentCountValue = toFiniteNumber(u?.student_count);
+         const studentCount = studentCountValue !== null
+            ? new Intl.NumberFormat("en-US").format(studentCountValue)
             : unknownFieldText("total_students", "Total Students");
          const formats = Array.isArray(u.academics?.formats)
             ? u.academics.formats.map((x) => escapeHtml(trStudyMode(String(x)))).filter(Boolean).join(", ")
@@ -2333,8 +2335,8 @@ export async function initUniversityPage() {
                                 `;
                             }
                             if (String(key) === "acceptance_rate_percent") {
-                                const num = Number(rawValue);
-                                if (Number.isFinite(num)) {
+                                const num = toFiniteNumber(rawValue);
+                                if (num !== null) {
                                     const pct = Math.max(0, Math.min(100, num));
                                     return `
                                         <div class="program-acceptance">
@@ -2355,8 +2357,9 @@ export async function initUniversityPage() {
                             return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
                         };
 
+                        const programAcceptance = toFiniteNumber(program.acceptance_rate_percent);
                         const rows = [
-                            ...(Number.isFinite(Number(program.acceptance_rate_percent)) ? [{
+                            ...(programAcceptance !== null ? [{
                                 label: translateWord("acceptance_rate", "Acceptance Rate"),
                                 key: "acceptance_rate_percent",
                                 rawValue: program.acceptance_rate_percent,
@@ -2869,6 +2872,7 @@ export async function initUniversityPage() {
 // PAGE: RANKING (Исправлена сортировка)
 // =====================================
 function toFiniteNumber(value) {
+    if (value === null || value === undefined || value === "") return null;
     const n = Number(value);
     return Number.isFinite(n) ? n : null;
 }
@@ -3093,6 +3097,11 @@ export function initGuidePage() {
             NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
             APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
             IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
+            ALEVELCERT: t("guide.academic.alevelcert", "A-Level certificate confirms completion of GCE Advanced Level subjects, widely used for UK undergraduate entry."),
+            HKDSELEVEL: t("guide.academic.hkdselevel", "HKDSE level reflects performance in the Hong Kong Diploma of Secondary Education and is used in local university admissions."),
+            SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification."),
+            GERMANABITURCERT: t("guide.academic.germanabiturcert", "German Abitur certificate is the standard qualification granting access to German universities."),
+            OSSDCERT: t("guide.academic.ossdcert", "OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions."),
         };
         const base = descriptions[normalized]
             || t("guide.academic.default", "This is an academic metric used by one or more admission tracks in the UniSearch dataset.");

@@ -15,7 +15,20 @@ class ExamsApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertIsInstance(data, dict)
-        for key in ("SAT", "ACT", "GPA"):
+        for key in (
+            "SAT",
+            "ACT",
+            "GPA",
+            "IB_DIPLOMA",
+            "AP_TOTAL",
+            "A_LEVEL_CERT",
+            "SWISS_MATURITY_CERT",
+            "GERMAN_ABITUR_CERT",
+            "OSSD_CERT",
+            "HKDSE_LEVEL",
+            "UNT",
+            "NUET",
+        ):
             self.assertIn(key, data)
 
     def test_validate_exam_accepts_valid_score(self):

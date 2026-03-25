@@ -125,17 +125,72 @@ def _tuition_fact(university: Dict[str, Any], verified_at: str) -> Dict[str, Any
     }
 
 
+def _student_count_fact(university: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    value = _safe_num(university.get("student_count"))
+    if value is None or value <= 0:
+        return None
+    prov = university.get("fact_provenance") if isinstance(university.get("fact_provenance"), dict) else {}
+    facts = prov.get("facts") if isinstance(prov.get("facts"), dict) else {}
+    existing = facts.get("student_count")
+    if not isinstance(existing, dict):
+        return None
+    out = dict(existing)
+    out["value"] = int(round(value))
+    out.setdefault("unit", "students")
+    return out
+
+
+def _acceptance_fact(university: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    academics = university.get("academics") if isinstance(university.get("academics"), dict) else {}
+    value = _safe_num(academics.get("acceptance_rate_percent"))
+    if value is None or value < 0 or value > 100:
+        return None
+    meta = academics.get("acceptance_rate_percent_meta")
+    if not isinstance(meta, dict):
+        prov = university.get("fact_provenance") if isinstance(university.get("fact_provenance"), dict) else {}
+        facts = prov.get("facts") if isinstance(prov.get("facts"), dict) else {}
+        existing = facts.get("acceptance_rate_percent")
+        if isinstance(existing, dict):
+            out = dict(existing)
+            out["value"] = round(float(value), 2)
+            out.setdefault("unit", "percent")
+            return out
+        return None
+
+    out: Dict[str, Any] = {
+        "value": round(float(value), 2),
+        "unit": "percent",
+        "source": str(meta.get("source") or "").strip(),
+        "source_url": str(meta.get("source_url") or "").strip(),
+        "verified_at": str(meta.get("verified_at") or "").strip(),
+        "confidence": str(meta.get("confidence") or "medium").strip() or "medium",
+        "status": str(meta.get("status") or "official").strip() or "official",
+        "method": str(meta.get("method") or "").strip(),
+    }
+    basis = meta.get("basis")
+    if isinstance(basis, dict) and basis:
+        out["basis"] = basis
+    return out
+
+
 def refresh_fact_provenance(payload: List[Dict[str, Any]], verified_at: str) -> int:
     changed = 0
     for row in payload:
         if not isinstance(row, dict):
             continue
+        facts: Dict[str, Any] = {
+            "rank": _rank_fact(row, verified_at),
+            "tuition_total_cost_year_usd": _tuition_fact(row, verified_at),
+        }
+        student_count_fact = _student_count_fact(row)
+        if isinstance(student_count_fact, dict):
+            facts["student_count"] = student_count_fact
+        acceptance_fact = _acceptance_fact(row)
+        if isinstance(acceptance_fact, dict):
+            facts["acceptance_rate_percent"] = acceptance_fact
         new_obj = {
             "schema_version": 1,
-            "facts": {
-                "rank": _rank_fact(row, verified_at),
-                "tuition_total_cost_year_usd": _tuition_fact(row, verified_at),
-            },
+            "facts": facts,
         }
         if row.get("fact_provenance") != new_obj:
             row["fact_provenance"] = new_obj

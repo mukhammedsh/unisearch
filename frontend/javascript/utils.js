@@ -11,16 +11,17 @@ export function aiName(key) {
 
 export const $ = (id) => document.getElementById(id);
 
-const GLOBAL_API_LOADER_ID = "globalApiLoader";
-const GLOBAL_API_LOADER_SHOW_DELAY_MS = 120;
-const GLOBAL_API_LOADER_MIN_VISIBLE_MS = 220;
+const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
+const GLOBAL_LOADING_ACTIVE_CLASS = "global-loading-active";
+const GLOBAL_LOADING_SHOW_DELAY_MS = 120;
+const GLOBAL_LOADING_MIN_VISIBLE_MS = 220;
 
-let __apiLoaderInstalled = false;
-let __apiPendingCount = 0;
-let __apiShowTimer = 0;
-let __apiHideTimer = 0;
-let __apiVisible = false;
-let __apiVisibleAt = 0;
+let __globalLoaderInstalled = false;
+let __globalPendingCount = 0;
+let __globalShowTimer = 0;
+let __globalHideTimer = 0;
+let __globalVisible = false;
+let __globalVisibleAt = 0;
 
 function getRequestUrl(input) {
   if (typeof input === "string") return input;
@@ -44,88 +45,90 @@ function isBackendApiRequest(input) {
   }
 }
 
-function ensureGlobalApiLoaderNode() {
+function ensureGlobalLoadingOverlayNode() {
   if (typeof document === "undefined" || !document.body) return null;
-  let node = document.getElementById(GLOBAL_API_LOADER_ID);
+  let node = document.getElementById(GLOBAL_LOADING_OVERLAY_ID);
   if (node) return node;
 
   node = document.createElement("div");
-  node.id = GLOBAL_API_LOADER_ID;
-  node.className = "global-api-loader";
+  node.id = GLOBAL_LOADING_OVERLAY_ID;
+  node.className = "global-loading-overlay";
   node.setAttribute("aria-hidden", "true");
-  node.innerHTML = `<div class="global-api-loader__spinner" aria-hidden="true"></div>`;
+  node.innerHTML = `<div class="center-loading" role="status" aria-label="Loading"><div class="center-loading-spinner" aria-hidden="true"></div></div>`;
   document.body.appendChild(node);
   return node;
 }
 
-function setGlobalApiLoaderVisible(visible) {
-  const node = ensureGlobalApiLoaderNode();
+function setGlobalLoadingVisible(visible) {
+  const node = ensureGlobalLoadingOverlayNode();
   if (!node) return;
   if (visible) {
     node.classList.add("is-visible");
     node.setAttribute("aria-hidden", "false");
-    __apiVisibleAt = Date.now();
-    __apiVisible = true;
+    document.body.classList.add(GLOBAL_LOADING_ACTIVE_CLASS);
+    __globalVisibleAt = Date.now();
+    __globalVisible = true;
     return;
   }
   node.classList.remove("is-visible");
   node.setAttribute("aria-hidden", "true");
-  __apiVisible = false;
+  document.body.classList.remove(GLOBAL_LOADING_ACTIVE_CLASS);
+  __globalVisible = false;
 }
 
-function onApiRequestStart() {
-  __apiPendingCount += 1;
+function onGlobalApiRequestStart() {
+  __globalPendingCount += 1;
 
-  if (__apiHideTimer) {
-    clearTimeout(__apiHideTimer);
-    __apiHideTimer = 0;
+  if (__globalHideTimer) {
+    clearTimeout(__globalHideTimer);
+    __globalHideTimer = 0;
   }
-  if (__apiVisible || __apiShowTimer) return;
+  if (__globalVisible || __globalShowTimer) return;
 
-  __apiShowTimer = window.setTimeout(() => {
-    __apiShowTimer = 0;
-    if (__apiPendingCount > 0) setGlobalApiLoaderVisible(true);
-  }, GLOBAL_API_LOADER_SHOW_DELAY_MS);
+  __globalShowTimer = window.setTimeout(() => {
+    __globalShowTimer = 0;
+    if (__globalPendingCount > 0) setGlobalLoadingVisible(true);
+  }, GLOBAL_LOADING_SHOW_DELAY_MS);
 }
 
-function onApiRequestEnd() {
-  __apiPendingCount = Math.max(0, __apiPendingCount - 1);
-  if (__apiPendingCount > 0) return;
+function onGlobalApiRequestEnd() {
+  __globalPendingCount = Math.max(0, __globalPendingCount - 1);
+  if (__globalPendingCount > 0) return;
 
-  if (__apiShowTimer) {
-    clearTimeout(__apiShowTimer);
-    __apiShowTimer = 0;
+  if (__globalShowTimer) {
+    clearTimeout(__globalShowTimer);
+    __globalShowTimer = 0;
   }
 
-  if (!__apiVisible) return;
-  const elapsed = Date.now() - __apiVisibleAt;
-  const wait = Math.max(0, GLOBAL_API_LOADER_MIN_VISIBLE_MS - elapsed);
-  __apiHideTimer = window.setTimeout(() => {
-    __apiHideTimer = 0;
-    if (__apiPendingCount === 0) setGlobalApiLoaderVisible(false);
+  if (!__globalVisible) return;
+  const elapsed = Date.now() - __globalVisibleAt;
+  const wait = Math.max(0, GLOBAL_LOADING_MIN_VISIBLE_MS - elapsed);
+  __globalHideTimer = window.setTimeout(() => {
+    __globalHideTimer = 0;
+    if (__globalPendingCount === 0) setGlobalLoadingVisible(false);
   }, wait);
 }
 
 export function initGlobalApiLoadingIndicator() {
-  if (__apiLoaderInstalled || typeof window === "undefined" || typeof window.fetch !== "function") return;
-  __apiLoaderInstalled = true;
+  if (__globalLoaderInstalled || typeof window === "undefined" || typeof window.fetch !== "function") return;
+  __globalLoaderInstalled = true;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-      ensureGlobalApiLoaderNode();
+      ensureGlobalLoadingOverlayNode();
     }, { once: true });
   } else {
-    ensureGlobalApiLoaderNode();
+    ensureGlobalLoadingOverlayNode();
   }
 
   const originalFetch = window.fetch.bind(window);
   window.fetch = async (input, init) => {
     const tracked = isBackendApiRequest(input);
-    if (tracked) onApiRequestStart();
+    if (tracked) onGlobalApiRequestStart();
     try {
       return await originalFetch(input, init);
     } finally {
-      if (tracked) onApiRequestEnd();
+      if (tracked) onGlobalApiRequestEnd();
     }
   };
 }
@@ -485,6 +488,11 @@ const EXAM_LABELS_I18N = {
     NUETTOTAL: "NUET Total",
     APTOTAL: "AP Total",
     IBDIPLOMA: "IB Diploma",
+    ALEVELCERT: "A-Level Certificate",
+    HKDSELEVEL: "HKDSE level",
+    SWISSMATURITYCERT: "Swiss Maturity Certificate",
+    GERMANABITURCERT: "German Abitur Certificate",
+    OSSDCERT: "OSSD (Ontario Secondary School Diploma)",
     IELTS: "IELTS Academic",
     TOEFLIBT0120: "TOEFL iBT Total (0‑120, legacy)",
     TOEFLIBT16: "TOEFL iBT Band (1‑6, since Jan 21, 2026)",
@@ -509,6 +517,11 @@ const EXAM_LABELS_I18N = {
     NUETTOTAL: "NUET (общий балл)",
     APTOTAL: "AP (общий балл)",
     IBDIPLOMA: "Диплом IB",
+    ALEVELCERT: "A-Level сертификат",
+    HKDSELEVEL: "HKDSE уровень",
+    SWISSMATURITYCERT: "Швейцарский аттестат зрелости",
+    GERMANABITURCERT: "Немецкий Abitur",
+    OSSDCERT: "OSSD (Ontario Secondary School Diploma)",
     IELTS: "IELTS (академический модуль)",
     TOEFLIBT0120: "TOEFL iBT общий балл (0‑120, старая шкала)",
     TOEFLIBT16: "TOEFL iBT шкала 1‑6 (с 21 янв 2026)",
@@ -533,6 +546,11 @@ const EXAM_LABELS_I18N = {
     NUETTOTAL: "NUET (жалпы балл)",
     APTOTAL: "AP (жалпы балл)",
     IBDIPLOMA: "IB дипломы",
+    ALEVELCERT: "A-Level сертификаты",
+    HKDSELEVEL: "HKDSE деңгейі",
+    SWISSMATURITYCERT: "Швейцария жетілу аттестаты",
+    GERMANABITURCERT: "Германия Abitur",
+    OSSDCERT: "OSSD (Ontario Secondary School Diploma)",
     IELTS: "IELTS (академиялық модуль)",
     TOEFLIBT0120: "TOEFL iBT жалпы балл (0‑120, ескі шкала)",
     TOEFLIBT16: "TOEFL iBT 1‑6 шкаласы (2026 ж. 21 қаңтардан)",

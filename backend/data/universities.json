@@ -60,7 +60,21 @@
       "major_tags": [
         "computer science",
         "engineering"
-      ]
+      ],
+      "acceptance_rate_percent": 4.56,
+      "acceptance_rate_percent_meta": {
+        "source": "MIT Admissions Statistics",
+        "source_url": "https://mitadmissions.org/apply/process/stats/",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official MIT admissions counts (1,334 admitted / 29,281 applicants).",
+        "basis": {
+          "cycle": "Class of 2029",
+          "applicants": 29281,
+          "admitted": 1334
+        }
+      }
     },
     "finance": {
       "total_cost_year_usd": 89340,
@@ -105,7 +119,11 @@
           "Application fee (fee waiver available)"
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "stats_avg": {
+          "SAT": 1550
+        },
+        "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/"
       },
       {
         "id": "mit_regular-grant-need-based-aid",
@@ -137,7 +155,11 @@
         "funding_type": "grant",
         "track_badge": "Grant",
         "funding_program": "Need-based Aid",
-        "funding_source": "need"
+        "funding_source": "need",
+        "stats_avg": {
+          "SAT": 1550
+        },
+        "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/"
       }
     ],
     "verified_sources": [
@@ -172,10 +194,48 @@
       {
         "topic": "formats",
         "url": "https://www.eecs.mit.edu/academics/undergraduate-programs/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.mit.edu/about/mission-statement/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.mit.edu/about/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.mit.edu/education/schools-and-departments/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.mit.edu/about/"
+      },
+      {
+        "topic": "stats_avg",
+        "url": "https://mitadmissions.org/apply/process/stats/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://facts.mit.edu/"
+      },
+      {
+        "topic": "acceptance_rate",
+        "url": "https://mitadmissions.org/apply/process/stats/"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "MIT's mission is to advance knowledge and educate students in science, technology, and other areas of scholarship that will best serve the nation and the world. The Institute emphasizes education, research, and innovation in pursuit of that mission.",
+    "tags": [
+      "engineering",
+      "computer_science",
+      "natural_sciences",
+      "business",
+      "humanities",
+      "social_sciences",
+      "architecture",
+      "research",
+      "innovation"
+    ],
     "description_source": "https://www.mit.edu/about/",
     "factors": {
       "practice_vs_science": 0.9549,
@@ -251,6 +311,31 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 11920.0,
+          "unit": "students",
+          "source": "MIT Facts",
+          "source_url": "https://facts.mit.edu/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on MIT Facts."
+        },
+        "acceptance_rate_percent": {
+          "value": 4.56,
+          "unit": "percent",
+          "source": "MIT Admissions Statistics",
+          "source_url": "https://mitadmissions.org/apply/process/stats/",
+          "verified_at": "2026-03-25",
+          "confidence": "high",
+          "status": "official",
+          "method": "Calculated from official MIT admissions counts (1,334 admitted / 29,281 applicants).",
+          "basis": {
+            "cycle": "Class of 2029",
+            "applicants": 29281,
+            "admitted": 1334
+          }
         }
       }
     },
@@ -260,7 +345,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 11920
   },
   {
     "id": "imperial-college-london-uk",
@@ -404,10 +490,28 @@
       {
         "topic": "formats",
         "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/ug/beng-meng-computing/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.imperial.ac.uk/admin-services/student-records-and-data/for-staff/student-statistics-public/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.imperial.ac.uk/about/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.imperial.ac.uk/about/"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "Imperial describes itself as a world-leading university for science, technology, engineering, medicine and business, using science across its London campuses and international network to tackle global challenges.",
+    "tags": [
+      "science_and_technology",
+      "engineering",
+      "medicine",
+      "business",
+      "research"
+    ],
     "description_source": "https://www.imperial.ac.uk/about/",
     "factors": {
       "practice_vs_science": 0.9389,
@@ -482,6 +586,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 25143.0,
+          "unit": "students",
+          "source": "Imperial College London Student statistics (public)",
+          "source_url": "https://www.imperial.ac.uk/admin-services/student-records-and-data/for-staff/student-statistics-public/",
+          "verified_at": "2026-03-25",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on the official Imperial student statistics page."
         }
       }
     },
@@ -491,7 +605,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 25143
   },
   {
     "id": "stanford-university-usa-ca",
@@ -534,7 +649,22 @@
       ],
       "major_tags": [
         "computer science"
-      ]
+      ],
+      "acceptance_rate_percent": 3.61,
+      "acceptance_rate_percent_meta": {
+        "source": "Stanford Common Data Set 2024-2025",
+        "source_url": "https://ucomm.stanford.edu/cds/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+        "basis": {
+          "cycle": "Fall 2024 first-time first-year admission",
+          "applicants": 57326,
+          "admitted": 2067,
+          "enrolled": 1693
+        }
+      }
     },
     "finance": {
       "total_cost_year_usd": 93213,
@@ -577,7 +707,11 @@
           "Two academic teacher recommendations"
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "stats_avg": {
+          "SAT": 1540
+        },
+        "stats_avg_source_url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period"
       },
       {
         "id": "stanford_standard-grant-need-based-aid",
@@ -607,7 +741,11 @@
         "funding_type": "grant",
         "track_badge": "Grant",
         "funding_program": "Need-based Aid",
-        "funding_source": "need"
+        "funding_source": "need",
+        "stats_avg": {
+          "SAT": 1540
+        },
+        "stats_avg_source_url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period"
       }
     ],
     "verified_sources": [
@@ -630,10 +768,40 @@
       {
         "topic": "formats",
         "url": "https://majors.stanford.edu/majors/computer-science"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.stanford.edu/about/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.stanford.edu/about/"
+      },
+      {
+        "topic": "stats_avg",
+        "url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://facts.stanford.edu/"
+      },
+      {
+        "topic": "acceptance_rate",
+        "url": "https://ucomm.stanford.edu/cds/"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "Stanford says its mission is to create and share knowledge and prepare students to contribute to the world. With seven schools on one campus, it offers programs across arts and humanities, natural and social sciences, engineering, medicine, law, education, and business, and highlights interdisciplinary research and innovation.",
+    "tags": [
+      "humanities",
+      "social_sciences",
+      "natural_sciences",
+      "engineering",
+      "medicine",
+      "law",
+      "education",
+      "business",
+      "research"
+    ],
     "description_source": "https://www.stanford.edu/about/",
     "factors": {
       "practice_vs_science": 0.9749,
@@ -708,6 +876,32 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 17552.0,
+          "unit": "students",
+          "source": "Stanford Facts",
+          "source_url": "https://facts.stanford.edu/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on Stanford Facts."
+        },
+        "acceptance_rate_percent": {
+          "value": 3.61,
+          "unit": "percent",
+          "source": "Stanford Common Data Set 2024-2025",
+          "source_url": "https://ucomm.stanford.edu/cds/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+          "basis": {
+            "cycle": "Fall 2024 first-time first-year admission",
+            "applicants": 57326,
+            "admitted": 2067,
+            "enrolled": 1693
+          }
         }
       }
     },
@@ -717,7 +911,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 17552
   },
   {
     "id": "harvard-usa-cambridge",
@@ -761,7 +956,21 @@
       ],
       "major_tags": [
         "computer science"
-      ]
+      ],
+      "acceptance_rate_percent": 4.18,
+      "acceptance_rate_percent_meta": {
+        "source": "Harvard College Admissions Statistics",
+        "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official Harvard admissions counts (2,003 admitted / 47,893 applicants).",
+        "basis": {
+          "cycle": "Class of 2028",
+          "applicants": 47893,
+          "admitted": 2003
+        }
+      }
     },
     "finance": {
       "total_cost_year_usd": 86926,
@@ -807,7 +1016,11 @@
           "Application fee (fee waiver available)"
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "stats_avg": {
+          "SAT": 1550
+        },
+        "stats_avg_source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf"
       },
       {
         "id": "harvard_college-grant-financial-aid",
@@ -840,7 +1053,11 @@
         "funding_type": "grant",
         "track_badge": "Grant",
         "funding_program": "Financial Aid",
-        "funding_source": "need"
+        "funding_source": "need",
+        "stats_avg": {
+          "SAT": 1550
+        },
+        "stats_avg_source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf"
       }
     ],
     "verified_sources": [
@@ -859,10 +1076,43 @@
       {
         "topic": "formats",
         "url": "https://seas.harvard.edu/computer-science"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.harvard.edu/about/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.harvard.edu/academics/schools/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.harvard.edu/academics/schools/"
+      },
+      {
+        "topic": "stats_avg",
+        "url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.harvard.edu/about-harvard/harvard-glance/"
+      },
+      {
+        "topic": "acceptance_rate",
+        "url": "https://college.harvard.edu/admissions/admissions-statistics"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "Harvard describes its community as learning, researching, teaching, and working in pursuit of truth, knowledge, and a better world. The University consists of Harvard College, 12 graduate and professional schools, and the Radcliffe Institute for Advanced Study.",
+    "tags": [
+      "engineering",
+      "business",
+      "law",
+      "medicine",
+      "education",
+      "humanities",
+      "natural_sciences",
+      "research"
+    ],
     "description_source": "https://www.harvard.edu/about/",
     "factors": {
       "practice_vs_science": 1.0,
@@ -937,6 +1187,31 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 24596.0,
+          "unit": "students",
+          "source": "Harvard at a Glance",
+          "source_url": "https://www.harvard.edu/about-harvard/harvard-glance/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student count published by Harvard."
+        },
+        "acceptance_rate_percent": {
+          "value": 4.18,
+          "unit": "percent",
+          "source": "Harvard College Admissions Statistics",
+          "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Calculated from official Harvard admissions counts (2,003 admitted / 47,893 applicants).",
+          "basis": {
+            "cycle": "Class of 2028",
+            "applicants": 47893,
+            "admitted": 2003
+          }
         }
       }
     },
@@ -946,7 +1221,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 24596
   },
   {
     "id": "eth-zurich-ch-zurich",
@@ -1079,6 +1355,34 @@
         "track_badge": "Grant",
         "funding_program": "Excellence Scholarship",
         "funding_source": "merit"
+      },
+      {
+        "id": "eth_swiss_maturity",
+        "label": "Swiss Maturity Certificate",
+        "requirements": {
+          "SWISS_MATURITY_CERT": 1
+        },
+        "stats_avg": {},
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "de",
+            "accept_native": true,
+            "min_cefr": 5,
+            "requirements": {
+              "TestDaF_TDN": 4,
+              "DSH_Level": 3
+            },
+            "notes": "ETH Bachelor programs are taught in German; C1-level proficiency is required."
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Swiss maturite gymnasiale (cantonal or federal) certificate qualifies for admission to ETH bachelor programmes."
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
       }
     ],
     "verified_sources": [
@@ -1101,10 +1405,35 @@
       {
         "topic": "formats",
         "url": "https://inf.ethz.ch/studies.html"
+      },
+      {
+        "topic": "description",
+        "url": "https://ethz.ch/en/the-eth-zurich/portrait.html"
+      },
+      {
+        "topic": "tags",
+        "url": "https://ethz.ch/en/the-eth-zurich/portrait.html"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://ethz.ch/en/the-eth-zurich/portrait/annual-report-2024/teaching.html"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "ETH Zurich describes itself as a university for science and technology founded in 1855. It is a federal government university with departments spanning engineering, computer science, natural sciences, and humanities and social sciences.",
+    "tags": [
+      "science_and_technology",
+      "engineering",
+      "computer_science",
+      "natural_sciences",
+      "humanities",
+      "social_sciences",
+      "public_university",
+      "research"
+    ],
     "description_source": "https://ethz.ch/en/the-eth-zurich/portrait.html",
     "factors": {
       "practice_vs_science": 0.9105,
@@ -1179,6 +1508,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 26198.0,
+          "unit": "students",
+          "source": "ETH Zurich Annual Report 2024 - Teaching",
+          "source_url": "https://ethz.ch/en/the-eth-zurich/portrait/annual-report-2024/teaching.html",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published in the ETH Zurich annual report teaching section."
         }
       }
     },
@@ -1188,7 +1527,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 26198
   },
   {
     "id": "national-university-of-singapore-sg-singapore",
@@ -1313,6 +1653,34 @@
         "track_badge": "Grant",
         "funding_program": "ASEAN Scholarship",
         "funding_source": "merit"
+      },
+      {
+        "id": "nus_sg_alevel",
+        "label": "Singapore-Cambridge GCE A-Level",
+        "requirements": {
+          "A_LEVEL_CERT": 1
+        },
+        "stats_avg": {},
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.0
+            }
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Minimum admission requirements: three H2 content-based subjects.",
+          "General Paper (GP).",
+          "Pass in Project Work (PW).",
+          "Mother Tongue Language (MTL) requirement or exemption."
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
       }
     ],
     "verified_sources": [
@@ -1331,10 +1699,48 @@
       {
         "topic": "formats",
         "url": "https://www.comp.nus.edu.sg/programmes/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.nus.edu.sg/about"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.nus.edu.sg/education"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.nus.edu.sg/education"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.nus.edu.sg/about"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://nus.edu.sg/oam/admissions/singapore-cambridge-gce-a-level/admission-requirements"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://www.nus.edu.sg/oam/docs/default-source/application-guide/cat-a-application-guide.pdf"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.nus.edu.sg/about"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "NUS aspires to be a leading global university dedicated to quality education, influential research, and visionary enterprise in service of society. It is Singapore's flagship university with colleges and faculties in arts and social sciences, business, computing, design and engineering, law, medicine, and science.",
+    "tags": [
+      "national_university",
+      "research",
+      "engineering",
+      "computer_science",
+      "business",
+      "law",
+      "medicine",
+      "social_sciences",
+      "natural_sciences"
+    ],
     "description_source": "https://www.nus.edu.sg/about",
     "factors": {
       "practice_vs_science": 0.9113,
@@ -1409,6 +1815,20 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 51679.0,
+          "unit": "students",
+          "source": "NUS About",
+          "source_url": "https://www.nus.edu.sg/about",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official_aggregated",
+          "method": "Summed from official NUS counts published on the About page.",
+          "basis": {
+            "undergraduate_students": 31541,
+            "graduate_students": 20138
+          }
         }
       }
     },
@@ -1418,7 +1838,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 51679
   },
   {
     "id": "epfl-ch-lausanne",
@@ -1509,6 +1930,33 @@
         ],
         "funding_type": "paid",
         "track_badge": "Paid"
+      },
+      {
+        "id": "epfl_swiss_maturity",
+        "label": "Swiss Maturity Certificate",
+        "requirements": {
+          "SWISS_MATURITY_CERT": 1
+        },
+        "stats_avg": {},
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "fr",
+            "accept_native": true,
+            "min_cefr": 4,
+            "requirements": {
+              "DELF_DALF_Level": 4
+            },
+            "notes": "EPFL requires French B2 minimum (C1 strongly recommended)."
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Holders of a Swiss maturite gymnasiale are accepted in the first year of EPFL bachelor programs with no other condition."
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
       }
     ],
     "verified_sources": [
@@ -1531,10 +1979,36 @@
       {
         "topic": "formats",
         "url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.epfl.ch/about/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.epfl.ch/about/"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.epfl.ch/about/overview/annual-report/"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "EPFL is a science and technology institution in Switzerland and a technical university focused on teaching, research, and innovation. Its schools include engineering, computer and communication sciences, basic sciences, life sciences, architecture and civil/environmental engineering, and management of technology.",
+    "tags": [
+      "science_and_technology",
+      "engineering",
+      "computer_science",
+      "natural_sciences",
+      "life_sciences",
+      "business",
+      "architecture",
+      "research",
+      "innovation"
+    ],
     "description_source": "https://www.epfl.ch/about/",
     "factors": {
       "practice_vs_science": 0.3849,
@@ -1609,6 +2083,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 14011.0,
+          "unit": "students",
+          "source": "EPFL Annual Report 2024",
+          "source_url": "https://www.epfl.ch/about/overview/annual-report/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published in the EPFL annual report 2024 materials."
         }
       }
     },
@@ -1618,7 +2102,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 14011
   },
   {
     "id": "technical-university-of-munich-de-munich",
@@ -1704,6 +2189,23 @@
         ],
         "funding_type": "paid",
         "track_badge": "Paid"
+      },
+      {
+        "id": "tum_abitur",
+        "label": "German Abitur (HZB)",
+        "requirements": {
+          "GERMAN_ABITUR_CERT": 1
+        },
+        "stats_avg": {},
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "German-language bachelor programs require a university entrance qualification (e.g., Abitur)."
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
       }
     ],
     "verified_sources": [
@@ -1722,10 +2224,37 @@
       {
         "topic": "formats",
         "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.tum.de/en/about-tum"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.tum.de/en/about-tum"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://academics.nat.tum.de/en/bsc/ph/apply"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.tum.de/en/about-tum/facts-and-figures"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "TUM emphasizes excellence in research, teaching, and innovation and organizes its academics into schools such as Computation, Information and Technology; Engineering and Design; Natural Sciences; Life Sciences; Medicine and Health; Management; and Social Sciences and Technology.",
+    "tags": [
+      "computer_science",
+      "engineering",
+      "design",
+      "natural_sciences",
+      "life_sciences",
+      "medicine",
+      "business",
+      "social_sciences",
+      "research",
+      "innovation"
+    ],
     "description_source": "https://www.tum.de/en/about-tum",
     "factors": {
       "practice_vs_science": 0.896,
@@ -1800,6 +2329,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 53581.0,
+          "unit": "students",
+          "source": "TUM Facts and Figures",
+          "source_url": "https://www.tum.de/en/about-tum/facts-and-figures",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on TUM facts and figures."
         }
       }
     },
@@ -1809,7 +2348,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 53581
   },
   {
     "id": "university-of-toronto-ca-toronto",
@@ -1853,7 +2393,21 @@
       ],
       "major_tags": [
         "computer science"
-      ]
+      ],
+      "acceptance_rate_percent": 74.33,
+      "acceptance_rate_percent_meta": {
+        "source": "University of Toronto Governing Council presentation",
+        "source_url": "https://governingcouncil.utoronto.ca/media/32171",
+        "verified_at": "2026-03-16",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+        "basis": {
+          "cycle": "Fall 2024",
+          "applicants": 29528,
+          "admitted": 21949
+        }
+      }
     },
     "finance": {
       "total_cost_year_usd": 62000,
@@ -1929,6 +2483,23 @@
         "track_badge": "Grant",
         "funding_program": "Pearson Scholarship",
         "funding_source": "merit"
+      },
+      {
+        "id": "uoft_ossd",
+        "label": "OSSD (Ontario)",
+        "requirements": {
+          "OSSD_CERT": 1
+        },
+        "stats_avg": {},
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "OSSD with six 4U/M subjects including English is required for Ontario applicants."
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
       }
     ],
     "verified_sources": [
@@ -1951,10 +2522,48 @@
       {
         "topic": "formats",
         "url": "https://web.cs.toronto.edu/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.utoronto.ca/about-u-of-t"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.utoronto.ca/utogether/faculties-divisions"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.utoronto.ca/utogether/faculties-divisions"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.utoronto.ca/about-u-of-t"
+      },
+      {
+        "topic": "acceptance_rate",
+        "url": "https://governingcouncil.utoronto.ca/media/32171"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://future.utoronto.ca/requirements-canadian-high-schools"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.utoronto.ca/about-u-of-t/quick-facts"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "U of T describes itself as a top research-intensive university focused on discovery, innovation, and global impact. Its faculties and divisions include Applied Science and Engineering, Arts and Science, Law, Management, Medicine, Education, and others across three campuses.",
+    "tags": [
+      "research",
+      "engineering",
+      "business",
+      "law",
+      "medicine",
+      "education",
+      "humanities",
+      "natural_sciences",
+      "social_sciences"
+    ],
     "description_source": "https://www.utoronto.ca/about-u-of-t",
     "factors": {
       "practice_vs_science": 0.9601,
@@ -2029,6 +2638,31 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 97678.0,
+          "unit": "students",
+          "source": "University of Toronto Quick Facts",
+          "source_url": "https://www.utoronto.ca/about-u-of-t/quick-facts",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on U of T Quick Facts."
+        },
+        "acceptance_rate_percent": {
+          "value": 74.33,
+          "unit": "percent",
+          "source": "University of Toronto Governing Council presentation",
+          "source_url": "https://governingcouncil.utoronto.ca/media/32171",
+          "verified_at": "2026-03-16",
+          "confidence": "medium",
+          "status": "official",
+          "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+          "basis": {
+            "cycle": "Fall 2024",
+            "applicants": 29528,
+            "admitted": 21949
+          }
         }
       }
     },
@@ -2038,7 +2672,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 97678
   },
   {
     "id": "cuhk-hk-shatin",
@@ -2165,6 +2800,23 @@
         "track_badge": "Grant",
         "funding_program": "Admission Scholarship",
         "funding_source": "merit"
+      },
+      {
+        "id": "cuhk_hkdse",
+        "label": "HKDSE (JUPAS)",
+        "requirements": {
+          "HKDSE_LEVEL": 3
+        },
+        "stats_avg": {},
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "HKDSE minimum university requirements: Chinese Language level 3, English Language level 3, Mathematics level 2, Citizenship and Social Development attained, Elective 1 level 3, Elective 2 level 3 (or M1/M2/Other Language subject level 3)."
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
       }
     ],
     "verified_sources": [
@@ -2187,10 +2839,39 @@
       {
         "topic": "formats",
         "url": "https://www.cse.cuhk.edu.hk/about/department/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
+      },
+      {
+        "topic": "local_exam_requirements",
+        "url": "https://admission.cuhk.edu.hk/application/jupas/minimum-university-requirements/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.iso.cuhk.edu.hk/english/publications/facts-and-figures/"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "CUHK's mission is to preserve, create, apply, and disseminate knowledge through teaching, research, and public service across a comprehensive range of disciplines, and its vision is to be a first-class comprehensive research university with bilingual and multicultural dimensions. The university has a collegiate system and faculties of arts, business, education, engineering, law, medicine, science, and social science.",
+    "tags": [
+      "research",
+      "comprehensive",
+      "bilingual",
+      "collegiate",
+      "humanities",
+      "social_sciences",
+      "engineering",
+      "business",
+      "law",
+      "medicine",
+      "natural_sciences",
+      "education"
+    ],
     "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
     "factors": {
       "practice_vs_science": 0.891,
@@ -2266,6 +2947,20 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 23088.0,
+          "unit": "students",
+          "source": "CUHK Facts and Figures",
+          "source_url": "https://www.iso.cuhk.edu.hk/english/publications/facts-and-figures/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official_aggregated",
+          "method": "Summed from official undergraduate and postgraduate totals published by CUHK.",
+          "basis": {
+            "undergraduate_students": 18438,
+            "postgraduate_students": 4650
+          }
         }
       }
     },
@@ -2275,7 +2970,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 23088
   },
   {
     "id": "university-of-tokyo-jp-tokyo",
@@ -2431,11 +3127,30 @@
       {
         "topic": "formats",
         "url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.u-tokyo.ac.jp/en/about/numbers.html"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.u-tokyo.ac.jp/en/about/about.html"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.u-tokyo.ac.jp/en/about/about.html"
       }
     ],
-    "description": "",
-    "tags": [],
-    "description_source": "https://www.u-tokyo.ac.jp/en/about/numbers.html",
+    "description": "UTokyo says it was established in 1877 as Japan's first national university and offers courses across essentially all academic disciplines while conducting research across the full spectrum of academic activity.",
+    "tags": [
+      "national_university",
+      "research",
+      "engineering",
+      "natural_sciences",
+      "humanities",
+      "social_sciences"
+    ],
+    "description_source": "https://www.u-tokyo.ac.jp/en/about/about.html",
     "factors": {
       "practice_vs_science": 0.948,
       "social_vs_hardcore": 0.6328,
@@ -2507,6 +3222,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 29230.0,
+          "unit": "students",
+          "source": "UTokyo by the Numbers",
+          "source_url": "https://www.u-tokyo.ac.jp/en/about/numbers.html",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student enrollment published by the University of Tokyo."
         }
       }
     },
@@ -2516,7 +3241,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 29230
   },
   {
     "id": "seoul-national-university-kr-seoul",
@@ -2694,10 +3420,33 @@
       {
         "topic": "formats",
         "url": "https://en.snu.ac.kr/academics/programs/undergraduate"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://en.snu.ac.kr/"
+      },
+      {
+        "topic": "description",
+        "url": "https://en.snu.ac.kr/about/overview/vision"
+      },
+      {
+        "topic": "tags",
+        "url": "https://en.snu.ac.kr/about/overview/vision"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "Seoul National University presents itself as a leading national university with colleges spanning the humanities, social sciences, natural sciences, engineering, business, medicine, education and the arts, supported by a broad research portfolio.",
+    "tags": [
+      "comprehensive",
+      "national_university",
+      "research",
+      "engineering",
+      "natural_sciences",
+      "humanities",
+      "social_sciences",
+      "business",
+      "medicine",
+      "education"
+    ],
     "description_source": "https://en.snu.ac.kr/about/overview/vision",
     "factors": {
       "practice_vs_science": 0.9021,
@@ -2773,6 +3522,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 29073.0,
+          "unit": "students",
+          "source": "Seoul National University official site",
+          "source_url": "https://en.snu.ac.kr/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct enrolled student count published on the official Seoul National University site."
         }
       }
     },
@@ -2782,7 +3541,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 29073
   },
   {
     "id": "delft-university-of-technology-nl-delft",
@@ -2918,10 +3678,6 @@
     ],
     "verified_sources": [
       {
-        "topic": "extra_requirements",
-        "url": "https://www.scribd.com/document/880887339/Regulation-Matching-Selection-Criteria-Procedure-BSc-Computer-Science-Engineering-TUD25-26"
-      },
-      {
         "topic": "programs",
         "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/"
       },
@@ -2932,10 +3688,32 @@
       {
         "topic": "formats",
         "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.tudelft.nl/en/about-tu-delft"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.tudelft.nl/en/about-tu-delft"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.tudelft.nl/en/about-tu-delft"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "TU Delft says it is the oldest and largest technical university in the Netherlands, combining nearly 40 technological and scientific disciplines with research facilities, a major library and a strong focus on innovation and sustainability.",
+    "tags": [
+      "science_and_technology",
+      "engineering",
+      "natural_sciences",
+      "research",
+      "innovation"
+    ],
     "description_source": "https://www.tudelft.nl/en/about-tu-delft",
     "factors": {
       "practice_vs_science": 0.8703,
@@ -3011,6 +3789,19 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 26000.0,
+          "unit": "students",
+          "source": "About TU Delft",
+          "source_url": "https://www.tudelft.nl/en/about-tu-delft",
+          "verified_at": "2026-03-25",
+          "confidence": "medium",
+          "status": "official_approximate",
+          "method": "Lower-bound numeric value derived from the official '26.000+ students' figure published on the About TU Delft page.",
+          "basis": {
+            "published_value_text": "26.000+ students"
+          }
         }
       }
     },
@@ -3020,7 +3811,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 26000
   },
   {
     "id": "kaist-kr-daejeon",
@@ -3173,10 +3965,27 @@
       {
         "topic": "formats",
         "url": "https://engineering.kaist.ac.kr/education/department"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.kaist.ac.kr/en/html/kaist/01.html"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.kaist.ac.kr/en/html/kaist/01.html"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.kaist.ac.kr/en/html/kaist/01.html"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "KAIST describes itself as Korea's first and top science and technology university, educating, researching and leading innovation to serve the happiness and prosperity of humanity.",
+    "tags": [
+      "science_and_technology",
+      "engineering",
+      "research",
+      "innovation"
+    ],
     "description_source": "https://www.kaist.ac.kr/en/html/kaist/01.html",
     "factors": {
       "practice_vs_science": 0.8535,
@@ -3252,6 +4061,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 10793.0,
+          "unit": "students",
+          "source": "KAIST Facts and Figures",
+          "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published by KAIST."
         }
       }
     },
@@ -3261,7 +4080,8 @@
       "status": "excluded",
       "verified_at": "2026-02-24",
       "note": "Excluded from QS WUR 2026 publication due to documented manipulation issue."
-    }
+    },
+    "student_count": 10793
   },
   {
     "id": "tsinghua-university-cn-beijing",
@@ -3426,10 +4246,33 @@
       {
         "topic": "formats",
         "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.tsinghua.edu.cn/zjqhwj/Tsinghua_University_Brochure_2025.pdf"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.tsinghua.edu.cn/en/About.htm"
+      },
+      {
+        "topic": "tags",
+        "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
       }
     ],
-    "description": "",
-    "tags": [],
+    "description": "Tsinghua says it advances the well-being of the nation and the world through teaching, research and innovation, with academic divisions spanning engineering, computer science, science, law, design, medicine, economics and more.",
+    "tags": [
+      "comprehensive",
+      "engineering",
+      "computer_science",
+      "natural_sciences",
+      "law",
+      "medicine",
+      "design",
+      "business",
+      "research",
+      "innovation"
+    ],
     "description_source": "https://www.tsinghua.edu.cn/en/About.htm",
     "factors": {
       "practice_vs_science": 0.9279,
@@ -3505,6 +4348,21 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 62496.0,
+          "unit": "students",
+          "source": "Tsinghua University Brochure 2025",
+          "source_url": "https://www.tsinghua.edu.cn/zjqhwj/Tsinghua_University_Brochure_2025.pdf",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official_aggregated",
+          "method": "Summed from official brochure counts for undergraduate, master's, and doctoral students.",
+          "basis": {
+            "undergraduate_students": 16272,
+            "masters_students": 22605,
+            "doctoral_students": 23619
+          }
         }
       }
     },
@@ -3514,7 +4372,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 62496
   },
   {
     "id": "nazarbayev-university-kaz-astana",
@@ -3805,11 +4664,33 @@
       {
         "topic": "formats",
         "url": "https://nu.edu.kz/admissions/programs/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://nu.edu.kz/about/"
+      },
+      {
+        "topic": "description",
+        "url": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf"
+      },
+      {
+        "topic": "tags",
+        "url": "https://nu.edu.kz/academics/schools/"
       }
     ],
-    "description": "",
-    "tags": [],
-    "description_source": "https://nu.edu.kz/about/",
+    "description": "Official NU materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
+    "tags": [
+      "public_university",
+      "research",
+      "engineering",
+      "computer_science",
+      "natural_sciences",
+      "medicine",
+      "business",
+      "education",
+      "social_sciences"
+    ],
+    "description_source": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf",
     "factors": {
       "practice_vs_science": 0.6913,
       "social_vs_hardcore": 0.5861,
@@ -3884,6 +4765,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 7089.0,
+          "unit": "students",
+          "source": "Nazarbayev University About",
+          "source_url": "https://nu.edu.kz/about/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on the official Nazarbayev University About page."
         }
       }
     },
@@ -3893,7 +4784,8 @@
       "status": "not_listed",
       "verified_at": "2026-02-24",
       "note": "Not listed in QS WUR 2026 published table."
-    }
+    },
+    "student_count": 7089
   },
   {
     "id": "kyoto-university-jp-kyoto",
@@ -4039,11 +4931,30 @@
       {
         "topic": "formats",
         "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.kyoto-u.ac.jp/en/about/profile"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals"
       }
     ],
-    "description": "",
-    "tags": [],
-    "description_source": "https://www.kyoto-u.ac.jp/en/about/profile",
+    "description": "Kyoto University says it sustains a historical commitment to academic freedom and pursues world-class knowledge through research across the humanities, sciences and technology within a broad university structure.",
+    "tags": [
+      "comprehensive",
+      "research",
+      "engineering",
+      "natural_sciences",
+      "humanities",
+      "social_sciences"
+    ],
+    "description_source": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
     "factors": {
       "practice_vs_science": 0.9238,
       "social_vs_hardcore": 0.4157,
@@ -4115,6 +5026,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 22300.0,
+          "unit": "students",
+          "source": "Kyoto University Profile",
+          "source_url": "https://www.kyoto-u.ac.jp/en/about/profile",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on the Kyoto University profile page."
         }
       }
     },
@@ -4124,7 +5045,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 22300
   },
   {
     "id": "university-of-melbourne-au-melbourne",
@@ -4288,11 +5210,33 @@
       {
         "topic": "formats",
         "url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://about.unimelb.edu.au/strategy/facts-and-figures"
+      },
+      {
+        "topic": "description",
+        "url": "https://about.unimelb.edu.au/leadership/vice-chancellor/speeches/vice-chancellors-fifth-annual-address"
+      },
+      {
+        "topic": "tags",
+        "url": "https://about.unimelb.edu.au/strategy/our-structure/faculties-and-graduate-schools"
       }
     ],
-    "description": "",
-    "tags": [],
-    "description_source": "https://about.unimelb.edu.au/",
+    "description": "The University of Melbourne positions itself as a research-intensive university whose teaching is closely connected to deep research, with broad disciplinary strength across the humanities, sciences, business, law, medicine and education.",
+    "tags": [
+      "research",
+      "engineering",
+      "business",
+      "law",
+      "medicine",
+      "education",
+      "humanities",
+      "natural_sciences",
+      "social_sciences"
+    ],
+    "description_source": "https://about.unimelb.edu.au/leadership/vice-chancellor/speeches/vice-chancellors-fifth-annual-address",
     "factors": {
       "practice_vs_science": 0.9245,
       "social_vs_hardcore": 0.7892,
@@ -4367,6 +5311,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 77162.0,
+          "unit": "students",
+          "source": "University of Melbourne Facts and Figures",
+          "source_url": "https://about.unimelb.edu.au/strategy/facts-and-figures",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published in the University of Melbourne facts and figures."
         }
       }
     },
@@ -4376,7 +5330,8 @@
       "status": "official",
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
-    }
+    },
+    "student_count": 77162
   },
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
@@ -4540,11 +5495,34 @@
       {
         "topic": "formats",
         "url": "https://sdu.edu.kz/en/information-system-example/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://sdu.edu.kz/en/students/"
+      },
+      {
+        "topic": "description",
+        "url": "https://sdu.edu.kz/en/about-us-3/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://sdu.edu.kz/en/about-us-3/"
       }
     ],
-    "description": "",
-    "tags": [],
-    "description_source": "https://sdu.edu.kz/why/",
+    "description": "SDU University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
+    "tags": [
+      "comprehensive",
+      "education",
+      "humanities",
+      "engineering",
+      "computer_science",
+      "natural_sciences",
+      "law",
+      "social_sciences",
+      "business",
+      "research"
+    ],
+    "description_source": "https://sdu.edu.kz/en/about-us-3/",
     "factors": {
       "practice_vs_science": 0.6244,
       "social_vs_hardcore": 0.556,
@@ -4619,6 +5597,16 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 4300.0,
+          "unit": "students",
+          "source": "SDU Students",
+          "source_url": "https://sdu.edu.kz/en/students/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct active enrollee count published on the SDU students page."
         }
       }
     },
@@ -4628,7 +5616,8 @@
       "status": "not_listed",
       "verified_at": "2026-02-24",
       "note": "Not listed in QS WUR 2026 published table."
-    }
+    },
+    "student_count": 4300
   },
   {
     "id": "astana-it-university-kaz-astana",
@@ -4774,29 +5763,39 @@
     ],
     "verified_sources": [
       {
-        "topic": "english_language_policy",
-        "url": "https://astanait.edu.kz/wp-content/uploads/2024/12/INTERNAL-POLICY.pdf"
+        "topic": "student_count",
+        "url": "https://astanait.edu.kz/en/about-aitu/"
+      },
+      {
+        "topic": "description",
+        "url": "https://astanait.edu.kz/en/about-aitu/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://astanait.edu.kz/en/bachelor/"
       },
       {
         "topic": "extra_requirements",
-        "url": "https://admission.astanait.edu.kz/paid_basis"
+        "url": "https://astanait.edu.kz/en/bachelor/"
       },
       {
         "topic": "programs",
-        "url": "https://astanait.edu.kz/en/software-engineering-2/"
-      },
-      {
-        "topic": "programs",
-        "url": "https://astanait.edu.kz/en/computer-science-2/"
+        "url": "https://astanait.edu.kz/en/bachelor/"
       },
       {
         "topic": "formats",
-        "url": "https://astanait.edu.kz/en/software-engineering-2/"
+        "url": "https://astanait.edu.kz/en/bachelor/"
       }
     ],
-    "description": "",
-    "tags": [],
-    "description_source": "https://astanait.edu.kz/en/university/mission/",
+    "description": "Astana IT University says its mission is to promote the digital transformation of Kazakhstan and its vision is to lead innovative continuous IT education and science with high social responsibility.",
+    "tags": [
+      "science_and_technology",
+      "computer_science",
+      "engineering",
+      "innovation",
+      "research"
+    ],
+    "description_source": "https://astanait.edu.kz/en/about-aitu/",
     "factors": {
       "practice_vs_science": 0.0,
       "social_vs_hardcore": 0.275,
@@ -4871,6 +5870,24 @@
           "verified_at": "2026-02-21",
           "confidence": "medium",
           "status": "curated"
+        },
+        "student_count": {
+          "value": 6725.0,
+          "unit": "students",
+          "source": "AITU official profile and strategy re-verification",
+          "source_url": "https://astanait.edu.kz/en/about-aitu/",
+          "verified_at": "2026-03-25",
+          "confidence": "medium",
+          "status": "official_curated",
+          "method": "Enrolment split was re-verified against the official AITU 2026-2030 strategy document during the 2026-03-25 data sprint; the live About AITU page is retained as the stable official landing page because the direct strategy PDF URL currently returns 410 in automated checks.",
+          "basis": {
+            "as_of": "2025-01-01",
+            "bachelor_students": 6110,
+            "masters_students": 592,
+            "doctoral_students": 27,
+            "college_students": 707,
+            "reverified_document_title": "AITU Development Strategy 2026-2030"
+          }
         }
       }
     },
@@ -4880,6 +5897,7 @@
       "status": "not_listed",
       "verified_at": "2026-02-24",
       "note": "Not listed in QS WUR 2026 published table."
-    }
+    },
+    "student_count": 6725
   }
 ]

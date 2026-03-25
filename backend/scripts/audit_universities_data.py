@@ -231,8 +231,8 @@ def audit_dataset(
             warnings.append(f"{uid}: tags contain subjective metadata and should be reviewed")
 
         student_count = row.get("student_count")
-        if student_count is not None:
-            warnings.append(f"{uid}: student_count is present without fact-level provenance")
+        if student_count is not None and not isinstance(student_count, (int, float)):
+            errors.append(f"{uid}: student_count must be numeric when present")
 
         outcomes = row.get("outcomes")
         if isinstance(outcomes, dict) and outcomes.get("average_early_career_salary_usd") is not None:
@@ -269,8 +269,6 @@ def audit_dataset(
             if acceptance is not None:
                 if not isinstance(acceptance, (int, float)) or not (0.0 <= float(acceptance) <= 100.0):
                     errors.append(f"{uid}: academics.acceptance_rate_percent must be within [0, 100]")
-                else:
-                    warnings.append(f"{uid}: academics.acceptance_rate_percent is derived data and should be reviewed")
 
             a_tags = academics.get("major_tags")
             if a_tags is not None and not isinstance(a_tags, list):
@@ -343,8 +341,40 @@ def audit_dataset(
                         errors.append(f"{uid}: fact_provenance.facts.{fact_key}.source is empty")
                     if not _is_non_empty_text(verified_at):
                         errors.append(f"{uid}: fact_provenance.facts.{fact_key}.verified_at is empty")
-                if "acceptance_rate_percent" in facts:
-                    warnings.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent is derived data and should be removed")
+                student_count = row.get("student_count")
+                if student_count is not None:
+                    fact_row = facts.get("student_count")
+                    if not isinstance(fact_row, dict):
+                        warnings.append(f"{uid}: student_count is present without fact_provenance.facts.student_count")
+                    else:
+                        source = fact_row.get("source")
+                        verified_at = fact_row.get("verified_at")
+                        if not _is_non_empty_text(source):
+                            errors.append(f"{uid}: fact_provenance.facts.student_count.source is empty")
+                        if not _is_non_empty_text(verified_at):
+                            errors.append(f"{uid}: fact_provenance.facts.student_count.verified_at is empty")
+
+                academics = row.get("academics") if isinstance(row.get("academics"), dict) else {}
+                acceptance = academics.get("acceptance_rate_percent")
+                if isinstance(acceptance, (int, float)):
+                    meta = academics.get("acceptance_rate_percent_meta")
+                    if not isinstance(meta, dict):
+                        warnings.append(f"{uid}: academics.acceptance_rate_percent is present without acceptance_rate_percent_meta")
+                    else:
+                        if not _is_non_empty_text(meta.get("source")):
+                            errors.append(f"{uid}: academics.acceptance_rate_percent_meta.source is empty")
+                        if not _is_non_empty_text(meta.get("verified_at")):
+                            errors.append(f"{uid}: academics.acceptance_rate_percent_meta.verified_at is empty")
+                    fact_row = facts.get("acceptance_rate_percent")
+                    if not isinstance(fact_row, dict):
+                        warnings.append(f"{uid}: academics.acceptance_rate_percent is present without fact_provenance.facts.acceptance_rate_percent")
+                    else:
+                        source = fact_row.get("source")
+                        verified_at = fact_row.get("verified_at")
+                        if not _is_non_empty_text(source):
+                            errors.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent.source is empty")
+                        if not _is_non_empty_text(verified_at):
+                            errors.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent.verified_at is empty")
 
         if check_http:
             url_count = 0

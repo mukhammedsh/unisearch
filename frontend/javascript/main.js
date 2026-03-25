@@ -83,21 +83,41 @@ function initHomeMockupMedia() {
   const logoSmall = `${base}/universities/assets/logos-small/${uniId}.png`;
   const logoFull = `${base}/universities/assets/logos/${uniId}.png`;
 
-  document.documentElement.style.setProperty("--home-mockup-thumb-url", `url("${thumbFull}")`);
+  const fallbackThumb = frontendStaticAsset("images/mit-usa-cambridge.jpg");
+  const fallbackLogo = frontendStaticAsset("images/mit-usa-cambridge.png");
+
+  card.style.setProperty("--home-mockup-thumb-url", `url("${fallbackThumb}")`);
 
   const logo = document.querySelector(`img[data-home-uni-logo="${rawUniId}"]`);
   if (!(logo instanceof HTMLImageElement)) return;
 
-  logo.src = logoSmall;
-  logo.onerror = () => {
-    if (logo.dataset.full !== "1") {
-      logo.dataset.full = "1";
-      logo.src = logoFull;
-      return;
-    }
-    logo.onerror = null;
-    logo.src = frontendStaticAsset("images/minilogo.png");
+  logo.src = fallbackLogo;
+
+  const tryLogo = (src, next) => {
+    const probe = new Image();
+    probe.onload = () => {
+      logo.src = src;
+    };
+    probe.onerror = () => {
+      if (typeof next === "function") {
+        next();
+        return;
+      }
+      logo.src = fallbackLogo;
+    };
+    probe.src = src;
   };
+
+  tryLogo(logoSmall, () => tryLogo(logoFull, null));
+
+  const thumbProbe = new Image();
+  thumbProbe.onload = () => {
+    card.style.setProperty("--home-mockup-thumb-url", `url("${thumbFull}")`);
+  };
+  thumbProbe.onerror = () => {
+    card.style.setProperty("--home-mockup-thumb-url", `url("${fallbackThumb}")`);
+  };
+  thumbProbe.src = thumbFull;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

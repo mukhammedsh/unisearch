@@ -1,0 +1,610 @@
+{
+  "schema_version": 2,
+  "verified_at": "2026-03-25",
+  "universities": {
+    "mit-usa-cambridge": {
+      "student_count": {
+        "value": 11920,
+        "source": "MIT Facts",
+        "source_url": "https://facts.mit.edu/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on MIT Facts."
+      },
+      "acceptance_rate_percent": {
+        "value": 4.56,
+        "source": "MIT Admissions Statistics",
+        "source_url": "https://mitadmissions.org/apply/process/stats/",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official MIT admissions counts (1,334 admitted / 29,281 applicants).",
+        "basis": {
+          "cycle": "Class of 2029",
+          "applicants": 29281,
+          "admitted": 1334
+        }
+      }
+    },
+    "imperial-college-london-uk": {
+      "student_count": {
+        "value": 25143,
+        "source": "Imperial College London Student statistics (public)",
+        "source_url": "https://www.imperial.ac.uk/admin-services/student-records-and-data/for-staff/student-statistics-public/",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on the official Imperial student statistics page."
+      },
+      "description": {
+        "value": "Imperial describes itself as a world-leading university for science, technology, engineering, medicine and business, using science across its London campuses and international network to tackle global challenges.",
+        "source": "Imperial About",
+        "source_url": "https://www.imperial.ac.uk/about/",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct institutional profile published on Imperial's official About page."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "engineering",
+          "medicine",
+          "business",
+          "research"
+        ],
+        "source": "Imperial About",
+        "source_url": "https://www.imperial.ac.uk/about/",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official About page's description of Imperial's science, technology, engineering, medicine and business profile."
+      }
+    },
+    "stanford-university-usa-ca": {
+      "student_count": {
+        "value": 17552,
+        "source": "Stanford Facts",
+        "source_url": "https://facts.stanford.edu/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on Stanford Facts."
+      },
+      "acceptance_rate_percent": {
+        "value": 3.61,
+        "source": "Stanford Common Data Set 2024-2025",
+        "source_url": "https://ucomm.stanford.edu/cds/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+        "basis": {
+          "cycle": "Fall 2024 first-time first-year admission",
+          "applicants": 57326,
+          "admitted": 2067,
+          "enrolled": 1693
+        }
+      }
+    },
+    "harvard-usa-cambridge": {
+      "student_count": {
+        "value": 24596,
+        "source": "Harvard at a Glance",
+        "source_url": "https://www.harvard.edu/about-harvard/harvard-glance/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student count published by Harvard."
+      },
+      "acceptance_rate_percent": {
+        "value": 4.18,
+        "source": "Harvard College Admissions Statistics",
+        "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official Harvard admissions counts (2,003 admitted / 47,893 applicants).",
+        "basis": {
+          "cycle": "Class of 2028",
+          "applicants": 47893,
+          "admitted": 2003
+        }
+      }
+    },
+    "eth-zurich-ch-zurich": {
+      "student_count": {
+        "value": 26198,
+        "source": "ETH Zurich Annual Report 2024 - Teaching",
+        "source_url": "https://ethz.ch/en/the-eth-zurich/portrait/annual-report-2024/teaching.html",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published in the ETH Zurich annual report teaching section."
+      },
+      "verified_sources": [
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
+        }
+      ]
+    },
+    "national-university-of-singapore-sg-singapore": {
+      "student_count": {
+        "value": 51679,
+        "source": "NUS About",
+        "source_url": "https://www.nus.edu.sg/about",
+        "verified_at": "2026-03-12",
+        "status": "official_aggregated",
+        "confidence": "high",
+        "method": "Summed from official NUS counts published on the About page.",
+        "basis": {
+          "undergraduate_students": 31541,
+          "graduate_students": 20138
+        }
+      }
+    },
+    "epfl-ch-lausanne": {
+      "student_count": {
+        "value": 14011,
+        "source": "EPFL Annual Report 2024",
+        "source_url": "https://www.epfl.ch/about/overview/annual-report/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published in the EPFL annual report 2024 materials."
+      }
+    },
+    "technical-university-of-munich-de-munich": {
+      "student_count": {
+        "value": 53581,
+        "source": "TUM Facts and Figures",
+        "source_url": "https://www.tum.de/en/about-tum/facts-and-figures",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on TUM facts and figures."
+      }
+    },
+    "university-of-toronto-ca-toronto": {
+      "student_count": {
+        "value": 97678,
+        "source": "University of Toronto Quick Facts",
+        "source_url": "https://www.utoronto.ca/about-u-of-t/quick-facts",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on U of T Quick Facts."
+      }
+    },
+    "cuhk-hk-shatin": {
+      "student_count": {
+        "value": 23088,
+        "source": "CUHK Facts and Figures",
+        "source_url": "https://www.iso.cuhk.edu.hk/english/publications/facts-and-figures/",
+        "verified_at": "2026-03-12",
+        "status": "official_aggregated",
+        "confidence": "high",
+        "method": "Summed from official undergraduate and postgraduate totals published by CUHK.",
+        "basis": {
+          "undergraduate_students": 18438,
+          "postgraduate_students": 4650
+        }
+      }
+    },
+    "university-of-tokyo-jp-tokyo": {
+      "student_count": {
+        "value": 29230,
+        "source": "UTokyo by the Numbers",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/numbers.html",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student enrollment published by the University of Tokyo."
+      },
+      "description": {
+        "value": "UTokyo says it was established in 1877 as Japan's first national university and offers courses across essentially all academic disciplines while conducting research across the full spectrum of academic activity.",
+        "source": "About UTokyo",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/about.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct institutional profile published on the official About UTokyo page."
+      },
+      "tags": {
+        "value": [
+          "national_university",
+          "research",
+          "engineering",
+          "natural_sciences",
+          "humanities",
+          "social_sciences"
+        ],
+        "source": "About UTokyo",
+        "source_url": "https://www.u-tokyo.ac.jp/en/about/about.html",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official About UTokyo page's description of national-university status, broad academic coverage, and research mission."
+      }
+    },
+    "seoul-national-university-kr-seoul": {
+      "student_count": {
+        "value": 29073,
+        "source": "Seoul National University official site",
+        "source_url": "https://en.snu.ac.kr/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct enrolled student count published on the official Seoul National University site."
+      },
+      "description": {
+        "value": "Seoul National University presents itself as a leading national university with colleges spanning the humanities, social sciences, natural sciences, engineering, business, medicine, education and the arts, supported by a broad research portfolio.",
+        "source": "SNU Vision and Overview",
+        "source_url": "https://en.snu.ac.kr/about/overview/vision",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Summarized from the official SNU vision page and the institutional overview it exposes in site navigation."
+      },
+      "tags": {
+        "value": [
+          "comprehensive",
+          "national_university",
+          "research",
+          "engineering",
+          "natural_sciences",
+          "humanities",
+          "social_sciences",
+          "business",
+          "medicine",
+          "education"
+        ],
+        "source": "SNU Vision and Overview",
+        "source_url": "https://en.snu.ac.kr/about/overview/vision",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official SNU overview's list of colleges and research navigation."
+      }
+    },
+    "delft-university-of-technology-nl-delft": {
+      "student_count": {
+        "value": 26000,
+        "source": "About TU Delft",
+        "source_url": "https://www.tudelft.nl/en/about-tu-delft",
+        "verified_at": "2026-03-25",
+        "status": "official_approximate",
+        "confidence": "medium",
+        "method": "Lower-bound numeric value derived from the official '26.000+ students' figure published on the About TU Delft page.",
+        "basis": {
+          "published_value_text": "26.000+ students"
+        }
+      },
+      "description": {
+        "value": "TU Delft says it is the oldest and largest technical university in the Netherlands, combining nearly 40 technological and scientific disciplines with research facilities, a major library and a strong focus on innovation and sustainability.",
+        "source": "About TU Delft",
+        "source_url": "https://www.tudelft.nl/en/about-tu-delft",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct institutional profile published on the official About TU Delft page."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "engineering",
+          "natural_sciences",
+          "research",
+          "innovation"
+        ],
+        "source": "About TU Delft",
+        "source_url": "https://www.tudelft.nl/en/about-tu-delft",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official About TU Delft page's description of technological and scientific disciplines, research facilities, and innovation focus."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma"
+        }
+      ]
+    },
+    "kaist-kr-daejeon": {
+      "student_count": {
+        "value": 10793,
+        "source": "KAIST Facts and Figures",
+        "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published by KAIST."
+      },
+      "description": {
+        "value": "KAIST describes itself as Korea's first and top science and technology university, educating, researching and leading innovation to serve the happiness and prosperity of humanity.",
+        "source": "KAIST Mission and Vision",
+        "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct institutional profile published on KAIST's official mission and vision page."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "engineering",
+          "research",
+          "innovation"
+        ],
+        "source": "KAIST Mission and Vision",
+        "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from KAIST's official description of itself as a science and technology university focused on research and innovation."
+      }
+    },
+    "tsinghua-university-cn-beijing": {
+      "student_count": {
+        "value": 62496,
+        "source": "Tsinghua University Brochure 2025",
+        "source_url": "https://www.tsinghua.edu.cn/zjqhwj/Tsinghua_University_Brochure_2025.pdf",
+        "verified_at": "2026-03-12",
+        "status": "official_aggregated",
+        "confidence": "high",
+        "method": "Summed from official brochure counts for undergraduate, master's, and doctoral students.",
+        "basis": {
+          "undergraduate_students": 16272,
+          "masters_students": 22605,
+          "doctoral_students": 23619
+        }
+      },
+      "description": {
+        "value": "Tsinghua says it advances the well-being of the nation and the world through teaching, research and innovation, with academic divisions spanning engineering, computer science, science, law, design, medicine, economics and more.",
+        "source": "About Tsinghua",
+        "source_url": "https://www.tsinghua.edu.cn/en/About.htm",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Combined from the official About Tsinghua page and the official undergraduate divisions overview."
+      },
+      "tags": {
+        "value": [
+          "comprehensive",
+          "engineering",
+          "computer_science",
+          "natural_sciences",
+          "law",
+          "medicine",
+          "design",
+          "business",
+          "research",
+          "innovation"
+        ],
+        "source": "Tsinghua Undergraduate Divisions",
+        "source_url": "https://international.join-tsinghua.edu.cn/Divisions1.htm",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from Tsinghua's official description and the official undergraduate divisions/schools overview."
+      }
+    },
+    "nazarbayev-university-kaz-astana": {
+      "student_count": {
+        "value": 7089,
+        "source": "Nazarbayev University About",
+        "source_url": "https://nu.edu.kz/about/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on the official Nazarbayev University About page."
+      },
+      "description": {
+        "value": "Official NU materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
+        "source": "Nazarbayev University Institutional Evaluation Programme report",
+        "source_url": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Summarized from an official Nazarbayev University report hosted on the university domain."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "engineering",
+          "computer_science",
+          "natural_sciences",
+          "medicine",
+          "business",
+          "education",
+          "social_sciences"
+        ],
+        "source": "Nazarbayev University Schools",
+        "source_url": "https://nu.edu.kz/academics/schools/",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official schools structure and research-university positioning published by Nazarbayev University."
+      }
+    },
+    "kyoto-university-jp-kyoto": {
+      "student_count": {
+        "value": 22300,
+        "source": "Kyoto University Profile",
+        "source_url": "https://www.kyoto-u.ac.jp/en/about/profile",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published on the Kyoto University profile page."
+      },
+      "description": {
+        "value": "Kyoto University says it sustains a historical commitment to academic freedom and pursues world-class knowledge through research across the humanities, sciences and technology within a broad university structure.",
+        "source": "Kyoto University Mission Statement",
+        "source_url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct institutional mission statement published by Kyoto University."
+      },
+      "tags": {
+        "value": [
+          "comprehensive",
+          "research",
+          "engineering",
+          "natural_sciences",
+          "humanities",
+          "social_sciences"
+        ],
+        "source": "Kyoto University Mission Statement",
+        "source_url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from Kyoto University's official mission statement about humanities, sciences, technology, and research."
+      }
+    },
+    "university-of-melbourne-au-melbourne": {
+      "student_count": {
+        "value": 77162,
+        "source": "University of Melbourne Facts and Figures",
+        "source_url": "https://about.unimelb.edu.au/strategy/facts-and-figures",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct student headcount published in the University of Melbourne facts and figures."
+      },
+      "description": {
+        "value": "The University of Melbourne positions itself as a research-intensive university whose teaching is closely connected to deep research, with broad disciplinary strength across the humanities, sciences, business, law, medicine and education.",
+        "source": "University of Melbourne Vice-Chancellor annual address",
+        "source_url": "https://about.unimelb.edu.au/leadership/vice-chancellor/speeches/vice-chancellors-fifth-annual-address",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "medium",
+        "method": "Summarized from an official University of Melbourne leadership address on the university domain."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "engineering",
+          "business",
+          "law",
+          "medicine",
+          "education",
+          "humanities",
+          "natural_sciences",
+          "social_sciences"
+        ],
+        "source": "University of Melbourne faculties and graduate schools",
+        "source_url": "https://about.unimelb.edu.au/strategy/our-structure/faculties-and-graduate-schools",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official faculties and graduate schools structure published by the University of Melbourne."
+      }
+    },
+    "suleyman-demirel-university-kaz-kaskelen": {
+      "student_count": {
+        "value": 4300,
+        "source": "SDU Students",
+        "source_url": "https://sdu.edu.kz/en/students/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct active enrollee count published on the SDU students page."
+      },
+      "description": {
+        "value": "SDU University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
+        "source": "SDU About us",
+        "source_url": "https://sdu.edu.kz/en/about-us-3/",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Summarized from the official SDU About us page."
+      },
+      "tags": {
+        "value": [
+          "comprehensive",
+          "education",
+          "humanities",
+          "engineering",
+          "computer_science",
+          "natural_sciences",
+          "law",
+          "social_sciences",
+          "business",
+          "research"
+        ],
+        "source": "SDU About us",
+        "source_url": "https://sdu.edu.kz/en/about-us-3/",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official SDU schools and research-center structure."
+      }
+    },
+    "astana-it-university-kaz-astana": {
+      "student_count": {
+        "value": 6725,
+        "source": "AITU official profile and strategy re-verification",
+        "source_url": "https://astanait.edu.kz/en/about-aitu/",
+        "verified_at": "2026-03-25",
+        "status": "official_curated",
+        "confidence": "medium",
+        "method": "Enrolment split was re-verified against the official AITU 2026-2030 strategy document during the 2026-03-25 data sprint; the live About AITU page is retained as the stable official landing page because the direct strategy PDF URL currently returns 410 in automated checks.",
+        "basis": {
+          "as_of": "2025-01-01",
+          "bachelor_students": 6110,
+          "masters_students": 592,
+          "doctoral_students": 27,
+          "college_students": 707,
+          "reverified_document_title": "AITU Development Strategy 2026-2030"
+        }
+      },
+      "description": {
+        "value": "Astana IT University says its mission is to promote the digital transformation of Kazakhstan and its vision is to lead innovative continuous IT education and science with high social responsibility.",
+        "source": "About AITU",
+        "source_url": "https://astanait.edu.kz/en/about-aitu/",
+        "verified_at": "2026-03-25",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct mission and vision statements published on the official About AITU page."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "computer_science",
+          "engineering",
+          "innovation",
+          "research"
+        ],
+        "source": "AITU Bachelor's Degree",
+        "source_url": "https://astanait.edu.kz/en/bachelor/",
+        "verified_at": "2026-03-25",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official bachelor's page and the official About AITU page, which together describe AITU's IT schools, programs, innovation focus, and research mission."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://astanait.edu.kz/en/bachelor/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://astanait.edu.kz/en/bachelor/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://astanait.edu.kz/en/bachelor/"
+        }
+      ],
+      "clear_verified_topics": [
+        "english_language_policy"
+      ]
+    }
+  }
+}
