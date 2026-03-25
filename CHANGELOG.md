@@ -53,6 +53,10 @@ Status:
   - the Admission tab now shows a compact official-admissions summary for university-wide and program-level data availability;
   - the Programs tab now renders official program-level admissions signals as user-facing cards instead of leaving the structured catalog invisible;
   - users can now see whether a metric is an official rate, counts-based signal, capacity, cutoff, grade profile, or an explicit official `verified-null` state.
+- Polished the final Russian admissions wording pass:
+  - removed the remaining mixed English/Russian labels in the new admissions UI;
+  - replaced leftover technical placeholders such as `Applicants / offers`, `competition ratio`, and `verified-null` with clearer Russian user-facing phrasing;
+  - kept standard exam names like `A-Level` as domain terms while translating the surrounding admissions language.
 - Improved regression coverage for data integrity:
   - `backend/tests/test_official_facts_sync.py` now checks both catalog-to-dataset sync and the reverse condition that every dataset acceptance rate is catalog-backed with complete provenance metadata.
   - `backend/tests/test_official_admissions_sync.py` now verifies catalog-to-dataset sync and flat/nested acceptance-rate consistency for the new admissions layer.

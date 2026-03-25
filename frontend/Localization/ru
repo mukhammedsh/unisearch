@@ -303,7 +303,7 @@ university.official_admissions_note: UniSearch показывает только
 university.admissions.university_wide: По университету
 university.admissions.program_level: По программам
 university.admissions.program_signals: Официальные сигналы по программам
-university.admissions.program_signals_note: Здесь могут быть коэффициент приёма, applicants/offers, вместимость, проходной порог, grade profile или verified-null, если вуз не публикует отдельную метрику по программе.
+university.admissions.program_signals_note: Здесь могут быть коэффициент приёма, данные по заявкам и офферам, вместимость, проходной порог, профиль поступающих или явная отметка, что отдельная метрика не публикуется.
 university.admissions.checked: Проверено
 university.admissions.cycle: Цикл
 university.admissions.rows_count: Официальных строк: {count}
@@ -312,9 +312,9 @@ university.admissions.no_program_metrics: Отдельная официальн�
 university.admissions.open_source: Открыть источник
 university.admissions.official_source: Официальный источник
 university.admissions.status.official_rate: Официальный коэффициент
-university.admissions.status.official_counts: Официальные counts
+university.admissions.status.official_counts: Официальные числовые данные
 university.admissions.status.official_signals: Официальные сигналы
-university.admissions.status.competition_ratio_only: Официальный competition ratio
+university.admissions.status.competition_ratio_only: Официальное конкурсное соотношение
 university.admissions.status.verified_null_only: Отдельно не публикуется
 university.admissions.status.no_official_source: Нет официального источника
 university.admissions.status.reviewed: Проверено по официальным материалам
@@ -322,28 +322,28 @@ university.admissions.metric.acceptance_rate: Коэффициент приём�
 university.admissions.metric.capacity: Вместимость
 university.admissions.metric.entry_standard: Входной стандарт
 university.admissions.metric.cutoff: Проходной порог
-university.admissions.metric.counts: Applicants / offers
-university.admissions.metric.competition_ratio: Competition ratio
+university.admissions.metric.counts: Заявки / предложения о зачислении
+university.admissions.metric.competition_ratio: Конкурсное соотношение
 university.admissions.metric.verified_null: Отдельно не публикуется
 university.admissions.metric.official_signal: Официальный сигнал
-university.admissions.signal.rate: Официальный коэффициент из опубликованных counts.
+university.admissions.signal.rate: Официальный коэффициент, рассчитанный по опубликованным числовым данным.
 university.admissions.signal.capacity: Официально опубликованная вместимость или число мест.
-university.admissions.signal.entry_standard: Официально опубликованный grade profile или входной стандарт.
-university.admissions.signal.cutoff: Официально опубликованный проходной порог или direct-admit cutoff.
-university.admissions.signal.counts: Официально опубликованные applicants, offers или admitted counts.
-university.admissions.signal.competition_ratio: Официально опубликованный сигнал в формате competition ratio.
+university.admissions.signal.entry_standard: Официально опубликованный профиль поступающих или входной стандарт.
+university.admissions.signal.cutoff: Официально опубликованный проходной порог или порог прямого зачисления.
+university.admissions.signal.counts: Официально опубликованные данные по заявкам, предложениям о зачислении или зачисленным.
+university.admissions.signal.competition_ratio: Официально опубликованный сигнал в формате конкурсного соотношения.
 university.admissions.signal.verified_null: Отдельная официальная метрика по этой программе не публикуется.
-university.admissions.signal.official: Официально опубликованный admissions signal.
-university.admissions.counts.applicants: Applicants
-university.admissions.counts.admitted: Admitted
-university.admissions.counts.offers: Offers
-university.admissions.counts.enrolled: Enrolled
+university.admissions.signal.official: Официально опубликованный сигнал по поступлению.
+university.admissions.counts.applicants: Заявки
+university.admissions.counts.admitted: Зачислено
+university.admissions.counts.offers: Предложения о зачислении
+university.admissions.counts.enrolled: Фактически поступили
 university.admissions.counts.places: мест
 university.admissions.unit.points: баллов
 university.admissions.a_level: A-Level
-university.admissions.poly_gpa: Poly GPA
+university.admissions.poly_gpa: GPA политехнического колледжа
 university.admissions.range: Примерный диапазон
-university.admissions.supplementary_required: Нужна supplementary application
+university.admissions.supplementary_required: Нужна дополнительная заявка
 university.back_to_list: Назад к списку
 university.chat_assistant: Чат-ассистент
 university.clear: Очистить
