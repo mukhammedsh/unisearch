@@ -70,3 +70,6 @@ Status:
   - clarified that GPA percent is a UniSearch-only normalized estimate;
   - made the interests field and guide wording less technical for first-time student users.
   - removed the duplicate GPA helper line under the input and disabled the native browser tooltip so only the custom tooltip remains.
+- Improved local LAN development ergonomics:
+  - backend local startup now supports `BACKEND_HOST` and `BACKEND_PORT` from `backend/.env` instead of forcing `127.0.0.1`;
+  - README and `backend/.env.example` now document how to allow another device on the same local network without committing a real LAN IP to Git.
