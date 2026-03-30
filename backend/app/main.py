@@ -8,7 +8,13 @@ from fastapi.staticfiles import StaticFiles
 
 from app.core.observability import setup_observability
 from app.core.paths import UNIVERSITY_ASSETS_DIR
-from app.core.settings import APP_VERSION, AUTO_WARMUP_ON_STARTUP, FRONTEND_ORIGINS
+from app.core.settings import (
+    APP_VERSION,
+    AUTO_WARMUP_ON_STARTUP,
+    BACKEND_HOST,
+    BACKEND_PORT,
+    FRONTEND_ORIGINS,
+)
 from app.routers import root, universities, exams, languages
 from app.services.background_tasks import warmup_runtime
 
@@ -97,4 +103,4 @@ app.include_router(languages.router)
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host=BACKEND_HOST, port=BACKEND_PORT)

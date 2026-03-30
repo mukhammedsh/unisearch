@@ -166,6 +166,8 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 Infra/runtime:
 ```env
 APP_VERSION=2.5.8
+BACKEND_HOST=127.0.0.1
+BACKEND_PORT=8000
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -183,6 +185,19 @@ METRICS_PATH=/metrics
 SENTRY_DSN=
 SENTRY_TRACES_SAMPLE_RATE=0.0
 ```
+
+Local network example without committing your IPs:
+```env
+BACKEND_HOST=0.0.0.0
+BACKEND_PORT=8000
+FRONTEND_ORIGINS=http://127.0.0.1:5501,http://localhost:5501,http://<your-lan-ip>:5501
+```
+
+Notes:
+- `backend/.env` is ignored by Git, so your LAN IP stays local.
+- CORS must contain the frontend origin, not the backend URL. For a page opened as `http://<your-lan-ip>:5501`, add exactly that origin.
+- For another person in your LAN to open the site, start the backend with `--host 0.0.0.0` (or `BACKEND_HOST=0.0.0.0`) and start the frontend with `python -m http.server 5501 --bind 0.0.0.0`.
+- If Windows Defender Firewall prompts, allow Python on Private networks or the other device still will not connect.
 
 Translation pipeline:
 ```env

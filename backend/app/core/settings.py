@@ -48,6 +48,11 @@ FRONTEND_ORIGINS = _parse_frontend_origins()
 # Backward-compatible single-origin export for old imports.
 FRONTEND_ORIGIN = FRONTEND_ORIGINS[0]
 APP_VERSION = os.getenv("APP_VERSION", "2.5.8").strip() or "2.5.8"
+BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
+try:
+    BACKEND_PORT = int(os.getenv("BACKEND_PORT", "8000") or 8000)
+except Exception:
+    BACKEND_PORT = 8000
 
 
 def _env_bool(name: str, default: str = "0") -> bool:
