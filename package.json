@@ -1,12 +1,14 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
+    "dev:backend": "node scripts/dev-backend.mjs",
+    "dev:frontend": "node scripts/dev-frontend.mjs",
     "check:i18n": "node scripts/i18n-check.mjs",
-    "test:backend": "cd backend && python -m unittest discover tests -v",
+    "test:backend": "node scripts/test-backend.mjs",
     "test:e2e:pr": "playwright test --project=chromium --config=playwright.local.config.js",
     "test:e2e:nightly": "playwright test --project=chromium --project=firefox --project=webkit",
     "test:all": "npm run test:backend && npm run test:e2e:pr"

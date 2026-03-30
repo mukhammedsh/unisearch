@@ -2,6 +2,17 @@
 
 All notable project changes should be recorded here.
 
+## 2.6.1 (2026-03-30) - portable local-dev runtime and release alignment
+
+Status:
+- synchronized runtime/package version to `2.6.1` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, `backend/.env.example`, and README examples.
+- improved local-development portability and clone-and-run ergonomics:
+  - added `npm run dev:backend`, `npm run dev:frontend`, and `npm run test:backend` scripts that auto-detect local Python virtual environments instead of depending on manual activation.
+  - added shared Node launch helpers for backend startup, frontend static serving, backend test execution, and project env loading.
+  - frontend runtime config now derives the API base from the current host plus a configurable backend port instead of forcing `127.0.0.1:8000`, and generated `frontend/env.js` now includes `API_PORT`.
+  - Docker local runtime now respects overridable `BACKEND_PORT`, `REDIS_PORT`, and frontend-origin env values without requiring code edits.
+  - README and local env examples now document the new cross-platform startup flow plus `FRONTEND_HOST` / `FRONTEND_PORT` overrides for custom ports, LAN IPs, and non-Windows machines.
+
 ## 2.6.0 (2026-03-30) - manual admission-track selection
 
 Status:

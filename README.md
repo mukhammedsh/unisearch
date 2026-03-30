@@ -1,7 +1,7 @@
 # UniSearch / UniFit / UniChance
 
 UniSearch is a full-stack web app for university discovery and decision support.
-Current version: `2.6.0`
+Current version: `2.6.1`
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -13,7 +13,19 @@ Core capabilities:
 ## Quick start
 If you just want the project running locally:
 
-1. Start the backend:
+Prerequisites:
+- Python `3.12+`
+- Node.js `20+`
+
+1. Create your local backend config:
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+   PowerShell alternative:
+   ```powershell
+   Copy-Item backend/.env.example backend/.env
+   ```
+2. Start the backend:
    ```bash
    cd backend
    python -m venv .venv
@@ -22,15 +34,15 @@ If you just want the project running locally:
    # macOS/Linux
    # source .venv/bin/activate
    pip install -r requirements.txt
-   python -m uvicorn app.main:app --reload --port 8000
+   cd ..
+   npm run dev:backend
    ```
-2. Start the frontend in a second terminal:
+3. Start the frontend in a second terminal:
    ```bash
-   cd frontend
-   python -m http.server 5501
+   npm run dev:frontend
    ```
-3. Open `http://127.0.0.1:5501/index.html`
-4. If you changed curated official facts, sync and audit before committing:
+4. Open `http://127.0.0.1:5501/index.html`
+5. If you changed curated official facts, sync and audit before committing:
    ```bash
    python backend/scripts/apply_official_facts.py --verified-at 2026-03-25
    python backend/scripts/audit_universities_data.py
@@ -118,17 +130,19 @@ python -m venv .venv
 # macOS/Linux:
 # source .venv/bin/activate
 pip install -r requirements.txt
-python -m uvicorn app.main:app --reload --port 8000
+cd ..
+npm run dev:backend
 ```
 
 Notes:
 - `.venv/` is local per developer and ignored by Git.
 - If the project path was moved or renamed and CLI launchers break, recreate the env from scratch.
+- `npm run dev:backend` auto-detects `backend/.venv` when present and respects `BACKEND_HOST` / `BACKEND_PORT` from `.env`.
+- Direct launch still works if you prefer it: `python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`
 
 ### 2) Frontend
 ```bash
-cd frontend
-python -m http.server 5501
+npm run dev:frontend
 ```
 
 Open:
@@ -138,6 +152,11 @@ Open:
 - `http://127.0.0.1:5501/ranking.html`
 - `http://127.0.0.1:5501/guide.html`
 - `http://127.0.0.1:5501/about.html`
+
+Notes:
+- `npm run dev:frontend` regenerates `frontend/env.js` before startup.
+- The frontend runtime config automatically follows your current host for local URLs, so `localhost`, `127.0.0.1`, and LAN IP launches stay aligned with the same machine.
+- Change `FRONTEND_HOST` / `FRONTEND_PORT` in `backend/.env` if you want another static-server bind.
 
 ### 3) Full stack with Redis (Docker)
 ```bash
@@ -167,9 +186,11 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.6.0
+APP_VERSION=2.6.1
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
+FRONTEND_HOST=127.0.0.1
+FRONTEND_PORT=5501
 FRONTEND_ORIGIN=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
@@ -197,6 +218,7 @@ FRONTEND_ORIGINS=http://127.0.0.1:5501,http://localhost:5501,http://<your-lan-ip
 
 Notes:
 - `backend/.env` is ignored by Git, so your LAN IP stays local.
+- `FRONTEND_HOST` / `FRONTEND_PORT` are used by `npm run dev:frontend` only; backend CORS still depends on `FRONTEND_ORIGIN` / `FRONTEND_ORIGINS`.
 - CORS must contain the frontend origin, not the backend URL. For a page opened as `http://<your-lan-ip>:5501`, add exactly that origin.
 - For another person in your LAN to open the site, start the backend with `--host 0.0.0.0` (or `BACKEND_HOST=0.0.0.0`) and start the frontend with `python -m http.server 5501 --bind 0.0.0.0`.
 - If Windows Defender Firewall prompts, allow Python on Private networks or the other device still will not connect.
@@ -243,6 +265,9 @@ UNISEARCH_API_BASE_URL=https://api.example.com
 # or same-domain reverse-proxy
 # UNISEARCH_API_BASE_URL=/api
 
+# optional for local same-host dev when backend is not on 8000
+UNISEARCH_API_PORT=8000
+
 UNISEARCH_USE_PRETTY_URLS=true
 ```
 
@@ -250,6 +275,10 @@ Generate `frontend/env.js`:
 ```bash
 npm run build:frontend-env
 ```
+
+Local dev behavior:
+- If `UNISEARCH_API_BASE_URL` is empty, the frontend uses the same host as the page and `UNISEARCH_API_PORT` (or `BACKEND_PORT`) for API calls.
+- Example: frontend on `http://192.168.1.20:5600` and backend on `http://192.168.1.20:9000` works after setting `FRONTEND_PORT=5600`, `BACKEND_PORT=9000`, and matching `FRONTEND_ORIGIN` / `FRONTEND_ORIGINS`.
 
 ## Data maintenance and provenance
 The project is intentionally conservative about university facts.
@@ -431,6 +460,6 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Latest release:
-- `2.6.0` on `2026-03-30`
+- `2.6.1` on `2026-03-30`
 - focus: manual admission-track selection with cached user override for `UniChance` and `UniFit`
 - status: current release

@@ -7,13 +7,13 @@
   const isDevStaticHost = !isLocal && ["5501", "5510"].includes(port) && !!host;
 
   const apiBaseFromEnv = String(env.API_BASE_URL || "").trim();
-  // On local static serving, use the same host with backend port 8000.
+  const apiPortFromEnv = String(env.API_PORT || "").trim() || "8000";
+  const inferredLocalApiBase = `${location.protocol}//${host || "127.0.0.1"}:${apiPortFromEnv}`;
+  // On local static serving, use the same host with the configured backend port.
   // For production/non-dev hosts, keep reverse-proxy /api unless env.js overrides it.
-  w.API_BASE_URL = apiBaseFromEnv || (isLocal
-    ? "http://127.0.0.1:8000"
-    : (isDevStaticHost ? `${location.protocol}//${host}:8000` : "/api"));
+  w.API_BASE_URL = apiBaseFromEnv || ((isLocal || isDevStaticHost) ? inferredLocalApiBase : "/api");
 
-  w.APP_VERSION = "2.6.0";
+  w.APP_VERSION = "2.6.1";
 
   const debugRaw = env.APP_DEBUG;
   if (typeof debugRaw === "boolean") {
@@ -30,7 +30,9 @@
     const prettyText = String(prettyRaw ?? "").trim().toLowerCase();
     if (["1", "true", "yes", "on"].includes(prettyText)) w.APP_USE_PRETTY_URLS = true;
     else if (["0", "false", "no", "off"].includes(prettyText)) w.APP_USE_PRETTY_URLS = false;
-    else w.APP_USE_PRETTY_URLS = !isLocal;
+    // Plain local static servers (localhost or LAN IP on dev ports) do not
+    // rewrite pretty URLs like /universities -> /universities.html.
+    else w.APP_USE_PRETTY_URLS = !(isLocal || isDevStaticHost);
   }
 })(window);
 

@@ -1,6 +1,7 @@
 /* 1. utils.js - Базовые настройки, утилиты и работа с профилем */
 
-export const API_BASE = window.API_BASE_URL || "http://127.0.0.1:8000";
+const inferredApiBase = `${window.location?.protocol || "http:"}//${window.location?.hostname || "127.0.0.1"}:8000`;
+export const API_BASE = window.API_BASE_URL || inferredApiBase;
 const AI_DEFAULTS = { fit: "UniFit", chance: "UniChance" };
 export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
 

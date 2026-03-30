@@ -47,7 +47,7 @@ def _parse_frontend_origins() -> list[str]:
 FRONTEND_ORIGINS = _parse_frontend_origins()
 # Backward-compatible single-origin export for old imports.
 FRONTEND_ORIGIN = FRONTEND_ORIGINS[0]
-APP_VERSION = os.getenv("APP_VERSION", "2.6.0").strip() or "2.6.0"
+APP_VERSION = os.getenv("APP_VERSION", "2.6.1").strip() or "2.6.1"
 BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 try:
     BACKEND_PORT = int(os.getenv("BACKEND_PORT", "8000") or 8000)
