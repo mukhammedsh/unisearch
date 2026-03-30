@@ -32,7 +32,10 @@ export function usePrettyUrls() {
   if (typeof window === "undefined") return true;
   if (typeof window.APP_USE_PRETTY_URLS === "boolean") return window.APP_USE_PRETTY_URLS;
   const host = String(window.location?.hostname || "").toLowerCase();
-  return !LOCAL_HOSTS.has(host);
+  const port = String(window.location?.port || "").trim();
+  const isLocal = LOCAL_HOSTS.has(host);
+  const isDevStaticHost = !isLocal && ["5501", "5510"].includes(port) && !!host;
+  return !(isLocal || isDevStaticHost);
 }
 
 export function routeHome(queryOrParams = "") {
