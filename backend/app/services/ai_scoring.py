@@ -667,6 +667,43 @@ def _track_key(track: Dict[str, Any], idx: int) -> str:
     return f"track:{idx}"
 
 
+def _normalize_selected_admission_tracks(profile: Dict[str, Any]) -> Dict[str, str]:
+    if not isinstance(profile, dict):
+        return {}
+    raw = profile.get("selectedAdmissionTracks")
+    if not isinstance(raw, dict):
+        raw = profile.get("selected_admission_tracks")
+    if not isinstance(raw, dict):
+        return {}
+    out: Dict[str, str] = {}
+    for uni_id, track_key in raw.items():
+        uni = str(uni_id or "").strip()
+        track = str(track_key or "").strip()
+        if uni and track:
+            out[uni] = track
+    return out
+
+
+def _selected_track_key_for_university(profile: Dict[str, Any], university: Dict[str, Any]) -> str:
+    selections = _normalize_selected_admission_tracks(profile)
+    uni_id = str((university or {}).get("id") or "").strip()
+    if not uni_id:
+        return ""
+    return str(selections.get(uni_id) or "").strip()
+
+
+def _track_result_by_key(rows: List[Dict[str, Any]], track_key: Any) -> Optional[Dict[str, Any]]:
+    wanted = str(track_key or "").strip()
+    if not wanted:
+        return None
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("trackKey") or "").strip() == wanted:
+            return row
+    return None
+
+
 def _chance_level(chance_pct: float) -> Dict[str, str]:
     if chance_pct >= 80:
         return {"id": "high", "label": "High chance"}
@@ -947,6 +984,16 @@ def sort_universities_ai(
         if not isinstance(row, dict):
             continue
         row_id = str(row.get("id") or "").strip()
+        tracks = row.get("admission_tracks")
+        if not isinstance(tracks, list) or not tracks:
+            tracks = [{"id": "default", "label": "Standard", "requirements": {}, "stats_avg": {}, "scholarships": []}]
+        tracks = [t for t in tracks if isinstance(t, dict)]
+        selected_track_key = _selected_track_key_for_university(profile, row)
+        selected_track = None
+        for idx, track in enumerate(tracks):
+            if _track_key(track, idx) == selected_track_key:
+                selected_track = track
+                break
         uni_factors = _extract_university_factors(row)
         total_distance, distance_deltas = _distance_breakdown(user_pref, uni_factors)
         preference_mismatch = _clamp01(
@@ -959,6 +1006,10 @@ def sort_universities_ai(
         )
         chance_general = estimate_uni_chance(row, profile_any)
         chance_grant = estimate_uni_chance(row, profile_grant)
+        general_track_results = chance_general.get("tracks") if isinstance(chance_general.get("tracks"), list) else []
+        grant_track_results = chance_grant.get("tracks") if isinstance(chance_grant.get("tracks"), list) else []
+        selected_general_track = _track_result_by_key(general_track_results, selected_track_key)
+        selected_grant_track = _track_result_by_key(grant_track_results, selected_track_key)
         general_chance01 = _clamp01((_to_num(chance_general.get("overallChance")) or 0.0) / 100.0)
         grant_chance01 = _clamp01((_to_num(chance_grant.get("overallChance")) or 0.0) / 100.0)
         if finance_pref < 0.5:
@@ -970,6 +1021,15 @@ def sort_universities_ai(
         else:
             selected_chance01 = _clamp01((grant_chance01 + general_chance01) / 2.0)
             selected_chance_type = "balanced"
+        selected_by_user = bool(chance_general.get("selectedByUser")) and selected_track is not None and selected_general_track is not None
+        if selected_by_user:
+            selected_chance01 = _clamp01((_to_num(selected_general_track.get("chancePercent")) or 0.0) / 100.0)
+            selected_track_funding_type = _get_track_funding_type(selected_track)
+            selected_chance_type = "grant" if selected_track_funding_type == "grant" else "general"
+            if selected_track_funding_type == "grant":
+                grant_chance01 = _clamp01((_to_num((selected_grant_track or {}).get("chancePercent")) or 0.0) / 100.0)
+            else:
+                general_chance01 = selected_chance01
         admission_risk = _clamp01(1.0 - selected_chance01)
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
         if use_ml:
@@ -983,11 +1043,6 @@ def sort_universities_ai(
             final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
         hard_score = _clamp01(1.0 - preference_mismatch)
 
-        tracks = row.get("admission_tracks")
-        if not isinstance(tracks, list) or not tracks:
-            tracks = [{"id": "default", "label": "Standard", "requirements": {}, "stats_avg": {}, "scholarships": []}]
-        tracks = [t for t in tracks if isinstance(t, dict)]
-
         if not tracks:
             item = dict(row)
             item["matchData"] = {
@@ -995,6 +1050,8 @@ def sort_universities_ai(
                 "aidAny": False,
                 "aidEligible": False,
                 "grantName": "",
+                "trackKey": str(chance_general.get("bestTrackKey") or "default"),
+                "trackId": str(chance_general.get("bestTrackId") or "default"),
                 "trackLabel": "No matching track",
                 "missingRequiredEvidence": True,
                 "hardScore": hard_score,
@@ -1039,6 +1096,14 @@ def sort_universities_ai(
                 "mlQueryInputPreview": _preview_text(interest_text_raw),
                 "mlQueryOutputPreview": _preview_text(interest_text),
                 "mlQueryOutputLength": len(interest_text),
+                "recommendedTrackKey": str(chance_general.get("recommendedTrackKey") or chance_general.get("bestTrackKey") or ""),
+                "recommendedTrackId": str(chance_general.get("recommendedTrackId") or chance_general.get("bestTrackId") or ""),
+                "recommendedTrackLabel": str(chance_general.get("recommendedTrackLabel") or chance_general.get("bestTrackLabel") or ""),
+                "selectedTrackKey": str(chance_general.get("bestTrackKey") or ""),
+                "selectedTrackId": str(chance_general.get("bestTrackId") or ""),
+                "selectedTrackLabel": str(chance_general.get("bestTrackLabel") or ""),
+                "selectedByUser": selected_by_user,
+                "trackSelectionSource": "user" if selected_by_user else "recommended",
             }
             item["__ai_score"] = final_score
             item["__distance"] = preference_mismatch
@@ -1046,7 +1111,9 @@ def sort_universities_ai(
             continue
 
         best = None
-        for track in tracks:
+        selected_candidate = None
+        for idx, track in enumerate(tracks):
+            track_key = _track_key(track, idx)
             fit = _track_fit(track, ctx["userScores"], ctx["userLanguages"], lang_cfg, mode="sort")
             scholarships = track.get("scholarships", [])
             scholarships = scholarships if isinstance(scholarships, list) else []
@@ -1104,6 +1171,7 @@ def sort_universities_ai(
             amount = _to_num((eligible_scholar or {}).get("amount")) if isinstance(eligible_scholar, dict) else None
             final_price = max(0.0, cost - amount) if (aid_eligible and amount is not None) else cost
             match_data = {
+                "trackKey": track_key,
                 "trackId": str(track.get("id") or "track"),
                 "trackLabel": str(track.get("label") or "Standard"),
                 "finalPrice": final_price,
@@ -1170,9 +1238,24 @@ def sort_universities_ai(
             candidate = {"score": admit, "matchData": match_data}
             if best is None or float(candidate["score"]) > float(best["score"]):
                 best = candidate
+            if selected_by_user and track_key == selected_track_key:
+                selected_candidate = candidate
 
         item = dict(row)
-        item["matchData"] = (best or {}).get("matchData", {})
+        recommended_match = dict((best or {}).get("matchData", {}))
+        active_candidate = selected_candidate if selected_candidate is not None else best
+        active_match = dict((active_candidate or {}).get("matchData", {}))
+        recommended_track_key = str(recommended_match.get("trackKey") or "")
+        effective_selected_by_user = selected_candidate is not None and str(active_match.get("trackKey") or "") != recommended_track_key
+        active_match["recommendedTrackKey"] = recommended_track_key
+        active_match["recommendedTrackId"] = str(recommended_match.get("trackId") or "")
+        active_match["recommendedTrackLabel"] = str(recommended_match.get("trackLabel") or "")
+        active_match["selectedTrackKey"] = str(active_match.get("trackKey") or "")
+        active_match["selectedTrackId"] = str(active_match.get("trackId") or "")
+        active_match["selectedTrackLabel"] = str(active_match.get("trackLabel") or "")
+        active_match["selectedByUser"] = effective_selected_by_user
+        active_match["trackSelectionSource"] = "user" if effective_selected_by_user else "recommended"
+        item["matchData"] = active_match
         item["__ai_score"] = final_score
         item["__distance"] = preference_mismatch
         enriched.append(item)
@@ -1216,6 +1299,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
     entries = [{"track": t, "idx": i} for i, t in enumerate(tracks)]
     if funding_type != "any":
         entries = [row for row in entries if _get_track_funding_type(row["track"]) == funding_type]
+    selected_track_key = _selected_track_key_for_university(profile, university)
 
     has_evidence = bool(ctx["userScores"]) or any(
         isinstance(v, dict) and (bool(v.get("native")) or _to_num(v.get("cefr")) is not None or bool(v.get("exams")))
@@ -1237,17 +1321,28 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                     "details": {"academic": 0, "language": 0, "selectivity": 0, "affordability": 0, "feasibilityGate": 0, "conditionalRequirements": 0},
                 }
             )
-        best = per_track[0] if per_track else {"trackKey": "default", "trackId": "default", "trackLabel": "General admission"}
+        recommended = per_track[0] if per_track else {"trackKey": "default", "trackId": "default", "trackLabel": "General admission"}
+        user_selected = _track_result_by_key(per_track, selected_track_key)
+        selected_by_user = user_selected is not None and str(user_selected.get("trackKey") or "") != str(recommended.get("trackKey") or "")
+        best = user_selected if selected_by_user else recommended
         return {
             "overallChance": 0,
             "level": _chance_level(0),
             "bestTrackKey": best.get("trackKey"),
             "bestTrackId": best.get("trackId"),
             "bestTrackLabel": best.get("trackLabel"),
+            "recommendedTrackKey": recommended.get("trackKey"),
+            "recommendedTrackId": recommended.get("trackId"),
+            "recommendedTrackLabel": recommended.get("trackLabel"),
+            "selectedTrackKey": best.get("trackKey"),
+            "selectedTrackId": best.get("trackId"),
+            "selectedTrackLabel": best.get("trackLabel"),
             "tracks": per_track,
             "missingEvidence": True,
             "conditional": True,
             "fundingType": funding_type,
+            "selectedByUser": selected_by_user,
+            "trackSelectionSource": "user" if selected_by_user else "recommended",
         }
 
     if not entries:
@@ -1257,10 +1352,18 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             "bestTrackKey": "none",
             "bestTrackId": "",
             "bestTrackLabel": "No tracks for selected funding type",
+            "recommendedTrackKey": "none",
+            "recommendedTrackId": "",
+            "recommendedTrackLabel": "No tracks for selected funding type",
+            "selectedTrackKey": "none",
+            "selectedTrackId": "",
+            "selectedTrackLabel": "No tracks for selected funding type",
             "tracks": [],
             "missingEvidence": False,
             "conditional": False,
             "fundingType": funding_type,
+            "selectedByUser": False,
+            "trackSelectionSource": "recommended",
         }
 
     per_track = []
@@ -1308,23 +1411,34 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         )
 
     per_track.sort(key=lambda x: -int(x.get("chancePercent", 0)))
-    best = per_track[0] if per_track else {
+    recommended = per_track[0] if per_track else {
         "trackKey": "default",
         "trackId": "default",
         "trackLabel": "General admission",
         "chancePercent": 0,
         "level": _chance_level(0),
     }
+    user_selected = _track_result_by_key(per_track, selected_track_key)
+    selected_by_user = user_selected is not None and str(user_selected.get("trackKey") or "") != str(recommended.get("trackKey") or "")
+    best = user_selected if selected_by_user else recommended
     return {
         "overallChance": int(best.get("chancePercent", 0)),
         "level": best.get("level", _chance_level(0)),
         "bestTrackKey": best.get("trackKey"),
         "bestTrackId": best.get("trackId"),
         "bestTrackLabel": best.get("trackLabel"),
+        "recommendedTrackKey": recommended.get("trackKey"),
+        "recommendedTrackId": recommended.get("trackId"),
+        "recommendedTrackLabel": recommended.get("trackLabel"),
+        "selectedTrackKey": best.get("trackKey"),
+        "selectedTrackId": best.get("trackId"),
+        "selectedTrackLabel": best.get("trackLabel"),
         "tracks": per_track,
         "missingEvidence": False,
         "conditional": bool(best.get("conditional")),
         "fundingType": funding_type,
+        "selectedByUser": selected_by_user,
+        "trackSelectionSource": "user" if selected_by_user else "recommended",
     }
 
 

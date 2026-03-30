@@ -1138,6 +1138,49 @@
   overflow-wrap: anywhere;
 }
 
+.track-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.track-status-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.track-status-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  border: 1px solid transparent;
+}
+
+.track-status-badge--selected {
+  color: #3730a3;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.34);
+}
+
+.track-status-badge--recommended {
+  color: #92400e;
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.34);
+}
+
+.track-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
 .track-price {
   text-align: right;
   flex: 0 0 auto;
@@ -1167,6 +1210,32 @@
   font-size: 16px;
   font-weight: 800;
   color: #111;
+}
+
+.track-select-btn {
+  border: 1px solid rgba(87, 21, 219, 0.18);
+  background: rgba(87, 21, 219, 0.08);
+  color: var(--accent);
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.track-select-btn:hover:not(:disabled) {
+  background: rgba(87, 21, 219, 0.13);
+  border-color: rgba(87, 21, 219, 0.28);
+  transform: translateY(-1px);
+}
+
+.track-select-btn:disabled,
+.track-select-btn.is-active {
+  cursor: default;
+  background: rgba(16, 185, 129, 0.14);
+  color: #065f46;
+  border-color: rgba(16, 185, 129, 0.34);
 }
 
 .admission-empty-state {
@@ -2062,6 +2131,11 @@
     gap: 8px;
   }
 
+  .track-side {
+    width: 100%;
+    align-items: flex-start;
+  }
+
   .track-price {
     text-align: left;
   }
@@ -2642,6 +2716,18 @@
   color: #e5e7eb;
 }
 
+:root[data-theme="dark"] .track-status-badge--selected {
+  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(129, 140, 248, 0.36);
+}
+
+:root[data-theme="dark"] .track-status-badge--recommended {
+  color: #fcd34d;
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.34);
+}
+
 :root[data-theme="dark"] .track-desc,
 :root[data-theme="dark"] .track-major-all,
 :root[data-theme="dark"] .track-muted-italic,
@@ -2655,6 +2741,24 @@
   background: #1f242f;
   border-color: #374151;
   color: #dbe4f2;
+}
+
+:root[data-theme="dark"] .track-select-btn {
+  background: rgba(129, 140, 248, 0.12);
+  border-color: rgba(129, 140, 248, 0.28);
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .track-select-btn:hover:not(:disabled) {
+  background: rgba(129, 140, 248, 0.18);
+  border-color: rgba(129, 140, 248, 0.4);
+}
+
+:root[data-theme="dark"] .track-select-btn:disabled,
+:root[data-theme="dark"] .track-select-btn.is-active {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #a7f3d0;
 }
 
 :root[data-theme="dark"] .track-stats-box--min {

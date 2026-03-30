@@ -190,6 +190,44 @@ class AiScoringTests(unittest.TestCase):
         self.assertLessEqual(int(result.get("overallChance", 0)), 100)
         self.assertTrue(len(result.get("tracks", [])) >= 1)
 
+    def test_estimate_uni_chance_respects_user_selected_track_override(self):
+        university = {
+            "id": "manual-track-u",
+            "name": "Manual Track University",
+            "rank": 120,
+            "finance": {
+                "total_cost_year_usd": 18000,
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 50},
+            "admission_tracks": [
+                {
+                    "id": "safe",
+                    "label": "Safe Track",
+                    "requirements": {"GPA": 75},
+                    "stats_avg": {"GPA": 82},
+                },
+                {
+                    "id": "stretch",
+                    "label": "Stretch Track",
+                    "requirements": {"GPA": 95},
+                    "stats_avg": {"GPA": 98},
+                },
+            ],
+        }
+        profile = {
+            "gpa": 92,
+            "budget": 25000,
+            "selectedAdmissionTracks": {"manual-track-u": "stretch"},
+        }
+
+        result = estimate_uni_chance(university, profile)
+
+        self.assertEqual("stretch", str(result.get("bestTrackKey", "")))
+        self.assertEqual("safe", str(result.get("recommendedTrackKey", "")))
+        self.assertTrue(bool(result.get("selectedByUser")))
+        self.assertEqual("user", str(result.get("trackSelectionSource", "")))
+
     def test_language_exam_requirements_are_not_inferred_from_cefr(self):
         university = {
             "id": "eth-demo",
@@ -235,6 +273,58 @@ class AiScoringTests(unittest.TestCase):
         chance_c1 = estimate_uni_chance(university, profile_de_c1)
 
         self.assertLess(int(chance_b2.get("overallChance", 0)), int(chance_c1.get("overallChance", 0)))
+
+    def test_ai_sort_uses_user_selected_track_override(self):
+        items = [
+            {
+                "id": "u-manual",
+                "name": "Manual Choice University",
+                "rank": 80,
+                "finance": {"total_cost_year_usd": 22000, "financial_aid": {"merit_based": False, "need_based": False}},
+                "academics": {"acceptance_rate_percent": 45},
+                "factors": {
+                    "practice_vs_science": 0.5,
+                    "social_vs_hardcore": 0.5,
+                    "budget_vs_prestige": 0.5,
+                    "city_vs_campus": 0.5,
+                },
+                "admission_tracks": [
+                    {
+                        "id": "safe",
+                        "label": "Safe Track",
+                        "requirements": {"GPA": 75},
+                        "stats_avg": {"GPA": 82},
+                        "finance_override": {"total_cost_year_usd": 22000},
+                    },
+                    {
+                        "id": "stretch",
+                        "label": "Stretch Track",
+                        "requirements": {"GPA": 95},
+                        "stats_avg": {"GPA": 98},
+                        "finance_override": {"total_cost_year_usd": 12000},
+                    },
+                ],
+            }
+        ]
+        profile_auto = {"gpa": 92, "budget": 30000}
+        profile_manual = {
+            "gpa": 92,
+            "budget": 30000,
+            "selectedAdmissionTracks": {"u-manual": "stretch"},
+        }
+
+        auto_result = sort_universities_ai(items, profile=profile_auto, budget_vs_prestige=100, funding_type="any")
+        manual_result = sort_universities_ai(items, profile=profile_manual, budget_vs_prestige=100, funding_type="any")
+
+        auto_match = auto_result[0].get("matchData", {})
+        manual_match = manual_result[0].get("matchData", {})
+
+        self.assertEqual("safe", str(auto_match.get("trackKey", "")))
+        self.assertEqual("stretch", str(manual_match.get("trackKey", "")))
+        self.assertEqual("safe", str(manual_match.get("recommendedTrackKey", "")))
+        self.assertTrue(bool(manual_match.get("selectedByUser")))
+        self.assertEqual("user", str(manual_match.get("trackSelectionSource", "")))
+        self.assertLess(int(manual_match.get("selectedChance", 0)), int(auto_match.get("selectedChance", 0)))
 
     def test_jlpt_uses_best_lower_score_when_duplicate_exam_entries_exist(self):
         university = {

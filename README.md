@@ -1,6 +1,7 @@
 # UniSearch / UniFit / UniChance
 
 UniSearch is a full-stack web app for university discovery and decision support.
+Current version: `2.6.0`
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -45,6 +46,7 @@ If you just want the project running locally:
 
 ## Current highlights
 - Backend-first architecture for business logic and data delivery.
+- Users can now manually choose an admission track per university; the choice is cached locally and reused by both `UniChance` and `UniFit`.
 - University translation packs are served by backend (`/universities/translations`).
 - University media assets are stored in backend and served by API static routes.
 - Media variant naming is standardized to `small` and full-size variants.
@@ -165,7 +167,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.5.8
+APP_VERSION=2.6.0
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_ORIGIN=http://127.0.0.1:5501
@@ -429,6 +431,6 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Latest release:
-- `2.5.8` on `2026-03-25`
-- focus: official facts stabilization, admissions-source cleanup, and stronger provenance sync checks
-- status: work in progress tester build, not a finalized release yet
+- `2.6.0` on `2026-03-30`
+- focus: manual admission-track selection with cached user override for `UniChance` and `UniFit`
+- status: current release

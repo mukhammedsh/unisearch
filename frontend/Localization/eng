@@ -544,5 +544,9 @@ unifit.warning.cancel: Cancel
 unifit.warning.confirm: Okay I understand
 unifit.warning.desc: UniFit is more accurate when your profile includes exam or language scores.
 unifit.warning.title: Limited Profile Data
+admission.track.select: Select
+admission.track.selected: Selected
+admission.track.recommended: Recommended
+admission.track.select_tooltip: Select this admission track to use it for admission chance display and for UniFit ranking.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.

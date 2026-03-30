@@ -250,6 +250,7 @@ const PROFILE_DEFAULTS = {
     interests: "",
     studyMode: "Any",
     fundingType: "any",
+    selectedAdmissionTracks: {},
 };
 
 export let EXAM_CONFIG = {
@@ -751,6 +752,18 @@ export function loadProfileForApi() {
     })
     .filter(Boolean);
 
+  const selectedAdmissionTracks = profile?.selectedAdmissionTracks;
+  if (selectedAdmissionTracks && typeof selectedAdmissionTracks === "object" && !Array.isArray(selectedAdmissionTracks)) {
+    payload.selectedAdmissionTracks = Object.fromEntries(
+      Object.entries(selectedAdmissionTracks)
+        .map(([universityId, trackKey]) => [String(universityId || "").trim(), String(trackKey || "").trim()])
+        .filter(([universityId, trackKey]) => universityId && trackKey)
+    );
+  }
+  if (!payload.selectedAdmissionTracks || !Object.keys(payload.selectedAdmissionTracks).length) {
+    delete payload.selectedAdmissionTracks;
+  }
+
   if (!String(payload.interests || "").trim()) delete payload.interests;
   if (!String(payload.major || "").trim()) delete payload.major;
   if (!String(payload.name || "").trim()) delete payload.name;
@@ -782,6 +795,27 @@ export function saveProfile(p) {
 
 
 /* --- Сохранение фильтров (ОЧИЩЕНО) --- */
+export function getSelectedAdmissionTrack(universityId) {
+  const universityKey = String(universityId || "").trim();
+  if (!universityKey) return "";
+  const profile = loadProfile();
+  return String(profile?.selectedAdmissionTracks?.[universityKey] || "").trim();
+}
+
+export function saveSelectedAdmissionTrack(universityId, trackKey) {
+  const universityKey = String(universityId || "").trim();
+  if (!universityKey) return;
+  const profile = normalizeProfileData(loadProfile());
+  const selections = {
+    ...(profile.selectedAdmissionTracks && typeof profile.selectedAdmissionTracks === "object" ? profile.selectedAdmissionTracks : {}),
+  };
+  const normalizedTrackKey = String(trackKey || "").trim();
+  if (normalizedTrackKey) selections[universityKey] = normalizedTrackKey;
+  else delete selections[universityKey];
+  profile.selectedAdmissionTracks = selections;
+  saveProfile(profile);
+}
+
 const FILTERS_KEY = "unisearch_filters";
 let __filtersMemoryFallback = {};
 
@@ -1076,6 +1110,15 @@ export function normalizeProfileData(p) {
   if (fundingRaw === "grant" || fundingRaw === "paid") out.fundingType = fundingRaw;
   else out.fundingType = "any";
   out.interests = String(out.interests ?? "").trim().slice(0, 1200);
+  if (!out.selectedAdmissionTracks || typeof out.selectedAdmissionTracks !== "object" || Array.isArray(out.selectedAdmissionTracks)) {
+    out.selectedAdmissionTracks = {};
+  } else {
+    out.selectedAdmissionTracks = Object.fromEntries(
+      Object.entries(out.selectedAdmissionTracks)
+        .map(([universityId, trackKey]) => [String(universityId || "").trim(), String(trackKey || "").trim()])
+        .filter(([universityId, trackKey]) => universityId && trackKey)
+    );
+  }
 
   const gpaCfg = EXAM_CONFIG?.GPA || EXAM_CONFIG?.gpa || { min: 0, max: 100, step: 1 };
   const clampGpa = (v) => {

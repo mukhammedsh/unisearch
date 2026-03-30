@@ -79,8 +79,19 @@ class ProfilePayload(BaseModel):
     locale: Optional[str] = Field(default=None, max_length=16)
     studyMode: str = Field(default="", max_length=40)
     fundingType: str = Field(default="", max_length=20)
+    selectedAdmissionTracks: Dict[str, str] = Field(default_factory=dict)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: List[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_profile_aliases(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        data = dict(value)
+        if "selectedAdmissionTracks" not in data and isinstance(data.get("selected_admission_tracks"), dict):
+            data["selectedAdmissionTracks"] = data.get("selected_admission_tracks")
+        return data
 
     @field_validator("name", "major", "studyMode", "fundingType", mode="before")
     @classmethod
@@ -91,6 +102,19 @@ class ProfilePayload(BaseModel):
     @classmethod
     def _normalize_optional_text(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
+
+    @field_validator("selectedAdmissionTracks", mode="before")
+    @classmethod
+    def _normalize_selected_tracks(cls, value: Any) -> Dict[str, str]:
+        if not isinstance(value, dict):
+            return {}
+        out: Dict[str, str] = {}
+        for uni_id, track_key in value.items():
+            uni = _strip_or_none(uni_id)
+            track = _strip_or_none(track_key)
+            if uni and track:
+                out[uni] = track
+        return out
 
 
 class UniversitiesAiSortRequest(BaseModel):

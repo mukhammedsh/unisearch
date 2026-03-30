@@ -13,7 +13,7 @@
     ? "http://127.0.0.1:8000"
     : (isDevStaticHost ? `${location.protocol}//${host}:8000` : "/api"));
 
-  w.APP_VERSION = "2.5.8";
+  w.APP_VERSION = "2.6.0";
 
   const debugRaw = env.APP_DEBUG;
   if (typeof debugRaw === "boolean") {

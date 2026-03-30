@@ -2,6 +2,17 @@
 
 All notable project changes should be recorded here.
 
+## 2.6.0 (2026-03-30) - manual admission-track selection
+
+Status:
+- synchronized runtime/package version to `2.6.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
+- added manual admission-track selection in the university detail page:
+  - users can click `Select` on a specific admission track and keep that choice in local cached profile state per university;
+  - `UniChance` now uses the selected track for the displayed university-level chance summary instead of always forcing the auto-best chance track;
+  - `UniFit` now uses the selected track override for that university when computing ranking-facing chance and selected match data;
+  - the auto-recommended track stays visible as `Recommended`, so users can clear the override by returning to the recommended track.
+- added backend/profile support for `selectedAdmissionTracks`, including API payload normalization and rule-based scoring coverage for the new override behavior.
+
 ## 2.5.8 (2026-03-25, work in progress / tester build) - official facts stabilization and admissions-source cleanup
 
 Status:

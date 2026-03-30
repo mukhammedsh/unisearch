@@ -550,3 +550,7 @@ average_admitted_unavailable: Нет подтвержденных данных �
  Ð·Ð°ÑÐ¸ÑÐ»ÐµÐ½Ð½ÑÑ
 .
 roi.context.no_salary_data: Для этого университета нет подтвержденных данных о зарплатах выпускников.
+admission.track.select: Выбрать
+admission.track.selected: Выбрано
+admission.track.recommended: Рекомендовано
+admission.track.select_tooltip: Выбрать этот трек поступления, чтобы использовать его для отображения шанса поступить и для алгоритма UniFit.

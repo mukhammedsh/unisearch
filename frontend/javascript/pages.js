@@ -13,6 +13,7 @@ import {
   moneyUSD,
   loadProfile,
   loadProfileForApi,
+  saveSelectedAdmissionTrack,
   getFlagImg,
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
@@ -2770,6 +2771,12 @@ export async function initUniversityPage() {
                 if (admissionTrackFilter === "all") return true;
                 return getTrackFundingType(track) === admissionTrackFilter;
             });
+            const recommendedTrackKey = String(uniChance?.recommendedTrackKey || uniChance?.bestTrackKey || "").trim();
+            const activeTrackKey = String(uniChance?.bestTrackKey || "").trim();
+            const selectedTrackTooltip = t(
+                "admission.track.select_tooltip",
+                "Select this admission track to use it for admission chance display and for UniFit ranking."
+            );
             const totalTracks = tracks.length;
             const shownTracks = filteredEntries.length;
             const admissionFilterLabel = admissionTrackFilter === "grant"
@@ -2788,7 +2795,20 @@ export async function initUniversityPage() {
             </div>`;
 
             filteredEntries.forEach(({ track, idx }) => {
-                const trackChance = uniChanceByTrackKey.get(trackLookupKey(track, idx));
+                const trackKey = trackLookupKey(track, idx);
+                const trackChance = uniChanceByTrackKey.get(trackKey);
+                const isRecommendedTrack = Boolean(recommendedTrackKey && trackKey === recommendedTrackKey);
+                const isActiveTrack = Boolean(activeTrackKey && trackKey === activeTrackKey);
+                const selectionBadges = [];
+                if (isActiveTrack) {
+                    selectionBadges.push(`<span class="track-status-badge track-status-badge--selected">${escapeHtml(t("admission.track.selected", "Selected"))}</span>`);
+                }
+                if (isRecommendedTrack) {
+                    selectionBadges.push(`<span class="track-status-badge track-status-badge--recommended">${escapeHtml(t("admission.track.recommended", "Recommended"))}</span>`);
+                }
+                const selectionBadgeHtml = selectionBadges.length
+                    ? `<div class="track-status-badges">${selectionBadges.join("")}</div>`
+                    : "";
                 let majorsBadge = "";
                 if (track.applicable_majors && track.applicable_majors.length > 0) {
                     majorsBadge = `<div class="track-major-tags">
@@ -2894,20 +2914,37 @@ export async function initUniversityPage() {
 
                 const trackDescription = trTrackDescription(u.id, track.id, String(track.description || ""));
                 const trackLabel = trTrackLabel(String(track.label || "")) || unknownFieldText("placeholder.field.track_name", "Track name");
+                const selectButtonLabel = isActiveTrack
+                    ? t("admission.track.selected", "Selected")
+                    : t("admission.track.select", "Select");
+                const selectButtonClass = isActiveTrack ? "track-select-btn is-active" : "track-select-btn";
 
                 tracksHTML += `
                 <div class="track-card${isGrantTrack ? " track-card--grant" : ""}">
                     <div class="track-head">
                         <div class="track-head-main">
-                            <h4 class="track-title">${escapeHtml(trackLabel)}</h4>
+                            <div class="track-title-row">
+                                <h4 class="track-title">${escapeHtml(trackLabel)}</h4>
+                                ${selectionBadgeHtml}
+                            </div>
                             ${renderTrackFundingBadge(track)}
                             ${renderTrackChanceChip(trackChance)}
                             ${majorsBadge}
                             <p class="track-desc">${escapeHtml(trackDescription || unknownFieldText("placeholder.field.track_description", "Track description")).replace(/\n/g, "<br>")}</p>
                         </div>
-                        <div class="track-price">
-                            <div class="track-price-label">${trackPriceTitle}</div>
-                            <div class="track-price-value">${escapeHtml(trackPriceText)}</div>
+                        <div class="track-side">
+                            <div class="track-price">
+                                <div class="track-price-label">${trackPriceTitle}</div>
+                                <div class="track-price-value">${escapeHtml(trackPriceText)}</div>
+                            </div>
+                            <button
+                                class="${selectButtonClass}"
+                                type="button"
+                                data-track-select-key="${escapeHtml(trackKey)}"
+                                title="${escapeHtml(selectedTrackTooltip)}"
+                                aria-label="${escapeHtml(selectedTrackTooltip)}"
+                                ${isActiveTrack ? "disabled" : ""}
+                            >${escapeHtml(selectButtonLabel)}</button>
                         </div>
                     </div>
                     
@@ -2931,6 +2968,14 @@ export async function initUniversityPage() {
                 tracksHTML += `<div class="admission-empty-state">${escapeHtml(translateWord("no_tracks_selected_filter", "No tracks for selected filter."))}</div>`;
             }
             reqDiv.innerHTML = tracksHTML;
+            reqDiv.querySelectorAll("[data-track-select-key]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const trackKey = String(button.getAttribute("data-track-select-key") || "").trim();
+                    if (!trackKey) return;
+                    const nextTrackKey = trackKey === recommendedTrackKey ? "" : trackKey;
+                    saveSelectedAdmissionTrack(u.id, nextTrackKey);
+                });
+            });
         }
         applyPercentWidths(reqDiv);
     };

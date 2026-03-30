@@ -223,10 +223,25 @@ export function renderUniChanceSummary(uniChance) {
   }
   const chance = chanceRaw;
   const tone = chanceTone(chance);
-  const bestTrackRaw = String(uniChance.bestTrackLabel || "").trim();
-  const bestTrackLabel = bestTrackRaw
-    ? translateTrackLabel(bestTrackRaw, bestTrackRaw)
+  const activeTrackRaw = String(uniChance.bestTrackLabel || "").trim();
+  const activeTrackLabel = activeTrackRaw
+    ? translateTrackLabel(activeTrackRaw, activeTrackRaw)
     : translateUnknownWord("placeholder.field.best_track", "Best track");
+  const recommendedTrackRaw = String(uniChance.recommendedTrackLabel || uniChance.bestTrackLabel || "").trim();
+  const recommendedTrackLabel = recommendedTrackRaw
+    ? translateTrackLabel(recommendedTrackRaw, recommendedTrackRaw)
+    : translateUnknownWord("placeholder.field.best_track", "Best track");
+  const selectedByUser = Boolean(
+    uniChance?.selectedByUser
+    && String(uniChance?.bestTrackKey || "").trim()
+    && String(uniChance?.bestTrackKey || "").trim() !== String(uniChance?.recommendedTrackKey || "").trim()
+  );
+  const trackLabelTitle = selectedByUser
+    ? t("admission.track.selected", "Selected track")
+    : translateWord("best_track", "Best track");
+  const recommendationFoot = selectedByUser && recommendedTrackLabel && recommendedTrackLabel !== activeTrackLabel
+    ? ` • ${escapeHtml(t("admission.track.recommended", "Recommended"))}: <strong>${escapeHtml(recommendedTrackLabel)}</strong>`
+    : "";
   return `
       <div class="chance-panel">
         <div class="chance-head">
@@ -237,7 +252,7 @@ export function renderUniChanceSummary(uniChance) {
           <div class="chance-percent ${tone.cls}">${chance}%</div>
         </div>
         <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
-        <div class="chance-foot">${escapeHtml(translateWord("best_track", "Best track"))}: <strong>${escapeHtml(bestTrackLabel)}</strong> • ${escapeHtml(tone.label)}</div>
+        <div class="chance-foot">${escapeHtml(trackLabelTitle)}: <strong>${escapeHtml(activeTrackLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}</div>
       </div>
   `;
 }
