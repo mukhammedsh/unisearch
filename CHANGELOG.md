@@ -16,6 +16,8 @@ Status:
   - no-data admission states now render explicitly instead of collapsing to `0%`;
   - fallback chances are labeled as low confidence in the detail UI and per-track chips;
   - finance summary cards, price presentation, and localization handling were tightened to better match the updated detail layout.
+  - finance track total badges now use consistent full-width styling between paid and grant variants, while preserving grant-specific green visuals;
+  - admission track cards now have clearer spacing between entries in the detail page.
 - added backend and frontend regression coverage for the new behavior:
   - backend tests now cover score normalization, score-profile wiring, no-data handling, and updated `UniChance` responses;
   - frontend helper/config changes were aligned with the new exams and chance-model metadata.

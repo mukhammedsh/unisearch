@@ -1125,6 +1125,11 @@
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
 }
+
+.track-card + .track-card {
+  margin-top: 14px;
+}
+
 .track-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(87, 21, 219, 0.08) !important;
@@ -1785,22 +1790,25 @@
 
 .finance-total {
   text-align: left;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 2px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: #f5f0ff;
+  border: 1px solid #d8c9ff;
   border-radius: 12px;
-  padding: 8px 10px;
+  padding: 10px 12px;
 }
 .finance-total small { display: block; font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 0; }
 .finance-total span { font-size: 16px; font-weight: 900; color: var(--accent); }
 
 .finance-total--grant {
   background: #d1fae5;
-  border: 1px solid #86efac;
-  border-radius: 12px;
-  padding: 8px 10px;
+  border-color: #86efac;
 }
 
 .finance-total--grant small,
@@ -2395,6 +2403,11 @@
 
 :root[data-theme="dark"] .chance-percent-note {
   color: #fbbf24;
+}
+
+:root[data-theme="dark"] .finance-total {
+  background: #23163a;
+  border-color: #4c2ca8;
 }
 
 :root[data-theme="dark"] .finance-total--grant {
