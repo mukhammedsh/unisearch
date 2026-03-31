@@ -22,14 +22,18 @@ class ExamsApiTests(unittest.TestCase):
             "IB_DIPLOMA",
             "AP_TOTAL",
             "A_LEVEL_CERT",
+            "EGE",
             "SWISS_MATURITY_CERT",
             "GERMAN_ABITUR_CERT",
             "OSSD_CERT",
             "HKDSE_LEVEL",
+            "HKDSE_WEIGHTED_TOTAL",
             "UNT",
             "NUET",
         ):
             self.assertIn(key, data)
+        self.assertIn("normalization", data.get("SAT") or {})
+        self.assertEqual(1010, int(((data.get("SAT") or {}).get("normalization") or {}).get("p50", 0)))
 
     def test_validate_exam_accepts_valid_score(self):
         response = self.client.post(
@@ -60,6 +64,16 @@ class ExamsApiTests(unittest.TestCase):
         data = response.json()
         self.assertEqual("NUET", data.get("exam"))
         self.assertEqual(210, int(data.get("score")))
+
+    def test_validate_hkdse_weighted_total_accepts_decimal_score(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={"exam": "HKDSE_WEIGHTED_TOTAL", "score": 42.88},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("HKDSE_WEIGHTED_TOTAL", data.get("exam"))
+        self.assertAlmostEqual(42.88, float(data.get("score") or 0.0), places=2)
 
 
 if __name__ == "__main__":

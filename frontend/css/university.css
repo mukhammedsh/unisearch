@@ -959,6 +959,21 @@
   white-space: nowrap;
 }
 
+.chance-percent-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.chance-percent-note {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #92400e;
+  white-space: nowrap;
+}
+
 .chance-meter {
   margin-top: 10px;
   width: 100%;
@@ -1591,6 +1606,7 @@
 
 .finance-summary-right {
     flex: 0 0 300px; 
+    margin-top: 30px;
 }
 
 /* Зеленая карточка скидок */
@@ -1598,12 +1614,13 @@
     background: #ecfdf5; /* Светло-зеленый */
     border: 1px solid #10b981;
     border-radius: 12px;
-    padding: 20px;
+    padding: 16px 18px;
     height: auto; /* Высота по контенту */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 8px;
 }
 
 /* Синяя карточка общей цены */
@@ -1623,24 +1640,34 @@
 .price-header { 
     font-weight: 700; 
     color: var(--accent); 
-    margin-bottom: 8px; 
+    margin-bottom: 0; 
     font-size: 13px; 
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
+.price-inline-row {
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
 .price-big { 
-    font-size: 2.4rem; 
+    font-size: 2.2rem; 
     font-weight: 800; 
     color: var(--accent); 
-    line-height: 1;
+    line-height: 0.95;
 }
 
 .price-sub { 
-    font-size: 0.9rem; 
+    font-size: 0.95rem; 
     color: #6b7280; 
-    margin-top: 6px; 
+    margin-top: 0; 
     font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .price-prefix {
@@ -1756,9 +1783,18 @@
   overflow-wrap: anywhere;
 }
 
-.finance-total { text-align: left; }
-.finance-total small { display: block; font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
-.finance-total span { font-size: 20px; font-weight: 900; color: var(--accent); }
+.finance-total {
+  text-align: left;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+.finance-total small { display: block; font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 0; }
+.finance-total span { font-size: 16px; font-weight: 900; color: var(--accent); }
 
 .finance-total--grant {
   background: #d1fae5;
@@ -1993,6 +2029,9 @@
   .finance-summary-container { flex-direction: column; }
   .finance-summary-left { min-width: 0; width: 100%; }
   .finance-summary-right { flex: auto; width: 100%; }
+  .finance-summary-right { margin-top: 0; }
+  .price-inline-row { gap: 6px; }
+  .price-big { font-size: 2rem; }
 }
 
 .roi-box {
@@ -2352,6 +2391,10 @@
 :root[data-theme="dark"] .finance-total small,
 :root[data-theme="dark"] .finance-grant-list {
   color: var(--muted);
+}
+
+:root[data-theme="dark"] .chance-percent-note {
+  color: #fbbf24;
 }
 
 :root[data-theme="dark"] .finance-total--grant {

@@ -4,6 +4,7 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.settings import ML_INTEREST_TRANSLATION_DEBUG
+from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 from app.services.text_translation import translate_interest_text_for_ml
@@ -714,6 +715,171 @@ def _chance_level(chance_pct: float) -> Dict[str, str]:
     return {"id": "low", "label": "Low chance"}
 
 
+def _chance_locale(profile: Dict[str, Any]) -> str:
+    raw = str((profile or {}).get("locale") or (profile or {}).get("lang") or "").strip().lower()
+    return "rus" if raw.startswith("ru") else "eng"
+
+
+def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
+    labels = {
+        "eng": {
+            "missing_evidence": "Add exam scores or language evidence",
+            "missing_exam_score": "Add the exam used for this track",
+            "unsupported_exam_normalization": "Track score data is not yet comparable",
+            "no_score_profile": "No admitted-score data",
+        },
+        "rus": {
+            "missing_evidence": "Добавьте результаты экзаменов или языковые данные",
+            "missing_exam_score": "Добавьте результат экзамена для этого трека",
+            "unsupported_exam_normalization": "Пока нельзя корректно сопоставить ваш экзамен с этим треком",
+            "no_score_profile": "Нет данных о баллах принятых",
+        },
+    }
+    locale = _chance_locale(profile)
+    return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
+
+
+def _no_data_chance_level(profile: Dict[str, Any]) -> Dict[str, str]:
+    return {
+        "id": "no_data",
+        "label": "Нет данных" if _chance_locale(profile) == "rus" else "No data",
+    }
+
+
+def _normalize_exam_score(exam_type: Any, raw_score: Any) -> Optional[float]:
+    return exams_service.normalize_exam_score(exam_type, raw_score)
+
+
+def _track_score_profile(track: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    raw = track.get("score_profile")
+    if not isinstance(raw, dict):
+        return None
+    p25 = _to_num(raw.get("p25_normalized"))
+    median = _to_num(raw.get("median_normalized"))
+    p75 = _to_num(raw.get("p75_normalized"))
+    if p25 is None or median is None or p75 is None:
+        return None
+    out = dict(raw)
+    out["p25_normalized"] = float(p25)
+    out["median_normalized"] = float(median)
+    out["p75_normalized"] = float(p75)
+    return out
+
+
+def _resolve_user_normalized_track_score(
+    track: Dict[str, Any],
+    user_scores: Dict[str, Any],
+    user_languages: Dict[str, Any],
+) -> Dict[str, Any]:
+    score_profile = _track_score_profile(track)
+    if not isinstance(score_profile, dict):
+        return {"normalized": None, "exam_id": "", "reason": "no_score_profile"}
+
+    compatible_ids = score_profile.get("compatible_exam_ids")
+    if not isinstance(compatible_ids, list):
+        compatible_ids = [score_profile.get("exam_id")]
+
+    saw_user_score = False
+    for raw_exam_id in compatible_ids:
+        exam_id = str(raw_exam_id or "").strip().upper()
+        if not exam_id:
+            continue
+        user_score = _get_user_score(user_scores, exam_id, user_languages)
+        if user_score is None:
+            continue
+        saw_user_score = True
+        normalized = _normalize_exam_score(exam_id, user_score)
+        if normalized is not None:
+            return {"normalized": float(normalized), "exam_id": exam_id, "reason": ""}
+
+    if saw_user_score:
+        return {"normalized": None, "exam_id": "", "reason": "unsupported_exam_normalization"}
+    return {"normalized": None, "exam_id": "", "reason": "missing_exam_score"}
+
+
+def _compute_score_profile_chance(
+    *,
+    university: Dict[str, Any],
+    track: Dict[str, Any],
+    user_norm: float,
+) -> Dict[str, Any]:
+    score_profile = _track_score_profile(track)
+    if not isinstance(score_profile, dict):
+        return {"chance01": None, "confidence": "no_data"}
+
+    p25 = float(score_profile["p25_normalized"])
+    median = float(score_profile["median_normalized"])
+    p75 = float(score_profile["p75_normalized"])
+
+    spreads = []
+    if p75 > p25:
+        spreads.append((p75 - p25) / 1.349)
+    if median > p25:
+        spreads.append((median - p25) / 0.67449)
+    if p75 > median:
+        spreads.append((p75 - median) / 0.67449)
+    std = max(sum(spreads) / len(spreads), 1.0) if spreads else 10.0
+
+    z = (float(user_norm) - median) / std
+    base_prob = 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+    acceptance_pct = (
+        _to_num(score_profile.get("acceptance_rate_percent"))
+        or _to_num(track.get("acceptance_rate_percent"))
+        or _acceptance_percent(university)
+        or 50.0
+    )
+    acceptance01 = _clamp01(float(acceptance_pct) / 100.0)
+    chance01 = _clamp01(base_prob * acceptance01 * 2.0)
+
+    return {
+        "chance01": float(chance01),
+        "rangeLowPercent": round(max(0.0, chance01 - 0.08) * 100.0, 1),
+        "rangeHighPercent": round(min(1.0, chance01 + 0.08) * 100.0, 1),
+        "confidence": str(score_profile.get("confidence") or "estimated"),
+        "acceptanceRatePercent": round(float(acceptance_pct), 2),
+    }
+
+
+def _compute_estimated_fallback_chance(
+    *,
+    academic: float,
+    language: float,
+    selectivity: float,
+    affordability: float,
+    feasibility_gate: float,
+    scholarship_boost: float,
+    missing_evidence: bool,
+    has_acceptance_data: bool,
+) -> Dict[str, Any]:
+    base = (
+        (0.62 * _clamp01(float(academic)))
+        + (0.20 * _clamp01(float(language)))
+        + (0.18 * _clamp01(float(affordability)))
+    )
+    selectivity_factor = _clamp(0.55 + (0.45 * _clamp01(float(selectivity))), 0.45, 1.0)
+    if not has_acceptance_data:
+        selectivity_factor *= 0.82
+    evidence_factor = 0.88 if missing_evidence else 1.0
+    chance01 = _clamp01(
+        (base * selectivity_factor * _clamp01(float(feasibility_gate)) * evidence_factor)
+        + (0.35 * max(0.0, float(scholarship_boost)))
+    )
+    spread = 0.18 if missing_evidence else 0.15
+    return {
+        "chance01": float(chance01),
+        "rangeLowPercent": round(max(0.0, chance01 - spread) * 100.0, 1),
+        "rangeHighPercent": round(min(1.0, chance01 + spread) * 100.0, 1),
+        "confidence": "low",
+    }
+
+
+def _chance_percent_value(value: Any) -> Optional[float]:
+    parsed = _to_num(value)
+    if parsed is None:
+        return None
+    return _clamp(float(parsed), 0.0, 100.0)
+
+
 def _preference01(value: Any, fallback: float = 50.0) -> float:
     return _clamp01(_to_num_default(value, fallback) / 100.0)
 
@@ -1010,26 +1176,40 @@ def sort_universities_ai(
         grant_track_results = chance_grant.get("tracks") if isinstance(chance_grant.get("tracks"), list) else []
         selected_general_track = _track_result_by_key(general_track_results, selected_track_key)
         selected_grant_track = _track_result_by_key(grant_track_results, selected_track_key)
-        general_chance01 = _clamp01((_to_num(chance_general.get("overallChance")) or 0.0) / 100.0)
-        grant_chance01 = _clamp01((_to_num(chance_grant.get("overallChance")) or 0.0) / 100.0)
+        actual_general_chance = _chance_percent_value(chance_general.get("overallChance"))
+        actual_grant_chance = _chance_percent_value(chance_grant.get("overallChance"))
+        general_chance01 = _clamp01(((actual_general_chance if actual_general_chance is not None else 50.0) / 100.0))
+        grant_chance01 = _clamp01(((actual_grant_chance if actual_grant_chance is not None else 50.0) / 100.0))
+        selected_actual_chance = None
         if finance_pref < 0.5:
             selected_chance01 = grant_chance01
             selected_chance_type = "grant"
+            selected_actual_chance = actual_grant_chance
         elif finance_pref > 0.5:
             selected_chance01 = general_chance01
             selected_chance_type = "general"
+            selected_actual_chance = actual_general_chance
         else:
             selected_chance01 = _clamp01((grant_chance01 + general_chance01) / 2.0)
             selected_chance_type = "balanced"
+            if actual_general_chance is not None and actual_grant_chance is not None:
+                selected_actual_chance = (actual_general_chance + actual_grant_chance) / 2.0
+            else:
+                selected_actual_chance = actual_general_chance if actual_general_chance is not None else actual_grant_chance
         selected_by_user = bool(chance_general.get("selectedByUser")) and selected_track is not None and selected_general_track is not None
         if selected_by_user:
-            selected_chance01 = _clamp01((_to_num(selected_general_track.get("chancePercent")) or 0.0) / 100.0)
             selected_track_funding_type = _get_track_funding_type(selected_track)
             selected_chance_type = "grant" if selected_track_funding_type == "grant" else "general"
             if selected_track_funding_type == "grant":
-                grant_chance01 = _clamp01((_to_num((selected_grant_track or {}).get("chancePercent")) or 0.0) / 100.0)
+                actual_grant_chance = _chance_percent_value((selected_grant_track or {}).get("chancePercent"))
+                grant_chance01 = _clamp01(((actual_grant_chance if actual_grant_chance is not None else 50.0) / 100.0))
+                selected_actual_chance = actual_grant_chance
+                selected_chance01 = grant_chance01
             else:
-                general_chance01 = selected_chance01
+                actual_general_chance = _chance_percent_value((selected_general_track or {}).get("chancePercent"))
+                general_chance01 = _clamp01(((actual_general_chance if actual_general_chance is not None else 50.0) / 100.0))
+                selected_actual_chance = actual_general_chance
+                selected_chance01 = general_chance01
         admission_risk = _clamp01(1.0 - selected_chance01)
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
         if use_ml:
@@ -1066,17 +1246,17 @@ def sort_universities_ai(
                 "distanceDeltas": distance_deltas,
                 "preferenceMismatch": preference_mismatch,
                 "admissionRisk": admission_risk,
-                "selectedChance": int(round(selected_chance01 * 100.0)),
+                "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
                 "selectedChanceType": selected_chance_type,
-                "grantChance": int(round(grant_chance01 * 100.0)),
-                "generalChance": int(round(general_chance01 * 100.0)),
+                "grantChance": int(round(actual_grant_chance)) if actual_grant_chance is not None else None,
+                "generalChance": int(round(actual_general_chance)) if actual_general_chance is not None else None,
                 "uiBadgeHints": _build_ui_badge_hints(
                     preference_mismatch=preference_mismatch,
                     conditional=False,
                     conditional_requirements=0,
                     selected_chance_type=selected_chance_type,
-                    grant_chance=int(round(grant_chance01 * 100.0)),
-                    general_chance=int(round(general_chance01 * 100.0)),
+                    grant_chance=actual_grant_chance,
+                    general_chance=actual_general_chance,
                 ),
                 "factors": uni_factors,
                 "userPreferences": user_pref,
@@ -1192,17 +1372,17 @@ def sort_universities_ai(
                 "distanceDeltas": distance_deltas,
                 "preferenceMismatch": preference_mismatch,
                 "admissionRisk": admission_risk,
-                "selectedChance": int(round(selected_chance01 * 100.0)),
+                "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
                 "selectedChanceType": selected_chance_type,
-                "grantChance": int(round(grant_chance01 * 100.0)),
-                "generalChance": int(round(general_chance01 * 100.0)),
+                "grantChance": int(round(actual_grant_chance)) if actual_grant_chance is not None else None,
+                "generalChance": int(round(actual_general_chance)) if actual_general_chance is not None else None,
                 "uiBadgeHints": _build_ui_badge_hints(
                     preference_mismatch=preference_mismatch,
                     conditional=bool(fit.get("conditional")),
                     conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
                     selected_chance_type=selected_chance_type,
-                    grant_chance=int(round(grant_chance01 * 100.0)),
-                    general_chance=int(round(general_chance01 * 100.0)),
+                    grant_chance=actual_grant_chance,
+                    general_chance=actual_general_chance,
                 ),
                 "factors": uni_factors,
                 "userPreferences": user_pref,
@@ -1305,50 +1485,10 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         isinstance(v, dict) and (bool(v.get("native")) or _to_num(v.get("cefr")) is not None or bool(v.get("exams")))
         for v in (ctx["userLanguages"] or {}).values()
     )
-    if not has_evidence:
-        per_track = []
-        for row in entries:
-            track = row["track"]
-            idx = int(row["idx"])
-            per_track.append(
-                {
-                    "trackKey": _track_key(track, idx),
-                    "trackId": str(track.get("id") or ""),
-                    "trackLabel": str(track.get("label") or f"Track {idx + 1}"),
-                    "chancePercent": 0,
-                    "level": _chance_level(0),
-                    "conditional": True,
-                    "details": {"academic": 0, "language": 0, "selectivity": 0, "affordability": 0, "feasibilityGate": 0, "conditionalRequirements": 0},
-                }
-            )
-        recommended = per_track[0] if per_track else {"trackKey": "default", "trackId": "default", "trackLabel": "General admission"}
-        user_selected = _track_result_by_key(per_track, selected_track_key)
-        selected_by_user = user_selected is not None and str(user_selected.get("trackKey") or "") != str(recommended.get("trackKey") or "")
-        best = user_selected if selected_by_user else recommended
-        return {
-            "overallChance": 0,
-            "level": _chance_level(0),
-            "bestTrackKey": best.get("trackKey"),
-            "bestTrackId": best.get("trackId"),
-            "bestTrackLabel": best.get("trackLabel"),
-            "recommendedTrackKey": recommended.get("trackKey"),
-            "recommendedTrackId": recommended.get("trackId"),
-            "recommendedTrackLabel": recommended.get("trackLabel"),
-            "selectedTrackKey": best.get("trackKey"),
-            "selectedTrackId": best.get("trackId"),
-            "selectedTrackLabel": best.get("trackLabel"),
-            "tracks": per_track,
-            "missingEvidence": True,
-            "conditional": True,
-            "fundingType": funding_type,
-            "selectedByUser": selected_by_user,
-            "trackSelectionSource": "user" if selected_by_user else "recommended",
-        }
-
     if not entries:
         return {
-            "overallChance": 0,
-            "level": _chance_level(0),
+            "overallChance": None,
+            "level": _no_data_chance_level(profile),
             "bestTrackKey": "none",
             "bestTrackId": "",
             "bestTrackLabel": "No tracks for selected funding type",
@@ -1359,11 +1499,16 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             "selectedTrackId": "",
             "selectedTrackLabel": "No tracks for selected funding type",
             "tracks": [],
-            "missingEvidence": False,
+            "missingEvidence": not has_evidence,
             "conditional": False,
             "fundingType": funding_type,
             "selectedByUser": False,
             "trackSelectionSource": "recommended",
+            "chanceAvailable": False,
+            "reason": "no_tracks",
+            "label": "Нет треков для выбранного типа финансирования"
+            if _chance_locale(profile) == "rus"
+            else "No tracks for the selected funding type",
         }
 
     per_track = []
@@ -1386,10 +1531,66 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         )
         scholarship_boost = 0.08 if bool(track.get("scholarships")) else 0.0
 
-        base = _clamp01((academic * 0.53) + (language * 0.24) + (selectivity * 0.13) + (affordability * 0.10))
         feasibility_gate = _clamp(1.0 - 0.78 * float(fit.get("failRatio", 0.0)), 0.18, 1.0)
-        chance01 = _clamp01(base * feasibility_gate + scholarship_boost)
-        chance_pct = int(round(chance01 * 100.0))
+        score_profile = _track_score_profile(track)
+        score_meta = {"normalized": None, "exam_id": "", "reason": "no_score_profile"}
+        normalized_user_score = _to_num(score_meta.get("normalized"))
+        no_data_reason = ""
+        chance_pct = None
+        range_low = None
+        range_high = None
+        confidence = "no_data"
+        chance_model = "none"
+
+        if not has_evidence:
+            no_data_reason = "missing_evidence"
+        else:
+            if isinstance(score_profile, dict):
+                score_meta = _resolve_user_normalized_track_score(track, ctx["userScores"], ctx["userLanguages"])
+                normalized_user_score = _to_num(score_meta.get("normalized"))
+                if normalized_user_score is None:
+                    no_data_reason = str(score_meta.get("reason") or "no_score_profile")
+                else:
+                    chance_meta = _compute_score_profile_chance(
+                        university=university,
+                        track=track,
+                        user_norm=float(normalized_user_score),
+                    )
+                    chance01_raw = _to_num(chance_meta.get("chance01"))
+                    if chance01_raw is None:
+                        no_data_reason = "no_score_profile"
+                    else:
+                        context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
+                        chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + scholarship_boost)
+                        chance_pct = int(round(chance01 * 100.0))
+                        range_low = chance_meta.get("rangeLowPercent")
+                        range_high = chance_meta.get("rangeHighPercent")
+                        confidence = str(chance_meta.get("confidence") or "estimated")
+                        chance_model = "official_score_profile"
+            else:
+                chance_meta = _compute_estimated_fallback_chance(
+                    academic=academic,
+                    language=language,
+                    selectivity=selectivity,
+                    affordability=affordability,
+                    feasibility_gate=feasibility_gate,
+                    scholarship_boost=scholarship_boost,
+                    missing_evidence=bool(fit.get("missingEvidence")),
+                    has_acceptance_data=_acceptance_percent(university) is not None,
+                )
+                chance01_raw = _to_num(chance_meta.get("chance01"))
+                if chance01_raw is None:
+                    no_data_reason = "no_score_profile"
+                else:
+                    chance01 = _clamp01(float(chance01_raw))
+                    chance_pct = int(round(chance01 * 100.0))
+                    range_low = chance_meta.get("rangeLowPercent")
+                    range_high = chance_meta.get("rangeHighPercent")
+                    confidence = str(chance_meta.get("confidence") or "low")
+                    chance_model = "estimated_fallback"
+        
+        if chance_pct is None:
+            chance_model = "none"
 
         per_track.append(
             {
@@ -1397,8 +1598,17 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                 "trackId": str(track.get("id") or ""),
                 "trackLabel": str(track.get("label") or f"Track {idx + 1}"),
                 "chancePercent": chance_pct,
-                "level": _chance_level(chance_pct),
+                "level": _chance_level(chance_pct) if chance_pct is not None else _no_data_chance_level(profile),
                 "conditional": bool(fit.get("conditional")),
+                "chanceAvailable": chance_pct is not None,
+                "reason": no_data_reason,
+                "label": _chance_no_data_label(no_data_reason, profile) if chance_pct is None else "",
+                "confidence": confidence,
+                "chanceModel": chance_model,
+                "rangeLowPercent": range_low,
+                "rangeHighPercent": range_high,
+                "scoreProfileExamId": str((score_profile or {}).get("exam_id") or ""),
+                "userExamId": str(score_meta.get("exam_id") or ""),
                 "details": {
                     "academic": int(round(academic * 100.0)),
                     "language": int(round(language * 100.0)),
@@ -1410,20 +1620,30 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             }
         )
 
-    per_track.sort(key=lambda x: -int(x.get("chancePercent", 0)))
+    per_track.sort(
+        key=lambda x: (
+            x.get("chancePercent") is None,
+            -float(_to_num(x.get("chancePercent")) or 0.0),
+            str(x.get("trackLabel") or ""),
+        )
+    )
     recommended = per_track[0] if per_track else {
         "trackKey": "default",
         "trackId": "default",
         "trackLabel": "General admission",
-        "chancePercent": 0,
-        "level": _chance_level(0),
+        "chancePercent": None,
+        "level": _no_data_chance_level(profile),
+        "chanceAvailable": False,
+        "reason": "no_score_profile",
+        "label": _chance_no_data_label("no_score_profile", profile),
+        "chanceModel": "none",
     }
     user_selected = _track_result_by_key(per_track, selected_track_key)
     selected_by_user = user_selected is not None and str(user_selected.get("trackKey") or "") != str(recommended.get("trackKey") or "")
     best = user_selected if selected_by_user else recommended
     return {
-        "overallChance": int(best.get("chancePercent", 0)),
-        "level": best.get("level", _chance_level(0)),
+        "overallChance": best.get("chancePercent"),
+        "level": best.get("level", _no_data_chance_level(profile)),
         "bestTrackKey": best.get("trackKey"),
         "bestTrackId": best.get("trackId"),
         "bestTrackLabel": best.get("trackLabel"),
@@ -1434,11 +1654,18 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         "selectedTrackId": best.get("trackId"),
         "selectedTrackLabel": best.get("trackLabel"),
         "tracks": per_track,
-        "missingEvidence": False,
+        "missingEvidence": not has_evidence,
         "conditional": bool(best.get("conditional")),
         "fundingType": funding_type,
         "selectedByUser": selected_by_user,
         "trackSelectionSource": "user" if selected_by_user else "recommended",
+        "chanceAvailable": bool(best.get("chanceAvailable")),
+        "reason": str(best.get("reason") or ""),
+        "label": str(best.get("label") or ""),
+        "confidence": str(best.get("confidence") or ""),
+        "chanceModel": str(best.get("chanceModel") or "none"),
+        "rangeLowPercent": best.get("rangeLowPercent"),
+        "rangeHighPercent": best.get("rangeHighPercent"),
     }
 
 

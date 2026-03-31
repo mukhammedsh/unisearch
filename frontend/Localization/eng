@@ -550,3 +550,8 @@ admission.track.recommended: Recommended
 admission.track.select_tooltip: Select this admission track to use it for admission chance display and for UniFit ranking.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
+admission.chance_method.profile_short: Profile-based
+admission.chance_method.profile_detail: Based on admitted-score profiles plus your language, affordability, and feasibility context.
+admission.chance_method.estimated_short: Estimated
+admission.chance_method.estimated_detail: Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles.
+admission.chance_accuracy.low: Low confidence

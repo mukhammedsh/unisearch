@@ -262,6 +262,7 @@ export let EXAM_CONFIG = {
         "TOEFL": {"min": 0, "max": 120, "type": "int", "step": 1},
         "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
         "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
+        "HKDSE_WEIGHTED_TOTAL": {"min": 0, "max": 47.25, "type": "float", "step": 0.01},
         "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
         "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
     };
@@ -292,6 +293,7 @@ async function loadExamConfig() {
           "TOEFL": {"min": 0, "max": 120, "type": "int", "step": 1},
           "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
           "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
+          "HKDSE_WEIGHTED_TOTAL": {"min": 0, "max": 47.25, "type": "float", "step": 0.01},
           "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
           "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
       };
@@ -423,6 +425,8 @@ const EXAM_KEY_ALIASES = {
   NUETTOTAL: ["NUET", "NUET_TOTAL"],
   TOEFL: ["TOEFL_IBT", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
   TOEFL_IBT: ["TOEFL", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
+  WEIGHTED_TOTAL: ["HKDSE_WEIGHTED_TOTAL"],
+  HKDSE_WEIGHTED_TOTAL: ["WEIGHTED_TOTAL"],
 };
 
 function canonicalExamKey(value) {
@@ -464,6 +468,7 @@ const EXAM_LABEL_OVERRIDES = {
   NUET_TOTAL: "NUET Total",
   AP_Total: "AP Total",
   IB_Diploma: "IB Diploma",
+  HKDSE_WEIGHTED_TOTAL: "HKDSE Weighted Total (CUHK JUPAS)",
   IELTS: "IELTS Academic",
   TOEFL_iBT_0_120: "TOEFL iBT (0‑120)",
   TOEFL_iBT_1_6: "TOEFL iBT (1‑6)",
@@ -492,6 +497,7 @@ const EXAM_LABELS_I18N = {
     IBDIPLOMA: "IB Diploma",
     ALEVELCERT: "A-Level Certificate",
     HKDSELEVEL: "HKDSE level",
+    HKDSEWEIGHTEDTOTAL: "HKDSE Weighted Total (CUHK JUPAS)",
     SWISSMATURITYCERT: "Swiss Maturity Certificate",
     GERMANABITURCERT: "German Abitur Certificate",
     OSSDCERT: "OSSD (Ontario Secondary School Diploma)",
@@ -512,6 +518,7 @@ const EXAM_LABELS_I18N = {
   },
   rus: {
     SAT: "SAT",
+    HKDSEWEIGHTEDTOTAL: "HKDSE weighted total (CUHK JUPAS)",
     ACT: "ACT",
     GPA: "GPA",
     UNT: "ЕНТ",

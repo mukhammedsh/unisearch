@@ -38,12 +38,16 @@ class PersonaUniChanceRegressionTests(unittest.TestCase):
                     self.assertIn("overallChance", data)
                     self.assertIn("tracks", data)
                     self.assertIn("missingEvidence", data)
-                    self.assertTrue(0 <= int(data.get("overallChance", 0)) <= 100)
+                    overall_chance = data.get("overallChance")
+                    if overall_chance is not None:
+                        self.assertTrue(0 <= float(overall_chance) <= 100)
                     self.assertIsInstance(data.get("tracks"), list)
                     self.assertEqual(expected_missing, bool(data.get("missingEvidence")))
 
                     for track in data.get("tracks", []):
-                        self.assertTrue(0 <= int(track.get("chancePercent", 0)) <= 100)
+                        chance_percent = track.get("chancePercent")
+                        if chance_percent is not None:
+                            self.assertTrue(0 <= float(chance_percent) <= 100)
                         self.assertIn("trackLabel", track)
                         self.assertIn("details", track)
 

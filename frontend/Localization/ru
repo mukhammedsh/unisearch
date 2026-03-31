@@ -554,3 +554,9 @@ admission.track.select: Выбрать
 admission.track.selected: Выбрано
 admission.track.recommended: Рекомендовано
 admission.track.select_tooltip: Выбрать этот трек поступления, чтобы использовать его для отображения шанса поступить и для алгоритма UniFit.
+admission.chance_method.profile_short: По профилю зачисленных
+admission.chance_method.profile_detail: На основе профиля баллов зачисленных, а также ваших языковых данных, бюджета и выполнимости требований.
+admission.chance_method.estimated_short: Оценочно
+admission.chance_method.estimated_detail: Оценка по опубликованным минимумам, средним значениям там, где они есть, языковым требованиям, селективности и бюджету. Точность ниже, чем у профиля баллов зачисленных.
+admission.chance_accuracy.low: РќРёР·РєР°СЏ С‚РѕС‡РЅРѕСЃС‚СЊ
+admission.chance_accuracy.low: Низкая точность

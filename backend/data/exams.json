@@ -4,7 +4,16 @@
     "max": 1600,
     "type": "int",
     "step": 10,
-    "notes": "Total score (EBRW+Math)."
+    "notes": "Total score (EBRW+Math).",
+    "normalization": {
+      "kind": "anchor_percentile",
+      "p50": 1010,
+      "top5_min": 1450,
+      "p50_percentile": 50,
+      "top5_percentile": 95,
+      "source": "College Board",
+      "source_note": "Claude research table shared by the team on 2026-03-31."
+    }
   },
   "ACT": {
     "min": 1,
@@ -24,14 +33,32 @@
     "max": 140,
     "type": "int",
     "step": 1,
-    "notes": "Kazakhstan Unified National Testing."
+    "notes": "Kazakhstan Unified National Testing.",
+    "normalization": {
+      "kind": "anchor_percentile",
+      "p50": 85,
+      "top5_min": 120,
+      "p50_percentile": 50,
+      "top5_percentile": 95,
+      "source": "Kazakhstan Ministry of Education statistics",
+      "source_note": "Claude research table shared by the team on 2026-03-31."
+    }
   },
   "NUET": {
     "min": 0,
     "max": 240,
     "type": "int",
     "step": 1,
-    "notes": "Nazarbayev University Entrance Test (total)."
+    "notes": "Nazarbayev University Entrance Test (total).",
+    "normalization": {
+      "kind": "anchor_percentile",
+      "p50": 120,
+      "top5_min": 204,
+      "p50_percentile": 50,
+      "top5_percentile": 95,
+      "source": "Nazarbayev University admissions",
+      "source_note": "Adapted from the shared Claude normalization table by scaling its ~0-100 NUET anchors to UniSearch's raw 0-240 NUET total range."
+    }
   },
   "AP_Total": {
     "min": 0,
@@ -45,14 +72,33 @@
     "max": 45,
     "type": "int",
     "step": 1,
-    "notes": "IB Diploma Programme total."
+    "notes": "IB Diploma Programme total.",
+    "normalization": {
+      "kind": "anchor_percentile",
+      "p50": 30,
+      "top5_min": 40,
+      "p50_percentile": 50,
+      "top5_percentile": 95,
+      "source": "IBO Statistics",
+      "source_note": "Claude research table shared by the team on 2026-03-31."
+    }
   },
   "A_LEVEL_CERT": {
     "min": 0,
     "max": 1,
     "type": "bool",
     "step": 1,
-    "notes": "GCE A-Level completion (0/1)."
+    "notes": "GCE A-Level completion (0/1).",
+    "normalization": {
+      "kind": "grade_band_reference",
+      "supports_user_scoring": false,
+      "grade_min": "U",
+      "grade_max": "A*A*A*",
+      "p50_grade": "BBB",
+      "top5_min_grade": "A*A*A",
+      "source": "Ofqual",
+      "source_note": "Reference-only until UniSearch collects actual A-Level grade strings instead of a certificate flag."
+    }
   },
   "HKDSE_LEVEL": {
     "min": 1,
@@ -60,6 +106,29 @@
     "type": "int",
     "step": 1,
     "notes": "HKDSE level scale (1-7). 5**=7, 5*=6."
+  },
+  "HKDSE_WEIGHTED_TOTAL": {
+    "min": 0,
+    "max": 47.25,
+    "type": "float",
+    "step": 0.01,
+    "notes": "CUHK JUPAS HKDSE weighted Best 5 total for published admission-grade tables."
+  },
+  "EGE": {
+    "min": 0,
+    "max": 100,
+    "type": "int",
+    "step": 1,
+    "notes": "Unified State Exam (Russia).",
+    "normalization": {
+      "kind": "anchor_percentile",
+      "p50": 55,
+      "top5_min": 88,
+      "p50_percentile": 50,
+      "top5_percentile": 95,
+      "source": "Rosobrnadzor",
+      "source_note": "Claude research table shared by the team on 2026-03-31."
+    }
   },
   "SWISS_MATURITY_CERT": {
     "min": 0,

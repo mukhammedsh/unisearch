@@ -1,5 +1,5 @@
 import { aiName, escapeHtml, getExamDisplayName, loadProfile } from "./utils.js";
-import { t } from "./i18n.js";
+import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
 const MAP_MARKER_IMG_ONERROR = "if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();";
@@ -188,6 +188,50 @@ export function chanceTone(chance) {
   return { cls: "chance-low", label: translateWord("low_chance", "Low chance") };
 }
 
+function parseChanceValue(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "string" && !value.trim()) return null;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function chanceModelShort(model) {
+  const raw = String(model || "").trim().toLowerCase();
+  if (raw === "estimated_fallback") {
+    return t("admission.chance_method.estimated_short", "Estimated");
+  }
+  if (raw === "official_score_profile") {
+    return t("admission.chance_method.profile_short", "Profile-based");
+  }
+  return "";
+}
+
+function chanceModelDetail(model) {
+  const raw = String(model || "").trim().toLowerCase();
+  if (raw === "estimated_fallback") {
+    return t(
+      "admission.chance_method.estimated_detail",
+      "Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles."
+    );
+  }
+  if (raw === "official_score_profile") {
+    return t(
+      "admission.chance_method.profile_detail",
+      "Based on admitted-score profiles plus your language, affordability, and feasibility context."
+    );
+  }
+  return "";
+}
+
+function chanceAccuracyNote(model) {
+  const raw = String(model || "").trim().toLowerCase();
+  if (raw === "estimated_fallback") {
+    if (getCurrentLanguage() === "rus") return "Низкая точность";
+    return t("admission.chance_accuracy.low", "Low confidence");
+  }
+  return "";
+}
+
 export function renderUniChanceSummary(uniChance) {
   if (!uniChance) {
     const chanceTitle = translateWord("admission_probability_title", "Admission Probability");
@@ -205,24 +249,32 @@ export function renderUniChanceSummary(uniChance) {
       </div>
     `;
   }
-  const chanceRaw = Number(uniChance.overallChance);
-  if (!Number.isFinite(chanceRaw)) {
+  const chanceRaw = parseChanceValue(uniChance?.overallChance);
+  if (chanceRaw === null) {
+    const noDataLabel = String(
+      uniChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
+    ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
     return `
       <div class="chance-panel">
         <div class="chance-head">
           <div>
             <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-            <div class="chance-sub">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>
+            <div class="chance-sub">${escapeHtml(noDataLabel)}</div>
           </div>
           <div class="chance-percent chance-low">?</div>
         </div>
         <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
-        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_track", "Best track"))}</div>
+        <div class="chance-foot">${escapeHtml(noDataLabel)}</div>
       </div>
     `;
   }
   const chance = chanceRaw;
   const tone = chanceTone(chance);
+  const chanceModel = String(uniChance?.chanceModel || "").trim();
+  const chanceSub = chanceModelDetail(chanceModel)
+    || translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.");
+  const chanceMethodShort = chanceModelShort(chanceModel);
+  const chanceAccuracy = chanceAccuracyNote(chanceModel);
   const activeTrackRaw = String(uniChance.bestTrackLabel || "").trim();
   const activeTrackLabel = activeTrackRaw
     ? translateTrackLabel(activeTrackRaw, activeTrackRaw)
@@ -247,12 +299,15 @@ export function renderUniChanceSummary(uniChance) {
         <div class="chance-head">
           <div>
             <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-            <div class="chance-sub">${escapeHtml(translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context."))}</div>
+            <div class="chance-sub">${escapeHtml(chanceSub)}</div>
           </div>
-          <div class="chance-percent ${tone.cls}">${chance}%</div>
+          <div class="chance-percent-wrap">
+            <div class="chance-percent ${tone.cls}">${chance}%</div>
+            ${chanceAccuracy ? `<div class="chance-percent-note">${escapeHtml(chanceAccuracy)}</div>` : ""}
+          </div>
         </div>
         <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
-        <div class="chance-foot">${escapeHtml(trackLabelTitle)}: <strong>${escapeHtml(activeTrackLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}</div>
+        <div class="chance-foot">${escapeHtml(trackLabelTitle)}: <strong>${escapeHtml(activeTrackLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}${chanceMethodShort ? ` • ${escapeHtml(chanceMethodShort)}` : ""}</div>
       </div>
   `;
 }
@@ -261,12 +316,19 @@ export function renderTrackChanceChip(trackChance) {
   if (!trackChance) {
     return `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
   }
-  const chance = Number(trackChance.chancePercent);
-  if (!Number.isFinite(chance)) {
-    return `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
+  const chance = parseChanceValue(trackChance?.chancePercent);
+  if (chance === null) {
+    const noDataLabel = String(
+      trackChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
+    ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
+    return `<div class="chance-track-chip">${escapeHtml(noDataLabel)}</div>`;
   }
   const tone = chanceTone(chance);
-  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
+  const chanceModel = String(trackChance?.chanceModel || "").trim().toLowerCase();
+  const suffix = chanceModel === "estimated_fallback"
+    ? ` • ${escapeHtml(chanceModelShort(chanceModel))}`
+    : "";
+  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%${suffix}</div>`;
 }
 
 export function renderTrackFundingBadge(track) {

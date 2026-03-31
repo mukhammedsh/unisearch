@@ -56,10 +56,13 @@ def _canonical_exam_key(exam_id: Any) -> str:
 
 
 EXAM_KEY_ALIASES = {
+    "ENT": ["UNT"],
     "NUET": ["NUET_TOTAL"],
     "NUET_TOTAL": ["NUET"],
     "TOEFL": ["TOEFL_IBT", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
     "TOEFL_IBT": ["TOEFL", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
+    "WEIGHTED_TOTAL": ["HKDSE_WEIGHTED_TOTAL"],
+    "HKDSE_WEIGHTED_TOTAL": ["WEIGHTED_TOTAL"],
 }
 
 
@@ -94,6 +97,93 @@ def resolve_exam_key(exam_id: Any) -> str:
 
 def _to_decimal(x: Any) -> Decimal:
     return Decimal(str(x).strip())
+
+
+def _to_float(value: Any) -> Optional[float]:
+    try:
+        if value is None or value == "":
+            return None
+        return float(value)
+    except Exception:
+        return None
+
+
+def _clamp(value: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, value))
+
+
+def _normalization_config(exam_key: Any) -> Dict[str, Any]:
+    ensure_exams_cache()
+    resolved = resolve_exam_key(exam_key)
+    cfg = EXAMS_CONFIG.get(resolved) if resolved else None
+    if not isinstance(cfg, dict):
+        return {}
+    normalization = cfg.get("normalization")
+    return normalization if isinstance(normalization, dict) else {}
+
+
+def exam_supports_percentile_normalization(exam_key: Any) -> bool:
+    normalization = _normalization_config(exam_key)
+    if not normalization:
+        return False
+    if str(normalization.get("kind") or "").strip().lower() != "anchor_percentile":
+        return False
+    return bool(normalization.get("supports_user_scoring", True))
+
+
+def normalize_exam_score(exam_key: Any, score_raw: Any) -> Optional[float]:
+    """
+    Normalize a raw exam score to a 0-100 percentile-like scale.
+
+    Preferred path uses anchor_percentile metadata from exams.json:
+    - min -> 0
+    - p50 -> p50_percentile (default 50)
+    - top5_min -> top5_percentile (default 95)
+    - max -> 100
+
+    Falls back to simple min/max scaling when percentile anchors are not
+    available but the exam is still numeric. This keeps legacy numeric exams
+    usable until better anchor data is added.
+    """
+    ensure_exams_cache()
+    resolved = resolve_exam_key(exam_key)
+    cfg = EXAMS_CONFIG.get(resolved) if resolved else None
+    if not isinstance(cfg, dict):
+        return None
+    if str(cfg.get("type") or "").strip().lower() == "bool":
+        return None
+
+    score = _to_float(score_raw)
+    mn = _to_float(cfg.get("min"))
+    mx = _to_float(cfg.get("max"))
+    if score is None or mn is None or mx is None or mx <= mn:
+        return None
+
+    normalization = _normalization_config(resolved)
+    if str(normalization.get("kind") or "").strip().lower() == "anchor_percentile":
+        p50 = _to_float(normalization.get("p50"))
+        top5_min = _to_float(normalization.get("top5_min"))
+        p50_pct = _to_float(normalization.get("p50_percentile"))
+        top5_pct = _to_float(normalization.get("top5_percentile"))
+        p50_pct = 50.0 if p50_pct is None else _clamp(p50_pct, 0.0, 100.0)
+        top5_pct = 95.0 if top5_pct is None else _clamp(top5_pct, p50_pct, 100.0)
+
+        if p50 is not None and top5_min is not None and mn <= p50 <= top5_min <= mx:
+            if score <= p50:
+                return _clamp(((score - mn) / max(p50 - mn, 1e-9)) * p50_pct, 0.0, 100.0)
+            if score <= top5_min:
+                return _clamp(
+                    p50_pct + ((score - p50) / max(top5_min - p50, 1e-9)) * (top5_pct - p50_pct),
+                    0.0,
+                    100.0,
+                )
+            return _clamp(
+                top5_pct + ((score - top5_min) / max(mx - top5_min, 1e-9)) * (100.0 - top5_pct),
+                0.0,
+                100.0,
+            )
+
+    return _clamp(((score - mn) / max(mx - mn, 1e-9)) * 100.0, 0.0, 100.0)
 
 
 def validate_exam_value(exam_key: str, score_raw: Any) -> Union[int, float]:

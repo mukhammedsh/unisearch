@@ -1,7 +1,7 @@
 # UniSearch / UniFit / UniChance
 
 UniSearch is a full-stack web app for university discovery and decision support.
-Current version: `2.7.0`
+Current version: `2.8.0`
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -189,7 +189,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.7.0
+APP_VERSION=2.8.0
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_HOST=127.0.0.1
@@ -463,6 +463,6 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Latest release:
-- `2.7.0` on `2026-03-31`
-- focus: admission-track scope cleanup, official ROI salary coverage, startup warmup threading, and i18n dropdown sync
+- `2.8.0` on `2026-03-31`
+- focus: score-profile-based UniChance, exam normalization, estimated fallback labeling, and finance detail UI polish
 - status: current release

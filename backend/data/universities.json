@@ -248,7 +248,25 @@
         "stats_avg": {
           "SAT": 1550
         },
-        "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/"
+        "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1520,
+          "median_raw": 1550,
+          "p75_raw": 1570,
+          "p25_normalized": 97.33,
+          "median_normalized": 98.33,
+          "p75_normalized": 99.0,
+          "acceptance_rate_percent": 4.56,
+          "confidence": "high",
+          "source_scope": "official_common_data_set",
+          "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/",
+          "source_note": "Official MIT Common Data Set 2024-25 publishes SAT Composite 25th, 50th, and 75th percentiles for admitted/enrolled first-year students.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       },
       {
         "id": "mit_regular-grant-need-based-aid",
@@ -284,7 +302,25 @@
         "stats_avg": {
           "SAT": 1550
         },
-        "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/"
+        "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1520,
+          "median_raw": 1550,
+          "p75_raw": 1570,
+          "p25_normalized": 97.33,
+          "median_normalized": 98.33,
+          "p75_normalized": 99.0,
+          "acceptance_rate_percent": 4.56,
+          "confidence": "high",
+          "source_scope": "official_common_data_set",
+          "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/",
+          "source_note": "Official MIT Common Data Set 2024-25 publishes SAT Composite 25th, 50th, and 75th percentiles for admitted/enrolled first-year students.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       }
     ],
     "verified_sources": [
@@ -1405,7 +1441,25 @@
         "stats_avg": {
           "SAT": 1540
         },
-        "stats_avg_source_url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period"
+        "stats_avg_source_url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1510,
+          "median_raw": 1540,
+          "p75_raw": 1570,
+          "p25_normalized": 97.0,
+          "median_normalized": 98.0,
+          "p75_normalized": 99.0,
+          "acceptance_rate_percent": 3.61,
+          "confidence": "estimated",
+          "source_scope": "official_middle_50_range",
+          "source_url": "https://admission.stanford.edu/apply/first-year/testing.html",
+          "source_note": "Stanford publishes SAT middle-50 range 1510-1570; median is estimated as the midpoint of the official range.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       },
       {
         "id": "stanford_standard-grant-need-based-aid",
@@ -1439,7 +1493,25 @@
         "stats_avg": {
           "SAT": 1540
         },
-        "stats_avg_source_url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period"
+        "stats_avg_source_url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1510,
+          "median_raw": 1540,
+          "p75_raw": 1570,
+          "p25_normalized": 97.0,
+          "median_normalized": 98.0,
+          "p75_normalized": 99.0,
+          "acceptance_rate_percent": 3.61,
+          "confidence": "estimated",
+          "source_scope": "official_middle_50_range",
+          "source_url": "https://admission.stanford.edu/apply/first-year/testing.html",
+          "source_note": "Stanford publishes SAT middle-50 range 1510-1570; median is estimated as the midpoint of the official range.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       }
     ],
     "verified_sources": [
@@ -1804,7 +1876,25 @@
         "stats_avg": {
           "SAT": 1550
         },
-        "stats_avg_source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf"
+        "stats_avg_source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1510,
+          "median_raw": 1550,
+          "p75_raw": 1580,
+          "p25_normalized": 97.0,
+          "median_normalized": 98.33,
+          "p75_normalized": 99.33,
+          "acceptance_rate_percent": 4.18,
+          "confidence": "estimated",
+          "source_scope": "official_common_data_set_section_percentiles",
+          "source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf",
+          "source_note": "Harvard CDS publishes SAT EBRW and Math 25th/50th/75th percentiles; composite profile is estimated by summing the official section percentiles.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       },
       {
         "id": "harvard_college-grant-financial-aid",
@@ -1841,7 +1931,25 @@
         "stats_avg": {
           "SAT": 1550
         },
-        "stats_avg_source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf"
+        "stats_avg_source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1510,
+          "median_raw": 1550,
+          "p75_raw": 1580,
+          "p25_normalized": 97.0,
+          "median_normalized": 98.33,
+          "p75_normalized": 99.33,
+          "acceptance_rate_percent": 4.18,
+          "confidence": "estimated",
+          "source_scope": "official_common_data_set_section_percentiles",
+          "source_url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf",
+          "source_note": "Harvard CDS publishes SAT EBRW and Math 25th/50th/75th percentiles; composite profile is estimated by summing the official section percentiles.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       }
     ],
     "verified_sources": [
@@ -3848,7 +3956,25 @@
           "Submit documents electronically via applicant portals or testing authorities"
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1450,
+          "median_raw": 1500,
+          "p75_raw": 1550,
+          "p25_normalized": 95.0,
+          "median_normalized": 96.67,
+          "p75_normalized": 98.33,
+          "acceptance_rate_percent": 74.33,
+          "confidence": "estimated",
+          "source_scope": "official_us_applicant_middle_50_range",
+          "source_url": "https://future.utoronto.ca/us-admissions/",
+          "source_note": "University of Toronto publishes a U.S.-applicant SAT middle-50 range of 1450-1550; median is estimated as the midpoint of the official range.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       },
       {
         "id": "uoft_general-grant-pearson-scholarship",
@@ -3879,7 +4005,25 @@
         "funding_type": "grant",
         "track_badge": "Grant",
         "funding_program": "Pearson Scholarship",
-        "funding_source": "merit"
+        "funding_source": "merit",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1450,
+          "median_raw": 1500,
+          "p75_raw": 1550,
+          "p25_normalized": 95.0,
+          "median_normalized": 96.67,
+          "p75_normalized": 98.33,
+          "acceptance_rate_percent": 74.33,
+          "confidence": "estimated",
+          "source_scope": "official_us_applicant_middle_50_range",
+          "source_url": "https://future.utoronto.ca/us-admissions/",
+          "source_note": "University of Toronto publishes a U.S.-applicant SAT middle-50 range of 1450-1550; median is estimated as the midpoint of the official range.",
+          "normalization_method": "exam_anchor_percentile"
+        }
       },
       {
         "id": "uoft_ossd",
@@ -7058,6 +7202,24 @@
         },
         "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
         "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average SAT = 1475 (embedded statistics deck on the official statistics FAQ page).",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1367.5,
+          "median_raw": 1475,
+          "p75_raw": 1517.5,
+          "p25_normalized": 86.56,
+          "median_normalized": 95.83,
+          "p75_normalized": 97.25,
+          "acceptance_rate_percent": 21.0,
+          "confidence": "estimated",
+          "source_scope": "official_min_avg_max_estimate",
+          "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+          "source_note": "Estimated from official 2025 School of Engineering and Digital Sciences SAT min/avg/max admitted values 1260/1475/1560 by taking midpoints between min-avg and avg-max.",
+          "normalization_method": "exam_anchor_percentile"
+        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -7100,6 +7262,24 @@
         },
         "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
         "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average SAT = 1475 (embedded statistics deck on the official statistics FAQ page).",
+        "score_profile": {
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1367.5,
+          "median_raw": 1475,
+          "p75_raw": 1517.5,
+          "p25_normalized": 86.56,
+          "median_normalized": 95.83,
+          "p75_normalized": 97.25,
+          "acceptance_rate_percent": 21.0,
+          "confidence": "estimated",
+          "source_scope": "official_min_avg_max_estimate",
+          "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+          "source_note": "Estimated from official 2025 School of Engineering and Digital Sciences SAT min/avg/max admitted values 1260/1475/1560 by taking midpoints between min-avg and avg-max.",
+          "normalization_method": "exam_anchor_percentile"
+        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -7221,6 +7401,24 @@
         "requirements": {
           "NUET": 120
         },
+        "score_profile": {
+          "exam_id": "NUET",
+          "compatible_exam_ids": [
+            "NUET"
+          ],
+          "p25_raw": 165.0,
+          "median_raw": 193.0,
+          "p75_raw": 211.5,
+          "p25_normalized": 74.11,
+          "median_normalized": 89.11,
+          "p75_normalized": 96.04,
+          "acceptance_rate_percent": 21.0,
+          "confidence": "estimated",
+          "source_scope": "official_min_avg_max_estimate",
+          "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+          "source_note": "Estimated from official 2025 School of Engineering and Digital Sciences NUET total min/avg/max admitted values 137/193/230 by taking midpoints between min-avg and avg-max.",
+          "normalization_method": "exam_anchor_percentile"
+        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -7252,6 +7450,24 @@
         "description": "NUET applicants compete in NU's combined NUFYP and undergraduate regular-admissions flow. Eligible applicants may receive an undergraduate grant offer, remain on the waitlist, or receive a fee-paying undergraduate offer; NUET applicants recommended for fee-paying undergraduate admission may request NUFYP under the Grant if seats are available.",
         "requirements": {
           "NUET": 120
+        },
+        "score_profile": {
+          "exam_id": "NUET",
+          "compatible_exam_ids": [
+            "NUET"
+          ],
+          "p25_raw": 165.0,
+          "median_raw": 193.0,
+          "p75_raw": 211.5,
+          "p25_normalized": 74.11,
+          "median_normalized": 89.11,
+          "p75_normalized": 96.04,
+          "acceptance_rate_percent": 21.0,
+          "confidence": "estimated",
+          "source_scope": "official_min_avg_max_estimate",
+          "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+          "source_note": "Estimated from official 2025 School of Engineering and Digital Sciences NUET total min/avg/max admitted values 137/193/230 by taking midpoints between min-avg and avg-max.",
+          "normalization_method": "exam_anchor_percentile"
         },
         "scholarships": [],
         "study_mode": "On-campus",

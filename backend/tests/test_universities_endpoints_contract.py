@@ -77,6 +77,33 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIsNotNone(grant_track)
         self.assertIn("Computer Science", grant_track.get("applicable_majors") or [])
 
+    def test_university_detail_includes_track_score_profile_when_available(self):
+        response = self.client.get("/universities/cuhk-hk-shatin")
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        tracks = [
+            track
+            for track in (data.get("admission_tracks") or [])
+            if isinstance(track, dict)
+        ]
+        self.assertTrue(tracks)
+
+        hkdse_track = next(
+            (
+                track
+                for track in tracks
+                if str(track.get("id") or "") == "cuhk_hkdse"
+            ),
+            None,
+        )
+        self.assertIsNotNone(hkdse_track)
+        score_profile = hkdse_track.get("score_profile") or {}
+        self.assertIn("p25_normalized", score_profile)
+        self.assertIn("median_normalized", score_profile)
+        self.assertIn("p75_normalized", score_profile)
+        self.assertEqual("HKDSE_WEIGHTED_TOTAL", score_profile.get("exam_id"))
+
     def test_university_assets_are_served_from_backend(self):
         university_id = self._first_university_id()
         self.assertTrue(university_id)
@@ -150,7 +177,9 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         chance_data = uni_chance.json()
         self.assertIn("overallChance", chance_data)
         self.assertIn("tracks", chance_data)
-        self.assertTrue(0 <= int(chance_data.get("overallChance", 0)) <= 100)
+        overall_chance = chance_data.get("overallChance")
+        if overall_chance is not None:
+            self.assertTrue(0 <= float(overall_chance) <= 100)
 
         roi = self.client.post(
             f"/universities/{university_id}/roi",

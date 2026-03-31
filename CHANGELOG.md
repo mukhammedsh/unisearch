@@ -2,6 +2,24 @@
 
 All notable project changes should be recorded here.
 
+## 2.8.0 (2026-03-31) - score-profile chance modeling, exam normalization, and finance UI polish
+
+Status:
+- synchronized runtime/package version to `2.8.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, `backend/.env.example`, and README examples.
+- upgraded `UniChance` from a single heuristic estimate to a two-mode model:
+  - official `score_profile` chance computation now uses normalized admitted-score bands where official percentile-style data exists for a track;
+  - estimated fallback mode now keeps `UniChance` available for the wider catalog when admitted-score profiles are unavailable, with lower-confidence labeling in the UI instead of fake precision.
+- expanded admissions-score normalization and score-profile data:
+  - added shared exam normalization support for ENT / EGE / SAT / IB / NUET and route-specific HKDSE weighted totals;
+  - added or derived score-profile support for covered admission tracks in the universities dataset, including Nazarbayev University and CUHK route handling.
+- improved university detail UX around admission probability and finance summary cards:
+  - no-data admission states now render explicitly instead of collapsing to `0%`;
+  - fallback chances are labeled as low confidence in the detail UI and per-track chips;
+  - finance summary cards, price presentation, and localization handling were tightened to better match the updated detail layout.
+- added backend and frontend regression coverage for the new behavior:
+  - backend tests now cover score normalization, score-profile wiring, no-data handling, and updated `UniChance` responses;
+  - frontend helper/config changes were aligned with the new exams and chance-model metadata.
+
 ## 2.7.0 (2026-03-31) - admission-track scope cleanup, ROI salary signals, and i18n polish
 
 Status:

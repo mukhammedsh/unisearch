@@ -3024,6 +3024,29 @@ export async function initUniversityPage() {
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo"); 
     const priceBig = document.getElementById("detailPrice");           
+    const syncFinanceSummaryCardHeights = () => {
+        const scholarshipCard = scholDiv;
+        const totalPriceCard = priceBig?.closest?.(".total-price-card") || null;
+        if (!scholarshipCard || !totalPriceCard) return;
+
+        scholarshipCard.style.minHeight = "";
+        totalPriceCard.style.minHeight = "";
+        if (window.innerWidth <= 768) return;
+
+        window.requestAnimationFrame(() => {
+            scholarshipCard.style.minHeight = "";
+            totalPriceCard.style.minHeight = "";
+            const targetHeight = Math.max(
+                scholarshipCard.offsetHeight || 0,
+                totalPriceCard.offsetHeight || 0,
+            );
+            if (targetHeight > 0) {
+                const value = `${targetHeight}px`;
+                scholarshipCard.style.minHeight = value;
+                totalPriceCard.style.minHeight = value;
+            }
+        });
+    };
     
     if (u.finance) {
         // Блок скидок
@@ -3055,6 +3078,7 @@ export async function initUniversityPage() {
                 ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`
                 : escapeHtml(unknownFieldText("placeholder.field.cost", "Cost"));
         }
+        syncFinanceSummaryCardHeights();
         
         // Карточки треков
         if (finDiv) {
@@ -3209,6 +3233,7 @@ export async function initUniversityPage() {
         if (finDiv) {
             finDiv.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
         }
+        syncFinanceSummaryCardHeights();
     }
 
     if (stateEl) stateEl.textContent = "";
