@@ -947,6 +947,26 @@ export function initCustomSelect(selectId) {
         });
     };
 
+    const rebuildCustomOptions = () => {
+        customOptions.innerHTML = "";
+        const optionsFragment = document.createDocumentFragment();
+        for (const option of select.options) {
+            const div = document.createElement("div");
+            div.classList.add("custom-option");
+            div.setAttribute("data-value", String(option.value || ""));
+            if (option.disabled) div.classList.add("is-disabled");
+            const val = option.value;
+            const text = option.text;
+            const flag = getFlagImg(val);
+            if (flag) div.innerHTML = `${flag} <span>${escapeHtml(text)}</span>`;
+            else div.textContent = text;
+
+            if (option.selected) div.classList.add("selected");
+            optionsFragment.appendChild(div);
+        }
+        customOptions.appendChild(optionsFragment);
+    };
+
     function updateTrigger() {
         const selectedOption = select.options[select.selectedIndex];
         if (!selectedOption) return;
@@ -965,23 +985,13 @@ export function initCustomSelect(selectId) {
         }
     }
 
-    customOptions.innerHTML = "";
-    const optionsFragment = document.createDocumentFragment();
-    for (const option of select.options) {
-        const div = document.createElement("div");
-        div.classList.add("custom-option");
-        div.setAttribute("data-value", String(option.value || ""));
-        if (option.disabled) div.classList.add("is-disabled");
-        const val = option.value;
-        const text = option.text;
-        const flag = getFlagImg(val);
-        if (flag) div.innerHTML = `${flag} <span>${escapeHtml(text)}</span>`;
-        else div.textContent = text;
+    const syncFromNativeSelect = () => {
+        rebuildCustomOptions();
+        updateTrigger();
+        syncSelectedOptionState();
+    };
 
-        if (option.selected) div.classList.add("selected");
-        optionsFragment.appendChild(div);
-    }
-    customOptions.appendChild(optionsFragment);
+    syncFromNativeSelect();
 
     if (customOptions.dataset.bound !== "1") {
         customOptions.dataset.bound = "1";
@@ -997,8 +1007,7 @@ export function initCustomSelect(selectId) {
             select.value = nextValue;
             if (changed) select.dispatchEvent(new Event("change"));
             else {
-                updateTrigger();
-                syncSelectedOptionState();
+                syncFromNativeSelect();
             }
             wrapper.classList.remove("open");
         });
@@ -1013,13 +1022,32 @@ export function initCustomSelect(selectId) {
         });
 
         select.addEventListener("change", () => {
-            updateTrigger();
-            syncSelectedOptionState();
+            syncFromNativeSelect();
         });
     }
 
-    updateTrigger();
-    syncSelectedOptionState();
+    if (!wrapper.__customSelectLanguageBound && typeof window !== "undefined") {
+        wrapper.__customSelectLanguageBound = true;
+        window.addEventListener("languageChanged", () => {
+            window.requestAnimationFrame(syncFromNativeSelect);
+        });
+    }
+
+    if (!wrapper.__customSelectObserver && typeof MutationObserver === "function") {
+        const observer = new MutationObserver(() => {
+            syncFromNativeSelect();
+        });
+        observer.observe(select, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+            attributeFilter: ["disabled", "label", "selected"],
+        });
+        wrapper.__customSelectObserver = observer;
+    }
+
+    syncFromNativeSelect();
 }
 
 export function getLangExamLimits(examId, LANG_CONFIG) {

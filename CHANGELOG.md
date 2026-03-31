@@ -2,6 +2,34 @@
 
 All notable project changes should be recorded here.
 
+## 2.7.0 (2026-03-31) - admission-track scope cleanup, ROI salary signals, and i18n polish
+
+Status:
+- synchronized runtime/package version to `2.7.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, `backend/.env.example`, and README examples.
+- tightened frontend-origin configuration around `FRONTEND_ORIGINS` only:
+  - removed legacy `FRONTEND_ORIGIN` fallback/export from backend settings and local runtime examples;
+  - aligned Docker and Playwright configs with the multi-origin env shape used by current local-dev and E2E flows;
+  - corrected README environment examples and notes so they document the current CORS/runtime contract consistently.
+- made startup warmup non-blocking:
+  - backend startup now schedules warmup in a background thread instead of waiting synchronously during app boot;
+  - added backend coverage to confirm the warmup thread is started only when startup warmup is enabled.
+- cleaned up university detail product scope for admission tracks and majors:
+  - backend now derives `applicable_majors` for admission tracks, localizes those labels, and includes them in the university detail payload;
+  - foundation-only programs, majors, study levels, and admissions rows are filtered out from the bachelor-facing product scope when mixed with regular undergraduate data;
+  - Nazarbayev University data now exposes separate NUET undergraduate tracks, adds the supporting policy source, and includes Russian translations for the new labels/descriptions.
+- expanded ROI salary coverage using official outcomes data:
+  - added official outcomes-based salary signals for MIT, NUS, CUHK, and University of Toronto in `backend/data/universities.json`;
+  - ROI API contract coverage now checks that supported universities no longer fall back to `no_salary_data`;
+  - the finance tab now hides the ROI block when no official salary data exists instead of showing an empty placeholder state.
+- polished university detail and filter UX:
+  - finance cards now use a roomier responsive layout and a simpler stacked header/legend arrangement;
+  - the university detail cache version was bumped so clients refresh derived admission-track scope changes immediately;
+  - custom selects now rebuild themselves when option text changes, which keeps translated dropdown labels in sync after a language switch;
+  - universities-page country/region/city filters now refresh localized option labels in place after UI language changes.
+- added regression coverage for the new behavior:
+  - backend tests cover derived track majors, foundation-track filtering, localized NUET text, startup warmup threading, and ROI salary-backed responses;
+  - Playwright coverage now includes custom-select i18n sync, localized universities filters, admission-track major chips, and the ROI-hidden-without-salary case.
+
 ## 2.6.1 (2026-03-30) - portable local-dev runtime and release alignment
 
 Status:

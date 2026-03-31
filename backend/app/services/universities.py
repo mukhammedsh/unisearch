@@ -49,6 +49,7 @@ def _norm_tag_key(value: Any) -> str:
 
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
+UNIVERSITY_DETAIL_REPR_VERSION = 2
 
 
 def _normalize_search_lang(value: Any) -> str:
@@ -283,6 +284,10 @@ def _localize_university_payload(university: Dict[str, Any], search_lang: Any) -
             track["label"] = _translate_track_label(track.get("label"), lang)
             track["track_badge"] = _translate_admission_text(track.get("track_badge"), lang)
             track["description"] = _translate_admission_text(track.get("description"), lang)
+            if isinstance(track.get("applicable_majors"), list):
+                track["applicable_majors"] = [
+                    _translate_program_name(x, lang) for x in track.get("applicable_majors", [])
+                ]
             if isinstance(track.get("study_mode"), (str, list)):
                 track["study_mode"] = _translate_maybe_list(
                     track.get("study_mode"),
@@ -740,6 +745,167 @@ def _iter_programs(u: Dict[str, Any]) -> List[Dict[str, Any]]:
     return [p for p in raw if isinstance(p, dict)]
 
 
+def _track_program_names(u: Dict[str, Any]) -> List[str]:
+    academics = u.get("academics")
+    academics_obj = academics if isinstance(academics, dict) else {}
+    names = [p.get("name") for p in _iter_programs(u)]
+    majors = academics_obj.get("majors")
+    if isinstance(majors, list):
+        names.extend(majors)
+    return _uniq_non_empty(names)
+
+
+def _is_foundation_program_name(value: Any) -> bool:
+    text = _normalize_major_text(value)
+    return bool(text) and (
+        _contains_phrase(text, "foundation")
+        or _contains_phrase(text, "nufyp")
+        or _contains_phrase(text, "preparatory")
+    )
+
+
+def _track_targets_foundation(blob: str) -> bool:
+    return bool(blob) and any(
+        token in blob for token in ("foundation", "nufyp", "preparatory")
+    )
+
+
+def _track_targets_undergraduate(blob: str) -> bool:
+    return bool(blob) and any(
+        token in blob
+        for token in (
+            "undergraduate",
+            "direct admission",
+            "sat",
+            "act",
+            "olympiad",
+            "transfer",
+            "mid year",
+            "mid-year",
+            "bachelor",
+        )
+    )
+
+
+def _derive_track_applicable_majors(u: Dict[str, Any], track: Dict[str, Any]) -> List[str]:
+    explicit = track.get("applicable_majors")
+    if isinstance(explicit, list) and explicit:
+        return _uniq_non_empty(explicit)
+
+    program_names = _track_program_names(u)
+    if not program_names:
+        return []
+
+    blob_parts: List[Any] = [
+        track.get("id"),
+        track.get("label"),
+        track.get("description"),
+    ]
+    extra_requirements = track.get("extra_requirements")
+    if isinstance(extra_requirements, list):
+        blob_parts.extend(extra_requirements)
+    blob = _normalize_major_text(" ".join(str(part or "") for part in blob_parts))
+
+    matched_programs = [
+        name
+        for name in program_names
+        if _contains_phrase(blob, _normalize_major_text(name))
+    ]
+    matched_programs = _uniq_non_empty(matched_programs)
+    if matched_programs:
+        return matched_programs
+
+    foundation_programs = [name for name in program_names if _is_foundation_program_name(name)]
+    non_foundation_programs = [
+        name for name in program_names if not _is_foundation_program_name(name)
+    ]
+
+    if foundation_programs and non_foundation_programs:
+        if _track_targets_undergraduate(blob):
+            return non_foundation_programs
+        if _track_targets_foundation(blob):
+            return foundation_programs
+        return non_foundation_programs
+    if foundation_programs and _track_targets_foundation(blob):
+        return foundation_programs
+
+    return program_names
+
+
+def _should_keep_track_for_product_scope(u: Dict[str, Any], track: Dict[str, Any]) -> bool:
+    majors = track.get("applicable_majors")
+    if not isinstance(majors, list) or not majors:
+        return True
+
+    major_names = _uniq_non_empty(majors)
+    if not major_names:
+        return True
+
+    has_non_foundation_program = any(
+        not _is_foundation_program_name(name) for name in _track_program_names(u)
+    )
+    if not has_non_foundation_program:
+        return True
+
+    return not all(_is_foundation_program_name(name) for name in major_names)
+
+
+def _is_foundation_study_level(value: Any) -> bool:
+    return _contains_phrase(_normalize_major_text(value), "foundation")
+
+
+def _is_foundation_program_row(program: Dict[str, Any]) -> bool:
+    if not isinstance(program, dict):
+        return False
+
+    if _is_foundation_program_name(program.get("name")):
+        return True
+
+    levels = program.get("study_levels")
+    if isinstance(levels, list) and any(_is_foundation_study_level(level) for level in levels):
+        return True
+    if levels is not None and _is_foundation_study_level(levels):
+        return True
+
+    return False
+
+
+def _filter_academics_for_product_scope(academics: Dict[str, Any]) -> None:
+    if not isinstance(academics, dict):
+        return
+
+    programs = academics.get("programs")
+    if isinstance(programs, list):
+        academics["programs"] = [
+            program
+            for program in programs
+            if isinstance(program, dict) and not _is_foundation_program_row(program)
+        ]
+
+    majors = academics.get("majors")
+    if isinstance(majors, list):
+        academics["majors"] = [
+            major for major in majors if not _is_foundation_program_name(major)
+        ]
+
+    study_levels = academics.get("study_levels")
+    if isinstance(study_levels, list):
+        academics["study_levels"] = [
+            level for level in study_levels if not _is_foundation_study_level(level)
+        ]
+
+    admissions = academics.get("admissions")
+    if isinstance(admissions, dict):
+        admissions_programs = admissions.get("programs")
+        if isinstance(admissions_programs, list):
+            admissions["programs"] = [
+                row
+                for row in admissions_programs
+                if isinstance(row, dict)
+                and not _is_foundation_program_name(row.get("program_name") or row.get("name"))
+            ]
+
+
 def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
     """
     Adds backward-compatible academics fields for the new DB structure:
@@ -794,6 +960,21 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
                 vals.append(v)
         if vals:
             academics["acceptance_rate_percent"] = round(sum(vals) / len(vals), 2)
+
+    tracks = u.get("admission_tracks")
+    if isinstance(tracks, list):
+        kept_tracks: List[Dict[str, Any]] = []
+        for track in tracks:
+            if not isinstance(track, dict):
+                continue
+            derived_majors = _derive_track_applicable_majors(u, track)
+            if derived_majors:
+                track["applicable_majors"] = derived_majors
+            if _should_keep_track_for_product_scope(u, track):
+                kept_tracks.append(track)
+        u["admission_tracks"] = kept_tracks
+
+    _filter_academics_for_product_scope(academics)
 
     return u
 
@@ -1161,7 +1342,11 @@ def get_university_etag(university_id: str, search_lang: Optional[str] = None) -
     lang = _normalize_search_lang(search_lang)
     tr_mtime = file_mtime(UNIVERSITIES_TRANSLATIONS_PATH)
     tr_key = "none" if tr_mtime is None else str(tr_mtime)
-    digest = hashlib.sha1(f"{mtime_key}:{tr_key}:{uid}:{lang}".encode("utf-8")).hexdigest()
+    # Include the derived detail representation version so cache invalidation
+    # also happens when backend normalization changes without a data-file mtime bump.
+    digest = hashlib.sha1(
+        f"{mtime_key}:{tr_key}:{uid}:{lang}:{UNIVERSITY_DETAIL_REPR_VERSION}".encode("utf-8")
+    ).hexdigest()
     return f"\"{digest}\""
 
 

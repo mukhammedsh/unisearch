@@ -212,7 +212,9 @@
         "need_based": true
       }
     },
-    "outcomes": {},
+    "outcomes": {
+      "average_early_career_salary_usd": 98741.0
+    },
     "admission_tracks": [
       {
         "id": "mit_regular",
@@ -345,6 +347,14 @@
       {
         "topic": "acceptance_rate",
         "url": "https://mitadmissions.org/apply/process/stats/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://ir.mit.edu/outcomes/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
       }
     ],
     "description": "MIT's mission is to advance knowledge and educate students in science, technology, and other areas of scholarship that will best serve the nation and the world. The Institute emphasizes education, research, and innovation in pursuit of that mission.",
@@ -458,6 +468,24 @@
             "cycle": "Class of 2029",
             "applicants": 29281,
             "admitted": 1334
+          }
+        },
+        "average_early_career_salary_usd": {
+          "value": 98741.0,
+          "unit": "usd_per_year",
+          "source": "MIT Graduating Student Survey 2019",
+          "source_url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct bachelor's mean yearly salary reported for MIT graduating students with accepted positions in the 2019 survey.",
+          "basis": {
+            "degree_level": "bachelor",
+            "cohort": "2019",
+            "scope": "university_wide",
+            "metric": "mean_yearly_salary_usd",
+            "respondents_with_salary_data": 293,
+            "median_yearly_salary_usd": 90000
           }
         }
       }
@@ -1343,7 +1371,9 @@
         "need_based": true
       }
     },
-    "outcomes": {},
+    "outcomes": {
+      "average_early_career_salary_usd": 48314.67
+    },
     "admission_tracks": [
       {
         "id": "stanford_standard",
@@ -2517,7 +2547,9 @@
         "need_based": false
       }
     },
-    "outcomes": {},
+    "outcomes": {
+      "average_early_career_salary_usd": 48314.67
+    },
     "admission_tracks": [
       {
         "id": "nus_intl",
@@ -2658,6 +2690,14 @@
       {
         "topic": "student_count",
         "url": "https://www.nus.edu.sg/about"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://nus.edu.sg/ges-2024"
       }
     ],
     "description": "NUS aspires to be a leading global university dedicated to quality education, influential research, and visionary enterprise in service of society. It is Singapore's flagship university with colleges and faculties in arts and social sciences, business, computing, design and engineering, law, medicine, and science.",
@@ -2759,6 +2799,30 @@
           "basis": {
             "undergraduate_students": 31541,
             "graduate_students": 20138
+          }
+        },
+        "average_early_career_salary_usd": {
+          "value": 48314.67,
+          "unit": "usd_per_year",
+          "source": "NUS fresh graduate outcomes 2025",
+          "source_url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official_derived",
+          "method": "Annualized the official mean gross monthly salary for NUS fresh graduates in full-time permanent employment and converted SGD to USD using ECB euro reference rates for 2026-03-30.",
+          "basis": {
+            "degree_level": "bachelor",
+            "cohort": "Class of 2025",
+            "scope": "university_wide",
+            "metric": "mean_gross_monthly_salary_sgd",
+            "source_salary_sgd_per_month": 5193,
+            "source_median_salary_sgd_per_month": 4746,
+            "annualized_salary_sgd": 62316,
+            "fx_source": "ECB euro foreign exchange reference rates",
+            "fx_date": "2026-03-30",
+            "eur_usd": 1.1484,
+            "eur_sgd": 1.4812,
+            "usd_per_sgd": 0.77531731
           }
         }
       }
@@ -3256,7 +3320,11 @@
         "need_based": false
       }
     },
-    "outcomes": {},
+    "outcomes": {
+      "average_salary_by_major": {
+        "Computer Science": 64650.03
+      }
+    },
     "admission_tracks": [
       {
         "id": "tum_aptitude",
@@ -3747,7 +3815,11 @@
         "need_based": false
       }
     },
-    "outcomes": {},
+    "outcomes": {
+      "average_salary_by_major": {
+        "Computer Science": 64650.03
+      }
+    },
     "admission_tracks": [
       {
         "id": "uoft_general",
@@ -3875,6 +3947,10 @@
       {
         "topic": "acceptance_rate",
         "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://careernavigator.studentlife.utoronto.ca/page/salary-data"
       }
     ],
     "description": "U of T describes itself as a top research-intensive university focused on discovery, innovation, and global impact. Its faculties and divisions include Applied Science and Engineering, Arts and Science, Law, Management, Medicine, Education, and others across three campuses.",
@@ -3987,6 +4063,31 @@
             "cycle": "Fall 2024",
             "applicants": 29528,
             "admitted": 21949
+          }
+        },
+        "average_salary_by_major": {
+          "value": {
+            "Computer Science": 64650.03
+          },
+          "unit": "usd_per_year",
+          "source": "University of Toronto Career Centre Salary Data",
+          "source_url": "https://careernavigator.studentlife.utoronto.ca/page/salary-data",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official_derived",
+          "method": "Converted the official Computer Science median salary reported in CAD two years after graduation to USD using ECB euro reference rates for 2026-03-30.",
+          "basis": {
+            "degree_level": "bachelor",
+            "scope": "program_level",
+            "metric": "median_salary_cad_two_years_after_graduation",
+            "source_values_cad": {
+              "Computer Science": 90000
+            },
+            "fx_source": "ECB euro foreign exchange reference rates",
+            "fx_date": "2026-03-30",
+            "eur_usd": 1.1484,
+            "eur_cad": 1.5987,
+            "usd_per_cad": 0.71833365
           }
         }
       }
@@ -4173,7 +4274,9 @@
         "need_based": false
       }
     },
-    "outcomes": {},
+    "outcomes": {
+      "average_early_career_salary_usd": 34620.11
+    },
     "admission_tracks": [
       {
         "id": "cuhk_intl",
@@ -4295,6 +4398,10 @@
       {
         "topic": "student_count",
         "url": "https://www.iso.cuhk.edu.hk/english/publications/facts-and-figures/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
       }
     ],
     "description": "CUHK's mission is to preserve, create, apply, and disseminate knowledge through teaching, research, and public service across a comprehensive range of disciplines, and its vision is to be a first-class comprehensive research university with bilingual and multicultural dimensions. The university has a collegiate system and faculties of arts, business, education, engineering, law, medicine, science, and social science.",
@@ -4400,6 +4507,30 @@
           "basis": {
             "undergraduate_students": 18438,
             "postgraduate_students": 4650
+          }
+        },
+        "average_early_career_salary_usd": {
+          "value": 34620.11,
+          "unit": "usd_per_year",
+          "source": "CUHK Graduate Employment Survey Profile 2019",
+          "source_url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official_derived",
+          "method": "Annualized the official average monthly salary for CUHK full-time first-degree graduates and converted HKD to USD using ECB euro reference rates for 2026-03-30.",
+          "basis": {
+            "degree_level": "bachelor",
+            "cohort": "2019 full-time first-degree graduates",
+            "scope": "university_wide",
+            "metric": "average_monthly_salary_hkd",
+            "source_salary_hkd_per_month": 22602,
+            "source_median_salary_hkd_per_month": 19875,
+            "annualized_salary_hkd": 271224,
+            "fx_source": "ECB euro foreign exchange reference rates",
+            "fx_date": "2026-03-30",
+            "eur_usd": 1.1484,
+            "eur_hkd": 8.9969,
+            "usd_per_hkd": 0.12764397
           }
         }
       }
@@ -7082,12 +7213,82 @@
         "track_badge": "Grant",
         "funding_program": "State Grant",
         "funding_source": "state"
+      },
+      {
+        "id": "nu_nuet_undergraduate",
+        "label": "NUET Applicants",
+        "description": "NUET applicants compete in NU's combined NUFYP and undergraduate regular-admissions flow. Eligible applicants may receive an undergraduate grant offer, remain on the waitlist, or receive a fee-paying undergraduate offer; NUET applicants recommended for fee-paying undergraduate admission may request NUFYP under the Grant if seats are available.",
+        "requirements": {
+          "NUET": 120
+        },
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.0,
+              "TOEFL_iBT_0_120": 60
+            }
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "Scanned copy of passport or national ID",
+          "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
+          "Motivation letter in English",
+          "Valid test certificates as required by category",
+          "IELTS/TOEFL certificate uploaded in personal account",
+          "Application fee (paid online)"
+        ],
+        "funding_type": "paid",
+        "track_badge": "Paid"
+      },
+      {
+        "id": "nu_nuet_undergraduate-grant-state-grant",
+        "label": "NUET Applicants - State Grant (Grant)",
+        "description": "NUET applicants compete in NU's combined NUFYP and undergraduate regular-admissions flow. Eligible applicants may receive an undergraduate grant offer, remain on the waitlist, or receive a fee-paying undergraduate offer; NUET applicants recommended for fee-paying undergraduate admission may request NUFYP under the Grant if seats are available.",
+        "requirements": {
+          "NUET": 120
+        },
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.0,
+              "TOEFL_iBT_0_120": 60
+            }
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "Scanned copy of passport or national ID",
+          "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
+          "Motivation letter in English",
+          "Valid test certificates as required by category",
+          "IELTS/TOEFL certificate uploaded in personal account",
+          "Application fee (paid online)"
+        ],
+        "funding_type": "grant",
+        "track_badge": "Grant",
+        "funding_program": "State Grant",
+        "funding_source": "state"
       }
     ],
     "verified_sources": [
       {
         "topic": "undergraduate_requirements",
         "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
+      },
+      {
+        "topic": "undergraduate_policy",
+        "url": "https://regulations.nu.edu.kz/bitstream/123456789/1011/1/Admission%20Policy%20and%20Procedures%20to%20the%20NUFYP%20and%20Undergraduate%20programs%20of%20NU.pdf"
       },
       {
         "topic": "nufyp_nuet_threshold",

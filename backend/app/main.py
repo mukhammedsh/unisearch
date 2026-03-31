@@ -1,3 +1,4 @@
+import threading
 import logging
 import time
 import uuid
@@ -87,6 +88,16 @@ async def startup_runtime_warmup():
     if not AUTO_WARMUP_ON_STARTUP:
         return
 
+    warmup_thread = threading.Thread(
+        target=_run_startup_warmup,
+        name="startup-warmup",
+        daemon=True,
+    )
+    warmup_thread.start()
+    logger.info("warmup_sync scheduled trigger=startup_sync")
+
+
+def _run_startup_warmup() -> None:
     sync_result = warmup_runtime(trigger="startup_sync")
     logger.info(
         "warmup_sync ok=%s duration_ms=%s",

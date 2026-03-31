@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-03-11-2";
+const SW_VERSION = "2026-03-30-1";
 const CACHE_PREFIX = "unisearch";
 const FLAG_CDN_HOSTS = new Set(["flagcdn.com", "www.flagcdn.com"]);
 

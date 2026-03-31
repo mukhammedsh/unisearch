@@ -19,6 +19,7 @@ const selectors = {
   examList: "#examList",
   universitiesList: "#universitiesList",
   queryInput: "#qInput",
+  countrySelect: "#countrySelect",
   sortSelect: "#sortSelect",
   focusSlider: "#focusSlider",
   focusLabel: "#focusLabel",

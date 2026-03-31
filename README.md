@@ -1,7 +1,7 @@
 # UniSearch / UniFit / UniChance
 
 UniSearch is a full-stack web app for university discovery and decision support.
-Current version: `2.6.1`
+Current version: `2.7.0`
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -58,7 +58,10 @@ Prerequisites:
 
 ## Current highlights
 - Backend-first architecture for business logic and data delivery.
-- Users can now manually choose an admission track per university; the choice is cached locally and reused by both `UniChance` and `UniFit`.
+- Users can manually choose an admission track per university, and bachelor-facing detail pages now keep those tracks scoped to applicable non-foundation majors.
+- ROI now uses newly added official salary outcomes for supported universities and hides the ROI block when no official salary source exists yet.
+- Universities-page country/region/city filters keep translated dropdown labels in sync after UI language changes.
+- Backend startup warmup now runs in a background thread instead of delaying app boot.
 - University translation packs are served by backend (`/universities/translations`).
 - University media assets are stored in backend and served by API static routes.
 - Media variant naming is standardized to `small` and full-size variants.
@@ -186,12 +189,12 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=2.6.1
+APP_VERSION=2.7.0
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_HOST=127.0.0.1
 FRONTEND_PORT=5501
-FRONTEND_ORIGIN=http://127.0.0.1:5501
+FRONTEND_ORIGINS=http://127.0.0.1:5501
 # Optional multi-origin override:
 # FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
 
@@ -218,7 +221,7 @@ FRONTEND_ORIGINS=http://127.0.0.1:5501,http://localhost:5501,http://<your-lan-ip
 
 Notes:
 - `backend/.env` is ignored by Git, so your LAN IP stays local.
-- `FRONTEND_HOST` / `FRONTEND_PORT` are used by `npm run dev:frontend` only; backend CORS still depends on `FRONTEND_ORIGIN` / `FRONTEND_ORIGINS`.
+- `FRONTEND_HOST` / `FRONTEND_PORT` are used by `npm run dev:frontend` only; backend CORS depends on `FRONTEND_ORIGINS`.
 - CORS must contain the frontend origin, not the backend URL. For a page opened as `http://<your-lan-ip>:5501`, add exactly that origin.
 - For another person in your LAN to open the site, start the backend with `--host 0.0.0.0` (or `BACKEND_HOST=0.0.0.0`) and start the frontend with `python -m http.server 5501 --bind 0.0.0.0`.
 - If Windows Defender Firewall prompts, allow Python on Private networks or the other device still will not connect.
@@ -278,7 +281,7 @@ npm run build:frontend-env
 
 Local dev behavior:
 - If `UNISEARCH_API_BASE_URL` is empty, the frontend uses the same host as the page and `UNISEARCH_API_PORT` (or `BACKEND_PORT`) for API calls.
-- Example: frontend on `http://192.168.1.20:5600` and backend on `http://192.168.1.20:9000` works after setting `FRONTEND_PORT=5600`, `BACKEND_PORT=9000`, and matching `FRONTEND_ORIGIN` / `FRONTEND_ORIGINS`.
+- Example: frontend on `http://192.168.1.20:5600` and backend on `http://192.168.1.20:9000` works after setting `FRONTEND_PORT=5600`, `BACKEND_PORT=9000`, and matching `FRONTEND_ORIGINS`.
 
 ## Data maintenance and provenance
 The project is intentionally conservative about university facts.
@@ -460,6 +463,6 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Latest release:
-- `2.6.1` on `2026-03-30`
-- focus: manual admission-track selection with cached user override for `UniChance` and `UniFit`
+- `2.7.0` on `2026-03-31`
+- focus: admission-track scope cleanup, official ROI salary coverage, startup warmup threading, and i18n dropdown sync
 - status: current release

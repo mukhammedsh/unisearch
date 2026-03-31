@@ -19,7 +19,6 @@ module.exports = defineConfig({
       reuseExistingServer: true,
       env: {
         ...process.env,
-        FRONTEND_ORIGIN: 'http://127.0.0.1:5510',
         FRONTEND_ORIGINS: 'http://127.0.0.1:5501,http://127.0.0.1:5510',
         AUTO_WARMUP_ON_STARTUP: '0',
         ML_INTEREST_TRANSLATION_ENABLED: '0',

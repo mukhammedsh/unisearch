@@ -54,6 +54,29 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         )
         self.assertEqual(second.status_code, 304)
 
+    def test_university_detail_includes_track_applicable_majors(self):
+        response = self.client.get("/universities/astana-it-university-kaz-astana")
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        tracks = [
+            track
+            for track in (data.get("admission_tracks") or [])
+            if isinstance(track, dict)
+        ]
+        self.assertTrue(tracks)
+
+        grant_track = next(
+            (
+                track
+                for track in tracks
+                if str(track.get("id") or "") == "aitu_unt_grant"
+            ),
+            None,
+        )
+        self.assertIsNotNone(grant_track)
+        self.assertIn("Computer Science", grant_track.get("applicable_majors") or [])
+
     def test_university_assets_are_served_from_backend(self):
         university_id = self._first_university_id()
         self.assertTrue(university_id)
@@ -138,6 +161,25 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         for key in ("roi_value", "roi_label", "roi_tone", "context_type"):
             self.assertIn(key, roi_data)
         self.assertGreaterEqual(float(roi_data.get("roi_value", 0.0)), 0.0)
+
+    def test_roi_uses_official_salary_data_for_supported_universities(self):
+        supported_ids = [
+            "mit-usa-cambridge",
+            "national-university-of-singapore-sg-singapore",
+            "university-of-toronto-ca-toronto",
+            "cuhk-hk-shatin",
+        ]
+
+        for university_id in supported_ids:
+            with self.subTest(university_id=university_id):
+                response = self.client.post(
+                    f"/universities/{university_id}/roi",
+                    json={"profile": {"locale": "eng", "studyMode": "On-campus"}},
+                )
+                self.assertEqual(response.status_code, 200)
+                data = response.json()
+                self.assertNotEqual("no_salary_data", str(data.get("context_type", "")))
+                self.assertGreater(float(data.get("salary_used_usd", 0.0)), 0.0)
 
 
 if __name__ == "__main__":

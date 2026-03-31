@@ -707,7 +707,7 @@ function uniLogoSrc(universityId, opts = {}) {
   return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
 }
 
-const DETAIL_CACHE_KEY = "unisearch_detail_cache_v1";
+const DETAIL_CACHE_KEY = "unisearch_detail_cache_v2";
 const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 const DETAIL_CACHE_MAX_ITEMS = 24;
 const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
@@ -1489,6 +1489,31 @@ export function initUniversitiesPage() {
         el.maxSlider.value = val; state.max_tuition = val; fillTrack(); refetch();
     });
 
+    const refreshLocationFilterLabels = () => {
+        updateCountryOptions();
+        if (!state.country) {
+            if (el.countrySelect) el.countrySelect.value = "";
+            if (el.stateSelect) el.stateSelect.value = "";
+            if (el.citySelect) el.citySelect.value = "";
+            updateLocationLogic("");
+            return;
+        }
+
+        if (el.countrySelect) el.countrySelect.value = state.country;
+        updateLocationLogic(state.country);
+
+        if (state.region && el.stateSelect) {
+            el.stateSelect.value = state.region;
+            updateCitiesForState(state.country, state.region);
+        }
+
+        if (state.city && el.citySelect) {
+            el.citySelect.value = state.city;
+        }
+
+        ["countrySelect", "stateSelect", "citySelect"].forEach((id) => initCustomSelect(id));
+    };
+
     fetchAndRender();
     __universitiesProfileUpdatedHandler = () => {
         state.funding_type = getProfileFundingQueryValue();
@@ -1499,6 +1524,8 @@ export function initUniversitiesPage() {
     window.addEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
     __universitiesLanguageChangedHandler = () => {
         applyAISortOptionLabel();
+        refreshLocationFilterLabels();
+        applyToForm();
         updateTradeoffLabels();
         fetchAndRender();
     };
@@ -2620,6 +2647,10 @@ export async function initUniversityPage() {
             progDiv.innerHTML = `
                 <div class="program-list">
                     ${programs.map((program, idx) => {
+                        const isMajorTagField = (key) => {
+                            const normalized = String(key || "").trim().toLowerCase();
+                            return normalized === "major_tags" || normalized === "majors" || normalized === "applicable_majors";
+                        };
                         const renderValueCell = (label, key, rawValue, formattedValue) => {
                             if (Array.isArray(rawValue) && rawValue.length) {
                                 const translatedItems = rawValue.map((item) => {
@@ -2627,6 +2658,7 @@ export async function initUniversityPage() {
                                     if (String(key) === "study_levels") return trStudyLevel(raw);
                                     if (String(key) === "language") return trProgramLanguage(raw);
                                     if (String(key) === "study_mode") return trStudyMode(raw);
+                                    if (isMajorTagField(key)) return trProgramName(raw) || raw;
                                     return raw;
                                 });
                                 return `
@@ -2697,7 +2729,9 @@ export async function initUniversityPage() {
                         const extraRows = Object.entries(program)
                             .filter(([k, v]) => !knownKeys.has(k) && v !== null && v !== undefined && v !== "")
                             .map(([k, v]) => ({
-                                label: prettyField(k),
+                                label: isMajorTagField(k)
+                                    ? t("placeholder.field.applicable_majors", "Applicable majors")
+                                    : prettyField(k),
                                 key: k,
                                 rawValue: v,
                                 value: formatProgramValue(k, v),
@@ -2813,7 +2847,7 @@ export async function initUniversityPage() {
                 if (track.applicable_majors && track.applicable_majors.length > 0) {
                     majorsBadge = `<div class="track-major-tags">
                         ${track.applicable_majors.map(m => 
-                            `<span class="track-major-chip">📚 ${escapeHtml(String(m))}</span>`
+                            `<span class="track-major-chip">${escapeHtml(trProgramName(String(m)) || String(m))}</span>`
                         ).join("")}
                     </div>`;
                 } else {
@@ -2960,7 +2994,6 @@ export async function initUniversityPage() {
                     </div>
                     ${languageReqInfo}
                     ${extraReqInfo}
-                    ${grantsInfo}
                 </div>
                 `;
             });
@@ -3081,20 +3114,6 @@ export async function initUniversityPage() {
                         ${barHTML}
                         ${legendHTML}
                     </div>
-
-                    ${track.scholarships && track.scholarships.length > 0 ? `
-                        <div class="finance-footer">
-                            <div class="finance-grant-title">${escapeHtml(translateWord("available_scholarships", "Available Scholarships"))}:</div>
-                            <ul class="finance-grant-list">
-                                ${track.scholarships.map(s => `<li>${escapeHtml(translateAdmissionText(String(s.name || ""), String(s.name || "")))}</li>`).join("")}
-                            </ul>
-                        </div>
-                    ` : `
-                        <div class="finance-footer">
-                            <div class="finance-grant-title">${escapeHtml(translateWord("available_scholarships", "Available Scholarships"))}:</div>
-                            <div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.scholarships", "Scholarships"))}</div>
-                        </div>
-                    `}
                 </div>
                 `;
             });
@@ -3147,7 +3166,7 @@ export async function initUniversityPage() {
                 `;
             }
             
-            const roiBlock = `
+            const roiBlock = roiHasSalaryData ? `
                 <div class="roi-box">
                     <h3 class="roi-title">${roiTitle}</h3>
                     <p class="roi-description">
@@ -3175,7 +3194,7 @@ export async function initUniversityPage() {
                         </div>
                     </div>
                 </div>
-            `;
+            ` : "";
 
             finDiv.innerHTML = `<div class="finance-grid-new">${financeHTML}</div>` + roiBlock;
             applyPercentWidths(finDiv);

@@ -14,11 +14,10 @@ services:
       dockerfile: backend/Dockerfile
     container_name: unisearch-backend
     environment:
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://127.0.0.1:5501}
       FRONTEND_ORIGINS: ${FRONTEND_ORIGINS:-}
       BACKEND_HOST: 0.0.0.0
       BACKEND_PORT: ${BACKEND_PORT:-8000}
-      APP_VERSION: ${APP_VERSION:-2.6.1}
+      APP_VERSION: ${APP_VERSION:-2.7.0}
       REDIS_URL: redis://redis:6379/0
       AUTO_WARMUP_ON_STARTUP: "1"
       METRICS_ENABLED: "1"

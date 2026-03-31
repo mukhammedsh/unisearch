@@ -7,12 +7,8 @@ test("detail page renders UniChance/ROI and recomputes after profile update", as
     ...personas.enResearch.profile,
     major: "Computer Science",
   });
-  await page.goto("/universities.html");
+  await page.goto("/university.html?id=mit-usa-cambridge");
 
-  await expect(page.locator(".uni-card").first()).toBeVisible();
-  await page.locator(".uni-card").first().click();
-
-  await expect(page).toHaveURL(/university\.html\?id=/);
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toHaveText("University Name");
 
@@ -45,4 +41,16 @@ test("detail page renders UniChance/ROI and recomputes after profile update", as
   await page.click(selectors.profileCloseBtn);
   await page.click(".d-tab-btn[data-tab='tab-finance']");
   await expect(page.locator(".roi-box")).toBeVisible();
+});
+
+test("detail page hides ROI block when official salary data is missing", async ({ page }) => {
+  await seedProfile(page, {
+    ...personas.enResearch.profile,
+    major: "Computer Science",
+  });
+  await page.goto("/university.html?id=astana-it-university-kaz-astana");
+
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.click(".d-tab-btn[data-tab='tab-finance']");
+  await expect(page.locator(".roi-box")).toHaveCount(0);
 });
