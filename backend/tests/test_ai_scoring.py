@@ -382,6 +382,84 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("cuhk_hkdse", str(result.get("bestTrackKey") or ""))
         self.assertEqual("official_score_profile", str(result.get("chanceModel") or ""))
 
+    def test_score_profile_chance_has_small_acceptance_rate_influence(self):
+        base_track = {
+            "id": "profile-track",
+            "label": "Profile Track",
+            "requirements": {"GPA": 80},
+            "stats_avg": {"GPA": 90},
+        }
+        university_low = {
+            "id": "u-low-acc",
+            "name": "Low Acceptance University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 1},
+            "admission_tracks": [
+                {
+                    **base_track,
+                    "score_profile": _demo_score_profile("GPA", p25=50, median=65, p75=80, acceptance_rate_percent=1),
+                }
+            ],
+        }
+        university_high = {
+            "id": "u-high-acc",
+            "name": "High Acceptance University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 95},
+            "admission_tracks": [
+                {
+                    **base_track,
+                    "score_profile": _demo_score_profile("GPA", p25=50, median=65, p75=80, acceptance_rate_percent=95),
+                }
+            ],
+        }
+        profile = {"gpa": 100, "budget": 20000}
+
+        low_result = estimate_uni_chance(university_low, profile)
+        high_result = estimate_uni_chance(university_high, profile)
+
+        low_chance = int(low_result.get("overallChance", 0))
+        high_chance = int(high_result.get("overallChance", 0))
+
+        self.assertLess(low_chance, high_chance)
+        self.assertLessEqual(high_chance - low_chance, 10)
+
+    def test_estimated_fallback_chance_has_small_acceptance_rate_influence(self):
+        base_track = {
+            "id": "fallback-track",
+            "label": "Fallback Track",
+            "requirements": {"GPA": 80},
+            "stats_avg": {"GPA": 90},
+        }
+        university_low = {
+            "id": "u-low-fallback",
+            "name": "Low Acceptance Fallback University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 1},
+            "admission_tracks": [{**base_track}],
+        }
+        university_high = {
+            "id": "u-high-fallback",
+            "name": "High Acceptance Fallback University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 95},
+            "admission_tracks": [{**base_track}],
+        }
+        profile = {"gpa": 100, "budget": 20000}
+
+        low_result = estimate_uni_chance(university_low, profile)
+        high_result = estimate_uni_chance(university_high, profile)
+
+        low_chance = int(low_result.get("overallChance", 0))
+        high_chance = int(high_result.get("overallChance", 0))
+
+        self.assertLess(low_chance, high_chance)
+        self.assertLessEqual(high_chance - low_chance, 10)
+
     def test_language_exam_requirements_are_not_inferred_from_cefr(self):
         university = {
             "id": "eth-demo",

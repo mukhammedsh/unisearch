@@ -50,7 +50,7 @@ def _norm_tag_key(value: Any) -> str:
 
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
-UNIVERSITY_DETAIL_REPR_VERSION = 2
+UNIVERSITY_DETAIL_REPR_VERSION = 3
 
 
 def _normalize_search_lang(value: Any) -> str:
@@ -788,6 +788,69 @@ def _track_targets_undergraduate(blob: str) -> bool:
     )
 
 
+def _merge_track_variant_dict(base_value: Any, variant_value: Any) -> Any:
+    if isinstance(base_value, dict) and isinstance(variant_value, dict):
+        out = copy.deepcopy(base_value)
+        out.update(copy.deepcopy(variant_value))
+        return out
+    if variant_value is not None:
+        return copy.deepcopy(variant_value)
+    return copy.deepcopy(base_value)
+
+
+def _expand_track_funding_options(track: Dict[str, Any]) -> List[Dict[str, Any]]:
+    if not isinstance(track, dict):
+        return []
+
+    raw_options = track.get("funding_options")
+    options = [row for row in raw_options if isinstance(row, dict)] if isinstance(raw_options, list) else []
+    if not options:
+        return [track]
+
+    base_track = copy.deepcopy(track)
+    base_track.pop("funding_options", None)
+    expanded: List[Dict[str, Any]] = []
+
+    for option in options:
+        variant = copy.deepcopy(base_track)
+        option_copy = copy.deepcopy(option)
+        option_copy.pop("funding_options", None)
+
+        merged_requirements = _merge_track_variant_dict(
+            base_track.get("requirements"),
+            option_copy.pop("requirements", None),
+        )
+        if isinstance(merged_requirements, dict) and merged_requirements:
+            variant["requirements"] = merged_requirements
+        else:
+            variant.pop("requirements", None)
+
+        merged_stats_avg = _merge_track_variant_dict(
+            base_track.get("stats_avg"),
+            option_copy.pop("stats_avg", None),
+        )
+        if isinstance(merged_stats_avg, dict) and merged_stats_avg:
+            variant["stats_avg"] = merged_stats_avg
+        elif "stats_avg" in variant and not isinstance(variant.get("stats_avg"), dict):
+            variant.pop("stats_avg", None)
+
+        merged_finance_override = _merge_track_variant_dict(
+            base_track.get("finance_override"),
+            option_copy.pop("finance_override", None),
+        )
+        if isinstance(merged_finance_override, dict) and merged_finance_override:
+            variant["finance_override"] = merged_finance_override
+
+        variant.update(option_copy)
+        if not str(variant.get("id") or "").strip():
+            variant["id"] = base_track.get("id")
+        if not str(variant.get("label") or "").strip():
+            variant["label"] = base_track.get("label")
+        expanded.append(variant)
+
+    return expanded or [base_track]
+
+
 def _derive_track_applicable_majors(u: Dict[str, Any], track: Dict[str, Any]) -> List[str]:
     explicit = track.get("applicable_majors")
     if isinstance(explicit, list) and explicit:
@@ -1248,8 +1311,14 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
 
     tracks = u.get("admission_tracks")
     if isinstance(tracks, list):
-        kept_tracks: List[Dict[str, Any]] = []
+        expanded_tracks: List[Dict[str, Any]] = []
         for track in tracks:
+            if not isinstance(track, dict):
+                continue
+            expanded_tracks.extend(_expand_track_funding_options(track))
+
+        kept_tracks: List[Dict[str, Any]] = []
+        for track in expanded_tracks:
             if not isinstance(track, dict):
                 continue
             derived_majors = _derive_track_applicable_majors(u, track)

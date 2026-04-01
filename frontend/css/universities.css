@@ -131,12 +131,15 @@
   color: #5715db;
   font-size: 12px;
   font-weight: 800;
+  font-family: inherit;
+  font-style: normal;
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  display: inline-grid;
+  place-items: center;
   cursor: pointer;
   padding: 0;
+  appearance: none;
   transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
 }
 
@@ -314,7 +317,10 @@
     text-align: center;
     font-weight: 700;
     color: #5715db;
-    padding: 8px;
+    height: 44px;
+    padding: 0 10px;
+    line-height: 44px;
+    appearance: textfield;
 }
 
 /* Контейнер для наложения слайдеров */
@@ -578,7 +584,7 @@
   border: 8px solid #c5cad3;
   border-top-color: #ffffff;
   animation: uSpinnerRotate 0.9s linear infinite;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 
 @keyframes uSpinnerRotate {

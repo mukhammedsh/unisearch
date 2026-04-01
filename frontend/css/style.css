@@ -65,7 +65,7 @@ body {
   border: 8px solid #c5cad3;
   border-top-color: #ffffff;
   animation: center-loading-spin 0.9s linear infinite;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 
 .center-loading-spinner--sm {
@@ -610,12 +610,15 @@ html, body {
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 800;
+  font-family: inherit;
+  font-style: normal;
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  display: inline-grid;
+  place-items: center;
   padding: 0;
   cursor: pointer;
+  appearance: none;
 }
 
 .profile-info:hover,

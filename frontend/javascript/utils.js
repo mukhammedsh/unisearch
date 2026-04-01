@@ -463,9 +463,9 @@ const EXAM_LABEL_OVERRIDES = {
   ACT: "ACT",
   GPA: "GPA",
   UNT: "UNT (ЕНТ)",
-  NUET_Total: "NUET Total",
-  NUET: "NUET Total",
-  NUET_TOTAL: "NUET Total",
+  NUET_Total: "NUET",
+  NUET: "NUET",
+  NUET_TOTAL: "NUET",
   AP_Total: "AP Total",
   IB_Diploma: "IB Diploma",
   HKDSE_WEIGHTED_TOTAL: "HKDSE Weighted Total (CUHK JUPAS)",
@@ -491,8 +491,8 @@ const EXAM_LABELS_I18N = {
     ACT: "ACT",
     GPA: "GPA",
     UNT: "UNT (Kazakhstan)",
-    NUET: "NUET Total",
-    NUETTOTAL: "NUET Total",
+    NUET: "NUET",
+    NUETTOTAL: "NUET",
     APTOTAL: "AP Total",
     IBDIPLOMA: "IB Diploma",
     ALEVELCERT: "A-Level Certificate",
@@ -547,6 +547,11 @@ const EXAM_LABELS_I18N = {
     TOPIKLEVEL: "TOPIK уровень",
   },
 };
+
+if (EXAM_LABELS_I18N.rus) {
+  EXAM_LABELS_I18N.rus.NUET = "NUET";
+  EXAM_LABELS_I18N.rus.NUETTOTAL = "NUET";
+}
 
 function _localizedExamLabel(examId, locale = "") {
   const lang = normalizeUiLanguageForApi(locale) || getUiLanguageForApi();

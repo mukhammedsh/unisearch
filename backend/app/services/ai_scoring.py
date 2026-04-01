@@ -826,44 +826,47 @@ def _compute_score_profile_chance(
         _to_num(score_profile.get("acceptance_rate_percent"))
         or _to_num(track.get("acceptance_rate_percent"))
         or _acceptance_percent(university)
-        or 50.0
     )
-    acceptance01 = _clamp01(float(acceptance_pct) / 100.0)
-    chance01 = _clamp01(base_prob * acceptance01 * 2.0)
+    acceptance_factor = 1.0
+    if acceptance_pct is not None:
+        acceptance_factor = _clamp(0.90 + (0.10 * _clamp01(float(acceptance_pct) / 100.0)), 0.90, 1.0)
+    chance01 = _clamp01(base_prob * acceptance_factor)
 
     return {
         "chance01": float(chance01),
         "rangeLowPercent": round(max(0.0, chance01 - 0.08) * 100.0, 1),
         "rangeHighPercent": round(min(1.0, chance01 + 0.08) * 100.0, 1),
         "confidence": str(score_profile.get("confidence") or "estimated"),
-        "acceptanceRatePercent": round(float(acceptance_pct), 2),
+        "acceptanceRatePercent": round(float(acceptance_pct), 2) if acceptance_pct is not None else None,
     }
 
 
 def _compute_estimated_fallback_chance(
     *,
+    university: Dict[str, Any],
+    track: Dict[str, Any],
     academic: float,
     language: float,
-    selectivity: float,
     affordability: float,
     feasibility_gate: float,
     scholarship_boost: float,
     missing_evidence: bool,
-    has_acceptance_data: bool,
 ) -> Dict[str, Any]:
     base = (
         (0.62 * _clamp01(float(academic)))
         + (0.20 * _clamp01(float(language)))
         + (0.18 * _clamp01(float(affordability)))
     )
-    selectivity_factor = _clamp(0.55 + (0.45 * _clamp01(float(selectivity))), 0.45, 1.0)
-    if not has_acceptance_data:
-        selectivity_factor *= 0.82
     evidence_factor = 0.88 if missing_evidence else 1.0
+    acceptance_pct = _to_num(track.get("acceptance_rate_percent")) or _acceptance_percent(university)
+    acceptance_factor = 1.0
+    if acceptance_pct is not None:
+        acceptance_factor = _clamp(0.90 + (0.10 * _clamp01(float(acceptance_pct) / 100.0)), 0.90, 1.0)
     chance01 = _clamp01(
-        (base * selectivity_factor * _clamp01(float(feasibility_gate)) * evidence_factor)
+        (base * _clamp01(float(feasibility_gate)) * evidence_factor)
         + (0.35 * max(0.0, float(scholarship_boost)))
     )
+    chance01 = _clamp01(chance01 * acceptance_factor)
     spread = 0.18 if missing_evidence else 0.15
     return {
         "chance01": float(chance01),
@@ -1569,14 +1572,14 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                         chance_model = "official_score_profile"
             else:
                 chance_meta = _compute_estimated_fallback_chance(
+                    university=university,
+                    track=track,
                     academic=academic,
                     language=language,
-                    selectivity=selectivity,
                     affordability=affordability,
                     feasibility_gate=feasibility_gate,
                     scholarship_boost=scholarship_boost,
                     missing_evidence=bool(fit.get("missingEvidence")),
-                    has_acceptance_data=_acceptance_percent(university) is not None,
                 )
                 chance01_raw = _to_num(chance_meta.get("chance01"))
                 if chance01_raw is None:

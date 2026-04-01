@@ -162,7 +162,7 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
         self.assertIn("nu_nuet_undergraduate-grant-state-grant", tracks)
         self.assertNotIn("nu_nuet", tracks)
         self.assertNotIn("nu_nuet-grant-state-grant", tracks)
-
+ 
         undergraduate_track = tracks["nu_nuet_undergraduate"]
         undergraduate_grant_track = tracks["nu_nuet_undergraduate-grant-state-grant"]
 
