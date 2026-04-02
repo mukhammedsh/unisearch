@@ -10,6 +10,13 @@ export function aiName(key) {
   return AI_FUNCTIONS[k] || AI_DEFAULTS[k] || "AI Function";
 }
 
+function frontendStaticAsset(path = "") {
+  const cleanPath = String(path || "").replace(/^\/+/, "");
+  const currentPath = String(window.location.pathname || "");
+  const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
+  return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
+}
+
 export const $ = (id) => document.getElementById(id);
 
 const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
@@ -910,7 +917,8 @@ export function getFlagImg(countryName) {
   const cacheKey = `${code}|${raw}`;
   const cached = FLAG_IMG_HTML_CACHE.get(cacheKey);
   if (cached) return cached;
-  const html = `<img class="flag-icon-inline" src="https://flagcdn.com/${code}.svg" width="24" height="15" loading="lazy" decoding="async" alt="${escapeHtml(raw)}">`;
+  const src = frontendStaticAsset(`images/flags/${code}.svg`);
+  const html = `<img class="flag-icon-inline" src="${escapeHtml(src)}" width="24" height="18" loading="lazy" decoding="async" alt="${escapeHtml(raw)}">`;
   FLAG_IMG_HTML_CACHE.set(cacheKey, html);
   return html;
 }

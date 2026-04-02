@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## Unreleased - local flag assets, Russian translation fixes, and small UI polish
+
+Status:
+- switched frontend flag rendering from external `flagcdn.com` assets to bundled local SVG files under `frontend/images/flags`, so country flags now load from the app itself instead of a third-party CDN;
+- updated frontend flag asset resolution to work correctly both from the site root and `/frontend/...` paths, and bumped the service-worker cache version so clients refresh the new local flag assets immediately;
+- expanded Russian localization coverage for admission details:
+  - added missing strings for `Academic requirements`, `Academic average`, and `Language average` in both frontend and backend-driven translation dictionaries;
+  - added explicit Russian mappings for grant-related admissions labels such as `Abay Kunanbayev`, `State Grant`, `merit`, and `state`.
+- polished related UI presentation:
+  - increased inline flag display height for custom selects and country labels to better fit the new local SVG assets;
+  - slightly increased spacing above funding-option sections on the university detail page for cleaner track-card layout.
+
 ## 3.0.0 (2026-04-02) - compact funding-option tracks, alias-aware search, and detail-page admissions redesign
 
 Status:

@@ -1404,7 +1404,7 @@ html, body {
 
 .custom-option img, .custom-select-trigger img {
   width: 24px;
-  height: 15px;
+  height: 18px;
   display: inline-block;
   flex: 0 0 auto;
   object-fit: contain;
@@ -1414,7 +1414,7 @@ html, body {
 
 .flag-icon-inline {
   width: 24px;
-  height: 15px;
+  height: 18px;
   display: inline-block;
   vertical-align: middle;
   flex: 0 0 auto;

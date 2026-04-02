@@ -1,6 +1,5 @@
-const SW_VERSION = "2026-03-30-1";
+const SW_VERSION = "2026-04-02-1";
 const CACHE_PREFIX = "unisearch";
-const FLAG_CDN_HOSTS = new Set(["flagcdn.com", "www.flagcdn.com"]);
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
 const API_CACHE = `${CACHE_PREFIX}-api-${SW_VERSION}`;
@@ -39,10 +38,6 @@ function isImageRequest(request, url) {
   const normalizedPath = normalizeApiPath(path);
 
   if (normalizedPath.startsWith("/universities/assets/")) {
-    return true;
-  }
-
-  if (request.destination === "image" && FLAG_CDN_HOSTS.has(String(url.hostname || "").toLowerCase())) {
     return true;
   }
 

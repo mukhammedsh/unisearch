@@ -171,6 +171,9 @@
         }
       },
       "words": {
+        "academic_requirements": "Академические требования",
+        "academic_average": "Академический средний балл",
+        "language_average": "Языковой средний балл",
         "levels": "уровней",
         "program": "Программа",
         "track": "Трек",
@@ -339,6 +342,22 @@
         "social_sciences": "Социальные науки"
       },
       "track_label_fallback_replace": [
+        [
+          "Abay Kunanbayev",
+          "Грант имени Абая Кунанбаева"
+        ],
+        [
+          "State Grant",
+          "Государственный грант"
+        ],
+        [
+          "merit",
+          "по заслугам"
+        ],
+        [
+          "state",
+          "государственный"
+        ],
         [
           "Need-based Aid",
           "Поддержка по финансовой потребности"
@@ -575,6 +594,10 @@
         ]
       ],
       "admission_exact": {
+        "Abay Kunanbayev": "Грант имени Абая Кунанбаева",
+        "State Grant": "Государственный грант",
+        "merit": "по заслугам",
+        "state": "государственный",
         "3x4 photos (6 pcs.)": "Фотографии 3x4 (6 шт.)",
         "Academic transcripts": "Академические транскрипты",
         "Additional documents if required by program (personal statement/portfolio/aptitude test results)": "Дополнительные документы при требовании программы (мотивационное эссе/портфолио/результаты теста способностей)",
