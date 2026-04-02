@@ -171,7 +171,7 @@ profile.hint.gpa: Здесь GPA нужно указывать в процент
 profile.gpa_info_title: Как GPA работает здесь
 profile.gpa_info_tooltip: Укажите GPA в процентах от 0 до 100. Это внутренний формат UniSearch для подбора и примерных оценок. Реальные университеты смотрят ваш оригинальный аттестат или transcript и шкалу оценивания в контексте школы.
 profile.hint.interests: Напишите, что для вас важно в университете, чтобы UniSearch точнее отсортировал результаты.
-profile.warning.interests_english_only: Если автоперевод недоступен, заполните это поле на английском.
+profile.warning.interests_english_only: Автоперевод недоступен, пожалуйста заполните это поле на английском.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет (USD / год)

@@ -170,7 +170,7 @@ profile.hint.gpa: Use percent here. UniSearch uses it only as a normalized estim
 profile.gpa_info_title: How GPA works here
 profile.gpa_info_tooltip: Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.
 profile.hint.interests: Write what matters to you in a university so UniSearch can sort results more personally.
-profile.warning.interests_english_only: If automatic translation is unavailable, write this field in English.
+profile.warning.interests_english_only: Automatic translation is unavailable, please write this field in English.
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget (USD / year)
