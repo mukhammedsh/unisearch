@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from app.core.settings import ML_INTEREST_TRANSLATION_DEBUG
 from app.services import exams as exams_service
 from app.services import languages as languages_service
+from app.services import universities as universities_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 from app.services.text_translation import translate_interest_text_for_ml
 
@@ -724,7 +725,7 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
     labels = {
         "eng": {
             "missing_evidence": "Add exam scores or language evidence",
-            "missing_exam_score": "Add the exam used for this track",
+            "missing_exam_score": "Need exam data to see the chance for this track",
             "unsupported_exam_normalization": "Track score data is not yet comparable",
             "no_score_profile": "No admitted-score data",
         },
@@ -736,6 +737,8 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
         },
     }
     locale = _chance_locale(profile)
+    if locale == "rus" and reason == "missing_exam_score":
+        return "Нужны данные по экзаменам, чтобы увидеть шанс по этому треку"
     return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
 
 
@@ -1153,8 +1156,8 @@ def sort_universities_ai(
         if not isinstance(row, dict):
             continue
         row_id = str(row.get("id") or "").strip()
-        tracks = row.get("admission_tracks")
-        if not isinstance(tracks, list) or not tracks:
+        tracks = universities_service.expand_admission_track_variants(row.get("admission_tracks"))
+        if not tracks:
             tracks = [{"id": "default", "label": "Standard", "requirements": {}, "stats_avg": {}, "scholarships": []}]
         tracks = [t for t in tracks if isinstance(t, dict)]
         selected_track_key = _selected_track_key_for_university(profile, row)
@@ -1362,7 +1365,7 @@ def sort_universities_ai(
                 "aidEligible": aid_eligible,
                 "grantName": str((eligible_scholar or {}).get("name") or "") if isinstance(eligible_scholar, dict) else "",
                 "admitChance": admit,
-                "meetMinRequirements": bool(fit.get("hardPassAll")),
+                "meetMinRequirements": bool(fit.get("hardPassAll")) and not bool(fit.get("conditional")),
                 "missingRequiredEvidence": bool(fit.get("missingEvidence")),
                 "conditional": bool(fit.get("conditional")),
                 "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
@@ -1475,8 +1478,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         or "any"
     )
 
-    tracks = university.get("admission_tracks")
-    if not isinstance(tracks, list) or not tracks:
+    tracks = universities_service.expand_admission_track_variants(university.get("admission_tracks"))
+    if not tracks:
         tracks = [{"id": "default", "label": "General admission", "requirements": {}, "stats_avg": {}}]
     tracks = [t for t in tracks if isinstance(t, dict)]
     entries = [{"track": t, "idx": i} for i, t in enumerate(tracks)]
@@ -1747,8 +1750,8 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
         salary_used = 0.0
 
     annual_cost = _effective_track_cost(university, {}, preferred_mode=preferred_mode)
-    tracks = university.get("admission_tracks")
-    if isinstance(tracks, list) and tracks:
+    tracks = universities_service.expand_admission_track_variants(university.get("admission_tracks"))
+    if tracks:
         prices = []
         for track in tracks:
             if not isinstance(track, dict):

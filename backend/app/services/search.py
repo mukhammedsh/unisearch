@@ -87,6 +87,7 @@ def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
         full_chunks.append(norm)
 
     list_fields: List[Tuple[str, float]] = [
+        ("search_aliases", 5.5),
         ("tags", 2.5),
         ("major_exact", 4.0),
         ("majors", 3.0),

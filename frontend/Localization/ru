@@ -20,6 +20,20 @@ about.team_kicker: Наша команда
 about.team_title: Основные участники
 about.title: Мы команда абитуриентов UniSearch.
 footer.copyright: © 2026 UniSearch
+filter_any: Любой
+filter_grant: Грант
+filter_paid: Платно
+general_tuition: Общая стоимость обучения
+minimum_to_apply: Минимум для подачи
+total_per_year: Итого / год
+est_cost: Примерная стоимость
+est_net_cost: Примерная стоимость после гранта
+base_cost_before_grant: Базовая стоимость (до гранта)
+admission.track.funding_options: Варианты финансирования
+admission.track.options_count: {count} вариантов финансирования
+admission.chance.need_exam_data_track: Нужны данные по экзаменам, чтобы увидеть шанс по этому треку.
+extra_requirements: Дополнительные требования
+no_tracks_selected_filter: Нет треков для выбранного фильтра
 guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Трек поступления - это конкретный путь поступления в один и тот же университет.
 guide.admission.p2: Требования — это минимальный порог. Для надежного плана сравнивайте себя и со средними баллами зачисленных.

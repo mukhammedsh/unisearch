@@ -357,6 +357,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertIsNotNone(sat_result.get("overallChance"))
         self.assertTrue(bool(sat_result.get("chanceAvailable")))
         self.assertEqual("nu_direct", str(sat_result.get("bestTrackKey") or ""))
+        self.assertEqual("official_score_profile", str(sat_result.get("chanceModel") or ""))
 
         self.assertIsNotNone(nuet_result.get("overallChance"))
         self.assertTrue(bool(nuet_result.get("chanceAvailable")))
@@ -629,6 +630,35 @@ class AiScoringTests(unittest.TestCase):
         track = (chance.get("tracks") or [{}])[0]
         self.assertTrue(bool(track.get("conditional")))
         self.assertGreaterEqual(int((track.get("details") or {}).get("conditionalRequirements", 0)), 1)
+
+    def test_ai_sort_does_not_mark_requirements_met_when_required_exam_is_missing(self):
+        university = {
+            "id": "conditional-sort-demo",
+            "name": "Conditional Sort University",
+            "rank": 120,
+            "finance": {"total_cost_year_usd": 16000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 45},
+            "admission_tracks": [
+                {
+                    "id": "track-main",
+                    "label": "Main Track",
+                    "requirements": {"UNT": 110},
+                    "stats_avg": {"UNT": 120},
+                }
+            ],
+        }
+        profile = {
+            "budget": 25000,
+            "exams": [],
+            "languages": [],
+        }
+
+        result = sort_universities_ai([university], profile=profile, funding_type="any")
+        match = ((result[0] or {}).get("matchData") or {})
+
+        self.assertTrue(bool(match.get("conditional")))
+        self.assertFalse(bool(match.get("meetMinRequirements")))
+        self.assertGreaterEqual(int(match.get("conditionalRequirements", 0) or 0), 1)
 
     def test_ai_sort_online_mode_uses_tuition_only_cost(self):
         items = [
@@ -922,6 +952,52 @@ class AiScoringTests(unittest.TestCase):
 
         self.assertEqual("likely_grant", str(grant_hints.get("finance", "")))
         self.assertEqual("paid_admission", str(paid_hints.get("finance", "")))
+
+    def test_estimate_uni_chance_flattens_compact_track_funding_options(self):
+        university = {
+            "id": "u-compact-funding",
+            "name": "Compact Funding University",
+            "rank": 70,
+            "finance": {"total_cost_year_usd": 18000, "financial_aid": {"merit_based": True, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 40},
+            "admission_tracks": [
+                {
+                    "id": "direct",
+                    "label": "Direct Admission",
+                    "requirements": {"GPA": 80},
+                    "stats_avg": {"GPA": 88},
+                    "funding_options": [
+                        {
+                            "id": "direct",
+                            "label": "Paid Admission",
+                            "funding_type": "paid",
+                            "track_badge": "Paid",
+                            "requirements": {"SAT": 1200},
+                            "score_profile": _demo_score_profile("SAT", p25=1050, median=1180, p75=1300, acceptance_rate_percent=40),
+                        },
+                        {
+                            "id": "direct-grant",
+                            "label": "Merit Grant",
+                            "funding_type": "grant",
+                            "track_badge": "Grant",
+                            "requirements": {"SAT": 1400},
+                            "score_profile": _demo_score_profile("SAT", p25=1320, median=1410, p75=1510, acceptance_rate_percent=40),
+                        },
+                    ],
+                }
+            ],
+        }
+        profile = {
+            "gpa": 92,
+            "fundingType": "grant",
+            "exams": [{"exam": "SAT", "score": 1450}],
+        }
+
+        result = estimate_uni_chance(university, profile)
+
+        self.assertEqual("direct-grant", str(result.get("bestTrackId") or ""))
+        self.assertEqual("grant", str(result.get("fundingType") or ""))
+        self.assertEqual(["direct-grant"], [str(row.get("trackId") or "") for row in (result.get("tracks") or [])])
 
 if __name__ == "__main__":
     unittest.main()

@@ -66,16 +66,26 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         ]
         self.assertTrue(tracks)
 
-        grant_track = next(
+        admission_track = next(
             (
                 track
                 for track in tracks
-                if str(track.get("id") or "") == "aitu_unt_grant"
+                if str(track.get("id") or "") == "aitu_paid"
             ),
             None,
         )
-        self.assertIsNotNone(grant_track)
-        self.assertIn("Computer Science", grant_track.get("applicable_majors") or [])
+        self.assertIsNotNone(admission_track)
+        self.assertIn("Computer Science", admission_track.get("applicable_majors") or [])
+        grant_option = next(
+            (
+                option
+                for option in (admission_track.get("funding_options") or [])
+                if isinstance(option, dict) and str(option.get("id") or "") == "aitu_unt_grant"
+            ),
+            None,
+        )
+        self.assertIsNotNone(grant_option)
+        self.assertIn("Computer Science", grant_option.get("applicable_majors") or [])
 
     def test_university_detail_includes_track_score_profile_when_available(self):
         response = self.client.get("/universities/cuhk-hk-shatin")

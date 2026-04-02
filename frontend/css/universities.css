@@ -9,7 +9,6 @@
   --shadow: 0 10px 24px rgba(0, 0, 0, .06);
   --slider-track-inactive: #d4d8e0;
   --slider-track-active: #5715db;
-  --u-loading-dim: rgba(15, 23, 42, 0.22);
 }
 
 :root[data-theme="dark"] {
@@ -20,7 +19,6 @@
   --line: #323232;
   --shadow: 0 14px 28px rgba(0, 0, 0, .45);
   --slider-track-inactive: #303030;
-  --u-loading-dim: rgba(0, 0, 0, 0.34);
 }
 
 /* =========================================
@@ -560,38 +558,6 @@
   font-weight: 700;
 }
 
-.u-loading-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--u-loading-top);
-  bottom: 0;
-  z-index: 1001;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.u-loading-overlay.is-visible {
-  display: flex;
-}
-
-.u-loading-spinner {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 8px solid #c5cad3;
-  border-top-color: #ffffff;
-  animation: uSpinnerRotate 0.9s linear infinite;
-  box-shadow: none;
-}
-
-@keyframes uSpinnerRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .u-tour-modal {
   position: fixed;
   inset: 0;
@@ -817,49 +783,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   z-index: 1;
   overflow: hidden;
-}
-
-.u-map-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--u-loading-dim);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 800;
-  transition: opacity 0.2s ease;
-}
-
-.u-map-container::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 56px;
-  height: 56px;
-  margin-left: -28px;
-  margin-top: -28px;
-  border-radius: 50%;
-  border: 8px solid #c5cad3;
-  border-top-color: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-  animation: uSpinnerRotate 0.9s linear infinite;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 801;
-  transition: opacity 0.2s ease;
-}
-
-.u-content.is-loading-map .u-map-container::before,
-.u-content.is-loading-map .u-map-container::after {
-  opacity: 1;
-}
-
-.u-content.is-loading #listState,
-.u-content.is-loading #universitiesList,
-.u-content.is-loading #pagination {
-  visibility: hidden;
-  pointer-events: none;
 }
 
 /* =========================================

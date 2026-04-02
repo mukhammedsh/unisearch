@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-03-25",
+  "verified_at": "2026-04-01",
   "source_fragments": [
     "docs/data_research/structured_group_a_us_uk_admissions.json",
     "docs/data_research/structured_group_b_europe_canada_admissions.json",
@@ -732,23 +732,19 @@
     "eth-zurich-ch-zurich": {
       "university_name": "ETH Zurich",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": "none",
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "Official pages describe admission routes, entrance-exam paths, and a subset master's selectivity statement, but not a public university-wide applicants/admitted rate.",
+        "semantics": "Official ETH bachelor admissions pages describe eligibility, language requirements and entrance-exam routes, but no public institution-wide undergraduate applicant/admit rate was located.",
         "sources": [
           {
-            "url": "https://ethz.ch/en/studies/bachelor/application/auslaendische-reifezeugnisse/zulassungsvoraussetzungen.html",
-            "label": "ETH Zurich admission requirements"
+            "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/admission-prerequisites.html",
+            "label": "ETH Zurich admission prerequisites"
           },
           {
-            "url": "https://ethz.ch/content/dam/ethz/main/news/eth-news/2024/09/240912-mm-semesterstart-ce/MM_ETH%20Zurich_Semester%20start%20Sep%202024.pdf",
-            "label": "ETH Zurich semester start 2024 PDF"
-          },
-          {
-            "url": "https://ethz.ch/staffnet/en/finance-and-controlling/facts-and-figures/students.html",
-            "label": "ETH Zurich students facts and figures"
+            "url": "https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/how-to-apply.html",
+            "label": "ETH Zurich application process"
           }
         ]
       },
@@ -969,19 +965,15 @@
     "delft-university-of-technology-nl-delft": {
       "university_name": "TU Delft",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": "none",
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "Official materials confirm numerus fixus and selection for some bachelors, but no public applicants/admitted ratio was located.",
+        "semantics": "Official TU Delft materials describe numerus-fixus selection and programme capacities for some Bachelor programmes, but do not publish a university-wide undergraduate applicant/admit rate.",
         "sources": [
           {
-            "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/",
-            "label": "TU Delft aerospace engineering program page"
-          },
-          {
-            "url": "https://ocw.tudelft.nl/programs/bachelor/industrial-design-engineering/",
-            "label": "TU Delft industrial design engineering program page"
+            "url": "https://www.tudelft.nl/en/onderwijs/opleidingen/bachelors/computer-science-and-engineering/bachelor-of-computer-science-and-engineering/from-application-to-enrollment/selection-procedure",
+            "label": "TU Delft CSE selection procedure"
           },
           {
             "url": "https://www.tudelft.nl/en/about-tu-delft",
@@ -990,8 +982,8 @@
         ]
       },
       "program_level": {
-        "status": "verified_null_only",
-        "kind": "program_metrics_not_published",
+        "status": "official_counts",
+        "kind": "program_capacity_only",
         "acceptance_rate_percent": null,
         "counts": null,
         "notes": "Official program-level public selectivity data is not published for the reviewed current programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
@@ -1017,30 +1009,38 @@
       "programs": [
         {
           "program_name": "Computer Science and Engineering",
-          "source_scope": "program_verified_null",
-          "data_type": "verified-null",
+          "source_scope": "program_capacity_only",
+          "data_type": "capacity_only",
           "scope": "program",
           "metric_value": null,
           "metric_unit": null,
           "acceptance_rate_percent": null,
-          "counts": null,
-          "semantics": "The official TU Delft Computer Science and Engineering programme page describes the bachelor programme, but the reviewed official public materials do not publish applicants/admitted totals or a clean admission ratio for the programme.",
-          "notes": "Stored as verified-null because TU Delft does not expose a safe public CSE applicant/admit ratio in the reviewed official sources.",
+          "counts": {
+            "places": 590,
+            "english_track_places": 345,
+            "bilingual_track_places": 245,
+            "cycle": "2026-2027"
+          },
+          "semantics": "Official TU Delft CSE selection materials publish the fixed number of places for the 2026-2027 academic year, but not a clean public applicant/admit ratio.",
+          "notes": "Updated from verified-null to capacity-only because the official selection procedure page publishes the number of places.",
           "sources": [
             {
-              "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
-              "label": "TU Delft OCW Computer Science and Engineering programme page"
+              "url": "https://www.tudelft.nl/en/onderwijs/opleidingen/bachelors/computer-science-and-engineering/bachelor-of-computer-science-and-engineering/from-application-to-enrollment/selection-procedure",
+              "label": "TU Delft CSE selection procedure"
             }
           ],
           "provenance": {
-            "source": "TU Delft OCW Computer Science and Engineering programme page",
-            "source_url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
-            "verified_at": "2026-03-25",
+            "source": "TU Delft CSE selection procedure",
+            "source_url": "https://www.tudelft.nl/en/onderwijs/opleidingen/bachelors/computer-science-and-engineering/bachelor-of-computer-science-and-engineering/from-application-to-enrollment/selection-procedure",
+            "verified_at": "2026-04-01",
             "status": "official",
-            "confidence": "medium",
-            "method": "Verified-null: official programme page confirms the programme exists, but no public admission counts were found in the reviewed official sources.",
+            "confidence": "high",
+            "method": "Direct place-count published on the official TU Delft CSE selection page.",
             "basis": {
-              "summary": "The official TU Delft Computer Science and Engineering programme page describes the bachelor programme, but the reviewed official public materials do not publish applicants/admitted totals or a clean admission ratio for the programme."
+              "places": 590,
+              "english_track_places": 345,
+              "bilingual_track_places": 245,
+              "cycle": "2026-2027"
             }
           }
         },
@@ -1308,12 +1308,21 @@
     "national-university-of-singapore-sg-singapore": {
       "university_name": "National University of Singapore (NUS)",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "No public university-wide applicants/admitted rate was found in the official materials reviewed. NUS publishes indicative grade profiles and programme places instead.",
-        "sources": []
+        "semantics": "Official NUS undergraduate materials publish programme places and indicative grade profiles, but not a public institution-wide undergraduate applicant/admit rate.",
+        "sources": [
+          {
+            "url": "https://www.nus.edu.sg/oam/admissions/admissions",
+            "label": "NUS Undergraduate Admissions"
+          },
+          {
+            "url": "https://www.nus.edu.sg/oam/admissions/indicative-grade-profile",
+            "label": "Indicative Grade Profile"
+          }
+        ]
       },
       "program_level": {
         "status": "official_signals",
@@ -1407,12 +1416,21 @@
     "cuhk-hk-shatin": {
       "university_name": "The Chinese University of Hong Kong (CUHK)",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "No clean public university-wide applicants/admitted table was found. Official materials expose programme requirements, admission grades, projected enrolment, and route-specific admitted-count figures.",
-        "sources": []
+        "semantics": "Official CUHK materials publish route-specific score references, programme requirements and projected enrolment, but not a clean university-wide undergraduate applicant/admit rate.",
+        "sources": [
+          {
+            "url": "https://admission.cuhk.edu.hk/",
+            "label": "CUHK Undergraduate Admissions"
+          },
+          {
+            "url": "https://www.cuhk.edu.hk/adm/nonjupas/Admissions_Score_Reference.pdf",
+            "label": "CUHK Admissions Score Reference"
+          }
+        ]
       },
       "program_level": {
         "status": "official_signals",
@@ -1949,12 +1967,21 @@
     "seoul-national-university-kr-seoul": {
       "university_name": "Seoul National University",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "Official guides state that the number of applicants and acceptance rate will not be disclosed, and admission decisions are holistic.",
-        "sources": []
+        "semantics": "Official SNU undergraduate admissions guides explicitly state that the number of applicants and the acceptance rate will not be disclosed publicly.",
+        "sources": [
+          {
+            "url": "https://en.snu.ac.kr/admission",
+            "label": "SNU Admissions"
+          },
+          {
+            "url": "https://en.snu.ac.kr/webdata/uploads/eng/file/2024/01/Admissions_for_Undergraduate_Fall2024.pdf",
+            "label": "SNU undergraduate admission guide"
+          }
+        ]
       },
       "program_level": {
         "status": "verified_null_only",
@@ -2136,12 +2163,21 @@
     "tsinghua-university-cn-beijing": {
       "university_name": "Tsinghua University",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "No clean public university-wide admit-rate table was found in the official materials reviewed.",
-        "sources": []
+        "semantics": "Official Tsinghua undergraduate admissions pages publish programmes, fees and some department-level capacity information, but no university-wide undergraduate applicant/admit rate.",
+        "sources": [
+          {
+            "url": "https://www.tsinghua.edu.cn/en/Admissions.htm",
+            "label": "Tsinghua admissions overview"
+          },
+          {
+            "url": "https://international.join-tsinghua.edu.cn/Admission1/Application_Procedures.htm",
+            "label": "Tsinghua undergraduate application procedures"
+          }
+        ]
       },
       "program_level": {
         "status": "official_counts",
@@ -2231,12 +2267,21 @@
     "kyoto-university-jp-kyoto": {
       "university_name": "Kyoto University",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "No central university-wide acceptance-rate table was found in the official materials reviewed.",
-        "sources": []
+        "semantics": "Official Kyoto University materials do not provide a central university-wide undergraduate applicant/admit rate; reviewed official counts are programme-specific (for example Kyoto iUP).",
+        "sources": [
+          {
+            "url": "https://www.kyoto-u.ac.jp/en/about/publications/admissions-guide-for-international-applicants",
+            "label": "Kyoto admissions guide"
+          },
+          {
+            "url": "https://www.iup.kyoto-u.ac.jp/",
+            "label": "Kyoto iUP"
+          }
+        ]
       },
       "program_level": {
         "status": "official_counts",
@@ -2333,23 +2378,19 @@
     "university-of-melbourne-au-melbourne": {
       "university_name": "University of Melbourne",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "The official pages expose entry thresholds such as guaranteed ATARs, lowest selection ranks, prerequisites, and application pathways, but do not publish a public university-wide applicant/admit ratio.",
+        "semantics": "Official Melbourne undergraduate materials describe competitive selection, quotas and entry requirements, but do not publish a university-wide undergraduate applicant/admit rate.",
         "sources": [
           {
-            "url": "https://study.unimelb.edu.au/study-with-us/undergraduate-courses/change-of-preference/atar-guarantees",
-            "label": "ATAR guarantees"
+            "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/domestic-applications/entry-requirements/how-youre-selected",
+            "label": "How you are selected"
           },
           {
-            "url": "https://study.unimelb.edu.au/find/courses/undergraduate/bachelor-of-science/entry-requirements/",
-            "label": "Bachelor of Science entry requirements"
-          },
-          {
-            "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/domestic-applications/applications/domestic-mid-year-applications",
-            "label": "Domestic mid-year applications"
+            "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/entry-requirements",
+            "label": "International undergraduate entry requirements"
           }
         ]
       },
@@ -2444,7 +2485,7 @@
       "university_wide": {
         "status": "official_rate",
         "kind": "rate",
-        "acceptance_rate_percent": 21,
+        "acceptance_rate_percent": 21.0,
         "counts": {
           "applicants": 6911,
           "admitted": 1480
@@ -2587,23 +2628,15 @@
     "suleyman-demirel-university-kaz-kaskelen": {
       "university_name": "Suleyman Demirel University",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "The official pages expose admission rules based on UNT scores, interviews, special exams, and grant competition, but they do not publish a public university-wide applicant/admit total.",
+        "semantics": "Official SDU admissions pages publish process rules, grant competition and requirements, but no public university-wide undergraduate applicant/admit totals.",
         "sources": [
           {
             "url": "https://sdu.edu.kz/en/admission-3-2/",
-            "label": "Admission - SDU University"
-          },
-          {
-            "url": "https://sdu.edu.kz/ru/admission/",
             "label": "SDU admission page"
-          },
-          {
-            "url": "https://my.sdu.edu.kz/common/download/REGULATION-ON-TRANSFERRING-AND-RE-ADMISSION-OF-STUDENTS-AT-SULEYMAN-DEMIREL-UNIVERSITY.pdf",
-            "label": "Transfer and re-admission regulations"
           }
         ]
       },
@@ -2692,23 +2725,19 @@
     "astana-it-university-kaz-astana": {
       "university_name": "Astana IT University",
       "university_wide": {
-        "status": "no_official_source",
-        "kind": null,
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "The official materials describe application flow, preliminary approval, original-document submission, entrance testing, and program-group requirements, but do not publish public applicant/admit totals.",
+        "semantics": "Official AITU admissions materials publish requirements, test routes and bachelor programmes, but no public university-wide undergraduate applicant/admit totals.",
         "sources": [
           {
             "url": "https://astanait.edu.kz/en/how-to-apply/",
-            "label": "How to apply"
+            "label": "AITU how to apply"
           },
           {
             "url": "https://astanait.edu.kz/en/bachelor/",
-            "label": "Bachelor's Degree Programs"
-          },
-          {
-            "url": "https://astanait.edu.kz/en/aitu-excellence-test/",
-            "label": "AITU Excellence Test"
+            "label": "AITU bachelor programmes"
           }
         ]
       },

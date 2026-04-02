@@ -2,6 +2,28 @@
 
 All notable project changes should be recorded here.
 
+## 3.0.0 (2026-04-02) - compact funding-option tracks, alias-aware search, and detail-page admissions redesign
+
+Status:
+- synchronized runtime/package version to `3.0.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, `backend/.env.example`, and README examples.
+- reworked admission-track data around compact tracks with nested funding options:
+  - backend normalization now keeps canonical admission tracks compact while still deriving majors and score profiles for nested `funding_options`;
+  - new `expand_admission_track_variants()` compatibility handling now feeds AI sorting, chance estimation, aid detection, and funding filters where flattened variants are still required.
+- improved searchability, localization, and catalog data quality:
+  - university search now scores hidden aliases such as `MIT`, `NUS`, `TUM`, `CUHK`, `KAIST`, `NU`, and Cyrillic equivalents without reintroducing abbreviations into primary display names;
+  - nested funding-option content now localizes correctly across labels, descriptions, funding program/source text, extra requirements, language requirements, and scholarship names;
+  - catalog/translations were cleaned up to use fuller primary university names, refine Nazarbayev University and SDU descriptions, and add an inferred low-confidence SAT `score_profile` for Nazarbayev University direct admission.
+- updated `UniFit` / `UniChance` behavior for compact tracks and missing exam evidence:
+  - AI sorting and chance estimation now flatten compact funding options before scoring, so grant and paid variants remain compatible with ranking and detail-page selection flows;
+  - `meetMinRequirements` is no longer surfaced when required exam evidence is missing, and the no-data chance state now explicitly tells users that exam data is needed for that track in English and Russian.
+- redesigned the university detail admissions and finance experience:
+  - admission tracks now render grouped funding-option cards with per-option badges, selection controls, cost previews, average-admitted blocks, extra requirements, and localized major tags;
+  - the finance tab now mirrors that grouping with track-level sections, per-option breakdown cards, and clearer paid-vs-grant styling in both light and dark themes;
+  - loading states for ranking, guide, universities, and university detail were simplified from blocking overlay spinners to inline status notes.
+- added regression coverage for the new behavior:
+  - backend tests now cover compact funding-option schema retention, alias search, conditional requirement handling, and flattened chance-scoring compatibility;
+  - Playwright coverage now checks badge-priority conflicts, localized track-major chips, and Nazarbayev University compact funding-option rendering.
+
 ## 2.8.0 (2026-03-31) - score-profile chance modeling, exam normalization, and finance UI polish
 
 Status:

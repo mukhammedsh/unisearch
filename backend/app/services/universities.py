@@ -50,7 +50,30 @@ def _norm_tag_key(value: Any) -> str:
 
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
-UNIVERSITY_DETAIL_REPR_VERSION = 3
+UNIVERSITY_DETAIL_REPR_VERSION = 4
+
+_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
+    "mit-usa-cambridge": ["MIT", "МИТ"],
+    "imperial-college-london-uk": ["Imperial", "ICL", "Империал", "ИКЛ"],
+    "stanford-university-usa-ca": ["Stanford", "Стэнфорд", "Стенфорд"],
+    "harvard-usa-cambridge": ["Harvard", "Гарвард"],
+    "eth-zurich-ch-zurich": ["ETH", "ETH Zurich", "ЕТН", "ЕТХ", "ЕТН Цюрих"],
+    "national-university-of-singapore-sg-singapore": ["NUS", "НУС"],
+    "epfl-ch-lausanne": ["EPFL", "ЕПФЛ"],
+    "technical-university-of-munich-de-munich": ["TUM", "ТУМ"],
+    "university-of-toronto-ca-toronto": ["U of T", "UofT", "Toronto", "Торонто", "Ю оф Т"],
+    "cuhk-hk-shatin": ["CUHK", "КУХК"],
+    "university-of-tokyo-jp-tokyo": ["UTokyo", "Todai", "Тодай", "УТокио"],
+    "seoul-national-university-kr-seoul": ["SNU", "СНУ"],
+    "delft-university-of-technology-nl-delft": ["TU Delft", "Delft Tech", "ТУ Делфт", "Делфт Тех"],
+    "kaist-kr-daejeon": ["KAIST", "КАИСТ", "КАЙСТ"],
+    "tsinghua-university-cn-beijing": ["Tsinghua", "THU", "Цинхуа", "ТХУ"],
+    "nazarbayev-university-kaz-astana": ["NU", "НУ"],
+    "kyoto-university-jp-kyoto": ["KyotoU", "Kyodai", "Киото", "Кёто", "Кёодай"],
+    "university-of-melbourne-au-melbourne": ["UniMelb", "Melbourne", "Мельбурн", "ЮниМелб"],
+    "suleyman-demirel-university-kaz-kaskelen": ["SDU", "СДУ"],
+    "astana-it-university-kaz-astana": ["AITU", "АИТУ"],
+}
 
 
 def _normalize_search_lang(value: Any) -> str:
@@ -58,6 +81,13 @@ def _normalize_search_lang(value: Any) -> str:
     if raw.startswith("ru") or raw == "rus":
         return SEARCH_LANG_RUS
     return SEARCH_LANG_ENG
+
+
+def _hidden_search_aliases_for_university(u: Dict[str, Any]) -> List[str]:
+    uid = str((u or {}).get("id") or "").strip()
+    if not uid:
+        return []
+    return _uniq_non_empty(_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID.get(uid, []))
 
 
 _UNI_TRANSLATIONS_CACHE: Dict[str, Any] = {"mtime": None, "data": {}}
@@ -277,41 +307,52 @@ def _localize_university_payload(university: Dict[str, Any], search_lang: Any) -
                     lambda x: _translate_group_value("language", x, lang),
                 )
 
+    def localize_track_payload(track: Dict[str, Any]) -> None:
+        if not isinstance(track, dict):
+            return
+
+        track["label"] = _translate_track_label(track.get("label"), lang)
+        track["track_badge"] = _translate_admission_text(track.get("track_badge"), lang)
+        track["description"] = _translate_admission_text(track.get("description"), lang)
+        track["funding_program"] = _translate_admission_text(track.get("funding_program"), lang)
+        track["funding_source"] = _translate_admission_text(track.get("funding_source"), lang)
+        if isinstance(track.get("applicable_majors"), list):
+            track["applicable_majors"] = [
+                _translate_program_name(x, lang) for x in track.get("applicable_majors", [])
+            ]
+        if isinstance(track.get("study_mode"), (str, list)):
+            track["study_mode"] = _translate_maybe_list(
+                track.get("study_mode"),
+                lambda x: _translate_group_value("study_mode", x, lang),
+            )
+        if isinstance(track.get("extra_requirements"), list):
+            track["extra_requirements"] = [
+                _translate_admission_text(x, lang) for x in track.get("extra_requirements", [])
+            ]
+
+        lang_reqs = track.get("language_requirements")
+        if isinstance(lang_reqs, list):
+            for row in lang_reqs:
+                if not isinstance(row, dict):
+                    continue
+                row["code"] = _translate_group_value("language", row.get("code"), lang)
+
+        scholarships = track.get("scholarships")
+        if isinstance(scholarships, list):
+            for scholarship in scholarships:
+                if not isinstance(scholarship, dict):
+                    continue
+                scholarship["name"] = _translate_admission_text(scholarship.get("name"), lang)
+
+        funding_options = track.get("funding_options")
+        if isinstance(funding_options, list):
+            for option in funding_options:
+                localize_track_payload(option)
+
     tracks = u.get("admission_tracks")
     if isinstance(tracks, list):
         for track in tracks:
-            if not isinstance(track, dict):
-                continue
-            track["label"] = _translate_track_label(track.get("label"), lang)
-            track["track_badge"] = _translate_admission_text(track.get("track_badge"), lang)
-            track["description"] = _translate_admission_text(track.get("description"), lang)
-            if isinstance(track.get("applicable_majors"), list):
-                track["applicable_majors"] = [
-                    _translate_program_name(x, lang) for x in track.get("applicable_majors", [])
-                ]
-            if isinstance(track.get("study_mode"), (str, list)):
-                track["study_mode"] = _translate_maybe_list(
-                    track.get("study_mode"),
-                    lambda x: _translate_group_value("study_mode", x, lang),
-                )
-            if isinstance(track.get("extra_requirements"), list):
-                track["extra_requirements"] = [
-                    _translate_admission_text(x, lang) for x in track.get("extra_requirements", [])
-                ]
-
-            lang_reqs = track.get("language_requirements")
-            if isinstance(lang_reqs, list):
-                for row in lang_reqs:
-                    if not isinstance(row, dict):
-                        continue
-                    row["code"] = _translate_group_value("language", row.get("code"), lang)
-
-            scholarships = track.get("scholarships")
-            if isinstance(scholarships, list):
-                for scholarship in scholarships:
-                    if not isinstance(scholarship, dict):
-                        continue
-                    scholarship["name"] = _translate_admission_text(scholarship.get("name"), lang)
+            localize_track_payload(track)
 
     return u
 
@@ -805,7 +846,7 @@ def _expand_track_funding_options(track: Dict[str, Any]) -> List[Dict[str, Any]]
     raw_options = track.get("funding_options")
     options = [row for row in raw_options if isinstance(row, dict)] if isinstance(raw_options, list) else []
     if not options:
-        return [track]
+        return [copy.deepcopy(track)]
 
     base_track = copy.deepcopy(track)
     base_track.pop("funding_options", None)
@@ -849,6 +890,18 @@ def _expand_track_funding_options(track: Dict[str, Any]) -> List[Dict[str, Any]]
         expanded.append(variant)
 
     return expanded or [base_track]
+
+
+def expand_admission_track_variants(tracks: Any) -> List[Dict[str, Any]]:
+    if not isinstance(tracks, list):
+        return []
+
+    expanded: List[Dict[str, Any]] = []
+    for track in tracks:
+        if not isinstance(track, dict):
+            continue
+        expanded.extend(_expand_track_funding_options(track))
+    return expanded
 
 
 def _derive_track_applicable_majors(u: Dict[str, Any], track: Dict[str, Any]) -> List[str]:
@@ -1311,20 +1364,36 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
 
     tracks = u.get("admission_tracks")
     if isinstance(tracks, list):
-        expanded_tracks: List[Dict[str, Any]] = []
-        for track in tracks:
-            if not isinstance(track, dict):
-                continue
-            expanded_tracks.extend(_expand_track_funding_options(track))
-
         kept_tracks: List[Dict[str, Any]] = []
-        for track in expanded_tracks:
-            if not isinstance(track, dict):
+        for raw_track in tracks:
+            if not isinstance(raw_track, dict):
                 continue
+
+            track = copy.deepcopy(raw_track)
             derived_majors = _derive_track_applicable_majors(u, track)
             if derived_majors:
                 track["applicable_majors"] = derived_majors
             track["score_profile"] = _derive_track_score_profile(u, track)
+
+            raw_options = track.get("funding_options")
+            if isinstance(raw_options, list) and raw_options:
+                expanded_options = _expand_track_funding_options(track)
+                normalized_options: List[Dict[str, Any]] = []
+                for option_idx, raw_option in enumerate(raw_options):
+                    if not isinstance(raw_option, dict):
+                        continue
+                    option = copy.deepcopy(raw_option)
+                    variant = expanded_options[option_idx] if option_idx < len(expanded_options) else None
+                    if isinstance(variant, dict):
+                        option_majors = variant.get("applicable_majors")
+                        if isinstance(option_majors, list) and option_majors:
+                            option["applicable_majors"] = copy.deepcopy(option_majors)
+                        option_score_profile = variant.get("score_profile")
+                        if isinstance(option_score_profile, dict) and option_score_profile:
+                            option["score_profile"] = copy.deepcopy(option_score_profile)
+                    normalized_options.append(option)
+                track["funding_options"] = normalized_options
+
             if _should_keep_track_for_product_scope(u, track):
                 kept_tracks.append(track)
         u["admission_tracks"] = kept_tracks
@@ -1371,6 +1440,7 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
     state_key = _norm_space(_get_nested(u, ["location", "state"]))
     description = _safe_lower(u.get("description"))
     raw_tags = [str(x or "").strip() for x in (u.get("tags") or []) if str(x or "").strip()]
+    hidden_search_aliases = _hidden_search_aliases_for_university(u)
     tag_keys = [_norm_tag_key(x) for x in raw_tags if _norm_tag_key(x)]
 
     major_exact_rus = _uniq_non_empty(
@@ -1400,6 +1470,7 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
         "state_rus": _safe_lower(_STATE_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(state_key, "")),
         "description": description,
         "description_rus": description_rus,
+        "search_aliases": [_safe_lower(x) for x in hidden_search_aliases if x],
         "tags": [_safe_lower(x) for x in raw_tags if x],
         "tags_rus": [_safe_lower(x) for x in tags_rus if x],
         "size": _safe_lower(_get_nested(u, ["student_life", "size"])),
@@ -1459,8 +1530,8 @@ def _has_any_aid(u: Dict[str, Any]) -> bool:
             if _to_bool(aid.get("merit_based")) or _to_bool(aid.get("need_based")):
                 return True
 
-    tracks = u.get("admission_tracks")
-    if not isinstance(tracks, list):
+    tracks = expand_admission_track_variants(u.get("admission_tracks"))
+    if not tracks:
         return False
 
     for track in tracks:
@@ -1846,7 +1917,7 @@ def list_universities(
                 for (u, m) in pairs
                 if any(
                     _safe_lower(t.get("funding_type")) == ft
-                    for t in (u.get("admission_tracks") or [])
+                    for t in expand_admission_track_variants(u.get("admission_tracks"))
                     if isinstance(t, dict)
                 )
             ]

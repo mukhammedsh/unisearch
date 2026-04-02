@@ -73,6 +73,48 @@ class UniversitySearchTests(unittest.TestCase):
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual(["u-biz"], ids)
 
+    def test_query_matches_hidden_university_alias(self):
+        rows = [
+            {
+                "id": "nazarbayev-university-kaz-astana",
+                "name": "Nazarbayev University",
+                "location": {"country": "Kazakhstan", "city": "Astana", "state": ""},
+                "description": "Public research university in Astana.",
+                "tags": ["research", "engineering"],
+                "academics": {"programs": []},
+                "admission_tracks": [],
+            }
+        ]
+
+        normalized = [uni_service._normalize_university_schema(copy.deepcopy(x)) for x in rows]
+        meta = [uni_service._build_university_meta(x) for x in normalized]
+        with patch("app.services.universities.get_universities_with_meta", return_value=(normalized, meta)):
+            result = uni_service.list_universities(q="NU", paginate=False)
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["nazarbayev-university-kaz-astana"], ids)
+
+    def test_query_matches_hidden_university_alias_in_russian(self):
+        rows = [
+            {
+                "id": "nazarbayev-university-kaz-astana",
+                "name": "Nazarbayev University",
+                "location": {"country": "Kazakhstan", "city": "Astana", "state": ""},
+                "description": "Public research university in Astana.",
+                "tags": ["research", "engineering"],
+                "academics": {"programs": []},
+                "admission_tracks": [],
+            }
+        ]
+
+        normalized = [uni_service._normalize_university_schema(copy.deepcopy(x)) for x in rows]
+        meta = [uni_service._build_university_meta(x) for x in normalized]
+        with patch("app.services.universities.get_universities_with_meta", return_value=(normalized, meta)):
+            result = uni_service.list_universities(q="НУ", paginate=False, search_lang="rus")
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["nazarbayev-university-kaz-astana"], ids)
+
     def test_query_allows_small_typo_for_city(self):
         items, meta = self._mock_data()
         with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):

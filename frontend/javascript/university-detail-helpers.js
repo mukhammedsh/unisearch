@@ -232,6 +232,15 @@ function chanceAccuracyNote(model) {
   return "";
 }
 
+function chanceNoDataHelpNote(uniChance) {
+  const reason = String(uniChance?.reason || "").trim().toLowerCase();
+  if (reason !== "missing_exam_score") return "";
+  return t(
+    "admission.chance.need_exam_data_track",
+    "Need exam data to see the chance for this track."
+  );
+}
+
 export function renderUniChanceSummary(uniChance) {
   if (!uniChance) {
     const chanceTitle = translateWord("admission_probability_title", "Admission Probability");
@@ -254,6 +263,7 @@ export function renderUniChanceSummary(uniChance) {
     const noDataLabel = String(
       uniChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
     ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
+    const helpNote = chanceNoDataHelpNote(uniChance);
     return `
       <div class="chance-panel">
         <div class="chance-head">
@@ -264,6 +274,7 @@ export function renderUniChanceSummary(uniChance) {
           <div class="chance-percent chance-low">?</div>
         </div>
         <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
+        ${helpNote ? `<div class="chance-inline-note">${escapeHtml(helpNote)}</div>` : ""}
         <div class="chance-foot">${escapeHtml(noDataLabel)}</div>
       </div>
     `;
@@ -354,6 +365,71 @@ function normalizeFundingPreference(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (raw === "grant" || raw === "paid") return raw;
   return "any";
+}
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function mergeTrackVariantDict(baseValue, variantValue) {
+  const baseObj = isPlainObject(baseValue) ? baseValue : null;
+  const variantObj = isPlainObject(variantValue) ? variantValue : null;
+
+  if (baseObj && variantObj) return { ...baseObj, ...variantObj };
+  if (variantObj) return { ...variantObj };
+  if (baseObj) return { ...baseObj };
+  if (variantValue !== undefined && variantValue !== null) return variantValue;
+  if (baseValue !== undefined && baseValue !== null) return baseValue;
+  return null;
+}
+
+export function getTrackFundingOptions(track) {
+  const baseTrack = isPlainObject(track) ? track : {};
+  const rawOptions = Array.isArray(baseTrack.funding_options)
+    ? baseTrack.funding_options.filter(isPlainObject)
+    : [];
+
+  if (!rawOptions.length) {
+    return [{
+      ...baseTrack,
+      __parent_track_id: String(baseTrack.id || "").trim(),
+      __parent_track_label: String(baseTrack.label || "").trim(),
+      __funding_option_index: 0,
+      __is_funding_option: false,
+    }];
+  }
+
+  return rawOptions.map((option, optionIdx) => {
+    const merged = {
+      ...baseTrack,
+      ...option,
+      requirements: mergeTrackVariantDict(baseTrack.requirements, option.requirements),
+      stats_avg: mergeTrackVariantDict(baseTrack.stats_avg, option.stats_avg),
+      finance_override: mergeTrackVariantDict(baseTrack.finance_override, option.finance_override),
+      __parent_track_id: String(baseTrack.id || "").trim(),
+      __parent_track_label: String(baseTrack.label || "").trim(),
+      __funding_option_index: optionIdx,
+      __is_funding_option: true,
+    };
+
+    delete merged.funding_options;
+
+    if (!String(merged.id || "").trim()) merged.id = baseTrack.id;
+    if (!String(merged.label || "").trim()) merged.label = baseTrack.label;
+
+    return merged;
+  });
+}
+
+export function filterTrackFundingOptions(track, fundingFilter = "all") {
+  const options = getTrackFundingOptions(track);
+  if (fundingFilter === "all") return options;
+  return options.filter((option) => getTrackFundingType(option) === fundingFilter);
+}
+
+export function trackHasFundingOption(track, fundingFilter = "all") {
+  if (fundingFilter === "all") return true;
+  return filterTrackFundingOptions(track, fundingFilter).length > 0;
 }
 
 export function readAdmissionTrackFilterFromProfile() {

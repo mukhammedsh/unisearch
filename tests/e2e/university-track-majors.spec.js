@@ -6,7 +6,7 @@ test("admission tracks show applicable programs", async ({ page }) => {
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const majors = page.locator(".track-major-chip");
+  const majors = page.locator(".track-applicable-majors .tag");
   await expect(majors.first()).toBeVisible();
   await expect(majors).toContainText(["Computer Science"]);
 });
@@ -20,9 +20,20 @@ test("admission track major tags are localized in russian", async ({ page }) => 
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const majors = page.locator(".track-major-chip");
+  const majors = page.locator(".track-applicable-majors .tag");
   await expect(majors.first()).toBeVisible();
   await expect(majors).toContainText(["Компьютерные науки"]);
+});
+
+test("nazarbayev university keeps compact tracks and shows funding options inside each track", async ({ page }) => {
+  await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
+
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.click(".d-tab-btn[data-tab='tab-admission']");
+
+  await expect(page.locator(".track-card")).toHaveCount(2);
+  await expect(page.locator(".admission-option-card")).toHaveCount(4);
+  await expect(page.locator(".track-title")).toContainText(["Direct Admission (SAT)", "NUET Applicants"]);
 });
 
 test("program card major tags are localized in russian", async ({ page }) => {
@@ -36,5 +47,5 @@ test("program card major tags are localized in russian", async ({ page }) => {
 
   const programTags = page.locator("#tab-programs .program-card .program-tag");
   await expect(programTags.first()).toBeVisible();
-  await expect(page.locator("#tab-programs")).toContainText("Компьютерные науки");
+  await expect(programTags).toContainText(["Компьютерные науки"]);
 });

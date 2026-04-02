@@ -316,12 +316,12 @@
         "value": 26000,
         "source": "About TU Delft",
         "source_url": "https://www.tudelft.nl/en/about-tu-delft",
-        "verified_at": "2026-03-25",
-        "status": "official_approximate",
+        "verified_at": "2026-04-01",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Lower-bound numeric value derived from the official '26.000+ students' figure published on the About TU Delft page.",
+        "method": "Lower-bound numeric value derived from TU Delft's official '26,000+ students' statement.",
         "basis": {
-          "published_value_text": "26.000+ students"
+          "published_value_text": "26,000+ students"
         }
       },
       "description": {
@@ -454,7 +454,7 @@
         "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
       },
       "description": {
-        "value": "Official NU materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
+        "value": "Official materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
         "source": "Nazarbayev University Institutional Evaluation Programme report",
         "source_url": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf",
         "verified_at": "2026-03-25",
@@ -568,10 +568,10 @@
         "method": "Direct active enrollee count published on the SDU students page."
       },
       "description": {
-        "value": "SDU University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
+        "value": "Suleyman Demirel University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
         "source": "SDU About us",
         "source_url": "https://sdu.edu.kz/en/about-us-3/",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-04-01",
         "status": "official",
         "confidence": "high",
         "method": "Summarized from the official SDU About us page."
@@ -602,10 +602,10 @@
         "value": 6725,
         "source": "AITU official profile and strategy re-verification",
         "source_url": "https://astanait.edu.kz/en/about-aitu/",
-        "verified_at": "2026-03-25",
-        "status": "official_curated",
+        "verified_at": "2026-04-01",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Enrolment split was re-verified against the official AITU 2026-2030 strategy document during the 2026-03-25 data sprint; the live About AITU page is retained as the stable official landing page because the direct strategy PDF URL currently returns 410 in automated checks.",
+        "method": "Student count retained from the prior dataset but provenance wording updated: the value reflects an official institutional breakdown re-verified against AITU strategy materials and the official About page.",
         "basis": {
           "as_of": "2025-01-01",
           "bachelor_students": 6110,

@@ -79,6 +79,25 @@ body {
   to { transform: rotate(360deg); }
 }
 
+.inline-loading-note {
+  width: 100%;
+  min-height: 140px;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.inline-loading-note--compact {
+  min-height: 72px;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
 /* Global full-screen loader for backend requests */
 .global-loading-overlay {
   position: fixed;

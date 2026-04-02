@@ -27,9 +27,6 @@
   <main class="d-page">
     <div class="d-container">
       <div id="detailState" class="d-state"></div>
-      <div id="detailLoading" class="d-loading-overlay" aria-hidden="true">
-        <div class="d-loading-spinner" role="status" aria-label="Loading university details" data-i18n-aria-label="university.loading"></div>
-      </div>
 
       <section id="detailCard" class="d-card" style="display:none;">
         
@@ -113,8 +110,8 @@
                   <div class="finance-summary-left">
                      <h3 style="margin:0 0 10px 0; font-size:16px;" data-i18n="university.discounts_scholarships">Discounts & Scholarships</h3>
                      <div id="detailScholarshipInfo" class="scholarship-card">
-                        <div class="center-loading center-loading--compact" role="status" aria-label="Loading scholarships" data-i18n-aria-label="university.loading_scholarships">
-                          <div class="center-loading-spinner center-loading-spinner--sm" aria-hidden="true"></div>
+                        <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite" data-i18n="university.loading_scholarships">
+                          Loading scholarships
                         </div>
                      </div>
                   </div>

@@ -96,6 +96,49 @@ test("UniFit card badges still work when backend hints are missing (frontend fal
   await expect(firstCard.locator(".uni-why")).toContainText("strong");
 });
 
+test("UniFit card hides Requirements Met when conditional exam warning is present", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    const items = [
+      {
+        id: "mit-usa-cambridge",
+        name: "Conflicting Badge University",
+        rank: 5,
+        location: { country: "USA", city: "Boston" },
+        finance: { total_cost_year_usd: 42000 },
+        academics: { acceptance_rate_percent: 22 },
+        matchData: {
+          finalPrice: 42000,
+          preferenceMismatch: 0.08,
+          selectedChanceType: "grant",
+          grantChance: 88,
+          generalChance: 60,
+          conditional: true,
+          conditionalRequirements: 1,
+          meetMinRequirements: true,
+          uiBadgeHints: {
+            showConditionalExamNeeded: true,
+            vibe: "your_vibe",
+            finance: "likely_grant",
+          },
+        },
+      },
+    ];
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse(items)),
+    });
+  });
+
+  await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
+  const firstCard = page.locator(".uni-card").first();
+  await expect(firstCard).toBeVisible();
+  await expect(firstCard.locator(".uni-pill")).toContainText(["Conditional", "Your Vibe", "Likely Grant"]);
+  await expect(firstCard.locator(".uni-badge")).not.toContainText("Requirements Met");
+});
+
 test("UniFit card keeps all badges and switches to compact mode when badge count is above 4", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
@@ -257,14 +300,14 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
         ...base,
         id: "epfl-ch-lausanne",
         name: "Count 4",
+        finance: { total_cost_year_usd: 30000, financial_aid: { merit_based: true, need_based: false } },
         matchData: {
           ...base.matchData,
           preferenceMismatch: 0.08, // Your Vibe
           selectedChanceType: "grant",
           grantChance: 80, // Likely Grant
-          conditional: true, // Conditional
-          conditionalRequirements: 1,
           meetMinRequirements: true, // Requirements Met
+          aidAny: true, // Aid Available
         },
       },
       {

@@ -548,6 +548,7 @@ admission.track.select: Select
 admission.track.selected: Selected
 admission.track.recommended: Recommended
 admission.track.select_tooltip: Select this admission track to use it for admission chance display and for UniFit ranking.
+admission.chance.need_exam_data_track: Need exam data to see the chance for this track.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
 admission.chance_method.profile_short: Profile-based

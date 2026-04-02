@@ -1,7 +1,7 @@
 [
   {
     "id": "mit-usa-cambridge",
-    "name": "Massachusetts Institute of Technology (MIT)",
+    "name": "Massachusetts Institute of Technology",
     "rank": 1,
     "location": {
       "country": "USA",
@@ -2417,7 +2417,7 @@
   },
   {
     "id": "national-university-of-singapore-sg-singapore",
-    "name": "National University of Singapore (NUS)",
+    "name": "National University of Singapore",
     "rank": 6,
     "location": {
       "country": "Singapore",
@@ -3216,7 +3216,7 @@
   },
   {
     "id": "technical-university-of-munich-de-munich",
-    "name": "Technical University of Munich (TUM)",
+    "name": "Technical University of Munich",
     "rank": 9,
     "location": {
       "country": "Germany",
@@ -4156,7 +4156,7 @@
   },
   {
     "id": "cuhk-hk-shatin",
-    "name": "The Chinese University of Hong Kong (CUHK)",
+    "name": "The Chinese University of Hong Kong",
     "rank": 12,
     "location": {
       "country": "Hong Kong",
@@ -7065,7 +7065,27 @@
         },
         "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
         "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average SAT = 1475 (embedded statistics deck on the official statistics FAQ page).",
-        "score_profile": null,
+        "score_profile": {
+          "metric_id": "SAT",
+          "metric_unit": "",
+          "exam_id": "SAT",
+          "compatible_exam_ids": [
+            "SAT"
+          ],
+          "p25_raw": 1415,
+          "median_raw": 1475,
+          "p75_raw": 1535,
+          "p25_normalized": 91.42,
+          "median_normalized": 95.83,
+          "p75_normalized": 97.83,
+          "confidence": "low",
+          "source_program_name": "School of Engineering and Digital Sciences",
+          "source_scope": "track_stats_avg_inferred",
+          "source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+          "normalization_method": "exam_anchor_percentile",
+          "acceptance_rate_percent": 21.0,
+          "source_note": "Estimated admitted-score band inferred from the official 2025 enrolled-applicant average SAT of 1475 published by Nazarbayev University. This is lower confidence than a true percentile distribution because the public source does not publish p25 / median / p75 bands."
+        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [
@@ -7229,7 +7249,7 @@
         "url": "https://nu.edu.kz/admissions/fees-and-funding/"
       }
     ],
-    "description": "Official NU materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
+    "description": "Official materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
     "tags": [
       "public_university",
       "research",
@@ -8361,7 +8381,7 @@
         "url": "https://sdu.edu.kz/en/admission-3-2/"
       }
     ],
-    "description": "SDU University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
+    "description": "Suleyman Demirel University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
     "tags": [
       "comprehensive",
       "education",

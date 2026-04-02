@@ -159,19 +159,27 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
         }
 
         self.assertIn("nu_nuet_undergraduate", tracks)
-        self.assertIn("nu_nuet_undergraduate-grant-state-grant", tracks)
         self.assertNotIn("nu_nuet", tracks)
         self.assertNotIn("nu_nuet-grant-state-grant", tracks)
  
         undergraduate_track = tracks["nu_nuet_undergraduate"]
-        undergraduate_grant_track = tracks["nu_nuet_undergraduate-grant-state-grant"]
+        funding_options = {
+            str(option.get("id")): option
+            for option in (undergraduate_track.get("funding_options") or [])
+            if isinstance(option, dict)
+        }
+        self.assertIn("nu_nuet_undergraduate", funding_options)
+        self.assertIn("nu_nuet_undergraduate-grant-state-grant", funding_options)
+        undergraduate_paid_option = funding_options["nu_nuet_undergraduate"]
+        undergraduate_grant_option = funding_options["nu_nuet_undergraduate-grant-state-grant"]
 
-        self.assertEqual(120, int((undergraduate_track.get("requirements") or {}).get("NUET", 0)))
-        self.assertEqual("paid", str(undergraduate_track.get("funding_type") or ""))
-        self.assertEqual(120, int((undergraduate_grant_track.get("requirements") or {}).get("NUET", 0)))
-        self.assertEqual("grant", str(undergraduate_grant_track.get("funding_type") or ""))
+        self.assertEqual(120, int((undergraduate_paid_option.get("requirements") or {}).get("NUET", 0)))
+        self.assertEqual("paid", str(undergraduate_paid_option.get("funding_type") or ""))
+        self.assertEqual(120, int((undergraduate_grant_option.get("requirements") or {}).get("NUET", 0)))
+        self.assertEqual("grant", str(undergraduate_grant_option.get("funding_type") or ""))
         self.assertTrue(bool(undergraduate_track.get("applicable_majors")))
-        self.assertTrue(bool(undergraduate_grant_track.get("applicable_majors")))
+        self.assertTrue(bool(undergraduate_paid_option.get("applicable_majors")))
+        self.assertTrue(bool(undergraduate_grant_option.get("applicable_majors")))
 
         majors = university.get("academics", {}).get("majors") or []
         self.assertNotIn("Foundation Year", majors)
@@ -188,7 +196,7 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
             ],
         )
 
-    def test_dataset_contains_explicit_score_profiles_for_supported_tracks(self):
+    def test_dataset_keeps_explicit_mit_score_profile_and_compact_nu_tracks(self):
         mit = uni_service.get_university_by_id("mit-usa-cambridge")
         self.assertIsNotNone(mit)
         mit_tracks = {
@@ -209,14 +217,30 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
             for track in (nu.get("admission_tracks") or [])
             if isinstance(track, dict)
         }
-        sat_profile = (nu_tracks.get("nu_direct") or {}).get("score_profile") or {}
-        nuet_profile = (nu_tracks.get("nu_nuet_undergraduate") or {}).get("score_profile") or {}
 
+        sat_profile = (nu_tracks.get("nu_direct") or {}).get("score_profile") or {}
         self.assertEqual("SAT", sat_profile.get("exam_id"))
         self.assertEqual(1475, sat_profile.get("median_raw"))
-        self.assertEqual("NUET", nuet_profile.get("exam_id"))
-        self.assertEqual(193.0, nuet_profile.get("median_raw"))
-        self.assertGreater(float(nuet_profile.get("p75_normalized", 0.0)), float(nuet_profile.get("median_normalized", 0.0)))
+        self.assertEqual("low", sat_profile.get("confidence"))
+
+        self.assertIn("nu_direct", nu_tracks)
+        self.assertIn("nu_nuet_undergraduate", nu_tracks)
+        self.assertIn(
+            "nu_direct-grant-abay-kunanbayev",
+            [
+                str(option.get("id") or "")
+                for option in ((nu_tracks.get("nu_direct") or {}).get("funding_options") or [])
+                if isinstance(option, dict)
+            ],
+        )
+        self.assertIn(
+            "nu_nuet_undergraduate-grant-state-grant",
+            [
+                str(option.get("id") or "")
+                for option in ((nu_tracks.get("nu_nuet_undergraduate") or {}).get("funding_options") or [])
+                if isinstance(option, dict)
+            ],
+        )
 
     def test_nu_nuet_track_label_localizes_to_russian(self):
         university = uni_service.get_university_by_id(

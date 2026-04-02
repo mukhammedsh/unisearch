@@ -24,6 +24,23 @@ import {
   aiName,
 } from "./utils.js";
 
+import {
+  applyPercentWidths,
+  clusterMarkerLogoHtml,
+  getTrackFundingType,
+  getTrackFundingOptions,
+  filterTrackFundingOptions,
+  mapMarkerLogoHtml,
+  readAdmissionTrackFilterFromProfile,
+  renderExamGroup,
+  renderLanguageRequirements,
+  renderTrackChanceChip,
+  renderTrackFundingBadge,
+  renderUniChanceSummary,
+  splitExamEntries,
+  trackLookupKey,
+} from "./university-detail-helpers.js";
+
 import { setupTabs } from "./components.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "./routes.js";
@@ -41,20 +58,6 @@ import {
   translateWord,
 } from "./university-translations.js";
 import { bindInfoTooltips } from "./tooltip.js";
-import {
-  applyPercentWidths,
-  clusterMarkerLogoHtml,
-  getTrackFundingType,
-  mapMarkerLogoHtml,
-  readAdmissionTrackFilterFromProfile,
-  renderExamGroup,
-  renderLanguageRequirements,
-  renderTrackChanceChip,
-  renderTrackFundingBadge,
-  renderUniChanceSummary,
-  splitExamEntries,
-  trackLookupKey,
-} from "./university-detail-helpers.js";
 
 const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
 
@@ -276,6 +279,23 @@ function formatUiNumber(value, options = {}) {
   } catch (e) {
     return String(n);
   }
+}
+
+function formatFundingOptionsCount(count) {
+  const numericCount = Number(count);
+  const safeCount = Number.isFinite(numericCount) ? numericCount : 0;
+  const formattedCount = formatUiNumber(safeCount, { maximumFractionDigits: 0 });
+
+  if (getCurrentLanguage() === "rus") {
+    return `${formattedCount} ${ruPlural(
+      safeCount,
+      "вариант финансирования",
+      "варианта финансирования",
+      "вариантов финансирования"
+    )}`;
+  }
+
+  return `${formattedCount} ${safeCount === 1 ? "funding option" : "funding options"}`;
 }
 
 function formatAdmissionsPercent(value) {
@@ -2248,7 +2268,7 @@ export function initUniversitiesPage() {
         const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
         const likelyGrant = hintedFinance === "likely_grant" || (!hintedFinance && inGrantMode && Number.isFinite(grantChance) && grantChance >= 65);
         const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
-        const meetsMinRequirements = match.meetMinRequirements === true;
+        const meetsMinRequirements = match.meetMinRequirements === true && !hasConditionalExamWarning;
         const belowRequirements = match.meetMinRequirements === false;
         const aidAny = !!(match.aidAny || match.aidEligible || nested(u, ["finance", "financial_aid", "merit_based"], false) || nested(u, ["finance", "financial_aid", "need_based"], false));
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
@@ -2409,8 +2429,23 @@ export async function initUniversityPage() {
     const translatedCity = trCity(u?.location?.city || "");
     const translatedCountry = trCountry(u?.location?.country || "");
     const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
-    const annualCostForTrack = (track) => modeAwareAnnualCost((track && track.finance_override) || u.finance || {}, profileStudyMode);
-    setTxt("detailName", translatedName); 
+    const annualCostForTrack = (track) =>
+    modeAwareAnnualCost(((track && track.finance_override) || u.finance || {}), profileStudyMode);
+
+    const fundingOptionsForTrack = (track) => getTrackFundingOptions(track);
+
+    const allFundingOptions = (Array.isArray(u.admission_tracks) ? u.admission_tracks : [])
+    .flatMap((track) => fundingOptionsForTrack(track));
+
+    let minPrice = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
+    if (allFundingOptions.length) {
+    const prices = allFundingOptions
+        .map((option) => annualCostForTrack(option))
+        .filter((price) => Number.isFinite(Number(price)) && Number(price) > 0);
+
+    if (prices.length > 0) minPrice = Math.min(...prices);
+    }
+    setTxt("detailName", translatedName);
     const detailLocationEl = document.getElementById("detailLocation");
     if (detailLocationEl) {
         const locationParts = [translatedCity, translatedCountry].filter((part) => String(part || "").trim().length > 0);
@@ -2423,12 +2458,6 @@ export async function initUniversityPage() {
         } else {
             detailLocationEl.textContent = unknownFieldText("placeholder.field.location", "Location");
         }
-    }
-    
-    let minPrice = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
-    if (u.admission_tracks) {
-        const prices = u.admission_tracks.map((t) => annualCostForTrack(t));
-        if (prices.length > 0) minPrice = Math.min(...prices);
     }
     setTxt(
         "detailPrice",
@@ -2800,11 +2829,12 @@ export async function initUniversityPage() {
         } else {
             const tracks = Array.isArray(u.admission_tracks) ? u.admission_tracks : [];
             const filteredEntries = tracks
-                .map((track, idx) => ({ track, idx }))
-                .filter(({ track }) => {
-                if (admissionTrackFilter === "all") return true;
-                return getTrackFundingType(track) === admissionTrackFilter;
-            });
+            .map((track, idx) => ({
+                track,
+                idx,
+                options: filterTrackFundingOptions(track, admissionTrackFilter),
+            }))
+            .filter(({ options }) => options.length > 0);
             const recommendedTrackKey = String(uniChance?.recommendedTrackKey || uniChance?.bestTrackKey || "").trim();
             const activeTrackKey = String(uniChance?.bestTrackKey || "").trim();
             const selectedTrackTooltip = t(
@@ -2828,173 +2858,181 @@ export async function initUniversityPage() {
                 <span class="admission-filter-meta">${escapeHtml(translateTemplate("showing_tracks", "Showing {shown} of {total} tracks", { shown: shownTracks, total: totalTracks }))}</span>
             </div>`;
 
-            filteredEntries.forEach(({ track, idx }) => {
-                const trackKey = trackLookupKey(track, idx);
-                const trackChance = uniChanceByTrackKey.get(trackKey);
-                const isRecommendedTrack = Boolean(recommendedTrackKey && trackKey === recommendedTrackKey);
-                const isActiveTrack = Boolean(activeTrackKey && trackKey === activeTrackKey);
-                const selectionBadges = [];
-                if (isActiveTrack) {
-                    selectionBadges.push(`<span class="track-status-badge track-status-badge--selected">${escapeHtml(t("admission.track.selected", "Selected"))}</span>`);
-                }
-                if (isRecommendedTrack) {
-                    selectionBadges.push(`<span class="track-status-badge track-status-badge--recommended">${escapeHtml(t("admission.track.recommended", "Recommended"))}</span>`);
-                }
-                const selectionBadgeHtml = selectionBadges.length
-                    ? `<div class="track-status-badges">${selectionBadges.join("")}</div>`
-                    : "";
+            filteredEntries.forEach(({ track, idx, options }) => {
+                const trackLabel = trTrackLabel(track.label || "");
+                const trackDescription = trTrackDescription(u.id, track.id, track.description || "");
+                const majors = Array.isArray(track.applicable_majors) ? track.applicable_majors : [];
+                const translatedMajors = majors.map((m) => trProgramName(m)).filter(Boolean);
+
                 let majorsBadge = "";
-                if (track.applicable_majors && track.applicable_majors.length > 0) {
-                    majorsBadge = `<div class="track-major-tags">
-                        ${track.applicable_majors.map(m => 
-                            `<span class="track-major-chip">${escapeHtml(trProgramName(String(m)) || String(m))}</span>`
-                        ).join("")}
-                    </div>`;
-                } else {
-                    majorsBadge = `<span class="track-major-all">${escapeHtml(unknownFieldText("placeholder.field.applicable_majors", "Applicable majors"))}</span>`;
-                }
-                
-                const trackPriceOverride = track.finance_override?.total_cost_year_usd;
-                const trackPrice = annualCostForTrack(track);
-                const isGrantTrack = getTrackFundingType(track) === "grant";
-                const trackPriceTitle = isGrantTrack
-                    ? (trackPriceOverride != null ? translateWord("est_net_cost", "Est. Net Cost") : translateWord("base_cost_before_grant", "Base Cost (before grant)"))
-                    : translateWord("est_cost", "Est. Cost");
-                const trackPriceText = moneyOrUnknown(trackPrice, "placeholder.field.cost", "Cost");
-
-                // Требования
-                const reqSplit = splitExamEntries(track.requirements || {});
-                const minList =
-                    renderExamGroup(translateWord("academic_exams", "ACADEMIC EXAMS"), reqSplit.acad, "#6b7280") +
-                    renderExamGroup(translateWord("language_exams", "LANGUAGE EXAMS"), reqSplit.lang, "#2563eb");
-
-
-                // Средние баллы
-                const avgSplit = splitExamEntries(track.stats_avg || {});
-                let avgList = "";
-
-                if (Object.keys(track.stats_avg || {}).length > 0) {
-                avgList =
-                    renderExamGroup(translateWord("academic_exams", "ACADEMIC EXAMS"), avgSplit.acad, "#047857") +
-                    renderExamGroup(translateWord("language_exams", "LANGUAGE EXAMS"), avgSplit.lang, "#047857");
-                } else {
-                avgList = `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
-                }
-
-                const languageReqInfo = renderLanguageRequirements(track);
-                const extraReqs = Array.isArray(track.extra_requirements) ? track.extra_requirements.filter(Boolean) : [];
-                const extraReqInfo = extraReqs.length
-                    ? `
-                    <div class="track-extra-req">
-                        <div class="track-extra-req-title">${escapeHtml(translateWord("extra_requirements", "Extra Requirements"))}</div>
-                        <ul class="track-extra-req-list">
-                            ${extraReqs.map((item) => `<li>${escapeHtml(translateAdmissionText(String(item), String(item)))}</li>`).join("")}
-                        </ul>
-                    </div>
-                    `
-                    : `
-                    <div class="track-extra-req">
-                        <div class="track-extra-req-title">${escapeHtml(translateWord("extra_requirements", "Extra Requirements"))}</div>
-                        <div class="track-muted-italic">${escapeHtml(unknownFieldText("extra_requirements", "Extra Requirements"))}</div>
+                if (translatedMajors.length > 0) {
+                    majorsBadge = `
+                    <div class="track-applicable-majors">
+                        <strong>${escapeHtml(translateWord("placeholder.field.applicable_majors", "Applicable majors"))}:</strong>
+                        ${translatedMajors.map((major) => `<span class="tag">${escapeHtml(major)}</span>`).join("")}
                     </div>
                     `;
-
-                // Гранты
-                let grantsInfo = "";
-                if (track.scholarships && track.scholarships.length > 0) {
-                    grantsInfo = `
-                    <div class="track-grants">
-                        <div class="track-grants-title">${escapeHtml(translateWord("available_grants_aid", "AVAILABLE GRANTS & AID"))}:</div>
-                        <div class="track-grants-list">
-                            ${track.scholarships.map(s => {
-                                let conditions = "";
-                                if (s.requirements) {
-                                    conditions = Object.entries(s.requirements)
-                                        .map(([k, v]) => `${escapeHtml(String(k))} ≥ ${escapeHtml(String(v))}`)
-                                        .join(" • ");
-                                }
-                                const badgeText = s.amount 
-                                    ? `${translateWord("cover", "Cover")}: ${moneyUSD(s.amount)}` 
-                                    : (s.type === 'need' ? translateWord("need_based_aid", "Need-based Aid") : translateWord("merit_scholarship", "Merit Scholarship"));
-                                const safeBadgeText = escapeHtml(String(badgeText));
-
-                                return `
-                                <div class="track-grant-item">
-                                    <div class="track-grant-item-head">
-                                        <div class="track-grant-item-name">
-                                            <span>🏆</span> ${escapeHtml(String(s.name || ""))}
-                                        </div>
-                                        <div class="track-grant-item-badge">
-                                            ${safeBadgeText}
-                                        </div>
-                                    </div>
-                                    ${conditions ? `
-                                        <div class="track-grant-item-conditions">
-                                            <span class="track-grant-item-conditions-label">${escapeHtml(translateWord("requires", "Requires"))}:</span> ${conditions}
-                                        </div>
-                                    ` : `<div class="track-grant-item-empty">${escapeHtml(translateWord("no_specific_requirements_listed", "No specific requirements listed"))}</div>`}
-                                </div>
-                                `;
-                            }).join("")}
-                        </div>
-                    </div>`;
-                } else {
-                    grantsInfo = `
-                    <div class="track-grants">
-                        <div class="track-grants-title">${escapeHtml(translateWord("available_grants_aid", "AVAILABLE GRANTS & AID"))}:</div>
-                        <div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.scholarships", "Scholarships"))}</div>
-                    </div>`;
                 }
 
-                const trackDescription = trTrackDescription(u.id, track.id, String(track.description || ""));
-                const trackLabel = trTrackLabel(String(track.label || "")) || unknownFieldText("placeholder.field.track_name", "Track name");
-                const selectButtonLabel = isActiveTrack
-                    ? t("admission.track.selected", "Selected")
-                    : t("admission.track.select", "Select");
-                const selectButtonClass = isActiveTrack ? "track-select-btn is-active" : "track-select-btn";
+                const optionCardsHtml = options.map((option, optionIdx) => {
+                    const trackKey = trackLookupKey(option, optionIdx);
+                    const trackChance = uniChanceByTrackKey.get(trackKey);
+                    const isRecommendedTrack = Boolean(recommendedTrackKey && trackKey === recommendedTrackKey);
+                    const isActiveTrack = Boolean(activeTrackKey && trackKey === activeTrackKey);
 
-                tracksHTML += `
-                <div class="track-card${isGrantTrack ? " track-card--grant" : ""}">
-                    <div class="track-head">
-                        <div class="track-head-main">
-                            <div class="track-title-row">
-                                <h4 class="track-title">${escapeHtml(trackLabel)}</h4>
-                                ${selectionBadgeHtml}
-                            </div>
-                            ${renderTrackFundingBadge(track)}
+                    const selectionBadges = [];
+                    if (isActiveTrack) selectionBadges.push(escapeHtml(t("admission.track.selected", "Selected")));
+                    if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
+
+                    const selectionBadgeHtml = selectionBadges.length
+                    ? `<div class="track-selection-badge">${selectionBadges.join(" • ")}</div>`
+                    : "";
+
+                    const optionPriceOverride = option.finance_override?.total_cost_year_usd;
+                    const optionPrice = annualCostForTrack(option);
+                    const isGrantTrack = getTrackFundingType(option) === "grant";
+
+                    const priceTitle = isGrantTrack
+                    ? (optionPriceOverride != null
+                        ? translateWord("est_net_cost", "Est. Net Cost")
+                        : translateWord("base_cost_before_grant", "Base Cost (before grant)"))
+                    : translateWord("est_cost", "Est. Cost");
+
+                    const priceValue = Number.isFinite(Number(optionPrice))
+                    ? moneyUSD(optionPrice)
+                    : unknownFieldText("placeholder.field.cost", "Cost");
+
+                    const requirements = option.requirements || {};
+                    const minParts = splitExamEntries(requirements);
+                    const minList = [
+                    renderExamGroup(
+                        translateWord("academic_requirements", "Academic requirements"),
+                        minParts.acad,
+                        "#2563eb"
+                    ),
+                    renderExamGroup(
+                        translateWord("language_requirements_short", "Language requirements"),
+                        minParts.lang,
+                        "#047857"
+                    ),
+                    ].filter(Boolean).join("");
+
+                    const statsAvg = option.stats_avg || {};
+                    const avgParts = splitExamEntries(statsAvg);
+                    const avgList = [
+                    renderExamGroup(
+                        translateWord("academic_average", "Academic average"),
+                        avgParts.acad,
+                        "#2563eb"
+                    ),
+                    renderExamGroup(
+                        translateWord("language_average", "Language average"),
+                        avgParts.lang,
+                        "#047857"
+                    ),
+                    ].filter(Boolean).join("");
+                    const minContent = minList || `<div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>`;
+                    const avgContent = avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
+
+                    const languageReqInfo = renderLanguageRequirements(option.language_requirements);
+                    const extraRequirementItems = Array.isArray(option.extra_requirements)
+                    ? option.extra_requirements
+                        .map((item) => trTrackDescription(u.id, option.id, item))
+                        .filter(Boolean)
+                    : [];
+                    const extraReqInfo = extraRequirementItems.length
+                    ? `
+                        <div class="track-extra-req">
+                        <div class="track-extra-req-title">${escapeHtml(translateWord("extra_requirements", "Extra requirements"))}</div>
+                        <ul class="track-extra-req-list">${extraRequirementItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+                        </div>
+                    `
+                    : "";
+
+                    const optionLabelRaw = String(option.label || "").trim();
+                    const parentLabelRaw = String(track.label || "").trim();
+                    const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw
+                    ? trTrackLabel(optionLabelRaw)
+                    : "";
+
+                    const fundingMeta = [
+                    option.funding_program ? trTrackDescription(u.id, option.id, option.funding_program) : "",
+                    option.funding_source ? trTrackDescription(u.id, option.id, option.funding_source) : "",
+                    ].filter(Boolean);
+
+                    return `
+                    <article class="admission-option-card${isGrantTrack ? " admission-option-card--grant" : ""}">
+                        <div class="admission-option-head">
+                        <div class="admission-option-title-wrap">
+                            ${renderTrackFundingBadge(option)}
+                            ${optionLabel ? `<div class="admission-option-title">${escapeHtml(optionLabel)}</div>` : ""}
                             ${renderTrackChanceChip(trackChance)}
-                            ${majorsBadge}
-                            <p class="track-desc">${escapeHtml(trackDescription || unknownFieldText("placeholder.field.track_description", "Track description")).replace(/\n/g, "<br>")}</p>
                         </div>
-                        <div class="track-side">
-                            <div class="track-price">
-                                <div class="track-price-label">${trackPriceTitle}</div>
-                                <div class="track-price-value">${escapeHtml(trackPriceText)}</div>
-                            </div>
-                            <button
-                                class="${selectButtonClass}"
-                                type="button"
-                                data-track-select-key="${escapeHtml(trackKey)}"
-                                title="${escapeHtml(selectedTrackTooltip)}"
-                                aria-label="${escapeHtml(selectedTrackTooltip)}"
-                                ${isActiveTrack ? "disabled" : ""}
-                            >${escapeHtml(selectButtonLabel)}</button>
+                        ${selectionBadgeHtml}
                         </div>
-                    </div>
-                    
-                    <div class="track-stats-grid">
+
+                        ${fundingMeta.length ? `
+                        <div class="admission-option-meta">
+                            ${fundingMeta.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
+                        </div>
+                        ` : ""}
+
+                        <div class="track-cost-preview${isGrantTrack ? " track-cost-preview--grant" : ""}">
+                        <strong>${escapeHtml(priceTitle)}:</strong> ${escapeHtml(priceValue)}
+                        </div>
+
+                        <div class="track-stats-grid">
                         <div class="track-stats-box track-stats-box--min">
-                            <div class="track-stats-title">${escapeHtml(translateWord("minimum_to_apply", "Minimum To Apply"))}</div>
-                            <div class="track-stats-values">${minList || escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>
+                            <div class="track-stats-title">${escapeHtml(translateWord("minimum_to_apply", "Minimum to apply"))}</div>
+                            <div class="track-stats-values">${minContent}</div>
                         </div>
                         <div class="track-stats-box track-stats-box--avg">
                             <div class="track-stats-title track-stats-title--avg">${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}</div>
-                            <div class="track-stats-values">${avgList}</div>
+                            <div class="track-stats-values">${avgContent}</div>
+                        </div>
+                        </div>
+
+                        ${languageReqInfo}
+                        ${extraReqInfo}
+
+                        <div class="track-select-row">
+                        <button
+                            type="button"
+                            class="track-select-btn${isActiveTrack ? " is-active" : ""}"
+                            data-track-select-key="${escapeHtml(trackKey)}"
+                            title="${escapeHtml(selectedTrackTooltip)}"
+                        >
+                            ${escapeHtml(isActiveTrack ? t("admission.track.selected", "Selected") : t("admission.track.select", "Select"))}
+                        </button>
+                        </div>
+                    </article>
+                    `;
+                }).join("");
+                const trackHasGrantOnlyOptions = options.length > 0 && options.every((option) => getTrackFundingType(option) === "grant");
+
+                tracksHTML += `
+                    <section class="track-card${trackHasGrantOnlyOptions ? " track-card--grant" : ""}">
+                    <div class="track-header">
+                        <div>
+                        <h3 class="track-title">${escapeHtml(trackLabel || unknownFieldText("placeholder.field.track_name", "Track name"))}</h3>
+                        ${trackDescription ? `<p class="track-description">${escapeHtml(trackDescription)}</p>` : ""}
+                        </div>
+                        <div class="track-option-count">
+                        ${escapeHtml(formatFundingOptionsCount(options.length))}
                         </div>
                     </div>
-                    ${languageReqInfo}
-                    ${extraReqInfo}
-                </div>
+
+                    ${majorsBadge}
+
+                    <div class="track-funding-options-block">
+                        <div class="track-funding-options-title">
+                        ${escapeHtml(translateWord("admission.track.funding_options", "Funding options"))}
+                        </div>
+                        <div class="track-funding-options-grid">
+                        ${optionCardsHtml}
+                        </div>
+                    </div>
+                    </section>
                 `;
             });
             if (!filteredEntries.length) {
@@ -3070,8 +3108,14 @@ export async function initUniversityPage() {
         // Блок цены
         if (priceBig) {
             let minTotal = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
-            if (u.admission_tracks) {
-                const prices = u.admission_tracks.map((t) => annualCostForTrack(t)).filter((p) => p > 0);
+            const allFundingOptionsForFinance = (Array.isArray(u.admission_tracks) ? u.admission_tracks : [])
+                .flatMap((track) => getTrackFundingOptions(track));
+
+            if (allFundingOptionsForFinance.length) {
+                const prices = allFundingOptionsForFinance
+                    .map((option) => annualCostForTrack(option))
+                    .filter((price) => Number.isFinite(Number(price)) && Number(price) > 0);
+
                 if (prices.length > 0) minTotal = Math.min(...prices);
             }
             priceBig.innerHTML = Number.isFinite(Number(minTotal))
@@ -3082,146 +3126,114 @@ export async function initUniversityPage() {
         
         // Карточки треков
         if (finDiv) {
-            finDiv.innerHTML = ""; 
-            const tracks = (u.admission_tracks && u.admission_tracks.length > 0) ? u.admission_tracks : [{ label: translateWord("general_tuition", "General Tuition"), finance_override: null }];
+            finDiv.innerHTML = "";
+
+            const tracks = (Array.isArray(u.admission_tracks) && u.admission_tracks.length > 0)
+                ? u.admission_tracks
+                : [{ label: translateWord("general_tuition", "General Tuition"), finance_override: null }];
+
             let financeHTML = "";
 
-            tracks.forEach(track => {
-                const isGrantTrack = getTrackFundingType(track) === "grant";
-                const fData = track.finance_override || u.finance;
+            tracks.forEach((track) => {
+                const optionRows = getTrackFundingOptions(track);
+                const trackHasGrantOnlyOptions = optionRows.length > 0 && optionRows.every((option) => getTrackFundingType(option) === "grant");
+
+                const optionCardsHtml = optionRows.map((option) => {
+                const isGrantTrack = getTrackFundingType(option) === "grant";
+                const fData = option.finance_override || u.finance;
                 const total = modeAwareAnnualCost(fData || {}, profileStudyMode);
                 const breakdown = modeAwareBreakdown(fData || {}, profileStudyMode);
                 const totalText = moneyOrUnknown(total, "placeholder.field.total_cost", "Total cost");
 
-                let barHTML = `<div class="cost-progress-bar">`;
-                let legendHTML = `<div class="cost-legend">`;
-                
                 const colorClasses = ["cost-color-1", "cost-color-2", "cost-color-3", "cost-color-4", "cost-color-5"];
-                let i = 0;
+                const breakdownEntries = Object.entries(breakdown || {})
+                    .map(([key, val], idx) => {
+                    const numericVal = Number(val) || 0;
+                    return {
+                        colorClass: colorClasses[idx % colorClasses.length],
+                        label: translateCostBreakdownLabel(key),
+                        percent: Number.isFinite(Number(total)) && Number(total) > 0 ? ((numericVal / Number(total)) * 100) : 0,
+                        value: numericVal,
+                    };
+                    })
+                    .filter((entry) => entry.value > 0);
 
-                if (Object.keys(breakdown).length > 0 && Number.isFinite(Number(total)) && Number(total) > 0) {
-                    for (const [key, val] of Object.entries(breakdown)) {
-                        const colorClass = colorClasses[i % colorClasses.length];
-                        const numericVal = Number(val) || 0;
-                        const percent = total > 0 ? ((numericVal / total) * 100) : 0;
-                        const localizedCostLabel = translateCostBreakdownLabel(key);
-                        barHTML += `<div class="cost-progress-segment ${colorClass}" data-width-pct="${percent}" title="${escapeHtml(localizedCostLabel)}"></div>`;
-                        legendHTML += `
-                            <div class="cost-legend-row">
-                                <div class="cost-legend-label-wrap">
-                                    <span class="cost-legend-dot ${colorClass}"></span>
-                                    <span class="cost-legend-label">${escapeHtml(localizedCostLabel)}</span>
-                                </div>
-                                <span class="cost-legend-value">${moneyUSD(numericVal)}</span>
+                const optionLabelRaw = String(option.label || "").trim();
+                const parentLabelRaw = String(track.label || "").trim();
+                const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw
+                    ? trTrackLabel(optionLabelRaw)
+                    : "";
+                const fundingMeta = [
+                    option.funding_program ? trTrackDescription(u.id, option.id, option.funding_program) : "",
+                    option.funding_source ? trTrackDescription(u.id, option.id, option.funding_source) : "",
+                ].filter(Boolean);
+
+                const totalTitle = isGrantTrack
+                    ? translateWord("est_net_cost", "Est. Net Cost")
+                    : translateWord("total_per_year", "Total / year");
+                const breakdownHtml = breakdownEntries.length > 1
+                    ? `
+                    <div class="cost-progress-bar">
+                        ${breakdownEntries.map((entry) => `<span class="cost-progress-segment ${entry.colorClass}" style="--fill-width:${entry.percent}%"></span>`).join("")}
+                    </div>
+                    <div class="cost-legend">
+                        ${breakdownEntries.map((entry) => `
+                        <div class="cost-legend-row">
+                            <div class="cost-legend-label-wrap">
+                                <span class="cost-legend-dot ${entry.colorClass}"></span>
+                                <span class="cost-legend-label">${escapeHtml(entry.label)}</span>
                             </div>
-                        `;
-                        i++;
-                    }
-                } else {
-                    barHTML += `<div class="cost-progress-segment cost-color-1" data-width-pct="100"></div>`;
-                    legendHTML += `<div class="cost-legend-single">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
-                }
-                barHTML += `</div>`;
-                legendHTML += `</div>`;
+                            <span class="cost-legend-value">${escapeHtml(moneyUSD(entry.value))}</span>
+                        </div>
+                        `).join("")}
+                    </div>
+                    `
+                    : (breakdownEntries.length === 1
+                        ? `<div class="cost-legend-single">${escapeHtml(breakdownEntries[0].label)}: <strong>${escapeHtml(moneyUSD(breakdownEntries[0].value))}</strong></div>`
+                        : `<div class="cost-legend-single">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`);
+
+                return `
+                    <article class="finance-option-card${isGrantTrack ? " finance-option-card--grant" : ""}">
+                    <div class="finance-option-head">
+                        ${renderTrackFundingBadge(option)}
+                        ${optionLabel ? `<div class="finance-option-label">${escapeHtml(optionLabel)}</div>` : ""}
+                    </div>
+                    ${fundingMeta.length ? `
+                    <div class="admission-option-meta">
+                        ${fundingMeta.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
+                    </div>
+                    ` : ""}
+
+                    <div class="finance-option-total${isGrantTrack ? " finance-option-total--grant" : ""}">
+                        <strong>${escapeHtml(totalTitle)}:</strong> ${escapeHtml(totalText)}
+                    </div>
+
+                    <div class="cost-breakdown-list">
+                        ${breakdownHtml}
+                    </div>
+                    </article>
+                `;
+                }).join("");
 
                 financeHTML += `
-                <div class="finance-card${isGrantTrack ? " finance-card--grant" : ""}">
-                    <div class="finance-header">
-                        <div class="finance-track-name">${escapeHtml(trTrackLabel(String(track.label || "")) || unknownFieldText("placeholder.field.track_name", "Track name"))}</div>
-                        <div class="finance-total${isGrantTrack ? " finance-total--grant" : ""}">
-                            <small>${escapeHtml(translateWord("total_per_year", "Total / Year"))}</small>
-                            <span>${escapeHtml(totalText)}</span>
-                        </div>
+                <section class="finance-track-group${trackHasGrantOnlyOptions ? " finance-track-group--grant" : ""}">
+                    <div class="finance-track-group-head">
+                    <h3>${escapeHtml(trTrackLabel(track.label || "") || translateWord("placeholder.field.track_name", "Track name"))}</h3>
+                    ${track.description ? `<p>${escapeHtml(trTrackDescription(u.id, track.id, track.description))}</p>` : ""}
                     </div>
-                    
-                    <div class="finance-body">
-                        ${barHTML}
-                        ${legendHTML}
+
+                    <div class="finance-track-options-title">
+                    ${escapeHtml(translateWord("admission.track.funding_options", "Funding options"))}
                     </div>
-                </div>
+
+                    <div class="finance-track-options-grid">
+                    ${optionCardsHtml}
+                    </div>
+                </section>
                 `;
             });
 
-            // ROI block is calculated on backend.
-            const roi = uniRoi || {};
-            const roiTitle = escapeHtml(t("roi.title", String(roi.title || "Estimated ROI (Return on Investment)")));
-            const roiValueNum = Number(roi.roi_value);
-            const roiHasSalaryData = String(roi.context_type || "") !== "no_salary_data" && (Number(roi.salary_used_usd) || 0) > 0;
-            const roiValue = roiHasSalaryData && Number.isFinite(roiValueNum)
-                ? roiValueNum.toFixed(1)
-                : escapeHtml(unknownFieldText("placeholder.field.roi_score", "ROI score"));
-            const userSalary = Number(roi.salary_used_usd) || 0;
-            const roiTone = String(roi.roi_tone || "warn");
-            const roiLabel = escapeHtml(localizeRoiLabel(roi.roi_label, roiTone));
-            const roiToneClass = (roiTone === "excellent" || roiTone === "good")
-                ? "roi-tone-positive"
-                : "roi-tone-warn";
-            const roiContextType = String(roi.context_type || "");
-            const userMajor = escapeHtml(String(roi.user_major || ""));
-            const points = Number(roi.salary_data_points) || 0;
-            const avgHint = points > 0
-                ? t("roi.avg_hint_all_majors", "Showing computed average across all majors.")
-                : t("roi.avg_hint_all_graduates", "Showing average for all graduates.");
-
-            let roiContent = "";
-            if (roiContextType === "matched_major") {
-                roiContent = `
-                    <div class="roi-context roi-context--matched">
-                        ✅ ${tFormat("roi.context.matched_major", { major: userMajor }, "Calculation based on {major} graduates from this university.")}
-                    </div>
-                `;
-            } else if (roiContextType === "missing_major") {
-                roiContent = `
-                    <div class="roi-context roi-context--missing">
-                        ⚠️ <strong>${escapeHtml(t("roi.tip", "Tip:"))}</strong> ${escapeHtml(t("roi.context.missing_major", "Select your Major in Profile to see precise ROI for your field."))} ${escapeHtml(avgHint)}
-                    </div>
-                `;
-            } else if (roiContextType === "fallback_major") {
-                roiContent = `
-                    <div class="roi-context roi-context--neutral">
-                        ℹ️ ${tFormat("roi.context.fallback_major", { major: userMajor }, "Specific data for {major} not available.")} ${escapeHtml(avgHint)}
-                    </div>
-                `;
-            } else {
-                roiContent = `
-                    <div class="roi-context roi-context--neutral">
-                        ℹ️ ${escapeHtml(t("roi.context.default", "ROI is based on available university outcomes data."))}
-                    </div>
-                `;
-            }
-            
-            const roiBlock = roiHasSalaryData ? `
-                <div class="roi-box">
-                    <h3 class="roi-title">${roiTitle}</h3>
-                    <p class="roi-description">
-                        <b>${escapeHtml(t("roi.what_is", "What is ROI?"))}</b> ${escapeHtml(t("roi.explain", "It calculates how many times your first annual salary covers the cost of one year of education."))}
-                        <br><i>${escapeHtml(t("roi.formula", "Simple idea: compare average graduate salary with the cost of one study year."))}</i>
-                    </p>
-                    
-                    ${roiContent}
-
-                    <div class="roi-metrics-row">
-                        <div class="roi-metric">
-                            <div class="roi-metric-label">${escapeHtml(t("roi.estimated_salary", "Est. Graduate Salary"))}</div>
-                            <div class="roi-metric-value">${roiHasSalaryData ? moneyUSD(userSalary) : escapeHtml(unknownFieldText("placeholder.field.estimated_salary", "Estimated salary"))}</div>
-                            <div class="roi-metric-note">${escapeHtml(t("roi.per_year_early", "per year (early career)"))}</div>
-                        </div>
-                        <div class="roi-metrics-divider"></div>
-                        <div class="roi-metric">
-                            <div class="roi-metric-label">${escapeHtml(t("roi.score", "ROI Score"))}</div>
-                            <div class="roi-metric-value roi-metric-value--accent ${roiToneClass}">
-                                ${roiHasSalaryData ? `${roiValue}x` : roiValue}
-                            </div>
-                            <div class="roi-metric-note roi-metric-note--tone ${roiToneClass}">
-                                ${roiHasSalaryData ? roiLabel : escapeHtml(unknownFieldText("placeholder.field.roi_score", "ROI score"))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ` : "";
-
-            finDiv.innerHTML = `<div class="finance-grid-new">${financeHTML}</div>` + roiBlock;
-            applyPercentWidths(finDiv);
+            finDiv.innerHTML = financeHTML ? `<div class="finance-grid-new">${financeHTML}</div>` : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
         }
     } else {
         if (scholDiv) {
@@ -3467,8 +3479,8 @@ export function initGuidePage() {
     };
 
     const guideLoadingMarkup = (label) => `
-        <div class="center-loading center-loading--compact" role="status" aria-label="${escapeHtml(String(label || t("common.loading", "Loading")))}">
-            <div class="center-loading-spinner center-loading-spinner--sm" aria-hidden="true"></div>
+        <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite">
+            ${escapeHtml(String(label || t("common.loading", "Loading")))}
         </div>
     `;
 
