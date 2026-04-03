@@ -82,6 +82,10 @@ def _http_status(url: str, timeout_sec: float) -> Tuple[Optional[int], str]:
         return None, url
 
 
+def _has_suspicious_url_chars(value: str) -> bool:
+    return any(ord(ch) > 127 for ch in str(value or ""))
+
+
 def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
     website = university.get("website")
     if _is_non_empty_text(website):
@@ -110,6 +114,11 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
                 section = admissions.get(section_key)
                 if not isinstance(section, dict):
                     continue
+                provenance = section.get("provenance")
+                if isinstance(provenance, dict):
+                    url = provenance.get("source_url")
+                    if _is_non_empty_text(url):
+                        yield f"academics.admissions.{section_key}.provenance.source_url", str(url).strip()
                 sources = section.get("sources")
                 if isinstance(sources, list):
                     for s_idx, source_row in enumerate(sources):
@@ -124,6 +133,11 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
                     if not isinstance(program, dict):
                         continue
                     name = str(program.get("program_name") or program.get("name") or f"program_{p_idx}").strip()
+                    provenance = program.get("provenance")
+                    if isinstance(provenance, dict):
+                        url = provenance.get("source_url")
+                        if _is_non_empty_text(url):
+                            yield f"academics.admissions.programs[{p_idx}]/{name}/provenance.source_url", str(url).strip()
                     sources = program.get("sources")
                     if not isinstance(sources, list):
                         continue
@@ -469,6 +483,9 @@ def audit_dataset(
                 url_count += 1
                 if not _is_http_url(source_url):
                     errors.append(f"{uid}: invalid URL in {source_key}: {source_url}")
+                    continue
+                if _has_suspicious_url_chars(source_url):
+                    errors.append(f"{uid}: non-ascii URL in {source_key}: {source_url}")
                     continue
                 status, final_url = _http_status(source_url, timeout_sec=http_timeout_sec)
                 if status == 404:

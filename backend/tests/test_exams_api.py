@@ -65,6 +65,28 @@ class ExamsApiTests(unittest.TestCase):
         self.assertEqual("NUET", data.get("exam"))
         self.assertEqual(210, int(data.get("score")))
 
+    def test_validate_a_level_grades_returns_internal_score_and_raw_value(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={"exam": "A_LEVEL_CERT", "raw_value": "A*A*A"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("A_LEVEL_CERT", data.get("exam"))
+        self.assertEqual(17, int(data.get("score")))
+        self.assertEqual("A*A*A", data.get("raw_value"))
+        self.assertEqual("A*A*A", data.get("display_value"))
+
+    def test_validate_bool_exam_accepts_binary_flag(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={"exam": "SWISS_MATURITY_CERT", "score": 1},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("SWISS_MATURITY_CERT", data.get("exam"))
+        self.assertEqual(1, int(data.get("score")))
+
     def test_validate_hkdse_weighted_total_accepts_decimal_score(self):
         response = self.client.post(
             "/exams/validate",

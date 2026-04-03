@@ -2,6 +2,31 @@
 
 All notable project changes should be recorded here.
 
+## 3.2.0 (2026-04-03) - Smarter Admissions
+
+Status:
+- synchronized runtime/package version to `3.2.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
+- upgraded exam input handling across backend and frontend:
+  - `/exams/validate`, profile payload schemas, and profile serialization now accept richer exam submissions with `raw_value`, `display_value`, and structured `details` alongside numeric scores;
+  - A-Level input now supports real grade combinations such as `A*A*A`, converts the best 3 grades into an internal score, and enables normalization from actual user-entered grades instead of a certificate-only flag;
+  - HKDSE level inputs now use explicit band selection, while certificate-style exams such as Swiss Maturity, Abitur, and OSSD work as binary presence flags end-to-end;
+  - the profile UI gained dedicated non-numeric exam controls, guidance text, localized status labels, and consistent formatting of raw exam values in requirements and profile displays.
+- tightened UniChance / admission scoring behavior:
+  - profile exam evidence is now normalized through the shared exam-submission coercion path before chance scoring;
+  - fallback chance estimation is more conservative and now returns `0%` when required exam or language evidence is missing, when hard minimums are not met, or when only conditional evidence is available;
+  - Russian no-data / missing-evidence messaging was rewritten to talk about concrete admission options more clearly.
+- expanded and cleaned university dataset quality:
+  - admissions data now includes localized track and funding-option descriptions across the catalog;
+  - finance blocks were enriched with official detailed annual cost breakdowns, source URLs, notes, and `costs_breakdown_status` coverage;
+  - student-life size labels and reviewed UniFit slider factors were added or recalibrated, with supporting metadata updated to the new manual review version;
+  - translation payloads were extended for the new descriptions, ranking-status wording, cost-item labels, and humanized placeholder text.
+- improved frontend presentation and safety around the richer data:
+  - ranking-source statuses now render with localized human-readable fallbacks, and external admission source links escape attribute values safely;
+  - guide text and detail-page exam formatting now explain A-Level / HKDSE inputs correctly and display non-numeric requirement values cleanly.
+- strengthened regression and data-audit coverage:
+  - backend tests now cover raw A-Level grade validation, grade-based normalization, stricter fallback chance outcomes, localized track descriptions, detailed finance breakdown consistency, campus-size presence, slider-factor completeness, and breakdown-status exposure;
+  - the data audit script now checks additional provenance URLs and rejects non-ASCII source URLs before HTTP validation.
+
 ## 3.1.0 (2026-04-03) - UI Fixes
 
 Status:

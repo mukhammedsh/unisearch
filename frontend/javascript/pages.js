@@ -9,6 +9,7 @@ import {
   setUrlParams,
   nested,
   escapeHtml,
+  escapeHtmlAttr,
   initials,
   moneyUSD,
   loadProfile,
@@ -44,6 +45,7 @@ import { setupTabs } from "./components.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "./routes.js";
 import {
+  humanizeMachineLabel,
   initUniversityTranslations,
   translateAdmissionText,
   translateDataValue,
@@ -395,6 +397,14 @@ function admissionsStatusLabel(status) {
   return t("university.admissions.status.reviewed", "Officially reviewed");
 }
 
+function rankingStatusLabel(status) {
+  const key = String(status || "").trim().toLowerCase();
+  if (!key) return unknownFieldText("placeholder.field.global_rank", "Global Rank");
+
+  const fallback = humanizeMachineLabel(key, key);
+  return t(`ranking.source_status.${key}`, fallback);
+}
+
 function admissionsDataTypeKey(row) {
   const explicit = String(row?.data_type || "").trim().toLowerCase();
   if (explicit) return explicit;
@@ -559,10 +569,10 @@ function renderAdmissionsSourceLink(entry) {
   return `
     <a
       class="admissions-source-link"
-      href="${escapeHtml(source.url)}"
+      href="${escapeHtmlAttr(source.url)}"
       target="_blank"
       rel="noopener noreferrer"
-      ${title ? `title="${escapeHtml(title)}"` : ""}
+      ${title ? `title="${escapeHtmlAttr(title)}"` : ""}
     >${escapeHtml(t("university.admissions.open_source", "Open source"))}</a>
   `;
 }
@@ -2636,7 +2646,7 @@ export async function initUniversityPage() {
         if (officialRank) {
             rankHtml = `<span class="d-rank-emphasis">#${u.rank}</span>`;
         } else if (rankStatus) {
-            rankHtml = `<span>${escapeHtml(t(`ranking.source_status.${rankStatus}`, rankStatus))}</span>`;
+            rankHtml = `<span>${escapeHtml(rankingStatusLabel(rankStatus))}</span>`;
         }
 
         const campusSizeRaw = typeof u.student_life?.size === "string" ? String(u.student_life.size).trim() : "";
@@ -3457,7 +3467,7 @@ export async function initRankingPage() {
             const rankSource = String(rankMeta.source || "").trim();
             const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
             const rankStatusLabel = rankStatusRaw
-                ? t(`ranking.source_status.${rankStatusRaw}`, rankStatusRaw)
+                ? rankingStatusLabel(rankStatusRaw)
                 : unknownFieldText("placeholder.field.global_rank", "Global Rank");
             const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
                 || unknownFieldText("placeholder.field.verification_date", "Verification date");
@@ -3534,6 +3544,8 @@ export function initGuidePage() {
         return normalizeExamId(canonical || raw) || normalizeExamId(raw);
     };
     const scoreScaleText = (cfg) => {
+        const inputMode = String(cfg?.input_mode || "").trim().toLowerCase();
+        if (inputMode && inputMode !== "number") return "";
         const min = Number(cfg?.min);
         const max = Number(cfg?.max);
         if (!Number.isFinite(min) || !Number.isFinite(max)) return "";
@@ -3566,8 +3578,8 @@ export function initGuidePage() {
             NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
             APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
             IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
-            ALEVELCERT: t("guide.academic.alevelcert", "A-Level certificate confirms completion of GCE Advanced Level subjects, widely used for UK undergraduate entry."),
-            HKDSELEVEL: t("guide.academic.hkdselevel", "HKDSE level reflects performance in the Hong Kong Diploma of Secondary Education and is used in local university admissions."),
+            ALEVELCERT: t("guide.academic.alevelcert", "A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score."),
+            HKDSELEVEL: t("guide.academic.hkdselevel", "HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching."),
             SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification."),
             GERMANABITURCERT: t("guide.academic.germanabiturcert", "German Abitur certificate is the standard qualification granting access to German universities."),
             OSSDCERT: t("guide.academic.ossdcert", "OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions."),

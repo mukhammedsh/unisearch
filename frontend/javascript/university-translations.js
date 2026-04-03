@@ -38,6 +38,19 @@ function replaceInsensitive(text, search, replacement) {
   return String(text || "").replace(new RegExp(escaped, "gi"), String(replacement || ""));
 }
 
+export function humanizeMachineLabel(value, fallback = "") {
+  const raw = String(value || fallback || "").trim();
+  if (!raw) return String(fallback || "");
+
+  const spaced = raw
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!spaced) return String(fallback || "");
+
+  return spaced.replace(/\b[a-z]/g, (match) => match.toUpperCase());
+}
+
 export async function initUniversityTranslations(force = false) {
   const lang = normalizeLang(getCurrentLanguage());
   if (!force && CACHE.byLang.has(lang)) return CACHE.byLang.get(lang);
@@ -98,7 +111,8 @@ export function translateTemplate(key, fallback = "", params = {}) {
 }
 
 export function translateUnknownField(fieldLabel, fallback = "") {
-  const label = String(fieldLabel || fallback || "Data").trim() || String(fallback || "Data");
+  const rawLabel = String(fieldLabel || fallback || "Data").trim() || String(fallback || "Data");
+  const label = /[_-]/.test(rawLabel) ? humanizeMachineLabel(rawLabel, rawLabel) : rawLabel;
   return translateTemplate("common.placeholder_unknown", "{field} unknown", { field: label });
 }
 

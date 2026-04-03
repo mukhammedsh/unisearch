@@ -5,7 +5,11 @@ import {
   saveProfile,
   initCustomSelect,
   EXAM_CONFIG,
+  formatExamValue,
+  getExamConfig,
   getExamDisplayName,
+  getExamInputMode,
+  getExamLevelBands,
   canonicalizeExamId,
   escapeHtml,
   showToast,
@@ -306,6 +310,7 @@ const LAYOUT_HTML = `
           </select>
 
           <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" data-i18n-placeholder="profile.placeholder.score" />
+          <div id="examSpecialInputContainer" class="profile-exam-special" hidden></div>
           <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
         </div>
         
@@ -660,6 +665,7 @@ function initProfileUI() {
     const lowBudgetGrantApplyBtn = document.getElementById("profileLowBudgetGrantApply");
     const lowBudgetGrantDismissBtn = document.getElementById("profileLowBudgetGrantDismiss");
     const examScoreInput = document.getElementById("examScoreInput");
+    const examSpecialInputContainer = document.getElementById("examSpecialInputContainer");
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
     const profileMajorSelect = document.getElementById("profileMajorSelect");
@@ -720,8 +726,18 @@ function initProfileUI() {
             .map((row) => {
                 const exam = String(row?.exam || row?.id || "").trim();
                 const score = Number(row?.score);
-                if (!exam || !Number.isFinite(score)) return null;
-                return { exam: canonicalizeExamId(exam), score };
+                const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
+                const displayValue = String(row?.display_value || row?.displayValue || "").trim();
+                const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details)
+                    ? row.details
+                    : null;
+                if (!exam || (!Number.isFinite(score) && !rawValue && !details)) return null;
+                const out = { exam: canonicalizeExamId(exam) };
+                if (Number.isFinite(score)) out.score = score;
+                if (rawValue) out.raw_value = rawValue;
+                if (displayValue) out.display_value = displayValue;
+                if (details) out.details = details;
+                return out;
             })
             .filter(Boolean)
             .sort((a, b) => String(a.exam).localeCompare(String(b.exam)));
@@ -905,6 +921,213 @@ function initProfileUI() {
         refreshExamActionButton();
     };
 
+    const examConfigFor = (examId) => getExamConfig(examId);
+    const examInputModeFor = (examId) => getExamInputMode(examId);
+
+    const findExistingExamEntry = (examId) => {
+        const selected = canonicalizeExamId(examId);
+        if (!selected || !Array.isArray(profile.exams)) return null;
+        return profile.exams.find((row) => canonicalizeExamId(row?.exam ?? row?.id ?? "") === selected) || null;
+    };
+
+    const parseAlevelGrades = (rawValue) => {
+        const compact = String(rawValue || "")
+            .trim()
+            .toUpperCase()
+            .replaceAll(" ", "")
+            .replaceAll("★", "*")
+            .replace(/[,;/|+\-]+/g, "");
+        if (!compact) return [];
+        const tokens = compact.match(/A\*|[ABCDEU]/g) || [];
+        return tokens.join("") === compact ? tokens : [];
+    };
+
+    const renderSpecialExamInput = (examId) => {
+        if (!examSpecialInputContainer) return false;
+
+        const cfg = examConfigFor(examId);
+        const mode = examInputModeFor(examId);
+        const existing = findExistingExamEntry(examId);
+        examSpecialInputContainer.innerHTML = "";
+
+        if (mode === "band_select") {
+            const selectedBand = String(
+                existing?.raw_value
+                || existing?.rawValue
+                || existing?.display_value
+                || existing?.displayValue
+                || ""
+            ).trim();
+            const bands = getExamLevelBands(examId);
+            examSpecialInputContainer.innerHTML = `
+                <div class="profile-exam-special-field">
+                    <span class="mini-label">${escapeHtml(t("profile.exam_band_label", "Level"))}</span>
+                    <select id="examBandSelect" class="profile-input profile-input--select">
+                        <option value="" disabled ${selectedBand ? "" : "selected"}>${escapeHtml(t("profile.exam_band_placeholder", "Select level"))}</option>
+                        ${bands.map((band) => {
+                            const shortLabel = String(band?.short_label || "").trim();
+                            const selected = shortLabel && shortLabel === selectedBand ? "selected" : "";
+                            return `<option value="${escapeHtml(shortLabel)}" ${selected}>${escapeHtml(shortLabel)}</option>`;
+                        }).join("")}
+                    </select>
+                </div>
+            `;
+            return true;
+        }
+
+        if (mode === "grade_combo") {
+            const gradeScheme = cfg?.grade_scheme || {};
+            const minCount = Math.max(1, Number(gradeScheme?.subject_count_min) || 3);
+            const maxCount = Math.max(minCount, Number(gradeScheme?.subject_count_max) || minCount);
+            const bestOf = Math.max(1, Number(gradeScheme?.best_of) || minCount);
+            const gradeOptions = Array.isArray(gradeScheme?.grades) && gradeScheme.grades.length
+                ? gradeScheme.grades
+                : ["A*", "A", "B", "C", "D", "E", "U"];
+            const existingGrades = Array.isArray(existing?.details?.grades) && existing.details.grades.length
+                ? existing.details.grades.map((grade) => String(grade || "").trim())
+                : parseAlevelGrades(existing?.raw_value || existing?.rawValue || existing?.display_value || existing?.displayValue || "");
+
+            examSpecialInputContainer.innerHTML = `
+                <div class="profile-exam-special-grid profile-exam-special-grid--grades">
+                    ${Array.from({ length: maxCount }).map((_, idx) => {
+                        const selectedGrade = String(existingGrades[idx] || "").trim();
+                        const isOptional = idx >= minCount;
+                        const label = isOptional
+                            ? t("profile.exam_grade_optional", "Optional 4th subject")
+                            : tFormat("profile.exam_grade_slot", { index: idx + 1 }, `Grade ${idx + 1}`);
+                        return `
+                            <div class="profile-exam-special-field">
+                                <span class="mini-label">${escapeHtml(label)}</span>
+                                <select class="profile-input profile-input--select" data-grade-slot="${idx}">
+                                    <option value="" ${selectedGrade ? "" : "selected"}>${escapeHtml(t("profile.exam_grade_placeholder", "Select grade"))}</option>
+                                    ${gradeOptions.map((grade) => {
+                                        const selected = selectedGrade === grade ? "selected" : "";
+                                        return `<option value="${escapeHtml(grade)}" ${selected}>${escapeHtml(grade)}</option>`;
+                                    }).join("")}
+                                </select>
+                            </div>
+                        `;
+                    }).join("")}
+                    <div class="profile-exam-special-hint">${escapeHtml(
+                        tFormat(
+                            "profile.exam_alevel_hint",
+                            { min: minCount, max: maxCount, best: bestOf },
+                            `Enter ${minCount}-${maxCount} grades. UniSearch uses your best ${bestOf} grades.`
+                        )
+                    )}</div>
+                </div>
+            `;
+            return true;
+        }
+
+        return false;
+    };
+
+    const syncExamScoreInputState = () => {
+        if (!examScoreInput) return;
+
+        const selectedExam = canonicalizeExamId(examNameSelect?.value);
+        const mode = examInputModeFor(selectedExam);
+        const cfg = examConfigFor(selectedExam);
+        const examForm = examScoreInput.closest(".profile-exam-form");
+        const existing = findExistingExamEntry(selectedExam);
+        const usesNumberInput = mode === "number";
+        const usesSpecialInput = mode === "band_select" || mode === "grade_combo";
+
+        examScoreInput.hidden = !usesNumberInput;
+        examScoreInput.disabled = !usesNumberInput;
+        examScoreInput.setAttribute("aria-hidden", usesNumberInput ? "false" : "true");
+
+        if (examSpecialInputContainer) {
+            examSpecialInputContainer.hidden = !usesSpecialInput;
+            examSpecialInputContainer.setAttribute("aria-hidden", usesSpecialInput ? "false" : "true");
+            if (usesSpecialInput) renderSpecialExamInput(selectedExam);
+            else examSpecialInputContainer.innerHTML = "";
+        }
+
+        if (examForm) {
+            examForm.classList.toggle("profile-exam-form--no-score", !usesNumberInput && !usesSpecialInput);
+            examForm.classList.toggle("profile-exam-form--with-special", usesSpecialInput);
+        }
+
+        if (!usesNumberInput) {
+            examScoreInput.value = "";
+            return;
+        }
+
+        examScoreInput.placeholder = t("profile.placeholder.score", "Score");
+        if (existing && Number.isFinite(Number(existing?.score))) {
+            examScoreInput.value = String(existing.score);
+        } else {
+            examScoreInput.value = "";
+        }
+
+        if (cfg) {
+            if (cfg.min !== undefined) examScoreInput.min = String(cfg.min);
+            else examScoreInput.removeAttribute("min");
+            if (cfg.max !== undefined) examScoreInput.max = String(cfg.max);
+            else examScoreInput.removeAttribute("max");
+            if (cfg.step !== undefined) examScoreInput.step = String(cfg.step);
+            else examScoreInput.removeAttribute("step");
+            return;
+        }
+
+        examScoreInput.removeAttribute("min");
+        examScoreInput.removeAttribute("max");
+        examScoreInput.step = "0.1";
+    };
+
+    const readSelectedExamPayload = (examId) => {
+        const mode = examInputModeFor(examId);
+        if (mode === "flag") {
+            return { score: 1 };
+        }
+
+        if (mode === "band_select") {
+            const bandSelect = examSpecialInputContainer?.querySelector("#examBandSelect");
+            const band = String(bandSelect?.value || "").trim();
+            if (!band) {
+                showToast(t("profile.exam_band_required", "Select a level"), "error");
+                return null;
+            }
+            return {
+                raw_value: band,
+                details: { band },
+            };
+        }
+
+        if (mode === "grade_combo") {
+            const cfg = examConfigFor(examId);
+            const gradeScheme = cfg?.grade_scheme || {};
+            const minCount = Math.max(1, Number(gradeScheme?.subject_count_min) || 3);
+            const gradeSelects = Array.from(examSpecialInputContainer?.querySelectorAll("[data-grade-slot]") || []);
+            const grades = gradeSelects.map((node) => String(node?.value || "").trim());
+            const requiredGrades = grades.slice(0, minCount);
+            if (requiredGrades.some((grade) => !grade)) {
+                showToast(
+                    tFormat(
+                        "profile.exam_grade_required",
+                        { exam: getExamDisplayName(examId), count: minCount },
+                        `Choose ${minCount} grades for ${getExamDisplayName(examId)}`
+                    ),
+                    "error"
+                );
+                return null;
+            }
+
+            const normalizedGrades = grades.filter(Boolean);
+            const rawValue = normalizedGrades.join("");
+            return {
+                raw_value: rawValue,
+                details: { grades: normalizedGrades },
+            };
+        }
+
+        const rawScore = String(examScoreInput?.value || "").trim();
+        const score = parseFloat(rawScore);
+        return { score, raw_input_score: rawScore };
+    };
+
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect();
     }
@@ -919,6 +1142,7 @@ function initProfileUI() {
         const fallback = hasExisting ? "Edit" : "Add";
         addExamBtn.setAttribute("data-i18n", key);
         addExamBtn.textContent = t(key, fallback);
+        syncExamScoreInputState();
     }
 
     const retranslateProfileUi = () => {
@@ -1061,7 +1285,7 @@ function initProfileUI() {
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
                         <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam))}</span>
-                        <span class="profile-exam-score">${escapeHtml(tFormat("profile.exam_score_label", { score: String(ex.score) }, `Score: ${String(ex.score)}`))}</span>
+                        <span class="profile-exam-score">${escapeHtml(formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }))}</span>
                     </div>
                     <button data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
                 </div>
@@ -1314,6 +1538,7 @@ function initProfileUI() {
             initCustomSelect("profileFundingTypeSelect");
             initCustomSelect("profileMajorSelect");
         }
+        refreshExamActionButton();
     };
 
     if (closeBtn) closeBtn.onclick = requestClose;
@@ -1390,17 +1615,20 @@ function initProfileUI() {
 
     if (addExamBtn) {
         addExamBtn.onclick = async () => {
-            const name = examNameSelect.value;
-            const rawScore = examScoreInput.value;
-            const score = parseFloat(rawScore);
+            const name = canonicalizeExamId(examNameSelect.value);
+            const mode = examInputModeFor(name);
+            const selectedPayload = readSelectedExamPayload(name);
+            const rawScore = selectedPayload?.raw_input_score || "";
+            const score = Number(selectedPayload?.score);
 
-            const cfg = EXAM_CONFIG?.[name];
+            const cfg = examConfigFor(name);
             if (cfg) {
                 const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
                 const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
                 const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
+                const usesNumberInput = mode === "number";
 
-                if (Number.isFinite(min) && score < min) {
+                if (usesNumberInput && Number.isFinite(min) && score < min) {
                     showToast(
                         tFormat(
                             "profile.exam_score_min",
@@ -1411,7 +1639,7 @@ function initProfileUI() {
                     );
                     return;
                 }
-                if (Number.isFinite(max) && score > max) {
+                if (usesNumberInput && Number.isFinite(max) && score > max) {
                     showToast(
                         tFormat(
                             "profile.exam_score_max",
@@ -1423,7 +1651,7 @@ function initProfileUI() {
                     return;
                 }
 
-                if (Number.isFinite(step) && step > 0) {
+                if (usesNumberInput && Number.isFinite(step) && step > 0) {
                     const base = Number.isFinite(min) ? min : 0;
                     const k = (score - base) / step;
                     const diff = Math.abs(k - Math.round(k));
@@ -1445,17 +1673,20 @@ function initProfileUI() {
                 showToast(t("profile.exam_select_required", "Please select an exam"), "error");
                 return;
             }
-            if (Number.isNaN(score)) {
+            if (!selectedPayload) {
+                return;
+            }
+            if (mode === "number" && Number.isNaN(score)) {
                 showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
                 return;
             }
 
-            if (name !== "IELTS" && !Number.isInteger(score)) {
+            if (mode === "number" && name !== "IELTS" && name !== "HKDSE_WEIGHTED_TOTAL" && !Number.isInteger(score)) {
                 showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
                 return;
             }
 
-            if (name === "IELTS" && (score % 0.5 !== 0)) {
+            if (mode === "number" && name === "IELTS" && (score % 0.5 !== 0)) {
                 showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
                 return;
             }
@@ -1464,7 +1695,12 @@ function initProfileUI() {
                 const res = await fetch(`${API_BASE}/exams/validate`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ exam: name, score }),
+                    body: JSON.stringify({
+                        exam: name,
+                        ...(selectedPayload.score !== undefined && Number.isFinite(Number(selectedPayload.score)) ? { score: selectedPayload.score } : {}),
+                        ...(selectedPayload.raw_value ? { raw_value: selectedPayload.raw_value } : {}),
+                        ...(selectedPayload.details ? { details: selectedPayload.details } : {}),
+                    }),
                 });
                 let json = {};
                 try {
@@ -1495,10 +1731,28 @@ function initProfileUI() {
                 );
 
                 if (existingIndex !== -1) {
-                    profile.exams[existingIndex].score = json.score;
-                    showToast(tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`), "success");
+                    profile.exams[existingIndex] = {
+                        ...profile.exams[existingIndex],
+                        exam: examId,
+                        score: json.score,
+                        ...(json.raw_value ? { raw_value: json.raw_value } : {}),
+                        ...(json.display_value ? { display_value: json.display_value } : {}),
+                        ...(json.details ? { details: json.details } : {}),
+                    };
+                    showToast(
+                        (mode !== "number")
+                            ? tFormat("profile.exam_updated_simple", { exam: examLabel }, `Updated ${examLabel}`)
+                            : tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`),
+                        "success"
+                    );
                 } else {
-                    profile.exams.push({ exam: examId, score: json.score });
+                    profile.exams.push({
+                        exam: examId,
+                        score: json.score,
+                        ...(json.raw_value ? { raw_value: json.raw_value } : {}),
+                        ...(json.display_value ? { display_value: json.display_value } : {}),
+                        ...(json.details ? { details: json.details } : {}),
+                    });
                     showToast(tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`), "success");
                 }
 
@@ -1508,6 +1762,7 @@ function initProfileUI() {
 
                 examScoreInput.value = "";
                 examNameSelect.value = "";
+                syncExamScoreInputState();
                 if (typeof initCustomSelect === "function") {
                     initCustomSelect("examNameSelect");
                 }

@@ -261,18 +261,159 @@ const PROFILE_DEFAULTS = {
     selectedAdmissionTracks: {},
 };
 
-export let EXAM_CONFIG = {
-        "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
-        "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
-        "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
-        "IELTS": {"min": 0, "max": 9, "type": "float", "step": 0.5},
-        "TOEFL": {"min": 0, "max": 120, "type": "int", "step": 1},
-        "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
-        "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
-        "HKDSE_WEIGHTED_TOTAL": {"min": 0, "max": 47.25, "type": "float", "step": 0.01},
-        "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
-        "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
-    };
+const DEFAULT_EXAM_CONFIG = {
+    SAT: {
+      label: "SAT",
+      labels: { eng: "SAT", rus: "SAT" },
+      input_mode: "number",
+      min: 400,
+      max: 1600,
+      type: "int",
+      step: 10,
+    },
+    ACT: {
+      label: "ACT",
+      labels: { eng: "ACT", rus: "ACT" },
+      input_mode: "number",
+      min: 1,
+      max: 36,
+      type: "int",
+      step: 1,
+    },
+    GPA: {
+      label: "GPA",
+      labels: { eng: "GPA", rus: "GPA" },
+      input_mode: "number",
+      min: 0,
+      max: 100,
+      type: "int",
+      step: 1,
+    },
+    IELTS: { min: 0, max: 9, type: "float", step: 0.5 },
+    TOEFL: { min: 0, max: 120, type: "int", step: 1 },
+    UNT: {
+      label: "UNT (Kazakhstan)",
+      labels: { eng: "UNT (Kazakhstan)", rus: "ЕНТ" },
+      input_mode: "number",
+      min: 0,
+      max: 140,
+      type: "int",
+      step: 1,
+    },
+    NUET: {
+      label: "NUET",
+      labels: { eng: "NUET", rus: "NUET" },
+      input_mode: "number",
+      min: 0,
+      max: 240,
+      type: "int",
+      step: 1,
+    },
+    AP_Total: {
+      label: "AP Total",
+      labels: { eng: "AP Total", rus: "AP (общий балл)" },
+      input_mode: "number",
+      min: 0,
+      max: 25,
+      type: "int",
+      step: 1,
+    },
+    IB_Diploma: {
+      label: "IB Diploma",
+      labels: { eng: "IB Diploma", rus: "Диплом IB" },
+      input_mode: "number",
+      min: 24,
+      max: 45,
+      type: "int",
+      step: 1,
+    },
+    A_LEVEL_CERT: {
+      label: "A-Level",
+      labels: { eng: "A-Level", rus: "A-Level" },
+      input_mode: "grade_combo",
+      min: 0,
+      max: 18,
+      type: "int",
+      step: 1,
+      grade_scheme: {
+        subject_count_min: 3,
+        subject_count_max: 4,
+        best_of: 3,
+        grades: ["A*", "A", "B", "C", "D", "E", "U"],
+      },
+    },
+    HKDSE_LEVEL: {
+      label: "HKDSE Level",
+      labels: { eng: "HKDSE Level", rus: "Уровень HKDSE" },
+      input_mode: "band_select",
+      min: 1,
+      max: 7,
+      type: "int",
+      step: 1,
+      level_scheme: {
+        bands: [
+          { value: 1, short_label: "1" },
+          { value: 2, short_label: "2" },
+          { value: 3, short_label: "3" },
+          { value: 4, short_label: "4" },
+          { value: 5, short_label: "5" },
+          { value: 6, short_label: "5*" },
+          { value: 7, short_label: "5**" },
+        ],
+      },
+    },
+    HKDSE_WEIGHTED_TOTAL: {
+      label: "HKDSE Weighted Total (CUHK JUPAS)",
+      labels: { eng: "HKDSE Weighted Total (CUHK JUPAS)", rus: "HKDSE weighted total (CUHK JUPAS)" },
+      input_mode: "number",
+      min: 0,
+      max: 47.25,
+      type: "float",
+      step: 0.01,
+    },
+    EGE: {
+      label: "EGE",
+      labels: { eng: "EGE", rus: "ЕГЭ" },
+      input_mode: "number",
+      min: 0,
+      max: 100,
+      type: "int",
+      step: 1,
+    },
+    SWISS_MATURITY_CERT: {
+      label: "Swiss Maturity Certificate",
+      labels: { eng: "Swiss Maturity Certificate", rus: "Швейцарский аттестат зрелости" },
+      input_mode: "flag",
+      min: 0,
+      max: 1,
+      type: "bool",
+      step: 1,
+    },
+    GERMAN_ABITUR_CERT: {
+      label: "German Abitur Certificate",
+      labels: { eng: "German Abitur Certificate", rus: "Немецкий Abitur" },
+      input_mode: "flag",
+      min: 0,
+      max: 1,
+      type: "bool",
+      step: 1,
+    },
+    OSSD_CERT: {
+      label: "OSSD (Ontario Secondary School Diploma)",
+      labels: { eng: "OSSD (Ontario Secondary School Diploma)", rus: "OSSD (Ontario Secondary School Diploma)" },
+      input_mode: "flag",
+      min: 0,
+      max: 1,
+      type: "bool",
+      step: 1,
+    },
+  };
+
+function cloneDefaultExamConfig() {
+  return JSON.parse(JSON.stringify(DEFAULT_EXAM_CONFIG));
+}
+
+export let EXAM_CONFIG = cloneDefaultExamConfig();
 
 let __examConfigPromise = null;
 async function loadExamConfig() {
@@ -292,18 +433,7 @@ async function loadExamConfig() {
       window.dispatchEvent(new Event("examConfigLoaded"));
     } catch (error) {
       console.error("❌ Error loading exam config:", error);
-      EXAM_CONFIG = {
-          "SAT": {"min": 400, "max": 1600, "type": "int", "step": 10},
-          "ACT": {"min": 1, "max": 36, "type": "int", "step": 1},
-          "GPA": {"min": 0, "max": 100, "type": "int", "step": 1},
-          "IELTS": {"min": 0, "max": 9, "type": "float", "step": 0.5},
-          "TOEFL": {"min": 0, "max": 120, "type": "int", "step": 1},
-          "UNT": {"min": 0, "max": 140, "type": "int", "step": 1},
-          "NUET": {"min": 0, "max": 240, "type": "int", "step": 1},
-          "HKDSE_WEIGHTED_TOTAL": {"min": 0, "max": 47.25, "type": "float", "step": 0.01},
-          "AP_Total": {"min": 0, "max": 25, "type": "int", "step": 1},
-          "IB_Diploma": {"min": 24, "max": 45, "type": "int", "step": 1}
-      };
+      EXAM_CONFIG = cloneDefaultExamConfig();
     }
     return EXAM_CONFIG;
   })();
@@ -399,9 +529,21 @@ export function stabilizeNumericRanges(text) {
   });
 }
 
+function escapeHtmlCore(str) {
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 export function escapeHtml(str) {
-  const normalized = stabilizeNumericRanges(String(str ?? ""));
-  return normalized.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+  return escapeHtmlCore(stabilizeNumericRanges(String(str ?? "")));
+}
+
+export function escapeHtmlAttr(str) {
+  return escapeHtmlCore(str);
 }
 
 export function nested(obj, path, fallback = null) {
@@ -465,6 +607,90 @@ export function canonicalizeExamId(examId) {
   return raw;
 }
 
+function examConfigLocale(value = "") {
+  return normalizeUiLanguageForApi(value) || getUiLanguageForApi();
+}
+
+export function getExamConfig(examId) {
+  const raw = String(examId || "").trim();
+  if (!raw) return null;
+  const id = canonicalizeExamId(raw);
+  return EXAM_CONFIG?.[id] || EXAM_CONFIG?.[raw] || EXAM_CONFIG?.[raw.toUpperCase()] || null;
+}
+
+export function getExamInputMode(examId) {
+  const cfg = getExamConfig(examId);
+  const raw = String(cfg?.input_mode || "").trim().toLowerCase();
+  if (raw) return raw;
+  if (String(cfg?.type || "").trim().toLowerCase() === "bool") return "flag";
+  return "number";
+}
+
+export function getExamLevelBands(examId) {
+  const bands = getExamConfig(examId)?.level_scheme?.bands;
+  return Array.isArray(bands) ? bands : [];
+}
+
+export function getExamBandShortLabel(examId, value) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return "";
+  const bands = getExamLevelBands(examId);
+  const match = bands.find((row) => Number(row?.value) === numericValue);
+  return String(match?.short_label || "").trim();
+}
+
+const EXAM_VALUE_LABELS = {
+  eng: {
+    added: "Added",
+    required: "Required",
+    level: "Level",
+  },
+  rus: {
+    added: "Добавлено",
+    required: "Требуется",
+    level: "Уровень",
+  },
+};
+
+export function formatExamValue(examId, valueOrEntry, opts = {}) {
+  const locale = examConfigLocale(opts?.locale || opts?.lang || "");
+  const words = EXAM_VALUE_LABELS[locale] || EXAM_VALUE_LABELS.eng;
+  const entry = valueOrEntry && typeof valueOrEntry === "object" && !Array.isArray(valueOrEntry)
+    ? valueOrEntry
+    : null;
+  const rawValue = String(
+    entry?.display_value
+    || entry?.displayValue
+    || entry?.raw_value
+    || entry?.rawValue
+    || ""
+  ).trim();
+  const score = entry ? entry?.score : valueOrEntry;
+  const mode = getExamInputMode(examId);
+  const normalizedId = canonicalizeExamId(examId);
+
+  if (rawValue) return rawValue;
+
+  if (mode === "flag") {
+    return opts?.context === "requirement" ? words.required : words.added;
+  }
+
+  if (mode === "grade_combo" && Number(score) <= 1) {
+    return opts?.context === "requirement" ? words.required : words.added;
+  }
+
+  if (mode === "band_select") {
+    const band = getExamBandShortLabel(examId, score);
+    if (band) {
+      if (opts?.includeLevelPrefix === false) return band;
+      return `${words.level} ${band}`;
+    }
+  }
+
+  if (normalizedId === "GPA" && Number.isFinite(Number(score))) return `${score}%`;
+  return String(score ?? "").trim();
+}
+
 const EXAM_LABEL_OVERRIDES = {
   SAT: "SAT",
   ACT: "ACT",
@@ -502,7 +728,7 @@ const EXAM_LABELS_I18N = {
     NUETTOTAL: "NUET",
     APTOTAL: "AP Total",
     IBDIPLOMA: "IB Diploma",
-    ALEVELCERT: "A-Level Certificate",
+    ALEVELCERT: "A-Level",
     HKDSELEVEL: "HKDSE level",
     HKDSEWEIGHTEDTOTAL: "HKDSE Weighted Total (CUHK JUPAS)",
     SWISSMATURITYCERT: "Swiss Maturity Certificate",
@@ -525,33 +751,33 @@ const EXAM_LABELS_I18N = {
   },
   rus: {
     SAT: "SAT",
-    HKDSEWEIGHTEDTOTAL: "HKDSE weighted total (CUHK JUPAS)",
+    HKDSEWEIGHTEDTOTAL: "Взвешенный суммарный балл HKDSE (CUHK JUPAS)",
     ACT: "ACT",
     GPA: "GPA",
     UNT: "ЕНТ",
     NUET: "NUET (общий балл)",
     NUETTOTAL: "NUET (общий балл)",
-    APTOTAL: "AP (общий балл)",
+    APTOTAL: "AP (суммарный балл)",
     IBDIPLOMA: "Диплом IB",
-    ALEVELCERT: "A-Level сертификат",
+    ALEVELCERT: "Сертификат A-Level",
     HKDSELEVEL: "HKDSE уровень",
     SWISSMATURITYCERT: "Швейцарский аттестат зрелости",
-    GERMANABITURCERT: "Немецкий Abitur",
-    OSSDCERT: "OSSD (Ontario Secondary School Diploma)",
+    GERMANABITURCERT: "Аттестат Abitur",
+    OSSDCERT: "OSSD (диплом старшей школы Онтарио)",
     IELTS: "IELTS (академический модуль)",
     TOEFLIBT0120: "TOEFL iBT общий балл (0‑120, старая шкала)",
-    TOEFLIBT16: "TOEFL iBT шкала 1‑6 (с 21 янв 2026)",
-    DET: "Тест Duolingo по английскому (DET)",
-    PTE: "PTE Academic (академический)",
-    CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced (продвинутый уровень)",
+    TOEFLIBT16: "TOEFL iBT (шкала 1‑6, с 21 янв. 2026)",
+    DET: "Duolingo English Test (DET)",
+    PTE: "PTE Academic",
+    CAMBRIDGEC1ADVANCED: "Cambridge C1 Advanced",
     TESTDAFTDN: "TestDaF (уровень TDN)",
-    DSHLEVEL: "DSH уровень",
-    DELFDALFLEVEL: "DELF/DALF уровень",
-    TCFTOTAL: "TCF (общий балл)",
-    NT2PROGRAMMEII: "NT2 Programme II (программа II)",
-    HSKLEVEL: "HSK уровень",
-    JLPTLEVEL: "JLPT уровень",
-    TOPIKLEVEL: "TOPIK уровень",
+    DSHLEVEL: "Уровень DSH",
+    DELFDALFLEVEL: "Уровень DELF/DALF",
+    TCFTOTAL: "Общий балл TCF",
+    NT2PROGRAMMEII: "NT2 Programme II",
+    HSKLEVEL: "Уровень HSK",
+    JLPTLEVEL: "Уровень JLPT",
+    TOPIKLEVEL: "Уровень TOPIK",
   },
 };
 
@@ -624,15 +850,23 @@ export function getExamDisplayName(examId, opts = {}) {
   if (!raw) return "";
   const id = canonicalizeExamId(raw);
   const uiLocale = String(opts?.locale || opts?.lang || opts?.uiLang || "").trim();
+  const cfg = getExamConfig(id || raw);
+  const cfgLabels = cfg?.labels && typeof cfg.labels === "object" ? cfg.labels : null;
+  const localeKey = examConfigLocale(uiLocale);
+
+  if (cfgLabels) {
+    const localizedFromConfig = String(cfgLabels[localeKey] || "").trim();
+    if (localizedFromConfig) return localizedFromConfig;
+  }
+
+  const cfgLabel = String(cfg?.label || "").trim();
+  if (cfgLabel) return cfgLabel;
 
   const localized = _localizedExamLabel(id || raw, uiLocale);
   if (localized) return localized;
 
   const langLabel = getLangExamLabel(raw, opts.langCode || "");
   if (langLabel) return langLabel;
-
-  const cfgLabel = EXAM_CONFIG?.[id]?.label || EXAM_CONFIG?.[raw]?.label || EXAM_CONFIG?.[raw.toUpperCase()]?.label;
-  if (cfgLabel) return String(cfgLabel);
 
   if (EXAM_LABEL_OVERRIDES[id]) return EXAM_LABEL_OVERRIDES[id];
   if (EXAM_LABEL_OVERRIDES[raw]) return EXAM_LABEL_OVERRIDES[raw];
@@ -746,8 +980,18 @@ export function loadProfileForApi() {
     .map((row) => {
       const id = String(row?.id || row?.exam || "").trim();
       const score = Number(row?.score);
-      if (!id || !Number.isFinite(score)) return null;
-      return { id, score };
+      const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
+      const displayValue = String(row?.display_value || row?.displayValue || "").trim();
+      const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details)
+        ? row.details
+        : null;
+      if (!id || (!Number.isFinite(score) && !rawValue && !details)) return null;
+      const out = { id };
+      if (Number.isFinite(score)) out.score = score;
+      if (rawValue) out.raw_value = rawValue;
+      if (displayValue) out.display_value = displayValue;
+      if (details) out.details = details;
+      return out;
     })
     .filter(Boolean);
 
@@ -1192,20 +1436,40 @@ export function normalizeProfileData(p) {
       return;
     }
 
-    const cfg = EXAM_CONFIG?.[normalizedId] || EXAM_CONFIG?.[normalizedId.toUpperCase()] || null;
-    const clamped = cfg ? clampWithCfg(it?.score, cfg) : it?.score;
-    const score = (clamped ?? it?.score);
+    const cfg = getExamConfig(normalizedId);
+    const rawValue = String(it?.raw_value || it?.rawValue || "").trim();
+    const displayValue = String(it?.display_value || it?.displayValue || "").trim();
+    const details = it?.details && typeof it.details === "object" && !Array.isArray(it.details)
+      ? JSON.parse(JSON.stringify(it.details))
+      : null;
+    const clamped = cfg ? clampWithCfg(it?.score, cfg) : Number(it?.score);
+    const score = Number.isFinite(clamped) ? clamped : null;
+    if (score === null && !rawValue && !details) return;
+    const normalizedExam = { ...it, id: normalizedId, exam: normalizedId };
+    if (score !== null) normalizedExam.score = score;
+    else delete normalizedExam.score;
+    if (rawValue) normalizedExam.raw_value = rawValue;
+    else delete normalizedExam.raw_value;
+    delete normalizedExam.rawValue;
+    if (displayValue) normalizedExam.display_value = displayValue;
+    else delete normalizedExam.display_value;
+    delete normalizedExam.displayValue;
+    if (details) normalizedExam.details = details;
+    else delete normalizedExam.details;
 
     if (!dedupedExams.has(key)) {
-      dedupedExams.set(key, { ...it, id: normalizedId, exam: normalizedId, score });
+      dedupedExams.set(key, normalizedExam);
       return;
     }
 
     const existing = dedupedExams.get(key);
     const existingScore = Number(existing?.score);
     const nextScore = Number(score);
-    if (Number.isFinite(nextScore) && (!Number.isFinite(existingScore) || nextScore >= existingScore)) {
-      dedupedExams.set(key, { ...existing, ...it, id: normalizedId, exam: normalizedId, score });
+    if (
+      (Number.isFinite(nextScore) && (!Number.isFinite(existingScore) || nextScore >= existingScore))
+      || (!Number.isFinite(existingScore) && !Number.isFinite(nextScore))
+    ) {
+      dedupedExams.set(key, { ...existing, ...normalizedExam, id: normalizedId, exam: normalizedId });
     }
   });
   out.exams = Array.from(dedupedExams.values());

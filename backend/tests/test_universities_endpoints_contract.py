@@ -114,6 +114,147 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIn("p75_normalized", score_profile)
         self.assertEqual("HKDSE_WEIGHTED_TOTAL", score_profile.get("exam_id"))
 
+    def test_all_admission_tracks_and_funding_options_have_descriptions(self):
+        response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
+        self.assertEqual(response.status_code, 200)
+        items = response.json().get("items") or []
+        self.assertTrue(items)
+
+        for item in items:
+            university_id = str((item or {}).get("id") or "")
+            self.assertTrue(university_id)
+            detail = self.client.get(f"/universities/{university_id}")
+            self.assertEqual(detail.status_code, 200, university_id)
+            tracks = detail.json().get("admission_tracks") or []
+            for track in tracks:
+                if not isinstance(track, dict):
+                    continue
+                track_id = str(track.get("id") or "")
+                self.assertTrue(
+                    str(track.get("description") or "").strip(),
+                    f"{university_id}:{track_id} missing track description",
+                )
+                for option in track.get("funding_options") or []:
+                    if not isinstance(option, dict):
+                        continue
+                    option_id = str(option.get("id") or "")
+                    self.assertTrue(
+                        str(option.get("description") or "").strip(),
+                        f"{university_id}:{track_id}:{option_id} missing funding option description",
+                    )
+
+    def test_university_detail_localizes_track_descriptions_by_lang(self):
+        response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        track = next(
+            (
+                row
+                for row in (data.get("admission_tracks") or [])
+                if isinstance(row, dict) and str(row.get("id") or "") == "mit_regular"
+            ),
+            None,
+        )
+        self.assertIsNotNone(track)
+        self.assertTrue(
+            str(track.get("description") or "").startswith("Основной вариант поступления в MIT"),
+        )
+        paid_option = next(
+            (
+                row
+                for row in (track.get("funding_options") or [])
+                if isinstance(row, dict) and str(row.get("id") or "") == "mit_regular"
+            ),
+            None,
+        )
+        self.assertIsNotNone(paid_option)
+        self.assertIn("Платный вариант поступления в MIT", str(paid_option.get("description") or ""))
+
+    def test_all_universities_have_campus_size_and_detailed_cost_breakdown(self):
+        response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
+        self.assertEqual(response.status_code, 200)
+        items = response.json().get("items") or []
+        self.assertTrue(items)
+
+        for item in items:
+            university_id = str((item or {}).get("id") or "")
+            self.assertTrue(university_id)
+            detail = self.client.get(f"/universities/{university_id}")
+            self.assertEqual(detail.status_code, 200, university_id)
+            data = detail.json()
+
+            student_life = data.get("student_life") or {}
+            self.assertTrue(
+                str(student_life.get("size") or "").strip(),
+                f"{university_id} missing student_life.size",
+            )
+
+            finance = data.get("finance") or {}
+            breakdown = finance.get("costs_breakdown_year_usd") or {}
+            self.assertGreaterEqual(
+                len([key for key, value in breakdown.items() if isinstance(key, str) and value is not None]),
+                5,
+                f"{university_id} breakdown is not detailed enough",
+            )
+            total = float(finance.get("total_cost_year_usd") or 0.0)
+            summed = sum(float(value or 0.0) for value in breakdown.values())
+            self.assertAlmostEqual(
+                total,
+                summed,
+                places=2,
+                msg=f"{university_id} total_cost_year_usd does not match breakdown sum",
+            )
+
+    def test_university_detail_localizes_campus_size_group_by_lang(self):
+        response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        student_life = data.get("student_life") or {}
+        self.assertEqual("Средний", student_life.get("size"))
+
+    def test_all_universities_have_valid_unifit_slider_factors(self):
+        response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
+        self.assertEqual(response.status_code, 200)
+        items = response.json().get("items") or []
+        self.assertTrue(items)
+
+        expected_keys = {
+            "practice_vs_science",
+            "social_vs_hardcore",
+            "budget_vs_prestige",
+            "city_vs_campus",
+        }
+        for item in items:
+            university_id = str((item or {}).get("id") or "")
+            self.assertTrue(university_id)
+            detail = self.client.get(f"/universities/{university_id}")
+            self.assertEqual(detail.status_code, 200, university_id)
+            factors = detail.json().get("factors") or {}
+            self.assertTrue(expected_keys.issubset(factors.keys()), f"{university_id} missing UniFit factor keys")
+            for key in expected_keys:
+                value = factors.get(key)
+                self.assertIsNotNone(value, f"{university_id}:{key} is null")
+                numeric = float(value)
+                self.assertGreaterEqual(numeric, 0.0, f"{university_id}:{key} below 0")
+                self.assertLessEqual(numeric, 1.0, f"{university_id}:{key} above 1")
+
+    def test_all_universities_expose_cost_breakdown_status(self):
+        response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
+        self.assertEqual(response.status_code, 200)
+        items = response.json().get("items") or []
+        self.assertTrue(items)
+
+        allowed = {"official_breakdown", "mixed_official_guidance"}
+        for item in items:
+            university_id = str((item or {}).get("id") or "")
+            self.assertTrue(university_id)
+            detail = self.client.get(f"/universities/{university_id}")
+            self.assertEqual(detail.status_code, 200, university_id)
+            finance = detail.json().get("finance") or {}
+            status = str(finance.get("costs_breakdown_status") or "")
+            self.assertIn(status, allowed, f"{university_id} missing valid costs_breakdown_status")
+
     def test_university_assets_are_served_from_backend(self):
         university_id = self._first_university_id()
         self.assertTrue(university_id)

@@ -24,9 +24,14 @@ class ProfileExamInput(BaseModel):
 
     id: Optional[str] = Field(default=None, max_length=64)
     exam: Optional[str] = Field(default=None, max_length=64)
-    score: float = Field(ge=0, le=10000)
+    score: Optional[float] = Field(default=None, ge=0, le=10000)
+    raw_value: Optional[str] = Field(default=None, max_length=128)
+    rawValue: Optional[str] = Field(default=None, max_length=128)
+    display_value: Optional[str] = Field(default=None, max_length=128)
+    displayValue: Optional[str] = Field(default=None, max_length=128)
+    details: Optional[Dict[str, Any]] = None
 
-    @field_validator("id", "exam", mode="before")
+    @field_validator("id", "exam", "raw_value", "rawValue", "display_value", "displayValue", mode="before")
     @classmethod
     def _validate_exam_keys(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
@@ -35,6 +40,8 @@ class ProfileExamInput(BaseModel):
     def _ensure_exam_id(self) -> "ProfileExamInput":
         if not self.id and not self.exam:
             raise ValueError("Each exam entry must include 'id' or 'exam'")
+        if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+            raise ValueError("Each exam entry must include 'score', 'raw_value', or 'details'")
         return self
 
 
@@ -172,15 +179,28 @@ class ExamValidateRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     exam: str = Field(min_length=1, max_length=64)
-    score: Union[float, int, str]
+    score: Optional[Union[float, int, str]] = None
+    raw_value: Optional[str] = Field(default=None, max_length=128)
+    rawValue: Optional[str] = Field(default=None, max_length=128)
+    details: Optional[Dict[str, Any]] = None
 
-    @field_validator("exam", mode="before")
+    @field_validator("exam", "raw_value", "rawValue", mode="before")
     @classmethod
-    def _normalize_exam(cls, value: Any) -> str:
+    def _normalize_exam(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
         out = _strip_or_empty(value)
         if not out:
-            raise ValueError("exam is required")
+            return None
         return out
+
+    @model_validator(mode="after")
+    def _ensure_exam_validate_shape(self) -> "ExamValidateRequest":
+        if not self.exam:
+            raise ValueError("exam is required")
+        if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+            raise ValueError("score, raw_value, or details is required")
+        return self
 
 
 class LanguageValidateRequest(BaseModel):

@@ -27,14 +27,21 @@ def get_exam_config_full(response: Response = None):
 def validate_exam(payload: ExamValidateRequest):
     exam_raw = payload.exam
     score_raw = payload.score
+    raw_value = payload.raw_value or payload.rawValue
+    details = payload.details
 
     key = exams_service.resolve_exam_key(exam_raw.strip().upper())
 
     try:
-        score = exams_service.validate_exam_value(key, score_raw)
+        result = exams_service.coerce_exam_submission(
+            key,
+            score_raw=score_raw,
+            raw_value=raw_value,
+            details=details,
+        )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid score format")
 
-    return {"ok": True, "exam": key, "score": score}
+    return {"ok": True, **result}

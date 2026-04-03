@@ -1,4 +1,4 @@
-import { aiName, escapeHtml, getExamDisplayName, loadProfile } from "./utils.js";
+import { aiName, escapeHtml, formatExamValue, getExamDisplayName, loadProfile } from "./utils.js";
 import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
@@ -47,12 +47,14 @@ function isLanguageExam(examKey) {
 
 function formatExamScore(examKey, score) {
   const key = String(examKey || "").toUpperCase();
-  if (key === "GPA") return `${score}%`;
   if (key.includes("JLPT")) return `N${score}`;
   if (key.includes("TOPIK") || key.includes("HSK") || key.includes("TESTDAF") || key.includes("DSH")) {
     return `${translateWord("level_word", "Level")} ${score}`;
   }
-  return String(score);
+  return formatExamValue(examKey, score, {
+    context: "requirement",
+    locale: getCurrentLanguage(),
+  });
 }
 
 export function splitExamEntries(obj) {

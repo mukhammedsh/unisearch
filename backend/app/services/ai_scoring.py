@@ -285,7 +285,20 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
     for row in profile.get("exams", []) or []:
         if not isinstance(row, dict):
             continue
-        _set_best_score(user_scores, row.get("id", row.get("exam")), row.get("score"))
+        exam_id = row.get("id", row.get("exam"))
+        raw_score = row.get("score")
+        raw_value = row.get("raw_value", row.get("rawValue"))
+        details = row.get("details")
+        try:
+            parsed = exams_service.coerce_exam_submission(
+                exam_id,
+                score_raw=raw_score,
+                raw_value=raw_value,
+                details=details,
+            )
+            _set_best_score(user_scores, exam_id, parsed.get("score"))
+        except Exception:
+            _set_best_score(user_scores, exam_id, raw_score)
 
     for row in profile.get("languages", []) or []:
         if not isinstance(row, dict):
@@ -731,14 +744,14 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
         },
         "rus": {
             "missing_evidence": "Добавьте результаты экзаменов или языковые данные",
-            "missing_exam_score": "Добавьте результат экзамена для этого трека",
+            "missing_exam_score": "Нужны данные по экзамену, чтобы оценить шанс по этому варианту поступления",
             "unsupported_exam_normalization": "Пока нельзя корректно сопоставить ваш экзамен с этим треком",
-            "no_score_profile": "Нет данных о баллах принятых",
+            "no_score_profile": "Нет данных о баллах зачисленных",
         },
     }
     locale = _chance_locale(profile)
     if locale == "rus" and reason == "missing_exam_score":
-        return "Нужны данные по экзаменам, чтобы увидеть шанс по этому треку"
+        return "Нужны данные по экзаменам, чтобы оценить шанс по этому варианту поступления"
     return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
 
 
@@ -767,6 +780,13 @@ def _track_score_profile(track: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     out["median_normalized"] = float(median)
     out["p75_normalized"] = float(p75)
     return out
+
+
+def _track_has_required_evidence(track: Dict[str, Any]) -> bool:
+    req = track.get("requirements")
+    if isinstance(req, dict) and req:
+        return True
+    return len(_collect_language_requirements(track).get("items", [])) > 0
 
 
 def _resolve_user_normalized_track_score(
@@ -854,23 +874,46 @@ def _compute_estimated_fallback_chance(
     feasibility_gate: float,
     scholarship_boost: float,
     missing_evidence: bool,
+    hard_pass_all: bool,
+    conditional_requirements: int,
 ) -> Dict[str, Any]:
-    base = (
-        (0.62 * _clamp01(float(academic)))
-        + (0.20 * _clamp01(float(language)))
-        + (0.18 * _clamp01(float(affordability)))
-    )
-    evidence_factor = 0.88 if missing_evidence else 1.0
+    # Fallback must stay conservative: if mandatory exam or language evidence is
+    # missing, or any minimum is not met, the track is not realistically
+    # attainable and should show 0%.
+    if conditional_requirements > 0 or not hard_pass_all:
+        return {
+            "chance01": 0.0,
+            "rangeLowPercent": 0.0,
+            "rangeHighPercent": 0.0,
+            "confidence": "low",
+        }
+
+    academic_curve = _clamp01(float(academic)) ** 1.75
+    language_curve = _clamp01(float(language)) ** 1.55
+    affordability_curve = _clamp01(float(affordability)) ** 1.10
+    feasibility_curve = _clamp(0.92 + (0.08 * _clamp01(float(feasibility_gate))), 0.92, 1.0)
+    evidence_factor = 0.96 if missing_evidence else 1.0
+    has_language_rules = len(_collect_language_requirements(track).get("items", [])) > 0
     acceptance_pct = _to_num(track.get("acceptance_rate_percent")) or _acceptance_percent(university)
-    acceptance_factor = 1.0
-    if acceptance_pct is not None:
-        acceptance_factor = _clamp(0.90 + (0.10 * _clamp01(float(acceptance_pct) / 100.0)), 0.90, 1.0)
-    chance01 = _clamp01(
-        (base * _clamp01(float(feasibility_gate)) * evidence_factor)
-        + (0.35 * max(0.0, float(scholarship_boost)))
-    )
-    chance01 = _clamp01(chance01 * acceptance_factor)
-    spread = 0.18 if missing_evidence else 0.15
+    acceptance_signal = 0.45 if acceptance_pct is None else _clamp01(float(acceptance_pct) / 100.0)
+
+    if has_language_rules:
+        base = (
+            (0.60 * academic_curve)
+            + (0.18 * language_curve)
+            + (0.12 * affordability_curve)
+            + (0.10 * acceptance_signal)
+        )
+    else:
+        base = (
+            (0.72 * academic_curve)
+            + (0.18 * affordability_curve)
+            + (0.10 * acceptance_signal)
+        )
+
+    scholarship_bonus = 0.25 * max(0.0, float(scholarship_boost))
+    chance01 = _clamp01((base * feasibility_curve * evidence_factor) + scholarship_bonus)
+    spread = 0.12 if not missing_evidence else 0.10
     return {
         "chance01": float(chance01),
         "rangeLowPercent": round(max(0.0, chance01 - spread) * 100.0, 1),
@@ -1512,7 +1555,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             "trackSelectionSource": "recommended",
             "chanceAvailable": False,
             "reason": "no_tracks",
-            "label": "Нет треков для выбранного типа финансирования"
+            "label": "Нет вариантов для выбранного типа финансирования"
             if _chance_locale(profile) == "rus"
             else "No tracks for the selected funding type",
         }
@@ -1525,6 +1568,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         academic = float(fit.get("fit", 0.0))
         language = float(fit.get("langScore", 0.0))
         selectivity = _acceptance_score(university, mode="chance")
+        track_has_required_evidence = _track_has_required_evidence(track)
         aid_any = bool((((university.get("finance") or {}).get("financial_aid") or {}).get("merit_based"))) or bool((((university.get("finance") or {}).get("financial_aid") or {}).get("need_based"))) or bool(track.get("scholarships"))
         affordability = _affordability_score(
             university,
@@ -1548,7 +1592,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         confidence = "no_data"
         chance_model = "none"
 
-        if not has_evidence:
+        can_use_zero_fallback = (not has_evidence) and (not isinstance(score_profile, dict)) and track_has_required_evidence
+        if not has_evidence and not can_use_zero_fallback:
             no_data_reason = "missing_evidence"
         else:
             if isinstance(score_profile, dict):
@@ -1583,6 +1628,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                     feasibility_gate=feasibility_gate,
                     scholarship_boost=scholarship_boost,
                     missing_evidence=bool(fit.get("missingEvidence")),
+                    hard_pass_all=bool(fit.get("hardPassAll")),
+                    conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
                 )
                 chance01_raw = _to_num(chance_meta.get("chance01"))
                 if chance01_raw is None:

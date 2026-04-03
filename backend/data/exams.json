@@ -1,5 +1,11 @@
 {
   "SAT": {
+    "label": "SAT",
+    "labels": {
+      "eng": "SAT",
+      "rus": "SAT"
+    },
+    "input_mode": "number",
     "min": 400,
     "max": 1600,
     "type": "int",
@@ -16,12 +22,24 @@
     }
   },
   "ACT": {
+    "label": "ACT",
+    "labels": {
+      "eng": "ACT",
+      "rus": "ACT"
+    },
+    "input_mode": "number",
     "min": 1,
     "max": 36,
     "type": "int",
     "step": 1
   },
   "GPA": {
+    "label": "GPA",
+    "labels": {
+      "eng": "GPA",
+      "rus": "GPA"
+    },
+    "input_mode": "number",
     "min": 0,
     "max": 100,
     "type": "int",
@@ -29,6 +47,12 @@
     "notes": "Stored as percent (0-100)."
   },
   "UNT": {
+    "label": "UNT (Kazakhstan)",
+    "labels": {
+      "eng": "UNT (Kazakhstan)",
+      "rus": "ЕНТ"
+    },
+    "input_mode": "number",
     "min": 0,
     "max": 140,
     "type": "int",
@@ -45,6 +69,12 @@
     }
   },
   "NUET": {
+    "label": "NUET",
+    "labels": {
+      "eng": "NUET",
+      "rus": "NUET"
+    },
+    "input_mode": "number",
     "min": 0,
     "max": 240,
     "type": "int",
@@ -61,13 +91,25 @@
     }
   },
   "AP_Total": {
+    "label": "AP Total",
+    "labels": {
+      "eng": "AP Total",
+      "rus": "AP (суммарный балл)"
+    },
+    "input_mode": "number",
     "min": 0,
     "max": 25,
     "type": "int",
     "step": 1,
-    "notes": "Sum of up to 5 AP exams (each 1–5)."
+    "notes": "Sum of up to 5 AP exams (each 1-5)."
   },
   "IB_Diploma": {
+    "label": "IB Diploma",
+    "labels": {
+      "eng": "IB Diploma",
+      "rus": "Диплом IB"
+    },
+    "input_mode": "number",
     "min": 24,
     "max": 45,
     "type": "int",
@@ -84,30 +126,102 @@
     }
   },
   "A_LEVEL_CERT": {
+    "label": "A-Level",
+    "labels": {
+      "eng": "A-Level",
+      "rus": "Сертификат A-Level"
+    },
+    "input_mode": "grade_combo",
     "min": 0,
-    "max": 1,
-    "type": "bool",
+    "max": 18,
+    "type": "int",
     "step": 1,
-    "notes": "GCE A-Level completion (0/1).",
+    "notes": "Best 3 A-Level grades converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 3,
+      "subject_count_max": 4,
+      "best_of": 3,
+      "grades": [
+        "A*",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "U"
+      ],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    },
     "normalization": {
-      "kind": "grade_band_reference",
-      "supports_user_scoring": false,
-      "grade_min": "U",
-      "grade_max": "A*A*A*",
-      "p50_grade": "BBB",
-      "top5_min_grade": "A*A*A",
+      "kind": "anchor_percentile",
+      "p50": 12,
+      "top5_min": 17,
+      "p50_percentile": 50,
+      "top5_percentile": 95,
       "source": "Ofqual",
-      "source_note": "Reference-only until UniSearch collects actual A-Level grade strings instead of a certificate flag."
+      "source_note": "A-Level grades are converted to internal points using the best 3 grades for comparison inside UniSearch."
     }
   },
   "HKDSE_LEVEL": {
+    "label": "HKDSE Level",
+    "labels": {
+      "eng": "HKDSE Level",
+      "rus": "Уровень HKDSE"
+    },
+    "input_mode": "band_select",
     "min": 1,
     "max": 7,
     "type": "int",
     "step": 1,
-    "notes": "HKDSE level scale (1-7). 5**=7, 5*=6."
+    "notes": "HKDSE level scale where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        {
+          "value": 1,
+          "short_label": "1"
+        },
+        {
+          "value": 2,
+          "short_label": "2"
+        },
+        {
+          "value": 3,
+          "short_label": "3"
+        },
+        {
+          "value": 4,
+          "short_label": "4"
+        },
+        {
+          "value": 5,
+          "short_label": "5"
+        },
+        {
+          "value": 6,
+          "short_label": "5*"
+        },
+        {
+          "value": 7,
+          "short_label": "5**"
+        }
+      ]
+    }
   },
   "HKDSE_WEIGHTED_TOTAL": {
+    "label": "HKDSE Weighted Total (CUHK JUPAS)",
+    "labels": {
+      "eng": "HKDSE Weighted Total (CUHK JUPAS)",
+      "rus": "Взвешенный суммарный балл HKDSE (CUHK JUPAS)"
+    },
+    "input_mode": "number",
     "min": 0,
     "max": 47.25,
     "type": "float",
@@ -115,6 +229,12 @@
     "notes": "CUHK JUPAS HKDSE weighted Best 5 total for published admission-grade tables."
   },
   "EGE": {
+    "label": "EGE",
+    "labels": {
+      "eng": "EGE",
+      "rus": "ЕГЭ"
+    },
+    "input_mode": "number",
     "min": 0,
     "max": 100,
     "type": "int",
@@ -131,6 +251,12 @@
     }
   },
   "SWISS_MATURITY_CERT": {
+    "label": "Swiss Maturity Certificate",
+    "labels": {
+      "eng": "Swiss Maturity Certificate",
+      "rus": "Швейцарский аттестат зрелости"
+    },
+    "input_mode": "flag",
     "min": 0,
     "max": 1,
     "type": "bool",
@@ -138,6 +264,12 @@
     "notes": "Swiss Maturity (Matura/Maturite) certificate (0/1)."
   },
   "GERMAN_ABITUR_CERT": {
+    "label": "German Abitur Certificate",
+    "labels": {
+      "eng": "German Abitur Certificate",
+      "rus": "Аттестат Abitur"
+    },
+    "input_mode": "flag",
     "min": 0,
     "max": 1,
     "type": "bool",
@@ -145,6 +277,12 @@
     "notes": "German Abitur certificate (0/1)."
   },
   "OSSD_CERT": {
+    "label": "OSSD (Ontario Secondary School Diploma)",
+    "labels": {
+      "eng": "OSSD (Ontario Secondary School Diploma)",
+      "rus": "OSSD (диплом старшей школы Онтарио)"
+    },
+    "input_mode": "flag",
     "min": 0,
     "max": 1,
     "type": "bool",

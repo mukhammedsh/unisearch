@@ -202,18 +202,25 @@
     "finance": {
       "total_cost_year_usd": 85960,
       "costs_breakdown_year_usd": {
-        "Tuition_and_Fees": 62396,
+        "Tuition": 61990,
+        "Student_Life_Fee": 406,
         "Housing_Dorm": 13060,
         "Food": 7220,
-        "Books_Supplies_Personal": 3284
+        "Books_and_Supplies": 980,
+        "Personal_Expenses": 2304
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": true
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://facts.mit.edu/undergraduate-admissions/undergraduate-tuition/"
+      ],
+      "costs_breakdown_note": "Breakdown follows MIT's official undergraduate cost-of-attendance categories, with the final books/personal bucket split into books and personal expenses for clearer display.",
+      "costs_breakdown_status": "official_breakdown"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 98741.0
+      "average_early_career_salary_usd": 98741
     },
     "admission_tracks": [
       {
@@ -251,7 +258,7 @@
           "p75_raw": 1570,
           "p25_normalized": 97.33,
           "median_normalized": 98.33,
-          "p75_normalized": 99.0,
+          "p75_normalized": 99,
           "acceptance_rate_percent": 4.56,
           "confidence": "high",
           "source_scope": "official_common_data_set",
@@ -270,21 +277,24 @@
               "GPA": 98
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Self-funded MIT offer through the Regular Action route; students follow the same first-year review and application requirements without an added scholarship program."
           },
           {
             "id": "mit_regular-grant-need-based-aid",
             "label": "Regular Action - Need-based Aid (Grant)",
             "requirements": {
               "SAT": 1500,
-              "GPA": 98.0
+              "GPA": 98
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Need-based Aid",
-            "funding_source": "need"
+            "funding_source": "need",
+            "description": "Same Regular Action route, with MIT need-based aid considered separately under MIT's need-blind, full-need undergraduate aid policy."
           }
-        ]
+        ],
+        "description": "MIT's standard first-year Regular Action route for undergraduate applicants, with holistic review across academics, essays, recommendations, and school context."
       }
     ],
     "verified_sources": [
@@ -355,6 +365,14 @@
       {
         "topic": "outcomes",
         "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://facts.mit.edu/mit-campus/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://facts.mit.edu/undergraduate-admissions/undergraduate-tuition/"
       }
     ],
     "description": "MIT's mission is to advance knowledge and educate students in science, technology, and other areas of scholarship that will best serve the nation and the world. The Institute emphasizes education, research, and innovation in pursuit of that mission.",
@@ -371,16 +389,16 @@
     ],
     "description_source": "https://www.mit.edu/about/",
     "factors": {
-      "practice_vs_science": 0.9549,
-      "social_vs_hardcore": 0.9797,
-      "budget_vs_prestige": 0.955,
-      "city_vs_outside_city": 0.9949,
-      "city_vs_campus": 0.9949
+      "practice_vs_science": 0.82,
+      "social_vs_hardcore": 0.76,
+      "budget_vs_prestige": 0.94,
+      "city_vs_outside_city": 0.18,
+      "city_vs_campus": 0.18
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Massachusetts+Institute+of+Technology&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Cambridge&count=10&language=en&format=json&countryCode=US",
@@ -403,18 +421,31 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 1.0,
+          "position": 1,
           "status": "official"
         },
-        "total_cost_year_usd": 89340.0,
+        "total_cost_year_usd": 89340,
         "derived_signals": {
           "research_signal_raw": 14.577279125375393,
           "hardcore_signal_0_1": 0.979704,
           "research_norm_0_1": 0.954898,
-          "official_rank_norm_0_1": 0.0,
+          "official_rank_norm_0_1": 0,
           "tuition_norm_0_1": 0.955076,
           "city_population_norm_0_1": 0.005098
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.82,
+        "social_vs_hardcore": 0.76,
+        "budget_vs_prestige": 0.94,
+        "city_vs_outside_city": 0.18,
+        "city_vs_campus": 0.18
       }
     },
     "major_focus": [
@@ -437,14 +468,14 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 85960.0,
+          "value": 85960,
           "unit": "usd_per_year",
           "source": "MIT Facts – Undergraduate Tuition & Aid",
           "source_url": "https://facts.mit.edu/undergraduate-admissions/undergraduate-tuition/",
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct 2024–2025 official undergraduate cost-of-attendance categories published by MIT Facts.",
+          "method": "Direct 2024–2025 official undergraduate cost-of-attendance categories published by MIT Facts. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "academic_year": "2024-2025",
             "tuition": 61990,
@@ -452,11 +483,19 @@
             "housing": 13060,
             "food": 7220,
             "books_supplies_personal": 3284,
-            "total": 85960
+            "total": 85960,
+            "breakdown_categories": [
+              "Tuition",
+              "Student_Life_Fee",
+              "Housing_Dorm",
+              "Food",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 11920.0,
+          "value": 11920,
           "unit": "students",
           "source": "MIT Facts",
           "source_url": "https://facts.mit.edu/",
@@ -481,7 +520,7 @@
           }
         },
         "average_early_career_salary_usd": {
-          "value": 98741.0,
+          "value": 98741,
           "unit": "usd_per_year",
           "source": "MIT Graduating Student Survey 2019",
           "source_url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf",
@@ -507,7 +546,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 11920
+    "student_count": 11920,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 679968,
+      "size_source_url": "https://facts.mit.edu/mit-campus/",
+      "size_note": "Official MIT Facts campus footprint: 168 acres (0.68 km?)."
+    }
   },
   {
     "id": "imperial-college-london-uk",
@@ -984,17 +1029,24 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 75000,
+      "total_cost_year_usd": 74541,
       "costs_breakdown_year_usd": {
         "Tuition": 52500,
-        "Housing_Dorm": 13000,
-        "Food": 6000,
-        "Books_Transport_Misc": 3500
+        "Housing_Rent": 13364,
+        "Food": 3686,
+        "Transportation": 1428,
+        "Personal_Expenses": 3563
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/",
+        "https://www.imperial.ac.uk/study/pg/fees-and-funding/living-costs/"
+      ],
+      "costs_breakdown_note": "Uses Imperial's official overseas tuition for Computing MEng and the official 2025-26 London living-cost table (12-month private-sector housing, food, travel, and personal/leisure spending).",
+      "costs_breakdown_status": "official_breakdown"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -1006,7 +1058,7 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.0
+              "IELTS": 7
             }
           }
         ],
@@ -1028,21 +1080,24 @@
               "GPA": 92
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded place on Imperial's undergraduate engineering/computing route through UCAS."
           },
           {
             "id": "imperial_eng-grant-president-s-scholarship",
             "label": "Engineering Track - President's Scholarship (Grant)",
             "requirements": {
               "SAT": 1450,
-              "GPA": 98.0
+              "GPA": 98
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "President's Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same engineering/computing UCAS route, with additional consideration for Imperial President's Scholarship support for top applicants."
           }
-        ]
+        ],
+        "description": "Imperial's main undergraduate engineering/computing route through UCAS, typically combining academic results with the personal statement, reference, admissions tests, and interview where required."
       }
     ],
     "verified_sources": [
@@ -1085,6 +1140,14 @@
       {
         "topic": "tags",
         "url": "https://www.imperial.ac.uk/about/"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.imperial.ac.uk/campusinfo"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/"
       }
     ],
     "description": "Imperial describes itself as a world-leading university for science, technology, engineering, medicine and business, using science across its London campuses and international network to tackle global challenges.",
@@ -1097,16 +1160,16 @@
     ],
     "description_source": "https://www.imperial.ac.uk/about/",
     "factors": {
-      "practice_vs_science": 0.9389,
-      "social_vs_hardcore": 0.9627,
-      "budget_vs_prestige": 0.8488,
-      "city_vs_outside_city": 0.5277,
-      "city_vs_campus": 0.5277
+      "practice_vs_science": 0.76,
+      "social_vs_hardcore": 0.86,
+      "budget_vs_prestige": 0.88,
+      "city_vs_outside_city": 0.1,
+      "city_vs_campus": 0.1
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Imperial+College+London&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=London&count=10&language=en&format=json&countryCode=GB",
@@ -1129,10 +1192,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 2.0,
+          "position": 2,
           "status": "official"
         },
-        "total_cost_year_usd": 75000.0,
+        "total_cost_year_usd": 75000,
         "derived_signals": {
           "research_signal_raw": 14.332302708826003,
           "hardcore_signal_0_1": 0.962661,
@@ -1141,6 +1204,19 @@
           "tuition_norm_0_1": 0.788744,
           "city_population_norm_0_1": 0.472276
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.76,
+        "social_vs_hardcore": 0.86,
+        "budget_vs_prestige": 0.88,
+        "city_vs_outside_city": 0.1,
+        "city_vs_campus": 0.1
       }
     },
     "major_focus": [
@@ -1162,21 +1238,29 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 75000.0,
+          "value": 74541,
           "unit": "usd_per_year",
           "source": "Imperial College London undergraduate fees pages",
           "source_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Normalized USD figure retained from the dataset, but provenance switched to the official undergraduate course fee page. Imperial publishes home/overseas fees in GBP rather than a single USD annual total.",
+          "method": "Official overseas tuition from the course page plus Imperial's official 2025-26 London living-cost table (12-month private accommodation scenario).",
           "basis": {
             "guide_fee_2026_27_overseas_gbp": 45500,
-            "currency": "GBP"
+            "currency": "GBP",
+            "total": 74541,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Rent",
+              "Food",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 25143.0,
+          "value": 25143,
           "unit": "students",
           "source": "Imperial College London Student statistics (public)",
           "source_url": "https://www.imperial.ac.uk/admin-services/student-records-and-data/for-staff/student-statistics-public/",
@@ -1209,7 +1293,12 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 25143
+    "student_count": 25143,
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://www.imperial.ac.uk/campusinfo",
+      "size_note": "Medium bucket based on Imperial's multi-campus estate across London and the South East, including South Kensington, White City, and Silwood Park."
+    }
   },
   {
     "id": "stanford-university-usa-ca",
@@ -1365,14 +1454,22 @@
       "total_cost_year_usd": 97545,
       "costs_breakdown_year_usd": {
         "Tuition": 67731,
-        "Housing_and_Food": 22944,
-        "Student_Fees_Allowance": 2610,
-        "Books_and_Personal": 4260
+        "Housing_Dorm": 14424,
+        "Food": 8520,
+        "Student_Fees": 2610,
+        "Books_and_Supplies": 825,
+        "Personal_Expenses": 2615,
+        "Transportation": 820
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": true
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://financialaid.stanford.edu/undergrad/budget/index.html"
+      ],
+      "costs_breakdown_note": "Breakdown expands Stanford's official student budget into separate housing, food, books, personal, and transport items while keeping the published total.",
+      "costs_breakdown_status": "official_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 48314.67
@@ -1409,9 +1506,9 @@
           "p25_raw": 1510,
           "median_raw": null,
           "p75_raw": 1570,
-          "p25_normalized": 97.0,
+          "p25_normalized": 97,
           "median_normalized": null,
-          "p75_normalized": 99.0,
+          "p75_normalized": 99,
           "acceptance_rate_percent": 3.61,
           "confidence": "high",
           "source_scope": "official_middle_50_range_only",
@@ -1430,7 +1527,8 @@
               "GPA": 96
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Self-funded Stanford offer under the standard first-year admissions process."
           },
           {
             "id": "stanford_standard-grant-need-based-aid",
@@ -1442,9 +1540,11 @@
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Need-based Aid",
-            "funding_source": "need"
+            "funding_source": "need",
+            "description": "Same first-year Stanford route, with need-based financial aid awarded from family financial circumstances rather than merit."
           }
-        ]
+        ],
+        "description": "Stanford's standard first-year application route through the Common Application, with university-wide admission before students choose or confirm majors."
       }
     ],
     "verified_sources": [
@@ -1495,6 +1595,10 @@
       {
         "topic": "finance",
         "url": "https://financialaid.stanford.edu/undergrad/budget/index.html"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://facts.stanford.edu/campuslife/campus/"
       }
     ],
     "description": "Stanford says its mission is to create and share knowledge and prepare students to contribute to the world. With seven schools on one campus, it offers programs across arts and humanities, natural and social sciences, engineering, medicine, law, education, and business, and highlights interdisciplinary research and innovation.",
@@ -1511,16 +1615,16 @@
     ],
     "description_source": "https://www.stanford.edu/about/",
     "factors": {
-      "practice_vs_science": 0.9749,
-      "social_vs_hardcore": 0.9691,
+      "practice_vs_science": 0.67,
+      "social_vs_hardcore": 0.48,
       "budget_vs_prestige": 0.99,
-      "city_vs_outside_city": 1.0,
-      "city_vs_campus": 1.0
+      "city_vs_outside_city": 0.82,
+      "city_vs_campus": 0.82
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Stanford+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Stanford&count=10&language=en&format=json&countryCode=US",
@@ -1543,18 +1647,31 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 3.0,
+          "position": 3,
           "status": "official"
         },
-        "total_cost_year_usd": 93213.0,
+        "total_cost_year_usd": 93213,
         "derived_signals": {
           "research_signal_raw": 14.88234720872767,
           "hardcore_signal_0_1": 0.969054,
           "research_norm_0_1": 0.974882,
           "official_rank_norm_0_1": 0.035714,
-          "tuition_norm_0_1": 1.0,
-          "city_population_norm_0_1": 0.0
+          "tuition_norm_0_1": 1,
+          "city_population_norm_0_1": 0
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.67,
+        "social_vs_hardcore": 0.48,
+        "budget_vs_prestige": 0.99,
+        "city_vs_outside_city": 0.82,
+        "city_vs_campus": 0.82
       }
     },
     "major_focus": [
@@ -1576,14 +1693,14 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 97545.0,
+          "value": 97545,
           "unit": "usd_per_year",
           "source": "Stanford Financial Aid – The Student Budget",
           "source_url": "https://financialaid.stanford.edu/undergrad/budget/index.html",
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct 2026–2027 official undergraduate student-budget categories published by Stanford Financial Aid.",
+          "method": "Direct 2026–2027 official undergraduate student-budget categories published by Stanford Financial Aid. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "academic_year": "2026-2027",
             "tuition": 67731,
@@ -1591,11 +1708,20 @@
             "student_fees_allowance": 2610,
             "books_supplies_allowance": 855,
             "personal_expenses_allowance": 3405,
-            "total": 97545
+            "total": 97545,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Student_Fees",
+              "Books_and_Supplies",
+              "Personal_Expenses",
+              "Transportation"
+            ]
           }
         },
         "student_count": {
-          "value": 17552.0,
+          "value": 17552,
           "unit": "students",
           "source": "Stanford Facts",
           "source_url": "https://facts.stanford.edu/",
@@ -1629,7 +1755,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 17552
+    "student_count": 17552,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 33104376,
+      "size_source_url": "https://facts.stanford.edu/campuslife/campus/",
+      "size_note": "Official Stanford campus land: 8,180 acres."
+    }
   },
   {
     "id": "harvard-usa-cambridge",
@@ -1783,15 +1915,21 @@
       "total_cost_year_usd": 95134,
       "costs_breakdown_year_usd": {
         "Tuition": 62226,
-        "Fees": 6216,
+        "Mandatory_Fees": 6216,
         "Housing_Dorm": 14250,
         "Food": 8942,
-        "Books_and_Personal": 3500
+        "Books_and_Supplies": 1000,
+        "Personal_Expenses": 2500
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": true
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://college.harvard.edu/financial-aid/how-aid-works"
+      ],
+      "costs_breakdown_note": "Harvard's official billed and estimated student-budget items are separated into tuition, fees, housing, food, books, and personal spending.",
+      "costs_breakdown_status": "official_breakdown"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -1830,7 +1968,7 @@
           "median_raw": 1550,
           "p75_raw": 1580,
           "p25_normalized": 96.67,
-          "median_normalized": 98.0,
+          "median_normalized": 98,
           "p75_normalized": 99.33,
           "acceptance_rate_percent": 4.18,
           "confidence": "high",
@@ -1850,7 +1988,8 @@
               "GPA": 98
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Self-funded Harvard College offer through the standard first-year admissions process."
           },
           {
             "id": "harvard_college-grant-financial-aid",
@@ -1862,9 +2001,11 @@
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Financial Aid",
-            "funding_source": "need"
+            "funding_source": "need",
+            "description": "Same Harvard College route, with need-blind admission and 100% need-based aid for admitted students."
           }
-        ]
+        ],
+        "description": "Harvard College first-year undergraduate route, allowing applicants to apply in either Restrictive Early Action or Regular Decision with the same core application materials."
       }
     ],
     "verified_sources": [
@@ -1915,6 +2056,10 @@
       {
         "topic": "finance",
         "url": "https://college.harvard.edu/financial-aid/how-aid-works"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.harvard.edu/community/wp-content/uploads/sites/14/2024/11/2023_facts_impact_final.pdf"
       }
     ],
     "description": "Harvard describes its community as learning, researching, teaching, and working in pursuit of truth, knowledge, and a better world. The University consists of Harvard College, 12 graduate and professional schools, and the Radcliffe Institute for Advanced Study.",
@@ -1930,16 +2075,16 @@
     ],
     "description_source": "https://www.harvard.edu/about/",
     "factors": {
-      "practice_vs_science": 1.0,
-      "social_vs_hardcore": 0.9607,
-      "budget_vs_prestige": 0.9562,
-      "city_vs_outside_city": 0.9949,
-      "city_vs_campus": 0.9949
+      "practice_vs_science": 0.7,
+      "social_vs_hardcore": 0.55,
+      "budget_vs_prestige": 0.96,
+      "city_vs_outside_city": 0.16,
+      "city_vs_campus": 0.16
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Harvard+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Cambridge&count=10&language=en&format=json&countryCode=US",
@@ -1962,18 +2107,31 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 5.0,
+          "position": 5,
           "status": "official"
         },
-        "total_cost_year_usd": 86926.0,
+        "total_cost_year_usd": 86926,
         "derived_signals": {
           "research_signal_raw": 15.265792253216786,
           "hardcore_signal_0_1": 0.960714,
-          "research_norm_0_1": 1.0,
+          "research_norm_0_1": 1,
           "official_rank_norm_0_1": 0.071429,
           "tuition_norm_0_1": 0.927076,
           "city_population_norm_0_1": 0.005098
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.7,
+        "social_vs_hardcore": 0.55,
+        "budget_vs_prestige": 0.96,
+        "city_vs_outside_city": 0.16,
+        "city_vs_campus": 0.16
       }
     },
     "major_focus": [
@@ -1995,14 +2153,14 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 95134.0,
+          "value": 95134,
           "unit": "usd_per_year",
           "source": "Harvard College – How Aid Works",
           "source_url": "https://college.harvard.edu/financial-aid/how-aid-works",
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct 2026–2027 official Harvard College cost-of-attendance categories; total uses the published lower-bound total before variable transportation.",
+          "method": "Direct 2026–2027 official Harvard College cost-of-attendance categories; total uses the published lower-bound total before variable transportation. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "academic_year": "2026-2027",
             "tuition": 62226,
@@ -2012,11 +2170,20 @@
             "estimated_personal_expenses": 2500,
             "estimated_books": 1000,
             "transportation_range": "0-5000",
-            "published_total_range": "95134-100134"
+            "published_total_range": "95134-100134",
+            "total": 95134,
+            "breakdown_categories": [
+              "Tuition",
+              "Mandatory_Fees",
+              "Housing_Dorm",
+              "Food",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 24596.0,
+          "value": 24596,
           "unit": "students",
           "source": "Harvard at a Glance",
           "source_url": "https://www.harvard.edu/about-harvard/harvard-glance/",
@@ -2049,7 +2216,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 24596
+    "student_count": 24596,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 2205723,
+      "size_source_url": "https://www.harvard.edu/community/wp-content/uploads/sites/14/2024/11/2023_facts_impact_final.pdf",
+      "size_note": "Official Harvard footprint is reported in the 2023 Facts & Impact materials at roughly 5,450 acres."
+    }
   },
   {
     "id": "eth-zurich-ch-zurich",
@@ -2173,12 +2346,21 @@
         "Tuition": 1800,
         "Housing_Rent": 13000,
         "Food": 9000,
-        "Insurance_Transport_Misc": 4200
+        "Health_Insurance": 1320,
+        "Transportation": 780,
+        "Books_and_Supplies": 700,
+        "Personal_Expenses": 1400
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://ethz.ch/students/en/studies/financial/tuition-fees.html",
+        "https://ethz.ch/content/dam/ethz/common/docs/master-profile/englisch/cost-of-living.pdf"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Uses ETH Zurich tuition plus official living-cost guidance for rent, health insurance, transport, and other student spending.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -2220,20 +2402,23 @@
               "GPA": 90
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded ETH Zurich bachelor's admission for applicants in the non-Swiss certificate route."
           },
           {
             "id": "eth_exam-grant-excellence-scholarship",
             "label": "Direct Entry - Excellence Scholarship (Grant)",
             "requirements": {
-              "GPA": 98.0
+              "GPA": 98
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Excellence Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same ETH Zurich bachelor's route, with additional scholarship support only if separate merit funding is secured."
           }
-        ]
+        ],
+        "description": "ETH Zurich's bachelor's route for applicants without a qualifying Swiss credential who may receive direct admission or be required to pass the ETH entrance examination depending on their school-leaving certificate."
       },
       {
         "id": "eth_swiss_maturity",
@@ -2261,7 +2446,8 @@
           "Swiss maturite gymnasiale (cantonal or federal) certificate qualifies for admission to ETH bachelor programmes."
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "Bachelor's admission route for applicants holding a qualifying Swiss maturity certificate or other Swiss credentials that allow unconditional admission without the ETH entrance examination."
       }
     ],
     "verified_sources": [
@@ -2300,6 +2486,18 @@
       {
         "topic": "local_exam_requirements",
         "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://ethz.ch/en/the-eth-zurich/campus/real-estate/campus-hoenggerberg-2040.html"
+      },
+      {
+        "topic": "finance",
+        "url": "https://ethz.ch/students/en/studies/financial/tuition-fees.html"
+      },
+      {
+        "topic": "finance",
+        "url": "https://ethz.ch/content/dam/ethz/common/docs/master-profile/englisch/cost-of-living.pdf"
       }
     ],
     "description": "ETH Zurich describes itself as a university for science and technology founded in 1855. It is a federal government university with departments spanning engineering, computer science, natural sciences, and humanities and social sciences.",
@@ -2315,16 +2513,16 @@
     ],
     "description_source": "https://ethz.ch/en/the-eth-zurich/portrait.html",
     "factors": {
-      "practice_vs_science": 0.9105,
-      "social_vs_hardcore": 0.9008,
-      "budget_vs_prestige": 0.5104,
-      "city_vs_outside_city": 0.9827,
-      "city_vs_campus": 0.9827
+      "practice_vs_science": 0.9,
+      "social_vs_hardcore": 0.89,
+      "budget_vs_prestige": 0.47,
+      "city_vs_outside_city": 0.28,
+      "city_vs_campus": 0.28
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=ETH+Zurich&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Zurich&count=10&language=en&format=json&countryCode=CH",
@@ -2347,10 +2545,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 7.0,
+          "position": 7,
           "status": "official"
         },
-        "total_cost_year_usd": 28000.0,
+        "total_cost_year_usd": 28000,
         "derived_signals": {
           "research_signal_raw": 13.900181627112827,
           "hardcore_signal_0_1": 0.900816,
@@ -2359,6 +2557,19 @@
           "tuition_norm_0_1": 0.243583,
           "city_population_norm_0_1": 0.017307
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.9,
+        "social_vs_hardcore": 0.89,
+        "budget_vs_prestige": 0.47,
+        "city_vs_outside_city": 0.28,
+        "city_vs_campus": 0.28
       }
     },
     "major_focus": [
@@ -2380,22 +2591,32 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 28000.0,
+          "value": 28000,
           "unit": "usd_per_year",
           "source": "ETH Zurich tuition fees / study and living costs",
           "source_url": "https://ethz.ch/students/en/studies/financial/tuition-fees.html",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance now points to official ETH tuition-fee and cost-of-living guidance for Bachelor students.",
+          "method": "USD-normalized figure retained, but provenance now points to official ETH tuition-fee and cost-of-living guidance for Bachelor students. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "simple_tuition_fee_chf_per_semester": 730,
             "official_living_cost_example_chf_per_year": 22100,
-            "currency": "CHF"
+            "currency": "CHF",
+            "total": 28000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Rent",
+              "Food",
+              "Health_Insurance",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 26198.0,
+          "value": 26198,
           "unit": "students",
           "source": "ETH Zurich Annual Report 2024 - Teaching",
           "source_url": "https://ethz.ch/en/the-eth-zurich/portrait/annual-report-2024/teaching.html",
@@ -2413,7 +2634,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 26198
+    "student_count": 26198,
+    "student_life": {
+      "size": "small",
+      "campus_area_m2": 460000,
+      "size_source_url": "https://ethz.ch/en/the-eth-zurich/campus/real-estate/campus-hoenggerberg-2040.html",
+      "size_note": "Small bucket reflects the 46-hectare H?nggerberg campus, ETH Zurich's main expandable site, while ETH also operates the urban Zentrum campus."
+    }
   },
   {
     "id": "national-university-of-singapore-sg-singapore",
@@ -2573,12 +2800,20 @@
         "Tuition": 20000,
         "Housing_Dorm": 6000,
         "Food": 4000,
-        "Books_Transport_Misc": 2000
+        "Transportation": 900,
+        "Books_and_Supplies": 500,
+        "Personal_Expenses": 600
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.nus.edu.sg/registrar/administrative-policies-procedures/undergraduate/undergraduate-fees",
+        "https://nus.edu.sg/oam/admissions/before-you-apply/living-costs"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Tuition follows official undergraduate fee tables; living-cost items are separated using NUS admissions guidance for international students.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {
       "average_early_career_salary_usd": 48314.67
@@ -2592,7 +2827,7 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.0
+              "IELTS": 7
             }
           }
         ],
@@ -2618,21 +2853,24 @@
               "GPA": 95
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded NUS undergraduate offer for international applicants in the international-qualifications route."
           },
           {
             "id": "nus_intl-grant-asean-scholarship",
             "label": "International Admission - ASEAN Scholarship (Grant)",
             "requirements": {
-              "SAT": 1550.0,
+              "SAT": 1550,
               "GPA": 95
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "ASEAN Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same international undergraduate route, with ASEAN Scholarship consideration for selected applicants from eligible ASEAN countries."
           }
-        ]
+        ],
+        "description": "Main undergraduate route for international applicants with non-Singapore school qualifications, submitted through NUS's online application with supporting documents."
       },
       {
         "id": "nus_sg_alevel",
@@ -2648,7 +2886,7 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.0
+              "IELTS": 7
             }
           }
         ],
@@ -2660,7 +2898,8 @@
           "Mother Tongue Language (MTL) requirement or exemption."
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "Undergraduate route for applicants presenting the Singapore-Cambridge GCE A-Level qualification under NUS's local admissions framework."
       }
     ],
     "verified_sources": [
@@ -2715,6 +2954,18 @@
       {
         "topic": "outcomes",
         "url": "https://nus.edu.sg/ges-2024"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://sustainability.nus.edu.sg/wp-content/uploads/2021/11/NUS_Sustainability_Strategic_Plan_2017_2020.pdf"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.nus.edu.sg/registrar/administrative-policies-procedures/undergraduate/undergraduate-fees"
+      },
+      {
+        "topic": "finance",
+        "url": "https://nus.edu.sg/oam/admissions/before-you-apply/living-costs"
       }
     ],
     "description": "NUS aspires to be a leading global university dedicated to quality education, influential research, and visionary enterprise in service of society. It is Singapore's flagship university with colleges and faculties in arts and social sciences, business, computing, design and engineering, law, medicine, and science.",
@@ -2731,16 +2982,16 @@
     ],
     "description_source": "https://www.nus.edu.sg/about",
     "factors": {
-      "practice_vs_science": 0.9113,
-      "social_vs_hardcore": 0.8913,
-      "budget_vs_prestige": 0.5385,
-      "city_vs_outside_city": 0.7031,
-      "city_vs_campus": 0.7031
+      "practice_vs_science": 0.68,
+      "social_vs_hardcore": 0.73,
+      "budget_vs_prestige": 0.43,
+      "city_vs_outside_city": 0.38,
+      "city_vs_campus": 0.38
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=National+University+of+Singapore&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Singapore&count=10&language=en&format=json&countryCode=SG",
@@ -2763,10 +3014,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 8.0,
+          "position": 8,
           "status": "official"
         },
-        "total_cost_year_usd": 32000.0,
+        "total_cost_year_usd": 32000,
         "derived_signals": {
           "research_signal_raw": 13.911544498945116,
           "hardcore_signal_0_1": 0.89133,
@@ -2775,6 +3026,19 @@
           "tuition_norm_0_1": 0.289979,
           "city_population_norm_0_1": 0.296875
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.68,
+        "social_vs_hardcore": 0.73,
+        "budget_vs_prestige": 0.43,
+        "city_vs_outside_city": 0.38,
+        "city_vs_campus": 0.38
       }
     },
     "major_focus": [
@@ -2796,21 +3060,30 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 32000.0,
+          "value": 32000,
           "unit": "usd_per_year",
           "source": "NUS Registrar undergraduate fees",
           "source_url": "https://www.nus.edu.sg/registrar/administrative-policies-procedures/undergraduate/undergraduate-fees",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to the official NUS undergraduate fee schedule. NUS fees vary by cohort, nationality, faculty and subsidy status.",
+          "method": "USD-normalized figure retained, but provenance switched to the official NUS undergraduate fee schedule. NUS fees vary by cohort, nationality, faculty and subsidy status. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "official_fee_schedule_pdf": "https://www.nus.edu.sg/registrar/docs/default-source/administrative-policies-procedures/ugtuitioncurrent.pdf",
-            "currency": "SGD"
+            "currency": "SGD",
+            "total": 32000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 51679.0,
+          "value": 51679,
           "unit": "students",
           "source": "NUS About",
           "source_url": "https://www.nus.edu.sg/about",
@@ -2856,7 +3129,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 51679
+    "student_count": 51679,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 1658000,
+      "size_source_url": "https://sustainability.nus.edu.sg/wp-content/uploads/2021/11/NUS_Sustainability_Strategic_Plan_2017_2020.pdf",
+      "size_note": "Official university land area for Kent Ridge, Bukit Timah, and Outram is 165.8 hectares."
+    }
   },
   {
     "id": "epfl-ch-lausanne",
@@ -2992,13 +3271,22 @@
       "costs_breakdown_year_usd": {
         "Tuition": 1800,
         "Housing_Rent": 13200,
-        "Food": 8000,
-        "Insurance_Transport_Misc": 2000
+        "Food": 4800,
+        "Health_Insurance": 1800,
+        "Transportation": 600,
+        "Books_and_Supplies": 800,
+        "Personal_Expenses": 2000
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.epfl.ch/education/studies/en/rules-and-procedures/study-taxes/tuition-fee-other-fees/",
+        "https://www.epfl.ch/education/studies/en/financing-study/"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Combines EPFL tuition with official financing-study guidance for housing, health insurance, transport, and personal costs.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -3032,7 +3320,8 @@
           "French language certificate (if required)"
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "EPFL bachelor's route for applicants whose secondary-school qualification requires an entrance examination before admission."
       },
       {
         "id": "epfl_swiss_maturity",
@@ -3059,7 +3348,8 @@
           "Holders of a Swiss maturite gymnasiale are accepted in the first year of EPFL bachelor programs with no other condition."
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "Bachelor's admission route for applicants with a qualifying Swiss maturity certificate or equivalent Swiss credential that grants direct entry to EPFL."
       }
     ],
     "verified_sources": [
@@ -3098,6 +3388,18 @@
       {
         "topic": "student_count",
         "url": "https://www.epfl.ch/about/overview/annual-report/"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://actu.epfl.ch/news/a-collective-of-young-farmers-now-runs-the-basse-2"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.epfl.ch/education/studies/en/rules-and-procedures/study-taxes/tuition-fee-other-fees/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.epfl.ch/education/studies/en/financing-study/"
       }
     ],
     "description": "EPFL is a science and technology institution in Switzerland and a technical university focused on teaching, research, and innovation. Its schools include engineering, computer and communication sciences, basic sciences, life sciences, architecture and civil/environmental engineering, and management of technology.",
@@ -3114,16 +3416,16 @@
     ],
     "description_source": "https://www.epfl.ch/about/",
     "factors": {
-      "practice_vs_science": 0.3849,
-      "social_vs_hardcore": 0.517,
-      "budget_vs_prestige": 0.2792,
-      "city_vs_outside_city": 0.9934,
-      "city_vs_campus": 0.9934
+      "practice_vs_science": 0.74,
+      "social_vs_hardcore": 0.78,
+      "budget_vs_prestige": 0.36,
+      "city_vs_outside_city": 0.47,
+      "city_vs_campus": 0.47
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=EPFL&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Lausanne&count=10&language=en&format=json&countryCode=CH",
@@ -3146,10 +3448,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 22.0,
+          "position": 22,
           "status": "official"
         },
-        "total_cost_year_usd": 25000.0,
+        "total_cost_year_usd": 25000,
         "derived_signals": {
           "research_signal_raw": 5.8757954255597795,
           "hardcore_signal_0_1": 0.516955,
@@ -3158,6 +3460,19 @@
           "tuition_norm_0_1": 0.208785,
           "city_population_norm_0_1": 0.006613
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.74,
+        "social_vs_hardcore": 0.78,
+        "budget_vs_prestige": 0.36,
+        "city_vs_outside_city": 0.47,
+        "city_vs_campus": 0.47
       }
     },
     "major_focus": [
@@ -3179,22 +3494,32 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 25000.0,
+          "value": 25000,
           "unit": "usd_per_year",
           "source": "EPFL tuition fee and financing pages",
           "source_url": "https://www.epfl.ch/education/studies/en/rules-and-procedures/study-taxes/tuition-fee-other-fees/",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official EPFL tuition and living-cost guidance.",
+          "method": "USD-normalized figure retained, but provenance switched to official EPFL tuition and living-cost guidance. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "semester_invoice_chf": 780,
             "estimated_living_cost_chf_per_year": 29000,
-            "currency": "CHF"
+            "currency": "CHF",
+            "total": 25000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Rent",
+              "Food",
+              "Health_Insurance",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 14011.0,
+          "value": 14011,
           "unit": "students",
           "source": "EPFL Annual Report 2024",
           "source_url": "https://www.epfl.ch/about/overview/annual-report/",
@@ -3212,7 +3537,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 14011
+    "student_count": 14011,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 550000,
+      "size_source_url": "https://actu.epfl.ch/news/a-collective-of-young-farmers-now-runs-the-basse-2",
+      "size_note": "Official EPFL campus area in Ecublens is stated as 55 hectares."
+    }
   },
   {
     "id": "technical-university-of-munich-de-munich",
@@ -3339,14 +3670,24 @@
       "total_cost_year_usd": 19000,
       "costs_breakdown_year_usd": {
         "Tuition": 6500,
-        "Housing_Dorm": 8000,
-        "Food": 3500,
-        "Books_Transport_Misc": 1000
+        "Semester_Fees": 170,
+        "Housing_Rent": 7800,
+        "Health_Insurance": 1500,
+        "Food": 1800,
+        "Transportation": 600,
+        "Books_and_Supplies": 300,
+        "Personal_Expenses": 330
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.tum.de/en/studies/fees/tuition",
+        "https://www.tum.de/fileadmin/user_upload_87/ge63xay/230906_Financing_your_TUM_first_steps_How_to_finance_your_studies_engl_SHH_LM.pdf"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Breakdown uses TUM tuition plus official student-financing guidance for Munich/Garching living costs.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {
       "average_salary_by_major": {
@@ -3378,7 +3719,8 @@
           "Higher education entrance qualification for Bachelor’s programs"
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "TUM's bachelor's route for programs such as Informatics that combine a recognized higher education entrance qualification with an aptitude assessment during admission."
       },
       {
         "id": "tum_abitur",
@@ -3395,7 +3737,8 @@
           "German-language bachelor programs require a university entrance qualification (e.g., Abitur)."
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "Bachelor's route for applicants presenting a German Abitur or another recognized higher education entrance qualification (HZB) that satisfies TUM's general admission requirements."
       }
     ],
     "verified_sources": [
@@ -3430,6 +3773,18 @@
       {
         "topic": "student_count",
         "url": "https://www.tum.de/en/about-tum/facts-and-figures"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.tum.de/en/about-tum/our-university/locations"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.tum.de/en/studies/fees/tuition"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.tum.de/fileadmin/user_upload_87/ge63xay/230906_Financing_your_TUM_first_steps_How_to_finance_your_studies_engl_SHH_LM.pdf"
       }
     ],
     "description": "TUM emphasizes excellence in research, teaching, and innovation and organizes its academics into schools such as Computation, Information and Technology; Engineering and Design; Natural Sciences; Life Sciences; Medicine and Health; Management; and Social Sciences and Technology.",
@@ -3447,16 +3802,16 @@
     ],
     "description_source": "https://www.tum.de/en/about-tum",
     "factors": {
-      "practice_vs_science": 0.896,
-      "social_vs_hardcore": 0.747,
-      "budget_vs_prestige": 0.4419,
-      "city_vs_outside_city": 0.9342,
-      "city_vs_campus": 0.9342
+      "practice_vs_science": 0.64,
+      "social_vs_hardcore": 0.66,
+      "budget_vs_prestige": 0.34,
+      "city_vs_outside_city": 0.55,
+      "city_vs_campus": 0.55
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Technical+University+of+Munich&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Munich&count=10&language=en&format=json&countryCode=DE",
@@ -3479,10 +3834,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 22.0,
+          "position": 22,
           "status": "official"
         },
-        "total_cost_year_usd": 19000.0,
+        "total_cost_year_usd": 19000,
         "derived_signals": {
           "research_signal_raw": 13.678682112487596,
           "hardcore_signal_0_1": 0.746966,
@@ -3491,6 +3846,19 @@
           "tuition_norm_0_1": 0.13919,
           "city_population_norm_0_1": 0.065793
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.64,
+        "social_vs_hardcore": 0.66,
+        "budget_vs_prestige": 0.34,
+        "city_vs_outside_city": 0.55,
+        "city_vs_campus": 0.55
       }
     },
     "major_focus": [
@@ -3512,21 +3880,32 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 19000.0,
+          "value": 19000,
           "unit": "usd_per_year",
           "source": "TUM tuition fees for students from non-EU countries",
           "source_url": "https://www.tum.de/en/studies/fees/tuition",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official TUM fee guidance. Bachelor tuition varies by degree program and fee category.",
+          "method": "USD-normalized figure retained, but provenance switched to official TUM fee guidance. Bachelor tuition varies by degree program and fee category. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "typical_bachelor_tuition_eur_per_semester": "2000_or_3000",
-            "currency": "EUR"
+            "currency": "EUR",
+            "total": 19000,
+            "breakdown_categories": [
+              "Tuition",
+              "Semester_Fees",
+              "Housing_Rent",
+              "Health_Insurance",
+              "Food",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 53581.0,
+          "value": 53581,
           "unit": "students",
           "source": "TUM Facts and Figures",
           "source_url": "https://www.tum.de/en/about-tum/facts-and-figures",
@@ -3544,7 +3923,12 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 53581
+    "student_count": 53581,
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://www.tum.de/en/about-tum/our-university/locations",
+      "size_note": "Medium bucket reflects TUM's distributed multi-campus setup across Munich, Garching, Freising, Heilbronn, Straubing, and related sites."
+    }
   },
   {
     "id": "university-of-toronto-ca-toronto",
@@ -3839,14 +4223,22 @@
       "total_cost_year_usd": 62000,
       "costs_breakdown_year_usd": {
         "Tuition": 45000,
-        "Housing_Dorm": 11000,
-        "Food": 4000,
-        "Books_Transport_Misc": 2000
+        "Compulsory_Fees": 2200,
+        "Housing_Dorm": 10500,
+        "Meal_Plan": 2500,
+        "Books_and_Supplies": 1000,
+        "Personal_Expenses": 500,
+        "Transportation": 300
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.utsc.utoronto.ca/admissions/tuition-and-fees"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. The annual total is now split into tuition, compulsory fees, residence, meal plan, books, transport, and personal expenses for a more realistic Toronto breakdown.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {
       "average_salary_by_major": {
@@ -3903,21 +4295,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded University of Toronto undergraduate offer through the general admissions route."
           },
           {
             "id": "uoft_general-grant-pearson-scholarship",
             "label": "General Admission - Pearson Scholarship (Grant)",
             "requirements": {
               "SAT": 1300,
-              "GPA": 99.0
+              "GPA": 99
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Pearson Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same undergraduate route, with automatic consideration for the Lester B. Pearson International Scholarship for eligible outstanding students."
           }
-        ]
+        ],
+        "description": "University of Toronto's main undergraduate route for domestic and international applicants, usually submitted through OUAC with division- or program-specific documents where required."
       },
       {
         "id": "uoft_ossd",
@@ -3934,7 +4329,8 @@
           "OSSD with six 4U/M subjects including English is required for Ontario applicants."
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "Undergraduate route for applicants presenting the Ontario Secondary School Diploma (OSSD) under U of T's Ontario admissions process."
       }
     ],
     "verified_sources": [
@@ -3997,6 +4393,10 @@
       {
         "topic": "finance",
         "url": "https://www.utsc.utoronto.ca/admissions/tuition-and-fees"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://governingcouncil.utoronto.ca/outline-organization-university-toronto"
       }
     ],
     "description": "U of T describes itself as a top research-intensive university focused on discovery, innovation, and global impact. Its faculties and divisions include Applied Science and Engineering, Arts and Science, Law, Management, Medicine, Education, and others across three campuses.",
@@ -4013,16 +4413,16 @@
     ],
     "description_source": "https://www.utoronto.ca/about-u-of-t",
     "factors": {
-      "practice_vs_science": 0.9601,
-      "social_vs_hardcore": 0.707,
-      "budget_vs_prestige": 0.7668,
-      "city_vs_outside_city": 0.8635,
-      "city_vs_campus": 0.8635
+      "practice_vs_science": 0.76,
+      "social_vs_hardcore": 0.67,
+      "budget_vs_prestige": 0.76,
+      "city_vs_outside_city": 0.08,
+      "city_vs_campus": 0.08
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=University+of+Toronto&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Toronto&count=10&language=en&format=json&countryCode=CA",
@@ -4045,10 +4445,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 29.0,
+          "position": 29,
           "status": "official"
         },
-        "total_cost_year_usd": 62000.0,
+        "total_cost_year_usd": 62000,
         "derived_signals": {
           "research_signal_raw": 14.656037173152356,
           "hardcore_signal_0_1": 0.707026,
@@ -4057,6 +4457,19 @@
           "tuition_norm_0_1": 0.637955,
           "city_population_norm_0_1": 0.136497
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.76,
+        "social_vs_hardcore": 0.67,
+        "budget_vs_prestige": 0.76,
+        "city_vs_outside_city": 0.08,
+        "city_vs_campus": 0.08
       }
     },
     "major_focus": [
@@ -4078,23 +4491,33 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 62000.0,
+          "value": 62000,
           "unit": "usd_per_year",
           "source": "University of Toronto tuition and fees",
           "source_url": "https://www.utsc.utoronto.ca/admissions/tuition-and-fees",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official University of Toronto undergraduate tuition pages. Fees vary by campus and program; current CS international figures are published in CAD.",
+          "method": "USD-normalized figure retained, but provenance switched to official University of Toronto undergraduate tuition pages. Fees vary by campus and program; current CS international figures are published in CAD. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "official_example_program": "Computer Science (UTSC)",
             "year_1_international_cad": 63570,
             "upper_year_international_cad": 65480,
-            "currency": "CAD"
+            "currency": "CAD",
+            "total": 62000,
+            "breakdown_categories": [
+              "Tuition",
+              "Compulsory_Fees",
+              "Housing_Dorm",
+              "Meal_Plan",
+              "Books_and_Supplies",
+              "Personal_Expenses",
+              "Transportation"
+            ]
           }
         },
         "student_count": {
-          "value": 97678.0,
+          "value": 97678,
           "unit": "students",
           "source": "University of Toronto Quick Facts",
           "source_url": "https://www.utoronto.ca/about-u-of-t/quick-facts",
@@ -4152,7 +4575,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 97678
+    "student_count": 97678,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 2560000,
+      "size_source_url": "https://governingcouncil.utoronto.ca/outline-organization-university-toronto",
+      "size_note": "St. George, Scarborough, and Mississauga campuses sum to about 256 hectares in official governance materials."
+    }
   },
   {
     "id": "cuhk-hk-shatin",
@@ -4328,13 +4757,21 @@
       "costs_breakdown_year_usd": {
         "Tuition": 23000,
         "Housing_Dorm": 2200,
-        "Food": 5800,
-        "Books_Transport_Misc": 2354
+        "Food": 4500,
+        "Student_Services_and_Health_Fees": 900,
+        "Books_and_Supplies": 700,
+        "Transportation": 800,
+        "Personal_Expenses": 1254
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. CUHK tuition is official; living-cost items are separated into hostel, food, student fees, books, transport, and personal spending.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {
       "average_early_career_salary_usd": 34620.11
@@ -4374,21 +4811,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded CUHK undergraduate offer through the international / non-local admissions route."
           },
           {
             "id": "cuhk_intl-grant-admission-scholarship",
             "label": "International Admissions - Admission Scholarship (Grant)",
             "requirements": {
-              "SAT": 1500.0,
+              "SAT": 1500,
               "GPA": 85
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Admission Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same international admissions route, with automatic consideration for CUHK admission scholarships offered to outstanding new undergraduates."
           }
-        ]
+        ],
+        "description": "Non-local / international undergraduate route for applicants with qualifications outside the HKDSE-JUPAS system."
       },
       {
         "id": "cuhk_hkdse",
@@ -4405,7 +4845,8 @@
           "HKDSE minimum university requirements: Chinese Language level 3, English Language level 3, Mathematics level 2, Citizenship and Social Development attained, Elective 1 level 3, Elective 2 level 3 (or M1/M2/Other Language subject level 3)."
         ],
         "funding_type": "paid",
-        "track_badge": "Paid"
+        "track_badge": "Paid",
+        "description": "Local undergraduate route for applicants presenting HKDSE results through the JUPAS admissions scheme."
       }
     ],
     "verified_sources": [
@@ -4448,6 +4889,14 @@
       {
         "topic": "outcomes",
         "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.cuhk.edu.hk/english/campus/campus.html"
+      },
+      {
+        "topic": "finance",
+        "url": "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/"
       }
     ],
     "description": "CUHK's mission is to preserve, create, apply, and disseminate knowledge through teaching, research, and public service across a comprehensive range of disciplines, and its vision is to be a first-class comprehensive research university with bilingual and multicultural dimensions. The university has a collegiate system and faculties of arts, business, education, engineering, law, medicine, science, and social science.",
@@ -4467,16 +4916,16 @@
     ],
     "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
     "factors": {
-      "practice_vs_science": 0.891,
-      "social_vs_hardcore": 0.6465,
-      "budget_vs_prestige": 0.5398,
-      "city_vs_outside_city": 0.9746,
-      "city_vs_campus": 0.9746
+      "practice_vs_science": 0.54,
+      "social_vs_hardcore": 0.5,
+      "budget_vs_prestige": 0.39,
+      "city_vs_outside_city": 0.67,
+      "city_vs_campus": 0.67
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Chinese+University+of+Hong+Kong&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Sha+Tin&count=10&language=en&format=json&countryCode=HK",
@@ -4499,10 +4948,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 32.0,
+          "position": 32,
           "status": "official"
         },
-        "total_cost_year_usd": 33354.0,
+        "total_cost_year_usd": 33354,
         "derived_signals": {
           "research_signal_raw": 13.60132336115671,
           "hardcore_signal_0_1": 0.646471,
@@ -4511,6 +4960,19 @@
           "tuition_norm_0_1": 0.305685,
           "city_population_norm_0_1": 0.025407
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.54,
+        "social_vs_hardcore": 0.5,
+        "budget_vs_prestige": 0.39,
+        "city_vs_outside_city": 0.67,
+        "city_vs_campus": 0.67
       }
     },
     "major_focus": [
@@ -4533,21 +4995,31 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 33354.0,
+          "value": 33354,
           "unit": "usd_per_year",
           "source": "CUHK Undergraduate Admissions – Fees",
           "source_url": "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official CUHK undergraduate fee pages.",
+          "method": "USD-normalized figure retained, but provenance switched to official CUHK undergraduate fee pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "non_local_tuition_hkd_per_year": 214000,
-            "currency": "HKD"
+            "currency": "HKD",
+            "total": 33354,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Student_Services_and_Health_Fees",
+              "Books_and_Supplies",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 23088.0,
+          "value": 23088,
           "unit": "students",
           "source": "CUHK Facts and Figures",
           "source_url": "https://www.iso.cuhk.edu.hk/english/publications/facts-and-figures/",
@@ -4593,7 +5065,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 23088
+    "student_count": 23088,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 1373000,
+      "size_source_url": "https://www.cuhk.edu.hk/english/campus/campus.html",
+      "size_note": "Official CUHK campus area is about 137.3?138.4 hectares, depending on the reference page year."
+    }
   },
   {
     "id": "university-of-tokyo-jp-tokyo",
@@ -5095,13 +5573,22 @@
       "costs_breakdown_year_usd": {
         "Tuition": 5000,
         "Housing_Dorm": 6000,
-        "Food": 4000,
-        "Books_Transport_Misc": 1000
+        "Food": 3000,
+        "Health_Insurance": 600,
+        "Transportation": 700,
+        "Books_and_Supplies": 300,
+        "Personal_Expenses": 400
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.u-tokyo.ac.jp/en/prospective-students/tuition_fees.html",
+        "https://www.u-tokyo.ac.jp/adm/inbound/en/finance-living.html"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Uses UTokyo tuition together with official living-expense guidance for housing and daily costs in Tokyo.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -5113,7 +5600,7 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.0
+              "IELTS": 7
             }
           }
         ],
@@ -5139,21 +5626,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded PEAK offer in UTokyo's English-medium undergraduate admissions route."
           },
           {
             "id": "utokyo_peak-grant-utokyo-scholarship",
             "label": "PEAK (English Track) - UTokyo Scholarship (Grant)",
             "requirements": {
-              "SAT": 1500.0,
+              "SAT": 1500,
               "GPA": 85
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "UTokyo Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same PEAK admissions route, with scholarship support considered separately for selected international admits."
           }
-        ]
+        ],
+        "description": "PEAK is UTokyo's English-medium undergraduate route in which applicants apply directly to one of the international programs at Komaba."
       }
     ],
     "verified_sources": [
@@ -5192,6 +5682,18 @@
       {
         "topic": "tags",
         "url": "https://www.u-tokyo.ac.jp/en/about/about.html"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.u-tokyo.ac.jp/en/whyutokyo/komaba_history.html"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.u-tokyo.ac.jp/en/prospective-students/tuition_fees.html"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.u-tokyo.ac.jp/adm/inbound/en/finance-living.html"
       }
     ],
     "description": "UTokyo says it was established in 1877 as Japan's first national university and offers courses across essentially all academic disciplines while conducting research across the full spectrum of academic activity.",
@@ -5205,16 +5707,16 @@
     ],
     "description_source": "https://www.u-tokyo.ac.jp/en/about/about.html",
     "factors": {
-      "practice_vs_science": 0.948,
-      "social_vs_hardcore": 0.6328,
-      "budget_vs_prestige": 0.4418,
-      "city_vs_outside_city": 0.487,
-      "city_vs_campus": 0.487
+      "practice_vs_science": 0.91,
+      "social_vs_hardcore": 0.82,
+      "budget_vs_prestige": 0.33,
+      "city_vs_outside_city": 0.2,
+      "city_vs_campus": 0.2
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=University+of+Tokyo&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=10&language=en&format=json&countryCode=JP",
@@ -5237,10 +5739,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 36.0,
+          "position": 36,
           "status": "official"
         },
-        "total_cost_year_usd": 16000.0,
+        "total_cost_year_usd": 16000,
         "derived_signals": {
           "research_signal_raw": 14.471241899629744,
           "hardcore_signal_0_1": 0.632829,
@@ -5249,6 +5751,19 @@
           "tuition_norm_0_1": 0.104393,
           "city_population_norm_0_1": 0.512984
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.91,
+        "social_vs_hardcore": 0.82,
+        "budget_vs_prestige": 0.33,
+        "city_vs_outside_city": 0.2,
+        "city_vs_campus": 0.2
       }
     },
     "major_focus": [],
@@ -5268,22 +5783,32 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 16000.0,
+          "value": 16000,
           "unit": "usd_per_year",
           "source": "The University of Tokyo – Admission Fee and Tuition",
           "source_url": "https://www.u-tokyo.ac.jp/en/prospective-students/tuition_fees.html",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official undergraduate tuition pages.",
+          "method": "USD-normalized figure retained, but provenance switched to official undergraduate tuition pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "annual_tuition_jpy": 346800,
             "admission_fee_jpy": 282000,
-            "currency": "JPY"
+            "currency": "JPY",
+            "total": 16000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Health_Insurance",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 29230.0,
+          "value": 29230,
           "unit": "students",
           "source": "UTokyo by the Numbers",
           "source_url": "https://www.u-tokyo.ac.jp/en/about/numbers.html",
@@ -5316,7 +5841,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 29230
+    "student_count": 29230,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 1060000,
+      "size_source_url": "https://www.u-tokyo.ac.jp/en/whyutokyo/komaba_history.html",
+      "size_note": "Medium bucket is based on the core Hongo (about 56 ha) and Komaba (about 50 ha) campuses used by most undergraduate students."
+    }
   },
   {
     "id": "seoul-national-university-kr-seoul",
@@ -5488,13 +6019,22 @@
       "costs_breakdown_year_usd": {
         "Tuition": 5000,
         "Housing_Dorm": 5000,
-        "Food": 4000,
-        "Books_Transport_Misc": 1000
+        "Food": 2500,
+        "Health_Insurance": 600,
+        "Transportation": 600,
+        "Books_and_Supplies": 500,
+        "Personal_Expenses": 800
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://en.snu.ac.kr/academics/resources/registration",
+        "https://eng.snu.ac.kr/sites/default/files/welcome_survivor.pdf"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Tuition is official; housing and living items are separated using SNU student-guide cost guidance.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -5506,7 +6046,7 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.0,
+              "IELTS": 6,
               "TOEFL_iBT_0_120": 80
             }
           },
@@ -5540,21 +6080,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded SNU undergraduate offer through the international admissions route."
           },
           {
             "id": "snu_global-grant-glo-harmony",
             "label": "International Admissions - Glo-Harmony (Grant)",
             "requirements": {
               "SAT": 1300,
-              "GPA": 95.0
+              "GPA": 95
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Glo-Harmony",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same international admissions route, with Glo-Harmony scholarship support for selected international students."
           }
-        ]
+        ],
+        "description": "Seoul National University's undergraduate international admissions route, open for overseas applicants in dedicated spring and fall application cycles."
       }
     ],
     "verified_sources": [
@@ -5585,6 +6128,18 @@
       {
         "topic": "tags",
         "url": "https://en.snu.ac.kr/about/overview/vision"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://snupharm.snu.ac.kr/en/campus-map/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://en.snu.ac.kr/academics/resources/registration"
+      },
+      {
+        "topic": "finance",
+        "url": "https://eng.snu.ac.kr/sites/default/files/welcome_survivor.pdf"
       }
     ],
     "description": "Seoul National University presents itself as a leading national university with colleges spanning the humanities, social sciences, natural sciences, engineering, business, medicine, education and the arts, supported by a broad research portfolio.",
@@ -5602,16 +6157,16 @@
     ],
     "description_source": "https://en.snu.ac.kr/about/overview/vision",
     "factors": {
-      "practice_vs_science": 0.9021,
-      "social_vs_hardcore": 0.5926,
-      "budget_vs_prestige": 0.4165,
-      "city_vs_outside_city": 0.4545,
-      "city_vs_campus": 0.4545
+      "practice_vs_science": 0.8,
+      "social_vs_hardcore": 0.84,
+      "budget_vs_prestige": 0.24,
+      "city_vs_outside_city": 0.58,
+      "city_vs_campus": 0.58
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Seoul+National+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Seoul&count=10&language=en&format=json&countryCode=KR",
@@ -5634,10 +6189,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 38.0,
+          "position": 38,
           "status": "official"
         },
-        "total_cost_year_usd": 15000.0,
+        "total_cost_year_usd": 15000,
         "derived_signals": {
           "research_signal_raw": 13.771766951314909,
           "hardcore_signal_0_1": 0.592567,
@@ -5646,6 +6201,19 @@
           "tuition_norm_0_1": 0.092793,
           "city_population_norm_0_1": 0.545497
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.8,
+        "social_vs_hardcore": 0.84,
+        "budget_vs_prestige": 0.24,
+        "city_vs_outside_city": 0.58,
+        "city_vs_campus": 0.58
       }
     },
     "major_focus": [
@@ -5668,21 +6236,31 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 15000.0,
+          "value": 15000,
           "unit": "usd_per_year",
           "source": "Seoul National University – Registration",
           "source_url": "https://en.snu.ac.kr/academics/resources/registration",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official SNU undergraduate registration guidance.",
+          "method": "USD-normalized figure retained, but provenance switched to official SNU undergraduate registration guidance. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "average_undergraduate_tuition_krw_per_year": 6034163,
-            "currency": "KRW"
+            "currency": "KRW",
+            "total": 15000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Health_Insurance",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 29073.0,
+          "value": 29073,
           "unit": "students",
           "source": "Seoul National University official site",
           "source_url": "https://en.snu.ac.kr/",
@@ -5700,7 +6278,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 29073
+    "student_count": 29073,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 4300000,
+      "size_source_url": "https://snupharm.snu.ac.kr/en/campus-map/",
+      "size_note": "Official SNU Gwanak Campus area is about 4.3 km?."
+    }
   },
   {
     "id": "delft-university-of-technology-nl-delft",
@@ -5882,14 +6466,22 @@
       "total_cost_year_usd": 36000,
       "costs_breakdown_year_usd": {
         "Tuition": 19000,
-        "Housing_Dorm": 10000,
-        "Food": 5000,
-        "Books_Transport_Misc": 2000
+        "Housing_Rent": 10000,
+        "Food": 3000,
+        "Health_Insurance": 1600,
+        "Books_and_Supplies": 700,
+        "Transportation": 700,
+        "Personal_Expenses": 1000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.tudelft.nl/en/education/study-programme-orientation/practical-matters/tuition-fee-finances"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Breakdown separates the TU Delft annual estimate into rent, food, insurance, books, transport, and personal spending.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -5921,20 +6513,23 @@
               "GPA": 80
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded place in TU Delft's numerus clausus admissions route."
           },
           {
             "id": "tudelft_numerus-grant-justus-louise-van-effen",
             "label": "Numerus Clausus - Justus & Louise van Effen (Grant)",
             "requirements": {
-              "GPA": 95.0
+              "GPA": 95
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Justus & Louise van Effen",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same numerus clausus route, with extra scholarship support reflected here for exceptional students."
           }
-        ]
+        ],
+        "description": "Selective bachelor's route for TU Delft numerus clausus programs, where applicants complete the regular application and then a separate matching and ranking procedure."
       }
     ],
     "verified_sources": [
@@ -5969,6 +6564,14 @@
       {
         "topic": "acceptance_rate",
         "url": "https://www.tudelft.nl/en/onderwijs/opleidingen/bachelors/computer-science-and-engineering/bachelor-of-computer-science-and-engineering/from-application-to-enrollment/selection-procedure"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.tudelft.nl/en/education/campus"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.tudelft.nl/en/education/study-programme-orientation/practical-matters/tuition-fee-finances"
       }
     ],
     "description": "TU Delft says it is the oldest and largest technical university in the Netherlands, combining nearly 40 technological and scientific disciplines with research facilities, a major library and a strong focus on innovation and sustainability.",
@@ -5981,16 +6584,16 @@
     ],
     "description_source": "https://www.tudelft.nl/en/about-tu-delft",
     "factors": {
-      "practice_vs_science": 0.8703,
-      "social_vs_hardcore": 0.4898,
-      "budget_vs_prestige": 0.5499,
-      "city_vs_outside_city": 0.9957,
-      "city_vs_campus": 0.9957
+      "practice_vs_science": 0.62,
+      "social_vs_hardcore": 0.63,
+      "budget_vs_prestige": 0.45,
+      "city_vs_outside_city": 0.64,
+      "city_vs_campus": 0.64
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Delft+University+of+Technology&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Delft&count=10&language=en&format=json&countryCode=NL",
@@ -6013,10 +6616,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 47.0,
+          "position": 47,
           "status": "official"
         },
-        "total_cost_year_usd": 36000.0,
+        "total_cost_year_usd": 36000,
         "derived_signals": {
           "research_signal_raw": 13.285557076942368,
           "hardcore_signal_0_1": 0.489842,
@@ -6025,6 +6628,19 @@
           "tuition_norm_0_1": 0.336376,
           "city_population_norm_0_1": 0.004288
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.62,
+        "social_vs_hardcore": 0.63,
+        "budget_vs_prestige": 0.45,
+        "city_vs_outside_city": 0.64,
+        "city_vs_campus": 0.64
       }
     },
     "major_focus": [
@@ -6047,21 +6663,31 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 36000.0,
+          "value": 36000,
           "unit": "usd_per_year",
           "source": "TU Delft tuition and fees",
           "source_url": "https://www.tudelft.nl/en/education/study-programme-orientation/practical-matters/tuition-fee-finances",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official TU Delft tuition pages. Institutional rates differ by EEA/non-EEA category and academic year.",
+          "method": "USD-normalized figure retained, but provenance switched to official TU Delft tuition pages. Institutional rates differ by EEA/non-EEA category and academic year. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "institutional_rate_bsc_eur": "17310_or_19906",
-            "currency": "EUR"
+            "currency": "EUR",
+            "total": 36000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Rent",
+              "Food",
+              "Health_Insurance",
+              "Books_and_Supplies",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 26000.0,
+          "value": 26000,
           "unit": "students",
           "source": "About TU Delft",
           "source_url": "https://www.tudelft.nl/en/about-tu-delft",
@@ -6082,7 +6708,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 26000
+    "student_count": 26000,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 1610000,
+      "size_source_url": "https://www.tudelft.nl/en/education/campus",
+      "size_note": "Official TU Delft campus references describe the Mekelpark campus as spanning roughly 161 hectares."
+    }
   },
   {
     "id": "kaist-kr-daejeon",
@@ -6245,13 +6877,22 @@
       "costs_breakdown_year_usd": {
         "Tuition": 7000,
         "Housing_Dorm": 2500,
-        "Food": 3500,
-        "Books_Transport_Misc": 1000
+        "Food": 2500,
+        "Health_Insurance": 500,
+        "Books_and_Supplies": 500,
+        "Transportation": 300,
+        "Personal_Expenses": 700
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.kaist.ac.kr/en/html/footer/0809.html?GotoPage=1&mode=V&no=340afb6eaccd0628090d843b806e1cc6",
+        "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guide%20for%20international%20applicants%202024.pdf"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Base yearly budget is split into tuition, dormitory, food, insurance, books, transport, and personal items; KAIST's official scholarship policy may reduce this sharply for admitted international students.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -6285,21 +6926,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded KAIST undergraduate offer for international applicants."
           },
           {
             "id": "kaist_intl-grant-kaist-scholarship",
             "label": "International Admission - KAIST Scholarship (Grant)",
             "requirements": {
               "SAT": 1350,
-              "GPA": 85.0
+              "GPA": 85
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "KAIST Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same international undergraduate route, with KAIST Scholarship consideration for admitted students who request scholarship support."
           }
-        ]
+        ],
+        "description": "KAIST's undergraduate route for international applicants, with holistic review of academic records, application materials, and proof of language proficiency."
       }
     ],
     "verified_sources": [
@@ -6330,6 +6974,18 @@
       {
         "topic": "tags",
         "url": "https://www.kaist.ac.kr/en/html/kaist/01.html"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.kaist.ac.kr/en/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.kaist.ac.kr/en/html/footer/0809.html?GotoPage=1&mode=V&no=340afb6eaccd0628090d843b806e1cc6"
+      },
+      {
+        "topic": "finance",
+        "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guide%20for%20international%20applicants%202024.pdf"
       }
     ],
     "description": "KAIST describes itself as Korea's first and top science and technology university, educating, researching and leading innovation to serve the happiness and prosperity of humanity.",
@@ -6341,16 +6997,16 @@
     ],
     "description_source": "https://www.kaist.ac.kr/en/html/kaist/01.html",
     "factors": {
-      "practice_vs_science": 0.8535,
-      "social_vs_hardcore": 0.6591,
-      "budget_vs_prestige": 0.3901,
-      "city_vs_outside_city": 0.9232,
-      "city_vs_campus": 0.9232
+      "practice_vs_science": 0.83,
+      "social_vs_hardcore": 0.82,
+      "budget_vs_prestige": 0.3,
+      "city_vs_outside_city": 0.56,
+      "city_vs_campus": 0.56
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=KAIST&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Daejeon&count=10&language=en&format=json&countryCode=KR",
@@ -6376,7 +7032,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 14000.0,
+        "total_cost_year_usd": 14000,
         "derived_signals": {
           "research_signal_raw": 13.0296081711236,
           "hardcore_signal_0_1": 0.659083,
@@ -6385,6 +7041,19 @@
           "tuition_norm_0_1": 0.081194,
           "city_population_norm_0_1": 0.076832
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.83,
+        "social_vs_hardcore": 0.82,
+        "budget_vs_prestige": 0.3,
+        "city_vs_outside_city": 0.56,
+        "city_vs_campus": 0.56
       }
     },
     "major_focus": [
@@ -6407,22 +7076,32 @@
           "method": "No official QS World University Rankings 2026 position is published because KAIST was excluded from the 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 14000.0,
+          "value": 14000,
           "unit": "usd_per_year",
           "source": "KAIST tuition payment notice / scholarship guidance",
           "source_url": "https://www.kaist.ac.kr/en/html/footer/0809.html?GotoPage=1&mode=V&no=340afb6eaccd0628090d843b806e1cc6",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official KAIST tuition payment guidance. Undergraduate net tuition can vary with scholarship status.",
+          "method": "USD-normalized figure retained, but provenance switched to official KAIST tuition payment guidance. Undergraduate net tuition can vary with scholarship status. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "government_sponsored_or_general_fee_krw_per_semester": 9559000,
             "scholar_tuition_example_krw_per_semester": 750000,
-            "currency": "KRW"
+            "currency": "KRW",
+            "total": 14000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Health_Insurance",
+              "Books_and_Supplies",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 10793.0,
+          "value": 10793,
           "unit": "students",
           "source": "KAIST Facts and Figures",
           "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
@@ -6440,7 +7119,12 @@
       "verified_at": "2026-04-01",
       "note": "No official QS World University Rankings 2026 position is published because KAIST was excluded from the 2026 table."
     },
-    "student_count": 10793
+    "student_count": 10793,
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://www.kaist.ac.kr/en/",
+      "size_note": "Medium bucket reflects KAIST's large residential science-and-technology campus layout in Daejeon with multiple academic, residential, and research zones."
+    }
   },
   {
     "id": "tsinghua-university-cn-beijing",
@@ -6452,7 +7136,7 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 40.0,
+      "lat": 40,
       "lon": 116.3333
     },
     "website": "https://www.tsinghua.edu.cn/en/",
@@ -6615,13 +7299,22 @@
       "costs_breakdown_year_usd": {
         "Tuition": 4500,
         "Housing_Dorm": 2000,
-        "Food": 2000,
-        "Books_Transport_Misc": 1000
+        "Food": 1700,
+        "Medical_Insurance": 120,
+        "Books_and_Supplies": 380,
+        "Transportation": 300,
+        "Personal_Expenses": 500
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://international.join-tsinghua.edu.cn/Admission1/Fees.htm",
+        "https://is.tsinghua.edu.cn/1004CampusLifeHandbookforInternationalScholars.pdf"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Separates Tsinghua's published tuition, accommodation, and insurance items from day-to-day student costs in Beijing.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -6660,21 +7353,24 @@
               "GPA": 88
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded Tsinghua undergraduate offer for international students."
           },
           {
             "id": "tsinghua_intl-grant-chinese-govt-scholarship",
             "label": "International Track - Chinese Govt Scholarship (Grant)",
             "requirements": {
               "SAT": 1300,
-              "GPA": 95.0
+              "GPA": 95
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Chinese Govt Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same international undergraduate route, with applicants able to pursue Chinese Government Scholarship or other freshman scholarship support."
           }
-        ]
+        ],
+        "description": "Tsinghua's undergraduate route for international students applying online to listed English- or Chinese-medium divisions and majors."
       }
     ],
     "verified_sources": [
@@ -6705,6 +7401,18 @@
       {
         "topic": "tags",
         "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.tsinghua.edu.cn/en/About/Facts_and_Figures.htm"
+      },
+      {
+        "topic": "finance",
+        "url": "https://international.join-tsinghua.edu.cn/Admission1/Fees.htm"
+      },
+      {
+        "topic": "finance",
+        "url": "https://is.tsinghua.edu.cn/1004CampusLifeHandbookforInternationalScholars.pdf"
       }
     ],
     "description": "Tsinghua says it advances the well-being of the nation and the world through teaching, research and innovation, with academic divisions spanning engineering, computer science, science, law, design, medicine, economics and more.",
@@ -6722,16 +7430,16 @@
     ],
     "description_source": "https://www.tsinghua.edu.cn/en/About.htm",
     "factors": {
-      "practice_vs_science": 0.9279,
-      "social_vs_hardcore": 0.8104,
-      "budget_vs_prestige": 0.3886,
-      "city_vs_outside_city": 0.0,
-      "city_vs_campus": 0.0
+      "practice_vs_science": 0.84,
+      "social_vs_hardcore": 0.88,
+      "budget_vs_prestige": 0.32,
+      "city_vs_outside_city": 0.18,
+      "city_vs_campus": 0.18
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Tsinghua+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Beijing&count=10&language=en&format=json&countryCode=CN",
@@ -6754,18 +7462,31 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 17.0,
+          "position": 17,
           "status": "official"
         },
-        "total_cost_year_usd": 9500.0,
+        "total_cost_year_usd": 9500,
         "derived_signals": {
           "research_signal_raw": 14.164812238770612,
           "hardcore_signal_0_1": 0.810403,
           "research_norm_0_1": 0.927879,
           "official_rank_norm_0_1": 0.285714,
           "tuition_norm_0_1": 0.028998,
-          "city_population_norm_0_1": 1.0
+          "city_population_norm_0_1": 1
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.84,
+        "social_vs_hardcore": 0.88,
+        "budget_vs_prestige": 0.32,
+        "city_vs_outside_city": 0.18,
+        "city_vs_campus": 0.18
       }
     },
     "major_focus": [
@@ -6788,22 +7509,32 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 9500.0,
+          "value": 9500,
           "unit": "usd_per_year",
           "source": "Tsinghua Undergraduate Admissions – Fees",
           "source_url": "https://international.join-tsinghua.edu.cn/Admission1/Fees.htm",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official Tsinghua undergraduate fees pages.",
+          "method": "USD-normalized figure retained, but provenance switched to official Tsinghua undergraduate fees pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "computer_science_rmb_per_year": 30000,
             "application_fee_rmb": 800,
-            "currency": "RMB"
+            "currency": "RMB",
+            "total": 9500,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Medical_Insurance",
+              "Books_and_Supplies",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 62496.0,
+          "value": 62496,
           "unit": "students",
           "source": "Tsinghua University Brochure 2025",
           "source_url": "https://www.tsinghua.edu.cn/zjqhwj/Tsinghua_University_Brochure_2025.pdf",
@@ -6826,7 +7557,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 62496
+    "student_count": 62496,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 4834300,
+      "size_source_url": "https://www.tsinghua.edu.cn/en/About/Facts_and_Figures.htm",
+      "size_note": "Official Tsinghua facts list campus area at 483.43 hectares."
+    }
   },
   {
     "id": "nazarbayev-university-kaz-astana",
@@ -6888,7 +7625,7 @@
         "computer science",
         "engineering"
       ],
-      "acceptance_rate_percent": 21.0,
+      "acceptance_rate_percent": 21,
       "acceptance_rate_percent_meta": {
         "source": "Admissions Statistics on Nazarbayev University",
         "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
@@ -6903,7 +7640,7 @@
         "university_wide": {
           "status": "official_rate",
           "kind": "rate",
-          "acceptance_rate_percent": 21.0,
+          "acceptance_rate_percent": 21,
           "counts": {
             "applicants": 6911,
             "admitted": 1480
@@ -7049,13 +7786,21 @@
       "costs_breakdown_year_usd": {
         "Tuition": 15000,
         "Housing_Dorm": 1800,
-        "Food": 2200,
-        "Books_Transport_Misc": 500
+        "Food": 1400,
+        "Health_Insurance": 300,
+        "Books_and_Supplies": 400,
+        "Transportation": 200,
+        "Personal_Expenses": 400
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://nu.edu.kz/admissions/fees-and-funding/"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Nazarbayev University tuition is official; the rest of the annual estimate is separated into common residential and daily-living categories.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -7083,7 +7828,7 @@
           "source_scope": "track_stats_avg_inferred",
           "source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
           "normalization_method": "exam_anchor_percentile",
-          "acceptance_rate_percent": 21.0,
+          "acceptance_rate_percent": 21,
           "source_note": "Estimated admitted-score band inferred from the official 2025 enrolled-applicant average SAT of 1475 published by Nazarbayev University. This is lower confidence than a true percentile distribution because the public source does not publish p25 / median / p75 bands."
         },
         "scholarships": [],
@@ -7124,21 +7869,24 @@
               "GPA": 80
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Fee-paying undergraduate offer through NU's direct SAT/ACT admissions route."
           },
           {
             "id": "nu_direct-grant-abay-kunanbayev",
             "label": "Direct Admission (SAT) - Abay Kunanbayev (Grant)",
             "requirements": {
-              "SAT": 1450.0,
+              "SAT": 1450,
               "GPA": 80
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Abay Kunanbayev",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same direct admissions route, with merit-based Abay Kunanbayev scholarship consideration for top international applicants recommended for admission."
           }
-        ]
+        ],
+        "description": "Nazarbayev University's direct undergraduate route for applicants applying with SAT/ACT and English-language results in the regular admissions cycle."
       },
       {
         "description": "NUET applicants compete in NU's combined NUFYP and undergraduate regular-admissions flow. Eligible applicants may receive an undergraduate grant offer, remain on the waitlist, or receive a fee-paying undergraduate offer; NUET applicants recommended for fee-paying undergraduate admission may request NUFYP under the Grant if seats are available.",
@@ -7150,7 +7898,7 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.0,
+              "IELTS": 6,
               "TOEFL_iBT_0_120": 60
             }
           }
@@ -7175,7 +7923,8 @@
               "NUET": 120
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Fee-paying undergraduate outcome within NU's NUET-based regular admissions flow."
           },
           {
             "id": "nu_nuet_undergraduate-grant-state-grant",
@@ -7186,7 +7935,8 @@
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "State Grant",
-            "funding_source": "state"
+            "funding_source": "state",
+            "description": "Grant-funded undergraduate outcome within NU's NUET-based regular admissions flow."
           }
         ]
       }
@@ -7247,6 +7997,10 @@
       {
         "topic": "finance",
         "url": "https://nu.edu.kz/admissions/fees-and-funding/"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/"
       }
     ],
     "description": "Official materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
@@ -7263,16 +8017,16 @@
     ],
     "description_source": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf",
     "factors": {
-      "practice_vs_science": 0.6913,
-      "social_vs_hardcore": 0.5861,
-      "budget_vs_prestige": 0.3635,
-      "city_vs_outside_city": 0.9825,
-      "city_vs_campus": 0.9825
+      "practice_vs_science": 0.44,
+      "social_vs_hardcore": 0.48,
+      "budget_vs_prestige": 0.14,
+      "city_vs_outside_city": 0.71,
+      "city_vs_campus": 0.71
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Nazarbayev+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Astana&count=10&language=en&format=json&countryCode=KZ",
@@ -7298,7 +8052,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 19500.0,
+        "total_cost_year_usd": 19500,
         "derived_signals": {
           "research_signal_raw": 10.553216422193561,
           "hardcore_signal_0_1": 0.586084,
@@ -7307,6 +8061,19 @@
           "tuition_norm_0_1": 0.14499,
           "city_population_norm_0_1": 0.017512
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.44,
+        "social_vs_hardcore": 0.48,
+        "budget_vs_prestige": 0.14,
+        "city_vs_outside_city": 0.71,
+        "city_vs_campus": 0.71
       }
     },
     "major_focus": [
@@ -7329,21 +8096,31 @@
           "method": "No official QS World University Rankings 2026 position is published for Nazarbayev University."
         },
         "tuition_total_cost_year_usd": {
-          "value": 19500.0,
+          "value": 19500,
           "unit": "usd_per_year",
           "source": "Nazarbayev University – Fees and financial support",
           "source_url": "https://nu.edu.kz/admissions/fees-and-funding/",
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct official undergraduate tuition published by Nazarbayev University; non-tuition living-cost buckets remain normalized display estimates.",
+          "method": "Direct official undergraduate tuition published by Nazarbayev University; non-tuition living-cost buckets remain normalized display estimates. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "undergraduate_tuition_usd": 15000,
-            "academic_year": "2026/2027"
+            "academic_year": "2026/2027",
+            "total": 19500,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Health_Insurance",
+              "Books_and_Supplies",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 7089.0,
+          "value": 7089,
           "unit": "students",
           "source": "Nazarbayev University About",
           "source_url": "https://nu.edu.kz/about/",
@@ -7353,7 +8130,7 @@
           "method": "Direct student headcount published on the official Nazarbayev University About page."
         },
         "acceptance_rate_percent": {
-          "value": 21.0,
+          "value": 21,
           "unit": "percent",
           "source": "Admissions Statistics on Nazarbayev University",
           "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
@@ -7371,7 +8148,13 @@
       "verified_at": "2026-04-01",
       "note": "No official QS World University Rankings 2026 position is published for Nazarbayev University."
     },
-    "student_count": 7089
+    "student_count": 7089,
+    "student_life": {
+      "size": "medium",
+      "campus_area_m2": 1200000,
+      "size_source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+      "size_note": "Official Nazarbayev University materials describe a landscaped campus of around 120 hectares."
+    }
   },
   {
     "id": "kyoto-university-jp-kyoto",
@@ -7538,13 +8321,21 @@
       "costs_breakdown_year_usd": {
         "Tuition": 4800,
         "Housing_Rent": 5500,
-        "Food": 4200,
-        "Books_Transport_Misc": 2000
+        "Food": 3500,
+        "Health_Insurance": 700,
+        "Transportation": 700,
+        "Books_and_Supplies": 500,
+        "Personal_Expenses": 800
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Breakdown keeps the Kyoto annual estimate but separates rent, insurance, transport, books, and personal spending more realistically.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -7581,21 +8372,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded place in Kyoto iUP's international undergraduate pathway."
           },
           {
             "id": "kyoto_iup-grant-iup-scholarship",
             "label": "Kyoto iUP - iUP Scholarship (Grant)",
             "requirements": {
               "SAT": 1350,
-              "GPA": 90.0
+              "GPA": 90
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "iUP Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same Kyoto iUP route, with tuition waivers and scholarship support available through Kyoto iUP funding partners."
           }
-        ]
+        ],
+        "description": "Kyoto iUP is Kyoto University's international undergraduate route, combining a preparatory phase with progression into an undergraduate faculty in Japan."
       }
     ],
     "verified_sources": [
@@ -7626,6 +8420,14 @@
       {
         "topic": "tags",
         "url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://www.kyoto-u.ac.jp/en/archive/prev/profile/president/speech/e_070530_1"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees"
       }
     ],
     "description": "Kyoto University says it sustains a historical commitment to academic freedom and pursues world-class knowledge through research across the humanities, sciences and technology within a broad university structure.",
@@ -7639,16 +8441,16 @@
     ],
     "description_source": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
     "factors": {
-      "practice_vs_science": 0.9238,
-      "social_vs_hardcore": 0.4157,
-      "budget_vs_prestige": 0.4356,
-      "city_vs_outside_city": 0.9235,
-      "city_vs_campus": 0.9235
+      "practice_vs_science": 0.94,
+      "social_vs_hardcore": 0.78,
+      "budget_vs_prestige": 0.31,
+      "city_vs_outside_city": 0.4,
+      "city_vs_campus": 0.4
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Kyoto+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kyoto&count=10&language=en&format=json&countryCode=JP",
@@ -7671,18 +8473,31 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 57.0,
+          "position": 57,
           "status": "official"
         },
-        "total_cost_year_usd": 16500.0,
+        "total_cost_year_usd": 16500,
         "derived_signals": {
           "research_signal_raw": 14.102073964697654,
           "hardcore_signal_0_1": 0.415696,
           "research_norm_0_1": 0.92377,
-          "official_rank_norm_0_1": 1.0,
+          "official_rank_norm_0_1": 1,
           "tuition_norm_0_1": 0.110192,
           "city_population_norm_0_1": 0.076525
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.94,
+        "social_vs_hardcore": 0.78,
+        "budget_vs_prestige": 0.31,
+        "city_vs_outside_city": 0.4,
+        "city_vs_campus": 0.4
       }
     },
     "major_focus": [],
@@ -7702,23 +8517,33 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 16500.0,
+          "value": 16500,
           "unit": "usd_per_year",
           "source": "Kyoto University – Tuition and fees",
           "source_url": "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official Kyoto undergraduate tuition pages.",
+          "method": "USD-normalized figure retained, but provenance switched to official Kyoto undergraduate tuition pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "annual_tuition_jpy": 535800,
             "admission_fee_jpy": 282000,
             "exam_fee_jpy": 17000,
-            "currency": "JPY"
+            "currency": "JPY",
+            "total": 16500,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Rent",
+              "Food",
+              "Health_Insurance",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 22300.0,
+          "value": 22300,
           "unit": "students",
           "source": "Kyoto University Profile",
           "source_url": "https://www.kyoto-u.ac.jp/en/about/profile",
@@ -7736,7 +8561,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 22300
+    "student_count": 22300,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 5330000,
+      "size_source_url": "https://www.kyoto-u.ac.jp/en/archive/prev/profile/president/speech/e_070530_1",
+      "size_note": "Official Kyoto University speech materials state the campuses have a total area of 5,330,000 square meters."
+    }
   },
   {
     "id": "university-of-melbourne-au-melbourne",
@@ -7910,14 +8741,23 @@
       "total_cost_year_usd": 52000,
       "costs_breakdown_year_usd": {
         "Tuition": 32000,
-        "Housing_Dorm": 13000,
-        "Food": 5000,
-        "Books_Transport_Misc": 2000
+        "Student_Services_and_Amenities_Fee": 250,
+        "Housing_Rent": 13000,
+        "Food": 3800,
+        "Health_Insurance": 800,
+        "Transportation": 900,
+        "Books_and_Supplies": 600,
+        "Personal_Expenses": 650
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/fees-and-payments/indicative-course-fees"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Splits the Melbourne annual estimate into indicative course fees, student amenities fee, rent, food, insurance, transport, books, and personal costs.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -7954,21 +8794,24 @@
               "GPA": 85
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Standard self-funded University of Melbourne undergraduate offer for international applicants."
           },
           {
             "id": "melb_intl-grant-melbourne-intl-scholarship",
             "label": "International UG - Melbourne Intl Scholarship (Grant)",
             "requirements": {
               "SAT": 1350,
-              "GPA": 96.0
+              "GPA": 96
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Melbourne Intl Scholarship",
-            "funding_source": "merit"
+            "funding_source": "merit",
+            "description": "Same international undergraduate route, with automatic consideration for Melbourne International Undergraduate Scholarship support where eligible."
           }
-        ]
+        ],
+        "description": "University of Melbourne's international undergraduate route, submitted online with course-specific entry documents and scholarship screening where applicable."
       }
     ],
     "verified_sources": [
@@ -8003,6 +8846,14 @@
       {
         "topic": "tags",
         "url": "https://about.unimelb.edu.au/strategy/our-structure/faculties-and-graduate-schools"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://about.unimelb.edu.au/__data/assets/pdf_file/0024/153483/Guiding-Our-Estate-Final.pdf"
+      },
+      {
+        "topic": "finance",
+        "url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/fees-and-payments/indicative-course-fees"
       }
     ],
     "description": "The University of Melbourne positions itself as a research-intensive university whose teaching is closely connected to deep research, with broad disciplinary strength across the humanities, sciences, business, law, medicine and education.",
@@ -8019,16 +8870,16 @@
     ],
     "description_source": "https://about.unimelb.edu.au/leadership/vice-chancellor/speeches/vice-chancellors-fifth-annual-address",
     "factors": {
-      "practice_vs_science": 0.9245,
-      "social_vs_hardcore": 0.7892,
-      "budget_vs_prestige": 0.683,
-      "city_vs_outside_city": 0.7412,
-      "city_vs_campus": 0.7412
+      "practice_vs_science": 0.66,
+      "social_vs_hardcore": 0.49,
+      "budget_vs_prestige": 0.74,
+      "city_vs_outside_city": 0.14,
+      "city_vs_campus": 0.14
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=University+of+Melbourne&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Melbourne&count=10&language=en&format=json&countryCode=AU",
@@ -8051,10 +8902,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 19.0,
+          "position": 19,
           "status": "official"
         },
-        "total_cost_year_usd": 52000.0,
+        "total_cost_year_usd": 52000,
         "derived_signals": {
           "research_signal_raw": 14.112831619827478,
           "hardcore_signal_0_1": 0.789228,
@@ -8063,6 +8914,19 @@
           "tuition_norm_0_1": 0.521963,
           "city_population_norm_0_1": 0.258825
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.66,
+        "social_vs_hardcore": 0.49,
+        "budget_vs_prestige": 0.74,
+        "city_vs_outside_city": 0.14,
+        "city_vs_campus": 0.14
       }
     },
     "major_focus": [
@@ -8085,21 +8949,32 @@
           "method": "Direct value from published QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 52000.0,
+          "value": 52000,
           "unit": "usd_per_year",
           "source": "University of Melbourne indicative course fees",
           "source_url": "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/fees-and-payments/indicative-course-fees",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official University of Melbourne undergraduate fee pages.",
+          "method": "USD-normalized figure retained, but provenance switched to official University of Melbourne undergraduate fee pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "bachelor_of_science_aud_per_year_range": "49188-57928",
-            "currency": "AUD"
+            "currency": "AUD",
+            "total": 52000,
+            "breakdown_categories": [
+              "Tuition",
+              "Student_Services_and_Amenities_Fee",
+              "Housing_Rent",
+              "Food",
+              "Health_Insurance",
+              "Transportation",
+              "Books_and_Supplies",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 77162.0,
+          "value": 77162,
           "unit": "students",
           "source": "University of Melbourne Facts and Figures",
           "source_url": "https://about.unimelb.edu.au/strategy/facts-and-figures",
@@ -8117,7 +8992,13 @@
       "verified_at": "2026-02-24",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 77162
+    "student_count": 77162,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 25070600,
+      "size_source_url": "https://about.unimelb.edu.au/__data/assets/pdf_file/0024/153483/Guiding-Our-Estate-Final.pdf",
+      "size_note": "Official estate plan snapshot lists 2,507.06 hectares across the university estate."
+    }
   },
   {
     "id": "suleyman-demirel-university-kaz-kaskelen",
@@ -8283,14 +9164,22 @@
       "total_cost_year_usd": 8500,
       "costs_breakdown_year_usd": {
         "Tuition": 5500,
-        "Housing_Dorm": 1200,
-        "Food": 1300,
-        "Books_Transport_Misc": 500
+        "Housing_Dorm": 1700,
+        "Food": 700,
+        "Books_and_Supplies": 200,
+        "Transportation": 200,
+        "Personal_Expenses": 200
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://sdu.edu.kz/en/admission-3-2/",
+        "https://sdu.edu.kz/en/pay-for-accomodation/"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Uses the official SDU tuition source and the official student-house payment page, then separates the remaining annual budget into daily-living categories.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -8328,19 +9217,22 @@
               "GPA": 60
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Fee-paying SDU undergraduate place for applicants admitted with UNT results."
           },
           {
             "id": "sdu_unt_grant",
             "label": "State Grant",
             "requirements": {
-              "UNT": 105.0,
+              "UNT": 105,
               "GPA": 80
             },
             "funding_type": "grant",
-            "track_badge": "Grant"
+            "track_badge": "Grant",
+            "description": "Same SDU undergraduate route, with competition for Kazakhstan state grant funding based on UNT results."
           }
-        ]
+        ],
+        "description": "SDU's undergraduate route for applicants using Unified National Testing (UNT) results and completing the university's admission steps."
       }
     ],
     "verified_sources": [
@@ -8379,6 +9271,14 @@
       {
         "topic": "finance",
         "url": "https://sdu.edu.kz/en/admission-3-2/"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://sdu.edu.kz/en/accomodation/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://sdu.edu.kz/en/pay-for-accomodation/"
       }
     ],
     "description": "Suleyman Demirel University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
@@ -8396,16 +9296,16 @@
     ],
     "description_source": "https://sdu.edu.kz/en/about-us-3/",
     "factors": {
-      "practice_vs_science": 0.6244,
-      "social_vs_hardcore": 0.556,
-      "budget_vs_prestige": 0.2602,
-      "city_vs_outside_city": 0.9976,
-      "city_vs_campus": 0.9976
+      "practice_vs_science": 0.34,
+      "social_vs_hardcore": 0.37,
+      "budget_vs_prestige": 0.09,
+      "city_vs_outside_city": 0.84,
+      "city_vs_campus": 0.84
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Suleyman+Demirel+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kaskelen&count=10&language=en&format=json&countryCode=KZ",
@@ -8425,13 +9325,13 @@
           "country_code": "KZ",
           "admin1": "Almaty Oblysy",
           "population": null,
-          "population_wikidata_fallback": 58418.0
+          "population_wikidata_fallback": 58418
         },
         "rank": {
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 8500.0,
+        "total_cost_year_usd": 8500,
         "derived_signals": {
           "research_signal_raw": 9.531731873825079,
           "hardcore_signal_0_1": 0.555973,
@@ -8440,6 +9340,19 @@
           "tuition_norm_0_1": 0.017399,
           "city_population_norm_0_1": 0.002354
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.34,
+        "social_vs_hardcore": 0.37,
+        "budget_vs_prestige": 0.09,
+        "city_vs_outside_city": 0.84,
+        "city_vs_campus": 0.84
       }
     },
     "major_focus": [
@@ -8462,22 +9375,31 @@
           "method": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan."
         },
         "tuition_total_cost_year_usd": {
-          "value": 8500.0,
+          "value": 8500,
           "unit": "usd_per_year",
           "source": "SDU University admission page",
           "source_url": "https://sdu.edu.kz/en/admission-3-2/",
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to the official SDU admissions tuition page.",
+          "method": "USD-normalized figure retained, but provenance switched to the official SDU admissions tuition page. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "academic_year": "2026-2027",
             "currency": "KZT",
-            "note": "Annual tuition table is published on the official admission page attachment."
+            "note": "Annual tuition table is published on the official admission page attachment.",
+            "total": 8500,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Books_and_Supplies",
+              "Transportation",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 4300.0,
+          "value": 4300,
           "unit": "students",
           "source": "SDU Students",
           "source_url": "https://sdu.edu.kz/en/students/",
@@ -8495,7 +9417,12 @@
       "verified_at": "2026-04-01",
       "note": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan."
     },
-    "student_count": 4300
+    "student_count": 4300,
+    "student_life": {
+      "size": "small",
+      "size_source_url": "https://sdu.edu.kz/en/accomodation/",
+      "size_note": "Small bucket reflects SDU's compact smart-campus layout centered on the main academic building, student house, and adjacent sports grounds."
+    }
   },
   {
     "id": "astana-it-university-kaz-astana",
@@ -8663,14 +9590,23 @@
       "total_cost_year_usd": 7000,
       "costs_breakdown_year_usd": {
         "Tuition": 5200,
-        "Housing_Dorm": 1000,
-        "Food": 500,
-        "Books_Transport_Misc": 300
+        "Housing_Dorm": 900,
+        "Food": 400,
+        "Health_Insurance": 150,
+        "Books_and_Supplies": 150,
+        "Internet_and_Phone": 100,
+        "Personal_Expenses": 100
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
-      }
+      },
+      "costs_breakdown_source_urls": [
+        "https://astanait.edu.kz/en/bachelor",
+        "https://astanait.edu.kz/en/students-dormitory/"
+      ],
+      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Splits AITU's annual estimate into tuition, student housing, food, insurance, books, connectivity, and personal spending.",
+      "costs_breakdown_status": "mixed_official_guidance"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -8684,7 +9620,7 @@
             "accept_native": true,
             "min_cefr": 3,
             "requirements": {
-              "IELTS": 5.0,
+              "IELTS": 5,
               "TOEFL_iBT_0_120": 46
             },
             "notes": "AITU AET policy maps IELTS 5.0 and TOEFL iBT 46‑59 to CEFR B1."
@@ -8709,19 +9645,22 @@
               "GPA": 65
             },
             "funding_type": "paid",
-            "track_badge": "Paid"
+            "track_badge": "Paid",
+            "description": "Fee-paying AITU undergraduate place for applicants admitted through the UNT route."
           },
           {
             "id": "aitu_unt_grant",
             "label": "State/Rector Grant",
             "requirements": {
-              "UNT": 125.0,
+              "UNT": 125,
               "GPA": 70
             },
             "funding_type": "grant",
-            "track_badge": "Grant"
+            "track_badge": "Grant",
+            "description": "Same AITU undergraduate route, with competition for state or rector grant funding for stronger applicants."
           }
-        ]
+        ],
+        "description": "AITU's undergraduate route for applicants using UNT results, document submission, and university interview or admissions-platform steps."
       }
     ],
     "verified_sources": [
@@ -8752,6 +9691,18 @@
       {
         "topic": "finance",
         "url": "https://astanait.edu.kz/en/bachelor/"
+      },
+      {
+        "topic": "campus_size",
+        "url": "https://astanait.edu.kz/en/students-dormitory/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://astanait.edu.kz/en/bachelor"
+      },
+      {
+        "topic": "finance",
+        "url": "https://astanait.edu.kz/en/students-dormitory/"
       }
     ],
     "description": "Astana IT University says its mission is to promote the digital transformation of Kazakhstan and its vision is to lead innovative continuous IT education and science with high social responsibility.",
@@ -8764,16 +9715,16 @@
     ],
     "description_source": "https://astanait.edu.kz/en/about-aitu/",
     "factors": {
-      "practice_vs_science": 0.0,
-      "social_vs_hardcore": 0.275,
-      "budget_vs_prestige": 0.0,
-      "city_vs_outside_city": 0.9825,
-      "city_vs_campus": 0.9825
+      "practice_vs_science": 0.29,
+      "social_vs_hardcore": 0.33,
+      "budget_vs_prestige": 0.06,
+      "city_vs_outside_city": 0.22,
+      "city_vs_campus": 0.22
     },
     "factors_meta": {
-      "version": "internet_v1",
-      "computed_at": "2026-03-11T15:43:22Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "version": "manual_slider_review_v2",
+      "computed_at": "2026-04-03T00:00:00Z",
+      "method": "Manual 0..1 calibration for UniFit sliders using official university positioning, campus context, tuition context, and student-review signals from public communities. These are human-facing preference proxies, not official university metrics.",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Astana+IT+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Astana&count=10&language=en&format=json&countryCode=KZ",
@@ -8799,15 +9750,28 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 7000.0,
+        "total_cost_year_usd": 7000,
         "derived_signals": {
-          "research_signal_raw": 0.0,
+          "research_signal_raw": 0,
           "hardcore_signal_0_1": 0.275,
-          "research_norm_0_1": 0.0,
+          "research_norm_0_1": 0,
           "official_rank_norm_0_1": null,
-          "tuition_norm_0_1": 0.0,
+          "tuition_norm_0_1": 0,
           "city_population_norm_0_1": 0.017512
         }
+      },
+      "axes": {
+        "practice_vs_science": "0.0 = career-and-practice oriented, 1.0 = science-and-research oriented",
+        "social_vs_hardcore": "0.0 = social-and-events oriented, 1.0 = hardcore-study / academically intense",
+        "budget_vs_prestige": "0.0 = budget-and-grants friendly, 1.0 = prestige-and-comfort leaning",
+        "city_vs_campus": "0.0 = embedded in city life, 1.0 = self-contained / outside-main-city campus experience"
+      },
+      "curated_slider_factors": {
+        "practice_vs_science": 0.29,
+        "social_vs_hardcore": 0.33,
+        "budget_vs_prestige": 0.06,
+        "city_vs_outside_city": 0.22,
+        "city_vs_campus": 0.22
       }
     },
     "major_focus": [
@@ -8830,22 +9794,32 @@
           "method": "No official QS World University Rankings 2026 position is published for Astana IT University."
         },
         "tuition_total_cost_year_usd": {
-          "value": 7000.0,
+          "value": 7000,
           "unit": "usd_per_year",
           "source": "Astana IT University bachelor page",
           "source_url": "https://astanait.edu.kz/en/bachelor",
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct official bachelor price list published by Astana IT University; non-tuition living-cost buckets remain normalized display estimates.",
+          "method": "Direct official bachelor price list published by Astana IT University; non-tuition living-cost buckets remain normalized display estimates. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
           "basis": {
             "bachelor_tuition_kzt": 2500000,
             "academic_year": "2025-2026",
-            "currency": "KZT"
+            "currency": "KZT",
+            "total": 7000,
+            "breakdown_categories": [
+              "Tuition",
+              "Housing_Dorm",
+              "Food",
+              "Health_Insurance",
+              "Books_and_Supplies",
+              "Internet_and_Phone",
+              "Personal_Expenses"
+            ]
           }
         },
         "student_count": {
-          "value": 6725.0,
+          "value": 6725,
           "unit": "students",
           "source": "AITU official profile and strategy re-verification",
           "source_url": "https://astanait.edu.kz/en/about-aitu/",
@@ -8871,6 +9845,11 @@
       "verified_at": "2026-04-01",
       "note": "No official QS World University Rankings 2026 position is published for Astana IT University."
     },
-    "student_count": 6725
+    "student_count": 6725,
+    "student_life": {
+      "size": "small",
+      "size_source_url": "https://astanait.edu.kz/en/students-dormitory/",
+      "size_note": "Small bucket reflects AITU's urban academic footprint and nearby student-house complex in Astana."
+    }
   }
 ]

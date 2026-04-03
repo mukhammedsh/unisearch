@@ -151,12 +151,22 @@ profile.exam_integer_required: {exam} score must be an integer (e.g. 1400)
 profile.exam_invalid_score: Invalid score format
 profile.exam_removed: Exam removed
 profile.exam_score_label: Score: {score}
+profile.exam_status_added: Added
+profile.exam_band_label: Level
+profile.exam_band_placeholder: Select level
+profile.exam_band_required: Select a level
+profile.exam_grade_optional: Optional 4th subject
+profile.exam_grade_slot: Grade {index}
+profile.exam_grade_placeholder: Select grade
+profile.exam_grade_required: Choose {count} grades for {exam}
+profile.exam_alevel_hint: Enter {min}-{max} grades. UniSearch uses your best {best} grades.
 profile.exam_score_min: Min for {exam} is {min}
 profile.exam_score_max: Max for {exam} is {max}
 profile.exam_score_step: {exam} score must use step {step}
 profile.exam_select_required: Please select an exam
 profile.exam_validate_failed: Failed to validate exam score (code: {code})
 profile.exam_updated: Updated {exam} to {score}
+profile.exam_updated_simple: Updated {exam}
 profile.gpa_cleared: GPA cleared
 profile.gpa_must_number: GPA must be a number
 profile.gpa_range: GPA must be between {min} and {max}%
@@ -230,6 +240,7 @@ ranking.source_status.mixed: Mixed source
 ranking.source_status.official: Official ranking
 ranking.source_status.excluded: Excluded from published ranking
 ranking.source_status.not_listed: Not listed in published ranking
+ranking.source_status.not_published: Not Published
 ranking.source_status.curated: Manually reviewed
 ranking.source_status.derived: Model estimate
 ranking.source_status.derived_prestige_order: Model estimate
@@ -415,6 +426,7 @@ placeholder.field.financial_aid: Financial aid
 placeholder.field.roi_score: ROI score
 placeholder.field.estimated_salary: Estimated salary
 placeholder.field.language_requirements: Language requirements
+language_requirements_short: Language requirements
 placeholder.field.admission_probability: Admission probability
 placeholder.field.best_track: Best track
 placeholder.field.verification_date: Verification date
@@ -425,8 +437,8 @@ guide.academic.aptotal: AP Total reflects combined performance across multiple A
 guide.academic.default: This is an academic metric used by one or more admission tracks in the UniSearch dataset.
 guide.academic.gpa: GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency.
 guide.academic.ibdiploma: IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.
-guide.academic.alevelcert: A-Level certificate confirms completion of GCE Advanced Level subjects, widely used for UK undergraduate entry.
-guide.academic.hkdselevel: HKDSE level reflects performance in the Hong Kong Diploma of Secondary Education and is used in local university admissions.
+guide.academic.alevelcert: A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score.
+guide.academic.hkdselevel: HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching.
 guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification.
 guide.academic.germanabiturcert: German Abitur certificate is the standard qualification granting access to German universities.
 guide.academic.ossdcert: OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions.
@@ -527,6 +539,20 @@ cost_item_housing_rent: Housing (Rent)
 cost_item_food: Food
 cost_item_books_transport_misc: Books, Transport and Misc
 cost_item_insurance_transport_misc: Insurance, Transport and Misc
+cost_item_student_life_fee: Student Life Fee
+cost_item_student_fees: Student Fees
+cost_item_mandatory_fees: Mandatory Fees
+cost_item_compulsory_fees: Compulsory Fees
+cost_item_student_services_and_health_fees: Student Services and Health Fees
+cost_item_student_services_and_amenities_fee: Student Services and Amenities Fee
+cost_item_semester_fees: Semester Fees
+cost_item_meal_plan: Meal Plan
+cost_item_books_and_supplies: Books and Supplies
+cost_item_transportation: Transportation
+cost_item_health_insurance: Health Insurance
+cost_item_medical_insurance: Medical Insurance
+cost_item_personal_expenses: Personal Expenses
+cost_item_internet_and_phone: Internet and Phone
 tour.back: Back
 tour.finish: Finish
 tour.next: Next

@@ -303,7 +303,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("low", str(result.get("confidence") or ""))
         self.assertEqual("", str(result.get("reason") or ""))
 
-    def test_estimate_uni_chance_returns_no_data_without_any_evidence(self):
+    def test_estimate_uni_chance_fallback_returns_zero_without_any_required_evidence(self):
         university = {
             "id": "missing-evidence-u",
             "name": "Missing Evidence University",
@@ -326,9 +326,106 @@ class AiScoringTests(unittest.TestCase):
 
         result = estimate_uni_chance(university, profile)
 
+        self.assertEqual(0, int(result.get("overallChance", -1)))
+        self.assertTrue(bool(result.get("chanceAvailable")))
+        self.assertEqual("estimated_fallback", str(result.get("chanceModel") or ""))
+        self.assertEqual("low", str(result.get("confidence") or ""))
+        self.assertEqual("", str(result.get("reason") or ""))
+
+    def test_estimate_uni_chance_returns_no_data_without_any_evidence_or_requirements(self):
+        university = {
+            "id": "no-constraints-u",
+            "name": "No Constraints University",
+            "rank": 90,
+            "finance": {
+                "total_cost_year_usd": 18000,
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 42},
+            "admission_tracks": [
+                {
+                    "id": "main",
+                    "label": "Main Track",
+                    "requirements": {},
+                    "stats_avg": {},
+                }
+            ],
+        }
+        profile = {"locale": "rus", "budget": 25000}
+
+        result = estimate_uni_chance(university, profile)
+
         self.assertIsNone(result.get("overallChance"))
         self.assertFalse(bool(result.get("chanceAvailable")))
         self.assertEqual("missing_evidence", str(result.get("reason") or ""))
+
+    def test_estimated_fallback_returns_zero_when_required_exam_is_below_minimum(self):
+        university = {
+            "id": "below-min-fallback-u",
+            "name": "Below Min Fallback University",
+            "rank": 90,
+            "finance": {
+                "total_cost_year_usd": 18000,
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 42},
+            "admission_tracks": [
+                {
+                    "id": "main",
+                    "label": "Main Track",
+                    "requirements": {"GPA": 80, "SAT": 1300},
+                    "stats_avg": {"GPA": 88, "SAT": 1420},
+                }
+            ],
+        }
+        profile = {
+            "locale": "rus",
+            "budget": 25000,
+            "gpa": 92,
+            "exams": [{"id": "SAT", "score": 1200}],
+        }
+
+        result = estimate_uni_chance(university, profile)
+
+        self.assertEqual(0, int(result.get("overallChance", -1)))
+        self.assertTrue(bool(result.get("chanceAvailable")))
+        self.assertEqual("estimated_fallback", str(result.get("chanceModel") or ""))
+
+    def test_estimated_fallback_returns_zero_when_required_language_evidence_is_missing(self):
+        university = {
+            "id": "missing-lang-fallback-u",
+            "name": "Missing Lang Fallback University",
+            "rank": 90,
+            "finance": {
+                "total_cost_year_usd": 18000,
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 42},
+            "admission_tracks": [
+                {
+                    "id": "main",
+                    "label": "Main Track",
+                    "requirements": {"GPA": 80, "SAT": 1300},
+                    "stats_avg": {"GPA": 88, "SAT": 1420},
+                    "language_requirements_mode": "all",
+                    "language_requirements": [
+                        {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 7.0}}
+                    ],
+                }
+            ],
+        }
+        profile = {
+            "locale": "rus",
+            "budget": 25000,
+            "gpa": 92,
+            "exams": [{"id": "SAT", "score": 1380}],
+        }
+
+        result = estimate_uni_chance(university, profile)
+
+        self.assertEqual(0, int(result.get("overallChance", -1)))
+        self.assertTrue(bool(result.get("chanceAvailable")))
+        self.assertEqual("estimated_fallback", str(result.get("chanceModel") or ""))
 
     def test_estimate_uni_chance_uses_real_dataset_score_profiles_for_nu(self):
         university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
@@ -381,6 +478,49 @@ class AiScoringTests(unittest.TestCase):
         self.assertIsNotNone(result.get("overallChance"))
         self.assertTrue(bool(result.get("chanceAvailable")))
         self.assertEqual("cuhk_hkdse", str(result.get("bestTrackKey") or ""))
+        self.assertEqual("official_score_profile", str(result.get("chanceModel") or ""))
+
+    def test_estimate_uni_chance_accepts_raw_a_level_grades(self):
+        university = {
+            "id": "u-alevel-profile",
+            "name": "A-Level Profile University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 12000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 40},
+            "admission_tracks": [
+                {
+                    "id": "alevel_track",
+                    "label": "A-Level Track",
+                    "requirements": {"A_LEVEL_CERT": 1},
+                    "stats_avg": {},
+                    "score_profile": _demo_score_profile("A_LEVEL_CERT", p25=40, median=60, p75=80, acceptance_rate_percent=40),
+                    "language_requirements": [
+                        {
+                            "code": "en",
+                            "accept_native": True,
+                            "requirements": {"IELTS": 6.5},
+                        }
+                    ],
+                    "language_requirements_mode": "any",
+                }
+            ],
+        }
+        profile = {
+            "budget": 25000,
+            "exams": [
+                {
+                    "id": "A_LEVEL_CERT",
+                    "raw_value": "A*A*A",
+                    "details": {"grades": ["A*", "A*", "A"]},
+                }
+            ],
+            "languages": [{"code": "en", "kind": "native"}],
+        }
+
+        result = estimate_uni_chance(university, profile)
+
+        self.assertIsNotNone(result.get("overallChance"))
+        self.assertTrue(bool(result.get("chanceAvailable")))
         self.assertEqual("official_score_profile", str(result.get("chanceModel") or ""))
 
     def test_score_profile_chance_has_small_acceptance_rate_influence(self):
@@ -460,6 +600,45 @@ class AiScoringTests(unittest.TestCase):
 
         self.assertLess(low_chance, high_chance)
         self.assertLessEqual(high_chance - low_chance, 10)
+
+    def test_estimated_fallback_stays_close_to_score_profile_baseline(self):
+        base_track = {
+            "id": "calibrated-track",
+            "label": "Calibrated Track",
+            "requirements": {"GPA": 80},
+            "stats_avg": {"GPA": 90},
+        }
+        university_fallback = {
+            "id": "u-fallback-calibrated",
+            "name": "Fallback Calibrated University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 40},
+            "admission_tracks": [{**base_track}],
+        }
+        university_profile = {
+            "id": "u-profile-calibrated",
+            "name": "Profile Calibrated University",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
+            "academics": {"acceptance_rate_percent": 40},
+            "admission_tracks": [
+                {
+                    **base_track,
+                    "score_profile": _demo_score_profile("GPA", p25=55, median=70, p75=85, acceptance_rate_percent=40),
+                }
+            ],
+        }
+        profile = {"gpa": 85, "budget": 20000}
+
+        fallback_result = estimate_uni_chance(university_fallback, profile)
+        profile_result = estimate_uni_chance(university_profile, profile)
+
+        fallback_chance = int(fallback_result.get("overallChance", 0))
+        profile_chance = int(profile_result.get("overallChance", 0))
+
+        self.assertLessEqual(fallback_chance, profile_chance)
+        self.assertLessEqual(profile_chance - fallback_chance, 12)
 
     def test_language_exam_requirements_are_not_inferred_from_cefr(self):
         university = {

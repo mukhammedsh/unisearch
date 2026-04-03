@@ -804,6 +804,42 @@ html, body {
   gap: 10px;
 }
 
+.profile-exam-form--with-special{
+  grid-template-columns: 1.05fr minmax(240px, 1fr) auto;
+  align-items: start;
+}
+
+.profile-exam-form--no-score{
+  grid-template-columns: 1fr auto;
+}
+
+.profile-exam-special{
+  min-width: 0;
+}
+
+.profile-exam-special-grid{
+  display: grid;
+  gap: 8px;
+}
+
+.profile-exam-special-grid--grades{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-exam-special-field{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.profile-exam-special-hint{
+  grid-column: 1 / -1;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
 .profile-add{
   border: none;
   background: var(--accent);
@@ -1523,6 +1559,7 @@ html, body {
   .profile-body{ padding: 12px 16px 16px; }
 
   .profile-exam-form{ grid-template-columns: 1fr; }
+  .profile-exam-special-grid--grades{ grid-template-columns: 1fr; }
   .profile-budget{
     grid-template-columns: minmax(0, 1fr);
     column-gap: 8px;
