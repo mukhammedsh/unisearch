@@ -2,6 +2,20 @@
 
 All notable project changes should be recorded here.
 
+## 3.2.1 (2026-04-03) - Tag Label And Rule Cleanup
+
+Status:
+- synchronized runtime/package version to `3.2.1` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, `backend/.env.example`, and README examples;
+- clarified UniFit university-card tag wording:
+  - renamed `Top Match` to `Good Match` in English UI copy;
+  - renamed `Лучшее совпадение` to `Хорошее совпадение` in Russian UI copy;
+  - adjusted supporting explanation text so the second-tier preference tag reads clearly as weaker than `Your Vibe` / `Ваш формат`.
+- documented university-card tag behavior in a dedicated UniFit tag-rules reference:
+  - defined tag groups, display priority, and mutual-exclusion rules for preference, finance, requirements, and budget/aid states;
+  - explicitly recorded that `your_vibe` and `top_match` are a single preference-match group and must never render together on one card.
+- refreshed guide and regression coverage for the updated tag wording and preference-match behavior.
+- bumped the service-worker cache version so clients refresh the updated tag copy promptly after release.
+
 ## 3.2.0 (2026-04-03) - Smarter Admissions
 
 Status:

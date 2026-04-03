@@ -79,7 +79,7 @@ guide.tags.ai_note: Tags that work only when UniFit selected as sort strategy.
 guide.tags.ai_title: AI Tags
 guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.
 guide.tags.ai.your_vibe: Your Vibe: shown for very strong preference match (focus, atmosphere, location).
-guide.tags.ai.top_match: Top Match: shown for strong preference match.
+guide.tags.ai.top_match: Good Match: shown for a good preference match that does not reach Your Vibe level.
 guide.tags.ai.likely_grant: Likely Grant: shown when grant-oriented chance is strong.
 guide.tags.ai.paid_admission: Paid Admission: shown when general admission chance is strong in paid route.
 guide.tags.ai.requirements_met: Requirements Met: shown when minimum requirements are satisfied.
@@ -257,12 +257,12 @@ universities.all_cities: All Cities
 universities.any_state: Any State
 universities.badge.acceptance: Acceptance Rate: {value}%
 universities.badge.conditional_exam_needed: 📝 Conditional / Exam Needed
-universities.badge.top_match: ⭐ Top Match
+universities.badge.top_match: ⭐ Good Match
 universities.badge.your_vibe: 🔥 Your Vibe
 universities.badge.likely_grant: 💲 Likely Grant
 universities.badge.paid_admission: 💼 Paid Admission
 universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
-universities.why.top_match: This university is a strong preference match for your current slider setup.
+universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
 universities.why.likely_grant: In grant-priority mode, this university has a strong grant admission chance.
 universities.why.paid_admission: In willing-to-pay mode, this university has a strong general admission chance.

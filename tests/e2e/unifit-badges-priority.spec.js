@@ -92,8 +92,8 @@ test("UniFit card badges still work when backend hints are missing (frontend fal
   await page.goto("/universities.html");
   const firstCard = page.locator(".uni-card").first();
   await expect(firstCard).toBeVisible();
-  await expect(firstCard.locator(".uni-pill")).toContainText(["Top Match", "Paid Admission"]);
-  await expect(firstCard.locator(".uni-why")).toContainText("strong");
+  await expect(firstCard.locator(".uni-pill")).toContainText(["Good Match", "Paid Admission"]);
+  await expect(firstCard.locator(".uni-why")).toContainText("good preference match");
 });
 
 test("UniFit card hides Requirements Met when conditional exam warning is present", async ({ page }) => {
@@ -270,7 +270,7 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
         name: "Count 1",
         matchData: {
           ...base.matchData,
-          preferenceMismatch: 0.18, // Top Match
+          preferenceMismatch: 0.18, // Good Match
         },
       },
       {
@@ -279,7 +279,7 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
         name: "Count 2",
         matchData: {
           ...base.matchData,
-          preferenceMismatch: 0.18, // Top Match
+          preferenceMismatch: 0.18, // Good Match
           generalChance: 70, // Paid Admission
         },
       },

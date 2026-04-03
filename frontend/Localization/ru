@@ -80,7 +80,7 @@ guide.tags.ai_note: Эти теги работают только при выб�
 guide.tags.ai_title: ИИ-теги
 guide.tags.ai.conditional: Условно / Нужен экзамен: показывается, когда для выбранного варианта не хватает обязательного экзаменационного подтверждения.
 guide.tags.ai.your_vibe: Ваш формат: показывается при очень сильном совпадении предпочтений по фокусу, атмосфере и расположению.
-guide.tags.ai.top_match: Лучшее совпадение: показывается при сильном совпадении предпочтений.
+guide.tags.ai.top_match: Хорошее совпадение: показывается при хорошем совпадении предпочтений, если уровень не дотягивает до тега Ваш формат.
 guide.tags.ai.likely_grant: Высокий шанс на грант: показывается, когда прогноз особенно сильный именно по грантовому варианту.
 guide.tags.ai.paid_admission: Платный вариант: показывается при высоком общем шансе поступления на платный вариант.
 guide.tags.ai.requirements_met: Требования выполнены: показывается, когда минимальные требования выполнены.
@@ -258,12 +258,12 @@ universities.all_cities: Все города
 universities.any_state: Любой штат
 universities.badge.acceptance: Процент зачисления: {value}%
 universities.badge.conditional_exam_needed: 📝 Условно / Нужен экзамен
-universities.badge.top_match: ⭐ Лучшее совпадение
+universities.badge.top_match: ⭐ Хорошее совпадение
 universities.badge.your_vibe: 🔥 Ваш формат
 universities.badge.likely_grant: 💲 Высокий шанс на грант
 universities.badge.paid_admission: 💼 Платный вариант
 universities.why.conditional_exam_needed: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
-universities.why.top_match: Этот вуз особенно хорошо совпадает с вашими текущими настройками и предпочтениями.
+universities.why.top_match: Этот вуз хорошо совпадает с вашими текущими настройками и предпочтениями.
 universities.why.your_vibe: Этот вуз особенно хорошо совпадает с вашими предпочтениями по атмосфере, фокусу и расположению.
 universities.why.likely_grant: Если для вас важен грант, у этого вуза сильный прогноз именно по грантовому варианту.
 universities.why.paid_admission: Если вы готовы рассматривать платное обучение, у этого вуза высокий общий шанс поступления.

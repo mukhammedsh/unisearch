@@ -2377,7 +2377,7 @@ export function initUniversitiesPage() {
             whyText = t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional.");
         }
 
-        // Priority 2: highlight vibe fit from Focus/Atmosphere/Location distance
+        // Priority 2: preference-match group. Only one vibe tag may be shown.
         if (hasVeryHighVibeMatch) {
             badges.push(
                 `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.your_vibe", "🔥 Your Vibe"))}</span>`
@@ -2385,9 +2385,9 @@ export function initUniversitiesPage() {
             if (!whyText) whyText = t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders.");
         } else if (hasHighVibeMatch) {
             badges.push(
-                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.top_match", "⭐ Top Match"))}</span>`
+                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.top_match", "⭐ Good Match"))}</span>`
             );
-            if (!whyText) whyText = t("universities.why.top_match", "This university is a strong preference match for your current slider setup.");
+            if (!whyText) whyText = t("universities.why.top_match", "This university is a good preference match for your current slider setup.");
         }
 
         // Priority 3: financial route tag from finance slider mode + chance
