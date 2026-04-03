@@ -258,7 +258,7 @@
 #tab-finance .finance-box {
   position: relative;
   border: 1px solid rgba(168, 85, 247, 0.16);
-  border-radius: 24px;
+  border-radius: 0 0 24px 24px;
   background:
     radial-gradient(circle at top right, rgba(168, 85, 247, 0.16), transparent 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 245, 255, 0.96));
@@ -484,7 +484,7 @@
   right: 0;
   top: 0;
   height: 3px;
-  border-radius: 0;
+  border-radius: 20px;
   background: linear-gradient(90deg, #7d3cff, #5d17ea, #00a3ff);
   opacity: 0.95;
 }
@@ -695,6 +695,11 @@
   gap: 8px;
 }
 
+.admission-option-card .admission-option-meta,
+.finance-option-card .admission-option-meta {
+  margin-top: 0;
+}
+
 .admission-option-title,
 .finance-option-label {
   font-size: 14px;
@@ -704,8 +709,8 @@
 
 .track-cost-preview,
 .finance-option-total {
-  margin-top: 12px;
-  padding: 10px 12px;
+  margin-top: 0;
+  padding: 9px 12px;
   border-radius: 12px;
   background: linear-gradient(135deg, rgba(87, 21, 219, 0.08), rgba(168, 85, 247, 0.12));
   border: 1px solid rgba(168, 85, 247, 0.18);
@@ -716,7 +721,7 @@
 .track-cost-preview strong,
 .finance-option-total strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.35px;
@@ -762,9 +767,9 @@
 }
 
 .cost-breakdown-list {
-  margin-top: 12px;
+  margin-top: 0;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .finance-list-full {
@@ -1284,6 +1289,7 @@
   gap: 14px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   align-items: stretch;
+  grid-auto-rows: 1fr;
 }
 
 .admission-option-card,
@@ -1296,6 +1302,9 @@
   background: linear-gradient(180deg, #ffffff, #fcfbff);
   box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .admission-option-card::before,
@@ -1312,6 +1321,12 @@
   transform: translateY(-3px);
   border-color: rgba(168, 85, 247, 0.32);
   box-shadow: 0 18px 36px rgba(88, 28, 135, 0.12);
+}
+
+.admission-option-card--grant:hover,
+.finance-option-card--grant:hover {
+  border-color: #34d399;
+  box-shadow: 0 18px 36px rgba(16, 185, 129, 0.14);
 }
 
 .admission-option-card--grant,
@@ -1410,6 +1425,11 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(87, 21, 219, 0.08) !important;
   border-color: var(--accent) !important;
+}
+
+.track-card--grant:hover {
+  border-color: #34d399 !important;
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.14) !important;
 }
 
 .track-card--grant {
@@ -2133,12 +2153,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr; /* 2 колонки на ПК */
     gap: 8px;
-    margin-top: 12px;
+    margin-top: 0;
+    align-items: stretch;
+    grid-auto-rows: auto;
 }
 
 /* Прогресс-бар */
 .cost-progress-bar {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   background: #e2e8f0;
   height: 8px;
   border-radius: 999px;
@@ -2179,14 +2201,16 @@
 }
 
 .cost-legend-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
   border: 1px solid #e5e7eb;
   background: #ffffff;
-  border-radius: 10px;
-  padding: 7px 9px;
+  border-radius: 12px;
+  padding: 9px 11px;
+  min-height: 58px;
+  height: auto;
 }
 
 .cost-legend-label-wrap {
@@ -2208,6 +2232,7 @@
   color: #334155;
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
@@ -2217,6 +2242,8 @@
   font-weight: 800;
   white-space: nowrap;
   flex-shrink: 0;
+  text-align: right;
+  align-self: center;
 }
 
 .cost-legend-single {
@@ -2224,7 +2251,7 @@
   font-size: 13px;
   border: 1px dashed rgba(168, 85, 247, 0.24);
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   background: rgba(255, 255, 255, 0.68);
 }
 
@@ -2301,6 +2328,7 @@
     scroll-snap-align: start;
     padding: 10px 14px;
     font-size: 13px;
+    border-radius: 20px;
   }
   .d-tab-btn span:last-child {
     display: -webkit-box;
@@ -2550,6 +2578,7 @@
     max-width: 86vw;
     padding: 9px 12px;
     gap: 6px;
+    border-radius: 18px;
   }
 }
 

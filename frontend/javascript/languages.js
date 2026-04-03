@@ -358,6 +358,21 @@ export function initLanguagesPanel() {
       addLanguage();
     });
 
+    const submitLanguageOnEnter = (ev) => {
+      if (ev.key !== "Enter") return;
+      if (ev.defaultPrevented) return;
+      if (ev.shiftKey || ev.ctrlKey || ev.altKey || ev.metaKey) return;
+      if (ev.target instanceof Element && ev.target.closest(".custom-select-wrapper.open")) return;
+      ev.preventDefault();
+      addLanguage();
+    };
+
+    [langCode, langKind, langCefr, langExam, langExamScore].forEach((control) => {
+      control.addEventListener("keydown", submitLanguageOnEnter);
+    });
+
+    languagesBlock.addEventListener("keydown", submitLanguageOnEnter);
+
     async function addLanguage() {
       const prof = loadEditableProfile();
       prof.languages = prof.languages.map(normalizeLangEntry).filter(Boolean);

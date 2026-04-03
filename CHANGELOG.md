@@ -2,15 +2,35 @@
 
 All notable project changes should be recorded here.
 
-## Unreleased - local flag assets, Russian translation fixes, and small UI polish
+## 3.1.0 (2026-04-03) - UI Fixes
 
 Status:
+- synchronized runtime/package version to `3.1.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples.
 - switched frontend flag rendering from external `flagcdn.com` assets to bundled local SVG files under `frontend/images/flags`, so country flags now load from the app itself instead of a third-party CDN;
 - updated frontend flag asset resolution to work correctly both from the site root and `/frontend/...` paths, and bumped the service-worker cache version so clients refresh the new local flag assets immediately;
 - expanded Russian localization coverage for admission details:
   - added missing strings for `Academic requirements`, `Academic average`, and `Language average` in both frontend and backend-driven translation dictionaries;
   - added explicit Russian mappings for grant-related admissions labels such as `Abay Kunanbayev`, `State Grant`, `merit`, and `state`.
+- normalized several English university names to full official forms in both catalog and translation payloads:
+  - `ETH Zurich` -> `Swiss Federal Institute of Technology Zurich`;
+  - `EPFL` -> `Swiss Federal Institute of Technology Lausanne`;
+  - `KAIST` -> `Korea Advanced Institute of Science and Technology`;
+  - backend contract coverage now asserts the full-form names in both translations and detail responses.
+- improved local development launch scripts:
+  - `npm run dev:backend` now detects an already healthy local backend through `GET /health` and prints a friendlier ready state;
+  - frontend/backend dev helpers were tightened around local runtime startup flow and ready-state messaging.
+- added localized error-page support:
+  - new 404 page strings were added for both English and Russian;
+  - related frontend static-serving support files remain part of this release set.
 - polished related UI presentation:
+  - reworked the `About Us` page from multiple separate groups into one shared container with internal section dividers;
+  - stabilized language-switcher labels so `English (US)` and `Русский` no longer rename themselves when the UI language changes;
+  - fixed budget number inputs in filters so text stays centered and spinner controls clip correctly inside rounded fields;
+  - hid university-card acceptance-rate pills when no verified data exists;
+  - restored intended rounding where the previous UI fixes over-flattened controls, including detail-page tabs and budget fields;
+  - kept grant funding cards green on hover in the light theme instead of falling back to the default blue highlight;
+  - tightened funding-option spacing in admission/finance cards, aligned track cost breakdown cards, and reduced oversized cost legend rows;
+  - moved track language requirements into the `Minimum to apply` and `Average admitted` sections so each box now contains academic and language subsections instead of a separate language block below;
   - increased inline flag display height for custom selects and country labels to better fit the new local SVG assets;
   - slightly increased spacing above funding-option sections on the university detail page for cleaner track-card layout.
 

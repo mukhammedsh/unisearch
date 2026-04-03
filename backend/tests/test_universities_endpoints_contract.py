@@ -146,6 +146,30 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIn("program_names", payload)
         self.assertIn("track_labels", payload)
 
+    def test_english_university_names_use_full_forms(self):
+        response = self.client.get("/universities/translations?lang=eng")
+        self.assertEqual(response.status_code, 200)
+        payload = (response.json().get("data") or {}).get("university_names") or {}
+        self.assertEqual(
+            "Swiss Federal Institute of Technology Zurich",
+            payload.get("eth-zurich-ch-zurich"),
+        )
+        self.assertEqual(
+            "Swiss Federal Institute of Technology Lausanne",
+            payload.get("epfl-ch-lausanne"),
+        )
+        self.assertEqual(
+            "Korea Advanced Institute of Science and Technology",
+            payload.get("kaist-kr-daejeon"),
+        )
+
+        detail = self.client.get("/universities/kaist-kr-daejeon?lang=eng")
+        self.assertEqual(detail.status_code, 200)
+        self.assertEqual(
+            "Korea Advanced Institute of Science and Technology",
+            detail.json().get("name"),
+        )
+
     def test_ai_sort_uni_chance_and_roi_contracts(self):
         university_id = self._first_university_id()
         profile = {

@@ -572,3 +572,17 @@ admission.chance_method.profile_detail: Based on admitted-score profiles plus yo
 admission.chance_method.estimated_short: Estimated
 admission.chance_method.estimated_detail: Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles.
 admission.chance_accuracy.low: Low confidence
+title.404: Error 404 | UniSearch
+error404.title: Error 404
+error404.lead: The page may have moved, the link may be outdated, or the address may contain a typo.
+error404.primary: Go home
+error404.secondary: Open universities
+error404.panel.kicker: Quick help
+error404.panel.title: What to do next
+error404.tip.1: Check the address bar for a typo and reload the page.
+error404.tip.2: Return to the main pages and continue browsing from there.
+error404.tip.3: If you opened an old bookmark, update it to the current page.
+error404.quick_title: Popular sections
+error404.link.rankings: See top universities
+error404.link.guide: Learn how UniSearch works
+error404.link.about: Project and contacts

@@ -1,7 +1,7 @@
 # UniSearch / UniFit / UniChance
 
 UniSearch is a full-stack web app for university discovery and decision support.
-Current version: `3.0.0`
+Current version: `3.1.0`
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -141,6 +141,7 @@ Notes:
 - `.venv/` is local per developer and ignored by Git.
 - If the project path was moved or renamed and CLI launchers break, recreate the env from scratch.
 - `npm run dev:backend` auto-detects `backend/.venv` when present and respects `BACKEND_HOST` / `BACKEND_PORT` from `.env`.
+- `npm run dev:backend` probes `GET /health` to detect an already running local backend and prints a ready message once the new instance responds.
 - Direct launch still works if you prefer it: `python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`
 
 ### 2) Frontend
@@ -189,7 +190,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=3.0.0
+APP_VERSION=3.1.0
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_HOST=127.0.0.1
@@ -463,6 +464,7 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Latest release:
+- `3.1.0` on `2026-04-03`
 - `3.0.0` on `2026-04-02`
 - focus: compact funding-option tracks, alias-aware search, and the redesigned admissions/finance detail experience
 - status: current release

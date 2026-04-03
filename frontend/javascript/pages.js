@@ -33,7 +33,6 @@ import {
   mapMarkerLogoHtml,
   readAdmissionTrackFilterFromProfile,
   renderExamGroup,
-  renderLanguageRequirements,
   renderTrackChanceChip,
   renderTrackFundingBadge,
   renderUniChanceSummary,
@@ -218,6 +217,77 @@ function translateCostBreakdownLabel(rawKey) {
     .trim();
   if (!key) return fallback;
   return translateWord(`cost_item_${key}`, fallback);
+}
+
+function trackCefrLabel(id) {
+  const n = Number(id);
+  if (n === 1) return "A1";
+  if (n === 2) return "A2";
+  if (n === 3) return "B1";
+  if (n === 4) return "B2";
+  if (n === 5) return "C1";
+  if (n === 6) return "C2";
+  return String(id ?? "");
+}
+
+function renderTrackLanguageExamGroup(track, variant = "requirements") {
+  const list = Array.isArray(track?.language_requirements) ? track.language_requirements : [];
+  if (!list.length) return "";
+
+  const isAverage = variant === "average";
+  const title = isAverage
+    ? translateWord("language_average", "Language average")
+    : translateWord("language_requirements_short", "Language requirements");
+  const mode = String(track?.language_requirements_mode || "all").toLowerCase() === "any" ? "any" : "all";
+  const modeText = mode === "any"
+    ? translateWord("lang_mode_any", "Any one language proof is enough")
+    : translateWord("lang_mode_all", "All listed language proofs are required");
+
+  const rows = [];
+  if (!isAverage) {
+    rows.push(`<div><strong>${escapeHtml(modeText)}</strong></div>`);
+  }
+
+  list.forEach((lr) => {
+    const code = String(lr?.code || "").trim().toUpperCase() || "LANG";
+    const meta = [];
+    if (!isAverage && lr?.accept_native) {
+      meta.push(translateWord("native_accepted", "Native accepted"));
+    }
+    if (!isAverage && lr?.min_cefr != null) {
+      meta.push(`${translateWord("min_cefr", "Min CEFR")}: ${trackCefrLabel(lr.min_cefr)}`);
+    }
+    if (isAverage && lr?.recommended_cefr != null) {
+      meta.push(`${translateWord("recommended", "Recommended")}: ${trackCefrLabel(lr.recommended_cefr)}`);
+    }
+
+    const examPairs = Object.entries(isAverage ? (lr?.stats_avg || {}) : (lr?.requirements || {}));
+    if (meta.length) {
+      rows.push(`<div><strong>${escapeHtml(code)}:</strong> ${escapeHtml(meta.join(" • "))}</div>`);
+    }
+    if (!meta.length && !examPairs.length) {
+      rows.push(`<div><strong>${escapeHtml(code)}</strong></div>`);
+    }
+    examPairs.forEach(([exam, score]) => {
+      rows.push(
+        `<div><strong>${escapeHtml(code)} ${escapeHtml(getExamDisplayName(exam, { langCode: lr?.code }))}:</strong> ${escapeHtml(String(score))}</div>`
+      );
+    });
+  });
+
+  const fallbackText = isAverage
+    ? translateWord("average_admitted_unavailable", "No verified average admitted data published.")
+    : unknownFieldText("placeholder.field.language_requirements", "Language requirements");
+  const content = rows.length
+    ? rows.join("")
+    : `<div class="track-muted-italic">${escapeHtml(fallbackText)}</div>`;
+
+  return `
+      <div class="track-exam-group track-exam-group--success">
+      <div class="track-exam-group-title">${escapeHtml(title)}</div>
+      <div class="track-exam-group-list">${content}</div>
+      </div>
+  `;
 }
 
 function localizeRoiLabel(rawLabel, tone = "") {
@@ -2282,8 +2352,10 @@ export function initUniversitiesPage() {
                 { value: String(Math.round(acc * 100) / 100) },
                 `Acceptance Rate: ${Math.round(acc * 100) / 100}%`
             )
-            : unknownFieldText("acceptance_rate", "Acceptance Rate");
-        const acceptanceHtml = `<div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${escapeHtml(acceptanceText)}</span></div>`;
+            : "";
+        const acceptanceHtml = acceptanceText
+            ? `<div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${escapeHtml(acceptanceText)}</span></div>`
+            : "";
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
@@ -2910,11 +2982,7 @@ export async function initUniversityPage() {
                         minParts.acad,
                         "#2563eb"
                     ),
-                    renderExamGroup(
-                        translateWord("language_requirements_short", "Language requirements"),
-                        minParts.lang,
-                        "#047857"
-                    ),
+                    renderTrackLanguageExamGroup(option, "requirements"),
                     ].filter(Boolean).join("");
 
                     const statsAvg = option.stats_avg || {};
@@ -2925,16 +2993,10 @@ export async function initUniversityPage() {
                         avgParts.acad,
                         "#2563eb"
                     ),
-                    renderExamGroup(
-                        translateWord("language_average", "Language average"),
-                        avgParts.lang,
-                        "#047857"
-                    ),
+                    renderTrackLanguageExamGroup(option, "average"),
                     ].filter(Boolean).join("");
                     const minContent = minList || `<div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>`;
                     const avgContent = avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
-
-                    const languageReqInfo = renderLanguageRequirements(option.language_requirements);
                     const extraRequirementItems = Array.isArray(option.extra_requirements)
                     ? option.extra_requirements
                         .map((item) => trTrackDescription(u.id, option.id, item))
@@ -2992,7 +3054,6 @@ export async function initUniversityPage() {
                         </div>
                         </div>
 
-                        ${languageReqInfo}
                         ${extraReqInfo}
 
                         <div class="track-select-row">

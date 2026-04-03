@@ -2053,7 +2053,7 @@
   },
   {
     "id": "eth-zurich-ch-zurich",
-    "name": "ETH Zurich",
+    "name": "Swiss Federal Institute of Technology Zurich",
     "rank": 5,
     "location": {
       "country": "Switzerland",
@@ -2860,7 +2860,7 @@
   },
   {
     "id": "epfl-ch-lausanne",
-    "name": "EPFL",
+    "name": "Swiss Federal Institute of Technology Lausanne",
     "rank": 10,
     "location": {
       "country": "Switzerland",
@@ -6086,7 +6086,7 @@
   },
   {
     "id": "kaist-kr-daejeon",
-    "name": "KAIST",
+    "name": "Korea Advanced Institute of Science and Technology",
     "rank": null,
     "location": {
       "country": "South Korea",

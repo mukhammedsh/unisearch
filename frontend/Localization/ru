@@ -576,3 +576,17 @@ admission.chance_method.profile_detail: На основе профиля бал�
 admission.chance_method.estimated_short: Оценочно
 admission.chance_method.estimated_detail: Оценка по опубликованным минимумам, средним значениям там, где они есть, языковым требованиям, селективности и бюджету. Точность ниже, чем у профиля баллов зачисленных.
 admission.chance_accuracy.low: Низкая точность
+title.404: Ошибка 404 | UniSearch
+error404.title: Ошибка 404
+error404.lead: Возможно, страница была перемещена, ссылка устарела или в адресе есть ошибка.
+error404.primary: На главную
+error404.secondary: Открыть университеты
+error404.panel.kicker: Быстрая помощь
+error404.panel.title: Что можно сделать дальше
+error404.tip.1: Проверьте адресную строку на опечатку и обновите страницу.
+error404.tip.2: Вернитесь к основным разделам сайта и продолжите оттуда.
+error404.tip.3: Если это старая закладка, обновите её на актуальную ссылку.
+error404.quick_title: Популярные разделы
+error404.link.rankings: Посмотреть топ университетов
+error404.link.guide: Узнать, как работает UniSearch
+error404.link.about: О проекте и контактах

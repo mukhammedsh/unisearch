@@ -180,8 +180,8 @@ const LAYOUT_HTML = `
     <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">☰</button>
     <div class="lang-control">
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
-        <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
-        <option value="rus" data-i18n="nav.lang.rus">Русский</option>
+        <option value="eng">English (US)</option>
+        <option value="rus">Русский</option>
       </select>
     </div>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">🌙</button>
