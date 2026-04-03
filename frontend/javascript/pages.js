@@ -265,7 +265,7 @@ function renderTrackLanguageExamGroup(track, variant = "requirements") {
     if (meta.length) {
       rows.push(`<div><strong>${escapeHtml(code)}:</strong> ${escapeHtml(meta.join(" • "))}</div>`);
     }
-    if (!meta.length && !examPairs.length) {
+    if (!isAverage && !meta.length && !examPairs.length) {
       rows.push(`<div><strong>${escapeHtml(code)}</strong></div>`);
     }
     examPairs.forEach(([exam, score]) => {
@@ -274,6 +274,8 @@ function renderTrackLanguageExamGroup(track, variant = "requirements") {
       );
     });
   });
+
+  if (isAverage && !rows.length) return "";
 
   const fallbackText = isAverage
     ? translateWord("average_admitted_unavailable", "No verified average admitted data published.")

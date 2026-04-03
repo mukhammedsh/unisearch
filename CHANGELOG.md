@@ -27,6 +27,7 @@ Status:
   - stabilized language-switcher labels so `English (US)` and `Русский` no longer rename themselves when the UI language changes;
   - fixed budget number inputs in filters so text stays centered and spinner controls clip correctly inside rounded fields;
   - hid university-card acceptance-rate pills when no verified data exists;
+  - fixed `Average admitted` language rendering so bare language codes like `EN` / `KO` no longer appear when no verified language-average scores are published, and the card now falls back to the no-data message instead;
   - restored intended rounding where the previous UI fixes over-flattened controls, including detail-page tabs and budget fields;
   - kept grant funding cards green on hover in the light theme instead of falling back to the default blue highlight;
   - tightened funding-option spacing in admission/finance cards, aligned track cost breakdown cards, and reduced oversized cost legend rows;
