@@ -157,7 +157,7 @@ profile.exam_band_label: Уровень
 profile.exam_band_placeholder: Выберите уровень
 profile.exam_band_required: Выберите уровень
 profile.exam_grade_optional: Необязательный 4-й предмет
-profile.exam_grade_slot: Оценка {index}
+profile.exam_grade_slot: Предмет {index}
 profile.exam_grade_placeholder: Выберите оценку
 profile.exam_grade_required: Выберите {count} оценки для {exam}
 profile.exam_alevel_hint: Укажите {min}-{max} оценок. UniSearch использует ваши лучшие {best} оценки.
@@ -206,7 +206,7 @@ profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, 20000
 profile.placeholder.gpa: например, 92
-profile.placeholder.interests: Например: computer science, scholarships, big city, strong internships
+profile.placeholder.interests: Например, на английском: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено
@@ -273,7 +273,7 @@ universities.badge.below_requirements: ⚠️ Ниже требований
 universities.badge.over_budget: 💰 Выше бюджета
 universities.badge.over_budget_aid: 💸 Выше бюджета • Есть помощь по нуждаемости
 universities.badge.requirements_met: ✅ Требования выполнены
-universities.card.est_cost_year: Ориентировочная стоимость за год
+universities.card.est_cost_year: Примерная цена/год
 universities.city: Город
 universities.cost_per_year: Стоимость (USD / год)
 universities.country: Страна
@@ -368,7 +368,7 @@ university.admissions.counts.offers: Предложения о зачислен�
 university.admissions.counts.enrolled: Фактически поступили
 university.admissions.counts.places: мест
 university.admissions.unit.points: баллов
-university.admissions.a_level: A-Level
+university.admissions.a_level: Результаты A-Level
 university.admissions.poly_gpa: GPA политехнического колледжа
 university.admissions.range: Примерный диапазон
 university.admissions.supplementary_required: Нужна дополнительная заявка

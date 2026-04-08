@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-04-01",
+  "verified_at": "2026-04-04",
   "source_fragments": [
     "docs/data_research/structured_group_a_us_uk_admissions.json",
     "docs/data_research/structured_group_b_europe_canada_admissions.json",
@@ -2485,7 +2485,7 @@
       "university_wide": {
         "status": "official_rate",
         "kind": "rate",
-        "acceptance_rate_percent": 21.0,
+        "acceptance_rate_percent": 21,
         "counts": {
           "applicants": 6911,
           "admitted": 1480
@@ -2818,6 +2818,2351 @@
             "method": "Verified-null: official AITU materials publish thresholds and programme-group requirements rather than a public program-level admit table.",
             "basis": {
               "summary": "The reviewed official AITU bachelor admissions materials publish entrance-test and subject-group requirements, but do not publish program-specific applicants/admitted totals for Computer Science."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-oxford-uk-oxford": {
+      "university_name": "University of Oxford",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.ox.ac.uk/admissions/undergraduate",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.ox.ac.uk/admissions/undergraduate",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ox.ac.uk/admissions/undergraduate",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ox.ac.uk/admissions/undergraduate",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Engineering Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ox.ac.uk/admissions/undergraduate",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ox.ac.uk/admissions/undergraduate",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-cambridge-uk-cambridge": {
+      "university_name": "University of Cambridge",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.undergraduate.study.cam.ac.uk/apply",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.undergraduate.study.cam.ac.uk/apply",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.undergraduate.study.cam.ac.uk/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.undergraduate.study.cam.ac.uk/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.undergraduate.study.cam.ac.uk/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.undergraduate.study.cam.ac.uk/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "ucl-uk-london": {
+      "university_name": "University College London",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/apply",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/apply",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ucl.ac.uk/prospective-students/undergraduate/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Electronic and Electrical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ucl.ac.uk/prospective-students/undergraduate/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "kings-college-london-uk-london": {
+      "university_name": "King's College London",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Biomedical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-edinburgh-uk-edinburgh": {
+      "university_name": "University of Edinburgh",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.ed.ac.uk/studying/undergraduate/applying",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.ed.ac.uk/studying/undergraduate/applying",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Informatics",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ed.ac.uk/studying/undergraduate/applying",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ed.ac.uk/studying/undergraduate/applying",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Electronics and Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ed.ac.uk/studying/undergraduate/applying",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ed.ac.uk/studying/undergraduate/applying",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-manchester-uk-manchester": {
+      "university_name": "University of Manchester",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Mechanical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "caltech-usa-pasadena": {
+      "university_name": "California Institute of Technology",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 2.57,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://www.admissions.caltech.edu/apply",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Electrical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "uc-berkeley-usa-berkeley": {
+      "university_name": "University of California, Berkeley",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 10.98,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://admissions.berkeley.edu/apply-to-berkeley/freshmen/",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Electrical Engineering and Computer Sciences",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Mechanical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "princeton-university-usa-princeton": {
+      "university_name": "Princeton University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 4.62,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://admission.princeton.edu/how-apply",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Electrical and Computer Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "yale-university-usa-new-haven": {
+      "university_name": "Yale University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 3.87,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://admissions.yale.edu/first-year-application-process",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Biomedical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-chicago-usa-chicago": {
+      "university_name": "University of Chicago",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 4.48,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://collegeadmissions.uchicago.edu/apply",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Economics",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-pennsylvania-usa-philadelphia": {
+      "university_name": "University of Pennsylvania",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 5.4,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://admissions.upenn.edu/admissions-and-financial-aid/how-to-apply",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Economics",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "cornell-university-usa-ithaca": {
+      "university_name": "Cornell University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 8.76,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://admissions.cornell.edu/how-to-apply",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Mechanical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "columbia-university-usa-new-york": {
+      "university_name": "Columbia University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 3.99,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://undergrad.admissions.columbia.edu/apply",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Biomedical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "johns-hopkins-university-usa-baltimore": {
+      "university_name": "Johns Hopkins University",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 6.44,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://apply.jhu.edu/",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Biomedical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "ucla-usa-los-angeles": {
+      "university_name": "University of California, Los Angeles",
+      "university_wide": {
+        "status": "official_rate",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": 8.97,
+        "counts": null,
+        "semantics": "UniSearch stores the institution-wide undergraduate admission rate published in College Scorecard as the comparable selectivity reference for this first-year route.",
+        "sources": [
+          {
+            "url": "https://admission.ucla.edu/apply/freshman",
+            "label": "Official undergraduate admissions"
+          },
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard admissions data"
+          }
+        ],
+        "provenance": {
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-04-04",
+          "status": "official_external",
+          "confidence": "high",
+          "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "The reviewed public source publishes institution-wide undergraduate admissions rather than major-specific bachelor admit rates for these selected programs.",
+        "sources": [
+          {
+            "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "label": "College Scorecard institutional profile"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        },
+        {
+          "program_name": "Electrical Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed public admissions dataset reports institution-wide undergraduate admission rather than a separate major-level admit rate for this program.",
+          "notes": "Stored as verified-null because the current public admissions dataset does not publish a separate undergraduate admit rate for this program.",
+          "sources": [
+            {
+              "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+              "label": "College Scorecard institutional profile"
+            }
+          ],
+          "provenance": {
+            "source": "U.S. Department of Education College Scorecard",
+            "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "verified_at": "2026-04-04",
+            "status": "official_external",
+            "confidence": "high",
+            "method": "Verified-null: institution-wide undergraduate admissions dataset only.",
+            "basis": {
+              "summary": "Institution-wide public undergraduate admissions data only."
+            }
+          }
+        }
+      ]
+    },
+    "mcgill-university-ca-montreal": {
+      "university_name": "McGill University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Software Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-british-columbia-ca-vancouver": {
+      "university_name": "University of British Columbia",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://you.ubc.ca/applying-ubc/",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://you.ubc.ca/applying-ubc/",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://you.ubc.ca/applying-ubc/",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://you.ubc.ca/applying-ubc/",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Applied Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://you.ubc.ca/applying-ubc/",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://you.ubc.ca/applying-ubc/",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-waterloo-ca-waterloo": {
+      "university_name": "University of Waterloo",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://uwaterloo.ca/future-students/admissions",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://uwaterloo.ca/future-students/admissions",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://uwaterloo.ca/future-students/admissions",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://uwaterloo.ca/future-students/admissions",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Software Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://uwaterloo.ca/future-students/admissions",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://uwaterloo.ca/future-students/admissions",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "unsw-sydney-au-sydney": {
+      "university_name": "UNSW Sydney",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-sydney-au-sydney": {
+      "university_name": "University of Sydney",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Software Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "australian-national-university-au-canberra": {
+      "university_name": "Australian National University",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://study.anu.edu.au/apply",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://study.anu.edu.au/apply",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computing",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://study.anu.edu.au/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://study.anu.edu.au/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://study.anu.edu.au/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://study.anu.edu.au/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "university-of-hong-kong-hk-hong-kong": {
+      "university_name": "The University of Hong Kong",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://admissions.hku.hk/apply",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://admissions.hku.hk/apply",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://admissions.hku.hk/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://admissions.hku.hk/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://admissions.hku.hk/apply",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://admissions.hku.hk/apply",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "hkust-hk-hong-kong": {
+      "university_name": "Hong Kong University of Science and Technology",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://join.hkust.edu.hk/",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://join.hkust.edu.hk/",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://join.hkust.edu.hk/",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://join.hkust.edu.hk/",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Electronic Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://join.hkust.edu.hk/",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://join.hkust.edu.hk/",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        }
+      ]
+    },
+    "nanyang-technological-university-sg-singapore": {
+      "university_name": "Nanyang Technological University, Singapore",
+      "university_wide": {
+        "status": "no_official_source",
+        "kind": "undergraduate_institution_wide",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
+        "sources": [
+          {
+            "url": "https://www.ntu.edu.sg/admissions/undergraduate",
+            "label": "Official undergraduate admissions"
+          }
+        ]
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_requirements_only",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official public admissions materials reviewed for this university do not publish major-level undergraduate admit rates for the selected bachelor programs.",
+        "sources": [
+          {
+            "url": "https://www.ntu.edu.sg/admissions/undergraduate",
+            "label": "Official admissions requirements"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ntu.edu.sg/admissions/undergraduate",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ntu.edu.sg/admissions/undergraduate",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
+            }
+          }
+        },
+        {
+          "program_name": "Computer Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official undergraduate admissions materials do not publish a separate program-level acceptance rate for this bachelor option.",
+          "notes": "Stored as verified-null because UniSearch reviewed official admissions sources and did not find a public program-level undergraduate admit rate.",
+          "sources": [
+            {
+              "url": "https://www.ntu.edu.sg/admissions/undergraduate",
+              "label": "Official admissions requirements"
+            }
+          ],
+          "provenance": {
+            "source": "Official undergraduate admissions",
+            "source_url": "https://www.ntu.edu.sg/admissions/undergraduate",
+            "verified_at": "2026-04-04",
+            "status": "reviewed",
+            "confidence": "medium",
+            "method": "Verified-null from reviewed public admissions materials.",
+            "basis": {
+              "summary": "No public major-level undergraduate acceptance rate found in reviewed official sources."
             }
           }
         }

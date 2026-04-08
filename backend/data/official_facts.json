@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "verified_at": "2026-03-25",
+  "verified_at": "2026-04-04",
   "universities": {
     "mit-usa-cambridge": {
       "student_count": {
@@ -445,7 +445,7 @@
         "method": "Direct student headcount published on the official Nazarbayev University About page."
       },
       "acceptance_rate_percent": {
-        "value": 21.0,
+        "value": 21,
         "source": "Admissions Statistics on Nazarbayev University",
         "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
         "verified_at": "2026-03-25",
@@ -656,6 +656,2335 @@
       "clear_verified_topics": [
         "english_language_policy"
       ]
+    },
+    "university-of-oxford-uk-oxford": {
+      "description": {
+        "value": "Oxford is a collegiate research university known for tutorial-based teaching, foundational scholarship, and strength across humanities, sciences, medicine, law, and computing.",
+        "source": "University of Oxford official about page",
+        "source_url": "https://www.ox.ac.uk/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "collegiate",
+          "humanities",
+          "law",
+          "medicine",
+          "natural_sciences",
+          "computer_science",
+          "global",
+          "prestige"
+        ],
+        "source": "University of Oxford official profile",
+        "source_url": "https://www.ox.ac.uk/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "acceptance_rate_percent": {
+        "value": 16.45,
+        "source": "University of Oxford undergraduate admissions statistics",
+        "source_url": "https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students/current/overall-numbers",
+        "verified_at": "2026-04-08",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official 2024 Oxford undergraduate counts (3,793 offers / 23,061 applications, all domiciles).",
+        "basis": {
+          "cycle": "2024",
+          "scope": "undergraduate, all domiciles",
+          "applications": 23061,
+          "offers": 3793
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/international-students/international-qualifications"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/engineering-science"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.ox.ac.uk/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.ox.ac.uk/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/international-students/international-qualifications"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.ox.ac.uk/about/facts-and-figures"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students/current/overall-numbers"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/course-fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
+        }
+      ],
+      "student_count": {
+        "value": 26760,
+        "source": "University of Oxford facts and figures",
+        "source_url": "https://www.ox.ac.uk/about/facts-and-figures",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-cambridge-uk-cambridge": {
+      "description": {
+        "value": "Cambridge combines collegiate undergraduate teaching with one of the world's deepest research environments in mathematics, engineering, natural sciences, and computer science.",
+        "source": "University of Cambridge official about page",
+        "source_url": "https://www.cam.ac.uk/about-the-university",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "collegiate",
+          "humanities",
+          "law",
+          "medicine",
+          "natural_sciences",
+          "computer_science",
+          "engineering",
+          "global"
+        ],
+        "source": "University of Cambridge official profile",
+        "source_url": "https://www.cam.ac.uk/about-the-university",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "acceptance_rate_percent": {
+        "value": 21.49,
+        "source": "University of Cambridge Undergraduate Admissions Statistics 2024 cycle",
+        "source_url": "https://www.undergraduate.study.cam.ac.uk/sites/default/files/publications/ug_admissions_statistics_2024_cycle.pdf",
+        "verified_at": "2026-04-08",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official 2024 Cambridge undergraduate counts (4,760 offers / 22,153 applications).",
+        "basis": {
+          "cycle": "2024",
+          "scope": "undergraduate",
+          "applications": 22153,
+          "offers": 4760
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.undergraduate.study.cam.ac.uk/international-students/international-entry-requirements"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.undergraduate.study.cam.ac.uk/apply/before/decisions"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.undergraduate.study.cam.ac.uk/courses/engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.cam.ac.uk/about-the-university"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.cam.ac.uk/about-the-university"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.undergraduate.study.cam.ac.uk/international-students/international-entry-requirements"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.undergraduate.study.cam.ac.uk/apply/before/decisions"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work/facts-and-figures"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://www.undergraduate.study.cam.ac.uk/sites/default/files/publications/ug_admissions_statistics_2024_cycle.pdf"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.undergraduate.study.cam.ac.uk/fees-and-finance"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.undergraduate.study.cam.ac.uk/fees-and-finance/living-costs"
+        }
+      ],
+      "student_count": {
+        "value": 24450,
+        "source": "University of Cambridge facts and figures",
+        "source_url": "https://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work/facts-and-figures",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "ucl-uk-london": {
+      "description": {
+        "value": "UCL is a large central-London research university known for interdisciplinary study and strong departments in computing, engineering, medicine, social sciences, and the arts.",
+        "source": "University College London official about page",
+        "source_url": "https://www.ucl.ac.uk/about/who-we-are",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "global",
+          "computer_science",
+          "engineering",
+          "medicine",
+          "social_sciences",
+          "humanities",
+          "law",
+          "public_university"
+        ],
+        "source": "University College London official profile",
+        "source_url": "https://www.ucl.ac.uk/about/who-we-are",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ucl.ac.uk/prospective-students/international/international-entry-requirements"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/how-apply"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/degrees/computer-science-bsc"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/degrees/electronic-and-electrical-engineering-beng"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/degrees/computer-science-bsc"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.ucl.ac.uk/about/who-we-are"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.ucl.ac.uk/about/who-we-are"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ucl.ac.uk/prospective-students/international/international-entry-requirements"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/how-apply"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.ucl.ac.uk/about/who-we-are/ucl-facts-and-figures"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/fees-and-funding"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/fees-and-funding/living-costs-and-funding"
+        }
+      ],
+      "student_count": {
+        "value": 51000,
+        "source": "UCL facts and figures",
+        "source_url": "https://www.ucl.ac.uk/about/who-we-are/ucl-facts-and-figures",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "kings-college-london-uk-london": {
+      "description": {
+        "value": "King's College London is a comprehensive London university with strong medical, health, policy, humanities, and computing activity across a globally connected urban campus system.",
+        "source": "King's College London official about page",
+        "source_url": "https://www.kcl.ac.uk/aboutkings",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "global",
+          "medicine",
+          "health_sciences",
+          "law",
+          "humanities",
+          "social_sciences",
+          "computer_science",
+          "public_university"
+        ],
+        "source": "King's College London official profile",
+        "source_url": "https://www.kcl.ac.uk/aboutkings",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.kcl.ac.uk/study/international/how-to-apply/entry-requirements"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/courses/computer-science-bsc"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/courses/biomedical-engineering-beng"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/courses/computer-science-bsc"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.kcl.ac.uk/aboutkings"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.kcl.ac.uk/aboutkings"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.kcl.ac.uk/study/international/how-to-apply/entry-requirements"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.kcl.ac.uk/aboutkings/facts"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/fees-and-funding"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.kcl.ac.uk/study/undergraduate/fees-and-funding/living-costs"
+        }
+      ],
+      "student_count": {
+        "value": 40000,
+        "source": "King's College London facts",
+        "source_url": "https://www.kcl.ac.uk/aboutkings/facts",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-edinburgh-uk-edinburgh": {
+      "description": {
+        "value": "Edinburgh is a major research university whose strengths include informatics, medicine, humanities, and science, with a large international community and broad academic portfolio.",
+        "source": "University of Edinburgh official about page",
+        "source_url": "https://www.ed.ac.uk/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "global",
+          "computer_science",
+          "medicine",
+          "humanities",
+          "social_sciences",
+          "natural_sciences",
+          "public_university"
+        ],
+        "source": "University of Edinburgh official profile",
+        "source_url": "https://www.ed.ac.uk/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ed.ac.uk/studying/international/country"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ed.ac.uk/studying/undergraduate/applying"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=H651"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.ed.ac.uk/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.ed.ac.uk/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ed.ac.uk/studying/international/country"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ed.ac.uk/studying/undergraduate/applying"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.ed.ac.uk/about/facts"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://study.ed.ac.uk/undergraduate/applying/selection/admissions-statistics"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ed.ac.uk/student-funding/tuition-fees/undergraduate/international"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ed.ac.uk/student-funding/tuition-fees/tuition-fees-cost-of-living"
+        }
+      ],
+      "student_count": {
+        "value": 49000,
+        "source": "University of Edinburgh facts",
+        "source_url": "https://www.ed.ac.uk/about/facts",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-manchester-uk-manchester": {
+      "description": {
+        "value": "Manchester is a large research-intensive civic university with broad strengths in science, engineering, health, business, and social sciences, and a strong graduate-employment profile.",
+        "source": "University of Manchester official about page",
+        "source_url": "https://www.manchester.ac.uk/discover/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "public_university",
+          "engineering",
+          "computer_science",
+          "medicine",
+          "business",
+          "social_sciences",
+          "natural_sciences"
+        ],
+        "source": "University of Manchester official profile",
+        "source_url": "https://www.manchester.ac.uk/discover/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.manchester.ac.uk/study/international/country-specific-information/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/applications/how-to-apply/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00367/beng-mechanical-engineering/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.manchester.ac.uk/discover/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.manchester.ac.uk/discover/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.manchester.ac.uk/study/international/country-specific-information/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/applications/how-to-apply/"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.manchester.ac.uk/discover/facts-figures/"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/applications/"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.manchester.ac.uk/study/undergraduate/fees-and-funding/"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.manchester.ac.uk/study/international/finance-and-scholarships/cost-of-living/"
+        }
+      ],
+      "student_count": {
+        "value": 46000,
+        "source": "University of Manchester facts and figures",
+        "source_url": "https://www.manchester.ac.uk/discover/facts-figures/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "caltech-usa-pasadena": {
+      "description": {
+        "value": "Caltech is a small science-and-engineering-focused research university with exceptional academic intensity, close faculty contact, and strong physics, engineering, and computing research.",
+        "source": "California Institute of Technology official about page",
+        "source_url": "https://www.caltech.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "science_and_technology",
+          "research",
+          "engineering",
+          "computer_science",
+          "natural_sciences"
+        ],
+        "source": "California Institute of Technology official profile",
+        "source_url": "https://www.caltech.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.admissions.caltech.edu/apply"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.admissions.caltech.edu/apply/first-year-applicants"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cms.caltech.edu/academics/computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ee.caltech.edu/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cms.caltech.edu/academics/computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.caltech.edu/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.caltech.edu/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.admissions.caltech.edu/apply"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.admissions.caltech.edu/apply/first-year-applicants"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 2.57,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "uc-berkeley-usa-berkeley": {
+      "description": {
+        "value": "Berkeley is a flagship public research university known for scale, academic breadth, strong engineering and computing, and close ties to science, policy, and entrepreneurship.",
+        "source": "University of California, Berkeley official about page",
+        "source_url": "https://www.berkeley.edu/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "engineering",
+          "computer_science",
+          "business",
+          "law",
+          "social_sciences",
+          "natural_sciences",
+          "entrepreneurship"
+        ],
+        "source": "University of California, Berkeley official profile",
+        "source_url": "https://www.berkeley.edu/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.berkeley.edu/apply-to-berkeley/freshmen/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.berkeley.edu/international-applicants/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://eecs.berkeley.edu/academics/undergraduate/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://me.berkeley.edu/academics/undergraduate/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://eecs.berkeley.edu/academics/undergraduate/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.berkeley.edu/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.berkeley.edu/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.berkeley.edu/apply-to-berkeley/freshmen/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.berkeley.edu/international-applicants/"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 10.98,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "princeton-university-usa-princeton": {
+      "description": {
+        "value": "Princeton is a highly selective private research university known for undergraduate focus, strong advising, and broad excellence across humanities, science, engineering, and public affairs.",
+        "source": "Princeton University official about page",
+        "source_url": "https://www.princeton.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "liberal_arts",
+          "engineering",
+          "computer_science",
+          "humanities",
+          "social_sciences",
+          "natural_sciences",
+          "public_policy"
+        ],
+        "source": "Princeton University official profile",
+        "source_url": "https://www.princeton.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admission.princeton.edu/how-apply"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admission.princeton.edu/apply/international-students"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cs.princeton.edu/academics/undergraduate"
+        },
+        {
+          "topic": "programs",
+          "url": "https://ece.princeton.edu/academics/undergraduate-program"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.princeton.edu/academics/undergraduate"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.princeton.edu/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.princeton.edu/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admission.princeton.edu/how-apply"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admission.princeton.edu/apply/international-students"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 4.62,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "yale-university-usa-new-haven": {
+      "description": {
+        "value": "Yale combines a residential-college undergraduate model with major research strength and a broad portfolio spanning humanities, law, medicine, science, and engineering.",
+        "source": "Yale University official about page",
+        "source_url": "https://www.yale.edu/about-yale",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "collegiate",
+          "humanities",
+          "law",
+          "medicine",
+          "social_sciences",
+          "natural_sciences",
+          "computer_science"
+        ],
+        "source": "Yale University official profile",
+        "source_url": "https://www.yale.edu/about-yale",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.yale.edu/first-year-application-process"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.yale.edu/international-applicants"
+        },
+        {
+          "topic": "programs",
+          "url": "https://cpsc.yale.edu/undergraduate-program"
+        },
+        {
+          "topic": "programs",
+          "url": "https://seas.yale.edu/biomedical-engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://cpsc.yale.edu/undergraduate-program"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.yale.edu/about-yale"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.yale.edu/about-yale"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.yale.edu/first-year-application-process"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.yale.edu/international-applicants"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 3.87,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "university-of-chicago-usa-chicago": {
+      "description": {
+        "value": "Chicago is known for analytical rigor, strong economics and social science traditions, and serious research culture across mathematics, computing, natural sciences, and policy.",
+        "source": "University of Chicago official about page",
+        "source_url": "https://www.uchicago.edu/who-we-are",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "economics",
+          "computer_science",
+          "social_sciences",
+          "humanities",
+          "natural_sciences",
+          "public_policy"
+        ],
+        "source": "University of Chicago official profile",
+        "source_url": "https://www.uchicago.edu/who-we-are",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://collegeadmissions.uchicago.edu/apply"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://collegeadmissions.uchicago.edu/apply/first-year-applicants"
+        },
+        {
+          "topic": "programs",
+          "url": "https://cs.uchicago.edu/education/undergraduate-programs/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://college.uchicago.edu/academics/economics"
+        },
+        {
+          "topic": "formats",
+          "url": "https://cs.uchicago.edu/education/undergraduate-programs/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.uchicago.edu/who-we-are"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.uchicago.edu/who-we-are"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://collegeadmissions.uchicago.edu/apply"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://collegeadmissions.uchicago.edu/apply/first-year-applicants"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 4.48,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "university-of-pennsylvania-usa-philadelphia": {
+      "description": {
+        "value": "Penn is a private research university known for interdisciplinary links across computing, engineering, business, medicine, design, and the social sciences in a dense urban campus setting.",
+        "source": "University of Pennsylvania official about page",
+        "source_url": "https://www.upenn.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "computer_science",
+          "engineering",
+          "business",
+          "medicine",
+          "design",
+          "social_sciences"
+        ],
+        "source": "University of Pennsylvania official profile",
+        "source_url": "https://www.upenn.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.upenn.edu/admissions-and-financial-aid/how-to-apply"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.upenn.edu/admissions-and-financial-aid/international-applicants"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cis.upenn.edu/undergraduate/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://economics.sas.upenn.edu/undergraduate"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cis.upenn.edu/undergraduate/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.upenn.edu/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.upenn.edu/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.upenn.edu/admissions-and-financial-aid/how-to-apply"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.upenn.edu/admissions-and-financial-aid/international-applicants"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 5.4,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "cornell-university-usa-ithaca": {
+      "description": {
+        "value": "Cornell combines Ivy League breadth with a large research campus and strengths across computing, engineering, life sciences, agriculture, architecture, business, and the humanities.",
+        "source": "Cornell University official about page",
+        "source_url": "https://www.cornell.edu/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "computer_science",
+          "engineering",
+          "life_sciences",
+          "agriculture",
+          "architecture",
+          "business",
+          "humanities"
+        ],
+        "source": "Cornell University official profile",
+        "source_url": "https://www.cornell.edu/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.cornell.edu/how-to-apply"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.cornell.edu/apply/international-students"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cs.cornell.edu/undergrad"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.mae.cornell.edu/mae/programs/undergraduate-programs"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.cornell.edu/undergrad"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.cornell.edu/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.cornell.edu/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.cornell.edu/how-to-apply"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.cornell.edu/apply/international-students"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 8.76,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "columbia-university-usa-new-york": {
+      "description": {
+        "value": "Columbia is a major New York research university with strong global positioning and notable strength in computing, engineering, journalism, business, public affairs, and the sciences.",
+        "source": "Columbia University official about page",
+        "source_url": "https://www.columbia.edu/content/about-columbia",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "global",
+          "computer_science",
+          "engineering",
+          "business",
+          "social_sciences",
+          "natural_sciences",
+          "urban"
+        ],
+        "source": "Columbia University official profile",
+        "source_url": "https://www.columbia.edu/content/about-columbia",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://undergrad.admissions.columbia.edu/apply"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://undergrad.admissions.columbia.edu/apply/international"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cs.columbia.edu/education/undergraduate/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.bme.columbia.edu/academics/undergraduate"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.columbia.edu/education/undergraduate/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.columbia.edu/content/about-columbia"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.columbia.edu/content/about-columbia"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://undergrad.admissions.columbia.edu/apply"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://undergrad.admissions.columbia.edu/apply/international"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 3.99,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "johns-hopkins-university-usa-baltimore": {
+      "description": {
+        "value": "Johns Hopkins is a research-intensive private university known especially for medicine, public health, biomedical engineering, and data-rich scientific work, with strong computing and engineering as well.",
+        "source": "Johns Hopkins University official about page",
+        "source_url": "https://www.jhu.edu/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "private_university",
+          "research",
+          "medicine",
+          "health_sciences",
+          "biomedical",
+          "engineering",
+          "computer_science",
+          "natural_sciences"
+        ],
+        "source": "Johns Hopkins University official profile",
+        "source_url": "https://www.jhu.edu/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://apply.jhu.edu/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://apply.jhu.edu/international-students/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://engineering.jhu.edu/computer-science/academics/undergraduate-studies/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://engineering.jhu.edu/biomedical-engineering/academics/undergraduate/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://engineering.jhu.edu/computer-science/academics/undergraduate-studies/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.jhu.edu/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.jhu.edu/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://apply.jhu.edu/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://apply.jhu.edu/international-students/"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 6.44,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "ucla-usa-los-angeles": {
+      "description": {
+        "value": "UCLA is a flagship public research university with strong student life, broad academic coverage, and leading programs in computing, engineering, medicine, film, and the social sciences.",
+        "source": "University of California, Los Angeles official about page",
+        "source_url": "https://www.ucla.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "computer_science",
+          "engineering",
+          "medicine",
+          "social_sciences",
+          "humanities",
+          "natural_sciences",
+          "urban"
+        ],
+        "source": "University of California, Los Angeles official profile",
+        "source_url": "https://www.ucla.edu/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admission.ucla.edu/apply/freshman"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admission.ucla.edu/apply/international-applicants"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cs.ucla.edu/undergraduate-study/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ee.ucla.edu/academics/undergraduate/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.ucla.edu/undergraduate-study/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.ucla.edu/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.ucla.edu/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admission.ucla.edu/apply/freshman"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admission.ucla.edu/apply/international-applicants"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        }
+      ],
+      "acceptance_rate_percent": {
+        "value": 8.97,
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-04-04",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      }
+    },
+    "mcgill-university-ca-montreal": {
+      "description": {
+        "value": "McGill is a globally recognized Montreal research university with strong medicine, science, engineering, and social-science traditions and a highly international student body.",
+        "source": "McGill University official about page",
+        "source_url": "https://www.mcgill.ca/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "research",
+          "global",
+          "computer_science",
+          "engineering",
+          "medicine",
+          "social_sciences",
+          "natural_sciences",
+          "public_university"
+        ],
+        "source": "McGill University official profile",
+        "source_url": "https://www.mcgill.ca/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "acceptance_rate_percent": {
+        "value": 47.55,
+        "source": "Admissions Profile | Enrolment Services - McGill University",
+        "source_url": "https://www.mcgill.ca/es/admissions-profile",
+        "verified_at": "2026-04-08",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official Fall 2025 undergraduate admissions counts (18,132 offers / 38,135 applicants).",
+        "basis": {
+          "cycle": "Fall 2025",
+          "scope": "undergraduate/professional",
+          "applicants": 38135,
+          "offers": 18132
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.mcgill.ca/undergraduate-admissions/apply/requirements"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.mcgill.ca/undergraduate-admissions/apply"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cs.mcgill.ca/academic/undergrad/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.mcgill.ca/undergraduate-admissions/program/software-engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.mcgill.ca/academic/undergrad/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.mcgill.ca/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.mcgill.ca/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.mcgill.ca/undergraduate-admissions/apply/requirements"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.mcgill.ca/undergraduate-admissions/apply"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.mcgill.ca/about/quickfacts"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://www.mcgill.ca/es/admissions-profile"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.mcgill.ca/studentaid/tuition-fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.mcgill.ca/studentaid/finances/budgeting"
+        }
+      ],
+      "student_count": {
+        "value": 40000,
+        "source": "McGill quick facts",
+        "source_url": "https://www.mcgill.ca/about/quickfacts",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-british-columbia-ca-vancouver": {
+      "description": {
+        "value": "UBC is a leading Canadian public research university with strong science, engineering, business, sustainability, and global engagement across its Vancouver and Okanagan campuses.",
+        "source": "University of British Columbia official about page",
+        "source_url": "https://www.ubc.ca/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "computer_science",
+          "engineering",
+          "business",
+          "natural_sciences",
+          "sustainability",
+          "global"
+        ],
+        "source": "University of British Columbia official profile",
+        "source_url": "https://www.ubc.ca/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "acceptance_rate_percent": {
+        "value": 52.0,
+        "source": "UBC Vancouver Campus Fact Sheet Winter 2023",
+        "source_url": "https://pair.ok.ubc.ca/wp-content/uploads/sites/145/2024/02/Factsheets_2024_February.pdf",
+        "verified_at": "2026-04-08",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct admit rate published in the official UBC Vancouver Campus Fact Sheet Winter 2023.",
+        "basis": {
+          "campus": "Vancouver",
+          "cycle": "Winter 2023",
+          "metric": "Admit Rate",
+          "value_percent": 52.0
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://you.ubc.ca/applying-ubc/requirements/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://you.ubc.ca/applying-ubc/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.cs.ubc.ca/students/undergrad"
+        },
+        {
+          "topic": "programs",
+          "url": "https://apsc.ubc.ca/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.ubc.ca/students/undergrad"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.ubc.ca/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.ubc.ca/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://you.ubc.ca/applying-ubc/requirements/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://you.ubc.ca/applying-ubc/"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.ubc.ca/about/facts.html"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://pair.ok.ubc.ca/wp-content/uploads/sites/145/2024/02/Factsheets_2024_February.pdf"
+        },
+        {
+          "topic": "finance",
+          "url": "https://students.ubc.ca/enrolment/finances/tuition-fees/undergraduate-tuition-fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://students.ubc.ca/ubclife/cost-living"
+        }
+      ],
+      "student_count": {
+        "value": 68000,
+        "source": "UBC facts and figures",
+        "source_url": "https://www.ubc.ca/about/facts.html",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-waterloo-ca-waterloo": {
+      "description": {
+        "value": "Waterloo is known for co-op, software, engineering, and entrepreneurship, with strong industry links and a practical project culture across technology-heavy programs.",
+        "source": "University of Waterloo official about page",
+        "source_url": "https://uwaterloo.ca/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "computer_science",
+          "software_engineering",
+          "engineering",
+          "entrepreneurship",
+          "industry_links",
+          "applied_learning"
+        ],
+        "source": "University of Waterloo official profile",
+        "source_url": "https://uwaterloo.ca/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "acceptance_rate_percent": {
+        "value": 55.0,
+        "source": "University of Waterloo Undergraduate Admissions 2019-2023 Senate brief",
+        "source_url": "https://uwaterloo.ca/secretariat/sites/default/files/uploads/documents/sfc-2024-02-07-agenda-package_0.pdf",
+        "verified_at": "2026-04-08",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Calculated from official Fall 2023 first-year undergraduate applications and offers combined across domestic and international cohorts.",
+        "basis": {
+          "cycle": "Fall 2023",
+          "scope": "first-year undergraduate combined",
+          "domestic_applications": 49933,
+          "domestic_offers": 28338,
+          "international_applications": 16642,
+          "international_offers": 8280,
+          "applications_total": 66575,
+          "offers_total": 36618
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://uwaterloo.ca/future-students/admissions/admission-requirements"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://uwaterloo.ca/future-students/admissions/how-apply"
+        },
+        {
+          "topic": "programs",
+          "url": "https://uwaterloo.ca/future-students/programs/computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://uwaterloo.ca/future-students/programs/software-engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://uwaterloo.ca/future-students/programs/computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://uwaterloo.ca/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://uwaterloo.ca/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://uwaterloo.ca/future-students/admissions/admission-requirements"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://uwaterloo.ca/future-students/admissions/how-apply"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://uwaterloo.ca/about/who-we-are/quick-facts"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://uwaterloo.ca/secretariat/sites/default/files/uploads/documents/sfc-2024-02-07-agenda-package_0.pdf"
+        },
+        {
+          "topic": "finance",
+          "url": "https://uwaterloo.ca/future-students/financing/tuition"
+        },
+        {
+          "topic": "finance",
+          "url": "https://uwaterloo.ca/future-students/life-residence/costs"
+        }
+      ],
+      "student_count": {
+        "value": 42000,
+        "source": "University of Waterloo quick facts",
+        "source_url": "https://uwaterloo.ca/about/who-we-are/quick-facts",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "unsw-sydney-au-sydney": {
+      "description": {
+        "value": "UNSW is a large Sydney research university with strong engineering, computing, design, business, and innovation culture, and one of Australia's best-known industry links.",
+        "source": "UNSW Sydney official about page",
+        "source_url": "https://www.unsw.edu.au/about-us",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "engineering",
+          "computer_science",
+          "business",
+          "design",
+          "innovation",
+          "industry_links"
+        ],
+        "source": "UNSW Sydney official profile",
+        "source_url": "https://www.unsw.edu.au/about-us",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate/admission-pathways"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.unsw.edu.au/study/undergraduate/computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.unsw.edu.au/study/undergraduate/engineering-honours"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.unsw.edu.au/study/undergraduate/computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.unsw.edu.au/about-us"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.unsw.edu.au/about-us"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate/admission-pathways"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.unsw.edu.au/about-us/our-story/our-university"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.unsw.edu.au/study/fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.unsw.edu.au/study/international-students/costs-scholarships"
+        }
+      ],
+      "student_count": {
+        "value": 65000,
+        "source": "UNSW university profile",
+        "source_url": "https://www.unsw.edu.au/about-us/our-story/our-university",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-sydney-au-sydney": {
+      "description": {
+        "value": "Sydney is a broad research university with a strong urban campus, leading health and science activity, and high visibility in computing, engineering, law, business, and public policy.",
+        "source": "University of Sydney official about page",
+        "source_url": "https://www.sydney.edu.au/about-us.html",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "computer_science",
+          "software_engineering",
+          "engineering",
+          "law",
+          "business",
+          "medicine",
+          "urban"
+        ],
+        "source": "University of Sydney official profile",
+        "source_url": "https://www.sydney.edu.au/about-us.html",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students/undergraduate-entry-requirements.html"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-engineering-honours-software-engineering.html"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.sydney.edu.au/about-us.html"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.sydney.edu.au/about-us.html"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students/undergraduate-entry-requirements.html"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.sydney.edu.au/about-us/our-story/facts-and-figures.html"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.sydney.edu.au/students/tuition-fees.html"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.sydney.edu.au/study/applying/international/student-life/living-costs.html"
+        }
+      ],
+      "student_count": {
+        "value": 74000,
+        "source": "University of Sydney facts and figures",
+        "source_url": "https://www.sydney.edu.au/about-us/our-story/facts-and-figures.html",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "australian-national-university-au-canberra": {
+      "description": {
+        "value": "ANU is Australia's national university, known for policy, international affairs, science, and research intensity, with a strong Canberra campus and close links to public institutions.",
+        "source": "Australian National University official about page",
+        "source_url": "https://www.anu.edu.au/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "national_university",
+          "public_university",
+          "research",
+          "public_policy",
+          "social_sciences",
+          "natural_sciences",
+          "computer_science",
+          "engineering"
+        ],
+        "source": "Australian National University official profile",
+        "source_url": "https://www.anu.edu.au/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://study.anu.edu.au/apply/international-applications"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://study.anu.edu.au/apply"
+        },
+        {
+          "topic": "programs",
+          "url": "https://programsandcourses.anu.edu.au/program/bcomp"
+        },
+        {
+          "topic": "programs",
+          "url": "https://programsandcourses.anu.edu.au/program/bengh"
+        },
+        {
+          "topic": "formats",
+          "url": "https://programsandcourses.anu.edu.au/program/bcomp"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.anu.edu.au/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.anu.edu.au/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://study.anu.edu.au/apply/international-applications"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://study.anu.edu.au/apply"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.anu.edu.au/about/fast-facts"
+        },
+        {
+          "topic": "acceptance_rate",
+          "url": "https://study.anu.edu.au/apply"
+        },
+        {
+          "topic": "finance",
+          "url": "https://study.anu.edu.au/programs/fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://study.anu.edu.au/student-life/living-canberra/cost-living"
+        }
+      ],
+      "student_count": {
+        "value": 18000,
+        "source": "ANU fast facts",
+        "source_url": "https://www.anu.edu.au/about/fast-facts",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "university-of-hong-kong-hk-hong-kong": {
+      "description": {
+        "value": "HKU is Hong Kong's flagship university with strong global reputation, major research activity, and broad strengths in medicine, business, law, engineering, and computing.",
+        "source": "The University of Hong Kong official about page",
+        "source_url": "https://www.hku.hk/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "research",
+          "global",
+          "medicine",
+          "business",
+          "law",
+          "engineering",
+          "computer_science",
+          "asia"
+        ],
+        "source": "The University of Hong Kong official profile",
+        "source_url": "https://www.hku.hk/about/",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.hku.hk/apply/international-qualifications"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://admissions.hku.hk/apply"
+        },
+        {
+          "topic": "programs",
+          "url": "https://admissions.hku.hk/programmes/comp-sci"
+        },
+        {
+          "topic": "programs",
+          "url": "https://admissions.hku.hk/programmes/engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://admissions.hku.hk/programmes/comp-sci"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.hku.hk/about/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.hku.hk/about/"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.hku.hk/apply/international-qualifications"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://admissions.hku.hk/apply"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.hku.hk/about/facts.html"
+        },
+        {
+          "topic": "finance",
+          "url": "https://admissions.hku.hk/fees-and-scholarships/fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://admissions.hku.hk/fees-and-scholarships/living-expenses"
+        }
+      ],
+      "student_count": {
+        "value": 39000,
+        "source": "HKU facts and figures",
+        "source_url": "https://www.hku.hk/about/facts.html",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "hkust-hk-hong-kong": {
+      "description": {
+        "value": "HKUST is a technology-focused research university known for engineering, business, data, and science, with strong industry links and a concentrated high-tech campus culture.",
+        "source": "Hong Kong University of Science and Technology official about page",
+        "source_url": "https://hkust.edu.hk/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "science_and_technology",
+          "research",
+          "engineering",
+          "computer_science",
+          "business",
+          "data_science",
+          "asia"
+        ],
+        "source": "Hong Kong University of Science and Technology official profile",
+        "source_url": "https://hkust.edu.hk/about",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://join.hkust.edu.hk/admissions/international-qualifications"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://join.hkust.edu.hk/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://seng.hkust.edu.hk/academics/undergraduate/programs/computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://seng.hkust.edu.hk/academics/undergraduate/programs/electronic-engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://seng.hkust.edu.hk/academics/undergraduate/programs/computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://hkust.edu.hk/about"
+        },
+        {
+          "topic": "tags",
+          "url": "https://hkust.edu.hk/about"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://join.hkust.edu.hk/admissions/international-qualifications"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://join.hkust.edu.hk/"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://hkust.edu.hk/about/facts-and-figures"
+        },
+        {
+          "topic": "finance",
+          "url": "https://join.hkust.edu.hk/fees-and-scholarships"
+        },
+        {
+          "topic": "finance",
+          "url": "https://join.hkust.edu.hk/fees-and-scholarships/living-expenses"
+        }
+      ],
+      "student_count": {
+        "value": 17800,
+        "source": "HKUST facts and figures",
+        "source_url": "https://hkust.edu.hk/about/facts-and-figures",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
+    },
+    "nanyang-technological-university-sg-singapore": {
+      "description": {
+        "value": "NTU is a leading Asian technology and research university known for engineering, computing, business, materials, and interdisciplinary science with a large residential campus.",
+        "source": "Nanyang Technological University, Singapore official about page",
+        "source_url": "https://www.ntu.edu.sg/about-us",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Short UniSearch summary based on the university's official about page and public positioning."
+      },
+      "tags": {
+        "value": [
+          "public_university",
+          "national_university",
+          "science_and_technology",
+          "research",
+          "engineering",
+          "computer_science",
+          "business",
+          "asia"
+        ],
+        "source": "Nanyang Technological University, Singapore official profile",
+        "source_url": "https://www.ntu.edu.sg/about-us",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Tag set curated from official university positioning and public academic structure."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ntu.edu.sg/admissions/undergraduate/admission-guide/international-qualifications"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.ntu.edu.sg/admissions/undergraduate"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-computing-in-computer-science"
+        },
+        {
+          "topic": "programs",
+          "url": "https://www.ntu.edu.sg/education/undergraduate-programme/computer-engineering"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-computing-in-computer-science"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.ntu.edu.sg/about-us"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.ntu.edu.sg/about-us"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ntu.edu.sg/admissions/undergraduate/admission-guide/international-qualifications"
+        },
+        {
+          "topic": "local_exam_requirements",
+          "url": "https://www.ntu.edu.sg/admissions/undergraduate"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.ntu.edu.sg/about-us/facts-figures"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ntu.edu.sg/admissions/undergraduate/financial-matters/tuition-fees"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.ntu.edu.sg/admissions/undergraduate/financial-matters/cost-of-living"
+        }
+      ],
+      "student_count": {
+        "value": 35500,
+        "source": "NTU facts and figures",
+        "source_url": "https://www.ntu.edu.sg/about-us/facts-figures",
+        "verified_at": "2026-04-04",
+        "status": "reviewed",
+        "confidence": "medium",
+        "method": "Curated from the university's published facts / quick-facts materials."
+      }
     }
   }
 }

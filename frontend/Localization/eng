@@ -156,7 +156,7 @@ profile.exam_band_label: Level
 profile.exam_band_placeholder: Select level
 profile.exam_band_required: Select a level
 profile.exam_grade_optional: Optional 4th subject
-profile.exam_grade_slot: Grade {index}
+profile.exam_grade_slot: Subject {index}
 profile.exam_grade_placeholder: Select grade
 profile.exam_grade_required: Choose {count} grades for {exam}
 profile.exam_alevel_hint: Enter {min}-{max} grades. UniSearch uses your best {best} grades.
@@ -205,7 +205,7 @@ profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
 profile.placeholder.budget: e.g. 20000
 profile.placeholder.gpa: e.g. 92
-profile.placeholder.interests: Example: computer science, scholarships, big city, strong internships
+profile.placeholder.interests: Example: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies
 profile.placeholder.lang_score: Score (e.g. 7.5)
 profile.placeholder.score: Score
 profile.preference_saved: Preference saved
@@ -367,7 +367,7 @@ university.admissions.counts.offers: Offers
 university.admissions.counts.enrolled: Enrolled
 university.admissions.counts.places: places
 university.admissions.unit.points: points
-university.admissions.a_level: A-Level
+university.admissions.a_level: A-Level results
 university.admissions.poly_gpa: Poly GPA
 university.admissions.range: Approx. range
 university.admissions.supplementary_required: Supplementary required

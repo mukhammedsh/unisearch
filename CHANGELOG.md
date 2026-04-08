@@ -2,6 +2,33 @@
 
 All notable project changes should be recorded here.
 
+## 3.3.0 (2026-04-08) - +20 Universities
+
+Status:
+- synchronized runtime/package version to `3.3.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, `backend/.env.example`, and README examples;
+- expanded the university catalog with 20 new institutions:
+  - University of Oxford
+  - University of Cambridge
+  - California Institute of Technology
+  - University of Chicago
+  - University of Pennsylvania
+  - Cornell University
+  - University of California, Berkeley
+  - UNSW Sydney
+  - Yale University
+  - Princeton University
+  - University of Sydney
+  - McGill University
+  - Johns Hopkins University
+  - Australian National University
+  - University of Edinburgh
+  - University of Manchester
+  - Columbia University
+  - University of British Columbia
+  - University of California, Los Angeles
+  - University of Waterloo;
+- removed temporary university-import artifacts and stray generated assets that were not part of the finalized catalog update.
+
 ## 3.2.1 (2026-04-03) - Tag Label And Rule Cleanup
 
 Status:

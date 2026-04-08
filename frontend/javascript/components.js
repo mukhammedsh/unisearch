@@ -263,7 +263,7 @@ const LAYOUT_HTML = `
           class="profile-input"
           rows="4"
           maxlength="1200"
-          placeholder="Write only what you want to find (programs, research, location). Do not list what you do not want."
+          placeholder="Example: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies"
           data-i18n-placeholder="profile.placeholder.interests"
         ></textarea>
         <div
@@ -994,7 +994,7 @@ function initProfileUI() {
                         const isOptional = idx >= minCount;
                         const label = isOptional
                             ? t("profile.exam_grade_optional", "Optional 4th subject")
-                            : tFormat("profile.exam_grade_slot", { index: idx + 1 }, `Grade ${idx + 1}`);
+                            : tFormat("profile.exam_grade_slot", { index: idx + 1 }, `Subject ${idx + 1}`);
                         return `
                             <div class="profile-exam-special-field">
                                 <span class="mini-label">${escapeHtml(label)}</span>

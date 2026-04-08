@@ -8,7 +8,29 @@
       "Cambridge"
     ],
     "California": [
+      "Berkeley",
+      "Los Angeles",
+      "Pasadena",
       "Stanford"
+    ],
+    "New Jersey": [
+      "Princeton"
+    ],
+    "Connecticut": [
+      "New Haven"
+    ],
+    "Illinois": [
+      "Chicago"
+    ],
+    "Pennsylvania": [
+      "Philadelphia"
+    ],
+    "New York": [
+      "Ithaca",
+      "New York"
+    ],
+    "Maryland": [
+      "Baltimore"
     ]
   },
   "South Korea": [
@@ -20,23 +42,45 @@
     "Tokyo"
   ],
   "Hong Kong": [
+    "Hong Kong",
     "Sha Tin"
   ],
-  "UK": [
-    "London"
-  ],
+  "UK": {
+    "England": [
+      "Cambridge",
+      "London",
+      "Manchester",
+      "Oxford"
+    ],
+    "Scotland": [
+      "Edinburgh"
+    ]
+  },
   "Switzerland": [
     "Zurich",
     "Lausanne"
   ],
   "Canada": {
     "Ontario": [
-      "Toronto"
+      "Toronto",
+      "Waterloo"
+    ],
+    "Quebec": [
+      "Montreal"
+    ],
+    "British Columbia": [
+      "Vancouver"
     ]
   },
   "Australia": {
     "Victoria": [
       "Melbourne"
+    ],
+    "New South Wales": [
+      "Sydney"
+    ],
+    "Australian Capital Territory": [
+      "Canberra"
     ]
   },
   "China": [

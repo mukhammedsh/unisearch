@@ -129,7 +129,7 @@
     "label": "A-Level",
     "labels": {
       "eng": "A-Level",
-      "rus": "Сертификат A-Level"
+      "rus": "Оценки A-Level"
     },
     "input_mode": "grade_combo",
     "min": 0,
@@ -267,7 +267,7 @@
     "label": "German Abitur Certificate",
     "labels": {
       "eng": "German Abitur Certificate",
-      "rus": "Аттестат Abitur"
+      "rus": "Немецкий аттестат Abitur"
     },
     "input_mode": "flag",
     "min": 0,
@@ -280,7 +280,7 @@
     "label": "OSSD (Ontario Secondary School Diploma)",
     "labels": {
       "eng": "OSSD (Ontario Secondary School Diploma)",
-      "rus": "OSSD (диплом старшей школы Онтарио)"
+      "rus": "OSSD (диплом о среднем образовании Онтарио)"
     },
     "input_mode": "flag",
     "min": 0,
