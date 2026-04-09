@@ -42,6 +42,7 @@ import {
 } from "./university-detail-helpers.js";
 
 import { setupTabs } from "./components.js";
+import { heroIcon, stripLeadingDecorations } from "./icons.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "./routes.js";
 import {
@@ -91,6 +92,62 @@ function buildApiUrl(path) {
   const base = String(API_BASE || "").trim().replace(/\/+$/, "");
   const suffix = String(path || "").replace(/^\/+/, "");
   return `${base}/${suffix}`;
+}
+
+function formatCampusSizeValue(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const translated = translateDataValue("campus_size", raw, raw);
+  if (getCurrentLanguage() === "eng") return humanizeMachineLabel(translated, raw);
+  return translated;
+}
+
+function cleanDecoratedText(text) {
+  const raw = String(text || "").trim();
+  const stripped = stripLeadingDecorations(raw);
+  return stripped || raw;
+}
+
+function renderInlineIcon(name, size = 14, extraClass = "") {
+  const classes = ["ui-icon", `ui-icon--${size}`];
+  if (extraClass) classes.push(extraClass);
+  return heroIcon(name, classes.join(" "));
+}
+
+function renderUniPill(iconName, toneClass, text) {
+  return `<span class="uni-pill ${toneClass}">${renderInlineIcon(iconName, 14, "uni-pill-icon")}<span class="uni-pill-text">${escapeHtml(cleanDecoratedText(text))}</span></span>`;
+}
+
+function renderScholarshipLine(iconName, toneClass, text) {
+  return `<div class="scholarship-line ${toneClass}">${renderInlineIcon(iconName, 16, "scholarship-line-icon")}<span>${escapeHtml(cleanDecoratedText(text))}</span></div>`;
+}
+
+function renderLocationMarkup({
+  city = "",
+  country = "",
+  flagHtml = "",
+  wrapperClass = "",
+  iconClass = "",
+  showIcon = true,
+  cityClass = "",
+  countryClass = "",
+  fallbackClass = "",
+} = {}) {
+  const cityText = String(city || "").trim();
+  const countryText = String(country || "").trim();
+  const parts = [];
+  if (cityText) {
+    parts.push(`<span class="${cityClass}">${escapeHtml(cityText)}${countryText ? "," : ""}</span>`);
+  }
+  if (countryText) {
+    const countryLabel = `<span>${escapeHtml(countryText)}</span>`;
+    parts.push(`<span class="${countryClass}">${flagHtml ? `${flagHtml}${countryLabel}` : countryLabel}</span>`);
+  }
+  if (!parts.length) {
+    parts.push(`<span class="${fallbackClass || cityClass}">${escapeHtml(unknownFieldText("placeholder.field.location", "Location"))}</span>`);
+  }
+  const iconHtml = showIcon ? renderInlineIcon("map-pin", 14, iconClass) : "";
+  return `<div class="${wrapperClass}">${iconHtml}${parts.join("")}</div>`;
 }
 
 let rankingBadgeResizeBound = false;
@@ -430,6 +487,17 @@ function admissionsDataTypeLabel(typeKey) {
   return t("university.admissions.metric.official_signal", "Official signal");
 }
 
+function admissionsRateLabel(row) {
+  const status = String(row?.status || "").trim().toLowerCase();
+  const counts = row?.counts && typeof row.counts === "object" ? row.counts : {};
+  const hasCountBasis = toFiniteNumber(counts?.applicants) !== null
+    && (toFiniteNumber(counts?.admitted) !== null || toFiniteNumber(counts?.offers) !== null);
+  if (status === "official_counts" && hasCountBasis) {
+    return t("university.admissions.metric.rate_from_counts", "Rate from official counts");
+  }
+  return t("university.admissions.metric.acceptance_rate", "Acceptance rate");
+}
+
 function admissionsSignalSummary(row) {
   const typeKey = admissionsDataTypeKey(row);
   if (typeKey === "acceptance_rate") return t("university.admissions.signal.rate", "Official rate from published counts.");
@@ -473,7 +541,7 @@ function admissionsFactChips(row) {
   if (rate !== null) {
     chips.push({
       tone: "accent",
-      text: `${formatAdmissionsPercent(rate)} ${t("university.admissions.metric.acceptance_rate", "Acceptance rate")}`,
+      text: `${formatAdmissionsPercent(rate)} ${admissionsRateLabel(row)}`,
     });
   }
 
@@ -590,7 +658,7 @@ function renderAdmissionsOverview(admissions) {
     ? formatAdmissionsPercent(universityRate)
     : t("university.admissions.no_university_rate", "No official university-wide acceptance rate published.");
   const universitySub = universityRate !== null
-    ? t("university.admissions.metric.acceptance_rate", "Acceptance rate")
+    ? admissionsRateLabel(universityWide)
     : admissionsStatusLabel(universityWide?.status);
   const universityChecked = String(universityWide?.provenance?.verified_at || data?.status_date || "").trim();
 
@@ -815,6 +883,8 @@ const DETAIL_CACHE_MAX_ITEMS = 24;
 const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 let __detailProfileUpdatedHandler = null;
 let __detailLanguageChangedHandler = null;
+let __detailFinanceResizeHandler = null;
+let __detailFinanceResizeObserver = null;
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
 let __rankingLanguageChangedHandler = null;
@@ -1049,7 +1119,9 @@ export function initUniversitiesPage() {
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
         const aiOpt = el.sortSelect.querySelector('option[value="uni_ai"]');
-        if (aiOpt) aiOpt.textContent = tFormat("universities.sort_ai", { fit: aiName("fit") }, `✨ ${aiName("fit")}: ${t("common.ai_short", "AI")} Smart Sort`);
+        if (aiOpt) aiOpt.textContent = cleanDecoratedText(
+            tFormat("universities.sort_ai", { fit: aiName("fit") }, `${aiName("fit")}: ${t("common.ai_short", "AI")} Smart Sort`)
+        );
     };
     applyAISortOptionLabel();
 
@@ -1098,6 +1170,38 @@ export function initUniversitiesPage() {
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     let hasInitialListPaint = false;
     let uniFitWarningShownInSession = false;
+
+    function renderUniversitiesState(options = {}) {
+        if (!el.state) return;
+        const warningText = String(options.warningText || "").trim();
+        const emptyText = String(options.emptyText || "").trim();
+        const blocks = [];
+
+        if (warningText) {
+            blocks.push(`
+                <div class="u-state-card u-state-card--warning" role="status">
+                    <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.warning_title", "Temporary ranking fallback"))}</div>
+                    <div class="u-state-card__text">${escapeHtml(warningText)}</div>
+                </div>
+            `.trim());
+        }
+
+        if (emptyText) {
+            blocks.push(`
+                <div class="u-state-card u-state-card--empty" role="status">
+                    <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.empty_title", "No results for current filters"))}</div>
+                    <div class="u-state-card__text">${escapeHtml(emptyText)}</div>
+                </div>
+            `.trim());
+        }
+
+        if (!blocks.length) {
+            el.state.innerHTML = "";
+            return;
+        }
+
+        el.state.innerHTML = blocks.join("");
+    }
 
     function setUniversitiesLoading(isLoading) {
         if (!el.loading) return;
@@ -1336,7 +1440,7 @@ export function initUniversitiesPage() {
         modal.innerHTML = `
             <div class="unifit-warning-backdrop" data-action="cancel"></div>
             <div class="unifit-warning-card" role="dialog" aria-modal="true" aria-labelledby="unifitWarningTitle">
-                <div class="unifit-warning-icon">!</div>
+                <div class="unifit-warning-icon">${renderInlineIcon("exclamation-triangle", 20, "unifit-warning-icon-svg")}</div>
                 <div class="unifit-warning-content">
                     <h3 id="unifitWarningTitle">${escapeHtml(t("unifit.warning.title", "Limited Profile Data"))}</h3>
                     <p>${escapeHtml(t("unifit.warning.desc", "UniFit is more accurate when your profile includes exam or language scores."))}</p>
@@ -2175,16 +2279,13 @@ export function initUniversitiesPage() {
             hasInitialListPaint = true;
 
             if (!items.length) {
-                if (el.state) {
-                    el.state.textContent = warningText ? `${warningText} ${t("universities.state.empty", "No universities found.")}` : t("universities.state.empty", "No universities found.");
-                    el.state.classList.toggle("u-state-warning", !!warningText);
-                }
+                renderUniversitiesState({
+                    warningText,
+                    emptyText: t("universities.state.empty", "No universities found."),
+                });
                 return;
             }
-            if (el.state) {
-                el.state.textContent = warningText;
-                el.state.classList.toggle("u-state-warning", !!warningText);
-            }
+            renderUniversitiesState({ warningText });
             const profile = loadProfile();
             const userBudget = parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
@@ -2195,10 +2296,10 @@ export function initUniversitiesPage() {
         if (state.viewMode === "map") {
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
-            if (el.state) {
-                el.state.textContent = warningText;
-                el.state.classList.toggle("u-state-warning", !!warningText);
-            }
+            renderUniversitiesState({
+                warningText,
+                emptyText: items.length ? "" : t("universities.state.empty", "No universities found."),
+            });
         }
     }
 
@@ -2211,10 +2312,7 @@ export function initUniversitiesPage() {
         });
         setUniversitiesLoading(true);
         if (el.total) el.total.textContent = "0";
-        if (el.state) {
-            el.state.textContent = "";
-            el.state.classList.remove("u-state-warning");
-        }
+        renderUniversitiesState();
         if (state.viewMode === 'list') el.list.innerHTML = "";
         if (state.viewMode === "map") resetMapResults();
         if (el.pagination) el.pagination.innerHTML = "";
@@ -2307,17 +2405,17 @@ export function initUniversitiesPage() {
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
         const countryRaw = nested(u, ["location", "country"], "");
         const cityRaw = nested(u, ["location", "city"], "");
-        const cityText = escapeHtml(trCity(cityRaw));
-        const countryText = escapeHtml(trCountry(countryRaw));
-        let locString = `<span class="uni-loc-line">${escapeHtml(unknownFieldText("placeholder.field.location", "Location"))}</span>`;
-        if (countryRaw) {
-            const flagHtml = getFlagImg(countryRaw);
-            locString = cityRaw 
-                ? `<span class="uni-loc-line">${cityText}, ${flagHtml} ${countryText}</span>`
-                : `<span class="uni-loc-line">${flagHtml} ${countryText}</span>`;
-        } else if (cityRaw) {
-            locString = `<span class="uni-loc-line">${cityText}</span>`;
-        }
+        const locHtml = renderLocationMarkup({
+            city: trCity(cityRaw),
+            country: trCountry(countryRaw),
+            flagHtml: countryRaw ? getFlagImg(countryRaw) : "",
+            wrapperClass: "uni-loc",
+            iconClass: "uni-loc-icon",
+            showIcon: false,
+            cityClass: "uni-loc-city",
+            countryClass: "uni-loc-country",
+            fallbackClass: "uni-loc-line",
+        });
         const match = u.matchData || {};
 
         // Базовая цена (трековая, если algo её дал)
@@ -2372,7 +2470,7 @@ export function initUniversitiesPage() {
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
             badges.push(
-                `<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.conditional_exam_needed", "📝 Conditional / Exam Needed"))}</span>`
+                renderUniPill("clipboard-document-list", "uni-pill--warn", t("universities.badge.conditional_exam_needed", "Conditional / Exam Needed"))
             );
             whyText = t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional.");
         }
@@ -2380,12 +2478,12 @@ export function initUniversitiesPage() {
         // Priority 2: preference-match group. Only one vibe tag may be shown.
         if (hasVeryHighVibeMatch) {
             badges.push(
-                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.your_vibe", "🔥 Your Vibe"))}</span>`
+                renderUniPill("sparkles", "uni-pill--success", t("universities.badge.your_vibe", "Your Vibe"))
             );
             if (!whyText) whyText = t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders.");
         } else if (hasHighVibeMatch) {
             badges.push(
-                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.top_match", "⭐ Good Match"))}</span>`
+                renderUniPill("check-badge", "uni-pill--success", t("universities.badge.top_match", "Good Match"))
             );
             if (!whyText) whyText = t("universities.why.top_match", "This university is a good preference match for your current slider setup.");
         }
@@ -2393,28 +2491,28 @@ export function initUniversitiesPage() {
         // Priority 3: financial route tag from finance slider mode + chance
         if (likelyGrant) {
             badges.push(
-                `<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.likely_grant", "💲 Likely Grant"))}</span>`
+                renderUniPill("banknotes", "uni-pill--success", t("universities.badge.likely_grant", "Likely Grant"))
             );
             if (!whyText) whyText = t("universities.why.likely_grant", "In grant-priority mode, this university has a strong grant admission chance.");
         } else if (paidAdmission) {
             badges.push(
-                `<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.paid_admission", "💼 Paid Admission"))}</span>`
+                renderUniPill("briefcase", "uni-pill--budget", t("universities.badge.paid_admission", "Paid Admission"))
             );
             if (!whyText) whyText = t("universities.why.paid_admission", "In willing-to-pay mode, this university has a strong general admission chance.");
         }
 
         // Status tags: requirements + budget + aid.
         if (belowRequirements) {
-            badges.push(`<span class="uni-pill uni-pill--warn">${escapeHtml(t("universities.badge.below_requirements", "⚠️ Below Requirements"))}</span>`);
+            badges.push(renderUniPill("exclamation-triangle", "uni-pill--warn", t("universities.badge.below_requirements", "Below Requirements")));
         } else if (meetsMinRequirements) {
-            badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.requirements_met", "✅ Requirements Met"))}</span>`);
+            badges.push(renderUniPill("check-circle", "uni-pill--success", t("universities.badge.requirements_met", "Requirements Met")));
         }
 
         if (overBudget) {
-            if (aidAny) badges.push(`<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget_aid", "💸 Over Budget • Aid Available"))}</span>`);
-            else badges.push(`<span class="uni-pill uni-pill--budget">${escapeHtml(t("universities.badge.over_budget", "💰 Over Budget"))}</span>`);
+            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available")));
+            else badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget", "Over Budget")));
         } else if (aidAny) {
-            badges.push(`<span class="uni-pill uni-pill--success">${escapeHtml(t("universities.badge.aid_available", "🤝 Aid Available"))}</span>`);
+            badges.push(renderUniPill("check-circle", "uni-pill--success", t("universities.badge.aid_available", "Aid Available")));
         }
 
         const badgeCountClass = `uni-badge--count-${Math.min(Math.max(badges.length, 1), 6)}`;
@@ -2443,7 +2541,7 @@ export function initUniversitiesPage() {
             </div>
             <div class="uni-body">
                         <h3 class="uni-title" title="${safeName}">${safeName}</h3>
-            <div class="uni-loc"><span class="uni-loc-emoji" aria-hidden="true">📍</span>${locString}</div>
+            ${locHtml}
             ${acceptanceHtml}
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
@@ -2484,6 +2582,18 @@ export async function initUniversityPage() {
   if (__detailLanguageChangedHandler) {
     window.removeEventListener("languageChanged", __detailLanguageChangedHandler);
     __detailLanguageChangedHandler = null;
+  }
+  if (__detailFinanceResizeHandler) {
+    window.removeEventListener("resize", __detailFinanceResizeHandler);
+    __detailFinanceResizeHandler = null;
+  }
+  if (__detailFinanceResizeObserver) {
+    try {
+      __detailFinanceResizeObserver.disconnect();
+    } catch (e) {
+      // ignore observer cleanup issues
+    }
+    __detailFinanceResizeObserver = null;
   }
   bindInfoTooltips({ wrapSelector: ".d-info-wrap", buttonSelector: ".d-info" });
 
@@ -2532,13 +2642,19 @@ export async function initUniversityPage() {
     setTxt("detailName", translatedName);
     const detailLocationEl = document.getElementById("detailLocation");
     if (detailLocationEl) {
-        const locationParts = [translatedCity, translatedCountry].filter((part) => String(part || "").trim().length > 0);
+        const cityText = String(translatedCity || "").trim();
+        const countryText = String(translatedCountry || "").trim();
         const detailFlag = getFlagImg(u?.location?.country || "");
-        if (locationParts.length) {
-            const locationText = escapeHtml(locationParts.join(", "));
-            detailLocationEl.innerHTML = detailFlag
-                ? `<span class="d-location-emoji" aria-hidden="true">📍</span><span class="d-location-line">${detailFlag}<span>${locationText}</span></span>`
-                : `<span class="d-location-emoji" aria-hidden="true">📍</span><span>${locationText}</span>`;
+        if (cityText || countryText) {
+            const cityHtml = cityText
+                ? `<span class="d-location-city">${escapeHtml(cityText)}${countryText ? "," : ""}</span>`
+                : "";
+            const countryHtml = countryText
+                ? (detailFlag
+                    ? `<span class="d-location-country">${detailFlag}<span>${escapeHtml(countryText)}</span></span>`
+                    : `<span class="d-location-country"><span>${escapeHtml(countryText)}</span></span>`)
+                : "";
+            detailLocationEl.innerHTML = `${cityHtml}${countryHtml}`;
         } else {
             detailLocationEl.textContent = unknownFieldText("placeholder.field.location", "Location");
         }
@@ -2634,6 +2750,11 @@ export async function initUniversityPage() {
         const acceptanceRate = acceptanceDirect !== null
             ? acceptanceDirect
             : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
+        const acceptanceMeta = (u?.academics?.acceptance_rate_percent_meta && typeof u.academics.acceptance_rate_percent_meta === "object")
+            ? u.academics.acceptance_rate_percent_meta
+            : ((u?.academics?.admissions?.university_wide?.provenance && typeof u.academics.admissions.university_wide.provenance === "object")
+                ? u.academics.admissions.university_wide.provenance
+                : {});
         const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
         const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
         const rankValue = toFiniteNumber(u?.rank);
@@ -2641,7 +2762,37 @@ export async function initUniversityPage() {
         const acceptanceDisplay = acceptanceRate === null
             ? unknownFieldText("acceptance_rate", "Acceptance Rate")
             : `${Math.round(acceptanceRate * 100) / 100}%`;
-        const acceptanceRow = `<div class="d-kv"><span>${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span><span>${escapeHtml(acceptanceDisplay)}</span></div>`;
+        const acceptanceSourceUrl = safeUrl(acceptanceMeta?.source_url);
+        const acceptanceSourceLabel = String(acceptanceMeta?.source || "").trim() || t("university.admissions.official_source", "Official source");
+        const acceptanceChecked = String(acceptanceMeta?.verified_at || "").trim();
+        const acceptanceBasis = acceptanceMeta?.basis && typeof acceptanceMeta.basis === "object" ? acceptanceMeta.basis : {};
+        const acceptanceCycle = String(acceptanceBasis?.cycle || "").trim();
+        const acceptanceApplicants = toFiniteNumber(acceptanceBasis?.applicants);
+        const acceptanceAdmitted = toFiniteNumber(acceptanceBasis?.admitted);
+        const acceptanceInfoTitle = escapeHtml(t("university.admissions.official_source", "Official source"));
+        const acceptanceTooltip = acceptanceSourceUrl ? `
+            <span class="d-info-wrap">
+              <button type="button" class="d-info" aria-label="${acceptanceInfoTitle}" title="${acceptanceInfoTitle}">i</button>
+              <span class="d-tooltip" role="tooltip">
+                <strong>${acceptanceInfoTitle}</strong>
+                <span>${escapeHtml(acceptanceSourceLabel)}</span>
+                ${acceptanceChecked ? `<span>${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(acceptanceChecked)}</span>` : ""}
+                ${acceptanceCycle ? `<span>${escapeHtml(t("university.admissions.cycle", "Cycle"))}: ${escapeHtml(acceptanceCycle)}</span>` : ""}
+                ${acceptanceApplicants !== null ? `<span>${escapeHtml(t("university.admissions.counts.applicants", "Applicants"))}: ${escapeHtml(formatUiNumber(acceptanceApplicants))}</span>` : ""}
+                ${acceptanceAdmitted !== null ? `<span>${escapeHtml(t("university.admissions.counts.admitted", "Admitted"))}: ${escapeHtml(formatUiNumber(acceptanceAdmitted))}</span>` : ""}
+                <span><a href="${escapeHtmlAttr(acceptanceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a></span>
+              </span>
+            </span>
+        ` : "";
+        const acceptanceRow = `
+            <div class="d-kv">
+              <span class="d-kv-label">
+                ${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}
+                ${acceptanceTooltip}
+              </span>
+              <span>${escapeHtml(acceptanceDisplay)}</span>
+            </div>
+        `;
         let rankHtml = `<span>${escapeHtml(unknownFieldText("placeholder.field.global_rank", "Global Rank"))}</span>`;
         if (officialRank) {
             rankHtml = `<span class="d-rank-emphasis">#${u.rank}</span>`;
@@ -2651,7 +2802,7 @@ export async function initUniversityPage() {
 
         const campusSizeRaw = typeof u.student_life?.size === "string" ? String(u.student_life.size).trim() : "";
         const campusSize = campusSizeRaw
-            ? escapeHtml(translateDataValue("campus_size", campusSizeRaw, campusSizeRaw))
+            ? escapeHtml(formatCampusSizeValue(campusSizeRaw))
             : escapeHtml(unknownFieldText("campus_size", "Campus Size"));
         const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
         const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
@@ -3135,7 +3286,8 @@ export async function initUniversityPage() {
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo"); 
     const priceBig = document.getElementById("detailPrice");           
-    const syncFinanceSummaryCardHeights = () => {
+    let financeSummarySyncRaf = 0;
+    const applyFinanceSummaryCardHeights = () => {
         const scholarshipCard = scholDiv;
         const totalPriceCard = priceBig?.closest?.(".total-price-card") || null;
         if (!scholarshipCard || !totalPriceCard) return;
@@ -3144,20 +3296,45 @@ export async function initUniversityPage() {
         totalPriceCard.style.minHeight = "";
         if (window.innerWidth <= 768) return;
 
-        window.requestAnimationFrame(() => {
-            scholarshipCard.style.minHeight = "";
-            totalPriceCard.style.minHeight = "";
-            const targetHeight = Math.max(
-                scholarshipCard.offsetHeight || 0,
-                totalPriceCard.offsetHeight || 0,
-            );
-            if (targetHeight > 0) {
-                const value = `${targetHeight}px`;
-                scholarshipCard.style.minHeight = value;
-                totalPriceCard.style.minHeight = value;
-            }
+        const targetHeight = Math.max(
+            scholarshipCard.offsetHeight || 0,
+            totalPriceCard.offsetHeight || 0,
+        );
+        if (targetHeight > 0) {
+            const value = `${targetHeight}px`;
+            scholarshipCard.style.minHeight = value;
+            totalPriceCard.style.minHeight = value;
+        }
+    };
+    const syncFinanceSummaryCardHeights = () => {
+        if (financeSummarySyncRaf) {
+            window.cancelAnimationFrame(financeSummarySyncRaf);
+        }
+        financeSummarySyncRaf = window.requestAnimationFrame(() => {
+            financeSummarySyncRaf = 0;
+            applyFinanceSummaryCardHeights();
         });
     };
+    const settleFinanceSummaryCardHeights = () => {
+        syncFinanceSummaryCardHeights();
+        window.setTimeout(syncFinanceSummaryCardHeights, 140);
+    };
+    __detailFinanceResizeHandler = syncFinanceSummaryCardHeights;
+    window.addEventListener("resize", __detailFinanceResizeHandler, { passive: true });
+    if (typeof ResizeObserver === "function") {
+        __detailFinanceResizeObserver = new ResizeObserver(() => {
+            syncFinanceSummaryCardHeights();
+        });
+        if (scholDiv) __detailFinanceResizeObserver.observe(scholDiv);
+        const totalPriceCard = priceBig?.closest?.(".total-price-card") || null;
+        if (totalPriceCard) __detailFinanceResizeObserver.observe(totalPriceCard);
+        const financeSummaryContainer = scholDiv?.closest?.(".finance-summary-container") || null;
+        if (financeSummaryContainer) __detailFinanceResizeObserver.observe(financeSummaryContainer);
+    }
+    if (document.fonts?.ready?.then) {
+        document.fonts.ready.then(syncFinanceSummaryCardHeights).catch(() => {});
+    }
+    window.addEventListener("load", syncFinanceSummaryCardHeights, { once: true });
     
     if (u.finance) {
         // Блок скидок
@@ -3167,14 +3344,14 @@ export async function initUniversityPage() {
             const hasNeed = typeof fa.need_based === "boolean";
             const meritHtml = hasMerit
                 ? (fa.merit_based
-                    ? `<div class="scholarship-line scholarship-line--positive"><span class="scholarship-line-icon">✅</span> ${escapeHtml(translateWord("merit_based_scholarships_available", "Merit-based scholarships available"))}</div>`
-                    : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">❌</span> ${escapeHtml(translateWord("no_merit_based_scholarships", "No merit-based scholarships"))}</div>`)
-                : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">?</span> ${escapeHtml(unknownFieldText("placeholder.field.merit_scholarships", "Merit-based scholarships"))}</div>`;
+                    ? renderScholarshipLine("check-circle", "scholarship-line--positive", translateWord("merit_based_scholarships_available", "Merit-based scholarships available"))
+                    : renderScholarshipLine("x-circle", "scholarship-line--muted", translateWord("no_merit_based_scholarships", "No merit-based scholarships")))
+                : renderScholarshipLine("question-mark-circle", "scholarship-line--muted", unknownFieldText("placeholder.field.merit_scholarships", "Merit-based scholarships"));
             const needHtml = hasNeed
                 ? (fa.need_based
-                    ? `<div class="scholarship-line scholarship-line--positive"><span class="scholarship-line-icon">✅</span> ${escapeHtml(translateWord("need_based_financial_aid", "Need-based financial aid"))}</div>`
-                    : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">❌</span> ${escapeHtml(translateWord("no_need_based_aid", "No need-based aid"))}</div>`)
-                : `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">?</span> ${escapeHtml(unknownFieldText("placeholder.field.need_based_aid", "Need-based aid"))}</div>`;
+                    ? renderScholarshipLine("check-circle", "scholarship-line--positive", translateWord("need_based_financial_aid", "Need-based financial aid"))
+                    : renderScholarshipLine("x-circle", "scholarship-line--muted", translateWord("no_need_based_aid", "No need-based aid")))
+                : renderScholarshipLine("question-mark-circle", "scholarship-line--muted", unknownFieldText("placeholder.field.need_based_aid", "Need-based aid"));
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
@@ -3195,7 +3372,7 @@ export async function initUniversityPage() {
                 ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`
                 : escapeHtml(unknownFieldText("placeholder.field.cost", "Cost"));
         }
-        syncFinanceSummaryCardHeights();
+        settleFinanceSummaryCardHeights();
         
         // Карточки треков
         if (finDiv) {
@@ -3310,7 +3487,7 @@ export async function initUniversityPage() {
         }
     } else {
         if (scholDiv) {
-            scholDiv.innerHTML = `<div class="scholarship-line scholarship-line--muted"><span class="scholarship-line-icon">?</span> ${escapeHtml(unknownFieldText("placeholder.field.financial_aid", "Financial aid"))}</div>`;
+            scholDiv.innerHTML = renderScholarshipLine("question-mark-circle", "scholarship-line--muted", unknownFieldText("placeholder.field.financial_aid", "Financial aid"));
         }
         if (priceBig) {
             priceBig.textContent = unknownFieldText("placeholder.field.cost", "Cost");
@@ -3318,7 +3495,7 @@ export async function initUniversityPage() {
         if (finDiv) {
             finDiv.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
         }
-        syncFinanceSummaryCardHeights();
+        settleFinanceSummaryCardHeights();
     }
 
     if (stateEl) stateEl.textContent = "";
@@ -3460,8 +3637,6 @@ export async function initRankingPage() {
             const cityRaw = String(u?.location?.city || "");
             const countryRaw = String(u?.location?.country || "");
             const flag = getFlagImg(countryRaw);
-            const cityText = escapeHtml(trCity(cityRaw));
-            const countryText = escapeHtml(trCountry(countryRaw));
             const uniName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
             const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
             const rankSource = String(rankMeta.source || "").trim();
@@ -3483,9 +3658,17 @@ export async function initRankingPage() {
             const rankBadge = escapeHtml(
                 tFormat("ranking.source_status_label", { status: rankStatusLabel }, `Type: ${rankStatusLabel}`)
             );
-            const locationText = (cityRaw || countryRaw)
-                ? `${cityText}${countryRaw ? `, ${countryText}` : ""}`
-                : escapeHtml(unknownFieldText("placeholder.field.location", "Location"));
+            const locationHtml = renderLocationMarkup({
+                city: trCity(cityRaw),
+                country: trCountry(countryRaw),
+                flagHtml: flag,
+                wrapperClass: "rank-loc",
+                iconClass: "rank-loc-icon",
+                showIcon: false,
+                cityClass: "rank-loc-city",
+                countryClass: "rank-loc-country",
+                fallbackClass: "rank-loc-text",
+            });
 
             return `
             <a href="${routeUniversityDetail(u.id)}" class="rank-card"${sourceTitleAttr}>
@@ -3496,11 +3679,7 @@ export async function initRankingPage() {
                 </div>
                 <div class="rank-info">
                     <div class="rank-title">${escapeHtml(uniName)}</div>
-                    <div class="rank-loc">
-                        <span class="rank-loc-emoji" aria-hidden="true">📍</span>
-                        ${countryRaw ? `${flag} ` : ""}
-                        <span class="rank-loc-text">${locationText}</span>
-                    </div>
+                    ${locationHtml}
                 </div>
                 <div class="rank-badge">
                     ${rankBadge}

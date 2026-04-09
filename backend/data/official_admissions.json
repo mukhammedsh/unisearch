@@ -1087,7 +1087,7 @@
           "cycle": "Fall 2024",
           "scope": "university-wide"
         },
-        "semantics": "The Governing Council PDF gives distinct applicants and admitted counts for Fall 2024, while the Engineering annual report separately publishes selectivity and yield for first-year undergraduates.",
+        "semantics": "The Governing Council PDF gives Fall 2024 undergraduate 101 and non-101 distinct applicants and distinct admitted counts. UniSearch treats the derived 74.33% as a count-based undergraduate offer/admit rate, while the Engineering annual report separately publishes faculty-level selectivity and yield for first-year undergraduates.",
         "sources": [
           {
             "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
@@ -1108,11 +1108,12 @@
           "verified_at": "2026-03-16",
           "status": "official",
           "confidence": "medium",
-          "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+          "method": "Calculated as 21,949 distinct admitted divided by 29,528 distinct applicants from the official U of T Governing Council Fall 2024 undergraduate 101 + non-101 table.",
           "basis": {
             "cycle": "Fall 2024",
             "applicants": 29528,
-            "admitted": 21949
+            "admitted": 21949,
+            "scope": "undergraduate_101_plus_non_101_distinct_counts"
           }
         }
       },
@@ -4635,7 +4636,7 @@
       ]
     },
     "unsw-sydney-au-sydney": {
-      "university_name": "UNSW Sydney",
+      "university_name": "University of New South Wales",
       "university_wide": {
         "status": "no_official_source",
         "kind": "undergraduate_institution_wide",

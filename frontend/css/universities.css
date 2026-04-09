@@ -30,6 +30,39 @@
   padding: 18px 0 60px;
 }
 
+.u-page-scope {
+  max-width: 1320px;
+  margin: 0 auto 18px;
+  padding: 0 18px;
+}
+
+.u-page-scope__inner {
+  padding: 18px 20px;
+  border: 1px solid rgba(87, 21, 219, 0.18);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(87, 21, 219, 0.1), rgba(168, 85, 247, 0.04)),
+    var(--card);
+  box-shadow: 0 12px 28px rgba(87, 21, 219, 0.08);
+}
+
+.u-page-scope__eyebrow {
+  margin: 0 0 6px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.u-page-scope__text {
+  margin: 0;
+  max-width: 880px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
 .u-layout {
   max-width: 1320px;
   margin: 0 auto;
@@ -127,8 +160,6 @@
   border: 1px solid var(--line);
   background: #fff;
   color: #5715db;
-  font-size: 12px;
-  font-weight: 800;
   font-family: inherit;
   font-style: normal;
   line-height: 1;
@@ -139,6 +170,17 @@
   padding: 0;
   appearance: none;
   transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+
+.u-info .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.u-label-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .u-info:hover {
@@ -558,14 +600,47 @@
 }
 
 .u-state {
-  padding: 8px 2px 14px;
-  color: var(--muted);
-  font-size: 13px;
+  padding: 6px 0 16px;
+  display: grid;
+  gap: 10px;
 }
 
-.u-state.u-state-warning {
-  color: #b45309;
-  font-weight: 700;
+.u-state-card {
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 14px 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+}
+
+.u-state-card--scope {
+  border-color: rgba(87, 21, 219, 0.16);
+  background:
+    linear-gradient(135deg, rgba(87, 21, 219, 0.08), rgba(87, 21, 219, 0.02)),
+    var(--card);
+}
+
+.u-state-card--warning {
+  border-color: rgba(180, 83, 9, 0.24);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.u-state-card--empty {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.u-state-card__title {
+  margin: 0 0 4px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.u-state-card__text {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .u-tour-modal {
@@ -929,11 +1004,10 @@
   gap: 6px;
 }
 
-.uni-loc-emoji {
-  display: inline-block;
+.uni-loc-icon {
   flex: 0 0 auto;
-  line-height: 1;
-  transform: translateY(1px);
+  color: var(--accent);
+  margin-top: 1px;
 }
 
 .uni-loc-line {
@@ -943,6 +1017,17 @@
   max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+.uni-loc-city {
+  white-space: nowrap;
+}
+
+.uni-loc-country {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .uni-acceptance {
@@ -1033,7 +1118,8 @@
 
 .uni-pill {
   display: inline-flex;
-  align-items: flex-start;
+  align-items: center;
+  gap: 5px;
   padding: var(--uni-pill-pad-y, 2px) var(--uni-pill-pad-x, 6px);
   border-radius: 6px;
   font-size: var(--uni-pill-font-size, 10.5px);
@@ -1046,6 +1132,14 @@
   white-space: normal;
   overflow-wrap: anywhere;
   text-overflow: clip;
+}
+
+.uni-pill-icon {
+  flex: 0 0 auto;
+}
+
+.uni-pill-text {
+  min-width: 0;
 }
 
 .uni-badge .uni-pill {
@@ -1184,6 +1278,11 @@
   place-items: center;
   font-weight: 900;
   flex-shrink: 0;
+}
+
+.unifit-warning-icon .ui-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .unifit-warning-content h3 {
@@ -1684,8 +1783,25 @@
   color: #f0f0f0;
 }
 
-:root[data-theme="dark"] .u-state.u-state-warning {
-  color: #fbbf24;
+:root[data-theme="dark"] .u-state-card--scope {
+  border-color: rgba(168, 85, 247, 0.26);
+}
+
+:root[data-theme="dark"] .u-page-scope__inner {
+  background:
+    linear-gradient(135deg, rgba(87, 21, 219, 0.2), rgba(168, 85, 247, 0.08)),
+    var(--card);
+  border-color: rgba(168, 85, 247, 0.28);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme="dark"] .u-state-card--warning {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+:root[data-theme="dark"] .u-state-card--empty {
+  background: rgba(148, 163, 184, 0.12);
 }
 
 :root[data-theme="dark"] .slider-track {

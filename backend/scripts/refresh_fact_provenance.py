@@ -7,8 +7,8 @@ Adds/updates `fact_provenance` for:
 
 Rank behavior:
 - if `rank_meta.status == official`, rank fact is written as official external QS rank.
-- if `rank_meta.status in {excluded, not_listed}`, rank fact is preserved as non-official with that status.
-- otherwise rank fact falls back to internal derived prestige order metadata.
+- if `rank_meta.status in {not_published, excluded, not_listed}`, rank fact is preserved as non-official with that status.
+- otherwise rank fact falls back to legacy internal derived-prestige metadata.
 """
 
 from __future__ import annotations
@@ -76,18 +76,18 @@ def _rank_fact(university: Dict[str, Any], verified_at: str) -> Dict[str, Any]:
             "method": meta_note or "Direct value from published QS WUR 2026 table.",
         }
 
-    if meta_status in ("excluded", "not_listed"):
+    if meta_status in ("not_published", "excluded", "not_listed"):
         return {
             "value": int(value) if value is not None else None,
             "unit": "position",
             "source": meta_source or "QS World University Rankings 2026",
-            "source_url": meta_source_url or "https://www.topuniversities.com/world-university-rankings",
+            "source_url": meta_source_url or "https://www.topuniversities.com/qs-top-uni-wur",
             "external_reference": "QS World University Rankings 2026",
             "is_official_external_rank": False,
             "verified_at": effective_verified_at,
-            "confidence": "medium",
+            "confidence": "high" if meta_status == "not_published" else "medium",
             "status": meta_status,
-            "method": meta_note or "Fallback internal position for sorting; university is not in published QS WUR 2026 table.",
+            "method": meta_note or "No official QS WUR 2026 position is published for this university.",
         }
 
     return {

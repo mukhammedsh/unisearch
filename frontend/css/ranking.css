@@ -97,9 +97,12 @@
 
 .rank-info { flex-grow: 1; min-width: 0; }
 .rank-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-.rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; }
-.rank-loc-emoji { flex: 0 0 auto; line-height: 1; }
+.rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.rank-loc-icon { flex: 0 0 auto; color: var(--accent); }
+.rank-loc-city { white-space: nowrap; }
+.rank-loc-country { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .rank-loc-text { margin-left: 1px; }
+.rank-title-icon { color: #b45309; vertical-align: -3px; }
 
 .rank-badge {
     background: #f3f4f6;

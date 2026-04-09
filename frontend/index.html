@@ -10,7 +10,7 @@
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/index.css" />
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
@@ -25,9 +25,14 @@
           <p class="hero-desc" data-i18n="home.hero.desc">
               UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
           </p>
-          <p class="hero-note" data-i18n="home.scope.bachelor_only">
-              Current recommendations and analytics cover bachelor's degree tracks only.
-          </p>
+          <div class="hero-scope-callout" aria-label="Current study scope">
+              <p class="hero-scope-callout__title" data-i18n="home.scope.callout_title">
+                  Bachelor's programs only for now
+              </p>
+              <p class="hero-scope-callout__text" data-i18n="home.scope.callout_body">
+                  UniSearch currently covers bachelor's degree programs only. Master's and other study levels may appear later.
+              </p>
+          </div>
           <div class="hero-buttons">
               <a href="universities.html" data-route="universities" class="btn-primary" data-i18n="home.hero.start">Start Matching</a>
               <a href="ranking.html" data-route="ranking" class="btn-secondary" data-i18n="home.hero.rankings">View Rankings</a>
@@ -36,7 +41,7 @@
 
       <div class="hero-visual">
           <div class="blob"></div>
-          
+
           <div class="mockup-card" data-home-uni-id="mit-usa-cambridge" style="--home-mockup-thumb-url: url('images/mit-usa-cambridge.jpg');">
               <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
                   <div style="width:50px; height:50px; background:#f0f0f0; border-radius:10px; overflow:hidden;">
@@ -52,9 +57,7 @@
                       <div class="mockup-uni-loc" style="font-size:13px;" data-i18n="home.mockup.location">Cambridge, USA</div>
                   </div>
               </div>
-              <div style="display:flex; gap:10px; margin-bottom:15px;">
-                  <span style="background:#d1fae5; color:#065f46; padding:8px 8px; border-radius:6px; font-size:11px; font-weight:bold;" data-i18n="home.mockup.grant_available">✅ Grant Available</span>
-              </div>
+              <span style="background:#d1fae5; color:#065f46; padding:8px 8px; border-radius:6px; font-size:11px; font-weight:bold; display:inline-flex; align-items:center; gap:6px;"><span data-heroicon="check-circle" data-icon-size="14"></span><span data-i18n="home.mockup.grant_available">Grant Available</span></span>
               <!-- <div style="height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden;">
                   <div style="width:92%; height:100%; background:#5d17ea;"></div>
               </div> -->
@@ -63,7 +66,7 @@
                   <span style="font-weight:bold; color:#5d17ea;">92%</span>
               </div> -->
           </div>
-          
+
           <!-- <div class="mockup-card" style="position:absolute; top:20px; left:40px; z-index:1; transform: rotate(5deg) scale(0.9); opacity:0.6; pointer-events:none;"></div> -->
       </div>
   </section>
@@ -126,22 +129,22 @@
 
   <section class="features-section">
       <h2 class="section-title" data-i18n="home.why">Why use UniSearch?</h2>
-      
+
       <div class="feature-grid-new">
           <div class="feature-box">
-              <div class="feature-icon">🧠</div>
+              <div class="feature-icon"><span data-heroicon="cpu-chip" data-icon-size="24"></span></div>
               <h4 data-i18n="home.feature.ai_title">{fit} + {chance} AI</h4>
               <p data-i18n="home.feature.ai_desc">{fit} helps sort options for you, and {chance} shows an estimated admission chance.</p>
           </div>
-          
+
           <div class="feature-box">
-              <div class="feature-icon">💸</div>
+              <div class="feature-icon"><span data-heroicon="banknotes" data-icon-size="24"></span></div>
               <h4 data-i18n="home.feature.finance_title">Financial Clarity</h4>
               <p data-i18n="home.feature.finance_desc">See tuition and study costs, plus grant or discount options when they are available in the data.</p>
           </div>
 
           <div class="feature-box">
-              <div class="feature-icon">🚀</div>
+              <div class="feature-icon"><span data-heroicon="rocket-launch" data-icon-size="24"></span></div>
               <h4 data-i18n="home.feature.data_title">Simple Comparison</h4>
               <p data-i18n="home.feature.data_desc">We gather requirements, costs, and scholarships in one place so it is easier to compare universities.</p>
           </div>
@@ -154,8 +157,8 @@
 
   <footer class="site-footer">
       <div class="container footer-content">
-          <p data-i18n="footer.copyright">© 2026 UniSearch</p>
-          
+          <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+
           <div class="social-links">
               <a href="https://github.com/muxlex/unisearch" target="_blank">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
@@ -165,4 +168,3 @@
   </footer>
 </body>
 </html>
-

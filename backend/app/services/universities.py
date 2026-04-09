@@ -92,7 +92,7 @@ _HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
     "mcgill-university-ca-montreal": ["McGill", "Макгилл"],
     "university-of-british-columbia-ca-vancouver": ["UBC", "British Columbia", "ЮБиСи"],
     "university-of-waterloo-ca-waterloo": ["Waterloo", "Ватерлоо"],
-    "unsw-sydney-au-sydney": ["UNSW", "New South Wales", "ЮНСВ"],
+    "unsw-sydney-au-sydney": ["UNSW", "University of New South Wales", "New South Wales", "ЮНСВ"],
     "university-of-sydney-au-sydney": ["USyd", "Sydney", "Сидней"],
     "australian-national-university-au-canberra": ["ANU", "Australian National University", "АНУ"],
     "university-of-hong-kong-hk-hong-kong": ["HKU", "Hong Kong University", "ХКУ"],

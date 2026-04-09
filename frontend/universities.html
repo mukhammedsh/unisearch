@@ -24,17 +24,19 @@
 
 <body data-page="universities">
   <main class="u-page">
+    <section class="u-page-scope" aria-label="Current study scope">
+      <div class="u-page-scope__inner">
+        <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only for now</p>
+        <p class="u-page-scope__text" data-i18n="universities.scope_note.body">UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.</p>
+      </div>
+    </section>
     <div class="u-layout">
       <aside class="u-sidebar">
 
         <div class="u-filter-card">
           <div class="u-filter-title">
             <span class="u-filter-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M3 5h18M6 12h12M10 19h4"
-                      stroke="currentColor" stroke-width="2"
-                      stroke-linecap="round"/>
-              </svg>
+              <span data-heroicon="funnel" data-icon-size="20"></span>
             </span>
             <span data-i18n="universities.filter">Filter</span>
             <button id="resetFiltersBtn" class="u-reset" type="button">
@@ -44,7 +46,7 @@
 
           <div class="u-field">
             <label class="u-label" for="countrySelect">
-              <span>🌍 <span data-i18n="universities.country">Country</span></span>
+              <span class="u-label-icon"><span data-heroicon="globe-alt" data-icon-size="16"></span><span data-i18n="universities.country">Country</span></span>
             </label>
             <select id="countrySelect" class="u-select">
               <option value="" data-i18n="universities.global">Global</option>
@@ -53,7 +55,7 @@
 
           <div class="u-field" id="stateDiv" style="display: none;">
             <label class="u-label" for="stateSelect">
-              <span>🗺️ <span data-i18n="universities.state_region">State / Region</span></span>
+              <span class="u-label-icon"><span data-heroicon="map" data-icon-size="16"></span><span data-i18n="universities.state_region">State / Region</span></span>
             </label>
             <select id="stateSelect" class="u-select">
               <option value="" data-i18n="universities.any_state">Any State</option>
@@ -62,7 +64,7 @@
 
           <div class="u-field">
             <label class="u-label" for="citySelect">
-              <span>🏙️ <span data-i18n="universities.city">City</span></span>
+              <span class="u-label-icon"><span data-heroicon="building-office-2" data-icon-size="16"></span><span data-i18n="universities.city">City</span></span>
             </label>
             <select id="citySelect" class="u-select" disabled>
               <option value="" data-i18n="universities.select_country_first">Select country first</option>
@@ -73,13 +75,13 @@
 
           <div class="u-field">
             <label class="u-label">
-              <span>💵 <span data-i18n="universities.cost_per_year">Cost (USD / year)</span></span>
+              <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.cost_per_year">Cost (USD / year)</span></span>
             </label>
-            
+
             <div class="budget-control-wrapper">
                 <div class="budget-inputs">
                     <input id="minCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="0" />
-                    <span style="color:#aaa; font-weight:bold;">—</span>
+                    <span style="color:#aaa; font-weight:bold;">-</span>
                     <input id="maxCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="150000" />
                 </div>
 
@@ -88,11 +90,6 @@
                     <input id="minCostSlider" type="range" min="0" max="150000" value="0" step="100" />
                     <input id="maxCostSlider" type="range" min="0" max="150000" value="150000" step="100" />
                 </div>
-                
-                <!-- <div class="range-labels">
-                    <span>0</span>
-                    <span>1M+</span>
-                </div> -->
             </div>
           </div>
 
@@ -100,15 +97,15 @@
 
           <div class="u-field">
             <label class="u-label u-label-with-help" for="sortSelect">
-              <span>🤖 <span data-i18n="universities.sort_strategy">Sort Strategy</span></span>
+              <span class="u-label-icon"><span data-heroicon="sparkles" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort Strategy</span></span>
               <span class="u-info-wrap">
-                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="16"></span></button>
                 <span class="u-tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
               </span>
             </label>
             <select id="sortSelect" class="u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
-              <option value="uni_ai" data-i18n="universities.sort_ai">✨ {fit}: AI Smart Sort</option>
+              <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: AI Smart Sort</option>
               <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
               <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
             </select>
@@ -118,9 +115,9 @@
           <div class="u-field" id="aiSliderContainer">
             <div class="tradeoff-field">
               <div class="u-label u-label--between u-label-with-help">
-                <span>🧭 <span data-i18n="universities.tradeoff.focus">Focus</span></span>
+                <span class="u-label-icon"><span data-heroicon="cpu-chip" data-icon-size="16"></span><span data-i18n="universities.tradeoff.focus">Focus</span></span>
                 <span class="u-info-wrap">
-                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="16"></span></button>
                   <span class="u-tooltip" data-i18n="universities.help.tradeoff.focus">Choose whether you want more practice-oriented study or more theory and research.</span>
                 </span>
               </div>
@@ -136,9 +133,9 @@
 
             <div class="tradeoff-field">
               <div class="u-label u-label--between u-label-with-help">
-                <span>📚 <span data-i18n="universities.tradeoff.atmosphere">Atmosphere</span></span>
+                <span class="u-label-icon"><span data-heroicon="sparkles" data-icon-size="16"></span><span data-i18n="universities.tradeoff.atmosphere">Atmosphere</span></span>
                 <span class="u-info-wrap">
-                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="16"></span></button>
                   <span class="u-tooltip" data-i18n="universities.help.tradeoff.atmosphere">Choose between active student life and a calmer study-focused environment.</span>
                 </span>
               </div>
@@ -154,9 +151,9 @@
 
             <div class="tradeoff-field">
               <div class="u-label u-label--between u-label-with-help">
-                <span>💰 <span data-i18n="universities.tradeoff.finance">Finance</span></span>
+                <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.tradeoff.finance">Finance</span></span>
                 <span class="u-info-wrap">
-                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="16"></span></button>
                   <span class="u-tooltip" data-i18n="universities.help.tradeoff.finance">Left side favors grant-focused options. Right side also favors paid options.</span>
                 </span>
               </div>
@@ -172,9 +169,9 @@
 
             <div class="tradeoff-field">
               <div class="u-label u-label--between u-label-with-help">
-                <span>📍 <span data-i18n="universities.tradeoff.location">Location</span></span>
+                <span class="u-label-icon"><span data-heroicon="map-pin" data-icon-size="16"></span><span data-i18n="universities.tradeoff.location">Location</span></span>
                 <span class="u-info-wrap">
-                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open">i</button>
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="16"></span></button>
                   <span class="u-tooltip" data-i18n="universities.help.tradeoff.location">Left side favors life in big cities. Right side favors life outside big cities (suburban/rural campuses).</span>
                 </span>
               </div>
@@ -196,13 +193,7 @@
         <div class="u-top">
           <div class="u-search">
             <span class="u-search-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
-                      stroke="currentColor" stroke-width="2"/>
-                <path d="M16.5 16.5 21 21"
-                      stroke="currentColor" stroke-width="2"
-                      stroke-linecap="round"/>
-              </svg>
+              <span data-heroicon="magnifying-glass" data-icon-size="20"></span>
             </span>
             <input id="qInput" type="text" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" />
           </div>
@@ -211,13 +202,13 @@
              <div class="u-found">
                <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount">0</span> <span data-i18n="universities.found_suffix">universities</span>
              </div>
-             
+
              <div class="view-toggles">
                 <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                   <span data-heroicon="bars-3-bottom-left" data-icon-size="20"></span>
                 </button>
                 <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                   <span data-heroicon="map" data-icon-size="20"></span>
                 </button>
              </div>
           </div>
@@ -225,7 +216,7 @@
 
         <div id="listState" class="u-state"></div>
         <div id="universitiesList" class="u-grid"></div>
-        
+
         <div id="mapContainer" class="u-map-container" style="display: none;"></div>
 
         <div id="pagination" class="u-pagination"></div>
@@ -239,8 +230,8 @@
 
   <footer class="site-footer">
       <div class="container footer-content">
-          <p data-i18n="footer.copyright">© 2026 UniSearch</p>
-          
+          <p data-i18n="footer.copyright">� 2026 UniSearch</p>
+
           <div class="social-links">
               <a href="https://github.com/muxlex/unisearch" target="_blank">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
@@ -250,4 +241,3 @@
   </footer>
 </body>
 </html>
-

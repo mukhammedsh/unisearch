@@ -4,6 +4,7 @@ import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePag
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
+import { hydrateHeroIcons, stripLeadingDecorations } from "./icons.js";
 import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
 import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 
@@ -46,6 +47,17 @@ function applyAINameConfig() {
   document.querySelectorAll("[data-ai-name]").forEach((el) => {
     const key = String(el.getAttribute("data-ai-name") || "").trim().toLowerCase();
     if (tokens[key]) el.textContent = tokens[key];
+  });
+}
+
+function sanitizeDecoratedStaticText(root = document) {
+  const selectors = [
+    '[data-i18n="home.mockup.grant_available"]',
+  ];
+  selectors.forEach((selector) => {
+    root.querySelectorAll(selector).forEach((node) => {
+      node.textContent = stripLeadingDecorations(node.textContent);
+    });
   });
 }
 
@@ -146,11 +158,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.warn("university translations init failed, using local fallback pack:", e);
   });
   await loadGlobalLayout();
+  hydrateHeroIcons(document);
   window.dispatchEvent(new CustomEvent("languageChanged"));
   applyRouteLinks(document);
 
   applyAINameConfig();
   applyTranslations(document);
+  sanitizeDecoratedStaticText(document);
   initLanguagesPanel();
   initHomeMockupMedia();
   
@@ -186,6 +200,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.addEventListener("languageChanged", () => {
     applyAINameConfig();
     applyTranslations(document);
+    sanitizeDecoratedStaticText(document);
     const uniStat = document.getElementById("stat-uni");
     const countryStat = document.getElementById("stat-countries");
     if (uniStat && countryStat) {

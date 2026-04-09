@@ -26,6 +26,10 @@
 <body data-page="university">
   <main class="d-page">
     <div class="d-container">
+      <section class="d-page-scope" aria-label="Current study scope">
+        <p class="d-page-scope__eyebrow" data-i18n="university.scope_badge">Bachelor's only for now</p>
+        <p class="d-page-scope__text" data-i18n="university.scope_summary">This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.</p>
+      </section>
       <div id="detailState" class="d-state"></div>
 
       <section id="detailCard" class="d-card" style="display:none;">
@@ -41,16 +45,10 @@
               <h1 id="detailName" class="d-title">University Name</h1>
               <div class="d-head-links">
                 <a id="detailWebsite" href="#" target="_blank" class="d-site-link" title="Visit Official Website" data-i18n-title="university.visit_website">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                  </svg>
+                  <span data-heroicon="globe-alt" data-icon-size="20"></span>
                 </a>
                 <a id="detailMapLink" href="#" class="d-site-link" title="Show on map" style="display:none;" data-i18n-title="university.show_on_map">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 21s-7-4.35-7-11a7 7 0 1 1 14 0c0 6.65-7 11-7 11z"></path>
-                    <circle cx="12" cy="10" r="2.5"></circle>
-                  </svg>
+                  <span data-heroicon="map-pin" data-icon-size="20"></span>
                 </a>
               </div>
             </div>
@@ -61,16 +59,16 @@
 
         <div class="d-tabs">
           <button class="d-tab-btn active" data-tab="tab-general">
-            <span class="icon">📄</span> <span data-i18n="university.tab.general">General</span>
+            <span class="icon" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">General</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-programs">
-            <span class="icon">🎓</span> <span data-i18n="university.tab.programs">Programs</span>
+            <span class="icon" data-heroicon="academic-cap" data-icon-size="18"></span> <span data-i18n="university.tab.programs">Programs</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-admission">
-            <span class="icon">📝</span> <span data-i18n="university.tab.admission">Admission</span>
+            <span class="icon" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-finance">
-            <span class="icon">💲</span> <span data-i18n="university.tab.costs">Costs</span>
+            <span class="icon" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs</span>
           </button>
         </div>
 
@@ -90,7 +88,7 @@
           <div id="tab-programs" class="d-tab-pane">
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.available_majors">Available Majors</div>
-              <p class="d-box-note" data-i18n="university.programs_scope_note">Programs and admission data on this page currently cover bachelor's degree tracks only.</p>
+              <p class="d-box-note" data-i18n="university.programs_scope_note">Current list below is limited to bachelor's programs.</p>
               <div id="detailPrograms" class="d-box-text"></div>
             </div>
           </div>

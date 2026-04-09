@@ -19,6 +19,7 @@ import {
   getCurrentTheme,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
+import { heroIcon, setHeroIcon } from "./icons.js";
 import { initUniversityTranslations, translateProgramName } from "./university-translations.js";
 import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
 import { bindInfoTooltips } from "./tooltip.js";
@@ -29,7 +30,6 @@ function frontendStaticAsset(path = "") {
     const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
     return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
 }
-
 const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.png");
 const NAV_LOGO_DARK = frontendStaticAsset("images/darklogo.png");
 const NAV_LOGO_FALLBACK = frontendStaticAsset("images/minilogo.png");
@@ -181,14 +181,14 @@ const LAYOUT_HTML = `
   </nav>
 
   <div class="navbar-right">
-    <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">☰</button>
+    <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">${heroIcon("bars-3", "ui-icon ui-icon--18")}</button>
     <div class="lang-control">
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng">English (US)</option>
         <option value="rus">Русский</option>
       </select>
     </div>
-    <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">🌙</button>
+    <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">${heroIcon("moon", "ui-icon ui-icon--18")}</button>
     <button class="login-btn" id="profileBtn" data-i18n="nav.profile">Profile</button>
   </div>
 </header>
@@ -202,13 +202,13 @@ const LAYOUT_HTML = `
           <span id="profileNameDisplay">User</span>
           <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="16" />
           <button class="icon-btn" id="editNameBtn" title="Edit Name" data-i18n-title="profile.action.edit_name">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
+            ${heroIcon("pencil-square", "ui-icon ui-icon--18")}
           </button>
         </div>
         <div class="profile-subtitle" data-i18n="nav.profile">Profile</div>
       </div>
       <button class="icon-btn profile-close" id="profileCloseBtn" title="Close" data-i18n-title="profile.action.close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+        ${heroIcon("x-mark", "ui-icon ui-icon--18")}
       </button>
     </div>
 
@@ -244,7 +244,7 @@ const LAYOUT_HTML = `
           <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">Budget is under $1000. Maybe you need Grant only.</span>
           <div class="profile-budget-grant-hint__actions">
             <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">Set Grant only</button>
-            <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint">×</button>
+            <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>
           </div>
         </div>
       </div>
@@ -423,14 +423,14 @@ function initMobileMenu() {
         navbar.classList.remove("is-menu-open");
         menuBtn.setAttribute("aria-expanded", "false");
         menuBtn.setAttribute("aria-label", t("nav.open_menu", "Open menu"));
-        menuBtn.textContent = "☰";
+        setHeroIcon(menuBtn, "bars-3", "ui-icon ui-icon--18");
     };
 
     const openMenu = () => {
         navbar.classList.add("is-menu-open");
         menuBtn.setAttribute("aria-expanded", "true");
         menuBtn.setAttribute("aria-label", t("nav.close_menu", "Close menu"));
-        menuBtn.textContent = "✕";
+        setHeroIcon(menuBtn, "x-mark", "ui-icon ui-icon--18");
     };
 
     menuBtn.addEventListener("click", () => {
@@ -681,7 +681,7 @@ function initProfileUI() {
     const syncThemeButton = (themeOverride = "") => {
         if (!themeToggleBtn) return;
         const theme = String(themeOverride || getCurrentTheme() || "").trim().toLowerCase();
-        themeToggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+        setHeroIcon(themeToggleBtn, theme === "dark" ? "sun" : "moon", "ui-icon ui-icon--18");
         themeToggleBtn.title = t("nav.switch_theme", "Switch theme");
         themeToggleBtn.setAttribute("aria-label", t("nav.switch_theme", "Switch theme"));
         syncNavbarLogo(theme);

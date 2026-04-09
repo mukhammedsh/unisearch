@@ -104,6 +104,8 @@ home.feature.finance_desc: Смотрите стоимость обучения,
 home.feature.finance_title: Финансовая прозрачность
 home.hero.desc: UniSearch — удобная платформа для поиска университетов: сравнивайте требования, стоимость и возможности в одном месте.
 home.scope.bachelor_only: Сейчас рекомендации и аналитика покрывают только программы бакалавриата.
+home.scope.callout_title: Пока только программы бакалавриата
+home.scope.callout_body: Сейчас UniSearch покрывает только программы бакалавриата. Магистратура и другие уровни обучения могут появиться позже.
 home.hero.rankings: Смотреть рейтинг
 home.hero.start: Начать подбор
 home.hero.title: Найдите университет мечты с помощью ИИ
@@ -257,22 +259,22 @@ title.university: Университет | UniSearch
 universities.all_cities: Все города
 universities.any_state: Любой штат
 universities.badge.acceptance: Процент зачисления: {value}%
-universities.badge.conditional_exam_needed: 📝 Условно / Нужен экзамен
-universities.badge.top_match: ⭐ Хорошее совпадение
-universities.badge.your_vibe: 🔥 Ваш формат
-universities.badge.likely_grant: 💲 Высокий шанс на грант
-universities.badge.paid_admission: 💼 Платный вариант
+universities.badge.conditional_exam_needed: Условно / Нужен экзамен
+universities.badge.top_match: Хорошее совпадение
+universities.badge.your_vibe: Ваш формат
+universities.badge.likely_grant: Высокий шанс на грант
+universities.badge.paid_admission: Платный вариант
 universities.why.conditional_exam_needed: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
 universities.why.top_match: Этот вуз хорошо совпадает с вашими текущими настройками и предпочтениями.
 universities.why.your_vibe: Этот вуз особенно хорошо совпадает с вашими предпочтениями по атмосфере, фокусу и расположению.
 universities.why.likely_grant: Если для вас важен грант, у этого вуза сильный прогноз именно по грантовому варианту.
 universities.why.paid_admission: Если вы готовы рассматривать платное обучение, у этого вуза высокий общий шанс поступления.
-universities.badge.aid_available: 🤝 Доступна финансовая помощь
-universities.badge.aid_likely: 💲 Вероятен грант или финансовая помощь (без штрафа по бюджету)
-universities.badge.below_requirements: ⚠️ Ниже требований
-universities.badge.over_budget: 💰 Выше бюджета
-universities.badge.over_budget_aid: 💸 Выше бюджета • Есть помощь по нуждаемости
-universities.badge.requirements_met: ✅ Требования выполнены
+universities.badge.aid_available: Доступна финансовая помощь
+universities.badge.aid_likely: Вероятен грант или финансовая помощь (без штрафа по бюджету)
+universities.badge.below_requirements: Ниже требований
+universities.badge.over_budget: Выше бюджета
+universities.badge.over_budget_aid: Выше бюджета • Есть помощь по нуждаемости
+universities.badge.requirements_met: Требования выполнены
 universities.card.est_cost_year: Примерная цена/год
 universities.city: Город
 universities.cost_per_year: Стоимость (USD / год)
@@ -310,12 +312,16 @@ universities.help.tradeoff.focus: Показывает, что вам ближе
 universities.help.tradeoff.atmosphere: Примерно показывает ваш выбор между более социальной студенческой средой и более академически интенсивной.
 universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные варианты.
 universities.help.tradeoff.location: Слева приоритет у университетов в крупных городах, справа — у университетов вне крупных городов.
-universities.sort_ai: ✨ {fit}: умная ИИ-сортировка
+universities.sort_ai: {fit}: умная ИИ-сортировка
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
 universities.sort_strategy: Сортировка
 universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
+universities.scope_note.title: Пока только программы бакалавриата
+universities.scope_note.body: Сейчас UniSearch показывает только варианты бакалавриата и связанную с ними информацию о поступлении. Магистратура и другие уровни могут появиться позже.
+universities.scope_note.warning_title: Временный запасной режим ранжирования
+universities.scope_note.empty_title: Нет результатов для текущих фильтров
 universities.state.empty: Университеты не найдены.
 universities.state.failed: Не удалось загрузить данные.
 universities.state.ml_unavailable: Модуль машинного обучения недоступен. Используется только ранжирование по правилам.
@@ -325,7 +331,9 @@ universities.view_map: Карта
 university.about_campus: О вузе и кампусе
 university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
-university.programs_scope_note: Программы и данные о поступлении на этой странице сейчас охватывают только бакалавриат.
+university.scope_badge: Пока только бакалавриат
+university.scope_summary: На этой странице сейчас показаны только программы бакалавриата и связанная с ними информация о поступлении. Магистратура и другие уровни могут появиться позже.
+university.programs_scope_note: Список ниже сейчас ограничен программами бакалавриата.
 university.official_admissions_data: Официальные данные о поступлении
 university.official_admissions_note: UniSearch показывает только официально опубликованные метрики поступления. Если вуз не публикует процент зачисления, мы оставляем поле пустым, а не угадываем.
 university.admissions.university_wide: По университету
@@ -347,6 +355,7 @@ university.admissions.status.verified_null_only: Отдельно не публ�
 university.admissions.status.no_official_source: Нет официального источника
 university.admissions.status.reviewed: Проверено по официальным материалам
 university.admissions.metric.acceptance_rate: Процент зачисления
+university.admissions.metric.rate_from_counts: Процент по официальным числовым данным
 university.admissions.metric.capacity: Вместимость
 university.admissions.metric.entry_standard: Требуемый уровень
 university.admissions.metric.cutoff: Проходной порог
@@ -480,7 +489,7 @@ guide.language.toefl: Измеряет академическое владени
 guide.language.topik: TOPIK оценивает владение корейским и используется для подтверждения готовности к обучению на корейском.
 guide.loading_exam_config: Загрузка конфигурации экзаменов
 guide.scale_text: В UniSearch этот балл вводится по шкале {min}‑{max}.
-home.mockup.grant_available: ✅ Грант доступен
+home.mockup.grant_available: Грант доступен
 home.mockup.location: Кембридж, США
 languages.error.choose_cefr: Выберите уровень CEFR
 languages.error.choose_exam: Выберите экзамен
@@ -534,6 +543,7 @@ roi.tip: Совет:
 roi.title: Расчетный ROI (окупаемость инвестиций)
 roi.what_is: Что такое ROI?
 cost_item_tuition: Обучение
+cost_item_housing_college: Проживание (колледж)
 cost_item_housing_dorm: Проживание (общежитие)
 cost_item_housing_rent: Проживание (аренда)
 cost_item_food: Питание

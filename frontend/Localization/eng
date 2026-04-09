@@ -103,6 +103,8 @@ home.feature.finance_desc: See tuition and study costs, plus grant or discount o
 home.feature.finance_title: Financial Clarity
 home.hero.desc: UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
 home.scope.bachelor_only: Current recommendations and analytics cover bachelor's degree tracks only.
+home.scope.callout_title: Bachelor's programs only for now
+home.scope.callout_body: UniSearch currently covers bachelor's degree programs only. Master's and other study levels may appear later.
 home.hero.rankings: View Rankings
 home.hero.start: Start Matching
 home.hero.title: Find your dream university with AI Power
@@ -256,22 +258,22 @@ title.university: University | UniSearch
 universities.all_cities: All Cities
 universities.any_state: Any State
 universities.badge.acceptance: Acceptance Rate: {value}%
-universities.badge.conditional_exam_needed: 📝 Conditional / Exam Needed
-universities.badge.top_match: ⭐ Good Match
-universities.badge.your_vibe: 🔥 Your Vibe
-universities.badge.likely_grant: 💲 Likely Grant
-universities.badge.paid_admission: 💼 Paid Admission
+universities.badge.conditional_exam_needed: Conditional / Exam Needed
+universities.badge.top_match: Good Match
+universities.badge.your_vibe: Your Vibe
+universities.badge.likely_grant: Likely Grant
+universities.badge.paid_admission: Paid Admission
 universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
 universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
 universities.why.likely_grant: In grant-priority mode, this university has a strong grant admission chance.
 universities.why.paid_admission: In willing-to-pay mode, this university has a strong general admission chance.
-universities.badge.aid_available: 🤝 Aid Available
-universities.badge.aid_likely: 💲 Grant/Aid Likely (no budget penalty)
-universities.badge.below_requirements: ⚠️ Below Requirements
-universities.badge.over_budget: 💰 Over Budget
-universities.badge.over_budget_aid: 💸 Over Budget • Aid Available
-universities.badge.requirements_met: ✅ Requirements Met
+universities.badge.aid_available: Aid Available
+universities.badge.aid_likely: Grant/Aid Likely (no budget penalty)
+universities.badge.below_requirements: Below Requirements
+universities.badge.over_budget: Over Budget
+universities.badge.over_budget_aid: Over Budget • Aid Available
+universities.badge.requirements_met: Requirements Met
 universities.card.est_cost_year: Est. Cost/Year
 universities.city: City
 universities.cost_per_year: Cost (USD / year)
@@ -309,12 +311,16 @@ universities.help.tradeoff.focus: Choose whether you want more practice-oriented
 universities.help.tradeoff.atmosphere: Approximate preference between a more social student environment and a more academically intense one.
 universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals.
 universities.help.tradeoff.location: Left side favors universities in larger cities. Right side favors universities outside major cities.
-universities.sort_ai: ✨ {fit}: AI Smart Sort
+universities.sort_ai: {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
 universities.sort_strategy: Sort Strategy
 universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
+universities.scope_note.title: Bachelor's programs only for now
+universities.scope_note.body: UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.
+universities.scope_note.warning_title: Temporary ranking fallback
+universities.scope_note.empty_title: No results for current filters
 universities.state.empty: No universities found.
 universities.state.failed: Failed to load data.
 universities.state.ml_unavailable: Machine Learning unavailable. Using rule-based ranking only.
@@ -324,7 +330,9 @@ universities.view_map: Map View
 university.about_campus: About & Campus
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
-university.programs_scope_note: Programs and admission data on this page currently cover bachelor's degree tracks only.
+university.scope_badge: Bachelor's only for now
+university.scope_summary: This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.
+university.programs_scope_note: Current list below is limited to bachelor's programs.
 university.official_admissions_data: Official admissions data
 university.official_admissions_note: UniSearch shows only official published admissions metrics. If a university does not publish a rate, we keep it empty instead of guessing.
 university.admissions.university_wide: University-wide
@@ -346,6 +354,7 @@ university.admissions.status.verified_null_only: Not separately published
 university.admissions.status.no_official_source: No official source
 university.admissions.status.reviewed: Officially reviewed
 university.admissions.metric.acceptance_rate: Acceptance rate
+university.admissions.metric.rate_from_counts: Rate from official counts
 university.admissions.metric.capacity: Capacity
 university.admissions.metric.entry_standard: Entry standard
 university.admissions.metric.cutoff: Cutoff
@@ -480,7 +489,7 @@ guide.language.toefl: TOEFL measures academic English proficiency and is commonl
 guide.language.topik: TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.
 guide.loading_exam_config: Loading exam config
 guide.scale_text: In UniSearch, this score is entered on a {min}‑{max} scale.
-home.mockup.grant_available: ✅ Grant Available
+home.mockup.grant_available: Grant Available
 home.mockup.location: Cambridge, USA
 languages.error.choose_cefr: Choose CEFR level
 languages.error.choose_exam: Choose exam
@@ -534,6 +543,7 @@ roi.tip: Tip:
 roi.title: Estimated ROI (Return on Investment)
 roi.what_is: What is ROI?
 cost_item_tuition: Tuition
+cost_item_housing_college: Housing (College)
 cost_item_housing_dorm: Housing (Dorm)
 cost_item_housing_rent: Housing (Rent)
 cost_item_food: Food

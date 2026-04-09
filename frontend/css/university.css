@@ -16,7 +16,6 @@
   --line: rgba(0,0,0,.08);
   --shadow: 0 10px 24px rgba(0,0,0,.06);
 }
-
 :root[data-theme="dark"] {
   --accent-soft: rgba(168, 85, 247, 0.18);
   --accent-soft-strong: rgba(168, 85, 247, 0.26);
@@ -44,6 +43,34 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 18px;
+}
+
+.d-page-scope {
+  margin: 0 0 10px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.03)),
+    var(--card);
+  box-shadow: 0 12px 28px rgba(87, 21, 219, 0.08);
+}
+
+.d-page-scope__eyebrow {
+  margin: 0 0 6px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.d-page-scope__text {
+  margin: 0;
+  max-width: 820px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 600;
 }
 
 .d-state {
@@ -186,19 +213,18 @@
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  overflow-wrap: anywhere;
 }
 
-.d-location-emoji {
-  flex: 0 0 auto;
-  line-height: 1;
+.d-location-city {
+  white-space: nowrap;
 }
 
-.d-location-line {
+.d-location-country {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .d-back {
@@ -450,11 +476,22 @@
   color: #d1d5db;
 }
 
+.d-tooltip a {
+  color: #c7d2fe;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.d-tooltip a:hover {
+  color: #e0e7ff;
+}
+
 .d-info-wrap:hover .d-tooltip,
 .d-info-wrap:focus-within .d-tooltip,
 .d-info-wrap.is-open .d-tooltip {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
 /* =========================================
@@ -1996,7 +2033,7 @@
 }
 
 .scholarship-line-icon {
-  font-size: 14px;
+  flex: 0 0 auto;
 }
 
 .scholarship-line--positive {
@@ -2677,6 +2714,14 @@
   color: #3f3f46;
 }
 
+:root[data-theme="dark"] .d-tooltip a {
+  color: #4338ca;
+}
+
+:root[data-theme="dark"] .d-tooltip a:hover {
+  color: #312e81;
+}
+
 :root[data-theme="dark"] .d-tabs {
   border-bottom-color: var(--line);
 }
@@ -2766,6 +2811,18 @@
 
 :root[data-theme="dark"] .chance-percent-note {
   color: #fbbf24;
+}
+
+:root[data-theme="dark"] .d-page-scope {
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(168, 85, 247, 0.06)),
+    var(--card);
+  border-color: rgba(168, 85, 247, 0.28);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme="dark"] .d-page-scope__text {
+  color: #efe7ff;
 }
 
 :root[data-theme="dark"] .chance-inline-note {

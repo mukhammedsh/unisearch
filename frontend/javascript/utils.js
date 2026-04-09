@@ -1,3 +1,4 @@
+import { heroIcon } from "./icons.js";
 /* 1. utils.js - Базовые настройки, утилиты и работа с профилем */
 
 const inferredApiBase = `${window.location?.protocol || "http:"}//${window.location?.hostname || "127.0.0.1"}:8000`;
@@ -9,7 +10,6 @@ export function aiName(key) {
   const k = String(key || "").trim().toLowerCase();
   return AI_FUNCTIONS[k] || AI_DEFAULTS[k] || "AI Function";
 }
-
 function frontendStaticAsset(path = "") {
   const cleanPath = String(path || "").replace(/^\/+/, "");
   const currentPath = String(window.location.pathname || "");
@@ -887,9 +887,10 @@ export function showToast(message, type = "error") {
 
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
-    const icon = type === "success" ? "✅" : "⚠️";
-    
-    toast.innerHTML = `<span>${icon} ${escapeHtml(message)}</span><button class="toast-close">&times;</button>`;
+    const icon = type === "success"
+      ? heroIcon("check-circle", "ui-icon ui-icon--18 toast-icon")
+      : heroIcon("exclamation-triangle", "ui-icon ui-icon--18 toast-icon");
+    toast.innerHTML = `<span class="toast-message">${icon}<span>${escapeHtml(message)}</span></span><button class="toast-close" type="button" aria-label="Close">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
     toast.querySelector(".toast-close").onclick = () => removeToast(toast);
     setTimeout(() => removeToast(toast), 3000);
     container.appendChild(toast);
@@ -1133,6 +1134,56 @@ const COUNTRY_CODES = {
   "Australia": "au", "China": "cn", "Singapore": "sg", "Germany": "de", "Netherlands": "nl"
 };
 
+const COUNTRY_FLAG_ALIASES = {
+  au: "au",
+  australia: "au",
+  "австралия": "au",
+  ca: "ca",
+  canada: "ca",
+  "канада": "ca",
+  ch: "ch",
+  switzerland: "ch",
+  "швейцария": "ch",
+  cn: "cn",
+  china: "cn",
+  "китай": "cn",
+  de: "de",
+  germany: "de",
+  "германия": "de",
+  gb: "gb",
+  uk: "gb",
+  "united kingdom": "gb",
+  "great britain": "gb",
+  "великобритания": "gb",
+  hk: "hk",
+  "hong kong": "hk",
+  "гонконг": "hk",
+  jp: "jp",
+  japan: "jp",
+  "япония": "jp",
+  kr: "kr",
+  "south korea": "kr",
+  "republic of korea": "kr",
+  "южная корея": "kr",
+  kz: "kz",
+  kazakhstan: "kz",
+  "казахстан": "kz",
+  nl: "nl",
+  netherlands: "nl",
+  holland: "nl",
+  "нидерланды": "nl",
+  sg: "sg",
+  singapore: "sg",
+  "сингапур": "sg",
+  us: "us",
+  usa: "us",
+  "united states": "us",
+  "united states of america": "us",
+  "сша": "us",
+  "соединенные штаты": "us",
+  "соединённые штаты": "us",
+};
+
 const LANGUAGE_FLAG_CODES = {
   eng: "us",
   rus: "ru",
@@ -1156,7 +1207,13 @@ export function getFlagImg(countryName) {
   const raw = String(countryName || "").trim();
   if (!raw) return "";
   const lower = raw.toLowerCase();
-  const code = COUNTRY_CODES[raw] || COUNTRY_CODES[raw.toUpperCase()] || COUNTRY_CODES[lower] || LANGUAGE_FLAG_CODES[lower];
+  const normalized = lower.replace(/\s+/g, " ").trim();
+  const code =
+    COUNTRY_CODES[raw] ||
+    COUNTRY_CODES[raw.toUpperCase()] ||
+    COUNTRY_CODES[lower] ||
+    COUNTRY_FLAG_ALIASES[normalized] ||
+    LANGUAGE_FLAG_CODES[normalized];
   if (!code) return "";
   const cacheKey = `${code}|${raw}`;
   const cached = FLAG_IMG_HTML_CACHE.get(cacheKey);

@@ -198,11 +198,12 @@
         "verified_at": "2026-03-16",
         "status": "official",
         "confidence": "medium",
-        "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+        "method": "Calculated as 21,949 distinct admitted divided by 29,528 distinct applicants from the official U of T Governing Council Fall 2024 undergraduate 101 + non-101 table.",
         "basis": {
           "cycle": "Fall 2024",
           "applicants": 29528,
-          "admitted": 21949
+          "admitted": 21949,
+          "scope": "undergraduate_101_plus_non_101_distinct_counts"
         }
       }
     },
@@ -2447,7 +2448,7 @@
     "unsw-sydney-au-sydney": {
       "description": {
         "value": "UNSW is a large Sydney research university with strong engineering, computing, design, business, and innovation culture, and one of Australia's best-known industry links.",
-        "source": "UNSW Sydney official about page",
+        "source": "University of New South Wales official about page",
         "source_url": "https://www.unsw.edu.au/about-us",
         "verified_at": "2026-04-04",
         "status": "reviewed",
@@ -2465,7 +2466,7 @@
           "innovation",
           "industry_links"
         ],
-        "source": "UNSW Sydney official profile",
+        "source": "University of New South Wales official profile",
         "source_url": "https://www.unsw.edu.au/about-us",
         "verified_at": "2026-04-04",
         "status": "reviewed",

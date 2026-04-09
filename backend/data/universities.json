@@ -442,13 +442,13 @@
           "value": 1,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 85960,
@@ -524,9 +524,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 11920,
@@ -1198,13 +1200,13 @@
           "value": 2,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 74541,
@@ -1257,9 +1259,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 25143,
@@ -1634,13 +1638,13 @@
           "value": 3,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 97545,
@@ -1700,9 +1704,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 17552,
@@ -1716,7 +1722,7 @@
   {
     "id": "harvard-usa-cambridge",
     "name": "Harvard University",
-    "rank": 4,
+    "rank": 5,
     "location": {
       "country": "USA",
       "city": "Cambridge",
@@ -2075,13 +2081,13 @@
           "value": 5,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 95134,
@@ -2142,9 +2148,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 24596,
@@ -2632,13 +2640,13 @@
           "value": 4,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 70300,
@@ -2690,11 +2698,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -2707,7 +2715,7 @@
   {
     "id": "eth-zurich-ch-zurich",
     "name": "Swiss Federal Institute of Technology Zurich",
-    "rank": 5,
+    "rank": 7,
     "location": {
       "country": "Switzerland",
       "city": "Zurich",
@@ -3042,13 +3050,13 @@
           "value": 7,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 28000,
@@ -3089,9 +3097,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 26198,
@@ -3105,7 +3115,7 @@
   {
     "id": "national-university-of-singapore-sg-singapore",
     "name": "National University of Singapore",
-    "rank": 6,
+    "rank": 8,
     "location": {
       "country": "Singapore",
       "city": "Singapore",
@@ -3496,13 +3506,13 @@
           "value": 8,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 32000,
@@ -3569,9 +3579,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 51679,
@@ -4057,13 +4069,13 @@
           "value": 6,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 69800,
@@ -4115,11 +4127,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -4132,7 +4144,7 @@
   {
     "id": "tsinghua-university-cn-beijing",
     "name": "Tsinghua University",
-    "rank": 7,
+    "rank": 17,
     "location": {
       "country": "China",
       "city": "Beijing",
@@ -4486,13 +4498,13 @@
           "value": 17,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 9500,
@@ -4538,9 +4550,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 62496,
@@ -4554,7 +4568,7 @@
   {
     "id": "university-of-melbourne-au-melbourne",
     "name": "University of Melbourne",
-    "rank": 8,
+    "rank": 19,
     "location": {
       "country": "Australia",
       "city": "Melbourne",
@@ -4905,13 +4919,13 @@
           "value": 19,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 52000,
@@ -4952,9 +4966,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 77162,
@@ -4968,7 +4984,7 @@
   {
     "id": "technical-university-of-munich-de-munich",
     "name": "Technical University of Munich",
-    "rank": 9,
+    "rank": 22,
     "location": {
       "country": "Germany",
       "city": "Munich",
@@ -5272,13 +5288,13 @@
           "value": 22,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 19000,
@@ -5319,9 +5335,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 53581,
@@ -5334,7 +5352,7 @@
   {
     "id": "epfl-ch-lausanne",
     "name": "Swiss Federal Institute of Technology Lausanne",
-    "rank": 10,
+    "rank": 22,
     "location": {
       "country": "Switzerland",
       "city": "Lausanne",
@@ -5660,13 +5678,13 @@
           "value": 22,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 25000,
@@ -5707,9 +5725,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 14011,
@@ -6097,13 +6117,13 @@
           "value": 10,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 88509,
@@ -6162,11 +6182,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -6179,7 +6199,7 @@
   {
     "id": "university-of-toronto-ca-toronto",
     "name": "University of Toronto",
-    "rank": 11,
+    "rank": 29,
     "location": {
       "country": "Canada",
       "city": "Toronto",
@@ -6224,11 +6244,12 @@
         "verified_at": "2026-03-16",
         "status": "official",
         "confidence": "medium",
-        "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+        "method": "Calculated as 21,949 distinct admitted divided by 29,528 distinct applicants from the official U of T Governing Council Fall 2024 undergraduate 101 + non-101 table.",
         "basis": {
           "cycle": "Fall 2024",
           "applicants": 29528,
-          "admitted": 21949
+          "admitted": 21949,
+          "scope": "undergraduate_101_plus_non_101_distinct_counts"
         }
       },
       "admissions": {
@@ -6244,7 +6265,7 @@
             "cycle": "Fall 2024",
             "scope": "university-wide"
           },
-          "semantics": "The Governing Council PDF gives distinct applicants and admitted counts for Fall 2024, while the Engineering annual report separately publishes selectivity and yield for first-year undergraduates.",
+          "semantics": "The Governing Council PDF gives Fall 2024 undergraduate 101 and non-101 distinct applicants and distinct admitted counts. UniSearch treats the derived 74.33% as a count-based undergraduate offer/admit rate, while the Engineering annual report separately publishes faculty-level selectivity and yield for first-year undergraduates.",
           "sources": [
             {
               "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf",
@@ -6265,11 +6286,12 @@
             "verified_at": "2026-03-16",
             "status": "official",
             "confidence": "medium",
-            "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+            "method": "Calculated as 21,949 distinct admitted divided by 29,528 distinct applicants from the official U of T Governing Council Fall 2024 undergraduate 101 + non-101 table.",
             "basis": {
               "cycle": "Fall 2024",
               "applicants": 29528,
-              "admitted": 21949
+              "admitted": 21949,
+              "scope": "undergraduate_101_plus_non_101_distinct_counts"
             }
           }
         },
@@ -6709,13 +6731,13 @@
           "value": 29,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 62000,
@@ -6761,11 +6783,12 @@
           "verified_at": "2026-03-16",
           "confidence": "medium",
           "status": "official",
-          "method": "Calculated from official U of T Governing Council presentation counts for Fall 2024 distinct applicants and admitted.",
+          "method": "Calculated as 21,949 distinct admitted divided by 29,528 distinct applicants from the official U of T Governing Council Fall 2024 undergraduate 101 + non-101 table.",
           "basis": {
             "cycle": "Fall 2024",
             "applicants": 29528,
-            "admitted": 21949
+            "admitted": 21949,
+            "scope": "undergraduate_101_plus_non_101_distinct_counts"
           }
         },
         "average_salary_by_major": {
@@ -6797,9 +6820,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 97678,
@@ -6813,7 +6838,7 @@
   {
     "id": "cuhk-hk-shatin",
     "name": "The Chinese University of Hong Kong",
-    "rank": 12,
+    "rank": 32,
     "location": {
       "country": "Hong Kong",
       "city": "Sha Tin",
@@ -7194,13 +7219,13 @@
           "value": 32,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 33354,
@@ -7227,7 +7252,7 @@
           }
         },
         "student_count": {
-          "value": 23088.0,
+          "value": 23088,
           "unit": "students",
           "source": "CUHK Facts and Figures",
           "source_url": "https://www.iso.cuhk.edu.hk/english/publications/facts-and-figures/",
@@ -7268,9 +7293,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 23088,
@@ -7284,7 +7311,7 @@
   {
     "id": "university-of-tokyo-jp-tokyo",
     "name": "University of Tokyo",
-    "rank": 13,
+    "rank": 36,
     "location": {
       "country": "Japan",
       "city": "Tokyo",
@@ -7965,13 +7992,13 @@
           "value": 36,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 16000,
@@ -8027,9 +8054,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 29230,
@@ -8427,13 +8456,13 @@
           "value": 13,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 93243,
@@ -8492,11 +8521,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -8509,7 +8538,7 @@
   {
     "id": "seoul-national-university-kr-seoul",
     "name": "Seoul National University",
-    "rank": 14,
+    "rank": 38,
     "location": {
       "country": "South Korea",
       "city": "Seoul",
@@ -8824,13 +8853,13 @@
           "value": 38,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 15000,
@@ -8870,9 +8899,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 29073,
@@ -8886,7 +8917,7 @@
   {
     "id": "delft-university-of-technology-nl-delft",
     "name": "Delft University of Technology",
-    "rank": 15,
+    "rank": 47,
     "location": {
       "country": "Netherlands",
       "city": "Delft",
@@ -9234,13 +9265,13 @@
           "value": 47,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 36000,
@@ -9283,9 +9314,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 26000,
@@ -9683,13 +9716,13 @@
           "value": 15,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 90078,
@@ -9748,11 +9781,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -9765,7 +9798,7 @@
   {
     "id": "kyoto-university-jp-kyoto",
     "name": "Kyoto University",
-    "rank": 16,
+    "rank": 57,
     "location": {
       "country": "Japan",
       "city": "Kyoto",
@@ -10098,13 +10131,13 @@
           "value": 57,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-02-24",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 16500,
@@ -10146,9 +10179,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-02-24",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_count": 22300,
@@ -10544,13 +10579,13 @@
           "value": 16,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 90579,
@@ -10609,11 +10644,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -11004,13 +11039,13 @@
           "value": 17,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 82459,
@@ -11069,11 +11104,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -11085,7 +11120,7 @@
   },
   {
     "id": "unsw-sydney-au-sydney",
-    "name": "UNSW Sydney",
+    "name": "University of New South Wales",
     "rank": 20,
     "location": {
       "country": "Australia",
@@ -11141,7 +11176,7 @@
       ],
       "acceptance_rate_percent": null,
       "admissions": {
-        "university_name": "UNSW Sydney",
+        "university_name": "University of New South Wales",
         "university_wide": {
           "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
@@ -11517,18 +11552,18 @@
           "value": 20,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 52800,
           "unit": "usd_per_year",
-          "source": "UNSW Sydney tuition and living-cost guidance",
+          "source": "University of New South Wales tuition and living-cost guidance",
           "source_url": "https://www.unsw.edu.au/study/fees",
           "verified_at": "2026-04-04",
           "confidence": "medium",
@@ -11546,7 +11581,7 @@
           }
         },
         "student_count": {
-          "value": 65000.0,
+          "value": 65000,
           "unit": "students",
           "source": "UNSW university profile",
           "source_url": "https://www.unsw.edu.au/about-us/our-story/our-university",
@@ -11559,11 +11594,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -11962,13 +11997,13 @@
           "value": 21,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 89214,
@@ -12027,11 +12062,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -12427,13 +12462,13 @@
           "value": 25,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 85080,
@@ -12492,11 +12527,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -12942,13 +12977,13 @@
           "value": 25,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 54400,
@@ -12971,7 +13006,7 @@
           }
         },
         "student_count": {
-          "value": 74000.0,
+          "value": 74000,
           "unit": "students",
           "source": "University of Sydney facts and figures",
           "source_url": "https://www.sydney.edu.au/about-us/our-story/facts-and-figures.html",
@@ -12984,11 +13019,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -13470,13 +13505,13 @@
           "value": 27,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 47200,
@@ -13499,7 +13534,7 @@
           }
         },
         "student_count": {
-          "value": 40000.0,
+          "value": 40000,
           "unit": "students",
           "source": "McGill quick facts",
           "source_url": "https://www.mcgill.ca/about/quickfacts",
@@ -13528,11 +13563,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -13545,7 +13580,7 @@
   {
     "id": "johns-hopkins-university-usa-baltimore",
     "name": "Johns Hopkins University",
-    "rank": 28,
+    "rank": 24,
     "location": {
       "country": "USA",
       "city": "Baltimore",
@@ -13925,16 +13960,16 @@
       "schema_version": 1,
       "facts": {
         "rank": {
-          "value": 28,
+          "value": 24,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 87363,
@@ -13993,11 +14028,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -14441,13 +14476,13 @@
           "value": 32,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 51200,
@@ -14470,7 +14505,7 @@
           }
         },
         "student_count": {
-          "value": 18000.0,
+          "value": 18000,
           "unit": "students",
           "source": "ANU fast facts",
           "source_url": "https://www.anu.edu.au/about/fast-facts",
@@ -14483,11 +14518,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -14939,13 +14974,13 @@
           "value": 34,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 62600,
@@ -14981,11 +15016,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -15436,13 +15471,13 @@
           "value": 35,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 59800,
@@ -15478,11 +15513,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -15880,13 +15915,13 @@
           "value": 38,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 91287,
@@ -15945,11 +15980,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -16041,7 +16076,7 @@
               "campus": "Vancouver",
               "cycle": "Winter 2023",
               "metric": "Admit Rate",
-              "value_percent": 52
+              "value_percent": 52.0
             }
           }
         },
@@ -16424,13 +16459,13 @@
           "value": 40,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 50100,
@@ -16482,11 +16517,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -16876,13 +16911,13 @@
           "value": 46,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 76190,
@@ -16941,11 +16976,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -17438,13 +17473,13 @@
           "value": 119,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": true,
-          "verified_at": "2026-04-04",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "official",
-          "method": "Direct value from published QS WUR 2026 table."
+          "method": "Direct value from the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 51700,
@@ -17500,11 +17535,11 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
       "external_reference": "QS World University Rankings 2026",
       "is_official_external_rank": true,
       "status": "official",
-      "verified_at": "2026-04-04",
+      "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
@@ -17852,7 +17887,7 @@
           "source_url": "https://www.topuniversities.com/rankings-release-summaries/world-university-rankings-2026-release-summary",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-04-01",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "not_published",
           "method": "No official QS World University Rankings 2026 position is published because KAIST was excluded from the 2026 table."
@@ -17897,8 +17932,10 @@
     "rank_meta": {
       "source": "QS World University Rankings 2026",
       "source_url": "https://www.topuniversities.com/rankings-release-summaries/world-university-rankings-2026-release-summary",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
       "status": "not_published",
-      "verified_at": "2026-04-01",
+      "verified_at": "2026-04-09",
       "note": "No official QS World University Rankings 2026 position is published because KAIST was excluded from the 2026 table."
     },
     "student_count": 10793,
@@ -17964,7 +18001,7 @@
         "computer science",
         "engineering"
       ],
-      "acceptance_rate_percent": 21,
+      "acceptance_rate_percent": 21.0,
       "acceptance_rate_percent_meta": {
         "source": "Admissions Statistics on Nazarbayev University",
         "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
@@ -18384,13 +18421,13 @@
           "value": null,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-04-01",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "not_published",
-          "method": "No official QS World University Rankings 2026 position is published for Nazarbayev University."
+          "method": "No official QS World University Rankings 2026 position is published for Nazarbayev University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 19500,
@@ -18440,10 +18477,12 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
       "status": "not_published",
-      "verified_at": "2026-04-01",
-      "note": "No official QS World University Rankings 2026 position is published for Nazarbayev University."
+      "verified_at": "2026-04-09",
+      "note": "No official QS World University Rankings 2026 position is published for Nazarbayev University on the official QS WUR 2026 table."
     },
     "student_count": 7089,
     "student_life": {
@@ -18802,13 +18841,13 @@
           "value": null,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-04-01",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "not_published",
-          "method": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan."
+          "method": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 8500,
@@ -18848,10 +18887,12 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
       "status": "not_published",
-      "verified_at": "2026-04-01",
-      "note": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan."
+      "verified_at": "2026-04-09",
+      "note": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan on the official QS WUR 2026 table."
     },
     "student_count": 4300,
     "student_life": {
@@ -19206,13 +19247,13 @@
           "value": null,
           "unit": "position",
           "source": "QS World University Rankings 2026",
-          "source_url": "https://www.topuniversities.com/world-university-rankings",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
           "external_reference": "QS World University Rankings 2026",
           "is_official_external_rank": false,
-          "verified_at": "2026-04-01",
+          "verified_at": "2026-04-09",
           "confidence": "high",
           "status": "not_published",
-          "method": "No official QS World University Rankings 2026 position is published for Astana IT University."
+          "method": "No official QS World University Rankings 2026 position is published for Astana IT University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
           "value": 7000,
@@ -19261,10 +19302,12 @@
     },
     "rank_meta": {
       "source": "QS World University Rankings 2026",
-      "source_url": "https://www.topuniversities.com/world-university-rankings",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
       "status": "not_published",
-      "verified_at": "2026-04-01",
-      "note": "No official QS World University Rankings 2026 position is published for Astana IT University."
+      "verified_at": "2026-04-09",
+      "note": "No official QS World University Rankings 2026 position is published for Astana IT University on the official QS WUR 2026 table."
     },
     "student_count": 6725,
     "student_life": {

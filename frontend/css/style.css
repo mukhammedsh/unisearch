@@ -315,7 +315,6 @@ html, body {
   padding: 0;
   line-height: 1;
   cursor: pointer;
-  font-size: 16px;
 }
 
 .theme-btn:hover {
@@ -413,7 +412,6 @@ html, body {
   height: 38px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 20px;
   line-height: 1;
 }
 
@@ -573,6 +571,39 @@ html, body {
 .icon-btn svg{
   width: 18px;
   height: 18px;
+}
+
+.ui-icon {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  flex: 0 0 auto;
+}
+
+.ui-icon--14 {
+  width: 14px;
+  height: 14px;
+}
+
+.ui-icon--16 {
+  width: 16px;
+  height: 16px;
+}
+
+.ui-icon--18 {
+  width: 18px;
+  height: 18px;
+}
+
+.ui-icon--20 {
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon--24 {
+  width: 24px;
+  height: 24px;
 }
 
 .icon-btn:hover{
@@ -1002,15 +1033,15 @@ html, body {
 }
 
 .profile-delete--danger{
-  border-color: rgba(185, 28, 28, 0.24);
-  background: #fff1f2;
-  color: #b91c1c;
-}
-
-.profile-delete--danger:hover{
   border-color: #dc2626;
   background: #fee2e2;
   color: #991b1b;
+}
+
+.profile-delete--danger:hover{
+  border-color: #b91c1c;
+  background: #fecaca;
+  color: #7f1d1d;
 }
 
 .profile-confirm-modal{
@@ -1063,6 +1094,23 @@ html, body {
   justify-content: flex-end;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.profile-confirm-actions .profile-delete,
+.profile-confirm-actions .profile-add{
+  min-height: 44px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#profileResetModal .profile-confirm-actions .profile-delete,
+#profileResetModal .profile-confirm-actions .profile-add{
+  width: 160px;
+  min-width: 160px;
+  flex: 0 0 160px;
 }
 
 .profile-error{
@@ -1247,15 +1295,34 @@ html, body {
   color: #065f46;
 }
 
+.toast-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.toast-message span:last-child {
+  min-width: 0;
+}
+
+.toast-icon {
+  flex: 0 0 auto;
+}
+
 .toast-close {
   margin-left: auto;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
   color: inherit;
   opacity: 0.6;
-  padding: 0 4px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .toast-close:hover { opacity: 1; }
 

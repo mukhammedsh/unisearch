@@ -2,6 +2,34 @@
 
 All notable project changes should be recorded here.
 
+## 3.3.1 (2026-04-09) - Rank Truth And Icon System Cleanup
+
+Status:
+- synchronized runtime/package version to `3.3.1` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples;
+- audited and normalized current ranking/provenance data for the 40-university catalog:
+  - aligned university `rank`, `rank_meta`, and `fact_provenance.facts.rank` so official QS WUR 2026 positions and `not_published` states are consistent across the dataset;
+  - updated rank provenance handling so non-published universities keep explicit `not_published` metadata instead of falling back to legacy internal wording;
+  - documented the current ranking audit in `docs/rank_truth_update_2026-04-09.md`;
+  - clarified University of Toronto count-based admissions methodology wording in official fact/admissions catalogs;
+  - normalized UNSW naming to `University of New South Wales` in search aliases, official facts/admissions, and translations.
+- refreshed student-facing scope and detail messaging:
+  - added bachelor-only scope callouts to the homepage, universities list page, and university detail page;
+  - expanded English and Russian localization coverage for the new scope copy and related UI wording;
+  - added the missing `cost_item_housing_college` localization key in backend-driven translations.
+- unified frontend UI icons around a single Heroicons-based system:
+  - replaced mixed emoji/inline icon usage in navigation, filters, search/view controls, homepage feature cards, ranking title, university-detail tabs, toast states, and card badges;
+  - added shared icon helpers in `frontend/javascript/icons.js` and wired hydration/cleanup into frontend page initialization;
+  - removed decorative location pins from list/ranking/detail location strings and fixed long location wrapping while keeping country flags intact;
+  - adjusted detail-page action icons so website uses a globe icon and map uses a map-pin icon;
+  - documented third-party icon/brand usage in `THIRD_PARTY_NOTICES.md` and added `docs/icon_replacement_map_2026-04-09.md`.
+- polished related UI behavior and styling:
+  - improved universities-page empty/warning state cards and tooltip icon styling;
+  - refined profile confirmation-button sizing and destructive button states;
+  - improved scholarship-line, badge, toast, and ranking-location layout behavior for both light and dark themes;
+  - enabled clickable links inside detail-page tooltips and preserved proper icon sizing through shared CSS utilities.
+- extended regression coverage:
+  - updated the i18n smoke test to assert that the university-detail location keeps rendering a flag after language switches.
+
 ## 3.3.0 (2026-04-08) - +20 Universities
 
 Status:
