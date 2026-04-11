@@ -4,7 +4,7 @@ import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePag
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
-import { hydrateHeroIcons, stripLeadingDecorations } from "./icons.js";
+import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
 import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 
@@ -50,17 +50,6 @@ function applyAINameConfig() {
   });
 }
 
-function sanitizeDecoratedStaticText(root = document) {
-  const selectors = [
-    '[data-i18n="home.mockup.grant_available"]',
-  ];
-  selectors.forEach((selector) => {
-    root.querySelectorAll(selector).forEach((node) => {
-      node.textContent = stripLeadingDecorations(node.textContent);
-    });
-  });
-}
-
 function maybeWakeBackend() {
   const now = Date.now();
   try {
@@ -83,53 +72,20 @@ function maybeWakeBackend() {
   });
 }
 
-function initHomeMockupMedia() {
-  const card = document.querySelector(".mockup-card[data-home-uni-id]");
-  if (!(card instanceof HTMLElement)) return;
+function initHomePageActions() {
+  const profileTrigger = document.getElementById("profileBtn");
+  if (!(profileTrigger instanceof HTMLButtonElement)) return;
 
-  const rawUniId = String(card.getAttribute("data-home-uni-id") || "").trim();
-  if (!rawUniId) return;
-  const uniId = encodeURIComponent(rawUniId);
-  const base = String(API_BASE || "").trim().replace(/\/+$/, "");
-  const thumbFull = `${base}/universities/assets/thumbnails/${uniId}.jpg`;
-  const logoSmall = `${base}/universities/assets/logos-small/${uniId}.png`;
-  const logoFull = `${base}/universities/assets/logos/${uniId}.png`;
-
-  const fallbackThumb = frontendStaticAsset("images/mit-usa-cambridge.jpg");
-  const fallbackLogo = frontendStaticAsset("images/mit-usa-cambridge.png");
-
-  card.style.setProperty("--home-mockup-thumb-url", `url("${fallbackThumb}")`);
-
-  const logo = document.querySelector(`img[data-home-uni-logo="${rawUniId}"]`);
-  if (!(logo instanceof HTMLImageElement)) return;
-
-  logo.src = fallbackLogo;
-
-  const tryLogo = (src, next) => {
-    const probe = new Image();
-    probe.onload = () => {
-      logo.src = src;
-    };
-    probe.onerror = () => {
-      if (typeof next === "function") {
-        next();
-        return;
-      }
-      logo.src = fallbackLogo;
-    };
-    probe.src = src;
-  };
-
-  tryLogo(logoSmall, () => tryLogo(logoFull, null));
-
-  const thumbProbe = new Image();
-  thumbProbe.onload = () => {
-    card.style.setProperty("--home-mockup-thumb-url", `url("${thumbFull}")`);
-  };
-  thumbProbe.onerror = () => {
-    card.style.setProperty("--home-mockup-thumb-url", `url("${fallbackThumb}")`);
-  };
-  thumbProbe.src = thumbFull;
+  ["homeOpenProfileBtn", "homeWorkflowProfileBtn"].forEach((id) => {
+    const btn = document.getElementById(id);
+    if (!(btn instanceof HTMLElement)) return;
+    if (btn.dataset.bound === "1") return;
+    btn.dataset.bound = "1";
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      profileTrigger.click();
+    });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -164,9 +120,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   applyAINameConfig();
   applyTranslations(document);
-  sanitizeDecoratedStaticText(document);
   initLanguagesPanel();
-  initHomeMockupMedia();
+  initHomePageActions();
   
   if (isUniversitiesPage) {
     // Keep universities first paint focused on list data; preload configs shortly after.
@@ -200,7 +155,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.addEventListener("languageChanged", () => {
     applyAINameConfig();
     applyTranslations(document);
-    sanitizeDecoratedStaticText(document);
     const uniStat = document.getElementById("stat-uni");
     const countryStat = document.getElementById("stat-countries");
     if (uniStat && countryStat) {

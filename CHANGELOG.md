@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.0 (2026-04-12) - Full Web App Design Rework
+
+Status:
+- synchronized runtime/package version to `3.4.0` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README examples;
+- completed a full rework of the UniSearch web-application design:
+  - redesigned the homepage around a clearer catalog-first hero, stronger CTA structure, refreshed typography, and a more focused product preview;
+  - rebuilt the universities, ranking, guide, about, error, and university-detail experiences into a more cohesive visual system with denser comparison surfaces and better desktop/mobile responsiveness;
+  - improved practical decision-making flows with map-side result panels, university quick stats, cleaner detail summaries, and more consistent icon-driven UI patterns across the frontend;
+  - expanded English and Russian localization coverage to support the new product framing, copy, and redesigned page sections;
+- added Heroicons sync tooling and refreshed third-party notices to support the updated icon pipeline used by the redesigned frontend;
+- bumped the service-worker cache version so clients refresh the redesigned frontend assets immediately after deployment.
+
 ## 3.3.1 (2026-04-09) - Rank Truth And Icon System Cleanup
 
 Status:

@@ -1229,6 +1229,7 @@ export function initCustomSelect(selectId) {
     if (!select) return;
     bindCustomSelectGlobalClick();
     const isLanguageSelect = selectId === "languageSelect";
+    const showFlags = select.dataset.flags !== "off";
     let wrapper = select.parentNode;
     const alreadyWrapped = wrapper && wrapper.classList.contains("custom-select-wrapper");
 
@@ -1278,7 +1279,7 @@ export function initCustomSelect(selectId) {
             if (option.disabled) div.classList.add("is-disabled");
             const val = option.value;
             const text = option.text;
-            const flag = getFlagImg(val);
+            const flag = showFlags ? getFlagImg(val) : "";
             if (flag) div.innerHTML = `${flag} <span>${escapeHtml(text)}</span>`;
             else div.textContent = text;
 
@@ -1293,7 +1294,7 @@ export function initCustomSelect(selectId) {
         if (!selectedOption) return;
         const val = selectedOption.value;
         const text = selectedOption.text;
-        const flag = getFlagImg(val);
+        const flag = showFlags ? getFlagImg(val) : "";
         if (isLanguageSelect) {
             const shortLabel = ({ eng: "EN", rus: "RU" }[String(val || "").toLowerCase()] || String(val || "").toUpperCase() || text);
             trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;

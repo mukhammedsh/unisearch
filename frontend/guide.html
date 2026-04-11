@@ -9,7 +9,7 @@
   <script src="javascript/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/guide.css" />
 </head>
@@ -21,122 +21,129 @@
       <p data-i18n="guide.intro">
         This page explains, in plain language, what profile data we use and how to read your results.
       </p>
-      <div class="guide-nav">
-        <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
-        <a href="#guide-ml" data-i18n="guide.nav.interests">Interests</a>
-        <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
-        <a href="#guide-admission" data-i18n="guide.nav.admission">Admission</a>
-        <a href="#guide-exam-basics" data-i18n="guide.nav.exam_basics">Exam Basics</a>
-        <a href="#guide-academic-exams" data-i18n="guide.nav.academic_exams">Academic Exams</a>
-        <a href="#guide-language-exams" data-i18n="guide.nav.language_exams">Language Exams</a>
-        <a href="#guide-tags" data-i18n="guide.nav.tags">Tags</a>
-        <a href="#guide-glossary" data-i18n="guide.nav.glossary">Glossary</a>
-      </div>
     </section>
 
-    <section id="guide-unifit" class="guide-section">
-      <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
-      <div class="guide-doc">
-        <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> builds a university list for you. It uses your filters, budget, preferred locations, and profile data.</p>
-        <p data-i18n="guide.unifit.p2">If exam or language data is missing, you still see options, but we mark that extra proof may be needed.</p>
-        <p data-i18n="guide.unifit.p3">One university can have several admission tracks. We check each track separately, so your best option may be inside a lower-ranked university.</p>
-        <p data-i18n="guide.unifit.p4">When you update profile data, the order updates too. This is expected: results always reflect your current information.</p>
-      </div>
-    </section>
-
-    <section id="guide-ml" class="guide-section">
-      <h2 data-i18n="guide.ml.title">How your interests are used</h2>
-      <div class="guide-doc">
-        <p data-i18n="guide.ml.p1">In the Interests field, write what matters to you: major, city, budget, scholarships, campus style, and so on.</p>
-        <p data-i18n="guide.ml.p2">The system compares this text with university and program descriptions.</p>
-        <p data-i18n="guide.ml.p3">More specific interests usually give better recommendations.</p>
-        <p data-i18n="guide.ml.p4">Keep it short. Example in English: computer science, scholarships, USA.</p>
-        <p data-i18n="guide.ml.p5">Interests help sort options, but they do not replace official university requirements.</p>
-        <p class="guide-muted" data-i18n="profile.warning.interests_english_only">Translation is unavailable. Please write interests in English.</p>
-      </div>
-    </section>
-
-    <section id="guide-unichance" class="guide-section">
-      <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">UniChance</span> (estimated admission chance 0‑100)</h2>
-      <div class="guide-doc">
-        <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">UniChance</span> shows an approximate admission chance. It is guidance, not a guarantee.</p>
-        <p data-i18n="guide.unichance.p2">The estimate is based on your data: scores, language, budget, and selected track requirements.</p>
-        <p data-i18n="guide.unichance.p3">Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.</p>
-        <p data-i18n="guide.unichance.p4">Check Best Track to see where your chance is strongest inside that university.</p>
-      </div>
-    </section>
-
-    <section id="guide-admission" class="guide-section">
-      <h2 data-i18n="guide.admission.title">How to read admission tracks</h2>
-      <div class="guide-doc">
-        <p data-i18n="guide.admission.p1">An admission track is one concrete way to enter the same university.</p>
-        <p data-i18n="guide.admission.p2">Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.</p>
-        <p data-i18n="guide.admission.p3">Mode any means one language proof is enough. Mode all means every listed proof is required.</p>
-        <p data-i18n="guide.admission.p4">Scholarships and aid can noticeably reduce total cost, so always check track details.</p>
-      </div>
-    </section>
-
-    <section id="guide-exam-basics" class="guide-section">
-      <h2 data-i18n="guide.exam_basics.title">Exam Basics (Admissions)</h2>
-      <div class="guide-doc">
-        <p data-i18n="guide.exam_basics.p1">Admissions usually need two parts: academic scores and proof of language proficiency.</p>
-        <p data-i18n="guide.exam_basics.p2">Requirements differ by country and university, so check each track directly.</p>
-        <p data-i18n="guide.exam_basics.p3">Language requirements are especially important for international programs.</p>
-        <p data-i18n="guide.exam_basics.p4">Simple strategy: first cover minimums, then improve scores for stronger options.</p>
-      </div>
-    </section>
-
-    <section id="guide-academic-exams" class="guide-section">
-      <h2 data-i18n="guide.academic_exams.title">Academic Exams</h2>
-      <p class="guide-muted" data-i18n="guide.muted.academic">Short explanations of academic exams used in requirements.</p>
-      <div id="guideAcademicExams" class="guide-doc"></div>
-    </section>
-
-    <section id="guide-language-exams" class="guide-section">
-      <h2 data-i18n="guide.language_exams.title">Language Exams</h2>
-      <p class="guide-muted" data-i18n="guide.muted.language">Short explanations of language exams and certificates.</p>
-      <div id="guideLanguageExams" class="guide-doc"></div>
-    </section>
-
-    <section id="guide-tags" class="guide-section">
-      <h2 data-i18n="guide.tags.title">Tags</h2>
-      <div class="guide-doc">
-        <p data-i18n="guide.tags.intro">Card tags help you quickly read why a university looks good or risky for your profile.</p>
-
-        <div class="guide-tags-group">
-          <h4 data-i18n="guide.tags.standard_title">Standard Tags</h4>
-          <ul class="guide-list">
-            <li data-i18n="guide.tags.standard.acceptance">Acceptance Rate: shown when acceptance data is available.</li>
-            <li data-i18n="guide.tags.standard.aid_available">Aid Available: shown when merit-based or need-based aid is present.</li>
-            <li data-i18n="guide.tags.standard.over_budget">Over Budget: shown when estimated annual cost is above your profile budget.</li>
-            <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available: shown when cost is above budget but aid exists.</li>
-          </ul>
+    <div class="guide-layout">
+      <aside class="guide-sidebar">
+        <div class="guide-nav">
+          <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
+          <a href="#guide-ml" data-i18n="guide.nav.interests">Interests</a>
+          <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
+          <a href="#guide-admission" data-i18n="guide.nav.admission">Admission</a>
+          <a href="#guide-exam-basics" data-i18n="guide.nav.exam_basics">Exam Basics</a>
+          <a href="#guide-academic-exams" data-i18n="guide.nav.academic_exams">Academic Exams</a>
+          <a href="#guide-language-exams" data-i18n="guide.nav.language_exams">Language Exams</a>
+          <a href="#guide-tags" data-i18n="guide.nav.tags">Tags</a>
+          <a href="#guide-glossary" data-i18n="guide.nav.glossary">Glossary</a>
         </div>
+      </aside>
 
-        <hr class="guide-tags-divider" />
-
-        <div class="guide-tags-group">
-          <div class="guide-tags-head">
-            <h4 data-i18n="guide.tags.ai_title">AI Tags</h4>
-            <p class="guide-muted guide-muted--tiny guide-tags-note" data-i18n="guide.tags.ai_note">Tags that work only when UniFit selected as sort strategy.</p>
+      <div class="guide-content">
+        <section id="guide-unifit" class="guide-section">
+          <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> builds a university list for you. It uses your filters, budget, preferred locations, and profile data.</p>
+            <p data-i18n="guide.unifit.p2">If exam or language data is missing, you still see options, but we mark that extra proof may be needed.</p>
+            <p data-i18n="guide.unifit.p3">One university can have several admission tracks. We check each track separately, so your best option may be inside a lower-ranked university.</p>
+            <p data-i18n="guide.unifit.p4">When you update profile data, the order updates too. This is expected: results always reflect your current information.</p>
           </div>
-          <ul class="guide-list guide-list--after-note">
-            <li data-i18n="guide.tags.ai.conditional">Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.</li>
-            <li data-i18n="guide.tags.ai.your_vibe">Your Vibe: shown for very strong preference match (focus, atmosphere, location).</li>
-            <li data-i18n="guide.tags.ai.top_match">Good Match: shown for a good preference match that does not reach Your Vibe level.</li>
-            <li data-i18n="guide.tags.ai.likely_grant">Likely Grant: shown when grant-oriented chance is strong.</li>
-            <li data-i18n="guide.tags.ai.paid_admission">Paid Admission: shown when general admission chance is strong in paid route.</li>
-            <li data-i18n="guide.tags.ai.requirements_met">Requirements Met: shown when minimum requirements are satisfied.</li>
-            <li data-i18n="guide.tags.ai.below_requirements">Below Requirements: shown when minimum requirements are not satisfied.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <section id="guide-glossary" class="guide-section">
-      <h2 data-i18n="guide.glossary.title">Glossary</h2>
-      <div id="guideGlossary" class="guide-doc"></div>
-    </section>
+        <section id="guide-ml" class="guide-section">
+          <h2 data-i18n="guide.ml.title">How your interests are used</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.ml.p1">In the Interests field, write what matters to you: major, city, budget, scholarships, campus style, and so on.</p>
+            <p data-i18n="guide.ml.p2">The system compares this text with university and program descriptions.</p>
+            <p data-i18n="guide.ml.p3">More specific interests usually give better recommendations.</p>
+            <p data-i18n="guide.ml.p4">Keep it short. Example in English: computer science, scholarships, USA.</p>
+            <p data-i18n="guide.ml.p5">Interests help sort options, but they do not replace official university requirements.</p>
+            <p class="guide-muted" data-i18n="profile.warning.interests_english_only">Translation is unavailable. Please write interests in English.</p>
+          </div>
+        </section>
+
+        <section id="guide-unichance" class="guide-section">
+          <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">UniChance</span> (estimated admission chance 0-100)</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">UniChance</span> shows an approximate admission chance. It is guidance, not a guarantee.</p>
+            <p data-i18n="guide.unichance.p2">The estimate is based on your data: scores, language, budget, and selected track requirements.</p>
+            <p data-i18n="guide.unichance.p3">Easy reading: 80-100 high, 60-79 good, 40-59 medium, below 40 low.</p>
+            <p data-i18n="guide.unichance.p4">Check Best Track to see where your chance is strongest inside that university.</p>
+          </div>
+        </section>
+
+        <section id="guide-admission" class="guide-section">
+          <h2 data-i18n="guide.admission.title">How to read admission tracks</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.admission.p1">An admission track is one concrete way to enter the same university.</p>
+            <p data-i18n="guide.admission.p2">Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.</p>
+            <p data-i18n="guide.admission.p3">Mode any means one language proof is enough. Mode all means every listed proof is required.</p>
+            <p data-i18n="guide.admission.p4">Scholarships and aid can noticeably reduce total cost, so always check track details.</p>
+          </div>
+        </section>
+
+        <section id="guide-exam-basics" class="guide-section">
+          <h2 data-i18n="guide.exam_basics.title">Exam Basics (Admissions)</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.exam_basics.p1">Admissions usually need two parts: academic scores and proof of language proficiency.</p>
+            <p data-i18n="guide.exam_basics.p2">Requirements differ by country and university, so check each track directly.</p>
+            <p data-i18n="guide.exam_basics.p3">Language requirements are especially important for international programs.</p>
+            <p data-i18n="guide.exam_basics.p4">Simple strategy: first cover minimums, then improve scores for stronger options.</p>
+          </div>
+        </section>
+
+        <section id="guide-academic-exams" class="guide-section">
+          <h2 data-i18n="guide.academic_exams.title">Academic Exams</h2>
+          <p class="guide-muted" data-i18n="guide.muted.academic">Short explanations of academic exams used in requirements.</p>
+          <div id="guideAcademicExams" class="guide-doc"></div>
+        </section>
+
+        <section id="guide-language-exams" class="guide-section">
+          <h2 data-i18n="guide.language_exams.title">Language Exams</h2>
+          <p class="guide-muted" data-i18n="guide.muted.language">Short explanations of language exams and certificates.</p>
+          <div id="guideLanguageExams" class="guide-doc"></div>
+        </section>
+
+        <section id="guide-tags" class="guide-section">
+          <h2 data-i18n="guide.tags.title">Tags</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.tags.intro">Card tags help you quickly read why a university looks good or risky for your profile.</p>
+
+            <div class="guide-tags-group">
+              <h4 data-i18n="guide.tags.standard_title">Standard Tags</h4>
+              <ul class="guide-list">
+                <li data-i18n="guide.tags.standard.acceptance">Acceptance Rate: shown when acceptance data is available.</li>
+                <li data-i18n="guide.tags.standard.aid_available">Aid Available: shown when merit-based or need-based aid is present.</li>
+                <li data-i18n="guide.tags.standard.over_budget">Over Budget: shown when estimated annual cost is above your profile budget.</li>
+                <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available: shown when cost is above budget but aid exists.</li>
+              </ul>
+            </div>
+
+            <hr class="guide-tags-divider" />
+
+            <div class="guide-tags-group">
+              <div class="guide-tags-head">
+                <h4 data-i18n="guide.tags.ai_title">AI Tags</h4>
+                <p class="guide-muted guide-muted--tiny guide-tags-note" data-i18n="guide.tags.ai_note">Tags that work only when UniFit selected as sort strategy.</p>
+              </div>
+              <ul class="guide-list guide-list--after-note">
+                <li data-i18n="guide.tags.ai.conditional">Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.</li>
+                <li data-i18n="guide.tags.ai.your_vibe">Your Vibe: shown for very strong preference match (focus, atmosphere, location).</li>
+                <li data-i18n="guide.tags.ai.top_match">Good Match: shown for a good preference match that does not reach Your Vibe level.</li>
+                <li data-i18n="guide.tags.ai.likely_grant">Likely Grant: shown when grant-oriented chance is strong.</li>
+                <li data-i18n="guide.tags.ai.paid_admission">Paid Admission: shown when general admission chance is strong in paid route.</li>
+                <li data-i18n="guide.tags.ai.requirements_met">Requirements Met: shown when minimum requirements are satisfied.</li>
+                <li data-i18n="guide.tags.ai.below_requirements">Below Requirements: shown when minimum requirements are not satisfied.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="guide-glossary" class="guide-section">
+          <h2 data-i18n="guide.glossary.title">Glossary</h2>
+          <div id="guideGlossary" class="guide-doc"></div>
+        </section>
+      </div>
+    </div>
   </main>
 
   <script src="env.js"></script>
@@ -144,4 +151,3 @@
   <script type="module" src="javascript/main.js"></script>
 </body>
 </html>
-

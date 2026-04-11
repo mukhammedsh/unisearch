@@ -1,4 +1,4 @@
-/* 4. pages.js - ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ ВЕРСИЯ */
+/* 4. pages.js - Р¤РРќРђР›Р¬РќРђРЇ РРЎРџР РђР’Р›Р•РќРќРђРЇ Р’Р•Р РЎРРЇ */
 
 import {
   API_BASE,
@@ -115,7 +115,8 @@ function renderInlineIcon(name, size = 14, extraClass = "") {
 }
 
 function renderUniPill(iconName, toneClass, text) {
-  return `<span class="uni-pill ${toneClass}">${renderInlineIcon(iconName, 14, "uni-pill-icon")}<span class="uni-pill-text">${escapeHtml(cleanDecoratedText(text))}</span></span>`;
+  const safeText = escapeHtml(cleanDecoratedText(text));
+  return `<span class="uni-pill ${toneClass}" title="${safeText}">${renderInlineIcon(iconName, 14, "uni-pill-icon")}<span class="uni-pill-text">${safeText}</span></span>`;
 }
 
 function renderScholarshipLine(iconName, toneClass, text) {
@@ -322,7 +323,7 @@ function renderTrackLanguageExamGroup(track, variant = "requirements") {
 
     const examPairs = Object.entries(isAverage ? (lr?.stats_avg || {}) : (lr?.requirements || {}));
     if (meta.length) {
-      rows.push(`<div><strong>${escapeHtml(code)}:</strong> ${escapeHtml(meta.join(" • "))}</div>`);
+      rows.push(`<div><strong>${escapeHtml(code)}:</strong> ${escapeHtml(meta.join(" вЂў "))}</div>`);
     }
     if (!isAverage && !meta.length && !examPairs.length) {
       rows.push(`<div><strong>${escapeHtml(code)}</strong></div>`);
@@ -391,11 +392,11 @@ function localizeDuration(rawValue) {
 
   if (lang === "rus") {
     return raw
-      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "год", "года", "лет")}`)
-      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "месяц", "месяца", "месяцев")}`)
-      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "неделя", "недели", "недель")}`)
-      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "день", "дня", "дней")}`)
-      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "семестр", "семестра", "семестров")}`);
+      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РіРѕРґ", "РіРѕРґР°", "Р»РµС‚")}`)
+      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РјРµСЃСЏС†", "РјРµСЃСЏС†Р°", "РјРµСЃСЏС†РµРІ")}`)
+      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РЅРµРґРµР»СЏ", "РЅРµРґРµР»Рё", "РЅРµРґРµР»СЊ")}`)
+      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РґРµРЅСЊ", "РґРЅСЏ", "РґРЅРµР№")}`)
+      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "СЃРµРјРµСЃС‚СЂ", "СЃРµРјРµСЃС‚СЂР°", "СЃРµРјРµСЃС‚СЂРѕРІ")}`);
   }
 
   return raw;
@@ -420,9 +421,9 @@ function formatFundingOptionsCount(count) {
   if (getCurrentLanguage() === "rus") {
     return `${formattedCount} ${ruPlural(
       safeCount,
-      "вариант финансирования",
-      "варианта финансирования",
-      "вариантов финансирования"
+      "РІР°СЂРёР°РЅС‚ С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ",
+      "РІР°СЂРёР°РЅС‚Р° С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ",
+      "РІР°СЂРёР°РЅС‚РѕРІ С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ"
     )}`;
   }
 
@@ -1037,7 +1038,7 @@ async function fetchUniversityDetailCached(universityId) {
 }
 
 // =====================================
-// PAGE: UNIVERSITIES LIST (Список вузов)
+// PAGE: UNIVERSITIES LIST (РЎРїРёСЃРѕРє РІСѓР·РѕРІ)
 // =====================================
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
@@ -1067,8 +1068,7 @@ export function initUniversitiesPage() {
         locationSlider: $("locationSlider"), locationLabel: $("locationLabel"),
         resetBtn: $("resetFiltersBtn"),
         content: document.querySelector(".u-content"),
-        list: $("universitiesList"), mapContainer: $("mapContainer"), total: $("totalCount"), 
-        state: $("listState"), pagination: $("pagination"),
+        list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),`r`n        state: $("listState"), pagination: $("pagination"),
         btnList: $("viewListBtn"), btnMap: $("viewMapBtn"),
         loading: $("universitiesLoading")
     };
@@ -1146,7 +1146,7 @@ export function initUniversitiesPage() {
             50
         ),
         city_vs_campus: clampPercent(savedState.city_vs_campus, 50),
-        viewMode: savedState.viewMode || "list", page: 1, limit: 15,
+        viewMode: savedState.viewMode || "list", page: 1, limit: 24,
     };
     if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
     state.max_tuition = Math.min(MAX_TUITION, state.max_tuition);
@@ -1490,7 +1490,7 @@ export function initUniversitiesPage() {
         okBtn?.focus();
     });
 
-    // --- Слайдеры ---
+    // --- РЎР»Р°Р№РґРµСЂС‹ ---
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
         const minVal = parseInt(el.minSlider.value); const maxVal = parseInt(el.maxSlider.value); const maxRange = parseInt(el.maxSlider.max);
@@ -1519,10 +1519,11 @@ export function initUniversitiesPage() {
         el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
-    // --- Карта ---
+    // --- РљР°СЂС‚Р° ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
+    let activeMapUniId = String(focusUniId || "").trim();
 
     readFromUrl(); 
     
@@ -1741,13 +1742,20 @@ export function initUniversitiesPage() {
         state.viewMode = mode;
         saveFilters(state);
         if (mode === "map") {
-            el.list.style.display = "none"; el.pagination.style.display = "none"; 
-            el.mapContainer.style.display = "block"; el.btnList.classList.remove("active"); el.btnMap.classList.add("active");
-            initMap(); setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
+            el.list.style.display = "none";
+            el.pagination.style.display = "none";
+            if (el.mapStage) el.mapStage.style.display = "grid";
+            el.btnList.classList.remove("active");
+            el.btnMap.classList.add("active");
+            initMap();
+            setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
             if (shouldFetch) fetchAndRender(); 
         } else {
-            el.list.style.display = "grid"; el.pagination.style.display = "flex"; el.mapContainer.style.display = "none";
-            el.btnList.classList.add("active"); el.btnMap.classList.remove("active");
+            el.list.style.display = "grid";
+            el.pagination.style.display = "flex";
+            if (el.mapStage) el.mapStage.style.display = "none";
+            el.btnList.classList.add("active");
+            el.btnMap.classList.remove("active");
             if (shouldFetch) fetchAndRender();
         }
     }
@@ -1797,11 +1805,127 @@ export function initUniversitiesPage() {
         mapInstance.addLayer(markersLayer);
     }
 
+    function updateMapResultsSelection(uniId) {
+        activeMapUniId = String(uniId || "").trim();
+        if (!el.mapResults) return;
+        el.mapResults.querySelectorAll(".u-map-result-card[data-uni-id]").forEach((card) => {
+            const isActive = card.getAttribute("data-uni-id") === activeMapUniId;
+            card.classList.toggle("is-active", isActive);
+        });
+    }
+
+    function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
+        const targetId = String(uniId || "").trim();
+        if (!targetId || !mapInstance) return;
+        const marker = markersByUniId.get(targetId);
+        if (!marker) return;
+
+        updateMapResultsSelection(targetId);
+        const latLng = marker.getLatLng();
+        const openTarget = () => {
+            marker.setZIndexOffset(1200);
+            if (openPopup) marker.openPopup();
+        };
+
+        if (fly) {
+            mapInstance.once('moveend', openTarget);
+            mapInstance.flyTo(latLng, zoom, {
+                animate: true,
+                duration: 1.0,
+                easeLinearity: 0.2
+            });
+            return;
+        }
+
+        mapInstance.panTo(latLng);
+        openTarget();
+    }
+
+    function renderMapResultsPanel(items) {
+        if (!el.mapResults) return;
+        const mappedItems = (Array.isArray(items) ? items : []).filter((u) => u?.coordinates?.lat && u?.coordinates?.lon);
+        const heading = escapeHtml(t("universities.map_panel.title", "Results on the map"));
+        const subheading = escapeHtml(t("universities.map_panel.subtitle", "Pick a university to center the map and open its details."));
+
+        if (!mappedItems.length) {
+            el.mapResults.innerHTML = `
+                <div class="u-map-results-head">
+                    <h3>${heading}</h3>
+                    <p>${subheading}</p>
+                </div>
+                <div class="u-map-results-empty">${escapeHtml(t("universities.map_panel.empty", "No universities with map coordinates match these filters."))}</div>
+            `;
+            return;
+        }
+
+        const visibleItems = mappedItems.slice(0, 10);
+        const preferredId = visibleItems.some((u) => String(u.id || "") === activeMapUniId)
+            ? activeMapUniId
+            : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : String(visibleItems[0]?.id || ""));
+        activeMapUniId = preferredId;
+
+        el.mapResults.innerHTML = `
+            <div class="u-map-results-head">
+                <h3>${heading}</h3>
+                <p>${subheading}</p>
+            </div>
+            <div class="u-map-results-list">
+                ${visibleItems.map((u) => {
+                    const uniId = String(u.id || "");
+                    const match = u.matchData || {};
+                    const baseCost =
+                        (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
+                        (match.cost !== undefined ? match.cost : null) ??
+                        nested(u, ["finance", "total_cost_year_usd"], 0);
+                    const finalCost =
+                        (match.finalPrice !== undefined ? match.finalPrice : null) ??
+                        (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
+                        baseCost;
+                    const city = String(trCity(u?.location?.city || "") || "").trim();
+                    const country = String(trCountry(u?.location?.country || "") || "").trim();
+                    const locationText = [city, country].filter(Boolean).join(", ");
+                    const rank = toFiniteNumber(u?.rank);
+                    const detailHref = routeUniversityDetail(uniId);
+                    const isActive = uniId === preferredId;
+                    return `
+                        <article class="u-map-result-card${isActive ? " is-active" : ""}" data-uni-id="${escapeHtml(uniId)}">
+                            <button type="button" class="u-map-result-focus" data-uni-focus="${escapeHtml(uniId)}">
+                                <span class="u-map-result-logo">
+                                    <img src="${uniLogoSrc(uniId)}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${uniLogoSrc(uniId, { forceFull: true })}';}else{this.style.display='none'; this.parentNode.textContent='${initials(trUniversityName(u) || "U")}';}">
+                                </span>
+                                <span class="u-map-result-copy">
+                                    <span class="u-map-result-name">${escapeHtml(textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name"))}</span>
+                                    <span class="u-map-result-meta">${escapeHtml(locationText || unknownFieldText("placeholder.field.location", "Location"))}</span>
+                                </span>
+                                <span class="u-map-result-rank">${rank !== null && rank > 0 ? `#${escapeHtml(String(rank))}` : ""}</span>
+                            </button>
+                            <div class="u-map-result-bottom">
+                                <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost"))}</span>
+                                <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details в†’"))}</a>
+                            </div>
+                        </article>
+                    `;
+                }).join("")}
+            </div>
+        `;
+
+        el.mapResults.querySelectorAll("[data-uni-focus]").forEach((button) => {
+            button.addEventListener("click", () => {
+                focusMapUniversity(button.getAttribute("data-uni-focus"), {
+                    openPopup: true,
+                    fly: true,
+                    zoom: 14,
+                });
+            });
+        });
+    }
+
     function updateMapMarkers(items) {
         if (!mapInstance || !markersLayer) return;
         markersLayer.clearLayers();
         markersByUniId = new Map();
         const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
+        renderMapResultsPanel(items);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
         const mapViewportHeight = Number(el.mapContainer?.clientHeight || 0);
         const popupMaxHeight = Math.max(220, mapViewportHeight - (isCompactViewport ? 28 : 40));
@@ -1836,6 +1960,7 @@ export function initUniversitiesPage() {
                 marker.bindPopup(cardHTML, popupOptions);
                 marker.on('click', function(e) {
                     const clickedMarker = this;
+                    updateMapResultsSelection(uniId);
                     clickedMarker.setZIndexOffset(1000);
                     mapInstance.once('moveend', () => {
                         if (!clickedMarker.getPopup().isOpen()) clickedMarker.openPopup();
@@ -1854,6 +1979,7 @@ export function initUniversitiesPage() {
         if (state.viewMode === "map" && focusUniId && !focusUniDone) {
             const target = markersByUniId.get(focusUniId);
             if (target) {
+                updateMapResultsSelection(focusUniId);
                 focusUniDone = true;
                 const latLng = target.getLatLng();
                 mapInstance.once('moveend', () => {
@@ -1862,6 +1988,11 @@ export function initUniversitiesPage() {
                 });
                 mapInstance.flyTo(latLng, 14, { animate: true, duration: 1.2 });
             }
+        }
+
+        if (!focusUniDone) {
+            const fallbackId = activeMapUniId || String(items?.[0]?.id || "");
+            if (fallbackId) updateMapResultsSelection(fallbackId);
         }
     }
 
@@ -1873,6 +2004,8 @@ export function initUniversitiesPage() {
             markersLayer.clearLayers();
         }
         markersByUniId = new Map();
+        activeMapUniId = String(focusUniId || "").trim();
+        if (el.mapResults) el.mapResults.innerHTML = "";
     }
 
     function updateSliderVisibility() {
@@ -2096,7 +2229,7 @@ export function initUniversitiesPage() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">🌍 ${escapeHtml(t("universities.global", "Global"))}</option>`;
+        let html = `<option value="">рџЊЌ ${escapeHtml(t("universities.global", "Global"))}</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
             const value = String(c || "");
@@ -2399,7 +2532,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (БЕЗ ROI) ---
+    // --- RENDER CARD (Р‘Р•Р— ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -2418,13 +2551,13 @@ export function initUniversitiesPage() {
         });
         const match = u.matchData || {};
 
-        // Базовая цена (трековая, если algo её дал)
+        // Р‘Р°Р·РѕРІР°СЏ С†РµРЅР° (С‚СЂРµРєРѕРІР°СЏ, РµСЃР»Рё algo РµС‘ РґР°Р»)
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
         (match.cost !== undefined ? match.cost : null) ??
         nested(u, ["finance", "total_cost_year_usd"], 0);
 
-        // Итоговая цена с учётом scholarship amount (если есть)
+        // РС‚РѕРіРѕРІР°СЏ С†РµРЅР° СЃ СѓС‡С‘С‚РѕРј scholarship amount (РµСЃР»Рё РµСЃС‚СЊ)
         const cost =
         (match.finalPrice !== undefined ? match.finalPrice : null) ??
         (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
@@ -2509,18 +2642,19 @@ export function initUniversitiesPage() {
         }
 
         if (overBudget) {
-            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available")));
+            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget вЂў Aid Available")));
             else badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget", "Over Budget")));
         } else if (aidAny) {
             badges.push(renderUniPill("check-circle", "uni-pill--success", t("universities.badge.aid_available", "Aid Available")));
         }
 
-        const badgeCountClass = `uni-badge--count-${Math.min(Math.max(badges.length, 1), 6)}`;
+        const visibleBadges = badges.slice();
+        const badgeCountClass = `uni-badge--count-${Math.min(Math.max(visibleBadges.length, 1), 8)}`;
         const badgeContainerClass = `uni-badge ${badgeCountClass}`;
-        badgesHTML = badges.join(" ");
+        badgesHTML = visibleBadges.join(" ");
 
         
-        // ROI УБРАН ПОЛНОСТЬЮ
+        // ROI РЈР‘Р РђРќ РџРћР›РќРћРЎРўР¬Р®
 
         const logoSrc = uniLogoSrc(id);
         const logoSrcFull = uniLogoSrc(id, { forceFull: true });
@@ -2532,6 +2666,12 @@ export function initUniversitiesPage() {
         const safeName = escapeHtml(name);
         const safeWhyText = escapeHtml(whyText || "");
         const overlayTitle = whyText ? `${name}. ${whyText}` : String(name || "");
+        const rankValue = toFiniteNumber(u?.rank);
+        const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
+        const detailLabel = escapeHtml(t("universities.card.view_details", "View details"));
+        const footerMetaHtml = rankValue !== null && rankValue > 0
+            ? `<span class="uni-rank" aria-label="${rankLabel}">#${escapeHtml(String(rankValue))}</span>`
+            : `<span class="uni-rank" aria-hidden="true"></span>`;
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
             <div class="uni-media">
@@ -2545,6 +2685,10 @@ export function initUniversitiesPage() {
             ${acceptanceHtml}
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
+            <div class="uni-footer">
+                ${footerMetaHtml}
+                <span class="uni-details">${detailLabel}<span aria-hidden="true">в†’</span></span>
+            </div>
             </div>
             <a class="uni-card-link-overlay" href="${detailHref}" aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
         </article>
@@ -2557,18 +2701,18 @@ export function initUniversitiesPage() {
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
         let html = ""; const p = state.page; const maxVisible = 5;
         const createBtn = (page, text, isActive = false) => { const activeClass = isActive ? "page-btn--active" : ""; return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`; };
-        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, `‹ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
+        if (p > 1) { html += createBtn(1, "В«"); html += createBtn(p - 1, `вЂ№ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
         let startPage, endPage;
         if (totalPages <= maxVisible) { startPage = 1; endPage = totalPages; } else { const maxPagesBefore = Math.floor(maxVisible / 2); const maxPagesAfter = Math.ceil(maxVisible / 2) - 1; if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; } }
         if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} ›`); html += createBtn(totalPages, "»"); }
+        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} вЂє`); html += createBtn(totalPages, "В»"); }
         el.pagination.innerHTML = html;
         el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
     }
 }
 
 // =====================================
-// PAGE: UNIVERSITY DETAILS (Детальная)
+// PAGE: UNIVERSITY DETAILS (Р”РµС‚Р°Р»СЊРЅР°СЏ)
 // =====================================
 export async function initUniversityPage() {
   const id = extractUniversityIdFromLocation(window.location);
@@ -2617,7 +2761,7 @@ export async function initUniversityPage() {
       ? u.academics.admissions
       : null;
 
-    // 1. Шапка
+    // 1. РЁР°РїРєР°
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = String(val ?? "").trim(); };
     const translatedName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
     const translatedCity = trCity(u?.location?.city || "");
@@ -2639,6 +2783,20 @@ export async function initUniversityPage() {
 
     if (prices.length > 0) minPrice = Math.min(...prices);
     }
+    const acceptanceDirect = toFiniteNumber(u?.academics?.acceptance_rate_percent);
+    const acceptanceValues = (Array.isArray(u?.academics?.programs) ? u.academics.programs : [])
+        .map((p) => toFiniteNumber(p?.acceptance_rate_percent))
+        .filter((v) => v !== null);
+    const acceptanceComputed = acceptanceValues.length
+        ? (acceptanceValues.reduce((sum, v) => sum + v, 0) / acceptanceValues.length)
+        : NaN;
+    const acceptanceRate = acceptanceDirect !== null
+        ? acceptanceDirect
+        : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
+    const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
+    const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
+    const rankValue = toFiniteNumber(u?.rank);
+    const officialRank = rankValue !== null && rankValue > 0 && rankStatus === "official";
     setTxt("detailName", translatedName);
     const detailLocationEl = document.getElementById("detailLocation");
     if (detailLocationEl) {
@@ -2657,6 +2815,46 @@ export async function initUniversityPage() {
             detailLocationEl.innerHTML = `${cityHtml}${countryHtml}`;
         } else {
             detailLocationEl.textContent = unknownFieldText("placeholder.field.location", "Location");
+        }
+    }
+    const detailQuickStatsEl = document.getElementById("detailQuickStats");
+    if (detailQuickStatsEl) {
+        const quickStats = [];
+        if (officialRank) {
+            quickStats.push({
+                label: translateWord("global_rank", "Global Rank"),
+                value: `#${u.rank}`,
+            });
+        } else if (rankStatus) {
+            quickStats.push({
+                label: translateWord("global_rank", "Global Rank"),
+                value: rankingStatusLabel(rankStatus),
+            });
+        }
+        if (acceptanceRate !== null) {
+            quickStats.push({
+                label: t("ranking.acceptance", "Acceptance Rate"),
+                value: `${Math.round(acceptanceRate * 100) / 100}%`,
+            });
+        }
+        if (Number.isFinite(Number(minPrice))) {
+            quickStats.push({
+                label: t("universities.card.est_cost_year", "Est. Cost/Year"),
+                value: moneyUSD(minPrice),
+            });
+        }
+
+        if (quickStats.length) {
+            detailQuickStatsEl.innerHTML = quickStats.map((item) => `
+                <div class="d-quick-stat">
+                    <span class="d-quick-stat-label">${escapeHtml(item.label)}</span>
+                    <span class="d-quick-stat-value">${escapeHtml(String(item.value))}</span>
+                </div>
+            `).join("");
+            detailQuickStatsEl.style.display = "grid";
+        } else {
+            detailQuickStatsEl.innerHTML = "";
+            detailQuickStatsEl.style.display = "none";
         }
     }
     setTxt(
@@ -2740,27 +2938,13 @@ export async function initUniversityPage() {
     // --- TAB 1: GENERAL ---
     const recDiv = document.getElementById("detailRecommendations");
     if (recDiv) {
-        const acceptanceDirect = toFiniteNumber(u?.academics?.acceptance_rate_percent);
-        const acceptanceValues = (Array.isArray(u?.academics?.programs) ? u.academics.programs : [])
-            .map((p) => toFiniteNumber(p?.acceptance_rate_percent))
-            .filter((v) => v !== null);
-        const acceptanceComputed = acceptanceValues.length
-            ? (acceptanceValues.reduce((sum, v) => sum + v, 0) / acceptanceValues.length)
-            : NaN;
-        const acceptanceRate = acceptanceDirect !== null
-            ? acceptanceDirect
-            : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
         const acceptanceMeta = (u?.academics?.acceptance_rate_percent_meta && typeof u.academics.acceptance_rate_percent_meta === "object")
             ? u.academics.acceptance_rate_percent_meta
             : ((u?.academics?.admissions?.university_wide?.provenance && typeof u.academics.admissions.university_wide.provenance === "object")
                 ? u.academics.admissions.university_wide.provenance
                 : {});
-        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-        const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
-        const rankValue = toFiniteNumber(u?.rank);
-        const officialRank = rankValue !== null && rankValue > 0 && rankStatus === "official";
         const acceptanceDisplay = acceptanceRate === null
-            ? unknownFieldText("acceptance_rate", "Acceptance Rate")
+            ? t("common.no_data", "No data")
             : `${Math.round(acceptanceRate * 100) / 100}%`;
         const acceptanceSourceUrl = safeUrl(acceptanceMeta?.source_url);
         const acceptanceSourceLabel = String(acceptanceMeta?.source || "").trim() || t("university.admissions.official_source", "Official source");
@@ -2772,7 +2956,7 @@ export async function initUniversityPage() {
         const acceptanceInfoTitle = escapeHtml(t("university.admissions.official_source", "Official source"));
         const acceptanceTooltip = acceptanceSourceUrl ? `
             <span class="d-info-wrap">
-              <button type="button" class="d-info" aria-label="${acceptanceInfoTitle}" title="${acceptanceInfoTitle}">i</button>
+              <button type="button" class="d-info" aria-label="${acceptanceInfoTitle}" title="${acceptanceInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
               <span class="d-tooltip" role="tooltip">
                 <strong>${acceptanceInfoTitle}</strong>
                 <span>${escapeHtml(acceptanceSourceLabel)}</span>
@@ -2806,9 +2990,9 @@ export async function initUniversityPage() {
             : escapeHtml(unknownFieldText("campus_size", "Campus Size"));
         const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
         const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
-        const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m² (up to 50 ha)"));
-        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000‑2,000,000 m² (50‑200 ha)"));
-        const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 m² (200+ ha)"));
+        const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 mВІ (up to 50 ha)"));
+        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000вЂ‘2,000,000 mВІ (50вЂ‘200 ha)"));
+        const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 mВІ (200+ ha)"));
         const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
         recDiv.innerHTML = `
             <div class="d-kv"><span>${escapeHtml(translateWord("global_rank", "Global Rank"))}</span>${rankHtml}</div>
@@ -2817,7 +3001,7 @@ export async function initUniversityPage() {
               <span class="d-kv-label">
                 ${campusSizeLabel}
                 <span class="d-info-wrap">
-                  <button type="button" class="d-info" aria-label="${campusSizeInfoTitle}" title="${campusSizeInfoTitle}">i</button>
+                  <button type="button" class="d-info" aria-label="${campusSizeInfoTitle}" title="${campusSizeInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
                   <span class="d-tooltip" role="tooltip">
                     <strong>${campusSizeInfoTitle}</strong>
                     <span>${campusSizeInfoSmall}</span>
@@ -3051,7 +3235,7 @@ export async function initUniversityPage() {
     let admissionTrackFilter = readAdmissionTrackFilterFromProfile();
 
 
-    // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
+    // --- TAB 3: ADMISSION (РРЎРџР РђР’Р›Р•РќРћ: Р’РµСЂРЅСѓР» Р¦РµРЅСѓ Рё РЎСЂРµРґРЅРёРµ Р±Р°Р»Р»С‹) ---
         const reqDiv = document.getElementById("detailRequirements");
         const renderAdmissionTab = () => {
         if (!reqDiv) return;
@@ -3120,7 +3304,7 @@ export async function initUniversityPage() {
                     if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
 
                     const selectionBadgeHtml = selectionBadges.length
-                    ? `<div class="track-selection-badge">${selectionBadges.join(" • ")}</div>`
+                    ? `<div class="track-selection-badge">${selectionBadges.join(" вЂў ")}</div>`
                     : "";
 
                     const optionPriceOverride = option.finance_override?.total_cost_year_usd;
@@ -3282,7 +3466,7 @@ export async function initUniversityPage() {
     };
     window.addEventListener("profileUpdated", __detailProfileUpdatedHandler);
 
-    // --- TAB 4: FINANCE (С блоком ROI) ---
+    // --- TAB 4: FINANCE (РЎ Р±Р»РѕРєРѕРј ROI) ---
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo"); 
     const priceBig = document.getElementById("detailPrice");           
@@ -3337,7 +3521,7 @@ export async function initUniversityPage() {
     window.addEventListener("load", syncFinanceSummaryCardHeights, { once: true });
     
     if (u.finance) {
-        // Блок скидок
+        // Р‘Р»РѕРє СЃРєРёРґРѕРє
         if (scholDiv) {
             const fa = u.finance.financial_aid || {};
             const hasMerit = typeof fa.merit_based === "boolean";
@@ -3355,7 +3539,7 @@ export async function initUniversityPage() {
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
-        // Блок цены
+        // Р‘Р»РѕРє С†РµРЅС‹
         if (priceBig) {
             let minTotal = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
             const allFundingOptionsForFinance = (Array.isArray(u.admission_tracks) ? u.admission_tracks : [])
@@ -3374,7 +3558,7 @@ export async function initUniversityPage() {
         }
         settleFinanceSummaryCardHeights();
         
-        // Карточки треков
+        // РљР°СЂС‚РѕС‡РєРё С‚СЂРµРєРѕРІ
         if (finDiv) {
             finDiv.innerHTML = "";
 
@@ -3525,7 +3709,7 @@ export async function initUniversityPage() {
 }
 
 // =====================================
-// PAGE: RANKING (Исправлена сортировка)
+// PAGE: RANKING (РСЃРїСЂР°РІР»РµРЅР° СЃРѕСЂС‚РёСЂРѕРІРєР°)
 // =====================================
 function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
@@ -3609,7 +3793,7 @@ export async function initRankingPage() {
     rankingFetchController = controller;
 
     try {
-        // Запрашиваем 200 вузов
+        // Р—Р°РїСЂР°С€РёРІР°РµРј 200 РІСѓР·РѕРІ
         const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
         const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc&lang=${encodeURIComponent(uiLang)}`, {
             signal: controller.signal,
@@ -3622,7 +3806,7 @@ export async function initRankingPage() {
             const rank = Number(u.rank_display);
             const hasOfficialRank = u?.rank_is_official === true && Number.isFinite(rank) && rank > 0;
 
-            // Цвета для топ-3
+            // Р¦РІРµС‚Р° РґР»СЏ С‚РѕРї-3
             let rankClass = "";
             if (hasOfficialRank && rank === 1) rankClass = "rank-1";
             else if (hasOfficialRank && rank === 2) rankClass = "rank-2";
@@ -3744,7 +3928,7 @@ export function initGuidePage() {
         if (!label) return desc;
         if (!desc) return label;
         if (desc.toLocaleLowerCase().startsWith(label.toLocaleLowerCase())) return desc;
-        return tFormat("guide.exam_desc_with_label", { exam: label, desc }, `${label} — ${desc}`);
+        return tFormat("guide.exam_desc_with_label", { exam: label, desc }, `${label} вЂ” ${desc}`);
     }
 
     function describeAcademicExam(id, cfg, labelText = "") {
@@ -3759,7 +3943,7 @@ export function initGuidePage() {
             IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
             ALEVELCERT: t("guide.academic.alevelcert", "A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score."),
             HKDSELEVEL: t("guide.academic.hkdselevel", "HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching."),
-            SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification."),
+            SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "Swiss Maturity Certificate (Matura/MaturitГ©) is the standard Swiss university-entrance qualification."),
             GERMANABITURCERT: t("guide.academic.germanabiturcert", "German Abitur certificate is the standard qualification granting access to German universities."),
             OSSDCERT: t("guide.academic.ossdcert", "OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions."),
         };
@@ -3959,15 +4143,17 @@ export function initGuidePage() {
         renderLanguageExams();
     }
 
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const sectionById = new Map(sections.map((sec) => [sec.id, sec]));
-    const activateSection = (id, updateHash = false) => {
+    const activateSection = (id, { updateHash = false, scroll = false } = {}) => {
         const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
         if (!nextId) return;
+        const targetSection = sectionById.get(nextId);
 
         sections.forEach((sec) => {
             const active = sec.id === nextId;
             sec.classList.toggle("is-active", active);
-            sec.setAttribute("aria-hidden", active ? "false" : "true");
+            sec.setAttribute("aria-hidden", "false");
         });
 
         navLinks.forEach((link) => {
@@ -3979,20 +4165,77 @@ export function initGuidePage() {
         if (updateHash) {
             history.replaceState(null, "", `#${nextId}`);
         }
+
+        if (scroll && targetSection) {
+            targetSection.scrollIntoView({
+                behavior: prefersReducedMotion ? "auto" : "smooth",
+                block: "start",
+            });
+        }
     };
 
     navLinks.forEach((link) => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
-            activateSection((link.getAttribute("href") || "").replace("#", ""), true);
+            activateSection((link.getAttribute("href") || "").replace("#", ""), {
+                updateHash: true,
+                scroll: true,
+            });
         });
     });
 
     bindGuideHashChange(() => {
-        activateSection(String(window.location.hash || "").replace("#", ""), false);
+        activateSection(String(window.location.hash || "").replace("#", ""), {
+            updateHash: false,
+            scroll: false,
+        });
     });
 
+    let scrollTicking = false;
+    const syncActiveSectionFromScroll = () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        window.requestAnimationFrame(() => {
+            const viewportTop = 110;
+            const viewportBottom = window.innerHeight - 120;
+            let currentId = sections[0]?.id || "";
+            let bestScore = Number.NEGATIVE_INFINITY;
+
+            for (const sec of sections) {
+                const rect = sec.getBoundingClientRect();
+                const visibleTop = Math.max(rect.top, viewportTop);
+                const visibleBottom = Math.min(rect.bottom, viewportBottom);
+                const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+                const distancePenalty = Math.abs(rect.top - viewportTop) * 0.08;
+                const score = visibleHeight - distancePenalty;
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    currentId = sec.id;
+                }
+            }
+
+            if (currentId) {
+                activateSection(currentId, {
+                    updateHash: false,
+                    scroll: false,
+                });
+            }
+
+            scrollTicking = false;
+        });
+    };
+
     renderAll();
-    activateSection(String(window.location.hash || "").replace("#", ""), false);
-    bindGuideExternalUpdates(renderAll);
+    activateSection(String(window.location.hash || "").replace("#", ""), {
+        updateHash: false,
+        scroll: false,
+    });
+    window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
+    window.addEventListener("resize", syncActiveSectionFromScroll);
+    bindGuideExternalUpdates(() => {
+        renderAll();
+        syncActiveSectionFromScroll();
+    });
+    syncActiveSectionFromScroll();
 }

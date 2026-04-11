@@ -9,7 +9,7 @@
   <script src="javascript/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
@@ -217,7 +217,10 @@
         <div id="listState" class="u-state"></div>
         <div id="universitiesList" class="u-grid"></div>
 
-        <div id="mapContainer" class="u-map-container" style="display: none;"></div>
+        <div id="mapStage" class="u-map-stage" style="display: none;">
+          <aside id="mapResultsPanel" class="u-map-results" aria-live="polite"></aside>
+          <div id="mapContainer" class="u-map-container"></div>
+        </div>
 
         <div id="pagination" class="u-pagination"></div>
       </section>
@@ -230,7 +233,7 @@
 
   <footer class="site-footer">
       <div class="container footer-content">
-          <p data-i18n="footer.copyright">© 2026 UniSearch</p>
+          <p data-i18n="footer.copyright">Â© 2026 UniSearch</p>
 
           <div class="social-links">
               <a href="https://github.com/muxlex/unisearch" target="_blank">

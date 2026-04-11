@@ -1,4 +1,4 @@
-meta.display_name: English
+﻿meta.display_name: English
 meta.code: eng
 academic_requirements: Academic requirements
 academic_average: Academic average
@@ -30,12 +30,25 @@ about.meta.lead: 15 years old, student in Zhanaozen Bilim-Innovation Lyceum.
 about.meta.planning: 14 years old, student in Zhanaozen Bilim-Innovation Lyceum.
 about.name.lead: Shabdaluly Mukhammed
 about.name.planning: Rashidov Yerbolat
+about.principles_kicker: Principles
+about.principles_title: How we want the product to feel
+about.principle.clarity.title: Readable before decorative
+about.principle.clarity.body: We prefer strong hierarchy, compact comparison, and plain language over visual effects that slow down real decision-making.
+about.principle.sources.title: Official sources first
+about.principle.sources.body: If a university does not publish a metric separately, we would rather say that clearly than invent a false precision.
+about.principle.student.title: Built from the student side
+about.principle.student.body: The product is shaped around the real order of decisions: shortlist, compare costs, check requirements, then open the exact track.
+about.proof.product.body: Less decorative noise, more useful comparison: what it costs, how to apply, and what looks realistic for your profile.
+about.proof.product.title: Product goal
+about.proof.scope.body: Bachelor's search with admissions, cost, and aid context in one place.
+about.proof.scope.title: Current scope
+about.proof.sources.body: We prefer official published requirements and clearly mark when a metric is not separately published.
+about.proof.sources.title: Data standard
 about.role.lead: Lead Developer and Project Architect
 about.role.planning: Planning and Text Documentation
 about.team_kicker: Our Team
-about.team_title: Core contributors
 about.title: We are the abiturient team behind UniSearch.
-footer.copyright: © 2026 UniSearch
+footer.copyright: В© 2026 UniSearch
 guide.academic_exams.title: Academic Exams
 guide.admission.p1: An admission track is one concrete way to enter the same university.
 guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.
@@ -48,7 +61,7 @@ guide.exam_basics.p3: Language requirements are especially important for interna
 guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
 guide.exam_basics.title: Exam Basics (Admissions)
 guide.eyebrow: UniSearch Guide
-guide.exam_desc_with_label: {exam} — {desc}
+guide.exam_desc_with_label: {exam} вЂ” {desc}
 guide.glossary.title: Glossary
 guide.intro: This page explains, in plain language, what profile data we use and how to read your results.
 guide.language_exams.title: Language Exams
@@ -74,7 +87,7 @@ guide.tags.standard_title: Standard Tags
 guide.tags.standard.acceptance: Acceptance Rate: shown when acceptance data is available.
 guide.tags.standard.aid_available: Aid Available: shown when merit-based or need-based aid is present.
 guide.tags.standard.over_budget: Over Budget: shown when estimated annual cost is above your profile budget.
-guide.tags.standard.over_budget_aid: Over Budget • Aid Available: shown when cost is above budget but aid exists.
+guide.tags.standard.over_budget_aid: Over Budget вЂў Aid Available: shown when cost is above budget but aid exists.
 guide.tags.ai_note: Tags that work only when UniFit selected as sort strategy.
 guide.tags.ai_title: AI Tags
 guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.
@@ -87,9 +100,9 @@ guide.tags.ai.below_requirements: Below Requirements: shown when minimum require
 guide.title: How UniSearch works in simple words
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
 guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
-guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
+guide.unichance.p3: Easy reading: 80вЂ‘100 high, 60вЂ‘79 good, 40вЂ‘59 medium, below 40 low.
 guide.unichance.p4: Check Best Track to see where your chance is strongest inside that university.
-guide.unichance.title: {chance} (estimated admission chance 0‑100)
+guide.unichance.title: {chance} (estimated admission chance 0вЂ‘100)
 guide.unifit.p1: {fit} builds a university list for you. It uses your filters, budget, preferred locations, and profile data.
 guide.unifit.p2: If exam or language data is missing, you still see options, but we mark that extra proof may be needed.
 guide.unifit.p3: One university can have several admission tracks. We check each track separately, so your best option may be inside a lower-ranked university.
@@ -101,14 +114,9 @@ home.feature.data_desc: We gather requirements, costs, and scholarships in one p
 home.feature.data_title: Simple Comparison
 home.feature.finance_desc: See tuition and study costs, plus grant or discount options when they are available in the data.
 home.feature.finance_title: Financial Clarity
-home.hero.desc: UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
 home.scope.bachelor_only: Current recommendations and analytics cover bachelor's degree tracks only.
-home.scope.callout_title: Bachelor's programs only for now
-home.scope.callout_body: UniSearch currently covers bachelor's degree programs only. Master's and other study levels may appear later.
 home.hero.rankings: View Rankings
 home.hero.start: Start Matching
-home.hero.title: Find your dream university with AI Power
-home.hero.title_html: Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
 home.journey.kicker: University matching
 home.journey.title: Choose your ideal university
 home.journey.desc: Compare requirements, costs, and admission chances in one place.
@@ -130,7 +138,7 @@ nav.close_menu: Close menu
 nav.guide: Guide
 nav.home: Home
 nav.lang.eng: English (US)
-nav.lang.rus: Русский
+nav.lang.rus: Р СѓСЃСЃРєРёР№
 nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
@@ -141,7 +149,7 @@ profile.add: Add
 profile.edit: Edit
 profile.budget_cleared: Budget cleared
 profile.budget_integers_only: Integers only (no dots/commas)
-profile.budget_limit: Limit: 0‑1,000,000 USD
+profile.budget_limit: Limit: 0вЂ‘1,000,000 USD
 profile.budget_must_number: Budget must be a number
 profile.budget_saved: Budget saved!
 profile.cefr: CEFR
@@ -174,7 +182,7 @@ profile.gpa_must_number: GPA must be a number
 profile.gpa_range: GPA must be between {min} and {max}%
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
-profile.hint.budget_range: Range: 0‑1,000,000
+profile.hint.budget_range: Range: 0вЂ‘1,000,000
 profile.hint.low_budget_grant: Budget is under $1000. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
@@ -194,7 +202,7 @@ profile.label.major: Intended Major
 profile.label.study_mode: Preferred Study Mode
 profile.language: Language
 profile.languages: Languages
-profile.name_invalid_length: Name length must be 3‑16 chars
+profile.name_invalid_length: Name length must be 3вЂ‘16 chars
 profile.name_invalid_symbols: Invalid symbols in name
 profile.nickname_updated: Nickname updated!
 profile.option.funding_any: Any (Grant + Paid)
@@ -251,7 +259,6 @@ ranking.subtitle: Popular universities by study quality and opportunities (2026)
 ranking.title: Global University Ranking
 title.about: About Us | UniSearch
 title.guide: Guide | UniSearch
-title.index: UniSearch - AI University Finder
 title.ranking: Global Ranking | UniSearch
 title.universities: Universities | UniSearch
 title.university: University | UniSearch
@@ -272,9 +279,10 @@ universities.badge.aid_available: Aid Available
 universities.badge.aid_likely: Grant/Aid Likely (no budget penalty)
 universities.badge.below_requirements: Below Requirements
 universities.badge.over_budget: Over Budget
-universities.badge.over_budget_aid: Over Budget • Aid Available
+universities.badge.over_budget_aid: Over Budget вЂў Aid Available
 universities.badge.requirements_met: Requirements Met
 universities.card.est_cost_year: Est. Cost/Year
+universities.card.view_details: View details
 universities.city: City
 universities.cost_per_year: Cost (USD / year)
 universities.country: Country
@@ -283,6 +291,9 @@ universities.found_prefix: Found
 universities.found_suffix: universities
 universities.global: Global
 universities.loading: Loading universities
+universities.map_panel.empty: No universities with map coordinates match these filters.
+universities.map_panel.subtitle: Pick a university to center the map and open its details.
+universities.map_panel.title: Results on the map
 universities.pagination.next: Next
 universities.pagination.prev: Prev
 universities.reset: Reset
@@ -413,6 +424,7 @@ university.visit_website: Visit Official Website
 common.loading: Loading
 common.ai_short: AI
 common.placeholder_unknown: {field} unknown
+common.no_data: No data
 placeholder.field.university_name: University name
 placeholder.field.location: Location
 placeholder.field.official_website: Official website
@@ -448,7 +460,7 @@ guide.academic.gpa: GPA represents cumulative school academic performance across
 guide.academic.ibdiploma: IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.
 guide.academic.alevelcert: A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score.
 guide.academic.hkdselevel: HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching.
-guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification.
+guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/MaturitГ©) is the standard Swiss university-entrance qualification.
 guide.academic.germanabiturcert: German Abitur certificate is the standard qualification granting access to German universities.
 guide.academic.ossdcert: OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions.
 guide.academic.intro: The following academic exams are currently used by UniSearch for admission track matching and recommendation quality.
@@ -488,7 +500,7 @@ guide.language.pte: PTE Academic is a computer-based English proficiency test us
 guide.language.toefl: TOEFL measures academic English proficiency and is commonly accepted for university admissions.
 guide.language.topik: TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.
 guide.loading_exam_config: Loading exam config
-guide.scale_text: In UniSearch, this score is entered on a {min}‑{max} scale.
+guide.scale_text: In UniSearch, this score is entered on a {min}вЂ‘{max} scale.
 home.mockup.grant_available: Grant Available
 home.mockup.location: Cambridge, USA
 languages.error.choose_cefr: Choose CEFR level
@@ -608,8 +620,9 @@ admission.chance_method.profile_detail: Based on admitted-score profiles plus yo
 admission.chance_method.estimated_short: Estimated
 admission.chance_method.estimated_detail: Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles.
 admission.chance_accuracy.low: Low confidence
-title.404: Error 404 | UniSearch
-error404.title: Error 404
+title.404: Page Not Found | UniSearch
+error404.kicker: Error 404
+error404.title: Page not found
 error404.lead: The page may have moved, the link may be outdated, or the address may contain a typo.
 error404.primary: Go home
 error404.secondary: Open universities
@@ -622,3 +635,114 @@ error404.quick_title: Popular sections
 error404.link.rankings: See top universities
 error404.link.guide: Learn how UniSearch works
 error404.link.about: Project and contacts
+title.index: UniSearch | Compare Universities by Cost, Admissions, and Fit
+home.hero.title: Find your dream university
+home.hero.title_html: Find your <span class="text-gradient">dream</span> university
+home.hero.desc: Start with the catalog, then compare cost, admission tracks, and your estimated chance in one place.
+home.hero.profile: Open Profile
+home.hero.catalog: Open University Catalog
+home.hero.metrics_aria: UniSearch coverage
+home.hero.metric.catalog: Catalog
+home.hero.metric.coverage: Coverage
+home.hero.metric.mode: Scope
+home.hero.metric.mode_value: Bachelor's
+home.hero.metric.mode_note: programs for now
+home.scope.callout_title: Current scope
+home.scope.callout_body: UniSearch currently focuses on bachelor's planning and shortlist building.
+home.preview.aria: Product preview
+home.preview.sample: What you can do inside the catalog
+home.preview.title: Go from broad search to a real shortlist.
+home.preview.desc: Use your profile to filter universities, review cost early, and open track details before applying.
+home.preview.point1: Filter by budget, country, exam, and {fit}.
+home.preview.point2: See estimated cost and aid context early.
+home.preview.point3: Compare requirements and {chance} by track.
+home.links.ranking: Ranking
+home.links.guide: Guide
+home.links.about: About
+home.preview.profile.kicker: Profile
+home.preview.profile.title: Your planning inputs
+home.preview.profile.budget_label: Budget
+home.preview.profile.budget_value: $20k / year
+home.preview.profile.gpa_label: GPA
+home.preview.profile.gpa_value: 92 / 100
+home.preview.profile.exam_label: Exam
+home.preview.profile.exam_value: IELTS 7.5
+home.preview.profile.interests_label: Interests
+home.preview.profile.interests_value: AI, scholarships, city campus
+home.preview.results.kicker: Shortlist
+home.preview.results.title: {fit} sorted options
+home.preview.results.card1.name: Delft University of Technology
+home.preview.results.card1.meta: Delft, Netherlands
+home.preview.results.card1.badge: Strong fit
+home.preview.results.card1.cost: $36k estimated cost
+home.preview.results.card1.chance: {chance} 68/100
+home.preview.results.card2.name: University of Toronto
+home.preview.results.card2.meta: Toronto, Canada
+home.preview.results.card2.badge: Aid available
+home.preview.results.card2.cost: $63k estimated cost
+home.preview.results.card2.chance: {chance} 54/100
+home.preview.track.kicker: Best track
+home.preview.track.title: Compare the actual admission route in one view
+home.preview.track.row1.label: Admission path
+home.preview.track.row1.value: Direct entry
+home.preview.track.row2.label: Language proof
+home.preview.track.row2.value: IELTS 6.5 minimum
+home.preview.track.row3.label: Funding
+home.preview.track.row3.value: Merit scholarship possible
+home.proof.kicker: Planning signals
+home.proof.title: What you can evaluate before you ever open an application
+home.proof.card1.title: Official facts where available
+home.proof.card1.desc: We prioritize official admissions and fact data when the university publishes it clearly.
+home.proof.card2.title: Track-based comparison
+home.proof.card2.desc: You compare concrete admission paths, not just a generic university card.
+home.proof.card3.title: Cost first, prestige second
+home.proof.card3.desc: Budget, aid, and yearly cost are visible early so the shortlist stays realistic.
+home.proof.card4.title: Ranking and guide stay connected
+home.proof.card4.desc: The catalog, ranking, and guide work together, so users can research and decide in one flow.
+home.outcomes.kicker: Decision support
+home.outcomes.title: Decide faster with the right context upfront
+home.outcomes.desc: Start with your profile, then quickly understand shortlist quality, cost pressure, and admissions direction.
+home.outcomes.card1.title: Build a shortlist that matches your profile
+home.outcomes.card1.desc: Use budget, exams, languages, and preferences to narrow the catalog into realistic options.
+home.outcomes.card2.title: See the financial picture early
+home.outcomes.card2.desc: Estimated cost, aid signals, and funding context appear before you waste time on impossible options.
+home.outcomes.card3.title: Inspect the actual admission route
+home.outcomes.card3.desc: Open track details to compare requirements, language proof, and your estimated admission chance.
+home.workflow.kicker: Workflow
+home.workflow.title: Move from profile to shortlist in three steps
+home.workflow.desc: Start with your inputs, narrow the catalog, then open track details where the real decision gets made.
+home.workflow.step1.title: Fill in your profile
+home.workflow.step1.desc: Add your budget, GPA, exams, languages, and preferences so the ranking becomes personal.
+home.workflow.step2.title: Filter and sort strategically
+home.workflow.step2.desc: Use country, city, cost, funding type, and {fit} to move from broad search to a real shortlist.
+home.workflow.step3.title: Open details and compare tracks
+home.workflow.step3.desc: Check admissions, finance, and your estimated chance by track before you decide where to apply.
+home.workflow.cta_profile: Start with Profile
+home.workflow.cta_catalog: Go to university catalog
+home.workflow.side1.kicker: Ranking
+home.workflow.side1.title: Use ranking for broad scanning
+home.workflow.side1.desc: Ranking is useful when you want to quickly explore strong global names before narrowing by fit and cost.
+home.workflow.side1.link: Open ranking
+home.workflow.side2.kicker: Guide
+home.workflow.side2.title: Use the guide when terms are unclear
+home.workflow.side2.desc: The guide explains scores, tags, and how {fit} and {chance} should be read.
+home.workflow.side2.link: Open guide
+home.trust.kicker: Data and scope
+home.trust.title: Know what the data can support
+home.trust.desc: UniSearch is strongest when scope, data quality, and estimation limits stay visible from the start.
+home.trust.card1.title: What you can rely on
+home.trust.card1.item1: Track-by-track comparison instead of one generic score.
+home.trust.card1.item2: Cost and aid context shown next to the option.
+home.trust.card1.item3: Guide and ranking available when users need more context.
+home.trust.card2.title: What should stay explicit
+home.trust.card2.item1: Bachelor's programs only for now.
+home.trust.card2.item2: Official admissions detail varies by university and country.
+home.trust.card2.item3: {chance} is guidance for planning, not an admissions guarantee.
+home.explore.kicker: Explore more
+home.explore.title: Use ranking, guide, and about when you need more context
+home.explore.card1.title: Global ranking
+home.explore.card1.desc: Scan popular universities quickly, then move back into fit, cost, and track comparison.
+home.explore.card2.title: Guide
+home.explore.card2.desc: Read the glossary, exam basics, and the meaning of tags before making decisions.
+home.explore.card3.title: About the team
+home.explore.card3.desc: See who is building the product and why the project is focused on practical student planning.

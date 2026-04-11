@@ -9,17 +9,16 @@
   <script src="javascript/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/error.css" />
 </head>
 <body data-page="error-404">
   <main class="error-page error-page--404">
-    <section class="error-hero">
-      <div class="error-hero-copy">
-        <div class="error-hero-decor error-hero-decor--top" aria-hidden="true"></div>
-        <div class="error-hero-decor error-hero-decor--bottom" aria-hidden="true"></div>
-        <div class="error-code" aria-hidden="true" data-i18n="error404.title">Error 404</div>
+    <section class="error-shell">
+      <section class="error-main">
+        <p class="error-kicker" data-i18n="error404.kicker">Error 404</p>
+        <h1 class="error-title" data-i18n="error404.title">Page not found</h1>
         <p class="error-lead" data-i18n="error404.lead">
           The page may have moved, the link may be outdated, or the address may contain a typo.
         </p>
@@ -28,7 +27,7 @@
           <a href="index.html" data-route="home" class="error-btn error-btn--primary" data-i18n="error404.primary">Go home</a>
           <a href="universities.html" data-route="universities" class="error-btn error-btn--secondary" data-i18n="error404.secondary">Open universities</a>
         </div>
-      </div>
+      </section>
     </section>
   </main>
 

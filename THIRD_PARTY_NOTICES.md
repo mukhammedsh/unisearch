@@ -12,9 +12,10 @@ This project uses or references the following third-party icon and brand assets.
 - License note: The Heroicons repository states that the library is MIT licensed.
 - How this project uses it:
   - UI action icons and state icons rendered via `frontend/javascript/icons.js`
+  - Source SVG data is synced from the official `@heroicons/react` `24/outline` package
   - Used across navigation, filters, tabs, badges, toasts, and other interface controls
 - Integration note:
-  - Icons are embedded as inline SVG paths adapted from Heroicons and styled through `currentColor`
+  - Icons are embedded as inline SVG generated from the upstream Heroicons package and styled through `currentColor`
   - The project uses a unified `24/outline`-style visual language for UI icons
 
 ## 2. flag-icons

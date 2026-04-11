@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="./" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
-  <title data-i18n="title.index">UniSearch - AI University Finder</title>
+  <title data-i18n="title.index">UniSearch | Compare Universities by Cost, Admissions, and Fit</title>
   <script src="javascript/theme-init.js"></script>
 
   <link rel="stylesheet" href="css/style.css" />
@@ -13,158 +13,81 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
 </head>
 <body data-page="home">
-
-  <section class="hero-section">
-      <div class="hero-text">
+  <main class="home-page">
+    <section class="home-hero">
+      <div class="home-shell">
+        <div class="hero-copy">
           <h1 class="hero-title" data-i18n-html="home.hero.title_html">
-              Find your dream university with <span class="text-gradient"><span class="ai-gold">AI Power</span></span>
+            Find your <span class="text-gradient">dream</span> university
           </h1>
           <p class="hero-desc" data-i18n="home.hero.desc">
-              UniSearch is a student-friendly platform for finding universities by comparing requirements, costs, and opportunities in one clear place.
+            Start with the catalog, then compare cost, admission tracks, and your estimated chance in one place.
           </p>
-          <div class="hero-scope-callout" aria-label="Current study scope">
-              <p class="hero-scope-callout__title" data-i18n="home.scope.callout_title">
-                  Bachelor's programs only for now
-              </p>
-              <p class="hero-scope-callout__text" data-i18n="home.scope.callout_body">
-                  UniSearch currently covers bachelor's degree programs only. Master's and other study levels may appear later.
-              </p>
+
+          <div class="hero-actions">
+            <a href="universities.html" data-route="universities" class="btn-primary" data-i18n="home.hero.catalog">
+              Open University Catalog
+            </a>
+            <a id="homeOpenProfileBtn" href="#" role="button" class="home-secondary-btn" data-i18n="home.hero.profile">
+              Open Profile
+            </a>
           </div>
-          <div class="hero-buttons">
-              <a href="universities.html" data-route="universities" class="btn-primary" data-i18n="home.hero.start">Start Matching</a>
-              <a href="ranking.html" data-route="ranking" class="btn-secondary" data-i18n="home.hero.rankings">View Rankings</a>
+
+          <div class="hero-facts" aria-label="UniSearch coverage" data-i18n-aria-label="home.hero.metrics_aria">
+            <p class="hero-fact">
+              <strong id="stat-uni" class="hero-fact__value">20</strong>
+              <span id="stat-uni-label" class="hero-fact__text">universities</span>
+            </p>
+            <p class="hero-fact">
+              <strong id="stat-countries" class="hero-fact__value">13</strong>
+              <span id="stat-country-label" class="hero-fact__text">countries</span>
+            </p>
+            <p class="hero-fact hero-fact--muted">
+              <strong class="hero-fact__value hero-fact__value--small" data-i18n="home.hero.metric.mode_value">Bachelor's</strong>
+              <span class="hero-fact__text" data-i18n="home.hero.metric.mode_note">programs for now</span>
+            </p>
           </div>
+
+        </div>
+
+        <aside class="hero-rail" aria-label="Product preview" data-i18n-aria-label="home.preview.aria">
+          <p class="hero-rail__eyebrow" data-i18n="home.preview.sample">What you can do inside the catalog</p>
+          <p class="hero-rail__title" data-i18n="home.preview.title">Go from broad search to a real shortlist.</p>
+          <p class="hero-rail__desc" data-i18n="home.preview.desc">Use your profile to filter universities, review cost early, and open track details before applying.</p>
+
+          <ul class="preview-list">
+            <li class="preview-item" data-i18n="home.preview.point1">Filter by budget, country, exam, and {fit}.</li>
+            <li class="preview-item" data-i18n="home.preview.point2">See estimated cost and aid context early.</li>
+            <li class="preview-item" data-i18n="home.preview.point3">Compare requirements and {chance} by track.</li>
+          </ul>
+
+          <div class="home-links">
+            <a href="ranking.html" data-route="ranking" data-i18n="home.links.ranking">Ranking</a>
+            <a href="guide.html" data-route="guide" data-i18n="home.links.guide">Guide</a>
+            <a href="about.html" data-route="about" data-i18n="home.links.about">About</a>
+          </div>
+        </aside>
       </div>
-
-      <div class="hero-visual">
-          <div class="blob"></div>
-
-          <div class="mockup-card" data-home-uni-id="mit-usa-cambridge" style="--home-mockup-thumb-url: url('images/mit-usa-cambridge.jpg');">
-              <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
-                  <div style="width:50px; height:50px; background:#f0f0f0; border-radius:10px; overflow:hidden;">
-                      <img
-                        data-home-uni-logo="mit-usa-cambridge"
-                        src="images/mit-usa-cambridge.png"
-                        alt="MIT logo"
-                        style="width:100%; height:100%; object-fit:contain; padding:5px;"
-                      >
-                  </div>
-                  <div>
-                      <div class="mockup-uni-name" style="font-weight:800;">MIT</div>
-                      <div class="mockup-uni-loc" style="font-size:13px;" data-i18n="home.mockup.location">Cambridge, USA</div>
-                  </div>
-              </div>
-              <span style="background:#d1fae5; color:#065f46; padding:8px 8px; border-radius:6px; font-size:11px; font-weight:bold; display:inline-flex; align-items:center; gap:6px;"><span data-heroicon="check-circle" data-icon-size="14"></span><span data-i18n="home.mockup.grant_available">Grant Available</span></span>
-              <!-- <div style="height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden;">
-                  <div style="width:92%; height:100%; background:#5d17ea;"></div>
-              </div> -->
-              <!-- <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:11px; color:#666;">
-                  <span>Match Score</span>
-                  <span style="font-weight:bold; color:#5d17ea;">92%</span>
-              </div> -->
-          </div>
-
-          <!-- <div class="mockup-card" style="position:absolute; top:20px; left:40px; z-index:1; transform: rotate(5deg) scale(0.9); opacity:0.6; pointer-events:none;"></div> -->
-      </div>
-  </section>
-
-  <section class="stats-section">
-      <div class="home-flow">
-          <div class="home-flow-head">
-              <div class="home-flow-copy">
-                  <p class="home-journey-kicker" data-i18n="home.journey.kicker">University matching</p>
-                  <h2 class="home-journey-title" data-i18n="home.journey.title">Choose your ideal university</h2>
-              <p class="home-journey-desc" data-i18n="home.journey.desc">
-                  Compare requirements, costs, and admission chances in one place.
-              </p>
-              </div>
-              <div class="home-flow-stats">
-                  <div class="home-live-item">
-                      <span id="stat-uni" class="home-live-value">20</span>
-                      <span id="stat-uni-label" class="home-live-label">universities</span>
-                  </div>
-                  <div class="home-live-item">
-                      <span id="stat-countries" class="home-live-value">13</span>
-                      <span id="stat-country-label" class="home-live-label">countries</span>
-                  </div>
-              </div>
-          </div>
-
-          <div class="home-flow-steps">
-              <article class="home-flow-step">
-                  <div class="home-flow-step-num">1</div>
-                  <div class="home-flow-step-copy">
-                      <h3 data-i18n="home.journey.step1.title">Fill your profile</h3>
-                      <p data-i18n="home.journey.step1.desc">
-                          Add budget, GPA, exams, and languages for accurate matching.
-                      </p>
-                  </div>
-              </article>
-
-              <article class="home-flow-step">
-                  <div class="home-flow-step-num">2</div>
-                  <div class="home-flow-step-copy">
-                      <h3 data-i18n="home.journey.step2.title">Set filters</h3>
-                      <p data-i18n="home.journey.step2.desc">
-                          Select country, city, and cost range.
-                      </p>
-                  </div>
-              </article>
-
-              <article class="home-flow-step">
-                  <div class="home-flow-step-num">3</div>
-                  <div class="home-flow-step-copy">
-                      <h3 data-i18n="home.journey.step3.title">Compare tracks</h3>
-                      <p data-i18n="home.journey.step3.desc">
-                          Open university cards to review admission paths, cost, and scholarship potential.
-                      </p>
-                  </div>
-              </article>
-          </div>
-      </div>
-  </section>
-
-  <section class="features-section">
-      <h2 class="section-title" data-i18n="home.why">Why use UniSearch?</h2>
-
-      <div class="feature-grid-new">
-          <div class="feature-box">
-              <div class="feature-icon"><span data-heroicon="cpu-chip" data-icon-size="24"></span></div>
-              <h4 data-i18n="home.feature.ai_title">{fit} + {chance} AI</h4>
-              <p data-i18n="home.feature.ai_desc">{fit} helps sort options for you, and {chance} shows an estimated admission chance.</p>
-          </div>
-
-          <div class="feature-box">
-              <div class="feature-icon"><span data-heroicon="banknotes" data-icon-size="24"></span></div>
-              <h4 data-i18n="home.feature.finance_title">Financial Clarity</h4>
-              <p data-i18n="home.feature.finance_desc">See tuition and study costs, plus grant or discount options when they are available in the data.</p>
-          </div>
-
-          <div class="feature-box">
-              <div class="feature-icon"><span data-heroicon="rocket-launch" data-icon-size="24"></span></div>
-              <h4 data-i18n="home.feature.data_title">Simple Comparison</h4>
-              <p data-i18n="home.feature.data_desc">We gather requirements, costs, and scholarships in one place so it is easier to compare universities.</p>
-          </div>
-      </div>
-  </section>
+    </section>
+  </main>
 
   <script src="env.js"></script>
   <script src="config.js"></script>
   <script type="module" src="javascript/main.js"></script>
 
   <footer class="site-footer">
-      <div class="container footer-content">
-          <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+    <div class="container footer-content">
+      <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
 
-          <div class="social-links">
-              <a href="https://github.com/muxlex/unisearch" target="_blank">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
-              </a>
-          </div>
+      <div class="social-links">
+        <a href="https://github.com/muxlex/unisearch" target="_blank" rel="noopener">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
+        </a>
       </div>
+    </div>
   </footer>
 </body>
 </html>

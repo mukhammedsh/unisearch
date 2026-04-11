@@ -284,7 +284,7 @@ const LAYOUT_HTML = `
               class="profile-info"
               aria-label="How GPA works here"
               data-i18n-aria-label="profile.gpa_info_title"
-            >i</button>
+            >${heroIcon("information-circle", "ui-icon ui-icon--14")}</button>
             <span class="profile-tooltip" role="tooltip">
               <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
               <span data-i18n="profile.gpa_info_tooltip">Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.</span>
@@ -326,7 +326,7 @@ const LAYOUT_HTML = `
         <div class="lang-add-grid lang-add-grid--compact">
             <div>
             <span class="mini-label" data-i18n="profile.language">Language</span>
-            <select id="langCode" class="profile-input"></select>
+            <select id="langCode" class="profile-input" data-flags="off"></select>
             </div>
 
             <div>
@@ -348,7 +348,7 @@ const LAYOUT_HTML = `
 
             <div id="examContainer" class="profile-lang-conditional">
             <span class="mini-label" data-i18n="profile.exam">Exam</span>
-            <select id="langExam" class="profile-input"></select>
+            <select id="langExam" class="profile-input" data-flags="off"></select>
             </div>
 
             <div id="scoreContainer" class="profile-lang-conditional">
@@ -960,8 +960,8 @@ function initProfileUI() {
             ).trim();
             const bands = getExamLevelBands(examId);
             examSpecialInputContainer.innerHTML = `
-                <div class="profile-exam-special-field">
-                    <span class="mini-label">${escapeHtml(t("profile.exam_band_label", "Level"))}</span>
+                <div class="profile-exam-special-field profile-exam-special-field--inline">
+                    <span class="mini-label mini-label--hidden">${escapeHtml(t("profile.exam_band_label", "Level"))}</span>
                     <select id="examBandSelect" class="profile-input profile-input--select">
                         <option value="" disabled ${selectedBand ? "" : "selected"}>${escapeHtml(t("profile.exam_band_placeholder", "Select level"))}</option>
                         ${bands.map((band) => {
@@ -1048,6 +1048,8 @@ function initProfileUI() {
         if (examForm) {
             examForm.classList.toggle("profile-exam-form--no-score", !usesNumberInput && !usesSpecialInput);
             examForm.classList.toggle("profile-exam-form--with-special", usesSpecialInput);
+            examForm.classList.toggle("profile-exam-form--grades", mode === "grade_combo");
+            examForm.classList.toggle("profile-exam-form--band", mode === "band_select");
         }
 
         if (!usesNumberInput) {
