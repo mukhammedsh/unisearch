@@ -109,10 +109,16 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         )
         self.assertIsNotNone(hkdse_track)
         score_profile = hkdse_track.get("score_profile") or {}
+        requirements = hkdse_track.get("requirements") or {}
+        stats_avg = hkdse_track.get("stats_avg") or {}
         self.assertIn("p25_normalized", score_profile)
         self.assertIn("median_normalized", score_profile)
         self.assertIn("p75_normalized", score_profile)
         self.assertEqual("HKDSE_WEIGHTED_TOTAL", score_profile.get("exam_id"))
+        self.assertEqual(3, int(requirements.get("HKDSE_CHINESE_LANGUAGE", 0)))
+        self.assertEqual(3, int(requirements.get("HKDSE_ENGLISH_LANGUAGE", 0)))
+        self.assertEqual(2, int(requirements.get("HKDSE_MATHEMATICS", 0)))
+        self.assertAlmostEqual(42.88, float(stats_avg.get("HKDSE_WEIGHTED_TOTAL") or 0.0), places=2)
 
     def test_all_admission_tracks_and_funding_options_have_descriptions(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
@@ -171,11 +177,29 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIsNotNone(paid_option)
         self.assertIn("Платный вариант поступления в MIT", str(paid_option.get("description") or ""))
 
-    def test_all_universities_have_campus_size_and_detailed_cost_breakdown(self):
+    def test_all_universities_have_campus_size_and_truthful_cost_breakdown(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
         self.assertEqual(response.status_code, 200)
         items = response.json().get("items") or []
         self.assertTrue(items)
+
+        forbidden_keys = {
+            "Personal_Expenses",
+            "Health_Insurance",
+            "Medical_Insurance",
+            "Transportation",
+            "Internet_and_Phone",
+        }
+        tuition_and_fee_only_allowed = {
+            "Tuition",
+            "Student_Life_Fee",
+            "Student_Fees",
+            "Mandatory_Fees",
+            "Student_Services_and_Amenities_Fee",
+            "Semester_Fees",
+            "Compulsory_Fees",
+            "Student_Services_and_Health_Fees",
+        }
 
         for item in items:
             university_id = str((item or {}).get("id") or "")
@@ -192,18 +216,31 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
 
             finance = data.get("finance") or {}
             breakdown = finance.get("costs_breakdown_year_usd") or {}
-            self.assertGreaterEqual(
-                len([key for key, value in breakdown.items() if isinstance(key, str) and value is not None]),
-                5,
-                f"{university_id} breakdown is not detailed enough",
-            )
             total = float(finance.get("total_cost_year_usd") or 0.0)
+            self.assertGreater(total, 0.0, f"{university_id} missing total_cost_year_usd")
+
+            self.assertTrue(breakdown, f"{university_id} missing visible truthful breakdown")
+            self.assertTrue(
+                forbidden_keys.isdisjoint(set(breakdown.keys())),
+                f"{university_id} still exposes forbidden discretionary breakdown keys",
+            )
+            self.assertTrue(
+                all(float(value or 0.0) > 0.0 for value in breakdown.values()),
+                f"{university_id} contains non-positive breakdown values",
+            )
+
+            status = str(finance.get("costs_breakdown_status") or "")
+            if status == "official_tuition_and_fees_only":
+                self.assertTrue(
+                    set(breakdown.keys()).issubset(tuition_and_fee_only_allowed),
+                    f"{university_id} exposes non-official living-cost categories under tuition/fees-only policy",
+                )
+
             summed = sum(float(value or 0.0) for value in breakdown.values())
-            self.assertAlmostEqual(
-                total,
+            self.assertLessEqual(
                 summed,
-                places=2,
-                msg=f"{university_id} total_cost_year_usd does not match breakdown sum",
+                total + 0.01,
+                f"{university_id} visible breakdown exceeds total_cost_year_usd",
             )
 
     def test_university_detail_localizes_campus_size_group_by_lang(self):
@@ -245,7 +282,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         items = response.json().get("items") or []
         self.assertTrue(items)
 
-        allowed = {"official_breakdown", "mixed_official_guidance"}
+        allowed = {"official_mandatory_breakdown", "official_tuition_and_fees_only"}
         for item in items:
             university_id = str((item or {}).get("id") or "")
             self.assertTrue(university_id)
@@ -308,6 +345,23 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(detail.status_code, 200)
         self.assertEqual(
             "Korea Advanced Institute of Science and Technology",
+            detail.json().get("name"),
+        )
+
+    def test_russian_university_names_hide_abbreviations_in_visible_label(self):
+        response = self.client.get("/universities/translations?lang=rus")
+        self.assertEqual(response.status_code, 200)
+        payload = (response.json().get("data") or {}).get("university_names") or {}
+        self.assertEqual(
+            "Швейцарская высшая техническая школа Цюриха",
+            payload.get("eth-zurich-ch-zurich"),
+        )
+        self.assertNotIn("(ETH Zurich)", payload.get("eth-zurich-ch-zurich", ""))
+
+        detail = self.client.get("/universities/eth-zurich-ch-zurich?lang=rus")
+        self.assertEqual(detail.status_code, 200)
+        self.assertEqual(
+            "Швейцарская высшая техническая школа Цюриха",
             detail.json().get("name"),
         )
 

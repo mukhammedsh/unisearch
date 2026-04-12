@@ -133,14 +133,20 @@ class FundingOptionsCompatibilityTests(unittest.TestCase):
             if isinstance(track, dict)
         }
 
-        self.assertIn("nu_direct", tracks)
+        self.assertIn("nu_sat_applicants", tracks)
+        self.assertIn("nu_act_applicants", tracks)
         self.assertIn("nu_nuet_undergraduate", tracks)
         self.assertNotIn("nu_direct-grant-abay-kunanbayev", tracks)
         self.assertNotIn("nu_nuet_undergraduate-grant-state-grant", tracks)
 
-        direct_options = {
+        sat_options = {
             str(option.get("id")): option
-            for option in (tracks["nu_direct"].get("funding_options") or [])
+            for option in (tracks["nu_sat_applicants"].get("funding_options") or [])
+            if isinstance(option, dict)
+        }
+        act_options = {
+            str(option.get("id")): option
+            for option in (tracks["nu_act_applicants"].get("funding_options") or [])
             if isinstance(option, dict)
         }
         nuet_options = {
@@ -149,12 +155,18 @@ class FundingOptionsCompatibilityTests(unittest.TestCase):
             if isinstance(option, dict)
         }
 
-        self.assertIn("nu_direct", direct_options)
-        self.assertIn("nu_direct-grant-abay-kunanbayev", direct_options)
+        self.assertIn("nu_sat_applicants", sat_options)
+        self.assertIn("nu_sat_applicants-grant-abay-kunanbayev", sat_options)
+        self.assertIn("nu_act_applicants", act_options)
+        self.assertIn("nu_act_applicants-grant-abay-kunanbayev", act_options)
         self.assertIn("nu_nuet_undergraduate", nuet_options)
         self.assertIn("nu_nuet_undergraduate-grant-state-grant", nuet_options)
-        self.assertEqual("paid", str(direct_options["nu_direct"].get("funding_type") or ""))
-        self.assertEqual("grant", str(direct_options["nu_direct-grant-abay-kunanbayev"].get("funding_type") or ""))
+        self.assertEqual("paid", str(sat_options["nu_sat_applicants"].get("funding_type") or ""))
+        self.assertEqual("grant", str(sat_options["nu_sat_applicants-grant-abay-kunanbayev"].get("funding_type") or ""))
+        self.assertEqual(1240, int((sat_options["nu_sat_applicants"].get("requirements") or {}).get("SAT", 0)))
+        self.assertEqual(26, int((act_options["nu_act_applicants"].get("requirements") or {}).get("ACT", 0)))
+        self.assertEqual(1475, int((sat_options["nu_sat_applicants"].get("stats_avg") or {}).get("SAT", 0)))
+        self.assertFalse(bool(act_options["nu_act_applicants"].get("stats_avg")))
 
 
 if __name__ == "__main__":

@@ -55,8 +55,13 @@ class ProfileLanguageInput(BaseModel):
     exam: Optional[str] = Field(default=None, max_length=64)
     examId: Optional[str] = Field(default=None, max_length=64)
     score: Optional[float] = Field(default=None, ge=0, le=10000)
+    raw_value: Optional[str] = Field(default=None, max_length=128)
+    rawValue: Optional[str] = Field(default=None, max_length=128)
+    display_value: Optional[str] = Field(default=None, max_length=128)
+    displayValue: Optional[str] = Field(default=None, max_length=128)
+    details: Optional[Dict[str, Any]] = None
 
-    @field_validator("code", "lang", "exam", "examId", mode="before")
+    @field_validator("code", "lang", "exam", "examId", "raw_value", "rawValue", "display_value", "displayValue", mode="before")
     @classmethod
     def _validate_lang_fields(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
@@ -70,8 +75,8 @@ class ProfileLanguageInput(BaseModel):
         if self.kind == "exam":
             if not self.exam and not self.examId:
                 raise ValueError("Language kind='exam' requires 'exam' or 'examId'")
-            if self.score is None:
-                raise ValueError("Language kind='exam' requires 'score'")
+            if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+                raise ValueError("Language kind='exam' requires 'score', 'raw_value', or 'details'")
         return self
 
 
@@ -212,8 +217,11 @@ class LanguageValidateRequest(BaseModel):
     label: Optional[str] = Field(default=None, max_length=8)
     exam: Optional[str] = Field(default=None, max_length=64)
     score: Optional[Union[float, int, str]] = None
+    raw_value: Optional[str] = Field(default=None, max_length=128)
+    rawValue: Optional[str] = Field(default=None, max_length=128)
+    details: Optional[Dict[str, Any]] = None
 
-    @field_validator("code", "exam", "label", mode="before")
+    @field_validator("code", "exam", "label", "raw_value", "rawValue", mode="before")
     @classmethod
     def _normalize_language_fields(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
@@ -225,8 +233,8 @@ class LanguageValidateRequest(BaseModel):
         if self.kind == "exam":
             if not self.exam:
                 raise ValueError("kind='exam' requires exam")
-            if self.score is None or self.score == "":
-                raise ValueError("kind='exam' requires score")
+            if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+                raise ValueError("kind='exam' requires score, raw_value, or details")
         return self
 
 

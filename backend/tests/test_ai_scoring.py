@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from app.services import universities as uni_service
-from app.services.ai_scoring import estimate_uni_chance, sort_universities_ai
+from app.services.ai_scoring import _build_user_context, estimate_uni_chance, sort_universities_ai
 
 
 def _demo_score_profile(exam_id="GPA", p25=60, median=75, p75=90, acceptance_rate_percent=None):
@@ -20,6 +20,73 @@ def _demo_score_profile(exam_id="GPA", p25=60, median=75, p75=90, acceptance_rat
 
 
 class AiScoringTests(unittest.TestCase):
+    def test_build_user_context_flattens_composite_exam_components(self):
+        profile = {
+            "exams": [
+                {
+                    "exam": "SAT",
+                    "details": {
+                        "components": [
+                            {"exam": "SAT_MATH", "score": 780},
+                            {"exam": "SAT_EBRW", "score": 760},
+                        ]
+                    },
+                },
+                {
+                    "exam": "HKDSE_LEVEL",
+                    "details": {
+                        "components": [
+                            {"exam": "HKDSE_CHINESE_LANGUAGE", "raw_value": "3"},
+                            {"exam": "HKDSE_ENGLISH_LANGUAGE", "raw_value": "4"},
+                            {"exam": "HKDSE_MATHEMATICS", "raw_value": "4"},
+                            {"exam": "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT", "score": 1},
+                            {"exam": "HKDSE_ELECTIVE_1", "raw_value": "5"},
+                            {"exam": "HKDSE_ELECTIVE_2_OR_M1_M2_OTHER_LANGUAGE", "raw_value": "5*"},
+                        ],
+                        "extra_scores": [
+                            {"exam": "HKDSE_WEIGHTED_TOTAL", "score": 42.88}
+                        ],
+                    },
+                },
+            ]
+        }
+
+        ctx = _build_user_context(profile, {})
+
+        self.assertEqual(1540, int(ctx["userScores"].get("SAT") or 0))
+        self.assertEqual(780, int(ctx["userScores"].get("SAT_MATH") or 0))
+        self.assertEqual(760, int(ctx["userScores"].get("SAT_EBRW") or 0))
+        self.assertEqual(23, int(ctx["userScores"].get("HKDSE_LEVEL") or 0))
+        self.assertEqual(3, int(ctx["userScores"].get("HKDSE_CHINESE_LANGUAGE") or 0))
+        self.assertAlmostEqual(42.88, float(ctx["userScores"].get("HKDSE_WEIGHTED_TOTAL") or 0.0), places=2)
+
+    def test_build_user_context_flattens_composite_language_exam_components(self):
+        profile = {
+            "languages": [
+                {
+                    "code": "en",
+                    "kind": "exam",
+                    "exam": "IELTS",
+                    "score": 7.5,
+                    "details": {
+                        "components": [
+                            {"exam": "IELTS_LISTENING", "score": 8.0},
+                            {"exam": "IELTS_READING", "score": 7.5},
+                            {"exam": "IELTS_WRITING", "score": 7.0},
+                            {"exam": "IELTS_SPEAKING", "score": 7.0},
+                        ]
+                    },
+                }
+            ]
+        }
+
+        ctx = _build_user_context(profile, {})
+
+        self.assertAlmostEqual(7.5, float(ctx["userScores"].get("IELTS") or 0.0), places=2)
+        self.assertAlmostEqual(8.0, float(ctx["userScores"].get("IELTS_LISTENING") or 0.0), places=2)
+        self.assertAlmostEqual(7.5, float(ctx["userLanguages"]["en"]["exams"].get("IELTS") or 0.0), places=2)
+        self.assertAlmostEqual(7.0, float(ctx["userLanguages"]["en"]["exams"].get("IELTS_WRITING") or 0.0), places=2)
+
     def test_ai_sort_prefers_distance_match_even_when_ml_scores_disagree(self):
         items = [
             {
@@ -437,7 +504,15 @@ class AiScoringTests(unittest.TestCase):
             "gpa": 92,
             "exams": [{"id": "SAT", "score": 1480}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
-            "selectedAdmissionTracks": {"nazarbayev-university-kaz-astana": "nu_direct"},
+            "selectedAdmissionTracks": {"nazarbayev-university-kaz-astana": "nu_sat_applicants"},
+        }
+        act_profile = {
+            "locale": "rus",
+            "budget": 15000,
+            "gpa": 92,
+            "exams": [{"id": "ACT", "score": 31}],
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
+            "selectedAdmissionTracks": {"nazarbayev-university-kaz-astana": "nu_act_applicants"},
         }
         nuet_profile = {
             "locale": "rus",
@@ -449,12 +524,18 @@ class AiScoringTests(unittest.TestCase):
         }
 
         sat_result = estimate_uni_chance(university, sat_profile)
+        act_result = estimate_uni_chance(university, act_profile)
         nuet_result = estimate_uni_chance(university, nuet_profile)
 
         self.assertIsNotNone(sat_result.get("overallChance"))
         self.assertTrue(bool(sat_result.get("chanceAvailable")))
-        self.assertEqual("nu_direct", str(sat_result.get("bestTrackKey") or ""))
+        self.assertEqual("nu_sat_applicants", str(sat_result.get("bestTrackKey") or ""))
         self.assertEqual("official_score_profile", str(sat_result.get("chanceModel") or ""))
+
+        self.assertIsNotNone(act_result.get("overallChance"))
+        self.assertTrue(bool(act_result.get("chanceAvailable")))
+        self.assertEqual("nu_act_applicants", str(act_result.get("bestTrackKey") or ""))
+        self.assertEqual("estimated_fallback", str(act_result.get("chanceModel") or ""))
 
         self.assertIsNotNone(nuet_result.get("overallChance"))
         self.assertTrue(bool(nuet_result.get("chanceAvailable")))

@@ -17,16 +17,23 @@ class ExamsApiTests(unittest.TestCase):
         self.assertIsInstance(data, dict)
         for key in (
             "SAT",
+            "SAT_MATH",
+            "SAT_EBRW",
             "ACT",
             "GPA",
             "IB_DIPLOMA",
+            "IB_MATHEMATICS_HL",
             "AP_TOTAL",
+            "AP_CALCULUS_BC",
             "A_LEVEL_CERT",
+            "A_LEVEL_MATHEMATICS",
             "EGE",
             "SWISS_MATURITY_CERT",
             "GERMAN_ABITUR_CERT",
             "OSSD_CERT",
             "HKDSE_LEVEL",
+            "HKDSE_MATHEMATICS",
+            "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT",
             "HKDSE_WEIGHTED_TOTAL",
             "UNT",
             "NUET",
@@ -76,6 +83,39 @@ class ExamsApiTests(unittest.TestCase):
         self.assertEqual(17, int(data.get("score")))
         self.assertEqual("A*A*A", data.get("raw_value"))
         self.assertEqual("A*A*A", data.get("display_value"))
+
+    def test_validate_single_subject_a_level_grade_returns_grade_points(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={"exam": "A_LEVEL_MATHEMATICS", "raw_value": "A*"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("A_LEVEL_MATHEMATICS", data.get("exam"))
+        self.assertEqual(6, int(data.get("score")))
+        self.assertEqual("A*", data.get("raw_value"))
+
+    def test_validate_sat_breakdown_returns_total_and_components(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={
+                "exam": "SAT",
+                "details": {
+                    "components": [
+                        {"exam": "SAT_MATH", "score": 780},
+                        {"exam": "SAT_EBRW", "score": 760},
+                    ]
+                },
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("SAT", data.get("exam"))
+        self.assertEqual(1540, int(data.get("score")))
+        self.assertIn("Math 780", str(data.get("display_value", "")))
+        details = data.get("details") or {}
+        self.assertEqual(2, len(details.get("components") or []))
+        self.assertTrue(bool((details.get("components") or [])[0].get("exam")))
 
     def test_validate_bool_exam_accepts_binary_flag(self):
         response = self.client.post(

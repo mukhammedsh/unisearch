@@ -202,8 +202,7 @@
         "Student_Life_Fee": 406,
         "Housing_Dorm": 13060,
         "Food": 7220,
-        "Books_and_Supplies": 980,
-        "Personal_Expenses": 2304
+        "Books_and_Supplies": 980
       },
       "financial_aid": {
         "merit_based": true,
@@ -212,8 +211,8 @@
       "costs_breakdown_source_urls": [
         "https://facts.mit.edu/undergraduate-admissions/undergraduate-tuition/"
       ],
-      "costs_breakdown_note": "Breakdown follows MIT's official undergraduate cost-of-attendance categories, with the final books/personal bucket split into books and personal expenses for clearer display.",
-      "costs_breakdown_status": "official_breakdown"
+      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 98741
@@ -458,7 +457,7 @@
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct 2024-2025 official undergraduate cost-of-attendance categories published by MIT Facts. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Direct official cost-of-attendance source retained. UniSearch now limits displayed breakdown categories to verified mandatory items only and excludes personal or other discretionary allowances.",
           "basis": {
             "academic_year": "2024-2025",
             "tuition": 61990,
@@ -472,9 +471,9 @@
               "Student_Life_Fee",
               "Housing_Dorm",
               "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Books_and_Supplies"
+            ],
+            "display_breakdown_policy": "official_mandatory_breakdown"
           }
         },
         "student_count": {
@@ -1017,9 +1016,7 @@
       "costs_breakdown_year_usd": {
         "Tuition": 52500,
         "Housing_Rent": 13364,
-        "Food": 3686,
-        "Transportation": 1428,
-        "Personal_Expenses": 3563
+        "Food": 3686
       },
       "financial_aid": {
         "merit_based": true,
@@ -1029,8 +1026,8 @@
         "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/",
         "https://www.imperial.ac.uk/study/pg/fees-and-funding/living-costs/"
       ],
-      "costs_breakdown_note": "Uses Imperial's official overseas tuition for Computing MEng and the official 2025-26 London living-cost table (12-month private-sector housing, food, travel, and personal/leisure spending).",
-      "costs_breakdown_status": "official_breakdown"
+      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -1216,7 +1213,7 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Official overseas tuition from the course page plus Imperial's official 2025-26 London living-cost table (12-month private accommodation scenario).",
+          "method": "Direct official cost-of-attendance source retained. UniSearch now limits displayed breakdown categories to verified mandatory items only and excludes personal or other discretionary allowances.",
           "basis": {
             "guide_fee_2026_27_overseas_gbp": 45500,
             "currency": "GBP",
@@ -1224,10 +1221,9 @@
             "breakdown_categories": [
               "Tuition",
               "Housing_Rent",
-              "Food",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Food"
+            ],
+            "display_breakdown_policy": "official_mandatory_breakdown"
           }
         },
         "student_count": {
@@ -1428,9 +1424,7 @@
         "Housing_Dorm": 14424,
         "Food": 8520,
         "Student_Fees": 2610,
-        "Books_and_Supplies": 825,
-        "Personal_Expenses": 2615,
-        "Transportation": 820
+        "Books_and_Supplies": 825
       },
       "financial_aid": {
         "merit_based": true,
@@ -1439,8 +1433,8 @@
       "costs_breakdown_source_urls": [
         "https://financialaid.stanford.edu/undergrad/budget/index.html"
       ],
-      "costs_breakdown_note": "Breakdown expands Stanford's official student budget into separate housing, food, books, personal, and transport items while keeping the published total.",
-      "costs_breakdown_status": "official_breakdown"
+      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 48314.67
@@ -1654,7 +1648,7 @@
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct 2026-2027 official undergraduate student-budget categories published by Stanford Financial Aid. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Direct official cost-of-attendance source retained. UniSearch now limits displayed breakdown categories to verified mandatory items only and excludes personal or other discretionary allowances.",
           "basis": {
             "academic_year": "2026-2027",
             "tuition": 67731,
@@ -1668,10 +1662,9 @@
               "Housing_Dorm",
               "Food",
               "Student_Fees",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Books_and_Supplies"
+            ],
+            "display_breakdown_policy": "official_mandatory_breakdown"
           }
         },
         "student_count": {
@@ -1872,8 +1865,7 @@
         "Mandatory_Fees": 6216,
         "Housing_Dorm": 14250,
         "Food": 8942,
-        "Books_and_Supplies": 1000,
-        "Personal_Expenses": 2500
+        "Books_and_Supplies": 1000
       },
       "financial_aid": {
         "merit_based": true,
@@ -1882,8 +1874,8 @@
       "costs_breakdown_source_urls": [
         "https://college.harvard.edu/financial-aid/how-aid-works"
       ],
-      "costs_breakdown_note": "Harvard's official billed and estimated student-budget items are separated into tuition, fees, housing, food, books, and personal spending.",
-      "costs_breakdown_status": "official_breakdown"
+      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -2097,7 +2089,7 @@
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct 2026-2027 official Harvard College cost-of-attendance categories; total uses the published lower-bound total before variable transportation. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Direct official cost-of-attendance source retained. UniSearch now limits displayed breakdown categories to verified mandatory items only and excludes personal or other discretionary allowances.",
           "basis": {
             "academic_year": "2026-2027",
             "tuition": 62226,
@@ -2114,9 +2106,9 @@
               "Mandatory_Fees",
               "Housing_Dorm",
               "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Books_and_Supplies"
+            ],
+            "display_breakdown_policy": "official_mandatory_breakdown"
           }
         },
         "student_count": {
@@ -2348,12 +2340,7 @@
     "finance": {
       "total_cost_year_usd": 70300,
       "costs_breakdown_year_usd": {
-        "Tuition": 52700,
-        "Housing_College": 10800,
-        "Food": 3400,
-        "Books_and_Supplies": 900,
-        "Transportation": 900,
-        "Personal_Expenses": 1600
+        "Tuition": 52700
       },
       "financial_aid": {
         "need_based": false,
@@ -2363,24 +2350,24 @@
         "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/course-fees",
         "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
       {
         "id": "university-of-oxford-uk-oxford_a_level",
-        "label": "A-Level Entry",
+        "label": "A-Level Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Mathematics and Computer Science"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "A_LEVEL_CERT": 17
+          "A_LEVEL_CERT": 17,
+          "A_LEVEL_MATHEMATICS": 5
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -2388,14 +2375,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.5
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 110
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 24,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 24
             }
           },
           {
@@ -2419,23 +2414,92 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "MAT admissions test and interview shortlist where required",
+          "Computer Science requires A-Level Mathematics; if Further Mathematics is available at school, Oxford strongly recommends and often expects it.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university."
+        "description": "Direct Oxford route for Computer Science applicants presenting A-Level results or predicted grades with the required mathematics preparation."
+      },
+      {
+        "id": "university-of-oxford-uk-oxford_a_level_maths_cs",
+        "label": "A-Level Entry (Mathematics and Computer Science)",
+        "applicable_majors": [
+          "Mathematics and Computer Science"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "A_LEVEL_CERT": 17,
+          "A_LEVEL_MATHEMATICS": 6,
+          "A_LEVEL_FURTHER_MATHEMATICS": 6
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 24,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 24
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 76
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 135
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "MAT admissions test and interview shortlist where required",
+          "Mathematics and Computer Science usually expects A* in Mathematics and A* in Further Mathematics when Further Mathematics is available.",
+          "If Further Mathematics is not available, Oxford may instead make an A*AA offer with A* in Mathematics.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Oxford route for Mathematics and Computer Science applicants presenting A-Level results or predicted grades."
       },
       {
         "id": "university-of-oxford-uk-oxford_ib",
-        "label": "IB Diploma Entry",
+        "label": "IB Diploma Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Mathematics and Computer Science"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "IB_Diploma": 39
+          "IB_Diploma": 39,
+          "IB_MATHEMATICS_HL": 7
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -2443,14 +2507,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.5
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 110
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 24,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 24
             }
           },
           {
@@ -2474,15 +2546,145 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "Typical Oxford Computer Science IB offer is 39 points including core points with 7,6,6 at Higher Level and 7 in Higher Level Mathematics.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects."
+        "description": "Direct Oxford route for Computer Science applicants presenting the IB Diploma with the required Higher Level Mathematics."
+      },
+      {
+        "id": "university-of-oxford-uk-oxford_ib_maths_cs",
+        "label": "IB Diploma Entry (Mathematics and Computer Science)",
+        "applicable_majors": [
+          "Mathematics and Computer Science"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "IB_Diploma": 39,
+          "IB_MATHEMATICS_HL": 7
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 24,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 24
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 76
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 135
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "Typical Oxford Mathematics and Computer Science IB offer is 39 points including core points with 7,6,6 at Higher Level and 7 in Higher Level Mathematics.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Oxford route for Mathematics and Computer Science applicants presenting the IB Diploma."
       },
       {
         "id": "university-of-oxford-uk-oxford_sat_ap",
-        "label": "SAT/AP Entry",
+        "label": "SAT/AP Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
+          "Computer Science"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "SAT": 1470,
+          "SAT_MATH": 770,
+          "AP_Total": 15,
+          "AP_CALCULUS_BC": 5
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 24,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 24
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 76
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 135
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "Oxford Computer Science accepts either four APs at grade 5 including AP Calculus BC and two other mathematics or science subjects, or three APs at grade 5 including AP Calculus BC plus the stated SAT threshold.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Oxford Computer Science route for applicants using AP examinations together with a qualifying SAT result."
+      },
+      {
+        "id": "university-of-oxford-uk-oxford_sat_ap_maths_cs",
+        "label": "SAT/AP Entry (Mathematics and Computer Science)",
+        "applicable_majors": [
           "Mathematics and Computer Science"
         ],
         "scholarships": [],
@@ -2491,7 +2693,8 @@
         "study_mode": "On-campus",
         "requirements": {
           "SAT": 1480,
-          "AP_Total": 20
+          "AP_Total": 15,
+          "AP_CALCULUS_BC": 5
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -2499,14 +2702,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.5
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 110
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 24,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 24
             }
           },
           {
@@ -2530,9 +2741,10 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "Oxford Mathematics and Computer Science accepts either four APs at grade 5 including AP Calculus BC, or three APs at grade 5 including AP Calculus BC plus the stated SAT threshold.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants using SAT results together with strong AP performance or equivalent advanced secondary-school evidence accepted by the university."
+        "description": "Direct Oxford Mathematics and Computer Science route for applicants using AP examinations together with a qualifying SAT result."
       }
     ],
     "verified_sources": [
@@ -2587,6 +2799,10 @@
       {
         "topic": "finance",
         "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
+      },
+      {
+        "topic": "language_requirements",
+        "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford/for-international-students/english-language-requirements"
       }
     ],
     "description": "Oxford is a collegiate research university known for tutorial-based teaching, foundational scholarship, and strength across humanities, sciences, medicine, law, and computing.",
@@ -2656,16 +2872,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_College",
-              "Food",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -2829,13 +3041,7 @@
     "finance": {
       "total_cost_year_usd": 28000,
       "costs_breakdown_year_usd": {
-        "Tuition": 1800,
-        "Housing_Rent": 13000,
-        "Food": 9000,
-        "Health_Insurance": 1320,
-        "Transportation": 780,
-        "Books_and_Supplies": 700,
-        "Personal_Expenses": 1400
+        "Tuition": 1800
       },
       "financial_aid": {
         "merit_based": true,
@@ -2844,8 +3050,8 @@
       "costs_breakdown_source_urls": [
         "https://ethz.ch/students/en/studies/financial/tuition-fees.html"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Uses ETH Zurich tuition plus official living-cost guidance for rent, health insurance, transport, and other student spending.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -3066,21 +3272,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance now points to official ETH tuition-fee and cost-of-living guidance for Bachelor students. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "simple_tuition_fee_chf_per_semester": 730,
             "official_living_cost_example_chf_per_year": 22100,
             "currency": "CHF",
             "total": 28000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Health_Insurance",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -3265,12 +3466,7 @@
     "finance": {
       "total_cost_year_usd": 32000,
       "costs_breakdown_year_usd": {
-        "Tuition": 20000,
-        "Housing_Dorm": 6000,
-        "Food": 4000,
-        "Transportation": 900,
-        "Books_and_Supplies": 500,
-        "Personal_Expenses": 600
+        "Tuition": 20000
       },
       "financial_aid": {
         "merit_based": true,
@@ -3280,8 +3476,8 @@
         "https://www.nus.edu.sg/registrar/administrative-policies-procedures/undergraduate/undergraduate-fees",
         "https://nus.edu.sg/oam/admissions/before-you-apply/living-costs"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Tuition follows official undergraduate fee tables; living-cost items are separated using NUS admissions guidance for international students.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 48314.67
@@ -3522,19 +3718,15 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to the official NUS undergraduate fee schedule. NUS fees vary by cohort, nationality, faculty and subsidy status. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "official_fee_schedule_pdf": "https://www.nus.edu.sg/registrar/docs/default-source/administrative-policies-procedures/ugtuitioncurrent.pdf",
             "currency": "SGD",
             "total": 32000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -3777,12 +3969,7 @@
     "finance": {
       "total_cost_year_usd": 69800,
       "costs_breakdown_year_usd": {
-        "Tuition": 52000,
-        "Housing_College": 11200,
-        "Food": 3300,
-        "Books_and_Supplies": 900,
-        "Transportation": 900,
-        "Personal_Expenses": 1500
+        "Tuition": 52000
       },
       "financial_aid": {
         "need_based": false,
@@ -3792,24 +3979,24 @@
         "https://www.undergraduate.study.cam.ac.uk/fees-and-finance",
         "https://www.undergraduate.study.cam.ac.uk/fees-and-finance/living-costs"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
       {
         "id": "university-of-cambridge-uk-cambridge_a_level",
-        "label": "A-Level Entry",
+        "label": "A-Level Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Engineering"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "A_LEVEL_CERT": 17
+          "A_LEVEL_CERT": 17,
+          "A_LEVEL_MATHEMATICS": 5
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -3817,14 +4004,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.5
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 110
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 25,
+              "TOEFL_iBT_0_120_READING": 25,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 25
             }
           },
           {
@@ -3848,23 +4043,89 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "Computer Science requires A-Level Mathematics; some Cambridge Colleges also ask for Further Mathematics at A Level or AS Level when available.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university."
+        "description": "Direct Cambridge route for Computer Science applicants presenting A-Level results or predicted grades."
+      },
+      {
+        "id": "university-of-cambridge-uk-cambridge_a_level_engineering",
+        "label": "A-Level Entry (Engineering)",
+        "applicable_majors": [
+          "Engineering"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "A_LEVEL_CERT": 17,
+          "A_LEVEL_MATHEMATICS": 5,
+          "A_LEVEL_PHYSICS": 5
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 25,
+              "TOEFL_iBT_0_120_READING": 25,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 25
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 76
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 135
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "Engineering requires A-Level Mathematics and Physics; some Cambridge Colleges also expect or recommend Further Mathematics when available.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Cambridge route for Engineering applicants presenting A-Level results or predicted grades."
       },
       {
         "id": "university-of-cambridge-uk-cambridge_ib",
-        "label": "IB Diploma Entry",
+        "label": "IB Diploma Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Engineering"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "IB_Diploma": 40
+          "IB_Diploma": 41,
+          "IB_MATHEMATICS_HL": 7
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -3872,14 +4133,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.5
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 110
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 25,
+              "TOEFL_iBT_0_120_READING": 25,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 25
             }
           },
           {
@@ -3903,24 +4172,90 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "Computer Science typical Cambridge IB offer is 41-42 points with 7,7,6 at Higher Level and Higher Level Mathematics required.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects."
+        "description": "Direct Cambridge route for Computer Science applicants presenting the IB Diploma."
+      },
+      {
+        "id": "university-of-cambridge-uk-cambridge_ib_engineering",
+        "label": "IB Diploma Entry (Engineering)",
+        "applicable_majors": [
+          "Engineering"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "IB_Diploma": 41,
+          "IB_MATHEMATICS_HL": 7,
+          "IB_PHYSICS_HL": 6
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 25,
+              "TOEFL_iBT_0_120_READING": 25,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 25
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 76
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 135
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "Engineering typical Cambridge IB offer is 41-42 points with 7,7,6 at Higher Level including Higher Level Mathematics and Physics.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Cambridge route for Engineering applicants presenting the IB Diploma."
       },
       {
         "id": "university-of-cambridge-uk-cambridge_sat_ap",
-        "label": "SAT/AP Entry",
+        "label": "SAT/AP Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Engineering"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "SAT": 1490,
-          "AP_Total": 20
+          "SAT": 1500,
+          "SAT_MATH": 750,
+          "AP_Total": 25
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -3928,14 +4263,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7.5
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 110
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 25,
+              "TOEFL_iBT_0_120_READING": 25,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 25
             }
           },
           {
@@ -3959,9 +4302,75 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "For Cambridge science courses, U.S. applicants normally need a minimum combined SAT score of 1500 with Mathematics 750+ alongside at least five AP scores of 5 in course-related subjects.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants using SAT results together with strong AP performance or equivalent advanced secondary-school evidence accepted by the university."
+        "description": "Direct Cambridge Computer Science route for applicants using SAT results together with a full set of qualifying AP scores."
+      },
+      {
+        "id": "university-of-cambridge-uk-cambridge_sat_ap_engineering",
+        "label": "SAT/AP Entry (Engineering)",
+        "applicable_majors": [
+          "Engineering"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "SAT": 1500,
+          "SAT_MATH": 750,
+          "AP_Total": 25
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 110,
+              "TOEFL_iBT_0_120_LISTENING": 25,
+              "TOEFL_iBT_0_120_READING": 25,
+              "TOEFL_iBT_0_120_SPEAKING": 25,
+              "TOEFL_iBT_0_120_WRITING": 25
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 76
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 135
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "For Cambridge science courses, U.S. applicants normally need a minimum combined SAT score of 1500 with Mathematics 750+ alongside at least five AP scores of 5 in course-related subjects.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Cambridge Engineering route for applicants using SAT results together with a full set of qualifying AP scores."
       }
     ],
     "verified_sources": [
@@ -4016,6 +4425,10 @@
       {
         "topic": "finance",
         "url": "https://www.undergraduate.study.cam.ac.uk/fees-and-finance/living-costs"
+      },
+      {
+        "topic": "language_requirements",
+        "url": "https://www.undergraduate.study.cam.ac.uk/apply/before/entry-requirements"
       }
     ],
     "description": "Cambridge combines collegiate undergraduate teaching with one of the world's deepest research environments in mathematics, engineering, natural sciences, and computer science.",
@@ -4085,16 +4498,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_College",
-              "Food",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -4308,13 +4717,7 @@
     "finance": {
       "total_cost_year_usd": 9500,
       "costs_breakdown_year_usd": {
-        "Tuition": 4500,
-        "Housing_Dorm": 2000,
-        "Food": 1700,
-        "Medical_Insurance": 120,
-        "Books_and_Supplies": 380,
-        "Transportation": 300,
-        "Personal_Expenses": 500
+        "Tuition": 4500
       },
       "financial_aid": {
         "merit_based": true,
@@ -4324,8 +4727,8 @@
         "https://international.join-tsinghua.edu.cn/Admission1/Fees.htm",
         "https://is.tsinghua.edu.cn/1004CampusLifeHandbookforInternationalScholars.pdf"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Separates Tsinghua's published tuition, accommodation, and insurance items from day-to-day student costs in Beijing.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -4514,21 +4917,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official Tsinghua undergraduate fees pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "computer_science_rmb_per_year": 30000,
             "application_fee_rmb": 800,
             "currency": "RMB",
             "total": 9500,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Medical_Insurance",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -4733,13 +5131,7 @@
       "total_cost_year_usd": 52000,
       "costs_breakdown_year_usd": {
         "Tuition": 32000,
-        "Student_Services_and_Amenities_Fee": 250,
-        "Housing_Rent": 13000,
-        "Food": 3800,
-        "Health_Insurance": 800,
-        "Transportation": 900,
-        "Books_and_Supplies": 600,
-        "Personal_Expenses": 650
+        "Student_Services_and_Amenities_Fee": 250
       },
       "financial_aid": {
         "merit_based": true,
@@ -4748,8 +5140,8 @@
       "costs_breakdown_source_urls": [
         "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/fees-and-payments/indicative-course-fees"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Splits the Melbourne annual estimate into indicative course fees, student amenities fee, rent, food, insurance, transport, books, and personal costs.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -4935,21 +5327,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official University of Melbourne undergraduate fee pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "bachelor_of_science_aud_per_year_range": "49188-57928",
             "currency": "AUD",
             "total": 52000,
             "breakdown_categories": [
               "Tuition",
-              "Student_Services_and_Amenities_Fee",
-              "Housing_Rent",
-              "Food",
-              "Health_Insurance",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Student_Services_and_Amenities_Fee"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -5104,13 +5491,7 @@
       "total_cost_year_usd": 19000,
       "costs_breakdown_year_usd": {
         "Tuition": 6500,
-        "Semester_Fees": 170,
-        "Housing_Rent": 7800,
-        "Health_Insurance": 1500,
-        "Food": 1800,
-        "Transportation": 600,
-        "Books_and_Supplies": 300,
-        "Personal_Expenses": 330
+        "Semester_Fees": 170
       },
       "financial_aid": {
         "merit_based": false,
@@ -5120,8 +5501,8 @@
         "https://www.tum.de/en/studies/fees/tuition",
         "https://www.tum.de/fileadmin/user_upload_87/ge63xay/230906_Financing_your_TUM_first_steps_How_to_finance_your_studies_engl_SHH_LM.pdf"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Breakdown uses TUM tuition plus official student-financing guidance for Munich/Garching living costs.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_salary_by_major": {
@@ -5304,21 +5685,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official TUM fee guidance. Bachelor tuition varies by degree program and fee category. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "typical_bachelor_tuition_eur_per_semester": "2000_or_3000",
             "currency": "EUR",
             "total": 19000,
             "breakdown_categories": [
               "Tuition",
-              "Semester_Fees",
-              "Housing_Rent",
-              "Health_Insurance",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Semester_Fees"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -5479,13 +5855,7 @@
     "finance": {
       "total_cost_year_usd": 25000,
       "costs_breakdown_year_usd": {
-        "Tuition": 1800,
-        "Housing_Rent": 13200,
-        "Food": 4800,
-        "Health_Insurance": 1800,
-        "Transportation": 600,
-        "Books_and_Supplies": 800,
-        "Personal_Expenses": 2000
+        "Tuition": 1800
       },
       "financial_aid": {
         "merit_based": false,
@@ -5495,8 +5865,8 @@
         "https://www.epfl.ch/education/studies/en/rules-and-procedures/study-taxes/tuition-fee-other-fees/",
         "https://www.epfl.ch/education/studies/en/financing-study/"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Combines EPFL tuition with official financing-study guidance for housing, health insurance, transport, and personal costs.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -5694,21 +6064,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official EPFL tuition and living-cost guidance. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "semester_invoice_chf": 780,
             "estimated_living_cost_chf_per_year": 29000,
             "currency": "CHF",
             "total": 25000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Health_Insurance",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -5910,12 +6275,7 @@
     "finance": {
       "total_cost_year_usd": 88509,
       "costs_breakdown_year_usd": {
-        "Tuition": 65898,
-        "Housing_Dorm": 12981,
-        "Food": 7302,
-        "Books_and_Supplies": 1428,
-        "Personal_Expenses": 0,
-        "Transportation": 900
+        "Tuition": 65898
       },
       "financial_aid": {
         "merit_based": false,
@@ -5924,8 +6284,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 128566
@@ -6133,16 +6493,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -6489,12 +6845,7 @@
       "total_cost_year_usd": 62000,
       "costs_breakdown_year_usd": {
         "Tuition": 45000,
-        "Compulsory_Fees": 2200,
-        "Housing_Dorm": 10500,
-        "Meal_Plan": 2500,
-        "Books_and_Supplies": 1000,
-        "Personal_Expenses": 500,
-        "Transportation": 300
+        "Compulsory_Fees": 2200
       },
       "financial_aid": {
         "merit_based": true,
@@ -6503,8 +6854,8 @@
       "costs_breakdown_source_urls": [
         "https://www.utsc.utoronto.ca/admissions/tuition-and-fees"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. The annual total is now split into tuition, compulsory fees, residence, meal plan, books, transport, and personal expenses for a more realistic Toronto breakdown.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_salary_by_major": {
@@ -6747,7 +7098,7 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official University of Toronto undergraduate tuition pages. Fees vary by campus and program; current CS international figures are published in CAD. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "official_example_program": "Computer Science (UTSC)",
             "year_1_international_cad": 63570,
@@ -6756,13 +7107,9 @@
             "total": 62000,
             "breakdown_categories": [
               "Tuition",
-              "Compulsory_Fees",
-              "Housing_Dorm",
-              "Meal_Plan",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Compulsory_Fees"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -7006,12 +7353,7 @@
       "total_cost_year_usd": 33354,
       "costs_breakdown_year_usd": {
         "Tuition": 23000,
-        "Housing_Dorm": 2200,
-        "Food": 4500,
-        "Student_Services_and_Health_Fees": 900,
-        "Books_and_Supplies": 700,
-        "Transportation": 800,
-        "Personal_Expenses": 1254
+        "Student_Services_and_Health_Fees": 900
       },
       "financial_aid": {
         "merit_based": true,
@@ -7020,8 +7362,8 @@
       "costs_breakdown_source_urls": [
         "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. CUHK tuition is official; living-cost items are separated into hostel, food, student fees, books, transport, and personal spending.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 34620.11
@@ -7084,15 +7426,24 @@
         "id": "cuhk_hkdse",
         "label": "HKDSE (JUPAS)",
         "requirements": {
-          "HKDSE_LEVEL": 3
+          "HKDSE_CHINESE_LANGUAGE": 3,
+          "HKDSE_ENGLISH_LANGUAGE": 3,
+          "HKDSE_MATHEMATICS": 2,
+          "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT": 1,
+          "HKDSE_ELECTIVE_1": 3,
+          "HKDSE_ELECTIVE_2_OR_M1_M2_OTHER_LANGUAGE": 3
         },
-        "stats_avg": {},
+        "stats_avg": {
+          "HKDSE_WEIGHTED_TOTAL": 42.88
+        },
         "scholarships": [],
         "study_mode": "On-campus",
         "language_requirements": [],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "HKDSE minimum university requirements: Chinese Language level 3, English Language level 3, Mathematics level 2, Citizenship and Social Development attained, Elective 1 level 3, Elective 2 level 3 (or M1/M2/Other Language subject level 3)."
+          "HKDSE minimum university requirements: Chinese Language level 3, English Language level 3, Mathematics level 2, Citizenship and Social Development attained, Elective 1 level 3, Elective 2 level 3 (or M1/M2/Other Language subject level 3).",
+          "CUHK Computer Science and Engineering published 2025 JUPAS weighted Best 5 profile: lower quartile 40.38, median 42.88, upper quartile 44.5.",
+          "Published CUHK subject weighting for this programme gives extra weight to Mathematics, M1/M2, and selected science/ICT electives."
         ],
         "funding_type": "paid",
         "track_badge": "Paid",
@@ -7235,20 +7586,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official CUHK undergraduate fee pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "non_local_tuition_hkd_per_year": 214000,
             "currency": "HKD",
             "total": 33354,
             "breakdown_categories": [
               "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Student_Services_and_Health_Fees",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Student_Services_and_Health_Fees"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -7802,13 +8149,7 @@
     "finance": {
       "total_cost_year_usd": 16000,
       "costs_breakdown_year_usd": {
-        "Tuition": 5000,
-        "Housing_Dorm": 6000,
-        "Food": 3000,
-        "Health_Insurance": 600,
-        "Transportation": 700,
-        "Books_and_Supplies": 300,
-        "Personal_Expenses": 400
+        "Tuition": 5000
       },
       "financial_aid": {
         "merit_based": true,
@@ -7818,8 +8159,8 @@
         "https://www.u-tokyo.ac.jp/en/prospective-students/tuition_fees.html",
         "https://www.u-tokyo.ac.jp/adm/inbound/en/finance-living.html"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Uses UTokyo tuition together with official living-expense guidance for housing and daily costs in Tokyo.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -8008,21 +8349,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official undergraduate tuition pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "annual_tuition_jpy": 346800,
             "admission_fee_jpy": 282000,
             "currency": "JPY",
             "total": 16000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Health_Insurance",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -8241,12 +8577,7 @@
     "finance": {
       "total_cost_year_usd": 93243,
       "costs_breakdown_year_usd": {
-        "Tuition": 70662,
-        "Housing_Dorm": 12870,
-        "Food": 7239,
-        "Books_and_Supplies": 1800,
-        "Personal_Expenses": 0,
-        "Transportation": 672
+        "Tuition": 70662
       },
       "financial_aid": {
         "merit_based": false,
@@ -8255,8 +8586,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 91885
@@ -8472,16 +8803,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -8656,13 +8983,7 @@
     "finance": {
       "total_cost_year_usd": 15000,
       "costs_breakdown_year_usd": {
-        "Tuition": 5000,
-        "Housing_Dorm": 5000,
-        "Food": 2500,
-        "Health_Insurance": 600,
-        "Transportation": 600,
-        "Books_and_Supplies": 500,
-        "Personal_Expenses": 800
+        "Tuition": 5000
       },
       "financial_aid": {
         "merit_based": true,
@@ -8672,8 +8993,8 @@
         "https://en.snu.ac.kr/academics/resources/registration",
         "https://eng.snu.ac.kr/sites/default/files/welcome_survivor.pdf"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Tuition is official; housing and living items are separated using SNU student-guide cost guidance.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -8869,20 +9190,15 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official SNU undergraduate registration guidance. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "average_undergraduate_tuition_krw_per_year": 6034163,
             "currency": "KRW",
             "total": 15000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Health_Insurance",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -9089,13 +9405,7 @@
     "finance": {
       "total_cost_year_usd": 36000,
       "costs_breakdown_year_usd": {
-        "Tuition": 19000,
-        "Housing_Rent": 10000,
-        "Food": 3000,
-        "Health_Insurance": 1600,
-        "Books_and_Supplies": 700,
-        "Transportation": 700,
-        "Personal_Expenses": 1000
+        "Tuition": 19000
       },
       "financial_aid": {
         "merit_based": true,
@@ -9104,8 +9414,8 @@
       "costs_breakdown_source_urls": [
         "https://www.tudelft.nl/en/education/study-programme-orientation/practical-matters/tuition-fee-finances"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Breakdown separates the TU Delft annual estimate into rent, food, insurance, books, transport, and personal spending.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -9281,20 +9591,15 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official TU Delft tuition pages. Institutional rates differ by EEA/non-EEA category and academic year. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "institutional_rate_bsc_eur": "17310_or_19906",
             "currency": "EUR",
             "total": 36000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Health_Insurance",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -9501,12 +9806,7 @@
     "finance": {
       "total_cost_year_usd": 90078,
       "costs_breakdown_year_usd": {
-        "Tuition": 68686,
-        "Housing_Dorm": 12271,
-        "Food": 6903,
-        "Books_and_Supplies": 1358,
-        "Personal_Expenses": 0,
-        "Transportation": 860
+        "Tuition": 68686
       },
       "financial_aid": {
         "merit_based": false,
@@ -9515,8 +9815,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 111371
@@ -9732,16 +10032,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -9955,13 +10251,7 @@
     "finance": {
       "total_cost_year_usd": 16500,
       "costs_breakdown_year_usd": {
-        "Tuition": 4800,
-        "Housing_Rent": 5500,
-        "Food": 3500,
-        "Health_Insurance": 700,
-        "Transportation": 700,
-        "Books_and_Supplies": 500,
-        "Personal_Expenses": 800
+        "Tuition": 4800
       },
       "financial_aid": {
         "merit_based": true,
@@ -9970,8 +10260,8 @@
       "costs_breakdown_source_urls": [
         "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Breakdown keeps the Kyoto annual estimate but separates rent, insurance, transport, books, and personal spending more realistically.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -10147,7 +10437,7 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official Kyoto undergraduate tuition pages. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "annual_tuition_jpy": 535800,
             "admission_fee_jpy": 282000,
@@ -10155,14 +10445,9 @@
             "currency": "JPY",
             "total": 16500,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Health_Insurance",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -10364,12 +10649,7 @@
     "finance": {
       "total_cost_year_usd": 90579,
       "costs_breakdown_year_usd": {
-        "Tuition": 69314,
-        "Housing_Dorm": 12434,
-        "Food": 6994,
-        "Books_and_Supplies": 1226,
-        "Personal_Expenses": 0,
-        "Transportation": 611
+        "Tuition": 69314
       },
       "financial_aid": {
         "merit_based": false,
@@ -10378,8 +10658,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 104043
@@ -10595,16 +10875,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -10829,12 +11105,7 @@
     "finance": {
       "total_cost_year_usd": 82459,
       "costs_breakdown_year_usd": {
-        "Tuition": 50547,
-        "Housing_Dorm": 15200,
-        "Food": 8550,
-        "Books_and_Supplies": 1131,
-        "Personal_Expenses": 5062,
-        "Transportation": 1969
+        "Tuition": 50547
       },
       "financial_aid": {
         "merit_based": false,
@@ -10843,8 +11114,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 92446
@@ -11055,16 +11326,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -11268,12 +11535,7 @@
     "finance": {
       "total_cost_year_usd": 52800,
       "costs_breakdown_year_usd": {
-        "Tuition": 33900,
-        "Housing_Rent": 10200,
-        "Food": 3600,
-        "Transportation": 900,
-        "Books_and_Supplies": 900,
-        "Personal_Expenses": 3300
+        "Tuition": 33900
       },
       "financial_aid": {
         "need_based": false,
@@ -11283,8 +11545,8 @@
         "https://www.unsw.edu.au/study/fees",
         "https://www.unsw.edu.au/study/international-students/costs-scholarships"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -11568,16 +11830,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -11781,12 +12039,7 @@
     "finance": {
       "total_cost_year_usd": 89214,
       "costs_breakdown_year_usd": {
-        "Tuition": 67250,
-        "Housing_Dorm": 12736,
-        "Food": 7164,
-        "Books_and_Supplies": 1000,
-        "Personal_Expenses": 0,
-        "Transportation": 1064
+        "Tuition": 67250
       },
       "financial_aid": {
         "merit_based": false,
@@ -11795,8 +12048,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 100533
@@ -12013,16 +12266,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -12247,12 +12496,7 @@
     "finance": {
       "total_cost_year_usd": 85080,
       "costs_breakdown_year_usd": {
-        "Tuition": 62688,
-        "Housing_Dorm": 12960,
-        "Food": 7290,
-        "Books_and_Supplies": 1050,
-        "Personal_Expenses": 0,
-        "Transportation": 1092
+        "Tuition": 62688
       },
       "financial_aid": {
         "merit_based": false,
@@ -12261,8 +12505,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 110066
@@ -12478,16 +12722,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -12692,12 +12932,7 @@
     "finance": {
       "total_cost_year_usd": 54400,
       "costs_breakdown_year_usd": {
-        "Tuition": 35600,
-        "Housing_Rent": 10500,
-        "Food": 3700,
-        "Transportation": 900,
-        "Books_and_Supplies": 1000,
-        "Personal_Expenses": 2700
+        "Tuition": 35600
       },
       "financial_aid": {
         "need_based": false,
@@ -12707,8 +12942,8 @@
         "https://www.sydney.edu.au/students/tuition-fees.html",
         "https://www.sydney.edu.au/study/applying/international/student-life/living-costs.html"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -12993,16 +13228,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -13218,12 +13449,7 @@
     "finance": {
       "total_cost_year_usd": 47200,
       "costs_breakdown_year_usd": {
-        "Tuition": 27400,
-        "Housing_Dorm": 11100,
-        "Food": 4300,
-        "Transportation": 900,
-        "Books_and_Supplies": 1200,
-        "Personal_Expenses": 2300
+        "Tuition": 27400
       },
       "financial_aid": {
         "need_based": false,
@@ -13233,8 +13459,8 @@
         "https://www.mcgill.ca/studentaid/tuition-fees",
         "https://www.mcgill.ca/studentaid/finances/budgeting"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -13521,16 +13747,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -13749,12 +13971,7 @@
     "finance": {
       "total_cost_year_usd": 87363,
       "costs_breakdown_year_usd": {
-        "Tuition": 65230,
-        "Housing_Dorm": 12896,
-        "Food": 7254,
-        "Books_and_Supplies": 1356,
-        "Personal_Expenses": 0,
-        "Transportation": 627
+        "Tuition": 65230
       },
       "financial_aid": {
         "merit_based": false,
@@ -13763,8 +13980,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 87555
@@ -13979,16 +14196,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -14192,12 +14405,7 @@
     "finance": {
       "total_cost_year_usd": 51200,
       "costs_breakdown_year_usd": {
-        "Tuition": 33200,
-        "Housing_Dorm": 10000,
-        "Food": 3400,
-        "Transportation": 800,
-        "Books_and_Supplies": 900,
-        "Personal_Expenses": 2900
+        "Tuition": 33200
       },
       "financial_aid": {
         "need_based": false,
@@ -14207,8 +14415,8 @@
         "https://study.anu.edu.au/programs/fees",
         "https://study.anu.edu.au/student-life/living-canberra/cost-living"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -14492,16 +14700,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -14683,12 +14887,7 @@
     "finance": {
       "total_cost_year_usd": 62600,
       "costs_breakdown_year_usd": {
-        "Tuition": 42200,
-        "Housing_Rent": 11800,
-        "Food": 3300,
-        "Transportation": 1200,
-        "Books_and_Supplies": 900,
-        "Personal_Expenses": 3200
+        "Tuition": 42200
       },
       "financial_aid": {
         "need_based": false,
@@ -14698,8 +14897,8 @@
         "https://www.ed.ac.uk/student-funding/tuition-fees/undergraduate/international",
         "https://www.ed.ac.uk/student-funding/tuition-fees/tuition-fees-cost-of-living"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -14990,16 +15189,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -15180,12 +15375,7 @@
     "finance": {
       "total_cost_year_usd": 59800,
       "costs_breakdown_year_usd": {
-        "Tuition": 39500,
-        "Housing_Rent": 11200,
-        "Food": 3200,
-        "Transportation": 1000,
-        "Books_and_Supplies": 900,
-        "Personal_Expenses": 4000
+        "Tuition": 39500
       },
       "financial_aid": {
         "need_based": false,
@@ -15195,24 +15385,24 @@
         "https://www.manchester.ac.uk/study/undergraduate/fees-and-funding/",
         "https://www.manchester.ac.uk/study/international/finance-and-scholarships/cost-of-living/"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
       {
         "id": "university-of-manchester-uk-manchester_a_level",
-        "label": "A-Level Entry",
+        "label": "A-Level Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Mechanical Engineering"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "A_LEVEL_CERT": 15
+          "A_LEVEL_CERT": 17,
+          "A_LEVEL_MATHEMATICS": 6
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -15220,14 +15410,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 7.0,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 90
+              "TOEFL_iBT_0_120": 100,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 22,
+              "TOEFL_iBT_0_120_SPEAKING": 22,
+              "TOEFL_iBT_0_120_WRITING": 22
             }
           },
           {
@@ -15251,23 +15449,89 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "Manchester Computer Science typically requires A*AA including A* in Mathematics and at least one other science subject such as Computer Science, Further Mathematics, Biology, Chemistry or Physics.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university."
+        "description": "Direct Manchester route for Computer Science applicants presenting A-Level results or predicted grades."
+      },
+      {
+        "id": "university-of-manchester-uk-manchester_a_level_mechanical_engineering",
+        "label": "A-Level Entry (Mechanical Engineering)",
+        "applicable_majors": [
+          "Mechanical Engineering"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "A_LEVEL_CERT": 17,
+          "A_LEVEL_MATHEMATICS": 6,
+          "A_LEVEL_PHYSICS": 6
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 90,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 22,
+              "TOEFL_iBT_0_120_SPEAKING": 22,
+              "TOEFL_iBT_0_120_WRITING": 22
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 59
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 120
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "Manchester Mechanical Engineering typically requires A*A*A including Mathematics, Physics and one other subject.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Manchester route for Mechanical Engineering applicants presenting A-Level results or predicted grades."
       },
       {
         "id": "university-of-manchester-uk-manchester_ib",
-        "label": "IB Diploma Entry",
+        "label": "IB Diploma Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Mechanical Engineering"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "IB_Diploma": 35
+          "IB_Diploma": 37,
+          "IB_MATHEMATICS_HL": 7
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -15275,14 +15539,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 7.0,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 90
+              "TOEFL_iBT_0_120": 100,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 22,
+              "TOEFL_iBT_0_120_SPEAKING": 22,
+              "TOEFL_iBT_0_120_WRITING": 22
             }
           },
           {
@@ -15306,24 +15578,89 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "Manchester Computer Science typically requires 37 points overall with 7,6,6 at Higher Level including Higher Level Mathematics and at least one other science subject.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects."
+        "description": "Direct Manchester route for Computer Science applicants presenting the IB Diploma."
+      },
+      {
+        "id": "university-of-manchester-uk-manchester_ib_mechanical_engineering",
+        "label": "IB Diploma Entry (Mechanical Engineering)",
+        "applicable_majors": [
+          "Mechanical Engineering"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "IB_Diploma": 38,
+          "IB_MATHEMATICS_HL": 7,
+          "IB_PHYSICS_HL": 7
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 90,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 22,
+              "TOEFL_iBT_0_120_SPEAKING": 22,
+              "TOEFL_iBT_0_120_WRITING": 22
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 59
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 120
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "Manchester Mechanical Engineering typically requires 38 points overall with 7,7,6 at Higher Level including Higher Level Mathematics and Physics.",
+          "English-language proof where applicable"
+        ],
+        "description": "Direct Manchester route for Mechanical Engineering applicants presenting the IB Diploma."
       },
       {
         "id": "university-of-manchester-uk-manchester_sat_ap",
-        "label": "SAT/AP Entry",
+        "label": "US AP / SAT Entry (Computer Science)",
         "applicable_majors": [
-          "Computer Science",
-          "Mechanical Engineering"
+          "Computer Science"
         ],
         "scholarships": [],
         "funding_type": "paid",
         "track_badge": "Paid",
         "study_mode": "On-campus",
         "requirements": {
-          "SAT": 1380,
-          "AP_Total": 17
+          "SAT": 1290,
+          "AP_Total": 15
         },
         "language_requirements_mode": "any",
         "language_requirements": [
@@ -15331,14 +15668,22 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 7.0,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           },
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 90
+              "TOEFL_iBT_0_120": 100,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 22,
+              "TOEFL_iBT_0_120_SPEAKING": 22,
+              "TOEFL_iBT_0_120_WRITING": 22
             }
           },
           {
@@ -15362,9 +15707,76 @@
           "Academic reference where required",
           "Personal statement or written work where required",
           "Interview or admissions test where required by the course",
+          "For U.S. applicants, Manchester uses SAT 1290 as a GCSE-equivalent benchmark and typically expects AP results equivalent to the course's A-Level offer.",
+          "Computer Science applicants normally need AP subjects that cover Mathematics and the relevant science-subject expectation.",
           "English-language proof where applicable"
         ],
-        "description": "Direct undergraduate route for applicants using SAT results together with strong AP performance or equivalent advanced secondary-school evidence accepted by the university."
+        "description": "Manchester Computer Science route for U.S. applicants using SAT results and AP examinations."
+      },
+      {
+        "id": "university-of-manchester-uk-manchester_sat_ap_mechanical_engineering",
+        "label": "US AP / SAT Entry (Mechanical Engineering)",
+        "applicable_majors": [
+          "Mechanical Engineering"
+        ],
+        "scholarships": [],
+        "funding_type": "paid",
+        "track_badge": "Paid",
+        "study_mode": "On-campus",
+        "requirements": {
+          "SAT": 1290,
+          "AP_Total": 20
+        },
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 90,
+              "TOEFL_iBT_0_120_LISTENING": 22,
+              "TOEFL_iBT_0_120_READING": 22,
+              "TOEFL_iBT_0_120_SPEAKING": 22,
+              "TOEFL_iBT_0_120_WRITING": 22
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 59
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 120
+            }
+          }
+        ],
+        "extra_requirements": [
+          "UCAS or university application form",
+          "Official transcript or school record with predicted/achieved grades",
+          "Academic reference where required",
+          "Personal statement or written work where required",
+          "Interview or admissions test where required by the course",
+          "For U.S. applicants, Manchester uses SAT 1290 as a GCSE-equivalent benchmark and typically expects AP results equivalent to the course's A-Level offer.",
+          "Mechanical Engineering applicants normally need AP subjects that cover Mathematics and Physics.",
+          "English-language proof where applicable"
+        ],
+        "description": "Manchester Mechanical Engineering route for U.S. applicants using SAT results and AP examinations."
       }
     ],
     "verified_sources": [
@@ -15419,6 +15831,14 @@
       {
         "topic": "finance",
         "url": "https://www.manchester.ac.uk/study/international/finance-and-scholarships/cost-of-living/"
+      },
+      {
+        "topic": "language_requirements",
+        "url": "https://www.cs.manchester.ac.uk/study/international-students/index.htm"
+      },
+      {
+        "topic": "language_requirements",
+        "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2027/03921/meng-mechanical-engineering/"
       }
     ],
     "description": "Manchester is a large research-intensive civic university with broad strengths in science, engineering, health, business, and social sciences, and a strong graduate-employment profile.",
@@ -15487,16 +15907,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Rent",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -15699,12 +16115,7 @@
     "finance": {
       "total_cost_year_usd": 91287,
       "costs_breakdown_year_usd": {
-        "Tuition": 71845,
-        "Housing_Dorm": 11251,
-        "Food": 6329,
-        "Books_and_Supplies": 1440,
-        "Personal_Expenses": 0,
-        "Transportation": 422
+        "Tuition": 71845
       },
       "financial_aid": {
         "merit_based": false,
@@ -15713,8 +16124,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 102491
@@ -15931,16 +16342,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -16172,12 +16579,7 @@
     "finance": {
       "total_cost_year_usd": 50100,
       "costs_breakdown_year_usd": {
-        "Tuition": 30000,
-        "Housing_Dorm": 12500,
-        "Food": 3900,
-        "Transportation": 900,
-        "Books_and_Supplies": 1100,
-        "Personal_Expenses": 1700
+        "Tuition": 30000
       },
       "financial_aid": {
         "need_based": false,
@@ -16187,8 +16589,8 @@
         "https://students.ubc.ca/enrolment/finances/tuition-fees/undergraduate-tuition-fees",
         "https://students.ubc.ca/ubclife/cost-living"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -16475,16 +16877,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -16701,12 +17099,7 @@
     "finance": {
       "total_cost_year_usd": 76190,
       "costs_breakdown_year_usd": {
-        "Tuition": 49403,
-        "Housing_Dorm": 11756,
-        "Food": 6613,
-        "Books_and_Supplies": 1641,
-        "Personal_Expenses": 4879,
-        "Transportation": 1898
+        "Tuition": 49403
       },
       "financial_aid": {
         "merit_based": false,
@@ -16715,8 +17108,8 @@
       "costs_breakdown_source_urls": [
         "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
       ],
-      "costs_breakdown_note": "College Scorecard publishes annual tuition, room/board, books, and other expenses. UniSearch splits room/board and other-expense buckets into housing/food and personal/transport sub-buckets for display while preserving the official annual total.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
       "average_early_career_salary_usd": 82511
@@ -16927,16 +17320,12 @@
           "verified_at": "2026-04-04",
           "confidence": "high",
           "status": "official_external",
-          "method": "Direct annual cost-of-attendance value from College Scorecard.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Personal_Expenses",
-              "Transportation"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -17186,12 +17575,7 @@
     "finance": {
       "total_cost_year_usd": 51700,
       "costs_breakdown_year_usd": {
-        "Tuition": 32800,
-        "Housing_Dorm": 11600,
-        "Food": 3400,
-        "Transportation": 800,
-        "Books_and_Supplies": 1200,
-        "Personal_Expenses": 1900
+        "Tuition": 32800
       },
       "financial_aid": {
         "need_based": false,
@@ -17201,8 +17585,8 @@
         "https://uwaterloo.ca/future-students/financing/tuition",
         "https://uwaterloo.ca/future-students/life-residence/costs"
       ],
-      "costs_breakdown_note": "Uses official tuition guidance and official university cost-of-living guidance, normalized into UniSearch annual USD display buckets.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -17489,16 +17873,12 @@
           "verified_at": "2026-04-04",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "Annual total assembled from official tuition guidance and official university living-cost guidance, then normalized into UniSearch display buckets in USD.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Transportation",
-              "Books_and_Supplies",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -17705,13 +18085,7 @@
     "finance": {
       "total_cost_year_usd": 14000,
       "costs_breakdown_year_usd": {
-        "Tuition": 7000,
-        "Housing_Dorm": 2500,
-        "Food": 2500,
-        "Health_Insurance": 500,
-        "Books_and_Supplies": 500,
-        "Transportation": 300,
-        "Personal_Expenses": 700
+        "Tuition": 7000
       },
       "financial_aid": {
         "merit_based": true,
@@ -17721,8 +18095,8 @@
         "https://www.kaist.ac.kr/en/html/footer/0809.html?GotoPage=1&mode=V&no=340afb6eaccd0628090d843b806e1cc6",
         "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guide%20for%20international%20applicants%202024.pdf"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Base yearly budget is split into tuition, dormitory, food, insurance, books, transport, and personal items; KAIST's official scholarship policy may reduce this sharply for admitted international students.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -17900,21 +18274,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to official KAIST tuition payment guidance. Undergraduate net tuition can vary with scholarship status. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "government_sponsored_or_general_fee_krw_per_semester": 9559000,
             "scholar_tuition_example_krw_per_semester": 750000,
             "currency": "KRW",
             "total": 14000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Health_Insurance",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -18131,13 +18500,7 @@
     "finance": {
       "total_cost_year_usd": 19500,
       "costs_breakdown_year_usd": {
-        "Tuition": 15000,
-        "Housing_Dorm": 1800,
-        "Food": 1400,
-        "Health_Insurance": 300,
-        "Books_and_Supplies": 400,
-        "Transportation": 200,
-        "Personal_Expenses": 400
+        "Tuition": 15000
       },
       "financial_aid": {
         "merit_based": true,
@@ -18146,8 +18509,8 @@
       "costs_breakdown_source_urls": [
         "https://nu.edu.kz/admissions/fees-and-funding/"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Nazarbayev University tuition is official; the rest of the annual estimate is separated into common residential and daily-living categories.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -18205,38 +18568,97 @@
           "IELTS/TOEFL certificate uploaded in personal account",
           "Application fee (paid online)"
         ],
-        "id": "nu_direct",
-        "label": "Direct Admission (SAT)",
+        "id": "nu_sat_applicants",
+        "label": "SAT Applicants",
         "funding_options": [
           {
-            "id": "nu_direct",
-            "label": "Direct Admission (SAT)",
+            "id": "nu_sat_applicants",
+            "label": "SAT Applicants",
             "requirements": {
               "SAT": 1240,
               "GPA": 80
             },
             "funding_type": "paid",
             "track_badge": "Paid",
-            "description": "Fee-paying undergraduate offer through NU's direct SAT/ACT admissions route."
+            "description": "Fee-paying undergraduate offer in NU's SAT/ACT applicants category for applicants submitting SAT."
           },
           {
-            "id": "nu_direct-grant-abay-kunanbayev",
-            "label": "Direct Admission (SAT) - Abay Kunanbayev (Grant)",
+            "id": "nu_sat_applicants-grant-abay-kunanbayev",
+            "label": "SAT Applicants - Abay Kunanbayev (Grant)",
             "requirements": {
-              "SAT": 1450,
+              "SAT": 1240,
               "GPA": 80
             },
             "funding_type": "grant",
             "track_badge": "Grant",
             "funding_program": "Abay Kunanbayev",
             "funding_source": "merit",
-            "description": "Same direct admissions route, with merit-based Abay Kunanbayev scholarship consideration for top international applicants recommended for admission."
+            "description": "Undergraduate offer in the same SAT/ACT applicants category with Abay Kunanbayev scholarship consideration for recommended international applicants submitting SAT."
           }
         ],
-        "description": "Nazarbayev University's direct undergraduate route for applicants applying with SAT/ACT and English-language results in the regular admissions cycle."
+        "description": "UI split of NU's SAT/ACT applicants category for applicants applying with SAT and English-language results."
       },
       {
-        "description": "NUET applicants compete in NU's regular undergraduate admissions flow. Eligible applicants may receive an undergraduate grant offer, remain on the waitlist, or receive a fee-paying undergraduate offer.",
+        "score_profile": null,
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 6.5,
+              "TOEFL_iBT_0_120": 79
+            },
+            "stats_avg": {
+              "IELTS": 7.4
+            },
+            "stats_avg_source_url": "https://nu.edu.kz/admissions/useful-information-and-contacts/statistics-faq/",
+            "stats_avg_source_note": "Official Nazarbayev University undergraduate statistics for 2025 enrolled applicants: School of Engineering and Digital Sciences average IELTS = 7.4 (embedded statistics deck on the official statistics FAQ page)."
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "Online application form",
+          "Scanned copy of passport or national ID",
+          "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
+          "Motivation letter in English",
+          "Valid test certificates as required by category",
+          "IELTS/TOEFL certificate uploaded in personal account",
+          "Application fee (paid online)"
+        ],
+        "id": "nu_act_applicants",
+        "label": "ACT Applicants",
+        "funding_options": [
+          {
+            "id": "nu_act_applicants",
+            "label": "ACT Applicants",
+            "requirements": {
+              "ACT": 26,
+              "GPA": 80
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying undergraduate offer in NU's SAT/ACT applicants category for applicants submitting ACT."
+          },
+          {
+            "id": "nu_act_applicants-grant-abay-kunanbayev",
+            "label": "ACT Applicants - Abay Kunanbayev (Grant)",
+            "requirements": {
+              "ACT": 26,
+              "GPA": 80
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "funding_program": "Abay Kunanbayev",
+            "funding_source": "merit",
+            "description": "Undergraduate offer in the same SAT/ACT applicants category with Abay Kunanbayev scholarship consideration for recommended international applicants submitting ACT."
+          }
+        ],
+        "description": "UI split of NU's SAT/ACT applicants category for applicants applying with ACT and English-language results."
+      },
+      {
+        "description": "NUET applicants enter NU's regular undergraduate competition. Applicants who meet the minimum NUET threshold participate in undergraduate competition, and NU notes that applicants with the minimum passing score can also be considered for NUFYP.",
         "score_profile": null,
         "scholarships": [],
         "study_mode": "On-campus",
@@ -18437,20 +18859,15 @@
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct official undergraduate tuition published by Nazarbayev University; non-tuition living-cost buckets remain normalized display estimates. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "undergraduate_tuition_usd": 15000,
             "academic_year": "2026/2027",
             "total": 19500,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Health_Insurance",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -18651,12 +19068,7 @@
     "finance": {
       "total_cost_year_usd": 8500,
       "costs_breakdown_year_usd": {
-        "Tuition": 5500,
-        "Housing_Dorm": 1700,
-        "Food": 700,
-        "Books_and_Supplies": 200,
-        "Transportation": 200,
-        "Personal_Expenses": 200
+        "Tuition": 5500
       },
       "financial_aid": {
         "merit_based": true,
@@ -18666,8 +19078,8 @@
         "https://sdu.edu.kz/en/admission-3-2/",
         "https://sdu.edu.kz/en/pay-for-accomodation/"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Uses the official SDU tuition source and the official student-house payment page, then separates the remaining annual budget into daily-living categories.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -18857,20 +19269,16 @@
           "verified_at": "2026-04-01",
           "confidence": "medium",
           "status": "official_derived",
-          "method": "USD-normalized figure retained, but provenance switched to the official SDU admissions tuition page. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "academic_year": "2026-2027",
             "currency": "KZT",
             "note": "Annual tuition table is published on the official admission page attachment.",
             "total": 8500,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Books_and_Supplies",
-              "Transportation",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {
@@ -19064,13 +19472,7 @@
     "finance": {
       "total_cost_year_usd": 7000,
       "costs_breakdown_year_usd": {
-        "Tuition": 5200,
-        "Housing_Dorm": 900,
-        "Food": 400,
-        "Health_Insurance": 150,
-        "Books_and_Supplies": 150,
-        "Internet_and_Phone": 100,
-        "Personal_Expenses": 100
+        "Tuition": 5200
       },
       "financial_aid": {
         "merit_based": true,
@@ -19080,8 +19482,8 @@
         "https://astanait.edu.kz/en/bachelor",
         "https://astanait.edu.kz/en/students-dormitory/"
       ],
-      "costs_breakdown_note": "Tuition and at least part of the living-cost basis come from official university sources; some display categories are normalized from official guidance, ranges, or campus housing information rather than a single official line-item table. Splits AITU's annual estimate into tuition, student housing, food, insurance, books, connectivity, and personal spending.",
-      "costs_breakdown_status": "mixed_official_guidance"
+      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {},
     "admission_tracks": [
@@ -19263,21 +19665,16 @@
           "verified_at": "2026-04-01",
           "confidence": "high",
           "status": "official",
-          "method": "Direct official bachelor price list published by Astana IT University; non-tuition living-cost buckets remain normalized display estimates. UniSearch now keeps detailed annual living-cost categories normalized into separate display buckets.",
+          "method": "Annual total remains based on official tuition and living-cost guidance, but UniSearch now keeps only directly official tuition and fee line items in the displayed breakdown to avoid invented subcategory splits.",
           "basis": {
             "bachelor_tuition_kzt": 2500000,
             "academic_year": "2025-2026",
             "currency": "KZT",
             "total": 7000,
             "breakdown_categories": [
-              "Tuition",
-              "Housing_Dorm",
-              "Food",
-              "Health_Insurance",
-              "Books_and_Supplies",
-              "Internet_and_Phone",
-              "Personal_Expenses"
-            ]
+              "Tuition"
+            ],
+            "display_breakdown_policy": "official_tuition_and_fees_only"
           }
         },
         "student_count": {

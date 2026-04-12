@@ -3,14 +3,21 @@
     "label": "SAT",
     "labels": {
       "eng": "SAT",
-      "rus": "SAT"
+      "rus": "SAT (общий балл)"
     },
-    "input_mode": "number",
+    "input_mode": "subject_breakdown",
     "min": 400,
     "max": 1600,
     "type": "int",
     "step": 10,
-    "notes": "Total score (EBRW+Math).",
+    "notes": "Total score (EBRW + Math).",
+    "breakdown_scheme": {
+      "fixed_components": [
+        { "exam": "SAT_MATH", "label": "Math" },
+        { "exam": "SAT_EBRW", "label": "EBRW" }
+      ],
+      "total_strategy": "sum"
+    },
     "normalization": {
       "kind": "anchor_percentile",
       "p50": 1010,
@@ -20,6 +27,34 @@
       "source": "College Board",
       "source_note": "Claude research table shared by the team on 2026-03-31."
     }
+  },
+  "SAT_MATH": {
+    "label": "SAT Math",
+    "labels": {
+      "eng": "SAT Math",
+      "rus": "SAT Math"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 200,
+    "max": 800,
+    "type": "int",
+    "step": 10,
+    "notes": "SAT Mathematics section score."
+  },
+  "SAT_EBRW": {
+    "label": "SAT EBRW",
+    "labels": {
+      "eng": "SAT EBRW",
+      "rus": "SAT EBRW"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 200,
+    "max": 800,
+    "type": "int",
+    "step": 10,
+    "notes": "SAT Evidence-Based Reading and Writing section score."
   },
   "ACT": {
     "label": "ACT",
@@ -52,12 +87,39 @@
       "eng": "UNT (Kazakhstan)",
       "rus": "ЕНТ"
     },
-    "input_mode": "number",
+    "input_mode": "subject_breakdown",
     "min": 0,
     "max": 140,
     "type": "int",
     "step": 1,
     "notes": "Kazakhstan Unified National Testing.",
+    "breakdown_scheme": {
+      "fixed_components": [
+        { "exam": "UNT_HISTORY_OF_KAZAKHSTAN", "label": "History of Kazakhstan" },
+        { "exam": "UNT_READING_LITERACY", "label": "Reading literacy" },
+        { "exam": "UNT_MATHEMATICAL_LITERACY", "label": "Mathematical literacy" }
+      ],
+      "selectable_components": [
+        { "exam": "UNT_PROFILE_MATHEMATICS", "label": "Mathematics" },
+        { "exam": "UNT_PROFILE_PHYSICS", "label": "Physics" },
+        { "exam": "UNT_PROFILE_INFORMATICS", "label": "Informatics" },
+        { "exam": "UNT_PROFILE_CHEMISTRY", "label": "Chemistry" },
+        { "exam": "UNT_PROFILE_BIOLOGY", "label": "Biology" },
+        { "exam": "UNT_PROFILE_GEOGRAPHY", "label": "Geography" },
+        { "exam": "UNT_PROFILE_WORLD_HISTORY", "label": "World History" },
+        { "exam": "UNT_PROFILE_ENGLISH", "label": "English language" },
+        { "exam": "UNT_PROFILE_GERMAN", "label": "German language" },
+        { "exam": "UNT_PROFILE_FRENCH", "label": "French language" },
+        { "exam": "UNT_PROFILE_KAZAKH_LANGUAGE", "label": "Kazakh language" },
+        { "exam": "UNT_PROFILE_RUSSIAN_LANGUAGE", "label": "Russian language" },
+        { "exam": "UNT_PROFILE_KAZAKH_LITERATURE", "label": "Kazakh literature" },
+        { "exam": "UNT_PROFILE_RUSSIAN_LITERATURE", "label": "Russian literature" },
+        { "exam": "UNT_PROFILE_HUMAN_AND_SOCIETY", "label": "Human and Society" }
+      ],
+      "selectable_count_min": 2,
+      "selectable_count_max": 2,
+      "total_strategy": "sum"
+    },
     "normalization": {
       "kind": "anchor_percentile",
       "p50": 85,
@@ -67,6 +129,243 @@
       "source": "Kazakhstan Ministry of Education statistics",
       "source_note": "Claude research table shared by the team on 2026-03-31."
     }
+  },
+  "UNT_HISTORY_OF_KAZAKHSTAN": {
+    "label": "UNT History of Kazakhstan",
+    "labels": {
+      "eng": "UNT History of Kazakhstan",
+      "rus": "ЕНТ История Казахстана"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 20,
+    "type": "int",
+    "step": 1,
+    "notes": "Mandatory UNT section: History of Kazakhstan."
+  },
+  "UNT_READING_LITERACY": {
+    "label": "UNT Reading Literacy",
+    "labels": {
+      "eng": "UNT Reading Literacy",
+      "rus": "ЕНТ Грамотность чтения"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 10,
+    "type": "int",
+    "step": 1,
+    "notes": "Mandatory UNT section: Reading literacy."
+  },
+  "UNT_MATHEMATICAL_LITERACY": {
+    "label": "UNT Mathematical Literacy",
+    "labels": {
+      "eng": "UNT Mathematical Literacy",
+      "rus": "ЕНТ Математическая грамотность"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 10,
+    "type": "int",
+    "step": 1,
+    "notes": "Mandatory UNT section: Mathematical literacy."
+  },
+  "UNT_PROFILE_MATHEMATICS": {
+    "label": "UNT Mathematics",
+    "labels": {
+      "eng": "UNT Mathematics",
+      "rus": "ЕНТ Математика"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_PHYSICS": {
+    "label": "UNT Physics",
+    "labels": {
+      "eng": "UNT Physics",
+      "rus": "ЕНТ Физика"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_INFORMATICS": {
+    "label": "UNT Informatics",
+    "labels": {
+      "eng": "UNT Informatics",
+      "rus": "ЕНТ Информатика"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_CHEMISTRY": {
+    "label": "UNT Chemistry",
+    "labels": {
+      "eng": "UNT Chemistry",
+      "rus": "ЕНТ Химия"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_BIOLOGY": {
+    "label": "UNT Biology",
+    "labels": {
+      "eng": "UNT Biology",
+      "rus": "ЕНТ Биология"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_GEOGRAPHY": {
+    "label": "UNT Geography",
+    "labels": {
+      "eng": "UNT Geography",
+      "rus": "ЕНТ География"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_WORLD_HISTORY": {
+    "label": "UNT World History",
+    "labels": {
+      "eng": "UNT World History",
+      "rus": "ЕНТ Всемирная история"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_ENGLISH": {
+    "label": "UNT English Language",
+    "labels": {
+      "eng": "UNT English Language",
+      "rus": "ЕНТ Английский язык"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_GERMAN": {
+    "label": "UNT German Language",
+    "labels": {
+      "eng": "UNT German Language",
+      "rus": "ЕНТ Немецкий язык"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_FRENCH": {
+    "label": "UNT French Language",
+    "labels": {
+      "eng": "UNT French Language",
+      "rus": "ЕНТ Французский язык"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_KAZAKH_LANGUAGE": {
+    "label": "UNT Kazakh Language",
+    "labels": {
+      "eng": "UNT Kazakh Language",
+      "rus": "ЕНТ Казахский язык"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_RUSSIAN_LANGUAGE": {
+    "label": "UNT Russian Language",
+    "labels": {
+      "eng": "UNT Russian Language",
+      "rus": "ЕНТ Русский язык"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_KAZAKH_LITERATURE": {
+    "label": "UNT Kazakh Literature",
+    "labels": {
+      "eng": "UNT Kazakh Literature",
+      "rus": "ЕНТ Казахская литература"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_RUSSIAN_LITERATURE": {
+    "label": "UNT Russian Literature",
+    "labels": {
+      "eng": "UNT Russian Literature",
+      "rus": "ЕНТ Русская литература"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
+  },
+  "UNT_PROFILE_HUMAN_AND_SOCIETY": {
+    "label": "UNT Human and Society",
+    "labels": {
+      "eng": "UNT Human and Society",
+      "rus": "ЕНТ Человек и общество"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 50,
+    "type": "int",
+    "step": 1
   },
   "NUET": {
     "label": "NUET",
@@ -91,30 +390,218 @@
     }
   },
   "AP_Total": {
-    "label": "AP Total",
+    "label": "AP",
     "labels": {
-      "eng": "AP Total",
+      "eng": "AP",
       "rus": "AP (суммарный балл)"
     },
-    "input_mode": "number",
+    "input_mode": "subject_breakdown",
     "min": 0,
     "max": 25,
     "type": "int",
     "step": 1,
-    "notes": "Sum of up to 5 AP exams (each 1-5)."
+    "notes": "Sum of up to 5 AP exams (each 1-5).",
+    "breakdown_scheme": {
+      "selectable_components": [
+        { "exam": "AP_CALCULUS_AB", "label": "Calculus AB" },
+        { "exam": "AP_CALCULUS_BC", "label": "Calculus BC" },
+        { "exam": "AP_COMPUTER_SCIENCE_A", "label": "Computer Science A" },
+        { "exam": "AP_PHYSICS_C_MECHANICS", "label": "Physics C: Mechanics" },
+        { "exam": "AP_PHYSICS_C_ELECTRICITY_MAGNETISM", "label": "Physics C: Electricity and Magnetism" },
+        { "exam": "AP_CHEMISTRY", "label": "Chemistry" },
+        { "exam": "AP_BIOLOGY", "label": "Biology" }
+      ],
+      "selectable_count_min": 1,
+      "selectable_count_max": 5,
+      "total_strategy": "sum"
+    }
+  },
+  "AP_CALCULUS_AB": {
+    "label": "AP Calculus AB",
+    "labels": {
+      "eng": "AP Calculus AB",
+      "rus": "AP Calculus AB"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Calculus AB.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
+  },
+  "AP_CALCULUS_BC": {
+    "label": "AP Calculus BC",
+    "labels": {
+      "eng": "AP Calculus BC",
+      "rus": "AP Calculus BC"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Calculus BC.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
+  },
+  "AP_COMPUTER_SCIENCE_A": {
+    "label": "AP Computer Science A",
+    "labels": {
+      "eng": "AP Computer Science A",
+      "rus": "AP Computer Science A"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Computer Science A.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
+  },
+  "AP_PHYSICS_C_MECHANICS": {
+    "label": "AP Physics C: Mechanics",
+    "labels": {
+      "eng": "AP Physics C: Mechanics",
+      "rus": "AP Physics C: Mechanics"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Physics C: Mechanics.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
+  },
+  "AP_PHYSICS_C_ELECTRICITY_MAGNETISM": {
+    "label": "AP Physics C: Electricity and Magnetism",
+    "labels": {
+      "eng": "AP Physics C: Electricity and Magnetism",
+      "rus": "AP Physics C: Electricity and Magnetism"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Physics C: Electricity and Magnetism.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
+  },
+  "AP_CHEMISTRY": {
+    "label": "AP Chemistry",
+    "labels": {
+      "eng": "AP Chemistry",
+      "rus": "AP Chemistry"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Chemistry.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
+  },
+  "AP_BIOLOGY": {
+    "label": "AP Biology",
+    "labels": {
+      "eng": "AP Biology",
+      "rus": "AP Biology"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 5,
+    "type": "int",
+    "step": 1,
+    "notes": "Advanced Placement score for Biology.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" }
+      ]
+    }
   },
   "IB_Diploma": {
     "label": "IB Diploma",
     "labels": {
       "eng": "IB Diploma",
-      "rus": "Диплом IB"
+      "rus": "IB (суммарный балл)"
     },
-    "input_mode": "number",
+    "input_mode": "subject_breakdown",
     "min": 24,
     "max": 45,
     "type": "int",
     "step": 1,
     "notes": "IB Diploma Programme total.",
+    "breakdown_scheme": {
+      "selectable_components": [
+        { "exam": "IB_MATHEMATICS_HL", "label": "Mathematics HL" },
+        { "exam": "IB_PHYSICS_HL", "label": "Physics HL" },
+        { "exam": "IB_CHEMISTRY_HL", "label": "Chemistry HL" },
+        { "exam": "IB_BIOLOGY_HL", "label": "Biology HL" },
+        { "exam": "IB_COMPUTER_SCIENCE_HL", "label": "Computer Science HL" }
+      ],
+      "selectable_count_min": 0,
+      "selectable_count_max": 4,
+      "total_strategy": "use_parent_score",
+      "parent_score_label": "Total"
+    },
     "normalization": {
       "kind": "anchor_percentile",
       "p50": 30,
@@ -125,40 +612,156 @@
       "source_note": "Claude research table shared by the team on 2026-03-31."
     }
   },
+  "IB_MATHEMATICS_HL": {
+    "label": "IB Mathematics HL",
+    "labels": {
+      "eng": "IB Mathematics HL",
+      "rus": "IB Mathematics HL"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "Higher Level score for IB Mathematics.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "6" },
+        { "value": 7, "short_label": "7" }
+      ]
+    }
+  },
+  "IB_PHYSICS_HL": {
+    "label": "IB Physics HL",
+    "labels": {
+      "eng": "IB Physics HL",
+      "rus": "IB Physics HL"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "Higher Level score for IB Physics.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "6" },
+        { "value": 7, "short_label": "7" }
+      ]
+    }
+  },
+  "IB_CHEMISTRY_HL": {
+    "label": "IB Chemistry HL",
+    "labels": {
+      "eng": "IB Chemistry HL",
+      "rus": "IB Chemistry HL"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "Higher Level score for IB Chemistry.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "6" },
+        { "value": 7, "short_label": "7" }
+      ]
+    }
+  },
+  "IB_BIOLOGY_HL": {
+    "label": "IB Biology HL",
+    "labels": {
+      "eng": "IB Biology HL",
+      "rus": "IB Biology HL"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "Higher Level score for IB Biology.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "6" },
+        { "value": 7, "short_label": "7" }
+      ]
+    }
+  },
+  "IB_COMPUTER_SCIENCE_HL": {
+    "label": "IB Computer Science HL",
+    "labels": {
+      "eng": "IB Computer Science HL",
+      "rus": "IB Computer Science HL"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "Higher Level score for IB Computer Science.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "6" },
+        { "value": 7, "short_label": "7" }
+      ]
+    }
+  },
   "A_LEVEL_CERT": {
     "label": "A-Level",
     "labels": {
       "eng": "A-Level",
-      "rus": "Оценки A-Level"
+      "rus": "A-Level (суммарный балл)"
     },
-    "input_mode": "grade_combo",
+    "input_mode": "subject_breakdown",
     "min": 0,
     "max": 18,
     "type": "int",
     "step": 1,
     "notes": "Best 3 A-Level grades converted to internal points (A*=6, A=5, ... U=0).",
-    "grade_scheme": {
-      "subject_count_min": 3,
-      "subject_count_max": 4,
-      "best_of": 3,
-      "grades": [
-        "A*",
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "U"
+    "breakdown_scheme": {
+      "selectable_components": [
+        { "exam": "A_LEVEL_MATHEMATICS", "label": "Mathematics" },
+        { "exam": "A_LEVEL_FURTHER_MATHEMATICS", "label": "Further Mathematics" },
+        { "exam": "A_LEVEL_PHYSICS", "label": "Physics" },
+        { "exam": "A_LEVEL_CHEMISTRY", "label": "Chemistry" },
+        { "exam": "A_LEVEL_BIOLOGY", "label": "Biology" },
+        { "exam": "A_LEVEL_COMPUTER_SCIENCE", "label": "Computer Science" }
       ],
-      "grade_points": {
-        "A*": 6,
-        "A": 5,
-        "B": 4,
-        "C": 3,
-        "D": 2,
-        "E": 1,
-        "U": 0
-      }
+      "selectable_count_min": 3,
+      "selectable_count_max": 4,
+      "total_strategy": "best_of_sum",
+      "best_of": 3
     },
     "normalization": {
       "kind": "anchor_percentile",
@@ -170,50 +773,495 @@
       "source_note": "A-Level grades are converted to internal points using the best 3 grades for comparison inside UniSearch."
     }
   },
-  "HKDSE_LEVEL": {
-    "label": "HKDSE Level",
+  "A_LEVEL_MATHEMATICS": {
+    "label": "A-Level Mathematics",
     "labels": {
-      "eng": "HKDSE Level",
+      "eng": "A-Level Mathematics",
+      "rus": "A-Level Mathematics"
+    },
+    "hidden": true,
+    "input_mode": "grade_combo",
+    "min": 0,
+    "max": 6,
+    "type": "int",
+    "step": 1,
+    "notes": "Single-subject A-Level grade converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 1,
+      "subject_count_max": 1,
+      "best_of": 1,
+      "grades": ["A*", "A", "B", "C", "D", "E", "U"],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    }
+  },
+  "A_LEVEL_FURTHER_MATHEMATICS": {
+    "label": "A-Level Further Mathematics",
+    "labels": {
+      "eng": "A-Level Further Mathematics",
+      "rus": "A-Level Further Mathematics"
+    },
+    "hidden": true,
+    "input_mode": "grade_combo",
+    "min": 0,
+    "max": 6,
+    "type": "int",
+    "step": 1,
+    "notes": "Single-subject A-Level grade converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 1,
+      "subject_count_max": 1,
+      "best_of": 1,
+      "grades": ["A*", "A", "B", "C", "D", "E", "U"],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    }
+  },
+  "A_LEVEL_PHYSICS": {
+    "label": "A-Level Physics",
+    "labels": {
+      "eng": "A-Level Physics",
+      "rus": "A-Level Physics"
+    },
+    "hidden": true,
+    "input_mode": "grade_combo",
+    "min": 0,
+    "max": 6,
+    "type": "int",
+    "step": 1,
+    "notes": "Single-subject A-Level grade converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 1,
+      "subject_count_max": 1,
+      "best_of": 1,
+      "grades": ["A*", "A", "B", "C", "D", "E", "U"],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    }
+  },
+  "A_LEVEL_CHEMISTRY": {
+    "label": "A-Level Chemistry",
+    "labels": {
+      "eng": "A-Level Chemistry",
+      "rus": "A-Level Chemistry"
+    },
+    "hidden": true,
+    "input_mode": "grade_combo",
+    "min": 0,
+    "max": 6,
+    "type": "int",
+    "step": 1,
+    "notes": "Single-subject A-Level grade converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 1,
+      "subject_count_max": 1,
+      "best_of": 1,
+      "grades": ["A*", "A", "B", "C", "D", "E", "U"],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    }
+  },
+  "A_LEVEL_BIOLOGY": {
+    "label": "A-Level Biology",
+    "labels": {
+      "eng": "A-Level Biology",
+      "rus": "A-Level Biology"
+    },
+    "hidden": true,
+    "input_mode": "grade_combo",
+    "min": 0,
+    "max": 6,
+    "type": "int",
+    "step": 1,
+    "notes": "Single-subject A-Level grade converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 1,
+      "subject_count_max": 1,
+      "best_of": 1,
+      "grades": ["A*", "A", "B", "C", "D", "E", "U"],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    }
+  },
+  "A_LEVEL_COMPUTER_SCIENCE": {
+    "label": "A-Level Computer Science",
+    "labels": {
+      "eng": "A-Level Computer Science",
+      "rus": "A-Level Computer Science"
+    },
+    "hidden": true,
+    "input_mode": "grade_combo",
+    "min": 0,
+    "max": 6,
+    "type": "int",
+    "step": 1,
+    "notes": "Single-subject A-Level grade converted to internal points (A*=6, A=5, ... U=0).",
+    "grade_scheme": {
+      "subject_count_min": 1,
+      "subject_count_max": 1,
+      "best_of": 1,
+      "grades": ["A*", "A", "B", "C", "D", "E", "U"],
+      "grade_points": {
+        "A*": 6,
+        "A": 5,
+        "B": 4,
+        "C": 3,
+        "D": 2,
+        "E": 1,
+        "U": 0
+      }
+    }
+  },
+  "HKDSE_LEVEL": {
+    "label": "HKDSE",
+    "labels": {
+      "eng": "HKDSE",
       "rus": "Уровень HKDSE"
     },
+    "input_mode": "subject_breakdown",
+    "min": 0,
+    "max": 42,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE level scale where 5*=6 and 5**=7.",
+    "breakdown_scheme": {
+      "fixed_components": [
+        { "exam": "HKDSE_CHINESE_LANGUAGE", "label": "Chinese Language" },
+        { "exam": "HKDSE_ENGLISH_LANGUAGE", "label": "English Language" },
+        { "exam": "HKDSE_MATHEMATICS", "label": "Mathematics" },
+        { "exam": "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT", "label": "Citizenship and Social Development" },
+        { "exam": "HKDSE_ELECTIVE_1", "label": "Elective 1" },
+        { "exam": "HKDSE_ELECTIVE_2_OR_M1_M2_OTHER_LANGUAGE", "label": "Elective 2 / M1 / M2 / Other Language" }
+      ],
+      "extra_scores": [
+        { "exam": "HKDSE_WEIGHTED_TOTAL", "label": "Weighted total" }
+      ],
+      "total_strategy": "sum"
+    }
+  },
+  "HKDSE_CHINESE_LANGUAGE": {
+    "label": "HKDSE Chinese Language",
+    "labels": {
+      "eng": "HKDSE Chinese Language",
+      "rus": "HKDSE Chinese Language"
+    },
+    "hidden": true,
     "input_mode": "band_select",
     "min": 1,
     "max": 7,
     "type": "int",
     "step": 1,
-    "notes": "HKDSE level scale where 5*=6 and 5**=7.",
+    "notes": "HKDSE Chinese Language level where 5*=6 and 5**=7.",
     "level_scheme": {
       "bands": [
-        {
-          "value": 1,
-          "short_label": "1"
-        },
-        {
-          "value": 2,
-          "short_label": "2"
-        },
-        {
-          "value": 3,
-          "short_label": "3"
-        },
-        {
-          "value": 4,
-          "short_label": "4"
-        },
-        {
-          "value": 5,
-          "short_label": "5"
-        },
-        {
-          "value": 6,
-          "short_label": "5*"
-        },
-        {
-          "value": 7,
-          "short_label": "5**"
-        }
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
       ]
     }
+  },
+  "HKDSE_ENGLISH_LANGUAGE": {
+    "label": "HKDSE English Language",
+    "labels": {
+      "eng": "HKDSE English Language",
+      "rus": "HKDSE English Language"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE English Language level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_MATHEMATICS": {
+    "label": "HKDSE Mathematics",
+    "labels": {
+      "eng": "HKDSE Mathematics",
+      "rus": "HKDSE Mathematics"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE Mathematics level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_ELECTIVE_1": {
+    "label": "HKDSE Elective 1",
+    "labels": {
+      "eng": "HKDSE Elective 1",
+      "rus": "HKDSE Elective 1"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE elective subject level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_ELECTIVE_2_OR_M1_M2_OTHER_LANGUAGE": {
+    "label": "HKDSE Elective 2 / M1 / M2 / Other Language",
+    "labels": {
+      "eng": "HKDSE Elective 2 / M1 / M2 / Other Language",
+      "rus": "HKDSE Elective 2 / M1 / M2 / Other Language"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE second elective or approved substitute level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_M1": {
+    "label": "HKDSE Mathematics Extended Part M1",
+    "labels": {
+      "eng": "HKDSE Mathematics Extended Part M1",
+      "rus": "HKDSE Mathematics Extended Part M1"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE Mathematics Extended Part Module 1 level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_M2": {
+    "label": "HKDSE Mathematics Extended Part M2",
+    "labels": {
+      "eng": "HKDSE Mathematics Extended Part M2",
+      "rus": "HKDSE Mathematics Extended Part M2"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE Mathematics Extended Part Module 2 level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_PHYSICS": {
+    "label": "HKDSE Physics",
+    "labels": {
+      "eng": "HKDSE Physics",
+      "rus": "HKDSE Physics"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE Physics level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_CHEMISTRY": {
+    "label": "HKDSE Chemistry",
+    "labels": {
+      "eng": "HKDSE Chemistry",
+      "rus": "HKDSE Chemistry"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE Chemistry level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_BIOLOGY": {
+    "label": "HKDSE Biology",
+    "labels": {
+      "eng": "HKDSE Biology",
+      "rus": "HKDSE Biology"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE Biology level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_ICT": {
+    "label": "HKDSE Information and Communication Technology",
+    "labels": {
+      "eng": "HKDSE Information and Communication Technology",
+      "rus": "HKDSE Information and Communication Technology"
+    },
+    "hidden": true,
+    "input_mode": "band_select",
+    "min": 1,
+    "max": 7,
+    "type": "int",
+    "step": 1,
+    "notes": "HKDSE ICT level where 5*=6 and 5**=7.",
+    "level_scheme": {
+      "bands": [
+        { "value": 1, "short_label": "1" },
+        { "value": 2, "short_label": "2" },
+        { "value": 3, "short_label": "3" },
+        { "value": 4, "short_label": "4" },
+        { "value": 5, "short_label": "5" },
+        { "value": 6, "short_label": "5*" },
+        { "value": 7, "short_label": "5**" }
+      ]
+    }
+  },
+  "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT": {
+    "label": "HKDSE Citizenship and Social Development",
+    "labels": {
+      "eng": "HKDSE Citizenship and Social Development",
+      "rus": "HKDSE Citizenship and Social Development"
+    },
+    "hidden": true,
+    "input_mode": "flag",
+    "min": 0,
+    "max": 1,
+    "type": "bool",
+    "step": 1,
+    "notes": "HKDSE Citizenship and Social Development attained/pass indicator."
   },
   "HKDSE_WEIGHTED_TOTAL": {
     "label": "HKDSE Weighted Total (CUHK JUPAS)",
@@ -221,6 +1269,7 @@
       "eng": "HKDSE Weighted Total (CUHK JUPAS)",
       "rus": "Взвешенный суммарный балл HKDSE (CUHK JUPAS)"
     },
+    "hidden": true,
     "input_mode": "number",
     "min": 0,
     "max": 47.25,

@@ -159,6 +159,9 @@ body.global-loading-active > *:not(#globalLoadingOverlay) {
   :root.theme-animating body,
   :root.theme-animating .navbar,
   :root.theme-animating .theme-btn,
+  :root.theme-animating .profile-trigger-btn,
+  :root.theme-animating .menu-btn,
+  :root.theme-animating .lang-switch,
   :root.theme-animating .profile-card,
   :root.theme-animating .profile-input,
   :root.theme-animating .profile-name-input,
@@ -492,7 +495,7 @@ html, body {
   position: relative;
   width: min(760px, 96vw);      /* ✅ шире на больших экранах */
   max-height: 92vh;             /* ✅ не вылезает за экран */
-  background: var(--surface);
+  background: var(--surface-solid);
   border-radius: 18px;
   box-shadow: var(--shadow-md);
   z-index: 1;
@@ -675,20 +678,38 @@ html, body {
 .profile-info{
   width: 22px;
   height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  box-sizing: border-box;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
   background: var(--surface-soft);
   color: var(--text-muted);
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex: 0 0 auto;
+  line-height: 0;
   padding: 0;
   cursor: pointer;
   appearance: none;
 }
 
+.profile-info > *{
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
 .profile-info .ui-icon{
   width: 14px;
   height: 14px;
+  display: block;
 }
 
 .profile-info:hover,
@@ -870,6 +891,10 @@ html, body {
   grid-template-columns: minmax(150px, 0.95fr) minmax(430px, 2.4fr) auto;
 }
 
+.profile-exam-form--with-special.profile-exam-form--breakdown{
+  grid-template-columns: minmax(170px, 0.95fr) minmax(420px, 2.5fr) auto;
+}
+
 .profile-exam-form--no-score{
   grid-template-columns: 1fr auto;
 }
@@ -887,6 +912,11 @@ html, body {
   grid-template-columns: repeat(4, minmax(96px, 1fr));
   column-gap: 10px;
   row-gap: 8px;
+}
+
+.profile-exam-special-grid--breakdown{
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 .profile-exam-special-grid--grades .profile-input{
@@ -921,6 +951,60 @@ html, body {
   font-size: 12px;
   line-height: 1.4;
   color: var(--text-muted);
+}
+
+.profile-exam-breakdown-row{
+  display: grid;
+  grid-template-columns: minmax(170px, 0.95fr) minmax(180px, 1.05fr);
+  gap: 10px;
+  align-items: end;
+}
+
+.profile-exam-breakdown-subject,
+.profile-exam-breakdown-score{
+  min-width: 0;
+}
+
+.profile-exam-breakdown-chip{
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.profile-exam-breakdown-empty{
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px dashed var(--line);
+  color: var(--text-muted);
+  background: var(--bg-soft);
+}
+
+.track-exam-entry-group{
+  display: grid;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.track-exam-entry-group + .track-exam-entry-group{
+  border-top: 1px dashed var(--line);
+  margin-top: 6px;
+}
+
+.track-exam-entry-group-title{
+  color: var(--text);
+}
+
+.track-exam-entry-group-list{
+  display: grid;
+  gap: 4px;
 }
 
 .profile-exam-form .profile-add{
@@ -1281,6 +1365,10 @@ html, body {
   display: none;
 }
 
+.lang-add-grid .profile-exam-special{
+  grid-column: 1 / -1;
+}
+
 .lang-actions{
   display:flex;
   justify-content:flex-end;
@@ -1595,7 +1683,7 @@ html, body {
   display: inline-block;
   flex: 0 0 auto;
   object-fit: contain;
-  border-radius: 1px;
+  border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -1606,7 +1694,7 @@ html, body {
   vertical-align: middle;
   flex: 0 0 auto;
   object-fit: contain;
-  border-radius: 1px;
+  border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
@@ -1733,6 +1821,7 @@ html, body {
 
   .profile-exam-form{ grid-template-columns: 1fr; }
   .profile-exam-special-grid--grades{ grid-template-columns: 1fr; }
+  .profile-exam-breakdown-row{ grid-template-columns: 1fr; }
   .profile-budget{
     grid-template-columns: minmax(0, 1fr);
     column-gap: 8px;
@@ -1953,6 +2042,16 @@ body {
   color: var(--text);
   padding-top: 72px;
   letter-spacing: -0.01em;
+}
+
+body[data-page="about"],
+body[data-page="guide"] {
+  background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+}
+
+:root[data-theme="dark"] body[data-page="about"],
+:root[data-theme="dark"] body[data-page="guide"] {
+  background: linear-gradient(180deg, #131416 0%, var(--bg) 100%);
 }
 
 button,

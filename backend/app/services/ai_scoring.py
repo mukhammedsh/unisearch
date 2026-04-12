@@ -296,7 +296,18 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                 raw_value=raw_value,
                 details=details,
             )
-            _set_best_score(user_scores, exam_id, parsed.get("score"))
+            _set_best_score(user_scores, parsed.get("exam", exam_id), parsed.get("score"))
+            parsed_details = parsed.get("details")
+            if isinstance(parsed_details, dict):
+                for bucket_name in ("components", "extra_scores"):
+                    bucket = parsed_details.get(bucket_name)
+                    if not isinstance(bucket, list):
+                        continue
+                    for item in bucket:
+                        if not isinstance(item, dict):
+                            continue
+                        nested_exam = item.get("exam") or item.get("id") or item.get("exam_id")
+                        _set_best_score(user_scores, nested_exam, item.get("score"))
         except Exception:
             _set_best_score(user_scores, exam_id, raw_score)
 
@@ -323,11 +334,45 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
 
         if kind == "exam":
             exam_id = str(row.get("exam", row.get("examId", row.get("id", "")))).strip()
-            score = _to_num(row.get("score"))
-            if not exam_id or score is None:
+            raw_score = row.get("score")
+            raw_value = row.get("raw_value", row.get("rawValue"))
+            details = row.get("details")
+            if not exam_id:
                 continue
-            _set_best_score(user_languages[code]["exams"], exam_id, score)
-            _set_best_score(user_scores, exam_id, score)
+            try:
+                parsed_lang = languages_service.validate_language(
+                    {
+                        "code": code,
+                        "kind": "exam",
+                        "exam": exam_id,
+                        "score": raw_score,
+                        "raw_value": raw_value,
+                        "details": details,
+                    }
+                ).get("language", {})
+                parsed_exam_id = str(parsed_lang.get("exam") or exam_id).strip()
+                parsed_score = _to_num(parsed_lang.get("score"))
+                if parsed_exam_id and parsed_score is not None:
+                    _set_best_score(user_languages[code]["exams"], parsed_exam_id, parsed_score)
+                    _set_best_score(user_scores, parsed_exam_id, parsed_score)
+                parsed_details = parsed_lang.get("details")
+                if isinstance(parsed_details, dict):
+                    bucket = parsed_details.get("components")
+                    if isinstance(bucket, list):
+                        for item in bucket:
+                            if not isinstance(item, dict):
+                                continue
+                            nested_exam = item.get("exam") or item.get("id") or item.get("exam_id")
+                            nested_score = item.get("score")
+                            _set_best_score(user_languages[code]["exams"], nested_exam, nested_score)
+                            _set_best_score(user_scores, nested_exam, nested_score)
+                continue
+            except Exception:
+                score = _to_num(raw_score)
+                if score is None:
+                    continue
+                _set_best_score(user_languages[code]["exams"], exam_id, score)
+                _set_best_score(user_scores, exam_id, score)
 
     return {
         "userScores": user_scores,

@@ -864,6 +864,56 @@ def _merge_track_variant_dict(base_value: Any, variant_value: Any) -> Any:
     return copy.deepcopy(base_value)
 
 
+def _is_language_exam_key_for_track_merge(exam_id: Any) -> bool:
+    key = str(exam_id or "").strip().upper()
+    if not key:
+        return False
+    return any(
+        token in key
+        for token in (
+            "IELTS",
+            "TOEFL",
+            "DET",
+            "DUOLINGO",
+            "PTE",
+            "CAMBRIDGE",
+            "TESTDAF",
+            "DSH",
+            "DELF",
+            "DALF",
+            "TCF",
+            "TEF",
+            "NT2",
+            "HSK",
+            "JLPT",
+            "TOPIK",
+        )
+    )
+
+
+def _filter_variant_stats_avg_for_requirements(stats_avg: Any, requirements: Any) -> Any:
+    if not isinstance(stats_avg, dict):
+        return copy.deepcopy(stats_avg)
+    if not isinstance(requirements, dict) or not requirements:
+        return copy.deepcopy(stats_avg)
+
+    allowed_keys = {
+        exams_service.resolve_exam_key(key)
+        for key in requirements.keys()
+        if not _is_language_exam_key_for_track_merge(key)
+    }
+    allowed_keys = {str(key or "").strip().upper() for key in allowed_keys if str(key or "").strip()}
+    if not allowed_keys:
+        return copy.deepcopy(stats_avg)
+
+    filtered: Dict[str, Any] = {}
+    for raw_key, value in stats_avg.items():
+        resolved = str(exams_service.resolve_exam_key(raw_key) or "").strip().upper()
+        if resolved and resolved in allowed_keys:
+            filtered[str(raw_key)] = copy.deepcopy(value)
+    return filtered
+
+
 def _expand_track_funding_options(track: Dict[str, Any]) -> List[Dict[str, Any]]:
     if not isinstance(track, dict):
         return []
@@ -895,9 +945,13 @@ def _expand_track_funding_options(track: Dict[str, Any]) -> List[Dict[str, Any]]
             base_track.get("stats_avg"),
             option_copy.pop("stats_avg", None),
         )
+        merged_stats_avg = _filter_variant_stats_avg_for_requirements(
+            merged_stats_avg,
+            merged_requirements,
+        )
         if isinstance(merged_stats_avg, dict) and merged_stats_avg:
             variant["stats_avg"] = merged_stats_avg
-        elif "stats_avg" in variant and not isinstance(variant.get("stats_avg"), dict):
+        else:
             variant.pop("stats_avg", None)
 
         merged_finance_override = _merge_track_variant_dict(
@@ -1413,6 +1467,9 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
                         option_majors = variant.get("applicable_majors")
                         if isinstance(option_majors, list) and option_majors:
                             option["applicable_majors"] = copy.deepcopy(option_majors)
+                        option_stats_avg = variant.get("stats_avg")
+                        if isinstance(option_stats_avg, dict):
+                            option["stats_avg"] = copy.deepcopy(option_stats_avg)
                         option_score_profile = variant.get("score_profile")
                         if isinstance(option_score_profile, dict) and option_score_profile:
                             option["score_profile"] = copy.deepcopy(option_score_profile)

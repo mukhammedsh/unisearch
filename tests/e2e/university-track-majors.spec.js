@@ -32,9 +32,9 @@ test("nazarbayev university keeps compact tracks and shows funding options insid
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  await expect(page.locator(".track-card")).toHaveCount(2);
-  await expect(page.locator(".admission-option-card")).toHaveCount(4);
-  await expect(page.locator(".track-title")).toContainText(["Direct Admission (SAT)", "NUET Applicants"]);
+  await expect(page.locator(".track-card")).toHaveCount(3);
+  await expect(page.locator(".admission-option-card")).toHaveCount(6);
+  await expect(page.locator(".track-title")).toContainText(["SAT Applicants", "ACT Applicants", "NUET Applicants"]);
 });
 
 test("tsinghua admission tab keeps paid and grant options visible when profile prefers grant", async ({ page }) => {

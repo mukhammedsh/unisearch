@@ -370,6 +370,8 @@ const LAYOUT_HTML = `
                     data-i18n-placeholder="profile.placeholder.lang_score" />
             </div>
 
+            <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
+
             <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
         </div>
 
@@ -914,6 +916,8 @@ function initProfileUI() {
 
         const seen = new Set();
         Object.keys(EXAM_CONFIG).forEach((examKey) => {
+            const cfg = EXAM_CONFIG?.[examKey];
+            if (cfg?.hidden) return;
             const normalized = canonicalizeExamId(examKey);
             const key = String(normalized || examKey).toUpperCase().replace(/[^A-Z0-9]/g, "");
             if (!key || key === "GPA") return;
@@ -951,13 +955,284 @@ function initProfileUI() {
         return tokens.join("") === compact ? tokens : [];
     };
 
+    const breakdownSchemeFor = (examId) => {
+        const scheme = examConfigFor(examId)?.breakdown_scheme;
+        return scheme && typeof scheme === "object" && !Array.isArray(scheme) ? scheme : {};
+    };
+
+    const normalizeBreakdownDefinitions = (items, { defaultRequired = false } = {}) => {
+        if (!Array.isArray(items)) return [];
+        return items
+            .map((item) => {
+                if (typeof item === "string") {
+                    const exam = canonicalizeExamId(item);
+                    if (!exam) return null;
+                    return { exam, label: getExamDisplayName(exam), required: defaultRequired };
+                }
+                if (!item || typeof item !== "object") return null;
+                const exam = canonicalizeExamId(item.exam || item.id || item.exam_id || "");
+                if (!exam) return null;
+                return {
+                    exam,
+                    label: String(getExamDisplayName(exam) || item.label || exam).trim(),
+                    required: item.required === undefined ? defaultRequired : !!item.required,
+                };
+            })
+            .filter(Boolean);
+    };
+
+    const normalizeBreakdownRows = (rows) => {
+        if (!Array.isArray(rows)) return [];
+        return rows
+            .map((row) => {
+                if (!row || typeof row !== "object") return null;
+                const exam = canonicalizeExamId(row.exam || row.id || row.exam_id || "");
+                if (!exam) return null;
+                const rawValue = String(row.raw_value || row.rawValue || row.display_value || row.displayValue || "").trim();
+                const details = row.details && typeof row.details === "object" && !Array.isArray(row.details)
+                    ? JSON.parse(JSON.stringify(row.details))
+                    : null;
+                const score = row?.score === null || row?.score === undefined || row?.score === ""
+                    ? null
+                    : Number(row.score);
+                return {
+                    exam,
+                    score: Number.isFinite(score) ? score : null,
+                    raw_value: rawValue,
+                    details,
+                };
+            })
+            .filter(Boolean);
+    };
+
+    const buildBreakdownState = (examId, source = null) => {
+        const scheme = breakdownSchemeFor(examId);
+        const fixed = normalizeBreakdownDefinitions(scheme.fixed_components, { defaultRequired: true });
+        const selectable = normalizeBreakdownDefinitions(scheme.selectable_components, { defaultRequired: false });
+        const extraScores = normalizeBreakdownDefinitions(scheme.extra_scores, { defaultRequired: false });
+        const scoreValue = Number(source?.score);
+        return {
+            totalScore: Number.isFinite(scoreValue) ? scoreValue : null,
+            components: normalizeBreakdownRows(source?.details?.components),
+            extraScores: normalizeBreakdownRows(source?.details?.extra_scores),
+            fixed,
+            selectable,
+            extraDefinitions: extraScores,
+        };
+    };
+
+    const getBreakdownState = (examId) => {
+        const selected = canonicalizeExamId(examId);
+        const isCurrent = examSpecialInputContainer?.dataset.breakdownExam === selected;
+        if (isCurrent) {
+            const liveState = readSubjectBreakdownDraft(selected, { silent: true });
+            if (liveState) return liveState;
+        }
+        return buildBreakdownState(selected, findExistingExamEntry(selected));
+    };
+
+    const gradeOptionsForExam = (examId) => {
+        const gradeScheme = examConfigFor(examId)?.grade_scheme || {};
+        return Array.isArray(gradeScheme.grades) && gradeScheme.grades.length
+            ? gradeScheme.grades
+            : ["A*", "A", "B", "C", "D", "E", "U"];
+    };
+
+    const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, valueState, isExtra = false }) => {
+        const cfg = examConfigFor(examId);
+        const mode = examInputModeFor(examId);
+        const rawValue = String(valueState?.raw_value || "").trim();
+        const numericScore = Number(valueState?.score);
+        const valueText = Number.isFinite(numericScore) ? String(numericScore) : rawValue;
+        const dataAttrs = `data-breakdown-slot="${escapeHtml(slotKey)}" data-breakdown-parent="${escapeHtml(parentExamId)}"`;
+
+        if (mode === "band_select") {
+            const bands = getExamLevelBands(examId);
+            return `
+                <select class="profile-input profile-input--select" ${dataAttrs} data-breakdown-value="band">
+                    <option value="" ${rawValue ? "" : "selected"}>${escapeHtml(t("profile.exam_band_placeholder", "Select level"))}</option>
+                    ${bands.map((band) => {
+                        const shortLabel = String(band?.short_label || "").trim();
+                        const selected = shortLabel && shortLabel === rawValue ? "selected" : "";
+                        return `<option value="${escapeHtml(shortLabel)}" ${selected}>${escapeHtml(shortLabel)}</option>`;
+                    }).join("")}
+                </select>
+            `;
+        }
+
+        if (mode === "grade_combo") {
+            const selectedGrade = String(
+                valueState?.details?.grades?.[0]
+                || rawValue
+                || ""
+            ).trim();
+            const gradeOptions = gradeOptionsForExam(examId);
+            return `
+                <select class="profile-input profile-input--select" ${dataAttrs} data-breakdown-value="grade">
+                    <option value="" ${selectedGrade ? "" : "selected"}>${escapeHtml(t("profile.exam_grade_placeholder", "Select grade"))}</option>
+                    ${gradeOptions.map((grade) => {
+                        const selected = selectedGrade === grade ? "selected" : "";
+                        return `<option value="${escapeHtml(grade)}" ${selected}>${escapeHtml(grade)}</option>`;
+                    }).join("")}
+                </select>
+            `;
+        }
+
+        if (mode === "flag") {
+            const rawFlag = valueState?.score;
+            const normalizedFlag = rawFlag === 0 ? "0" : (rawFlag === 1 ? "1" : "");
+            return `
+                <select class="profile-input profile-input--select" ${dataAttrs} data-breakdown-value="flag">
+                    <option value="" ${normalizedFlag ? "" : "selected"}>${escapeHtml(t("profile.exam_status_placeholder", "Select status"))}</option>
+                    <option value="1" ${normalizedFlag === "1" ? "selected" : ""}>${escapeHtml(t("profile.exam_status_pass", "Pass"))}</option>
+                    <option value="0" ${normalizedFlag === "0" ? "selected" : ""}>${escapeHtml(t("profile.exam_status_fail", "Not passed"))}</option>
+                </select>
+            `;
+        }
+
+        const min = cfg?.min !== undefined ? `min="${escapeHtml(String(cfg.min))}"` : "";
+        const max = cfg?.max !== undefined ? `max="${escapeHtml(String(cfg.max))}"` : "";
+        const step = cfg?.step !== undefined ? `step="${escapeHtml(String(cfg.step))}"` : `step="${isExtra ? "0.01" : "1"}"`;
+        const placeholder = isExtra
+            ? t("profile.placeholder.score", "Score")
+            : t("profile.placeholder.score", "Score");
+        return `
+            <input
+                type="number"
+                class="profile-input"
+                value="${escapeHtml(valueText)}"
+                placeholder="${escapeHtml(placeholder)}"
+                ${min}
+                ${max}
+                ${step}
+                ${dataAttrs}
+                data-breakdown-value="number"
+            >
+        `;
+    };
+
+    const readBreakdownFieldPayload = (container, examId) => {
+        const mode = examInputModeFor(examId);
+        if (!container) return null;
+
+        if (mode === "band_select") {
+            const raw = String(container.querySelector("[data-breakdown-value='band']")?.value || "").trim();
+            if (!raw) return null;
+            return { raw_value: raw, details: { band: raw } };
+        }
+
+        if (mode === "grade_combo") {
+            const raw = String(container.querySelector("[data-breakdown-value='grade']")?.value || "").trim();
+            if (!raw) return null;
+            return { raw_value: raw, details: { grades: [raw] } };
+        }
+
+        if (mode === "flag") {
+            const raw = String(container.querySelector("[data-breakdown-value='flag']")?.value || "").trim();
+            if (raw !== "0" && raw !== "1") return null;
+            return { score: raw === "1" ? 1 : 0 };
+        }
+
+        const raw = String(container.querySelector("[data-breakdown-value='number']")?.value || "").trim();
+        if (!raw) return null;
+        const score = Number(raw);
+        if (!Number.isFinite(score)) return { invalid: true, raw };
+        return { score, raw_input_score: raw };
+    };
+
+    function readSubjectBreakdownDraft(examId, options = {}) {
+        const selected = canonicalizeExamId(examId);
+        const silent = options?.silent === true;
+        const fallbackState = buildBreakdownState(selected, findExistingExamEntry(selected));
+        if (!examSpecialInputContainer || examSpecialInputContainer.dataset.breakdownExam !== selected) {
+            return fallbackState;
+        }
+
+        const state = {
+            ...fallbackState,
+            totalScore: fallbackState.totalScore,
+            components: [],
+            extraScores: [],
+        };
+
+        const fixedRows = Array.from(examSpecialInputContainer.querySelectorAll("[data-breakdown-fixed-row]"));
+        for (const row of fixedRows) {
+            const exam = canonicalizeExamId(row.getAttribute("data-breakdown-exam"));
+            const payload = readBreakdownFieldPayload(row, exam);
+            if (!payload) {
+                if (silent) {
+                    state.components.push({ exam, score: null });
+                    continue;
+                }
+                const label = String(row.getAttribute("data-breakdown-label") || getExamDisplayName(exam)).trim();
+                if (!silent) showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
+                return null;
+            }
+            if (payload.invalid) {
+                if (!silent) showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
+                return null;
+            }
+            state.components.push({
+                exam,
+                ...(payload.score !== undefined ? { score: payload.score } : {}),
+                ...(payload.raw_value ? { raw_value: payload.raw_value } : {}),
+                ...(payload.details ? { details: payload.details } : {}),
+            });
+        }
+
+        const selectableRows = Array.from(examSpecialInputContainer.querySelectorAll("[data-breakdown-selectable-row]"));
+        for (const row of selectableRows) {
+            const exam = canonicalizeExamId(row.querySelector("[data-breakdown-subject-select]")?.value || "");
+            if (!exam) continue;
+            const payload = readBreakdownFieldPayload(row, exam);
+            if (!payload) {
+                if (silent) {
+                    state.components.push({ exam, score: null });
+                    continue;
+                }
+                const label = getExamDisplayName(exam);
+                if (!silent) showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
+                return null;
+            }
+            if (payload.invalid) {
+                if (!silent) showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
+                return null;
+            }
+            state.components.push({
+                exam,
+                ...(payload.score !== undefined ? { score: payload.score } : {}),
+                ...(payload.raw_value ? { raw_value: payload.raw_value } : {}),
+                ...(payload.details ? { details: payload.details } : {}),
+            });
+        }
+
+        const extraRows = Array.from(examSpecialInputContainer.querySelectorAll("[data-breakdown-extra-row]"));
+        for (const row of extraRows) {
+            const exam = canonicalizeExamId(row.getAttribute("data-breakdown-exam"));
+            const payload = readBreakdownFieldPayload(row, exam);
+            if (!payload) continue;
+            if (payload.invalid) {
+                if (!silent) showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
+                return null;
+            }
+            state.extraScores.push({
+                exam,
+                ...(payload.score !== undefined ? { score: payload.score } : {}),
+                ...(payload.raw_value ? { raw_value: payload.raw_value } : {}),
+                ...(payload.details ? { details: payload.details } : {}),
+            });
+        }
+
+        return state;
+    }
+
     const renderSpecialExamInput = (examId) => {
         if (!examSpecialInputContainer) return false;
 
         const cfg = examConfigFor(examId);
         const mode = examInputModeFor(examId);
         const existing = findExistingExamEntry(examId);
-        examSpecialInputContainer.innerHTML = "";
+        if (mode !== "subject_breakdown") delete examSpecialInputContainer.dataset.breakdownExam;
 
         if (mode === "band_select") {
             const selectedBand = String(
@@ -1029,6 +1304,97 @@ function initProfileUI() {
             return true;
         }
 
+        if (mode === "subject_breakdown") {
+            const state = getBreakdownState(examId);
+            const scheme = breakdownSchemeFor(examId);
+            const selectableMax = Math.max(0, Number(scheme?.selectable_count_max) || state.selectable.length || 0);
+            const selectableMin = Math.max(0, Number(scheme?.selectable_count_min) || 0);
+            const usedSelectable = state.components.filter((row) =>
+                state.selectable.some((item) => item.exam === row.exam)
+            );
+            const extraScores = state.extraDefinitions.map((def) => {
+                const existingRow = state.extraScores.find((row) => row.exam === def.exam) || null;
+                return { ...def, row: existingRow };
+            });
+
+            const selectableRows = Array.from({ length: selectableMax }).map((_, idx) => {
+                const current = usedSelectable[idx] || null;
+                const selectedExam = canonicalizeExamId(current?.exam || "");
+                const optionList = state.selectable.filter((item) =>
+                    !item.exam || item.exam === selectedExam || !usedSelectable.some((row, rowIdx) => rowIdx !== idx && row.exam === item.exam)
+                );
+                const rowExam = selectedExam || "";
+                const label = idx < selectableMin
+                    ? tFormat("profile.exam_subject_slot", { index: idx + 1 }, `Subject ${idx + 1}`)
+                    : tFormat("profile.exam_subject_optional_slot", { index: idx + 1 }, `Optional subject ${idx + 1}`);
+                return `
+                    <div class="profile-exam-breakdown-row" data-breakdown-selectable-row="${idx}">
+                        <div class="profile-exam-breakdown-subject">
+                            <span class="mini-label">${escapeHtml(label)}</span>
+                            <select class="profile-input profile-input--select" data-breakdown-subject-select="${idx}">
+                                <option value="" ${selectedExam ? "" : "selected"}>${escapeHtml(t("profile.exam_subject_placeholder", "Select subject"))}</option>
+                                ${optionList.map((item) => {
+                                    const selected = item.exam === selectedExam ? "selected" : "";
+                                    return `<option value="${escapeHtml(item.exam)}" ${selected}>${escapeHtml(item.label)}</option>`;
+                                }).join("")}
+                            </select>
+                        </div>
+                        <div class="profile-exam-breakdown-score">
+                            <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
+                            ${rowExam
+                                ? renderBreakdownValueControl({ parentExamId: examId, examId: rowExam, slotKey: `selectable-${idx}`, valueState: current })
+                                : `<div class="profile-exam-breakdown-empty">${escapeHtml(t("profile.exam_subject_choose_first", "Choose a subject first"))}</div>`}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            examSpecialInputContainer.dataset.breakdownExam = canonicalizeExamId(examId);
+            examSpecialInputContainer.innerHTML = `
+                <div class="profile-exam-special-grid profile-exam-special-grid--breakdown">
+                    ${state.fixed.map((item) => {
+                        const current = state.components.find((row) => row.exam === item.exam) || null;
+                        return `
+                            <div class="profile-exam-breakdown-row" data-breakdown-fixed-row="${escapeHtml(item.exam)}" data-breakdown-exam="${escapeHtml(item.exam)}" data-breakdown-label="${escapeHtml(item.label)}">
+                                <div class="profile-exam-breakdown-subject">
+                                    <span class="mini-label">${escapeHtml(item.label)}</span>
+                                    <div class="profile-exam-breakdown-chip">${escapeHtml(item.label)}</div>
+                                </div>
+                                <div class="profile-exam-breakdown-score">
+                                    <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
+                                    ${renderBreakdownValueControl({ parentExamId: examId, examId: item.exam, slotKey: `fixed-${item.exam}`, valueState: current })}
+                                </div>
+                            </div>
+                        `;
+                    }).join("")}
+                    ${selectableRows}
+                    ${extraScores.map((item) => `
+                        <div class="profile-exam-breakdown-row" data-breakdown-extra-row="${escapeHtml(item.exam)}" data-breakdown-exam="${escapeHtml(item.exam)}">
+                            <div class="profile-exam-breakdown-subject">
+                                <span class="mini-label">${escapeHtml(item.label)}</span>
+                                <div class="profile-exam-breakdown-chip">${escapeHtml(item.label)}</div>
+                            </div>
+                            <div class="profile-exam-breakdown-score">
+                                <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
+                                ${renderBreakdownValueControl({ parentExamId: examId, examId: item.exam, slotKey: `extra-${item.exam}`, valueState: item.row, isExtra: true })}
+                            </div>
+                        </div>
+                    `).join("")}
+                    <div class="profile-exam-special-hint">${escapeHtml(
+                        tFormat(
+                            "profile.exam_breakdown_hint",
+                            { min: selectableMin, max: selectableMax || 0 },
+                            selectableMax
+                                ? `Enter scores by subject. Required subjects stay fixed, and you can choose ${selectableMin}-${selectableMax} extra subjects where needed.`
+                                : "Enter scores by subject."
+                        )
+                    )}</div>
+                </div>
+            `;
+            return true;
+        }
+
+        examSpecialInputContainer.innerHTML = "";
         return false;
     };
 
@@ -1038,10 +1404,13 @@ function initProfileUI() {
         const selectedExam = canonicalizeExamId(examNameSelect?.value);
         const mode = examInputModeFor(selectedExam);
         const cfg = examConfigFor(selectedExam);
+        const breakdownScheme = breakdownSchemeFor(selectedExam);
         const examForm = examScoreInput.closest(".profile-exam-form");
         const existing = findExistingExamEntry(selectedExam);
-        const usesNumberInput = mode === "number";
-        const usesSpecialInput = mode === "band_select" || mode === "grade_combo";
+        const usesCompositeParentScore = mode === "subject_breakdown"
+            && String(breakdownScheme?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
+        const usesNumberInput = mode === "number" || usesCompositeParentScore;
+        const usesSpecialInput = mode === "band_select" || mode === "grade_combo" || mode === "subject_breakdown";
 
         examScoreInput.hidden = !usesNumberInput;
         examScoreInput.disabled = !usesNumberInput;
@@ -1059,6 +1428,7 @@ function initProfileUI() {
             examForm.classList.toggle("profile-exam-form--with-special", usesSpecialInput);
             examForm.classList.toggle("profile-exam-form--grades", mode === "grade_combo");
             examForm.classList.toggle("profile-exam-form--band", mode === "band_select");
+            examForm.classList.toggle("profile-exam-form--breakdown", mode === "subject_breakdown");
         }
 
         if (!usesNumberInput) {
@@ -1066,7 +1436,9 @@ function initProfileUI() {
             return;
         }
 
-        examScoreInput.placeholder = t("profile.placeholder.score", "Score");
+        examScoreInput.placeholder = usesCompositeParentScore
+            ? t("profile.exam_total_placeholder", "Overall total")
+            : t("profile.placeholder.score", "Score");
         if (existing && Number.isFinite(Number(existing?.score))) {
             examScoreInput.value = String(existing.score);
         } else {
@@ -1134,9 +1506,138 @@ function initProfileUI() {
             };
         }
 
+        if (mode === "subject_breakdown") {
+            const scheme = breakdownSchemeFor(examId);
+            const draft = readSubjectBreakdownDraft(examId);
+            if (!draft) return null;
+
+            const selectableMin = Math.max(0, Number(scheme?.selectable_count_min) || 0);
+            const selectableSet = new Set(draft.selectable.map((item) => item.exam));
+            const selectedOptionalCount = draft.components.filter((row) => selectableSet.has(row.exam)).length;
+            if (selectedOptionalCount < selectableMin) {
+                showToast(
+                    tFormat(
+                        "profile.exam_subject_required_count",
+                        { count: selectableMin, exam: getExamDisplayName(examId) },
+                        `Choose at least ${selectableMin} subjects for ${getExamDisplayName(examId)}`
+                    ),
+                    "error"
+                );
+                return null;
+            }
+
+            const payload = {
+                details: {
+                    components: draft.components,
+                    ...(draft.extraScores.length ? { extra_scores: draft.extraScores } : {}),
+                },
+            };
+
+            if (String(scheme?.total_strategy || "").trim().toLowerCase() === "use_parent_score") {
+                const rawScore = String(examScoreInput?.value || "").trim();
+                const score = Number(rawScore);
+                if (!rawScore || Number.isNaN(score)) {
+                    showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
+                    return null;
+                }
+                payload.score = score;
+                payload.raw_input_score = rawScore;
+            }
+
+            return payload;
+        }
+
         const rawScore = String(examScoreInput?.value || "").trim();
         const score = parseFloat(rawScore);
         return { score, raw_input_score: rawScore };
+    };
+
+    const formatExamValidationToast = (examId, detailRaw) => {
+        const examLabel = getExamDisplayName(examId);
+        const detail = String(detailRaw || "").trim();
+        if (!detail) {
+            return tFormat("profile.exam_error_generic", { exam: examLabel }, `Could not save ${examLabel}`);
+        }
+
+        const rangeMatch = detail.match(/Score must be between\s+(.+?)\s+and\s+(.+)$/i);
+        if (rangeMatch) {
+            return tFormat(
+                "profile.exam_error_range",
+                { exam: examLabel, min: rangeMatch[1], max: rangeMatch[2] },
+                `${examLabel} must be between ${rangeMatch[1]} and ${rangeMatch[2]}`
+            );
+        }
+
+        const stepMatch = detail.match(/step=?([0-9.]+)/i);
+        if (stepMatch) {
+            return tFormat(
+                "profile.exam_error_step",
+                { exam: examLabel, step: stepMatch[1] },
+                `${examLabel} must use step ${stepMatch[1]}`
+            );
+        }
+
+        const subjectNameFrom = (rawValue) => {
+            const normalized = canonicalizeExamId(rawValue);
+            if (normalized && examConfigFor(normalized)) return getExamDisplayName(normalized);
+            return String(rawValue || "").trim();
+        };
+
+        const missingComponent = detail.match(/requires component\s+(.+)$/i);
+        if (missingComponent) {
+            const subject = subjectNameFrom(missingComponent[1]);
+            return tFormat(
+                "profile.exam_error_missing_subject",
+                { exam: examLabel, subject },
+                `Add ${subject} to ${examLabel}`
+            );
+        }
+
+        const minSubjects = detail.match(/requires at least\s+(\d+)\s+selected subjects/i);
+        if (minSubjects) {
+            return tFormat(
+                "profile.exam_error_too_few_subjects",
+                { exam: examLabel, count: minSubjects[1] },
+                `${examLabel} requires at least ${minSubjects[1]} subjects`
+            );
+        }
+
+        const maxSubjects = detail.match(/supports at most\s+(\d+)\s+selected subjects/i);
+        if (maxSubjects) {
+            return tFormat(
+                "profile.exam_error_too_many_subjects",
+                { exam: examLabel, count: maxSubjects[1] },
+                `${examLabel} supports at most ${maxSubjects[1]} subjects`
+            );
+        }
+
+        const notAllowed = detail.match(/does not support (?:component|extra score)\s+(.+)$/i);
+        if (notAllowed) {
+            const subject = subjectNameFrom(notAllowed[1]);
+            return tFormat(
+                "profile.exam_error_subject_not_allowed",
+                { exam: examLabel, subject },
+                `${subject} is not allowed for ${examLabel}`
+            );
+        }
+
+        if (/requires at least one subject score/i.test(detail)) {
+            return tFormat(
+                "profile.exam_error_missing_subject",
+                { exam: examLabel, subject: t("profile.exam_subject_placeholder", "subject") },
+                `Add at least one subject for ${examLabel}`
+            );
+        }
+
+        if (/invalid score format/i.test(detail)) {
+            return t("profile.exam_invalid_score", "Invalid score format");
+        }
+
+        return tFormat(
+            "profile.exam_error_detail",
+            { exam: examLabel, reason: detail },
+            `Could not save ${examLabel}: ${detail}`
+        );
     };
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
@@ -1337,6 +1838,17 @@ function initProfileUI() {
 
     if (examNameSelect) {
         examNameSelect.addEventListener("change", refreshExamActionButton);
+    }
+
+    if (examSpecialInputContainer) {
+        examSpecialInputContainer.addEventListener("change", (event) => {
+            const target = event?.target;
+            if (!(target instanceof Element)) return;
+            if (!target.matches("[data-breakdown-subject-select]")) return;
+            const selectedExam = canonicalizeExamId(examNameSelect?.value);
+            if (examInputModeFor(selectedExam) !== "subject_breakdown") return;
+            renderSpecialExamInput(selectedExam);
+        });
     }
 
     const saveAllProfileChanges = (notify = true) => {
@@ -1637,7 +2149,9 @@ function initProfileUI() {
                 const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
                 const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
                 const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
-                const usesNumberInput = mode === "number";
+                const usesNumberInput = mode === "number"
+                    || (mode === "subject_breakdown"
+                        && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score");
 
                 if (usesNumberInput && Number.isFinite(min) && score < min) {
                     showToast(
@@ -1687,17 +2201,20 @@ function initProfileUI() {
             if (!selectedPayload) {
                 return;
             }
-            if (mode === "number" && Number.isNaN(score)) {
+            const compositeUsesParentScore = mode === "subject_breakdown"
+                && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
+
+            if ((mode === "number" || compositeUsesParentScore) && Number.isNaN(score)) {
                 showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
                 return;
             }
 
-            if (mode === "number" && name !== "IELTS" && name !== "HKDSE_WEIGHTED_TOTAL" && !Number.isInteger(score)) {
+            if ((mode === "number" || compositeUsesParentScore) && name !== "IELTS" && name !== "HKDSE_WEIGHTED_TOTAL" && !Number.isInteger(score)) {
                 showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
                 return;
             }
 
-            if (mode === "number" && name === "IELTS" && (score % 0.5 !== 0)) {
+            if ((mode === "number" || compositeUsesParentScore) && name === "IELTS" && (score % 0.5 !== 0)) {
                 showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
                 return;
             }
@@ -1731,11 +2248,13 @@ function initProfileUI() {
                         .slice(0, 64);
                     const err = new Error("exam_validate_failed");
                     err.code = code || "unknown";
+                    err.detail = rawDetail;
                     throw err;
                 }
 
                 const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
                 const examLabel = getExamDisplayName(examId || name);
+                const savedValue = formatExamValue(examId || name, json, { context: "profile", locale: getCurrentLanguage() });
                 if (!Array.isArray(profile.exams)) profile.exams = [];
                 const existingIndex = profile.exams.findIndex((e) =>
                     canonicalizeExamId(e.exam ?? e.id ?? "") === examId
@@ -1752,7 +2271,7 @@ function initProfileUI() {
                     };
                     showToast(
                         (mode !== "number")
-                            ? tFormat("profile.exam_updated_simple", { exam: examLabel }, `Updated ${examLabel}`)
+                            ? tFormat("profile.exam_updated_value", { exam: examLabel, value: savedValue || examLabel }, `Updated ${examLabel}: ${savedValue || examLabel}`)
                             : tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`),
                         "success"
                     );
@@ -1764,7 +2283,12 @@ function initProfileUI() {
                         ...(json.display_value ? { display_value: json.display_value } : {}),
                         ...(json.details ? { details: json.details } : {}),
                     });
-                    showToast(tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`), "success");
+                    showToast(
+                        savedValue
+                            ? tFormat("profile.exam_added_value", { exam: examLabel, value: savedValue }, `Added ${examLabel}: ${savedValue}`)
+                            : tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`),
+                        "success"
+                    );
                 }
 
                 profile = ensureProfileShape(profile);
@@ -1778,16 +2302,7 @@ function initProfileUI() {
                     initCustomSelect("examNameSelect");
                 }
             } catch (e) {
-                const rawCode = String(e?.code || e?.name || "unknown").trim();
-                const safeCode = rawCode.replace(/\s+/g, "_").slice(0, 64) || "unknown";
-                showToast(
-                    tFormat(
-                        "profile.exam_validate_failed",
-                        { code: safeCode },
-                        `Failed to validate exam score (code: ${safeCode})`
-                    ),
-                    "error"
-                );
+                showToast(formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || ""), "error");
             }
         };
     }

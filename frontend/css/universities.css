@@ -157,27 +157,44 @@
 }
 
 .u-info {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  box-sizing: border-box;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: #fff;
   color: #5715db;
   font-family: inherit;
   font-style: normal;
-  line-height: 1;
+  line-height: 0;
   text-align: center;
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex: 0 0 auto;
   cursor: pointer;
   padding: 0;
   appearance: none;
   transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
 }
 
+.u-info > * {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
 .u-info .ui-icon {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
+  display: block;
 }
 
 .u-label-icon {
@@ -625,6 +642,11 @@
   gap: 10px;
 }
 
+.u-state:empty {
+  display: none;
+  padding: 0;
+}
+
 .u-state-card {
   border-radius: 14px;
   border: 1px solid var(--line);
@@ -1053,6 +1075,9 @@
 .uni-acceptance {
   margin-top: 1px;
   width: 100%;
+  min-height: 34px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .uni-badge {
@@ -1888,8 +1913,8 @@
 }
 
 :root[data-theme="dark"] .uni-card .uni-badge {
-  background: #242424;
-  border-color: #3a3a3a;
+  background: none;
+  border-color: transparent;
   color: #d2d2d2;
 }
 
@@ -2353,9 +2378,13 @@
 }
 
 .uni-footer {
-  margin-top: 0;
+  margin-top: auto;
   padding-top: 10px;
   border-top: 1px solid var(--line);
+}
+
+.uni-why + .uni-footer {
+  margin-top: 10px;
 }
 
 .uni-rank {
@@ -2736,7 +2765,7 @@
 
 .uni-badge .uni-pill {
   display: inline-flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   width: 100%;
   min-width: 0;
@@ -2801,6 +2830,18 @@
   background: rgba(148, 163, 184, 0.14);
   color: #d9e0ea;
   border-color: rgba(148, 163, 184, 0.22);
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--warn {
+  background: rgba(251, 191, 36, 0.16);
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--success {
+  background: rgba(52, 211, 153, 0.16);
+}
+
+:root[data-theme="dark"] .uni-card .uni-pill--budget {
+  background: rgba(160, 160, 160, 0.16);
 }
 
 @media (max-width: 780px) {

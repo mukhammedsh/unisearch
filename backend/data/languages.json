@@ -123,6 +123,7 @@
       {
         "id": "IELTS",
         "label": "IELTS Academic",
+        "input_mode": "subject_breakdown",
         "min": 0.0,
         "max": 9.0,
         "type": "float",
@@ -131,16 +132,121 @@
           0,
           5
         ],
-        "notes": "IELTS uses whole or half bands (e.g., 6.0, 6.5, 7.0)."
+        "notes": "IELTS uses whole or half bands (e.g., 6.0, 6.5, 7.0).",
+        "breakdown_scheme": {
+          "fixed_components": [
+            { "exam": "IELTS_LISTENING", "label": "Listening", "required": false },
+            { "exam": "IELTS_READING", "label": "Reading", "required": false },
+            { "exam": "IELTS_WRITING", "label": "Writing", "required": false },
+            { "exam": "IELTS_SPEAKING", "label": "Speaking", "required": false }
+          ],
+          "total_strategy": "use_parent_score",
+          "parent_score_label": "Overall"
+        }
+      },
+      {
+        "id": "IELTS_LISTENING",
+        "label": "IELTS Listening",
+        "hidden": true,
+        "min": 0.0,
+        "max": 9.0,
+        "type": "float",
+        "step": 0.5,
+        "decimals_allowed": [0, 5],
+        "notes": "IELTS Listening band score."
+      },
+      {
+        "id": "IELTS_READING",
+        "label": "IELTS Reading",
+        "hidden": true,
+        "min": 0.0,
+        "max": 9.0,
+        "type": "float",
+        "step": 0.5,
+        "decimals_allowed": [0, 5],
+        "notes": "IELTS Reading band score."
+      },
+      {
+        "id": "IELTS_WRITING",
+        "label": "IELTS Writing",
+        "hidden": true,
+        "min": 0.0,
+        "max": 9.0,
+        "type": "float",
+        "step": 0.5,
+        "decimals_allowed": [0, 5],
+        "notes": "IELTS Writing band score."
+      },
+      {
+        "id": "IELTS_SPEAKING",
+        "label": "IELTS Speaking",
+        "hidden": true,
+        "min": 0.0,
+        "max": 9.0,
+        "type": "float",
+        "step": 0.5,
+        "decimals_allowed": [0, 5],
+        "notes": "IELTS Speaking band score."
       },
       {
         "id": "TOEFL_iBT_0_120",
         "label": "TOEFL iBT (0–120, legacy total)",
+        "input_mode": "subject_breakdown",
         "min": 0,
         "max": 120,
         "type": "int",
         "step": 1,
-        "notes": "ETS still provides 0–120 comparable totals during the transition period."
+        "notes": "ETS still provides 0–120 comparable totals during the transition period.",
+        "breakdown_scheme": {
+          "fixed_components": [
+            { "exam": "TOEFL_iBT_0_120_READING", "label": "Reading", "required": false },
+            { "exam": "TOEFL_iBT_0_120_LISTENING", "label": "Listening", "required": false },
+            { "exam": "TOEFL_iBT_0_120_SPEAKING", "label": "Speaking", "required": false },
+            { "exam": "TOEFL_iBT_0_120_WRITING", "label": "Writing", "required": false }
+          ],
+          "total_strategy": "use_parent_score",
+          "parent_score_label": "Total"
+        }
+      },
+      {
+        "id": "TOEFL_iBT_0_120_READING",
+        "label": "TOEFL iBT Reading",
+        "hidden": true,
+        "min": 0,
+        "max": 30,
+        "type": "int",
+        "step": 1,
+        "notes": "TOEFL iBT Reading section score."
+      },
+      {
+        "id": "TOEFL_iBT_0_120_LISTENING",
+        "label": "TOEFL iBT Listening",
+        "hidden": true,
+        "min": 0,
+        "max": 30,
+        "type": "int",
+        "step": 1,
+        "notes": "TOEFL iBT Listening section score."
+      },
+      {
+        "id": "TOEFL_iBT_0_120_SPEAKING",
+        "label": "TOEFL iBT Speaking",
+        "hidden": true,
+        "min": 0,
+        "max": 30,
+        "type": "int",
+        "step": 1,
+        "notes": "TOEFL iBT Speaking section score."
+      },
+      {
+        "id": "TOEFL_iBT_0_120_WRITING",
+        "label": "TOEFL iBT Writing",
+        "hidden": true,
+        "min": 0,
+        "max": 30,
+        "type": "int",
+        "step": 1,
+        "notes": "TOEFL iBT Writing section score."
       },
       {
         "id": "TOEFL_iBT_1_6",

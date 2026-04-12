@@ -46,7 +46,7 @@
   letter-spacing: 1px;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--accent);
+  color: #5b6b82;
 }
 
 .about-title {
@@ -75,7 +75,7 @@
   padding: 7px 12px;
   background: rgba(87, 21, 219, 0.1);
   border: 1px solid rgba(87, 21, 219, 0.18);
-  color: var(--accent);
+  color: #5b6b82;
   font-size: 12px;
   font-weight: 700;
 }
@@ -142,7 +142,7 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   font-weight: 800;
-  color: var(--accent);
+  color: #5b6b82;
 }
 
 .about-section-head h2 {
@@ -208,7 +208,7 @@
 .team-role {
   margin: 5px 0 10px;
   font-weight: 700;
-  color: var(--accent);
+  color: #5b6b82;
   font-size: 14px;
 }
 
@@ -292,8 +292,14 @@
 }
 
 :root[data-theme="dark"] .about-eyebrow,
-:root[data-theme="dark"] .about-kicker,
-:root[data-theme="dark"] .team-role,
+:root[data-theme="dark"] .about-kicker {
+  color: #9aa7b8;
+}
+
+:root[data-theme="dark"] .team-role {
+  color: #9aa7b8;
+}
+
 :root[data-theme="dark"] .about-contact-card a {
   color: var(--accent);
 }
@@ -306,7 +312,7 @@
 :root[data-theme="dark"] .about-tag {
   background: rgba(87, 21, 219, 0.14);
   border-color: rgba(87, 21, 219, 0.32);
-  color: var(--accent);
+  color: #9aa7b8;
 }
 
 :root[data-theme="dark"] .about-link,
@@ -376,7 +382,7 @@
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: #5b6b82;
 }
 
 .about-proof-value {
@@ -429,7 +435,7 @@
 }
 
 .about-contact-card a {
-  color: var(--text);
+  color: var(--accent);
 }
 
 .contact-note,
@@ -438,17 +444,24 @@
 }
 
 .team-card {
-  padding: 18px;
+  padding: 14px 16px;
 }
 
 .team-card-body h3 {
+  margin: 0;
   font-size: 26px;
   letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .team-role {
-  margin-top: 6px;
-  color: var(--accent);
+  margin: 4px 0 8px;
+  color: var(--text-muted);
+}
+
+.team-bio {
+  margin: 0;
+  line-height: 1.45;
 }
 
 @media (max-width: 980px) {

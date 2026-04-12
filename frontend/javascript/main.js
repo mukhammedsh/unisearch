@@ -92,7 +92,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const path = window.location.pathname;
   const hash = String(window.location.hash || "").trim();
   const isGuideSectionHash = /^#guide-[a-z0-9-]+$/i.test(hash);
-  if (isHomePath(path) && isGuideSectionHash) {
+  const isFrontendRootPath = /^\/frontend\/?$/i.test(String(path || "").trim());
+  if ((isHomePath(path) || isFrontendRootPath) && isGuideSectionHash) {
     const target = `${routeGuide()}${hash}`;
     window.location.replace(target);
     return;
@@ -135,20 +136,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     ensureCityDatabase();
     initUniversitiesPage();
   } else if (isGuidePath(path) || document.getElementById("guidePage")) {
-    ensureExamConfig();
-    ensureLanguageConfig();
+    await Promise.all([
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
     initGuidePage();
   } else if (isUniversityDetailPath(path) || document.getElementById("detailCard")) {
-    ensureExamConfig();
-    ensureLanguageConfig();
+    await Promise.all([
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
     initUniversityPage();
   } else if (isRankingPath(path) || document.getElementById("rankingList")) {
-    ensureExamConfig();
-    ensureLanguageConfig();
+    await Promise.all([
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
     initRankingPage();
   } else {
-    ensureExamConfig();
-    ensureLanguageConfig();
+    await Promise.all([
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
     initHomePageStats();
   }
 

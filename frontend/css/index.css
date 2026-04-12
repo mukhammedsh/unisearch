@@ -1,5 +1,5 @@
 :root {
-  --home-bg: #f7f5f0;
+  --home-bg: #f3f5f9;
   --home-surface: #ffffff;
   --home-surface-elevated: rgba(255, 255, 255, 0.92);
   --home-ink: #101320;
@@ -21,7 +21,7 @@
 }
 
 body[data-page="home"] {
-  background: linear-gradient(180deg, #fbfaf7 0%, var(--home-bg) 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, var(--home-bg) 100%);
   color: var(--home-ink);
   min-height: 100vh;
   display: flex;
@@ -68,7 +68,14 @@ body[data-page="home"] {
   letter-spacing: 0;
   text-transform: none;
   font-weight: 700;
+}
+
+.hero-kicker {
   color: var(--home-accent);
+}
+
+.hero-rail__eyebrow {
+  color: var(--home-ink-soft);
 }
 
 .hero-title {

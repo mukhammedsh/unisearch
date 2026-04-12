@@ -90,6 +90,28 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
         self.assertIn("items", payload)
         self.assertIsInstance(payload.get("items"), list)
 
+    def test_accepts_composite_language_exam_payload(self):
+        response = self._post_ai_sort(
+            {
+                "languages": [
+                    {
+                        "code": "en",
+                        "kind": "exam",
+                        "exam": "IELTS",
+                        "score": 7.5,
+                        "raw_value": "Overall 7.5, Listening 8.0",
+                        "details": {
+                            "components": [
+                                {"exam": "IELTS_LISTENING", "score": 8.0},
+                                {"exam": "IELTS_READING", "score": 7.5},
+                            ]
+                        },
+                    }
+                ],
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+
 
 if __name__ == "__main__":
     unittest.main()

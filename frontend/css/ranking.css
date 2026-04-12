@@ -358,6 +358,18 @@
     text-shadow: none;
 }
 
+.rank-1 {
+    color: #d4a017;
+}
+
+.rank-2 {
+    color: #8f98a3;
+}
+
+.rank-3 {
+    color: #b4692d;
+}
+
 .rank-logo {
     grid-row: 1 / span 2;
     width: 64px;

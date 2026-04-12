@@ -644,6 +644,7 @@ const EXAM_VALUE_LABELS = {
     added: "Added",
     required: "Required",
     level: "Level",
+    total: "Total",
   },
   rus: {
     added: "Добавлено",
@@ -651,6 +652,45 @@ const EXAM_VALUE_LABELS = {
     level: "Уровень",
   },
 };
+
+if (EXAM_VALUE_LABELS.rus) {
+  EXAM_VALUE_LABELS.rus.total = "Общий балл";
+}
+
+function formatCompositeExamValue(examId, entry, words, opts = {}) {
+  if (!entry || typeof entry !== "object") return "";
+  const cfg = getExamConfig(examId);
+  const scheme = cfg?.breakdown_scheme && typeof cfg.breakdown_scheme === "object"
+    ? cfg.breakdown_scheme
+    : null;
+  if (!scheme) return "";
+
+  const components = Array.isArray(entry?.details?.components) ? entry.details.components : [];
+  const extraScores = Array.isArray(entry?.details?.extra_scores) ? entry.details.extra_scores : [];
+  if (!components.length && !extraScores.length) return "";
+
+  const totalStrategy = String(scheme?.total_strategy || "").trim().toLowerCase();
+  const totalLabelRaw = String(scheme?.parent_score_label || "").trim();
+  const totalLabel = /^(total|overall)$/i.test(totalLabelRaw)
+    ? (words.total || "Total")
+    : (totalLabelRaw || words.total || "Total");
+  const parts = [];
+
+  if (totalStrategy === "use_parent_score" && Number.isFinite(Number(entry?.score))) {
+    parts.push(`${totalLabel} ${entry.score}`);
+  }
+
+  [...components, ...extraScores].forEach((item) => {
+    if (!item || typeof item !== "object") return;
+    const childExam = String(item.exam || item.id || "").trim();
+    if (!childExam) return;
+    const value = formatExamValue(childExam, item, { ...opts, includeLevelPrefix: false });
+    if (!value) return;
+    parts.push(`${getExamDisplayName(childExam, opts)} ${value}`);
+  });
+
+  return parts.join(", ");
+}
 
 export function formatExamValue(examId, valueOrEntry, opts = {}) {
   const locale = examConfigLocale(opts?.locale || opts?.lang || "");
@@ -669,6 +709,11 @@ export function formatExamValue(examId, valueOrEntry, opts = {}) {
   const mode = getExamInputMode(examId);
   const normalizedId = canonicalizeExamId(examId);
 
+  if (mode === "subject_breakdown") {
+    const compositeValue = formatCompositeExamValue(examId, entry, words, opts);
+    if (compositeValue) return compositeValue;
+  }
+
   if (rawValue) return rawValue;
 
   if (mode === "flag") {
@@ -677,6 +722,24 @@ export function formatExamValue(examId, valueOrEntry, opts = {}) {
 
   if (mode === "grade_combo" && Number(score) <= 1) {
     return opts?.context === "requirement" ? words.required : words.added;
+  }
+
+  if (mode === "grade_combo" && Number.isFinite(Number(score))) {
+    const cfg = getExamConfig(examId);
+    const scheme = cfg?.grade_scheme || {};
+    const minCount = Number(scheme?.subject_count_min);
+    const maxCount = Number(scheme?.subject_count_max);
+    const bestOf = Number(scheme?.best_of);
+    const isSingleSubject = minCount === 1 && maxCount === 1 && bestOf === 1;
+    if (isSingleSubject) {
+      const gradePoints = scheme?.grade_points && typeof scheme.grade_points === "object"
+        ? scheme.grade_points
+        : null;
+      if (gradePoints) {
+        const inverted = Object.entries(gradePoints).find(([, pts]) => Number(pts) === Number(score));
+        if (inverted?.[0]) return String(inverted[0]);
+      }
+    }
   }
 
   if (mode === "band_select") {
@@ -692,7 +755,9 @@ export function formatExamValue(examId, valueOrEntry, opts = {}) {
 }
 
 const EXAM_LABEL_OVERRIDES = {
-  SAT: "SAT",
+  SAT: "SAT Total",
+  SAT_MATH: "SAT Math",
+  SAT_EBRW: "SAT EBRW",
   ACT: "ACT",
   GPA: "GPA",
   UNT: "UNT (ЕНТ)",
@@ -700,7 +765,38 @@ const EXAM_LABEL_OVERRIDES = {
   NUET: "NUET",
   NUET_TOTAL: "NUET",
   AP_Total: "AP Total",
-  IB_Diploma: "IB Diploma",
+  AP_CALCULUS_AB: "AP Calculus AB",
+  AP_CALCULUS_BC: "AP Calculus BC",
+  AP_COMPUTER_SCIENCE_A: "AP Computer Science A",
+  AP_PHYSICS_C_MECHANICS: "AP Physics C: Mechanics",
+  AP_PHYSICS_C_ELECTRICITY_MAGNETISM: "AP Physics C: Electricity and Magnetism",
+  AP_CHEMISTRY: "AP Chemistry",
+  AP_BIOLOGY: "AP Biology",
+  IB_Diploma: "IB Total",
+  IB_MATHEMATICS_HL: "IB Mathematics HL",
+  IB_PHYSICS_HL: "IB Physics HL",
+  IB_CHEMISTRY_HL: "IB Chemistry HL",
+  IB_BIOLOGY_HL: "IB Biology HL",
+  IB_COMPUTER_SCIENCE_HL: "IB Computer Science HL",
+  A_LEVEL_CERT: "A-Level Total",
+  A_LEVEL_MATHEMATICS: "A-Level Mathematics",
+  A_LEVEL_FURTHER_MATHEMATICS: "A-Level Further Mathematics",
+  A_LEVEL_PHYSICS: "A-Level Physics",
+  A_LEVEL_CHEMISTRY: "A-Level Chemistry",
+  A_LEVEL_BIOLOGY: "A-Level Biology",
+  A_LEVEL_COMPUTER_SCIENCE: "A-Level Computer Science",
+  HKDSE_CHINESE_LANGUAGE: "HKDSE Chinese Language",
+  HKDSE_ENGLISH_LANGUAGE: "HKDSE English Language",
+  HKDSE_MATHEMATICS: "HKDSE Mathematics",
+  HKDSE_ELECTIVE_1: "HKDSE Elective 1",
+  HKDSE_ELECTIVE_2_OR_M1_M2_OTHER_LANGUAGE: "HKDSE Elective 2 / M1 / M2 / Other Language",
+  HKDSE_M1: "HKDSE Mathematics Extended Part M1",
+  HKDSE_M2: "HKDSE Mathematics Extended Part M2",
+  HKDSE_PHYSICS: "HKDSE Physics",
+  HKDSE_CHEMISTRY: "HKDSE Chemistry",
+  HKDSE_BIOLOGY: "HKDSE Biology",
+  HKDSE_ICT: "HKDSE Information and Communication Technology",
+  HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT: "HKDSE Citizenship and Social Development",
   HKDSE_WEIGHTED_TOTAL: "HKDSE Weighted Total (CUHK JUPAS)",
   IELTS: "IELTS Academic",
   TOEFL_iBT_0_120: "TOEFL iBT (0‑120)",
@@ -726,10 +822,10 @@ const EXAM_LABELS_I18N = {
     UNT: "UNT (Kazakhstan)",
     NUET: "NUET",
     NUETTOTAL: "NUET",
-    APTOTAL: "AP Total",
+    APTOTAL: "AP",
     IBDIPLOMA: "IB Diploma",
     ALEVELCERT: "A-Level",
-    HKDSELEVEL: "HKDSE level",
+    HKDSELEVEL: "HKDSE",
     HKDSEWEIGHTEDTOTAL: "HKDSE Weighted Total (CUHK JUPAS)",
     SWISSMATURITYCERT: "Swiss Maturity Certificate",
     GERMANABITURCERT: "German Abitur Certificate",
@@ -784,6 +880,73 @@ const EXAM_LABELS_I18N = {
 if (EXAM_LABELS_I18N.rus) {
   EXAM_LABELS_I18N.rus.NUET = "NUET";
   EXAM_LABELS_I18N.rus.NUETTOTAL = "NUET";
+  EXAM_LABELS_I18N.rus.APTOTAL = "AP";
+  EXAM_LABELS_I18N.rus.ALEVELCERT = "A-Level";
+  EXAM_LABELS_I18N.rus.HKDSELEVEL = "HKDSE";
+  EXAM_LABELS_I18N.rus.IBDIPLOMA = "Диплом IB";
+}
+
+if (EXAM_LABELS_I18N.rus) {
+  Object.assign(EXAM_LABELS_I18N.rus, {
+    SATMATH: "SAT Математика",
+    SATEBRW: "SAT Чтение и письмо",
+    IELTSLISTENING: "IELTS Аудирование",
+    IELTSREADING: "IELTS Чтение",
+    IELTSWRITING: "IELTS Письмо",
+    IELTSSPEAKING: "IELTS Говорение",
+    TOEFLIBT0120READING: "TOEFL iBT Чтение",
+    TOEFLIBT0120LISTENING: "TOEFL iBT Аудирование",
+    TOEFLIBT0120SPEAKING: "TOEFL iBT Говорение",
+    TOEFLIBT0120WRITING: "TOEFL iBT Письмо",
+    APCALCULUSAB: "AP Calculus AB",
+    APCALCULUSBC: "AP Calculus BC",
+    APCOMPUTERSCIENCEA: "AP Computer Science A",
+    APPHYSICSCMECHANICS: "AP Physics C: Mechanics",
+    APPHYSICSCELECTRICITYMAGNETISM: "AP Physics C: Electricity and Magnetism",
+    APCHEMISTRY: "AP Chemistry",
+    APBIOLOGY: "AP Biology",
+    IBMATHEMATICSHL: "IB Математика HL",
+    IBPHYSICSHL: "IB Физика HL",
+    IBCHEMISTRYHL: "IB Химия HL",
+    IBBIOLOGYHL: "IB Биология HL",
+    IBCOMPUTERSCIENCEHL: "IB Computer Science HL",
+    ALEVELMATHEMATICS: "A-Level Математика",
+    ALEVELFURTHERMATHEMATICS: "A-Level Further Mathematics",
+    ALEVELPHYSICS: "A-Level Физика",
+    ALEVELCHEMISTRY: "A-Level Химия",
+    ALEVELBIOLOGY: "A-Level Биология",
+    ALEVELCOMPUTERSCIENCE: "A-Level Computer Science",
+    HKDSECHINESELANGUAGE: "HKDSE Китайский язык",
+    HKDSEENGLISHLANGUAGE: "HKDSE Английский язык",
+    HKDSEMATHEMATICS: "HKDSE Математика",
+    HKDSEELECTIVE1: "HKDSE Электив 1",
+    HKDSEELECTIVE2ORM1M2OTHERLANGUAGE: "HKDSE Электив 2 / M1 / M2 / другой язык",
+    HKDSEM1: "HKDSE Расширенная математика M1",
+    HKDSEM2: "HKDSE Расширенная математика M2",
+    HKDSEPHYSICS: "HKDSE Физика",
+    HKDSECHEMISTRY: "HKDSE Химия",
+    HKDSEBIOLOGY: "HKDSE Биология",
+    HKDSEICT: "HKDSE ICT",
+    HKDSECITIZENSHIPANDSOCIALDEVELOPMENT: "HKDSE Гражданственность и социальное развитие",
+    UNTHISTORYOFKAZAKHSTAN: "ЕНТ История Казахстана",
+    UNTREADINGLITERACY: "ЕНТ Грамотность чтения",
+    UNTMATHEMATICALLITERACY: "ЕНТ Математическая грамотность",
+    UNTPROFILEMATHEMATICS: "ЕНТ Математика",
+    UNTPROFILEPHYSICS: "ЕНТ Физика",
+    UNTPROFILEINFORMATICS: "ЕНТ Информатика",
+    UNTPROFILECHEMISTRY: "ЕНТ Химия",
+    UNTPROFILEBIOLOGY: "ЕНТ Биология",
+    UNTPROFILEGEOGRAPHY: "ЕНТ География",
+    UNTPROFILEWORLDHISTORY: "ЕНТ Всемирная история",
+    UNTPROFILEENGLISH: "ЕНТ Английский язык",
+    UNTPROFILEGERMAN: "ЕНТ Немецкий язык",
+    UNTPROFILEFRENCH: "ЕНТ Французский язык",
+    UNTPROFILEKAZAKHLANGUAGE: "ЕНТ Казахский язык",
+    UNTPROFILERUSSIANLANGUAGE: "ЕНТ Русский язык",
+    UNTPROFILEKAZAKHLITERATURE: "ЕНТ Казахская литература",
+    UNTPROFILERUSSIANLITERATURE: "ЕНТ Русская литература",
+    UNTPROFILEHUMANANDSOCIETY: "ЕНТ Человек и общество",
+  });
 }
 
 function _localizedExamLabel(examId, locale = "") {
@@ -854,6 +1017,9 @@ export function getExamDisplayName(examId, opts = {}) {
   const cfgLabels = cfg?.labels && typeof cfg.labels === "object" ? cfg.labels : null;
   const localeKey = examConfigLocale(uiLocale);
 
+  const localized = _localizedExamLabel(id || raw, uiLocale);
+  if (localized) return localized;
+
   if (cfgLabels) {
     const localizedFromConfig = String(cfgLabels[localeKey] || "").trim();
     if (localizedFromConfig) return localizedFromConfig;
@@ -861,9 +1027,6 @@ export function getExamDisplayName(examId, opts = {}) {
 
   const cfgLabel = String(cfg?.label || "").trim();
   if (cfgLabel) return cfgLabel;
-
-  const localized = _localizedExamLabel(id || raw, uiLocale);
-  if (localized) return localized;
 
   const langLabel = getLangExamLabel(raw, opts.langCode || "");
   if (langLabel) return langLabel;
@@ -1010,8 +1173,18 @@ export function loadProfileForApi() {
       if (kind === "exam") {
         const exam = String(row?.exam || row?.examId || "").trim();
         const score = Number(row?.score);
-        if (!exam || !Number.isFinite(score)) return null;
-        return { code, kind: "exam", exam, score };
+        const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
+        const displayValue = String(row?.display_value || row?.displayValue || "").trim();
+        const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details)
+          ? row.details
+          : null;
+        if (!exam || (!Number.isFinite(score) && !rawValue && !details)) return null;
+        const out = { code, kind: "exam", exam };
+        if (Number.isFinite(score)) out.score = score;
+        if (rawValue) out.raw_value = rawValue;
+        if (displayValue) out.display_value = displayValue;
+        if (details) out.details = details;
+        return out;
       }
       return null;
     })
@@ -1555,6 +1728,11 @@ export function normalizeProfileData(p) {
       if (kind === "exam") {
         const examId = String(it?.exam || it?.examId || "").trim();
         if (!examId) return null;
+        const rawValue = String(it?.raw_value || it?.rawValue || "").trim();
+        const displayValue = String(it?.display_value || it?.displayValue || "").trim();
+        const details = it?.details && typeof it.details === "object" && !Array.isArray(it.details)
+          ? JSON.parse(JSON.stringify(it.details))
+          : null;
 
         // 1) пробуем из LANG_CONFIG
         let limits = getLangExamLimits(examId, LANG_CONFIG);
@@ -1563,9 +1741,15 @@ export function normalizeProfileData(p) {
         if (!limits) limits = FALLBACK_LANG_LIMITS[examId] || null;
 
         const clamped = limits ? clampNumberToLimits(it?.score, limits) : Number(it?.score);
-        if (!Number.isFinite(clamped)) return null;
+        const normalizedScore = Number.isFinite(clamped) ? clamped : null;
+        if (normalizedScore === null && !rawValue && !displayValue && !details) return null;
 
-        return { code, kind, exam: examId, score: clamped };
+        const out = { code, kind, exam: examId };
+        if (normalizedScore !== null) out.score = normalizedScore;
+        if (rawValue) out.raw_value = rawValue;
+        if (displayValue) out.display_value = displayValue;
+        if (details) out.details = details;
+        return out;
       }
 
       return null;

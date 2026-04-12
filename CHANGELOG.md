@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.2 (2026-04-13) - Composite Exam Scores And Truthful Track Data
+
+Status:
+- synchronized runtime/package version to `3.4.2` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README release references;
+- added composite exam validation/storage for subject and section breakdowns, so profile inputs and validation APIs can keep separate scores per subject while still calculating the parent total where applicable;
+- expanded academic exam coverage for breakdown-based submissions, including subject-level SAT, A-Level, AP, HKDSE, and similar exam structures, with stronger payload validation and API test coverage;
+- expanded language-exam handling for composite submissions such as IELTS section scores, preserving overall score plus detailed component results for frontend rendering and downstream AI/profile flows;
+- updated profile exam/language UI, localized messages, and success/error toasts so users can enter per-subject or per-section scores directly instead of flattening everything into one raw number;
+- updated university admission rendering to group composite requirement/average entries more clearly and to keep funding-option `stats_avg` scoped only to the exams actually required by that variant;
+- tightened finance data presentation so visible yearly cost breakdowns stay truthful to official mandatory or tuition-and-fee-only sources instead of exposing discretionary categories as verified line items;
+- bumped the service-worker cache version so clients refresh the `3.4.2` frontend assets immediately after deployment.
+
 ## 3.4.1 (2026-04-12) - Encoding And Admission Option Fixes
 
 Status:

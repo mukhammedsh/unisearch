@@ -3,8 +3,8 @@ meta.code: rus
 academic_requirements: Академические требования
 academic_average: Средний академический балл
 language_average: Средний языковой балл
-about.bio.lead: Отвечает за весь код и реализацию всех идей. Является капитаном команды и принимает ключевые решения по проекту.
-about.bio.planning: Полностью отвечает за текстовую документацию, большинство идей и улучшений, а также за многочисленные тесты сайта.
+about.bio.lead: Отвечает за весь код и реализацию всех идей.
+about.bio.planning: Отвечает за большинство идей, улучшений и тестов сайта.
 about.contact.email: Эл. почта
 about.contact.github: GitHub
 about.contact_kicker: Контакты
@@ -13,18 +13,8 @@ about.email_note: Основной контакт по вопросам прое
 about.eyebrow: О нас
 about.github_note: Код, коммиты и обновления проекта.
 about.lead: UniSearch создан абитуриентами для абитуриентов. Наша цель — сделать выбор университета более понятным, простым и практичным.
-about.meta.lead: 15 лет, ученик Жанаозенского лицея Білім-Инновация.
-about.meta.planning: 14 лет, ученик Жанаозенского лицея Білім-Инновация.
 about.name.lead: Шабдалулы Мухаммед
 about.name.planning: Рашидов Ерболат
-about.principles_kicker: Принципы
-about.principles_title: Каким мы хотим ощущать продукт
-about.principle.clarity.title: Сначала читаемость, потом декор
-about.principle.clarity.body: Мы делаем ставку на сильную иерархию, компактное сравнение и простой язык вместо эффектов, которые мешают принимать реальные решения.
-about.principle.sources.title: Сначала официальные источники
-about.principle.sources.body: Если университет не публикует метрику отдельно, мы лучше скажем об этом прямо, чем создадим ложную точность.
-about.principle.student.title: Сделано со стороны абитуриента
-about.principle.student.body: Продукт выстроен вокруг реального порядка решений: собрать shortlist, сравнить стоимость, проверить требования и только потом открыть точный трек.
 about.proof.product.body: Меньше декоративного шума, больше полезного сравнения: сколько стоит, как поступать и что реально подходит вашему профилю.
 about.proof.product.title: Цель продукта
 about.proof.scope.body: Поиск бакалавриата с данными о поступлении, стоимости и финансовой помощи в одном месте.
@@ -32,7 +22,7 @@ about.proof.scope.title: Текущий охват
 about.proof.sources.body: Мы опираемся на официально опубликованные требования и прямо отмечаем, когда метрика отдельно не публикуется.
 about.proof.sources.title: Стандарт данных
 about.role.lead: Ведущий разработчик и архитектор проекта
-about.role.planning: Планирование и текстовая документация
+about.role.planning: Идеи, улучшения и тестирование
 about.team_kicker: Наша команда
 about.title: Мы — команда абитуриентов, создавшая UniSearch.
 footer.copyright: © 2026 UniSearch
@@ -283,6 +273,7 @@ universities.badge.over_budget: Выше бюджета
 universities.badge.over_budget_aid: Выше бюджета • Есть помощь по нуждаемости
 universities.badge.requirements_met: Требования выполнены
 universities.card.est_cost_year: Примерная цена/год
+universities.card.in_ranking: в рейтинге
 universities.card.view_details: Открыть детали
 universities.city: Город
 universities.cost_per_year: Стоимость (USD / год)
@@ -331,11 +322,11 @@ universities.sort_strategy: Сортировка
 universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
 universities.scope_note.title: Пока только программы бакалавриата
 universities.scope_note.body: Сейчас UniSearch показывает только варианты бакалавриата и связанную с ними информацию о поступлении. Магистратура и другие уровни могут появиться позже.
-universities.scope_note.warning_title: Временный запасной режим ранжирования
+universities.scope_note.warning_title: Interests недоступны
 universities.scope_note.empty_title: Нет результатов для текущих фильтров
 universities.state.empty: Университеты не найдены.
 universities.state.failed: Не удалось загрузить данные.
-universities.state.ml_unavailable: Модуль машинного обучения недоступен. Используется только ранжирование по правилам.
+universities.state.ml_unavailable: Interests из вашего профиля временно не влияют на сортировку.
 universities.state_region: Штат / Регион
 universities.view_list: Список
 universities.view_map: Карта
@@ -418,6 +409,9 @@ university.tab.general: Общее
 university.tab.programs: Программы
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
+university.finance.breakdown_note.mandatory_only: Показаны только подтвержденные обязательные траты. Личные и другие необязательные позиции убраны.
+university.finance.breakdown_note.tuition_fees_only: Показаны только напрямую официальные позиции по обучению и университетским сборам. Итоговая сумма за год может быть выше, потому что источник дает общую оценку расходов на проживание, но не публикует авторитетную разбивку по отдельным категориям.
+university.finance.breakdown_note.partial: Эта разбивка специально неполная. В итоговую сумму также могут входить другие учтенные источником надбавки или недетализированные расходы.
 university.visit_website: Открыть официальный сайт
 
 # Added localization coverage keys
@@ -745,3 +739,34 @@ home.explore.card2.title: Гайд
 home.explore.card2.desc: Прочитайте глоссарий, основы экзаменов и смысл тегов до принятия решения.
 home.explore.card3.title: О команде
 home.explore.card3.desc: Посмотрите, кто делает продукт и почему проект сфокусирован на практичном планировании для абитуриентов.
+profile.exam_status_placeholder: Выберите статус
+profile.exam_status_pass: Сдано
+profile.exam_status_fail: Не сдано
+profile.exam_component_required: Введите балл для {subject}
+profile.exam_subject_slot: Предмет {index}
+profile.exam_subject_optional_slot: Доп. предмет {index}
+profile.exam_subject_placeholder: Выберите предмет
+profile.exam_subject_choose_first: Сначала выберите предмет
+profile.exam_breakdown_hint: Введите баллы по предметам. Обязательные предметы остаются фиксированными, а где нужно, можно выбрать ещё {min}-{max} предметов.
+profile.exam_total_placeholder: {label}
+profile.exam_subject_required_count: Выберите как минимум {count} предмета для {exam}
+profile.exam_error_range: {exam} должен быть в диапазоне от {min} до {max}
+profile.exam_error_step: Для {exam} нужно использовать шаг {step}
+profile.exam_error_missing_subject: Добавьте {subject} в {exam}
+profile.exam_error_too_few_subjects: Для {exam} нужно как минимум {count} предмета
+profile.exam_error_too_many_subjects: Для {exam} можно выбрать максимум {count} предмета
+profile.exam_error_subject_not_allowed: {subject} нельзя использовать для {exam}
+profile.exam_error_generic: Не удалось сохранить {exam}
+profile.exam_error_detail: Не удалось сохранить {exam}: {reason}
+profile.exam_added_value: Добавлен {exam}: {value}
+profile.exam_updated_value: Обновлён {exam}: {value}
+languages.exam_total_overall: Общий балл
+languages.exam_total_total: Общий балл
+languages.exam_total_placeholder: Балл за {label}
+languages.exam_breakdown_hint: Добавьте баллы по секциям, если они у вас есть. Общий балл остаётся основным требованием, если вуз отдельно не публикует минимумы по секциям.
+languages.error.range: {exam} должен быть в диапазоне от {min} до {max}
+languages.error.step: Для {exam} нужно использовать шаг {step}
+languages.error.detail: Не удалось сохранить {exam}: {reason}
+languages.error.generic: Не удалось сохранить {exam}
+languages.added_value: Добавлен {language} {exam}: {value}
+languages.updated_value: Обновлён {language} {exam}: {value}

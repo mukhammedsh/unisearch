@@ -62,6 +62,33 @@ class LanguagesApiTests(unittest.TestCase):
         detail = str(response.json().get("detail", ""))
         self.assertTrue("step" in detail.lower() or "between" in detail.lower())
 
+    def test_validate_language_exam_accepts_composite_ielts(self):
+        response = self.client.post(
+            "/languages/validate",
+            json={
+                "code": "en",
+                "kind": "exam",
+                "exam": "IELTS",
+                "score": 7.5,
+                "details": {
+                    "components": [
+                        {"exam": "IELTS_LISTENING", "score": 8.0},
+                        {"exam": "IELTS_READING", "score": 7.5},
+                        {"exam": "IELTS_WRITING", "score": 7.0},
+                        {"exam": "IELTS_SPEAKING", "score": 7.0},
+                    ]
+                },
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        language = payload.get("language") or {}
+        self.assertEqual("exam", language.get("kind"))
+        self.assertEqual("IELTS", language.get("exam"))
+        self.assertAlmostEqual(7.5, float(language.get("score")), places=6)
+        self.assertIn("Listening", str(language.get("raw_value", "")))
+        self.assertIsInstance((language.get("details") or {}).get("components"), list)
+
 
 if __name__ == "__main__":
     unittest.main()

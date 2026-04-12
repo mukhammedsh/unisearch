@@ -1,7 +1,12 @@
 .guide-page{
+  --guide-sidebar-offset: 82px;
   max-width: 1280px;
   margin: 32px auto 88px;
   padding: 0 20px;
+}
+
+body[data-page="guide"] .guide-page{
+  animation: none;
 }
 
 .guide-hero{
@@ -43,17 +48,34 @@
 }
 
 .guide-sidebar{
-  position: sticky;
-  top: 94px;
+  position: relative;
+  align-self: start;
 }
 
 .guide-nav{
   display: grid;
   gap: 4px;
+  width: 100%;
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--surface-soft);
+  max-height: calc(100vh - var(--guide-sidebar-offset) - 16px);
+  overflow-y: auto;
+}
+
+.guide-nav.is-floating{
+  position: fixed;
+  top: var(--guide-sidebar-offset);
+  left: var(--guide-sidebar-left, 0px);
+  width: var(--guide-sidebar-width, 250px);
+}
+
+.guide-nav.is-stuck-bottom{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .guide-nav a{
@@ -255,15 +277,18 @@
   }
 
   .guide-sidebar{
-    position: static;
+    align-self: auto;
   }
 
   .guide-nav{
+    position: static;
     display: flex;
     gap: 8px;
     overflow-x: auto;
+    overflow-y: hidden;
     padding: 8px;
     scrollbar-width: thin;
+    max-height: none;
   }
 
   .guide-nav a{

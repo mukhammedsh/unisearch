@@ -29,7 +29,7 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
                 ]
             },
             "admission_tracks": [
-                {"id": "direct", "label": "Direct Admission (SAT)"},
+                {"id": "direct", "label": "SAT/ACT Applicants"},
                 {"id": "foundation", "label": "Foundation Year (NUET)"},
             ],
         }
@@ -145,6 +145,10 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
         self.assertEqual(31.83, score_profile.get("acceptance_rate_percent"))
         self.assertEqual("exam_min_max_scale", score_profile.get("normalization_method"))
         self.assertEqual("HKDSE_WEIGHTED_TOTAL", score_profile.get("exam_id"))
+        self.assertEqual(3, int((track.get("requirements") or {}).get("HKDSE_CHINESE_LANGUAGE", 0)))
+        self.assertEqual(3, int((track.get("requirements") or {}).get("HKDSE_ENGLISH_LANGUAGE", 0)))
+        self.assertEqual(2, int((track.get("requirements") or {}).get("HKDSE_MATHEMATICS", 0)))
+        self.assertEqual(42.88, float((track.get("stats_avg") or {}).get("HKDSE_WEIGHTED_TOTAL", 0.0)))
         self.assertGreater(float(score_profile.get("median_normalized", 0.0)), float(score_profile.get("p25_normalized", 0.0)))
         self.assertGreater(float(score_profile.get("p75_normalized", 0.0)), float(score_profile.get("median_normalized", 0.0)))
 
@@ -218,18 +222,28 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
             if isinstance(track, dict)
         }
 
-        sat_profile = (nu_tracks.get("nu_direct") or {}).get("score_profile") or {}
+        sat_profile = (nu_tracks.get("nu_sat_applicants") or {}).get("score_profile") or {}
         self.assertEqual("SAT", sat_profile.get("exam_id"))
         self.assertEqual(1475, sat_profile.get("median_raw"))
         self.assertEqual("low", sat_profile.get("confidence"))
+        self.assertFalse(bool((nu_tracks.get("nu_act_applicants") or {}).get("score_profile")))
 
-        self.assertIn("nu_direct", nu_tracks)
+        self.assertIn("nu_sat_applicants", nu_tracks)
+        self.assertIn("nu_act_applicants", nu_tracks)
         self.assertIn("nu_nuet_undergraduate", nu_tracks)
         self.assertIn(
-            "nu_direct-grant-abay-kunanbayev",
+            "nu_sat_applicants-grant-abay-kunanbayev",
             [
                 str(option.get("id") or "")
-                for option in ((nu_tracks.get("nu_direct") or {}).get("funding_options") or [])
+                for option in ((nu_tracks.get("nu_sat_applicants") or {}).get("funding_options") or [])
+                if isinstance(option, dict)
+            ],
+        )
+        self.assertIn(
+            "nu_act_applicants-grant-abay-kunanbayev",
+            [
+                str(option.get("id") or "")
+                for option in ((nu_tracks.get("nu_act_applicants") or {}).get("funding_options") or [])
                 if isinstance(option, dict)
             ],
         )

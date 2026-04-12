@@ -1,4 +1,4 @@
-import { aiName, escapeHtml, formatExamValue, getExamDisplayName, loadProfile } from "./utils.js";
+import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, formatExamValue, getExamDisplayName, loadProfile } from "./utils.js";
 import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
@@ -67,6 +67,174 @@ export function splitExamEntries(obj) {
   return { lang, acad };
 }
 
+function getLanguageExamConfig(examId, langCode = "") {
+  const target = String(examId || "").trim();
+  if (!target) return null;
+  const groups = LANG_CONFIG?.language_exams || {};
+  const normalizedLang = String(langCode || "").trim().toLowerCase();
+  if (normalizedLang && Array.isArray(groups[normalizedLang])) {
+    const exact = groups[normalizedLang].find((row) => String(row?.id || "").trim() === target);
+    if (exact) return exact;
+  }
+  for (const arr of Object.values(groups)) {
+    if (!Array.isArray(arr)) continue;
+    const exact = arr.find((row) => String(row?.id || "").trim() === target);
+    if (exact) return exact;
+  }
+  return null;
+}
+
+function getCompositeConfig(examId, opts = {}) {
+  const langCfg = getLanguageExamConfig(examId, opts?.langCode || "");
+  if (langCfg && typeof langCfg === "object") return langCfg;
+  const id = canonicalizeExamId(examId);
+  return id ? EXAM_CONFIG?.[id] || null : null;
+}
+
+function getCompositeScheme(examId, opts = {}) {
+  const scheme = getCompositeConfig(examId, opts)?.breakdown_scheme;
+  return scheme && typeof scheme === "object" && !Array.isArray(scheme) ? scheme : null;
+}
+
+function normalizeCompositeDefs(items = []) {
+  if (!Array.isArray(items)) return [];
+  return items
+    .map((row) => {
+      if (typeof row === "string") {
+        const exam = String(row || "").trim();
+        return exam ? { exam, label: getExamDisplayName(exam) } : null;
+      }
+      if (!row || typeof row !== "object") return null;
+      const exam = String(row.exam || row.id || row.exam_id || "").trim();
+      if (!exam) return null;
+      return { exam, label: String(row.label || "").trim() || getExamDisplayName(exam) };
+    })
+    .filter(Boolean);
+}
+
+function getCompositeParentExam(examId, opts = {}) {
+  const target = String(examId || "").trim();
+  if (!target) return "";
+  const academicEntries = Object.entries(EXAM_CONFIG || {});
+  for (const [parentId, cfg] of academicEntries) {
+    const scheme = cfg?.breakdown_scheme;
+    if (!scheme || typeof scheme !== "object") continue;
+    const defs = [
+      ...normalizeCompositeDefs(scheme.fixed_components),
+      ...normalizeCompositeDefs(scheme.selectable_components),
+      ...normalizeCompositeDefs(scheme.extra_scores),
+    ];
+    if (defs.some((row) => String(row.exam || "").trim() === target)) return String(parentId || "").trim();
+  }
+
+  const groups = LANG_CONFIG?.language_exams || {};
+  const langCode = String(opts?.langCode || "").trim().toLowerCase();
+  const lists = langCode && Array.isArray(groups[langCode])
+    ? [groups[langCode]]
+    : Object.values(groups).filter((row) => Array.isArray(row));
+  for (const arr of lists) {
+    for (const cfg of arr) {
+      const scheme = cfg?.breakdown_scheme;
+      if (!scheme || typeof scheme !== "object") continue;
+      const defs = [
+        ...normalizeCompositeDefs(scheme.fixed_components),
+        ...normalizeCompositeDefs(scheme.selectable_components),
+        ...normalizeCompositeDefs(scheme.extra_scores),
+      ];
+      if (defs.some((row) => String(row.exam || "").trim() === target)) return String(cfg?.id || "").trim();
+    }
+  }
+
+  return "";
+}
+
+function compositeChildLabel(parentExamId, childExamId, opts = {}) {
+  const localized = getExamDisplayName(childExamId, opts);
+  if (localized) return localized;
+  const scheme = getCompositeScheme(parentExamId, opts);
+  const defs = [
+    ...normalizeCompositeDefs(scheme?.fixed_components),
+    ...normalizeCompositeDefs(scheme?.selectable_components),
+    ...normalizeCompositeDefs(scheme?.extra_scores),
+  ];
+  const found = defs.find((row) => String(row.exam || "").trim() === String(childExamId || "").trim());
+  if (found?.label) return found.label;
+  return String(childExamId || "").trim();
+}
+
+function compositeEntryOrder(parentExamId, examId, opts = {}) {
+  if (!parentExamId || parentExamId === examId) return -1;
+  const scheme = getCompositeScheme(parentExamId, opts);
+  const order = [
+    ...normalizeCompositeDefs(scheme?.fixed_components),
+    ...normalizeCompositeDefs(scheme?.selectable_components),
+    ...normalizeCompositeDefs(scheme?.extra_scores),
+  ].map((row) => String(row.exam || "").trim());
+  const idx = order.indexOf(String(examId || "").trim());
+  return idx >= 0 ? idx : 10_000;
+}
+
+export function renderGroupedExamPairRows(pairs, opts = {}) {
+  const list = Array.isArray(pairs) ? pairs : [];
+  if (!list.length) return "";
+
+  const groups = [];
+  const groupMap = new Map();
+
+  list.forEach(([exam, score], originalIndex) => {
+    const examId = String(exam || "").trim();
+    if (!examId) return;
+    const parentExamId = getCompositeParentExam(examId, opts) || examId;
+    const groupId = parentExamId || examId;
+    if (!groupMap.has(groupId)) {
+      const group = {
+        exam: groupId,
+        entries: [],
+        firstIndex: originalIndex,
+      };
+      groupMap.set(groupId, group);
+      groups.push(group);
+    }
+    groupMap.get(groupId).entries.push({ exam: examId, score, originalIndex });
+  });
+
+  return groups
+    .sort((a, b) => a.firstIndex - b.firstIndex)
+    .map((group) => {
+      const parentExamId = group.exam;
+      const parentLabel = getExamDisplayName(parentExamId, opts);
+      const hasCompositeChildren = group.entries.some((row) => row.exam !== parentExamId);
+      const sortedEntries = group.entries.slice().sort((a, b) => {
+        const left = compositeEntryOrder(parentExamId, a.exam, opts);
+        const right = compositeEntryOrder(parentExamId, b.exam, opts);
+        if (left !== right) return left - right;
+        return a.originalIndex - b.originalIndex;
+      });
+
+      if (!hasCompositeChildren && sortedEntries.length === 1 && sortedEntries[0].exam === parentExamId) {
+        const item = sortedEntries[0];
+        return `<div><strong>${escapeHtml(getExamDisplayName(item.exam, opts))}:</strong> ${escapeHtml(formatExamScore(item.exam, item.score))}</div>`;
+      }
+
+      const scheme = getCompositeScheme(parentExamId, opts);
+      const totalLabel = String(scheme?.parent_score_label || "").trim() || translateWord("total_per_year", "Total").split("/")[0].trim() || "Total";
+      return `
+        <div class="track-exam-entry-group">
+          <div class="track-exam-entry-group-title"><strong>${escapeHtml(parentLabel)}</strong></div>
+          <div class="track-exam-entry-group-list">
+            ${sortedEntries.map((item) => {
+              const label = item.exam === parentExamId
+                ? totalLabel
+                : compositeChildLabel(parentExamId, item.exam, opts);
+              return `<div><strong>${escapeHtml(label)}:</strong> ${escapeHtml(formatExamScore(item.exam, item.score))}</div>`;
+            }).join("")}
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function examGroupToneClass(color) {
   if (color === "#2563eb") return "track-exam-group--info";
   if (color === "#047857") return "track-exam-group--success";
@@ -82,9 +250,7 @@ export function renderExamGroup(title, pairs, color) {
           ${title}
       </div>
       <div class="track-exam-group-list">
-          ${pairs.map(([exam, score]) => `
-          <div><strong>${escapeHtml(getExamDisplayName(exam))}:</strong> ${escapeHtml(formatExamScore(exam, score))}</div>
-          `).join("")}
+          ${renderGroupedExamPairRows(pairs)}
       </div>
       </div>
   `;
@@ -152,7 +318,7 @@ export function renderLanguageRequirements(track) {
                 ${reqPairs.length ? `
                   <div class="track-lang-rule-requirements">
                     <strong>${escapeHtml(translateWord("exam_minimums", "Exam minimums"))}:</strong>
-                    ${reqPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))} ≥ ${escapeHtml(String(v))}</div>`).join("")}
+                    ${renderGroupedExamPairRows(reqPairs, { langCode: lr?.code })}
                   </div>
                 ` : `
                   <div class="track-lang-rule-requirements">
@@ -163,7 +329,7 @@ export function renderLanguageRequirements(track) {
                 <div class="track-lang-rule-average">
                   <strong>${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}:</strong>
                   ${avgPairs.length
-                    ? avgPairs.map(([k, v]) => `<div>${escapeHtml(getExamDisplayName(k, { langCode: lr?.code }))}: ${escapeHtml(String(v))}</div>`).join("")
+                    ? renderGroupedExamPairRows(avgPairs, { langCode: lr?.code })
                     : `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`}
                 </div>
               </div>
@@ -385,6 +551,28 @@ function mergeTrackVariantDict(baseValue, variantValue) {
   return null;
 }
 
+function filterStatsAvgForRequirements(statsAvg, requirements) {
+  const statsObj = isPlainObject(statsAvg) ? statsAvg : null;
+  const reqObj = isPlainObject(requirements) ? requirements : null;
+  if (!statsObj) return statsAvg;
+  if (!reqObj || !Object.keys(reqObj).length) return { ...statsObj };
+
+  const allowed = new Set(
+    Object.keys(reqObj)
+      .filter((key) => !isLanguageExam(key))
+      .map((key) => canonicalizeExamId(key))
+      .filter(Boolean)
+  );
+  if (!allowed.size) return { ...statsObj };
+
+  const filtered = {};
+  for (const [key, value] of Object.entries(statsObj)) {
+    const canonical = canonicalizeExamId(key);
+    if (canonical && allowed.has(canonical)) filtered[key] = value;
+  }
+  return filtered;
+}
+
 export function getTrackFundingOptions(track) {
   const baseTrack = isPlainObject(track) ? track : {};
   const rawOptions = Array.isArray(baseTrack.funding_options)
@@ -402,11 +590,15 @@ export function getTrackFundingOptions(track) {
   }
 
   return rawOptions.map((option, optionIdx) => {
+    const mergedRequirements = mergeTrackVariantDict(baseTrack.requirements, option.requirements);
     const merged = {
       ...baseTrack,
       ...option,
-      requirements: mergeTrackVariantDict(baseTrack.requirements, option.requirements),
-      stats_avg: mergeTrackVariantDict(baseTrack.stats_avg, option.stats_avg),
+      requirements: mergedRequirements,
+      stats_avg: filterStatsAvgForRequirements(
+        mergeTrackVariantDict(baseTrack.stats_avg, option.stats_avg),
+        mergedRequirements
+      ),
       finance_override: mergeTrackVariantDict(baseTrack.finance_override, option.finance_override),
       __parent_track_id: String(baseTrack.id || "").trim(),
       __parent_track_label: String(baseTrack.label || "").trim(),

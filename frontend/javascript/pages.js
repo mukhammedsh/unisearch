@@ -14,6 +14,7 @@ import {
   moneyUSD,
   loadProfile,
   loadProfileForApi,
+  getSelectedAdmissionTrack,
   saveSelectedAdmissionTrack,
   getFlagImg,
   initCustomSelect,
@@ -32,6 +33,7 @@ import {
   getTrackFundingOptions,
   mapMarkerLogoHtml,
   renderExamGroup,
+  renderGroupedExamPairRows,
   renderTrackChanceChip,
   renderTrackFundingBadge,
   renderUniChanceSummary,
@@ -277,6 +279,34 @@ function translateCostBreakdownLabel(rawKey) {
   return translateWord(`cost_item_${key}`, fallback);
 }
 
+function costBreakdownCoverageNote(financeData, breakdownEntries, total) {
+  const finance = financeData && typeof financeData === "object" ? financeData : {};
+  const status = String(finance.costs_breakdown_status || "").trim().toLowerCase();
+  const breakdownSum = breakdownEntries.reduce((sum, entry) => sum + (Number(entry?.value) || 0), 0);
+  const totalValue = Number(total);
+  const hasHiddenPortion = Number.isFinite(totalValue) && totalValue > 0 && (totalValue - breakdownSum) > 1;
+
+  if (status === "official_tuition_and_fees_only") {
+    return t(
+      "university.finance.breakdown_note.tuition_fees_only",
+      "Showing only directly official tuition and institutional fee items. Other living-cost subcategories are hidden because the source does not publish them as authoritative line items."
+    );
+  }
+  if (status === "official_mandatory_breakdown") {
+    return t(
+      "university.finance.breakdown_note.mandatory_only",
+      "Showing only verified mandatory items. Personal or other discretionary allowances were removed."
+    );
+  }
+  if (hasHiddenPortion) {
+    return t(
+      "university.finance.breakdown_note.partial",
+      "This breakdown is intentionally partial. The total may also include other source-side allowances or non-itemized costs."
+    );
+  }
+  return "";
+}
+
 function trackCefrLabel(id) {
   const n = Number(id);
   if (n === 1) return "A1";
@@ -320,17 +350,18 @@ function renderTrackLanguageExamGroup(track, variant = "requirements") {
     }
 
     const examPairs = Object.entries(isAverage ? (lr?.stats_avg || {}) : (lr?.requirements || {}));
-    if (meta.length) {
-      rows.push(`<div><strong>${escapeHtml(code)}:</strong> ${escapeHtml(meta.join(" • "))}</div>`);
-    }
-    if (!isAverage && !meta.length && !examPairs.length) {
-      rows.push(`<div><strong>${escapeHtml(code)}</strong></div>`);
-    }
-    examPairs.forEach(([exam, score]) => {
-      rows.push(
-        `<div><strong>${escapeHtml(code)} ${escapeHtml(getExamDisplayName(exam, { langCode: lr?.code }))}:</strong> ${escapeHtml(String(score))}</div>`
-      );
-    });
+    const groupedExamRows = renderGroupedExamPairRows(examPairs, { langCode: lr?.code });
+    if (!meta.length && !groupedExamRows && isAverage) return;
+
+    rows.push(`
+      <div class="track-exam-entry-group">
+        <div class="track-exam-entry-group-title"><strong>${escapeHtml(code)}</strong></div>
+        <div class="track-exam-entry-group-list">
+          ${meta.length ? `<div>${escapeHtml(meta.join(" • "))}</div>` : ""}
+          ${groupedExamRows}
+        </div>
+      </div>
+    `);
   });
 
   if (isAverage && !rows.length) return "";
@@ -876,7 +907,7 @@ function uniLogoSrc(universityId, opts = {}) {
   return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
 }
 
-const DETAIL_CACHE_KEY = "unisearch_detail_cache_v2";
+const DETAIL_CACHE_KEY = "unisearch_detail_cache_v3";
 const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 const DETAIL_CACHE_MAX_ITEMS = 24;
 const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
@@ -2595,9 +2626,7 @@ export function initUniversitiesPage() {
                 `Acceptance Rate: ${Math.round(acc * 100) / 100}%`
             )
             : "";
-        const acceptanceHtml = acceptanceText
-            ? `<div class="uni-acceptance"><span class="uni-pill uni-pill--neutral">${escapeHtml(acceptanceText)}</span></div>`
-            : "";
+        const acceptanceHtml = `<div class="uni-acceptance${acceptanceText ? "" : " uni-acceptance--empty"}">${acceptanceText ? `<span class="uni-pill uni-pill--neutral">${escapeHtml(acceptanceText)}</span>` : ""}</div>`;
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
@@ -2668,8 +2697,9 @@ export function initUniversitiesPage() {
         const rankValue = toFiniteNumber(u?.rank);
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
         const detailLabel = escapeHtml(t("universities.card.view_details", "View details"));
+        const inRankingLabel = escapeHtml(t("universities.card.in_ranking", "in ranking"));
         const footerMetaHtml = rankValue !== null && rankValue > 0
-            ? `<span class="uni-rank" aria-label="${rankLabel}">#${escapeHtml(String(rankValue))}</span>`
+            ? `<span class="uni-rank" aria-label="${rankLabel}">#${escapeHtml(String(rankValue))} ${inRankingLabel}</span>`
             : `<span class="uni-rank" aria-hidden="true"></span>`;
         return `
         <article class="uni-card" data-uni-id="${escapeHtml(id)}">
@@ -3252,8 +3282,10 @@ export async function initUniversityPage() {
                 options: getTrackFundingOptions(track),
             }))
             .filter(({ options }) => options.length > 0);
-            const recommendedTrackKey = String(uniChance?.recommendedTrackKey || uniChance?.bestTrackKey || "").trim();
-            const activeTrackKey = String(uniChance?.bestTrackKey || "").trim();
+            const bestTrackKey = String(uniChance?.bestTrackKey || "").trim();
+            const recommendedTrackKey = String(uniChance?.recommendedTrackKey || bestTrackKey || "").trim();
+            const selectedTrackKey = getSelectedAdmissionTrack(u.id);
+            const effectiveSelectedTrackKey = selectedTrackKey || bestTrackKey;
             const selectedTrackTooltip = t(
                 "admission.track.select_tooltip",
                 "Select this admission track to use it for admission chance display and for UniFit ranking."
@@ -3280,10 +3312,10 @@ export async function initUniversityPage() {
                     const trackKey = trackLookupKey(option, optionIdx);
                     const trackChance = uniChanceByTrackKey.get(trackKey);
                     const isRecommendedTrack = Boolean(recommendedTrackKey && trackKey === recommendedTrackKey);
-                    const isActiveTrack = Boolean(activeTrackKey && trackKey === activeTrackKey);
+                    const isSelectedTrack = Boolean(effectiveSelectedTrackKey && trackKey === effectiveSelectedTrackKey);
 
                     const selectionBadges = [];
-                    if (isActiveTrack) selectionBadges.push(escapeHtml(t("admission.track.selected", "Selected")));
+                    if (isSelectedTrack) selectionBadges.push(escapeHtml(t("admission.track.selected", "Selected")));
                     if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
 
                     const selectionBadgeHtml = selectionBadges.length
@@ -3389,11 +3421,12 @@ export async function initUniversityPage() {
                         <div class="track-select-row">
                         <button
                             type="button"
-                            class="track-select-btn${isActiveTrack ? " is-active" : ""}"
+                            class="track-select-btn${isSelectedTrack ? " is-active" : ""}"
                             data-track-select-key="${escapeHtml(trackKey)}"
                             title="${escapeHtml(selectedTrackTooltip)}"
+                            ${isSelectedTrack ? "disabled" : ""}
                         >
-                            ${escapeHtml(isActiveTrack ? t("admission.track.selected", "Selected") : t("admission.track.select", "Select"))}
+                            ${escapeHtml(isSelectedTrack ? t("admission.track.selected", "Selected") : t("admission.track.select", "Select"))}
                         </button>
                         </div>
                     </article>
@@ -3429,10 +3462,10 @@ export async function initUniversityPage() {
             reqDiv.innerHTML = tracksHTML;
             reqDiv.querySelectorAll("[data-track-select-key]").forEach((button) => {
                 button.addEventListener("click", () => {
+                    if (button.disabled) return;
                     const trackKey = String(button.getAttribute("data-track-select-key") || "").trim();
                     if (!trackKey) return;
-                    const nextTrackKey = trackKey === recommendedTrackKey ? "" : trackKey;
-                    saveSelectedAdmissionTrack(u.id, nextTrackKey);
+                    saveSelectedAdmissionTrack(u.id, trackKey);
                 });
             });
         }
@@ -3570,6 +3603,7 @@ export async function initUniversityPage() {
                     };
                     })
                     .filter((entry) => entry.value > 0);
+                const breakdownNote = costBreakdownCoverageNote(fData || {}, breakdownEntries, total);
 
                 const optionLabelRaw = String(option.label || "").trim();
                 const parentLabelRaw = String(track.label || "").trim();
@@ -3604,6 +3638,9 @@ export async function initUniversityPage() {
                     : (breakdownEntries.length === 1
                         ? `<div class="cost-legend-single">${escapeHtml(breakdownEntries[0].label)}: <strong>${escapeHtml(moneyUSD(breakdownEntries[0].value))}</strong></div>`
                         : `<div class="cost-legend-single">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`);
+                const breakdownNoteHtml = breakdownNote
+                    ? `<div class="finance-breakdown-note">${escapeHtml(breakdownNote)}</div>`
+                    : "";
 
                 return `
                     <article class="finance-option-card${isGrantTrack ? " finance-option-card--grant" : ""}">
@@ -3623,6 +3660,7 @@ export async function initUniversityPage() {
 
                     <div class="cost-breakdown-list">
                         ${breakdownHtml}
+                        ${breakdownNoteHtml}
                     </div>
                     </article>
                 `;
@@ -3871,6 +3909,10 @@ export async function initRankingPage() {
 export function initGuidePage() {
     const page = document.getElementById("guidePage");
     if (!page) return;
+    const layout = page.querySelector(".guide-layout");
+    const sidebar = page.querySelector(".guide-sidebar");
+    const stickyNav = page.querySelector(".guide-nav");
+    const desktopGuideMedia = window.matchMedia("(min-width: 981px)");
     const navLinks = Array.from(page.querySelectorAll(".guide-nav a[href^='#guide-']"));
     const sections = Array.from(page.querySelectorAll(".guide-section[id]"));
 
@@ -4047,6 +4089,7 @@ export function initGuidePage() {
         const seen = new Set();
         const exams = Object.entries(EXAM_CONFIG || {})
             .filter(([id]) => !langIds.has(String(id)))
+            .filter(([, cfg]) => !cfg?.hidden)
             .filter(([id]) => {
                 const normalized = canonicalizeExamId(id);
                 const key = String(normalized || id).toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -4122,6 +4165,64 @@ export function initGuidePage() {
         renderLanguageExams();
     }
 
+    function syncGuideSidebarOffset() {
+        const navbar = document.querySelector(".navbar");
+        const navbarHeight = navbar instanceof HTMLElement ? Math.ceil(navbar.getBoundingClientRect().height) : 72;
+        page.style.setProperty("--guide-sidebar-offset", `${navbarHeight + 10}px`);
+    }
+
+    function updateGuideNavHrefs() {
+        navLinks.forEach((link) => {
+            const hash = String(link.dataset.guideHash || link.getAttribute("href") || "").trim();
+            if (!/^#guide-[a-z0-9-]+$/i.test(hash)) return;
+            link.dataset.guideHash = hash;
+            link.setAttribute("href", `${window.location.pathname}${window.location.search}${hash}`);
+        });
+    }
+
+    function resetGuideFloatingNav() {
+        if (!(sidebar instanceof HTMLElement) || !(stickyNav instanceof HTMLElement)) return;
+        stickyNav.classList.remove("is-floating", "is-stuck-bottom");
+        stickyNav.style.removeProperty("--guide-sidebar-left");
+        stickyNav.style.removeProperty("--guide-sidebar-width");
+        sidebar.style.removeProperty("min-height");
+    }
+
+    function syncGuideFloatingNav() {
+        if (!(layout instanceof HTMLElement) || !(sidebar instanceof HTMLElement) || !(stickyNav instanceof HTMLElement)) return;
+        if (!desktopGuideMedia.matches) {
+            resetGuideFloatingNav();
+            return;
+        }
+
+        const offset = parseFloat(getComputedStyle(page).getPropertyValue("--guide-sidebar-offset")) || 82;
+        const sidebarRect = sidebar.getBoundingClientRect();
+        const layoutRect = layout.getBoundingClientRect();
+        const navHeight = stickyNav.offsetHeight;
+        const sidebarTop = window.scrollY + sidebarRect.top;
+        const layoutBottom = window.scrollY + layoutRect.bottom;
+        const stickStart = sidebarTop - offset;
+        const stickEnd = layoutBottom - navHeight - offset;
+
+        sidebar.style.minHeight = `${navHeight}px`;
+        stickyNav.style.setProperty("--guide-sidebar-left", `${Math.round(sidebarRect.left)}px`);
+        stickyNav.style.setProperty("--guide-sidebar-width", `${Math.round(sidebarRect.width)}px`);
+
+        if (window.scrollY <= stickStart) {
+            stickyNav.classList.remove("is-floating", "is-stuck-bottom");
+            return;
+        }
+
+        if (window.scrollY >= stickEnd) {
+            stickyNav.classList.remove("is-floating");
+            stickyNav.classList.add("is-stuck-bottom");
+            return;
+        }
+
+        stickyNav.classList.remove("is-stuck-bottom");
+        stickyNav.classList.add("is-floating");
+    }
+
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const sectionById = new Map(sections.map((sec) => [sec.id, sec]));
     const activateSection = (id, { updateHash = false, scroll = false } = {}) => {
@@ -4136,13 +4237,13 @@ export function initGuidePage() {
         });
 
         navLinks.forEach((link) => {
-            const active = link.getAttribute("href") === `#${nextId}`;
+            const active = String(link.dataset.guideHash || link.getAttribute("href") || "").trim() === `#${nextId}`;
             link.classList.toggle("is-active", active);
             link.setAttribute("aria-current", active ? "page" : "false");
         });
 
         if (updateHash) {
-            history.replaceState(null, "", `#${nextId}`);
+            history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
         }
 
         if (scroll && targetSection) {
@@ -4156,7 +4257,7 @@ export function initGuidePage() {
     navLinks.forEach((link) => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
-            activateSection((link.getAttribute("href") || "").replace("#", ""), {
+            activateSection(String(link.dataset.guideHash || link.getAttribute("href") || "").replace("#", ""), {
                 updateHash: true,
                 scroll: true,
             });
@@ -4201,20 +4302,31 @@ export function initGuidePage() {
                 });
             }
 
+            syncGuideFloatingNav();
             scrollTicking = false;
         });
     };
 
+    syncGuideSidebarOffset();
+    updateGuideNavHrefs();
     renderAll();
     activateSection(String(window.location.hash || "").replace("#", ""), {
         updateHash: false,
         scroll: false,
     });
     window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
-    window.addEventListener("resize", syncActiveSectionFromScroll);
-    bindGuideExternalUpdates(() => {
-        renderAll();
+    window.addEventListener("resize", () => {
+        syncGuideSidebarOffset();
+        syncGuideFloatingNav();
         syncActiveSectionFromScroll();
     });
+    bindGuideExternalUpdates(() => {
+        syncGuideSidebarOffset();
+        updateGuideNavHrefs();
+        renderAll();
+        syncGuideFloatingNav();
+        syncActiveSectionFromScroll();
+    });
+    syncGuideFloatingNav();
     syncActiveSectionFromScroll();
 }
