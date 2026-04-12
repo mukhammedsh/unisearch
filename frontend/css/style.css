@@ -287,18 +287,24 @@ html, body {
   object-fit: contain;
 }
 
-.login-btn{
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
+.profile-trigger-btn{
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
   cursor: pointer;
 }
 
-.login-btn:hover{
-  background: var(--accent-strong);
+.profile-trigger-btn:hover{
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .theme-btn {
@@ -1706,7 +1712,7 @@ html, body {
   .navbar-right .lang-control .custom-select-trigger::after {
     right: 6px;
   }
-  .login-btn { padding: 8px 14px; font-size: 13px; }
+  .profile-trigger-btn { width: 34px; height: 34px; }
   .theme-btn { width: 34px; height: 34px; margin-right: 6px; }
   .menu-btn { display: none; }
 
@@ -1869,10 +1875,7 @@ html, body {
     margin-right: 6px;
   }
 
-  .login-btn {
-    padding: 9px 14px;
-    font-size: 13px;
-  }
+  .profile-trigger-btn { width: 34px; height: 34px; }
 }
 
 @media (max-width: 700px) {
@@ -1967,6 +1970,7 @@ h5,
 h6,
 .navbar-center a,
 .login-btn,
+.profile-trigger-btn,
 .menu-btn,
 .btn-primary,
 .home-secondary-btn,
@@ -2027,20 +2031,7 @@ h6,
   height: 40px;
 }
 
-.login-btn {
-  min-height: 40px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: var(--accent);
-  box-shadow: none;
-  transition: background-color 0.16s ease, transform 0.16s ease;
-}
-
-.login-btn:hover {
-  background: var(--accent-strong);
-  transform: translateY(-1px);
-}
-
+.profile-trigger-btn,
 .theme-btn,
 .lang-switch,
 .navbar-right .lang-control .custom-select-trigger,
@@ -2052,12 +2043,18 @@ h6,
 }
 
 .theme-btn:hover,
+.profile-trigger-btn:hover,
 .lang-switch:hover,
 .navbar-right .lang-control .custom-select-trigger:hover,
 .menu-btn:hover {
   border-color: rgba(79, 70, 229, 0.24);
   color: var(--text);
   background: var(--surface-solid);
+}
+
+.profile-trigger-btn .ui-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .site-footer {

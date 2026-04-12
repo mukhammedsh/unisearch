@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const { personas, seedProfile } = require("./helpers/personas");
 
 test("admission tracks show applicable programs", async ({ page }) => {
   await page.goto("/university.html?id=astana-it-university-kaz-astana");
@@ -34,6 +35,18 @@ test("nazarbayev university keeps compact tracks and shows funding options insid
   await expect(page.locator(".track-card")).toHaveCount(2);
   await expect(page.locator(".admission-option-card")).toHaveCount(4);
   await expect(page.locator(".track-title")).toContainText(["Direct Admission (SAT)", "NUET Applicants"]);
+});
+
+test("tsinghua admission tab keeps paid and grant options visible when profile prefers grant", async ({ page }) => {
+  await seedProfile(page, personas.ruStemGrant.profile);
+  await page.goto("/university.html?id=tsinghua-university-cn-beijing");
+
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.click(".d-tab-btn[data-tab='tab-admission']");
+
+  const optionCards = page.locator(".admission-option-card");
+  await expect(optionCards).toHaveCount(2);
+  await expect(optionCards).toContainText(["Paid", "Grant"]);
 });
 
 test("program card major tags are localized in russian", async ({ page }) => {

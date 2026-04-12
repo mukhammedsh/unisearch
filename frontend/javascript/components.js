@@ -189,7 +189,16 @@ const LAYOUT_HTML = `
       </select>
     </div>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">${heroIcon("moon", "ui-icon ui-icon--18")}</button>
-    <button class="login-btn" id="profileBtn" data-i18n="nav.profile">Profile</button>
+    <button
+      class="profile-trigger-btn"
+      id="profileBtn"
+      type="button"
+      title="Profile"
+      aria-label="Profile"
+      aria-haspopup="dialog"
+      data-i18n-title="nav.profile"
+      data-i18n-aria-label="nav.profile"
+    >${heroIcon("user-circle", "ui-icon ui-icon--18")}</button>
   </div>
 </header>
 

@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.1 (2026-04-12) - Encoding And Admission Option Fixes
+
+Status:
+- synchronized runtime/package version to `3.4.1` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README release references;
+- fixed broken text encoding and punctuation artifacts in frontend localization/runtime strings:
+  - removed stray BOM artifacts from the English and Russian localization packs;
+  - restored proper Cyrillic rendering and normalized several broken dash/bullet glyphs in shared frontend text;
+- updated the navbar profile entry from a text button to a compact user icon button, including responsive sizing and shared icon registration;
+- fixed university-detail admissions rendering so funding-option cards keep showing both paid and grant variants even when the profile funding preference is set to grant-only;
+- added Playwright regression coverage for the funding-option visibility fix on the Tsinghua University detail page;
+- bumped the service-worker cache version so clients refresh the patched frontend assets immediately after deployment.
+
 ## 3.4.0 (2026-04-12) - Full Web App Design Rework
 
 Status:

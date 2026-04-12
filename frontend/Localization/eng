@@ -1,4 +1,4 @@
-﻿meta.display_name: English
+meta.display_name: English
 meta.code: eng
 academic_requirements: Academic requirements
 academic_average: Academic average
@@ -48,7 +48,7 @@ about.role.lead: Lead Developer and Project Architect
 about.role.planning: Planning and Text Documentation
 about.team_kicker: Our Team
 about.title: We are the abiturient team behind UniSearch.
-footer.copyright: В© 2026 UniSearch
+footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
 guide.admission.p1: An admission track is one concrete way to enter the same university.
 guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.
@@ -61,7 +61,7 @@ guide.exam_basics.p3: Language requirements are especially important for interna
 guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
 guide.exam_basics.title: Exam Basics (Admissions)
 guide.eyebrow: UniSearch Guide
-guide.exam_desc_with_label: {exam} вЂ” {desc}
+guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Glossary
 guide.intro: This page explains, in plain language, what profile data we use and how to read your results.
 guide.language_exams.title: Language Exams
@@ -87,7 +87,7 @@ guide.tags.standard_title: Standard Tags
 guide.tags.standard.acceptance: Acceptance Rate: shown when acceptance data is available.
 guide.tags.standard.aid_available: Aid Available: shown when merit-based or need-based aid is present.
 guide.tags.standard.over_budget: Over Budget: shown when estimated annual cost is above your profile budget.
-guide.tags.standard.over_budget_aid: Over Budget вЂў Aid Available: shown when cost is above budget but aid exists.
+guide.tags.standard.over_budget_aid: Over Budget • Aid Available: shown when cost is above budget but aid exists.
 guide.tags.ai_note: Tags that work only when UniFit selected as sort strategy.
 guide.tags.ai_title: AI Tags
 guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.
@@ -100,9 +100,9 @@ guide.tags.ai.below_requirements: Below Requirements: shown when minimum require
 guide.title: How UniSearch works in simple words
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
 guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
-guide.unichance.p3: Easy reading: 80вЂ‘100 high, 60вЂ‘79 good, 40вЂ‘59 medium, below 40 low.
+guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
 guide.unichance.p4: Check Best Track to see where your chance is strongest inside that university.
-guide.unichance.title: {chance} (estimated admission chance 0вЂ‘100)
+guide.unichance.title: {chance} (estimated admission chance 0‑100)
 guide.unifit.p1: {fit} builds a university list for you. It uses your filters, budget, preferred locations, and profile data.
 guide.unifit.p2: If exam or language data is missing, you still see options, but we mark that extra proof may be needed.
 guide.unifit.p3: One university can have several admission tracks. We check each track separately, so your best option may be inside a lower-ranked university.
@@ -138,7 +138,7 @@ nav.close_menu: Close menu
 nav.guide: Guide
 nav.home: Home
 nav.lang.eng: English (US)
-nav.lang.rus: Р СѓСЃСЃРєРёР№
+nav.lang.rus: Русский
 nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
@@ -149,7 +149,7 @@ profile.add: Add
 profile.edit: Edit
 profile.budget_cleared: Budget cleared
 profile.budget_integers_only: Integers only (no dots/commas)
-profile.budget_limit: Limit: 0вЂ‘1,000,000 USD
+profile.budget_limit: Limit: 0‑1,000,000 USD
 profile.budget_must_number: Budget must be a number
 profile.budget_saved: Budget saved!
 profile.cefr: CEFR
@@ -182,7 +182,7 @@ profile.gpa_must_number: GPA must be a number
 profile.gpa_range: GPA must be between {min} and {max}%
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
-profile.hint.budget_range: Range: 0вЂ‘1,000,000
+profile.hint.budget_range: Range: 0‑1,000,000
 profile.hint.low_budget_grant: Budget is under $1000. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
@@ -202,7 +202,7 @@ profile.label.major: Intended Major
 profile.label.study_mode: Preferred Study Mode
 profile.language: Language
 profile.languages: Languages
-profile.name_invalid_length: Name length must be 3вЂ‘16 chars
+profile.name_invalid_length: Name length must be 3‑16 chars
 profile.name_invalid_symbols: Invalid symbols in name
 profile.nickname_updated: Nickname updated!
 profile.option.funding_any: Any (Grant + Paid)
@@ -279,7 +279,7 @@ universities.badge.aid_available: Aid Available
 universities.badge.aid_likely: Grant/Aid Likely (no budget penalty)
 universities.badge.below_requirements: Below Requirements
 universities.badge.over_budget: Over Budget
-universities.badge.over_budget_aid: Over Budget вЂў Aid Available
+universities.badge.over_budget_aid: Over Budget • Aid Available
 universities.badge.requirements_met: Requirements Met
 universities.card.est_cost_year: Est. Cost/Year
 universities.card.view_details: View details
@@ -460,7 +460,7 @@ guide.academic.gpa: GPA represents cumulative school academic performance across
 guide.academic.ibdiploma: IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.
 guide.academic.alevelcert: A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score.
 guide.academic.hkdselevel: HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching.
-guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/MaturitГ©) is the standard Swiss university-entrance qualification.
+guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification.
 guide.academic.germanabiturcert: German Abitur certificate is the standard qualification granting access to German universities.
 guide.academic.ossdcert: OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions.
 guide.academic.intro: The following academic exams are currently used by UniSearch for admission track matching and recommendation quality.
@@ -500,7 +500,7 @@ guide.language.pte: PTE Academic is a computer-based English proficiency test us
 guide.language.toefl: TOEFL measures academic English proficiency and is commonly accepted for university admissions.
 guide.language.topik: TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.
 guide.loading_exam_config: Loading exam config
-guide.scale_text: In UniSearch, this score is entered on a {min}вЂ‘{max} scale.
+guide.scale_text: In UniSearch, this score is entered on a {min}‑{max} scale.
 home.mockup.grant_available: Grant Available
 home.mockup.location: Cambridge, USA
 languages.error.choose_cefr: Choose CEFR level
