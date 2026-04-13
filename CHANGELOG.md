@@ -2,6 +2,17 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.3 (2026-04-13) - Design Refinement And Mobile Responsiveness
+
+Status:
+- synchronized runtime/package version to `3.4.3` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README release references;
+- improved mobile responsiveness and layout stability across universities, university-detail, ranking, guide, and about pages;
+- refined frontend visual system including button styling, navigation alignment, and interactive hover/active states;
+- updated university-detail admissions and finance presentation for better density and readability on smaller screens;
+- improved backend logic for exam-score normalization and admission-track majored processing;
+- synchronized curated data catalogs for official facts and admissions, and updated related unit/E2E regression tests;
+- bumped the service-worker cache version so clients refresh the `3.4.3` frontend assets immediately after deployment.
+
 ## 3.4.2 (2026-04-13) - Composite Exam Scores And Truthful Track Data
 
 Status:

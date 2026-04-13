@@ -1453,6 +1453,15 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
             if derived_majors:
                 track["applicable_majors"] = derived_majors
             track["score_profile"] = _derive_track_score_profile(u, track)
+            if track.get("score_profile"):
+                sp = track["score_profile"]
+                exam_id = sp.get("exam_id")
+                median = sp.get("median_raw")
+                if exam_id and median is not None:
+                    if "stats_avg" not in track or not isinstance(track["stats_avg"], dict):
+                        track["stats_avg"] = {}
+                    if exam_id not in track["stats_avg"]:
+                        track["stats_avg"][exam_id] = median
 
             raw_options = track.get("funding_options")
             if isinstance(raw_options, list) and raw_options:

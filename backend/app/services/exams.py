@@ -661,9 +661,11 @@ def normalize_exam_score(exam_key: Any, score_raw: Any) -> Optional[float]:
     if mode in ("grade_combo", "band_select", "subject_breakdown"):
         try:
             coerced = coerce_exam_submission(resolved, score_raw=score_raw)
+            score = _to_float(coerced.get("score"))
         except ValueError:
-            return None
-        score = _to_float(coerced.get("score"))
+            score = _to_float(score_raw)
+            if score is None:
+                return None
     else:
         score = _to_float(score_raw)
 

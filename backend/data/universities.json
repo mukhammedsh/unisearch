@@ -1039,7 +1039,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
+              "IELTS": 7,
+              "IELTS_LISTENING": 6.5,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           }
         ],
@@ -2214,39 +2218,20 @@
       ],
       "acceptance_rate_percent": 16.45,
       "admissions": {
-        "university_name": "University of Oxford",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
-          "status": "official_rate",
+          "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
-          "acceptance_rate_percent": 16.45,
-          "counts": {
-            "cycle": "2024",
-            "scope": "all domiciles",
-            "applications": 23061,
-            "offers": 3793,
-            "students_admitted": 3245
-          },
-          "semantics": "Oxford publishes university-wide undergraduate applications, offers, and students admitted. UniSearch stores the institution-wide bachelor's offer rate rather than inventing program-level rates.",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
           "sources": [
             {
-              "url": "https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students/current/overall-numbers",
-              "label": "Oxford undergraduate admissions statistics: overall numbers"
+              "url": "https://www.ox.ac.uk/admissions/undergraduate",
+              "label": "Official undergraduate admissions"
             }
-          ],
-          "provenance": {
-            "source": "University of Oxford undergraduate admissions statistics",
-            "source_url": "https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students/current/overall-numbers",
-            "verified_at": "2026-04-08",
-            "status": "official_derived",
-            "confidence": "high",
-            "method": "Calculated from official 2024 Oxford undergraduate counts (3,793 offers / 23,061 applications, all domiciles).",
-            "basis": {
-              "cycle": "2024",
-              "scope": "undergraduate, all domiciles",
-              "applications": 23061,
-              "offers": 3793
-            }
-          }
+          ]
         },
         "program_level": {
           "status": "verified_null_only",
@@ -2292,7 +2277,7 @@
             }
           },
           {
-            "program_name": "Mathematics and Computer Science",
+            "program_name": "Engineering Science",
             "source_scope": "program_verified_null",
             "data_type": "verified-null",
             "scope": "program",
@@ -2749,6 +2734,10 @@
     ],
     "verified_sources": [
       {
+        "topic": "language_requirements",
+        "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford/for-international-students/english-language-requirements"
+      },
+      {
         "topic": "extra_requirements",
         "url": "https://www.ox.ac.uk/admissions/undergraduate/international-students/international-qualifications"
       },
@@ -2799,10 +2788,6 @@
       {
         "topic": "finance",
         "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
-      },
-      {
-        "topic": "language_requirements",
-        "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford/for-international-students/english-language-requirements"
       }
     ],
     "description": "Oxford is a collegiate research university known for tutorial-based teaching, foundational scholarship, and strength across humanities, sciences, medicine, law, and computing.",
@@ -3491,7 +3476,9 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
+              "IELTS": 7,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5
             }
           }
         ],
@@ -3550,7 +3537,9 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
+              "IELTS": 7,
+              "IELTS_READING": 6.5,
+              "IELTS_WRITING": 6.5
             }
           }
         ],
@@ -3844,38 +3833,20 @@
       ],
       "acceptance_rate_percent": 21.49,
       "admissions": {
-        "university_name": "University of Cambridge",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
-          "status": "official_rate",
+          "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
-          "acceptance_rate_percent": 21.49,
-          "counts": {
-            "cycle": "2024",
-            "applications": 22153,
-            "offers": 4760,
-            "acceptances": 3632
-          },
-          "semantics": "Cambridge publishes university-wide undergraduate applications, offers, and acceptances for the admissions cycle. UniSearch stores the institution-wide bachelor's offer rate rather than inventing program-level rates.",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
           "sources": [
             {
-              "url": "https://www.undergraduate.study.cam.ac.uk/sites/default/files/publications/ug_admissions_statistics_2024_cycle.pdf",
-              "label": "University of Cambridge Undergraduate Admissions Statistics 2024 cycle"
+              "url": "https://www.undergraduate.study.cam.ac.uk/apply",
+              "label": "Official undergraduate admissions"
             }
-          ],
-          "provenance": {
-            "source": "University of Cambridge Undergraduate Admissions Statistics 2024 cycle",
-            "source_url": "https://www.undergraduate.study.cam.ac.uk/sites/default/files/publications/ug_admissions_statistics_2024_cycle.pdf",
-            "verified_at": "2026-04-08",
-            "status": "official_derived",
-            "confidence": "high",
-            "method": "Calculated from official 2024 Cambridge undergraduate counts (4,760 offers / 22,153 applications).",
-            "basis": {
-              "cycle": "2024",
-              "scope": "undergraduate",
-              "applications": 22153,
-              "offers": 4760
-            }
-          }
+          ]
         },
         "program_level": {
           "status": "verified_null_only",
@@ -4375,6 +4346,10 @@
     ],
     "verified_sources": [
       {
+        "topic": "language_requirements",
+        "url": "https://www.undergraduate.study.cam.ac.uk/apply/before/entry-requirements"
+      },
+      {
         "topic": "extra_requirements",
         "url": "https://www.undergraduate.study.cam.ac.uk/international-students/international-entry-requirements"
       },
@@ -4425,10 +4400,6 @@
       {
         "topic": "finance",
         "url": "https://www.undergraduate.study.cam.ac.uk/fees-and-finance/living-costs"
-      },
-      {
-        "topic": "language_requirements",
-        "url": "https://www.undergraduate.study.cam.ac.uk/apply/before/entry-requirements"
       }
     ],
     "description": "Cambridge combines collegiate undergraduate teaching with one of the world's deepest research environments in mathematics, engineering, natural sciences, and computer science.",
@@ -5153,7 +5124,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           }
         ],
@@ -6163,7 +6138,8 @@
       ],
       "acceptance_rate_percent": 2.57,
       "admissions": {
-        "university_name": "California Institute of Technology",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -6871,7 +6847,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           }
         ],
@@ -7756,7 +7736,7 @@
           "kind": null,
           "acceptance_rate_percent": null,
           "counts": null,
-          "notes": "The official pages also expose separate result pages for some programs, so program-level counts can be stored when the source gives them explicitly.",
+          "notes": "The official pages also expose separate result pages for some graduate programs, so program-level counts can be stored when the source gives them explicitly.",
           "sources": [
             {
               "url": "https://www.u-tokyo.ac.jp/en/about/applications_admissions.html"
@@ -8465,7 +8445,8 @@
       ],
       "acceptance_rate_percent": 4.48,
       "admissions": {
-        "university_name": "University of Chicago",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -8613,7 +8594,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
+              "IELTS": 7,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
@@ -8974,6 +8959,35 @@
               "method": "Verified-null: official SNU materials state that applicant counts and acceptance rate are not disclosed.",
               "basis": {
                 "summary": "SNU official materials state that the number of applicants and the acceptance rate are not disclosed, and no public program-level admit table was found for Computer Science and Engineering."
+              }
+            }
+          },
+          {
+            "program_name": "Computer Science and Engineering (Graduate)",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed SNU official public materials did not provide a graduate program-level applicants/admitted table for Computer Science and Engineering, and the admissions FAQ notes that applicant counts and acceptance rate are not disclosed.",
+            "notes": "Stored as verified-null because no official public graduate Computer Science and Engineering admit counts were found.",
+            "sources": [
+              {
+                "url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+                "label": "SNU admissions FAQ"
+              }
+            ],
+            "provenance": {
+              "source": "SNU admissions FAQ",
+              "source_url": "https://en.snu.ac.kr/admission/overview/faq/admission",
+              "verified_at": "2026-03-25",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official SNU public admissions materials do not expose a program-level admit table for this program.",
+              "basis": {
+                "summary": "The reviewed SNU official public materials did not provide a graduate program-level applicants/admitted table for Computer Science and Engineering, and the admissions FAQ notes that applicant counts and acceptance rate are not disclosed."
               }
             }
           }
@@ -9427,7 +9441,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           }
         ],
@@ -9694,7 +9712,8 @@
       ],
       "acceptance_rate_percent": 5.4,
       "admissions": {
-        "university_name": "University of Pennsylvania",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -10163,10 +10182,13 @@
           "kind": null,
           "acceptance_rate_percent": null,
           "counts": null,
-          "notes": "Kyoto publishes past-results tables with capacity, applicants, examinees, successful applicants, and enrollees for individual programs.",
+          "notes": "Kyoto publishes past-results tables with capacity, applicants, examinees, successful applicants, and enrollees for individual programs and graduate schools.",
           "sources": [
             {
               "url": "https://www.ges.kyoto-u.ac.jp/en/admissions/past-results"
+            },
+            {
+              "url": "https://www.t.kyoto-u.ac.jp/en/admissions/graduate/exam1/result"
             },
             {
               "url": "https://www.i.kyoto-u.ac.jp/en/admission/application/"
@@ -10537,7 +10559,8 @@
       ],
       "acceptance_rate_percent": 8.76,
       "admissions": {
-        "university_name": "Cornell University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -10993,7 +11016,8 @@
       ],
       "acceptance_rate_percent": 10.98,
       "admissions": {
-        "university_name": "University of California, Berkeley",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -11443,7 +11467,8 @@
       ],
       "acceptance_rate_percent": null,
       "admissions": {
-        "university_name": "University of New South Wales",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
@@ -11570,7 +11595,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -11623,7 +11652,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -11676,7 +11709,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -11927,7 +11964,8 @@
       ],
       "acceptance_rate_percent": 3.87,
       "admissions": {
-        "university_name": "Yale University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -12384,7 +12422,8 @@
       ],
       "acceptance_rate_percent": 4.62,
       "admissions": {
-        "university_name": "Princeton University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -12840,7 +12879,8 @@
       ],
       "acceptance_rate_percent": null,
       "admissions": {
-        "university_name": "University of Sydney",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
@@ -12967,7 +13007,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -13020,7 +13064,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -13073,7 +13121,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -13323,39 +13375,20 @@
       ],
       "acceptance_rate_percent": 47.55,
       "admissions": {
-        "university_name": "McGill University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
-          "status": "official_rate",
+          "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
-          "acceptance_rate_percent": 47.55,
-          "counts": {
-            "cycle": "Fall 2025",
-            "scope": "undergraduate/professional",
-            "applicants": 38135,
-            "offers": 18132,
-            "entering_class": 7310
-          },
-          "semantics": "McGill publishes undergraduate/professional applicant and offer totals in its admissions profile. UniSearch stores the institution-wide bachelor's offer rate rather than inventing program-level rates.",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
           "sources": [
             {
-              "url": "https://www.mcgill.ca/es/admissions-profile",
-              "label": "Admissions Profile | Enrolment Services - McGill University"
+              "url": "https://www.mcgill.ca/undergraduate-admissions/apply",
+              "label": "Official undergraduate admissions"
             }
-          ],
-          "provenance": {
-            "source": "Admissions Profile | Enrolment Services - McGill University",
-            "source_url": "https://www.mcgill.ca/es/admissions-profile",
-            "verified_at": "2026-04-08",
-            "status": "official_derived",
-            "confidence": "high",
-            "method": "Calculated from official Fall 2025 undergraduate admissions counts (18,132 offers / 38,135 applicants).",
-            "basis": {
-              "cycle": "Fall 2025",
-              "scope": "undergraduate/professional",
-              "applicants": 38135,
-              "offers": 18132
-            }
-          }
+          ]
         },
         "program_level": {
           "status": "verified_null_only",
@@ -13484,7 +13517,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -13538,7 +13575,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -13592,7 +13633,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -13859,7 +13904,8 @@
       ],
       "acceptance_rate_percent": 6.44,
       "admissions": {
-        "university_name": "Johns Hopkins University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -14007,7 +14053,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
+              "IELTS": 7,
+              "IELTS_LISTENING": 7.0,
+              "IELTS_READING": 7.0,
+              "IELTS_WRITING": 7.0,
+              "IELTS_SPEAKING": 7.0
             }
           },
           {
@@ -14313,7 +14363,8 @@
       ],
       "acceptance_rate_percent": null,
       "admissions": {
-        "university_name": "Australian National University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
@@ -14440,7 +14491,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -14493,7 +14548,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -14546,7 +14605,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -14795,7 +14858,8 @@
       ],
       "acceptance_rate_percent": null,
       "admissions": {
-        "university_name": "University of Edinburgh",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
@@ -14824,7 +14888,7 @@
         },
         "programs": [
           {
-            "program_name": "Computer Science",
+            "program_name": "Informatics",
             "source_scope": "program_verified_null",
             "data_type": "verified-null",
             "scope": "program",
@@ -14922,7 +14986,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 5.5,
+              "IELTS_READING": 5.5,
+              "IELTS_WRITING": 5.5,
+              "IELTS_SPEAKING": 5.5
             }
           },
           {
@@ -14977,7 +15045,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 5.5,
+              "IELTS_READING": 5.5,
+              "IELTS_WRITING": 5.5,
+              "IELTS_SPEAKING": 5.5
             }
           },
           {
@@ -15033,7 +15105,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 5.5,
+              "IELTS_READING": 5.5,
+              "IELTS_WRITING": 5.5,
+              "IELTS_SPEAKING": 5.5
             }
           },
           {
@@ -15283,7 +15359,8 @@
       ],
       "acceptance_rate_percent": null,
       "admissions": {
-        "university_name": "University of Manchester",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
@@ -15781,6 +15858,14 @@
     ],
     "verified_sources": [
       {
+        "topic": "language_requirements",
+        "url": "https://www.cs.manchester.ac.uk/study/international-students/index.htm"
+      },
+      {
+        "topic": "language_requirements",
+        "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2027/03921/meng-mechanical-engineering/"
+      },
+      {
         "topic": "extra_requirements",
         "url": "https://www.manchester.ac.uk/study/international/country-specific-information/"
       },
@@ -15831,14 +15916,6 @@
       {
         "topic": "finance",
         "url": "https://www.manchester.ac.uk/study/international/finance-and-scholarships/cost-of-living/"
-      },
-      {
-        "topic": "language_requirements",
-        "url": "https://www.cs.manchester.ac.uk/study/international-students/index.htm"
-      },
-      {
-        "topic": "language_requirements",
-        "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2027/03921/meng-mechanical-engineering/"
       }
     ],
     "description": "Manchester is a large research-intensive civic university with broad strengths in science, engineering, health, business, and social sciences, and a strong graduate-employment profile.",
@@ -16003,7 +16080,8 @@
       ],
       "acceptance_rate_percent": 3.99,
       "admissions": {
-        "university_name": "Columbia University",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -16459,33 +16537,20 @@
       ],
       "acceptance_rate_percent": 52.0,
       "admissions": {
-        "university_name": "University of British Columbia",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
-          "status": "official_rate",
+          "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
-          "acceptance_rate_percent": 52,
+          "acceptance_rate_percent": null,
           "counts": null,
-          "semantics": "UBC's Vancouver Campus Fact Sheet publishes an overall undergraduate admit rate for the Vancouver campus. UniSearch stores that official institution-wide bachelor's rate rather than inventing program-level rates.",
+          "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
           "sources": [
             {
-              "url": "https://pair.ok.ubc.ca/wp-content/uploads/sites/145/2024/02/Factsheets_2024_February.pdf",
-              "label": "UBC Vancouver Campus Fact Sheet Winter 2023"
+              "url": "https://you.ubc.ca/applying-ubc/",
+              "label": "Official undergraduate admissions"
             }
-          ],
-          "provenance": {
-            "source": "UBC Vancouver Campus Fact Sheet Winter 2023",
-            "source_url": "https://pair.ok.ubc.ca/wp-content/uploads/sites/145/2024/02/Factsheets_2024_February.pdf",
-            "verified_at": "2026-04-08",
-            "status": "official",
-            "confidence": "high",
-            "method": "Direct admit rate published in the official UBC Vancouver Campus Fact Sheet Winter 2023.",
-            "basis": {
-              "campus": "Vancouver",
-              "cycle": "Winter 2023",
-              "metric": "Admit Rate",
-              "value_percent": 52.0
-            }
-          }
+          ]
         },
         "program_level": {
           "status": "verified_null_only",
@@ -16614,7 +16679,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -16668,7 +16737,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -16722,7 +16795,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0
             }
           },
           {
@@ -16987,7 +17064,8 @@
       ],
       "acceptance_rate_percent": 8.97,
       "admissions": {
-        "university_name": "University of California, Los Angeles",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
           "status": "official_rate",
           "kind": "undergraduate_institution_wide",
@@ -17438,46 +17516,20 @@
       ],
       "acceptance_rate_percent": 55.0,
       "admissions": {
-        "university_name": "University of Waterloo",
+        "schema_version": 1,
+        "status_date": "2026-04-04",
         "university_wide": {
-          "status": "official_rate",
+          "status": "no_official_source",
           "kind": "undergraduate_institution_wide",
-          "acceptance_rate_percent": 55,
-          "counts": {
-            "cycle": "Fall 2023",
-            "scope": "first-year undergraduate combined",
-            "domestic_applications": 49933,
-            "domestic_offers": 28338,
-            "international_applications": 16642,
-            "international_offers": 8280,
-            "applications_total": 66575,
-            "offers_total": 36618
-          },
-          "semantics": "Waterloo's Senate admissions brief publishes first-year undergraduate applications and offers separately for domestic and international cohorts. UniSearch stores the combined institution-wide bachelor's offer rate rather than inventing program-level rates.",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official admissions materials describe routes, qualifications, and required documents, but they do not publish a directly comparable university-wide undergraduate acceptance rate for UniSearch to store here.",
           "sources": [
             {
-              "url": "https://uwaterloo.ca/secretariat/sites/default/files/uploads/documents/sfc-2024-02-07-agenda-package_0.pdf",
-              "label": "University of Waterloo Undergraduate Admissions 2019-2023 Senate brief"
+              "url": "https://uwaterloo.ca/future-students/admissions",
+              "label": "Official undergraduate admissions"
             }
-          ],
-          "provenance": {
-            "source": "University of Waterloo Undergraduate Admissions 2019-2023 Senate brief",
-            "source_url": "https://uwaterloo.ca/secretariat/sites/default/files/uploads/documents/sfc-2024-02-07-agenda-package_0.pdf",
-            "verified_at": "2026-04-08",
-            "status": "official_derived",
-            "confidence": "high",
-            "method": "Calculated from official Fall 2023 first-year undergraduate applications and offers combined across domestic and international cohorts.",
-            "basis": {
-              "cycle": "Fall 2023",
-              "scope": "first-year undergraduate combined",
-              "domestic_applications": 49933,
-              "domestic_offers": 28338,
-              "international_applications": 16642,
-              "international_offers": 8280,
-              "applications_total": 66575,
-              "offers_total": 36618
-            }
-          }
+          ]
         },
         "program_level": {
           "status": "verified_null_only",
@@ -17610,7 +17662,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           },
           {
@@ -17664,7 +17720,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           },
           {
@@ -17718,7 +17778,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
+              "IELTS": 6.5,
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.5,
+              "IELTS_SPEAKING": 6.5
             }
           },
           {
@@ -18385,12 +18449,12 @@
         "university_wide": {
           "status": "official_rate",
           "kind": "rate",
-          "acceptance_rate_percent": 21,
+          "acceptance_rate_percent": 21.0,
           "counts": {
             "applicants": 6911,
             "admitted": 1480
           },
-          "semantics": "The official undergraduate statistics PDF publishes a direct 2025 undergraduate admission rate and notes that the published rate reflects a combined first-year admissions flow.",
+          "semantics": "The official undergraduate statistics PDF publishes a direct 2025 undergraduate admission rate. The research note states that since 2024 there is a single application for NUFYP and undergraduate programs, so the published rate reflects that combined admissions flow.",
           "sources": [
             {
               "url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
@@ -18411,7 +18475,7 @@
             "verified_at": "2026-03-25",
             "status": "official",
             "confidence": "medium",
-            "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that the published rate reflects NU's combined first-year admissions flow."
+            "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
           }
         },
         "program_level": {
@@ -18445,7 +18509,7 @@
             "metric_unit": null,
             "acceptance_rate_percent": null,
             "counts": null,
-            "semantics": "Nazarbayev University publishes a combined undergraduate admissions rate, but the reviewed official materials do not publish program-by-program admit totals for Computer Science.",
+            "semantics": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Computer Science.",
             "notes": "Stored as verified-null because no official public Computer Science admit table was found.",
             "sources": [
               {
@@ -18461,7 +18525,7 @@
               "confidence": "high",
               "method": "Verified-null: official NU materials provide a combined undergraduate admissions flow rather than major-specific public admit counts.",
               "basis": {
-                "summary": "Nazarbayev University publishes a combined undergraduate admissions rate, but the reviewed official materials do not publish program-by-program admit totals for Computer Science."
+                "summary": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Computer Science."
               }
             }
           },
@@ -18474,7 +18538,7 @@
             "metric_unit": null,
             "acceptance_rate_percent": null,
             "counts": null,
-            "semantics": "Nazarbayev University publishes a combined undergraduate admissions rate, but the reviewed official materials do not publish program-by-program admit totals for Mechanical and Aerospace Engineering.",
+            "semantics": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Mechanical and Aerospace Engineering.",
             "notes": "Stored as verified-null because no official public Mechanical and Aerospace Engineering admit table was found.",
             "sources": [
               {
@@ -18490,7 +18554,36 @@
               "confidence": "high",
               "method": "Verified-null: official NU materials provide a combined undergraduate admissions flow rather than major-specific public admit counts.",
               "basis": {
-                "summary": "Nazarbayev University publishes a combined undergraduate admissions rate, but the reviewed official materials do not publish program-by-program admit totals for Mechanical and Aerospace Engineering."
+                "summary": "Nazarbayev University publishes a combined undergraduate admissions rate and notes that the NUFYP and undergraduate programs share a single application flow, but the reviewed official materials do not publish program-by-program admit totals for Mechanical and Aerospace Engineering."
+              }
+            }
+          },
+          {
+            "program_name": "Foundation Year",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "Nazarbayev University states that since 2024 the NUFYP and undergraduate programs have a single application form, but the reviewed official materials do not publish a standalone public applicant/admit table for Foundation Year.",
+            "notes": "Stored as verified-null because the public official flow is combined rather than published as a separate Foundation Year admission ratio.",
+            "sources": [
+              {
+                "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+                "label": "Nazarbayev University regular admissions overview"
+              }
+            ],
+            "provenance": {
+              "source": "Nazarbayev University regular admissions overview",
+              "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+              "verified_at": "2026-03-25",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official NU materials describe a combined foundation-undergraduate admissions flow rather than a standalone public Foundation Year admit table.",
+              "basis": {
+                "summary": "Nazarbayev University states that since 2024 the NUFYP and undergraduate programs have a single application form, but the reviewed official materials do not publish a standalone public applicant/admit table for Foundation Year."
               }
             }
           }
@@ -18549,7 +18642,11 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5,
-              "TOEFL_iBT_0_120": 79
+              "TOEFL_iBT_0_120": 79,
+              "IELTS_LISTENING": 5.5,
+              "IELTS_READING": 5.5,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 5.5
             },
             "stats_avg": {
               "IELTS": 7.4
@@ -18608,7 +18705,11 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5,
-              "TOEFL_iBT_0_120": 79
+              "TOEFL_iBT_0_120": 79,
+              "IELTS_LISTENING": 5.5,
+              "IELTS_READING": 5.5,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 5.5
             },
             "stats_avg": {
               "IELTS": 7.4
@@ -18668,7 +18769,11 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6,
-              "TOEFL_iBT_0_120": 60
+              "TOEFL_iBT_0_120": 60,
+              "IELTS_LISTENING": 5.5,
+              "IELTS_READING": 5.5,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 5.5
             }
           }
         ],

@@ -478,10 +478,37 @@
 
 @media (max-width: 640px) {
   .about-page {
-    margin-top: 24px;
+    margin-top: 16px;
+    padding: 0 12px;
   }
 
   .about-shell {
-    padding: 20px 18px;
+    padding: 18px 14px;
+    border-radius: 20px;
+  }
+
+  .about-title {
+    font-size: 32px;
+  }
+
+  .about-lead {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .about-principle-card {
+    padding: 14px;
+  }
+
+  .about-principle-card h3 {
+    font-size: 17px;
+  }
+
+  .team-card-body h3 {
+    font-size: 22px;
+  }
+
+  .team-bio {
+    font-size: 14px;
   }
 }

@@ -21,9 +21,9 @@ class ExamNormalizationTests(unittest.TestCase):
     def test_hkdse_weighted_total_uses_min_max_normalization(self):
         self.assertAlmostEqual(90.7513, float(exams_service.normalize_exam_score("HKDSE_WEIGHTED_TOTAL", 42.88) or 0.0), places=3)
 
-    def test_a_level_grades_normalize_from_raw_grade_string(self):
-        self.assertAlmostEqual(50.0, float(exams_service.normalize_exam_score("A_LEVEL_CERT", "BBB") or 0.0), places=4)
-        self.assertAlmostEqual(95.0, float(exams_service.normalize_exam_score("A_LEVEL_CERT", "A*A*A") or 0.0), places=4)
+    def test_a_level_grades_normalize_from_internal_points(self):
+        self.assertAlmostEqual(50.0, float(exams_service.normalize_exam_score("A_LEVEL_CERT", 12) or 0.0), places=4)
+        self.assertAlmostEqual(95.0, float(exams_service.normalize_exam_score("A_LEVEL_CERT", 17) or 0.0), places=4)
         self.assertTrue(exams_service.exam_supports_percentile_normalization("A_LEVEL_CERT"))
 
 

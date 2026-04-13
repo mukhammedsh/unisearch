@@ -568,6 +568,32 @@ export function moneyUSD(val) {
   return "$" + new Intl.NumberFormat("en-US").format(n);
 }
 
+/**
+ * Русское склонение числительных (1 балл, 2 балла, 5 баллов)
+ * @param {number} n 
+ * @param {string[]} forms [балл, балла, баллов]
+ */
+function pluralRus(n, forms) {
+  const v = Math.abs(n) % 100;
+  const v1 = v % 10;
+  if (v > 10 && v < 20) return forms[2];
+  if (v1 > 1 && v1 < 5) return forms[1];
+  if (v1 === 1) return forms[0];
+  return forms[2];
+}
+
+export function formatPlural(n, forms, lang = "eng") {
+  const num = Number(n);
+  if (lang === "rus" && Array.isArray(forms) && forms.length >= 3) {
+    return pluralRus(num, forms);
+  }
+  // English: 1 point, 2 points
+  if (Array.isArray(forms)) {
+    return num === 1 ? forms[0] : (forms[1] || forms[0]);
+  }
+  return String(forms || "");
+}
+
 const EXAM_KEY_ALIASES = {
   NUET: ["NUET_TOTAL", "NUETTOTAL"],
   NUET_TOTAL: ["NUET", "NUETTOTAL"],
@@ -645,17 +671,16 @@ const EXAM_VALUE_LABELS = {
     required: "Required",
     level: "Level",
     total: "Total",
+    points: ["pt", "pts"],
   },
   rus: {
     added: "Добавлено",
     required: "Требуется",
     level: "Уровень",
+    total: "Общий балл",
+    points: ["балл", "балла", "баллов"],
   },
 };
-
-if (EXAM_VALUE_LABELS.rus) {
-  EXAM_VALUE_LABELS.rus.total = "Общий балл";
-}
 
 function formatCompositeExamValue(examId, entry, words, opts = {}) {
   if (!entry || typeof entry !== "object") return "";
@@ -751,8 +776,24 @@ export function formatExamValue(examId, valueOrEntry, opts = {}) {
   }
 
   if (normalizedId === "GPA" && Number.isFinite(Number(score))) return `${score}%`;
+
+  const canonId = canonicalExamKey(normalizedId);
+  const needsPointsSuffix = (
+    canonId === "ALEVELCERT" ||
+    canonId === "APTOTAL" ||
+    canonId === "IBDIPLOMA" ||
+    canonId === "NUETTOTAL" ||
+    canonId === "NUET" ||
+    canonId === "HKDSEWEIGHTEDTOTAL"
+  );
+  if (needsPointsSuffix && Number.isFinite(Number(score)) && Number(score) > 0) {
+    const suffix = formatPlural(score, words.points, locale);
+    return `${score} ${suffix}`;
+  }
+
   return String(score ?? "").trim();
 }
+
 
 const EXAM_LABEL_OVERRIDES = {
   SAT: "SAT Total",

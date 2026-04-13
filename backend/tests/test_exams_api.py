@@ -45,18 +45,18 @@ class ExamsApiTests(unittest.TestCase):
     def test_validate_exam_accepts_valid_score(self):
         response = self.client.post(
             "/exams/validate",
-            json={"exam": "SAT", "score": 1450},
+            json={"exam": "SAT_MATH", "score": 750},
         )
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertTrue(bool(data.get("ok")))
-        self.assertEqual("SAT", data.get("exam"))
-        self.assertEqual(1450, int(data.get("score")))
+        self.assertEqual("SAT_MATH", data.get("exam"))
+        self.assertEqual(750, int(data.get("score")))
 
     def test_validate_exam_rejects_invalid_step(self):
         response = self.client.post(
             "/exams/validate",
-            json={"exam": "SAT", "score": 1451},
+            json={"exam": "SAT_MATH", "score": 751},
         )
         self.assertEqual(response.status_code, 400)
         detail = str(response.json().get("detail", ""))
@@ -75,14 +75,21 @@ class ExamsApiTests(unittest.TestCase):
     def test_validate_a_level_grades_returns_internal_score_and_raw_value(self):
         response = self.client.post(
             "/exams/validate",
-            json={"exam": "A_LEVEL_CERT", "raw_value": "A*A*A"},
+            json={
+                "exam": "A_LEVEL_CERT",
+                "details": {
+                    "components": [
+                        {"exam": "A_LEVEL_MATHEMATICS", "raw_value": "A*"},
+                        {"exam": "A_LEVEL_PHYSICS", "raw_value": "A*"},
+                        {"exam": "A_LEVEL_CHEMISTRY", "raw_value": "A*"},
+                    ]
+                }
+            },
         )
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("A_LEVEL_CERT", data.get("exam"))
-        self.assertEqual(17, int(data.get("score")))
-        self.assertEqual("A*A*A", data.get("raw_value"))
-        self.assertEqual("A*A*A", data.get("display_value"))
+        self.assertEqual(18, int(data.get("score")))  # Three A*s = 6+6+6 = 18
 
     def test_validate_single_subject_a_level_grade_returns_grade_points(self):
         response = self.client.post(

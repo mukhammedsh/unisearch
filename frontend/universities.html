@@ -30,9 +30,9 @@
         <p class="u-page-scope__text" data-i18n="universities.scope_note.body">UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.</p>
       </div>
     </section>
-    <div class="u-layout">
-      <aside class="u-sidebar">
 
+    <div class="u-layout">
+      <aside id="uSidebar" class="u-sidebar">
         <div class="u-filter-card">
           <div class="u-filter-title">
             <span class="u-filter-icon" aria-hidden="true">
@@ -226,6 +226,11 @@
       </section>
     </div>
   </main>
+
+  <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button">
+    <span data-heroicon="funnel" data-icon-size="20"></span>
+    <span data-i18n="universities.filter">Filter</span>
+  </button>
 
   <script src="env.js"></script>
   <script src="config.js"></script>

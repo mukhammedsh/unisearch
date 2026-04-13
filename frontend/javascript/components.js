@@ -458,7 +458,7 @@ function initMobileMenu() {
         if (e.key === "Escape") closeMenu();
     });
 
-    const media = window.matchMedia("(max-width: 599px)");
+    const media = window.matchMedia("(max-width: 980px)");
     const onViewportChange = (e) => {
         if (!e.matches) closeMenu();
     };
@@ -477,7 +477,7 @@ function syncAdaptiveNavbarLayout() {
     if (!navbar || !left || !center || !right) return;
 
     // Mobile/tablet layout is handled via CSS media rules.
-    if (window.matchMedia("(max-width: 768px)").matches) {
+    if (window.matchMedia("(max-width: 980px)").matches) {
         navbar.classList.remove("is-compact");
         return;
     }

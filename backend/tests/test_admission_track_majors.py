@@ -131,7 +131,13 @@ class AdmissionTrackMajorsTests(unittest.TestCase):
                 {
                     "id": "cuhk_hkdse",
                     "label": "HKDSE (JUPAS)",
-                    "requirements": {"HKDSE_LEVEL": 3},
+                    "requirements": {
+                        "HKDSE_LEVEL": 3,
+                        "HKDSE_WEIGHTED_TOTAL": 35,
+                        "HKDSE_CHINESE_LANGUAGE": 3,
+                        "HKDSE_ENGLISH_LANGUAGE": 3,
+                        "HKDSE_MATHEMATICS": 2
+                    },
                 }
             ],
         }

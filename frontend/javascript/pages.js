@@ -1576,6 +1576,33 @@ export function initUniversitiesPage() {
     
     switchView(state.viewMode, false);
     
+    const setupMobileFilters = () => {
+        const toggleBtn = $("mobileFilterToggle");
+        const sidebar = $("uSidebar");
+        if (!toggleBtn || !sidebar) return;
+
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("is-open");
+            const isOpen = sidebar.classList.contains("is-open");
+            toggleBtn.classList.toggle("is-active", isOpen);
+            
+            // Lock body scroll when filters are open on mobile
+            if (window.innerWidth <= 980) {
+                document.body.style.overflow = isOpen ? "hidden" : "";
+            }
+        });
+
+        // Close sidebar when clicking outside on mobile backdrop
+        sidebar.addEventListener("click", (e) => {
+            if (window.innerWidth <= 980 && e.target === sidebar) {
+                sidebar.classList.remove("is-open");
+                toggleBtn.classList.remove("is-active");
+                document.body.style.overflow = "";
+            }
+        });
+    };
+    setupMobileFilters();
+
     const refetch = debounce(() => { 
         state.page = 1; 
         saveFilters(state);

@@ -128,22 +128,18 @@ body.global-loading-active > *:not(#globalLoadingOverlay) {
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
 @keyframes detail-enter {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -213,7 +209,7 @@ a {
 }
 
 html, body {
-  overflow-x: hidden; /* ⛔️ Главный фикс: запрещает скролл влево-вправо */
+  /* overflow-x: removed to allow sticky position */
   width: 100%;        /* Гарантирует, что сайт не шире окна */
   position: relative; /* Стабилизирует позиционирование */
 }
@@ -914,10 +910,9 @@ html, body {
   row-gap: 8px;
 }
 
-.profile-exam-special-grid--breakdown{
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
+.profile-exam-special-  .guide-layout{
+    display: block; /* Stack naturally to allow sidebar to stick over content */
+  }
 
 .profile-exam-special-grid--grades .profile-input{
   min-height: 45px;
@@ -1601,6 +1596,7 @@ html, body {
   background-repeat: no-repeat;
   background-position: center;
   transition: transform 0.2s;
+  flex-shrink: 0;
 }
 
 .custom-select-wrapper.open .custom-select-trigger::after {
@@ -1671,6 +1667,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .custom-select-trigger-content--compact {
@@ -1749,6 +1746,7 @@ html, body {
 
 /* --- Адаптивность для мобильных (Улучшенная) --- */
 @media (max-width: 768px) {
+
   .navbar {
     position: sticky;
     top: 0;
@@ -1790,12 +1788,13 @@ html, body {
   .navbar-right .lang-control .custom-select-wrapper { margin-right: 0; }
   .navbar-right .lang-control .custom-select-wrapper,
   .navbar-right .lang-control .custom-select-trigger {
-    width: 68px;
-    min-height: 34px;
+    width: 82px;
+    min-height: 38px;
   }
   .navbar-right .lang-control .custom-select-trigger {
-    padding: 0 18px 0 6px;
+    padding: 0 16px 0 10px; /* Better left padding for flag */
     font-size: 11px;
+    width: 82px;
   }
   .navbar-right .lang-control .custom-select-trigger::after {
     right: 6px;
@@ -1812,12 +1811,19 @@ html, body {
     border-top: 1px solid var(--line);
     justify-content: center;
     gap: 15px;
+    display: flex; /* We use absolute/opacity/max-height for the toggleable menu */
+  }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Profile modal tweaks */
-  .profile-card{ width: min(720px, 96vw); }
-  .profile-header{ padding: 18px 16px 12px; }
-  .profile-body{ padding: 12px 16px 16px; }
+  .profile-card { width: min(720px, 96vw); max-height: 90vh; }
+  .profile-header { padding: 18px 16px 12px; }
+  .profile-body { padding: 12px 16px 16px; }
 
   .profile-exam-form{ grid-template-columns: 1fr; }
   .profile-exam-special-grid--grades{ grid-template-columns: 1fr; }
@@ -2086,6 +2092,11 @@ h6,
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   height: 72px;
   padding: 0 28px;
   background: rgba(255, 255, 255, 0.82);
@@ -2120,10 +2131,19 @@ h6,
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -12px;
+  bottom: -4px;
   height: 2px;
   border-radius: 999px;
   background: var(--accent);
+}
+
+@media (max-width: 980px) {
+  .navbar-center a.is-active::after {
+    bottom: 5px;
+    left: auto;
+    width: 4px;
+    height: 4px;
+  }
 }
 
 .logo {
@@ -2180,15 +2200,95 @@ h6,
 }
 
 @media (max-width: 768px) {
-  body {
-    padding-top: 78px;
-  }
+  /* Inherit global 72px padding-top */
 
   .navbar {
     padding: 10px 16px;
+    height: 72px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .navbar-left {
+    order: 1;
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .navbar-right {
+    order: 2;
+    width: auto;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Standardize gap for all buttons */
+    margin-left: 0;
+  }
+
+  .navbar-right > * {
+    margin: 0 !important; /* Remove any individual margins to ensure even gaps */
+  }
+
+  .navbar-center {
+    display: flex;
+    position: absolute;
+    top: 72px; /* Height of the fixed navbar */
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--surface-solid);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 20px;
+    z-index: 1001;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+
+  .navbar.is-menu-open .navbar-center {
+    opacity: 1;
+    max-height: 500px;
+    pointer-events: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  .navbar-center a {
+    padding: 12px 0;
+    width: 100%;
+    border-bottom: 1px solid var(--line-faint);
+  }
+
+  .navbar-center a:last-child {
+    border-bottom: none;
   }
 
   .navbar-center a.is-active::after {
     bottom: -8px;
+  }
+
+  .logo {
+    height: 34px;
+  }
+
+  .theme-btn, 
+  .profile-trigger-btn, 
+  .menu-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar-right .lang-switch-wrap {
+    display: none; /* Only hide the text labeller, not the trigger */
+  }
+  
+  .navbar-right .lang-control {
+    display: block; /* Ensure it stays visible */
   }
 }

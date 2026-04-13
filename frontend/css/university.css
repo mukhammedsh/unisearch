@@ -543,6 +543,8 @@
   opacity: 0.95;
 }
 
+
+
 .program-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 26px rgba(36, 14, 79, 0.1);
@@ -798,6 +800,9 @@
   display: grid;
   gap: 12px;
 }
+
+
+
 
 .finance-track-group--grant {
   border-color: #86efac;
@@ -1365,14 +1370,26 @@
   margin-top: 24px;
 }
 
-.track-funding-options-grid,
-.finance-track-options-grid {
+.track-funding-options-grid {
   display: grid;
   gap: 14px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   align-items: stretch;
   grid-auto-rows: 1fr;
 }
+
+.finance-track-options-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+
+
+
+
+
+
 
 .admission-option-card,
 .finance-option-card {
@@ -1389,6 +1406,8 @@
   gap: 12px;
 }
 
+
+
 .admission-option-card::before,
 .finance-option-card::before {
   content: "";
@@ -1397,6 +1416,8 @@
   height: 3px;
   background: linear-gradient(90deg, var(--accent), var(--accent-highlight));
 }
+
+
 
 .admission-option-card:hover,
 .finance-option-card:hover {
@@ -1453,6 +1474,8 @@
   color: var(--accent);
 }
 
+
+
 .track-option-count,
 .track-selection-badge {
   opacity: 1;
@@ -1501,6 +1524,8 @@
   background: linear-gradient(90deg, var(--accent), var(--accent-highlight));
 }
 
+
+
 .track-card + .track-card {
   margin-top: 14px;
 }
@@ -1523,7 +1548,10 @@
 
 .track-card--grant::before {
   background: linear-gradient(90deg, #10b981, #34d399);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
 }
+
 
 .track-head {
   display: flex;
@@ -2103,7 +2131,7 @@
    ========================================= */
 .finance-grid-new {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: 1fr;
   gap: 24px;
   margin-top: 10px;
   
@@ -3576,8 +3604,9 @@
 }
 
 .d-title {
-  font-size: clamp(26px, 3.5vw, 38px);
-  letter-spacing: -0.03em;
+  font-size: clamp(22px, 5vw, 38px);
+  letter-spacing: -0.02em;
+  font-weight: 800;
 }
 
 .d-location {
@@ -3634,11 +3663,17 @@
 
 .d-tabs {
   margin-top: 0;
-  padding: 0 20px;
-  gap: 18px;
+  padding: 0 16px;
+  gap: 20px;
   border-bottom: none;
   background: var(--card);
   overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.d-tabs::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .d-tab-btn {
@@ -3650,6 +3685,7 @@
   background: transparent;
   color: var(--muted);
   box-shadow: none;
+  flex: 0 0 auto; /* Prevent tabs from shrinking */
 }
 
 .d-tab-btn:hover {
@@ -3659,7 +3695,7 @@
 }
 
 .d-tab-btn.active {
-  color: var(--text);
+  color: var(--accent);
   background: transparent;
   box-shadow: none;
 }
@@ -3670,7 +3706,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 2px;
+  height: 3px;
   border-radius: 999px;
   background: var(--accent);
 }
@@ -3782,6 +3818,8 @@
   background: var(--accent);
 }
 
+
+
 .admission-option-card:hover,
 .finance-option-card:hover {
   transform: translateY(-2px);
@@ -3799,6 +3837,8 @@
 .finance-option-card--grant::before {
   background: #10b981;
 }
+
+
 
 .track-cost-preview,
 .track-extra-req,
@@ -3914,11 +3954,16 @@
   border-top-color: transparent;
 }
 
-.track-funding-options-grid,
-.finance-track-options-grid,
-.finance-grid-new {
+.track-funding-options-grid {
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
 }
+
+.finance-track-options-grid,
+.finance-grid-new {
+  grid-template-columns: 1fr;
+}
+
+
 
 .finance-header,
 .track-header {
@@ -3974,15 +4019,29 @@
 }
 
 @media (max-width: 720px) {
+  .d-head {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .d-back {
     width: 100%;
     text-align: center;
+    order: -1;
+    margin-bottom: 12px;
   }
 
   .d-head-links {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: stretch;
     margin-left: 0;
+    margin-top: 14px;
+  }
+  
+  .d-site-link {
+    width: 100%;
+    justify-content: center;
   }
 
   .d-title-row {
@@ -3990,12 +4049,34 @@
   }
 
   .d-tab-btn {
-    min-width: 104px;
-    padding: 13px 10px 15px;
+    min-width: 0;
+    padding: 13px 4px 15px;
   }
 
   .track-side,
   .track-price {
     min-width: 0;
+  }
+
+  .d-kv {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 12px 0;
+  }
+
+  .d-kv > span:first-child,
+  .d-kv > span:last-child {
+    flex: 0 0 100%;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .d-quick-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .d-cover {
+    aspect-ratio: 16 / 9;
   }
 }

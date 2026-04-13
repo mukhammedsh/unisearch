@@ -591,8 +591,13 @@ class AiScoringTests(unittest.TestCase):
             "exams": [
                 {
                     "id": "A_LEVEL_CERT",
-                    "raw_value": "A*A*A",
-                    "details": {"grades": ["A*", "A*", "A"]},
+                    "details": {
+                        "components": [
+                            {"exam": "A_LEVEL_MATHEMATICS", "raw_value": "A*", "score": 6},
+                            {"exam": "A_LEVEL_PHYSICS", "raw_value": "A*", "score": 6},
+                            {"exam": "A_LEVEL_CHEMISTRY", "raw_value": "A", "score": 5}
+                        ]
+                    },
                 }
             ],
             "languages": [{"code": "en", "kind": "native"}],
