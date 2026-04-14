@@ -7,13 +7,30 @@
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.about">About Us | UniSearch</title>
   <script src="javascript/theme-init.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/about.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/about.css" />
 </head>
 <body data-page="about">
+  <div id="siteInitialLoader" class="site-initial-loader">
+    <div class="skeleton-bg">
+      <div class="skeleton-block skel-header-bar"></div>
+      <div class="skel-content-col" style="max-width: 800px; margin: 0 auto; width: 100%;">
+        <div class="skeleton-block skel-title" style="width: 50%; margin: 40px auto 20px;"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text-short"></div>
+        <div class="skeleton-block skel-text" style="margin-top: 30px;"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text-short"></div>
+      </div>
+    </div>
+    <div class="site-initial-loader__spinner"></div>
+  </div>
   <main class="about-page">
     <section class="about-shell">
       <section class="about-hero about-shell-section">
@@ -102,12 +119,12 @@
 
   <footer class="site-footer">
     <div class="container footer-content">
-        <p data-i18n="footer.copyright">© 2026 UniSearch</p>
-        <div class="social-links">
-            <a href="https://github.com/muxlex/unisearch" target="_blank" rel="noopener">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
-            </a>
-        </div>
+      <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+      <div class="social-links">
+        <a href="https://github.com/muxlex/unisearch" target="_blank" rel="noopener">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
+        </a>
+      </div>
     </div>
   </footer>
 </body>

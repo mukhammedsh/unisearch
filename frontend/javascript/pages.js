@@ -1,4 +1,4 @@
-/* 4. pages.js - ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ ВЕРСИЯ */
+﻿/* 4. pages.js - Р¤РРќРђР›Р¬РќРђРЇ РРЎРџР РђР’Р›Р•РќРќРђРЇ Р’Р•Р РЎРРЇ */
 
 import {
   API_BASE,
@@ -41,7 +41,7 @@ import {
   trackLookupKey,
 } from "./university-detail-helpers.js";
 
-import { setupTabs } from "./components.js";
+import { setupTabs, renderNoConnection } from "./components.js";
 import { heroIcon, stripLeadingDecorations } from "./icons.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "./routes.js";
@@ -60,6 +60,8 @@ import {
   translateWord,
 } from "./university-translations.js";
 import { bindInfoTooltips } from "./tooltip.js";
+export { initRankingPage } from "./pages/ranking.js";
+export { initGuidePage } from "./pages/guide.js";
 
 const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
 
@@ -421,11 +423,11 @@ function localizeDuration(rawValue) {
 
   if (lang === "rus") {
     return raw
-      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "год", "года", "лет")}`)
-      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "месяц", "месяца", "месяцев")}`)
-      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "неделя", "недели", "недель")}`)
-      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "день", "дня", "дней")}`)
-      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "семестр", "семестра", "семестров")}`);
+      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РіРѕРґ", "РіРѕРґР°", "Р»РµС‚")}`)
+      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РјРµСЃСЏС†", "РјРµСЃСЏС†Р°", "РјРµСЃСЏС†РµРІ")}`)
+      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РЅРµРґРµР»СЏ", "РЅРµРґРµР»Рё", "РЅРµРґРµР»СЊ")}`)
+      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РґРµРЅСЊ", "РґРЅСЏ", "РґРЅРµР№")}`)
+      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "СЃРµРјРµСЃС‚СЂ", "СЃРµРјРµСЃС‚СЂР°", "СЃРµРјРµСЃС‚СЂРѕРІ")}`);
   }
 
   return raw;
@@ -450,9 +452,9 @@ function formatFundingOptionsCount(count) {
   if (getCurrentLanguage() === "rus") {
     return `${formattedCount} ${ruPlural(
       safeCount,
-      "вариант финансирования",
-      "варианта финансирования",
-      "вариантов финансирования"
+      "РІР°СЂРёР°РЅС‚ С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ",
+      "РІР°СЂРёР°РЅС‚Р° С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ",
+      "РІР°СЂРёР°РЅС‚РѕРІ С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ"
     )}`;
   }
 
@@ -1067,7 +1069,7 @@ async function fetchUniversityDetailCached(universityId) {
 }
 
 // =====================================
-// PAGE: UNIVERSITIES LIST (Список вузов)
+// PAGE: UNIVERSITIES LIST (РЎРїРёСЃРѕРє РІСѓР·РѕРІ)
 // =====================================
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
@@ -1099,8 +1101,7 @@ export function initUniversitiesPage() {
         content: document.querySelector(".u-content"),
         list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),
         state: $("listState"), pagination: $("pagination"),
-        btnList: $("viewListBtn"), btnMap: $("viewMapBtn"),
-        loading: $("universitiesLoading")
+        btnList: $("viewListBtn"), btnMap: $("viewMapBtn")
     };
     const isTranslationDebugEnabled = (() => {
         const raw = window.APP_DEBUG;
@@ -1234,12 +1235,9 @@ export function initUniversitiesPage() {
     }
 
     function setUniversitiesLoading(isLoading) {
-        if (!el.loading) return;
         const mapMode = state.viewMode === "map";
         const useMapOverlay = !!isLoading && mapMode;
         const showDefaultOverlay = !!isLoading && !mapMode;
-        el.loading.classList.toggle("is-visible", showDefaultOverlay);
-        el.loading.setAttribute("aria-hidden", showDefaultOverlay ? "false" : "true");
         if (el.content) {
             el.content.classList.toggle("is-loading", showDefaultOverlay);
             el.content.classList.toggle("is-loading-map", useMapOverlay);
@@ -1520,7 +1518,7 @@ export function initUniversitiesPage() {
         okBtn?.focus();
     });
 
-    // --- Слайдеры ---
+    // --- РЎР»Р°Р№РґРµСЂС‹ ---
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
         const minVal = parseInt(el.minSlider.value); const maxVal = parseInt(el.maxSlider.value); const maxRange = parseInt(el.maxSlider.max);
@@ -1549,7 +1547,7 @@ export function initUniversitiesPage() {
         el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
-    // --- Карта ---
+    // --- РљР°СЂС‚Р° ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
@@ -2286,7 +2284,7 @@ export function initUniversitiesPage() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">🌍 ${escapeHtml(t("universities.global", "Global"))}</option>`;
+        let html = `<option value="">рџЊЌ ${escapeHtml(t("universities.global", "Global"))}</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
             const value = String(c || "");
@@ -2572,7 +2570,14 @@ export function initUniversitiesPage() {
         if (runSeq !== fetchRunSeq) return;
         if (err?.name === "AbortError") return;
         console.error(err);
-        if (el.state) el.state.textContent = t("universities.state.failed", "Failed to load data.");
+        if (el.list) {
+            renderNoConnection({
+                containerId: "universitiesList",
+                onRetry: () => fetchAndRender()
+            });
+        } else if (el.state) {
+            el.state.textContent = t("universities.state.failed", "Failed to load data.");
+        }
         } finally {
         if (runSeq === fetchRunSeq) {
             setUniversitiesLoading(false);
@@ -2589,7 +2594,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (БЕЗ ROI) ---
+    // --- RENDER CARD (Р‘Р•Р— ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -2608,13 +2613,13 @@ export function initUniversitiesPage() {
         });
         const match = u.matchData || {};
 
-        // Базовая цена (трековая, если algo её дал)
+        // Р‘Р°Р·РѕРІР°СЏ С†РµРЅР° (С‚СЂРµРєРѕРІР°СЏ, РµСЃР»Рё algo РµС‘ РґР°Р»)
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
         (match.cost !== undefined ? match.cost : null) ??
         nested(u, ["finance", "total_cost_year_usd"], 0);
 
-        // Итоговая цена с учётом scholarship amount (если есть)
+        // РС‚РѕРіРѕРІР°СЏ С†РµРЅР° СЃ СѓС‡С‘С‚РѕРј scholarship amount (РµСЃР»Рё РµСЃС‚СЊ)
         const cost =
         (match.finalPrice !== undefined ? match.finalPrice : null) ??
         (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
@@ -2709,7 +2714,7 @@ export function initUniversitiesPage() {
         badgesHTML = visibleBadges.join(" ");
 
         
-        // ROI УБРАН ПОЛНОСТЬЮ
+        // ROI РЈР‘Р РђРќ РџРћР›РќРћРЎРўР¬Р®
 
         const logoSrc = uniLogoSrc(id);
         const logoSrcFull = uniLogoSrc(id, { forceFull: true });
@@ -2768,7 +2773,7 @@ export function initUniversitiesPage() {
 }
 
 // =====================================
-// PAGE: UNIVERSITY DETAILS (Детальная)
+// PAGE: UNIVERSITY DETAILS (Р”РµС‚Р°Р»СЊРЅР°СЏ)
 // =====================================
 export async function initUniversityPage() {
   const id = extractUniversityIdFromLocation(window.location);
@@ -2817,7 +2822,7 @@ export async function initUniversityPage() {
       ? u.academics.admissions
       : null;
 
-    // 1. Шапка
+    // 1. РЁР°РїРєР°
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = String(val ?? "").trim(); };
     const translatedName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
     const translatedCity = trCity(u?.location?.city || "");
@@ -3047,7 +3052,7 @@ export async function initUniversityPage() {
         const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
         const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
         const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m² (up to 50 ha)"));
-        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000‑2,000,000 m² (50‑200 ha)"));
+        const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000-2,000,000 m² (50-200 ha)"));
         const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 m² (200+ ha)"));
         const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
         recDiv.innerHTML = `
@@ -3290,7 +3295,7 @@ export async function initUniversityPage() {
     }
 
 
-    // --- TAB 3: ADMISSION (ИСПРАВЛЕНО: Вернул Цену и Средние баллы) ---
+    // --- TAB 3: ADMISSION (РРЎРџР РђР’Р›Р•РќРћ: Р’РµСЂРЅСѓР» Р¦РµРЅСѓ Рё РЎСЂРµРґРЅРёРµ Р±Р°Р»Р»С‹) ---
         const reqDiv = document.getElementById("detailRequirements");
         const renderAdmissionTab = () => {
         if (!reqDiv) return;
@@ -3505,7 +3510,7 @@ export async function initUniversityPage() {
     };
     window.addEventListener("profileUpdated", __detailProfileUpdatedHandler);
 
-    // --- TAB 4: FINANCE (С блоком ROI) ---
+    // --- TAB 4: FINANCE (РЎ Р±Р»РѕРєРѕРј ROI) ---
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo"); 
     const priceBig = document.getElementById("detailPrice");           
@@ -3560,7 +3565,7 @@ export async function initUniversityPage() {
     window.addEventListener("load", syncFinanceSummaryCardHeights, { once: true });
     
     if (u.finance) {
-        // Блок скидок
+        // Р‘Р»РѕРє СЃРєРёРґРѕРє
         if (scholDiv) {
             const fa = u.finance.financial_aid || {};
             const hasMerit = typeof fa.merit_based === "boolean";
@@ -3578,7 +3583,7 @@ export async function initUniversityPage() {
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
-        // Блок цены
+        // Р‘Р»РѕРє С†РµРЅС‹
         if (priceBig) {
             let minTotal = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
             const allFundingOptionsForFinance = (Array.isArray(u.admission_tracks) ? u.admission_tracks : [])
@@ -3597,7 +3602,7 @@ export async function initUniversityPage() {
         }
         settleFinanceSummaryCardHeights();
         
-        // Карточки треков
+        // РљР°СЂС‚РѕС‡РєРё С‚СЂРµРєРѕРІ
         if (finDiv) {
             finDiv.innerHTML = "";
 
@@ -3746,14 +3751,19 @@ export async function initUniversityPage() {
 
   } catch (err) {
     console.error(err);
-    if (stateEl) stateEl.textContent = t("university.error_loading", "Error loading details.");
+    if (stateEl) {
+      renderNoConnection({
+        containerId: stateEl.id,
+        onRetry: () => initUniversityPage()
+      });
+    }
   } finally {
     setDetailLoading(false);
   }
 }
 
 // =====================================
-// PAGE: RANKING (Исправлена сортировка)
+// PAGE: RANKING (РСЃРїСЂР°РІР»РµРЅР° СЃРѕСЂС‚РёСЂРѕРІРєР°)
 // =====================================
 function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
@@ -3761,599 +3771,3 @@ function toFiniteNumber(value) {
     return Number.isFinite(n) ? n : null;
 }
 
-function buildNormalizedRankingItems(items) {
-    const rows = Array.isArray(items) ? items : [];
-
-    const compareNullableAsc = (a, b) => {
-        const aMiss = a === null || a === undefined;
-        const bMiss = b === null || b === undefined;
-        if (aMiss && bMiss) return 0;
-        if (aMiss) return 1;
-        if (bMiss) return -1;
-        return a - b;
-    };
-    const compareNullableDesc = (a, b) => compareNullableAsc(b, a);
-
-    const scored = rows.map((u, index) => {
-        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-        const rankStatus = String(rankMeta.status || "").trim().toLowerCase();
-        const rawRank = toFiniteNumber(u?.rank);
-        const hasOfficialRank = rankStatus === "official" && rawRank !== null && rawRank > 0;
-        const nameKey = String(u?.name || u?.id || "").trim().toLowerCase();
-
-        return {
-            item: u,
-            index,
-            nameKey,
-            rawRank,
-            hasOfficialRank,
-        };
-    });
-
-    const official = scored
-        .filter((row) => row.hasOfficialRank)
-        .sort((a, b) => {
-            const byRank = compareNullableAsc(a.rawRank, b.rawRank);
-            if (byRank !== 0) return byRank;
-            const byName = a.nameKey.localeCompare(b.nameKey);
-            if (byName !== 0) return byName;
-            return a.index - b.index;
-        });
-
-    const unranked = scored
-        .filter((row) => !row.hasOfficialRank)
-        .sort((a, b) => {
-            const byName = a.nameKey.localeCompare(b.nameKey);
-            if (byName !== 0) return byName;
-            return a.index - b.index;
-        });
-
-    const ordered = [...official, ...unranked];
-    return ordered.map((row) => ({
-        ...row.item,
-        rank_display: row.hasOfficialRank ? row.rawRank : null,
-        rank_is_official: row.hasOfficialRank,
-    }));
-}
-
-export async function initRankingPage() {
-    const listEl = document.getElementById("rankingList");
-    if (!listEl) return;
-    if (__rankingLanguageChangedHandler) {
-        window.removeEventListener("languageChanged", __rankingLanguageChangedHandler);
-        __rankingLanguageChangedHandler = null;
-    }
-    const onRankingLanguageChanged = () => {
-        __rankingLanguageChangedHandler = null;
-        initRankingPage();
-    };
-    __rankingLanguageChangedHandler = onRankingLanguageChanged;
-    window.addEventListener("languageChanged", onRankingLanguageChanged, { once: true });
-    ensureRankingBadgeResizeHandler();
-    if (rankingFetchController) {
-        rankingFetchController.abort();
-    }
-    const controller = new AbortController();
-    rankingFetchController = controller;
-
-    try {
-        // Запрашиваем 200 вузов
-        const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
-        const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc&lang=${encodeURIComponent(uiLang)}`, {
-            signal: controller.signal,
-        });
-        if (!res.ok) throw new Error("Error loading ranking");
-        const data = await res.json();
-        let items = buildNormalizedRankingItems(data.items || []);
-
-        const html = items.map((u, index) => {
-            const rank = Number(u.rank_display);
-            const hasOfficialRank = u?.rank_is_official === true && Number.isFinite(rank) && rank > 0;
-
-            // Цвета для топ-3
-            let rankClass = "";
-            if (hasOfficialRank && rank === 1) rankClass = "rank-1";
-            else if (hasOfficialRank && rank === 2) rankClass = "rank-2";
-            else if (hasOfficialRank && rank === 3) rankClass = "rank-3";
-
-            const logoSrc = uniLogoSrc(u.id);
-            const logoSrcFull = uniLogoSrc(u.id, { forceFull: true });
-            const thumbSrc = uniThumbnailSrc(u.id);
-            const thumbSrcFull = uniThumbnailSrc(u.id, { forceFull: true });
-            const loadingAttr = index < 4 ? "eager" : "lazy";
-            const fetchPriorityAttr = index < 2 ? "high" : "auto";
-            const cityRaw = String(u?.location?.city || "");
-            const countryRaw = String(u?.location?.country || "");
-            const flag = getFlagImg(countryRaw);
-            const uniName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
-            const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-            const rankSource = String(rankMeta.source || "").trim();
-            const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
-            const rankStatusLabel = rankStatusRaw
-                ? rankingStatusLabel(rankStatusRaw)
-                : unknownFieldText("placeholder.field.global_rank", "Global Rank");
-            const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
-                || unknownFieldText("placeholder.field.verification_date", "Verification date");
-            const sourceTooltip = rankSource
-                ? tFormat(
-                    "ranking.source_tooltip",
-                    { source: rankSource, status: rankStatusLabel, verified_at: rankVerifiedAt },
-                    `Source: ${rankSource} | Type: ${rankStatusLabel} | Checked: ${rankVerifiedAt}`
-                )
-                : "";
-            const sourceTitleAttr = sourceTooltip ? ` title="${escapeHtml(sourceTooltip)}"` : "";
-            const rankDisplay = hasOfficialRank ? `#${rank}` : escapeHtml(rankStatusLabel);
-            const rankBadge = escapeHtml(
-                tFormat("ranking.source_status_label", { status: rankStatusLabel }, `Type: ${rankStatusLabel}`)
-            );
-            const locationHtml = renderLocationMarkup({
-                city: trCity(cityRaw),
-                country: trCountry(countryRaw),
-                flagHtml: flag,
-                wrapperClass: "rank-loc",
-                iconClass: "rank-loc-icon",
-                showIcon: false,
-                cityClass: "rank-loc-city",
-                countryClass: "rank-loc-country",
-                fallbackClass: "rank-loc-text",
-            });
-
-            return `
-            <a href="${routeUniversityDetail(u.id)}" class="rank-card"${sourceTitleAttr}>
-                <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
-                <div class="rank-num ${rankClass}${hasOfficialRank ? "" : " rank-num--meta"}">${rankDisplay}</div>
-                <div class="rank-logo">
-                    <img src="${logoSrc}" alt="${initials(uniName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.parentNode.textContent='${initials(uniName)}';}">
-                </div>
-                <div class="rank-info">
-                    <div class="rank-title">${escapeHtml(uniName)}</div>
-                    ${locationHtml}
-                </div>
-                <div class="rank-badge">
-                    ${rankBadge}
-                </div>
-            </a>
-            `;
-        }).join("");
-
-        listEl.innerHTML = html;
-        requestAnimationFrame(() => fitRankingBadgeText(listEl));
-
-    } catch (err) {
-        if (err?.name === "AbortError") return;
-        console.error(err);
-        listEl.innerHTML = `<div class="rank-error">${escapeHtml(t("ranking.failed", "Failed to load ranking."))}</div>`;
-    } finally {
-        if (rankingFetchController === controller) {
-            rankingFetchController = null;
-        }
-    }
-}
-
-// =====================================
-// PAGE: GUIDE
-// =====================================
-export function initGuidePage() {
-    const page = document.getElementById("guidePage");
-    if (!page) return;
-    const layout = page.querySelector(".guide-layout");
-    const sidebar = page.querySelector(".guide-sidebar");
-    const stickyNav = page.querySelector(".guide-nav");
-    const desktopGuideMedia = window.matchMedia("(min-width: 981px)");
-    const navLinks = Array.from(page.querySelectorAll(".guide-nav a[href^='#guide-']"));
-    const sections = Array.from(page.querySelectorAll(".guide-section[id]"));
-
-    const academicWrap = document.getElementById("guideAcademicExams");
-    const languageWrap = document.getElementById("guideLanguageExams");
-    const glossaryWrap = document.getElementById("guideGlossary");
-
-    const normalizeExamId = (value) => String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-    const stableExamSortKey = (value) => {
-        const raw = String(value || "").trim();
-        if (!raw) return "";
-        const canonical = canonicalizeExamId(raw);
-        return normalizeExamId(canonical || raw) || normalizeExamId(raw);
-    };
-    const scoreScaleText = (cfg) => {
-        const inputMode = String(cfg?.input_mode || "").trim().toLowerCase();
-        if (inputMode && inputMode !== "number") return "";
-        const min = Number(cfg?.min);
-        const max = Number(cfg?.max);
-        if (!Number.isFinite(min) || !Number.isFinite(max)) return "";
-        if (min === max) return "";
-        return tFormat("guide.scale_text", { min, max }, `In UniSearch, this score is entered on a ${min}\u2011${max} scale.`);
-    };
-
-    const guideLoadingMarkup = (label) => `
-        <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite">
-            ${escapeHtml(String(label || t("common.loading", "Loading")))}
-        </div>
-    `;
-
-    function withExamLabel(description, examLabel) {
-        const desc = String(description || "").trim();
-        const label = String(examLabel || "").trim();
-        if (!label) return desc;
-        if (!desc) return label;
-        if (desc.toLocaleLowerCase().startsWith(label.toLocaleLowerCase())) return desc;
-        return tFormat("guide.exam_desc_with_label", { exam: label, desc }, `${label} — ${desc}`);
-    }
-
-    function describeAcademicExam(id, cfg, labelText = "") {
-        const normalized = normalizeExamId(id);
-        const descriptions = {
-            SAT: t("guide.academic.sat", "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics."),
-            ACT: t("guide.academic.act", "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning."),
-            GPA: t("guide.academic.gpa", "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency."),
-            UNT: t("guide.academic.unt", "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways."),
-            NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
-            APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
-            IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
-            ALEVELCERT: t("guide.academic.alevelcert", "A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score."),
-            HKDSELEVEL: t("guide.academic.hkdselevel", "HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching."),
-            SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification."),
-            GERMANABITURCERT: t("guide.academic.germanabiturcert", "German Abitur certificate is the standard qualification granting access to German universities."),
-            OSSDCERT: t("guide.academic.ossdcert", "OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions."),
-        };
-        const base = descriptions[normalized]
-            || t("guide.academic.default", "This is an academic metric used by one or more admission tracks in the UniSearch dataset.");
-        const scale = scoreScaleText(cfg);
-        const text = `${base}${scale ? ` ${scale}` : ""}`.trim();
-        return withExamLabel(text, labelText);
-    }
-
-    function describeLanguageExam(examId, langCode, cfg, labelText = "") {
-        const exam = String(examId || "").toUpperCase();
-        const label = String(labelText || "").toUpperCase();
-        const key = `${exam} ${label}`;
-
-        let base = t("guide.language.default", "This language proficiency exam is used to verify readiness for study in the program language.");
-        if (key.includes("IELTS")) {
-            base = t("guide.language.ielts", "IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.");
-        } else if (key.includes("TOEFL")) {
-            base = t("guide.language.toefl", "TOEFL measures academic English proficiency and is commonly accepted for university admissions.");
-        } else if (key.includes("DUOLINGO") || key.includes("DET")) {
-            base = t("guide.language.det", "Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.");
-        } else if (key.includes("PTE")) {
-            base = t("guide.language.pte", "PTE Academic is a computer-based English proficiency test used in international admissions.");
-        } else if (key.includes("CAMBRIDGE")) {
-            base = t("guide.language.cambridge", "Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.");
-        } else if (key.includes("TESTDAF") || key.includes("DSH")) {
-            base = t("guide.language.german", "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study tracks.");
-        } else if (key.includes("DELF") || key.includes("DALF") || key.includes("TCF") || key.includes("TEF")) {
-            base = t("guide.language.french", "These exams assess French proficiency and are used for French-language academic eligibility.");
-        } else if (key.includes("NT2")) {
-            base = t("guide.language.dutch", "NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.");
-        } else if (key.includes("HSK")) {
-            base = t("guide.language.hsk", "HSK measures Chinese language proficiency for academic and formal language use.");
-        } else if (key.includes("JLPT")) {
-            base = t("guide.language.jlpt", "JLPT measures Japanese language proficiency across standard difficulty levels.");
-        } else if (key.includes("TOPIK")) {
-            base = t("guide.language.topik", "TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.");
-        } else if (langCode) {
-            base = tFormat("guide.language.by_code", { code: String(langCode).toUpperCase() }, `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission tracks.`);
-        }
-
-        const scale = scoreScaleText(cfg);
-        const text = `${base}${scale ? ` ${scale}` : ""}`.trim();
-        return withExamLabel(text, labelText);
-    }
-
-    function glossaryEntries() {
-        const fitName = aiName("fit");
-        const chanceName = aiName("chance");
-        return [
-            {
-                term: fitName,
-                desc: tFormat("guide.glossary.fit", { fit: fitName }, `${fitName} is the smart sorting mode based on your profile.`),
-            },
-            {
-                term: chanceName,
-                desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is an estimated admission chance based on your data.`),
-            },
-            {
-                term: t("guide.glossary.term.swr", "Data Cache"),
-                desc: t("guide.glossary.swr", "Cache behavior: we first show saved data, then refresh it in the background."),
-            },
-            {
-                term: t("guide.glossary.term.admission_track", "Admission Track"),
-                desc: t("guide.glossary.admission_track", "A specific way to apply to a university (e.g., direct, exam-based, scholarship path)."),
-            },
-            {
-                term: t("guide.glossary.term.requirements", "Requirements"),
-                desc: t("guide.glossary.requirements", "Minimum scores to be considered for a track."),
-            },
-            {
-                term: t("guide.glossary.term.stats_avg", "Average (Admitted)"),
-                desc: t("guide.glossary.stats_avg", "Average scores of admitted students on that track."),
-            },
-            {
-                term: t("guide.glossary.term.language_requirements", "Language Requirements"),
-                desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam."),
-            },
-            {
-                term: t("guide.glossary.term.mode_any", "Mode = any"),
-                desc: t("guide.glossary.mode_any", "You need to satisfy at least one listed language option."),
-            },
-            {
-                term: t("guide.glossary.term.mode_all", "Mode = all"),
-                desc: t("guide.glossary.mode_all", "You must satisfy every listed language requirement."),
-            },
-            {
-                term: t("guide.glossary.term.match_score", "Match Score"),
-                desc: tFormat("guide.glossary.match_score", { fit: fitName }, `Internal ${fitName} ranking score; higher means a better fit for your profile.`),
-            },
-        ];
-    }
-
-    function getLanguageTitle(code, fallback = "") {
-        const normalized = String(code || "").trim().toLowerCase();
-        const fallbackLabel = String(fallback || "").trim() || String(code || "").toUpperCase();
-        if (!normalized) return fallbackLabel;
-        return t(`languages.name.${normalized}`, fallbackLabel);
-    }
-
-    function renderGlossary() {
-        if (!glossaryWrap) return;
-        const gloss = glossaryEntries();
-        const lines = gloss.map((g) => `<li><strong>${escapeHtml(g.term)}:</strong> ${escapeHtml(g.desc)}</li>`).join("");
-        glossaryWrap.innerHTML = `
-            <p>${escapeHtml(t("guide.glossary.intro", "Short definitions of the terms you see on the site."))}</p>
-            <ul class="guide-list">${lines}</ul>
-        `;
-    }
-
-    function renderAcademicExams() {
-        if (!academicWrap) return;
-
-        const langIds = new Set();
-        const groups = LANG_CONFIG?.language_exams || {};
-        for (const arr of Object.values(groups)) {
-            if (!Array.isArray(arr)) continue;
-            arr.forEach((x) => langIds.add(String(x?.id || "").trim()));
-        }
-
-        const seen = new Set();
-        const exams = Object.entries(EXAM_CONFIG || {})
-            .filter(([id]) => !langIds.has(String(id)))
-            .filter(([, cfg]) => !cfg?.hidden)
-            .filter(([id]) => {
-                const normalized = canonicalizeExamId(id);
-                const key = String(normalized || id).toUpperCase().replace(/[^A-Z0-9]/g, "");
-                if (!key) return false;
-                if (seen.has(key)) return false;
-                seen.add(key);
-                return true;
-            })
-            .sort((a, b) => {
-                const left = stableExamSortKey(a[0]);
-                const right = stableExamSortKey(b[0]);
-                const byKey = left.localeCompare(right);
-                if (byKey !== 0) return byKey;
-                return String(a[0] || "").localeCompare(String(b[0] || ""));
-            });
-
-        if (!exams.length) {
-            academicWrap.innerHTML = guideLoadingMarkup(t("guide.loading_exam_config", "Loading exam config"));
-            return;
-        }
-
-        const items = exams.map(([id, cfg]) => {
-            const examLabel = getExamDisplayName(id, { locale: getCurrentLanguage() });
-            return `<li>${escapeHtml(describeAcademicExam(id, cfg, examLabel))}</li>`;
-        }).join("");
-        academicWrap.innerHTML = `
-            <p>${escapeHtml(t("guide.academic.intro", "The following academic exams are currently used by UniSearch for admission track matching and recommendation quality."))}</p>
-            <ul class="guide-list">${items}</ul>
-        `;
-    }
-
-    function renderLanguageExams() {
-        if (!languageWrap) return;
-        const groups = LANG_CONFIG?.language_exams || {};
-        const languages = LANG_CONFIG?.languages || [];
-        const nameByCode = Object.fromEntries(languages.map((x) => [x.code, x.name || x.label || x.code]));
-
-        const codes = Object.keys(groups).sort();
-        if (!codes.length) {
-            languageWrap.innerHTML = guideLoadingMarkup(t("guide.loading_language_config", "Loading language exam config"));
-            return;
-        }
-
-        languageWrap.innerHTML = codes.map((code) => {
-            const arr = Array.isArray(groups[code]) ? groups[code] : [];
-            if (!arr.length) return "";
-            const title = getLanguageTitle(code, nameByCode[code] || code.toUpperCase());
-            const sortedArr = [...arr].sort((a, b) => {
-                const left = stableExamSortKey(a?.id);
-                const right = stableExamSortKey(b?.id);
-                const byKey = left.localeCompare(right);
-                if (byKey !== 0) return byKey;
-                return String(a?.id || "").localeCompare(String(b?.id || ""));
-            });
-
-            return `
-                <section class="guide-subsection">
-                    <h4>${escapeHtml(title)} (${escapeHtml(code.toUpperCase())})</h4>
-                    <ul class="guide-list">
-                        ${sortedArr.map((ex) => {
-                            const examLabel = getExamDisplayName(ex?.id, { langCode: code, locale: getCurrentLanguage() });
-                            return `<li>${escapeHtml(describeLanguageExam(ex?.id, code, ex, examLabel))}</li>`;
-                        }).join("")}
-                    </ul>
-                </section>
-            `;
-        }).join("");
-    }
-
-    function renderAll() {
-        renderGlossary();
-        renderAcademicExams();
-        renderLanguageExams();
-    }
-
-    function syncGuideSidebarOffset() {
-        const navbar = document.querySelector(".navbar");
-        const navbarHeight = navbar instanceof HTMLElement ? Math.ceil(navbar.getBoundingClientRect().height) : 72;
-        page.style.setProperty("--guide-sidebar-offset", `${navbarHeight + 10}px`);
-    }
-
-    function updateGuideNavHrefs() {
-        navLinks.forEach((link) => {
-            const hash = String(link.dataset.guideHash || link.getAttribute("href") || "").trim();
-            if (!/^#guide-[a-z0-9-]+$/i.test(hash)) return;
-            link.dataset.guideHash = hash;
-            link.setAttribute("href", `${window.location.pathname}${window.location.search}${hash}`);
-        });
-    }
-
-    function resetGuideFloatingNav() {
-        if (!(sidebar instanceof HTMLElement) || !(stickyNav instanceof HTMLElement)) return;
-        stickyNav.classList.remove("is-floating", "is-stuck-bottom");
-        stickyNav.style.removeProperty("--guide-sidebar-left");
-        stickyNav.style.removeProperty("--guide-sidebar-width");
-        sidebar.style.removeProperty("min-height");
-    }
-
-    function syncGuideFloatingNav() {
-        if (!(layout instanceof HTMLElement) || !(sidebar instanceof HTMLElement) || !(stickyNav instanceof HTMLElement)) return;
-        if (!desktopGuideMedia.matches) {
-            resetGuideFloatingNav();
-            return;
-        }
-
-        const offset = parseFloat(getComputedStyle(page).getPropertyValue("--guide-sidebar-offset")) || 82;
-        const sidebarRect = sidebar.getBoundingClientRect();
-        const layoutRect = layout.getBoundingClientRect();
-        const navHeight = stickyNav.offsetHeight;
-        const sidebarTop = window.scrollY + sidebarRect.top;
-        const layoutBottom = window.scrollY + layoutRect.bottom;
-        const stickStart = sidebarTop - offset;
-        const stickEnd = layoutBottom - navHeight - offset;
-
-        sidebar.style.minHeight = `${navHeight}px`;
-        stickyNav.style.setProperty("--guide-sidebar-left", `${Math.round(sidebarRect.left)}px`);
-        stickyNav.style.setProperty("--guide-sidebar-width", `${Math.round(sidebarRect.width)}px`);
-
-        if (window.scrollY <= stickStart) {
-            stickyNav.classList.remove("is-floating", "is-stuck-bottom");
-            return;
-        }
-
-        if (window.scrollY >= stickEnd) {
-            stickyNav.classList.remove("is-floating");
-            stickyNav.classList.add("is-stuck-bottom");
-            return;
-        }
-
-        stickyNav.classList.remove("is-stuck-bottom");
-        stickyNav.classList.add("is-floating");
-    }
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const sectionById = new Map(sections.map((sec) => [sec.id, sec]));
-    const activateSection = (id, { updateHash = false, scroll = false } = {}) => {
-        const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
-        if (!nextId) return;
-        const targetSection = sectionById.get(nextId);
-
-        sections.forEach((sec) => {
-            const active = sec.id === nextId;
-            sec.classList.toggle("is-active", active);
-            sec.setAttribute("aria-hidden", "false");
-        });
-
-        navLinks.forEach((link) => {
-            const active = String(link.dataset.guideHash || link.getAttribute("href") || "").trim() === `#${nextId}`;
-            link.classList.toggle("is-active", active);
-            link.setAttribute("aria-current", active ? "page" : "false");
-        });
-
-        if (updateHash) {
-            history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
-        }
-
-        if (scroll && targetSection) {
-            targetSection.scrollIntoView({
-                behavior: prefersReducedMotion ? "auto" : "smooth",
-                block: "start",
-            });
-        }
-    };
-
-    navLinks.forEach((link) => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
-            activateSection(String(link.dataset.guideHash || link.getAttribute("href") || "").replace("#", ""), {
-                updateHash: true,
-                scroll: true,
-            });
-        });
-    });
-
-    bindGuideHashChange(() => {
-        activateSection(String(window.location.hash || "").replace("#", ""), {
-            updateHash: false,
-            scroll: false,
-        });
-    });
-
-    let scrollTicking = false;
-    const syncActiveSectionFromScroll = () => {
-        if (scrollTicking) return;
-        scrollTicking = true;
-        window.requestAnimationFrame(() => {
-            const viewportTop = 110;
-            const viewportBottom = window.innerHeight - 120;
-            let currentId = sections[0]?.id || "";
-            let bestScore = Number.NEGATIVE_INFINITY;
-
-            for (const sec of sections) {
-                const rect = sec.getBoundingClientRect();
-                const visibleTop = Math.max(rect.top, viewportTop);
-                const visibleBottom = Math.min(rect.bottom, viewportBottom);
-                const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-                const distancePenalty = Math.abs(rect.top - viewportTop) * 0.08;
-                const score = visibleHeight - distancePenalty;
-
-                if (score > bestScore) {
-                    bestScore = score;
-                    currentId = sec.id;
-                }
-            }
-
-            if (currentId) {
-                activateSection(currentId, {
-                    updateHash: false,
-                    scroll: false,
-                });
-            }
-
-            syncGuideFloatingNav();
-            scrollTicking = false;
-        });
-    };
-
-    syncGuideSidebarOffset();
-    updateGuideNavHrefs();
-    renderAll();
-    activateSection(String(window.location.hash || "").replace("#", ""), {
-        updateHash: false,
-        scroll: false,
-    });
-    window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
-    window.addEventListener("resize", () => {
-        syncGuideSidebarOffset();
-        syncGuideFloatingNav();
-        syncActiveSectionFromScroll();
-    });
-    bindGuideExternalUpdates(() => {
-        syncGuideSidebarOffset();
-        updateGuideNavHrefs();
-        renderAll();
-        syncGuideFloatingNav();
-        syncActiveSectionFromScroll();
-    });
-    syncGuideFloatingNav();
-    syncActiveSectionFromScroll();
-}

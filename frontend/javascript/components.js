@@ -2344,3 +2344,53 @@ export function setupTabs() {
     if (targetPane) targetPane.classList.add("active");
   });
 }
+/**
+ * Отрисовывает экран "Нет подключения к интернету"
+ * @param {Object} options 
+ * @param {Function} options.onRetry Коллбек для кнопки повтора
+ * @param {string} options.containerId ID контейнера, куда вставить (опционально)
+ * @returns {string} HTML-строка
+ */
+export function renderNoConnection(options = {}) {
+  const { onRetry, containerId, targetEl } = options;
+  const html = `
+    <div class="error-screen error-screen--full fadeIn">
+      <div class="error-icon-wrap">
+        ${heroIcon("rss", "ui-icon ui-icon--32")}
+      </div>
+      <h2 class="error-title" data-i18n="error.no_connection.title">No Internet Connection</h2>
+      <p class="error-desc" data-i18n="error.no_connection.desc">We couldn't reach the server. Please check your internet connection and try again.</p>
+      <button class="error-btn" id="errorRetryBtn">
+        ${heroIcon("arrow-path", "ui-icon ui-icon--18")}
+        <span data-i18n="error.retry">Retry</span>
+      </button>
+    </div>
+  `;
+
+  const container = targetEl || (containerId ? document.getElementById(containerId) : null);
+  
+  if (container) {
+    container.innerHTML = html;
+    applyTranslations(container);
+    const btn = container.querySelector("#errorRetryBtn");
+    if (btn && typeof onRetry === "function") {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        onRetry();
+      };
+    }
+  }
+
+  // Специфичное требование: если показывается ошибка подключения, загрузчик скелета больше не нужен
+  const siteLoader = document.getElementById("siteInitialLoader");
+  if (siteLoader) {
+    siteLoader.classList.add("is-hidden");
+    document.body.classList.remove("initial-loading");
+    // Удаляем его через некоторое время, чтобы анимация завершилась
+    setTimeout(() => {
+        if (siteLoader.parentNode) siteLoader.remove();
+    }, 600);
+  }
+
+  return html;
+}

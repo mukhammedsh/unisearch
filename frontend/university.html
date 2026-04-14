@@ -15,15 +15,35 @@
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.university">University | UniSearch</title>
   <script src="javascript/theme-init.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/university.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
 </head>
 
 <body data-page="university">
+  <div id="siteInitialLoader" class="site-initial-loader">
+    <div class="skeleton-bg skeleton-bg--row">
+      <div class="skeleton-block skel-header-bar"></div>
+      <div class="skel-sidebar-col" style="width: 250px;">
+        <div class="skeleton-block" style="height: 100px; width: 100px; border-radius: 50%;"></div>
+        <div class="skeleton-block skel-text" style="margin-top: 20px;"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+      </div>
+      <div class="skel-content-col">
+        <div class="skeleton-block skel-hero" style="height: 250px;"></div>
+        <div class="skeleton-block skel-title"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text-short"></div>
+        <div class="skeleton-block skel-card"></div>
+      </div>
+    </div>
+    <div class="site-initial-loader__spinner"></div>
+  </div>
   <main class="d-page">
     <div class="d-container">
       <section class="d-page-scope" aria-label="Current study scope">
@@ -142,13 +162,12 @@
 
   <footer class="site-footer">
     <div class="container footer-content">
-        <p data-i18n="footer.copyright">© 2026 UniSearch</p>
-        
-        <div class="social-links">
-            <a href="https://github.com/muxlex/unisearch" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
-            </a>
-        </div>
+      <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+      <div class="social-links">
+        <a href="https://github.com/muxlex/unisearch" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="32">
+        </a>
+      </div>
     </div>
   </footer>
 </body>

@@ -210,8 +210,8 @@ a {
 
 html, body {
   /* overflow-x: removed to allow sticky position */
-  width: 100%;        /* Гарантирует, что сайт не шире окна */
-  position: relative; /* Стабилизирует позиционирование */
+  width: 100%;        /* Keeps the layout within the viewport width */
+  position: relative; /* Stabilizes positioning */
 }
 
 /* ===== Navbar ===== */
@@ -473,7 +473,7 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  padding: 12px; /* чтобы на маленьких экранах края не прилипали */
+  padding: 12px; /* Adds breathing room on small screens */
 }
 
 .profile-modal.is-open {
@@ -483,22 +483,22 @@ html, body {
 .profile-backdrop{
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45); /* ✅ затемнение через отдельный слой */
+  background: rgba(0,0,0,0.45); /* Backdrop dimming via a separate layer */
 }
 
-/* Само окно */
+/* Modal shell */
 .profile-card{
   position: relative;
-  width: min(760px, 96vw);      /* ✅ шире на больших экранах */
-  max-height: 92vh;             /* ✅ не вылезает за экран */
+  width: min(760px, 96vw);      /* Slightly wider on large screens */
+  max-height: 92vh;             /* Prevents overflow beyond the viewport */
   background: var(--surface-solid);
   border-radius: 18px;
   box-shadow: var(--shadow-md);
   z-index: 1;
 
-  display: flex;                /* ✅ фиксируем header, скроллим body */
+  display: flex;                /* Keeps header fixed while body scrolls */
   flex-direction: column;
-  overflow: hidden;             /* ✅ чтобы внутренний скролл работал красиво */
+  overflow: hidden;             /* Lets inner scrolling behave cleanly */
 }
 
 .profile-header{
@@ -639,7 +639,7 @@ html, body {
   background: var(--line);
 }
 
-/* ✅ Контент скроллится внутри */
+/* Content scrolls inside the modal */
 .profile-body{
   padding: 16px 22px 22px;
   overflow: auto;
@@ -1404,7 +1404,7 @@ html, body {
   cursor: pointer;
 }
 
-/* --- TOAST NOTIFICATIONS (Система уведомлений) --- */
+/* --- TOAST NOTIFICATIONS --- */
 .toast-container {
   position: fixed;
   bottom: 20px;
@@ -1557,7 +1557,7 @@ html, body {
   margin-bottom: 10px;
 }
 
-/* --- Custom Select (Глобальные стили для Dropdown) --- */
+/* --- Custom Select (Global dropdown styles) --- */
 .custom-select-wrapper {
   position: relative;
   width: 100%;
@@ -1695,7 +1695,7 @@ html, body {
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Основной блок футера */
+/* Footer block */
 .site-footer {
     background-color: var(--surface-soft);
     padding: 20px 0;
@@ -1744,7 +1744,7 @@ html, body {
     filter: var(--footer-icon-filter);
 }
 
-/* --- Адаптивность для мобильных (Улучшенная) --- */
+/* --- Mobile responsiveness (improved) --- */
 @media (max-width: 768px) {
 
   .navbar {
@@ -2264,31 +2264,195 @@ h6,
     border-bottom: none;
   }
 
-  .navbar-center a.is-active::after {
-    bottom: -8px;
-  }
-
   .logo {
     height: 34px;
   }
-
-  .theme-btn, 
-  .profile-trigger-btn, 
-  .menu-btn {
-    width: 38px;
-    height: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
-@media (max-width: 600px) {
-  .navbar-right .lang-switch-wrap {
-    display: none; /* Only hide the text labeller, not the trigger */
-  }
-  
-  .navbar-right .lang-control {
-    display: block; /* Ensure it stays visible */
-  }
+/* Initial Page Loader */
+.initial-loading > *:not(#siteInitialLoader) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.site-initial-loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.site-initial-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-initial-loader__spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 8px solid #c5cad3;
+  border-top-color: #ffffff;
+  animation: center-loading-spin 0.9s linear infinite;
+  box-shadow: none;
+}
+
+/* Skeleton Loader Background */
+.skeleton-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 5% 20px;
+  gap: 30px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.skeleton-bg--row {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+.skeleton-bg--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+.skeleton-block {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  animation: skel-pulse 1.5s infinite ease-in-out;
+}
+html[data-theme="light"] .skeleton-block {
+  background: rgba(255, 255, 255, 0.3);
+}
+@keyframes skel-pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+}
+
+/* Common Skeleton Shapes */
+.skel-header-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+}
+.skel-sidebar-col {
+  width: 280px;
+  display: none;
+}
+@media (min-width: 900px) {
+  .skel-sidebar-col { display: flex; flex-direction: column; gap: 20px; }
+}
+.skel-content-col {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.skel-title { height: 40px; width: 60%; border-radius: 6px; }
+.skel-text { height: 20px; width: 100%; border-radius: 4px; }
+.skel-text-short { height: 20px; width: 70%; border-radius: 4px; }
+.skel-card { height: 200px; width: 100%; border-radius: 12px; }
+.skel-hero { height: 350px; width: 100%; border-radius: 24px; }
+/* Error / No Connection Screen */
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  width: 100%;
+}
+
+.error-screen--full {
+  min-height: calc(100vh - 200px);
+}
+
+.fadeIn {
+  animation: fadeInAnim 0.6s cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+@keyframes fadeInAnim {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.error-icon-wrap {
+  width: 90px;
+  height: 90px;
+  background: var(--surface-soft);
+  color: var(--accent);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px var(--line);
+}
+
+.error-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.error-desc {
+  font-size: 17px;
+  color: var(--text-muted);
+  max-width: 440px;
+  line-height: 1.6;
+  margin: 0 0 36px;
+}
+
+.error-btn {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(87, 21, 219, 0.22);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.error-btn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(87, 21, 219, 0.3);
+}
+
+.error-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.error-btn .ui-icon {
+  transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.error-btn:hover .ui-icon {
+  transform: rotate(180deg);
 }

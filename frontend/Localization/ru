@@ -770,3 +770,6 @@ languages.error.detail: Не удалось сохранить {exam}: {reason}
 languages.error.generic: Не удалось сохранить {exam}
 languages.added_value: Добавлен {language} {exam}: {value}
 languages.updated_value: Обновлён {language} {exam}: {value}
+error.no_connection.title: Нет подключения к интернету
+error.no_connection.desc: Мы не смогли связаться с сервером. Пожалуйста, проверьте подключение и повторите попытку.
+error.retry: Повторить

@@ -7,13 +7,30 @@
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.guide">Guide | UniSearch</title>
   <script src="javascript/theme-init.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/guide.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/guide.css" />
 </head>
 <body data-page="guide">
+  <div id="siteInitialLoader" class="site-initial-loader">
+    <div class="skeleton-bg">
+      <div class="skeleton-block skel-header-bar"></div>
+      <div class="skel-content-col" style="max-width: 800px; margin: 0 auto; width: 100%;">
+        <div class="skeleton-block skel-title" style="width: 50%; margin: 40px auto 20px;"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text-short"></div>
+        <div class="skeleton-block skel-text" style="margin-top: 30px;"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text-short"></div>
+      </div>
+    </div>
+    <div class="site-initial-loader__spinner"></div>
+  </div>
   <main class="guide-page" id="guidePage">
     <section class="guide-hero">
       <p class="guide-eyebrow" data-i18n="guide.eyebrow">UniSearch Guide</p>
@@ -114,7 +131,7 @@
                 <li data-i18n="guide.tags.standard.acceptance">Acceptance Rate: shown when acceptance data is available.</li>
                 <li data-i18n="guide.tags.standard.aid_available">Aid Available: shown when merit-based or need-based aid is present.</li>
                 <li data-i18n="guide.tags.standard.over_budget">Over Budget: shown when estimated annual cost is above your profile budget.</li>
-                <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available: shown when cost is above budget but aid exists.</li>
+                <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget &bull; Aid Available: shown when cost is above budget but aid exists.</li>
               </ul>
             </div>
 

@@ -2,6 +2,14 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.4 (2026-04-14) - Skeleton Loaders and Error States
+
+Status:
+- synchronized runtime/package version to `3.4.4` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README release references;
+- added skeleton loading states across main pages (universities, university detail, ranking, about) to improve perceived performance during initial data fetch;
+- added localization strings for "No Internet Connection" error states;
+- bumped the service-worker cache version so clients refresh the `3.4.4` frontend assets immediately after deployment.
+
 ## 3.4.3 (2026-04-13) - Design Refinement And Mobile Responsiveness
 
 Status:

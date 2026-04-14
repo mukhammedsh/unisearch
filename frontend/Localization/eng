@@ -771,3 +771,6 @@ languages.error.detail: Could not save {exam}: {reason}
 languages.error.generic: Could not save {exam}
 languages.added_value: Added {language} {exam}: {value}
 languages.updated_value: Updated {language} {exam}: {value}
+error.no_connection.title: No Internet Connection
+error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.
+error.retry: Retry

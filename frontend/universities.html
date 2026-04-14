@@ -7,6 +7,10 @@
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.universities">Universities | UniSearch</title>
   <script src="javascript/theme-init.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/universities.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic,cyrillic-ext,latin,latin-ext" rel="stylesheet">
@@ -15,14 +19,36 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/universities.css" />
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 </head>
 
 <body data-page="universities">
+  <div id="siteInitialLoader" class="site-initial-loader">
+    <div class="skeleton-bg skeleton-bg--row">
+      <div class="skeleton-block skel-header-bar"></div>
+      <div class="skel-sidebar-col">
+        <div class="skeleton-block skel-title" style="width: 80%;"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+        <div class="skeleton-block skel-text"></div>
+      </div>
+      <div class="skel-content-col">
+        <div class="skeleton-block skel-title"></div>
+        <div class="skeleton-bg--grid">
+          <div class="skeleton-block skel-card"></div>
+          <div class="skeleton-block skel-card"></div>
+          <div class="skeleton-block skel-card"></div>
+          <div class="skeleton-block skel-card"></div>
+          <div class="skeleton-block skel-card"></div>
+          <div class="skeleton-block skel-card"></div>
+        </div>
+      </div>
+    </div>
+    <div class="site-initial-loader__spinner"></div>
+  </div>
   <main class="u-page">
     <section class="u-page-scope" aria-label="Current study scope">
       <div class="u-page-scope__inner">
@@ -215,6 +241,7 @@
         </div>
 
         <div id="listState" class="u-state"></div>
+        <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>
         <div id="universitiesList" class="u-grid"></div>
 
         <div id="mapStage" class="u-map-stage" style="display: none;">

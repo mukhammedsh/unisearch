@@ -1,5 +1,5 @@
 /* frontend/javascript/main.js */
-import { loadGlobalLayout } from "./components.js";
+import { loadGlobalLayout, renderNoConnection } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
 import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
@@ -99,66 +99,75 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  initTheme();
+  const siteLoader = document.getElementById("siteInitialLoader");
+  if (siteLoader) document.body.classList.add("initial-loading");
   const isUniversitiesPage = Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList"));
-  const i18nInitPromise = initI18n().catch((e) => {
-    console.warn("i18n init failed, using built-in fallback pack:", e);
-  });
-  if (!isUniversitiesPage) {
+
+  try {
+    initTheme();
+    const i18nInitPromise = initI18n().catch((e) => {
+      console.warn("i18n init failed, using built-in fallback pack:", e);
+    });
     initGlobalApiLoadingIndicator();
-  }
-  registerServiceWorker();
+    registerServiceWorker();
 
-  // Ensure language + university translation packs are ready before UI render.
-  await i18nInitPromise;
-  await initUniversityTranslations().catch((e) => {
-    console.warn("university translations init failed, using local fallback pack:", e);
-  });
-  await loadGlobalLayout();
-  hydrateHeroIcons(document);
-  window.dispatchEvent(new CustomEvent("languageChanged"));
-  applyRouteLinks(document);
+    // Ensure language + university translation packs are ready before UI render.
+    await i18nInitPromise;
+    await initUniversityTranslations().catch((e) => {
+      console.warn("university translations init failed, using local fallback pack:", e);
+    });
+    await loadGlobalLayout();
+    hydrateHeroIcons(document);
+    window.dispatchEvent(new CustomEvent("languageChanged"));
+    applyRouteLinks(document);
 
-  applyAINameConfig();
-  applyTranslations(document);
-  initLanguagesPanel();
-  initHomePageActions();
-  
-  if (isUniversitiesPage) {
-    // Keep universities first paint focused on list data; preload configs shortly after.
-    window.setTimeout(() => {
-      ensureExamConfig();
-      ensureLanguageConfig();
-    }, 1200);
-    window.setTimeout(() => {
-      maybeWakeBackend();
-    }, 1400);
-    ensureCityDatabase();
-    initUniversitiesPage();
-  } else if (isGuidePath(path) || document.getElementById("guidePage")) {
-    await Promise.all([
-      ensureExamConfig(),
-      ensureLanguageConfig(),
-    ]);
-    initGuidePage();
-  } else if (isUniversityDetailPath(path) || document.getElementById("detailCard")) {
-    await Promise.all([
-      ensureExamConfig(),
-      ensureLanguageConfig(),
-    ]);
-    initUniversityPage();
-  } else if (isRankingPath(path) || document.getElementById("rankingList")) {
-    await Promise.all([
-      ensureExamConfig(),
-      ensureLanguageConfig(),
-    ]);
-    initRankingPage();
-  } else {
-    await Promise.all([
-      ensureExamConfig(),
-      ensureLanguageConfig(),
-    ]);
-    initHomePageStats();
+    applyAINameConfig();
+    applyTranslations(document);
+    initLanguagesPanel();
+    initHomePageActions();
+
+    const pageInitPromise = (async () => {
+      if (document.body.dataset.page === "error-404") {
+        return;
+      }
+      if (isUniversitiesPage) {
+        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+        maybeWakeBackend();
+        ensureCityDatabase();
+        await initUniversitiesPage();
+      } else if (isGuidePath(path) || document.getElementById("guidePage")) {
+        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+        await initGuidePage();
+      } else if (isUniversityDetailPath(path) || document.getElementById("detailCard")) {
+        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+        await initUniversityPage();
+      } else if (isRankingPath(path) || document.getElementById("rankingList")) {
+        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+        await initRankingPage();
+      } else {
+        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+        await initHomePageStats();
+      }
+    })();
+
+    await pageInitPromise;
+
+  } catch (error) {
+    console.error("Initialization failed:", error);
+    // Показываем экран ошибки, если всё упало
+    const mainEl = document.querySelector('main') || document.body;
+    if (mainEl && document.body.dataset.page !== "error-404") {
+        renderNoConnection({
+            targetEl: mainEl,
+            onRetry: () => window.location.reload()
+        });
+    }
+  } finally {
+    if (siteLoader) {
+      siteLoader.classList.add("is-hidden");
+      document.body.classList.remove("initial-loading");
+      setTimeout(() => siteLoader.remove(), 600);
+    }
   }
 
   window.addEventListener("languageChanged", () => {
