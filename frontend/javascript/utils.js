@@ -20,7 +20,6 @@ function frontendStaticAsset(path = "") {
 export const $ = (id) => document.getElementById(id);
 
 const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
-const GLOBAL_LOADING_ACTIVE_CLASS = "global-loading-active";
 const GLOBAL_LOADING_SHOW_DELAY_MS = 120;
 const GLOBAL_LOADING_MIN_VISIBLE_MS = 220;
 
@@ -62,7 +61,11 @@ function ensureGlobalLoadingOverlayNode() {
   node.id = GLOBAL_LOADING_OVERLAY_ID;
   node.className = "global-loading-overlay";
   node.setAttribute("aria-hidden", "true");
-  node.innerHTML = `<div class="center-loading" role="status" aria-label="Loading"><div class="center-loading-spinner" aria-hidden="true"></div></div>`;
+  node.innerHTML = `
+    <div class="global-loading-overlay__track" aria-hidden="true">
+      <div class="global-loading-overlay__bar"></div>
+    </div>
+  `;
   document.body.appendChild(node);
   return node;
 }
@@ -73,14 +76,12 @@ function setGlobalLoadingVisible(visible) {
   if (visible) {
     node.classList.add("is-visible");
     node.setAttribute("aria-hidden", "false");
-    document.body.classList.add(GLOBAL_LOADING_ACTIVE_CLASS);
     __globalVisibleAt = Date.now();
     __globalVisible = true;
     return;
   }
   node.classList.remove("is-visible");
   node.setAttribute("aria-hidden", "true");
-  document.body.classList.remove(GLOBAL_LOADING_ACTIVE_CLASS);
   __globalVisible = false;
 }
 

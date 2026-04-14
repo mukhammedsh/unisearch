@@ -102,6 +102,58 @@ document.addEventListener("DOMContentLoaded", async () => {
   const siteLoader = document.getElementById("siteInitialLoader");
   if (siteLoader) document.body.classList.add("initial-loading");
   const isUniversitiesPage = Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList"));
+  const isUniversityPage = Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard"));
+  let siteLoaderDismissed = false;
+  const dismissSiteLoader = () => {
+    if (!siteLoader || siteLoaderDismissed) return;
+    siteLoaderDismissed = true;
+    siteLoader.classList.add("is-hidden");
+    document.body.classList.remove("initial-loading");
+    setTimeout(() => siteLoader.remove(), 600);
+  };
+  const primeRouteLoadingUi = () => {
+    if (isUniversitiesPage) {
+      const skeletonEl = document.getElementById("universitiesSkeleton");
+      const listEl = document.getElementById("universitiesList");
+      const paginationEl = document.getElementById("pagination");
+      if (skeletonEl && !skeletonEl.innerHTML.trim()) {
+        skeletonEl.innerHTML = Array.from({ length: 8 }, () => `
+          <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
+            <div class="uni-media">
+              <div class="uni-price" aria-hidden="true">
+                <div class="skeleton-line" style="width: 64px; height: 11px; margin-left: auto;"></div>
+                <div class="skeleton-line" style="width: 56px; height: 18px; margin: 6px 0 0 auto;"></div>
+              </div>
+              <div class="uni-logo" aria-hidden="true"></div>
+            </div>
+            <div class="uni-body">
+              <div class="skeleton-line" style="width: 86%; height: 17px;"></div>
+              <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
+              <div class="skeleton-line" style="width: 58%;"></div>
+              <div class="skeleton-line" style="width: 72%;"></div>
+              <div class="skeleton-line" style="width: 100%; height: 68px; border-radius: 12px; margin-top: 8px;"></div>
+              <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
+            </div>
+          </article>
+        `).join("");
+      }
+      if (skeletonEl) {
+        skeletonEl.style.display = "grid";
+        skeletonEl.setAttribute("aria-hidden", "false");
+      }
+      if (listEl) listEl.style.visibility = "hidden";
+      if (paginationEl) paginationEl.style.visibility = "hidden";
+      return;
+    }
+
+    if (isUniversityPage) {
+      const detailLoading = document.getElementById("detailLoading");
+      if (detailLoading) {
+        detailLoading.classList.add("is-visible");
+        detailLoading.setAttribute("aria-hidden", "false");
+      }
+    }
+  };
 
   try {
     initTheme();
@@ -111,11 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initGlobalApiLoadingIndicator();
     registerServiceWorker();
 
-    // Ensure language + university translation packs are ready before UI render.
     await i18nInitPromise;
-    await initUniversityTranslations().catch((e) => {
-      console.warn("university translations init failed, using local fallback pack:", e);
-    });
     await loadGlobalLayout();
     hydrateHeroIcons(document);
     window.dispatchEvent(new CustomEvent("languageChanged"));
@@ -125,8 +173,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyTranslations(document);
     initLanguagesPanel();
     initHomePageActions();
+    primeRouteLoadingUi();
+    dismissSiteLoader();
+
+    const needsUniversityTranslations = Boolean(isUniversitiesPage || isUniversityPage || isRankingPath(path) || document.getElementById("rankingList"));
+    const universityTranslationsPromise = needsUniversityTranslations
+      ? initUniversityTranslations().catch((e) => {
+          console.warn("university translations init failed, using local fallback pack:", e);
+        })
+      : Promise.resolve();
 
     const pageInitPromise = (async () => {
+      await universityTranslationsPromise;
       if (document.body.dataset.page === "error-404") {
         return;
       }
@@ -163,11 +221,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
   } finally {
-    if (siteLoader) {
-      siteLoader.classList.add("is-hidden");
-      document.body.classList.remove("initial-loading");
-      setTimeout(() => siteLoader.remove(), 600);
-    }
+    dismissSiteLoader();
   }
 
   window.addEventListener("languageChanged", () => {

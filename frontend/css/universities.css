@@ -903,6 +903,7 @@
   grid-template-columns: repeat(4, minmax(220px, 1fr));
   gap: 16px;
   align-items: stretch;
+  min-height: 372px;
 }
 
 /* Skeleton Loading Animation */
@@ -917,6 +918,7 @@
 
 .is-skeleton .uni-media,
 .is-skeleton .uni-logo,
+.is-skeleton .uni-price,
 .is-skeleton .skeleton-line {
   background: var(--surface-soft, rgba(0, 0, 0, 0.04));
   background-image: linear-gradient(
@@ -932,6 +934,7 @@
 
 :root[data-theme="dark"] .is-skeleton .uni-media,
 :root[data-theme="dark"] .is-skeleton .uni-logo,
+:root[data-theme="dark"] .is-skeleton .uni-price,
 :root[data-theme="dark"] .is-skeleton .skeleton-line {
   background: var(--surface-soft, rgba(255, 255, 255, 0.04));
   background-image: linear-gradient(
@@ -946,6 +949,32 @@
   height: 14px;
   border-radius: 4px;
   margin-bottom: 6px;
+}
+
+.u-skeleton-card {
+  pointer-events: none;
+}
+
+.u-skeleton-card .uni-media::after {
+  display: none;
+}
+
+.u-skeleton-card .uni-price {
+  border: none;
+  box-shadow: none;
+}
+
+.u-skeleton-card .uni-body {
+  gap: 8px;
+}
+
+.u-map-stage.is-loading .u-map-container {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.u-map-stage.is-loading .u-map-results {
+  opacity: 0.88;
 }
 
 /* =========================================

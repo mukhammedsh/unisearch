@@ -88,6 +88,63 @@
   font-weight: 900;
 }
 
+.d-loading {
+  display: none;
+  margin-bottom: 16px;
+}
+
+.d-loading.is-visible {
+  display: block;
+}
+
+.d-loading-card {
+  display: grid;
+  gap: 18px;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.05);
+  pointer-events: none;
+}
+
+.d-loading-cover {
+  height: 260px;
+  border-radius: 22px;
+}
+
+.d-loading-head {
+  display: grid;
+  gap: 10px;
+}
+
+.d-loading-title {
+  height: 34px;
+  width: min(72%, 540px);
+  border-radius: 10px;
+}
+
+.d-loading-text {
+  height: 18px;
+  width: 58%;
+  border-radius: 8px;
+}
+
+.d-loading-text--short {
+  width: 42%;
+}
+
+.d-loading-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.d-loading-panel {
+  min-height: 180px;
+  border-radius: 18px;
+}
+
 /* =========================================
    HEADER & COVER
    ========================================= */
@@ -4019,6 +4076,14 @@
 }
 
 @media (max-width: 720px) {
+  .d-loading-cover {
+    height: 210px;
+  }
+
+  .d-loading-grid {
+    grid-template-columns: 1fr;
+  }
+
   .d-head {
     padding: 16px;
     flex-direction: column;

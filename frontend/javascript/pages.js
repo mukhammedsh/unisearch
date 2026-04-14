@@ -1,4 +1,4 @@
-﻿/* 4. pages.js - Р¤РРќРђР›Р¬РќРђРЇ РРЎРџР РђР’Р›Р•РќРќРђРЇ Р’Р•Р РЎРРЇ */
+/* frontend/javascript/pages.js */
 
 import {
   API_BASE,
@@ -423,11 +423,11 @@ function localizeDuration(rawValue) {
 
   if (lang === "rus") {
     return raw
-      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РіРѕРґ", "РіРѕРґР°", "Р»РµС‚")}`)
-      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РјРµСЃСЏС†", "РјРµСЃСЏС†Р°", "РјРµСЃСЏС†РµРІ")}`)
-      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РЅРµРґРµР»СЏ", "РЅРµРґРµР»Рё", "РЅРµРґРµР»СЊ")}`)
-      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "РґРµРЅСЊ", "РґРЅСЏ", "РґРЅРµР№")}`)
-      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "СЃРµРјРµСЃС‚СЂ", "СЃРµРјРµСЃС‚СЂР°", "СЃРµРјРµСЃС‚СЂРѕРІ")}`);
+      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "год", "года", "лет")}`)
+      .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "месяц", "месяца", "месяцев")}`)
+      .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "неделя", "недели", "недель")}`)
+      .replace(/\b(\d+)\s*days?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "день", "дня", "дней")}`)
+      .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "семестр", "семестра", "семестров")}`);
   }
 
   return raw;
@@ -452,9 +452,9 @@ function formatFundingOptionsCount(count) {
   if (getCurrentLanguage() === "rus") {
     return `${formattedCount} ${ruPlural(
       safeCount,
-      "РІР°СЂРёР°РЅС‚ С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ",
-      "РІР°СЂРёР°РЅС‚Р° С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ",
-      "РІР°СЂРёР°РЅС‚РѕРІ С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ"
+      "вариант финансирования",
+      "варианта финансирования",
+      "вариантов финансирования"
     )}`;
   }
 
@@ -1069,7 +1069,7 @@ async function fetchUniversityDetailCached(universityId) {
 }
 
 // =====================================
-// PAGE: UNIVERSITIES LIST (РЎРїРёСЃРѕРє РІСѓР·РѕРІ)
+// PAGE: UNIVERSITIES LIST
 // =====================================
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
@@ -1100,7 +1100,7 @@ export function initUniversitiesPage() {
         resetBtn: $("resetFiltersBtn"),
         content: document.querySelector(".u-content"),
         list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),
-        state: $("listState"), pagination: $("pagination"),
+        skeleton: $("universitiesSkeleton"), state: $("listState"), pagination: $("pagination"),
         btnList: $("viewListBtn"), btnMap: $("viewMapBtn")
     };
     const isTranslationDebugEnabled = (() => {
@@ -1236,11 +1236,57 @@ export function initUniversitiesPage() {
 
     function setUniversitiesLoading(isLoading) {
         const mapMode = state.viewMode === "map";
-        const useMapOverlay = !!isLoading && mapMode;
-        const showDefaultOverlay = !!isLoading && !mapMode;
+        const showListSkeleton = !!isLoading && !mapMode;
         if (el.content) {
-            el.content.classList.toggle("is-loading", showDefaultOverlay);
-            el.content.classList.toggle("is-loading-map", useMapOverlay);
+            el.content.setAttribute("aria-busy", isLoading ? "true" : "false");
+        }
+        if (el.skeleton) {
+            if (showListSkeleton) {
+                if (!el.skeleton.innerHTML.trim()) {
+                    const skeletonCount = Math.min(Math.max(8, Math.ceil(window.innerWidth / 320) * 2), state.limit);
+                    el.skeleton.innerHTML = Array.from({ length: skeletonCount }, () => `
+                        <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
+                            <div class="uni-media">
+                                <div class="uni-price" aria-hidden="true">
+                                    <div class="skeleton-line" style="width: 64px; height: 11px; margin-left: auto;"></div>
+                                    <div class="skeleton-line" style="width: 56px; height: 18px; margin: 6px 0 0 auto;"></div>
+                                </div>
+                                <div class="uni-logo" aria-hidden="true"></div>
+                            </div>
+                            <div class="uni-body">
+                                <div class="skeleton-line" style="width: 86%; height: 17px;"></div>
+                                <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
+                                <div class="skeleton-line" style="width: 58%;"></div>
+                                <div class="skeleton-line" style="width: 72%;"></div>
+                                <div class="skeleton-line" style="width: 100%; height: 68px; border-radius: 12px; margin-top: 8px;"></div>
+                                <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
+                            </div>
+                        </article>
+                    `).join("");
+                }
+                el.skeleton.style.display = "grid";
+                el.skeleton.setAttribute("aria-hidden", "false");
+            } else {
+                el.skeleton.style.display = "none";
+                el.skeleton.setAttribute("aria-hidden", "true");
+            }
+        }
+        if (el.list) {
+            el.list.style.display = mapMode ? "none" : "grid";
+            el.list.style.visibility = showListSkeleton ? "hidden" : "visible";
+        }
+        if (el.pagination && !mapMode) {
+            el.pagination.style.visibility = showListSkeleton ? "hidden" : "visible";
+        }
+        if (el.mapStage) {
+            el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode);
+        }
+        if (el.mapResults && isLoading && mapMode) {
+            el.mapResults.innerHTML = `
+                <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite">
+                    ${escapeHtml(t("universities.loading", "Loading universities"))}
+                </div>
+            `;
         }
     }
 
@@ -1518,7 +1564,7 @@ export function initUniversitiesPage() {
         okBtn?.focus();
     });
 
-    // --- РЎР»Р°Р№РґРµСЂС‹ ---
+    // --- Sliders ---
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
         const minVal = parseInt(el.minSlider.value); const maxVal = parseInt(el.maxSlider.value); const maxRange = parseInt(el.maxSlider.max);
@@ -2284,7 +2330,7 @@ export function initUniversitiesPage() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">рџЊЌ ${escapeHtml(t("universities.global", "Global"))}</option>`;
+        let html = `<option value="">&#x1F30D; ${escapeHtml(t("universities.global", "Global"))}</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
             const value = String(c || "");
@@ -2714,7 +2760,7 @@ export function initUniversitiesPage() {
         badgesHTML = visibleBadges.join(" ");
 
         
-        // ROI РЈР‘Р РђРќ РџРћР›РќРћРЎРўР¬Р®
+        // ROI intentionally removed from university cards.
 
         const logoSrc = uniLogoSrc(id);
         const logoSrcFull = uniLogoSrc(id, { forceFull: true });
@@ -2773,7 +2819,7 @@ export function initUniversitiesPage() {
 }
 
 // =====================================
-// PAGE: UNIVERSITY DETAILS (Р”РµС‚Р°Р»СЊРЅР°СЏ)
+// PAGE: UNIVERSITY DETAILS
 // =====================================
 export async function initUniversityPage() {
   const id = extractUniversityIdFromLocation(window.location);
@@ -2822,7 +2868,7 @@ export async function initUniversityPage() {
       ? u.academics.admissions
       : null;
 
-    // 1. РЁР°РїРєР°
+    // 1. Header
     const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = String(val ?? "").trim(); };
     const translatedName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
     const translatedCity = trCity(u?.location?.city || "");
@@ -3295,7 +3341,7 @@ export async function initUniversityPage() {
     }
 
 
-    // --- TAB 3: ADMISSION (РРЎРџР РђР’Р›Р•РќРћ: Р’РµСЂРЅСѓР» Р¦РµРЅСѓ Рё РЎСЂРµРґРЅРёРµ Р±Р°Р»Р»С‹) ---
+    // --- TAB 3: ADMISSION ---
         const reqDiv = document.getElementById("detailRequirements");
         const renderAdmissionTab = () => {
         if (!reqDiv) return;
@@ -3510,7 +3556,7 @@ export async function initUniversityPage() {
     };
     window.addEventListener("profileUpdated", __detailProfileUpdatedHandler);
 
-    // --- TAB 4: FINANCE (РЎ Р±Р»РѕРєРѕРј ROI) ---
+    // --- TAB 4: FINANCE ---
     const finDiv = document.getElementById("detailFinance");
     const scholDiv = document.getElementById("detailScholarshipInfo"); 
     const priceBig = document.getElementById("detailPrice");           
@@ -3565,7 +3611,7 @@ export async function initUniversityPage() {
     window.addEventListener("load", syncFinanceSummaryCardHeights, { once: true });
     
     if (u.finance) {
-        // Р‘Р»РѕРє СЃРєРёРґРѕРє
+        // Scholarships block
         if (scholDiv) {
             const fa = u.finance.financial_aid || {};
             const hasMerit = typeof fa.merit_based === "boolean";
@@ -3583,7 +3629,7 @@ export async function initUniversityPage() {
             scholDiv.innerHTML = meritHtml + needHtml;
         }
 
-        // Р‘Р»РѕРє С†РµРЅС‹
+        // Price block
         if (priceBig) {
             let minTotal = modeAwareAnnualCost(u.finance || {}, profileStudyMode);
             const allFundingOptionsForFinance = (Array.isArray(u.admission_tracks) ? u.admission_tracks : [])
@@ -3602,7 +3648,7 @@ export async function initUniversityPage() {
         }
         settleFinanceSummaryCardHeights();
         
-        // РљР°СЂС‚РѕС‡РєРё С‚СЂРµРєРѕРІ
+        // Track cards
         if (finDiv) {
             finDiv.innerHTML = "";
 
@@ -3763,7 +3809,7 @@ export async function initUniversityPage() {
 }
 
 // =====================================
-// PAGE: RANKING (РСЃРїСЂР°РІР»РµРЅР° СЃРѕСЂС‚РёСЂРѕРІРєР°)
+// PAGE: RANKING
 // =====================================
 function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
