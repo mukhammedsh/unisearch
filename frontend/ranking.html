@@ -18,23 +18,6 @@
 </head>
 <body data-page="ranking">
   <div id="siteInitialLoader" class="site-initial-loader">
-    <div class="skeleton-bg skeleton-bg--row">
-      <div class="skeleton-block skel-header-bar"></div>
-      <div class="skel-sidebar-col">
-        <div class="skeleton-block skel-title" style="width: 80%;"></div>
-        <div class="skeleton-block skel-text"></div>
-        <div class="skeleton-block skel-text"></div>
-      </div>
-      <div class="skel-content-col">
-        <div class="skeleton-block skel-title" style="width: 40%;"></div>
-        <div class="skeleton-block skel-text" style="height: 60px;"></div>
-        <div class="skeleton-block skel-text" style="height: 60px;"></div>
-        <div class="skeleton-block skel-text" style="height: 60px;"></div>
-        <div class="skeleton-block skel-text" style="height: 60px;"></div>
-        <div class="skeleton-block skel-text" style="height: 60px;"></div>
-        <div class="skeleton-block skel-text" style="height: 60px;"></div>
-      </div>
-    </div>
     <div class="site-initial-loader__spinner"></div>
   </div>
   <main class="u-page">
@@ -43,8 +26,22 @@
         <h1><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="24"></span> <span data-i18n="ranking.title">Global University Ranking</span></h1>
         <p data-i18n="ranking.subtitle">Popular universities by study quality and opportunities (2026)</p>
       </div>
+
+      <div class="rank-tools" aria-label="Ranking filters" data-i18n-aria-label="ranking.tools_aria">
+        <label class="rank-search">
+          <span data-heroicon="magnifying-glass" data-icon-size="18"></span>
+          <input id="rankingSearchInput" type="search" placeholder="Search ranking..." data-i18n-placeholder="ranking.search_placeholder">
+        </label>
+        <label class="rank-country-filter">
+          <span data-i18n="ranking.country_filter">Country</span>
+          <select id="rankingCountrySelect">
+            <option value="" data-i18n="ranking.country_all">All countries</option>
+          </select>
+        </label>
+      </div>
+      <p class="rank-source-note" data-i18n="ranking.source_note">Ranks use official published sources where available; universities without a published global rank stay visible after ranked entries.</p>
       
-      <div id="rankingList">
+      <div id="rankingList" class="ranking-list">
         <div class="inline-loading-note" role="status" aria-live="polite" data-i18n="ranking.loading">
           Loading rankings
         </div>

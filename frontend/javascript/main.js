@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const hash = String(window.location.hash || "").trim();
   const isGuideSectionHash = /^#guide-[a-z0-9-]+$/i.test(hash);
   const isFrontendRootPath = /^\/frontend\/?$/i.test(String(path || "").trim());
+  const isHomePage = Boolean(isHomePath(path) || isFrontendRootPath || document.body.dataset.page === "home");
   if ((isHomePath(path) || isFrontendRootPath) && isGuideSectionHash) {
     const target = `${routeGuide()}${hash}`;
     window.location.replace(target);
@@ -100,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const siteLoader = document.getElementById("siteInitialLoader");
-  if (siteLoader) document.body.classList.add("initial-loading");
+  if (siteLoader && !isHomePage) document.body.classList.add("initial-loading");
   const isUniversitiesPage = Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList"));
   const isUniversityPage = Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard"));
   let siteLoaderDismissed = false;

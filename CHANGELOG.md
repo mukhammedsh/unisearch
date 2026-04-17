@@ -2,6 +2,22 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.5 (2026-04-17) - Saved Universities, Comparison, Profile Redesign, and Motion
+
+Status:
+- synchronized runtime/package version to `3.4.5` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, and README release references;
+- redesigned the profile modal into section tabs for basics, scores, languages, and preferences, with profile completion progress, interest chips, smoother save/reset/unsaved-change flows, and better reduced-motion behavior;
+- added shared frontend motion helpers for press, panel-enter, list-enter, row-exit, state-pulse, theme, toast, profile, detail-tab, universities-list, and map/result interactions, while respecting `prefers-reduced-motion`;
+- added saved-university storage with favorite buttons, saved-only filtering, a favorites shortlist bar, recently viewed universities, persisted compare selection, and pressed/active states across list and map cards;
+- added a university comparison tray and modal with overview, programs, admissions, finance, and context sections, including highlighted best-rank, lowest-cost, accessibility, aid, salary/outcome, requirements, source, and data-quality signals;
+- rebuilt universities-page search and mobile filtering UX with active-filter chips, mobile filter sheet controls, search suggestions for universities/cities/countries, saved empty states, stronger card metrics, and refreshed map result cards;
+- improved ranking UX with search, country filter, suggestions, source notes, empty states, skeleton handling, dynamic badge fitting, and localized ranking tool labels;
+- refreshed homepage preview, detail-page action labels, detail tab switching, guide/ranking/list styling, and shared icon usage to match the updated interaction model;
+- expanded English and Russian localization for profile sections, ranking tools, saved universities, comparison tables, shortlist/recent bars, empty states, action labels, and tour controls;
+- refined university coordinates, campus-size localization, and translation data used by frontend rendering and backend endpoint contract tests;
+- added Playwright coverage for profile/category motion, saved/compare pressed states, and detail-tab switching, and updated the language-validation flow regression test to target the new profile tabs;
+- bumped the service-worker cache version so clients refresh the `3.4.5` frontend assets immediately after deployment.
+
 ## 3.4.4 (2026-04-14) - Skeleton Loaders and Error States
 
 Status:

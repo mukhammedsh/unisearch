@@ -157,7 +157,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
 .hero-facts {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 8px 24px;
   align-items: center;
 }
 
@@ -169,21 +169,27 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   font-size: 15px;
   line-height: 1.5;
   color: var(--home-ink-soft);
+  position: relative;
 }
 
 .hero-fact::after {
-  content: "·";
-  width: auto;
-  height: auto;
-  margin-left: 4px;
+  content: "";
+  width: 3px;
+  height: 3px;
+  margin-left: 0;
+  margin-right: 0;
+  position: absolute;
+  left: calc(100% + 10.5px);
+  top: 50%;
+  transform: translateY(-50%);
   align-self: center;
-  font-size: 18px;
-  line-height: 1;
-  color: rgba(16, 19, 32, 0.34);
+  border-radius: 50%;
+  background: rgba(16, 19, 32, 0.34);
+  pointer-events: none;
 }
 
 :root[data-theme="dark"] .hero-fact::after {
-  color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .hero-fact:last-of-type::after {
@@ -251,7 +257,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.82em;
+  top: calc((1.6em - 6px) / 2);
   width: 6px;
   height: 6px;
   border-radius: 50%;

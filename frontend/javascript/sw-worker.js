@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-04-14-1";
+const SW_VERSION = "2026-04-17-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;

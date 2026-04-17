@@ -17,6 +17,11 @@ import {
   MAJOR_OPTIONS,
   toggleTheme,
   getCurrentTheme,
+  animateElementOut,
+  markMotionEnter,
+  motionPress,
+  prefersReducedMotion,
+  replayMotion,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
@@ -223,9 +228,17 @@ const LAYOUT_HTML = `
 
     <div id="usernameError" class="profile-error profile-error--username"></div>
 
+    <div class="profile-progress" id="profileProgressText" data-i18n="profile.progress.empty">Complete your profile for better matches.</div>
+    <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
+      <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">Basics</button>
+      <button class="profile-section-tab" type="button" data-profile-tab="scores" role="tab" aria-selected="false" data-i18n="profile.section.scores">Scores</button>
+      <button class="profile-section-tab" type="button" data-profile-tab="languages" role="tab" aria-selected="false" data-i18n="profile.section.languages">Languages</button>
+      <button class="profile-section-tab" type="button" data-profile-tab="preferences" role="tab" aria-selected="false" data-i18n="profile.section.preferences">Preferences</button>
+    </div>
+
     <div class="profile-body">
       
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="basics">
         <label class="profile-label" data-i18n="profile.label.budget">Total Budget (USD / year)</label>
         <div class="profile-budget">
           <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
@@ -233,7 +246,7 @@ const LAYOUT_HTML = `
         <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0‑1,000,000</div>
       </div>
 
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="basics">
         <label class="profile-label" data-i18n="profile.label.study_mode">Preferred Study Mode</label>
         <select id="studyModeSelect" class="profile-input profile-input--select">
            <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
@@ -242,7 +255,7 @@ const LAYOUT_HTML = `
         </select>
       </div>
 
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="basics">
         <label class="profile-label" data-i18n="profile.label.funding_type">Preferred Funding Type</label>
         <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
            <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
@@ -258,14 +271,14 @@ const LAYOUT_HTML = `
         </div>
       </div>
 
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="preferences">
         <label class="profile-label" data-i18n="profile.label.major">Intended Major</label>
         <select id="profileMajorSelect" class="profile-input profile-input--select">
            <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
         </select>
       </div>
 
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="preferences">
         <label class="profile-label" data-i18n="profile.label.interests">What You Want in a University</label>
         <textarea
           id="profileInterestsInput"
@@ -282,9 +295,14 @@ const LAYOUT_HTML = `
           data-i18n="profile.warning.interests_english_only"
         >If automatic translation is unavailable, write this field in English.</div>
         <div class="profile-hint" data-i18n="profile.hint.interests">Write what matters to you in a university so UniSearch can sort results more personally.</div>
+        <div class="profile-interest-chips" aria-label="Interest examples" data-i18n-aria-label="profile.interest_examples">
+          <button type="button" data-interest-chip="computer science, scholarships, internships" data-i18n="profile.interest_chip.tech">Tech + scholarships</button>
+          <button type="button" data-interest-chip="big city, strong student life, internships" data-i18n="profile.interest_chip.city">Big city</button>
+          <button type="button" data-interest-chip="research labs, science, academic environment" data-i18n="profile.interest_chip.research">Research labs</button>
+        </div>
       </div>
 
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="scores">
         <div class="profile-label-row">
           <label class="profile-label" for="gpaInput" data-i18n="profile.label.gpa">GPA (Percent)</label>
           <span class="profile-info-wrap">
@@ -306,7 +324,7 @@ const LAYOUT_HTML = `
         </div>
       </div>
 
-      <div class="profile-field">
+      <div class="profile-field" data-profile-section="scores">
         <label class="profile-label" data-i18n="profile.label.exams">Exams (list, optional)</label>
         
         <div class="profile-exam-form">
@@ -327,7 +345,7 @@ const LAYOUT_HTML = `
         <div id="examList" class="profile-exam-list"></div>
       </div>
 
-      <section class="profile-block" id="languagesBlock">
+      <section class="profile-block" id="languagesBlock" data-profile-section="languages">
         <div class="profile-block-head">
             <h3 data-i18n="profile.languages">Languages</h3>
         </div>
@@ -795,6 +813,43 @@ function initProfileUI() {
         : null;
     let savedSignature = "";
     let lowBudgetGrantHintDismissed = false;
+    const profileProgressText = document.getElementById("profileProgressText");
+    const profileSectionTabs = Array.from(modal.querySelectorAll(".profile-section-tab"));
+    const profileSectionNodes = Array.from(modal.querySelectorAll("[data-profile-section]"));
+
+    const setProfileSection = (section = "basics") => {
+        const active = String(section || "basics");
+        profileSectionTabs.forEach((tab) => {
+            const isActive = String(tab.dataset.profileTab || "") === active;
+            tab.classList.toggle("is-active", isActive);
+            tab.setAttribute("aria-selected", isActive ? "true" : "false");
+            if (isActive) replayMotion(tab, "motion-press-pop", { timeoutMs: 280 });
+        });
+        profileSectionNodes.forEach((node) => {
+            const isActive = String(node.getAttribute("data-profile-section") || "") === active;
+            node.classList.toggle("is-section-hidden", !isActive);
+            if (isActive) replayMotion(node, "is-motion-active", { timeoutMs: 420 });
+        });
+    };
+
+    const updateProfileProgress = () => {
+        if (!profileProgressText) return;
+        let completed = 0;
+        const total = 5;
+        if (String(profile.budget || "").trim()) completed += 1;
+        if (String(profile.major || "").trim()) completed += 1;
+        if (String(profile.interests || "").trim()) completed += 1;
+        if (String(profile.gpa || "").trim() || (Array.isArray(profile.exams) && profile.exams.length)) completed += 1;
+        if (Array.isArray(profile.languages) && profile.languages.length) completed += 1;
+        profileProgressText.textContent = completed
+            ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
+            : t("profile.progress.empty", "Complete your profile for better matches.");
+    };
+
+    profileSectionTabs.forEach((tab) => {
+        tab.addEventListener("click", () => setProfileSection(tab.dataset.profileTab || "basics"));
+    });
+    setProfileSection("basics");
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
     const getNameDraft = () => String(nameInput?.value || "").trim();
@@ -879,6 +934,7 @@ function initProfileUI() {
         }
         if (saveProfileBtn) saveProfileBtn.disabled = !isDirty;
         renderLowBudgetGrantHint();
+        updateProfileProgress();
         return isDirty;
     };
 
@@ -1802,6 +1858,7 @@ function initProfileUI() {
                     <button data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
                 </div>
             `).join("");
+            markMotionEnter(examList, ".profile-exam-item", { limit: 8, staggerMs: 18 });
         }
         refreshExamActionButton();
     };
@@ -1873,6 +1930,8 @@ function initProfileUI() {
         saveProfile(profile);
         savedSignature = stableProfileSignature(profile);
         refreshSaveState();
+        replayMotion(profileSaveState, "motion-state-pulse", { timeoutMs: 520 });
+        replayMotion(saveProfileBtn, "motion-state-pulse", { timeoutMs: 520 });
 
         if (notify) showToast(t("profile.saved_all", "Profile saved"), "success");
         return true;
@@ -1880,18 +1939,34 @@ function initProfileUI() {
 
     const closeUnsavedDialog = (focusCloseButton = false) => {
         if (!unsavedModal) return;
-        unsavedModal.classList.remove("is-open");
-        unsavedModal.setAttribute("aria-hidden", "true");
-        unsavedModal.style.display = "none";
-        if (focusCloseButton && closeBtn) closeBtn.focus();
+        const finish = () => {
+            unsavedModal.classList.remove("is-open", "is-closing");
+            unsavedModal.setAttribute("aria-hidden", "true");
+            unsavedModal.style.display = "none";
+            if (focusCloseButton && closeBtn) closeBtn.focus();
+        };
+        if (prefersReducedMotion() || !unsavedModal.classList.contains("is-open")) {
+            finish();
+            return;
+        }
+        unsavedModal.classList.add("is-closing");
+        window.setTimeout(finish, 180);
     };
 
     const closeResetDialog = (focusResetButton = false) => {
         if (!resetModal) return;
-        resetModal.classList.remove("is-open");
-        resetModal.setAttribute("aria-hidden", "true");
-        resetModal.style.display = "none";
-        if (focusResetButton && resetProfileBtn) resetProfileBtn.focus();
+        const finish = () => {
+            resetModal.classList.remove("is-open", "is-closing");
+            resetModal.setAttribute("aria-hidden", "true");
+            resetModal.style.display = "none";
+            if (focusResetButton && resetProfileBtn) resetProfileBtn.focus();
+        };
+        if (prefersReducedMotion() || !resetModal.classList.contains("is-open")) {
+            finish();
+            return;
+        }
+        resetModal.classList.add("is-closing");
+        window.setTimeout(finish, 180);
     };
 
     const closeImmediately = () => {
@@ -1901,11 +1976,19 @@ function initProfileUI() {
         closeResetDialog(false);
         if (openBtn) openBtn.focus();
 
-        modal.classList.remove("is-open");
-        modal.style.display = "none";
-        modal.setAttribute("aria-hidden", "true");
-        window.dispatchEvent(new Event("profileModalClosed"));
-        resetFields();
+        const finish = () => {
+            modal.classList.remove("is-open", "is-closing");
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+            window.dispatchEvent(new Event("profileModalClosed"));
+            resetFields();
+        };
+        if (prefersReducedMotion()) {
+            finish();
+            return;
+        }
+        modal.classList.add("is-closing");
+        window.setTimeout(finish, 180);
     };
 
     const closeForLanguageSwitch = () => {
@@ -1914,15 +1997,24 @@ function initProfileUI() {
         transferredProfileDraft = ensureProfileShape(profile);
         closeUnsavedDialog(false);
         closeResetDialog(false);
-        modal.classList.remove("is-open");
-        modal.style.display = "none";
-        modal.setAttribute("aria-hidden", "true");
-        window.dispatchEvent(new Event("profileModalClosed"));
+        const finish = () => {
+            modal.classList.remove("is-open", "is-closing");
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+            window.dispatchEvent(new Event("profileModalClosed"));
+        };
+        if (prefersReducedMotion()) {
+            finish();
+            return;
+        }
+        modal.classList.add("is-closing");
+        window.setTimeout(finish, 180);
     };
 
     const openUnsavedDialog = () => {
         if (!unsavedModal) return;
         unsavedModal.style.display = "flex";
+        unsavedModal.classList.remove("is-closing");
         unsavedModal.classList.add("is-open");
         unsavedModal.setAttribute("aria-hidden", "false");
     };
@@ -1930,6 +2022,7 @@ function initProfileUI() {
     const openResetDialog = () => {
         if (!resetModal) return;
         resetModal.style.display = "flex";
+        resetModal.classList.remove("is-closing");
         resetModal.classList.add("is-open");
         resetModal.setAttribute("aria-hidden", "false");
     };
@@ -1971,6 +2064,17 @@ function initProfileUI() {
             profile.interests = getInterestsDraft();
             refreshSaveState();
         });
+        modal.querySelectorAll("[data-interest-chip]").forEach((chip) => {
+            chip.addEventListener("click", () => {
+                motionPress(chip);
+                const text = String(chip.getAttribute("data-interest-chip") || "").trim();
+                if (!text) return;
+                const current = getInterestsDraft();
+                profileInterestsInput.value = current ? `${current}, ${text}` : text;
+                profile.interests = getInterestsDraft();
+                refreshSaveState();
+            });
+        });
     }
 
     if (budgetInput) {
@@ -1990,11 +2094,13 @@ function initProfileUI() {
     }
 
     lowBudgetGrantDismissBtn?.addEventListener("click", () => {
+        motionPress(lowBudgetGrantDismissBtn);
         lowBudgetGrantHintDismissed = true;
         renderLowBudgetGrantHint();
     });
 
     lowBudgetGrantApplyBtn?.addEventListener("click", () => {
+        motionPress(lowBudgetGrantApplyBtn);
         if (!profileFundingTypeSelect) return;
         lowBudgetGrantHintDismissed = true;
         profileFundingTypeSelect.value = "grant";
@@ -2021,6 +2127,7 @@ function initProfileUI() {
 
     if (saveProfileBtn) {
         saveProfileBtn.addEventListener("click", () => {
+            motionPress(saveProfileBtn);
             if (isUsernameDraftDirty() && !commitProfileName(false)) {
                 return;
             }
@@ -2041,6 +2148,7 @@ function initProfileUI() {
     };
 
     resetProfileBtn?.addEventListener("click", () => {
+        motionPress(resetProfileBtn);
         syncInputsToDraft();
         openResetDialog();
     });
@@ -2051,6 +2159,7 @@ function initProfileUI() {
             renderInterestsTranslationWarning(status);
         });
         window.dispatchEvent(new Event("profileModalOpened"));
+        modal.classList.remove("is-closing");
         modal.classList.add("is-open");
         modal.style.display = "flex";
         modal.removeAttribute("aria-hidden");
@@ -2068,12 +2177,15 @@ function initProfileUI() {
     if (backdrop) backdrop.onclick = requestClose;
 
     discardBtn?.addEventListener("click", () => {
+        motionPress(discardBtn);
         closeImmediately();
     });
     cancelCloseBtn?.addEventListener("click", () => {
+        motionPress(cancelCloseBtn);
         closeUnsavedDialog(true);
     });
     saveAndCloseBtn?.addEventListener("click", () => {
+        motionPress(saveAndCloseBtn);
         syncInputsToDraft();
         if (isUsernameDraftDirty() && !commitProfileName(false)) {
             closeUnsavedDialog(true);
@@ -2092,9 +2204,13 @@ function initProfileUI() {
         closeResetDialog(true);
     });
     resetCancelBtn?.addEventListener("click", () => {
+        motionPress(resetCancelBtn);
         closeResetDialog(true);
     });
-    resetConfirmBtn?.addEventListener("click", resetProfileData);
+    resetConfirmBtn?.addEventListener("click", () => {
+        motionPress(resetConfirmBtn);
+        resetProfileData();
+    });
 
     document.addEventListener("keydown", (e) => {
         if (e.key !== "Escape") return;
@@ -2138,6 +2254,7 @@ function initProfileUI() {
 
     if (addExamBtn) {
         addExamBtn.onclick = async () => {
+            motionPress(addExamBtn);
             const name = canonicalizeExamId(examNameSelect.value);
             const mode = examInputModeFor(name);
             const selectedPayload = readSelectedExamPayload(name);
@@ -2309,16 +2426,21 @@ function initProfileUI() {
 
     if (examList) {
         examList.onclick = (e) => {
-            if (e.target.tagName !== "BUTTON") return;
-            const idx = Number(e.target.dataset.idx);
+            const btn = e.target instanceof Element ? e.target.closest("button[data-idx]") : null;
+            if (!btn) return;
+            motionPress(btn);
+            const idx = Number(btn.dataset.idx);
             if (!Number.isFinite(idx)) return;
             if (!Array.isArray(profile.exams)) profile.exams = [];
 
-            profile.exams.splice(idx, 1);
-            profile = ensureProfileShape(profile);
-            refreshSaveState();
-            renderProfileData();
-            showToast(t("profile.exam_removed", "Exam removed"), "success");
+            const row = btn.closest(".profile-exam-item");
+            animateElementOut(row, () => {
+                profile.exams.splice(idx, 1);
+                profile = ensureProfileShape(profile);
+                refreshSaveState();
+                renderProfileData();
+                showToast(t("profile.exam_removed", "Exam removed"), "success");
+            });
         };
     }
 
@@ -2339,9 +2461,13 @@ export function setupTabs() {
     buttons.forEach((b) => b.classList.remove("active"));
     panes.forEach((p) => p.classList.remove("active"));
     btn.classList.add("active");
+    motionPress(btn);
     const tabId = btn.getAttribute("data-tab");
     const targetPane = tabId ? document.getElementById(tabId) : null;
-    if (targetPane) targetPane.classList.add("active");
+    if (targetPane) {
+      targetPane.classList.add("active");
+      replayMotion(targetPane, "motion-panel-enter", { timeoutMs: 420 });
+    }
   });
 }
 /**
@@ -2356,7 +2482,7 @@ export function renderNoConnection(options = {}) {
   const html = `
     <div class="error-screen error-screen--full fadeIn">
       <div class="error-icon-wrap">
-        ${heroIcon("rss", "ui-icon ui-icon--32")}
+        ${heroIcon("exclamation-triangle", "ui-icon ui-icon--32")}
       </div>
       <h2 class="error-title" data-i18n="error.no_connection.title">No Internet Connection</h2>
       <p class="error-desc" data-i18n="error.no_connection.desc">We couldn't reach the server. Please check your internet connection and try again.</p>

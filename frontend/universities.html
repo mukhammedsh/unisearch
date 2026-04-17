@@ -25,28 +25,6 @@
 
 <body data-page="universities">
   <div id="siteInitialLoader" class="site-initial-loader">
-    <div class="skeleton-bg skeleton-bg--row">
-      <div class="skeleton-block skel-header-bar"></div>
-      <div class="skel-sidebar-col">
-        <div class="skeleton-block skel-title" style="width: 80%;"></div>
-        <div class="skeleton-block skel-text"></div>
-        <div class="skeleton-block skel-text"></div>
-        <div class="skeleton-block skel-text"></div>
-        <div class="skeleton-block skel-text"></div>
-        <div class="skeleton-block skel-text"></div>
-      </div>
-      <div class="skel-content-col">
-        <div class="skeleton-block skel-title"></div>
-        <div class="skeleton-bg--grid">
-          <div class="skeleton-block skel-card"></div>
-          <div class="skeleton-block skel-card"></div>
-          <div class="skeleton-block skel-card"></div>
-          <div class="skeleton-block skel-card"></div>
-          <div class="skeleton-block skel-card"></div>
-          <div class="skeleton-block skel-card"></div>
-        </div>
-      </div>
-    </div>
     <div class="site-initial-loader__spinner"></div>
   </div>
   <main class="u-page">
@@ -68,6 +46,17 @@
             <button id="resetFiltersBtn" class="u-reset" type="button">
               <span data-i18n="universities.reset">Reset</span>
             </button>
+            <button id="closeMobileFilters" class="u-filter-close" type="button" title="Close filters" data-i18n-title="universities.filter.close" aria-label="Close filters" data-i18n-aria-label="universities.filter.close">
+              <span data-heroicon="x-mark" data-icon-size="18"></span>
+            </button>
+          </div>
+
+          <div class="u-field u-field--toggle">
+            <label class="u-toggle">
+              <input id="savedOnlyToggle" class="u-toggle-input" type="checkbox">
+              <span class="u-toggle-track" aria-hidden="true"></span>
+              <span class="u-toggle-label" data-i18n="universities.filter.saved_only">Favorites only</span>
+            </label>
           </div>
 
           <div class="u-field">
@@ -241,6 +230,9 @@
         </div>
 
         <div id="listState" class="u-state"></div>
+        <div id="mobileFilterSummary" class="u-mobile-filter-summary" aria-live="polite"></div>
+        <div id="savedShortlistBar" class="u-shortlist" hidden></div>
+        <div id="recentlyViewedBar" class="u-recent" hidden></div>
         <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>
         <div id="universitiesList" class="u-grid"></div>
 
@@ -256,8 +248,11 @@
 
   <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button">
     <span data-heroicon="funnel" data-icon-size="20"></span>
-    <span data-i18n="universities.filter">Filter</span>
+    <span data-i18n="universities.filter_mobile">Filter</span>
+    <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
   </button>
+
+  <div id="compareTray" class="compare-tray" aria-live="polite" hidden></div>
 
   <script src="env.js"></script>
   <script src="config.js"></script>

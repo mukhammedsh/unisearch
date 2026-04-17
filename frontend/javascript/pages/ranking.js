@@ -4,6 +4,9 @@ import {
   escapeHtmlAttr,
   getFlagImg,
   initials,
+  initCustomSelect,
+  markMotionEnter,
+  replayMotion,
 } from "../utils.js";
 import { renderNoConnection } from "../components.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
@@ -74,6 +77,53 @@ function trUniversityName(university) {
   return translateUniversityName(university?.id, String(university?.name || ""));
 }
 
+function normalizeSearchText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9а-яё]+/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function acronymForName(name) {
+  const skip = new Set(["of", "the", "and", "for", "de", "la", "le", "в", "и"]);
+  return String(name || "")
+    .split(/[^A-Za-zА-Яа-яЁё0-9]+/)
+    .filter((word) => word && !skip.has(word.toLowerCase()))
+    .map((word) => word[0])
+    .join("")
+    .toLowerCase();
+}
+
+function rankingSearchTokens(university) {
+  const name = String(university?.name || "");
+  const translatedName = trUniversityName(university);
+  const id = String(university?.id || "");
+  const city = String(university?.location?.city || "");
+  const country = String(university?.location?.country || "");
+  const tokens = [
+    name,
+    translatedName,
+    id,
+    id.replace(/-/g, " "),
+    city,
+    trCity(city),
+    country,
+    trCountry(country),
+    acronymForName(name),
+    acronymForName(translatedName),
+  ];
+  return Array.from(new Set(tokens.map(normalizeSearchText).filter(Boolean)));
+}
+
+function matchesRankingQuery(university, rawQuery) {
+  const query = normalizeSearchText(rawQuery);
+  if (!query) return true;
+  return rankingSearchTokens(university).some((token) => token.includes(query) || query.includes(token));
+}
+
 function rankingStatusLabel(status) {
   const key = String(status || "").trim().toLowerCase();
   if (!key) return unknownFieldText("placeholder.field.global_rank", "Global Rank");
@@ -93,6 +143,20 @@ function uniLogoSrc(universityId, opts = {}) {
   const forceFull = !!opts.forceFull;
   const folder = forceFull ? "logos" : "logos-small";
   return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
+}
+
+function rankingSkeletonMarkup(count = 8) {
+  return Array.from({ length: count }, () => `
+    <div class="rank-card rank-card--skeleton is-skeleton" aria-hidden="true">
+      <div class="skeleton-line rank-skeleton-num"></div>
+      <div class="rank-logo"></div>
+      <div class="rank-info">
+        <div class="skeleton-line" style="width: 72%; height: 18px;"></div>
+        <div class="skeleton-line" style="width: 42%; height: 13px;"></div>
+      </div>
+      <div class="skeleton-line rank-skeleton-badge"></div>
+    </div>
+  `).join("");
 }
 
 function fitRankingBadgeText(container) {
@@ -197,6 +261,7 @@ export async function initRankingPage() {
   if (rankingFetchController) rankingFetchController.abort();
   const controller = new AbortController();
   rankingFetchController = controller;
+  listEl.innerHTML = rankingSkeletonMarkup();
 
   try {
     const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
@@ -206,8 +271,67 @@ export async function initRankingPage() {
     if (!res.ok) throw new Error("Error loading ranking");
     const data = await res.json();
     const items = buildNormalizedRankingItems(data.items || []);
+    const searchInput = document.getElementById("rankingSearchInput");
+    const countrySelect = document.getElementById("rankingCountrySelect");
+    const searchHost = searchInput?.closest(".rank-search") || null;
+    let suggestionsNode = searchHost?.querySelector(".rank-search-suggestions") || null;
+    if (searchHost && !suggestionsNode) {
+      suggestionsNode = document.createElement("div");
+      suggestionsNode.className = "rank-search-suggestions";
+      suggestionsNode.setAttribute("role", "listbox");
+      searchHost.appendChild(suggestionsNode);
+    }
 
-    listEl.innerHTML = items.map((university, index) => {
+    const hideSuggestions = () => {
+      if (!suggestionsNode) return;
+      suggestionsNode.innerHTML = "";
+      suggestionsNode.classList.remove("is-open");
+    };
+
+    const renderSuggestions = () => {
+      if (!suggestionsNode || !searchInput) return;
+      const q = String(searchInput.value || "").trim();
+      const query = normalizeSearchText(q);
+      if (query.length < 2) {
+        hideSuggestions();
+        return;
+      }
+      const seen = new Set();
+      const rows = [];
+      items.forEach((item) => {
+        const name = trUniversityName(item);
+        const city = trCity(item?.location?.city || "");
+        const country = trCountry(item?.location?.country || "");
+        const acronym = acronymForName(item?.name || name).toUpperCase();
+        [
+          { value: name, type: t("universities.suggestions.university", "University") },
+          { value: acronym, type: t("ranking.suggestion.alias", "Alias") },
+          { value: city, type: t("universities.suggestions.city", "City") },
+          { value: country, type: t("universities.suggestions.country", "Country") },
+        ].forEach((row) => {
+          const value = String(row.value || "").trim();
+          const key = normalizeSearchText(value);
+          if (!value || seen.has(key) || !key.includes(query)) return;
+          seen.add(key);
+          rows.push(row);
+        });
+      });
+      if (!rows.length) {
+        hideSuggestions();
+        return;
+      }
+      suggestionsNode.innerHTML = rows.slice(0, 7).map((row) => `
+        <button class="rank-search-suggestion" type="button" data-value="${escapeHtmlAttr(row.value)}" role="option">
+          <span>${escapeHtml(row.value)}</span>
+          <small>${escapeHtml(row.type)}</small>
+        </button>
+      `).join("");
+      suggestionsNode.classList.add("is-open");
+      markMotionEnter(suggestionsNode, ".rank-search-suggestion", { limit: 7, staggerMs: 14 });
+    };
+
+    const renderRankingRows = (rows) => {
+      listEl.innerHTML = rows.map((university, index) => {
       const rank = Number(university.rank_display);
       const hasOfficialRank = university?.rank_is_official === true && Number.isFinite(rank) && rank > 0;
 
@@ -264,9 +388,55 @@ export async function initRankingPage() {
           <div class="rank-badge">${rankBadge}</div>
         </a>
       `;
-    }).join("");
+      }).join("");
+      if (!rows.length) {
+        listEl.innerHTML = `
+          <div class="rank-empty" role="status">
+            <strong>${escapeHtml(t("ranking.empty.title", "No ranking matches"))}</strong>
+            <span>${escapeHtml(t("ranking.empty.body", "Try a different search or country filter."))}</span>
+          </div>
+        `;
+      }
+      markMotionEnter(listEl, ".rank-card, .rank-empty", { limit: 18, staggerMs: 20 });
+      replayMotion(listEl, "motion-panel-enter", { timeoutMs: 420 });
+      requestAnimationFrame(() => fitRankingBadgeText(listEl));
+    };
 
-    requestAnimationFrame(() => fitRankingBadgeText(listEl));
+    if (countrySelect) {
+      const prev = String(countrySelect.value || "");
+      const countries = Array.from(new Set(items.map((item) => String(item?.location?.country || "").trim()).filter(Boolean))).sort();
+      countrySelect.innerHTML = `<option value="">${escapeHtml(t("ranking.country_all", "All countries"))}</option>`
+        + countries.map((country) => `<option value="${escapeHtmlAttr(country)}">${escapeHtml(trCountry(country))}</option>`).join("");
+      countrySelect.value = countries.includes(prev) ? prev : "";
+      initCustomSelect("rankingCountrySelect");
+    }
+
+    const applyRankingFilters = () => {
+      const q = String(searchInput?.value || "").trim().toLowerCase();
+      const country = String(countrySelect?.value || "").trim();
+      const rows = items.filter((item) => {
+        const itemCountry = String(item?.location?.country || "").trim();
+        const matchesQuery = matchesRankingQuery(item, q);
+        const matchesCountry = !country || itemCountry === country;
+        return matchesQuery && matchesCountry;
+      });
+      renderRankingRows(rows);
+      renderSuggestions();
+    };
+
+    if (searchInput) {
+      searchInput.oninput = applyRankingFilters;
+      searchInput.onblur = () => window.setTimeout(hideSuggestions, 160);
+    }
+    suggestionsNode?.addEventListener("click", (event) => {
+      const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
+      if (!btn || !searchInput) return;
+      searchInput.value = String(btn.getAttribute("data-value") || "");
+      applyRankingFilters();
+      hideSuggestions();
+    });
+    if (countrySelect) countrySelect.onchange = applyRankingFilters;
+    applyRankingFilters();
   } catch (err) {
     if (err?.name === "AbortError") return;
     console.error(err);

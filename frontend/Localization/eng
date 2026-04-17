@@ -228,6 +228,17 @@ profile.score: Score
 profile.type: Type
 profile.unit.gpa: % (0 to 100)
 profile.unit.usd_year: USD / year
+profile.progress.empty: Complete your profile for better matches.
+profile.progress.count: {completed}/{total} profile areas complete
+profile.sections.aria: Profile sections
+profile.section.basics: Basics
+profile.section.scores: Scores
+profile.section.languages: Languages
+profile.section.preferences: Preferences
+profile.interest_examples: Interest examples
+profile.interest_chip.tech: Tech + scholarships
+profile.interest_chip.city: Big city
+profile.interest_chip.research: Research labs
 ranking.acceptance: Acceptance Rate
 ranking.failed: Failed to load ranking.
 ranking.loading: Loading ranking
@@ -247,6 +258,14 @@ ranking.source_status.derived_prestige_order: Model estimate
 ranking.source_tooltip: Source: {source} | Type: {status} | Checked: {verified_at}
 ranking.subtitle: Popular universities by study quality and opportunities (2026)
 ranking.title: Global University Ranking
+ranking.tools_aria: Ranking filters
+ranking.search_placeholder: Search university or city...
+ranking.country_filter: Country filter
+ranking.country_all: All countries
+ranking.source_note: Ranking uses official sources when available. Other entries are clearly marked as estimates or reviewed data.
+ranking.empty.title: No ranking matches
+ranking.empty.body: Try a different search or country filter.
+ranking.suggestion.alias: Alias
 title.about: About Us | UniSearch
 title.guide: Guide | UniSearch
 title.ranking: Global Ranking | UniSearch
@@ -255,6 +274,7 @@ title.university: University | UniSearch
 universities.all_cities: All Cities
 universities.any_state: Any State
 universities.badge.acceptance: Acceptance Rate: {value}%
+universities.badge.acceptance_na: Acceptance Rate: N/A
 universities.badge.conditional_exam_needed: Conditional / Exam Needed
 universities.badge.top_match: Good Match
 universities.badge.your_vibe: Your Vibe
@@ -274,10 +294,19 @@ universities.badge.requirements_met: Requirements Met
 universities.card.est_cost_year: Est. Cost/Year
 universities.card.in_ranking: in ranking
 universities.card.view_details: View details
+universities.card.metrics: Key metrics
+universities.card.cost_short: Cost
+universities.card.save: Add to favorites
+universities.card.compare: Add to compare
+universities.card.compare_selected: Selected for comparison
 universities.city: City
 universities.cost_per_year: Cost (USD / year)
 universities.country: Country
 universities.filter: Filter
+universities.filter_mobile: Filter
+universities.filter.close: Close filters
+universities.filter.none_active: No active filters
+universities.filter.saved_only: Favorites only
 universities.found_prefix: Found
 universities.found_suffix: universities
 universities.global: Global
@@ -290,6 +319,54 @@ universities.pagination.prev: Prev
 universities.reset: Reset
 universities.search_placeholder: Search university...
 universities.select_country_first: Select country first
+universities.suggestions.university: University
+universities.suggestions.city: City
+universities.suggestions.country: Country
+universities.compare.selected: {count} selected for comparison
+universities.compare.need_more: Select one more university to compare
+universities.compare.clear: Clear
+universities.compare.open: Compare
+universities.compare.title: Compare universities
+universities.compare.row.metric: Metric
+universities.compare.row.location: Location
+universities.compare.row.aid: Aid
+universities.compare.aid_both: Merit + need-based
+universities.compare.aid_merit: Merit aid
+universities.compare.aid_need: Need-based aid
+universities.compare.track_count: {count} tracks / {options} options
+universities.compare.native_ok: native accepted
+universities.compare.verified_count: {sources} sources / {facts} facts
+universities.compare.remove: Remove from comparison
+universities.compare.badge.best_rank: Best rank
+universities.compare.badge.lowest_cost: Lowest cost
+universities.compare.badge.more_accessible: More accessible
+universities.compare.badge.aid: Aid
+universities.compare.section.overview: Overview
+universities.compare.section.programs: Programs
+universities.compare.section.admissions: Admissions
+universities.compare.section.finance: Finance
+universities.compare.section.context: Context
+universities.compare.row.student_count: Students
+universities.compare.row.website: Website
+universities.compare.row.programs: Programs shown
+universities.compare.row.study_mode: Study mode
+universities.compare.row.language: Program language
+universities.compare.row.tracks: Admission tracks
+universities.compare.row.main_track: Main track
+universities.compare.row.requirements: Minimum requirements
+universities.compare.row.avg_scores: Admitted score context
+universities.compare.row.language_proof: Language proof
+universities.compare.row.extra_requirements: Extra requirements
+universities.compare.row.total_cost: Total / year
+universities.compare.row.tuition_fees: Tuition + fees
+universities.compare.row.living_costs: Living cost items
+universities.compare.row.salary: Early career salary
+universities.compare.row.data_quality: Verified data
+universities.compare.available: Available
+universities.compare.intro: Compare practical decision signals side by side: ranking, cost, acceptance, programs, admission requirements, aid, outcomes, and data confidence. Highlighted cells mark the strongest value among selected universities.
+universities.recent.title: Recently viewed
+universities.shortlist.title: Favorites
+universities.shortlist.remove: Remove from favorites
 universities.tradeoff.focus: Focus
 universities.tradeoff.focus.left: Career & Practice
 universities.tradeoff.focus.right: Science & Research
@@ -324,12 +401,15 @@ universities.scope_note.body: UniSearch currently shows bachelor's degree option
 universities.scope_note.warning_title: Interests unavailable
 universities.scope_note.empty_title: No results for current filters
 universities.state.empty: No universities found.
+universities.state.empty_saved: No favorite universities match these filters.
 universities.state.failed: Failed to load data.
 universities.state.ml_unavailable: Interests from your profile are temporarily not affecting sorting.
 universities.state_region: State / Region
 universities.view_list: List View
 universities.view_map: Map View
 university.about_campus: About & Campus
+university.action.website: Website
+university.action.map: Map
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
 university.scope_badge: Bachelor's only for now
@@ -419,6 +499,8 @@ common.loading: Loading
 common.ai_short: AI
 common.placeholder_unknown: {field} unknown
 common.no_data: No data
+common.na: N/A
+common.close: Close
 placeholder.field.university_name: University name
 placeholder.field.location: Location
 placeholder.field.official_website: Official website
@@ -575,6 +657,7 @@ tour.next: Next
 tour.open_profile: Open Profile
 tour.skip: Skip
 tour.step1.desc: This page helps you quickly pick universities by country, cost, and your profile.
+tour.close: Close tour
 tour.step1.kicker: Welcome
 tour.step1.point1: Use search + filters in the left panel.
 tour.step1.point2: Switch between List and Map view on the top right.
@@ -650,6 +733,9 @@ home.preview.desc: Use your profile to filter universities, review cost early, a
 home.preview.point1: Filter by budget, country, exam, and {fit}.
 home.preview.point2: See estimated cost and aid context early.
 home.preview.point3: Compare requirements and {chance} by track.
+home.preview.shortlist_aria: Example shortlist preview
+home.preview.shortlist_title: MIT Computer Science
+home.preview.shortlist_meta: Saved shortlist • 3 key signals visible
 home.links.ranking: Ranking
 home.links.guide: Guide
 home.links.about: About

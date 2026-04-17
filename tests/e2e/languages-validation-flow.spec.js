@@ -8,6 +8,7 @@ test("languages panel validates and saves realistic exam-based language proof", 
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+  await page.click("[data-profile-tab='languages']");
   await page.waitForSelector(selectors.langCode, { state: "attached" });
 
   await page.waitForFunction(() => {

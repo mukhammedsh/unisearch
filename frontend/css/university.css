@@ -519,7 +519,8 @@
   position: absolute;
   left: 0;
   top: calc(100% + 8px);
-  width: min(320px, 76vw);
+  width: min(320px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
   background: #101010;
   color: #f5f5f5;
   border-radius: 10px;
@@ -529,9 +530,10 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   z-index: 30;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(-4px);
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
   overflow-wrap: anywhere;
 }
 
@@ -564,8 +566,16 @@
 .d-info-wrap:focus-within .d-tooltip,
 .d-info-wrap.is-open .d-tooltip {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+@media (max-width: 680px) {
+  .d-tooltip {
+    left: auto;
+    right: 0;
+  }
 }
 
 /* =========================================
@@ -1111,7 +1121,12 @@
   font-weight: 700;
   color: #555;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   align-items: center;
   gap: 9px;
@@ -1161,10 +1176,13 @@
 
 .d-tab-pane {
   display: none;
-  animation: fadeIn 0.3s ease;
 }
 .d-tab-pane.active {
   display: block;
+}
+
+.d-tab-pane.active.motion-panel-enter {
+  animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) both;
 }
 
 .d-tab-content {
@@ -1180,10 +1198,18 @@
   background: #faf5ff;
   color: var(--accent);
   border-radius: 14px;
-  transition: all 0.2s;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
   border: 1px solid rgba(87, 21, 219, 0.18);
   flex-shrink: 0;
   line-height: 0;
+}
+
+.d-site-link-label {
+  display: none;
 }
 
 .d-site-link .ui-icon {
@@ -1710,7 +1736,12 @@
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 .track-select-btn:hover:not(:disabled) {
@@ -4095,6 +4126,9 @@
     text-align: center;
     order: -1;
     margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .d-head-links {
@@ -4106,7 +4140,16 @@
   
   .d-site-link {
     width: 100%;
+    min-height: 46px;
     justify-content: center;
+    gap: 8px;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .d-site-link-label {
+    display: inline;
+    font-weight: 800;
   }
 
   .d-title-row {
@@ -4143,5 +4186,22 @@
   
   .d-cover {
     aspect-ratio: 16 / 9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .d-tab-btn,
+  .d-tab-pane,
+  .d-site-link,
+  .track-select-btn,
+  .program-card,
+  .admission-option-card,
+  .finance-option-card,
+  .track-card,
+  .finance-card,
+  .program-acceptance-fill,
+  .cost-bar-fill {
+    transition: none !important;
+    animation: none !important;
   }
 }

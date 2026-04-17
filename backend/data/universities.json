@@ -9,8 +9,8 @@
       "state": "Massachusetts"
     },
     "coordinates": {
-      "lat": 42.3601,
-      "lon": -71.0942
+      "lat": 42.359722,
+      "lon": -71.091944
     },
     "website": "https://www.mit.edu/",
     "academics": {
@@ -548,8 +548,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 51.4988,
-      "lon": -0.1749
+      "lat": 51.498308,
+      "lon": -0.176882
     },
     "website": "https://www.imperial.ac.uk/",
     "academics": {
@@ -1284,7 +1284,7 @@
     },
     "coordinates": {
       "lat": 37.4275,
-      "lon": -122.1697
+      "lon": -122.17
     },
     "website": "https://www.stanford.edu/",
     "academics": {
@@ -1726,8 +1726,8 @@
       "state": "MA"
     },
     "coordinates": {
-      "lat": 42.3736,
-      "lon": -71.1097
+      "lat": 42.374444,
+      "lon": -71.116944
     },
     "website": "https://www.harvard.edu/",
     "academics": {
@@ -2169,8 +2169,8 @@
       "state": "England"
     },
     "coordinates": {
-      "lat": 51.75,
-      "lon": -1.26
+      "lat": 51.755,
+      "lon": -1.255
     },
     "website": "https://www.ox.ac.uk/",
     "academics": {
@@ -2919,8 +2919,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 47.3763,
-      "lon": 8.5477
+      "lat": 47.37645,
+      "lon": 8.54785
     },
     "website": "https://ethz.ch/en.html",
     "academics": {
@@ -3308,8 +3308,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 1.2966,
-      "lon": 103.7764
+      "lat": 1.295556,
+      "lon": 103.776667
     },
     "website": "https://nus.edu.sg/",
     "academics": {
@@ -3785,8 +3785,8 @@
       "state": "England"
     },
     "coordinates": {
-      "lat": 52.2,
-      "lon": 0.12
+      "lat": 52.205356,
+      "lon": 0.113157
     },
     "website": "https://www.cam.ac.uk/",
     "academics": {
@@ -4532,7 +4532,7 @@
     },
     "coordinates": {
       "lat": 40,
-      "lon": 116.3333
+      "lon": 116.326667
     },
     "website": "https://www.tsinghua.edu.cn/en/",
     "academics": {
@@ -4944,8 +4944,8 @@
       "state": "Victoria"
     },
     "coordinates": {
-      "lat": -37.7986,
-      "lon": 144.9602
+      "lat": -37.7963,
+      "lon": 144.9614
     },
     "website": "https://www.unimelb.edu.au/",
     "academics": {
@@ -5353,8 +5353,8 @@
       "state": "Bavaria"
     },
     "coordinates": {
-      "lat": 48.1507,
-      "lon": 11.5691
+      "lat": 48.148056,
+      "lon": 11.568056
     },
     "website": "https://www.tum.de/en/",
     "academics": {
@@ -5710,8 +5710,8 @@
       "state": "Vaud"
     },
     "coordinates": {
-      "lat": 46.5191,
-      "lon": 6.5668
+      "lat": 46.520278,
+      "lon": 6.565556
     },
     "website": "https://www.epfl.ch/en/",
     "academics": {
@@ -6090,8 +6090,8 @@
       "state": "California"
     },
     "coordinates": {
-      "lat": 34.137349,
-      "lon": -118.125878
+      "lat": 34.1385,
+      "lon": -118.1244
     },
     "website": "https://www.caltech.edu/",
     "academics": {
@@ -7172,8 +7172,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 22.4195,
-      "lon": 114.2052
+      "lat": 22.419722,
+      "lon": 114.206792
     },
     "website": "https://www.cuhk.edu.hk/english/",
     "academics": {
@@ -7645,8 +7645,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 35.7128,
-      "lon": 139.762
+      "lat": 35.71339,
+      "lon": 139.76232
     },
     "website": "https://www.u-tokyo.ac.jp/en/",
     "academics": {
@@ -8395,8 +8395,8 @@
       "state": "Illinois"
     },
     "coordinates": {
-      "lat": 41.787994,
-      "lon": -87.599539
+      "lat": 41.789722,
+      "lon": -87.599722
     },
     "website": "https://www.uchicago.edu/",
     "academics": {
@@ -9662,8 +9662,8 @@
       "state": "Pennsylvania"
     },
     "coordinates": {
-      "lat": 39.950929,
-      "lon": -75.19391
+      "lat": 39.953889,
+      "lon": -75.193056
     },
     "website": "https://www.upenn.edu/",
     "academics": {
@@ -10511,8 +10511,8 @@
       "state": "New York"
     },
     "coordinates": {
-      "lat": 42.4472,
-      "lon": -76.483084
+      "lat": 42.449167,
+      "lon": -76.483889
     },
     "website": "https://www.cornell.edu/",
     "academics": {
@@ -10959,7 +10959,7 @@
   },
   {
     "id": "uc-berkeley-usa-berkeley",
-    "name": "University of California, Berkeley",
+    "name": "University of California (Berkeley)",
     "rank": 17,
     "location": {
       "country": "USA",
@@ -10967,8 +10967,8 @@
       "state": "California"
     },
     "coordinates": {
-      "lat": 37.871918,
-      "lon": -122.260463
+      "lat": 37.871944,
+      "lon": -122.258333
     },
     "website": "https://www.berkeley.edu/",
     "academics": {
@@ -11419,8 +11419,8 @@
       "state": "New South Wales"
     },
     "coordinates": {
-      "lat": -33.87,
-      "lon": 151.21
+      "lat": -33.917599,
+      "lon": 151.231237
     },
     "website": "https://www.unsw.edu.au/",
     "academics": {
@@ -12373,8 +12373,8 @@
       "state": "New Jersey"
     },
     "coordinates": {
-      "lat": 40.348732,
-      "lon": -74.659365
+      "lat": 40.345278,
+      "lon": -74.656111
     },
     "website": "https://www.princeton.edu/",
     "academics": {
@@ -12830,8 +12830,8 @@
       "state": "New South Wales"
     },
     "coordinates": {
-      "lat": -33.87,
-      "lon": 151.21
+      "lat": -33.8875,
+      "lon": 151.19
     },
     "website": "https://www.sydney.edu.au/",
     "academics": {
@@ -13326,8 +13326,8 @@
       "state": "Quebec"
     },
     "coordinates": {
-      "lat": 45.51,
-      "lon": -73.59
+      "lat": 45.506886,
+      "lon": -73.578712
     },
     "website": "https://www.mcgill.ca/",
     "academics": {
@@ -13854,8 +13854,8 @@
       "state": "Maryland"
     },
     "coordinates": {
-      "lat": 39.328977,
-      "lon": -76.621595
+      "lat": 39.328889,
+      "lon": -76.620556
     },
     "website": "https://www.jhu.edu/",
     "academics": {
@@ -14315,8 +14315,8 @@
       "state": "Australian Capital Territory"
     },
     "coordinates": {
-      "lat": -35.28,
-      "lon": 149.13
+      "lat": -35.2778,
+      "lon": 149.1205
     },
     "website": "https://www.anu.edu.au/",
     "academics": {
@@ -14809,8 +14809,8 @@
       "state": "Scotland"
     },
     "coordinates": {
-      "lat": 55.95,
-      "lon": -3.2
+      "lat": 55.947389,
+      "lon": -3.187194
     },
     "website": "https://www.ed.ac.uk/",
     "academics": {
@@ -15311,8 +15311,8 @@
       "state": "England"
     },
     "coordinates": {
-      "lat": 53.48,
-      "lon": -2.24
+      "lat": 53.466023,
+      "lon": -2.233086
     },
     "website": "https://www.manchester.ac.uk/",
     "academics": {
@@ -16030,8 +16030,8 @@
       "state": "New York"
     },
     "coordinates": {
-      "lat": 40.808286,
-      "lon": -73.961885
+      "lat": 40.8075,
+      "lon": -73.961944
     },
     "website": "https://www.columbia.edu/",
     "academics": {
@@ -16489,8 +16489,8 @@
       "state": "British Columbia"
     },
     "coordinates": {
-      "lat": 49.25,
-      "lon": -123.12
+      "lat": 49.264722,
+      "lon": -123.252778
     },
     "website": "https://www.ubc.ca/",
     "academics": {
@@ -17008,7 +17008,7 @@
   },
   {
     "id": "ucla-usa-los-angeles",
-    "name": "University of California, Los Angeles",
+    "name": "University of California (Los Angeles)",
     "rank": 46,
     "location": {
       "country": "USA",
@@ -17016,8 +17016,8 @@
       "state": "California"
     },
     "coordinates": {
-      "lat": 34.07178,
-      "lon": -118.442179
+      "lat": 34.072222,
+      "lon": -118.442778
     },
     "website": "https://www.ucla.edu/",
     "academics": {
@@ -17467,8 +17467,8 @@
       "state": "Ontario"
     },
     "coordinates": {
-      "lat": 43.47,
-      "lon": -80.52
+      "lat": 43.470199,
+      "lon": -80.545243
     },
     "website": "https://uwaterloo.ca/",
     "academics": {
@@ -18004,8 +18004,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 36.3721,
-      "lon": 127.3604
+      "lat": 36.372,
+      "lon": 127.363
     },
     "website": "https://www.kaist.ac.kr/en/",
     "academics": {
@@ -19424,8 +19424,8 @@
       "state": ""
     },
     "coordinates": {
-      "lat": 51.0913,
-      "lon": 71.4128
+      "lat": 51.090861,
+      "lon": 71.418415
     },
     "website": "https://astanait.edu.kz/",
     "academics": {

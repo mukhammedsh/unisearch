@@ -229,6 +229,17 @@ profile.score: Балл
 profile.type: Тип
 profile.unit.gpa: % (от 0 до 100)
 profile.unit.usd_year: USD / год
+profile.progress.empty: Заполните профиль, чтобы подбор стал точнее.
+profile.progress.count: Заполнено разделов профиля: {completed}/{total}
+profile.sections.aria: Разделы профиля
+profile.section.basics: Основное
+profile.section.scores: Баллы
+profile.section.languages: Языки
+profile.section.preferences: Предпочтения
+profile.interest_examples: Примеры интересов
+profile.interest_chip.tech: IT + стипендии
+profile.interest_chip.city: Большой город
+profile.interest_chip.research: Исследовательские лаборатории
 ranking.acceptance: Процент зачисления
 ranking.failed: Не удалось загрузить рейтинг.
 ranking.loading: Загрузка рейтинга
@@ -248,6 +259,14 @@ ranking.source_status.derived_prestige_order: Оценка модели
 ranking.source_tooltip: Источник: {source} | Тип: {status} | Проверено: {verified_at}
 ranking.subtitle: Популярные университеты по качеству обучения и возможностям (2026)
 ranking.title: Глобальный рейтинг университетов
+ranking.tools_aria: Фильтры рейтинга
+ranking.search_placeholder: Поиск университета или города...
+ranking.country_filter: Фильтр по стране
+ranking.country_all: Все страны
+ranking.source_note: В рейтинге используются официальные источники, когда они доступны. Остальные позиции явно помечены как оценки или проверенные вручную данные.
+ranking.empty.title: В рейтинге нет совпадений
+ranking.empty.body: Попробуйте другой поиск или фильтр по стране.
+ranking.suggestion.alias: Аббревиатура
 title.about: О нас | UniSearch
 title.guide: Гайд | UniSearch
 title.ranking: Глобальный рейтинг университетов | UniSearch
@@ -256,6 +275,7 @@ title.university: Университет | UniSearch
 universities.all_cities: Все города
 universities.any_state: Любой штат
 universities.badge.acceptance: Процент зачисления: {value}%
+universities.badge.acceptance_na: Процент зачисления: неизвестно
 universities.badge.conditional_exam_needed: Условно / Нужен экзамен
 universities.badge.top_match: Хорошее совпадение
 universities.badge.your_vibe: Ваш формат
@@ -275,10 +295,19 @@ universities.badge.requirements_met: Требования выполнены
 universities.card.est_cost_year: Примерная цена/год
 universities.card.in_ranking: в рейтинге
 universities.card.view_details: Открыть детали
+universities.card.metrics: Ключевые метрики
+universities.card.cost_short: Цена
+universities.card.save: Добавить в избранное
+universities.card.compare: Добавить к сравнению
+universities.card.compare_selected: Выбрано для сравнения
 universities.city: Город
 universities.cost_per_year: Стоимость (USD / год)
 universities.country: Страна
 universities.filter: Фильтр
+universities.filter_mobile: Фильтр
+universities.filter.close: Закрыть фильтры
+universities.filter.none_active: Нет активных фильтров
+universities.filter.saved_only: Только избранные
 universities.found_prefix: Найдено
 universities.found_suffix: университетов
 universities.global: Глобально
@@ -291,6 +320,54 @@ universities.pagination.prev: Назад
 universities.reset: Сброс
 universities.search_placeholder: Поиск университета...
 universities.select_country_first: Сначала выберите страну
+universities.suggestions.university: Университет
+universities.suggestions.city: Город
+universities.suggestions.country: Страна
+universities.compare.selected: {count} выбрано для сравнения
+universities.compare.need_more: Выберите ещё один университет для сравнения
+universities.compare.clear: Очистить
+universities.compare.open: Сравнить
+universities.compare.title: Сравнение университетов
+universities.compare.row.metric: Метрика
+universities.compare.row.location: Локация
+universities.compare.row.aid: Финансовая помощь
+universities.compare.aid_both: Merit + помощь по нуждаемости
+universities.compare.aid_merit: Merit aid
+universities.compare.aid_need: Помощь по нуждаемости
+universities.compare.track_count: {count} треков / {options} вариантов
+universities.compare.native_ok: родной язык принимается
+universities.compare.verified_count: {sources} источников / {facts} фактов
+universities.compare.remove: Убрать из сравнения
+universities.compare.badge.best_rank: Лучшее место
+universities.compare.badge.lowest_cost: Самая низкая стоимость
+universities.compare.badge.more_accessible: Выше шанс
+universities.compare.badge.aid: Помощь
+universities.compare.section.overview: Обзор
+universities.compare.section.programs: Программы
+universities.compare.section.admissions: Поступление
+universities.compare.section.finance: Финансы
+universities.compare.section.context: Контекст
+universities.compare.row.student_count: Студенты
+universities.compare.row.website: Сайт
+universities.compare.row.programs: Программы
+universities.compare.row.study_mode: Формат обучения
+universities.compare.row.language: Язык программ
+universities.compare.row.tracks: Треки поступления
+universities.compare.row.main_track: Основной трек
+universities.compare.row.requirements: Минимальные требования
+universities.compare.row.avg_scores: Баллы поступивших
+universities.compare.row.language_proof: Подтверждение языка
+universities.compare.row.extra_requirements: Доп. требования
+universities.compare.row.total_cost: Итого в год
+universities.compare.row.tuition_fees: Обучение + сборы
+universities.compare.row.living_costs: Жизненные расходы
+universities.compare.row.salary: Зарплата в начале карьеры
+universities.compare.row.data_quality: Проверенные данные
+universities.compare.available: Доступно
+universities.compare.intro: Сравните практичные сигналы для решения рядом: рейтинг, стоимость, процент зачисления, программы, требования, помощь, результаты и качество данных. Подсвеченные ячейки показывают самое сильное значение среди выбранных университетов.
+universities.recent.title: Недавно открытые
+universities.shortlist.title: Избранное
+universities.shortlist.remove: Убрать из избранного
 universities.tradeoff.focus: Фокус
 universities.tradeoff.focus.left: Карьера и практика
 universities.tradeoff.focus.right: Наука и исследования
@@ -325,12 +402,15 @@ universities.scope_note.body: Сейчас UniSearch показывает тол
 universities.scope_note.warning_title: Interests недоступны
 universities.scope_note.empty_title: Нет результатов для текущих фильтров
 universities.state.empty: Университеты не найдены.
+universities.state.empty_saved: В избранном нет университетов под эти фильтры.
 universities.state.failed: Не удалось загрузить данные.
 universities.state.ml_unavailable: Interests из вашего профиля временно не влияют на сортировку.
 universities.state_region: Штат / Регион
 universities.view_list: Список
 universities.view_map: Карта
 university.about_campus: О вузе и кампусе
+university.action.website: Сайт
+university.action.map: Карта
 university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
 university.scope_badge: Пока только бакалавриат
@@ -419,6 +499,8 @@ common.loading: Загрузка
 common.ai_short: ИИ
 common.placeholder_unknown: {field}: нет данных
 common.no_data: Нет данных
+common.na: неизвестно
+common.close: Закрыть
 placeholder.field.university_name: Название университета
 placeholder.field.location: Расположение
 placeholder.field.official_website: Официальный сайт
@@ -575,6 +657,7 @@ tour.next: Далее
 tour.open_profile: Открыть профиль
 tour.skip: Пропустить
 tour.step1.desc: Эта страница помогает быстро подобрать университеты по стране, стоимости и вашему профилю.
+tour.close: Закрыть тур
 tour.step1.kicker: Добро пожаловать
 tour.step1.point1: Используйте поиск и фильтры на левой панели.
 tour.step1.point2: Переключайтесь между режимами «Список» и «Карта» в правом верхнем углу.
@@ -649,6 +732,9 @@ home.preview.desc: Используйте профиль для фильтрац
 home.preview.point1: Фильтруйте по бюджету, стране, экзамену и {fit}.
 home.preview.point2: Сразу видите ориентировочную стоимость и контекст финансовой помощи.
 home.preview.point3: Сравнивайте требования и {chance} по каждому варианту поступления.
+home.preview.shortlist_aria: Пример короткого списка
+home.preview.shortlist_title: MIT Computer Science
+home.preview.shortlist_meta: Сохраненный список • 3 ключевых сигнала видны сразу
 home.links.ranking: Рейтинг
 home.links.guide: Гайд
 home.links.about: О проекте

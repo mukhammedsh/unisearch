@@ -19,6 +19,76 @@ function frontendStaticAsset(path = "") {
 
 export const $ = (id) => document.getElementById(id);
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+export function prefersReducedMotion() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+export function replayMotion(node, className, options = {}) {
+  if (!node || !className || prefersReducedMotion()) return;
+  const timeoutMs = Number(options.timeoutMs || 700);
+  node.classList.remove(className);
+  void node.offsetWidth;
+  node.classList.add(className);
+  const cleanup = () => node.classList.remove(className);
+  node.addEventListener("animationend", cleanup, { once: true });
+  window.setTimeout(cleanup, timeoutMs);
+}
+
+export function motionPress(node) {
+  replayMotion(node, "motion-press-pop", { timeoutMs: 320 });
+}
+
+export function markMotionEnter(root, selector = "", options = {}) {
+  if (!root || prefersReducedMotion()) return;
+  const className = String(options.className || "motion-list-item-enter");
+  const staggerMs = Math.max(0, Number(options.staggerMs || 22));
+  const limit = Math.max(0, Number(options.limit || 18));
+  const nodes = selector
+    ? Array.from(root.querySelectorAll(selector))
+    : [root];
+
+  nodes.slice(0, limit || nodes.length).forEach((node, index) => {
+    if (!(node instanceof HTMLElement)) return;
+    node.classList.remove(className);
+    node.style.animationDelay = `${Math.min(index * staggerMs, 180)}ms`;
+    void node.offsetWidth;
+    node.classList.add(className);
+    const cleanup = () => {
+      node.classList.remove(className);
+      node.style.animationDelay = "";
+    };
+    node.addEventListener("animationend", cleanup, { once: true });
+    window.setTimeout(cleanup, 900);
+  });
+}
+
+export function animateElementOut(node, callback, options = {}) {
+  if (!node) {
+    if (typeof callback === "function") callback();
+    return;
+  }
+  if (prefersReducedMotion()) {
+    if (typeof callback === "function") callback();
+    return;
+  }
+
+  const className = String(options.className || "motion-row-exit");
+  const timeoutMs = Number(options.timeoutMs || 260);
+  let done = false;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    node.classList.remove(className);
+    if (typeof callback === "function") callback();
+  };
+  node.classList.add(className);
+  node.addEventListener("animationend", finish, { once: true });
+  window.setTimeout(finish, timeoutMs);
+}
+
 const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
 const GLOBAL_LOADING_SHOW_DELAY_MS = 120;
 const GLOBAL_LOADING_MIN_VISIBLE_MS = 220;
@@ -1102,7 +1172,7 @@ export function showToast(message, type = "error") {
 }
 
 export function removeToast(toast) {
-    toast.style.animation = "fadeOut 0.3s ease forwards";
+    toast.style.animation = "fadeOut var(--motion-medium, 0.26s) var(--motion-ease-exit, ease) forwards";
     toast.addEventListener("animationend", () => {
         if(toast.parentNode) toast.parentNode.removeChild(toast);
     });
@@ -1309,6 +1379,7 @@ export function saveFilters(state) {
         city: state.city,
         // funding type now comes from profile.fundingType
         study_level: state.study_level,
+        only_saved: !!state.only_saved,
         min_tuition: state.min_tuition,
         max_tuition: state.max_tuition,
         sort: state.sort,

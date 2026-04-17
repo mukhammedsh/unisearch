@@ -323,6 +323,10 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIn("groups", payload)
         self.assertIn("program_names", payload)
         self.assertIn("track_labels", payload)
+        self.assertEqual(
+            "Бакалавр вычислительных систем",
+            (payload.get("program_names") or {}).get("bachelor_of_computing"),
+        )
 
     def test_english_university_names_use_full_forms(self):
         response = self.client.get("/universities/translations?lang=eng")

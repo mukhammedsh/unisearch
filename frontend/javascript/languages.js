@@ -8,6 +8,9 @@ import {
   initCustomSelect,
   escapeHtml,
   getExamDisplayName,
+  animateElementOut,
+  markMotionEnter,
+  motionPress,
 } from "./utils.js";
 import { t, tFormat } from "./i18n.js";
 
@@ -496,6 +499,7 @@ export function initLanguagesPanel() {
           </div>
         `;
       }).join("");
+      markMotionEnter(langList, ".lang-item", { limit: 8, staggerMs: 18 });
 
       refreshLangActionButton();
     }
@@ -625,7 +629,7 @@ export function initLanguagesPanel() {
         if (parsed.empty) continue;
         components.push({ exam: def.exam, score: parsed.score });
       }
-      return components.length ? { components } : null;
+      return components.length ? { components } : undefined;
     }
 
     function resetExamInputs() {
@@ -700,6 +704,7 @@ export function initLanguagesPanel() {
 
     langAddBtn.addEventListener("click", (ev) => {
       ev.preventDefault();
+      motionPress(langAddBtn);
       addLanguage();
     });
 
@@ -841,6 +846,7 @@ export function initLanguagesPanel() {
     langList.addEventListener("click", (event) => {
       const btn = event.target.closest("button[data-idx]");
       if (!btn) return;
+      motionPress(btn);
       const idx = Number(btn.dataset.idx);
       if (!Number.isFinite(idx)) return;
 
@@ -849,10 +855,13 @@ export function initLanguagesPanel() {
         .map(normalizeLangEntry)
         .filter(Boolean);
 
-      prof.languages.splice(idx, 1);
-      saveEditableProfile(prof);
-      renderList();
-      showToast(t("languages.removed", "Removed"), "success");
+      const row = btn.closest(".lang-item");
+      animateElementOut(row, () => {
+        prof.languages.splice(idx, 1);
+        saveEditableProfile(prof);
+        renderList();
+        showToast(t("languages.removed", "Removed"), "success");
+      });
     });
 
     window.addEventListener("profileModalOpened", renderForm);

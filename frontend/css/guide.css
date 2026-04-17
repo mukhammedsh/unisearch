@@ -87,7 +87,10 @@ body[data-page="guide"] .guide-page{
   font-size: 13px;
   line-height: 1.35;
   font-weight: 700;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .guide-nav a:hover{
@@ -116,7 +119,10 @@ body[data-page="guide"] .guide-page{
   background: var(--surface-solid);
   overflow: hidden;
   scroll-margin-top: 108px;
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 .guide-section + .guide-section{
@@ -286,6 +292,7 @@ body[data-page="guide"] .guide-page{
     width: 100%;
     box-sizing: border-box;
     background: var(--bg); /* To cover background text while sticky */
+    overflow: hidden;
   }
 
   .guide-nav{
@@ -300,7 +307,29 @@ body[data-page="guide"] .guide-page{
     border: 1px solid var(--line);
     scrollbar-width: none;
     max-height: none;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .guide-sidebar::before,
+  .guide-sidebar::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    width: 24px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .guide-sidebar::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg), rgba(255, 255, 255, 0));
+  }
+
+  .guide-sidebar::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bg), rgba(255, 255, 255, 0));
   }
 
   .guide-nav::-webkit-scrollbar {
@@ -312,6 +341,10 @@ body[data-page="guide"] .guide-page{
     white-space: nowrap;
     padding: 10px 14px;
     font-size: 13px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    scroll-snap-align: start;
     -webkit-tap-highlight-color: transparent;
   }
 

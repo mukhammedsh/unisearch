@@ -38,7 +38,7 @@ def _parse_frontend_origins() -> list[str]:
 
 
 FRONTEND_ORIGINS = _parse_frontend_origins()
-APP_VERSION = os.getenv("APP_VERSION", "3.4.4").strip() or "3.4.4"
+APP_VERSION = os.getenv("APP_VERSION", "3.4.5").strip() or "3.4.5"
 BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 try:
     BACKEND_PORT = int(os.getenv("BACKEND_PORT", "8000") or 8000)
