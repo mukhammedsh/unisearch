@@ -301,7 +301,7 @@ function costBreakdownCoverageNote(financeData, breakdownEntries, total) {
   if (status === "official_mandatory_breakdown") {
     return t(
       "university.finance.breakdown_note.mandatory_only",
-      "Showing only verified mandatory items. Personal or other discretionary allowances were removed."
+      "Showing only verified mandatory items."
     );
   }
   if (hasHiddenPortion) {

@@ -488,7 +488,7 @@ university.tab.general: General
 university.tab.programs: Programs
 university.total_cost_calculator: Total Cost Calculator
 university.total_estimated_cost: Total Estimated Cost
-university.finance.breakdown_note.mandatory_only: Showing only verified mandatory items. Personal or other discretionary allowances were removed.
+university.finance.breakdown_note.mandatory_only: Showing only verified mandatory items.
 university.finance.breakdown_note.tuition_fees_only: Showing only directly official tuition and institutional fee items. The yearly total may still be higher because the source gives an overall living-cost estimate without publishing authoritative subcategory line items.
 university.finance.breakdown_note.partial: This breakdown is intentionally partial. The total may also include other source-side allowances or non-itemized costs.
 university.visit_website: Visit Official Website

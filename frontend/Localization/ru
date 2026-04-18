@@ -489,7 +489,7 @@ university.tab.general: Общее
 university.tab.programs: Программы
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
-university.finance.breakdown_note.mandatory_only: Показаны только подтвержденные обязательные траты. Личные и другие необязательные позиции убраны.
+university.finance.breakdown_note.mandatory_only: Показаны только подтвержденные обязательные траты.
 university.finance.breakdown_note.tuition_fees_only: Показаны только напрямую официальные позиции по обучению и университетским сборам. Итоговая сумма за год может быть выше, потому что источник дает общую оценку расходов на проживание, но не публикует авторитетную разбивку по отдельным категориям.
 university.finance.breakdown_note.partial: Эта разбивка специально неполная. В итоговую сумму также могут входить другие учтенные источником надбавки или недетализированные расходы.
 university.visit_website: Открыть официальный сайт

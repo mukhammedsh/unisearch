@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-04-18-1";
+const SW_VERSION = "2026-04-18-2";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -52,6 +52,7 @@ function isImageRequest(request, url) {
 function isApiRequest(request, url) {
   if (request.method !== "GET") return false;
   if (!/^https?:$/i.test(url.protocol)) return false;
+  if (url.origin !== self.location.origin) return false;
   return isKnownApiPath(url.pathname);
 }
 
