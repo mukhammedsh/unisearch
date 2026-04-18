@@ -16,6 +16,7 @@ jobs:
       PYTHONPATH: ${{ github.workspace }}/backend
       OPS_ADMIN_TOKEN: test-ops-token
       RATE_LIMIT_ENABLED: "0"
+      ML_SEMANTIC_EMBEDDINGS_ENABLED: "0"
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -20,13 +20,26 @@ except Exception:
     np = None  # type: ignore[assignment]
     _NUMPY_AVAILABLE = False
 
-try:
-    from sentence_transformers import SentenceTransformer
+SentenceTransformer = None  # type: ignore[assignment]
+_SENTENCE_TRANSFORMERS_AVAILABLE: Optional[bool] = None
 
-    _SENTENCE_TRANSFORMERS_AVAILABLE = True
-except Exception:
-    SentenceTransformer = None  # type: ignore[assignment]
-    _SENTENCE_TRANSFORMERS_AVAILABLE = False
+
+def _load_sentence_transformer_class():
+    global SentenceTransformer, _SENTENCE_TRANSFORMERS_AVAILABLE
+
+    if _SENTENCE_TRANSFORMERS_AVAILABLE is not None:
+        return SentenceTransformer if _SENTENCE_TRANSFORMERS_AVAILABLE else None
+
+    try:
+        from sentence_transformers import SentenceTransformer as SentenceTransformerClass
+
+        SentenceTransformer = SentenceTransformerClass  # type: ignore[assignment]
+        _SENTENCE_TRANSFORMERS_AVAILABLE = True
+        return SentenceTransformer
+    except Exception:
+        SentenceTransformer = None  # type: ignore[assignment]
+        _SENTENCE_TRANSFORMERS_AVAILABLE = False
+        return None
 
 try:
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -370,7 +383,8 @@ class MLRecommender:
         if not ML_SEMANTIC_EMBEDDINGS_ENABLED:
             self._semantic_error = "semantic_disabled"
             return
-        if not _SENTENCE_TRANSFORMERS_AVAILABLE or not _NUMPY_AVAILABLE:
+        sentence_transformer_class = _load_sentence_transformer_class()
+        if sentence_transformer_class is None or not _NUMPY_AVAILABLE:
             self._semantic_error = "semantic_dependency_missing"
             return
         if not docs:
@@ -379,7 +393,7 @@ class MLRecommender:
 
         try:
             if self._semantic_model is None:
-                self._semantic_model = SentenceTransformer(  # type: ignore[misc]
+                self._semantic_model = sentence_transformer_class(
                     str(ML_SEMANTIC_EMBEDDINGS_MODEL),
                     device=str(ML_SEMANTIC_EMBEDDINGS_DEVICE),
                 )
