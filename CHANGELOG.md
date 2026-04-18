@@ -13,6 +13,8 @@ Status:
 - hardened Docker and repository security with a non-root backend container user, expanded `.dockerignore`, a GitHub security workflow for CodeQL/audits/repository guards, and `rel="noopener noreferrer"` on external GitHub links;
 - replaced inline image `onerror` handlers with a shared `bindImageFallbacks` handler, including logo/thumbnail/map-marker fallback flows across navigation, university cards, ranking cards, comparison cards, maps, and detail pages;
 - improved 320px and narrow mobile layout stability for navbar controls, language selector, profile modal tabs/actions, university catalog cards, skeleton grids, map result cards, university-detail cover/tabs, admissions, and finance sections;
+- restored the university-detail ROI block in the finance tab when verified salary data is available, while keeping it hidden for universities without salary data;
+- stabilized GitHub Actions by configuring backend test environment variables and updating E2E tests for the profile tab UI, skeleton cards, UniFit badges, ROI rendering, and local API rate limits;
 - updated backend tests for ops authorization, sanitized translation status, security headers, oversized body rejection, and Sentry scrubbing, and expanded Playwright overflow coverage for 320px, navbar controls, finance tabs, and profile modal overflow;
 - bumped the service-worker cache version so clients refresh the `3.4.6` frontend assets immediately after deployment.
 

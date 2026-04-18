@@ -58,9 +58,11 @@ for (const locale of locales) {
     await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#languageSelect")).toHaveValue(locale.value);
 
-    const firstCard = page.locator(".uni-card").first();
+    const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
     await expect(firstCard).toBeVisible();
-    await expect(firstCard.locator(".uni-badge")).toHaveClass(/uni-badge--count-4/);
+    const badgeBox = firstCard.locator(".uni-badge");
+    await expect(badgeBox).toBeVisible();
+    await expect(badgeBox).toHaveClass(/uni-badge--count-4/);
     await expect(firstCard.locator(".uni-badge .uni-pill")).toHaveCount(4);
 
     const overflow = await firstCard.evaluate((card) => {

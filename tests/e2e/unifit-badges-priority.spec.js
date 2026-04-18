@@ -47,10 +47,11 @@ test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", 
   });
 
   await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
-  const firstCard = page.locator(".uni-card").first();
+  const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
   const pills = firstCard.locator(".uni-badge .uni-pill");
+  await expect(pills.first()).toBeVisible();
   const pillCount = await pills.count();
   expect(pillCount).toBeGreaterThanOrEqual(3);
   await expect(pills.nth(0)).toContainText("Conditional");
@@ -90,8 +91,9 @@ test("UniFit card badges still work when backend hints are missing (frontend fal
   });
 
   await page.goto("/universities.html");
-  const firstCard = page.locator(".uni-card").first();
+  const firstCard = page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
+  await expect(firstCard.locator(".uni-badge .uni-pill").first()).toBeVisible();
   await expect(firstCard.locator(".uni-pill")).toContainText(["Good Match", "Paid Admission"]);
   await expect(firstCard.locator(".uni-why")).toContainText("good preference match");
 });
@@ -133,8 +135,9 @@ test("UniFit card hides Requirements Met when conditional exam warning is presen
   });
 
   await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
-  const firstCard = page.locator(".uni-card").first();
+  const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
+  await expect(firstCard.locator(".uni-badge .uni-pill").first()).toBeVisible();
   await expect(firstCard.locator(".uni-pill")).toContainText(["Conditional", "Your Vibe", "Likely Grant"]);
   await expect(firstCard.locator(".uni-badge")).not.toContainText("Requirements Met");
 });
@@ -180,10 +183,11 @@ test("UniFit card keeps all badges and switches to compact mode when badge count
   });
 
   await page.goto("/universities.html");
-  const firstCard = page.locator(".uni-card").first();
+  const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
   const badgeBox = firstCard.locator(".uni-badge");
+  await expect(badgeBox).toBeVisible();
   await expect(badgeBox).toHaveClass(/uni-badge--count-5/);
 
   const pills = firstCard.locator(".uni-badge .uni-pill");
@@ -236,7 +240,7 @@ test("UniFit card badge logic caps at 5 computed status badges", async ({ page }
   });
 
   await page.goto("/universities.html");
-  const pills = page.locator(".uni-card").first().locator(".uni-badge .uni-pill");
+  const pills = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-badge .uni-pill");
   await expect(pills).toHaveCount(5);
 });
 

@@ -65,8 +65,25 @@ async function setRangeValue(page, elementId, value) {
   );
 }
 
+async function openProfileTab(page, tabName) {
+  const tab = page.locator(`[data-profile-tab="${tabName}"]`);
+  await tab.click();
+  await expectProfileTabVisible(page, tabName);
+}
+
+async function expectProfileTabVisible(page, tabName) {
+  await page.waitForFunction((name) => {
+    const tab = document.querySelector(`[data-profile-tab="${name}"]`);
+    const panel = document.querySelector(`[data-profile-section="${name}"]`);
+    if (!tab || !panel) return false;
+    return tab.classList.contains("is-active") && !panel.classList.contains("is-section-hidden");
+  }, tabName);
+}
+
 module.exports = {
   selectors,
+  expectProfileTabVisible,
+  openProfileTab,
   setNativeSelect,
   setRangeValue,
 };

@@ -409,6 +409,68 @@ function localizeRoiLabel(rawLabel, tone = "") {
   return t("roi.label.high_investment", "High Investment");
 }
 
+function renderRoiBox(roi) {
+  if (!roi || typeof roi !== "object") return "";
+  const salary = toFiniteNumber(roi.salary_used_usd);
+  const annualCost = toFiniteNumber(roi.annual_cost_usd);
+  const roiValue = toFiniteNumber(roi.roi_value);
+  const contextType = String(roi.context_type || "").trim().toLowerCase();
+  if (salary === null || annualCost === null || roiValue === null || salary <= 0 || contextType === "no_salary_data") return "";
+
+  const tone = String(roi.roi_tone || "").trim().toLowerCase();
+  const toneClass = tone === "excellent" || tone === "good" ? "roi-tone-positive" : "roi-tone-warn";
+  const userMajor = String(roi.user_major || "").trim();
+  const matchedMajor = String(roi.matched_major || "").trim();
+  let contextClass = "roi-context--neutral";
+  let contextText = t("roi.context.default", "ROI is based on available university outcomes data.");
+
+  if (contextType === "matched_major" && matchedMajor) {
+    contextClass = "roi-context--matched";
+    contextText = translateTemplate(
+      "roi.context.matched_major",
+      "Calculation based on {major} graduates from this university.",
+      { major: matchedMajor }
+    );
+  } else if (contextType === "fallback_major" && userMajor) {
+    contextText = translateTemplate(
+      "roi.context.fallback_major",
+      "Specific data for {major} not available.",
+      { major: userMajor }
+    );
+  } else if (contextType === "missing_major") {
+    contextClass = "roi-context--missing";
+    contextText = t("roi.context.missing_major", "Select your Major in Profile to see precise ROI for your field.");
+  }
+
+  const label = localizeRoiLabel(roi.roi_label, tone);
+  return `
+    <section class="roi-box">
+      <h3 class="roi-title">${escapeHtml(t("roi.title", "Estimated ROI (Return on Investment)"))}</h3>
+      <p class="roi-description">${escapeHtml(t("roi.explain", "It calculates how many times your first annual salary covers the cost of one year of education."))}</p>
+      <div class="roi-context ${contextClass}">${escapeHtml(contextText)}</div>
+      <div class="roi-metrics-row">
+        <div class="roi-metric">
+          <div class="roi-metric-label">${escapeHtml(t("roi.score", "ROI Score"))}</div>
+          <div class="roi-metric-value roi-metric-value--accent ${toneClass}">${escapeHtml(formatUiNumber(roiValue, { maximumFractionDigits: 1 }))}x</div>
+          <div class="roi-metric-note roi-metric-note--tone ${toneClass}">${escapeHtml(label)}</div>
+        </div>
+        <div class="roi-metrics-divider" aria-hidden="true"></div>
+        <div class="roi-metric">
+          <div class="roi-metric-label">${escapeHtml(t("roi.estimated_salary", "Est. Graduate Salary"))}</div>
+          <div class="roi-metric-value">${escapeHtml(moneyUSD(salary))}</div>
+          <div class="roi-metric-note">${escapeHtml(t("roi.per_year_early", "per year (early career)"))}</div>
+        </div>
+        <div class="roi-metrics-divider" aria-hidden="true"></div>
+        <div class="roi-metric">
+          <div class="roi-metric-label">${escapeHtml(translateWord("total_per_year", "Total / year"))}</div>
+          <div class="roi-metric-value">${escapeHtml(moneyUSD(annualCost))}</div>
+          <div class="roi-metric-note">${escapeHtml(t("roi.formula", "Simple idea: compare average graduate salary with the cost of one study year."))}</div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function ruPlural(n, one, few, many) {
   const abs = Math.abs(Number(n)) % 100;
   const last = abs % 10;
@@ -4678,8 +4740,10 @@ export async function initUniversityPage() {
                 `;
             });
 
-            finDiv.innerHTML = financeHTML ? `<div class="finance-grid-new">${financeHTML}</div>` : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
-            markMotionEnter(finDiv, ".finance-track-group, .finance-option-card, .admission-empty-state", { limit: 18, staggerMs: 18 });
+            const roiHtml = renderRoiBox(uniRoi);
+            const financeGridHtml = financeHTML ? `<div class="finance-grid-new">${financeHTML}</div>` : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
+            finDiv.innerHTML = `${financeGridHtml}${roiHtml}`;
+            markMotionEnter(finDiv, ".finance-track-group, .finance-option-card, .roi-box, .admission-empty-state", { limit: 18, staggerMs: 18 });
         }
     } else {
         if (scholDiv) {

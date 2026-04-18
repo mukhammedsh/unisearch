@@ -12,6 +12,9 @@ jobs:
   backend-tests:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}/backend
+      OPS_ADMIN_TOKEN: test-ops-token
     steps:
       - name: Checkout
         uses: actions/checkout@v4

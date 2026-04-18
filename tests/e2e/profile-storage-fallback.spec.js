@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test("profile keeps edits in-session when localStorage is unavailable", async ({ page }) => {
   await page.addInitScript(() => {
@@ -32,6 +32,7 @@ test("profile keeps edits in-session when localStorage is unavailable", async ({
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
   await page.fill(selectors.budgetInput, "12000");
+  await openProfileTab(page, "scores");
   await page.fill(selectors.gpaInput, "87");
   await page.click(selectors.saveProfileBtn);
 
@@ -39,6 +40,6 @@ test("profile keeps edits in-session when localStorage is unavailable", async ({
   await page.click(selectors.profileBtn);
 
   await expect(page.locator(selectors.budgetInput)).toHaveValue("12000");
+  await openProfileTab(page, "scores");
   await expect(page.locator(selectors.gpaInput)).toHaveValue("87");
 });
-

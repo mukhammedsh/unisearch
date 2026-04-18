@@ -6,6 +6,8 @@ test("detail page renders UniChance/ROI and recomputes after profile update", as
   await seedProfile(page, {
     ...personas.enResearch.profile,
     major: "Computer Science",
+    gpa: 99,
+    exams: [{ exam: "SAT", score: 1550 }],
   });
   await page.goto("/university.html?id=mit-usa-cambridge");
 

@@ -13,7 +13,7 @@ test("universities page uses AI sort with realistic search/filter interactions",
   await page.goto("/universities.html");
   expect((await firstAiSort).status()).toBe(200);
 
-  await expect(page.locator(".uni-card").first()).toBeVisible();
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   const queryFetch = page.waitForResponse(
     (response) =>
@@ -33,7 +33,7 @@ test("universities page uses AI sort with realistic search/filter interactions",
 
   await expect(page).toHaveURL(/practice_vs_science=80/);
   await expect(page.locator(selectors.focusLabel)).not.toHaveText("");
-  await expect(page.locator(".uni-card").first()).toBeVisible();
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   const atmosphereFetch = page.waitForResponse(
     (response) =>
