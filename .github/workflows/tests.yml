@@ -39,23 +39,7 @@ jobs:
           python -m unittest discover tests -v 2>&1 | tee ../backend-test.log
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
-            failure_output="$(python - <<'PY'
-from pathlib import Path
-
-text = Path("../backend-test.log").read_text(encoding="utf-8", errors="replace")
-markers = [
-    "\n======================================================================\nFAIL:",
-    "\n======================================================================\nERROR:",
-    "\nFAILED (",
-]
-positions = [text.find(marker) for marker in markers if text.find(marker) >= 0]
-if positions:
-    snippet = text[min(positions):]
-else:
-    snippet = text[-6000:]
-print(snippet[-6000:])
-PY
-)"
+            failure_output="$(python -c 'from pathlib import Path; text = Path("../backend-test.log").read_text(encoding="utf-8", errors="replace"); markers = ["\n======================================================================\nFAIL:", "\n======================================================================\nERROR:", "\nFAILED ("]; positions = [text.find(marker) for marker in markers if text.find(marker) >= 0]; snippet = text[min(positions):] if positions else text[-6000:]; print(snippet[-6000:])')"
             {
               echo "### Backend unittest failure"
               echo '```text'
