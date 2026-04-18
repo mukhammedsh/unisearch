@@ -4189,6 +4189,97 @@
   }
 }
 
+@media (max-width: 380px) {
+  .d-page {
+    padding-top: 16px;
+  }
+
+  .d-container {
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-x: clip;
+  }
+
+  .d-page-scope {
+    padding: 14px 14px 15px;
+    border-radius: 16px;
+  }
+
+  .d-card {
+    max-width: 100%;
+  }
+
+  .d-cover {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    height: clamp(150px, 56vw, 176px);
+    aspect-ratio: auto;
+  }
+
+  .d-cover-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+
+  .d-head {
+    padding: 14px 12px;
+  }
+
+  .d-title {
+    font-size: 20px;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .d-location {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .d-tabs {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 12px;
+    scroll-padding-inline: 12px;
+  }
+
+  .d-tab-btn {
+    min-width: 96px;
+    padding: 12px 4px 13px;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .d-tab-btn span:last-child {
+    white-space: normal;
+    line-height: 1.15;
+  }
+
+  .d-box,
+  #tab-admission .d-box,
+  #tab-finance .finance-box {
+    padding: 16px 12px;
+  }
+
+  .track-funding-options-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admission-option-card,
+  .finance-option-card,
+  .track-card {
+    border-radius: 16px;
+  }
+
+  .price-inline-row,
+  .finance-option-total,
+  .track-cost-preview {
+    min-width: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .d-tab-btn,
   .d-tab-pane,

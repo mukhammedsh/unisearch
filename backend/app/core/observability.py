@@ -23,6 +23,43 @@ except Exception:  # pragma: no cover - optional dependency
 
 logger = logging.getLogger("unisearch.observability")
 
+_SENSITIVE_KEYS = {
+    "authorization",
+    "cookie",
+    "cookies",
+    "details",
+    "exam",
+    "exams",
+    "interests",
+    "languages",
+    "password",
+    "profile",
+    "raw_value",
+    "rawvalue",
+    "score",
+    "secret",
+    "token",
+}
+
+
+def _scrub_sensitive(value: Any) -> Any:
+    if isinstance(value, dict):
+        out = {}
+        for key, item in value.items():
+            key_text = str(key or "").strip().lower()
+            if key_text in _SENSITIVE_KEYS or any(part in key_text for part in ("token", "secret", "password", "authorization")):
+                out[key] = "[Filtered]"
+            else:
+                out[key] = _scrub_sensitive(item)
+        return out
+    if isinstance(value, list):
+        return [_scrub_sensitive(item) for item in value]
+    return value
+
+
+def _before_send(event: Any, hint: Any) -> Any:
+    return _scrub_sensitive(event)
+
 
 def setup_observability(app: FastAPI) -> None:
     if SENTRY_DSN and sentry_sdk is not None:
@@ -30,6 +67,8 @@ def setup_observability(app: FastAPI) -> None:
             sentry_sdk.init(
                 dsn=SENTRY_DSN,
                 traces_sample_rate=max(0.0, min(1.0, float(SENTRY_TRACES_SAMPLE_RATE))),
+                send_default_pii=False,
+                before_send=_before_send,
             )
             logger.info("sentry_enabled traces_sample_rate=%s", SENTRY_TRACES_SAMPLE_RATE)
         except Exception:

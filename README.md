@@ -1,7 +1,7 @@
 # UniSearch / UniFit / UniChance
 
 UniSearch is a full-stack web app for university discovery and decision support.
-Current version: `3.4.5`
+Current version: `3.4.6`
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -96,12 +96,13 @@ General:
 - `GET /`
 - `GET /health`
 - `GET /ready`
-- `GET /metrics` when enabled
+- `GET /metrics` when enabled and authorized
 
 Operations:
-- `GET /ops/runtime`
-- `POST /ops/warmup`
-- `GET /ops/translation-status`
+- `GET /ops/runtime` (requires `OPS_ADMIN_TOKEN`)
+- `POST /ops/warmup` (requires `OPS_ADMIN_TOKEN`)
+- `GET /ops/translation-status` (requires `OPS_ADMIN_TOKEN`)
+- `GET /translation-status` (public, sanitized)
 
 Universities:
 - `GET /universities`
@@ -167,6 +168,10 @@ Notes:
 docker compose up --build
 ```
 
+The backend image runs as a non-root user. Redis is available only on the internal Docker network by default; do not publish Redis to the internet. Set `OPS_ADMIN_TOKEN` in your shell or `.env` before exposing ops endpoints or metrics on a hosted deployment.
+
+For VPS or Docker hosting behind a reverse proxy, see [deployment security notes](docs/deployment_security.md) for Caddy and Nginx examples.
+
 ## Optional translation service (LibreTranslate)
 If `ML_INTEREST_TRANSLATION_ENABLED=1`, the backend expects:
 - `LIBRETRANSLATE_URL=http://127.0.0.1:5000/translate`
@@ -190,7 +195,7 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=3.4.5
+APP_VERSION=3.4.6
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_HOST=127.0.0.1
@@ -207,8 +212,18 @@ REDIS_CONNECT_TIMEOUT_SEC=0.35
 REDIS_OPERATION_TIMEOUT_SEC=0.35
 
 AUTO_WARMUP_ON_STARTUP=1
-METRICS_ENABLED=1
+METRICS_ENABLED=0
 METRICS_PATH=/metrics
+OPS_ADMIN_TOKEN=
+OPS_ADMIN_HEADER=X-UniSearch-Ops-Token
+REQUEST_BODY_MAX_BYTES=131072
+RATE_LIMIT_ENABLED=1
+GLOBAL_RATE_LIMIT_REQUESTS=600
+GLOBAL_RATE_LIMIT_WINDOW_SEC=60
+EXPENSIVE_RATE_LIMIT_REQUESTS=120
+EXPENSIVE_RATE_LIMIT_WINDOW_SEC=60
+TRUST_X_FORWARDED_FOR=0
+TRUSTED_PROXY_IPS=
 SENTRY_DSN=
 SENTRY_TRACES_SAMPLE_RATE=0.0
 ```
@@ -226,6 +241,9 @@ Notes:
 - CORS must contain the frontend origin, not the backend URL. For a page opened as `http://<your-lan-ip>:5501`, add exactly that origin.
 - For another person in your LAN to open the site, start the backend with `--host 0.0.0.0` (or `BACKEND_HOST=0.0.0.0`) and start the frontend with `python -m http.server 5501 --bind 0.0.0.0`.
 - If Windows Defender Firewall prompts, allow Python on Private networks or the other device still will not connect.
+- Set a long random `OPS_ADMIN_TOKEN` before using `/ops/*`, `/metrics`, or `/health?warmup=1` outside local development.
+- Keep `TRUST_X_FORWARDED_FOR=0` unless the backend is behind a known reverse proxy listed in `TRUSTED_PROXY_IPS`.
+- Sentry is optional. When enabled, UniSearch filters profile, interests, exams, languages, auth headers, tokens, and secrets before sending events.
 
 Translation pipeline:
 ```env
@@ -464,6 +482,7 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Latest release:
+- `3.4.6` on `2026-04-18`
 - `3.4.5` on `2026-04-17`
 - `3.4.4` on `2026-04-13`
 - `3.4.2` on `2026-04-13`

@@ -38,7 +38,7 @@ def _parse_frontend_origins() -> list[str]:
 
 
 FRONTEND_ORIGINS = _parse_frontend_origins()
-APP_VERSION = os.getenv("APP_VERSION", "3.4.5").strip() or "3.4.5"
+APP_VERSION = os.getenv("APP_VERSION", "3.4.6").strip() or "3.4.6"
 BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 try:
     BACKEND_PORT = int(os.getenv("BACKEND_PORT", "8000") or 8000)
@@ -71,13 +71,44 @@ except Exception:
 
 AUTO_WARMUP_ON_STARTUP = _env_bool("AUTO_WARMUP_ON_STARTUP", "1")
 
-METRICS_ENABLED = _env_bool("METRICS_ENABLED", "1")
+METRICS_ENABLED = _env_bool("METRICS_ENABLED", "0")
 METRICS_PATH = os.getenv("METRICS_PATH", "/metrics").strip() or "/metrics"
 SENTRY_DSN = os.getenv("SENTRY_DSN", "").strip()
 try:
     SENTRY_TRACES_SAMPLE_RATE = float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", "0.0"))
 except Exception:
     SENTRY_TRACES_SAMPLE_RATE = 0.0
+
+
+OPS_ADMIN_TOKEN = os.getenv("OPS_ADMIN_TOKEN", "").strip()
+OPS_ADMIN_HEADER = os.getenv("OPS_ADMIN_HEADER", "X-UniSearch-Ops-Token").strip() or "X-UniSearch-Ops-Token"
+TRUST_X_FORWARDED_FOR = _env_bool("TRUST_X_FORWARDED_FOR", "0")
+TRUSTED_PROXY_IPS = [
+    value.strip()
+    for value in os.getenv("TRUSTED_PROXY_IPS", "").split(",")
+    if value.strip()
+]
+try:
+    REQUEST_BODY_MAX_BYTES = int(os.getenv("REQUEST_BODY_MAX_BYTES", "131072") or 131072)
+except Exception:
+    REQUEST_BODY_MAX_BYTES = 131072
+RATE_LIMIT_ENABLED = _env_bool("RATE_LIMIT_ENABLED", "1")
+try:
+    GLOBAL_RATE_LIMIT_REQUESTS = int(os.getenv("GLOBAL_RATE_LIMIT_REQUESTS", "600") or 600)
+except Exception:
+    GLOBAL_RATE_LIMIT_REQUESTS = 600
+try:
+    GLOBAL_RATE_LIMIT_WINDOW_SEC = int(os.getenv("GLOBAL_RATE_LIMIT_WINDOW_SEC", "60") or 60)
+except Exception:
+    GLOBAL_RATE_LIMIT_WINDOW_SEC = 60
+try:
+    EXPENSIVE_RATE_LIMIT_REQUESTS = int(os.getenv("EXPENSIVE_RATE_LIMIT_REQUESTS", "120") or 120)
+except Exception:
+    EXPENSIVE_RATE_LIMIT_REQUESTS = 120
+try:
+    EXPENSIVE_RATE_LIMIT_WINDOW_SEC = int(os.getenv("EXPENSIVE_RATE_LIMIT_WINDOW_SEC", "60") or 60)
+except Exception:
+    EXPENSIVE_RATE_LIMIT_WINDOW_SEC = 60
 
 
 ML_INTEREST_TRANSLATION_ENABLED = _env_bool("ML_INTEREST_TRANSLATION_ENABLED", "1")

@@ -71,6 +71,19 @@ class ApiValidationTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test_ai_sort_rejects_oversized_body(self):
+        response = self.client.post(
+            "/universities/ai-sort",
+            json={
+                "profile": {
+                    "interests": "x" * 140_000,
+                },
+                "page": 1,
+                "limit": 20,
+            },
+        )
+        self.assertEqual(response.status_code, 413)
+
 
 if __name__ == "__main__":
     unittest.main()

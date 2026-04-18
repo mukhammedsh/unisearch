@@ -4,6 +4,16 @@ import uuid
 from collections import deque
 from typing import Any, Deque, Dict, Optional, Tuple
 
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+from app.core.settings import (
+    METRICS_PATH,
+    OPS_ADMIN_HEADER,
+    OPS_ADMIN_TOKEN,
+    TRUST_X_FORWARDED_FOR,
+    TRUSTED_PROXY_IPS,
+)
 from app.core.redis_store import get_redis_client, is_redis_configured
 
 
@@ -121,3 +131,54 @@ def build_rate_limiter(
         redis_client=redis_client,
         key_prefix=redis_key_prefix,
     )
+
+
+def request_client_ip(request: Optional[Request]) -> str:
+    if request is None:
+        return "unknown"
+
+    direct_host = ""
+    if request.client and request.client.host:
+        direct_host = str(request.client.host).strip()
+
+    if TRUST_X_FORWARDED_FOR and direct_host and direct_host in set(TRUSTED_PROXY_IPS):
+        xff = str(request.headers.get("x-forwarded-for", "")).strip()
+        if xff:
+            first = xff.split(",")[0].strip()
+            if first:
+                return first
+
+    return direct_host or "unknown"
+
+
+def is_protected_ops_request(request: Request) -> bool:
+    path = str(request.url.path or "")
+    if path.startswith("/ops/"):
+        return True
+    if path == str(METRICS_PATH or "/metrics"):
+        return True
+    if path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on"}:
+        return True
+    return False
+
+
+def ops_request_is_authorized(request: Request) -> bool:
+    token = str(OPS_ADMIN_TOKEN or "").strip()
+    if not token:
+        return False
+
+    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip()
+    auth_value = str(request.headers.get("authorization", "")).strip()
+    bearer_prefix = "bearer "
+    bearer_value = auth_value[len(bearer_prefix):].strip() if auth_value.lower().startswith(bearer_prefix) else ""
+    return header_value == token or bearer_value == token
+
+
+def protected_ops_response() -> JSONResponse:
+    if OPS_ADMIN_TOKEN:
+        return JSONResponse(
+            {"detail": "Ops endpoint requires admin credentials"},
+            status_code=401,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return JSONResponse({"detail": "Not found"}, status_code=404)

@@ -617,6 +617,57 @@ export function escapeHtmlAttr(str) {
   return escapeHtmlCore(str);
 }
 
+let __imageFallbacksBound = false;
+
+export function bindImageFallbacks(root = document) {
+  const targetRoot = root || document;
+  if (targetRoot === document && __imageFallbacksBound) return;
+  if (!targetRoot || typeof targetRoot.addEventListener !== "function") return;
+
+  targetRoot.addEventListener("error", (event) => {
+    const img = event.target;
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const fallbackSrc = String(img.dataset.fallbackSrc || "").trim();
+    const finalSrc = String(img.dataset.finalSrc || "").trim();
+    const fallbackText = String(img.dataset.fallbackText || "").trim();
+    const parentClass = String(img.dataset.parentErrorClass || "").trim();
+    const removeOnError = img.dataset.removeOnError === "1";
+    const stage = String(img.dataset.fallbackStage || "0");
+
+    if (parentClass && img.parentElement) {
+      img.parentElement.classList.add(parentClass);
+    }
+
+    if (stage === "0" && fallbackSrc) {
+      img.dataset.fallbackStage = "1";
+      img.src = fallbackSrc;
+      return;
+    }
+
+    if ((stage === "0" || stage === "1") && finalSrc && img.src !== finalSrc) {
+      img.dataset.fallbackStage = "2";
+      img.src = finalSrc;
+      return;
+    }
+
+    if (fallbackText && img.parentNode) {
+      img.style.display = "none";
+      img.parentNode.textContent = fallbackText;
+      return;
+    }
+
+    if (removeOnError) {
+      img.remove();
+      return;
+    }
+
+    img.style.display = "none";
+  }, true);
+
+  if (targetRoot === document) __imageFallbacksBound = true;
+}
+
 export function nested(obj, path, fallback = null) {
   let cur = obj;
   for (const key of path) {

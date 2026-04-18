@@ -170,7 +170,7 @@ const LAYOUT_HTML = `
         src="${NAV_LOGO_LIGHT}"
         data-logo-light="${NAV_LOGO_LIGHT}"
         data-logo-dark="${NAV_LOGO_DARK}"
-        onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='${NAV_LOGO_FALLBACK}';}"
+        data-fallback-src="${NAV_LOGO_FALLBACK}"
         alt="Logo"
         class="logo"
       />
@@ -587,7 +587,7 @@ async function fetchTranslationRuntimeStatus(force = false) {
     }
     __translationStatusCache.inFlight = (async () => {
         try {
-            const res = await fetch(`${API_BASE}/ops/translation-status`, {
+            const res = await fetch(`${API_BASE}/translation-status`, {
                 cache: "no-store",
                 headers: { "Accept": "application/json" },
             });

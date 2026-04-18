@@ -1,7 +1,7 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout, renderNoConnection } from "./components.js";
 import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
-import { API_BASE, aiName, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
+import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
@@ -61,7 +61,7 @@ function maybeWakeBackend() {
     // ignore
   }
 
-  const pingUrl = `${API_BASE}/health?warmup=1&t=${now}`;
+  const pingUrl = `${API_BASE}/health?t=${now}`;
   fetch(pingUrl, {
     method: "GET",
     cache: "no-store",
@@ -89,6 +89,8 @@ function initHomePageActions() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  bindImageFallbacks(document);
+
   const path = window.location.pathname;
   const hash = String(window.location.hash || "").trim();
   const isGuideSectionHash = /^#guide-[a-z0-9-]+$/i.test(hash);

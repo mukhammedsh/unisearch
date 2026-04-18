@@ -72,3 +72,14 @@ def runtime_warmup():
 @router.get("/ops/translation-status")
 def translation_status():
     return text_translation_service.get_translation_runtime_status(force_check=False)
+
+
+@router.get("/translation-status")
+def public_translation_status():
+    status = text_translation_service.get_translation_runtime_status(force_check=False)
+    return {
+        "enabled": bool(status.get("enabled")),
+        "provider": str(status.get("provider") or "none"),
+        "available": bool(status.get("available")),
+        "reason": str(status.get("reason") or ""),
+    }

@@ -111,6 +111,7 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
+        self._send_security_headers()
         self.end_headers()
 
         if include_body:
@@ -126,9 +127,20 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
         self.send_response(404)
         self.send_header("Content-Type", "text/plain; charset=utf-8")
         self.send_header("Content-Length", str(len(payload)))
+        self._send_security_headers()
         self.end_headers()
         if include_body:
             self.wfile.write(payload)
+
+    def _send_security_headers(self) -> None:
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
+        self.send_header(
+            "Content-Security-Policy-Report-Only",
+            "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
+        )
 
 
 def main() -> None:

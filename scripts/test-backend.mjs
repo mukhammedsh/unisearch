@@ -11,8 +11,12 @@ const env = loadProjectEnv({
   rootDir,
   files: [".env", "backend/.env"],
 });
+const testEnv = {
+  ...env,
+  OPS_ADMIN_TOKEN: env.OPS_ADMIN_TOKEN || "test-ops-token",
+};
 
-const python = detectPython(rootDir, env);
+const python = detectPython(rootDir, testEnv);
 
 console.log(`[test:backend] using python: ${python}`);
 
@@ -21,7 +25,7 @@ const child = spawn(
   ["-m", "unittest", "discover", "tests", "-v"],
   {
     cwd: backendDir,
-    env,
+    env: testEnv,
     stdio: "inherit",
     shell: false,
   },

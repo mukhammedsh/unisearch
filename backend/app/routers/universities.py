@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 
 from app.core.redis_store import cache_get_json, cache_set_json
+from app.core.security import request_client_ip
 from app.core.settings import AI_SORT_CACHE_TTL_SEC, REDIS_CACHE_TTL_SEC
 from app.schemas import ProfileOnlyRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
@@ -34,16 +35,7 @@ def _etag_matches(if_none_match: str, etag: str) -> bool:
 
 
 def _request_client_key(request: Optional[Request]) -> str:
-    if request is None:
-        return "unknown"
-    xff = str(request.headers.get("x-forwarded-for", "")).strip()
-    if xff:
-        first = xff.split(",")[0].strip()
-        if first:
-            return first
-    if request.client and request.client.host:
-        return str(request.client.host)
-    return "unknown"
+    return request_client_ip(request)
 
 
 def _request_locale_hint(request: Optional[Request]) -> str:

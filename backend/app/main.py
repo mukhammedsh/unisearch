@@ -5,16 +5,31 @@ import uuid
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.core.observability import setup_observability
 from app.core.paths import UNIVERSITY_ASSETS_DIR
+from app.core.security import (
+    build_rate_limiter,
+    is_protected_ops_request,
+    ops_request_is_authorized,
+    protected_ops_response,
+    request_client_ip,
+)
 from app.core.settings import (
     APP_VERSION,
     AUTO_WARMUP_ON_STARTUP,
     BACKEND_HOST,
     BACKEND_PORT,
+    EXPENSIVE_RATE_LIMIT_REQUESTS,
+    EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
     FRONTEND_ORIGINS,
+    GLOBAL_RATE_LIMIT_REQUESTS,
+    GLOBAL_RATE_LIMIT_WINDOW_SEC,
+    OPS_ADMIN_HEADER,
+    RATE_LIMIT_ENABLED,
+    REQUEST_BODY_MAX_BYTES,
 )
 from app.routers import root, universities, exams, languages
 from app.services.background_tasks import warmup_runtime
@@ -29,11 +44,82 @@ logger = logging.getLogger("unisearch.api")
 app = FastAPI(title="UniSearch AI API", version=APP_VERSION)
 setup_observability(app)
 
+_GLOBAL_RATE_LIMITER = build_rate_limiter(
+    limit=GLOBAL_RATE_LIMIT_REQUESTS,
+    window_seconds=GLOBAL_RATE_LIMIT_WINDOW_SEC,
+    redis_key_prefix="api:rate-limit:global",
+)
+_EXPENSIVE_RATE_LIMITER = build_rate_limiter(
+    limit=EXPENSIVE_RATE_LIMIT_REQUESTS,
+    window_seconds=EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
+    redis_key_prefix="api:rate-limit:expensive",
+)
+_EXPENSIVE_POST_PATHS = {
+    "/universities/ai-sort",
+    "/exams/validate",
+    "/languages/validate",
+}
+
+
+def _is_expensive_request(request: Request) -> bool:
+    path = str(request.url.path or "")
+    if request.method.upper() != "POST":
+        return False
+    if path in _EXPENSIVE_POST_PATHS:
+        return True
+    if path.endswith("/uni-chance") or path.endswith("/roi") or path == "/ops/warmup":
+        return True
+    return False
+
+
+def _security_headers() -> dict[str, str]:
+    return {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+        "Content-Security-Policy-Report-Only": (
+            "default-src 'self'; "
+            "base-uri 'self'; "
+            "frame-ancestors 'none'; "
+            "object-src 'none'"
+        ),
+    }
+
+
+def _apply_security_headers(response):
+    for name, value in _security_headers().items():
+        if name not in response.headers:
+            response.headers[name] = value
+    return response
+
+
+def _rate_limit_response(limit: int, window_sec: int, retry_after: float) -> JSONResponse:
+    retry_after_sec = max(1, int(round(retry_after)))
+    response = JSONResponse(
+        {"detail": "Too many requests"},
+        status_code=429,
+        headers={
+            "Retry-After": str(retry_after_sec),
+            "X-RateLimit-Limit": str(limit),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Window": str(window_sec),
+        },
+    )
+    return _apply_security_headers(response)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=FRONTEND_ORIGINS,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=[
+        "Accept",
+        "Accept-Language",
+        "Authorization",
+        "Content-Type",
+        "If-None-Match",
+        OPS_ADMIN_HEADER,
+    ],
     expose_headers=[
         "ETag",
         "Cache-Control",
@@ -57,8 +143,51 @@ app.mount(
 async def request_metrics(request: Request, call_next):
     request_id = str(uuid.uuid4())
     start = time.perf_counter()
+    response = None
     try:
-        response = await call_next(request)
+        if is_protected_ops_request(request) and not ops_request_is_authorized(request):
+            response = protected_ops_response()
+        else:
+            content_length_raw = str(request.headers.get("content-length", "")).strip()
+            if content_length_raw:
+                try:
+                    content_length = int(content_length_raw)
+                except Exception:
+                    content_length = 0
+                if REQUEST_BODY_MAX_BYTES > 0 and content_length > REQUEST_BODY_MAX_BYTES:
+                    response = JSONResponse({"detail": "Request body too large"}, status_code=413)
+
+            if response is None and RATE_LIMIT_ENABLED:
+                client_key = request_client_ip(request)
+                global_allowed, global_remaining, global_retry = _GLOBAL_RATE_LIMITER.check(client_key)
+                if not global_allowed:
+                    response = _rate_limit_response(
+                        GLOBAL_RATE_LIMIT_REQUESTS,
+                        GLOBAL_RATE_LIMIT_WINDOW_SEC,
+                        global_retry,
+                    )
+                elif _is_expensive_request(request):
+                    path_key = f"{client_key}:{request.method.upper()}:{request.url.path}"
+                    expensive_allowed, expensive_remaining, expensive_retry = _EXPENSIVE_RATE_LIMITER.check(path_key)
+                    if not expensive_allowed:
+                        response = _rate_limit_response(
+                            EXPENSIVE_RATE_LIMIT_REQUESTS,
+                            EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
+                            expensive_retry,
+                        )
+                    else:
+                        response = await call_next(request)
+                        response.headers["X-RateLimit-Limit"] = str(EXPENSIVE_RATE_LIMIT_REQUESTS)
+                        response.headers["X-RateLimit-Remaining"] = str(expensive_remaining)
+                        response.headers["X-RateLimit-Window"] = str(EXPENSIVE_RATE_LIMIT_WINDOW_SEC)
+                else:
+                    response = await call_next(request)
+                    response.headers["X-RateLimit-Limit"] = str(GLOBAL_RATE_LIMIT_REQUESTS)
+                    response.headers["X-RateLimit-Remaining"] = str(global_remaining)
+                    response.headers["X-RateLimit-Window"] = str(GLOBAL_RATE_LIMIT_WINDOW_SEC)
+
+            if response is None:
+                response = await call_next(request)
     except Exception:
         duration_ms = (time.perf_counter() - start) * 1000.0
         logger.exception(
@@ -72,6 +201,7 @@ async def request_metrics(request: Request, call_next):
 
     duration_ms = (time.perf_counter() - start) * 1000.0
     response.headers["X-Request-Id"] = request_id
+    _apply_security_headers(response)
     logger.info(
         "request_ok request_id=%s method=%s path=%s status=%s duration_ms=%.2f",
         request_id,

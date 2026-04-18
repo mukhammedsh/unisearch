@@ -1757,7 +1757,7 @@ export function initUniversitiesPage() {
                 <article class="compare-uni-card" data-uni-id="${escapeHtmlAttr(id)}">
                     <div class="compare-uni-card__head">
                         <div class="compare-uni-card__logo">
-                            <img src="${logoSrc}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.style.display='none';this.parentNode.textContent='${initials(compareUniversityName(u))}';}">
+                            <img src="${logoSrc}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}">
                         </div>
                         <button class="compare-uni-card__remove" type="button" data-action="remove-compare" data-uni-id="${escapeHtmlAttr(id)}" aria-label="${escapeHtmlAttr(t("universities.compare.remove", "Remove from comparison"))}">${renderInlineIcon("x-mark", 16, "compare-remove-icon")}</button>
                     </div>
@@ -2837,7 +2837,7 @@ export function initUniversitiesPage() {
                         <article class="u-map-result-card${isActive ? " is-active" : ""}" data-uni-id="${escapeHtml(uniId)}">
                             <button type="button" class="u-map-result-focus" data-uni-focus="${escapeHtml(uniId)}">
                                 <span class="u-map-result-logo">
-                                    <img src="${uniLogoSrc(uniId)}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${uniLogoSrc(uniId, { forceFull: true })}';}else{this.style.display='none'; this.parentNode.textContent='${initials(trUniversityName(u) || "U")}';}">
+                                    <img src="${uniLogoSrc(uniId)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(uniId, { forceFull: true }))}" data-fallback-text="${escapeHtmlAttr(initials(trUniversityName(u) || "U"))}">
                                 </span>
                                 <span class="u-map-result-copy">
                                     <span class="u-map-result-name">${escapeHtml(textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name"))}</span>
@@ -3680,13 +3680,13 @@ export function initUniversitiesPage() {
         return `
         <article class="uni-card" data-uni-id="${escapeHtmlAttr(id)}">
             <div class="uni-media">
-            <img class="uni-media-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${thumbSrcFull}';}else{this.src='${logoSrcFull}';}">
+            <img class="uni-media-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFull)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
             <div class="uni-card-actions">
                 <button class="uni-action-btn uni-action-btn--favorite${isSaved ? " is-active" : ""}" type="button" data-card-action="save" aria-pressed="${isSaved ? "true" : "false"}" title="${escapeHtmlAttr(saveLabel)}" aria-label="${escapeHtmlAttr(saveLabel)}">${renderInlineIcon("star", 16, "uni-action-icon")}</button>
                 <button class="uni-action-btn uni-action-btn--compare${isCompared ? " is-active" : ""}" type="button" data-card-action="compare" aria-pressed="${isCompared ? "true" : "false"}" title="${escapeHtmlAttr(compareLabel)}" aria-label="${escapeHtmlAttr(compareLabel)}">${renderInlineIcon(isCompared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon")}</button>
             </div>
             <div class="uni-price"><small>${escapeHtml(t("universities.card.est_cost_year", "Est. Cost/Year"))}</small><b>${escapeHtml(costText)}</b></div>
-            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" onerror="if(!this.dataset.full){this.dataset.full='1';this.src='${logoSrcFull}';}else{this.onerror=null; this.parentNode.textContent='${initials(name)}';}"></div>
+            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}"></div>
             </div>
             <div class="uni-body">
                         <h3 class="uni-title" title="${safeName}">${safeName}</h3>
@@ -3881,7 +3881,7 @@ export async function initUniversityPage() {
     const logoEl = document.getElementById("detailLogo");
     if (logoEl) {
         const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
-        logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(uniId, { forceFull: true })}" alt="Logo" onerror="if(!this.dataset.small){this.dataset.small='1';this.src='${uniLogoSrc(uniId)}';}else{this.style.display='none'; this.parentNode.textContent='${initialsText}';}">`;
+        logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(uniId, { forceFull: true })}" alt="Logo" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(uniId))}" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
     }
 
     const siteBtn = document.getElementById("detailWebsite");

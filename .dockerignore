@@ -1,8 +1,14 @@
 .git
 .github
 .vscode
+node_modules
+playwright-report
+test-results
+frontend/env.js
 backend/venv
+backend/.venv
 backend/.env
 **/__pycache__
 **/*.pyc
+.pytest_cache
 release

@@ -2,6 +2,20 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.6 (2026-04-18) - Security Hardening and Narrow Viewport Stability
+
+Status:
+- synchronized runtime/package version to `3.4.6` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, README release references, and deployment examples;
+- protected `/ops/*`, `/metrics`, and `/health?warmup=1` with `OPS_ADMIN_TOKEN`, added a sanitized public `/translation-status` endpoint, and moved frontend translation-status checks away from private ops routes;
+- added global and expensive-request rate limits, request body size limits, stricter CORS methods/headers, opt-in trusted-proxy IP handling, and baseline security headers for backend and frontend dev-server responses;
+- disabled metrics by default, documented ops/security environment variables, added deployment security notes for Caddy/Nginx hosting, and kept Docker Redis private on the compose network;
+- hardened backend observability by disabling default Sentry PII and scrubbing profile, exam, language, auth, token, and secret fields before events are sent;
+- hardened Docker and repository security with a non-root backend container user, expanded `.dockerignore`, a GitHub security workflow for CodeQL/audits/repository guards, and `rel="noopener noreferrer"` on external GitHub links;
+- replaced inline image `onerror` handlers with a shared `bindImageFallbacks` handler, including logo/thumbnail/map-marker fallback flows across navigation, university cards, ranking cards, comparison cards, maps, and detail pages;
+- improved 320px and narrow mobile layout stability for navbar controls, language selector, profile modal tabs/actions, university catalog cards, skeleton grids, map result cards, university-detail cover/tabs, admissions, and finance sections;
+- updated backend tests for ops authorization, sanitized translation status, security headers, oversized body rejection, and Sentry scrubbing, and expanded Playwright overflow coverage for 320px, navbar controls, finance tabs, and profile modal overflow;
+- bumped the service-worker cache version so clients refresh the `3.4.6` frontend assets immediately after deployment.
+
 ## 3.4.5 (2026-04-17) - Saved Universities, Comparison, Profile Redesign, and Motion
 
 Status:

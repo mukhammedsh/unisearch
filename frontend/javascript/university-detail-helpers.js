@@ -2,11 +2,9 @@ import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, forma
 import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
-const MAP_MARKER_IMG_ONERROR = "if(this.parentNode){this.parentNode.classList.add('no-logo');}this.remove();";
-
 export function mapMarkerLogoHtml(logoUrl) {
   const safeLogoUrl = escapeHtml(logoUrl);
-  return `<div class="map-marker-container"><img class="marker-img-inner" src="${safeLogoUrl}" alt="" loading="lazy" decoding="async" onerror="${MAP_MARKER_IMG_ONERROR}"></div>`;
+  return `<div class="map-marker-container"><img class="marker-img-inner" src="${safeLogoUrl}" alt="" loading="lazy" decoding="async" data-parent-error-class="no-logo" data-remove-on-error="1"></div>`;
 }
 
 export function clusterMarkerLogoHtml(logoUrl, extraCount) {
