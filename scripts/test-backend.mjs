@@ -14,6 +14,7 @@ const env = loadProjectEnv({
 const testEnv = {
   ...env,
   OPS_ADMIN_TOKEN: env.OPS_ADMIN_TOKEN || "test-ops-token",
+  RATE_LIMIT_ENABLED: env.RATE_LIMIT_ENABLED || "0",
 };
 
 const python = detectPython(rootDir, testEnv);
