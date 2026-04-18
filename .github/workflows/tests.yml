@@ -39,17 +39,33 @@ jobs:
           python -m unittest discover tests -v 2>&1 | tee ../backend-test.log
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
+            failure_output="$(python - <<'PY'
+from pathlib import Path
+
+text = Path("../backend-test.log").read_text(encoding="utf-8", errors="replace")
+markers = [
+    "\n======================================================================\nFAIL:",
+    "\n======================================================================\nERROR:",
+    "\nFAILED (",
+]
+positions = [text.find(marker) for marker in markers if text.find(marker) >= 0]
+if positions:
+    snippet = text[min(positions):]
+else:
+    snippet = text[-6000:]
+print(snippet[-6000:])
+PY
+)"
             {
-              echo "### Backend unittest failure tail"
+              echo "### Backend unittest failure"
               echo '```text'
-              tail -n 120 ../backend-test.log
+              printf '%s\n' "$failure_output"
               echo '```'
             } >> "$GITHUB_STEP_SUMMARY"
-            tail_output="$(tail -n 80 ../backend-test.log)"
-            tail_output="${tail_output//'%'/'%25'}"
-            tail_output="${tail_output//$'\n'/'%0A'}"
-            tail_output="${tail_output//$'\r'/'%0D'}"
-            echo "::error title=Backend unittest failure::$tail_output"
+            failure_output="${failure_output//'%'/'%25'}"
+            failure_output="${failure_output//$'\n'/'%0A'}"
+            failure_output="${failure_output//$'\r'/'%0D'}"
+            echo "::error title=Backend unittest failure::$failure_output"
             exit "$status"
           fi
 
