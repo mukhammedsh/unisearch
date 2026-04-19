@@ -63,6 +63,7 @@ guide.ml.p4: Keep it short. Example in English: computer science, scholarships, 
 guide.ml.p5: Interests help sort options, but they do not replace official university requirements.
 guide.ml.title: How your interests are used
 guide.nav.interests: Interests
+guide.nav.roi: ROI
 guide.muted.academic: Short explanations of academic exams used in requirements.
 guide.muted.language: Short explanations of language exams and certificates.
 guide.nav.academic_exams: Academic Exams
@@ -88,6 +89,12 @@ guide.tags.ai.paid_admission: Paid Admission: shown when general admission chanc
 guide.tags.ai.requirements_met: Requirements Met: shown when minimum requirements are satisfied.
 guide.tags.ai.below_requirements: Below Requirements: shown when minimum requirements are not satisfied.
 guide.title: How UniSearch works in simple words
+guide.roi.title: ROI (return on investment)
+guide.roi.p1: ROI compares the estimated early-career graduate salary with the estimated cost of one study year.
+guide.roi.p2: In simple terms, it helps you see whether the financial outcome looks strong relative to what you pay for education.
+guide.roi.p3: ROI is a planning signal, not a salary promise. Real outcomes depend on your major, country, skills, work rights, and the job market.
+guide.roi.p4: UniSearch shows ROI only when verified graduate salary data is available. If a university does not publish reliable salary data, the ROI block is hidden.
+guide.roi.p5: Use ROI together with tuition, aid, admission chance, and program fit. A cheaper university is not always better, and a high salary estimate does not remove admission or visa risk.
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
 guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
 guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
@@ -549,6 +556,7 @@ guide.glossary.fit: {fit} is the smart sorting mode based on your profile.
 guide.glossary.intro: Short definitions of the terms you see on the site.
 guide.glossary.language_requirements: Accepted proof of language ability: native, CEFR, or language exam.
 guide.glossary.match_score: A service score that shows how well a university fits your profile.
+guide.glossary.roi: Return on Investment compares estimated graduate salary with the cost of one study year.
 guide.glossary.mode_all: You must satisfy every listed language requirement.
 guide.glossary.mode_any: You need to satisfy at least one listed language option.
 guide.glossary.requirements: Minimum scores to be considered for a track.
@@ -557,6 +565,7 @@ guide.glossary.swr: Cache behavior: we first show saved data, then refresh it in
 guide.glossary.term.admission_track: Admission Track
 guide.glossary.term.language_requirements: Language Requirements
 guide.glossary.term.match_score: Match Score
+guide.glossary.term.roi: ROI
 guide.glossary.term.mode_all: Mode = all
 guide.glossary.term.mode_any: Mode = any
 guide.glossary.term.requirements: Requirements

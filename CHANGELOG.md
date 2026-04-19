@@ -2,6 +2,25 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.7 (2026-04-19) - Mobile UX and Product Workspace Refresh
+
+Status:
+- synchronized runtime/package version to `3.4.7` across frontend runtime config, backend settings default, `package.json`, `package-lock.json`, `docker-compose.yml`, README release references, and deployment examples;
+- stabilized saved-university removal on the universities page so cards keep their viewport position when the favorites shortlist shrinks or disappears;
+- added ROI guidance to the user guide in English and Russian, including guide navigation and generated guide content support;
+- documented the UniSearch design system and UI audit direction for the 2026 calm academic product workspace refresh;
+- aligned the university detail page with the 2026 product UI direction, including the connected cover/header/tabs shell, quieter underlined tabs, token-based surfaces, and consistent light/dark detail styling;
+- made the university-detail `Admission` and `Costs` tab panels visually match `General` and `Programs` by removing the extra rounded outer panel treatment while keeping inner data cards readable;
+- refined UniChance accuracy presentation so low-accuracy labels sit below the percentage on wider layouts and move beside the percentage only on constrained mobile layouts;
+- fixed the compact language selector so its dropdown arrow stays anchored on the right when switching between EN/RU;
+- improved phone and tablet UX across the shared navbar, profile modal, homepage, universities catalog, university detail page, ranking, and guide layouts;
+- converted the profile modal into a more phone-friendly bottom sheet on small screens, with horizontally scrollable section tabs and safer touch targets;
+- improved catalog mobile filtering with a tablet drawer, phone bottom sheet, safe-area-aware floating filter button, stronger toolbar wrapping, and no horizontal overflow on narrow devices;
+- made guide mobile navigation full-width on phones instead of appearing as a narrow inset panel;
+- removed negative letter spacing from touched UI areas to improve Russian text readability and reduce mobile text compression;
+- expanded Playwright responsive coverage for home, universities, ranking, guide, university detail, navbar menu, catalog filters, profile modal, UniChance layout, and detail tab panel design invariants across narrow, mobile, tablet, light, and dark viewports.
+- bumped the service-worker cache version so clients refresh the `3.4.7` frontend assets immediately after deployment.
+
 ## 3.4.6 (2026-04-18) - Security Hardening and Narrow Viewport Stability
 
 Status:

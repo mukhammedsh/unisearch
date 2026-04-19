@@ -1,6 +1,7 @@
 :root {
   --home-bg: #f3f5f9;
   --home-surface: #ffffff;
+  --home-surface-soft: #f7f9fc;
   --home-surface-elevated: rgba(255, 255, 255, 0.92);
   --home-ink: #101320;
   --home-ink-soft: #5d6477;
@@ -12,6 +13,7 @@
 :root[data-theme="dark"] {
   --home-bg: #0f1012;
   --home-surface: #17181a;
+  --home-surface-soft: #17181a;
   --home-surface-elevated: rgba(23, 24, 26, 0.92);
   --home-ink: #f2f4fb;
   --home-ink-soft: #adb1bb;
@@ -83,7 +85,7 @@ body[data-page="home"] {
   max-width: 700px;
   font-size: clamp(42px, 5vw, 74px);
   line-height: 0.98;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
   font-weight: 900;
   color: var(--home-ink);
 }
@@ -230,7 +232,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   margin: 0;
   font-size: 18px;
   line-height: 1.5;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   font-weight: 800;
   color: var(--home-ink);
 }
@@ -314,6 +316,77 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
     padding: 32px 20px 64px;
   }
 }
+}
+
+/* ===== 2026 Home Device UX ===== */
+@media (max-width: 980px) {
+  .home-page {
+    padding-left: var(--mobile-safe-gutter, 16px);
+    padding-right: var(--mobile-safe-gutter, 16px);
+  }
+
+  .hero-copy {
+    justify-items: start;
+  }
+
+  .hero-title {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-page {
+    padding-top: 22px;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+
+  .hero-copy {
+    justify-items: stretch;
+  }
+
+  .hero-title {
+    max-width: none;
+    font-size: clamp(32px, 11vw, 42px);
+    letter-spacing: 0;
+  }
+
+  .hero-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .hero-fact {
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-fact--muted {
+    grid-column: 1 / -1;
+  }
+
+  .hero-rail {
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .hero-title {
+    font-size: 31px;
+  }
+
+  .hero-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-fact--muted {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 680px) {

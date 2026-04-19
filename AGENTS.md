@@ -82,6 +82,12 @@ docs/                     project documentation
 Новая страница должна быть рабочим экраном, а не декоративным лендингом, если лендинг не попросили явно.
 
 ## UI и дизайн
+- Перед любым заметным UI-изменением сверяйся с `docs/design-system.md`; текущий целевой стиль — calm academic product workspace: спокойный, плотный, практичный интерфейс для подбора университета, а не generic SaaS или декоративный AI-лендинг.
+- Для оценки текущих расхождений используй `docs/ui-design-audit.md`; при правках постепенно приближай старые участки к `2026 Product Refresh`, не делая широкий CSS-рефакторинг без необходимости.
+- Базовые токены дизайна бери из `frontend/css/style.css` (`--font-sans`, `--font-display`, `--accent`, `--bg`, `--surface-solid`, `--surface-soft`, `--line`, `--text`, `--text-muted`, motion tokens). Не заводи новую палитру, если можно использовать существующие переменные.
+- Рабочие экраны должны строиться как инструмент: scope/status → toolbar/search/filter → данные → loading/empty/error states. Новые страницы не должны быть лендингом, если это не попросили явно.
+- Основные карточки: `background: var(--surface-solid)`, `border: 1px solid var(--line)`, радиус 16–20px, без тени по умолчанию; тень допустима на hover/floating слоях. Primary action — accent-filled, secondary — surface/transparent с border.
+- Для primary tabs предпочитай спокойные underline-tabs, а не filled pill tabs, если локальный паттерн явно не требует другого.
 - Избегай «ИИшного» дизайна: дефолтных Tailwind-палитр, пластиковых градиентов и generic SaaS-вида.
 - Тени — многослойные, с цветовым оттенком и низкой прозрачностью; не плоские `shadow-md`.
 - Типографика — парные шрифты, заголовки отличаются от тела текста; tight tracking допустим для заголовков.

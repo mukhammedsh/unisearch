@@ -1445,6 +1445,11 @@ export function initUniversitiesPage() {
         });
     };
 
+    const getVisibleCardAnchor = () => {
+        const cards = Array.from(el.list?.querySelectorAll(".uni-card[data-uni-id]") || []);
+        return cards.find((card) => card.getBoundingClientRect().bottom > 0) || cards[0] || null;
+    };
+
     const syncCardActionState = () => {
         document.querySelectorAll(".uni-card[data-uni-id]").forEach((card) => {
             const rowId = String(card.getAttribute("data-uni-id") || "").trim();
@@ -1481,7 +1486,11 @@ export function initUniversitiesPage() {
         if (action === "save") {
             const wasSaved = savedUniversityIds.has(uniId);
             const beforeTop = card.getBoundingClientRect().top;
-            const shouldCompensateShift = !!options.compensateLayoutShift && !wasSaved && savedUniversityIds.size === 0;
+            const savedCountBefore = savedUniversityIds.size;
+            const shouldCompensateShift = !!options.compensateLayoutShift && (
+                (!wasSaved && savedCountBefore === 0) ||
+                wasSaved
+            );
             if (wasSaved) savedUniversityIds.delete(uniId);
             else savedUniversityIds.add(uniId);
             syncCardActionState();
@@ -2657,6 +2666,9 @@ export function initUniversitiesPage() {
         if (!uniId) return;
         motionPress(removeBtn);
         const chip = removeBtn.closest(".u-shortlist__chip");
+        const anchorCard = getVisibleCardAnchor();
+        const beforeTop = anchorCard?.getBoundingClientRect().top;
+        const shouldCompensateShift = !state.only_saved;
         animateElementOut(chip, () => {
             savedUniversityIds.delete(uniId);
             writeIdListStorage(SAVED_UNIVERSITIES_KEY, Array.from(savedUniversityIds));
@@ -2669,6 +2681,7 @@ export function initUniversitiesPage() {
             renderSavedShortlistBar();
             syncCardActionState();
             if (state.only_saved) refetch();
+            else if (shouldCompensateShift) compensateCardAnchorShift(anchorCard, beforeTop);
         });
     });
 
