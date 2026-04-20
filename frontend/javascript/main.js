@@ -1,7 +1,10 @@
 /* frontend/javascript/main.js */
 import { loadGlobalLayout, renderNoConnection } from "./components.js";
-import { initUniversitiesPage, initUniversityPage, initRankingPage, initGuidePage } from "./pages.js";
-import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator } from "./utils.js";
+import { initUniversitiesPage } from "./pages/universities.js";
+import { initUniversityPage } from "./pages/university.js";
+import { initRankingPage } from "./pages/ranking.js";
+import { initGuidePage } from "./pages/guide.js";
+import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
@@ -11,12 +14,6 @@ import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversities
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 
-function frontendStaticAsset(path = "") {
-  const cleanPath = String(path || "").replace(/^\/+/, "");
-  const currentPath = String(window.location.pathname || "");
-  const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
-  return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
-}
 
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;

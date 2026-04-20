@@ -11,12 +11,12 @@ from app.services.background_tasks import warmup_runtime
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/", summary="Service status", description="Returns basic service status and version.")
 def root():
     return {"status": "ok", "service": "unisearch-backend-ai", "version": APP_VERSION}
 
 
-@router.get("/health")
+@router.get("/health", summary="Health check", description="Lightweight liveness probe. Pass ?warmup=true to trigger a synchronous warmup and include its result.")
 def health(warmup: bool = Query(False)):
     payload = {"status": "ok", "version": APP_VERSION}
     if warmup:
@@ -24,7 +24,7 @@ def health(warmup: bool = Query(False)):
     return payload
 
 
-@router.get("/ready")
+@router.get("/ready", summary="Readiness check", description="Verifies that all required datasets (universities, languages, exams) are loaded and Redis is reachable.")
 def ready():
     universities = universities_service.load_universities()
     locations = universities_service.get_locations()
@@ -51,7 +51,7 @@ def ready():
     }
 
 
-@router.get("/ops/runtime")
+@router.get("/ops/runtime", summary="Runtime status (ops)", description="Returns runtime metadata including app version and Redis connectivity.")
 def runtime_status():
     return {
         "status": "ok",
@@ -60,7 +60,7 @@ def runtime_status():
     }
 
 
-@router.post("/ops/warmup")
+@router.post("/ops/warmup", summary="Trigger warmup (ops)", description="Runs a synchronous data-warmup cycle and returns the result.")
 def runtime_warmup():
     sync_result = warmup_runtime(trigger="ops_sync")
     return {
@@ -69,12 +69,12 @@ def runtime_warmup():
     }
 
 
-@router.get("/ops/translation-status")
+@router.get("/ops/translation-status", summary="Translation status (ops)", description="Returns full translation service runtime status including provider details.")
 def translation_status():
     return text_translation_service.get_translation_runtime_status(force_check=False)
 
 
-@router.get("/translation-status")
+@router.get("/translation-status", summary="Public translation status", description="Returns a sanitized subset of the translation service status safe for frontend consumption.")
 def public_translation_status():
     status = text_translation_service.get_translation_runtime_status(force_check=False)
     return {

@@ -10,7 +10,7 @@ export function aiName(key) {
   const k = String(key || "").trim().toLowerCase();
   return AI_FUNCTIONS[k] || AI_DEFAULTS[k] || "AI Function";
 }
-function frontendStaticAsset(path = "") {
+export function frontendStaticAsset(path = "") {
   const cleanPath = String(path || "").replace(/^\/+/, "");
   const currentPath = String(window.location.pathname || "");
   const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
@@ -318,14 +318,14 @@ const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 const API_LANG_DEFAULT = "eng";
 const API_LANG_SUPPORTED = new Set(["eng", "rus"]);
 let __profileMemoryFallback = null;
-// 🔥 ДОБАВЛЕНО: Новые поля в дефолтном профиле
-const PROFILE_DEFAULTS = { 
-    name: "User", 
-    budget: "", 
+
+const PROFILE_DEFAULTS = {
+    name: "User",
+    budget: "",
     gpa: "",
-    exams: [], 
-    languages: [],   // ✅ новое поле
-    major: "", 
+    exams: [],
+    languages: [],
+    major: "",
     interests: "",
     studyMode: "Any",
     fundingType: "any",
@@ -1794,9 +1794,15 @@ function clampWithCfg(score, cfg) {
 
 export function normalizeProfileData(p) {
   const out = { ...PROFILE_DEFAULTS, ...(p || {}) };
+
+  // --- Scalar field defaults ---
+  out.name = String(out.name || PROFILE_DEFAULTS.name).trim() || PROFILE_DEFAULTS.name;
+  out.budget = (out.budget === null || out.budget === undefined) ? PROFILE_DEFAULTS.budget : out.budget;
+  out.major = String(out.major ?? "").trim();
+  out.studyMode = String(out.studyMode || PROFILE_DEFAULTS.studyMode).trim() || PROFILE_DEFAULTS.studyMode;
   const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
   if (fundingRaw === "grant" || fundingRaw === "paid") out.fundingType = fundingRaw;
-  else out.fundingType = "any";
+  else out.fundingType = PROFILE_DEFAULTS.fundingType;
   out.interests = String(out.interests ?? "").trim().slice(0, 1200);
   if (!out.selectedAdmissionTracks || typeof out.selectedAdmissionTracks !== "object" || Array.isArray(out.selectedAdmissionTracks)) {
     out.selectedAdmissionTracks = {};

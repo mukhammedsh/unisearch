@@ -6,17 +6,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import file_mtime
 from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
+from app.core.utils import to_float as _num_or_none, safe_lower as _safe_lower, norm_space as _norm_space, norm_tag_key as _norm_tag_key
 from app.services import exams as exams_service
 from app.services import search as search_service
-
-
-def _num_or_none(x: Any) -> Optional[float]:
-    try:
-        if x is None or x == "":
-            return None
-        return float(x)
-    except (ValueError, TypeError):
-        return None
 
 
 def _uniq_non_empty(items: List[Any]) -> List[str]:
@@ -32,20 +24,6 @@ def _uniq_non_empty(items: List[Any]) -> List[str]:
         seen.add(k)
         out.append(s)
     return out
-
-
-def _safe_lower(x: Any) -> str:
-    if x is None:
-        return ""
-    return str(x).strip().lower()
-
-
-def _norm_space(value: Any) -> str:
-    return re.sub(r"\s+", " ", _safe_lower(value)).strip()
-
-
-def _norm_tag_key(value: Any) -> str:
-    return re.sub(r"[^a-z0-9]+", "_", _safe_lower(value)).strip("_")
 
 
 SEARCH_LANG_ENG = "eng"

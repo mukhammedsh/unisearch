@@ -2,6 +2,20 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.9 (2026-04-21) - Architecture and Frontend Code Modularization
+
+Status:
+- synchronized runtime/package version to `3.4.9` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- modularized the monolithic `frontend/javascript/pages.js` file (almost 5,000 lines) into smaller, maintainable modules:
+  - extracted shared helper functions and UI variables into `pages/_shared.js`;
+  - extracted the catalog list initialization into `pages/universities.js`;
+  - extracted the university detail initialization into `pages/university.js`;
+- updated `frontend/javascript/main.js` to import page logic directly from the new modules, bypassing and fully removing `pages.js`;
+- completed global loading spinner CSS cleanup by eliminating legacy, redundant purple spinners from `universities.css` and unifying it to the global white spinner;
+- upgraded FastAPI backend application lifecycle events from legacy `@app.on_event("startup")` hooks to the modern ASGI asynchronous `lifespan` pattern;
+- centralized repeated backend dictionary utilities and helpers into `backend/app/core/utils.py`;
+- updated E2E testing configurations to accurately capture and report failures related to UI component modifications.
+
 ## 3.4.8 (2026-04-20) - Version Source Cleanup and Documentation Refresh
 
 Status:

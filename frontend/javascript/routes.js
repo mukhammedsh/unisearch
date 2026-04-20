@@ -31,6 +31,8 @@ function withQuery(pathname, queryOrParams = "") {
 export function usePrettyUrls() {
   if (typeof window === "undefined") return true;
   if (typeof window.APP_USE_PRETTY_URLS === "boolean") return window.APP_USE_PRETTY_URLS;
+  // Fallback when config.js has not set the flag yet.
+  if (typeof window.IS_LOCAL_DEV === "boolean") return !window.IS_LOCAL_DEV;
   const host = String(window.location?.hostname || "").toLowerCase();
   const port = String(window.location?.port || "").trim();
   const isLocal = LOCAL_HOSTS.has(host);

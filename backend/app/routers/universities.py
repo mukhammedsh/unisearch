@@ -112,7 +112,7 @@ def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
     return f"{namespace}:{digest}"
 
 
-@router.get("/universities")
+@router.get("/universities", summary="List universities", description="Returns a paginated, filterable list of universities. Supports search, country/city/region filters, budget range, acceptance rate range, study level, funding type, format, and size filters.")
 def list_universities(
     q: Optional[str] = None,
     country: Optional[str] = None,
@@ -200,7 +200,7 @@ def list_universities(
     return result
 
 
-@router.post("/universities/ai-sort")
+@router.post("/universities/ai-sort", summary="AI-sorted university list (UniFit)", description="Sorts universities by profile fit using the UniFit algorithm. Considers exams, budget, interests, languages, and preference sliders to produce a personalized ranking.")
 def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Request, response: Response = None):
     profile = to_profile_dict(payload.profile)
     q = payload.q
@@ -303,7 +303,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     }
 
 
-@router.get("/universities/translations")
+@router.get("/universities/translations", summary="University translation bundle", description="Returns localized university names, descriptions, tags, and program labels for the requested language.")
 def get_universities_translations(
     lang: Optional[str] = Query(None, max_length=16),
     request: Request = None,
@@ -315,7 +315,7 @@ def get_universities_translations(
     return uni_service.get_university_translation_bundle(search_lang)
 
 
-@router.get("/universities/{university_id}")
+@router.get("/universities/{university_id}", summary="University detail", description="Returns full details for a single university, including admission tracks, finance, programs, and student life. Supports ETag caching and language localization.")
 def get_university(
     university_id: str,
     lang: Optional[str] = Query(None, max_length=16),
@@ -346,7 +346,7 @@ def get_university(
     return u
 
 
-@router.post("/universities/{university_id}/uni-chance")
+@router.post("/universities/{university_id}/uni-chance", summary="Admission chance estimate (UniChance)", description="Estimates the user's admission probability for a specific university based on their profile, exams, and languages.")
 def get_university_uni_chance(
     university_id: str,
     payload: ProfileOnlyRequest,
@@ -362,7 +362,7 @@ def get_university_uni_chance(
     return ai_scoring_service.estimate_uni_chance(university, profile)
 
 
-@router.post("/universities/{university_id}/roi")
+@router.post("/universities/{university_id}/roi", summary="ROI estimate", description="Estimates return on investment for a university based on cost, salary outcomes, and the user's profile.")
 def get_university_roi(
     university_id: str,
     payload: ProfileOnlyRequest,
@@ -378,7 +378,7 @@ def get_university_roi(
     return ai_scoring_service.estimate_university_roi(university, profile)
 
 
-@router.get("/locations")
+@router.get("/locations", summary="Available locations", description="Returns a tree of countries, regions, and cities that have universities in the catalog.")
 def get_locations(response: Response = None):
     cached = cache_get_json("api:locations")
     if isinstance(cached, dict):
@@ -395,7 +395,7 @@ def get_locations(response: Response = None):
     return data
 
 
-@router.get("/stats")
+@router.get("/stats", summary="Catalog statistics", description="Returns aggregate statistics about the university catalog: total count, country breakdown, and program coverage.")
 def get_stats(response: Response = None):
     cached = cache_get_json("api:stats")
     if isinstance(cached, dict):

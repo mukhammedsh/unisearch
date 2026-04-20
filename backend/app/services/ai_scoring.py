@@ -4,6 +4,7 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.settings import ML_INTEREST_TRANSLATION_DEBUG
+from app.core.utils import to_float as _to_num, to_float_default as _to_num_default, clamp as _clamp, clamp01 as _clamp01
 from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services import universities as universities_service
@@ -26,31 +27,6 @@ def _preview_text(value: Any, max_len: int = 180) -> str:
     return f"{raw[:max_len]}..."
 
 
-def _to_num(value: Any) -> Optional[float]:
-    try:
-        if value is None or value == "":
-            return None
-        out = float(value)
-        if math.isfinite(out):
-            return out
-        return None
-    except Exception:
-        return None
-
-
-def _to_num_default(value: Any, default: float) -> float:
-    parsed = _to_num(value)
-    if parsed is None:
-        return float(default)
-    return float(parsed)
-
-
-def _clamp(value: float, lo: float, hi: float) -> float:
-    return max(lo, min(hi, value))
-
-
-def _clamp01(value: float) -> float:
-    return _clamp(value, 0.0, 1.0)
 
 
 def _canonical_exam_key(key: Any) -> str:

@@ -7,7 +7,7 @@ from app.schemas import ExamValidateRequest
 router = APIRouter()
 
 
-@router.get("/exams/config")
+@router.get("/exams/config", summary="Exam configuration", description="Returns the map of supported exams with their score ranges, input modes, and level bands.")
 def get_exam_config(response: Response = None):
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300"
@@ -15,7 +15,7 @@ def get_exam_config(response: Response = None):
     return exams_service.EXAMS_CONFIG
 
 
-@router.get("/exams/config/full")
+@router.get("/exams/config/full", summary="Full exam configuration", description="Returns the complete exam configuration, identical to /exams/config in the current version.")
 def get_exam_config_full(response: Response = None):
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300"
@@ -23,7 +23,7 @@ def get_exam_config_full(response: Response = None):
     return exams_service.EXAMS_CONFIG
 
 
-@router.post("/exams/validate")
+@router.post("/exams/validate", summary="Validate exam submission", description="Validates and coerces an exam score submission, returning the canonical score, raw value, and display value.")
 def validate_exam(payload: ExamValidateRequest):
     exam_raw = payload.exam
     score_raw = payload.score

@@ -2,6 +2,7 @@ import threading
 import logging
 import time
 import uuid
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,7 +42,30 @@ logging.basicConfig(
 )
 logger = logging.getLogger("unisearch.api")
 
-app = FastAPI(title="UniSearch AI API", version=APP_VERSION)
+
+def _run_startup_warmup() -> None:
+    sync_result = warmup_runtime(trigger="startup_sync")
+    logger.info(
+        "warmup_sync ok=%s duration_ms=%s",
+        sync_result.get("ok"),
+        sync_result.get("duration_ms"),
+    )
+
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    if AUTO_WARMUP_ON_STARTUP:
+        warmup_thread = threading.Thread(
+            target=_run_startup_warmup,
+            name="startup-warmup",
+            daemon=True,
+        )
+        warmup_thread.start()
+        logger.info("warmup_sync scheduled trigger=startup_sync")
+    yield
+
+
+app = FastAPI(title="UniSearch AI API", version=APP_VERSION, lifespan=_lifespan)
 setup_observability(app)
 
 _GLOBAL_RATE_LIMITER = build_rate_limiter(
@@ -212,28 +236,6 @@ async def request_metrics(request: Request, call_next):
     )
     return response
 
-
-@app.on_event("startup")
-async def startup_runtime_warmup():
-    if not AUTO_WARMUP_ON_STARTUP:
-        return
-
-    warmup_thread = threading.Thread(
-        target=_run_startup_warmup,
-        name="startup-warmup",
-        daemon=True,
-    )
-    warmup_thread.start()
-    logger.info("warmup_sync scheduled trigger=startup_sync")
-
-
-def _run_startup_warmup() -> None:
-    sync_result = warmup_runtime(trigger="startup_sync")
-    logger.info(
-        "warmup_sync ok=%s duration_ms=%s",
-        sync_result.get("ok"),
-        sync_result.get("duration_ms"),
-    )
 
 app.include_router(root.router)
 app.include_router(universities.router)

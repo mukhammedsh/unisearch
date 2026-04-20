@@ -22,6 +22,7 @@ import {
   motionPress,
   prefersReducedMotion,
   replayMotion,
+  frontendStaticAsset,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
@@ -29,12 +30,7 @@ import { initUniversityTranslations, translateProgramName } from "./university-t
 import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
 import { bindInfoTooltips } from "./tooltip.js";
 
-function frontendStaticAsset(path = "") {
-    const cleanPath = String(path || "").replace(/^\/+/, "");
-    const currentPath = String(window.location.pathname || "");
-    const frontendPrefix = (currentPath === "/frontend" || currentPath.startsWith("/frontend/")) ? "/frontend" : "";
-    return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
-}
+
 const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.png");
 const NAV_LOGO_DARK = frontendStaticAsset("images/darklogo.png");
 const NAV_LOGO_FALLBACK = frontendStaticAsset("images/minilogo.png");
@@ -607,7 +603,6 @@ async function fetchTranslationRuntimeStatus(force = false) {
     return __translationStatusCache.inFlight;
 }
 
-// 🔥 1. Функция загрузки (теперь берет строку, а не файл)
 export async function loadGlobalLayout() {
     if (document.getElementById("profileModal")) return;
     try {
@@ -738,15 +733,7 @@ function initProfileUI() {
     const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
 
     const ensureProfileShape = (raw) => {
-        const out = normalizeProfileData(raw);
-        out.name = String(out.name || "User").trim() || "User";
-        out.budget = out.budget === null || out.budget === undefined ? "" : out.budget;
-        out.gpa = out.gpa === null || out.gpa === undefined ? "" : out.gpa;
-        out.major = String(out.major || "").trim();
-        out.interests = String(out.interests || "").trim().slice(0, 1200);
-        out.studyMode = String(out.studyMode || "Any").trim() || "Any";
-        out.fundingType = normalizeFundingType(out.fundingType || out.funding_type || "any");
-        return out;
+        return normalizeProfileData(raw);
     };
 
     const stableProfileSignature = (raw) => {

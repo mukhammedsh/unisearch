@@ -1,4 +1,5 @@
 import unittest
+from contextlib import AsyncExitStack
 from unittest.mock import Mock, patch
 
 import app.main as main_module
@@ -13,7 +14,8 @@ class StartupWarmupTests(unittest.IsolatedAsyncioTestCase):
             "Thread",
             return_value=fake_thread,
         ) as thread_cls:
-            await main_module.startup_runtime_warmup()
+            async with AsyncExitStack() as stack:
+                await stack.enter_async_context(main_module._lifespan(main_module.app))
 
         thread_cls.assert_called_once_with(
             target=main_module._run_startup_warmup,
@@ -27,7 +29,8 @@ class StartupWarmupTests(unittest.IsolatedAsyncioTestCase):
             main_module.threading,
             "Thread",
         ) as thread_cls:
-            await main_module.startup_runtime_warmup()
+            async with AsyncExitStack() as stack:
+                await stack.enter_async_context(main_module._lifespan(main_module.app))
 
         thread_cls.assert_not_called()
 
