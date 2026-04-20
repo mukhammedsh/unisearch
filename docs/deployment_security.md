@@ -20,7 +20,6 @@ python -c "import secrets; print(secrets.token_urlsafe(48))"
 Hosted backend environment example:
 
 ```env
-APP_VERSION=3.4.6
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_ORIGINS=https://example.com

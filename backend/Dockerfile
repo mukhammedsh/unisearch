@@ -15,6 +15,7 @@ RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
 
 COPY --chown=appuser:appuser backend/app /app/app
 COPY --chown=appuser:appuser backend/data /app/data
+COPY --chown=appuser:appuser package.json /app/package.json
 
 USER appuser
 

@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { loadProjectEnv } from "../../scripts/lib/project-env.mjs";
+import { readProjectVersion } from "../../scripts/lib/project-version.mjs";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const scriptDir = path.dirname(scriptPath);
@@ -18,10 +19,12 @@ export function generateFrontendEnvFile({ rootDir = defaultRootDir } = {}) {
   const apiPort = String(env.UNISEARCH_API_PORT || env.BACKEND_PORT || "8000").trim() || "8000";
   const prettyRaw = String(env.UNISEARCH_USE_PRETTY_URLS || "").trim();
   const debugRaw = String(env.UNISEARCH_APP_DEBUG || "").trim();
+  const appVersion = readProjectVersion(rootDir);
 
   const payload = {
     API_BASE_URL: apiBase,
     API_PORT: apiPort,
+    APP_VERSION: appVersion,
     APP_USE_PRETTY_URLS: prettyRaw,
     APP_DEBUG: debugRaw,
   };

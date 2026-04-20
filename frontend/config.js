@@ -13,7 +13,7 @@
   // For production/non-dev hosts, keep reverse-proxy /api unless env.js overrides it.
   w.API_BASE_URL = apiBaseFromEnv || ((isLocal || isDevStaticHost) ? inferredLocalApiBase : "/api");
 
-  w.APP_VERSION = "3.4.7";
+  w.APP_VERSION = String(env.APP_VERSION || "").trim() || "0.0.0-dev";
 
   const debugRaw = env.APP_DEBUG;
   if (typeof debugRaw === "boolean") {

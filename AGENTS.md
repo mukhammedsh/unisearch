@@ -151,7 +151,7 @@ python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
 ## Release workflow
 Если пользователь просит поднять версию, сделать релизный commit или закоммитить release-изменения:
 - Сначала изучи все незакоммиченные изменения через `git status`, `git diff --stat`, `git diff --name-status` и релевантный diff по группам файлов.
-- Подними версию в `package.json` и синхронизируй все существующие runtime/version references: `package-lock.json`, `frontend/config.js`, `backend/app/core/settings.py`, `docker-compose.yml`, README, deployment examples и service-worker cache version, если он есть.
+- Подними версию через `npm run bump:version -- patch|minor|major|X.Y.Z`; `package.json` — единый источник версии приложения. Если меняешь вручную, синхронизируй npm lock/runtime artifacts через `npm install --package-lock-only`, `npm run build:frontend-env`, `npm run check:version`. `frontend/config.js`, backend settings и `docker-compose.yml` не должны хранить hardcoded semver приложения.
 - Добавь верхний раздел в `CHANGELOG.md` для новой версии с датой релиза и фактическим списком незакоммиченных изменений; не оставляй новые изменения в предыдущем релизном разделе.
 - Запусти минимальные релевантные проверки до commit и явно зафиксируй, что прошло или почему не удалось запустить.
 - Делай осмысленный commit от имени текущего пользователя, затем push текущей ветки.

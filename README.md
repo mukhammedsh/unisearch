@@ -1,7 +1,13 @@
 # UniSearch / UniFit / UniChance
 
+[![Tests](https://github.com/Muxlex/unisearch/actions/workflows/tests.yml/badge.svg)](https://github.com/Muxlex/unisearch/actions/workflows/tests.yml)
+[![Version](https://img.shields.io/github/package-json/v/Muxlex/unisearch?filename=package.json)](package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB.svg)](backend/requirements.txt)
+[![Node 20+](https://img.shields.io/badge/Node-20%2B-339933.svg)](package.json)
+
 UniSearch is a full-stack web app for university discovery and decision support.
-Current version: `3.4.7`
+Current version source: `package.json` -> `version`.
 
 Core capabilities:
 - structured university catalog with filters/search
@@ -11,13 +17,17 @@ Core capabilities:
 - multilingual UI (`eng`, `ru`) with backend-driven localization
 
 ## Quick start
-If you just want the project running locally:
+If you just want the project running locally from a fresh clone:
 
 Prerequisites:
 - Python `3.12+`
 - Node.js `20+`
 
-1. Create your local backend config:
+1. Install Node dependencies:
+   ```bash
+   npm install
+   ```
+2. Create your local backend config:
    ```bash
    cp backend/.env.example backend/.env
    ```
@@ -25,7 +35,7 @@ Prerequisites:
    ```powershell
    Copy-Item backend/.env.example backend/.env
    ```
-2. Start the backend:
+3. Start the backend:
    ```bash
    cd backend
    python -m venv .venv
@@ -37,14 +47,15 @@ Prerequisites:
    cd ..
    npm run dev:backend
    ```
-3. Start the frontend in a second terminal:
+4. Start the frontend in a second terminal:
    ```bash
    npm run dev:frontend
    ```
-4. Open `http://127.0.0.1:5501/index.html`
-5. If you changed curated official facts, sync and audit before committing:
+5. Open `http://127.0.0.1:5501/index.html`
+6. If you changed curated official facts or admissions data, sync and audit before committing:
    ```bash
-   python backend/scripts/apply_official_facts.py --verified-at 2026-03-25
+   python backend/scripts/apply_official_facts.py --verified-at 2026-04-04
+   python backend/scripts/apply_official_admissions.py
    python backend/scripts/audit_universities_data.py
    python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
    ```
@@ -54,27 +65,32 @@ Prerequisites:
 - Runtime and env vars: see [Environment configuration](#environment-configuration)
 - Curated data workflow: see [Data maintenance and provenance](#data-maintenance-and-provenance)
 - Tests and CI: see [Testing](#testing) and [CI policy](#ci-policy)
+- Contribution notes: see [CONTRIBUTING.md](CONTRIBUTING.md)
 - Release history: see [CHANGELOG.md](CHANGELOG.md)
 
-## Current highlights
-- Backend-first architecture for business logic and data delivery.
-- Users can manually choose an admission track per university, and bachelor-facing detail pages now keep those tracks scoped to applicable non-foundation majors.
-- ROI now uses newly added official salary outcomes for supported universities and hides the ROI block when no official salary source exists yet.
-- Universities-page country/region/city filters keep translated dropdown labels in sync after UI language changes.
-- Backend startup warmup now runs in a background thread instead of delaying app boot.
-- University translation packs are served by backend (`/universities/translations`).
-- University media assets are stored in backend and served by API static routes.
-- Media variant naming is standardized to `small` and full-size variants.
-- Frontend static assets use root-absolute paths where needed to stay stable on pretty URLs like `/universities/:id`.
-- Service worker is registered from `/sw.js` with root scope to avoid nested-route cache issues.
-- Frontend image policy:
-  - list/ranking cards use `small` assets by default
-  - university detail page uses full-size assets
+## Project snapshot
+- Product scope is bachelor-level university discovery and decision support.
+- Business logic and data shaping live in the FastAPI backend; the frontend is static Vanilla JS/HTML/CSS.
+- UI languages are English (`eng`) and Russian (`ru`), with university translations served by `/universities/translations`.
+- University facts and admissions data are conservative: official sources only, with missing values preferred over guesses.
+- University media is stored under `backend/data/university_assets/` and served by `/universities/assets/{folder}/{filename}`.
+- List and ranking views use `small` media variants by default; detail pages use full-size variants.
+
+## Development guardrails
+- Keep user-facing text localized in both `frontend/Localization/eng` and `frontend/Localization/ru`.
+- Keep light and dark themes working for UI changes.
+- Use existing project patterns before adding new structure, dependencies, or abstractions.
+- Use Heroicons through `frontend/javascript/icons.js`; run `npm run sync:heroicons` only when icon sources need refreshing.
+- Do not hardcode backend URLs; use the existing runtime config path through `frontend/env.js` and `frontend/config.js`.
+- For visible feature, search, ranking, profile, data, or API changes, update `CHANGELOG.md`.
+
+## Contributing
+UniSearch is mainly a solo-maintained project, but focused external fixes are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for scope, data-source rules, and the expected checks before a PR.
 
 ## Architecture
 - Frontend: Vanilla JS + HTML/CSS in `frontend/`
 - Backend: FastAPI in `backend/app/`
-- Data: JSON datasets in `backend/data/*.json`
+- Data: JSON datasets in `backend/data/*.json`, with curated facts/admissions catalogs synced into `universities.json`
 - University media: `backend/data/university_assets/*`
 
 ## University media assets
@@ -123,6 +139,8 @@ Reference data:
 - `POST /languages/validate`
 
 ## Run locally
+Run `npm install` once from the repository root before using npm scripts in a fresh clone.
+
 ### 1) Backend
 Use Python `3.12.x` for the most predictable dependency behavior.
 
@@ -195,7 +213,6 @@ ML_INTEREST_TRANSLATION_ENABLED=0
 ### Backend (`backend/.env`)
 Infra/runtime:
 ```env
-APP_VERSION=3.4.7
 BACKEND_HOST=127.0.0.1
 BACKEND_PORT=8000
 FRONTEND_HOST=127.0.0.1
@@ -254,7 +271,7 @@ ML_INTEREST_TRANSLATION_TARGET=en
 ML_INTEREST_TRANSLATION_SOURCE=auto
 LIBRETRANSLATE_URL=http://127.0.0.1:5000/translate
 LIBRETRANSLATE_API_KEY=
-ML_INTEREST_TRANSLATION_TIMEOUT_SEC=1.2
+ML_INTEREST_TRANSLATION_TIMEOUT_SEC=2.5
 ML_INTEREST_TRANSLATION_CACHE_TTL_SEC=86400
 ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS=2000
 ML_INTEREST_TRANSLATION_RATE_LIMIT_REQUESTS=40
@@ -280,7 +297,7 @@ Semantic ranking behavior:
 - On fresh deploys, first startup may be slower while model artifacts load or download.
 
 ### Frontend runtime env
-Frontend reads runtime config from `frontend/env.js` generated at deploy time:
+Frontend reads runtime config from `frontend/env.js` generated at deploy time. The generated file also includes `APP_VERSION` from `package.json`:
 
 ```env
 UNISEARCH_API_BASE_URL=https://api.example.com
@@ -298,6 +315,29 @@ Generate `frontend/env.js`:
 npm run build:frontend-env
 ```
 
+### Version source
+The release version is stored in one canonical place: `package.json` -> `version`.
+
+- backend reads it from `package.json` at startup and exposes it through OpenAPI, `/`, `/health`, `/ready`, and `/ops/runtime`
+- Docker copies `package.json` into the backend image for the same runtime lookup
+- frontend receives it through generated `frontend/env.js`
+- `package-lock.json` keeps npm's mirrored root version
+
+After bumping `package.json`, run:
+```bash
+npm install --package-lock-only
+npm run build:frontend-env
+npm run check:version
+```
+
+Or use the helper command:
+```bash
+npm run bump:version -- patch
+npm run bump:version -- minor
+npm run bump:version -- major
+npm run bump:version -- 3.4.9
+```
+
 Local dev behavior:
 - If `UNISEARCH_API_BASE_URL` is empty, the frontend uses the same host as the page and `UNISEARCH_API_PORT` (or `BACKEND_PORT`) for API calls.
 - Example: frontend on `http://192.168.1.20:5600` and backend on `http://192.168.1.20:9000` works after setting `FRONTEND_PORT=5600`, `BACKEND_PORT=9000`, and matching `FRONTEND_ORIGINS`.
@@ -308,20 +348,23 @@ The project is intentionally conservative about university facts.
 Rules:
 - Use official university pages, official admissions pages, or official university-hosted PDFs/reports only.
 - Do not fill missing facts from aggregators, marketing retellings, or inferred heuristics when an official institution-wide source is missing.
-- `backend/data/official_facts.json` is the curated source of truth for verified optional facts added in recent cleanup passes.
-- `backend/data/universities.json` should be updated from the catalog through the sync script, not hand-edited first for those curated facts.
+- `backend/data/official_facts.json` is the curated source of truth for verified optional facts such as student counts and institution-level acceptance rates.
+- `backend/data/official_admissions.json` is the structured source of truth for university-wide and program-level admissions signals.
+- `backend/data/universities.json` should be updated from the curated catalogs through sync scripts, not hand-edited first for those facts.
 
 Current curated workflow:
-1. Add or update verified facts in `backend/data/official_facts.json`
-2. Sync them into the dataset:
+1. Add or update verified optional facts in `backend/data/official_facts.json`.
+2. Add or update structured admissions signals in `backend/data/official_admissions.json` when admission rates, counts, capacity, grade profiles, cutoffs, or verified-null states change.
+3. Sync curated catalogs into the dataset:
    ```bash
-   python backend/scripts/apply_official_facts.py --verified-at 2026-03-25
+   python backend/scripts/apply_official_facts.py --verified-at 2026-04-04
+   python backend/scripts/apply_official_admissions.py
    ```
-3. Run dataset audit:
+4. Run dataset audit:
    ```bash
    python backend/scripts/audit_universities_data.py
    ```
-4. Run HTTP source audit for touched URLs:
+5. Run HTTP source audit for touched URLs:
    ```bash
    python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
    ```
@@ -398,6 +441,11 @@ Check the following:
 
 ## Repository layout
 ```text
+CONTRIBUTING.md
+LICENSE
+README.md
+CHANGELOG.md
+
 backend/
   app/
     main.py
@@ -428,6 +476,7 @@ backend/
   data/
     universities.json
     official_facts.json
+    official_admissions.json
     universities_translations.json
     exams.json
     languages.json
@@ -439,7 +488,9 @@ backend/
       thumbnails-small/
   scripts/
     apply_official_facts.py
+    apply_official_admissions.py
     audit_universities_data.py
+    refresh_fact_provenance.py
     refresh_university_factors.py
   tests/
     fixtures/
@@ -461,11 +512,19 @@ frontend/
   scripts/
 
 docs/
+  design-system.md
+  deployment_security.md
+  ui-design-audit.md
   official_admissions_cleanup_2026-03-25.md
   official_facts_update_2026-03-12.md
 
 scripts/
+  bump-version.mjs
+  check-version-sync.mjs
+  dev-backend.mjs
+  dev-frontend.mjs
   i18n-check.mjs
+  test-backend.mjs
 
 tests/
   e2e/
@@ -481,11 +540,13 @@ tests/
 ## Changelog
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
-Latest release:
+Recent releases:
+- `3.4.8` on `2026-04-20`
 - `3.4.7` on `2026-04-19`
 - `3.4.6` on `2026-04-18`
 - `3.4.5` on `2026-04-17`
 - `3.4.4` on `2026-04-13`
+- `3.4.3` on `2026-04-13`
 - `3.4.2` on `2026-04-13`
 - `3.4.1` on `2026-04-12`
 - `3.4.0` on `2026-04-12`
@@ -494,5 +555,3 @@ Latest release:
 - `3.2.1` on `2026-04-03`
 - `3.1.0` on `2026-04-03`
 - `3.0.0` on `2026-04-02`
-- focus: full web-application design rework with refreshed comparison flows and release version sync
-- status: current release

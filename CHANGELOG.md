@@ -2,6 +2,17 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.8 (2026-04-20) - Version Source Cleanup and Documentation Refresh
+
+Status:
+- synchronized runtime/package version to `3.4.8` through the new package-based version flow, including `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- made `package.json` the canonical application version source for backend, frontend, Docker, and release tooling instead of keeping hardcoded semver values in runtime config, backend settings, Compose, or deployment examples;
+- added backend runtime version loading from `package.json` and copied `package.json` into the backend Docker image so API metadata, health, ready, and ops runtime responses use the same release version;
+- added `npm run bump:version` and `npm run check:version`, and made `npm run test:all` verify version synchronization before backend and E2E checks;
+- refreshed README onboarding with badges, fresh-clone setup steps, stable project snapshot/guardrails, updated data-maintenance workflow for official facts and admissions, repository layout updates, and recent release references;
+- added `CONTRIBUTING.md` with lightweight solo-maintainer contribution guidance, setup notes, data-source rules, PR expectations, and relevant checks for occasional external fixes;
+- updated project agent release instructions to use the new version bump/check workflow.
+
 ## 3.4.7 (2026-04-19) - Mobile UX and Product Workspace Refresh
 
 Status:

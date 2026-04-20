@@ -1,5 +1,6 @@
 import os
 from app.core.env import load_local_env
+from app.core.version import APP_VERSION
 
 
 load_local_env()
@@ -38,7 +39,6 @@ def _parse_frontend_origins() -> list[str]:
 
 
 FRONTEND_ORIGINS = _parse_frontend_origins()
-APP_VERSION = os.getenv("APP_VERSION", "3.4.7").strip() or "3.4.7"
 BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 try:
     BACKEND_PORT = int(os.getenv("BACKEND_PORT") or os.getenv("PORT") or 8000)
