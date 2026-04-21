@@ -6,6 +6,17 @@
   <base href="./" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.ranking">Global Ranking | UniSearch</title>
+  <script>
+    (() => {
+      const target = new URL("universities.html", window.location.href);
+      const current = new URL(window.location.href);
+      current.searchParams.forEach((value, key) => {
+        if (key !== "tab") target.searchParams.set(key, value);
+      });
+      target.searchParams.set("tab", "ranking");
+      window.location.replace(target.toString());
+    })();
+  </script>
   <script src="javascript/theme-init.js"></script>
 
   <link rel="stylesheet" href="css/style.css" />

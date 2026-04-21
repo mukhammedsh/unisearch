@@ -12,16 +12,52 @@ from app.core.settings import (
     ML_SEMANTIC_EMBEDDINGS_MODEL,
 )
 
-try:
-    import numpy as np
-
-    _NUMPY_AVAILABLE = True
-except Exception:
-    np = None  # type: ignore[assignment]
-    _NUMPY_AVAILABLE = False
-
 SentenceTransformer = None  # type: ignore[assignment]
 _SENTENCE_TRANSFORMERS_AVAILABLE: Optional[bool] = None
+np = None  # type: ignore[assignment]
+_NUMPY_AVAILABLE: Optional[bool] = None
+TfidfVectorizer = None  # type: ignore[assignment]
+cosine_similarity = None  # type: ignore[assignment]
+_SKLEARN_AVAILABLE: Optional[bool] = None
+
+
+def _load_numpy():
+    global np, _NUMPY_AVAILABLE
+
+    if _NUMPY_AVAILABLE is not None:
+        return np if _NUMPY_AVAILABLE else None
+
+    try:
+        import numpy as numpy_module
+
+        np = numpy_module  # type: ignore[assignment]
+        _NUMPY_AVAILABLE = True
+        return np
+    except Exception:
+        np = None  # type: ignore[assignment]
+        _NUMPY_AVAILABLE = False
+        return None
+
+
+def _load_sklearn():
+    global TfidfVectorizer, cosine_similarity, _SKLEARN_AVAILABLE
+
+    if _SKLEARN_AVAILABLE is not None:
+        return bool(_SKLEARN_AVAILABLE)
+
+    try:
+        from sklearn.feature_extraction.text import TfidfVectorizer as TfidfVectorizerClass
+        from sklearn.metrics.pairwise import cosine_similarity as cosine_similarity_func
+
+        TfidfVectorizer = TfidfVectorizerClass  # type: ignore[assignment]
+        cosine_similarity = cosine_similarity_func  # type: ignore[assignment]
+        _SKLEARN_AVAILABLE = True
+        return True
+    except Exception:
+        TfidfVectorizer = None  # type: ignore[assignment]
+        cosine_similarity = None  # type: ignore[assignment]
+        _SKLEARN_AVAILABLE = False
+        return False
 
 
 def _load_sentence_transformer_class():
@@ -40,17 +76,6 @@ def _load_sentence_transformer_class():
         SentenceTransformer = None  # type: ignore[assignment]
         _SENTENCE_TRANSFORMERS_AVAILABLE = False
         return None
-
-try:
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-
-    _SKLEARN_AVAILABLE = True
-except Exception:
-    TfidfVectorizer = None  # type: ignore[assignment]
-    cosine_similarity = None  # type: ignore[assignment]
-    _SKLEARN_AVAILABLE = False
-
 
 def _safe_text(value: Any) -> str:
     if value is None:
@@ -364,7 +389,7 @@ class MLRecommender:
         self._tfidf_ready = False
         self._vectorizer = None
         self._tfidf_matrix = None
-        if not _SKLEARN_AVAILABLE or not docs:
+        if not _load_sklearn() or not docs:
             return
         try:
             self._vectorizer = TfidfVectorizer(stop_words="english")
@@ -384,7 +409,7 @@ class MLRecommender:
             self._semantic_error = "semantic_disabled"
             return
         sentence_transformer_class = _load_sentence_transformer_class()
-        if sentence_transformer_class is None or not _NUMPY_AVAILABLE:
+        if sentence_transformer_class is None or _load_numpy() is None:
             self._semantic_error = "semantic_dependency_missing"
             return
         if not docs:
@@ -463,7 +488,7 @@ class MLRecommender:
             not self._semantic_ready
             or self._semantic_model is None
             or self._semantic_embeddings is None
-            or not _NUMPY_AVAILABLE
+            or _load_numpy() is None
         ):
             return None
         try:

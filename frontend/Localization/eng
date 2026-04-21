@@ -64,6 +64,7 @@ guide.ml.p5: Interests help sort options, but they do not replace official unive
 guide.ml.title: How your interests are used
 guide.nav.interests: Interests
 guide.nav.roi: ROI
+guide.nav.comparison: Comparison
 guide.muted.academic: Short explanations of academic exams used in requirements.
 guide.muted.language: Short explanations of language exams and certificates.
 guide.nav.academic_exams: Academic Exams
@@ -95,6 +96,19 @@ guide.roi.p2: In simple terms, it helps you see whether the financial outcome lo
 guide.roi.p3: ROI is a planning signal, not a salary promise. Real outcomes depend on your major, country, skills, work rights, and the job market.
 guide.roi.p4: UniSearch shows ROI only when verified graduate salary data is available. If a university does not publish reliable salary data, the ROI block is hidden.
 guide.roi.p5: Use ROI together with tuition, aid, admission chance, and program fit. A cheaper university is not always better, and a high salary estimate does not remove admission or visa risk.
+guide.comparison.title: University comparison
+guide.comparison.p1: Comparison is inside Universities, in the Comparing tab. The catalog keeps normal navigation, so selecting universities for comparison happens only in that dedicated tab.
+guide.comparison.p2: Open Comparing, choose universities from cards or the map, then press Compare. Clicking a selected card again removes it from the shortlist.
+guide.comparison.p3: The results page scans comparable published parameters: ranking, cost, aid, acceptance, tracks, requirements, common exams, language minimums, bachelor programs, study formats, salary, and data confidence.
+guide.comparison.p4: Key differences explain practical reasons to choose each university. Overview scores are relative only to the selected universities, and the detailed table highlights the strongest value in each row.
+guide.comparison.note: Missing official data is shown as unavailable instead of being invented. Use comparison as a decision aid together with official university sources.
+guide.comparison.flow_aria: How comparison works
+guide.comparison.step1.title: 1. Select
+guide.comparison.step1.body: Use cards or map pins in Comparing.
+guide.comparison.step2.title: 2. Compare
+guide.comparison.step2.body: Build a results page from the shortlist.
+guide.comparison.step3.title: 3. Read
+guide.comparison.step3.body: Check key differences, scores, table highlights, and conclusion.
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
 guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
 guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
@@ -295,6 +309,10 @@ title.guide: Guide | UniSearch
 title.ranking: Global Ranking | UniSearch
 title.universities: Universities | UniSearch
 title.university: University | UniSearch
+universities.tabs.aria: University sections
+universities.tabs.catalog: Catalog
+universities.tabs.ranking: Ranking
+universities.tabs.comparing: Comparing
 universities.all_cities: All Cities
 universities.any_state: Any State
 universities.badge.acceptance: Acceptance Rate: {value}%
@@ -339,6 +357,7 @@ universities.found_suffix: universities
 universities.global: Global
 universities.loading: Loading universities
 universities.map_panel.empty: No universities with map coordinates match these filters.
+universities.map_panel.compare_subtitle: Comparison shortlist on the map.
 universities.map_panel.subtitle: Pick a university to center the map and open its details.
 universities.map_panel.title: Results on the map
 universities.pagination.next: Next
@@ -391,6 +410,69 @@ universities.compare.row.salary: Early career salary
 universities.compare.row.data_quality: Verified data
 universities.compare.available: Available
 universities.compare.intro: Compare practical decision signals side by side: ranking, cost, acceptance, programs, admission requirements, aid, outcomes, and data confidence. Highlighted cells mark the strongest value among selected universities.
+universities.compare.status_title: Comparing
+universities.compare.status_empty: Comparison shortlist
+universities.compare.status_selected: {count} selected
+universities.compare.results.kicker: Comparison results
+universities.compare.results.title: University comparison
+universities.compare.results.back_to_selection: Back to selection
+universities.compare.results.empty_title: No comparison yet
+universities.compare.results.empty_body: Select at least two universities to build a comparison.
+universities.compare.insight.budget_title: Budget
+universities.compare.insight.budget: Among selected universities, {name} is best on budget at {cost} per year.
+universities.compare.insight.budget_with_delta: {name} has the strongest budget signal at {cost} per year, about {percent} lower than the other selected universities on average.
+universities.compare.insight.budget_empty: Published comparable yearly cost is missing for the selected universities.
+universities.compare.insight.acceptance_title: Admission access
+universities.compare.insight.acceptance: {name} has the highest published acceptance rate at {rate}.
+universities.compare.insight.acceptance_with_delta: {name} has a {percent} higher acceptance rate than the other selected universities on average, so it looks more accessible.
+universities.compare.insight.acceptance_empty: Published acceptance-rate data is missing, so accessibility cannot be compared reliably.
+universities.compare.insight.prestige_title: Prestige
+universities.compare.insight.prestige: {name} leads on prestige with the best published rank: {rank}.
+universities.compare.insight.prestige_empty: Published ranking data is missing for this comparison.
+universities.compare.section.outcomes: Outcomes
+universities.compare.section.data: Data confidence
+universities.compare.row.program_count: Bachelor programs
+universities.compare.row.major_tags: Academic fields
+universities.compare.row.study_formats: Study formats
+universities.compare.row.funding_options: Funding options
+universities.compare.row.extra_requirements_count: Extra requirement load
+universities.compare.row.verified_sources: Verified sources
+universities.compare.row.verified_facts: Verified facts
+universities.compare.row.campus_area: Campus area
+universities.compare.row.exam_requirement: {exam} requirement
+universities.compare.row.exam_average: Admitted score: {exam}
+universities.compare.row.language_exam_requirement: {exam} language minimum
+universities.compare.category.prestige: Prestige
+universities.compare.category.prestige_sub: Rank and selectivity signals
+universities.compare.category.admissions: Admissions
+universities.compare.category.admissions_sub: Access, tracks, and requirements
+universities.compare.category.finance: Finance
+universities.compare.category.finance_sub: Cost and aid flexibility
+universities.compare.category.academics: Academics
+universities.compare.category.academics_sub: Program breadth and study options
+universities.compare.category.outcomes: Outcomes
+universities.compare.category.outcomes_sub: Published career outcome signals
+universities.compare.category.data: Data confidence
+universities.compare.category.data_sub: Verified facts and sources
+universities.compare.category.context: Context
+universities.compare.category.context_sub: Scale and campus context
+universities.compare.differences.title: Key differences
+universities.compare.differences.subtitle: The algorithm scans comparable published parameters and lists practical advantages for each selected university.
+universities.compare.differences.reasons_for: Reasons to choose {name}
+universities.compare.differences.no_clear_advantage: No clear published advantage found across comparable metrics.
+universities.compare.overview.title: Overview
+universities.compare.overview.subtitle: Scores are normalized only within the selected universities, so they show relative strengths for this comparison.
+universities.compare.tests.title: Tests and characteristics
+universities.compare.tests.subtitle: Detailed table of published values. Green cells mark the strongest comparable value in each row.
+universities.compare.conclusion.title: Conclusion
+universities.compare.conclusion.body: Best relative fits by category: {summary}. Use the highlighted table rows and official sources before making the final decision.
+universities.compare.conclusion.empty: The selected universities are close on the comparable published metrics. Use the highlighted table rows and official sources before making the final decision.
+universities.compare.reason.rank: {name}: best published rank - {value}.
+universities.compare.reason.higher_percent: {name}: "{metric}" is {percent} higher than the nearest comparable option ({value} vs {baseline}).
+universities.compare.reason.lower_percent: {name}: "{metric}" is {percent} lower than the nearest comparable option ({value} vs {baseline}).
+universities.compare.reason.highest: {name}: highest "{metric}" - {value}.
+universities.compare.reason.lowest: {name}: lowest "{metric}" - {value}.
+universities.compare.reason.best: {name}: strongest "{metric}" signal - {value}.
 universities.recent.title: Recently viewed
 universities.recent.clear_all: Clear all
 universities.recent.remove: Remove {university} from recently viewed
@@ -584,6 +666,7 @@ guide.glossary.intro: Short definitions of the terms you see on the site.
 guide.glossary.language_requirements: Accepted proof of language ability: native, CEFR, or language exam.
 guide.glossary.match_score: A service score that shows how well a university fits your profile.
 guide.glossary.roi: Return on Investment compares estimated graduate salary with the cost of one study year.
+guide.glossary.comparison: A university-side-by-side view that scans comparable published metrics and explains key differences.
 guide.glossary.mode_all: You must satisfy every listed language requirement.
 guide.glossary.mode_any: You need to satisfy at least one listed language option.
 guide.glossary.requirements: Minimum scores to be considered for a track.
@@ -593,6 +676,7 @@ guide.glossary.term.admission_track: Admission Track
 guide.glossary.term.language_requirements: Language Requirements
 guide.glossary.term.match_score: Match Score
 guide.glossary.term.roi: ROI
+guide.glossary.term.comparison: Comparison
 guide.glossary.term.mode_all: Mode = all
 guide.glossary.term.mode_any: Mode = any
 guide.glossary.term.requirements: Requirements

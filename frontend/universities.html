@@ -10,6 +10,7 @@
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/universities.css" />
+  <link rel="stylesheet" href="css/ranking.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +41,19 @@
       </div>
     </section>
 
-    <div class="u-layout">
+    <nav id="universitiesSectionTabs" class="u-section-tabs" aria-label="University sections" data-i18n-aria-label="universities.tabs.aria">
+      <button class="u-section-tab is-active" type="button" data-universities-tab="catalog" aria-pressed="true">
+        <span data-i18n="universities.tabs.catalog">Catalog</span>
+      </button>
+      <button class="u-section-tab" type="button" data-universities-tab="ranking" aria-pressed="false">
+        <span data-i18n="universities.tabs.ranking">Ranking</span>
+      </button>
+      <button class="u-section-tab" type="button" data-universities-tab="compare" aria-pressed="false">
+        <span data-i18n="universities.tabs.comparing">Comparing</span>
+      </button>
+    </nav>
+
+    <div id="universitiesCatalogPane" class="u-layout" data-universities-pane="catalog">
       <aside id="uSidebar" class="u-sidebar">
         <div class="u-filter-card">
           <div class="u-filter-title">
@@ -240,6 +253,7 @@
         </div>
 
         <div id="mobileFilterSummary" class="u-mobile-filter-summary" aria-live="polite"></div>
+        <div id="compareModeStatus" class="u-compare-mode-status" hidden></div>
         <div id="recentlyViewedBar" class="u-recent" hidden></div>
         <div id="listState" class="u-state"></div>
         <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>
@@ -253,6 +267,37 @@
         <div id="pagination" class="u-pagination"></div>
       </section>
     </div>
+
+    <section id="universitiesRankingPane" class="u-tab-pane u-tab-pane--ranking" data-universities-pane="ranking" hidden>
+      <div class="rank-container">
+        <div class="rank-header">
+          <h1><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="24"></span> <span data-i18n="ranking.title">Global University Ranking</span></h1>
+          <p data-i18n="ranking.subtitle">Popular universities by study quality and opportunities (2026)</p>
+        </div>
+
+        <div class="rank-tools" aria-label="Ranking filters" data-i18n-aria-label="ranking.tools_aria">
+          <label class="rank-search">
+            <span data-heroicon="magnifying-glass" data-icon-size="18"></span>
+            <input id="rankingSearchInput" type="search" placeholder="Search ranking..." data-i18n-placeholder="ranking.search_placeholder">
+          </label>
+          <label class="rank-country-filter">
+            <span data-i18n="ranking.country_filter">Country</span>
+            <select id="rankingCountrySelect">
+              <option value="" data-i18n="ranking.country_all">All countries</option>
+            </select>
+          </label>
+        </div>
+        <p class="rank-source-note" data-i18n="ranking.source_note">Ranking uses official sources when available. Other entries are clearly marked as estimates or reviewed data.</p>
+
+        <div id="rankingList" class="ranking-list">
+          <div class="inline-loading-note" role="status" aria-live="polite" data-i18n="ranking.loading">
+            Loading ranking
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="compareResultsPane" class="compare-results" data-universities-pane="compare-results" hidden></section>
   </main>
 
   <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button">

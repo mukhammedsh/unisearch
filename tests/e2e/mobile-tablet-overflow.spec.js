@@ -106,6 +106,12 @@ for (const viewport of viewports) {
       await expect(page.locator("#uSidebar")).not.toHaveClass(/is-open/);
     }
 
+    await page.goto("/universities.html?tab=compare&compare=results&ids=mit-usa-cambridge,imperial-college-london-uk");
+    await expect(page.locator("#compareResultsPane")).toBeVisible();
+    await expect(page.locator(".compare-key-differences")).toBeVisible();
+    await page.waitForLoadState("networkidle");
+    await expectNoHorizontalOverflow(page, `universities compare results ${viewport.name}`);
+
     await page.goto("/ranking.html");
     await expect(page.locator(".rank-container")).toBeVisible();
     await page.waitForLoadState("networkidle");

@@ -49,7 +49,9 @@ export function routeUniversities(queryOrParams = "") {
 }
 
 export function routeRanking(queryOrParams = "") {
-  return withQuery(usePrettyUrls() ? "/ranking" : "ranking.html", queryOrParams);
+  const params = new URLSearchParams(toQueryString(queryOrParams));
+  if (!params.has("tab")) params.set("tab", "ranking");
+  return routeUniversities(params);
 }
 
 export function routeGuide(queryOrParams = "") {

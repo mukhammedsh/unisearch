@@ -28,7 +28,7 @@ import {
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
 import { initUniversityTranslations, translateProgramName } from "./university-translations.js";
-import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
+import { routeAbout, routeGuide, routeHome, routeUniversities } from "./routes.js";
 import { bindInfoTooltips } from "./tooltip.js";
 import {
   SETTING_DISABLE_RECENT_UNIVERSITIES,
@@ -186,7 +186,6 @@ const LAYOUT_HTML = `
   <nav class="navbar-center" id="primaryNav">
     <a href="${routeHome()}" data-route="home" data-link="home" data-i18n="nav.home">Home</a>
     <a href="${routeUniversities()}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
-    <a href="${routeRanking()}" data-route="ranking" data-link="ranking" data-i18n="nav.rankings">Rankings</a>
     <a href="${routeGuide()}" data-route="guide" data-link="guide" data-i18n="nav.guide">Guide</a>
     <a href="${routeAbout()}" data-route="about" data-link="about" data-i18n="nav.about">About Us</a>
   </nav>

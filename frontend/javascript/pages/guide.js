@@ -134,6 +134,7 @@ export function initGuidePage() {
       { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "Average scores of admitted students on that track.") },
       { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam.") },
       { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Return on Investment compares estimated graduate salary with the cost of one study year.") },
+      { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "A university-side-by-side view that scans comparable published metrics and explains key differences.") },
       { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "You need to satisfy at least one listed language option.") },
       { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "You must satisfy every listed language requirement.") },
       { term: t("guide.glossary.term.match_score", "Match Score"), desc: tFormat("guide.glossary.match_score", { fit: fitName }, `Internal ${fitName} ranking score; higher means a better fit for your profile.`) },

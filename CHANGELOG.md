@@ -2,12 +2,25 @@
 
 All notable project changes should be recorded here.
 
+## 3.5.0 (2026-04-22) - Consolidated University Workspace
+
+Status:
+- synchronized runtime/package version to `3.5.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- consolidated Ranking, Compare, and Universities catalog into a unified tabbed interface inside the `universities.html` page;
+- redirected the legacy `ranking.html` page to the new unified catalog ranking tab via route mappings and immediate client-side redirection;
+- updated English and Russian localizations to support the new unified comparison and ranking layout structure;
+- refined UI logic inside `universities.js`, `components.js`, and `routes.js` to implement section-tab switching and URL query state (`?tab=catalog|ranking|compare`);
+- adjusted UI styling related to guide, ranking, and universities to visually support the tabbed integration;
+- improved backend logic inside `ml_scoring.py` to align with the latest platform interactions;
+- updated test coverage, modifying the responsive E2E test and introducing a new spec for tab switching and compare results.
+
 ## 3.4.12 (2026-04-21) - UI/UX Workspace Polish
 
 Status:
 - synchronized runtime/package version to `3.4.12` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
 - added a localized settings dialog for local interface preferences, including recently opened university storage and opening university detail pages in new tabs;
 - added client-side app route navigation for core frontend pages so internal page changes keep the workspace state smoother and show route-loading feedback;
+- moved Ranking into the Universities workspace as an internal tab and added a Comparing tab with card/map-only selection, URL-addressable comparison results, generated key differences, category scores, and metric-table highlights;
 - improved universities catalog skeletons with responsive counts, shared shimmer tokens, and reduced-motion coverage;
 - refined the catalog recent-universities bar with clear-all and per-item removal controls, dark-mode styling, and localized labels;
 - updated navbar/profile tab indicators, mobile navbar sizing, hover states, and accent tokens for calmer interaction behavior;
