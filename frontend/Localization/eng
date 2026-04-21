@@ -427,6 +427,9 @@ universities.view_map: Map View
 university.about_campus: About & Campus
 university.action.website: Website
 university.action.map: Map
+university.action.save: Save to favorites
+university.action.save_label: Save
+university.action.saved: Saved
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
 university.scope_badge: Bachelor's only for now

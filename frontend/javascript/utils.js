@@ -1929,3 +1929,34 @@ export function normalizeProfileData(p) {
   out.gpa = (normalizedGpa === null) ? "" : normalizedGpa;
   return out;
 }
+
+export function setupSlidingIndicator(containerSelector, itemSelector, activeClass = "active") {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+  container.classList.add("has-sliding-indicator");
+  let indicator = container.querySelector(".sliding-indicator");
+  if (!indicator) {
+    indicator = document.createElement("span");
+    indicator.className = "sliding-indicator";
+    indicator.setAttribute("aria-hidden", "true");
+    container.appendChild(indicator);
+  }
+  const update = () => {
+    const active = container.querySelector(`${itemSelector}.${activeClass}`) || container.querySelector(`${itemSelector}.is-active`);
+    if (!active || container.offsetWidth === 0) {
+      indicator.style.opacity = "0";
+      return;
+    }
+    indicator.style.opacity = "1";
+    // We get position relative to the container using offsetLeft
+    let left = active.offsetLeft;
+    // In rare cases offsetParent might not be the container, but here container has position: relative ("has-sliding-indicator")
+    indicator.style.transform = `translate3d(${left}px, 0, 0) scaleX(${active.offsetWidth})`;
+  };
+  const obs = new MutationObserver(update);
+  obs.observe(container, { attributes: true, subtree: true, attributeFilter: ["class"] });
+  window.addEventListener("resize", update, { passive: true });
+  window.addEventListener("load", update, { passive: true });
+  setTimeout(update, 50);
+  return update;
+}

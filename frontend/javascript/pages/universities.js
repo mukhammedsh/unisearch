@@ -27,6 +27,7 @@ import {
   markMotionEnter,
   motionPress,
   replayMotion,
+  setupSlidingIndicator,
 } from "../utils.js";
 
 import {
@@ -273,6 +274,7 @@ export function initUniversitiesPage() {
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     setupScopeNotice();
+    setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;

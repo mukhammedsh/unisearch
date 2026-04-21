@@ -21,7 +21,7 @@
 - **Карточки:** `border: 1px solid var(--line)`, `background: var(--surface-solid)`, радиус 16–20px. Никаких вложенных карточек.
 - **Взаимодействие:** Поддержка Light/Dark themes, `hover/active/focus` состояний, `aria-label` для кнопок.
 - **Вкладки:** Только `underline-tabs` (не pill tabs).
-- **Анимации:** Только `opacity` и `transform` (spring-style). Запрещено `transition-all`.
+- **Анимации:** Только `opacity` и `transform` (spring-style). Запрещено `transition-all`. Для вкладок разделов (Navbar, профиль, универ, фильтры) смена категории должна быть со sliding эффектом ползунка (смещение влево/вправо).
 - **Состояния:** Обязательно покрыть Loading (skeletons), Empty, Error. Без технических ошибок в UI.
 
 ## 4. КЛЮЧЕВАЯ ЛОГИКА
@@ -36,7 +36,7 @@
 - **Медиа:** Лого 1:1 (PNG), Обложки 16:9 (JPG). ВУЗ должен быть узнаваем.
 
 ## 6. CHANGELOG И РЕЛИЗ (Release Workflow)
-- **CHANGELOG.md:** Обновлять только при изменении поведения/API (не для рефакторинга).
+- **CHANGELOG.md & AGENTS.md:** Обновлять сухо, только по существу (изменения поведения/API, или важные паттерны), не писать воду и не обновлять без прямого смысла.
 - **Steps для релиза:**
   1. `git diff` и `git status` (проверить отсутствие хвостов, хардкода, токенов).
   2. Поднять версию: `npm run bump:version -- [patch|minor|major|X.Y.Z]` (единый источник – `package.json`).

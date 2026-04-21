@@ -23,6 +23,7 @@ import {
   prefersReducedMotion,
   replayMotion,
   frontendStaticAsset,
+  setupSlidingIndicator,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t, tFormat } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
@@ -637,6 +638,9 @@ export async function loadGlobalLayout() {
         if (typeof initCustomSelect === "function") initCustomSelect("languageSelect");
         initAdaptiveNavbarLayout();
 
+        // Add sliding indicator for navbar
+        setupSlidingIndicator("#primaryNav", "a", "is-active");
+
         // Запускаем логику профиля
         initProfileUI();
 
@@ -661,6 +665,8 @@ function initProfileUI() {
 
     if (modal.dataset.bound === "1") return;
     modal.dataset.bound = "1";
+
+    setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
 
     const unsavedModal = document.getElementById("profileUnsavedModal");
     const unsavedBackdrop = unsavedModal?.querySelector(".profile-confirm-backdrop");
@@ -2456,6 +2462,8 @@ export function setupTabs() {
       replayMotion(targetPane, "motion-panel-enter", { timeoutMs: 420 });
     }
   });
+  
+  setupSlidingIndicator(".d-tabs", ".d-tab-btn", "active");
 }
 /**
  * Отрисовывает экран "Нет подключения к интернету"

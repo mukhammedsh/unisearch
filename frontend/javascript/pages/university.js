@@ -291,7 +291,7 @@ export async function initUniversityPage() {
                 value: `${Math.round(acceptanceRate * 100) / 100}%`,
             });
         }
-        if (Number.isFinite(Number(minPrice))) {
+        if (false && Number.isFinite(Number(minPrice))) {
             quickStats.push({
                 label: t("universities.card.est_cost_year", "Est. Cost/Year"),
                 value: moneyUSD(minPrice),
@@ -352,6 +352,31 @@ export async function initUniversityPage() {
         p.set("focus_uni", String(u.id || id));
         mapBtn.href = routeUniversities(p);
         mapBtn.style.display = "inline-flex";
+    }
+    const saveBtn = document.getElementById("detailSaveBtn");
+    if (saveBtn) {
+        const updateSaveBtn = () => {
+            const saved = readIdListStorage(SAVED_UNIVERSITIES_KEY);
+            const isSaved = saved.includes(u.id);
+            saveBtn.setAttribute("aria-pressed", isSaved ? "true" : "false");
+            saveBtn.classList.toggle("is-saved", isSaved);
+            const iconClass = isSaved ? "bookmark-solid" : "bookmark";
+            saveBtn.querySelector(".uni-action-icon").innerHTML = renderInlineIcon(iconClass, 20);
+            saveBtn.querySelector(".d-site-link-label").textContent = isSaved ? t("university.action.saved", "Saved") : t("university.action.save_label", "Save");
+        };
+        updateSaveBtn();
+        saveBtn.onclick = () => {
+            const saved = readIdListStorage(SAVED_UNIVERSITIES_KEY);
+            const idx = saved.indexOf(u.id);
+            if (idx > -1) {
+                saved.splice(idx, 1);
+            } else {
+                saved.push(u.id);
+            }
+            writeIdListStorage(SAVED_UNIVERSITIES_KEY, saved);
+            updateSaveBtn();
+            motionPress(saveBtn);
+        };
     }
     let uniChance = null;
     let uniChanceByTrackKey = new Map();

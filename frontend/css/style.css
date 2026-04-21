@@ -3377,3 +3377,21 @@ canvas {
     position: static;
   }
 }
+
+/* Sliding Indicator */
+.has-sliding-indicator {
+  position: relative;
+}
+.sliding-indicator {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  height: 2px;
+  width: 1px;
+  background: var(--accent);
+  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+  pointer-events: none;
+  transform-origin: left bottom;
+  z-index: 10;
+  border-radius: 2px 2px 0 0;
+}

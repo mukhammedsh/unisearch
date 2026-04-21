@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.11 (2026-04-21) - UI Animation and Interaction Refinements
+
+Status:
+- synchronized runtime/package version to `3.4.11` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- implemented sliding tab animations for the main navigation, profile sections, university detail tabs, and universities list scope toggles;
+- mapped the "Not published" university ranking status explicitly to a localized "N/A" fallback across the catalog;
+- removed the redundant, context-free placeholder cost from the university-detail quick stats row to prioritize the explicit finance tab breakdown;
+- preserved the `style.css` baseline variable `--accent` and verified global color-token parity for dark-mode components;
+- added an interactive "Add to Favorites" button inside the university detail page with persisted local storage and active styling;
+- updated the `eng` and `ru` localization sources with key mappings for the new university detail save interactions;
+- updated `AGENTS.md` guidelines with explicit boundaries for sliding animations, prohibiting global transitions, and specifying maintenance protocols.
+
 ## 3.4.10 (2026-04-21) - UI Bug Fixes and UX Refinements
 
 Status:

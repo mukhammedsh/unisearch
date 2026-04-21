@@ -428,6 +428,9 @@ universities.view_map: Карта
 university.about_campus: О вузе и кампусе
 university.action.website: Сайт
 university.action.map: Карта
+university.action.save: Сохранить в избранное
+university.action.save_label: Сохранить
+university.action.saved: Сохранено
 university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
 university.scope_badge: Пока только бакалавриат

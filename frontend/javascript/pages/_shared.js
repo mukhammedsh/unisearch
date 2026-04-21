@@ -552,6 +552,7 @@ export function admissionsStatusLabel(status) {
 export function rankingStatusLabel(status) {
   const key = String(status || "").trim().toLowerCase();
   if (!key) return unknownFieldText("placeholder.field.global_rank", "Global Rank");
+  if (key === "not_published") return t("common.na", "N/A");
 
   const fallback = humanizeMachineLabel(key, key);
   return t(`ranking.source_status.${key}`, fallback);
