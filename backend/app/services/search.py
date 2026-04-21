@@ -60,14 +60,20 @@ def _token_matches(query_token: str, candidate_tokens: Sequence[str]) -> bool:
     return False
 
 
-def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
+def prepare_query(query: Any) -> Optional[Dict[str, Any]]:
     q_norm = _normalize(query)
     if not q_norm:
-        return 0.0
+        return None
     q_tokens = _tokens(q_norm)
     if not q_tokens:
-        return 0.0
+        return None
+    return {
+        "q_norm": q_norm,
+        "q_tokens": q_tokens,
+    }
 
+
+def prepare_search_meta(meta_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     fields: List[Tuple[str, float]] = [
         ("name", 6.0),
         ("city", 4.0),
@@ -109,12 +115,25 @@ def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
 
     if not full_chunks:
         return None
-    full_text = " ".join(full_chunks)
+
+    return {
+        "weighted_token_sets": weighted_token_sets,
+        "full_text": " ".join(full_chunks),
+        "name_text": _normalize(meta_row.get("name", "")),
+    }
+
+
+def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any]) -> Optional[float]:
+    q_norm = prepared_query["q_norm"]
+    q_tokens = prepared_query["q_tokens"]
+
+    weighted_token_sets = prepared_meta["weighted_token_sets"]
+    full_text = prepared_meta["full_text"]
+    name_text = prepared_meta["name_text"]
 
     score = 0.0
     if q_norm in full_text:
         score += 60.0
-    name_text = _normalize(meta_row.get("name", ""))
     if name_text and q_norm in name_text:
         score += 80.0
 
@@ -132,3 +151,13 @@ def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
     if matched_tokens == len(q_tokens):
         score += 15.0
     return score
+
+
+def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
+    pq = prepare_query(query)
+    if pq is None:
+        return 0.0
+    pm = prepare_search_meta(meta_row)
+    if pm is None:
+        return None
+    return score_prepared(pm, pq)

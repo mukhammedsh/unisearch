@@ -1917,16 +1917,27 @@ def list_universities(
 
     if q:
         query_candidates = _search_query_candidates(q, search_lang=lang)
+        prepared_queries = []
+        for q_val in query_candidates:
+            pq = search_service.prepare_query(q_val)
+            if pq:
+                prepared_queries.append(pq)
+
         scored_pairs = []
         for u, m in pairs:
             meta_search = _meta_for_search_lang(m, lang)
+            pm = search_service.prepare_search_meta(meta_search)
+            if not pm:
+                continue
+
             best_score: Optional[float] = None
-            for query_value in query_candidates:
-                score = search_service.score_query(meta_search, query_value)
+            for pq in prepared_queries:
+                score = search_service.score_prepared(pm, pq)
                 if score is None or score <= 0:
                     continue
                 if best_score is None or score > best_score:
                     best_score = float(score)
+
             if best_score is None:
                 continue
             uid = str(u.get("id", "")).strip() or f"@{id(u)}"
