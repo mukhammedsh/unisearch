@@ -335,7 +335,7 @@ Or use the helper command:
 npm run bump:version -- patch
 npm run bump:version -- minor
 npm run bump:version -- major
-npm run bump:version -- 3.4.9
+npm run bump:version -- 3.4.10
 ```
 
 Local dev behavior:
@@ -439,99 +439,6 @@ Check the following:
 - Ensure pretty-URL rewrites map detail routes to `university.html`
 - If needed, unregister the service worker, clear site data, and hard reload
 
-## Repository layout
-```text
-CONTRIBUTING.md
-LICENSE
-README.md
-CHANGELOG.md
-
-backend/
-  app/
-    main.py
-    core/
-      env.py
-      files.py
-      observability.py
-      paths.py
-      redis_store.py
-      security.py
-      settings.py
-    routers/
-      root.py
-      universities.py
-      exams.py
-      languages.py
-    schemas/
-      payloads.py
-    services/
-      ai_scoring.py
-      background_tasks.py
-      exams.py
-      languages.py
-      ml_scoring.py
-      search.py
-      text_translation.py
-      universities.py
-  data/
-    universities.json
-    official_facts.json
-    official_admissions.json
-    universities_translations.json
-    exams.json
-    languages.json
-    cities.json
-    university_assets/
-      logos/
-      logos-small/
-      thumbnails/
-      thumbnails-small/
-  scripts/
-    apply_official_facts.py
-    apply_official_admissions.py
-    audit_universities_data.py
-    refresh_fact_provenance.py
-    refresh_university_factors.py
-  tests/
-    fixtures/
-    test_*.py
-
-frontend/
-  index.html
-  universities.html
-  university.html
-  ranking.html
-  guide.html
-  about.html
-  config.js
-  env.js
-  sw.js
-  css/
-  javascript/
-  Localization/
-  scripts/
-
-docs/
-  design-system.md
-  deployment_security.md
-  ui-design-audit.md
-  official_admissions_cleanup_2026-03-25.md
-  official_facts_update_2026-03-12.md
-
-scripts/
-  bump-version.mjs
-  check-version-sync.mjs
-  dev-backend.mjs
-  dev-frontend.mjs
-  i18n-check.mjs
-  test-backend.mjs
-
-tests/
-  e2e/
-    helpers/
-    *.spec.js
-```
-
 ## Notes
 - Default fallback language remains English when an unsupported locale is detected.
 - Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
@@ -541,6 +448,8 @@ tests/
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.4.10` on `2026-04-21`
+- `3.4.9` on `2026-04-21`
 - `3.4.8` on `2026-04-20`
 - `3.4.7` on `2026-04-19`
 - `3.4.6` on `2026-04-18`

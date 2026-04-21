@@ -4119,6 +4119,35 @@
   line-height: 1.35;
 }
 
+.finance-summary-container {
+  margin-bottom: 18px;
+  align-items: flex-start;
+}
+
+.finance-summary-right {
+  margin-top: 30px;
+  display: block;
+}
+
+.total-price-card {
+  width: 100%;
+  min-height: 112px;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-inline-row {
+  align-items: center;
+}
+
+.price-big {
+  line-height: 1.05;
+}
+
+.price-sub {
+  line-height: 1.2;
+}
+
 @media (max-width: 980px) {
   .track-funding-options-grid,
   .finance-track-options-grid,

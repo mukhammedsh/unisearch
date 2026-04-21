@@ -24,7 +24,6 @@ import {
   EXAM_CONFIG,
   LANG_CONFIG,
   aiName,
-  animateElementOut,
   markMotionEnter,
   motionPress,
   replayMotion,
@@ -138,24 +137,11 @@ import {
   DETAIL_CACHE_KEY,
   DETAIL_CACHE_TTL_MS,
   DETAIL_CACHE_MAX_ITEMS,
-  UNIVERSITIES_TOUR_SEEN_KEY,
   SAVED_UNIVERSITIES_KEY,
   COMPARE_UNIVERSITIES_KEY,
   RECENT_UNIVERSITIES_KEY,
   MAX_COMPARE_UNIVERSITIES,
   MAX_RECENT_UNIVERSITIES,
-  __detailProfileUpdatedHandler,
-  __detailLanguageChangedHandler,
-  __detailFinanceResizeHandler,
-  __detailFinanceResizeObserver,
-  __universitiesProfileUpdatedHandler,
-  __universitiesLanguageChangedHandler,
-  __universitiesMapCardActionHandler,
-  __rankingLanguageChangedHandler,
-  __guideExternalUpdateHandler,
-  __guideHashChangeHandler,
-  bindGuideExternalUpdates,
-  bindGuideHashChange,
   hasSeenUniversitiesTour,
   markUniversitiesTourSeen,
   readIdListStorage,
@@ -166,12 +152,18 @@ import {
   getDetailCacheEntry,
   setDetailCacheEntry,
   touchDetailCacheEntry,
+  fetchUniversityDetailCached,
   toFiniteNumber
 } from './_shared.js';
+
+let __universitiesProfileUpdatedHandler = null;
+let __universitiesLanguageChangedHandler = null;
+let __universitiesMapCardActionHandler = null;
 
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
     const MIN_RANGE_GAP = 100;
+    const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
     const clampTuition = (value, fallback = 0) => {
         const n = Number(value);
         if (!Number.isFinite(n)) return fallback;
@@ -204,10 +196,11 @@ export function initUniversitiesPage() {
         mobileFilterCount: $("mobileFilterCount"),
         mobileFilterToggle: $("mobileFilterToggle"),
         mobileFilterClose: $("closeMobileFilters"),
-        savedOnlyToggle: $("savedOnlyToggle"),
-        savedShortlistBar: $("savedShortlistBar"),
+        savedFilterButtons: Array.from(document.querySelectorAll("[data-saved-filter]")),
         recentlyViewedBar: $("recentlyViewedBar"),
-        compareTray: $("compareTray")
+        compareTray: $("compareTray"),
+        scopeNotice: $("universitiesScopeNotice"),
+        scopeNoticeDismiss: $("dismissUniversitiesScopeNotice")
     };
     const isTranslationDebugEnabled = (() => {
         const raw = window.APP_DEBUG;
@@ -241,6 +234,29 @@ export function initUniversitiesPage() {
         return exams.length > 0 || langs.length > 0;
     }
 
+    const setupScopeNotice = () => {
+        if (!el.scopeNotice) return;
+
+        let dismissed = false;
+        try {
+            dismissed = localStorage.getItem(SCOPE_NOTICE_DISMISSED_KEY) === "1";
+        } catch (e) {
+            dismissed = false;
+        }
+
+        el.scopeNotice.hidden = dismissed;
+        if (dismissed || !el.scopeNoticeDismiss) return;
+
+        el.scopeNoticeDismiss.addEventListener("click", () => {
+            el.scopeNotice.hidden = true;
+            try {
+                localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
+            } catch (e) {
+                // Ignore storage errors; the notice still closes for this page view.
+            }
+        });
+    };
+
     if (!el.list) return;
     if (__universitiesProfileUpdatedHandler) {
         window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
@@ -256,6 +272,7 @@ export function initUniversitiesPage() {
     }
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
+    setupScopeNotice();
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -346,8 +363,17 @@ export function initUniversitiesPage() {
             chips.push(`${moneyUSD(Number(state.min_tuition) || 0)}-${moneyUSD(Number(state.max_tuition) || MAX_TUITION)}`);
         }
         if (state.sort && state.sort !== "name_asc") chips.push(optionTextForValue(el.sortSelect, state.sort) || state.sort);
-        if (state.only_saved) chips.push(t("universities.filter.saved_only", "Favorites only"));
+        if (state.only_saved) chips.push(t("universities.filter.favorites", "Favorites"));
         return chips.length ? chips : [t("universities.filter.none_active", "No active filters")];
+    };
+
+    const syncSavedFilterButtons = () => {
+        const mode = state.only_saved ? "favorites" : "all";
+        el.savedFilterButtons.forEach((btn) => {
+            const active = String(btn.getAttribute("data-saved-filter") || "") === mode;
+            btn.classList.toggle("is-active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
     };
 
     const updateMobileFilterUi = () => {
@@ -366,6 +392,30 @@ export function initUniversitiesPage() {
         }
     };
 
+    const getRenderedUniversityById = (id) => {
+        const cleanId = String(id || "").trim();
+        return lastRenderedItems.find((item) => String(item?.id || "") === cleanId) || null;
+    };
+
+    const getUniversityDisplayNameById = (id) => {
+        const cleanId = String(id || "").trim();
+        if (!cleanId) return "";
+
+        const rendered = getRenderedUniversityById(cleanId);
+        const renderedName = String(rendered ? trUniversityName(rendered) : "").trim();
+        if (renderedName) return renderedName;
+
+        const cachedLanguages = [getCurrentLanguage(), "eng", "ru"];
+        for (const lang of cachedLanguages) {
+            const cached = getDetailCacheEntry(cleanId, lang);
+            const cachedName = String(cached?.data ? trUniversityName(cached.data) : "").trim();
+            if (cachedName) return cachedName;
+        }
+
+        const translated = String(translateUniversityName(cleanId, "") || "").trim();
+        return translated && translated !== cleanId ? translated : "";
+    };
+
     const renderCompareTray = () => {
         if (!el.compareTray) return;
         const ids = Array.from(compareUniversityIds);
@@ -375,8 +425,7 @@ export function initUniversitiesPage() {
             return;
         }
         const names = ids
-            .map((id) => lastRenderedItems.find((item) => String(item?.id || "") === id))
-            .map((item, idx) => item ? trUniversityName(item) : ids[idx])
+            .map((id) => getUniversityDisplayNameById(id))
             .filter(Boolean);
         el.compareTray.hidden = false;
         const canCompare = ids.length >= 2;
@@ -399,40 +448,6 @@ export function initUniversitiesPage() {
         replayMotion(el.compareTray.querySelector(".compare-tray__text"), "motion-state-pulse", { timeoutMs: 520 });
     };
 
-    const getRenderedUniversityById = (id) => {
-        const cleanId = String(id || "").trim();
-        return lastRenderedItems.find((item) => String(item?.id || "") === cleanId) || null;
-    };
-
-    const renderSavedShortlistBar = () => {
-        if (!el.savedShortlistBar) return;
-        const ids = Array.from(savedUniversityIds);
-        if (!ids.length) {
-            el.savedShortlistBar.hidden = true;
-            el.savedShortlistBar.innerHTML = "";
-            return;
-        }
-        const rows = ids.slice(0, 8).map((id) => {
-            const item = getRenderedUniversityById(id);
-            const label = item ? trUniversityName(item) : id.replace(/-/g, " ");
-            return { id, label };
-        });
-        el.savedShortlistBar.hidden = false;
-        el.savedShortlistBar.innerHTML = `
-            <span class="u-shortlist__label">${escapeHtml(t("universities.shortlist.title", "Shortlist"))}</span>
-            <div class="u-shortlist__items">
-                ${rows.map((row) => `
-                    <span class="u-shortlist__chip">
-                        <a class="u-shortlist__chip-text" href="${routeUniversityDetail(row.id)}">${escapeHtml(row.label)}</a>
-                        <button class="u-shortlist__remove" type="button" data-action="remove-saved" data-uni-id="${escapeHtmlAttr(row.id)}" aria-label="${escapeHtmlAttr(t("universities.shortlist.remove", "Remove from shortlist"))}">${renderInlineIcon("x-mark", 14, "u-shortlist__remove-icon")}</button>
-                    </span>
-                `).join("")}
-            </div>
-        `;
-        replayMotion(el.savedShortlistBar, "motion-panel-enter", { timeoutMs: 420 });
-        markMotionEnter(el.savedShortlistBar, ".u-shortlist__chip", { limit: 8, staggerMs: 18 });
-    };
-
     const compensateCardAnchorShift = (card, beforeTop) => {
         if (!(card instanceof Element) || !Number.isFinite(beforeTop)) return;
         window.requestAnimationFrame(() => {
@@ -442,11 +457,6 @@ export function initUniversitiesPage() {
                 window.scrollBy({ top: delta, left: 0, behavior: "auto" });
             }
         });
-    };
-
-    const getVisibleCardAnchor = () => {
-        const cards = Array.from(el.list?.querySelectorAll(".uni-card[data-uni-id]") || []);
-        return cards.find((card) => card.getBoundingClientRect().bottom > 0) || cards[0] || null;
     };
 
     const syncCardActionState = () => {
@@ -806,7 +816,7 @@ export function initUniversitiesPage() {
         document.body.style.overflow = "hidden";
         window.setTimeout(() => modal.querySelector(".compare-modal__close")?.focus(), 0);
 
-        const fallbackById = new Map(ids.map((id) => [id, getRenderedUniversityById(id) || { id, name: id.replace(/-/g, " ") }]));
+        const fallbackById = new Map(ids.map((id) => [id, getRenderedUniversityById(id) || { id, name: getUniversityDisplayNameById(id) }]));
         const universities = (await Promise.all(ids.map(async (id) => {
             try {
                 const detail = await fetchUniversityDetailCached(id);
@@ -920,17 +930,20 @@ export function initUniversitiesPage() {
 
     const renderRecentlyViewedBar = () => {
         if (!el.recentlyViewedBar) return;
-        const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => !compareUniversityIds.has(id)).slice(0, 6);
+        const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
         if (!recentIds.length) {
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.innerHTML = "";
             return;
         }
-        const rows = recentIds.map((id) => {
-            const item = getRenderedUniversityById(id);
-            const label = item ? trUniversityName(item) : id.replace(/-/g, " ");
-            return { id, label };
-        });
+        const rows = recentIds
+            .map((id) => ({ id, label: getUniversityDisplayNameById(id) }))
+            .filter((row) => row.label);
+        if (!rows.length) {
+            el.recentlyViewedBar.hidden = true;
+            el.recentlyViewedBar.innerHTML = "";
+            return;
+        }
         el.recentlyViewedBar.hidden = false;
         el.recentlyViewedBar.innerHTML = `
             <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
@@ -944,9 +957,55 @@ export function initUniversitiesPage() {
         writeIdListStorage(SAVED_UNIVERSITIES_KEY, Array.from(savedUniversityIds));
         writeIdListStorage(COMPARE_UNIVERSITIES_KEY, Array.from(compareUniversityIds));
         renderCompareTray();
-        renderSavedShortlistBar();
         renderRecentlyViewedBar();
         syncCardActionState();
+    };
+
+    const normalizeUniversitySearchText = (value) => String(value || "")
+        .toLowerCase()
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\p{L}\p{N}]+/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const acronymForUniversityName = (name) => {
+        const skip = new Set(["of", "the", "and", "for", "de", "la", "le"]);
+        return String(name || "")
+            .split(/[^\p{L}\p{N}]+/u)
+            .filter((word) => word && !skip.has(word.toLowerCase()))
+            .map((word) => word[0])
+            .join("")
+            .toLowerCase();
+    };
+
+    const universitySearchTokens = (item) => {
+        const name = String(item?.name || "");
+        const translatedName = trUniversityName(item);
+        const id = String(item?.id || "");
+        const city = String(item?.location?.city || "");
+        const country = String(item?.location?.country || "");
+        const aliases = Array.isArray(item?.search_aliases) ? item.search_aliases : [];
+        const tokens = [
+            name,
+            translatedName,
+            id,
+            id.replace(/-/g, " "),
+            city,
+            trCity(city),
+            country,
+            trCountry(country),
+            acronymForUniversityName(name),
+            acronymForUniversityName(translatedName),
+            ...aliases,
+        ];
+        return Array.from(new Set(tokens.map(normalizeUniversitySearchText).filter(Boolean)));
+    };
+
+    const matchesUniversityQuery = (item, rawQuery) => {
+        const query = normalizeUniversitySearchText(rawQuery);
+        if (!query) return true;
+        return universitySearchTokens(item).some((token) => token.includes(query) || query.includes(token));
     };
 
     const ensureSearchSuggestionsNode = () => {
@@ -974,38 +1033,33 @@ export function initUniversitiesPage() {
     const renderSearchSuggestions = () => {
         const node = ensureSearchSuggestionsNode();
         if (!node || !el.qInput) return;
-        const q = String(el.qInput.value || "").trim().toLowerCase();
-        if (q.length < 2 || !lastRenderedItems.length) {
+        const q = String(el.qInput.value || "").trim();
+        const query = normalizeUniversitySearchText(q);
+        if (query.length < 2 || !lastRenderedItems.length) {
             hideSearchSuggestions();
             return;
         }
         const seen = new Set();
         const suggestions = [];
         lastRenderedItems.forEach((item) => {
-            const rows = [
-                { type: t("universities.suggestions.university", "University"), value: trUniversityName(item) },
-                { type: t("universities.suggestions.city", "City"), value: trCity(item?.location?.city || "") },
-                { type: t("universities.suggestions.country", "Country"), value: trCountry(item?.location?.country || "") },
-            ];
-            rows.forEach((row) => {
-                const value = String(row.value || "").trim();
-                const key = value.toLowerCase();
-                if (!value || seen.has(key) || !key.includes(q)) return;
-                seen.add(key);
-                suggestions.push(row);
-            });
+            if (!matchesUniversityQuery(item, q)) return;
+            const value = String(trUniversityName(item) || item?.name || "").trim();
+            const key = normalizeUniversitySearchText(value || item?.id);
+            if (!value || seen.has(key)) return;
+            seen.add(key);
+            suggestions.push(value);
         });
         if (!suggestions.length) {
             hideSearchSuggestions();
             return;
         }
-        node.innerHTML = suggestions.slice(0, 6).map((row) => `
-            <button type="button" class="u-search-suggestion" data-value="${escapeHtmlAttr(row.value)}" role="option">
-                <span>${escapeHtml(row.value)}</span>
-                <small>${escapeHtml(row.type)}</small>
+        node.innerHTML = suggestions.slice(0, 7).map((name) => `
+            <button type="button" class="u-search-suggestion" data-value="${escapeHtmlAttr(name)}" role="option">
+                <span>${escapeHtml(name)}</span>
             </button>
         `).join("");
         node.classList.add("is-open");
+        markMotionEnter(node, ".u-search-suggestion", { limit: 7, staggerMs: 14 });
     };
 
     function renderUniversitiesState(options = {}) {
@@ -1518,9 +1572,15 @@ export function initUniversitiesPage() {
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
 
-    el.savedOnlyToggle?.addEventListener("change", () => {
-        state.only_saved = !!el.savedOnlyToggle.checked;
-        refetch();
+    el.savedFilterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const nextOnlySaved = String(btn.getAttribute("data-saved-filter") || "") === "favorites";
+            if (state.only_saved === nextOnlySaved) return;
+            motionPress(btn);
+            state.only_saved = nextOnlySaved;
+            syncSavedFilterButtons();
+            refetch();
+        });
     });
 
     el.sortSelect?.addEventListener("change", () => {
@@ -1654,34 +1714,6 @@ export function initUniversitiesPage() {
         if (action === "open-compare") {
             openCompareModal().catch((err) => console.error(err));
         }
-    });
-
-    el.savedShortlistBar?.addEventListener("click", (e) => {
-        const removeBtn = e.target instanceof Element ? e.target.closest("[data-action='remove-saved']") : null;
-        if (!removeBtn) return;
-        e.preventDefault();
-        e.stopPropagation();
-        const uniId = String(removeBtn.getAttribute("data-uni-id") || "").trim();
-        if (!uniId) return;
-        motionPress(removeBtn);
-        const chip = removeBtn.closest(".u-shortlist__chip");
-        const anchorCard = getVisibleCardAnchor();
-        const beforeTop = anchorCard?.getBoundingClientRect().top;
-        const shouldCompensateShift = !state.only_saved;
-        animateElementOut(chip, () => {
-            savedUniversityIds.delete(uniId);
-            writeIdListStorage(SAVED_UNIVERSITIES_KEY, Array.from(savedUniversityIds));
-            el.list?.querySelectorAll("[data-card-action='save']").forEach((btn) => {
-                const rowId = String(btn.closest("[data-uni-id]")?.getAttribute("data-uni-id") || "");
-                const active = savedUniversityIds.has(rowId);
-                btn.classList.toggle("is-active", active);
-                btn.setAttribute("aria-pressed", active ? "true" : "false");
-            });
-            renderSavedShortlistBar();
-            syncCardActionState();
-            if (state.only_saved) refetch();
-            else if (shouldCompensateShift) compensateCardAnchorShift(anchorCard, beforeTop);
-        });
     });
 
     el.btnList?.addEventListener("click", () => {
@@ -2202,7 +2234,7 @@ export function initUniversitiesPage() {
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
         if (el.minInput) el.minInput.value = state.min_tuition;
         if (el.maxInput) el.maxInput.value = state.max_tuition;
-        if (el.savedOnlyToggle) el.savedOnlyToggle.checked = !!state.only_saved;
+        syncSavedFilterButtons();
         
         fillTrack(); 
 
@@ -2456,7 +2488,6 @@ export function initUniversitiesPage() {
                         : t("universities.state.empty", "No universities found."),
                 });
                 renderCompareTray();
-                renderSavedShortlistBar();
                 renderRecentlyViewedBar();
                 updateMobileFilterUi();
                 return;
@@ -2469,7 +2500,6 @@ export function initUniversitiesPage() {
             renderPagination(total);
             markMotionEnter(el.pagination, ".page-btn", { limit: 10, staggerMs: 12 });
             renderCompareTray();
-            renderSavedShortlistBar();
             renderRecentlyViewedBar();
             updateMobileFilterUi();
             return;
@@ -2485,7 +2515,6 @@ export function initUniversitiesPage() {
                     ? ""
                     : (state.only_saved ? t("universities.state.empty_saved", "No favorite universities match these filters.") : t("universities.state.empty", "No universities found.")),
             });
-            renderSavedShortlistBar();
             renderRecentlyViewedBar();
             updateMobileFilterUi();
         }

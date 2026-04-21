@@ -299,31 +299,20 @@ export async function initRankingPage() {
       const seen = new Set();
       const rows = [];
       items.forEach((item) => {
-        const name = trUniversityName(item);
-        const city = trCity(item?.location?.city || "");
-        const country = trCountry(item?.location?.country || "");
-        const acronym = acronymForName(item?.name || name).toUpperCase();
-        [
-          { value: name, type: t("universities.suggestions.university", "University") },
-          { value: acronym, type: t("ranking.suggestion.alias", "Alias") },
-          { value: city, type: t("universities.suggestions.city", "City") },
-          { value: country, type: t("universities.suggestions.country", "Country") },
-        ].forEach((row) => {
-          const value = String(row.value || "").trim();
-          const key = normalizeSearchText(value);
-          if (!value || seen.has(key) || !key.includes(query)) return;
-          seen.add(key);
-          rows.push(row);
-        });
+        if (!matchesRankingQuery(item, q)) return;
+        const value = String(trUniversityName(item) || item?.name || "").trim();
+        const key = normalizeSearchText(value || item?.id);
+        if (!value || seen.has(key)) return;
+        seen.add(key);
+        rows.push(value);
       });
       if (!rows.length) {
         hideSuggestions();
         return;
       }
-      suggestionsNode.innerHTML = rows.slice(0, 7).map((row) => `
-        <button class="rank-search-suggestion" type="button" data-value="${escapeHtmlAttr(row.value)}" role="option">
-          <span>${escapeHtml(row.value)}</span>
-          <small>${escapeHtml(row.type)}</small>
+      suggestionsNode.innerHTML = rows.slice(0, 7).map((name) => `
+        <button class="rank-search-suggestion" type="button" data-value="${escapeHtmlAttr(name)}" role="option">
+          <span>${escapeHtml(name)}</span>
         </button>
       `).join("");
       suggestionsNode.classList.add("is-open");

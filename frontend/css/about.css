@@ -343,10 +343,7 @@
 }
 
 .about-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
-  gap: 22px;
-  align-items: end;
+  display: block;
 }
 
 .about-title {
@@ -365,6 +362,7 @@
 
 .about-proof-grid {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -465,8 +463,8 @@
 }
 
 @media (max-width: 980px) {
-  .about-hero,
   .about-principles-grid,
+  .about-proof-grid,
   .team-grid {
     grid-template-columns: 1fr;
   }

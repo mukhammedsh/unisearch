@@ -125,6 +125,12 @@ home.journey.step2.desc: Выберите страну, город и диапа
 home.journey.step3.title: Сравните варианты
 home.journey.step3.desc: Открывайте карточки вузов и сравнивайте варианты поступления, стоимость и стипендии.
 home.stats.countries: Страны
+home.stats.universities_one: университет
+home.stats.universities_few: университета
+home.stats.universities_many: университетов
+home.stats.countries_one: страна
+home.stats.countries_few: страны
+home.stats.countries_many: стран
 home.stats.open_source_value: Полный
 home.stats.open_source: Открытый код
 home.stats.ranking_chance: Рейтинг + Шанс
@@ -311,9 +317,12 @@ universities.city: Город
 universities.cost_per_year: Стоимость (USD / год)
 universities.country: Страна
 universities.filter: Фильтр
+universities.filter.all: Все
 universities.filter_mobile: Фильтр
 universities.filter.close: Закрыть фильтры
+universities.filter.favorites: Избранные
 universities.filter.none_active: Нет активных фильтров
+universities.filter.saved_scope: Область списка университетов
 universities.filter.saved_only: Только избранные
 universities.found_prefix: Найдено
 universities.found_suffix: университетов
@@ -406,6 +415,7 @@ universities.sort_strategy: Сортировка
 universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
 universities.scope_note.title: Пока только программы бакалавриата
 universities.scope_note.body: Сейчас UniSearch показывает только варианты бакалавриата и связанную с ними информацию о поступлении. Магистратура и другие уровни могут появиться позже.
+universities.scope_note.dismiss: Скрыть уведомление
 universities.scope_note.warning_title: Interests недоступны
 universities.scope_note.empty_title: Нет результатов для текущих фильтров
 universities.state.empty: Университеты не найдены.
@@ -422,6 +432,7 @@ university.ask_placeholder: Спросите про поступление, ст
 university.available_majors: Доступные специальности
 university.scope_badge: Пока только бакалавриат
 university.scope_summary: На этой странице сейчас показаны только программы бакалавриата и связанная с ними информация о поступлении. Магистратура и другие уровни могут появиться позже.
+university.summary_aria: Краткая информация об университете
 university.programs_scope_note: Список ниже сейчас ограничен программами бакалавриата.
 university.official_admissions_data: Официальные данные о поступлении
 university.official_admissions_note: UniSearch показывает только официально опубликованные метрики поступления. Если вуз не публикует процент зачисления, мы оставляем поле пустым, а не угадываем.

@@ -26,16 +26,29 @@ test("universities favorite and compare motion preserves pressed states", async 
 
   const firstCard = page.locator(".uni-card:not(.is-skeleton)").first();
   await expect(firstCard).toBeVisible();
+  const firstUniversityId = await firstCard.getAttribute("data-uni-id");
+  const firstUniversityName = (await firstCard.locator(".uni-title").innerText()).trim();
 
-  const favorite = firstCard.locator("[data-card-action='save']");
+  await page.evaluate((id) => {
+    localStorage.setItem("unisearch_recent_university_ids_v1", JSON.stringify([id]));
+  }, firstUniversityId);
+  await page.reload();
+
+  const refreshedFirstCard = page.locator(".uni-card:not(.is-skeleton)").first();
+  await expect(refreshedFirstCard).toBeVisible();
+  const recentChip = page.locator("#recentlyViewedBar .u-recent__chip").filter({ hasText: firstUniversityName }).first();
+  await expect(recentChip).toBeVisible();
+
+  const favorite = refreshedFirstCard.locator("[data-card-action='save']");
   await favorite.click();
   await expect(favorite).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("#savedShortlistBar")).toBeVisible();
+  await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
 
-  const compare = firstCard.locator("[data-card-action='compare']");
+  const compare = refreshedFirstCard.locator("[data-card-action='compare']");
   await compare.click();
   await expect(compare).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#compareTray")).toBeVisible();
+  await expect(recentChip).toBeVisible();
 
   await expect.poll(async () =>
     page.locator(".motion-press-pop, .motion-pop, .motion-row-exit").count()

@@ -124,6 +124,12 @@ home.journey.step2.desc: Select country, city, and cost range.
 home.journey.step3.title: Compare tracks
 home.journey.step3.desc: Open university cards to review admission paths, cost, and scholarship potential.
 home.stats.countries: Countries
+home.stats.universities_one: university
+home.stats.universities_few: universities
+home.stats.universities_many: universities
+home.stats.countries_one: country
+home.stats.countries_few: countries
+home.stats.countries_many: countries
 home.stats.open_source_value: Full
 home.stats.open_source: Open Source
 home.stats.ranking_chance: Ranking + Chance
@@ -310,9 +316,12 @@ universities.city: City
 universities.cost_per_year: Cost (USD / year)
 universities.country: Country
 universities.filter: Filter
+universities.filter.all: All
 universities.filter_mobile: Filter
 universities.filter.close: Close filters
+universities.filter.favorites: Favorites
 universities.filter.none_active: No active filters
+universities.filter.saved_scope: University list scope
 universities.filter.saved_only: Favorites only
 universities.found_prefix: Found
 universities.found_suffix: universities
@@ -405,6 +414,7 @@ universities.sort_strategy: Sort Strategy
 universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
 universities.scope_note.title: Bachelor's programs only for now
 universities.scope_note.body: UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.
+universities.scope_note.dismiss: Dismiss notice
 universities.scope_note.warning_title: Interests unavailable
 universities.scope_note.empty_title: No results for current filters
 universities.state.empty: No universities found.
@@ -421,6 +431,7 @@ university.ask_placeholder: Ask about admission, scholarships, housing, deadline
 university.available_majors: Available Majors
 university.scope_badge: Bachelor's only for now
 university.scope_summary: This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.
+university.summary_aria: University summary
 university.programs_scope_note: Current list below is limited to bachelor's programs.
 university.official_admissions_data: Official admissions data
 university.official_admissions_note: UniSearch shows only official published admissions metrics. If a university does not publish a rate, we keep it empty instead of guessing.

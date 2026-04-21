@@ -28,10 +28,15 @@
     <div class="site-initial-loader__spinner"></div>
   </div>
   <main class="u-page">
-    <section class="u-page-scope" aria-label="Current study scope">
+    <section id="universitiesScopeNotice" class="u-page-scope" aria-label="Current study scope">
       <div class="u-page-scope__inner">
-        <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only for now</p>
-        <p class="u-page-scope__text" data-i18n="universities.scope_note.body">UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.</p>
+        <div class="u-page-scope__content">
+          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only for now</p>
+          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.</p>
+        </div>
+        <button id="dismissUniversitiesScopeNotice" class="u-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
+          <span data-heroicon="x-mark" data-icon-size="18"></span>
+        </button>
       </div>
     </section>
 
@@ -51,12 +56,17 @@
             </button>
           </div>
 
-          <div class="u-field u-field--toggle">
-            <label class="u-toggle">
-              <input id="savedOnlyToggle" class="u-toggle-input" type="checkbox">
-              <span class="u-toggle-track" aria-hidden="true"></span>
-              <span class="u-toggle-label" data-i18n="universities.filter.saved_only">Favorites only</span>
-            </label>
+          <div class="u-field u-field--saved-scope">
+            <div class="u-saved-filter" role="group" aria-label="Saved filter" data-i18n-aria-label="universities.filter.saved_scope">
+              <button class="u-saved-filter__btn is-active" type="button" data-saved-filter="all" aria-pressed="true">
+                <span class="u-saved-filter__icon" data-heroicon="building-office-2" data-icon-size="16"></span>
+                <span data-i18n="universities.filter.all">All</span>
+              </button>
+              <button class="u-saved-filter__btn" type="button" data-saved-filter="favorites" aria-pressed="false">
+                <span class="u-saved-filter__icon" data-heroicon="star" data-icon-size="16"></span>
+                <span data-i18n="universities.filter.favorites">Favorites</span>
+              </button>
+            </div>
           </div>
 
           <div class="u-field">
@@ -229,10 +239,9 @@
           </div>
         </div>
 
-        <div id="listState" class="u-state"></div>
         <div id="mobileFilterSummary" class="u-mobile-filter-summary" aria-live="polite"></div>
-        <div id="savedShortlistBar" class="u-shortlist" hidden></div>
         <div id="recentlyViewedBar" class="u-recent" hidden></div>
+        <div id="listState" class="u-state"></div>
         <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>
         <div id="universitiesList" class="u-grid"></div>
 

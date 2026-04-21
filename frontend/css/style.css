@@ -399,8 +399,10 @@ html, body {
   font-size: 12px;
   font-weight: 700;
   justify-content: center;
+  align-items: center;
   gap: 6px;
   background: var(--surface-soft);
+  line-height: 1;
 }
 
 .navbar-right .lang-control .custom-select-trigger::after {
@@ -421,14 +423,18 @@ html, body {
 }
 
 .navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
+  align-items: center;
   flex: 0 1 auto;
   gap: 5px;
   max-width: none;
 }
 
 .navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content span {
+  display: inline-flex;
+  align-items: center;
   flex: 0 0 auto;
   min-width: max-content;
+  line-height: 1;
   overflow: visible;
   text-overflow: clip;
 }
@@ -1317,9 +1323,9 @@ html, body {
 }
 
 .profile-reset-zone{
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px dashed var(--line);
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -2769,7 +2775,7 @@ html[data-theme="light"] .skeleton-block {
   font-weight: 800;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(87, 21, 219, 0.22);
+  box-shadow: none;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard),
@@ -2782,7 +2788,7 @@ html[data-theme="light"] .skeleton-block {
 .error-btn:hover {
   background: var(--accent-strong);
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px rgba(87, 21, 219, 0.3);
+  box-shadow: none;
 }
 
 .error-btn:active {
@@ -3340,12 +3346,34 @@ canvas {
   justify-content: flex-start;
 }
 
+.navbar-right .lang-control .custom-select-trigger--language {
+  justify-content: center;
+  gap: 7px;
+  padding: 0 10px;
+}
+
+.navbar-right .lang-control .custom-select-trigger--language::after {
+  position: static;
+  display: inline-block;
+  transform: none;
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger--language::after {
+  transform: rotate(180deg);
+}
+
+.navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
+  width: auto;
+  justify-content: center;
+  gap: 7px;
+}
+
 @media (max-width: 380px) {
   .navbar-right .lang-control .custom-select-trigger--language {
-    padding-right: 18px;
+    padding: 0 8px;
   }
 
   .navbar-right .lang-control .custom-select-trigger--language::after {
-    right: 7px;
+    position: static;
   }
 }

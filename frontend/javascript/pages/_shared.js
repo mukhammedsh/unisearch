@@ -1127,7 +1127,7 @@ export function touchDetailCacheEntry(universityId, lang = getCurrentLanguage())
   writeDetailCache(cache);
 }
 
-async function fetchUniversityDetailCached(universityId) {
+export async function fetchUniversityDetailCached(universityId) {
   const key = String(universityId || "").trim();
   const lang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
   if (!key) throw new Error("University ID is required");

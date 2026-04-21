@@ -2,6 +2,19 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.10 (2026-04-21) - UI Bug Fixes and UX Refinements
+
+Status:
+- synchronized runtime/package version to `3.4.10` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- replaced the catalog favorites-only switch with an underlined All/Favorites scope control, including localized labels and correct `aria-pressed` states;
+- made the bachelor's-scope notice on the universities page dismissible and persisted the dismissal locally;
+- improved universities and ranking search suggestions so they return matching university names from localized names, aliases, acronyms, cities, and countries without noisy duplicate type labels;
+- kept recently viewed universities visible and human-readable through cached detail names, including after favoriting or comparing items;
+- localized homepage coverage plural labels and university-detail placeholders so English fallback text does not leak into the Russian UI during initial loading;
+- refined ranking country-filter styling, language selector alignment, about-page proof layout, finance summary spacing, dark-mode recent chips, and global error-button shadows;
+- removed the volatile repository layout tree from `README.md` so adding files no longer requires README maintenance;
+- updated Playwright motion coverage for the revised favorites/recently-viewed behavior.
+
 ## 3.4.9 (2026-04-21) - Architecture and Frontend Code Modularization
 
 Status:

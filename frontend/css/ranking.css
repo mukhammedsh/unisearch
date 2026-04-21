@@ -5,7 +5,7 @@
 
 .rank-tools {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+    grid-template-columns: minmax(0, 1fr) 174px;
     gap: 12px;
     align-items: end;
     margin: -12px 0 14px;
@@ -42,11 +42,13 @@
 }
 
 .rank-country-filter {
-    min-height: 48px;
-    padding: 0 12px;
+    min-height: auto;
+    padding: 0;
     position: relative;
     width: fit-content;
     justify-self: end;
+    border: 0;
+    background: transparent;
 }
 
 .rank-country-filter .custom-select-wrapper {
@@ -58,13 +60,14 @@
 }
 
 .rank-country-filter .custom-select-trigger {
-    min-height: 40px;
-    border: 0;
-    background: transparent;
-    padding: 0 34px;
+    min-height: 48px;
+    border: 1px solid var(--line);
+    background: var(--surface-solid);
+    padding: 0 38px 0 16px;
     box-shadow: none;
     justify-content: center;
     text-align: center;
+    border-radius: 14px;
 }
 
 .rank-country-filter .custom-select-trigger::after {
@@ -81,6 +84,30 @@
 .rank-country-filter .custom-option {
     justify-content: center;
     text-align: center;
+}
+
+.rank-country-filter .custom-options {
+    border-radius: 14px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    clip-path: inset(0 round 14px);
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-muted) transparent;
+}
+
+.rank-country-filter .custom-options::-webkit-scrollbar {
+    width: 10px;
+}
+
+.rank-country-filter .custom-options::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.rank-country-filter .custom-options::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-color: var(--text-muted);
+    background-clip: content-box;
 }
 
 .rank-search-suggestions {
@@ -124,7 +151,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 10px;
     transition:
         background-color var(--motion-fast) var(--motion-ease-standard),
@@ -494,6 +521,23 @@
     color: #fca5a5;
     border-color: #7f1d1d;
     background: #2a1114;
+}
+
+:root[data-theme="dark"] .rank-country-filter .custom-select-trigger,
+:root[data-theme="dark"] .rank-country-filter .custom-options {
+    background: #171717;
+    border-color: var(--line);
+    color: var(--text);
+}
+
+:root[data-theme="dark"] .rank-country-filter .custom-option:hover,
+:root[data-theme="dark"] .rank-country-filter .custom-option:focus-visible {
+    background: #222222;
+}
+
+:root[data-theme="dark"] .rank-country-filter .custom-option.selected {
+    background: rgba(168, 85, 247, 0.16);
+    color: var(--text);
 }
 
 /* ===== 2026 Ranking Refresh ===== */

@@ -6,7 +6,7 @@ import { initRankingPage } from "./pages/ranking.js";
 import { initGuidePage } from "./pages/guide.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
-import { applyTranslations, getCurrentLanguage, initI18n } from "./i18n.js";
+import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
 import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
@@ -273,27 +273,11 @@ function getRuPluralCategory(count) {
 
 function getCountNoun(kind, count, lang) {
   const n = normalizeCount(count, 0);
-  if (kind === "countries") {
-    if (lang === "rus") {
-      const cat = getRuPluralCategory(n);
-      if (cat === "one") return "страна";
-      if (cat === "few") return "страны";
-      return "стран";
-    }
-    return n === 1 ? "country" : "countries";
-  }
-
-  if (kind === "universities") {
-    if (lang === "rus") {
-      const cat = getRuPluralCategory(n);
-      if (cat === "one") return "университет";
-      if (cat === "few") return "университета";
-      return "университетов";
-    }
-    return n === 1 ? "university" : "universities";
-  }
-
-  return "";
+  const category = lang === "rus" ? getRuPluralCategory(n) : (n === 1 ? "one" : "many");
+  const fallback = kind === "countries"
+    ? (n === 1 ? "country" : "countries")
+    : (n === 1 ? "university" : "universities");
+  return t(`home.stats.${kind}_${category}`, fallback);
 }
 
 function renderHomeCoverage(universitiesTotal, countriesTotal) {

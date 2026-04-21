@@ -138,26 +138,11 @@ import {
   DETAIL_CACHE_KEY,
   DETAIL_CACHE_TTL_MS,
   DETAIL_CACHE_MAX_ITEMS,
-  UNIVERSITIES_TOUR_SEEN_KEY,
   SAVED_UNIVERSITIES_KEY,
   COMPARE_UNIVERSITIES_KEY,
   RECENT_UNIVERSITIES_KEY,
   MAX_COMPARE_UNIVERSITIES,
   MAX_RECENT_UNIVERSITIES,
-  __detailProfileUpdatedHandler,
-  __detailLanguageChangedHandler,
-  __detailFinanceResizeHandler,
-  __detailFinanceResizeObserver,
-  __universitiesProfileUpdatedHandler,
-  __universitiesLanguageChangedHandler,
-  __universitiesMapCardActionHandler,
-  __rankingLanguageChangedHandler,
-  __guideExternalUpdateHandler,
-  __guideHashChangeHandler,
-  bindGuideExternalUpdates,
-  bindGuideHashChange,
-  hasSeenUniversitiesTour,
-  markUniversitiesTourSeen,
   readIdListStorage,
   writeIdListStorage,
   rememberRecentUniversity,
@@ -166,8 +151,14 @@ import {
   getDetailCacheEntry,
   setDetailCacheEntry,
   touchDetailCacheEntry,
+  fetchUniversityDetailCached,
   toFiniteNumber
 } from './_shared.js';
+
+let __detailProfileUpdatedHandler = null;
+let __detailLanguageChangedHandler = null;
+let __detailFinanceResizeHandler = null;
+let __detailFinanceResizeObserver = null;
 
 export async function initUniversityPage() {
   const id = extractUniversityIdFromLocation(window.location);
@@ -213,12 +204,18 @@ export async function initUniversityPage() {
     if (stateEl) stateEl.textContent = "";
     const u = await fetchUniversityDetailCached(id);
     const uniId = String(u.id || id);
+    rememberRecentUniversity(uniId);
     const admissionsData = u?.academics?.admissions && typeof u.academics.admissions === "object"
       ? u.academics.admissions
       : null;
 
     // 1. Header
-    const setTxt = (eid, val) => { const e = document.getElementById(eid); if (e) e.textContent = String(val ?? "").trim(); };
+    const setTxt = (eid, val) => {
+      const e = document.getElementById(eid);
+      if (!e) return;
+      e.removeAttribute("data-i18n");
+      e.textContent = String(val ?? "").trim();
+    };
     const translatedName = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
     const translatedCity = trCity(u?.location?.city || "");
     const translatedCountry = trCountry(u?.location?.country || "");
@@ -256,6 +253,7 @@ export async function initUniversityPage() {
     setTxt("detailName", translatedName);
     const detailLocationEl = document.getElementById("detailLocation");
     if (detailLocationEl) {
+        detailLocationEl.removeAttribute("data-i18n");
         const cityText = String(translatedCity || "").trim();
         const countryText = String(translatedCountry || "").trim();
         const detailFlag = getFlagImg(u?.location?.country || "");
