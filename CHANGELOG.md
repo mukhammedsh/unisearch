@@ -7,6 +7,7 @@ All notable project changes should be recorded here.
 Status:
 - synchronized runtime/package version to `3.4.10` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
 - replaced the catalog favorites-only switch with an underlined All/Favorites scope control, including localized labels and correct `aria-pressed` states;
+- defaulted empty/no-evidence profiles to regular name sorting instead of automatic UniFit requests, while keeping UniFit available when profile evidence exists;
 - made the bachelor's-scope notice on the universities page dismissible and persisted the dismissal locally;
 - improved universities and ranking search suggestions so they return matching university names from localized names, aliases, acronyms, cities, and countries without noisy duplicate type labels;
 - kept recently viewed universities visible and human-readable through cached detail names, including after favoriting or comparing items;

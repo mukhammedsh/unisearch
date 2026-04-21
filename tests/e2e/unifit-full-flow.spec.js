@@ -107,24 +107,33 @@ test.describe("UniFit end-to-end flow", () => {
     expect(hasPrice).toBeGreaterThanOrEqual(0); // optional — some cards may not show price
   });
 
-  test("empty profile still triggers AI sort and returns results", async ({ page }) => {
-    // Seed with minimal/empty profile to test graceful handling
+  test("empty profile uses regular sorting and still returns results", async ({ page }) => {
     await seedProfile(page, { name: "Empty Profile" });
 
-    const aiSort = page.waitForResponse(
-      (res) =>
-        res.url().includes("/universities/ai-sort") &&
-        res.request().method() === "POST" &&
-        res.status() === 200
+    const aiSortRequests = [];
+    page.on("request", (request) => {
+      if (request.url().includes("/universities/ai-sort") && request.method() === "POST") {
+        aiSortRequests.push(request.url());
+      }
+    });
+
+    const listResponse = page.waitForResponse(
+      (res) => {
+        const url = new URL(res.url());
+        return url.pathname === "/universities" &&
+          res.request().method() === "GET" &&
+          res.status() === 200;
+      }
     );
     await page.goto("/universities.html");
-    const response = await aiSort;
+    const response = await listResponse;
     const body = await response.json();
 
     expect(body.items).toBeDefined();
     expect(body.items.length).toBeGreaterThan(0);
+    await expect(page.locator("#sortSelect")).toHaveValue("name_asc");
+    expect(aiSortRequests).toHaveLength(0);
 
-    // Cards should render without errors
     await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
   });
 });
