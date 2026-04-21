@@ -90,7 +90,7 @@ body[data-page="error-404"] main.error-page{
 }
 
 .error-btn:hover{
-  transform: translateY(-1px);
+  border-color: var(--accent);
 }
 
 .error-btn--primary{

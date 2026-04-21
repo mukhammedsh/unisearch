@@ -146,8 +146,19 @@ nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
 nav.rankings: Ranking
+nav.settings: Settings
 nav.switch_theme: Switch theme
 nav.universities: Universities
+settings.title: Settings
+settings.subtitle: Control how UniSearch stores local interface data on this device.
+settings.saved: Settings saved
+settings.type.bool: On / off
+settings.option.disable_recent.title: Do not save recently opened
+settings.option.disable_recent.desc: When enabled, UniSearch will stop adding universities you open to the local recently viewed list. Existing recent items stay until you clear them.
+settings.option.store_recent.title: Save recently opened
+settings.option.store_recent.desc: When enabled, UniSearch adds universities you open to the local recently viewed list on this device.
+settings.option.open_universities_new_tab.title: Open universities in a new tab
+settings.option.open_universities_new_tab.desc: When enabled, university cards and recently viewed links open detail pages in a separate browser tab while keeping the current list in place.
 profile.add: Add
 profile.edit: Edit
 profile.budget_cleared: Budget cleared
@@ -264,7 +275,7 @@ ranking.source_status.mixed: Mixed source
 ranking.source_status.official: Official ranking
 ranking.source_status.excluded: Excluded from published ranking
 ranking.source_status.not_listed: Not listed in published ranking
-ranking.source_status.not_published: Not Published
+ranking.source_status.not_published: N/A
 ranking.source_status.curated: Manually reviewed
 ranking.source_status.derived: Model estimate
 ranking.source_status.derived_prestige_order: Model estimate
@@ -381,6 +392,8 @@ universities.compare.row.data_quality: Verified data
 universities.compare.available: Available
 universities.compare.intro: Compare practical decision signals side by side: ranking, cost, acceptance, programs, admission requirements, aid, outcomes, and data confidence. Highlighted cells mark the strongest value among selected universities.
 universities.recent.title: Recently viewed
+universities.recent.clear_all: Clear all
+universities.recent.remove: Remove {university} from recently viewed
 universities.shortlist.title: Favorites
 universities.shortlist.remove: Remove from favorites
 universities.tradeoff.focus: Focus

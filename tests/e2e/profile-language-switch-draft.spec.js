@@ -30,3 +30,18 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
   await expect(page.locator(selectors.interestsInput)).toHaveValue("AI and robotics labs in big cities");
   await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
 });
+
+test("profile major options are localized on initial russian load", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => {
+    window.localStorage.setItem("unisearch_ui_language_v1", "rus");
+  });
+  await page.goto("/");
+
+  await expect(page.locator(selectors.profileBtn)).toBeVisible();
+  await page.click(selectors.profileBtn);
+  await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+
+  await openProfileTab(page, "preferences");
+  await expect(page.locator(`${selectors.majorSelect} option[value="Computer Science"]`)).toHaveText("Компьютерные науки");
+});

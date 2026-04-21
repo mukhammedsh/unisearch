@@ -98,6 +98,11 @@ export function isGuidePath(pathname = "") {
   return /\/guide(?:\.html)?$/.test(path);
 }
 
+export function isAboutPath(pathname = "") {
+  const path = normalizePath(pathname).toLowerCase();
+  return /\/about(?:\.html)?$/.test(path);
+}
+
 export function getUniversityIdFromPath(pathname = "") {
   const path = normalizePath(pathname);
   const match = path.match(/\/universities\/([^/]+)$/i);
@@ -146,4 +151,17 @@ export function applyRouteLinks(root = document) {
 
     if (href) link.setAttribute("href", href);
   });
+}
+
+export function navigateToAppRoute(href, options = {}) {
+  if (typeof window === "undefined") return false;
+  const detail = {
+    href: String(href || ""),
+    replace: !!options.replace,
+    handled: false,
+  };
+  window.dispatchEvent(new CustomEvent("app:navigate", { detail }));
+  if (detail.handled) return true;
+  if (detail.href) window.location.href = detail.href;
+  return false;
 }

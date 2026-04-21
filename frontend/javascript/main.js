@@ -9,7 +9,7 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
-import { applyRouteLinks, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
@@ -85,6 +85,335 @@ function initHomePageActions() {
   });
 }
 
+function getUniversitiesSkeletonCount({ listEl, skeletonEl, limit = 24 } = {}) {
+  const renderedColumns = listEl
+    ? getComputedStyle(listEl).gridTemplateColumns.split(" ").filter(Boolean).length
+    : 0;
+  const width = Math.max(
+    Number(listEl?.clientWidth || 0),
+    Number(skeletonEl?.parentElement?.clientWidth || 0),
+    Number(window.innerWidth || 0)
+  );
+  const cardMinWidth = 252;
+  const gridGap = 18;
+  const columns = renderedColumns || Math.max(1, Math.floor((width + gridGap) / (cardMinWidth + gridGap)));
+  const rows = 3;
+  return Math.min(limit, Math.max(columns, columns * rows));
+}
+
+function isFrontendRootPath(pathname) {
+  return /^\/frontend\/?$/i.test(String(pathname || "").trim());
+}
+
+function routePageFromPath(pathname) {
+  if (isHomePath(pathname) || isFrontendRootPath(pathname)) return "home";
+  if (isUniversitiesListPath(pathname)) return "universities";
+  if (isUniversityDetailPath(pathname)) return "university";
+  if (isRankingPath(pathname)) return "ranking";
+  if (isGuidePath(pathname)) return "guide";
+  if (isAboutPath(pathname)) return "about";
+  return "";
+}
+
+function isAppRouteUrl(url) {
+  if (!(url instanceof URL)) return false;
+  if (url.origin !== window.location.origin) return false;
+  return Boolean(routePageFromPath(url.pathname));
+}
+
+function currentRouteContext() {
+  const path = window.location.pathname;
+  const pageFromPath = routePageFromPath(path);
+  const page = String(document.body.dataset.page || pageFromPath || "home").trim().toLowerCase();
+  const normalizedPage = page === "university" ? "university" : (pageFromPath || page || "home");
+  return {
+    path,
+    page: normalizedPage,
+    navPage: normalizedPage === "university" ? "universities" : normalizedPage,
+    isHomePage: Boolean(normalizedPage === "home" || isHomePath(path) || isFrontendRootPath(path)),
+    isUniversitiesPage: Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList")),
+    isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
+    isRankingPage: Boolean(isRankingPath(path) || document.getElementById("rankingList")),
+    isGuidePage: Boolean(isGuidePath(path) || document.getElementById("guidePage")),
+  };
+}
+
+function syncBodyPageFromRoute() {
+  const page = routePageFromPath(window.location.pathname);
+  if (page) document.body.dataset.page = page;
+}
+
+function syncNavbarActive(navPage = "") {
+  const currentPage = String(navPage || currentRouteContext().navPage || "").trim().toLowerCase();
+  document.querySelectorAll(".navbar-center a").forEach((link) => {
+    const isActive = currentPage && String(link.getAttribute("data-link") || "").toLowerCase() === currentPage;
+    link.classList.toggle("is-active", !!isActive);
+    if (isActive) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+}
+
+function primeRouteLoadingUi(ctx = currentRouteContext()) {
+  if (ctx.isUniversitiesPage) {
+    const skeletonEl = document.getElementById("universitiesSkeleton");
+    const listEl = document.getElementById("universitiesList");
+    const paginationEl = document.getElementById("pagination");
+    if (skeletonEl && !skeletonEl.innerHTML.trim()) {
+      const skeletonCount = getUniversitiesSkeletonCount({ listEl, skeletonEl });
+      skeletonEl.dataset.count = String(skeletonCount);
+      skeletonEl.innerHTML = Array.from({ length: skeletonCount }, () => `
+        <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
+          <div class="uni-media">
+            <div class="uni-price" aria-hidden="true">
+              <div class="skeleton-line" style="width: 64px; height: 11px; margin-left: auto;"></div>
+              <div class="skeleton-line" style="width: 56px; height: 18px; margin: 6px 0 0 auto;"></div>
+            </div>
+            <div class="uni-logo" aria-hidden="true"></div>
+          </div>
+          <div class="uni-body">
+            <div class="skeleton-line" style="width: 86%; height: 17px;"></div>
+            <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
+            <div class="skeleton-line" style="width: 58%;"></div>
+            <div class="skeleton-line" style="width: 72%;"></div>
+            <div class="skeleton-line" style="width: 100%; height: 68px; border-radius: 12px; margin-top: 8px;"></div>
+            <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
+          </div>
+        </article>
+      `).join("");
+    }
+    if (skeletonEl) {
+      skeletonEl.style.display = "grid";
+      skeletonEl.setAttribute("aria-hidden", "false");
+    }
+    if (listEl) listEl.style.visibility = "hidden";
+    if (paginationEl) paginationEl.style.visibility = "hidden";
+    return;
+  }
+
+  if (ctx.isUniversityPage) {
+    const detailLoading = document.getElementById("detailLoading");
+    if (detailLoading) {
+      detailLoading.classList.add("is-visible");
+      detailLoading.setAttribute("aria-hidden", "false");
+    }
+  }
+}
+
+async function initializeCurrentRoute() {
+  syncBodyPageFromRoute();
+  const ctx = currentRouteContext();
+  syncNavbarActive(ctx.navPage);
+  applyRouteLinks(document);
+  hydrateHeroIcons(document);
+  bindImageFallbacks(document);
+  applyAINameConfig();
+  applyTranslations(document);
+  initHomePageActions();
+  primeRouteLoadingUi(ctx);
+
+  if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isRankingPage) {
+    try {
+      await initUniversityTranslations();
+    } catch (e) {
+      console.warn("university translations init failed, using local fallback pack:", e);
+    }
+  }
+
+  if (document.body.dataset.page === "error-404") return;
+
+  if (ctx.isUniversitiesPage) {
+    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+    maybeWakeBackend();
+    ensureCityDatabase();
+    await initUniversitiesPage();
+  } else if (ctx.isGuidePage) {
+    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+    await initGuidePage();
+  } else if (ctx.isUniversityPage) {
+    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+    await initUniversityPage();
+  } else if (ctx.isRankingPage) {
+    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+    await initRankingPage();
+  } else {
+    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+    await initHomePageStats();
+  }
+}
+
+function stylesheetKeyFrom(link, baseUrl) {
+  const href = String(link.getAttribute("href") || "").trim();
+  if (!href) return "";
+  try {
+    return new URL(href, baseUrl).href;
+  } catch (e) {
+    return href;
+  }
+}
+
+function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
+  const nextTitle = nextDoc.querySelector("title");
+  if (nextTitle) {
+    const currentTitle = document.querySelector("title");
+    const importedTitle = document.importNode(nextTitle, true);
+    if (currentTitle) currentTitle.replaceWith(importedTitle);
+    else document.head.appendChild(importedTitle);
+  }
+
+  const existingStyles = new Set(
+    Array.from(document.querySelectorAll('link[rel~="stylesheet"][href]'))
+      .map((link) => stylesheetKeyFrom(link, document.baseURI))
+      .filter(Boolean)
+  );
+
+  nextDoc.querySelectorAll('link[rel~="stylesheet"][href]').forEach((link) => {
+    const key = stylesheetKeyFrom(link, routeUrl);
+    if (!key || existingStyles.has(key)) return;
+    const clone = document.importNode(link, true);
+    clone.setAttribute("href", key);
+    document.head.appendChild(clone);
+    existingStyles.add(key);
+  });
+}
+
+function replaceRouteDom(nextDoc) {
+  const nextMain = nextDoc.querySelector("main");
+  if (!nextMain) throw new Error("Route document has no main element");
+
+  const currentMain = document.querySelector("main");
+  const importedMain = document.importNode(nextMain, true);
+  if (currentMain) currentMain.replaceWith(importedMain);
+  else document.body.appendChild(importedMain);
+
+  const nextFooter = nextDoc.querySelector("footer.site-footer");
+  const currentFooter = document.querySelector("footer.site-footer");
+  if (nextFooter) {
+    const importedFooter = document.importNode(nextFooter, true);
+    if (currentFooter) currentFooter.replaceWith(importedFooter);
+    else document.body.appendChild(importedFooter);
+  } else if (currentFooter) {
+    currentFooter.remove();
+  }
+
+  const nextPage = String(nextDoc.body?.dataset?.page || "").trim().toLowerCase();
+  if (nextPage) document.body.dataset.page = nextPage;
+}
+
+let appRouteNavigationInFlight = null;
+
+async function loadAppRoute(rawHref, options = {}) {
+  const url = new URL(rawHref, window.location.href);
+  if (!isAppRouteUrl(url)) {
+    window.location.href = url.href;
+    return false;
+  }
+
+  const currentUrl = new URL(window.location.href);
+  const sameDocumentPath = url.pathname === currentUrl.pathname && url.search === currentUrl.search;
+  if (!options.force && sameDocumentPath && url.hash && url.hash !== currentUrl.hash) {
+    window.history.pushState({ appRoute: true }, "", url.href);
+    document.querySelector(url.hash)?.scrollIntoView({ block: "start" });
+    return true;
+  }
+  if (!options.force && url.href === currentUrl.href) return true;
+
+  if (appRouteNavigationInFlight) {
+    try {
+      appRouteNavigationInFlight.abort();
+    } catch (e) {
+      // ignore abort issues
+    }
+  }
+
+  const controller = new AbortController();
+  appRouteNavigationInFlight = controller;
+  document.body.classList.add("route-loading");
+
+  try {
+    const response = await fetch(url.href, {
+      credentials: "same-origin",
+      headers: { Accept: "text/html" },
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`Route load failed: ${response.status}`);
+    const html = await response.text();
+    const nextDoc = new DOMParser().parseFromString(html, "text/html");
+
+    syncDocumentHeadFromRoute(nextDoc, url.href);
+    replaceRouteDom(nextDoc);
+
+    if (options.history !== false) {
+      const method = options.replace ? "replaceState" : "pushState";
+      window.history[method]({ appRoute: true }, "", url.href);
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    await initializeCurrentRoute();
+    if (url.hash) {
+      window.requestAnimationFrame(() => {
+        document.querySelector(url.hash)?.scrollIntoView({ block: "start" });
+      });
+    }
+    return true;
+  } catch (error) {
+    if (error?.name === "AbortError") return false;
+    console.warn("Client-side route failed, falling back to full navigation:", error);
+    if (options.history === false) window.location.reload();
+    else window.location.href = url.href;
+    return false;
+  } finally {
+    if (appRouteNavigationInFlight === controller) appRouteNavigationInFlight = null;
+    document.body.classList.remove("route-loading");
+  }
+}
+
+function shouldHandleLinkClick(event, link) {
+  if (!link || event.defaultPrevented) return false;
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
+  if (link.hasAttribute("download")) return false;
+  const target = String(link.getAttribute("target") || "").trim().toLowerCase();
+  if (target && target !== "_self") return false;
+
+  const url = new URL(link.getAttribute("href") || "", window.location.href);
+  if (!isAppRouteUrl(url)) return false;
+
+  const currentUrl = new URL(window.location.href);
+  if (url.pathname === currentUrl.pathname && url.search === currentUrl.search && url.hash) return false;
+  return true;
+}
+
+function installClientRouter() {
+  if (window.__unisearchClientRouterInstalled) return;
+  window.__unisearchClientRouterInstalled = true;
+
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const link = target?.closest("a[href]");
+    if (!shouldHandleLinkClick(event, link)) return;
+    event.preventDefault();
+    loadAppRoute(link.href).catch((error) => {
+      console.warn("Client-side navigation failed:", error);
+      window.location.href = link.href;
+    });
+  });
+
+  window.addEventListener("app:navigate", (event) => {
+    const detail = event.detail || {};
+    if (!detail.href) return;
+    detail.handled = true;
+    loadAppRoute(detail.href, { replace: !!detail.replace }).catch((error) => {
+      console.warn("Client-side navigation failed:", error);
+      window.location.href = detail.href;
+    });
+  });
+
+  window.addEventListener("popstate", () => {
+    loadAppRoute(window.location.href, { history: false, force: true }).catch(() => {
+      window.location.reload();
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   bindImageFallbacks(document);
 
@@ -117,7 +446,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const listEl = document.getElementById("universitiesList");
       const paginationEl = document.getElementById("pagination");
       if (skeletonEl && !skeletonEl.innerHTML.trim()) {
-        skeletonEl.innerHTML = Array.from({ length: 8 }, () => `
+        const skeletonCount = getUniversitiesSkeletonCount({ listEl, skeletonEl });
+        skeletonEl.dataset.count = String(skeletonCount);
+        skeletonEl.innerHTML = Array.from({ length: skeletonCount }, () => `
           <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
             <div class="uni-media">
               <div class="uni-price" aria-hidden="true">
@@ -165,6 +496,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await i18nInitPromise;
     await loadGlobalLayout();
+    installClientRouter();
     hydrateHeroIcons(document);
     window.dispatchEvent(new CustomEvent("languageChanged"));
     applyRouteLinks(document);

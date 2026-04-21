@@ -2,6 +2,19 @@
 
 All notable project changes should be recorded here.
 
+## 3.4.12 (2026-04-21) - UI/UX Workspace Polish
+
+Status:
+- synchronized runtime/package version to `3.4.12` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- added a localized settings dialog for local interface preferences, including recently opened university storage and opening university detail pages in new tabs;
+- added client-side app route navigation for core frontend pages so internal page changes keep the workspace state smoother and show route-loading feedback;
+- improved universities catalog skeletons with responsive counts, shared shimmer tokens, and reduced-motion coverage;
+- refined the catalog recent-universities bar with clear-all and per-item removal controls, dark-mode styling, and localized labels;
+- updated navbar/profile tab indicators, mobile navbar sizing, hover states, and accent tokens for calmer interaction behavior;
+- improved university detail save-button active styling and preserved localized major labels on initial Russian profile loads;
+- updated Russian localization wording to prefer full "университет" terminology and refined "N/A"/unknown fallbacks for ranking and empty data states;
+- added Playwright coverage for localized profile major options on initial Russian load.
+
 ## 3.4.11 (2026-04-21) - UI Animation and Interaction Refinements
 
 Status:

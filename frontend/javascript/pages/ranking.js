@@ -11,6 +11,7 @@ import {
 import { renderNoConnection } from "../components.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { routeUniversityDetail } from "../routes.js";
+import { shouldOpenUniversitiesInNewTab } from "../settings.js";
 import {
   humanizeMachineLabel,
   translateDataValue,
@@ -22,6 +23,12 @@ let rankingBadgeResizeBound = false;
 let rankingBadgeResizeRaf = 0;
 let rankingFetchController = null;
 let rankingLanguageChangedHandler = null;
+
+const universityLinkAttrs = () => (
+  shouldOpenUniversitiesInNewTab()
+    ? ' target="_blank" rel="noopener noreferrer"'
+    : ""
+);
 
 function safePathSegment(raw) {
   return encodeURIComponent(String(raw || "").trim());
@@ -125,8 +132,9 @@ function matchesRankingQuery(university, rawQuery) {
 }
 
 function rankingStatusLabel(status) {
-  const key = String(status || "").trim().toLowerCase();
+  const key = String(status || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
   if (!key) return unknownFieldText("placeholder.field.global_rank", "Global Rank");
+  if (key === "not_published") return t("common.na", "N/A");
   const fallback = humanizeMachineLabel(key, key);
   return t(`ranking.source_status.${key}`, fallback);
 }
@@ -364,7 +372,7 @@ export async function initRankingPage() {
       });
 
       return `
-        <a href="${routeUniversityDetail(university.id)}" class="rank-card"${sourceTitleAttr}>
+        <a href="${routeUniversityDetail(university.id)}" class="rank-card"${universityLinkAttrs()}${sourceTitleAttr}>
           <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFull)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
           <div class="rank-num ${rankClass}${hasOfficialRank ? "" : " rank-num--meta"}">${rankDisplay}</div>
           <div class="rank-logo">

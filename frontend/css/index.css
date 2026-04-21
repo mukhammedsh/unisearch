@@ -153,7 +153,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
 .btn-primary:hover,
 .home-secondary-btn:hover,
 .home-links a:hover {
-  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.24);
 }
 
 .hero-facts {

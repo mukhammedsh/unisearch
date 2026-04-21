@@ -113,7 +113,6 @@
 
 .about-link:hover {
   border-color: var(--accent);
-  transform: translateY(-1px);
 }
 
 .about-section {

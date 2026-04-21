@@ -50,6 +50,18 @@ import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "../routes.js";
 import {
+  SETTINGS_CACHE_KEY,
+  SETTINGS_DEFINITIONS,
+  SETTING_DISABLE_RECENT_UNIVERSITIES,
+  SETTING_OPEN_UNIVERSITIES_NEW_TAB,
+  getSettingValue,
+  readSettingsArray,
+  setSettingValue,
+  shouldOpenUniversitiesInNewTab,
+  shouldStoreRecentUniversities,
+  writeSettingsArray,
+} from "../settings.js";
+import {
   humanizeMachineLabel,
   initUniversityTranslations,
   translateAdmissionText,
@@ -64,6 +76,18 @@ import {
   translateWord,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
+export {
+  SETTINGS_CACHE_KEY,
+  SETTINGS_DEFINITIONS,
+  SETTING_DISABLE_RECENT_UNIVERSITIES,
+  SETTING_OPEN_UNIVERSITIES_NEW_TAB,
+  getSettingValue,
+  readSettingsArray,
+  setSettingValue,
+  shouldOpenUniversitiesInNewTab,
+  shouldStoreRecentUniversities,
+  writeSettingsArray,
+};
 export const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
 
 export function normalizeUrl(raw) {
@@ -550,7 +574,7 @@ export function admissionsStatusLabel(status) {
 }
 
 export function rankingStatusLabel(status) {
-  const key = String(status || "").trim().toLowerCase();
+  const key = String(status || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
   if (!key) return unknownFieldText("placeholder.field.global_rank", "Global Rank");
   if (key === "not_published") return t("common.na", "N/A");
 
@@ -1049,6 +1073,7 @@ export function writeIdListStorage(key, ids) {
 }
 
 export function rememberRecentUniversity(id) {
+  if (!shouldStoreRecentUniversities()) return;
   const cleanId = String(id || "").trim();
   if (!cleanId) return;
   const next = [cleanId, ...readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((value) => value !== cleanId)]

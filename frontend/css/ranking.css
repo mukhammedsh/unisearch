@@ -280,7 +280,6 @@
     pointer-events: none;
 }
 .rank-card:hover {
-    transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(93, 23, 234, 0.15);
     border-color: rgba(93, 23, 234, 0.4);
 }
@@ -432,7 +431,7 @@
         border-radius: 10px;
     }
 
-    /* Инфо о вузе растягиваем */
+    /* Инфо об университете растягиваем */
     .rank-info {
         flex: 1; /* Занимает всё оставшееся место в строке */
         min-width: 120px; /* Чтобы текст не сжимался в 0 */

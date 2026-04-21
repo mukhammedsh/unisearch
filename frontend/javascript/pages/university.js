@@ -274,17 +274,6 @@ export async function initUniversityPage() {
     const detailQuickStatsEl = document.getElementById("detailQuickStats");
     if (detailQuickStatsEl) {
         const quickStats = [];
-        if (officialRank) {
-            quickStats.push({
-                label: translateWord("global_rank", "Global Rank"),
-                value: `#${u.rank}`,
-            });
-        } else if (rankStatus) {
-            quickStats.push({
-                label: translateWord("global_rank", "Global Rank"),
-                value: rankingStatusLabel(rankStatus),
-            });
-        }
         if (acceptanceRate !== null) {
             quickStats.push({
                 label: t("ranking.acceptance", "Acceptance Rate"),
@@ -355,13 +344,14 @@ export async function initUniversityPage() {
     }
     const saveBtn = document.getElementById("detailSaveBtn");
     if (saveBtn) {
+        const iconSpan = saveBtn.querySelector(".uni-action-icon");
+        if (iconSpan) iconSpan.removeAttribute("data-heroicon");
         const updateSaveBtn = () => {
             const saved = readIdListStorage(SAVED_UNIVERSITIES_KEY);
             const isSaved = saved.includes(u.id);
             saveBtn.setAttribute("aria-pressed", isSaved ? "true" : "false");
             saveBtn.classList.toggle("is-saved", isSaved);
-            const iconClass = isSaved ? "bookmark-solid" : "bookmark";
-            saveBtn.querySelector(".uni-action-icon").innerHTML = renderInlineIcon(iconClass, 20);
+            if (iconSpan) iconSpan.innerHTML = renderInlineIcon("star", 20);
             saveBtn.querySelector(".d-site-link-label").textContent = isSaved ? t("university.action.saved", "Saved") : t("university.action.save_label", "Save");
         };
         updateSaveBtn();

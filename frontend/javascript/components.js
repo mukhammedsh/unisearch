@@ -30,6 +30,15 @@ import { heroIcon, setHeroIcon } from "./icons.js";
 import { initUniversityTranslations, translateProgramName } from "./university-translations.js";
 import { routeAbout, routeGuide, routeHome, routeRanking, routeUniversities } from "./routes.js";
 import { bindInfoTooltips } from "./tooltip.js";
+import {
+  SETTING_DISABLE_RECENT_UNIVERSITIES,
+  SETTING_OPEN_UNIVERSITIES_NEW_TAB,
+  getSettingValue,
+  readSettingsArray,
+  setSettingValue,
+  shouldStoreRecentUniversities,
+  writeSettingsArray,
+} from "./settings.js";
 
 
 const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.png");
@@ -192,6 +201,16 @@ const LAYOUT_HTML = `
     </div>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">${heroIcon("moon", "ui-icon ui-icon--18")}</button>
     <button
+      class="settings-trigger-btn"
+      id="settingsBtn"
+      type="button"
+      title="Settings"
+      aria-label="Settings"
+      aria-haspopup="dialog"
+      data-i18n-title="nav.settings"
+      data-i18n-aria-label="nav.settings"
+    >${heroIcon("cog-6-tooth", "ui-icon ui-icon--18")}</button>
+    <button
       class="profile-trigger-btn"
       id="profileBtn"
       type="button"
@@ -203,6 +222,45 @@ const LAYOUT_HTML = `
     >${heroIcon("user-circle", "ui-icon ui-icon--18")}</button>
   </div>
 </header>
+
+<div class="settings-modal" id="settingsModal" aria-hidden="true">
+  <div class="settings-backdrop" data-close="settings"></div>
+  <section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="settings-header">
+      <div>
+        <h2 id="settingsTitle" data-i18n="settings.title">Settings</h2>
+        <p data-i18n="settings.subtitle">Control how UniSearch stores local interface data on this device.</p>
+      </div>
+      <button class="icon-btn settings-close" id="settingsCloseBtn" type="button" title="Close" aria-label="Close" data-i18n-title="profile.action.close" data-i18n-aria-label="profile.action.close">
+        ${heroIcon("x-mark", "ui-icon ui-icon--18")}
+      </button>
+    </div>
+    <div class="settings-list" id="settingsList">
+      <article class="settings-row" data-setting-key="${SETTING_DISABLE_RECENT_UNIVERSITIES}">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.store_recent.title">Save recently opened</h3>
+          <p data-i18n="settings.option.store_recent.desc">When enabled, UniSearch adds universities you open to the local recently viewed list on this device.</p>
+        </div>
+        <label class="settings-switch">
+          <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_DISABLE_RECENT_UNIVERSITIES}" />
+          <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
+          <span class="settings-switch-text" data-i18n="settings.type.bool">On / off</span>
+        </label>
+      </article>
+      <article class="settings-row" data-setting-key="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.open_universities_new_tab.title">Open universities in a new tab</h3>
+          <p data-i18n="settings.option.open_universities_new_tab.desc">When enabled, university cards and recently viewed links open detail pages in a separate browser tab while keeping the current list in place.</p>
+        </div>
+        <label class="settings-switch">
+          <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
+          <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
+          <span class="settings-switch-text" data-i18n="settings.type.bool">On / off</span>
+        </label>
+      </article>
+    </div>
+  </section>
+</div>
 
 <div class="profile-modal" id="profileModal">
   <div class="profile-backdrop" data-close="profile"></div>
@@ -640,6 +698,13 @@ export async function loadGlobalLayout() {
 
         // Add sliding indicator for navbar
         setupSlidingIndicator("#primaryNav", "a", "is-active");
+        initSettingsUI();
+
+        try {
+            await initUniversityTranslations();
+        } catch (e) {
+            // keep profile major labels on local fallbacks when the endpoint is unavailable
+        }
 
         // Запускаем логику профиля
         initProfileUI();
@@ -647,6 +712,70 @@ export async function loadGlobalLayout() {
     } catch (error) {
         console.error("Error loading layout:", error);
     }
+}
+
+let __settingsInited = false;
+function initSettingsUI() {
+    if (__settingsInited) return;
+    __settingsInited = true;
+
+    const modal = document.getElementById("settingsModal");
+    const openBtn = document.getElementById("settingsBtn");
+    const closeBtn = document.getElementById("settingsCloseBtn");
+    const backdrop = modal?.querySelector(".settings-backdrop");
+    const settingInputs = Array.from(modal?.querySelectorAll("[data-setting-input]") || []);
+
+    if (!modal || !openBtn || !settingInputs.length) return;
+
+    const syncSettingsInputs = () => {
+        settingInputs.forEach((input) => {
+            const key = String(input.getAttribute("data-setting-input") || "").trim();
+            input.checked = key === SETTING_DISABLE_RECENT_UNIVERSITIES
+                ? shouldStoreRecentUniversities()
+                : getSettingValue(key) === true;
+        });
+    };
+
+    const openSettings = () => {
+        syncSettingsInputs();
+        modal.setAttribute("aria-hidden", "false");
+        modal.classList.add("is-open");
+        document.body.classList.add("modal-open");
+        closeBtn?.focus({ preventScroll: true });
+    };
+
+    const closeSettings = () => {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+        openBtn.focus({ preventScroll: true });
+    };
+
+    writeSettingsArray(readSettingsArray());
+    syncSettingsInputs();
+
+    openBtn.addEventListener("click", openSettings);
+    closeBtn?.addEventListener("click", closeSettings);
+    backdrop?.addEventListener("click", closeSettings);
+
+    settingInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+            const key = String(input.getAttribute("data-setting-input") || "").trim();
+            const nextValue = key === SETTING_DISABLE_RECENT_UNIVERSITIES
+                ? !input.checked
+                : input.checked;
+            setSettingValue(key, nextValue);
+            syncSettingsInputs();
+            showToast(t("settings.saved", "Settings saved"), "success");
+        });
+    });
+
+    window.addEventListener("settingsChanged", syncSettingsInputs);
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+            closeSettings();
+        }
+    });
 }
 
 let __profileInited = false;
@@ -666,7 +795,7 @@ function initProfileUI() {
     if (modal.dataset.bound === "1") return;
     modal.dataset.bound = "1";
 
-    setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
+    const updateProfileTabsIndicator = setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
 
     const unsavedModal = document.getElementById("profileUnsavedModal");
     const unsavedBackdrop = unsavedModal?.querySelector(".profile-confirm-backdrop");
@@ -2156,6 +2285,9 @@ function initProfileUI() {
         modal.classList.add("is-open");
         modal.style.display = "flex";
         modal.removeAttribute("aria-hidden");
+        requestAnimationFrame(() => {
+            updateProfileTabsIndicator?.();
+        });
 
         if (typeof initCustomSelect === "function") {
             initCustomSelect("examNameSelect");

@@ -1941,22 +1941,69 @@ export function setupSlidingIndicator(containerSelector, itemSelector, activeCla
     indicator.setAttribute("aria-hidden", "true");
     container.appendChild(indicator);
   }
-  const update = () => {
-    const active = container.querySelector(`${itemSelector}.${activeClass}`) || container.querySelector(`${itemSelector}.is-active`);
-    if (!active || container.offsetWidth === 0) {
+  const readExtraWidth = () => {
+    const raw = getComputedStyle(container).getPropertyValue("--sliding-indicator-extra-width").trim();
+    const parsed = Number.parseFloat(raw);
+    return Number.isFinite(parsed) ? parsed : 8;
+  };
+  const state = { previewTarget: null };
+  const activeSelector = `${itemSelector}.${activeClass}, ${itemSelector}.is-active`;
+  const getActive = () => container.querySelector(activeSelector);
+  const positionTo = (target) => {
+    if (!target || container.offsetWidth === 0) {
       indicator.style.opacity = "0";
       return;
     }
+    const left = target.offsetLeft;
+    const extraWidth = readExtraWidth();
+    const width = Math.max(1, target.offsetWidth + extraWidth);
+    const isReady = indicator.dataset.ready === "1";
+    if (!isReady) indicator.style.transition = "none";
     indicator.style.opacity = "1";
-    // We get position relative to the container using offsetLeft
-    let left = active.offsetLeft;
-    // In rare cases offsetParent might not be the container, but here container has position: relative ("has-sliding-indicator")
-    indicator.style.transform = `translate3d(${left}px, 0, 0) scaleX(${active.offsetWidth})`;
+    indicator.style.width = `${width}px`;
+    indicator.style.transform = `translate3d(${left}px, 0, 0)`;
+    if (!isReady) {
+      indicator.dataset.ready = "1";
+      void indicator.offsetWidth;
+      requestAnimationFrame(() => {
+        indicator.style.transition = "";
+      });
+    }
   };
-  const obs = new MutationObserver(update);
-  obs.observe(container, { attributes: true, subtree: true, attributeFilter: ["class"] });
+  const update = (target = null) => {
+    positionTo(target || state.previewTarget || getActive());
+  };
+  const bindItems = () => {
+    container.querySelectorAll(itemSelector).forEach((item) => {
+      if (item.dataset?.slidingIndicatorBound === "1") return;
+      if (item.dataset) item.dataset.slidingIndicatorBound = "1";
+      item.addEventListener("pointerenter", () => {
+        state.previewTarget = item;
+        update(item);
+      });
+      item.addEventListener("pointerleave", () => {
+        if (state.previewTarget === item) state.previewTarget = null;
+        update();
+      });
+      item.addEventListener("focusin", () => {
+        state.previewTarget = item;
+        update(item);
+      });
+      item.addEventListener("focusout", () => {
+        if (state.previewTarget === item) state.previewTarget = null;
+        window.setTimeout(() => update(), 0);
+      });
+    });
+  };
+  bindItems();
+  const refresh = () => {
+    bindItems();
+    update();
+  };
+  const obs = new MutationObserver(refresh);
+  obs.observe(container, { attributes: true, childList: true, subtree: true, attributeFilter: ["class"] });
   window.addEventListener("resize", update, { passive: true });
-  window.addEventListener("load", update, { passive: true });
-  setTimeout(update, 50);
+  window.addEventListener("load", refresh, { passive: true });
+  setTimeout(refresh, 50);
   return update;
 }

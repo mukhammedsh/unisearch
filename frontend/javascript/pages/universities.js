@@ -48,7 +48,7 @@ import {
 import { setupTabs, renderNoConnection } from "../components.js";
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "../routes.js";
+import { extractUniversityIdFromLocation, navigateToAppRoute, routeUniversities, routeUniversityDetail } from "../routes.js";
 import {
   humanizeMachineLabel,
   initUniversityTranslations,
@@ -147,6 +147,7 @@ import {
   markUniversitiesTourSeen,
   readIdListStorage,
   writeIdListStorage,
+  shouldOpenUniversitiesInNewTab,
   rememberRecentUniversity,
   readDetailCache,
   writeDetailCache,
@@ -160,6 +161,7 @@ import {
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
 let __universitiesMapCardActionHandler = null;
+let __universitiesSettingsChangedHandler = null;
 
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
@@ -271,6 +273,10 @@ export function initUniversitiesPage() {
         document.removeEventListener("click", __universitiesMapCardActionHandler, true);
         __universitiesMapCardActionHandler = null;
     }
+    if (__universitiesSettingsChangedHandler) {
+        window.removeEventListener("settingsChanged", __universitiesSettingsChangedHandler);
+        __universitiesSettingsChangedHandler = null;
+    }
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     setupScopeNotice();
@@ -314,6 +320,23 @@ export function initUniversitiesPage() {
     if (state.max_tuition < state.min_tuition + MIN_RANGE_GAP) {
         state.max_tuition = state.min_tuition + MIN_RANGE_GAP;
     }
+    const getUniversitiesSkeletonCount = () => {
+        const renderedColumns = el.list
+            ? getComputedStyle(el.list).gridTemplateColumns.split(" ").filter(Boolean).length
+            : 0;
+        const width = Math.max(
+            Number(el.list?.clientWidth || 0),
+            Number(el.skeleton?.parentElement?.clientWidth || 0),
+            Number(el.content?.clientWidth || 0)
+        );
+        const cardMinWidth = 252;
+        const gridGap = 18;
+        const columns = renderedColumns || (width > 0
+            ? Math.max(1, Math.floor((width + gridGap) / (cardMinWidth + gridGap)))
+            : Math.max(1, Math.floor((window.innerWidth + gridGap) / (cardMinWidth + gridGap))));
+        const rows = 3;
+        return Math.min(state.limit, Math.max(columns, columns * rows));
+    };
     let focusUniId = "";
     let focusUniDone = false;
 
@@ -851,7 +874,7 @@ export function initUniversitiesPage() {
                         <span><small>${escapeHtml(t("ranking.acceptance", "Acceptance"))}</small><strong>${escapeHtml(compareAcceptanceText(u))}</strong></span>
                     </div>
                     ${badges.length ? `<div class="compare-uni-card__badges">${badges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join("")}</div>` : ""}
-                    <a class="compare-uni-card__link" href="${routeUniversityDetail(id)}">${escapeHtml(t("universities.card.view_details", "View details"))}</a>
+                    <a class="compare-uni-card__link" href="${routeUniversityDetail(id)}"${universityLinkAttrs()}>${escapeHtml(t("universities.card.view_details", "View details"))}</a>
                 </article>
             `;
         }).join("");
@@ -930,6 +953,23 @@ export function initUniversitiesPage() {
         });
     };
 
+    const universityLinkAttrs = () => (
+        shouldOpenUniversitiesInNewTab()
+            ? ' target="_blank" rel="noopener noreferrer"'
+            : ""
+    );
+
+    const openUniversityDetail = (id) => {
+        const cleanId = String(id || "").trim();
+        if (!cleanId) return;
+        const href = routeUniversityDetail(cleanId);
+        if (shouldOpenUniversitiesInNewTab()) {
+            window.open(href, "_blank", "noopener,noreferrer");
+            return;
+        }
+        navigateToAppRoute(href);
+    };
+
     const renderRecentlyViewedBar = () => {
         if (!el.recentlyViewedBar) return;
         const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
@@ -948,11 +988,51 @@ export function initUniversitiesPage() {
         }
         el.recentlyViewedBar.hidden = false;
         el.recentlyViewedBar.innerHTML = `
-            <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
+            <div class="u-recent__head">
+                <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
+                <button class="u-recent__clear" type="button" data-action="clear-recent">
+                    ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
+                    <span>${escapeHtml(t("universities.recent.clear_all", "Clear all"))}</span>
+                </button>
+            </div>
             <div class="u-recent__items">
-                ${rows.map((row) => `<a class="u-recent__chip" href="${routeUniversityDetail(row.id)}">${escapeHtml(row.label)}</a>`).join("")}
+                ${rows.map((row) => {
+                    const removeLabel = tFormat(
+                        "universities.recent.remove",
+                        { university: row.label },
+                        `Remove ${row.label} from recently viewed`
+                    );
+                    return `
+                        <span class="u-recent__chip">
+                            <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
+                            <button
+                                class="u-recent__remove"
+                                type="button"
+                                data-action="remove-recent"
+                                data-uni-id="${escapeHtmlAttr(row.id)}"
+                                aria-label="${escapeHtmlAttr(removeLabel)}"
+                                title="${escapeHtmlAttr(removeLabel)}"
+                            >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
+                        </span>
+                    `;
+                }).join("")}
             </div>
         `;
+        el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
+            writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
+            renderRecentlyViewedBar();
+        });
+        el.recentlyViewedBar.querySelectorAll('[data-action="remove-recent"]').forEach((button) => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                const uniId = String(button.getAttribute("data-uni-id") || "").trim();
+                if (!uniId) return;
+                const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
+                writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
+                renderRecentlyViewedBar();
+            });
+        });
     };
 
     const persistSavedAndCompare = () => {
@@ -1104,8 +1184,9 @@ export function initUniversitiesPage() {
         }
         if (el.skeleton) {
             if (showListSkeleton) {
-                if (!el.skeleton.innerHTML.trim()) {
-                    const skeletonCount = Math.min(Math.max(8, Math.ceil(window.innerWidth / 320) * 2), state.limit);
+                const skeletonCount = getUniversitiesSkeletonCount();
+                if (!el.skeleton.innerHTML.trim() || el.skeleton.dataset.count !== String(skeletonCount)) {
+                    el.skeleton.dataset.count = String(skeletonCount);
                     el.skeleton.innerHTML = Array.from({ length: skeletonCount }, () => `
                         <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
                             <div class="uni-media">
@@ -1678,7 +1759,12 @@ export function initUniversitiesPage() {
         const detailLink = target.closest(".uni-card-link-overlay");
         if (detailLink) {
             const card = detailLink.closest("[data-uni-id]");
-            rememberRecentUniversity(card?.getAttribute("data-uni-id"));
+            const uniId = card?.getAttribute("data-uni-id");
+            rememberRecentUniversity(uniId);
+            if (shouldOpenUniversitiesInNewTab()) {
+                e.preventDefault();
+                openUniversityDetail(uniId);
+            }
             return;
         }
         const actionBtn = target.closest("[data-card-action]");
@@ -1691,7 +1777,7 @@ export function initUniversitiesPage() {
         const card = target.closest("[data-uni-id]");
         if (!card || target.tagName === "A") return;
         rememberRecentUniversity(card.getAttribute("data-uni-id"));
-        window.location.href = routeUniversityDetail(card.getAttribute("data-uni-id"));
+        openUniversityDetail(card.getAttribute("data-uni-id"));
     });
 
     __universitiesMapCardActionHandler = (e) => {
@@ -1787,6 +1873,10 @@ export function initUniversitiesPage() {
         fetchAndRender();
     };
     window.addEventListener("languageChanged", __universitiesLanguageChangedHandler);
+    __universitiesSettingsChangedHandler = () => {
+        renderRecentlyViewedBar();
+    };
+    window.addEventListener("settingsChanged", __universitiesSettingsChangedHandler);
 
     function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
@@ -1970,6 +2060,16 @@ export function initUniversitiesPage() {
                     fly: true,
                     zoom: 14,
                 });
+            });
+        });
+        el.mapResults.querySelectorAll(".u-map-result-link").forEach((link) => {
+            link.addEventListener("click", (event) => {
+                if (!shouldOpenUniversitiesInNewTab()) return;
+                const card = link.closest("[data-uni-id]");
+                const uniId = card?.getAttribute("data-uni-id");
+                rememberRecentUniversity(uniId);
+                event.preventDefault();
+                openUniversityDetail(uniId);
             });
         });
     }
@@ -2768,10 +2868,6 @@ export function initUniversitiesPage() {
                     <span class="uni-metric-label">${rankLabel}</span>
                     <span class="uni-metric-value">${rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"))}</span>
                 </div>
-                <div class="uni-metric">
-                    <span class="uni-metric-label">${escapeHtml(t("universities.card.cost_short", "Cost"))}</span>
-                    <span class="uni-metric-value">${escapeHtml(costText)}</span>
-                </div>
                 <div class="uni-metric${acc !== null ? "" : " uni-metric--missing"}">
                     <span class="uni-metric-label">${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span>
                     <span class="uni-metric-value">${escapeHtml(acceptanceValueText)}</span>
@@ -2804,7 +2900,7 @@ export function initUniversitiesPage() {
                 <span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>
             </div>
             </div>
-            <a class="uni-card-link-overlay" href="${detailHref}" aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
+            <a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
         </article>
         `;
     }
