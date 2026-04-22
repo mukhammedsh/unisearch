@@ -94,6 +94,42 @@ class UniversitySearchTests(unittest.TestCase):
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual(["nazarbayev-university-kaz-astana"], ids)
 
+    def test_query_matches_aitu_hidden_alias(self):
+        rows = [
+            {
+                "id": "astana-it-university-kaz-astana",
+                "name": "Astana IT University",
+                "location": {"country": "Kazakhstan", "city": "Astana", "state": ""},
+                "description": "University focused on digital education.",
+                "tags": ["ict", "computer science"],
+                "academics": {"programs": []},
+                "admission_tracks": [],
+            }
+        ]
+
+        normalized = [uni_service._normalize_university_schema(copy.deepcopy(x)) for x in rows]
+        meta = [uni_service._build_university_meta(x) for x in normalized]
+        with patch("app.services.universities.get_universities_with_meta", return_value=(normalized, meta)):
+            result = uni_service.list_universities(q="AITU", paginate=False)
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["astana-it-university-kaz-astana"], ids)
+
+    def test_card_projection_keeps_aitu_hidden_alias(self):
+        row = uni_service._normalize_university_schema(
+            {
+                "id": "astana-it-university-kaz-astana",
+                "name": "Astana IT University",
+                "location": {"country": "Kazakhstan", "city": "Astana", "state": ""},
+                "academics": {"programs": []},
+                "admission_tracks": [],
+            }
+        )
+
+        card = uni_service.to_university_card(row)
+
+        self.assertIn("aitu", card.get("search_aliases", []))
+
     def test_query_matches_hidden_university_alias_in_russian(self):
         rows = [
             {

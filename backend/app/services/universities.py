@@ -1689,6 +1689,7 @@ def to_university_card(
         "academics": {
             "acceptance_rate_percent": _get_university_acceptance_rate(u),
         },
+        "search_aliases": [_safe_lower(x) for x in _hidden_search_aliases_for_university(u)],
         "aid_any": _has_any_aid(u),
     }
     rank_meta = _rank_meta_from_university(u)

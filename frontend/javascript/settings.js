@@ -1,10 +1,11 @@
 export const SETTINGS_CACHE_KEY = "unisearch_settings_cache_v1";
 export const SETTING_DISABLE_RECENT_UNIVERSITIES = "disable_recent_universities";
+export const SETTING_STORE_RECENT_UNIVERSITIES = SETTING_DISABLE_RECENT_UNIVERSITIES;
 export const SETTING_OPEN_UNIVERSITIES_NEW_TAB = "open_universities_new_tab";
 
 export const SETTINGS_DEFINITIONS = [
   {
-    key: SETTING_DISABLE_RECENT_UNIVERSITIES,
+    key: SETTING_STORE_RECENT_UNIVERSITIES,
     type: "bool",
     defaultValue: false,
     titleKey: "settings.option.store_recent.title",

@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.5.1 (2026-04-22) - Compare Workflow Fixes
+
+Status:
+- synchronized runtime/package version to `3.5.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- changed university comparison to an exact two-university pair with a persistent bottom tray, fixed pair replacement behavior, and restored selected compare cards after client-side navigation;
+- added a required comparison setup step for choosing admission track and funding option per university before opening results, including persisted `tracks` URL state and per-track UniChance context;
+- rebuilt comparison result cards, metrics, best-cell highlighting, key-difference text, and mobile/tablet layouts around the selected track/funding data instead of generic university-level defaults;
+- preserved comparison route/query parameters through route-link normalization and added explicit compare route helpers;
+- exposed hidden university search aliases on card projections so queries such as `AITU` can match the full university record;
+- refined English/Russian comparison, financial-aid, funding, and UniChance fallback copy, plus related university translation labels;
+- updated backend and Playwright coverage for hidden-alias search, compare setup/results flow, responsive comparison tables, and localStorage-backed UniFit filter state.
+
 ## 3.5.0 (2026-04-22) - Consolidated University Workspace
 
 Status:

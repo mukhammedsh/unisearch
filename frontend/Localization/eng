@@ -166,9 +166,8 @@ nav.universities: Universities
 settings.title: Settings
 settings.subtitle: Control how UniSearch stores local interface data on this device.
 settings.saved: Settings saved
-settings.type.bool: On / off
-settings.option.disable_recent.title: Do not save recently opened
-settings.option.disable_recent.desc: When enabled, UniSearch will stop adding universities you open to the local recently viewed list. Existing recent items stay until you clear them.
+settings.type.bool: Off / on
+
 settings.option.store_recent.title: Save recently opened
 settings.option.store_recent.desc: When enabled, UniSearch adds universities you open to the local recently viewed list on this device.
 settings.option.open_universities_new_tab.title: Open universities in a new tab
@@ -368,17 +367,22 @@ universities.select_country_first: Select country first
 universities.suggestions.university: University
 universities.suggestions.city: City
 universities.suggestions.country: Country
-universities.compare.selected: {count} selected for comparison
-universities.compare.need_more: Select one more university to compare
+universities.compare.selected: {count}/{total} selected
+universities.compare.need_more: Choose the second university
+universities.compare.pair_label: Comparison pair
+universities.compare.pair_slot: University {number}
+universities.compare.pair_empty: Empty slot
+universities.compare.pair_ready: Comparison pair is ready
 universities.compare.clear: Clear
 universities.compare.open: Compare
+universities.compare.continue: Continue
 universities.compare.title: Compare universities
 universities.compare.row.metric: Metric
 universities.compare.row.location: Location
 universities.compare.row.aid: Aid
-universities.compare.aid_both: Merit + need-based
-universities.compare.aid_merit: Merit aid
-universities.compare.aid_need: Need-based aid
+universities.compare.aid_both: Merit scholarships + need-based aid
+universities.compare.aid_merit: Merit scholarships
+universities.compare.aid_need: Need-based financial aid
 universities.compare.track_count: {count} tracks / {options} options
 universities.compare.native_ok: native accepted
 universities.compare.verified_count: {sources} sources / {facts} facts
@@ -386,7 +390,7 @@ universities.compare.remove: Remove from comparison
 universities.compare.badge.best_rank: Best rank
 universities.compare.badge.lowest_cost: Lowest cost
 universities.compare.badge.more_accessible: More accessible
-universities.compare.badge.aid: Aid
+universities.compare.badge.aid: Financial aid
 universities.compare.section.overview: Overview
 universities.compare.section.programs: Programs
 universities.compare.section.admissions: Admissions
@@ -399,6 +403,8 @@ universities.compare.row.study_mode: Study mode
 universities.compare.row.language: Program language
 universities.compare.row.tracks: Admission tracks
 universities.compare.row.main_track: Main track
+universities.compare.row.selected_track: Selected track
+universities.compare.row.funding_choice: Selected funding
 universities.compare.row.requirements: Minimum requirements
 universities.compare.row.avg_scores: Admitted score context
 universities.compare.row.language_proof: Language proof
@@ -411,13 +417,18 @@ universities.compare.row.data_quality: Verified data
 universities.compare.available: Available
 universities.compare.intro: Compare practical decision signals side by side: ranking, cost, acceptance, programs, admission requirements, aid, outcomes, and data confidence. Highlighted cells mark the strongest value among selected universities.
 universities.compare.status_title: Comparing
-universities.compare.status_empty: Comparison shortlist
-universities.compare.status_selected: {count} selected
+universities.compare.status_empty: Comparison pair
+universities.compare.status_selected: {count}/{total} selected
 universities.compare.results.kicker: Comparison results
 universities.compare.results.title: University comparison
 universities.compare.results.back_to_selection: Back to selection
 universities.compare.results.empty_title: No comparison yet
-universities.compare.results.empty_body: Select at least two universities to build a comparison.
+universities.compare.results.empty_body: Select exactly two universities to build a comparison pair.
+universities.compare.configure.kicker: Before comparison
+universities.compare.configure.title: Choose tracks and funding
+universities.compare.configure.subtitle: Pick one admission track and one funding option for each university. The comparison will use these selected options for requirements, language proof, cost, and funding.
+universities.compare.configure.selected: Track and funding selected
+universities.compare.configure.required: Select one option before comparing
 universities.compare.insight.budget_title: Budget
 universities.compare.insight.budget: Among selected universities, {name} is best on budget at {cost} per year.
 universities.compare.insight.budget_with_delta: {name} has the strongest budget signal at {cost} per year, about {percent} lower than the other selected universities on average.
@@ -457,22 +468,23 @@ universities.compare.category.data_sub: Verified facts and sources
 universities.compare.category.context: Context
 universities.compare.category.context_sub: Scale and campus context
 universities.compare.differences.title: Key differences
-universities.compare.differences.subtitle: The algorithm scans comparable published parameters and lists practical advantages for each selected university.
-universities.compare.differences.reasons_for: Reasons to choose {name}
+universities.compare.differences.subtitle: Shows the clearest published advantages for each selected university.
+universities.compare.differences.reasons_for: {name}
 universities.compare.differences.no_clear_advantage: No clear published advantage found across comparable metrics.
 universities.compare.overview.title: Overview
-universities.compare.overview.subtitle: Scores are normalized only within the selected universities, so they show relative strengths for this comparison.
+universities.compare.overview.subtitle: 0-100 within this comparison only: 100 marks the stronger selected university in that category, not an absolute university score.
+universities.compare.score_value: {score}/100
 universities.compare.tests.title: Tests and characteristics
-universities.compare.tests.subtitle: Detailed table of published values. Green cells mark the strongest comparable value in each row.
+universities.compare.tests.subtitle: Detailed table of published values. Green cells appear only when one university is uniquely stronger in that row.
 universities.compare.conclusion.title: Conclusion
 universities.compare.conclusion.body: Best relative fits by category: {summary}. Use the highlighted table rows and official sources before making the final decision.
 universities.compare.conclusion.empty: The selected universities are close on the comparable published metrics. Use the highlighted table rows and official sources before making the final decision.
-universities.compare.reason.rank: {name}: best published rank - {value}.
-universities.compare.reason.higher_percent: {name}: "{metric}" is {percent} higher than the nearest comparable option ({value} vs {baseline}).
-universities.compare.reason.lower_percent: {name}: "{metric}" is {percent} lower than the nearest comparable option ({value} vs {baseline}).
-universities.compare.reason.highest: {name}: highest "{metric}" - {value}.
-universities.compare.reason.lowest: {name}: lowest "{metric}" - {value}.
-universities.compare.reason.best: {name}: strongest "{metric}" signal - {value}.
+universities.compare.reason.rank: Best published rank: {value}.
+universities.compare.reason.higher_percent: {metric}: {value} instead of {baseline}.
+universities.compare.reason.lower_percent: {metric}: {value} instead of {baseline}.
+universities.compare.reason.highest: Highest {metric}: {value}.
+universities.compare.reason.lowest: Lowest {metric}: {value}.
+universities.compare.reason.best: {metric}: {value}.
 universities.recent.title: Recently viewed
 universities.recent.clear_all: Clear all
 universities.recent.remove: Remove {university} from recently viewed
@@ -808,6 +820,8 @@ unifit.warning.title: Limited Profile Data
 admission.track.select: Select
 admission.track.selected: Selected
 admission.track.recommended: Recommended
+admission.track.funding_program: Funding program
+admission.track.funding_source: Funding source
 admission.track.select_tooltip: Select this admission track to use it for admission chance display and for UniFit ranking.
 admission.chance.need_exam_data_track: Need exam data to see the chance for this track.
 average_admitted_unavailable: No verified average admitted data published.

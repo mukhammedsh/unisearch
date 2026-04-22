@@ -70,8 +70,10 @@ test.describe("UniFit end-to-end flow", () => {
     const reSortBody = await reSortResponse.json();
     expect(reSortBody.items.length).toBeGreaterThan(0);
 
-    // URL should reflect the new slider value
-    await expect(page).toHaveURL(/budget_vs_prestige=0/);
+    await expect(page).not.toHaveURL(/budget_vs_prestige=0/);
+    await expect.poll(async () => page.evaluate(() =>
+      JSON.parse(localStorage.getItem("unisearch_filters") || "{}").budget_vs_prestige
+    )).toBe(0);
 
     // Cards still visible after re-sort
     await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();

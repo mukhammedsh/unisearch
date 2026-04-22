@@ -167,9 +167,8 @@ nav.universities: Университеты
 settings.title: Настройки
 settings.subtitle: Управляйте тем, как UniSearch хранит локальные данные интерфейса на этом устройстве.
 settings.saved: Настройки сохранены
-settings.type.bool: Вкл. / выкл.
-settings.option.disable_recent.title: Не сохранять недавно открытые
-settings.option.disable_recent.desc: Если включено, UniSearch перестанет добавлять открытые университеты в локальный список недавно открытых. Уже сохранённые элементы останутся, пока вы не очистите их.
+settings.type.bool: Выкл. / вкл.
+
 settings.option.store_recent.title: Сохранять недавно открытые
 settings.option.store_recent.desc: Если включено, UniSearch добавляет открытые университеты в локальный список недавно открытых на этом устройстве.
 settings.option.open_universities_new_tab.title: Открывать университеты в новой вкладке
@@ -369,25 +368,30 @@ universities.select_country_first: Сначала выберите страну
 universities.suggestions.university: Университет
 universities.suggestions.city: Город
 universities.suggestions.country: Страна
-universities.compare.selected: {count} выбрано для сравнения
-universities.compare.need_more: Выберите ещё один университет для сравнения
+universities.compare.selected: Выбрано: {count}/{total}
+universities.compare.need_more: Выберите второй университет
+universities.compare.pair_label: Пара для сравнения
+universities.compare.pair_slot: Университет {number}
+universities.compare.pair_empty: Пустой слот
+universities.compare.pair_ready: Пара для сравнения готова
 universities.compare.clear: Очистить
 universities.compare.open: Сравнить
+universities.compare.continue: Продолжить
 universities.compare.title: Сравнение университетов
 universities.compare.row.metric: Метрика
 universities.compare.row.location: Локация
 universities.compare.row.aid: Финансовая помощь
-universities.compare.aid_both: Merit + помощь по нуждаемости
-universities.compare.aid_merit: Merit aid
-universities.compare.aid_need: Помощь по нуждаемости
+universities.compare.aid_both: Стипендии за достижения + помощь по финансовой нуждаемости
+universities.compare.aid_merit: Стипендии за достижения
+universities.compare.aid_need: Помощь по финансовой нуждаемости
 universities.compare.track_count: {count} треков / {options} вариантов
 universities.compare.native_ok: родной язык принимается
 universities.compare.verified_count: {sources} источников / {facts} фактов
 universities.compare.remove: Убрать из сравнения
-universities.compare.badge.best_rank: Лучшее место
+universities.compare.badge.best_rank: Лучший рейтинг
 universities.compare.badge.lowest_cost: Самая низкая стоимость
 universities.compare.badge.more_accessible: Выше шанс
-universities.compare.badge.aid: Помощь
+universities.compare.badge.aid: Финансовая помощь
 universities.compare.section.overview: Обзор
 universities.compare.section.programs: Программы
 universities.compare.section.admissions: Поступление
@@ -400,6 +404,8 @@ universities.compare.row.study_mode: Формат обучения
 universities.compare.row.language: Язык программ
 universities.compare.row.tracks: Треки поступления
 universities.compare.row.main_track: Основной трек
+universities.compare.row.selected_track: Выбранный трек
+universities.compare.row.funding_choice: Выбранное финансирование
 universities.compare.row.requirements: Минимальные требования
 universities.compare.row.avg_scores: Баллы поступивших
 universities.compare.row.language_proof: Подтверждение языка
@@ -412,13 +418,18 @@ universities.compare.row.data_quality: Проверенные данные
 universities.compare.available: Доступно
 universities.compare.intro: Сравните практичные сигналы для решения рядом: рейтинг, стоимость, процент зачисления, программы, требования, помощь, результаты и качество данных. Подсвеченные ячейки показывают самое сильное значение среди выбранных университетов.
 universities.compare.status_title: Сравнение
-universities.compare.status_empty: Короткий список для сравнения
-universities.compare.status_selected: Выбрано: {count}
+universities.compare.status_empty: Пара для сравнения
+universities.compare.status_selected: Выбрано: {count}/{total}
 universities.compare.results.kicker: Итоги сравнения
 universities.compare.results.title: Сравнение университетов
 universities.compare.results.back_to_selection: Вернуться к выбору
 universities.compare.results.empty_title: Сравнение ещё не собрано
-universities.compare.results.empty_body: Выберите минимум два университета, чтобы собрать сравнение.
+universities.compare.results.empty_body: Выберите ровно два университета, чтобы собрать пару для сравнения.
+universities.compare.configure.kicker: Перед сравнением
+universities.compare.configure.title: Выберите треки и финансирование
+universities.compare.configure.subtitle: Выберите по одному треку поступления и варианту финансирования для каждого университета. Сравнение возьмёт требования, подтверждение языка, стоимость и финансирование из этих выбранных вариантов.
+universities.compare.configure.selected: Трек и финансирование выбраны
+universities.compare.configure.required: Выберите один вариант перед сравнением
 universities.compare.insight.budget_title: Бюджет
 universities.compare.insight.budget: Среди выбранных университетов {name} лучший по бюджету: {cost} в год.
 universities.compare.insight.budget_with_delta: {name} даёт самый сильный бюджетный сигнал: {cost} в год, примерно на {percent} ниже среднего по остальным выбранным университетам.
@@ -458,22 +469,23 @@ universities.compare.category.data_sub: Проверенные факты и и�
 universities.compare.category.context: Контекст
 universities.compare.category.context_sub: Масштаб и кампусная среда
 universities.compare.differences.title: Ключевые отличия
-universities.compare.differences.subtitle: Алгоритм проходит по сопоставимым опубликованным параметрам и показывает практические преимущества каждого выбранного университета.
-universities.compare.differences.reasons_for: Причины выбрать {name}
+universities.compare.differences.subtitle: Показываем самые заметные опубликованные плюсы каждого выбранного университета.
+universities.compare.differences.reasons_for: {name}
 universities.compare.differences.no_clear_advantage: Явного опубликованного преимущества по сопоставимым метрикам не найдено.
 universities.compare.overview.title: Обзор
-universities.compare.overview.subtitle: Оценки нормализованы только внутри выбранных университетов, поэтому показывают относительные сильные стороны именно этого сравнения.
+universities.compare.overview.subtitle: Шкала 0-100 работает только внутри этого сравнения: 100 получает более сильный выбранный университет в категории, это не абсолютная оценка университета.
+universities.compare.score_value: {score}/100
 universities.compare.tests.title: Тесты и характеристики
-universities.compare.tests.subtitle: Детальная таблица опубликованных значений. Зелёные ячейки отмечают самый сильный сопоставимый показатель в строке.
+universities.compare.tests.subtitle: Детальная таблица опубликованных значений. Зелёные ячейки появляются только там, где один университет уникально сильнее в этой строке.
 universities.compare.conclusion.title: Итоги
 universities.compare.conclusion.body: Лучшие относительные совпадения по категориям: {summary}. Финальное решение лучше принимать по подсвеченным строкам таблицы и официальным источникам.
 universities.compare.conclusion.empty: Выбранные университеты близки по опубликованным сопоставимым метрикам. Проверьте подсвеченные строки таблицы и официальные источники перед финальным решением.
-universities.compare.reason.rank: {name}: лучший опубликованный рейтинг — {value}.
-universities.compare.reason.higher_percent: {name}: «{metric}» на {percent} выше ближайшего сопоставимого варианта ({value} против {baseline}).
-universities.compare.reason.lower_percent: {name}: «{metric}» на {percent} ниже ближайшего сопоставимого варианта ({value} против {baseline}).
-universities.compare.reason.highest: {name}: самый высокий показатель «{metric}» — {value}.
-universities.compare.reason.lowest: {name}: самый низкий показатель «{metric}» — {value}.
-universities.compare.reason.best: {name}: самый сильный сигнал «{metric}» — {value}.
+universities.compare.reason.rank: Лучший опубликованный рейтинг: {value}.
+universities.compare.reason.higher_percent: {metric}: {value} вместо {baseline}.
+universities.compare.reason.lower_percent: {metric}: {value} вместо {baseline}.
+universities.compare.reason.highest: Самый высокий показатель: {metric} — {value}.
+universities.compare.reason.lowest: Самый низкий показатель: {metric} — {value}.
+universities.compare.reason.best: {metric}: {value}.
 universities.recent.title: Недавно открытые
 universities.recent.clear_all: Очистить все
 universities.recent.remove: Убрать {university} из недавно открытых
@@ -810,6 +822,8 @@ roi.context.no_salary_data: Для этого университета нет п
 admission.track.select: Выбрать
 admission.track.selected: Выбрано
 admission.track.recommended: Рекомендовано
+admission.track.funding_program: Программа финансирования
+admission.track.funding_source: Источник финансирования
 admission.track.select_tooltip: Выбрать этот вариант поступления, чтобы показывать шанс именно по нему и учитывать его в алгоритме UniFit.
 admission.chance_method.profile_short: По профилю зачисленных
 admission.chance_method.profile_detail: На основе профиля баллов зачисленных, а также ваших языковых данных, бюджета и того, насколько вы проходите по требованиям.

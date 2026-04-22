@@ -392,7 +392,6 @@ function chanceModelDetail(model) {
 function chanceAccuracyNote(model) {
   const raw = String(model || "").trim().toLowerCase();
   if (raw === "estimated_fallback") {
-    if (getCurrentLanguage() === "rus") return "Низкая точность";
     return t("admission.chance_accuracy.low", "Low confidence");
   }
   return "";
@@ -426,22 +425,23 @@ export function renderUniChanceSummary(uniChance) {
   }
   const chanceRaw = parseChanceValue(uniChance?.overallChance);
   if (chanceRaw === null) {
+    const noDataTitle = t("common.no_data", "No data");
     const noDataLabel = String(
       uniChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
     ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
-    const helpNote = chanceNoDataHelpNote(uniChance);
+    const helpNote = chanceNoDataHelpNote(uniChance) || (noDataLabel !== noDataTitle ? noDataLabel : "");
     return `
       <div class="chance-panel">
         <div class="chance-head">
           <div>
             <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-            <div class="chance-sub">${escapeHtml(noDataLabel)}</div>
+            <div class="chance-sub">${escapeHtml(noDataTitle)}</div>
           </div>
           <div class="chance-percent chance-low">?</div>
         </div>
         <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
         ${helpNote ? `<div class="chance-inline-note">${escapeHtml(helpNote)}</div>` : ""}
-        <div class="chance-foot">${escapeHtml(noDataLabel)}</div>
+        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>
       </div>
     `;
   }

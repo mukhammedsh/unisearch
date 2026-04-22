@@ -31,7 +31,7 @@ import { initUniversityTranslations, translateProgramName } from "./university-t
 import { routeAbout, routeGuide, routeHome, routeUniversities } from "./routes.js";
 import { bindInfoTooltips } from "./tooltip.js";
 import {
-  SETTING_DISABLE_RECENT_UNIVERSITIES,
+  SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_OPEN_UNIVERSITIES_NEW_TAB,
   getSettingValue,
   readSettingsArray,
@@ -185,7 +185,7 @@ const LAYOUT_HTML = `
 
   <nav class="navbar-center" id="primaryNav">
     <a href="${routeHome()}" data-route="home" data-link="home" data-i18n="nav.home">Home</a>
-    <a href="${routeUniversities()}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
+    <a href="${routeUniversities({ tab: "catalog" })}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
     <a href="${routeGuide()}" data-route="guide" data-link="guide" data-i18n="nav.guide">Guide</a>
     <a href="${routeAbout()}" data-route="about" data-link="about" data-i18n="nav.about">About Us</a>
   </nav>
@@ -235,15 +235,15 @@ const LAYOUT_HTML = `
       </button>
     </div>
     <div class="settings-list" id="settingsList">
-      <article class="settings-row" data-setting-key="${SETTING_DISABLE_RECENT_UNIVERSITIES}">
+      <article class="settings-row" data-setting-key="${SETTING_STORE_RECENT_UNIVERSITIES}">
         <div class="settings-copy">
           <h3 data-i18n="settings.option.store_recent.title">Save recently opened</h3>
           <p data-i18n="settings.option.store_recent.desc">When enabled, UniSearch adds universities you open to the local recently viewed list on this device.</p>
         </div>
         <label class="settings-switch">
-          <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_DISABLE_RECENT_UNIVERSITIES}" />
+          <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_STORE_RECENT_UNIVERSITIES}" />
           <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
-          <span class="settings-switch-text" data-i18n="settings.type.bool">On / off</span>
+          <span class="settings-switch-text" data-i18n="settings.type.bool">Off / on</span>
         </label>
       </article>
       <article class="settings-row" data-setting-key="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}">
@@ -254,7 +254,7 @@ const LAYOUT_HTML = `
         <label class="settings-switch">
           <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
           <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
-          <span class="settings-switch-text" data-i18n="settings.type.bool">On / off</span>
+          <span class="settings-switch-text" data-i18n="settings.type.bool">Off / on</span>
         </label>
       </article>
     </div>
@@ -729,7 +729,7 @@ function initSettingsUI() {
     const syncSettingsInputs = () => {
         settingInputs.forEach((input) => {
             const key = String(input.getAttribute("data-setting-input") || "").trim();
-            input.checked = key === SETTING_DISABLE_RECENT_UNIVERSITIES
+            input.checked = key === SETTING_STORE_RECENT_UNIVERSITIES
                 ? shouldStoreRecentUniversities()
                 : getSettingValue(key) === true;
         });
@@ -760,7 +760,7 @@ function initSettingsUI() {
     settingInputs.forEach((input) => {
         input.addEventListener("change", () => {
             const key = String(input.getAttribute("data-setting-input") || "").trim();
-            const nextValue = key === SETTING_DISABLE_RECENT_UNIVERSITIES
+            const nextValue = key === SETTING_STORE_RECENT_UNIVERSITIES
                 ? !input.checked
                 : input.checked;
             setSettingValue(key, nextValue);

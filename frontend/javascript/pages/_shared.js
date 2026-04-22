@@ -53,6 +53,7 @@ import {
   SETTINGS_CACHE_KEY,
   SETTINGS_DEFINITIONS,
   SETTING_DISABLE_RECENT_UNIVERSITIES,
+  SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_OPEN_UNIVERSITIES_NEW_TAB,
   getSettingValue,
   readSettingsArray,
@@ -80,6 +81,7 @@ export {
   SETTINGS_CACHE_KEY,
   SETTINGS_DEFINITIONS,
   SETTING_DISABLE_RECENT_UNIVERSITIES,
+  SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_OPEN_UNIVERSITIES_NEW_TAB,
   getSettingValue,
   readSettingsArray,
@@ -1003,8 +1005,9 @@ export const DETAIL_CACHE_MAX_ITEMS = 24;
 export const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 export const SAVED_UNIVERSITIES_KEY = "unisearch_saved_university_ids_v1";
 export const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
+export const COMPARE_ADMISSION_CHOICES_KEY = "unisearch_compare_admission_choices_v1";
 export const RECENT_UNIVERSITIES_KEY = "unisearch_recent_university_ids_v1";
-export const MAX_COMPARE_UNIVERSITIES = 8;
+export const MAX_COMPARE_UNIVERSITIES = 2;
 export const MAX_RECENT_UNIVERSITIES = 12;
 export let __detailProfileUpdatedHandler = null;
 export let __detailLanguageChangedHandler = null;

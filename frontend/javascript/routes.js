@@ -50,7 +50,23 @@ export function routeUniversities(queryOrParams = "") {
 
 export function routeRanking(queryOrParams = "") {
   const params = new URLSearchParams(toQueryString(queryOrParams));
-  if (!params.has("tab")) params.set("tab", "ranking");
+  params.set("tab", "ranking");
+  return routeUniversities(params);
+}
+
+export function routeCompareSelection(queryOrParams = "") {
+  const params = new URLSearchParams(toQueryString(queryOrParams));
+  params.set("tab", "compare");
+  params.set("compare", "select");
+  return routeUniversities(params);
+}
+
+export function routeCompareResults(ids = [], tracks = [], queryOrParams = "") {
+  const params = new URLSearchParams(toQueryString(queryOrParams));
+  params.set("tab", "compare");
+  params.set("compare", "results");
+  if (Array.isArray(ids) && ids.length) params.set("ids", ids.join(","));
+  if (Array.isArray(tracks) && tracks.length) params.set("tracks", tracks.join(","));
   return routeUniversities(params);
 }
 
@@ -139,16 +155,20 @@ export function applyRouteLinks(root = document) {
     const route = String(link.getAttribute("data-route") || "").trim().toLowerCase();
     if (!route) return;
 
+    // Preserve existing query params from the link if any
+    const params = new URLSearchParams(link.search || "");
+
     let href = "";
-    if (route === "home") href = routeHome();
-    if (route === "universities") href = routeUniversities();
-    if (route === "ranking") href = routeRanking();
-    if (route === "guide") href = routeGuide();
-    if (route === "about") href = routeAbout();
+    if (route === "home") href = routeHome(params);
+    if (route === "universities") href = routeUniversities(params);
+    if (route === "ranking") href = routeRanking(params);
+    if (route === "compare") href = routeCompareSelection(params);
+    if (route === "guide") href = routeGuide(params);
+    if (route === "about") href = routeAbout(params);
 
     if (route === "university") {
       const rawId = String(link.getAttribute("data-route-id") || "").trim();
-      if (rawId) href = routeUniversityDetail(rawId);
+      if (rawId) href = routeUniversityDetail(rawId, params);
     }
 
     if (href) link.setAttribute("href", href);

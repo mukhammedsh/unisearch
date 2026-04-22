@@ -108,7 +108,14 @@ for (const viewport of viewports) {
 
     await page.goto("/universities.html?tab=compare&compare=results&ids=mit-usa-cambridge,imperial-college-london-uk");
     await expect(page.locator("#compareResultsPane")).toBeVisible();
+    await expect(page.locator(".compare-config-column")).toHaveCount(2);
+    await expect(page.locator(".track-select-btn.is-active")).toHaveCount(2);
+    const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
+    await expect(continueCompareButton).toBeEnabled();
+    await continueCompareButton.click();
     await expect(page.locator(".compare-key-differences")).toBeVisible();
+    await expect(page.locator(".compare-uni-card")).toHaveCount(2);
+    await expect(page.locator(".compare-table thead th")).toHaveCount(3);
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `universities compare results ${viewport.name}`);
 
