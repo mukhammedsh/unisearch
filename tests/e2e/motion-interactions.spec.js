@@ -44,7 +44,11 @@ test("universities favorite and compare motion preserves pressed states", async 
   await expect(favorite).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
 
-  const compare = refreshedFirstCard.locator("[data-card-action='compare']");
+  await page.locator("[data-universities-tab='compare']").click();
+  await expect(page.locator("body")).toHaveClass(/universities-compare-mode/);
+  const compareModeCard = page.locator(`.uni-card[data-uni-id="${firstUniversityId}"]`).first();
+  await expect(compareModeCard).toBeVisible();
+  const compare = compareModeCard.locator("[data-card-action='compare']");
   await compare.click();
   await expect(compare).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#compareTray")).toBeVisible();
