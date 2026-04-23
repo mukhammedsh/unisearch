@@ -82,6 +82,9 @@ jobs:
       - name: Run i18n consistency checks
         run: npm run check:i18n
 
+      - name: Run frontend unit tests
+        run: npm run test:unit
+
       - name: Install Playwright browser (Chromium)
         run: npx playwright install --with-deps chromium
 

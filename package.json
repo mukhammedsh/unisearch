@@ -12,8 +12,9 @@
     "check:version": "node scripts/check-version-sync.mjs",
     "sync:heroicons": "node scripts/sync-heroicons.mjs",
     "test:backend": "node scripts/test-backend.mjs",
-    "test:e2e:pr": "playwright test --project=chromium --config=playwright.local.config.js",
-    "test:e2e:nightly": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:unit": "node --test tests/unit/*.test.mjs",
+    "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
+    "test:e2e:nightly": "npx playwright test --project=chromium --project=firefox --project=webkit",
     "test:all": "npm run check:version && npm run test:backend && npm run test:e2e:pr"
   },
   "devDependencies": {
