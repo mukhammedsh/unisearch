@@ -2100,7 +2100,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -5045,7 +5045,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 820px) {
   .u-section-tabs {
     margin-bottom: 14px;
     gap: 16px;
@@ -5194,7 +5194,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .compare-table {
-    min-width: 0;
+    min-width: 500px;
     width: 100%;
   }
 
