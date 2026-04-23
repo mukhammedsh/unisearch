@@ -56,5 +56,22 @@ class TextTranslationTests(unittest.TestCase):
         self.assertEqual("provider_error", out.get("reason"))
 
 
+    def test_detect_source_lang_with_valid_hint(self):
+        self.assertEqual("en", text_translation_service._detect_source_lang("some text", "eng"))
+        self.assertEqual("ru", text_translation_service._detect_source_lang("some text", "rus"))
+        self.assertEqual("en", text_translation_service._detect_source_lang("some text", "en"))
+        self.assertEqual("ru", text_translation_service._detect_source_lang("some text", "ru-ru"))
+
+    def test_detect_source_lang_with_invalid_hint(self):
+        self.assertEqual("auto", text_translation_service._detect_source_lang("some text", "invalid"))
+        self.assertEqual("auto", text_translation_service._detect_source_lang("some text", None))
+        self.assertEqual("auto", text_translation_service._detect_source_lang("some text", ""))
+        self.assertEqual("auto", text_translation_service._detect_source_lang("some text", 123))
+
+    def test_detect_source_lang_empty_text(self):
+        self.assertEqual("auto", text_translation_service._detect_source_lang("", "invalid"))
+        self.assertEqual("en", text_translation_service._detect_source_lang("", "eng"))
+        self.assertEqual("auto", text_translation_service._detect_source_lang("", ""))
+
 if __name__ == "__main__":
     unittest.main()
