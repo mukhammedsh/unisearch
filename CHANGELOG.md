@@ -2,6 +2,16 @@
 
 All notable project changes should be recorded here.
 
+## 3.5.2 (2026-04-23) - Jules PR Optimizations
+
+Status:
+- synchronized runtime/package version to `3.5.2` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- merged PR #7 to narrow `backend/app/services/exams.py` exception handling to expected file, JSON, and numeric conversion errors instead of broad `Exception` catches;
+- merged PR #8 to optimize university tuition filtering by evaluating effective university cost once per candidate while applying min/max bounds in one pass;
+- merged PR #9 to optimize university region, country, and city filtering by applying location filters together instead of repeatedly rebuilding intermediate lists;
+- merged PR #10 to add backend coverage for text-translation source-language hint normalization and `auto` fallback behavior;
+- merged PR #13 to add Node frontend unit tests for funding preference normalization, run them in CI, and use `npx playwright` for E2E scripts.
+
 ## 3.5.1 (2026-04-22) - Compare Workflow Fixes
 
 Status:
