@@ -49,11 +49,9 @@
   margin: 0 0 10px;
   padding: 18px 20px;
   border-radius: 18px;
-  border: 1px solid rgba(168, 85, 247, 0.18);
-  background:
-    linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.03)),
-    var(--card);
-  box-shadow: 0 12px 28px rgba(87, 21, 219, 0.08);
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: none;
 }
 
 .d-page-scope__eyebrow {
@@ -340,12 +338,10 @@
 #tab-admission .d-box,
 #tab-finance .finance-box {
   position: relative;
-  border: 1px solid rgba(168, 85, 247, 0.16);
+  border: 1px solid var(--line);
   border-radius: 0;
-  background:
-    radial-gradient(circle at top right, rgba(168, 85, 247, 0.16), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 245, 255, 0.96));
-  box-shadow: 0 18px 40px rgba(88, 28, 135, 0.08);
+  background: var(--card);
+  box-shadow: none;
   overflow: visible;
 }
 

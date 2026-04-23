@@ -44,10 +44,8 @@
   padding: 18px 20px;
   border: 1px solid rgba(87, 21, 219, 0.18);
   border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(87, 21, 219, 0.1), rgba(168, 85, 247, 0.04)),
-    var(--card);
-  box-shadow: 0 12px 28px rgba(87, 21, 219, 0.08);
+  background: var(--card);
+  box-shadow: none;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -4231,11 +4229,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root[data-theme="dark"] .u-page-scope__inner {
-  background:
-    linear-gradient(135deg, rgba(87, 21, 219, 0.2), rgba(168, 85, 247, 0.08)),
-    var(--card);
-  border-color: rgba(168, 85, 247, 0.28);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .u-state-card--warning {
@@ -6153,7 +6149,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     width: min(320px, calc(100vw - 32px));
     min-height: 50px;
     justify-content: center;
-    border-radius: 999px;
+    border-radius: 12px;
   }
 
   .compare-tray {

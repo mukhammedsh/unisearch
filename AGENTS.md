@@ -16,13 +16,15 @@
 - **Тесты:** Playwright E2E (`tests/e2e/`), Pytest (`backend/tests/`).
 
 ## 3. UI/UX (Calm Academic Workspace)
-- **Стиль:** Рабочий инструмент. Запрещены SaaS/AI-landing стили, Tailwind-палитры, плоские `shadow-md`.
+- **Спецификация:** Подробные детали по типографике, размерам и логике компонентов обязательно сверять с `docs/design-system.md`.
+- **Стиль (Native-like Productivity Tool):** Рабочий инструмент. Строгий интерфейс (как Notion/Linear). Запрещены SaaS/AI-landing стили, Tailwind-палитры, сильные/размытые `box-shadow` и огромные градиентные свечения.
+- **Анти-паттерны ИИ (ЗАПРЕЩЕНО):** Вложенные карточки (используйте разделительные линии), круглые Pill Tabs (только underline-tabs), хардкод цветов (использовать только CSS-переменные), плавающие элементы (только плоская структура). Скругления (border-radius) должны быть унифицированы (10-16px), избегайте круглых кнопок-пилюль (овалов).
 - **Структура экранов:** Scope/status → toolbar/filter → данные.
-- **Карточки:** `border: 1px solid var(--line)`, `background: var(--surface-solid)`, радиус 16–20px. Никаких вложенных карточек.
-- **Взаимодействие:** Поддержка Light/Dark themes, `hover/active/focus` состояний, `aria-label` для кнопок.
-- **Вкладки:** Только `underline-tabs` (не pill tabs).
-- **Анимации:** Только `opacity` и `transform` (spring-style). Запрещено `transition-all`. Для вкладок разделов (Navbar, профиль, универ, фильтры) смена категории должна быть со sliding эффектом ползунка (смещение влево/вправо).
-- **Состояния:** Обязательно покрыть Loading (skeletons), Empty, Error. Без технических ошибок в UI.
+- **Карточки:** Строго `border: 1px solid var(--line)`, `background: var(--surface-solid)` (или `var(--surface)`), без `box-shadow`, радиус 16–20px.
+- **Взаимодействие:** Поддержка Light/Dark themes, `hover/active/focus` состояний. Focus: `outline: 2px solid var(--accent); outline-offset: 2px;`. Взаимодействие достигается сменой фона (`var(--surface-soft)`) или цвета рамки, без увеличения размера.
+- **Анимации:** Только `opacity` и `transform` (spring-style). Запрещено `transition-all`. Для вкладок разделов смена категории должна быть со sliding эффектом ползунка.
+- **Состояния:** Обязательно покрыть Loading (через `.center-loading-spinner`), Empty, Error. Хардкод текста запрещен (использовать локализацию).
+- **Компоненты:** Кнопки Primary (`var(--accent)` фон, без рамки) и Secondary (`var(--surface-soft)`, `1px solid var(--line)`). Иконки (Heroicons) центрированы с текстом через flexbox.
 
 ## 4. КЛЮЧЕВАЯ ЛОГИКА
 - **UniFit:** `services/ai_scoring.py` (комплексное ранжирование).
