@@ -20,7 +20,7 @@ def load_exams_config() -> Dict[str, Dict[str, Any]]:
                 if isinstance(v, dict):
                     cfg[str(k).strip().upper()] = v
             return cfg
-    except Exception:
+    except (OSError, json.JSONDecodeError):
         return {}
 
 
@@ -110,7 +110,7 @@ def _to_float(value: Any) -> Optional[float]:
         if value is None or value == "":
             return None
         return float(value)
-    except Exception:
+    except (ValueError, TypeError):
         return None
 
 
