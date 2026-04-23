@@ -2,6 +2,19 @@
 
 All notable project changes should be recorded here.
 
+## 3.5.6 (2026-04-23) - Calm Academic Workspace Redesign
+
+Status:
+- removed decorative AI-style gradients (`linear-gradient`, `radial-gradient`) from university page scope blocks (`.u-page-scope__inner`, `.d-page-scope`) and replaced them with flat `var(--card)` backgrounds and `1px solid var(--line)` borders;
+- removed heavy drop shadows from scope panels (`box-shadow: 0 12–18px …`) and standardized them to `none` or `var(--shadow-md)`;
+- updated global `--shadow-md` CSS variable in both light and dark modes to reduce blur radius from `60px` to `24px` for a cleaner, flatter visual feel;
+- replaced pill-shaped mobile filter button (`border-radius: 999px`) with a rounded rectangle (`border-radius: 12px`) matching the Calm Academic Workspace standard;
+- moved comparison UI breakpoint from `680px` to `820px` so tablets (iPad) display the configure panel in a single column instead of squeezing two;
+- enabled horizontal scrolling for comparison tables on narrow screens by setting `min-width: 500px` inside the scrollable wrapper;
+- fixed comparison tray floating panel (`compare-tray`) incorrectly shifting off-screen on mobile due to a conflicting `transform: translateX(-50%)` — added `transform: none` override for narrow viewports;
+- standardized comparison tray floating shadow to `var(--shadow-md)` instead of a hardcoded heavy value;
+- updated `AGENTS.md` with strict UI/UX guidelines linking to `docs/design-system.md` for the Calm Academic Workspace design protocol.
+
 ## 3.5.2 (2026-04-23) - Jules PR Optimizations
 
 Status:
