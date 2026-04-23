@@ -2013,18 +2013,17 @@ def list_universities(
                 filtered.append((u, m))
         pairs = filtered
 
-    if min_tuition is not None:
-        pairs = [
-            (u, m)
-            for (u, m) in pairs
-            if _safe_compare_gte(_effective_university_cost(u, format_preference=mode_pref), min_tuition)
-        ]
-    if max_tuition is not None:
-        pairs = [
-            (u, m)
-            for (u, m) in pairs
-            if _safe_compare_lte(_effective_university_cost(u, format_preference=mode_pref), max_tuition)
-        ]
+    if min_tuition is not None or max_tuition is not None:
+        filtered = []
+        for u, m in pairs:
+            cost = _effective_university_cost(u, format_preference=mode_pref)
+            if min_tuition is not None and not _safe_compare_gte(cost, min_tuition):
+                continue
+            if max_tuition is not None and not _safe_compare_lte(cost, max_tuition):
+                continue
+            filtered.append((u, m))
+        pairs = filtered
+
 
     if min_acceptance is not None:
         pairs = [(u, m) for (u, m) in pairs if _safe_compare_gte(_get_university_acceptance_rate(u), min_acceptance)]
