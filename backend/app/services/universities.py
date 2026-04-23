@@ -1946,15 +1946,25 @@ def list_universities(
             scored_pairs.append((u, m))
         pairs = scored_pairs
 
-    if region:
-        reg = _safe_lower(region)
-        pairs = [(u, m) for (u, m) in pairs if m.get("state", "") == reg]
-    if country:
-        cc = _safe_lower(country)
-        pairs = [(u, m) for (u, m) in pairs if m.get("country", "") == cc]
-    if city:
-        cc = _safe_lower(city)
-        pairs = [(u, m) for (u, m) in pairs if m.get("city", "") == cc]
+    if region or country or city:
+        reg = _safe_lower(region) if region else None
+        cc = _safe_lower(country) if country else None
+        cit = _safe_lower(city) if city else None
+
+        if reg and cc and cit:
+            pairs = [(u, m) for u, m in pairs if m.get("state", "") == reg and m.get("country", "") == cc and m.get("city", "") == cit]
+        elif reg and cc:
+            pairs = [(u, m) for u, m in pairs if m.get("state", "") == reg and m.get("country", "") == cc]
+        elif reg and cit:
+            pairs = [(u, m) for u, m in pairs if m.get("state", "") == reg and m.get("city", "") == cit]
+        elif cc and cit:
+            pairs = [(u, m) for u, m in pairs if m.get("country", "") == cc and m.get("city", "") == cit]
+        elif reg:
+            pairs = [(u, m) for u, m in pairs if m.get("state", "") == reg]
+        elif cc:
+            pairs = [(u, m) for u, m in pairs if m.get("country", "") == cc]
+        elif cit:
+            pairs = [(u, m) for u, m in pairs if m.get("city", "") == cit]
 
     if major:
         m_exact = _canonical_major(major)
