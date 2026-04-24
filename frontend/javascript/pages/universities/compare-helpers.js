@@ -129,3 +129,386 @@ export async function resolveAiSortResult(options = {}) {
     renderData(lateAiData);
   }
 }
+
+import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
+import { 
+  nested, 
+  loadProfile, 
+  moneyUSD, 
+  getExamDisplayName 
+} from "../../utils.js";
+import { 
+  toFiniteNumber, 
+  formatUiNumber,
+  trUniversityName,
+  trCity,
+  trState,
+  trCountry,
+  trProgramLanguage,
+  trTrackLabel,
+  textOrUnknown,
+  unknownFieldText,
+  ruPlural,
+  modeAwareAnnualCost,
+  normalizeStudyModeForCost
+} from "../_shared.js";
+import { 
+  translateDataValue, 
+  translateProgramName, 
+  translateTrackLabel, 
+  humanizeMachineLabel 
+} from "../../university-translations.js";
+import { 
+  getTrackFundingOptions, 
+  renderTrackFundingBadge, 
+  trackLookupKey
+} from "../../university-detail-helpers.js";
+
+export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost") {
+  const n = toFiniteNumber(value);
+  return n !== null ? moneyUSD(n) : unknownFieldText(fallbackKey, fallback);
+}
+
+export function compareUniversityName(u) {
+  const rawName = String(u?.name || u?.id || "").trim();
+  return textOrUnknown(trUniversityName(u), "placeholder.field.university_name", rawName || "University name");
+}
+
+export function compareLocationText(u) {
+  const city = trCity(nested(u, ["location", "city"], ""));
+  const region = trState(nested(u, ["location", "state"], ""));
+  const country = trCountry(nested(u, ["location", "country"], ""));
+  return [city, region, country].filter(Boolean).join(", ") || t("common.na", "N/A");
+}
+
+export function compareRankText(u) {
+  const rank = toFiniteNumber(u?.rank);
+  return rank !== null && rank > 0 ? `#${rank}` : t("common.na", "N/A");
+}
+
+export function compareAcceptanceText(u) {
+  const acc = toFiniteNumber(u?.academics?.acceptance_rate_percent);
+  return acc !== null ? `${Math.round(acc * 100) / 100}%` : t("common.na", "N/A");
+}
+
+export function compareAidText(u) {
+  const merit = nested(u, ["finance", "financial_aid", "merit_based"], false);
+  const need = nested(u, ["finance", "financial_aid", "need_based"], false);
+  if (merit && need) return t("universities.compare.aid_both", "Merit scholarships + need-based aid");
+  if (merit) return t("universities.compare.aid_merit", "Merit scholarships");
+  if (need) return t("universities.compare.aid_need", "Need-based financial aid");
+  return t("common.na", "N/A");
+}
+
+export function compareBachelorPrograms(u) {
+  const programs = Array.isArray(u?.academics?.programs) ? u.academics.programs : [];
+  return programs.filter((program) => {
+    const levels = Array.isArray(program?.study_levels) ? program.study_levels : [];
+    if (!levels.length) return true;
+    return levels.some((level) => /bachelor|undergraduate/i.test(String(level || "")));
+  });
+}
+
+export function compareProgramSummary(u) {
+  const programs = compareBachelorPrograms(u);
+  if (!programs.length) return t("common.na", "N/A");
+  const names = programs
+    .map((program) => translateProgramName(String(u?.id || ""), String(program?.name || "").trim()))
+    .filter(Boolean);
+  const visible = names.slice(0, 2).join(", ");
+  const more = names.length > 2 ? ` +${names.length - 2}` : "";
+  return visible ? `${visible}${more}` : t("common.na", "N/A");
+}
+
+export function compareLanguageSummary(u) {
+  const programs = compareBachelorPrograms(u);
+  const langs = new Set();
+  programs.forEach((program) => {
+    const raw = program?.language;
+    const values = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+    values.forEach((value) => {
+      const translated = trProgramLanguage(value);
+      if (translated) langs.add(translated);
+    });
+  });
+  if (!langs.size) return t("common.na", "N/A");
+  return Array.from(langs).slice(0, 3).join(", ");
+}
+
+export function compareStudyModeText(u) {
+  const formats = Array.isArray(u?.academics?.formats) ? u.academics.formats : [];
+  if (formats.length) return formats.map((item) => translateDataValue("study_mode", item, item)).join(", ");
+  const programs = compareBachelorPrograms(u);
+  const modes = Array.from(new Set(programs.map((program) => String(program?.study_mode || "").trim()).filter(Boolean)));
+  return modes.length ? modes.map((item) => translateDataValue("study_mode", item, item)).join(", ") : t("common.na", "N/A");
+}
+
+export function compareAdmissionOptionEntries(u) {
+  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
+  return tracks.flatMap((track, trackIdx) => {
+    const options = getTrackFundingOptions(track);
+    return options.map((option, optionIdx) => ({
+      track,
+      option,
+      trackIdx,
+      optionIdx,
+      key: trackLookupKey(option, optionIdx),
+    }));
+  }).filter((entry) => entry.key && entry.option);
+}
+
+export function compareSelectedAdmissionEntry(u, compareAdmissionChoices) {
+  const uniId = String(u?.id || "").trim();
+  const selectedKey = String(compareAdmissionChoices.get(uniId) || "").trim();
+  if (!selectedKey) return null;
+  return compareAdmissionOptionEntries(u).find((entry) => entry.key === selectedKey) || null;
+}
+
+export function compareSelectedAdmissionOption(u, compareAdmissionChoices) {
+  return compareSelectedAdmissionEntry(u, compareAdmissionChoices)?.option || null;
+}
+
+export function compareSelectedAdmissionTrack(u, compareAdmissionChoices) {
+  return compareSelectedAdmissionEntry(u, compareAdmissionChoices)?.track || null;
+}
+
+export function compareSelectedFinance(u, compareAdmissionChoices) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  return (option?.finance_override && typeof option.finance_override === "object")
+    ? option.finance_override
+    : (u?.finance || {});
+}
+
+export function compareSelectedAnnualCost(u, compareAdmissionChoices) {
+  const finance = compareSelectedFinance(u, compareAdmissionChoices);
+  const profileMode = normalizeStudyModeForCost(loadProfile()?.studyMode || loadProfile()?.study_mode || "");
+  const modeCost = modeAwareAnnualCost(finance, profileMode);
+  const total = modeCost ?? finance?.total_cost_year_usd ?? u?.finance?.total_cost_year_usd;
+  return toFiniteNumber(total);
+}
+
+export function compareTrackCountText(u) {
+  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
+  const options = tracks.reduce((sum, track) => sum + (Array.isArray(track?.funding_options) ? Math.max(track.funding_options.length, 1) : 1), 0);
+  if (!tracks.length) return t("common.na", "N/A");
+  return tFormat("universities.compare.track_count", { count: String(tracks.length), options: String(options) }, `${tracks.length} tracks / ${options} options`);
+}
+
+export function compareTrackLabel(u, compareAdmissionChoices) {
+  const track = compareSelectedAdmissionTrack(u, compareAdmissionChoices);
+  if (!track) return t("common.na", "N/A");
+  return trTrackLabel(track?.label || "") || translateTrackLabel(String(u?.id || ""), String(track?.id || track?.label || ""), String(track?.label || ""));
+}
+
+export function compareFundingChoiceText(u, compareAdmissionChoices) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  if (!option) return t("common.na", "N/A");
+  const badgeHtml = renderTrackFundingBadge(option);
+  const badge = (new DOMParser().parseFromString(badgeHtml, "text/html")).body.textContent?.trim() || "";
+  const optionLabelRaw = String(option?.label || "").trim();
+  const parentLabelRaw = String(option?.__parent_track_label || "").trim();
+  const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";
+  return [badge, optionLabel].filter(Boolean).join(" - ") || compareAidText(u);
+}
+
+export function compareRequirementsText(u, compareAdmissionChoices) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  const req = (option?.requirements && typeof option.requirements === "object") ? option.requirements : {};
+  const rows = Object.entries(req || {})
+    .filter(([, value]) => value !== null && value !== undefined && value !== "")
+    .map(([key, value]) => `${getExamDisplayName(key)} ${value}`);
+  return rows.length ? rows.slice(0, 3).join(", ") : t("common.na", "N/A");
+}
+
+export function compareAverageScoreText(u, compareAdmissionChoices) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
+  const rows = Object.entries(stats)
+    .filter(([, value]) => value !== null && value !== undefined && value !== "")
+    .map(([key, value]) => `${getExamDisplayName(key)} ${value}`);
+  return rows.length ? rows.slice(0, 3).join(", ") : t("common.na", "N/A");
+}
+
+export function compareLanguageProofText(u, compareAdmissionChoices) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  const requirements = Array.isArray(option?.language_requirements) ? option.language_requirements : [];
+  const rows = [];
+  requirements.forEach((entry) => {
+    const req = (entry?.requirements && typeof entry.requirements === "object") ? entry.requirements : {};
+    Object.entries(req).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") rows.push(`${getExamDisplayName(key)} ${value}`);
+    });
+    if (entry?.accept_native) rows.push(t("universities.compare.native_ok", "native accepted"));
+  });
+  return rows.length ? Array.from(new Set(rows)).slice(0, 4).join(", ") : t("common.na", "N/A");
+}
+
+export function compareExtraRequirementsText(u, compareAdmissionChoices) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  const extras = Array.isArray(option?.extra_requirements) ? option.extra_requirements.filter(Boolean) : [];
+  if (!extras.length) return t("common.na", "N/A");
+  const visible = extras.slice(0, 2).join("; ");
+  const more = extras.length > 2 ? ` +${extras.length - 2}` : "";
+  return `${visible}${more}`;
+}
+
+export function compareCostBreakdownText(u, mode, compareAdmissionChoices) {
+  const finance = compareSelectedFinance(u, compareAdmissionChoices);
+  const breakdown = (finance?.costs_breakdown_year_usd && typeof finance.costs_breakdown_year_usd === "object")
+    ? finance.costs_breakdown_year_usd
+    : {};
+  const entries = Object.entries(breakdown);
+  if (!entries.length) return t("common.na", "N/A");
+  const matcher = mode === "tuition"
+    ? (key) => /tuition|fee/i.test(key)
+    : (key) => /housing|dorm|food|meal|living|room|board|books|supplies|insurance|transport/i.test(key);
+  const selected = entries.filter(([key]) => matcher(String(key || "")));
+  const total = selected.reduce((sum, [, value]) => {
+    const n = toFiniteNumber(value);
+    return n !== null ? sum + n : sum;
+  }, 0);
+  return total > 0 ? moneyUSD(total) : t("common.na", "N/A");
+}
+
+export function compareSourceText(u, factKey) {
+  const fact = nested(u, ["fact_provenance", "facts", factKey], null);
+  const source = String(fact?.source || "").trim();
+  const status = String(fact?.status || u?.rank_meta?.status || "").trim();
+  const parts = [source, status ? humanizeMachineLabel(status, status) : ""].filter(Boolean);
+  return parts.length ? parts.join(" - ") : t("common.na", "N/A");
+}
+
+export function compareDataConfidenceText(u) {
+  const sources = Array.isArray(u?.verified_sources) ? u.verified_sources.length : 0;
+  const facts = u?.fact_provenance?.facts && typeof u.fact_provenance.facts === "object"
+    ? Object.keys(u.fact_provenance.facts).length
+    : 0;
+  if (!sources && !facts) return t("common.na", "N/A");
+  if (getCurrentLanguage() === "rus") {
+    return `${sources} ${ruPlural(sources, "источник", "источника", "источников")} / ${facts} ${ruPlural(facts, "факт", "факта", "фактов")}`;
+  }
+  return tFormat("universities.compare.verified_count", { sources: String(sources), facts: String(facts) }, `${sources} sources / ${facts} facts`);
+}
+
+export function compareOutcomeText(u) {
+  const salary = toFiniteNumber(u?.outcomes?.average_early_career_salary_usd);
+  return salary !== null ? moneyUSD(salary) : t("common.na", "N/A");
+}
+
+export function compareStudentCountText(u) {
+  const count = toFiniteNumber(u?.student_count);
+  if (count === null) return t("common.na", "N/A");
+  try {
+    return new Intl.NumberFormat(getCurrentLanguage() === "rus" ? "ru-RU" : "en-US").format(count);
+  } catch (e) {
+    return String(count);
+  }
+}
+
+export function compareCountText(value) {
+  const n = toFiniteNumber(value);
+  return n !== null ? formatUiNumber(n, { maximumFractionDigits: 0 }) : t("common.na", "N/A");
+}
+
+export function comparePercentText(value) {
+  const n = toFiniteNumber(value);
+  return n !== null ? `${formatUiNumber(n, { maximumFractionDigits: 2 })}%` : t("common.na", "N/A");
+}
+
+export function compareScoreText(value) {
+  const n = toFiniteNumber(value);
+  return n !== null ? formatUiNumber(n, { maximumFractionDigits: 2 }) : t("common.na", "N/A");
+}
+
+export function compareCampusAreaText(value) {
+  const n = toFiniteNumber(value);
+  return n !== null ? formatCampusSizeValue(n) : t("common.na", "N/A");
+}
+
+export function compareBachelorProgramCount(u) {
+  return compareBachelorPrograms(u).length;
+}
+
+export function compareLanguageCount(u) {
+  const langs = new Set();
+  compareBachelorPrograms(u).forEach((program) => {
+    const raw = program?.language;
+    const values = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+    values.forEach((value) => {
+      const clean = String(value || "").trim();
+      if (clean) langs.add(clean.toLowerCase());
+    });
+  });
+  return langs.size;
+}
+
+export function compareStudyFormatCount(u) {
+  const formats = Array.isArray(u?.academics?.formats) ? u.academics.formats : [];
+  const fromPrograms = compareBachelorPrograms(u).map((program) => String(program?.study_mode || "").trim()).filter(Boolean);
+  return new Set([...formats, ...fromPrograms].map((item) => String(item || "").trim().toLowerCase()).filter(Boolean)).size;
+}
+
+export function compareMajorTagCount(u) {
+  const tags = new Set();
+  const rawTags = [
+    ...(Array.isArray(u?.academics?.major_tags) ? u.academics.major_tags : []),
+    ...(Array.isArray(u?.major_focus) ? u.major_focus : []),
+  ];
+  rawTags.forEach((tag) => {
+    const clean = String(tag || "").trim().toLowerCase();
+    if (clean) tags.add(clean);
+  });
+  compareBachelorPrograms(u).forEach((program) => {
+    const programTags = Array.isArray(program?.major_tags) ? program.major_tags : [];
+    programTags.forEach((tag) => {
+      const clean = String(tag || "").trim().toLowerCase();
+      if (clean) tags.add(clean);
+    });
+  });
+  return tags.size;
+}
+
+export function compareFundingOptionCount(u) {
+  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
+  return tracks.reduce((sum, track) => {
+    const options = Array.isArray(track?.funding_options) ? track.funding_options.length : 0;
+    return sum + Math.max(options, 1);
+  }, 0);
+}
+
+export function compareExtraRequirementCount(u) {
+  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
+  const extras = new Set();
+  tracks.forEach((track) => {
+    const rows = Array.isArray(track?.extra_requirements) ? track.extra_requirements : [];
+    rows.forEach((item) => {
+      const clean = String(item || "").trim();
+      if (clean) extras.add(clean);
+    });
+  });
+  return extras.size;
+}
+
+export function compareAidScore(u) {
+  const merit = nested(u, ["finance", "financial_aid", "merit_based"], false) ? 1 : 0;
+  const need = nested(u, ["finance", "financial_aid", "need_based"], false) ? 1 : 0;
+  return merit + need;
+}
+
+export function compareCostBreakdownNumber(u, mode, compareAdmissionChoices) {
+  const finance = compareSelectedFinance(u, compareAdmissionChoices);
+  const breakdown = (finance?.costs_breakdown_year_usd && typeof finance.costs_breakdown_year_usd === "object")
+    ? finance.costs_breakdown_year_usd
+    : {};
+  const entries = Object.entries(breakdown);
+  if (!entries.length) return null;
+  const matcher = mode === "tuition"
+    ? (key) => /tuition|fee/i.test(key)
+    : (key) => /housing|dorm|food|meal|living|room|board|books|supplies|insurance|transport/i.test(key);
+  const total = entries.reduce((sum, [key, value]) => {
+    if (!matcher(String(key || ""))) return sum;
+    const n = toFiniteNumber(value);
+    return n !== null ? sum + n : sum;
+  }, 0);
+  return total > 0 ? total : null;
+}

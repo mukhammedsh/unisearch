@@ -3,7 +3,6 @@
 import {
   API_BASE,
   $,
-  bindImageFallbacks,
   debounce,
   loadFilters,
   saveFilters,
@@ -27,6 +26,7 @@ import {
   motionPress,
   replayMotion,
   setupSlidingIndicator,
+  bindImageFallbacks,
 } from "../utils.js";
 
 import {
@@ -79,11 +79,11 @@ import {
   renderUniPill,
   renderScholarshipLine,
   renderLocationMarkup,
-
-
-
-
-
+  rankingBadgeResizeBound,
+  rankingBadgeResizeRaf,
+  rankingFetchController,
+  fitRankingBadgeText,
+  ensureRankingBadgeResizeHandler,
   trCountry,
   trCity,
   trState,
@@ -237,15 +237,22 @@ export function initUniversitiesPage() {
     const logTranslationDebug = (stage, details = {}) => {
         if (!isTranslationDebugEnabled) return;
         try {
-            // Disabled sensitive logging to console for security
-            // console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
-            // Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
-            // console.groupEnd();
+            console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
+            Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
+            console.groupEnd();
         } catch (e) {
             // ignore logging errors
         }
     };
+    logTranslationDebug("debug mode enabled", {
+        enabled: true,
+        note: "ML + translation debug is enabled by APP_DEBUG runtime flag.",
+    });
 
+    const getProfileFundingQueryValue = () => {
+        const profile = loadProfile();
+        return fundingPreferenceToQueryValue(profile?.fundingType || profile?.funding_type || "any");
+    };
 
     function hasProfileEvidence(profile) {
         const exams = Array.isArray(profile?.exams) ? profile.exams : [];
@@ -416,7 +423,7 @@ export function initUniversitiesPage() {
         return String(opt?.text || "").trim();
     };
 
-    const activeFilterCount = () => {
+    function activeFilterCount() {
         let count = 0;
         if (state.q) count += 1;
         if (state.country) count += 1;
@@ -428,9 +435,9 @@ export function initUniversitiesPage() {
         if (state.funding_type && state.funding_type !== "any") count += 1;
         if (state.only_saved) count += 1;
         return count;
-    };
+    }
 
-    const mobileFilterChips = () => {
+    function mobileFilterChips() {
         const chips = [];
         if (state.q) chips.push(state.q);
         if (state.country) chips.push(trCountry(state.country));
@@ -442,18 +449,18 @@ export function initUniversitiesPage() {
         if (state.sort && state.sort !== "name_asc") chips.push(optionTextForValue(el.sortSelect, state.sort) || state.sort);
         if (state.only_saved) chips.push(t("universities.filter.favorites", "Favorites"));
         return chips.length ? chips : [t("universities.filter.none_active", "No active filters")];
-    };
+    }
 
-    const syncSavedFilterButtons = () => {
+    function syncSavedFilterButtons() {
         const mode = state.only_saved ? "favorites" : "all";
         el.savedFilterButtons.forEach((btn) => {
             const active = String(btn.getAttribute("data-saved-filter") || "") === mode;
             btn.classList.toggle("is-active", active);
             btn.setAttribute("aria-pressed", active ? "true" : "false");
         });
-    };
+    }
 
-    const updateMobileFilterUi = () => {
+    function updateMobileFilterUi() {
         const count = activeFilterCount();
         if (el.mobileFilterCount) {
             el.mobileFilterCount.hidden = count <= 0;
@@ -467,7 +474,7 @@ export function initUniversitiesPage() {
                 </div>
             `;
         }
-    };
+    }
 
     let rankingInitialized = false;
     const isCompareTab = () => state.activeTab === "compare";
@@ -1005,8 +1012,7 @@ export function initUniversitiesPage() {
     const compareFundingChoiceText = (u) => {
         const option = compareSelectedAdmissionOption(u);
         if (!option) return t("common.na", "N/A");
-        const badgeHtml = renderTrackFundingBadge(option);
-        const badge = (new DOMParser().parseFromString(badgeHtml, "text/html")).body.textContent?.trim() || "";
+        const badge = renderTrackFundingBadge(option).replace(/<[^>]+>/g, "").trim();
         const optionLabelRaw = String(option?.label || "").trim();
         const parentLabelRaw = String(option?.__parent_track_label || "").trim();
         const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";
@@ -1087,7 +1093,7 @@ export function initUniversitiesPage() {
             : 0;
         if (!sources && !facts) return t("common.na", "N/A");
         if (getCurrentLanguage() === "rus") {
-            return `${sources} ${ruPlural(sources, "РёСЃС‚РѕС‡РЅРёРє", "РёСЃС‚РѕС‡РЅРёРєР°", "РёСЃС‚РѕС‡РЅРёРєРѕРІ")} / ${facts} ${ruPlural(facts, "С„Р°РєС‚", "С„Р°РєС‚Р°", "С„Р°РєС‚РѕРІ")}`;
+            return `${sources} ${ruPlural(sources, "источник", "источника", "источников")} / ${facts} ${ruPlural(facts, "факт", "факта", "фактов")}`;
         }
         return tFormat("universities.compare.verified_count", { sources: String(sources), facts: String(facts) }, `${sources} sources / ${facts} facts`);
     };
@@ -3159,7 +3165,7 @@ export function initUniversitiesPage() {
         el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
-    // --- Р С™Р В°РЎР‚РЎвЂљР В° ---
+    // --- РљР°СЂС‚Р° ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
@@ -3768,7 +3774,7 @@ export function initUniversitiesPage() {
                             </button>
                             <div class="u-map-result-bottom">
                                 <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost"))}</span>
-                                <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details в†’"))}</a>
+                                <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details →"))}</a>
                             </div>
                         </article>
                     `;
@@ -4438,7 +4444,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (Р вЂР вЂўР вЂ” ROI) ---
+    // --- RENDER CARD (Р‘Р•Р— ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -4457,13 +4463,13 @@ export function initUniversitiesPage() {
         });
         const match = u.matchData || {};
 
-        // Р вЂР В°Р В·Р С•Р Р†Р В°РЎРЏ РЎвЂ Р ВµР Р…Р В° (РЎвЂљРЎР‚Р ВµР С”Р С•Р Р†Р В°РЎРЏ, Р ВµРЎРѓР В»Р С‘ algo Р ВµРЎвЂ Р Т‘Р В°Р В»)
+        // Р‘Р°Р·РѕРІР°СЏ С†РµРЅР° (С‚СЂРµРєРѕРІР°СЏ, РµСЃР»Рё algo РµС‘ РґР°Р»)
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
         (match.cost !== undefined ? match.cost : null) ??
         nested(u, ["finance", "total_cost_year_usd"], 0);
 
-        // Р ВРЎвЂљР С•Р С–Р С•Р Р†Р В°РЎРЏ РЎвЂ Р ВµР Р…Р В° РЎРѓ РЎС“РЎвЂЎРЎвЂРЎвЂљР С•Р С scholarship amount (Р ВµРЎРѓР В»Р С‘ Р ВµРЎРѓРЎвЂљРЎРЉ)
+        // РС‚РѕРіРѕРІР°СЏ С†РµРЅР° СЃ СѓС‡С‘С‚РѕРј scholarship amount (РµСЃР»Рё РµСЃС‚СЊ)
         const cost =
         (match.finalPrice !== undefined ? match.finalPrice : null) ??
         (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
@@ -4541,7 +4547,7 @@ export function initUniversitiesPage() {
         }
 
         if (overBudget) {
-            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget вЂў Aid Available")));
+            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available")));
             else badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget", "Over Budget")));
         } else if (aidAny) {
             badges.push(renderUniPill("check-circle", "uni-pill--success", t("universities.badge.aid_available", "Aid Available")));
@@ -4615,7 +4621,7 @@ export function initUniversitiesPage() {
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
             <div class="uni-footer">
-                <span class="uni-details">${detailLabel}<span aria-hidden="true">в†’</span></span>
+                <span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>
             </div>
             </div>
             <a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
@@ -4629,11 +4635,11 @@ export function initUniversitiesPage() {
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
         let html = ""; const p = state.page; const maxVisible = 5;
         const createBtn = (page, text, isActive = false) => { const activeClass = isActive ? "page-btn--active" : ""; return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`; };
-        if (p > 1) { html += createBtn(1, "В«"); html += createBtn(p - 1, `вЂ№ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
+        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, `‹ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
         let startPage, endPage;
         if (totalPages <= maxVisible) { startPage = 1; endPage = totalPages; } else { const maxPagesBefore = Math.floor(maxVisible / 2); const maxPagesAfter = Math.ceil(maxVisible / 2) - 1; if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; } }
         if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} вЂє`); html += createBtn(totalPages, "В»"); }
+        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} ›`); html += createBtn(totalPages, "»"); }
         el.pagination.innerHTML = html;
         el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
     }
