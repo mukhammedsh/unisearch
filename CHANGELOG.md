@@ -2,6 +2,12 @@
 
 All notable project changes should be recorded here.
 
+## 3.6.1 (2026-04-24) - Fix Module Resolution Errors
+
+Status:
+- synchronized runtime/package version to `3.6.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- removed invalid ranking-related imports from `frontend/javascript/pages/universities.js` to fix ES module load failures.
+
 ## 3.6.0 (2026-04-24) - Codebase Refactor
 
 Status:

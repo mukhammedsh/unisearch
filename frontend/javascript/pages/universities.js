@@ -1,4 +1,4 @@
-﻿/* frontend/javascript/pages.js */
+/* frontend/javascript/pages.js */
 
 import {
   API_BASE,
@@ -79,11 +79,11 @@ import {
   renderUniPill,
   renderScholarshipLine,
   renderLocationMarkup,
-  rankingBadgeResizeBound,
-  rankingBadgeResizeRaf,
-  rankingFetchController,
-  fitRankingBadgeText,
-  ensureRankingBadgeResizeHandler,
+
+
+
+
+
   trCountry,
   trCity,
   trState,
