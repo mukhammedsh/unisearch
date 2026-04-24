@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.6.0 (2026-04-24) - Codebase Refactor
+
+Status:
+- synchronized runtime/package version to `3.6.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- split frontend utility responsibilities into focused modules for safe storage, runtime UI helpers, theme, config loading, formatting, custom selects, and persistence while keeping `frontend/javascript/utils.js` as a compatibility facade;
+- split global frontend shell code by moving settings, profile UI, layout-cache, navbar-logo, translation-status, and profile-draft logic out of `frontend/javascript/components.js`;
+- decomposed the universities workspace by extracting compare detail loading, UniChance loading, AI-sort fallback orchestration, and shared detail-cache/history helpers into dedicated modules;
+- decomposed the university detail page into a thin entrypoint, a page controller, and separate overview, extra-info, programs, admission, and finance render modules;
+- centralized backend finance/study-mode helpers in `backend/app/services/finance_modes.py` and reused them from university listing/detail and AI scoring services;
+- centralized low-level exam config, coercion, grade, level, and breakdown helpers in `backend/app/services/exam_support.py` while preserving public exam-service behavior;
+- simplified request metrics middleware and search scoring/edit-distance helpers, including focused unit coverage for fuzzy matching behavior.
+
 ## 3.5.6 (2026-04-23) - Calm Academic Workspace Redesign
 
 Status:

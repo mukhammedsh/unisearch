@@ -1,243 +1,38 @@
-import json
 import re
-from decimal import Decimal, InvalidOperation
+from decimal import InvalidOperation
 from typing import Any, Dict, List, Optional, Union
 
-from app.core.files import file_mtime
-from app.core.paths import EXAMS_PATH
+from app.services import exam_support
 
-
-def load_exams_config() -> Dict[str, Dict[str, Any]]:
-    if not EXAMS_PATH:
-        return {}
-    try:
-        with open(EXAMS_PATH, "r", encoding="utf-8") as f:
-            raw = json.load(f)
-            if not isinstance(raw, dict):
-                return {}
-            cfg = {}
-            for k, v in raw.items():
-                if isinstance(v, dict):
-                    cfg[str(k).strip().upper()] = v
-            return cfg
-    except (OSError, json.JSONDecodeError):
-        return {}
-
-
-EXAMS_CONFIG: Dict[str, Dict[str, Any]] = {}
-EXAM_WHITELIST: Dict[str, Any] = {}
-_EXAMS_CACHE = {"mtime": None}
-
-
-def ensure_exams_cache() -> None:
-    global EXAMS_CONFIG, EXAM_WHITELIST
-    mtime = file_mtime(EXAMS_PATH)
-    if mtime is None:
-        EXAMS_CONFIG = {}
-        EXAM_WHITELIST = {}
-        _EXAMS_CACHE["mtime"] = None
-        return
-    if mtime == _EXAMS_CACHE["mtime"]:
-        return
-    cfg = load_exams_config()
-    EXAMS_CONFIG = cfg
-    EXAM_WHITELIST = {
-        k: (float(v.get("min", 0.0)), float(v.get("max", 0.0)))
-        for k, v in EXAMS_CONFIG.items()
-    }
-    _EXAMS_CACHE["mtime"] = mtime
-
-
-ensure_exams_cache()
-
-
-def _canonical_exam_key(exam_id: Any) -> str:
-    return re.sub(r"[^A-Z0-9]", "", str(exam_id or "").strip().upper())
-
-
-EXAM_KEY_ALIASES = {
-    "ENT": ["UNT"],
-    "NUET": ["NUET_TOTAL"],
-    "NUET_TOTAL": ["NUET"],
-    "TOEFL": ["TOEFL_IBT", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
-    "TOEFL_IBT": ["TOEFL", "TOEFL_IBT_0_120", "TOEFL_IBT_1_6"],
-    "WEIGHTED_TOTAL": ["HKDSE_WEIGHTED_TOTAL"],
-    "HKDSE_WEIGHTED_TOTAL": ["WEIGHTED_TOTAL"],
-}
-
-
-def resolve_exam_key(exam_id: Any) -> str:
-    """
-    Resolve user/data exam id to existing EXAMS_CONFIG key.
-    Supports canonical matching and common aliases (e.g. NUET <-> NUET_TOTAL).
-    """
-    ensure_exams_cache()
-    raw = str(exam_id or "").strip().upper()
-    if not raw:
-        return ""
-    if raw in EXAMS_CONFIG:
-        return raw
-
-    target = _canonical_exam_key(raw)
-    for k in EXAMS_CONFIG.keys():
-        if _canonical_exam_key(k) == target:
-            return k
-
-    for a in EXAM_KEY_ALIASES.get(raw, []):
-        alias = str(a).strip().upper()
-        if alias in EXAMS_CONFIG:
-            return alias
-        alias_canon = _canonical_exam_key(alias)
-        for k in EXAMS_CONFIG.keys():
-            if _canonical_exam_key(k) == alias_canon:
-                return k
-
-    return raw
-
-
-def _strip_text(value: Any) -> str:
-    if value is None:
-        return ""
-    return str(value).strip()
-
-
-def _to_decimal(x: Any) -> Decimal:
-    return Decimal(str(x).strip())
-
-
-def _to_float(value: Any) -> Optional[float]:
-    try:
-        if value is None or value == "":
-            return None
-        return float(value)
-    except (ValueError, TypeError):
-        return None
-
-
-def _clamp(value: float, lo: float, hi: float) -> float:
-    return max(lo, min(hi, value))
-
-
-def _config_entry(exam_key: Any) -> Dict[str, Any]:
-    ensure_exams_cache()
-    resolved = resolve_exam_key(exam_key)
-    cfg = EXAMS_CONFIG.get(resolved) if resolved else None
-    return cfg if isinstance(cfg, dict) else {}
-
-
-def _input_mode(cfg: Dict[str, Any]) -> str:
-    raw = str(cfg.get("input_mode") or "").strip().lower()
-    if raw:
-        return raw
-    if str(cfg.get("type") or "").strip().lower() == "bool":
-        return "flag"
-    return "number"
-
-
-def _normalization_config(exam_key: Any) -> Dict[str, Any]:
-    cfg = _config_entry(exam_key)
-    normalization = cfg.get("normalization")
-    return normalization if isinstance(normalization, dict) else {}
-
-
-def exam_supports_percentile_normalization(exam_key: Any) -> bool:
-    normalization = _normalization_config(exam_key)
-    if not normalization:
-        return False
-    if str(normalization.get("kind") or "").strip().lower() != "anchor_percentile":
-        return False
-    return bool(normalization.get("supports_user_scoring", True))
-
-
-def _validate_numeric_score(exam_key: str, cfg: Dict[str, Any], score_raw: Any) -> Union[int, float]:
-    t = str(cfg.get("type", "float")).lower()
-    if score_raw is None or score_raw == "":
-        raise ValueError(f"{exam_key} score is required")
-
-    try:
-        dv = _to_decimal(score_raw)
-    except (InvalidOperation, ValueError):
-        raise ValueError("Invalid score format")
-
-    mn = _to_decimal(cfg.get("min", 0))
-    mx = _to_decimal(cfg.get("max", 0))
-
-    if dv < mn or dv > mx:
-        raise ValueError(f"Score must be between {mn} and {mx}")
-
-    step = cfg.get("step", None)
-    if step is not None:
-        st = _to_decimal(step)
-        q = (dv - mn) / st
-        if q != q.to_integral_value():
-            raise ValueError(f"Score must follow step={st}")
-
-    if exam_key == "IELTS" and "decimals_allowed" in cfg:
-        allowed = set(int(x) for x in cfg.get("decimals_allowed", []))
-        tenth = int((dv * 10) % 10)
-        if tenth not in allowed:
-            raise ValueError("IELTS decimals must be .0 or .5")
-
-    if t == "int":
-        return int(dv)
-    return float(dv)
-
-
-def _coerce_flag_score(exam_key: str, score_raw: Any) -> int:
-    if score_raw is None or score_raw == "":
-        return 1
-    text = _strip_text(score_raw).lower()
-    if text in ("1", "true", "yes", "on"):
-        return 1
-    if text in ("0", "false", "no", "off"):
-        return 0
-    raise ValueError(f"{exam_key} must be 0 or 1")
-
-
-def _grade_scheme(cfg: Dict[str, Any]) -> Dict[str, Any]:
-    raw = cfg.get("grade_scheme")
-    return raw if isinstance(raw, dict) else {}
-
-
-def _normalize_grade_token(value: Any) -> str:
-    raw = _strip_text(value).upper()
-    if not raw:
-        return ""
-    raw = raw.replace("★", "*")
-    raw = raw.replace("A STAR", "A*")
-    raw = raw.replace("A-STAR", "A*")
-    raw = raw.replace("ASTAR", "A*")
-    raw = raw.replace(" ", "")
-    return raw
-
-
-def _parse_grade_combo_from_details(details: Any) -> List[str]:
-    if not isinstance(details, dict):
-        return []
-    raw_grades = details.get("grades")
-    if not isinstance(raw_grades, list):
-        return []
-    out: List[str] = []
-    for item in raw_grades:
-        token = _normalize_grade_token(item)
-        if token:
-            out.append(token)
-    return out
-
-
-def _parse_grade_combo_from_text(raw_value: Any, allowed: Dict[str, int]) -> List[str]:
-    text = _strip_text(raw_value)
-    if not text:
-        return []
-    compact = _normalize_grade_token(text)
-    compact = re.sub(r"[,;/|+\-]+", "", compact)
-    tokens = re.findall(r"A\*|[ABCDEU]", compact)
-    if not tokens or "".join(tokens) != compact:
-        raise ValueError("A-Level grades must use only A*, A, B, C, D, E, or U")
-    for token in tokens:
-        if token not in allowed:
-            raise ValueError("A-Level grades must use only A*, A, B, C, D, E, or U")
-    return tokens
+load_exams_config = exam_support.load_exams_config
+EXAMS_CONFIG = exam_support.EXAMS_CONFIG
+EXAM_WHITELIST = exam_support.EXAM_WHITELIST
+ensure_exams_cache = exam_support.ensure_exams_cache
+resolve_exam_key = exam_support.resolve_exam_key
+exam_supports_percentile_normalization = exam_support.exam_supports_percentile_normalization
+_canonical_exam_key = exam_support.canonical_exam_key
+_strip_text = exam_support.strip_text
+_to_decimal = exam_support.to_decimal
+_to_float = exam_support.to_float
+_clamp = exam_support.clamp
+_config_entry = exam_support.config_entry
+_input_mode = exam_support.input_mode
+_normalization_config = exam_support.normalization_config
+_validate_numeric_score = exam_support.validate_numeric_score
+_coerce_flag_score = exam_support.coerce_flag_score
+_grade_scheme = exam_support.grade_scheme
+_normalize_grade_token = exam_support.normalize_grade_token
+_parse_grade_combo_from_details = exam_support.parse_grade_combo_from_details
+_parse_grade_combo_from_text = exam_support.parse_grade_combo_from_text
+_level_scheme = exam_support.level_scheme
+_breakdown_scheme = exam_support.breakdown_scheme
+_breakdown_item_definitions = exam_support.breakdown_item_definitions
+_display_value_from_submission = exam_support.display_value_from_submission
+_level_bands = exam_support.level_bands
+_normalize_level_label = exam_support.normalize_level_label
+_band_label_for_value = exam_support.band_label_for_value
+_band_value_for_label = exam_support.band_value_for_label
+_to_num_int = exam_support.to_num_int
 
 
 def _coerce_grade_combo_submission(
@@ -300,54 +95,6 @@ def _coerce_grade_combo_submission(
             "best_of": best_of,
         },
     }
-
-
-def _level_scheme(cfg: Dict[str, Any]) -> Dict[str, Any]:
-    raw = cfg.get("level_scheme")
-    return raw if isinstance(raw, dict) else {}
-
-
-def _breakdown_scheme(cfg: Dict[str, Any]) -> Dict[str, Any]:
-    raw = cfg.get("breakdown_scheme")
-    return raw if isinstance(raw, dict) else {}
-
-
-def _breakdown_item_definitions(items: Any, *, default_required: bool) -> List[Dict[str, Any]]:
-    if not isinstance(items, list):
-        return []
-    out: List[Dict[str, Any]] = []
-    for item in items:
-        if isinstance(item, str):
-            resolved = resolve_exam_key(item)
-            if not resolved:
-                continue
-            label = _strip_text(_config_entry(resolved).get("label")) or resolved
-            out.append({"exam": resolved, "label": label, "required": default_required})
-            continue
-        if not isinstance(item, dict):
-            continue
-        raw_exam = item.get("exam") or item.get("id") or item.get("exam_id")
-        resolved = resolve_exam_key(raw_exam)
-        if not resolved:
-            continue
-        label = _strip_text(item.get("label")) or _strip_text(_config_entry(resolved).get("label")) or resolved
-        required_raw = item.get("required")
-        required = default_required if required_raw is None else bool(required_raw)
-        out.append({"exam": resolved, "label": label, "required": required})
-    return out
-
-
-def _display_value_from_submission(parsed: Dict[str, Any]) -> str:
-    preferred = (
-        parsed.get("display_value"),
-        parsed.get("raw_value"),
-        parsed.get("score"),
-    )
-    for item in preferred:
-        text = _strip_text(item)
-        if text:
-            return text
-    return ""
 
 
 def _coerce_subject_breakdown_submission(
@@ -516,53 +263,6 @@ def _coerce_subject_breakdown_submission(
         result["raw_value"] = display_value
         result["display_value"] = display_value
     return result
-
-
-def _level_bands(cfg: Dict[str, Any]) -> List[Dict[str, Any]]:
-    bands = _level_scheme(cfg).get("bands")
-    return [row for row in bands if isinstance(row, dict)] if isinstance(bands, list) else []
-
-
-def _normalize_level_label(value: Any) -> str:
-    text = _strip_text(value).upper()
-    if not text:
-        return ""
-    text = text.replace("LEVEL", "")
-    text = text.replace(" ", "")
-    return text
-
-
-def _band_label_for_value(cfg: Dict[str, Any], score: Any) -> str:
-    numeric = _to_num_int(score)
-    if numeric is None:
-        return ""
-    for row in _level_bands(cfg):
-        if _to_num_int(row.get("value")) == numeric:
-            return _strip_text(row.get("short_label"))
-    return ""
-
-
-def _band_value_for_label(cfg: Dict[str, Any], raw_value: Any) -> Optional[int]:
-    label = _normalize_level_label(raw_value)
-    if not label:
-        return None
-    for row in _level_bands(cfg):
-        short_label = _normalize_level_label(row.get("short_label"))
-        numeric_value = _to_num_int(row.get("value"))
-        if numeric_value is None:
-            continue
-        if label == short_label or label == str(numeric_value):
-            return numeric_value
-    return None
-
-
-def _to_num_int(value: Any) -> Optional[int]:
-    num = _to_float(value)
-    if num is None:
-        return None
-    if abs(num - round(num)) > 1e-9:
-        return None
-    return int(round(num))
 
 
 def _coerce_band_select_submission(

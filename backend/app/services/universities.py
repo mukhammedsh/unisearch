@@ -8,6 +8,14 @@ from app.core.files import file_mtime
 from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
 from app.core.utils import to_float as _num_or_none, safe_lower as _safe_lower, norm_space as _norm_space, norm_tag_key as _norm_tag_key
 from app.services import exams as exams_service
+from app.services.finance_modes import (
+    extract_tuition_cost as _extract_tuition_cost,
+    mode_breakdown_from_finance as _mode_breakdown_from_finance,
+    mode_total_from_finance as _mode_total_from_finance,
+    mode_value_from_map as _mode_value_from_map,
+    normalize_cost_key as _normalize_cost_key,
+    normalize_study_mode as _normalize_study_mode,
+)
 from app.services import search as search_service
 
 
@@ -601,63 +609,6 @@ def _to_bool(x: Any) -> bool:
     if isinstance(x, str):
         return x.strip().lower() in {"1", "true", "yes", "y", "on"}
     return bool(x)
-
-
-def _normalize_study_mode(value: Any) -> str:
-    raw = _safe_lower(value)
-    if not raw or raw == "any":
-        return "any"
-    if raw in {"on-campus", "on campus", "campus", "offline", "in-person", "hybrid", "blended", "mixed"}:
-        return "on-campus"
-    if raw in {"online", "distance", "remote", "online / distance"}:
-        return "online"
-    return "any"
-
-
-def _normalize_cost_key(key: Any) -> str:
-    return re.sub(r"[^a-z]", "", str(key or "").strip().lower())
-
-
-def _mode_value_from_map(mode_map: Any, mode: str) -> Any:
-    if not isinstance(mode_map, dict):
-        return None
-    target = _normalize_study_mode(mode)
-    for key, value in mode_map.items():
-        if _normalize_study_mode(key) == target:
-            return value
-    return None
-
-
-def _mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[Dict[str, Any]]:
-    if not isinstance(finance, dict):
-        return None
-    for key in ("costs_breakdown_year_usd_by_mode", "costs_breakdown_by_mode_year_usd", "mode_costs_breakdown_year_usd"):
-        val = _mode_value_from_map(finance.get(key), mode)
-        if isinstance(val, dict):
-            return val
-    return None
-
-
-def _mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[float]:
-    if not isinstance(finance, dict):
-        return None
-    for key in ("total_cost_year_usd_by_mode", "total_cost_by_mode_year_usd", "mode_total_cost_year_usd"):
-        val = _mode_value_from_map(finance.get(key), mode)
-        amount = _to_float(val)
-        if amount is not None and amount >= 0:
-            return float(amount)
-    return None
-
-
-def _extract_tuition_cost(breakdown: Dict[str, Any]) -> Optional[float]:
-    if not isinstance(breakdown, dict):
-        return None
-    for key, value in breakdown.items():
-        if "tuition" in _normalize_cost_key(key):
-            amount = _to_float(value)
-            if amount is not None and amount >= 0:
-                return amount
-    return None
 
 
 def _effective_university_cost(u: Dict[str, Any], format_preference: Any = "any") -> float:

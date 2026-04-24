@@ -4,7 +4,7 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -132,6 +132,98 @@ def _rate_limit_response(limit: int, window_sec: int, retry_after: float) -> JSO
     )
     return _apply_security_headers(response)
 
+
+def _content_length(request: Request) -> int:
+    try:
+        return int(str(request.headers.get("content-length", "")).strip() or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _request_guard_response(request: Request) -> Response | None:
+    if is_protected_ops_request(request) and not ops_request_is_authorized(request):
+        return protected_ops_response()
+    if REQUEST_BODY_MAX_BYTES <= 0:
+        return None
+    if _content_length(request) <= REQUEST_BODY_MAX_BYTES:
+        return None
+    return JSONResponse({"detail": "Request body too large"}, status_code=413)
+
+
+def _rate_limit_headers(limit: int, remaining: int, window_sec: int) -> dict[str, str]:
+    return {
+        "X-RateLimit-Limit": str(limit),
+        "X-RateLimit-Remaining": str(remaining),
+        "X-RateLimit-Window": str(window_sec),
+    }
+
+
+def _rate_limit_result(request: Request) -> tuple[Response | None, dict[str, str]]:
+    if not RATE_LIMIT_ENABLED:
+        return None, {}
+
+    client_key = request_client_ip(request)
+    allowed, remaining, retry_after = _GLOBAL_RATE_LIMITER.check(client_key)
+    if not allowed:
+        return _rate_limit_response(
+            GLOBAL_RATE_LIMIT_REQUESTS,
+            GLOBAL_RATE_LIMIT_WINDOW_SEC,
+            retry_after,
+        ), {}
+
+    if not _is_expensive_request(request):
+        return None, _rate_limit_headers(
+            GLOBAL_RATE_LIMIT_REQUESTS,
+            remaining,
+            GLOBAL_RATE_LIMIT_WINDOW_SEC,
+        )
+
+    request_key = f"{client_key}:{request.method.upper()}:{request.url.path}"
+    allowed, remaining, retry_after = _EXPENSIVE_RATE_LIMITER.check(request_key)
+    if not allowed:
+        return _rate_limit_response(
+            EXPENSIVE_RATE_LIMIT_REQUESTS,
+            EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
+            retry_after,
+        ), {}
+
+    return None, _rate_limit_headers(
+        EXPENSIVE_RATE_LIMIT_REQUESTS,
+        remaining,
+        EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
+    )
+
+
+def _log_request_failure(request: Request, request_id: str, start: float) -> None:
+    duration_ms = (time.perf_counter() - start) * 1000.0
+    logger.exception(
+        "request_failed request_id=%s method=%s path=%s duration_ms=%.2f",
+        request_id,
+        request.method,
+        request.url.path,
+        duration_ms,
+    )
+
+
+def _finalize_request_response(
+    response: Response,
+    request: Request,
+    request_id: str,
+    start: float,
+) -> Response:
+    duration_ms = (time.perf_counter() - start) * 1000.0
+    response.headers["X-Request-Id"] = request_id
+    _apply_security_headers(response)
+    logger.info(
+        "request_ok request_id=%s method=%s path=%s status=%s duration_ms=%.2f",
+        request_id,
+        request.method,
+        request.url.path,
+        response.status_code,
+        duration_ms,
+    )
+    return response
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=FRONTEND_ORIGINS,
@@ -167,74 +259,19 @@ app.mount(
 async def request_metrics(request: Request, call_next):
     request_id = str(uuid.uuid4())
     start = time.perf_counter()
-    response = None
     try:
-        if is_protected_ops_request(request) and not ops_request_is_authorized(request):
-            response = protected_ops_response()
-        else:
-            content_length_raw = str(request.headers.get("content-length", "")).strip()
-            if content_length_raw:
-                try:
-                    content_length = int(content_length_raw)
-                except Exception:
-                    content_length = 0
-                if REQUEST_BODY_MAX_BYTES > 0 and content_length > REQUEST_BODY_MAX_BYTES:
-                    response = JSONResponse({"detail": "Request body too large"}, status_code=413)
-
-            if response is None and RATE_LIMIT_ENABLED:
-                client_key = request_client_ip(request)
-                global_allowed, global_remaining, global_retry = _GLOBAL_RATE_LIMITER.check(client_key)
-                if not global_allowed:
-                    response = _rate_limit_response(
-                        GLOBAL_RATE_LIMIT_REQUESTS,
-                        GLOBAL_RATE_LIMIT_WINDOW_SEC,
-                        global_retry,
-                    )
-                elif _is_expensive_request(request):
-                    path_key = f"{client_key}:{request.method.upper()}:{request.url.path}"
-                    expensive_allowed, expensive_remaining, expensive_retry = _EXPENSIVE_RATE_LIMITER.check(path_key)
-                    if not expensive_allowed:
-                        response = _rate_limit_response(
-                            EXPENSIVE_RATE_LIMIT_REQUESTS,
-                            EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
-                            expensive_retry,
-                        )
-                    else:
-                        response = await call_next(request)
-                        response.headers["X-RateLimit-Limit"] = str(EXPENSIVE_RATE_LIMIT_REQUESTS)
-                        response.headers["X-RateLimit-Remaining"] = str(expensive_remaining)
-                        response.headers["X-RateLimit-Window"] = str(EXPENSIVE_RATE_LIMIT_WINDOW_SEC)
-                else:
-                    response = await call_next(request)
-                    response.headers["X-RateLimit-Limit"] = str(GLOBAL_RATE_LIMIT_REQUESTS)
-                    response.headers["X-RateLimit-Remaining"] = str(global_remaining)
-                    response.headers["X-RateLimit-Window"] = str(GLOBAL_RATE_LIMIT_WINDOW_SEC)
-
-            if response is None:
-                response = await call_next(request)
+        response = _request_guard_response(request)
+        rate_headers: dict[str, str] = {}
+        if response is None:
+            response, rate_headers = _rate_limit_result(request)
+        if response is None:
+            response = await call_next(request)
+        response.headers.update(rate_headers)
     except Exception:
-        duration_ms = (time.perf_counter() - start) * 1000.0
-        logger.exception(
-            "request_failed request_id=%s method=%s path=%s duration_ms=%.2f",
-            request_id,
-            request.method,
-            request.url.path,
-            duration_ms,
-        )
+        _log_request_failure(request, request_id, start)
         raise
 
-    duration_ms = (time.perf_counter() - start) * 1000.0
-    response.headers["X-Request-Id"] = request_id
-    _apply_security_headers(response)
-    logger.info(
-        "request_ok request_id=%s method=%s path=%s status=%s duration_ms=%.2f",
-        request_id,
-        request.method,
-        request.url.path,
-        response.status_code,
-        duration_ms,
-    )
-    return response
+    return _finalize_request_response(response, request, request_id, start)
 
 
 app.include_router(root.router)

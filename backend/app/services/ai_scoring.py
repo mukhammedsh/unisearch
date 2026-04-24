@@ -6,6 +6,14 @@ from typing import Any, Dict, List, Optional, Tuple
 from app.core.settings import ML_INTEREST_TRANSLATION_DEBUG
 from app.core.utils import to_float as _to_num, to_float_default as _to_num_default, clamp as _clamp, clamp01 as _clamp01
 from app.services import exams as exams_service
+from app.services.finance_modes import (
+    extract_tuition_cost as _extract_tuition_cost,
+    mode_breakdown_from_finance as _mode_breakdown_from_finance,
+    mode_total_from_finance as _mode_total_from_finance,
+    mode_value_from_map as _mode_value_from_map,
+    normalize_cost_key as _normalize_cost_key,
+    normalize_study_mode as _normalize_study_mode,
+)
 from app.services import languages as languages_service
 from app.services import universities as universities_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
@@ -40,58 +48,12 @@ def _normalize_funding_preference(value: Any) -> str:
     return "any"
 
 
-def _normalize_study_mode(value: Any) -> str:
-    raw = str(value or "").strip().lower()
-    if not raw or raw == "any":
-        return "any"
-    if raw in ("on-campus", "on campus", "campus", "offline", "in-person", "hybrid", "blended", "mixed"):
-        return "on-campus"
-    if raw in ("online", "distance", "remote", "online / distance"):
-        return "online"
-    return "any"
-
-
 def _get_track_funding_type(track: Dict[str, Any]) -> str:
     raw_type = str(track.get("funding_type", "")).strip().lower()
     if raw_type in ("grant", "paid"):
         return raw_type
     badge = str(track.get("track_badge", "")).strip().lower()
     return "grant" if re.search(r"grant|scholar", badge) else "paid"
-
-
-def _normalize_cost_key(key: Any) -> str:
-    return re.sub(r"[^a-z]", "", str(key or "").strip().lower())
-
-
-def _mode_value_from_map(mode_map: Any, mode: str) -> Any:
-    if not isinstance(mode_map, dict):
-        return None
-    target = _normalize_study_mode(mode)
-    for key, value in mode_map.items():
-        if _normalize_study_mode(key) == target:
-            return value
-    return None
-
-
-def _mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[Dict[str, Any]]:
-    if not isinstance(finance, dict):
-        return None
-    for key in ("costs_breakdown_year_usd_by_mode", "costs_breakdown_by_mode_year_usd", "mode_costs_breakdown_year_usd"):
-        val = _mode_value_from_map(finance.get(key), mode)
-        if isinstance(val, dict):
-            return val
-    return None
-
-
-def _mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[float]:
-    if not isinstance(finance, dict):
-        return None
-    for key in ("total_cost_year_usd_by_mode", "total_cost_by_mode_year_usd", "mode_total_cost_year_usd"):
-        val = _mode_value_from_map(finance.get(key), mode)
-        amount = _to_num(val)
-        if amount is not None and amount >= 0:
-            return float(amount)
-    return None
 
 
 def _track_study_mode(university: Dict[str, Any], track: Dict[str, Any]) -> str:
@@ -127,17 +89,6 @@ def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict
         "track_finance": track_fin,
         "university_finance": uni_fin,
     }
-
-
-def _extract_tuition_cost(breakdown: Dict[str, Any]) -> Optional[float]:
-    if not isinstance(breakdown, dict):
-        return None
-    for key, value in breakdown.items():
-        if "tuition" in _normalize_cost_key(key):
-            amount = _to_num(value)
-            if amount is not None and amount >= 0:
-                return float(amount)
-    return None
 
 
 def _effective_cost_mode(preferred_mode: Any, track_mode: Any) -> str:

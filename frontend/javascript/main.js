@@ -1,4 +1,3 @@
-/* frontend/javascript/main.js */
 import { loadGlobalLayout, renderNoConnection } from "./components.js";
 import { initUniversitiesPage } from "./pages/universities.js";
 import { initUniversityPage } from "./pages/university.js";
@@ -13,6 +12,7 @@ import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isRankingPath, i
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
+const GUIDE_SECTION_HASH_RE = /^#guide-[a-z0-9-]+$/i;
 
 
 async function registerServiceWorker() {
@@ -54,9 +54,7 @@ function maybeWakeBackend() {
     const last = Number(lastRaw || 0);
     if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
     sessionStorage.setItem(BACKEND_WAKE_PING_KEY, String(now));
-  } catch (e) {
-    // ignore
-  }
+  } catch (e) {}
 
   const pingUrl = `${API_BASE}/health?t=${now}`;
   fetch(pingUrl, {
@@ -64,9 +62,7 @@ function maybeWakeBackend() {
     cache: "no-store",
     keepalive: true,
     headers: { Accept: "application/json" },
-  }).catch(() => {
-    // non-blocking warmup request
-  });
+  }).catch(() => {});
 }
 
 function initHomePageActions() {
@@ -199,9 +195,7 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
   }
 }
 
-async function initializeCurrentRoute() {
-  syncBodyPageFromRoute();
-  const ctx = currentRouteContext();
+function hydrateRouteShell(ctx = currentRouteContext()) {
   syncNavbarActive(ctx.navPage);
   applyRouteLinks(document);
   hydrateHeroIcons(document);
@@ -210,7 +204,9 @@ async function initializeCurrentRoute() {
   applyTranslations(document);
   initHomePageActions();
   primeRouteLoadingUi(ctx);
+}
 
+async function initRoutePage(ctx = currentRouteContext()) {
   if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isRankingPage) {
     try {
       await initUniversityTranslations();
@@ -221,24 +217,24 @@ async function initializeCurrentRoute() {
 
   if (document.body.dataset.page === "error-404") return;
 
+  await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
+
   if (ctx.isUniversitiesPage) {
-    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
     maybeWakeBackend();
     ensureCityDatabase();
-    await initUniversitiesPage();
-  } else if (ctx.isGuidePage) {
-    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-    await initGuidePage();
-  } else if (ctx.isUniversityPage) {
-    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-    await initUniversityPage();
-  } else if (ctx.isRankingPage) {
-    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-    await initRankingPage();
-  } else {
-    await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-    await initHomePageStats();
+    return initUniversitiesPage();
   }
+  if (ctx.isGuidePage) return initGuidePage();
+  if (ctx.isUniversityPage) return initUniversityPage();
+  if (ctx.isRankingPage) return initRankingPage();
+  return initHomePageStats();
+}
+
+async function initializeCurrentRoute() {
+  syncBodyPageFromRoute();
+  const ctx = currentRouteContext();
+  hydrateRouteShell(ctx);
+  await initRoutePage(ctx);
 }
 
 function stylesheetKeyFrom(link, baseUrl) {
@@ -320,9 +316,7 @@ async function loadAppRoute(rawHref, options = {}) {
   if (appRouteNavigationInFlight) {
     try {
       appRouteNavigationInFlight.abort();
-    } catch (e) {
-      // ignore abort issues
-    }
+    } catch (e) {}
   }
 
   const controller = new AbortController();
@@ -414,77 +408,36 @@ function installClientRouter() {
   });
 }
 
+function shouldRedirectHomeGuideHash(path = window.location.pathname, hash = window.location.hash) {
+  return (isHomePath(path) || isFrontendRootPath(path)) && GUIDE_SECTION_HASH_RE.test(String(hash || "").trim());
+}
+
+function createSiteLoaderController(isHomePage) {
+  const siteLoader = document.getElementById("siteInitialLoader");
+  let dismissed = false;
+  if (siteLoader && !isHomePage) document.body.classList.add("initial-loading");
+  return () => {
+    if (!siteLoader || dismissed) return;
+    dismissed = true;
+    siteLoader.classList.add("is-hidden");
+    document.body.classList.remove("initial-loading");
+    setTimeout(() => siteLoader.remove(), 600);
+  };
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   bindImageFallbacks(document);
 
   const path = window.location.pathname;
   const hash = String(window.location.hash || "").trim();
-  const isGuideSectionHash = /^#guide-[a-z0-9-]+$/i.test(hash);
-  const isFrontendRootPath = /^\/frontend\/?$/i.test(String(path || "").trim());
-  const isHomePage = Boolean(isHomePath(path) || isFrontendRootPath || document.body.dataset.page === "home");
-  if ((isHomePath(path) || isFrontendRootPath) && isGuideSectionHash) {
-    const target = `${routeGuide()}${hash}`;
-    window.location.replace(target);
+  if (shouldRedirectHomeGuideHash(path, hash)) {
+    window.location.replace(`${routeGuide()}${hash}`);
     return;
   }
 
-  const siteLoader = document.getElementById("siteInitialLoader");
-  if (siteLoader && !isHomePage) document.body.classList.add("initial-loading");
-  const isUniversitiesPage = Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList"));
-  const isUniversityPage = Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard"));
-  let siteLoaderDismissed = false;
-  const dismissSiteLoader = () => {
-    if (!siteLoader || siteLoaderDismissed) return;
-    siteLoaderDismissed = true;
-    siteLoader.classList.add("is-hidden");
-    document.body.classList.remove("initial-loading");
-    setTimeout(() => siteLoader.remove(), 600);
-  };
-  const primeRouteLoadingUi = () => {
-    if (isUniversitiesPage) {
-      const skeletonEl = document.getElementById("universitiesSkeleton");
-      const listEl = document.getElementById("universitiesList");
-      const paginationEl = document.getElementById("pagination");
-      if (skeletonEl && !skeletonEl.innerHTML.trim()) {
-        const skeletonCount = getUniversitiesSkeletonCount({ listEl, skeletonEl });
-        skeletonEl.dataset.count = String(skeletonCount);
-        skeletonEl.innerHTML = Array.from({ length: skeletonCount }, () => `
-          <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
-            <div class="uni-media">
-              <div class="uni-price" aria-hidden="true">
-                <div class="skeleton-line" style="width: 64px; height: 11px; margin-left: auto;"></div>
-                <div class="skeleton-line" style="width: 56px; height: 18px; margin: 6px 0 0 auto;"></div>
-              </div>
-              <div class="uni-logo" aria-hidden="true"></div>
-            </div>
-            <div class="uni-body">
-              <div class="skeleton-line" style="width: 86%; height: 17px;"></div>
-              <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
-              <div class="skeleton-line" style="width: 58%;"></div>
-              <div class="skeleton-line" style="width: 72%;"></div>
-              <div class="skeleton-line" style="width: 100%; height: 68px; border-radius: 12px; margin-top: 8px;"></div>
-              <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
-            </div>
-          </article>
-        `).join("");
-      }
-      if (skeletonEl) {
-        skeletonEl.style.display = "grid";
-        skeletonEl.setAttribute("aria-hidden", "false");
-      }
-      if (listEl) listEl.style.visibility = "hidden";
-      if (paginationEl) paginationEl.style.visibility = "hidden";
-      return;
-    }
-
-    if (isUniversityPage) {
-      const detailLoading = document.getElementById("detailLoading");
-      if (detailLoading) {
-        detailLoading.classList.add("is-visible");
-        detailLoading.setAttribute("aria-hidden", "false");
-      }
-    }
-  };
+  const dismissSiteLoader = createSiteLoaderController(
+    Boolean(routePageFromPath(path) === "home" || document.body.dataset.page === "home")
+  );
 
   try {
     initTheme();
@@ -497,60 +450,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     await i18nInitPromise;
     await loadGlobalLayout();
     installClientRouter();
-    hydrateHeroIcons(document);
-    window.dispatchEvent(new CustomEvent("languageChanged"));
-    applyRouteLinks(document);
+    syncBodyPageFromRoute();
 
-    applyAINameConfig();
-    applyTranslations(document);
+    const ctx = currentRouteContext();
+    hydrateRouteShell(ctx);
     initLanguagesPanel();
-    initHomePageActions();
-    primeRouteLoadingUi();
+    window.dispatchEvent(new CustomEvent("languageChanged"));
     dismissSiteLoader();
 
-    const needsUniversityTranslations = Boolean(isUniversitiesPage || isUniversityPage || isRankingPath(path) || document.getElementById("rankingList"));
-    const universityTranslationsPromise = needsUniversityTranslations
-      ? initUniversityTranslations().catch((e) => {
-          console.warn("university translations init failed, using local fallback pack:", e);
-        })
-      : Promise.resolve();
-
-    const pageInitPromise = (async () => {
-      await universityTranslationsPromise;
-      if (document.body.dataset.page === "error-404") {
-        return;
-      }
-      if (isUniversitiesPage) {
-        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-        maybeWakeBackend();
-        ensureCityDatabase();
-        await initUniversitiesPage();
-      } else if (isGuidePath(path) || document.getElementById("guidePage")) {
-        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-        await initGuidePage();
-      } else if (isUniversityDetailPath(path) || document.getElementById("detailCard")) {
-        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-        await initUniversityPage();
-      } else if (isRankingPath(path) || document.getElementById("rankingList")) {
-        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-        await initRankingPage();
-      } else {
-        await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-        await initHomePageStats();
-      }
-    })();
-
-    await pageInitPromise;
+    await initRoutePage(ctx);
 
   } catch (error) {
     console.error("Initialization failed:", error);
-    // Показываем экран ошибки, если всё упало
-    const mainEl = document.querySelector('main') || document.body;
+    const mainEl = document.querySelector("main") || document.body;
     if (mainEl && document.body.dataset.page !== "error-404") {
-        renderNoConnection({
-            targetEl: mainEl,
-            onRetry: () => window.location.reload()
-        });
+      renderNoConnection({
+        targetEl: mainEl,
+        onRetry: () => window.location.reload()
+      });
     }
   } finally {
     dismissSiteLoader();

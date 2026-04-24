@@ -49,6 +49,7 @@ import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { extractUniversityIdFromLocation, navigateToAppRoute, routeUniversities, routeUniversityDetail } from "../routes.js";
 import { initRankingPage } from "./ranking.js";
+import { fetchCompareChances, loadCompareUniversities, resolveAiSortResult } from "./universities/compare-helpers.js";
 import {
   humanizeMachineLabel,
   initUniversityTranslations,
@@ -2252,15 +2253,11 @@ export function initUniversitiesPage() {
             </div>
         `;
 
-        const fallbackById = new Map(cleanIds.map((id) => [id, getRenderedUniversityById(id) || { id, name: getUniversityDisplayNameById(id) }]));
-        const universities = (await Promise.all(cleanIds.map(async (id) => {
-            try {
-                const detail = await fetchUniversityDetailCached(id);
-                return detail || fallbackById.get(id);
-            } catch (e) {
-                return fallbackById.get(id);
-            }
-        }))).filter(Boolean);
+        const universities = await loadCompareUniversities(cleanIds, {
+            getRenderedUniversityById,
+            getUniversityDisplayNameById,
+            fetchUniversityDetailCached,
+        });
 
         if (!isCompareConfigureMode()) return;
         if (universities.length !== COMPARE_PAIR_SIZE) {
@@ -2270,20 +2267,11 @@ export function initUniversitiesPage() {
             return;
         }
 
-        const chances = await Promise.all(cleanIds.map(async (id) => {
-            try {
-                const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/uni-chance`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ profile: loadProfileForApi() }),
-                });
-                if (!res.ok) return null;
-                return await res.json();
-            } catch (e) {
-                return null;
-            }
-        }));
-        compareChancesByUniId = new Map(cleanIds.map((id, idx) => [id, chances[idx]]));
+        compareChancesByUniId = await fetchCompareChances(cleanIds, {
+            apiBase: API_BASE,
+            fetchImpl: fetch,
+            loadProfileForApi,
+        });
 
         let changedChoices = false;
         universities.forEach((u) => {
@@ -2374,30 +2362,16 @@ export function initUniversitiesPage() {
             </div>
         `;
 
-        const fallbackById = new Map(cleanIds.map((id) => [id, getRenderedUniversityById(id) || { id, name: getUniversityDisplayNameById(id) }]));
-        const universities = (await Promise.all(cleanIds.map(async (id) => {
-            try {
-                const detail = await fetchUniversityDetailCached(id);
-                return detail || fallbackById.get(id);
-            } catch (e) {
-                return fallbackById.get(id);
-            }
-        }))).filter(Boolean);
-
-        const chances = await Promise.all(cleanIds.map(async (id) => {
-            try {
-                const res = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/uni-chance`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ profile: loadProfileForApi() }),
-                });
-                if (!res.ok) return null;
-                return await res.json();
-            } catch (e) {
-                return null;
-            }
-        }));
-        compareChancesByUniId = new Map(cleanIds.map((id, idx) => [id, chances[idx]]));
+        const universities = await loadCompareUniversities(cleanIds, {
+            getRenderedUniversityById,
+            getUniversityDisplayNameById,
+            fetchUniversityDetailCached,
+        });
+        compareChancesByUniId = await fetchCompareChances(cleanIds, {
+            apiBase: API_BASE,
+            fetchImpl: fetch,
+            loadProfileForApi,
+        });
 
         if (!isCompareResultsMode()) return;
         if (universities.length !== COMPARE_PAIR_SIZE) {
@@ -2496,15 +2470,11 @@ export function initUniversitiesPage() {
         document.body.style.overflow = "hidden";
         window.setTimeout(() => modal.querySelector(".compare-modal__close")?.focus(), 0);
 
-        const fallbackById = new Map(ids.map((id) => [id, getRenderedUniversityById(id) || { id, name: getUniversityDisplayNameById(id) }]));
-        const universities = (await Promise.all(ids.map(async (id) => {
-            try {
-                const detail = await fetchUniversityDetailCached(id);
-                return detail || fallbackById.get(id);
-            } catch (e) {
-                return fallbackById.get(id);
-            }
-        }))).filter(Boolean);
+        const universities = await loadCompareUniversities(ids, {
+            getRenderedUniversityById,
+            getUniversityDisplayNameById,
+            fetchUniversityDetailCached,
+        });
 
         if (!modal.classList.contains("is-open") || universities.length !== COMPARE_PAIR_SIZE) return;
         const metrics = compareMetrics(universities);
@@ -4423,52 +4393,20 @@ export function initUniversitiesPage() {
         }
         const isAiSort = (state.sort === "uni_ai");
         if (isAiSort) {
-            const canUseFallback = state.viewMode === "list" && !hasInitialListPaint && state.page === 1;
-            if (!canUseFallback) {
-                try {
-                    const aiData = await fetchUniversitiesAiSort(buildAiSortPayload());
-                    if (aiData?.__aborted) return;
-                    if (runSeq !== fetchRunSeq) return;
-                    renderFetchedData(aiData);
-                } catch (err) {
-                    if (err?.name === "AbortError") return;
-                    console.warn("AI sort failed, fallback list is used.", err);
-                    const fallbackData = await fetchUniversities(buildFallbackListParams(apiParams));
-                    if (fallbackData?.__aborted) return;
-                    if (runSeq !== fetchRunSeq) return;
-                    renderFetchedData(fallbackData);
-                }
-                return;
-            }
-
-            const aiPayload = buildAiSortPayload();
-            const aiPromise = fetchUniversitiesAiSort(aiPayload).catch((err) => {
-                if (err?.name !== "AbortError") {
-                    console.warn("AI sort request failed, fallback list is kept.", err);
-                }
-                return null;
+            await resolveAiSortResult({
+                canUseFastFallback: state.viewMode === "list" && !hasInitialListPaint && state.page === 1,
+                fastFallbackMs: AI_FAST_FALLBACK_MS,
+                fetchAi: () => fetchUniversitiesAiSort(buildAiSortPayload()),
+                fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams)),
+                isCurrentRun: () => runSeq === fetchRunSeq && state.sort === "uni_ai",
+                renderData: renderFetchedData,
+                onAiError: (err, mode) => {
+                    const message = mode === "direct"
+                        ? "AI sort failed, fallback list is used."
+                        : "AI sort request failed, fallback list is kept.";
+                    console.warn(message, err);
+                },
             });
-            const fastAiData = await Promise.race([
-                aiPromise,
-                new Promise((resolve) => window.setTimeout(() => resolve(null), AI_FAST_FALLBACK_MS)),
-            ]);
-
-            if (fastAiData && !fastAiData.__aborted) {
-                if (runSeq !== fetchRunSeq) return;
-                renderFetchedData(fastAiData);
-                return;
-            }
-
-            const fallbackData = await fetchUniversities(buildFallbackListParams(apiParams));
-            if (fallbackData?.__aborted) return;
-            if (runSeq !== fetchRunSeq) return;
-            renderFetchedData(fallbackData);
-
-            const lateAiData = await aiPromise;
-            if (!lateAiData || lateAiData.__aborted) return;
-            if (runSeq !== fetchRunSeq) return;
-            if (state.sort !== "uni_ai") return;
-            renderFetchedData(lateAiData);
             return;
         }
 

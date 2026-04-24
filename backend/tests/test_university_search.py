@@ -2,6 +2,7 @@ import copy
 import unittest
 from unittest.mock import patch
 
+from app.services import search as search_service
 from app.services import universities as uni_service
 
 
@@ -206,6 +207,12 @@ class UniversitySearchTests(unittest.TestCase):
 
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual([], ids)
+
+    def test_edit_distance_allows_single_missing_character(self):
+        self.assertTrue(search_service._edit_distance_leq_one("cambridge", "cambrdge"))
+
+    def test_edit_distance_rejects_transposition(self):
+        self.assertFalse(search_service._edit_distance_leq_one("ab", "ba"))
 
 
 if __name__ == "__main__":
