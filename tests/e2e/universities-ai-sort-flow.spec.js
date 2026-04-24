@@ -1,6 +1,11 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
 const { selectors, setRangeValue } = require("./helpers/selectors");
+const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
+
+test.beforeEach(async ({ page }) => {
+  await mockAllExpensiveEndpoints(page);
+});
 
 test("universities page uses AI sort with realistic search/filter interactions", async ({ page }) => {
   await seedProfile(page, personas.ruStemGrant.profile);

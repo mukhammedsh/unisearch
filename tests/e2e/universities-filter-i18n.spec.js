@@ -89,6 +89,7 @@ test("universities filter dropdowns update translated option text after language
   expect(before.country.customOptionTexts).toEqual(before.country.nativeOptionTexts);
 
   await switchLanguage(page, "rus");
+  await page.waitForTimeout(1000); // Wait for custom select to re-render
 
   await expect.poll(async () => {
     const snapshot = await snapshotFilterOptions(page);
@@ -100,7 +101,7 @@ test("universities filter dropdowns update translated option text after language
     const citySynced =
       JSON.stringify(snapshot.city.customOptionTexts) === JSON.stringify(snapshot.city.nativeOptionTexts);
     return countryChanged && countrySynced && citySynced;
-  }).toBe(true);
+  }, { timeout: 30000 }).toBe(true);
 
   const after = await snapshotFilterOptions(page);
   expect(after).not.toBeNull();

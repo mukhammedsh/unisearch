@@ -1,8 +1,10 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors } = require("./helpers/selectors");
+const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test("language switch keeps unsaved profile draft", async ({ page }) => {
+  await mockAllExpensiveEndpoints(page);
   await markTourAsSeen(page);
   await page.goto("/universities.html");
 
@@ -32,6 +34,7 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
 });
 
 test("profile major options are localized on initial russian load", async ({ page }) => {
+  await mockAllExpensiveEndpoints(page);
   await markTourAsSeen(page);
   await page.addInitScript(() => {
     window.localStorage.setItem("unisearch_ui_language_v1", "rus");

@@ -32,13 +32,15 @@ const personas = {
 
 async function seedProfile(page, profile) {
   await page.addInitScript(
-    ({ tourKey, storageKey, value }) => {
+    ({ tourKey, storageKey, filtersKey, value }) => {
       localStorage.setItem(tourKey, "1");
+      localStorage.removeItem(filtersKey);
       localStorage.setItem(storageKey, JSON.stringify(value));
     },
     {
       tourKey: tourSeenKey,
       storageKey: profileStorageKey,
+      filtersKey: "unisearch_filters",
       value: profile || {},
     }
   );

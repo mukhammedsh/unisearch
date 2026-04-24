@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.0 (2026-04-24) - AI Sorting E2E Stability and Mocking
+
+Status:
+- synchronized runtime/package version to `3.7.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- implemented a centralized E2E network mocking system in `tests/e2e/helpers/mocks.js` covering `/universities/ai-sort`, `/universities`, `/exams/validate`, and `/languages/validate` to eliminate 429 Rate Limit errors and flakiness in CI;
+- refactored `resolveAiSortResult` in `compare-helpers.js` to properly manage AI resolution state, preventing race conditions and redundant renders when fallback and AI data arrive concurrently;
+- hardened the profile seeding helper to clear filters between tests, preventing state leakage and ensuring deterministic sort-mode selection;
+- disabled backend rate-limiting and semantic embeddings in `playwright.config.js` for CI environments to further stabilize the test suite.
+
 ## 3.6.1 (2026-04-24) - Fix Module Resolution Errors
 
 Status:

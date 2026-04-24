@@ -62,37 +62,70 @@ export async function resolveAiSortResult(options = {}) {
   if (!canUseFastFallback) {
     try {
       const aiData = await fetchAi();
-      if (!aiData?.__aborted && isCurrentRun()) renderData(aiData);
+      if (!aiData?.__aborted && isCurrentRun()) {
+        renderData(aiData);
+      }
       return;
     } catch (error) {
       if (error?.name === "AbortError") return;
       onAiError(error, "direct");
     }
     const fallbackData = await fetchFallback();
-    if (!fallbackData?.__aborted && isCurrentRun()) renderData(fallbackData);
+    if (!fallbackData?.__aborted && isCurrentRun()) {
+      renderData(fallbackData);
+    }
     return;
   }
 
-  const aiPromise = fetchAi().catch((error) => {
-    if (error?.name !== "AbortError") onAiError(error, "fast-fallback");
-    return null;
+  let aiResolved = false;
+  let aiDataResult = null;
+
+  const aiPromise = (async () => {
+    try {
+      const data = await fetchAi();
+      aiResolved = true;
+      aiDataResult = data;
+      return data;
+    } catch (error) {
+      aiResolved = true;
+      if (error?.name !== "AbortError") onAiError(error, "fast-fallback");
+      return null;
+    }
+  })();
+
+  const timeoutPromise = new Promise((resolve) => {
+    window.setTimeout(() => resolve("timeout"), fastFallbackMs);
   });
-  const fastAiData = await Promise.race([
-    aiPromise,
-    new Promise((resolve) => window.setTimeout(() => resolve(null), fastFallbackMs)),
-  ]);
 
-  if (fastAiData && !fastAiData.__aborted && isCurrentRun()) {
-    renderData(fastAiData);
+  const firstResult = await Promise.race([aiPromise, timeoutPromise]);
+
+  if (firstResult !== "timeout") {
+    // AI responded within timeout
+    if (aiDataResult && !aiDataResult.__aborted && isCurrentRun()) {
+      renderData(aiDataResult);
+    }
     return;
   }
 
+  // Timeout reached, check if AI is ALREADY resolved (race condition)
+  if (aiResolved) {
+    if (aiDataResult && !aiDataResult.__aborted && isCurrentRun()) {
+      renderData(aiDataResult);
+    }
+    return;
+  }
+
+  // Still no AI, fetch fallback
   const fallbackData = await fetchFallback();
-  if (!fallbackData?.__aborted && isCurrentRun()) {
+  
+  // If AI resolved while we were fetching fallback, or if this run is stale, don't render fallback
+  if (!aiResolved && fallbackData && !fallbackData.__aborted && isCurrentRun()) {
     renderData(fallbackData);
   }
-  const lateAiData = await aiPromise;
-  if (lateAiData && !lateAiData.__aborted && isCurrentRun()) renderData(lateAiData);
 
-  return;
+  // Wait for late AI anyway to upgrade quality
+  const lateAiData = await aiPromise;
+  if (lateAiData && !lateAiData.__aborted && isCurrentRun()) {
+    renderData(lateAiData);
+  }
 }

@@ -1,8 +1,10 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
+const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test("profile accepts realistic user input and persists after reload", async ({ page }) => {
+  await mockAllExpensiveEndpoints(page);
   await markTourAsSeen(page);
   await page.goto("/universities.html");
 

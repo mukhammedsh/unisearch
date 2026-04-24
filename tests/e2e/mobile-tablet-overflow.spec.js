@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
+const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 const viewports = [
   { name: "narrow", width: 320, height: 568 },
@@ -73,6 +74,7 @@ async function expectResponsiveMenuUsable(page, label) {
 
 for (const viewport of viewports) {
   test(`no horizontal overflow on key pages (${viewport.name})`, async ({ page }) => {
+    await mockAllExpensiveEndpoints(page);
     await seedProfile(page, personas.enResearch.profile);
     await page.setViewportSize({
       width: viewport.width,

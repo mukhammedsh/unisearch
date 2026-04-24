@@ -1,6 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
 const { selectors, setRangeValue } = require("./helpers/selectors");
+const { mockAiSort } = require("./helpers/mocks");
 
 /**
  * Full UniFit end-to-end flow:
@@ -11,7 +12,12 @@ const { selectors, setRangeValue } = require("./helpers/selectors");
  * 5. Verify result order changes after slider adjustment
  */
 test.describe("UniFit end-to-end flow", () => {
+  test.beforeEach(async ({ page }) => {
+    // Moved mocking to individual tests to allow fallback verification
+  });
+
   test("profile-seeded user sees AI-sorted results with match data on page load", async ({ page }) => {
+    await mockAiSort(page);
     await seedProfile(page, personas.ruStemGrant.profile);
 
     const aiSortPromise = page.waitForResponse(
@@ -40,6 +46,7 @@ test.describe("UniFit end-to-end flow", () => {
   });
 
   test("adjusting sliders triggers re-sort and cards update", async ({ page }) => {
+    await mockAiSort(page);
     await seedProfile(page, personas.enResearch.profile);
 
     // Wait for the initial sort
@@ -80,6 +87,7 @@ test.describe("UniFit end-to-end flow", () => {
   });
 
   test("AI-sorted cards contain expected matchData-driven UI elements", async ({ page }) => {
+    await mockAiSort(page);
     await seedProfile(page, personas.ruStemGrant.profile);
 
     const aiSort = page.waitForResponse(
