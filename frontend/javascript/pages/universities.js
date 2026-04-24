@@ -237,22 +237,15 @@ export function initUniversitiesPage() {
     const logTranslationDebug = (stage, details = {}) => {
         if (!isTranslationDebugEnabled) return;
         try {
-            console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
-            Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
-            console.groupEnd();
+            // Disabled sensitive logging to console for security
+            // console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
+            // Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
+            // console.groupEnd();
         } catch (e) {
             // ignore logging errors
         }
     };
-    logTranslationDebug("debug mode enabled", {
-        enabled: true,
-        note: "ML + translation debug is enabled by APP_DEBUG runtime flag.",
-    });
 
-    const getProfileFundingQueryValue = () => {
-        const profile = loadProfile();
-        return fundingPreferenceToQueryValue(profile?.fundingType || profile?.funding_type || "any");
-    };
 
     function hasProfileEvidence(profile) {
         const exams = Array.isArray(profile?.exams) ? profile.exams : [];
@@ -1012,7 +1005,8 @@ export function initUniversitiesPage() {
     const compareFundingChoiceText = (u) => {
         const option = compareSelectedAdmissionOption(u);
         if (!option) return t("common.na", "N/A");
-        const badge = renderTrackFundingBadge(option).replace(/<[^>]+>/g, "").trim();
+        const badgeHtml = renderTrackFundingBadge(option);
+        const badge = (new DOMParser().parseFromString(badgeHtml, "text/html")).body.textContent?.trim() || "";
         const optionLabelRaw = String(option?.label || "").trim();
         const parentLabelRaw = String(option?.__parent_track_label || "").trim();
         const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";

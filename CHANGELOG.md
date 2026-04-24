@@ -2,6 +2,23 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.2 (2026-04-24) - Security Hardening and Repository Hygiene
+
+Status:
+- hardened `ops_request_is_authorized` in `backend/app/core/security.py` using `hmac.compare_digest` to prevent timing attacks;
+- performed a full project hygiene check: removed residual log files and temporary artifacts;
+- verified file encoding consistency (UTF-8) across the entire codebase.
+
+## 3.7.1 (2026-04-24) - Security Hardening and Repository Hygiene
+
+Status:
+- synchronized runtime/package version to `3.7.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- upgraded ETag hashing algorithm from `SHA1` to `SHA256` in `backend/app/services/universities.py` to address security advisories;
+- refactored HTML sanitization in `frontend/javascript/pages/universities.js` to use `DOMParser` instead of unsafe regular expressions, mitigating XSS risks;
+- disabled insecure clear-text logging of data objects in the `logTranslationDebug` function to prevent sensitive information leakage;
+- added `SECURITY.md` with vulnerability reporting guidelines and security practices;
+- added `CODE_OF_CONDUCT.md` and `SUPPORT.md` to formalize community standards and help channels.
+
 ## 3.7.0 (2026-04-24) - AI Sorting E2E Stability and Mocking
 
 Status:

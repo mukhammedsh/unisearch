@@ -191,9 +191,6 @@ The backend image runs as a non-root user. Redis is available only on the intern
 For VPS or Docker hosting behind a reverse proxy, see [deployment security notes](docs/deployment_security.md) for Caddy and Nginx examples.
 
 ## Optional translation service (LibreTranslate)
-If `ML_INTEREST_TRANSLATION_ENABLED=1`, the backend expects:
-- `LIBRETRANSLATE_URL=http://127.0.0.1:5000/translate`
-
 Docker example:
 ```bash
 docker run -d --name unisearch-libretranslate -p 5000:5000 libretranslate/libretranslate
@@ -448,6 +445,8 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.7.2` on `2026-04-24`
+- `3.7.1` on `2026-04-24`
 - `3.7.0` on `2026-04-24`
 - `3.6.1` on `2026-04-24`
 - `3.6.0` on `2026-04-24`

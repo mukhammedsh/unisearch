@@ -1,3 +1,4 @@
+import hmac
 import threading
 import time
 import uuid
@@ -171,7 +172,11 @@ def ops_request_is_authorized(request: Request) -> bool:
     auth_value = str(request.headers.get("authorization", "")).strip()
     bearer_prefix = "bearer "
     bearer_value = auth_value[len(bearer_prefix):].strip() if auth_value.lower().startswith(bearer_prefix) else ""
-    return header_value == token or bearer_value == token
+    
+    return (
+        hmac.compare_digest(header_value, token) or 
+        hmac.compare_digest(bearer_value, token)
+    )
 
 
 def protected_ops_response() -> JSONResponse:

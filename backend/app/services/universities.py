@@ -1791,7 +1791,7 @@ def get_university_etag(university_id: str, search_lang: Optional[str] = None) -
     tr_key = "none" if tr_mtime is None else str(tr_mtime)
     # Include the derived detail representation version so cache invalidation
     # also happens when backend normalization changes without a data-file mtime bump.
-    digest = hashlib.sha1(
+    digest = hashlib.sha256(
         f"{mtime_key}:{tr_key}:{uid}:{lang}:{UNIVERSITY_DETAIL_REPR_VERSION}".encode("utf-8")
     ).hexdigest()
     return f"\"{digest}\""
