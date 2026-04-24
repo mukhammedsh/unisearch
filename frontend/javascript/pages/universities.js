@@ -1,8 +1,9 @@
-/* frontend/javascript/pages.js */
+﻿/* frontend/javascript/pages.js */
 
 import {
   API_BASE,
   $,
+  bindImageFallbacks,
   debounce,
   loadFilters,
   saveFilters,
@@ -1092,7 +1093,7 @@ export function initUniversitiesPage() {
             : 0;
         if (!sources && !facts) return t("common.na", "N/A");
         if (getCurrentLanguage() === "rus") {
-            return `${sources} ${ruPlural(sources, "источник", "источника", "источников")} / ${facts} ${ruPlural(facts, "факт", "факта", "фактов")}`;
+            return `${sources} ${ruPlural(sources, "РёСЃС‚РѕС‡РЅРёРє", "РёСЃС‚РѕС‡РЅРёРєР°", "РёСЃС‚РѕС‡РЅРёРєРѕРІ")} / ${facts} ${ruPlural(facts, "С„Р°РєС‚", "С„Р°РєС‚Р°", "С„Р°РєС‚РѕРІ")}`;
         }
         return tFormat("universities.compare.verified_count", { sources: String(sources), facts: String(facts) }, `${sources} sources / ${facts} facts`);
     };
@@ -3164,7 +3165,7 @@ export function initUniversitiesPage() {
         el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
-    // --- РљР°СЂС‚Р° ---
+    // --- Р С™Р В°РЎР‚РЎвЂљР В° ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
@@ -3773,7 +3774,7 @@ export function initUniversitiesPage() {
                             </button>
                             <div class="u-map-result-bottom">
                                 <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost"))}</span>
-                                <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details →"))}</a>
+                                <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details в†’"))}</a>
                             </div>
                         </article>
                     `;
@@ -4443,7 +4444,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (Р‘Р•Р— ROI) ---
+    // --- RENDER CARD (Р вЂР вЂўР вЂ” ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -4462,13 +4463,13 @@ export function initUniversitiesPage() {
         });
         const match = u.matchData || {};
 
-        // Р‘Р°Р·РѕРІР°СЏ С†РµРЅР° (С‚СЂРµРєРѕРІР°СЏ, РµСЃР»Рё algo РµС‘ РґР°Р»)
+        // Р вЂР В°Р В·Р С•Р Р†Р В°РЎРЏ РЎвЂ Р ВµР Р…Р В° (РЎвЂљРЎР‚Р ВµР С”Р С•Р Р†Р В°РЎРЏ, Р ВµРЎРѓР В»Р С‘ algo Р ВµРЎвЂ Р Т‘Р В°Р В»)
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
         (match.cost !== undefined ? match.cost : null) ??
         nested(u, ["finance", "total_cost_year_usd"], 0);
 
-        // РС‚РѕРіРѕРІР°СЏ С†РµРЅР° СЃ СѓС‡С‘С‚РѕРј scholarship amount (РµСЃР»Рё РµСЃС‚СЊ)
+        // Р ВРЎвЂљР С•Р С–Р С•Р Р†Р В°РЎРЏ РЎвЂ Р ВµР Р…Р В° РЎРѓ РЎС“РЎвЂЎРЎвЂРЎвЂљР С•Р С scholarship amount (Р ВµРЎРѓР В»Р С‘ Р ВµРЎРѓРЎвЂљРЎРЉ)
         const cost =
         (match.finalPrice !== undefined ? match.finalPrice : null) ??
         (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
@@ -4546,7 +4547,7 @@ export function initUniversitiesPage() {
         }
 
         if (overBudget) {
-            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available")));
+            if (aidAny) badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget_aid", "Over Budget вЂў Aid Available")));
             else badges.push(renderUniPill("banknotes", "uni-pill--budget", t("universities.badge.over_budget", "Over Budget")));
         } else if (aidAny) {
             badges.push(renderUniPill("check-circle", "uni-pill--success", t("universities.badge.aid_available", "Aid Available")));
@@ -4620,7 +4621,7 @@ export function initUniversitiesPage() {
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
             <div class="uni-footer">
-                <span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>
+                <span class="uni-details">${detailLabel}<span aria-hidden="true">в†’</span></span>
             </div>
             </div>
             <a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
@@ -4634,11 +4635,11 @@ export function initUniversitiesPage() {
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
         let html = ""; const p = state.page; const maxVisible = 5;
         const createBtn = (page, text, isActive = false) => { const activeClass = isActive ? "page-btn--active" : ""; return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`; };
-        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, `‹ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
+        if (p > 1) { html += createBtn(1, "В«"); html += createBtn(p - 1, `вЂ№ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
         let startPage, endPage;
         if (totalPages <= maxVisible) { startPage = 1; endPage = totalPages; } else { const maxPagesBefore = Math.floor(maxVisible / 2); const maxPagesAfter = Math.ceil(maxVisible / 2) - 1; if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; } }
         if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} ›`); html += createBtn(totalPages, "»"); }
+        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} вЂє`); html += createBtn(totalPages, "В»"); }
         el.pagination.innerHTML = html;
         el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
     }

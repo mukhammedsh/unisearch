@@ -19,6 +19,7 @@ import {
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
 import { initProfileUI } from "./components/profile-ui.js";
+import { SETTING_STORE_RECENT_UNIVERSITIES, SETTING_OPEN_UNIVERSITIES_NEW_TAB } from "./settings.js";
 
 
 // HTML-РєРѕРґ РјРµРЅСЋ Рё РїСЂРѕС„РёР»СЏ (РІС€РёС‚ РїСЂСЏРјРѕ СЃСЋРґР°, С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ РїСЂРѕР±Р»РµРј СЃ Р·Р°РіСЂСѓР·РєРѕР№ С„Р°Р№Р»РѕРІ)

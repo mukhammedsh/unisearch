@@ -50,17 +50,9 @@ import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "../routes.js";
 import {
-  SETTINGS_CACHE_KEY,
-  SETTINGS_DEFINITIONS,
-  SETTING_DISABLE_RECENT_UNIVERSITIES,
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_OPEN_UNIVERSITIES_NEW_TAB,
-  getSettingValue,
-  readSettingsArray,
-  setSettingValue,
-  shouldOpenUniversitiesInNewTab,
   shouldStoreRecentUniversities,
-  writeSettingsArray,
 } from "../settings.js";
 import {
   humanizeMachineLabel,
@@ -78,18 +70,6 @@ import {
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import {
-  __detailFinanceResizeHandler,
-  __detailFinanceResizeObserver,
-  __detailLanguageChangedHandler,
-  __detailProfileUpdatedHandler,
-  __guideExternalUpdateHandler,
-  __guideHashChangeHandler,
-  __rankingLanguageChangedHandler,
-  __universitiesLanguageChangedHandler,
-  __universitiesMapCardActionHandler,
-  __universitiesProfileUpdatedHandler,
-  bindGuideExternalUpdates,
-  bindGuideHashChange,
   COMPARE_ADMISSION_CHOICES_KEY,
   COMPARE_UNIVERSITIES_KEY,
   DETAIL_CACHE_KEY,
@@ -109,22 +89,32 @@ import {
   setDetailCacheEntry,
   shouldOpenUniversitiesInNewTab,
   touchDetailCacheEntry,
-  UNIVERSITIES_TOUR_SEEN_KEY,
   writeDetailCache,
   writeIdListStorage,
 } from "./shared/cache.js";
 export {
-  SETTINGS_CACHE_KEY,
-  SETTINGS_DEFINITIONS,
-  SETTING_DISABLE_RECENT_UNIVERSITIES,
-  SETTING_STORE_RECENT_UNIVERSITIES,
-  SETTING_OPEN_UNIVERSITIES_NEW_TAB,
-  getSettingValue,
-  readSettingsArray,
-  setSettingValue,
+  // shared/cache.js re-exports (used by universities.js)
+  COMPARE_ADMISSION_CHOICES_KEY,
+  COMPARE_UNIVERSITIES_KEY,
+  DETAIL_CACHE_KEY,
+  DETAIL_CACHE_MAX_ITEMS,
+  DETAIL_CACHE_TTL_MS,
+  fetchUniversityDetailCached,
+  getDetailCacheEntry,
+  hasSeenUniversitiesTour,
+  markUniversitiesTourSeen,
+  MAX_COMPARE_UNIVERSITIES,
+  MAX_RECENT_UNIVERSITIES,
+  readDetailCache,
+  readIdListStorage,
+  RECENT_UNIVERSITIES_KEY,
+  rememberRecentUniversity,
+  SAVED_UNIVERSITIES_KEY,
+  setDetailCacheEntry,
   shouldOpenUniversitiesInNewTab,
-  shouldStoreRecentUniversities,
-  writeSettingsArray,
+  touchDetailCacheEntry,
+  writeDetailCache,
+  writeIdListStorage,
 };
 export const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
 

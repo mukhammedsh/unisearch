@@ -24,7 +24,7 @@ import {
   showToast,
   toggleTheme,
 } from "../utils.js";
-import { getCurrentLanguage, t, tFormat } from "../i18n.js";
+import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { setHeroIcon } from "../icons.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
@@ -1258,7 +1258,8 @@ export function initProfileUI() {
         if (profileFundingTypeSelect) profileFundingTypeSelect.value = normalizeFundingType(profile.fundingType);
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
-        renderInterestsTranslationWarning(__translationStatusCache.data);
+        renderInterestsTranslationWarning(null);
+        fetchTranslationRuntimeStatus(API_BASE).then((status) => renderInterestsTranslationWarning(status)).catch(() => {});
         renderProfileData();
         refreshSaveState();
     };
