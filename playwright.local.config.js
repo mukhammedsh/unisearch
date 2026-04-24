@@ -38,7 +38,7 @@ module.exports = defineConfig({
       },
     },
     {
-      command: 'python -m http.server 5510 --bind 127.0.0.1',
+      command: `${backendPython} -m http.server 5510 --bind 127.0.0.1`,
       cwd: 'frontend',
       url: 'http://127.0.0.1:5510/index.html',
       timeout: 60000,

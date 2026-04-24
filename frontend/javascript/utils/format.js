@@ -91,7 +91,7 @@ export function initials(name) {
 
 export function moneyUSD(value) {
   const amount = Number(value);
-  if (!Number.isFinite(amount)) return "вЂ”";
+  if (!Number.isFinite(amount)) return "—";
   return `$${new Intl.NumberFormat("en-US").format(amount)}`;
 }
 
@@ -130,36 +130,49 @@ const COUNTRY_CODES = {
 const COUNTRY_FLAG_ALIASES = {
   au: "au",
   australia: "au",
+  "австралия": "au",
   ca: "ca",
   canada: "ca",
+  "канада": "ca",
   ch: "ch",
   switzerland: "ch",
+  "швейцария": "ch",
   cn: "cn",
   china: "cn",
+  "китай": "cn",
   de: "de",
   germany: "de",
+  "германия": "de",
   gb: "gb",
   uk: "gb",
   "united kingdom": "gb",
   "great britain": "gb",
+  "великобритания": "gb",
   hk: "hk",
   "hong kong": "hk",
+  "гонконг": "hk",
   jp: "jp",
   japan: "jp",
+  "япония": "jp",
   kr: "kr",
   "south korea": "kr",
   "republic of korea": "kr",
+  "южная корея": "kr",
   kz: "kz",
   kazakhstan: "kz",
+  "казахстан": "kz",
   nl: "nl",
   netherlands: "nl",
   holland: "nl",
+  "нидерланды": "nl",
   sg: "sg",
   singapore: "sg",
+  "сингапур": "sg",
   us: "us",
   usa: "us",
   "united states": "us",
   "united states of america": "us",
+  "сша": "us",
 };
 
 const LANGUAGE_FLAG_CODES = {
