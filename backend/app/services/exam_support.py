@@ -142,11 +142,14 @@ def exam_supports_percentile_normalization(exam_key: Any) -> bool:
 
 def validate_numeric_score(exam_key: str, cfg: Dict[str, Any], score_raw: Any) -> Union[int, float]:
     score_type = str(cfg.get("type", "float")).lower()
-    if score_raw is None or score_raw == "":
+    if score_raw is None or str(score_raw).strip() == "":
         raise ValueError(f"{exam_key} score is required")
     try:
         value = to_decimal(score_raw)
     except (InvalidOperation, ValueError):
+        raise ValueError("Invalid score format")
+
+    if value.is_nan() or value.is_infinite():
         raise ValueError("Invalid score format")
 
     min_value = to_decimal(cfg.get("min", 0))

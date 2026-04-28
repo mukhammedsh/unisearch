@@ -73,5 +73,36 @@ class TextTranslationTests(unittest.TestCase):
         self.assertEqual("en", text_translation_service._detect_source_lang("", "eng"))
         self.assertEqual("auto", text_translation_service._detect_source_lang("", ""))
 
+    def test_translate_empty_text(self):
+        out = text_translation_service.translate_interest_text_for_ml("")
+        self.assertEqual("", out.get("text"))
+        self.assertEqual("empty", out.get("reason"))
+
+    def test_translation_disabled(self):
+        with patch.object(text_translation_service, "ML_INTEREST_TRANSLATION_ENABLED", False):
+            out = text_translation_service.translate_interest_text_for_ml("hello")
+        self.assertEqual("hello", out.get("text"))
+        self.assertEqual("disabled", out.get("reason"))
+
+    def test_provider_backoff(self):
+        with patch.object(text_translation_service, "ML_INTEREST_TRANSLATION_ENABLED", True), patch.object(
+            text_translation_service, "ML_INTEREST_TRANSLATION_PROVIDER", "libretranslate"
+        ), patch.object(
+            text_translation_service, "_provider_in_backoff", return_value=True
+        ):
+            out = text_translation_service.translate_interest_text_for_ml("hello")
+        self.assertEqual("hello", out.get("text"))
+        self.assertEqual("provider_backoff", out.get("reason"))
+
+    def test_rate_limited(self):
+        with patch.object(text_translation_service, "ML_INTEREST_TRANSLATION_ENABLED", True), patch.object(
+            text_translation_service, "ML_INTEREST_TRANSLATION_PROVIDER", "libretranslate"
+        ), patch.object(
+            text_translation_service._TRANSLATION_RATE_LIMITER, "check", return_value=(False, 0, 10.0)
+        ):
+            out = text_translation_service.translate_interest_text_for_ml("hello")
+        self.assertEqual("hello", out.get("text"))
+        self.assertEqual("rate_limited", out.get("reason"))
+
 if __name__ == "__main__":
     unittest.main()
