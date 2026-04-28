@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.4 (2026-04-28) - UI Fixes and Encoding Fixer Improvements
+
+Status:
+- synchronized runtime/package version to `3.7.4` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- changed Universities map mode to show map results as a horizontal list above a wider rectangular map in both Catalog and Comparing;
+- improved mobile map-result cards with compact horizontal scrolling, hidden mobile scrollbars, clearer next-card peek, tighter typography, and stable row actions;
+- expanded map popups so university cards are shown without Leaflet height clipping and changed university map markers from circular logos to rounded-square logos;
+- updated visible catalog coverage to `40` universities across `13` countries and added the Render web demo link to README;
+- added `scripts/check-encoding.mjs` with `npm run fix:encoding` and `npm run check:encoding` commands for BOM/mojibake/UTF-8 checks;
+- documented the encoding guard in `AGENTS.md` and `CLAUDE.md`, and included encoding checks in the minimum release/test workflow;
+- repaired mojibake in shared frontend comments and the Russian language option, plus aligned comparison localization keys for category titles and fallback labels.
+
 ## 3.7.2 (2026-04-24) - Security Hardening and Repository Hygiene
 
 Status:

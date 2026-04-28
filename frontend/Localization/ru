@@ -454,20 +454,29 @@ universities.compare.row.campus_area: Площадь кампуса
 universities.compare.row.exam_requirement: Минимум {exam}
 universities.compare.row.exam_average: Средний балл поступивших: {exam}
 universities.compare.row.language_exam_requirement: Языковой минимум {exam}
-universities.compare.category.prestige: Престижность
-universities.compare.category.prestige_sub: Рейтинг и селективность
-universities.compare.category.admissions: Поступление
-universities.compare.category.admissions_sub: Доступность, треки и требования
-universities.compare.category.finance: Финансы
-universities.compare.category.finance_sub: Стоимость и гибкость помощи
-universities.compare.category.academics: Академика
-universities.compare.category.academics_sub: Ширина программ и форматов
-universities.compare.category.outcomes: Результаты
-universities.compare.category.outcomes_sub: Опубликованные карьерные сигналы
-universities.compare.category.data: Надёжность данных
-universities.compare.category.data_sub: Проверенные факты и источники
-universities.compare.category.context: Контекст
-universities.compare.category.context_sub: Масштаб и кампусная среда
+universities.compare.category.prestige.title: Престижность
+universities.compare.category.prestige.subtitle: Рейтинг и селективность
+universities.compare.category.admissions.title: Поступление
+universities.compare.category.admissions.subtitle: Доступность, треки и требования
+universities.compare.category.finance.title: Финансы
+universities.compare.category.finance.subtitle: Стоимость и гибкость помощи
+universities.compare.category.academics.title: Академика
+universities.compare.category.academics.subtitle: Ширина программ и форматов
+universities.compare.category.outcomes.title: Результаты
+universities.compare.category.outcomes.subtitle: Опубликованные карьерные сигналы
+universities.compare.category.data.title: Надёжность данных
+universities.compare.category.data.subtitle: Проверенные факты и источники
+universities.compare.category.context.title: Контекст
+universities.compare.category.context.subtitle: Масштаб и кампусная среда
+universities.compare.exams_required: Требуемые экзамены
+universities.compare.funding.grant: Грант
+universities.compare.funding.paid: Платно
+universities.compare.quality.basic: Базовое
+universities.compare.quality.high: Высокое
+universities.compare.quality.medium: Среднее
+universities.compare.slot_label: Университет {index}
+universities.compare.source_note: Источник: {source}
+universities.compare.standard_requirements: Стандартные
 universities.compare.differences.title: Ключевые отличия
 universities.compare.differences.subtitle: Показываем самые заметные опубликованные плюсы каждого выбранного университета.
 universities.compare.differences.reasons_for: {name}

@@ -453,20 +453,29 @@ universities.compare.row.campus_area: Campus area
 universities.compare.row.exam_requirement: {exam} requirement
 universities.compare.row.exam_average: Admitted score: {exam}
 universities.compare.row.language_exam_requirement: {exam} language minimum
-universities.compare.category.prestige: Prestige
-universities.compare.category.prestige_sub: Rank and selectivity signals
-universities.compare.category.admissions: Admissions
-universities.compare.category.admissions_sub: Access, tracks, and requirements
-universities.compare.category.finance: Finance
-universities.compare.category.finance_sub: Cost and aid flexibility
-universities.compare.category.academics: Academics
-universities.compare.category.academics_sub: Program breadth and study options
-universities.compare.category.outcomes: Outcomes
-universities.compare.category.outcomes_sub: Published career outcome signals
-universities.compare.category.data: Data confidence
-universities.compare.category.data_sub: Verified facts and sources
-universities.compare.category.context: Context
-universities.compare.category.context_sub: Scale and campus context
+universities.compare.category.prestige.title: Prestige
+universities.compare.category.prestige.subtitle: Rank and selectivity signals
+universities.compare.category.admissions.title: Admissions
+universities.compare.category.admissions.subtitle: Access, tracks, and requirements
+universities.compare.category.finance.title: Finance
+universities.compare.category.finance.subtitle: Cost and aid flexibility
+universities.compare.category.academics.title: Academics
+universities.compare.category.academics.subtitle: Program breadth and study options
+universities.compare.category.outcomes.title: Outcomes
+universities.compare.category.outcomes.subtitle: Published career outcome signals
+universities.compare.category.data.title: Data confidence
+universities.compare.category.data.subtitle: Verified facts and sources
+universities.compare.category.context.title: Context
+universities.compare.category.context.subtitle: Scale and campus context
+universities.compare.exams_required: Exams required
+universities.compare.funding.grant: Grant
+universities.compare.funding.paid: Paid
+universities.compare.quality.basic: Basic
+universities.compare.quality.high: High
+universities.compare.quality.medium: Medium
+universities.compare.slot_label: University {index}
+universities.compare.source_note: Source: {source}
+universities.compare.standard_requirements: Standard
 universities.compare.differences.title: Key differences
 universities.compare.differences.subtitle: Shows the clearest published advantages for each selected university.
 universities.compare.differences.reasons_for: {name}

@@ -1,4 +1,4 @@
-/* 2. components.js - Р­Р»РµРјРµРЅС‚С‹ РёРЅС‚РµСЂС„РµР№СЃР° */
+/* 2. components.js - Элементы интерфейса */
 import {
   initCustomSelect,
   motionPress,
@@ -22,7 +22,7 @@ import { initProfileUI } from "./components/profile-ui.js";
 import { SETTING_STORE_RECENT_UNIVERSITIES, SETTING_OPEN_UNIVERSITIES_NEW_TAB } from "./settings.js";
 
 
-// HTML-РєРѕРґ РјРµРЅСЋ Рё РїСЂРѕС„РёР»СЏ (РІС€РёС‚ РїСЂСЏРјРѕ СЃСЋРґР°, С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ РїСЂРѕР±Р»РµРј СЃ Р·Р°РіСЂСѓР·РєРѕР№ С„Р°Р№Р»РѕРІ)
+// HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
 const LAYOUT_HTML = `
 <header class="navbar">
   <div class="navbar-left">
@@ -50,7 +50,7 @@ const LAYOUT_HTML = `
     <div class="lang-control">
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng">English (US)</option>
-        <option value="rus">Р СѓСЃСЃРєРёР№</option>
+        <option value="rus">Русский</option>
       </select>
     </div>
     <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">${heroIcon("moon", "ui-icon ui-icon--18")}</button>
@@ -493,7 +493,7 @@ export async function loadGlobalLayout() {
         syncNavbarLogo();
         bindThemeUiSync();
 
-        // РџРѕРґСЃРІРµС‚РєР° Р°РєС‚РёРІРЅРѕР№ СЃСЃС‹Р»РєРё РІ РјРµРЅСЋ
+        // Подсветка активной ссылки в меню
         const currentPageRaw = String(document.body.getAttribute('data-page') || "").trim().toLowerCase();
         const currentPage = (currentPageRaw === "university") ? "universities" : currentPageRaw;
         if (currentPage) {
@@ -521,7 +521,7 @@ export async function loadGlobalLayout() {
             // keep profile major labels on local fallbacks when the endpoint is unavailable
         }
 
-        // Р—Р°РїСѓСЃРєР°РµРј Р»РѕРіРёРєСѓ РїСЂРѕС„РёР»СЏ
+        // Запускаем логику профиля
         initProfileUI();
 
     } catch (error) {
@@ -555,11 +555,11 @@ export function setupTabs() {
   setupSlidingIndicator(".d-tabs", ".d-tab-btn", "active");
 }
 /**
- * РћС‚СЂРёСЃРѕРІС‹РІР°РµС‚ СЌРєСЂР°РЅ "РќРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє РёРЅС‚РµСЂРЅРµС‚Сѓ"
+ * Отрисовывает экран "Нет подключения к интернету"
  * @param {Object} options 
- * @param {Function} options.onRetry РљРѕР»Р»Р±РµРє РґР»СЏ РєРЅРѕРїРєРё РїРѕРІС‚РѕСЂР°
- * @param {string} options.containerId ID РєРѕРЅС‚РµР№РЅРµСЂР°, РєСѓРґР° РІСЃС‚Р°РІРёС‚СЊ (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)
- * @returns {string} HTML-СЃС‚СЂРѕРєР°
+ * @param {Function} options.onRetry Коллбек для кнопки повтора
+ * @param {string} options.containerId ID контейнера, куда вставить (опционально)
+ * @returns {string} HTML-строка
  */
 export function renderNoConnection(options = {}) {
   const { onRetry, containerId, targetEl } = options;
@@ -591,12 +591,12 @@ export function renderNoConnection(options = {}) {
     }
   }
 
-  // РЎРїРµС†РёС„РёС‡РЅРѕРµ С‚СЂРµР±РѕРІР°РЅРёРµ: РµСЃР»Рё РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РѕС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ, Р·Р°РіСЂСѓР·С‡РёРє СЃРєРµР»РµС‚Р° Р±РѕР»СЊС€Рµ РЅРµ РЅСѓР¶РµРЅ
+  // Специфичное требование: если показывается ошибка подключения, загрузчик скелета больше не нужен
   const siteLoader = document.getElementById("siteInitialLoader");
   if (siteLoader) {
     siteLoader.classList.add("is-hidden");
     document.body.classList.remove("initial-loading");
-    // РЈРґР°Р»СЏРµРј РµРіРѕ С‡РµСЂРµР· РЅРµРєРѕС‚РѕСЂРѕРµ РІСЂРµРјСЏ, С‡С‚РѕР±С‹ Р°РЅРёРјР°С†РёСЏ Р·Р°РІРµСЂС€РёР»Р°СЃСЊ
+    // Удаляем его через некоторое время, чтобы анимация завершилась
     setTimeout(() => {
         if (siteLoader.parentNode) siteLoader.remove();
     }, 600);

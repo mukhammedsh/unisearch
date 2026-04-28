@@ -1328,38 +1328,38 @@ export function initUniversitiesPage() {
 
     const compareCategoryMeta = () => ({
         prestige: {
-            title: t("universities.compare.category.prestige", "Prestige"),
-            subtitle: t("universities.compare.category.prestige_sub", "Rank and selectivity signals"),
+            title: t("universities.compare.category.prestige.title", "Prestige"),
+            subtitle: t("universities.compare.category.prestige.subtitle", "Rank and selectivity signals"),
             icon: "trophy",
         },
         admissions: {
-            title: t("universities.compare.category.admissions", "Admissions"),
-            subtitle: t("universities.compare.category.admissions_sub", "Access, tracks, and requirements"),
+            title: t("universities.compare.category.admissions.title", "Admissions"),
+            subtitle: t("universities.compare.category.admissions.subtitle", "Access, tracks, and requirements"),
             icon: "academic-cap",
         },
         finance: {
-            title: t("universities.compare.category.finance", "Finance"),
-            subtitle: t("universities.compare.category.finance_sub", "Cost and aid flexibility"),
+            title: t("universities.compare.category.finance.title", "Finance"),
+            subtitle: t("universities.compare.category.finance.subtitle", "Cost and aid flexibility"),
             icon: "banknotes",
         },
         academics: {
-            title: t("universities.compare.category.academics", "Academics"),
-            subtitle: t("universities.compare.category.academics_sub", "Program breadth and study options"),
+            title: t("universities.compare.category.academics.title", "Academics"),
+            subtitle: t("universities.compare.category.academics.subtitle", "Program breadth and study options"),
             icon: "book-open",
         },
         outcomes: {
-            title: t("universities.compare.category.outcomes", "Outcomes"),
-            subtitle: t("universities.compare.category.outcomes_sub", "Published career outcome signals"),
+            title: t("universities.compare.category.outcomes.title", "Outcomes"),
+            subtitle: t("universities.compare.category.outcomes.subtitle", "Published career outcome signals"),
             icon: "chart-bar",
         },
         data: {
-            title: t("universities.compare.category.data", "Data confidence"),
-            subtitle: t("universities.compare.category.data_sub", "Verified facts and sources"),
+            title: t("universities.compare.category.data.title", "Data confidence"),
+            subtitle: t("universities.compare.category.data.subtitle", "Verified facts and sources"),
             icon: "check-badge",
         },
         context: {
-            title: t("universities.compare.category.context", "Context"),
-            subtitle: t("universities.compare.category.context_sub", "Scale and campus context"),
+            title: t("universities.compare.category.context.title", "Context"),
+            subtitle: t("universities.compare.category.context.subtitle", "Scale and campus context"),
             icon: "building-office-2",
         },
     });
@@ -3165,7 +3165,7 @@ export function initUniversitiesPage() {
         el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
     }
 
-    // --- РљР°СЂС‚Р° ---
+    // --- Карта ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
@@ -3834,12 +3834,9 @@ export function initUniversitiesPage() {
         const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
         renderMapResultsPanel(items);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
-        const mapViewportHeight = Number(el.mapContainer?.clientHeight || 0);
-        const popupMaxHeight = Math.max(220, mapViewportHeight - (isCompactViewport ? 28 : 40));
         const popupOptions = {
-            minWidth: isCompactViewport ? 220 : 280,
-            maxWidth: isCompactViewport ? 280 : 320,
-            maxHeight: popupMaxHeight,
+            minWidth: isCompactViewport ? 220 : 320,
+            maxWidth: isCompactViewport ? 280 : 380,
             className: "custom-map-popup",
             autoPan: true,
             keepInView: true,
@@ -4444,7 +4441,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (Р‘Р•Р— ROI) ---
+    // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -4463,13 +4460,13 @@ export function initUniversitiesPage() {
         });
         const match = u.matchData || {};
 
-        // Р‘Р°Р·РѕРІР°СЏ С†РµРЅР° (С‚СЂРµРєРѕРІР°СЏ, РµСЃР»Рё algo РµС‘ РґР°Р»)
+        // Базовая цена (трековая, если algo её дал)
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
         (match.cost !== undefined ? match.cost : null) ??
         nested(u, ["finance", "total_cost_year_usd"], 0);
 
-        // РС‚РѕРіРѕРІР°СЏ С†РµРЅР° СЃ СѓС‡С‘С‚РѕРј scholarship amount (РµСЃР»Рё РµСЃС‚СЊ)
+        // Итоговая цена с учётом scholarship amount (если есть)
         const cost =
         (match.finalPrice !== undefined ? match.finalPrice : null) ??
         (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??

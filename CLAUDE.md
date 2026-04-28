@@ -52,6 +52,10 @@ python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 # Localization consistency
 npm run check:i18n
 
+# Encoding/mojibake guard
+npm run fix:encoding
+npm run check:encoding
+
 # Backend unit tests (pytest)
 npm run test:backend
 
@@ -225,6 +229,7 @@ frontend/
 - **Changelog:** Update `CHANGELOG.md` for visible features, API changes, data updates, or UI changes.
 - **No secrets:** Never commit `.env`, tokens, local IPs, cookies, logs, or generated dumps.
 - **Git hooks:** Do not skip hooks (`--no-verify`) unless explicitly required.
+- **Encoding:** Before any commit, run `npm run fix:encoding` and then `npm run check:encoding`. Do not commit mojibake, BOM-only churn, or broken UTF-8.
 
 ## Common Patterns
 
@@ -371,7 +376,7 @@ Generate: `npm run build:frontend-env`
 1. **Check status:** `git status` and `git diff` (verify no secrets, hardcoded text, stray files)
 2. **Bump version:** `npm run bump:version -- [patch|minor|major|X.Y.Z]`
 3. **Update CHANGELOG.md:** Add changes from current diff to new version block (be concise, focus on behavior/API changes)
-4. **Run tests:** `npm run check:i18n && npm run test:backend` (minimum)
+4. **Run tests:** `npm run fix:encoding && npm run check:encoding && npm run check:i18n && npm run test:backend` (minimum)
 5. **Commit and push:** `git add -A && git commit -m "chore(release): X.Y.Z" && git push`
 6. **Tag release:** `git tag -a vX.Y.Z -m "UniSearch X.Y.Z" && git push origin vX.Y.Z`
 7. **Monitor CI:** Check GitHub Actions for test results

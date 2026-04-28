@@ -3838,8 +3838,17 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .custom-map-popup .leaflet-popup-content {
   margin: 0 !important;
-  width: min(300px, calc(100vw - 32px)) !important;
+  width: min(360px, calc(100vw - 32px)) !important;
   max-width: calc(100vw - 32px) !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.custom-map-popup .leaflet-popup-scrolled {
+  border: 0;
+  margin: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 /* Карточка внутри попапа */
@@ -3887,7 +3896,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     height: 44px !important;
     background: #ffffff;
     border: 2px solid var(--accent);
-    border-radius: 50% !important;
+    border-radius: 12px !important;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     overflow: hidden !important;
     position: relative;
@@ -5275,7 +5284,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 /* ===== 2026 Map Split View ===== */
 .u-map-stage {
   display: none;
-  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -5288,7 +5297,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-map-results {
-  min-height: 700px;
   padding: 16px;
 }
 
@@ -5317,18 +5325,21 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .u-map-results-list {
   margin-top: 14px;
-  display: grid;
+  display: flex;
   gap: 10px;
-  max-height: 612px;
-  overflow: auto;
-  padding-right: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 2px 6px;
+  scroll-snap-type: x proximity;
 }
 
 .u-map-result-card {
+  flex: 0 0 min(330px, calc(100vw - 64px));
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--surface-soft);
   padding: 12px;
+  scroll-snap-align: start;
   transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -5461,8 +5472,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-map-container {
-  min-height: 700px;
-  height: 700px;
+  min-height: 560px;
+  height: clamp(560px, 58vw, 720px);
 }
 
 :root[data-theme="dark"] .u-map-results,
@@ -5481,17 +5492,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 @media (max-width: 1100px) {
-  .u-map-stage {
-    grid-template-columns: 1fr;
-  }
-
   .u-map-results {
     min-height: auto;
-  }
-
-  .u-map-results-list {
-    max-height: none;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
@@ -5502,12 +5504,75 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-map-results {
-    padding: 14px;
+    overflow: hidden;
+    padding: 12px 0 14px;
+  }
+
+  .u-map-results-head {
+    padding: 0 14px;
+  }
+
+  .u-map-results-head h3 {
+    font-size: 19px;
+    line-height: 1.15;
+  }
+
+  .u-map-results-head p {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .u-map-results-list {
+    gap: 8px;
+    margin-top: 12px;
+    padding: 0 14px 8px;
+    scroll-padding-inline: 14px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .u-map-results-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .u-map-result-card {
+    flex-basis: min(276px, calc(100vw - 64px));
+    border-radius: 16px;
+    padding: 10px;
+  }
+
+  .u-map-result-focus {
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .u-map-result-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .u-map-result-name {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .u-map-result-meta,
+  .u-map-result-price,
+  .u-map-result-link {
+    font-size: 11px;
+  }
+
+  .u-map-result-bottom {
+    gap: 8px;
+    margin-top: 9px;
+    padding-top: 9px;
   }
 
   .u-map-container {
-    min-height: 520px;
-    height: 520px;
+    min-height: 420px;
+    height: 62vh;
   }
 }
 
@@ -5958,17 +6023,16 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-map-result-focus {
-    grid-template-columns: 38px minmax(0, 1fr);
+    grid-template-columns: 36px minmax(0, 1fr);
   }
 
   .u-map-result-rank {
-    grid-column: 2;
-    justify-self: start;
+    display: none;
   }
 
   .u-map-result-bottom {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
   }
 }
 
@@ -6045,6 +6109,10 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
   .u-map-results {
     padding: 12px;
+  }
+
+  .u-map-result-card {
+    flex-basis: min(256px, calc(100vw - 84px));
   }
 
   .u-map-container {

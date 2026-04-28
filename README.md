@@ -9,6 +9,8 @@
 UniSearch is a full-stack web app for university discovery and decision support.
 Current version source: `package.json` -> `version`.
 
+Web demo: https://unisearch-frontend.onrender.com/
+
 Core capabilities:
 - structured university catalog with filters/search
 - AI ranking (`UniFit`) with preference sliders
@@ -70,6 +72,7 @@ Prerequisites:
 
 ## Project snapshot
 - Product scope is bachelor-level university discovery and decision support.
+- Current catalog coverage: 40 universities across 13 countries.
 - Business logic and data shaping live in the FastAPI backend; the frontend is static Vanilla JS/HTML/CSS.
 - UI languages are English (`eng`) and Russian (`ru`), with university translations served by `/universities/translations`.
 - University facts and admissions data are conservative: official sources only, with missing values preferred over guesses.
@@ -445,6 +448,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.7.4` on `2026-04-28`
 - `3.7.2` on `2026-04-24`
 - `3.7.1` on `2026-04-24`
 - `3.7.0` on `2026-04-24`

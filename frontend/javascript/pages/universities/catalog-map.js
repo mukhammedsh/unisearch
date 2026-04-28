@@ -291,12 +291,9 @@ export function updateMapMarkers(items, options = {}) {
   });
 
   const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
-  const mapViewportHeight = Number(mapContainer?.clientHeight || 0);
-  const popupMaxHeight = Math.max(220, mapViewportHeight - (isCompactViewport ? 28 : 40));
   const popupOptions = {
-    minWidth: isCompactViewport ? 220 : 280,
-    maxWidth: isCompactViewport ? 280 : 320,
-    maxHeight: popupMaxHeight,
+    minWidth: isCompactViewport ? 220 : 320,
+    maxWidth: isCompactViewport ? 280 : 380,
     className: "custom-map-popup",
     autoPan: true,
     keepInView: true,
