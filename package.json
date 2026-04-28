@@ -1,13 +1,14 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "3.7.4",
+  "version": "3.7.5",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
     "bump:version": "node scripts/bump-version.mjs",
     "dev:backend": "node scripts/dev-backend.mjs",
     "dev:frontend": "node scripts/dev-frontend.mjs",
+    "audit:performance": "node scripts/performance-audit.mjs",
     "check:i18n": "node scripts/i18n-check.mjs",
     "check:encoding": "node scripts/check-encoding.mjs",
     "check:version": "node scripts/check-version-sync.mjs",

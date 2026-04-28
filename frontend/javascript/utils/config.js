@@ -1,6 +1,7 @@
 import { API_BASE, debounce } from "./runtime.js";
 import { formatPlural } from "./format.js";
 import { getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
+import { createSafeStorage } from "./safe-storage.js";
 
 const DEFAULT_EXAM_CONFIG = {
   SAT: { label: "SAT", labels: { eng: "SAT", rus: "SAT" }, input_mode: "number", min: 400, max: 1600, type: "int", step: 10 },
@@ -224,6 +225,48 @@ let examConfigPromise = null;
 let langConfigPromise = null;
 let cityDbPromise = null;
 
+const configCacheStorage = createSafeStorage("local");
+const CONFIG_CACHE_PREFIX = "unisearch_config_cache_v1";
+const CONFIG_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+
+function configCacheKey(key) {
+  return `${CONFIG_CACHE_PREFIX}:${key}`;
+}
+
+function readConfigCache(key, options = {}) {
+  const record = configCacheStorage.getJson(configCacheKey(key), null);
+  if (!record || typeof record !== "object") return null;
+  const savedAt = Number(record.savedAt || 0);
+  if (!options.allowStale && (!savedAt || Date.now() - savedAt > CONFIG_CACHE_TTL_MS)) {
+    return null;
+  }
+  return record.data ?? null;
+}
+
+function writeConfigCache(key, data) {
+  configCacheStorage.setJson(configCacheKey(key), {
+    savedAt: Date.now(),
+    data,
+  });
+}
+
+async function fetchJsonWithConfigCache(key, url) {
+  const cached = readConfigCache(key);
+  if (cached) return cached;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    writeConfigCache(key, data);
+    return data;
+  } catch (error) {
+    const stale = readConfigCache(key, { allowStale: true });
+    if (stale) return stale;
+    throw error;
+  }
+}
+
 function canonicalExamKey(value) {
   return String(value || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
@@ -285,9 +328,7 @@ export async function ensureExamConfig() {
   if (!examConfigPromise) {
     examConfigPromise = (async () => {
       try {
-        const response = await fetch(`${API_BASE}/exams/config`);
-        if (!response.ok) throw new Error("Failed to load exam config");
-        const raw = await response.json();
+        const raw = await fetchJsonWithConfigCache("exams", `${API_BASE}/exams/config`);
         EXAM_CONFIG = raw?.exams ? raw.exams : raw;
         window.dispatchEvent(new Event("examConfigLoaded"));
       } catch (error) {
@@ -304,9 +345,7 @@ export async function ensureLanguageConfig() {
   if (!langConfigPromise) {
     langConfigPromise = (async () => {
       try {
-        const response = await fetch(`${API_BASE}/languages/config`);
-        if (!response.ok) throw new Error("Failed to load language config");
-        LANG_CONFIG = await response.json();
+        LANG_CONFIG = await fetchJsonWithConfigCache("languages", `${API_BASE}/languages/config`);
         window.dispatchEvent(new Event("languageConfigLoaded"));
       } catch (error) {
         console.error("Error loading language config:", error);
@@ -322,9 +361,7 @@ export async function ensureCityDatabase() {
   if (!cityDbPromise) {
     cityDbPromise = (async () => {
       try {
-        const response = await fetch(`${API_BASE}/locations`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        CITY_OPTIONS_BY_COUNTRY = await response.json();
+        CITY_OPTIONS_BY_COUNTRY = await fetchJsonWithConfigCache("locations", `${API_BASE}/locations`);
         window.dispatchEvent(new Event("citiesLoaded"));
       } catch (error) {
         console.error("Error loading cities:", error);

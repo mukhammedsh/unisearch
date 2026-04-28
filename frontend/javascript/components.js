@@ -1,9 +1,11 @@
 /* 2. components.js - Элементы интерфейса */
 import {
+  getCurrentTheme,
   initCustomSelect,
   motionPress,
   replayMotion,
   setupSlidingIndicator,
+  toggleTheme,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
@@ -18,7 +20,6 @@ import {
   syncNavbarLogo,
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
-import { initProfileUI } from "./components/profile-ui.js";
 import { SETTING_STORE_RECENT_UNIVERSITIES, SETTING_OPEN_UNIVERSITIES_NEW_TAB } from "./settings.js";
 
 
@@ -396,6 +397,80 @@ function initMobileMenu() {
     }
 }
 
+function initThemeToggleUi() {
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    if (!themeToggleBtn) return;
+
+    const syncThemeButton = (themeOverride = "") => {
+        const theme = String(themeOverride || getCurrentTheme() || "").trim().toLowerCase();
+        setHeroIcon(themeToggleBtn, theme === "dark" ? "sun" : "moon", "ui-icon ui-icon--18");
+        themeToggleBtn.title = t("nav.switch_theme", "Switch theme");
+        themeToggleBtn.setAttribute("aria-label", t("nav.switch_theme", "Switch theme"));
+        syncNavbarLogo(theme);
+    };
+
+    syncThemeButton();
+
+    if (themeToggleBtn.dataset.themeBound !== "1") {
+        themeToggleBtn.dataset.themeBound = "1";
+        themeToggleBtn.addEventListener("click", () => {
+            syncThemeButton(toggleTheme());
+        });
+    }
+
+    if (window.__unisearchThemeShellBound !== true) {
+        window.__unisearchThemeShellBound = true;
+        window.addEventListener("themeChanged", (e) => {
+            const theme = String(e?.detail?.theme || "").trim().toLowerCase();
+            syncThemeButton(theme);
+        });
+        window.addEventListener("pageshow", () => {
+            syncThemeButton();
+        });
+    }
+}
+
+let profileUiPromise = null;
+
+function bindLazyProfileUi() {
+    const profileBtn = document.getElementById("profileBtn");
+    if (!profileBtn || profileBtn.dataset.profileLazyBound === "1") return;
+    profileBtn.dataset.profileLazyBound = "1";
+
+    const loadProfileUi = async () => {
+        if (!profileUiPromise) {
+            profileUiPromise = Promise.all([
+                import("./components/profile-ui.js"),
+                initUniversityTranslations().catch(() => null),
+            ]).then(([module]) => {
+                module.initProfileUI?.();
+                return module;
+            });
+        }
+        return profileUiPromise;
+    };
+
+    const onProfileClick = async (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        profileBtn.disabled = true;
+        try {
+            await loadProfileUi();
+            profileBtn.removeEventListener("click", onProfileClick, true);
+            profileBtn.dataset.profileLazyBound = "loaded";
+            profileBtn.disabled = false;
+            profileBtn.click();
+        } catch (error) {
+            profileUiPromise = null;
+            console.error("Profile UI failed to load:", error);
+        } finally {
+            profileBtn.disabled = false;
+        }
+    };
+
+    profileBtn.addEventListener("click", onProfileClick, true);
+}
+
 function syncAdaptiveNavbarLayout() {
     const navbar = document.querySelector(".navbar");
     const left = document.querySelector(".navbar-left");
@@ -506,6 +581,7 @@ export async function loadGlobalLayout() {
         }
 
         initMobileMenu();
+        initThemeToggleUi();
         initLanguageSwitcher();
         applyTranslations(document);
         if (typeof initCustomSelect === "function") initCustomSelect("languageSelect");
@@ -515,14 +591,8 @@ export async function loadGlobalLayout() {
         setupSlidingIndicator("#primaryNav", "a", "is-active");
         initSettingsUI();
 
-        try {
-            await initUniversityTranslations();
-        } catch (e) {
-            // keep profile major labels on local fallbacks when the endpoint is unavailable
-        }
-
         // Запускаем логику профиля
-        initProfileUI();
+        bindLazyProfileUi();
 
     } catch (error) {
         console.error("Error loading layout:", error);

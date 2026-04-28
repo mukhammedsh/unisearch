@@ -70,6 +70,7 @@ except Exception:
     REDIS_OPERATION_TIMEOUT_SEC = 0.35
 
 AUTO_WARMUP_ON_STARTUP = _env_bool("AUTO_WARMUP_ON_STARTUP", "1")
+WARMUP_ML_ON_STARTUP = _env_bool("WARMUP_ML_ON_STARTUP", "0")
 
 METRICS_ENABLED = _env_bool("METRICS_ENABLED", "0")
 METRICS_PATH = os.getenv("METRICS_PATH", "/metrics").strip() or "/metrics"

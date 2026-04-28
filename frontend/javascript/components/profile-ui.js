@@ -7,7 +7,6 @@ import {
   escapeHtml,
   formatExamValue,
   frontendStaticAsset,
-  getCurrentTheme,
   getExamConfig,
   getExamDisplayName,
   getExamInputMode,
@@ -22,17 +21,14 @@ import {
   saveProfile,
   setupSlidingIndicator,
   showToast,
-  toggleTheme,
 } from "../utils.js";
 import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { setHeroIcon } from "../icons.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import {
   consumeProfileDraftAfterReload,
   fetchTranslationRuntimeStatus,
   persistProfileDraftForReload,
-  syncNavbarLogo,
 } from "./shell.js";
 import {
   getSettingValue,
@@ -78,7 +74,6 @@ export function initProfileUI() {
     const budgetInput = document.getElementById("budgetInput");
     const gpaInput = document.getElementById("gpaInput");
     const nameDisplay = document.getElementById("profileNameDisplay");
-    const themeToggleBtn = document.getElementById("themeToggleBtn");
 
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
@@ -99,29 +94,6 @@ export function initProfileUI() {
 
     const editNameBtn = document.getElementById("editNameBtn");
     const profileUsernameDiv = document.querySelector(".profile-username");
-
-    const syncThemeButton = (themeOverride = "") => {
-        if (!themeToggleBtn) return;
-        const theme = String(themeOverride || getCurrentTheme() || "").trim().toLowerCase();
-        setHeroIcon(themeToggleBtn, theme === "dark" ? "sun" : "moon", "ui-icon ui-icon--18");
-        themeToggleBtn.title = t("nav.switch_theme", "Switch theme");
-        themeToggleBtn.setAttribute("aria-label", t("nav.switch_theme", "Switch theme"));
-        syncNavbarLogo(theme);
-    };
-    syncThemeButton();
-    themeToggleBtn?.addEventListener("click", () => {
-        const nextTheme = toggleTheme();
-        syncThemeButton(nextTheme);
-    });
-    window.addEventListener("themeChanged", (e) => {
-        const theme = String(e?.detail?.theme || "").trim().toLowerCase();
-        syncNavbarLogo(theme);
-        syncThemeButton(theme);
-    });
-    window.addEventListener("pageshow", () => {
-        syncNavbarLogo();
-        syncThemeButton();
-    });
 
     const normalizeFundingType = (value) => {
         const raw = String(value || "").trim().toLowerCase();

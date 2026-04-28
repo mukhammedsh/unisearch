@@ -49,7 +49,6 @@ import { setupTabs, renderNoConnection } from "../components.js";
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { extractUniversityIdFromLocation, navigateToAppRoute, routeUniversities, routeUniversityDetail } from "../routes.js";
-import { initRankingPage } from "./ranking.js";
 import { fetchCompareChances, loadCompareUniversities, resolveAiSortResult } from "./universities/compare-helpers.js";
 import {
   humanizeMachineLabel,
@@ -477,6 +476,7 @@ export function initUniversitiesPage() {
     }
 
     let rankingInitialized = false;
+    let rankingModulePromise = null;
     const isCompareTab = () => state.activeTab === "compare";
     const isCompareResultsMode = () => isCompareTab() && state.compareStage === "results" && state.compareResultIds.length === COMPARE_PAIR_SIZE;
     const isCompareConfigureMode = () => isCompareTab() && state.compareStage === "configure" && state.compareResultIds.length === COMPARE_PAIR_SIZE;
@@ -555,7 +555,8 @@ export function initUniversitiesPage() {
         if (state.activeTab === "ranking") {
             if (!rankingInitialized) {
                 rankingInitialized = true;
-                await initRankingPage();
+                const rankingModule = await ensureIntegratedRankingAssets();
+                await rankingModule?.initRankingPage?.();
                 bindImageFallbacks(el.rankingPane || document);
             }
             replayMotion(el.rankingPane, "motion-panel-enter", { timeoutMs: 420 });
@@ -575,7 +576,7 @@ export function initUniversitiesPage() {
         }
 
         if (showCatalog) {
-            switchView(state.viewMode || "list", false);
+            await switchView(state.viewMode || "list", false);
             if (shouldFetch) fetchAndRender();
         }
     };
@@ -3170,6 +3171,73 @@ export function initUniversitiesPage() {
     let markersLayer = null;
     let markersByUniId = new Map();
     let activeMapUniId = String(focusUniId || "").trim();
+    let mapLibrariesPromise = null;
+
+    const MAP_ASSETS = {
+        leafletCss: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+        markerClusterCss: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css",
+        markerClusterDefaultCss: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
+        leafletJs: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+        markerClusterJs: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js",
+    };
+
+    function loadStylesheetOnce(id, href) {
+        if (document.getElementById(id)) return Promise.resolve();
+        return new Promise((resolve, reject) => {
+            const link = document.createElement("link");
+            link.id = id;
+            link.rel = "stylesheet";
+            link.href = href;
+            link.crossOrigin = "anonymous";
+            link.onload = () => resolve();
+            link.onerror = () => reject(new Error(`Failed to load ${href}`));
+            document.head.appendChild(link);
+        });
+    }
+
+    async function ensureIntegratedRankingAssets() {
+        await loadStylesheetOnce("rankingCss", "css/ranking.css");
+        if (!rankingModulePromise) rankingModulePromise = import("./ranking.js");
+        return rankingModulePromise;
+    }
+
+    function loadScriptOnce(id, src) {
+        if (document.getElementById(id)) return Promise.resolve();
+        return new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.id = id;
+            script.src = src;
+            script.async = true;
+            script.crossOrigin = "anonymous";
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Failed to load ${src}`));
+            document.head.appendChild(script);
+        });
+    }
+
+    function ensureMapLibraries() {
+        if (window.L && typeof window.L.markerClusterGroup === "function") {
+            return Promise.resolve(window.L);
+        }
+        if (!mapLibrariesPromise) {
+            mapLibrariesPromise = Promise.all([
+                loadStylesheetOnce("leafletCss", MAP_ASSETS.leafletCss),
+                loadStylesheetOnce("leafletMarkerClusterCss", MAP_ASSETS.markerClusterCss),
+                loadStylesheetOnce("leafletMarkerClusterDefaultCss", MAP_ASSETS.markerClusterDefaultCss),
+                loadScriptOnce("leafletJs", MAP_ASSETS.leafletJs)
+                    .then(() => loadScriptOnce("leafletMarkerClusterJs", MAP_ASSETS.markerClusterJs)),
+            ]).then(() => {
+                if (!window.L || typeof window.L.markerClusterGroup !== "function") {
+                    throw new Error("Leaflet marker cluster is unavailable");
+                }
+                return window.L;
+            }).catch((error) => {
+                mapLibrariesPromise = null;
+                throw error;
+            });
+        }
+        return mapLibrariesPromise;
+    }
 
     readFromUrl(); 
     
@@ -3190,7 +3258,7 @@ export function initUniversitiesPage() {
     applyToForm();
     updateSliderVisibility(); 
     
-    switchView(state.viewMode, false);
+    switchView(state.viewMode, false).catch((err) => console.error(err));
     
     const setupMobileFilters = () => {
         const toggleBtn = $("mobileFilterToggle");
@@ -3520,11 +3588,11 @@ export function initUniversitiesPage() {
 
     el.btnList?.addEventListener("click", () => {
         motionPress(el.btnList);
-        switchView("list", true);
+        switchView("list", true).catch((err) => console.error(err));
     });
     el.btnMap?.addEventListener("click", () => {
         motionPress(el.btnMap);
-        switchView("map", true);
+        switchView("map", true).catch((err) => console.error(err));
     });
 
     if (el.minSlider && el.maxSlider) {
@@ -3601,7 +3669,7 @@ export function initUniversitiesPage() {
     };
     window.addEventListener("settingsChanged", __universitiesSettingsChangedHandler);
 
-    function switchView(mode, shouldFetch = false) {
+    async function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
         saveFilters(state);
         if (mode === "map") {
@@ -3612,7 +3680,7 @@ export function initUniversitiesPage() {
             el.btnMap.classList.add("active");
             replayMotion(el.mapStage, "motion-panel-enter", { timeoutMs: 420 });
             replayMotion(el.btnMap, "motion-state-pulse", { timeoutMs: 520 });
-            initMap();
+            await initMap();
             setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
             if (shouldFetch) fetchAndRender(); 
         } else {
@@ -3627,9 +3695,9 @@ export function initUniversitiesPage() {
         }
     }
 
-    function initMap() {
-        if (mapInstance) return;
-        if (typeof L === "undefined") return;
+    async function initMap() {
+        if (mapInstance) return mapInstance;
+        const L = await ensureMapLibraries();
         mapInstance = L.map('mapContainer', {
             maxBounds: [[-90, -180], [90, 180]],
             maxBoundsViscosity: 1.0,
@@ -3670,6 +3738,7 @@ export function initUniversitiesPage() {
         });
         markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
         mapInstance.addLayer(markersLayer);
+        return mapInstance;
     }
 
     function updateMapResultsSelection(uniId) {
@@ -3829,6 +3898,8 @@ export function initUniversitiesPage() {
 
     function updateMapMarkers(items) {
         if (!mapInstance || !markersLayer) return;
+        const L = window.L;
+        if (!L) return;
         markersLayer.clearLayers();
         markersByUniId = new Map();
         const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
@@ -3982,6 +4053,7 @@ export function initUniversitiesPage() {
         const p = new URLSearchParams();
         const uiLang = getCurrentLanguage();
         if (uiLang) p.set("lang", uiLang);
+        if (forApi) p.set("fields", "card");
         state.funding_type = getProfileFundingQueryValue();
         if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
         if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
@@ -4378,6 +4450,7 @@ export function initUniversitiesPage() {
         renderUniversitiesState();
         if (state.viewMode === 'list') el.list.innerHTML = "";
         if (state.viewMode === "map") resetMapResults();
+        if (state.viewMode === "map" && !mapInstance) await initMap();
         if (el.pagination) el.pagination.innerHTML = "";
 
         const urlParams = sectionUrlParams();

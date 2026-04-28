@@ -1,8 +1,4 @@
 import { loadGlobalLayout, renderNoConnection } from "./components.js";
-import { initUniversitiesPage } from "./pages/universities.js";
-import { initUniversityPage } from "./pages/university.js";
-import { initRankingPage } from "./pages/ranking.js";
-import { initGuidePage } from "./pages/guide.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
@@ -14,6 +10,23 @@ const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 const GUIDE_SECTION_HASH_RE = /^#guide-[a-z0-9-]+$/i;
 
+const routeModuleLoaders = {
+  universities: () => import("./pages/universities.js"),
+  university: () => import("./pages/university.js"),
+  ranking: () => import("./pages/ranking.js"),
+  guide: () => import("./pages/guide.js"),
+};
+const routeModulePromises = new Map();
+
+function loadRouteModule(routeName) {
+  const key = String(routeName || "").trim().toLowerCase();
+  const loader = routeModuleLoaders[key];
+  if (!loader) return Promise.resolve(null);
+  if (!routeModulePromises.has(key)) {
+    routeModulePromises.set(key, loader());
+  }
+  return routeModulePromises.get(key);
+}
 
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -217,16 +230,36 @@ async function initRoutePage(ctx = currentRouteContext()) {
 
   if (document.body.dataset.page === "error-404") return;
 
-  await Promise.all([ensureExamConfig(), ensureLanguageConfig()]);
-
   if (ctx.isUniversitiesPage) {
     maybeWakeBackend();
-    ensureCityDatabase();
-    return initUniversitiesPage();
+    const [module] = await Promise.all([
+      loadRouteModule("universities"),
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+      ensureCityDatabase(),
+    ]);
+    return module?.initUniversitiesPage?.();
   }
-  if (ctx.isGuidePage) return initGuidePage();
-  if (ctx.isUniversityPage) return initUniversityPage();
-  if (ctx.isRankingPage) return initRankingPage();
+  if (ctx.isUniversityPage) {
+    const [module] = await Promise.all([
+      loadRouteModule("university"),
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
+    return module?.initUniversityPage?.();
+  }
+  if (ctx.isGuidePage) {
+    const [module] = await Promise.all([
+      loadRouteModule("guide"),
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
+    return module?.initGuidePage?.();
+  }
+  if (ctx.isRankingPage) {
+    const module = await loadRouteModule("ranking");
+    return module?.initRankingPage?.();
+  }
   return initHomePageStats();
 }
 

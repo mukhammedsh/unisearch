@@ -2118,9 +2118,22 @@ html, body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
+    min-width: 32px;
     height: 32px;
-    border-radius: 999px;
+    padding: 0 8px;
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.social-links a:hover {
+    color: var(--text);
+    background: var(--surface-soft);
+    border-color: var(--line);
 }
 
 .social-links img{
@@ -2132,6 +2145,12 @@ html, body {
 
 .site-footer img {
     filter: var(--footer-icon-filter);
+}
+
+.footer-social-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* --- Mobile responsiveness (improved) --- */
@@ -2397,8 +2416,8 @@ html, body {
 
 /* ===== 2026 Product Refresh ===== */
 :root {
-  --font-sans: "Manrope", "Segoe UI", Arial, sans-serif;
-  --font-display: "IBM Plex Sans", "Manrope", "Segoe UI", Arial, sans-serif;
+  --font-sans: "Segoe UI", Arial, sans-serif;
+  --font-display: "Segoe UI", Arial, sans-serif;
   --accent: #5715db;
   --accent-strong: #3f0ea8;
   --accent-soft: rgba(87, 21, 219, 0.12);
@@ -2723,7 +2742,7 @@ h6,
 }
 
 .social-links a {
-  width: 36px;
+  min-width: 36px;
   height: 36px;
   border: 1px solid var(--line);
   background: var(--surface-soft);

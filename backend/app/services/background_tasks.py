@@ -1,6 +1,7 @@
 import time
 from typing import Any, Dict
 
+from app.core.settings import WARMUP_ML_ON_STARTUP
 from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services import universities as universities_service
@@ -42,11 +43,17 @@ def warmup_runtime(trigger: str = "manual") -> Dict[str, Any]:
         result["ok"] = False
         result["exams_total"] = 0
 
-    try:
-        result["ml_ready"] = bool(get_ml_recommender().is_ready())
-    except Exception:
-        result["ok"] = False
+    trigger_name = str(trigger or "manual")
+    should_warm_ml = trigger_name != "startup_sync" or WARMUP_ML_ON_STARTUP
+    if should_warm_ml:
+        try:
+            result["ml_ready"] = bool(get_ml_recommender().is_ready())
+        except Exception:
+            result["ok"] = False
+            result["ml_ready"] = False
+    else:
         result["ml_ready"] = False
+        result["ml_skipped"] = True
 
     duration_ms = (time.perf_counter() - started) * 1000.0
     result["duration_ms"] = round(duration_ms, 2)

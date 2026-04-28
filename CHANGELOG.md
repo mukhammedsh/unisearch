@@ -2,6 +2,16 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.5 (2026-04-28) - Performance Optimizations
+
+Status:
+- synchronized runtime/package version to `3.7.5` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- lazy-loaded route modules, profile UI, integrated Ranking assets, and Leaflet map assets so first-page loads avoid unused page code and external map libraries;
+- removed external Google Fonts and Wikimedia GitHub icon requests from frontend pages, relying on local/system assets instead;
+- added local cached loading for exams, languages, and locations config endpoints with stale fallback when the backend is temporarily unavailable;
+- made startup ML warmup opt-in through `WARMUP_ML_ON_STARTUP` while preserving manual and ops warmup behavior;
+- added `npm run audit:performance` for lightweight frontend request and payload audits.
+
 ## 3.7.4 (2026-04-28) - UI Fixes and Encoding Fixer Improvements
 
 Status:
