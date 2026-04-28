@@ -48,6 +48,7 @@
   4. Обновить версию и список изменений в `README.md` (секция Recent releases). Если изменения функциональные — актуализировать соответствующие разделы `README.md`.
   5. Запустить минимальные тесты (`npm run fix:encoding`, `npm run check:encoding`, `npm run check:i18n`, `npm run test:backend`).
   5. Commit + Push.
+     После каждого `git push` (ветки или тега) проверить новые GitHub Actions runs, дождаться финального статуса (`success`/`failure`) и выдать итоговый отчет со ссылками. Локальный commit сам по себе Actions не запускает.
   6. Сделать тег: `git tag -a vX.Y.Z -m "UniSearch X.Y.Z"` -> `git push origin vX.Y.Z`.
   7. Контролировать GitHub Actions, выдать итоговый отчет со ссылками.
 
