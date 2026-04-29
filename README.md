@@ -448,6 +448,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.7.6` on `2026-04-29`
 - `3.7.5` on `2026-04-28`
 - `3.7.4` on `2026-04-28`
 - `3.7.2` on `2026-04-24`
@@ -457,7 +458,6 @@ Recent releases:
 - `3.6.0` on `2026-04-24`
 - `3.5.6` on `2026-04-23`
 - `3.5.2` on `2026-04-23`
-- `3.5.1` on `2026-04-22`
 - `3.5.0` on `2026-04-22`
 - `3.4.12` on `2026-04-21`
 - `3.4.11` on `2026-04-21`

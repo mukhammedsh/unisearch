@@ -1288,7 +1288,7 @@
 }
 
 .u-map-stage.is-loading .u-map-container {
-  opacity: 0.55;
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
@@ -1308,6 +1308,42 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   z-index: 1;
   overflow: hidden;
+}
+
+.u-map-stage.is-loading .u-map-container::before,
+.u-map-stage.is-loading .u-map-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 420;
+}
+
+.u-map-stage.is-loading .u-map-container::before {
+  background:
+    radial-gradient(circle at 18% 28%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 9px, transparent 10px),
+    radial-gradient(circle at 42% 58%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 10px, transparent 11px),
+    radial-gradient(circle at 68% 34%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 8px, transparent 9px),
+    radial-gradient(circle at 78% 72%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 11px, transparent 12px),
+    linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight, rgba(255,255,255,0.42)) 46%, transparent 58%, transparent 100%),
+    repeating-linear-gradient(0deg, transparent 0 70px, var(--line) 71px 72px),
+    repeating-linear-gradient(90deg, transparent 0 92px, var(--line) 93px 94px),
+    var(--surface-soft);
+  background-size: auto, auto, auto, auto, 220% 100%, auto, auto, auto;
+  opacity: 0.92;
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+.u-map-stage.is-loading .u-map-container::after {
+  inset: auto 18px 18px 18px;
+  height: 42px;
+  border-radius: 14px;
+  background:
+    linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight, rgba(255,255,255,0.42)) 46%, transparent 58%, transparent 100%),
+    var(--surface-solid);
+  background-size: 220% 100%, auto;
+  border: 1px solid var(--line);
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
 }
 
 /* =========================================
@@ -1341,17 +1377,13 @@
 
 .uni-card--compare-selected {
   border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
-  box-shadow: 0 10px 28px rgba(87, 21, 219, 0.14);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--accent) 62%, transparent),
+    0 10px 28px rgba(87, 21, 219, 0.14);
 }
 
 .uni-card--compare-selected::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 2px solid color-mix(in srgb, var(--accent) 62%, transparent);
-  border-radius: 16px;
-  pointer-events: none;
-  z-index: 4;
+  content: none;
 }
 
 .uni-media {
@@ -4836,6 +4868,14 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background: rgba(22, 23, 24, 0.94);
 }
 
+.uni-card.uni-card--compare-selected,
+:root[data-theme="dark"] .uni-card.uni-card--compare-selected {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--accent) 62%, transparent),
+    0 10px 28px rgba(87, 21, 219, 0.14);
+}
+
 :root[data-theme="dark"] .uni-logo {
   background: #ffffff;
 }
@@ -5298,6 +5338,54 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .u-map-results {
   padding: 16px;
+}
+
+.u-map-results-loading {
+  min-width: 0;
+}
+
+.u-map-results-head--loading {
+  display: grid;
+  gap: 10px;
+}
+
+.u-map-results-list--loading {
+  scrollbar-color: transparent transparent;
+}
+
+.u-map-result-card--loading {
+  pointer-events: none;
+}
+
+.u-map-result-card--loading .u-map-result-focus {
+  cursor: default;
+}
+
+.u-map-result-card--loading .u-map-result-logo {
+  background-color: var(--skeleton-base, var(--surface-soft, rgba(0, 0, 0, 0.04)));
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 34%,
+    var(--skeleton-highlight, rgba(255, 255, 255, 0.42)) 46%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+  border-color: transparent;
+}
+
+:root[data-theme="dark"] .u-map-result-card--loading .u-map-result-logo {
+  background-color: var(--skeleton-base, var(--surface-soft, rgba(255, 255, 255, 0.04)));
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 34%,
+    var(--skeleton-highlight, rgba(255, 255, 255, 0.14)) 46%,
+    transparent 58%,
+    transparent 100%
+  );
 }
 
 .u-map-results-head h3 {

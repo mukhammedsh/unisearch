@@ -1013,7 +1013,7 @@ export function initUniversitiesPage() {
     const compareFundingChoiceText = (u) => {
         const option = compareSelectedAdmissionOption(u);
         if (!option) return t("common.na", "N/A");
-        const badge = renderTrackFundingBadge(option).replace(/<[^>]+>/g, "").trim();
+        const badge = new DOMParser().parseFromString(renderTrackFundingBadge(option), "text/html").body.textContent?.trim() || "";
         const optionLabelRaw = String(option?.label || "").trim();
         const parentLabelRaw = String(option?.__parent_track_label || "").trim();
         const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";
@@ -2806,6 +2806,37 @@ export function initUniversitiesPage() {
         el.state.innerHTML = blocks.join("");
     }
 
+    function renderMapLoadingSkeleton() {
+        if (!el.mapResults) return;
+        const cardCount = Math.max(3, Math.min(5, Math.floor((Number(window.innerWidth || 0) || 1024) / 280)));
+        el.mapResults.innerHTML = `
+            <div class="u-map-results-loading is-skeleton" role="status" aria-live="polite" aria-label="${escapeHtmlAttr(t("universities.loading", "Loading universities"))}">
+                <div class="u-map-results-head u-map-results-head--loading">
+                    <div class="skeleton-line" style="width: 42%; height: 22px;"></div>
+                    <div class="skeleton-line" style="width: min(520px, 78%); height: 13px;"></div>
+                </div>
+                <div class="u-map-results-list u-map-results-list--loading">
+                    ${Array.from({ length: cardCount }, () => `
+                        <article class="u-map-result-card u-map-result-card--loading is-skeleton" aria-hidden="true">
+                            <div class="u-map-result-focus">
+                                <span class="u-map-result-logo"></span>
+                                <span class="u-map-result-copy">
+                                    <span class="skeleton-line" style="width: 84%; height: 15px;"></span>
+                                    <span class="skeleton-line" style="width: 58%; height: 12px;"></span>
+                                </span>
+                                <span class="skeleton-line u-map-result-rank" style="width: 38px; height: 18px;"></span>
+                            </div>
+                            <div class="u-map-result-bottom">
+                                <span class="skeleton-line" style="width: 72px; height: 14px;"></span>
+                                <span class="skeleton-line" style="width: 96px; height: 14px;"></span>
+                            </div>
+                        </article>
+                    `).join("")}
+                </div>
+            </div>
+        `;
+    }
+
     function setUniversitiesLoading(isLoading) {
         const mapMode = state.viewMode === "map";
         const showListSkeleton = !!isLoading && !mapMode;
@@ -2854,12 +2885,9 @@ export function initUniversitiesPage() {
         if (el.mapStage) {
             el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode);
         }
-        if (el.mapResults && isLoading && mapMode) {
-            el.mapResults.innerHTML = `
-                <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite">
-                    ${escapeHtml(t("universities.loading", "Loading universities"))}
-                </div>
-            `;
+        if (el.mapResults) {
+            el.mapResults.setAttribute("aria-busy", isLoading && mapMode ? "true" : "false");
+            if (isLoading && mapMode) renderMapLoadingSkeleton();
         }
     }
 
@@ -3172,6 +3200,7 @@ export function initUniversitiesPage() {
     let markersByUniId = new Map();
     let activeMapUniId = String(focusUniId || "").trim();
     let mapLibrariesPromise = null;
+    let mapInitPromise = null;
 
     const MAP_ASSETS = {
         leafletCss: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
@@ -3697,48 +3726,56 @@ export function initUniversitiesPage() {
 
     async function initMap() {
         if (mapInstance) return mapInstance;
-        const L = await ensureMapLibraries();
-        mapInstance = L.map('mapContainer', {
-            maxBounds: [[-90, -180], [90, 180]],
-            maxBoundsViscosity: 1.0,
-            minZoom: 2,
-            maxZoom: 18,
-            zoomAnimation: true,
-            zoomAnimationThreshold: 4,
-            fadeAnimation: true,
-            markerZoomAnimation: true,
-            zoomSnap: 0.25,
-            zoomDelta: 0.25,
-            wheelDebounceTime: 30,
-            wheelPxPerZoomLevel: 120
-        }).setView([25, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
-        markersLayer = L.markerClusterGroup({
-            showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
-            chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
-            iconCreateFunction: function(cluster) {
-                const markers = cluster.getAllChildMarkers();
-                const count = markers.length;
-                let best = null;
-                for (const m of markers) {
-                    const r = Number(m?.options?.uniRank);
-                    if (!Number.isFinite(r)) continue;
-                    if (!best || r < best.rank) best = { rank: r, id: m?.options?.uniId };
+        if (mapInitPromise) return mapInitPromise;
+        mapInitPromise = (async () => {
+            const L = await ensureMapLibraries();
+            if (mapInstance) return mapInstance;
+            mapInstance = L.map('mapContainer', {
+                maxBounds: [[-90, -180], [90, 180]],
+                maxBoundsViscosity: 1.0,
+                minZoom: 2,
+                maxZoom: 18,
+                zoomAnimation: true,
+                zoomAnimationThreshold: 4,
+                fadeAnimation: true,
+                markerZoomAnimation: true,
+                zoomSnap: 0.25,
+                zoomDelta: 0.25,
+                wheelDebounceTime: 30,
+                wheelPxPerZoomLevel: 120
+            }).setView([25, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
+            markersLayer = L.markerClusterGroup({
+                showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
+                chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
+                iconCreateFunction: function(cluster) {
+                    const markers = cluster.getAllChildMarkers();
+                    const count = markers.length;
+                    let best = null;
+                    for (const m of markers) {
+                        const r = Number(m?.options?.uniRank);
+                        if (!Number.isFinite(r)) continue;
+                        if (!best || r < best.rank) best = { rank: r, id: m?.options?.uniId };
+                    }
+                    const fallbackId = markers[0]?.options?.uniId || "default";
+                    const bestId = (best && best.id) ? best.id : fallbackId;
+                    const logoUrl = uniLogoSrc(bestId);
+                    return L.divIcon({
+                        html: clusterMarkerLogoHtml(logoUrl, count - 1),
+                        className: "cluster-icon-container",
+                        iconSize: [44, 44],
+                        iconAnchor: [22, 22],
+                    });
                 }
-                const fallbackId = markers[0]?.options?.uniId || "default";
-                const bestId = (best && best.id) ? best.id : fallbackId;
-                const logoUrl = uniLogoSrc(bestId);
-                return L.divIcon({
-                    html: clusterMarkerLogoHtml(logoUrl, count - 1),
-                    className: "cluster-icon-container",
-                    iconSize: [44, 44],
-                    iconAnchor: [22, 22],
-                });
-            }
+            });
+            markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
+            mapInstance.addLayer(markersLayer);
+            return mapInstance;
+        })().catch((error) => {
+            mapInitPromise = null;
+            throw error;
         });
-        markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
-        mapInstance.addLayer(markersLayer);
-        return mapInstance;
+        return mapInitPromise;
     }
 
     function updateMapResultsSelection(uniId) {
@@ -4449,7 +4486,6 @@ export function initUniversitiesPage() {
         if (el.total) el.total.textContent = "0";
         renderUniversitiesState();
         if (state.viewMode === 'list') el.list.innerHTML = "";
-        if (state.viewMode === "map") resetMapResults();
         if (state.viewMode === "map" && !mapInstance) await initMap();
         if (el.pagination) el.pagination.innerHTML = "";
 

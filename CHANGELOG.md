@@ -2,6 +2,16 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.6 (2026-04-29) - UI Loading and Footer Fixes
+
+Status:
+- synchronized runtime/package version to `3.7.6` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- fixed the global top loading bar animation so it travels across the full viewport instead of stopping around the middle of wide screens;
+- restored the shared footer on the Guide page and added a visible GitHub icon to footer social links across frontend pages;
+- changed the selected university card outline to an inset border effect so rounded corners do not break the purple outline;
+- added a dedicated map-mode loading skeleton with horizontal result-card placeholders and a shimmer map overlay;
+- prevented duplicate Leaflet map initialization when the Universities page opens directly in map mode.
+
 ## 3.7.5 (2026-04-28) - Performance Optimizations
 
 Status:
