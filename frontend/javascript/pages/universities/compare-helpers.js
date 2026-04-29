@@ -297,7 +297,8 @@ export function compareTrackCountText(u) {
 export function compareTrackLabel(u, compareAdmissionChoices) {
   const track = compareSelectedAdmissionTrack(u, compareAdmissionChoices);
   if (!track) return t("common.na", "N/A");
-  return trTrackLabel(track?.label || "") || translateTrackLabel(String(u?.id || ""), String(track?.id || track?.label || ""), String(track?.label || ""));
+  const label = String(track?.label || track?.id || "");
+  return trTrackLabel(track?.label || "") || translateTrackLabel(label, label);
 }
 
 export function compareFundingChoiceText(u, compareAdmissionChoices) {

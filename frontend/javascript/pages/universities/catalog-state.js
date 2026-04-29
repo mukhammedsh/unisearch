@@ -27,13 +27,13 @@ export function createFilterState(defaults = {}) {
   };
 }
 
-export function loadFilterStateFromStorage(key = "universities") {
-  const saved = loadFilters(key);
+export function loadFilterStateFromStorage() {
+  const saved = loadFilters();
   if (!saved || typeof saved !== "object") return {};
   return saved;
 }
 
-export function saveFilterStateToStorage(state, key = "universities") {
+export function saveFilterStateToStorage(state) {
   const toSave = {
     q: state.q,
     country: state.country,
@@ -48,7 +48,7 @@ export function saveFilterStateToStorage(state, key = "universities") {
     budget_vs_prestige: state.budget_vs_prestige,
     city_vs_campus: state.city_vs_campus,
   };
-  saveFilters(key, toSave);
+  saveFilters(toSave);
 }
 
 export function readFilterStateFromUrl(state, options = {}) {

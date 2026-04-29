@@ -1556,7 +1556,6 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         feasibility_gate = _clamp(1.0 - 0.78 * float(fit.get("failRatio", 0.0)), 0.18, 1.0)
         score_profile = _track_score_profile(track)
         score_meta = {"normalized": None, "exam_id": "", "reason": "no_score_profile"}
-        normalized_user_score = _to_num(score_meta.get("normalized"))
         no_data_reason = ""
         chance_pct = None
         range_low = None
@@ -1750,8 +1749,6 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
                 loose_match = (major_name, salary)
                 break
 
-    salary_used = 0.0
-    context_type = "no_data"
     major_matched = ""
     if not user_major:
         context_type = "missing_major"

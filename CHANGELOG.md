@@ -8,7 +8,8 @@ Status:
 - synchronized runtime/package version to `3.7.7` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
 - fixed the modular university comparison renderer so fallback metric calculation uses `compareMetrics` instead of calling a shadowed local variable;
 - hardened frontend/backend dev launchers by removing environment-derived URL/path logging and replacing HTTP readiness probes with validated TCP port checks;
-- changed the frontend dev server to serve only files from an indexed frontend directory, avoiding request-path based filesystem access.
+- changed the frontend dev server to serve only files from an indexed frontend directory, avoiding request-path based filesystem access;
+- cleaned remaining CodeQL warning patterns in comparison labels, catalog filter persistence, sort handling, and UniChance/ROI scoring assignments.
 
 ## 3.7.6 (2026-04-29) - UI Loading and Footer Fixes
 

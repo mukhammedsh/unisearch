@@ -1007,7 +1007,8 @@ export function initUniversitiesPage() {
     const compareTrackLabel = (u) => {
         const track = compareSelectedAdmissionTrack(u);
         if (!track) return t("common.na", "N/A");
-        return trTrackLabel(track?.label || "") || translateTrackLabel(String(u?.id || ""), String(track?.id || track?.label || ""), String(track?.label || ""));
+        const label = String(track?.label || track?.id || "");
+        return trTrackLabel(track?.label || "") || translateTrackLabel(label, label);
     };
 
     const compareFundingChoiceText = (u) => {
@@ -3316,7 +3317,7 @@ export function initUniversitiesPage() {
     };
     setupMobileFilters();
 
-    async function handleSortChange(nextSort, sourceEl = null) {
+    async function handleSortChange(nextSort) {
         const prevSort = state.sort;
         if (el.sortSelect) el.sortSelect.value = nextSort;
 
@@ -3327,7 +3328,6 @@ export function initUniversitiesPage() {
                     el.sortSelect.value = prevSort;
                     initCustomSelect("sortSelect");
                 }
-                if (sourceEl) sourceEl.value = prevSort;
                 const confirmed = await showUniFitWarning();
                 if (!confirmed) {
                     updateMobileFilterUi();
@@ -3337,7 +3337,6 @@ export function initUniversitiesPage() {
                     el.sortSelect.value = "uni_ai";
                     initCustomSelect("sortSelect");
                 }
-                if (sourceEl) sourceEl.value = "uni_ai";
             }
         }
 
@@ -3393,7 +3392,7 @@ export function initUniversitiesPage() {
     });
 
     el.sortSelect?.addEventListener("change", () => {
-        handleSortChange(el.sortSelect.value, null);
+        handleSortChange(el.sortSelect.value);
     });
 
     const shouldShowUniFitWarning = () => {
