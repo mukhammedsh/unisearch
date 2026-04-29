@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,32 +15,54 @@ const env = loadProjectEnv({
 });
 
 const python = detectPython(rootDir, env);
-const host = String(env.FRONTEND_HOST || "127.0.0.1").trim() || "127.0.0.1";
-const port = String(env.FRONTEND_PORT || "5501").trim() || "5501";
+const host = normalizeHost(env.FRONTEND_HOST, "127.0.0.1");
+const port = normalizePort(env.FRONTEND_PORT, 5501);
+const portArg = String(port);
 const probeHost = host === "0.0.0.0" ? "127.0.0.1" : (host === "::" ? "::1" : host);
-const probeUrlHost = probeHost.includes(":") && !probeHost.startsWith("[") ? `[${probeHost}]` : probeHost;
-const indexUrl = `http://${probeUrlHost}:${port}/index.html`;
-const envPath = generateFrontendEnvFile({ rootDir });
+generateFrontendEnvFile({ rootDir });
 
-console.log(`[dev:frontend] using python: ${python}`);
-console.log(`[dev:frontend] wrote runtime config: ${envPath}`);
-console.log(`[dev:frontend] serving UI on http://${host}:${port}/index.html`);
+console.log("[dev:frontend] using configured Python runtime.");
+console.log("[dev:frontend] wrote runtime config.");
+console.log("[dev:frontend] serving UI with configured host and port.");
+
+function normalizeHost(value, fallback) {
+  const hostValue = String(value || fallback).trim() || fallback;
+  const unwrapped = hostValue.startsWith("[") && hostValue.endsWith("]") ? hostValue.slice(1, -1) : hostValue;
+  if (net.isIP(unwrapped)) return unwrapped;
+  if (/^[a-zA-Z0-9.-]+$/.test(unwrapped)) return unwrapped;
+  return fallback;
+}
+
+function normalizePort(value, fallback) {
+  const parsed = Number.parseInt(String(value || fallback), 10);
+  if (Number.isInteger(parsed) && parsed >= 1 && parsed <= 65535) return parsed;
+  return fallback;
+}
+
+async function canConnect({ host: connectHost, port: connectPort, timeoutMs = 1000 }) {
+  return await new Promise((resolve) => {
+    const socket = net.createConnection({
+      host: connectHost,
+      port: connectPort,
+    });
+    const finish = (result) => {
+      socket.destroy();
+      resolve(result);
+    };
+
+    socket.setTimeout(timeoutMs);
+    socket.once("connect", () => finish(true));
+    socket.once("timeout", () => finish(false));
+    socket.once("error", () => finish(false));
+  });
+}
 
 async function isFrontendServing(timeoutMs = 1000) {
-  try {
-    const response = await fetch(indexUrl, {
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-    if (!response.ok) return false;
-    const contentType = String(response.headers.get("content-type") || "").toLowerCase();
-    return contentType.includes("text/html");
-  } catch {
-    return false;
-  }
+  return await canConnect({ host: probeHost, port, timeoutMs });
 }
 
 if (await isFrontendServing()) {
-  console.log(`[dev:frontend] frontend already running at ${indexUrl}`);
+  console.log("[dev:frontend] frontend already running.");
   process.exit(0);
 }
 
@@ -50,7 +73,7 @@ const child = spawn(
     "--host",
     host,
     "--port",
-    port,
+    portArg,
     "--directory",
     frontendDir,
   ],

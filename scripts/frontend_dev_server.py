@@ -62,6 +62,23 @@ def resolve_frontend_target(request_path: str) -> str:
     return normalized.lstrip("/")
 
 
+def build_file_index(base_dir: Path) -> dict[str, Path]:
+    resolved_base = base_dir.resolve()
+    file_index: dict[str, Path] = {}
+
+    for root, _dirs, files in os.walk(resolved_base):
+        root_path = Path(root)
+        for file_name in files:
+            file_path = (root_path / file_name).resolve()
+            try:
+                relative_key = file_path.relative_to(resolved_base).as_posix()
+            except ValueError:
+                continue
+            file_index[relative_key] = file_path
+
+    return file_index
+
+
 class FrontendDevHandler(SimpleHTTPRequestHandler):
     server_version = "UniSearchFrontendDev/1.0"
 
@@ -73,30 +90,23 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
 
     def _serve_request(self, *, include_body: bool) -> None:
         target = resolve_frontend_target(self.path)
-        filesystem_path = self._safe_filesystem_path(target)
+        filesystem_path = self._lookup_indexed_file(target)
 
-        if filesystem_path and filesystem_path.is_file():
+        if filesystem_path:
             self._send_file(filesystem_path, include_body=include_body)
             return
 
-        if filesystem_path and filesystem_path.is_dir():
-            index_file = filesystem_path / "index.html"
-            if index_file.is_file():
-                self._send_file(index_file, include_body=include_body)
-                return
+        index_path = self._lookup_indexed_file(f"{target.rstrip('/')}/index.html")
+        if index_path:
+            self._send_file(index_path, include_body=include_body)
+            return
 
         self._send_custom_404(include_body=include_body)
 
-    def _safe_filesystem_path(self, relative_path: str) -> Path | None:
-        base_dir = Path(self.directory).resolve()
+    def _lookup_indexed_file(self, relative_path: str) -> Path | None:
         clean_relative = str(relative_path or "").replace("\\", "/").lstrip("/")
-        candidate = (base_dir / clean_relative).resolve()
-
-        try:
-            candidate.relative_to(base_dir)
-        except ValueError:
-            return None
-        return candidate
+        file_index = getattr(self.server, "file_index", {})
+        return file_index.get(clean_relative)
 
     def _send_file(self, file_path: Path, *, include_body: bool, status: int = 200) -> None:
         content_type = self.guess_type(str(file_path))
@@ -118,8 +128,8 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
             self.wfile.write(data)
 
     def _send_custom_404(self, *, include_body: bool) -> None:
-        not_found_file = self._safe_filesystem_path("404.html")
-        if not_found_file and not_found_file.is_file():
+        not_found_file = self._lookup_indexed_file("404.html")
+        if not_found_file:
             self._send_file(not_found_file, include_body=include_body, status=404)
             return
 
@@ -152,7 +162,9 @@ def main() -> None:
 
     mimetypes.add_type("application/javascript", ".js")
 
-    directory = str(Path(args.directory).resolve())
+    directory_path = Path(args.directory).resolve()
+    directory = str(directory_path)
+    file_index = build_file_index(directory_path)
     handler_class = lambda *handler_args, **handler_kwargs: FrontendDevHandler(
         *handler_args,
         directory=directory,
@@ -160,7 +172,8 @@ def main() -> None:
     )
 
     with ThreadingHTTPServer((args.host, args.port), handler_class) as httpd:
-        print(f"[frontend-dev-server] serving {directory} at http://{args.host}:{args.port}")
+        httpd.file_index = file_index
+        print("[frontend-dev-server] serving indexed frontend files")
         httpd.serve_forever()
 
 

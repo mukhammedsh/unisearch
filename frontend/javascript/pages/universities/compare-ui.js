@@ -44,6 +44,7 @@ import {
   buildCompareSpecs,
   compareSpecRawValue,
   compareSpecSections,
+  compareMetrics,
   buildCompareAdvantages,
   buildCompareCategoryScores,
   compareCategoryMeta,
@@ -318,13 +319,14 @@ export function renderCompareConclusion(universities, metrics) {
 
 export function renderCompareResultsPage(container, universities, options = {}) {
   if (!container) return;
-  const metrics = options.metrics || metrics(universities, options.choices);
+  const comparisonMetrics = options.metrics || compareMetrics(universities, options.choices);
+  const renderOptions = { ...options, metrics: comparisonMetrics };
   
-  const cardsHtml = universities.map((u, i) => renderCompareCard(u, i, options)).join("");
-  const keyDifferencesHtml = renderCompareKeyDifferences(universities, metrics);
-  const overviewHtml = renderCompareOverview(universities, metrics);
-  const conclusionHtml = renderCompareConclusion(universities, metrics);
-  const tableHtml = renderCompareTable(universities, metrics);
+  const cardsHtml = universities.map((u, i) => renderCompareCard(u, i, renderOptions)).join("");
+  const keyDifferencesHtml = renderCompareKeyDifferences(universities, comparisonMetrics);
+  const overviewHtml = renderCompareOverview(universities, comparisonMetrics);
+  const conclusionHtml = renderCompareConclusion(universities, comparisonMetrics);
+  const tableHtml = renderCompareTable(universities, comparisonMetrics);
 
   container.innerHTML = `
     <div class="compare-results-head compare-results-head--pair">
