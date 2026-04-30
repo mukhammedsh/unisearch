@@ -384,7 +384,7 @@ Generate: `npm run build:frontend-env`
 4. **Run tests:** `npm run fix:encoding && npm run check:encoding && npm run check:i18n && npm run test:backend` (minimum)
 5. **Commit and push:** `git add -A && git commit -m "chore(release): X.Y.Z" && git push`
    After every `git push` (branch or tag), inspect the new GitHub Actions runs, wait for the final `success`/`failure` status, and include links in the final report. Local commits alone do not trigger Actions.
-6. **Tag release:** `git tag -a vX.Y.Z -m "UniSearch X.Y.Z" && git push origin vX.Y.Z`
+6. **Tag release:** Always create the annotated `vX.Y.Z` tag on the latest commit for that version: `git tag -a vX.Y.Z -m "UniSearch X.Y.Z" && git push origin vX.Y.Z`. A version commit is not complete without its tag.
 7. **Monitor CI:** Check GitHub Actions for test results
 
 **CHANGELOG.md and AGENTS.md updates:**

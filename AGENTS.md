@@ -52,7 +52,7 @@
   5. Запустить минимальные тесты (`npm run fix:encoding`, `npm run check:encoding`, `npm run check:i18n`, `npm run test:backend`).
   5. Commit + Push.
      После каждого `git push` (ветки или тега) проверить новые GitHub Actions runs, дождаться финального статуса (`success`/`failure`) и выдать итоговый отчет со ссылками. Локальный commit сам по себе Actions не запускает.
-  6. Сделать тег: `git tag -a vX.Y.Z -m "UniSearch X.Y.Z"` -> `git push origin vX.Y.Z`.
+  6. Сделать тег на последнем коммите этой версии: `git tag -a vX.Y.Z -m "UniSearch X.Y.Z"` -> `git push origin vX.Y.Z`. Версионный commit без тега не считать завершенным.
   7. Контролировать GitHub Actions, выдать итоговый отчет со ссылками.
 
 ## 7. БЕЗОПАСНОСТЬ И COMPATIBILITY
