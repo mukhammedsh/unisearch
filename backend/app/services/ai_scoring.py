@@ -836,6 +836,76 @@ def _compute_score_profile_chance(
     }
 
 
+def _compute_requirement_profile_proxy_chance(
+    *,
+    university: Dict[str, Any],
+    track: Dict[str, Any],
+    user_scores: Dict[str, Any],
+    user_languages: Dict[str, Any],
+) -> Dict[str, Any]:
+    req = track.get("requirements")
+    avg = track.get("stats_avg")
+    if not isinstance(req, dict) or not isinstance(avg, dict):
+        return {"chance01": None, "confidence": "no_data"}
+
+    rows = []
+    for exam_id, min_val in req.items():
+        if str(exam_id or "").strip().upper() == "GPA":
+            continue
+        if _is_language_exam_key(exam_id):
+            continue
+        if not _is_higher_better(exam_id):
+            continue
+        user = _get_user_score(user_scores, exam_id, user_languages)
+        user_norm = _normalize_exam_score(exam_id, user)
+        min_norm = _normalize_exam_score(exam_id, min_val)
+        avg_norm = _normalize_exam_score(exam_id, avg.get(exam_id))
+        if user_norm is None or min_norm is None:
+            continue
+        if avg_norm is None:
+            avg_norm = max(float(min_norm) + 12.0, float(user_norm))
+        p25 = _clamp(float(min_norm), 0.0, 100.0)
+        median = _clamp(max(float(avg_norm), p25 + 1.0), 0.0, 100.0)
+        spread = max(median - p25, 5.0)
+        p75 = _clamp(max(median + spread, median + 1.0), 0.0, 100.0)
+        proxy_track = dict(track)
+        proxy_track["score_profile"] = {
+            "exam_id": str(exam_id),
+            "compatible_exam_ids": [str(exam_id)],
+            "p25_normalized": p25,
+            "median_normalized": median,
+            "p75_normalized": p75,
+            "confidence": "low",
+        }
+        chance_meta = _compute_score_profile_chance(
+            university=university,
+            track=proxy_track,
+            user_norm=float(user_norm),
+        )
+        chance01 = _to_num(chance_meta.get("chance01"))
+        if chance01 is None:
+            continue
+        rows.append(
+            {
+                "chance01": _clamp01(float(chance01)),
+                "weight": _exam_weight(exam_id, mode="chance"),
+            }
+        )
+
+    if not rows:
+        return {"chance01": None, "confidence": "no_data"}
+
+    weighted = sum(float(row["chance01"]) * float(row["weight"]) for row in rows)
+    weights = sum(float(row["weight"]) for row in rows)
+    chance01 = _clamp01(weighted / weights if weights > 0 else min(float(row["chance01"]) for row in rows))
+    return {
+        "chance01": float(chance01),
+        "rangeLowPercent": round(max(0.0, chance01 - 0.12) * 100.0, 1),
+        "rangeHighPercent": round(min(1.0, chance01 + 0.12) * 100.0, 1),
+        "confidence": "low",
+    }
+
+
 def _compute_estimated_fallback_chance(
     *,
     university: Dict[str, Any],
@@ -1590,28 +1660,47 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                         confidence = str(chance_meta.get("confidence") or "estimated")
                         chance_model = "official_score_profile"
             else:
-                chance_meta = _compute_estimated_fallback_chance(
-                    university=university,
-                    track=track,
-                    academic=academic,
-                    language=language,
-                    affordability=affordability,
-                    feasibility_gate=feasibility_gate,
-                    scholarship_boost=scholarship_boost,
-                    missing_evidence=bool(fit.get("missingEvidence")),
-                    hard_pass_all=bool(fit.get("hardPassAll")),
-                    conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
-                )
-                chance01_raw = _to_num(chance_meta.get("chance01"))
-                if chance01_raw is None:
-                    no_data_reason = "no_score_profile"
+                if bool(fit.get("hardPassAll")) and int(fit.get("conditionalRequirements", 0) or 0) == 0:
+                    chance_meta = _compute_requirement_profile_proxy_chance(
+                        university=university,
+                        track=track,
+                        user_scores=ctx["userScores"],
+                        user_languages=ctx["userLanguages"],
+                    )
                 else:
-                    chance01 = _clamp01(float(chance01_raw))
+                    chance_meta = {"chance01": None, "confidence": "no_data"}
+                chance01_raw = _to_num(chance_meta.get("chance01"))
+                if chance01_raw is not None:
+                    context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
+                    chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + scholarship_boost)
                     chance_pct = int(round(chance01 * 100.0))
                     range_low = chance_meta.get("rangeLowPercent")
                     range_high = chance_meta.get("rangeHighPercent")
                     confidence = str(chance_meta.get("confidence") or "low")
                     chance_model = "estimated_fallback"
+                else:
+                    chance_meta = _compute_estimated_fallback_chance(
+                        university=university,
+                        track=track,
+                        academic=academic,
+                        language=language,
+                        affordability=affordability,
+                        feasibility_gate=feasibility_gate,
+                        scholarship_boost=scholarship_boost,
+                        missing_evidence=bool(fit.get("missingEvidence")),
+                        hard_pass_all=bool(fit.get("hardPassAll")),
+                        conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
+                    )
+                    chance01_raw = _to_num(chance_meta.get("chance01"))
+                    if chance01_raw is None:
+                        no_data_reason = "no_score_profile"
+                    else:
+                        chance01 = _clamp01(float(chance01_raw))
+                        chance_pct = int(round(chance01 * 100.0))
+                        range_low = chance_meta.get("rangeLowPercent")
+                        range_high = chance_meta.get("rangeHighPercent")
+                        confidence = str(chance_meta.get("confidence") or "low")
+                        chance_model = "estimated_fallback"
         
         if chance_pct is None:
             chance_model = "none"

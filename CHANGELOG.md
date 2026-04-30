@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 3.8.0 (2026-04-30) - UniChance Fallback Calibration
+
+Status:
+- synchronized runtime/package version to `3.8.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- calibrated estimated UniChance fallback scoring against official `score_profile` tracks by deriving a low-confidence proxy profile from comparable admission requirements and average stats;
+- preserved conservative fallback behavior for below-minimum exams, missing mandatory language evidence, and tracks without comparable score evidence;
+- added backend regression coverage that fills template profiles across all score-profile universities/tracks at `p25`, `median`, and `p75`, then compares exact UniChance with the same track using fallback scoring;
+- documented release-permission and release-note aggregation rules in `AGENTS.md` and `CLAUDE.md`.
+
 ## 3.7.9 (2026-04-30) - Docker Runtime Hardening
 
 Status:

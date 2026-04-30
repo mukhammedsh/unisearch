@@ -389,6 +389,10 @@ Generate: `npm run build:frontend-env`
 6. **Tag release:** Always create the annotated `vX.Y.Z` tag on the latest commit for that version: `git tag -a vX.Y.Z -m "UniSearch X.Y.Z" && git push origin vX.Y.Z`. A version commit is not complete without its tag.
 7. **Monitor CI:** Check GitHub Actions for test results
 
+**Release permission:** Commit + push is not the same as publishing a release. Do not create a GitHub Release, publish release notes, or trigger release publishing unless the user explicitly asks for a release. If the user only asks for commit + push, ask whether a release is needed before doing release-specific work.
+
+**Release notes:** Before publishing a GitHub Release, check the latest published GitHub Release and include every change from newer tags/versions, including intermediate tags that did not get their own GitHub Release.
+
 **CHANGELOG.md and AGENTS.md updates:**
 - Update only when there are meaningful changes (behavior, API, important patterns)
 - Be concise, no fluff
