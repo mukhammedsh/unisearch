@@ -185,12 +185,12 @@ Notes:
 - The frontend runtime config automatically follows your current host for local URLs, so `localhost`, `127.0.0.1`, and LAN IP launches stay aligned with the same machine.
 - Change `FRONTEND_HOST` / `FRONTEND_PORT` in `backend/.env` if you want another static-server bind.
 
-### 3) Full stack with Redis (Docker)
+### 3) Backend with Redis (Docker)
 ```bash
 docker compose up --build
 ```
 
-The backend image runs as a non-root user. Redis is available only on the internal Docker network by default; do not publish Redis to the internet. Set `OPS_ADMIN_TOKEN` in your shell or `.env` before exposing ops endpoints or metrics on a hosted deployment.
+This starts the FastAPI backend and Redis. The static frontend still runs with `npm run dev:frontend` or your web server. The backend image runs as a non-root user and Compose checks both Redis and backend health. Redis is available only on the internal Docker network by default; do not publish Redis to the internet. Set `OPS_ADMIN_TOKEN` in your shell or `.env` before exposing ops endpoints or metrics on a hosted deployment.
 
 For VPS or Docker hosting behind a reverse proxy, see [deployment security notes](docs/deployment_security.md) for Caddy and Nginx examples.
 
@@ -456,6 +456,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.7.9` on `2026-04-30`
 - `3.7.8` on `2026-04-30`
 - `3.7.7` on `2026-04-29`
 - `3.7.6` on `2026-04-29`

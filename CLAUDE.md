@@ -47,6 +47,8 @@ cd backend
 python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
+After testing, stop every local service you started for the task, including backend, frontend, Docker Compose, or ad-hoc servers. Use `Ctrl+C`, stop the process, or `docker compose down` before handing work back so the user can run and test the app themselves.
+
 ### Testing
 ```bash
 # Localization consistency

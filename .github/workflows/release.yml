@@ -3,6 +3,9 @@ name: Release Artifacts And Container
 on:
   release:
     types: [published]
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: write
@@ -20,7 +23,11 @@ jobs:
         id: vars
         shell: bash
         run: |
-          TAG="${{ github.event.release.tag_name }}"
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
           VERSION="${TAG#v}"
           OWNER_LC="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"

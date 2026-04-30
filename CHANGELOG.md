@@ -2,6 +2,16 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.9 (2026-04-30) - Docker Runtime Hardening
+
+Status:
+- synchronized runtime/package version to `3.7.9` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- hardened Docker Compose with Redis/backend healthchecks, `restart: unless-stopped`, and backend startup waiting for healthy Redis;
+- reduced Docker build context by excluding local env files, virtualenvs, frontend/docs/tests/scripts, and transient test artifacts;
+- changed backend Docker dependencies to use the CPU-only PyTorch wheel, reducing the local backend image from `8.52GB` to `2.02GB`;
+- added CI coverage for backend Docker image builds and enabled container artifact publishing from pushed `v*` tags;
+- documented that the Docker compose setup runs backend + Redis while the static frontend is served separately.
+
 ## 3.7.8 (2026-04-30) - Open-source Repository Hygiene
 
 Status:

@@ -103,3 +103,6 @@ jobs:
 
       - name: Validate Docker Compose config
         run: docker compose config
+
+      - name: Build backend Docker image
+        run: docker build -f backend/Dockerfile .

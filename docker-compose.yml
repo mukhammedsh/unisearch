@@ -3,6 +3,12 @@ services:
     image: redis:7-alpine
     container_name: unisearch-redis
     command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
     volumes:
       - redis_data:/data
 
@@ -11,6 +17,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     container_name: unisearch-backend
+    restart: unless-stopped
     environment:
       FRONTEND_ORIGINS: ${FRONTEND_ORIGINS:-}
       BACKEND_HOST: 0.0.0.0
@@ -28,8 +35,15 @@ services:
     ports:
       - "${BACKEND_PORT:-8000}:${BACKEND_PORT:-8000}"
     command: ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${BACKEND_PORT:-8000}"]
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/health' % os.getenv('BACKEND_PORT', '8000'), timeout=3).read()\""]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
 
 volumes:
   redis_data:
