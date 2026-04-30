@@ -2,6 +2,16 @@
 
 All notable project changes should be recorded here.
 
+## 3.7.8 (2026-04-30) - Open-source Repository Hygiene
+
+Status:
+- synchronized runtime/package version to `3.7.8` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- added GitHub PR and issue templates, CODEOWNERS, Dependabot configuration, and EditorConfig for clearer external contribution flow;
+- added a Repository Hygiene workflow for version sync, encoding, localization parity, and university data audit checks;
+- added practical fork/reuse and release checklist documentation, plus an ADR for upstream project boundaries;
+- added `npm run audit:data` and aligned the university data audit with truthful `rank: null` records that have explicit non-published rank metadata;
+- documented the new repo-hygiene and public-docs rules in `AGENTS.md`, `CLAUDE.md`, README, and CONTRIBUTING.
+
 ## 3.7.7 (2026-04-29) - CodeQL Alert Fixes
 
 Status:

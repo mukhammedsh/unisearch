@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Muxlex/unisearch/security/policy
+    about: Please report security issues through the security policy instead of public issues.
+  - name: Support
+    url: https://github.com/Muxlex/unisearch/blob/main/SUPPORT.md
+    about: Read support expectations before opening a request.

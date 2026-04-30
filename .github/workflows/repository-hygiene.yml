@@ -1,0 +1,38 @@
+name: Repository Hygiene
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install node dependencies
+        run: npm ci
+
+      - name: Check version sync
+        run: npm run check:version
+
+      - name: Check encoding
+        run: npm run check:encoding
+
+      - name: Check localization parity
+        run: npm run check:i18n
+
+      - name: Audit university data
+        run: npm run audit:data

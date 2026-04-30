@@ -240,8 +240,14 @@ def audit_dataset(
             errors.append(f"{uid}: empty name")
 
         rank = row.get("rank")
-        if not isinstance(rank, (int, float)) or float(rank) <= 0:
-            errors.append(f"{uid}: rank must be positive number")
+        rank_meta = row.get("rank_meta") if isinstance(row.get("rank_meta"), dict) else {}
+        rank_status = str(rank_meta.get("status") or "").strip().lower()
+        rank_missing_statuses = {"not_published", "excluded", "not_listed"}
+        if rank is None:
+            if rank_status not in rank_missing_statuses:
+                errors.append(f"{uid}: rank is null without a non-published rank_meta.status")
+        elif not isinstance(rank, (int, float)) or float(rank) <= 0:
+            errors.append(f"{uid}: rank must be positive number or null with non-published rank metadata")
 
         location = row.get("location")
         if not isinstance(location, dict):

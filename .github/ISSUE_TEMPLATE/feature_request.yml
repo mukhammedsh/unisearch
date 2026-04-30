@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest a focused UniSearch improvement.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user workflow is currently hard, slow, unclear, or missing?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Keep the idea focused and compatible with the current Vanilla JS + FastAPI architecture.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Search and filters
+        - UniFit ranking
+        - UniChance admissions estimate
+        - University comparison
+        - Profile and saved universities
+        - Guide or documentation
+        - Backend API
+        - Release or CI workflow
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrails
+      options:
+        - label: This stays within bachelor-level university discovery.
+          required: true
+        - label: This does not require a frontend framework or UI library.
+          required: true

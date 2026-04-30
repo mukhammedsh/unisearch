@@ -56,6 +56,9 @@ npm run check:i18n
 npm run fix:encoding
 npm run check:encoding
 
+# Dataset integrity
+npm run audit:data
+
 # Backend unit tests (pytest)
 npm run test:backend
 
@@ -92,7 +95,7 @@ After updating `backend/data/official_facts.json` or `backend/data/official_admi
 ```bash
 python backend/scripts/apply_official_facts.py --verified-at 2026-04-23
 python backend/scripts/apply_official_admissions.py
-python backend/scripts/audit_universities_data.py
+npm run audit:data
 python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
 ```
 
@@ -230,6 +233,8 @@ frontend/
 - **No secrets:** Never commit `.env`, tokens, local IPs, cookies, logs, or generated dumps.
 - **Git hooks:** Do not skip hooks (`--no-verify`) unless explicitly required.
 - **Encoding:** Before any commit, run `npm run fix:encoding` and then `npm run check:encoding`. Do not commit mojibake, BOM-only churn, or broken UTF-8.
+- **Public docs:** Add only practical guides, contracts, and durable decisions. Do not commit internal opinions, repo-readiness scores, or one-off assessments unless they are useful to project users.
+- **Repo hygiene:** For documentation, workflow, dependency, or repository-maintenance PRs, prefer the fast baseline: `npm run check:version`, `npm run check:encoding`, `npm run check:i18n`, and `npm run audit:data`.
 
 ## Common Patterns
 
@@ -245,12 +250,12 @@ frontend/
 2. Add Russian translation to `backend/data/universities_translations.json`
 3. Add hidden search aliases to `backend/app/services/universities.py` → `_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID`
 4. Add logo/thumbnail to `backend/data/university_assets/logos/` and `logos-small/`
-5. Run audit: `python backend/scripts/audit_universities_data.py`
+5. Run audit: `npm run audit:data`
 
 ### Updating Official Facts
 1. Edit `backend/data/official_facts.json` with verified data and source URL
 2. Run sync: `python backend/scripts/apply_official_facts.py --verified-at 2026-04-23`
-3. Run audit: `python backend/scripts/audit_universities_data.py`
+3. Run audit: `npm run audit:data`
 4. Commit both `official_facts.json` and updated `universities.json`
 
 ### Adding a Localization Key

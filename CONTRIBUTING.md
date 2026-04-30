@@ -56,7 +56,7 @@ npm run dev:frontend
   ```bash
   python backend/scripts/apply_official_facts.py --verified-at YYYY-MM-DD
   python backend/scripts/apply_official_admissions.py
-  python backend/scripts/audit_universities_data.py
+  npm run audit:data
   python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
   ```
 
@@ -64,13 +64,18 @@ npm run dev:frontend
 Run the smallest relevant check before a PR:
 
 ```bash
+npm run fix:encoding
+npm run check:encoding
 npm run check:i18n
+npm run audit:data
 npm run test:backend
 npm run test:e2e:pr
 npm run test:all
 ```
 
 Use `npm run test:all` for broad behavior changes.
+
+For visible UI changes, include screenshots or notes for the relevant desktop and mobile widths, and mention whether light and dark themes were checked.
 
 ## PR Expectations
 - Describe what changed and why.

@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Oral"
+    open-pull-requests-limit: 3
+    groups:
+      frontend-and-test-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "pip"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:20"
+      timezone: "Asia/Oral"
+    open-pull-requests-limit: 3
+    groups:
+      backend-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:40"
+      timezone: "Asia/Oral"
+    open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns:
+          - "*"

@@ -1,0 +1,48 @@
+name: University data correction
+description: Request a correction to university facts, admissions, costs, media, or sources.
+title: "[Data]: "
+body:
+  - type: input
+    id: university
+    attributes:
+      label: University
+      description: Use the full display name shown in UniSearch.
+    validations:
+      required: true
+  - type: dropdown
+    id: data_type
+    attributes:
+      label: Data type
+      options:
+        - Admissions requirements
+        - Tuition or costs
+        - Rankings
+        - Location or coordinates
+        - University media
+        - Translation
+        - Other official fact
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What should change?
+      description: Describe the current value and the corrected value.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Official source
+      description: Link only official university pages, admission pages, or university-hosted PDFs. Aggregators are not accepted.
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope checks
+      options:
+        - label: This is bachelor-level data, not master's or PhD data.
+          required: true
+        - label: I used an official source, not an aggregator or marketing summary.
+          required: true

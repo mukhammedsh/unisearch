@@ -67,6 +67,7 @@ Prerequisites:
 - Runtime and env vars: see [Environment configuration](#environment-configuration)
 - Curated data workflow: see [Data maintenance and provenance](#data-maintenance-and-provenance)
 - Tests and CI: see [Testing](#testing) and [CI policy](#ci-policy)
+- Forking and reuse: see [docs/forking-and-reuse.md](docs/forking-and-reuse.md)
 - Contribution notes: see [CONTRIBUTING.md](CONTRIBUTING.md)
 - Release history: see [CHANGELOG.md](CHANGELOG.md)
 
@@ -362,7 +363,7 @@ Current curated workflow:
    ```
 4. Run dataset audit:
    ```bash
-   python backend/scripts/audit_universities_data.py
+   npm run audit:data
    ```
 5. Run HTTP source audit for touched URLs:
    ```bash
@@ -422,6 +423,13 @@ Workflow: `.github/workflows/tests.yml`
 - Nightly schedule:
   - full Playwright matrix on Chromium, Firefox, and WebKit
 
+Workflow: `.github/workflows/repository-hygiene.yml`
+
+- PR and push to `main`:
+  - version sync check
+  - UTF-8 and mojibake encoding check
+  - English/Russian localization parity check
+
 ## Hosting notes
 - Works with standard setups like VPS + reverse proxy, Docker hosts, or managed platforms.
 - For non-local deployments, the frontend can use clean routes like `/`, `/universities`, `/universities/:id`, `/ranking`, `/guide`, and `/about` if rewrite rules are configured.
@@ -448,6 +456,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.7.8` on `2026-04-30`
 - `3.7.7` on `2026-04-29`
 - `3.7.6` on `2026-04-29`
 - `3.7.5` on `2026-04-28`
