@@ -3,9 +3,6 @@ name: Release Artifacts And Container
 on:
   release:
     types: [published]
-  push:
-    tags:
-      - "v*"
 
 permissions:
   contents: write
@@ -23,16 +20,67 @@ jobs:
         id: vars
         shell: bash
         run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            TAG="${{ github.event.release.tag_name }}"
-          else
-            TAG="${GITHUB_REF_NAME}"
-          fi
+          TAG="${{ github.event.release.tag_name }}"
           VERSION="${TAG#v}"
           OWNER_LC="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "owner_lc=${OWNER_LC}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate release changelog
+        shell: bash
+        env:
+          TAG: ${{ steps.vars.outputs.tag }}
+          VERSION: ${{ steps.vars.outputs.version }}
+        run: |
+          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Release tag must use vX.Y.Z format, got '$TAG'."
+            exit 1
+          fi
+
+          python - <<'PY'
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          version = os.environ["VERSION"]
+          changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
+          heading = re.compile(rf"^## {re.escape(version)}(?:\s|\()", re.MULTILINE)
+          match = heading.search(changelog)
+          if not match:
+              print(f"::error::CHANGELOG.md has no section for {version}.")
+              sys.exit(1)
+
+          next_heading = re.search(r"^## \d+\.\d+\.\d+(?:\s|\()", changelog[match.end():], re.MULTILINE)
+          end = match.end() + next_heading.start() if next_heading else len(changelog)
+          section = changelog[match.start():end]
+          bullets = [line[2:].strip() for line in section.splitlines() if line.startswith("- ")]
+          if not bullets:
+              print(f"::error::CHANGELOG.md section {version} has no release notes.")
+              sys.exit(1)
+
+          housekeeping_patterns = [
+              r"^synchronized runtime/package version\b",
+              r"^bumped\b.*\bversion\b",
+              r"^documented\b.*\b(AGENTS\.md|CLAUDE\.md|release|workflow|agent)\b",
+              r"^added\b.*\b(test|tests|coverage)\b",
+              r"^updated\b.*\b(test|tests|coverage)\b",
+              r"^verified\b",
+              r"^performed a full project hygiene check\b",
+              r"^cleaned\b.*\b(temporary|transient)\b",
+          ]
+          housekeeping = re.compile("|".join(f"(?:{pattern})" for pattern in housekeeping_patterns), re.IGNORECASE)
+          user_visible = [bullet for bullet in bullets if not housekeeping.search(bullet)]
+          if not user_visible:
+              print(
+                  "::error::CHANGELOG.md section "
+                  f"{version} has only release housekeeping. Add a user-facing behavior/API/data/UI change before publishing."
+              )
+              sys.exit(1)
+
+          print(f"Release {version} changelog has {len(user_visible)} user-facing note(s).")
+          PY
 
       - name: Build zip artifacts for release
         shell: bash

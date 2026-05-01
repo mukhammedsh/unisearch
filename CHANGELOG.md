@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 3.8.1 (2026-05-01) - Release Workflow and Maintenance
+
+Status:
+- synchronized runtime/package version to `3.8.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- improved Settings persistence lookups by using map-based key access while preserving the existing stored settings contract;
+- updated the Playwright test runner to `1.59.1` and moved GitHub Actions workflow dependencies to current Node 24-compatible major versions;
+- cleaned the official admissions sync script formatting after removing an unused future import;
+- changed release artifact publishing to run only from published GitHub Releases, and added a release-time changelog validation gate before artifact/container publishing.
+
 ## 3.8.0 (2026-04-30) - UniChance Fallback Calibration
 
 Status:
