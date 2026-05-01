@@ -6,14 +6,11 @@ It is intentionally richer than the legacy flat acceptance-rate fields and can
 store official status, raw counts, semantics, sources, and verified-null cases.
 """
 
-from __future__ import annotations
-
 import argparse
 import copy
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
@@ -89,7 +86,14 @@ def _normalize_provenance(value: Any) -> Optional[Dict[str, Any]]:
     if not isinstance(value, dict):
         return None
     out: Dict[str, Any] = {}
-    for key in ("source", "source_url", "verified_at", "status", "confidence", "method"):
+    for key in (
+        "source",
+        "source_url",
+        "verified_at",
+        "status",
+        "confidence",
+        "method",
+    ):
         text = _clean_text(value.get(key))
         if text:
             out[key] = text
@@ -159,7 +163,9 @@ def _normalize_programs(value: Any) -> List[Dict[str, Any]]:
         if name:
             row["program_name"] = name
         rate = _safe_num(row.get("acceptance_rate_percent"))
-        row["acceptance_rate_percent"] = round(float(rate), 2) if rate is not None else None
+        row["acceptance_rate_percent"] = (
+            round(float(rate), 2) if rate is not None else None
+        )
         row["counts"] = _normalize_counts(row.get("counts"))
         row["sources"] = _normalize_sources(row.get("sources"))
         row["provenance"] = _normalize_provenance(row.get("provenance"))
@@ -167,7 +173,9 @@ def _normalize_programs(value: Any) -> List[Dict[str, Any]]:
     return out
 
 
-def _normalize_admissions_payload(payload: Dict[str, Any], status_date: str, schema_version: int) -> Dict[str, Any]:
+def _normalize_admissions_payload(
+    payload: Dict[str, Any], status_date: str, schema_version: int
+) -> Dict[str, Any]:
     return {
         "schema_version": schema_version,
         "status_date": status_date,
@@ -184,7 +192,10 @@ def apply_official_admissions(
     changed = 0
     admissions_rows = catalog.get("universities") if isinstance(catalog, dict) else {}
     admissions_rows = admissions_rows if isinstance(admissions_rows, dict) else {}
-    status_date = _clean_text(catalog.get("verified_at") or catalog.get("status_date")) or "2026-03-25"
+    status_date = (
+        _clean_text(catalog.get("verified_at") or catalog.get("status_date"))
+        or "2026-03-25"
+    )
     schema_version = int(catalog.get("schema_version") or 1)
 
     for row in universities:
@@ -203,7 +214,9 @@ def apply_official_admissions(
             academics = {}
             row["academics"] = academics
 
-        normalized = _normalize_admissions_payload(payload, status_date=status_date, schema_version=schema_version)
+        normalized = _normalize_admissions_payload(
+            payload, status_date=status_date, schema_version=schema_version
+        )
         if academics.get("admissions") != normalized:
             academics["admissions"] = normalized
 
@@ -214,9 +227,17 @@ def apply_official_admissions(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Apply structured official admissions data to universities.json")
-    parser.add_argument("--data", default=str(DEFAULT_DATA_PATH), help="Path to universities.json")
-    parser.add_argument("--admissions", default=str(DEFAULT_ADMISSIONS_PATH), help="Path to official_admissions.json")
+    parser = argparse.ArgumentParser(
+        description="Apply structured official admissions data to universities.json"
+    )
+    parser.add_argument(
+        "--data", default=str(DEFAULT_DATA_PATH), help="Path to universities.json"
+    )
+    parser.add_argument(
+        "--admissions",
+        default=str(DEFAULT_ADMISSIONS_PATH),
+        help="Path to official_admissions.json",
+    )
     args = parser.parse_args()
 
     data_path = Path(args.data).resolve()
@@ -227,7 +248,9 @@ def main() -> None:
         raise RuntimeError("universities.json root must be a list")
 
     changed = apply_official_admissions(universities, catalog)
-    data_path.write_text(json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    data_path.write_text(
+        json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(f"Updated {changed} university rows from structured official admissions data")
 
 
