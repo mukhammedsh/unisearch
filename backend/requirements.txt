@@ -1,11 +1,11 @@
-fastapi==0.128.0
-uvicorn==0.40.0
-pydantic==2.12.5
+fastapi==0.136.1
+uvicorn==0.46.0
+pydantic==2.13.3
 typing_extensions==4.15.0
-scikit-learn==1.5.2
+scikit-learn==1.8.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.11.0+cpu
-sentence-transformers==3.2.1
-redis==5.2.1
+sentence-transformers==5.4.1
+redis==7.4.0
 prometheus-fastapi-instrumentator==7.1.0
-sentry-sdk==2.20.0
+sentry-sdk==2.58.0
