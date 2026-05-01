@@ -8,7 +8,13 @@ async function switchLanguage(page, value) {
     select.value = lang;
     select.dispatchEvent(new Event("change", { bubbles: true }));
   }, value);
-  await page.waitForLoadState("domcontentloaded");
+  await page.waitForFunction((lang) => {
+    const select = document.getElementById("languageSelect");
+    return !!select
+      && select.value === lang
+      && select.dataset.loading !== "1"
+      && !select.disabled;
+  }, value);
 }
 
 test("language switch updates UI labels for eng and ru locales", async ({ page }) => {
