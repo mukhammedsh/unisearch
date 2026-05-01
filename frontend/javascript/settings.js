@@ -20,12 +20,14 @@ export const SETTINGS_DEFINITIONS = [
   },
 ];
 
+const SETTINGS_DEFINITIONS_MAP = new Map(SETTINGS_DEFINITIONS.map((d) => [d.key, d]));
+
 function normalizeSettingValue(definition, value) {
   if (definition?.type === "bool") return value === true;
   return value;
 }
 
-export function readSettingsArray() {
+function getRawSettingsMap() {
   try {
     const parsed = JSON.parse(localStorage.getItem(SETTINGS_CACHE_KEY) || "[]");
     const rawRows = Array.isArray(parsed) ? parsed : [];
@@ -35,20 +37,21 @@ export function readSettingsArray() {
       if (!key) return;
       byKey.set(key, row?.value);
     });
-    return SETTINGS_DEFINITIONS.map((definition) => ({
-      key: definition.key,
-      type: definition.type,
-      value: byKey.has(definition.key)
-        ? normalizeSettingValue(definition, byKey.get(definition.key))
-        : definition.defaultValue,
-    }));
+    return byKey;
   } catch (e) {
-    return SETTINGS_DEFINITIONS.map((definition) => ({
-      key: definition.key,
-      type: definition.type,
-      value: definition.defaultValue,
-    }));
+    return new Map();
   }
+}
+
+export function readSettingsArray() {
+  const byKey = getRawSettingsMap();
+  return SETTINGS_DEFINITIONS.map((definition) => ({
+    key: definition.key,
+    type: definition.type,
+    value: byKey.has(definition.key)
+      ? normalizeSettingValue(definition, byKey.get(definition.key))
+      : definition.defaultValue,
+  }));
 }
 
 export function writeSettingsArray(settings) {
@@ -70,13 +73,17 @@ export function writeSettingsArray(settings) {
 }
 
 export function getSettingValue(key) {
-  const definition = SETTINGS_DEFINITIONS.find((item) => item.key === key);
-  const row = readSettingsArray().find((item) => item.key === key);
-  return row ? row.value : definition?.defaultValue;
+  const definition = SETTINGS_DEFINITIONS_MAP.get(key);
+  if (!definition) return undefined;
+  const rawMap = getRawSettingsMap();
+  if (rawMap.has(key)) {
+    return normalizeSettingValue(definition, rawMap.get(key));
+  }
+  return definition.defaultValue;
 }
 
 export function setSettingValue(key, value) {
-  const definition = SETTINGS_DEFINITIONS.find((item) => item.key === key);
+  const definition = SETTINGS_DEFINITIONS_MAP.get(key);
   const next = readSettingsArray().map((row) => (
     row.key === key
       ? { ...row, value: normalizeSettingValue(definition, value) }
