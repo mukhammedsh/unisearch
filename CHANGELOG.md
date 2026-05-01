@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 3.8.2 (2026-05-01) - Backend Dependency Refresh
+
+Status:
+- synchronized runtime/package version to `3.8.2` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- updated backend runtime dependencies: FastAPI `0.136.1`, Uvicorn `0.46.0`, Pydantic `2.13.3`, scikit-learn `1.8.0`, sentence-transformers `5.4.1`, Redis client `7.4.0`, and Sentry SDK `2.58.0`;
+- stabilized the language-switching E2E helper so tests wait for the asynchronous language selector state before asserting translated navigation labels.
+
 ## 3.8.1 (2026-05-01) - Release Workflow and Maintenance
 
 Status:
