@@ -284,21 +284,10 @@ export function renderProgramsSection({
             }));
 
           const allRows = [...rows, ...extraRows];
-          const modeMeta = formatProgramValue("study_mode", program.study_mode);
-          const durationMeta = formatProgramValue("duration", program.duration);
-          const levelsMeta = Array.isArray(program.study_levels)
-            ? `${program.study_levels.length} ${translateWord("levels", "levels")}`
-            : "";
-
           return `
             <div class="program-card">
               <div class="program-card-head">
                 <span class="program-card-index">${escapeHtml(translateWord("program", "Program"))} ${idx + 1}</span>
-                <div class="program-card-meta">
-                  ${durationMeta ? `<span class="program-pill">${escapeHtml(durationMeta)}</span>` : ""}
-                  ${modeMeta ? `<span class="program-pill">${escapeHtml(modeMeta)}</span>` : ""}
-                  ${levelsMeta ? `<span class="program-pill">${escapeHtml(levelsMeta)}</span>` : ""}
-                </div>
               </div>
               <div class="program-card-title">
                 ${escapeHtml(trProgramName(program.name || "") || unknownFieldText("placeholder.field.program_name", "Program name"))}
