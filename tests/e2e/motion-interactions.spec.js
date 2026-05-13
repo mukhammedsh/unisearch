@@ -73,3 +73,19 @@ test("university detail category switching leaves one active pane", async ({ pag
   await expect(page.locator("#tab-finance")).toHaveClass(/active/);
   await expect(page.locator(".d-tab-pane.active")).toHaveCount(1);
 });
+
+test("university detail tabs stay clickable after client-side route", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/universities.html");
+
+  const firstCard = page.locator(".uni-card:not(.is-skeleton)").first();
+  await expect(firstCard).toBeVisible();
+  await firstCard.locator(".uni-card-link-overlay").click();
+
+  await expect(page).toHaveURL(/\/university\.html\?id=/);
+  await expect(page.locator("#detailCard")).toBeVisible();
+
+  await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+});

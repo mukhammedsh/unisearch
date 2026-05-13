@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 3.9.1 (2026-05-13) - University Detail Route Fix
+
+Status:
+- synchronized runtime/package version to `3.9.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- fixed university detail tabs after client-side navigation by binding tab handlers to the current `.d-tabs` DOM node instead of a stale module-level flag;
+- added Playwright regression coverage for opening a university from the catalog through the client router and switching detail tabs without refreshing the page.
+
 ## 3.9.0 (2026-05-13) - Kazakhstan Catalog Expansion
 
 Status:

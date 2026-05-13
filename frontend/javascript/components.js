@@ -598,12 +598,11 @@ export async function loadGlobalLayout() {
         console.error("Error loading layout:", error);
     }
 }
-let __tabsBound = false;
 export function setupTabs() {
   const tabsRoot = document.querySelector(".d-tabs");
   if (!tabsRoot) return;
-  if (__tabsBound) return;
-  __tabsBound = true;
+  if (tabsRoot.dataset.bound === "1") return;
+  tabsRoot.dataset.bound = "1";
 
   tabsRoot.addEventListener("click", (e) => {
     const btn = e.target instanceof Element ? e.target.closest(".d-tab-btn") : null;
