@@ -313,6 +313,17 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual("Казахстан", location.get("country"))
         self.assertEqual("Астана", location.get("city"))
 
+    def test_kazakhstan_program_fields_are_localized_by_lang(self):
+        response = self.client.get("/universities/astana-medical-university-kaz-astana?lang=rus")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        programs = ((data.get("academics") or {}).get("programs") or [])
+        self.assertTrue(programs)
+
+        first_program = programs[0]
+        self.assertIn("Казахский", first_program.get("language") or [])
+        self.assertIn("Науки о здоровье", first_program.get("major_tags") or [])
+
     def test_university_translations_endpoint_contract(self):
         response = self.client.get("/universities/translations?lang=rus")
         self.assertEqual(response.status_code, 200)

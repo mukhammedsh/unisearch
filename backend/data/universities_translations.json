@@ -187,6 +187,7 @@
         "language": {
           "russian": "Русский",
           "english": "Английский",
+          "kazakh": "Казахский",
           "german": "Немецкий",
           "french": "Французский",
           "dutch": "Нидерландский",
@@ -559,6 +560,9 @@
         "management": "Менеджмент",
         "international_law": "Международное право",
         "public_health": "Общественное здоровье",
+        "health_sciences": "Науки о здоровье",
+        "cybersecurity": "Кибербезопасность",
+        "natural_resources": "Природные ресурсы",
         "pedagogy_and_psychology": "Педагогика и психология"
       },
       "track_label_fallback_replace": [

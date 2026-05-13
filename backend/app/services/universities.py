@@ -327,6 +327,10 @@ def _localize_university_payload(university: Dict[str, Any], search_lang: Any) -
                     p.get("language"),
                     lambda x: _translate_group_value("language", x, lang),
                 )
+                if isinstance(p.get("major_tags"), list):
+                    p["major_tags"] = [
+                        _translate_program_name(x, lang) for x in p.get("major_tags", [])
+                    ]
 
     def localize_track_payload(track: Dict[str, Any]) -> None:
         if not isinstance(track, dict):
