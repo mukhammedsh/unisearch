@@ -4723,6 +4723,1060 @@
           }
         }
       ]
+    },
+    "astana-medical-university-kaz-astana": {
+      "university_name": "Astana Medical University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Astana Medical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "Astana Medical University bachelor programs",
+            "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+          },
+          {
+            "label": "Astana Medical University incoming students",
+            "url": "https://amu.edu.kz/en/postupayushchim/"
+          }
+        ],
+        "provenance": {
+          "source": "Astana Medical University bachelor programs",
+          "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Astana Medical University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "Astana Medical University bachelor programs",
+            "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+          },
+          {
+            "label": "Astana Medical University incoming students",
+            "url": "https://amu.edu.kz/en/postupayushchim/"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Medicine",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Astana Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Medicine.",
+          "notes": "Stored as verified-null because no official public Medicine admit-count table was found.",
+          "sources": [
+            {
+              "label": "Astana Medical University bachelor programs",
+              "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+            }
+          ],
+          "provenance": {
+            "source": "Astana Medical University bachelor programs",
+            "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Astana Medical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Astana Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Dentistry",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Astana Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Dentistry.",
+          "notes": "Stored as verified-null because no official public Dentistry admit-count table was found.",
+          "sources": [
+            {
+              "label": "Astana Medical University bachelor programs",
+              "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+            }
+          ],
+          "provenance": {
+            "source": "Astana Medical University bachelor programs",
+            "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Astana Medical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Astana Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "international-information-technology-university-kaz-almaty": {
+      "university_name": "International Information Technology University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official International Information Technology University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "IITU bachelor's degree process of admission",
+            "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+          },
+          {
+            "label": "IITU bachelor admission page",
+            "url": "https://admission.iitu.edu.kz/bachelor_degree_eng"
+          }
+        ],
+        "provenance": {
+          "source": "IITU bachelor's degree process of admission",
+          "source_url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for International Information Technology University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "IITU bachelor's degree process of admission",
+            "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+          },
+          {
+            "label": "IITU bachelor admission page",
+            "url": "https://admission.iitu.edu.kz/bachelor_degree_eng"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Artificial Intelligence",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official International Information Technology University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Artificial Intelligence.",
+          "notes": "Stored as verified-null because no official public Artificial Intelligence admit-count table was found.",
+          "sources": [
+            {
+              "label": "IITU bachelor's degree process of admission",
+              "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+            }
+          ],
+          "provenance": {
+            "source": "IITU bachelor's degree process of admission",
+            "source_url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official International Information Technology University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official International Information Technology University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Information Security",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official International Information Technology University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Information Security.",
+          "notes": "Stored as verified-null because no official public Information Security admit-count table was found.",
+          "sources": [
+            {
+              "label": "IITU bachelor's degree process of admission",
+              "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+            }
+          ],
+          "provenance": {
+            "source": "IITU bachelor's degree process of admission",
+            "source_url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official International Information Technology University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official International Information Technology University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "satbayev-university-kaz-almaty": {
+      "university_name": "Satbayev University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Satbayev University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "Satbayev University undergraduate applicant guide",
+            "url": "https://satbayev.university/en/entrant-guide"
+          },
+          {
+            "label": "Satbayev University undergraduate page",
+            "url": "https://satbayev.university/en/undergraduate"
+          }
+        ],
+        "provenance": {
+          "source": "Satbayev University undergraduate applicant guide",
+          "source_url": "https://satbayev.university/en/entrant-guide",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Satbayev University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "Satbayev University undergraduate applicant guide",
+            "url": "https://satbayev.university/en/entrant-guide"
+          },
+          {
+            "label": "Satbayev University undergraduate page",
+            "url": "https://satbayev.university/en/undergraduate"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Satbayev University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Computer Science.",
+          "notes": "Stored as verified-null because no official public Computer Science admit-count table was found.",
+          "sources": [
+            {
+              "label": "Satbayev University undergraduate applicant guide",
+              "url": "https://satbayev.university/en/entrant-guide"
+            }
+          ],
+          "provenance": {
+            "source": "Satbayev University undergraduate applicant guide",
+            "source_url": "https://satbayev.university/en/entrant-guide",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Satbayev University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Satbayev University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Petroleum Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Satbayev University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Petroleum Engineering.",
+          "notes": "Stored as verified-null because no official public Petroleum Engineering admit-count table was found.",
+          "sources": [
+            {
+              "label": "Satbayev University undergraduate applicant guide",
+              "url": "https://satbayev.university/en/entrant-guide"
+            }
+          ],
+          "provenance": {
+            "source": "Satbayev University undergraduate applicant guide",
+            "source_url": "https://satbayev.university/en/entrant-guide",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Satbayev University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Satbayev University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "kazakhstan-british-technical-university-kaz-almaty": {
+      "university_name": "Kazakhstan-British Technical University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Kazakhstan-British Technical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "KBTU admissions",
+            "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+          },
+          {
+            "label": "KBTU undergraduate admission",
+            "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+          }
+        ],
+        "provenance": {
+          "source": "KBTU admissions",
+          "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Kazakhstan-British Technical University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "KBTU admissions",
+            "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+          },
+          {
+            "label": "KBTU undergraduate admission",
+            "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Information Systems",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Kazakhstan-British Technical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Information Systems.",
+          "notes": "Stored as verified-null because no official public Information Systems admit-count table was found.",
+          "sources": [
+            {
+              "label": "KBTU admissions",
+              "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+            }
+          ],
+          "provenance": {
+            "source": "KBTU admissions",
+            "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Kazakhstan-British Technical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Kazakhstan-British Technical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Oil and Gas Engineering",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Kazakhstan-British Technical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Oil and Gas Engineering.",
+          "notes": "Stored as verified-null because no official public Oil and Gas Engineering admit-count table was found.",
+          "sources": [
+            {
+              "label": "KBTU admissions",
+              "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+            }
+          ],
+          "provenance": {
+            "source": "KBTU admissions",
+            "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Kazakhstan-British Technical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Kazakhstan-British Technical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "al-farabi-kazakh-national-university-kaz-almaty": {
+      "university_name": "Al-Farabi Kazakh National University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Al-Farabi Kazakh National University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "Al-Farabi KazNU bachelor applicants",
+            "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+          },
+          {
+            "label": "Al-Farabi KazNU bachelor courses",
+            "url": "https://www.kaznu.kz/en/3360"
+          }
+        ],
+        "provenance": {
+          "source": "Al-Farabi KazNU bachelor applicants",
+          "source_url": "https://welcome.kaznu.kz/ru/welcome/bachelor",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Al-Farabi Kazakh National University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "Al-Farabi KazNU bachelor applicants",
+            "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+          },
+          {
+            "label": "Al-Farabi KazNU bachelor courses",
+            "url": "https://www.kaznu.kz/en/3360"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Al-Farabi Kazakh National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Computer Science.",
+          "notes": "Stored as verified-null because no official public Computer Science admit-count table was found.",
+          "sources": [
+            {
+              "label": "Al-Farabi KazNU bachelor applicants",
+              "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+            }
+          ],
+          "provenance": {
+            "source": "Al-Farabi KazNU bachelor applicants",
+            "source_url": "https://welcome.kaznu.kz/ru/welcome/bachelor",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Al-Farabi Kazakh National University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Al-Farabi Kazakh National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Economics",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Al-Farabi Kazakh National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Economics.",
+          "notes": "Stored as verified-null because no official public Economics admit-count table was found.",
+          "sources": [
+            {
+              "label": "Al-Farabi KazNU bachelor applicants",
+              "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+            }
+          ],
+          "provenance": {
+            "source": "Al-Farabi KazNU bachelor applicants",
+            "source_url": "https://welcome.kaznu.kz/ru/welcome/bachelor",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Al-Farabi Kazakh National University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Al-Farabi Kazakh National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "l-n-gumilyov-eurasian-national-university-kaz-astana": {
+      "university_name": "L.N. Gumilyov Eurasian National University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official L.N. Gumilyov Eurasian National University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "ENU bachelor applicants",
+            "url": "https://enu.kz/en/page/applicants/bachelor"
+          }
+        ],
+        "provenance": {
+          "source": "ENU bachelor applicants",
+          "source_url": "https://enu.kz/en/page/applicants/bachelor",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for L.N. Gumilyov Eurasian National University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "ENU bachelor applicants",
+            "url": "https://enu.kz/en/page/applicants/bachelor"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "International Relations",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official L.N. Gumilyov Eurasian National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for International Relations.",
+          "notes": "Stored as verified-null because no official public International Relations admit-count table was found.",
+          "sources": [
+            {
+              "label": "ENU bachelor applicants",
+              "url": "https://enu.kz/en/page/applicants/bachelor"
+            }
+          ],
+          "provenance": {
+            "source": "ENU bachelor applicants",
+            "source_url": "https://enu.kz/en/page/applicants/bachelor",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official L.N. Gumilyov Eurasian National University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official L.N. Gumilyov Eurasian National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Computer Science",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official L.N. Gumilyov Eurasian National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Computer Science.",
+          "notes": "Stored as verified-null because no official public Computer Science admit-count table was found.",
+          "sources": [
+            {
+              "label": "ENU bachelor applicants",
+              "url": "https://enu.kz/en/page/applicants/bachelor"
+            }
+          ],
+          "provenance": {
+            "source": "ENU bachelor applicants",
+            "source_url": "https://enu.kz/en/page/applicants/bachelor",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official L.N. Gumilyov Eurasian National University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official L.N. Gumilyov Eurasian National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "narxoz-university-kaz-almaty": {
+      "university_name": "Narxoz University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Narxoz University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "Narxoz foreign applicant checklist",
+            "url": "https://en.narxoz.kz/admission/checklist"
+          },
+          {
+            "label": "Narxoz bachelor admission",
+            "url": "https://narxoz.kz/admission/specificity/bachelor/"
+          }
+        ],
+        "provenance": {
+          "source": "Narxoz foreign applicant checklist",
+          "source_url": "https://en.narxoz.kz/admission/checklist",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Narxoz University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "Narxoz foreign applicant checklist",
+            "url": "https://en.narxoz.kz/admission/checklist"
+          },
+          {
+            "label": "Narxoz bachelor admission",
+            "url": "https://narxoz.kz/admission/specificity/bachelor/"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Economics",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Narxoz University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Economics.",
+          "notes": "Stored as verified-null because no official public Economics admit-count table was found.",
+          "sources": [
+            {
+              "label": "Narxoz foreign applicant checklist",
+              "url": "https://en.narxoz.kz/admission/checklist"
+            }
+          ],
+          "provenance": {
+            "source": "Narxoz foreign applicant checklist",
+            "source_url": "https://en.narxoz.kz/admission/checklist",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Narxoz University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Narxoz University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Digital Business",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Narxoz University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Digital Business.",
+          "notes": "Stored as verified-null because no official public Digital Business admit-count table was found.",
+          "sources": [
+            {
+              "label": "Narxoz foreign applicant checklist",
+              "url": "https://en.narxoz.kz/admission/checklist"
+            }
+          ],
+          "provenance": {
+            "source": "Narxoz foreign applicant checklist",
+            "source_url": "https://en.narxoz.kz/admission/checklist",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Narxoz University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Narxoz University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "kimep-university-kaz-almaty": {
+      "university_name": "KIMEP University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official KIMEP University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "KIMEP undergraduate admission",
+            "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+          },
+          {
+            "label": "KIMEP admission",
+            "url": "https://www.kimep.kz/prospective-students/en/admission/"
+          }
+        ],
+        "provenance": {
+          "source": "KIMEP undergraduate admission",
+          "source_url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for KIMEP University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "KIMEP undergraduate admission",
+            "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+          },
+          {
+            "label": "KIMEP admission",
+            "url": "https://www.kimep.kz/prospective-students/en/admission/"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Management",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official KIMEP University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Management.",
+          "notes": "Stored as verified-null because no official public Management admit-count table was found.",
+          "sources": [
+            {
+              "label": "KIMEP undergraduate admission",
+              "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+            }
+          ],
+          "provenance": {
+            "source": "KIMEP undergraduate admission",
+            "source_url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official KIMEP University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official KIMEP University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "International Law",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official KIMEP University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for International Law.",
+          "notes": "Stored as verified-null because no official public International Law admit-count table was found.",
+          "sources": [
+            {
+              "label": "KIMEP undergraduate admission",
+              "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+            }
+          ],
+          "provenance": {
+            "source": "KIMEP undergraduate admission",
+            "source_url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official KIMEP University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official KIMEP University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "asfendiyarov-kazakh-national-medical-university-kaz-almaty": {
+      "university_name": "Asfendiyarov Kazakh National Medical University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Asfendiyarov Kazakh National Medical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "KazNMU bachelor's degree applicants",
+            "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+          },
+          {
+            "label": "KazNMU bachelor's educational programs",
+            "url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/"
+          }
+        ],
+        "provenance": {
+          "source": "KazNMU bachelor's degree applicants",
+          "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Asfendiyarov Kazakh National Medical University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "KazNMU bachelor's degree applicants",
+            "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+          },
+          {
+            "label": "KazNMU bachelor's educational programs",
+            "url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Medicine",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Asfendiyarov Kazakh National Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Medicine.",
+          "notes": "Stored as verified-null because no official public Medicine admit-count table was found.",
+          "sources": [
+            {
+              "label": "KazNMU bachelor's degree applicants",
+              "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+            }
+          ],
+          "provenance": {
+            "source": "KazNMU bachelor's degree applicants",
+            "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Asfendiyarov Kazakh National Medical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Asfendiyarov Kazakh National Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Public Health",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Asfendiyarov Kazakh National Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Public Health.",
+          "notes": "Stored as verified-null because no official public Public Health admit-count table was found.",
+          "sources": [
+            {
+              "label": "KazNMU bachelor's degree applicants",
+              "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+            }
+          ],
+          "provenance": {
+            "source": "KazNMU bachelor's degree applicants",
+            "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Asfendiyarov Kazakh National Medical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Asfendiyarov Kazakh National Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
+    },
+    "abai-kazakh-national-pedagogical-university-kaz-almaty": {
+      "university_name": "Abai Kazakh National Pedagogical University",
+      "schema_version": 1,
+      "status_date": "2026-05-02",
+      "university_wide": {
+        "status": "verified_null_only",
+        "kind": "institution_wide_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Official Abai Kazakh National Pedagogical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+        "sources": [
+          {
+            "label": "Abai KazNPU bachelor admission conditions",
+            "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+          }
+        ],
+        "provenance": {
+          "source": "Abai KazNPU bachelor admission conditions",
+          "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+          "verified_at": "2026-05-02",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Abai Kazakh National Pedagogical University."
+        }
+      },
+      "program_level": {
+        "status": "verified_null_only",
+        "kind": "program_metrics_not_published",
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+        "sources": [
+          {
+            "label": "Abai KazNPU bachelor admission conditions",
+            "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "program_name": "Pedagogy and Psychology",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Abai Kazakh National Pedagogical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Pedagogy and Psychology.",
+          "notes": "Stored as verified-null because no official public Pedagogy and Psychology admit-count table was found.",
+          "sources": [
+            {
+              "label": "Abai KazNPU bachelor admission conditions",
+              "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+            }
+          ],
+          "provenance": {
+            "source": "Abai KazNPU bachelor admission conditions",
+            "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Abai Kazakh National Pedagogical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Abai Kazakh National Pedagogical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        },
+        {
+          "program_name": "Informatics",
+          "source_scope": "program_verified_null",
+          "data_type": "verified-null",
+          "scope": "program",
+          "metric_value": null,
+          "metric_unit": null,
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "The reviewed official Abai Kazakh National Pedagogical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Informatics.",
+          "notes": "Stored as verified-null because no official public Informatics admit-count table was found.",
+          "sources": [
+            {
+              "label": "Abai KazNPU bachelor admission conditions",
+              "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+            }
+          ],
+          "provenance": {
+            "source": "Abai KazNPU bachelor admission conditions",
+            "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: official Abai Kazakh National Pedagogical University materials do not publish a public program-level admit table for this bachelor program.",
+            "basis": {
+              "summary": "Official Abai Kazakh National Pedagogical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -8,6 +8,7 @@
 - **Кодировка:** Перед любым коммитом запускать `npm run fix:encoding`, затем `npm run check:encoding`. Не коммитить mojibake/BOM/битый UTF-8.
 - **Запуски сервисов:** Если для проверки поднимали backend, frontend, Docker Compose или другие локальные серверы, в конце работы обязательно выключить их (`Ctrl+C`, остановка процесса или `docker compose down`), чтобы пользователь мог тестировать сам.
 - **Документация:** В публичные docs добавлять только практичные инструкции/контракты. Не коммитить внутренние оценки, мнения и одноразовые аудиты, если они не нужны пользователям проекта.
+- **Graphify (локально, опционально):** Если существуют `frontend/graphify-out/GRAPH_REPORT.md`, `backend/graphify-out/GRAPH_REPORT.md` или `graphify-out/scopes/docs-rest/graphify-out/GRAPH_REPORT.md`, перед широким поиском по архитектуре сначала читать соответствующий report и использовать `graphify explain/query/path` по нужному `graph.json`. Если graphify-артефактов нет, работать обычным способом; пользователям проекта graphify не требуется. Артефакты `graphify-out/` локальные и не коммитятся. После значимых изменений кода обновлять только затронутый граф: `graphify update frontend` или `graphify update backend`.
 
 ## 2. СТЕК И АРХИТЕКТУРА
 - **Frontend:** Vanilla JS, HTML, CSS (`frontend/`).

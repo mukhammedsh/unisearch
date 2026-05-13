@@ -2,7 +2,7 @@
 window.__UNISEARCH_ENV__ = {
   "API_BASE_URL": "",
   "API_PORT": "8000",
-  "APP_VERSION": "3.8.2",
+  "APP_VERSION": "3.9.0",
   "APP_USE_PRETTY_URLS": "",
   "APP_DEBUG": ""
 };

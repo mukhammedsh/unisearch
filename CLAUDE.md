@@ -238,6 +238,12 @@ frontend/
 - **Public docs:** Add only practical guides, contracts, and durable decisions. Do not commit internal opinions, repo-readiness scores, or one-off assessments unless they are useful to project users.
 - **Repo hygiene:** For documentation, workflow, dependency, or repository-maintenance PRs, prefer the fast baseline: `npm run check:version`, `npm run check:encoding`, `npm run check:i18n`, and `npm run audit:data`.
 
+### Graphify
+- **Optional local index:** If `frontend/graphify-out/GRAPH_REPORT.md`, `backend/graphify-out/GRAPH_REPORT.md`, or `graphify-out/scopes/docs-rest/graphify-out/GRAPH_REPORT.md` exists locally, read the relevant report before broad architecture searches.
+- **Use graph queries first:** Prefer `graphify explain`, `graphify query`, or `graphify path` against the matching `graph.json` before reading many files for cross-module questions.
+- **No project requirement:** Graphify artifacts are maintainer-local, ignored by git, and not required for users or contributors. If they are absent, continue with normal repository search.
+- **Refresh only touched scopes:** After meaningful code changes, update only the affected graph with `graphify update frontend` or `graphify update backend`.
+
 ## Common Patterns
 
 ### Adding a New Filter

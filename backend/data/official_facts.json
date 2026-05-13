@@ -2078,7 +2078,7 @@
         "method": "Tag set curated from official university positioning and public academic structure."
       },
       "acceptance_rate_percent": {
-        "value": 52.0,
+        "value": 52,
         "source": "UBC Vancouver Campus Fact Sheet Winter 2023",
         "source_url": "https://pair.ok.ubc.ca/wp-content/uploads/sites/145/2024/02/Factsheets_2024_February.pdf",
         "verified_at": "2026-04-08",
@@ -2089,7 +2089,7 @@
           "campus": "Vancouver",
           "cycle": "Winter 2023",
           "metric": "Admit Rate",
-          "value_percent": 52.0
+          "value_percent": 52
         }
       },
       "verified_sources": [
@@ -2185,7 +2185,7 @@
         "method": "Tag set curated from official university positioning and public academic structure."
       },
       "acceptance_rate_percent": {
-        "value": 55.0,
+        "value": 55,
         "source": "University of Waterloo Undergraduate Admissions 2019-2023 Senate brief",
         "source_url": "https://uwaterloo.ca/secretariat/sites/default/files/uploads/documents/sfc-2024-02-07-agenda-package_0.pdf",
         "verified_at": "2026-04-08",
@@ -2543,6 +2543,482 @@
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
       }
+    },
+    "astana-medical-university-kaz-astana": {
+      "description": {
+        "value": "Astana Medical University is a major medical university in Astana with bachelor programs in medicine, dentistry, public health, pharmacy and related healthcare fields. Official program pages describe integrated medical education, clinical training and multilingual instruction in Kazakh, Russian and English.",
+        "source": "description",
+        "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "medicine",
+          "health sciences",
+          "clinical training",
+          "public health",
+          "research"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+        },
+        {
+          "topic": "finance",
+          "url": "https://amu.edu.kz/en/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/"
+        },
+        {
+          "topic": "description",
+          "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+        }
+      ]
+    },
+    "international-information-technology-university-kaz-almaty": {
+      "description": {
+        "value": "International Information Technology University is an Almaty-based IT university established in 2009. Official admissions materials describe English-focused bachelor study, UNT-based admission for Kazakhstan applicants, internal English testing and programs across artificial intelligence, information security, data and digital business.",
+        "source": "description",
+        "source_url": "https://iitu.edu.kz/en/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "computer science",
+          "engineering",
+          "cybersecurity",
+          "innovation",
+          "digital technology"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://iitu.edu.kz/en/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "extra_requirements",
+          "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+        },
+        {
+          "topic": "programs",
+          "url": "https://admission.iitu.edu.kz/bachelor_degree_eng"
+        },
+        {
+          "topic": "finance",
+          "url": "https://iitu.edu.kz/ru/articles/ac/bachelors-prices/"
+        },
+        {
+          "topic": "description",
+          "url": "https://iitu.edu.kz/en/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://iitu.edu.kz/en/"
+        }
+      ]
+    },
+    "satbayev-university-kaz-almaty": {
+      "description": {
+        "value": "Satbayev University is Kazakhstan's leading technical university in Almaty, focused on engineering, technology, architecture, energy, geology and applied research. Its official undergraduate page emphasizes modern laboratories, research centers and industry-oriented projects.",
+        "source": "description",
+        "source_url": "https://satbayev.university/en/undergraduate",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "engineering",
+          "computer science",
+          "technology",
+          "research",
+          "natural resources"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://satbayev.university/en/undergraduate",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://satbayev.university/en/undergraduate"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://satbayev.university/en/entrant-guide"
+        },
+        {
+          "topic": "finance",
+          "url": "https://official.satbayev.university/en/dlya-studentov/stoimost-obucheniya"
+        },
+        {
+          "topic": "description",
+          "url": "https://satbayev.university/en/undergraduate"
+        },
+        {
+          "topic": "tags",
+          "url": "https://satbayev.university/en/undergraduate"
+        }
+      ]
+    },
+    "kazakhstan-british-technical-university-kaz-almaty": {
+      "description": {
+        "value": "Kazakhstan-British Technical University is an Almaty technical university whose undergraduate materials emphasize English-medium instruction, industry-developed programs, modern laboratories, digital resources, internships and international certificates depending on the program.",
+        "source": "description",
+        "source_url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "engineering",
+          "computer science",
+          "business",
+          "industry partnerships",
+          "english-medium"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+        },
+        {
+          "topic": "finance",
+          "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+        },
+        {
+          "topic": "description",
+          "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+        },
+        {
+          "topic": "tags",
+          "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+        }
+      ]
+    },
+    "al-farabi-kazakh-national-university-kaz-almaty": {
+      "description": {
+        "value": "Al-Farabi Kazakh National University is a comprehensive national university in Almaty with more than 100 bachelor specialities across its faculties. Official materials describe KazNU as an innovative center for professional education and competitive personal development.",
+        "source": "description",
+        "source_url": "https://www.kaznu.kz/en/3360",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "comprehensive university",
+          "computer science",
+          "economics",
+          "research",
+          "student life"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://www.kaznu.kz/en/3360",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://www.kaznu.kz/en/3360"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+        },
+        {
+          "topic": "finance",
+          "url": "https://welcome.kaznu.kz/ru/19388/"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.kaznu.kz/en/3360"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.kaznu.kz/en/3360"
+        }
+      ]
+    },
+    "l-n-gumilyov-eurasian-national-university-kaz-astana": {
+      "description": {
+        "value": "L.N. Gumilyov Eurasian National University is a national university in Astana. Official bachelor materials highlight its capital-city location, international partnerships, active student life, educational-program threshold tables and opportunities for academic mobility.",
+        "source": "description",
+        "source_url": "https://enu.kz/en/page/applicants/bachelor",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "comprehensive university",
+          "international relations",
+          "computer science",
+          "research",
+          "academic mobility"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://enu.kz/en/page/applicants/bachelor",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://enu.kz/en/page/applicants/bachelor"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://enu.kz/en/page/applicants/bachelor"
+        },
+        {
+          "topic": "finance",
+          "url": "https://enu.kz/en/page/applicants/bachelor"
+        },
+        {
+          "topic": "description",
+          "url": "https://enu.kz/en/page/applicants/bachelor"
+        },
+        {
+          "topic": "tags",
+          "url": "https://enu.kz/en/page/applicants/bachelor"
+        }
+      ]
+    },
+    "narxoz-university-kaz-almaty": {
+      "description": {
+        "value": "Narxoz University is an Almaty private non-profit university focused on economics, management, law, digital technologies and social sciences. Official pages present undergraduate study, five schools, international partnerships and admissions support for local and international applicants.",
+        "source": "description",
+        "source_url": "https://en.narxoz.kz/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "business",
+          "economics",
+          "law",
+          "digital technology",
+          "international partnerships"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://en.narxoz.kz/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://en.narxoz.kz/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://en.narxoz.kz/admission/checklist"
+        },
+        {
+          "topic": "finance",
+          "url": "https://en.narxoz.kz/admission/checklist"
+        },
+        {
+          "topic": "description",
+          "url": "https://en.narxoz.kz/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://en.narxoz.kz/"
+        }
+      ]
+    },
+    "kimep-university-kaz-almaty": {
+      "description": {
+        "value": "KIMEP University is an English-medium university in Almaty with undergraduate programs in business, social sciences, law, education and humanities. Official materials describe year-round admissions support, online application, tuition-per-credit billing and undergraduate pathways through its colleges.",
+        "source": "description",
+        "source_url": "https://www.kimep.kz/prospective-students/en/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "business",
+          "law",
+          "english-medium",
+          "international relations",
+          "student life"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://www.kimep.kz/prospective-students/en/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://www.kimep.kz/bang-college-of-business/en/bachelor-of-management/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+        },
+        {
+          "topic": "finance",
+          "url": "https://www.kimep.kz/prospective-students/files/2025/06/tuition_fees_ugrad_eng-3.pdf"
+        },
+        {
+          "topic": "description",
+          "url": "https://www.kimep.kz/prospective-students/en/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://www.kimep.kz/prospective-students/en/"
+        }
+      ]
+    },
+    "asfendiyarov-kazakh-national-medical-university-kaz-almaty": {
+      "description": {
+        "value": "Asfendiyarov Kazakh National Medical University is a long-standing Almaty medical university with bachelor programs in medicine, public health, pharmacy, nursing and related healthcare fields. Official applicant pages describe UNT thresholds for healthcare, psychometric examination and enrollment stages.",
+        "source": "description",
+        "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "medicine",
+          "health sciences",
+          "public health",
+          "clinical training",
+          "research"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+        },
+        {
+          "topic": "finance",
+          "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+        },
+        {
+          "topic": "description",
+          "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+        }
+      ]
+    },
+    "abai-kazakh-national-pedagogical-university-kaz-almaty": {
+      "description": {
+        "value": "Abai Kazakh National Pedagogical University is Kazakhstan's first higher education institution and a major pedagogical university in Almaty. Official materials and QS profile describe broad teacher-training, humanities, social-science and informatics programs across multiple faculties.",
+        "source": "description",
+        "source_url": "https://abaiuniversity.edu.kz/en/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Summary derived from official university bachelor, applicant, or institutional pages."
+      },
+      "tags": {
+        "value": [
+          "education",
+          "pedagogy",
+          "social sciences",
+          "computer science",
+          "research"
+        ],
+        "source": "Official bachelor and institutional pages",
+        "source_url": "https://abaiuniversity.edu.kz/en/",
+        "verified_at": "2026-05-02",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Tags derived from official program areas and institutional positioning."
+      },
+      "verified_sources": [
+        {
+          "topic": "programs",
+          "url": "https://abaiuniversity.edu.kz/en/"
+        },
+        {
+          "topic": "extra_requirements",
+          "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+        },
+        {
+          "topic": "finance",
+          "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+        },
+        {
+          "topic": "description",
+          "url": "https://abaiuniversity.edu.kz/en/"
+        },
+        {
+          "topic": "tags",
+          "url": "https://abaiuniversity.edu.kz/en/"
+        }
+      ]
     }
   }
 }

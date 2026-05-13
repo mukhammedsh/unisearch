@@ -55,7 +55,17 @@
         "australian-national-university-au-canberra": "Australian National University",
         "university-of-hong-kong-hk-hong-kong": "The University of Hong Kong",
         "hkust-hk-hong-kong": "Hong Kong University of Science and Technology",
-        "nanyang-technological-university-sg-singapore": "Nanyang Technological University, Singapore"
+        "nanyang-technological-university-sg-singapore": "Nanyang Technological University, Singapore",
+        "astana-medical-university-kaz-astana": "Astana Medical University",
+        "international-information-technology-university-kaz-almaty": "International Information Technology University",
+        "satbayev-university-kaz-almaty": "Satbayev University",
+        "kazakhstan-british-technical-university-kaz-almaty": "Kazakhstan-British Technical University",
+        "al-farabi-kazakh-national-university-kaz-almaty": "Al-Farabi Kazakh National University",
+        "l-n-gumilyov-eurasian-national-university-kaz-astana": "L.N. Gumilyov Eurasian National University",
+        "narxoz-university-kaz-almaty": "Narxoz University",
+        "kimep-university-kaz-almaty": "KIMEP University",
+        "asfendiyarov-kazakh-national-medical-university-kaz-almaty": "Asfendiyarov Kazakh National Medical University",
+        "abai-kazakh-national-pedagogical-university-kaz-almaty": "Abai Kazakh National Pedagogical University"
       },
       "university_descriptions": {
         "university-of-oxford-uk-oxford": "Oxford is a collegiate research university known for tutorial-based teaching, foundational scholarship, and strength across humanities, sciences, medicine, law, and computing.",
@@ -82,7 +92,17 @@
         "australian-national-university-au-canberra": "ANU is Australia's national university, known for policy, international affairs, science, and research intensity, with a strong Canberra campus and close links to public institutions.",
         "university-of-hong-kong-hk-hong-kong": "HKU is Hong Kong's flagship university with strong global reputation, major research activity, and broad strengths in medicine, business, law, engineering, and computing.",
         "hkust-hk-hong-kong": "HKUST is a technology-focused research university known for engineering, business, data, and science, with strong industry links and a concentrated high-tech campus culture.",
-        "nanyang-technological-university-sg-singapore": "NTU is a leading Asian technology and research university known for engineering, computing, business, materials, and interdisciplinary science with a large residential campus."
+        "nanyang-technological-university-sg-singapore": "NTU is a leading Asian technology and research university known for engineering, computing, business, materials, and interdisciplinary science with a large residential campus.",
+        "astana-medical-university-kaz-astana": "Astana Medical University is a major medical university in Astana with bachelor programs in medicine, dentistry, public health, pharmacy and related healthcare fields. Official program pages describe integrated medical education, clinical training and multilingual instruction in Kazakh, Russian and English.",
+        "international-information-technology-university-kaz-almaty": "International Information Technology University is an Almaty-based IT university established in 2009. Official admissions materials describe English-focused bachelor study, UNT-based admission for Kazakhstan applicants, internal English testing and programs across artificial intelligence, information security, data and digital business.",
+        "satbayev-university-kaz-almaty": "Satbayev University is Kazakhstan's leading technical university in Almaty, focused on engineering, technology, architecture, energy, geology and applied research. Its official undergraduate page emphasizes modern laboratories, research centers and industry-oriented projects.",
+        "kazakhstan-british-technical-university-kaz-almaty": "Kazakhstan-British Technical University is an Almaty technical university whose undergraduate materials emphasize English-medium instruction, industry-developed programs, modern laboratories, digital resources, internships and international certificates depending on the program.",
+        "al-farabi-kazakh-national-university-kaz-almaty": "Al-Farabi Kazakh National University is a comprehensive national university in Almaty with more than 100 bachelor specialities across its faculties. Official materials describe KazNU as an innovative center for professional education and competitive personal development.",
+        "l-n-gumilyov-eurasian-national-university-kaz-astana": "L.N. Gumilyov Eurasian National University is a national university in Astana. Official bachelor materials highlight its capital-city location, international partnerships, active student life, educational-program threshold tables and opportunities for academic mobility.",
+        "narxoz-university-kaz-almaty": "Narxoz University is an Almaty private non-profit university focused on economics, management, law, digital technologies and social sciences. Official pages present undergraduate study, five schools, international partnerships and admissions support for local and international applicants.",
+        "kimep-university-kaz-almaty": "KIMEP University is an English-medium university in Almaty with undergraduate programs in business, social sciences, law, education and humanities. Official materials describe year-round admissions support, online application, tuition-per-credit billing and undergraduate pathways through its colleges.",
+        "asfendiyarov-kazakh-national-medical-university-kaz-almaty": "Asfendiyarov Kazakh National Medical University is a long-standing Almaty medical university with bachelor programs in medicine, public health, pharmacy, nursing and related healthcare fields. Official applicant pages describe UNT thresholds for healthcare, psychometric examination and enrollment stages.",
+        "abai-kazakh-national-pedagogical-university-kaz-almaty": "Abai Kazakh National Pedagogical University is Kazakhstan's first higher education institution and a major pedagogical university in Almaty. Official materials and QS profile describe broad teacher-training, humanities, social-science and informatics programs across multiple faculties."
       }
     },
     "rus": {
@@ -139,7 +159,8 @@
           "waterloo": "Ватерлоо",
           "sydney": "Сидней",
           "canberra": "Канберра",
-          "hong_kong": "Гонконг"
+          "hong_kong": "Гонконг",
+          "almaty": "Алматы"
         },
         "state": {
           "bavaria": "Бавария",
@@ -251,7 +272,20 @@
           "public_policy": "государственная политика",
           "regional_impact": "региональное влияние",
           "science_and_technology": "наука и технологии",
-          "silicon_valley": "Кремниевая долина"
+          "silicon_valley": "Кремниевая долина",
+          "academic_mobility": "Академическая мобильность",
+          "clinical_training": "Клиническая подготовка",
+          "comprehensive_university": "Классический университет",
+          "digital_technology": "Цифровые технологии",
+          "economics": "Экономика",
+          "industry_partnerships": "Партнерства с индустрией",
+          "international_partnerships": "Международные партнерства",
+          "international_relations": "Международные отношения",
+          "natural_resources": "Природные ресурсы",
+          "pedagogy": "Педагогика",
+          "public_health": "Общественное здоровье",
+          "student_life": "Студенческая жизнь",
+          "technology": "Технологии"
         }
       },
       "words": {
@@ -432,7 +466,37 @@
         "a_level_entry_mechanical_engineering": "Поступление по A-Level (Mechanical Engineering)",
         "ib_diploma_entry_mechanical_engineering": "Поступление по IB (Mechanical Engineering)",
         "us_ap_sat_entry_computer_science": "Поступление по SAT/AP (CS, США)",
-        "us_ap_sat_entry_mechanical_engineering": "Поступление по SAT/AP (MechEng, США)"
+        "us_ap_sat_entry_mechanical_engineering": "Поступление по SAT/AP (MechEng, США)",
+        "amu_healthcare_unt": "Поступление по ЕНТ (здравоохранение)",
+        "amu_healthcare_unt_paid": "Платное поступление",
+        "amu_healthcare_unt_grant": "Государственный грант",
+        "iitu_unt": "Поступление по ЕНТ",
+        "iitu_unt_paid": "Платное поступление",
+        "iitu_unt_grant": "Государственный грант",
+        "satbayev_unt": "Поступление по ЕНТ",
+        "satbayev_unt_paid": "Платное поступление",
+        "satbayev_unt_grant": "Государственный грант",
+        "kbtu_unt": "Поступление по ЕНТ",
+        "kbtu_unt_paid": "Платное поступление",
+        "kbtu_unt_grant": "Государственный грант",
+        "kaznu_unt": "Поступление по ЕНТ",
+        "kaznu_unt_paid": "Платное поступление",
+        "kaznu_unt_grant": "Государственный грант",
+        "enu_unt": "Поступление по ЕНТ",
+        "enu_unt_paid": "Платное поступление",
+        "enu_unt_grant": "Государственный грант",
+        "narxoz_unt": "Поступление по ЕНТ",
+        "narxoz_unt_paid": "Платное поступление",
+        "narxoz_unt_grant": "Государственный грант",
+        "kimep_undergraduate": "Поступление на бакалавриат",
+        "kimep_undergraduate_paid": "Платное поступление",
+        "kimep_undergraduate_grant": "Государственный грант",
+        "kaznmu_healthcare_unt": "Поступление по ЕНТ (здравоохранение)",
+        "kaznmu_healthcare_unt_paid": "Платное поступление",
+        "kaznmu_healthcare_unt_grant": "Государственный грант",
+        "abai_kaznpu_unt": "Поступление по ЕНТ",
+        "abai_kaznpu_unt_paid": "Платное поступление",
+        "abai_kaznpu_unt_grant": "Государственный грант"
       },
       "program_names": {
         "agriculture": "Сельское хозяйство",
@@ -484,7 +548,18 @@
         "applied_science": "Прикладные науки",
         "computing": "Вычислительные системы",
         "electronic_engineering": "Электронная инженерия",
-        "computer_engineering": "Компьютерная инженерия"
+        "computer_engineering": "Компьютерная инженерия",
+        "dentistry": "Стоматология",
+        "artificial_intelligence": "Искусственный интеллект",
+        "information_security": "Информационная безопасность",
+        "petroleum_engineering": "Нефтегазовая инженерия",
+        "oil_and_gas_engineering": "Нефтегазовая инженерия",
+        "international_relations": "Международные отношения",
+        "digital_business": "Цифровой бизнес",
+        "management": "Менеджмент",
+        "international_law": "Международное право",
+        "public_health": "Общественное здоровье",
+        "pedagogy_and_psychology": "Педагогика и психология"
       },
       "track_label_fallback_replace": [
         [
@@ -1006,7 +1081,34 @@
         "Direct Manchester route for Computer Science applicants presenting the IB Diploma.": "Прямое зачисление в Манчестерский университет для абитуриентов Computer Science на базе диплома IB.",
         "Direct Manchester route for Mechanical Engineering applicants presenting the IB Diploma.": "Прямое зачисление в Манчестерский университет для абитуриентов машиностроения на базе диплома IB.",
         "Manchester Computer Science route for U.S. applicants using SAT results and AP examinations.": "Манчестерский путь Computer Science для абитуриентов из США на базе результатов SAT и экзаменов AP.",
-        "Manchester Mechanical Engineering route for U.S. applicants using SAT results and AP examinations.": "Манчестерский путь «Машиностроение» для абитуриентов из США на базе результатов SAT и AP."
+        "Manchester Mechanical Engineering route for U.S. applicants using SAT results and AP examinations.": "Манчестерский путь «Машиностроение» для абитуриентов из США на базе результатов SAT и AP.",
+        "UNT certificate": "Сертификат ЕНТ",
+        "Secondary education certificate or diploma": "Аттестат о среднем образовании или диплом",
+        "Identity document": "Документ, удостоверяющий личность",
+        "Medical certificate with fluorography": "Медицинская справка с флюорографией",
+        "Vaccination card": "Карта профилактических прививок",
+        "3x4 photos": "Фотографии 3x4",
+        "Psychometric or special medical-field admission step when required by the official medical-university rules": "Психометрический или специальный этап отбора для медицинских направлений, если он требуется официальными правилами медицинского университета",
+        "Fee-paying bachelor place for applicants admitted through the UNT route.": "Платное место на бакалавриате для абитуриентов, поступающих по ЕНТ.",
+        "State-grant competition route for stronger applicants using UNT results.": "Конкурс на государственный грант для более сильных абитуриентов по результатам ЕНТ.",
+        "State grant certificate if available": "Сертификат государственного гранта при наличии",
+        "IELTS certificate if available or IITU English language test": "Сертификат IELTS при наличии или внутренний тест МУИТ по английскому языку",
+        "English proficiency certificate: IELTS 5.5 / TOEFL iBT 46 / STEP KBTU B1 / Duolingo intermediate where applicable": "Сертификат владения английским языком: IELTS 5.5 / TOEFL iBT 46 / STEP KBTU B1 / Duolingo Intermediate, где применимо",
+        "English proficiency evidence or KIMEP English placement/testing route": "Подтверждение владения английским языком или внутреннее распределение/тестирование КИМЭП по английскому языку",
+        "KIMEP online application": "Онлайн-заявка КИМЭП",
+        "Motivational essay where required": "Мотивационное эссе, если требуется",
+        "Astana Medical University bachelor route for healthcare applicants using UNT results and the required medical-field admission documents or psychometric step.": "Маршрут бакалавриата Медицинского университета Астана для абитуриентов направлений здравоохранения: результаты ЕНТ, обязательные документы для медицинских направлений и психометрический или специальный этап, если он требуется.",
+        "IITU bachelor route for applicants using UNT results, document submission through Platonus and English placement or certificate evidence for English-medium study.": "Маршрут бакалавриата МУИТ для абитуриентов с результатами ЕНТ: подача документов через Platonus и подтверждение английского языка через внутреннее распределение или сертификат для англоязычного обучения.",
+        "Satbayev University bachelor route for applicants using UNT results, profile subjects and admission documents; the official entrant guide states an 80-point university UNT threshold.": "Маршрут бакалавриата Университета Сатпаев для абитуриентов с результатами ЕНТ, профильными предметами и документами для поступления; официальный справочник поступающего указывает университетский порог ЕНТ в 80 баллов.",
+        "KBTU bachelor route for applicants admitted on tuition or government grant basis using UNT results and the official English-proficiency route.": "Маршрут бакалавриата КБТУ для абитуриентов, поступающих на платной основе или на государственный грант по результатам ЕНТ и официальному маршруту подтверждения английского языка.",
+        "Al-Farabi Kazakh National University bachelor route using UNT results, profile subjects, published thresholds and university admission documents.": "Маршрут бакалавриата Казахского национального университета имени аль-Фараби по результатам ЕНТ, профильным предметам, опубликованным порогам и документам приемной комиссии университета.",
+        "ENU bachelor route using UNT results, published educational-program thresholds, required documents and the university admission committee flow.": "Маршрут бакалавриата ЕНУ по результатам ЕНТ, опубликованным порогам образовательных программ, обязательным документам и процедуре приемной комиссии университета.",
+        "Narxoz bachelor route for applicants submitting official documents, UNT certificate where applicable and tuition-payment documents through the admissions flow.": "Маршрут бакалавриата Нархоза для абитуриентов, подающих официальные документы, сертификат ЕНТ при необходимости и документы об оплате обучения в рамках процедуры поступления.",
+        "KIMEP undergraduate route using Kazakhstan UNT where applicable, KIMEP application documents and English proficiency or internal placement/testing.": "Маршрут бакалавриата КИМЭП с использованием результатов ЕНТ Казахстана, где применимо, документов заявки КИМЭП и подтверждения английского языка или внутреннего распределения/тестирования.",
+        "KazNMU healthcare bachelor route using UNT results, chemistry/biology profile subjects, psychometric examination where required and official enrollment steps.": "Маршрут бакалавриата КазНМУ по направлениям здравоохранения: результаты ЕНТ, профильные предметы химия/биология, психометрический экзамен при необходимости и официальные этапы зачисления.",
+        "Abai KazNPU bachelor route using UNT results; official conditions state higher thresholds for pedagogical sciences and required admission documents.": "Маршрут бакалавриата КазНПУ имени Абая по результатам ЕНТ; официальные условия указывают повышенные пороги для педагогических наук и обязательные документы для поступления.",
+        "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.": "Конкурс на государственный грант по официальному порогу допуска ЕНТ; итоговое получение гранта зависит от конкурса и не является фиксированным общеуниверситетским баллом.",
+        "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff.": "Государственный грант присуждается по конкурсу; показанный балл ЕНТ - официальный порог допуска, а не гарантированный проходной балл на грант."
       },
       "university_names": {
         "mit-usa-cambridge": "Массачусетский технологический институт",
@@ -1053,7 +1155,17 @@
         "australian-national-university-au-canberra": "Австралийский национальный университет",
         "university-of-hong-kong-hk-hong-kong": "Гонконгский университет",
         "hkust-hk-hong-kong": "Гонконгский университет науки и технологий",
-        "nanyang-technological-university-sg-singapore": "Наньянский технологический университет"
+        "nanyang-technological-university-sg-singapore": "Наньянский технологический университет",
+        "astana-medical-university-kaz-astana": "Медицинский университет Астана",
+        "international-information-technology-university-kaz-almaty": "Международный университет информационных технологий",
+        "satbayev-university-kaz-almaty": "Университет Сатпаев",
+        "kazakhstan-british-technical-university-kaz-almaty": "Казахстанско-Британский технический университет",
+        "al-farabi-kazakh-national-university-kaz-almaty": "Казахский национальный университет имени аль-Фараби",
+        "l-n-gumilyov-eurasian-national-university-kaz-astana": "Евразийский национальный университет имени Л.Н. Гумилева",
+        "narxoz-university-kaz-almaty": "Университет Нархоз",
+        "kimep-university-kaz-almaty": "Университет КИМЭП",
+        "asfendiyarov-kazakh-national-medical-university-kaz-almaty": "Казахский национальный медицинский университет имени С.Д. Асфендиярова",
+        "abai-kazakh-national-pedagogical-university-kaz-almaty": "Казахский национальный педагогический университет имени Абая"
       },
       "university_descriptions": {
         "mit-usa-cambridge": "MIT — частный исследовательский университет в Кембридже (штат Массачусетс), известный сильными школами в науке и инженерии и практико-ориентированным обучением. Экосистема университета тесно связана с лабораториями, индустрией и стартап-средой вокруг Kendall Square. Ключевые направления: искусственный интеллект, робототехника, компьютерные науки, энергетические системы и исследования передовых материалов.",
@@ -1100,7 +1212,17 @@
         "australian-national-university-au-canberra": "ANU — национальный университет Австралии, известный политикой, международными отношениями, наукой и высокой исследовательской интенсивностью, с сильным кампусом в Канберре и тесными связями с государственными институтами.",
         "university-of-hong-kong-hk-hong-kong": "HKU — флагманский университет Гонконга с сильной глобальной репутацией, крупной исследовательской активностью и широкой силой в медицине, бизнесе, праве, инженерии и computer science.",
         "hkust-hk-hong-kong": "HKUST — технологически ориентированный исследовательский университет, известный инженерией, бизнесом, данными и наукой, с сильными связями с индустрией и концентрированной high-tech культурой кампуса.",
-        "nanyang-technological-university-sg-singapore": "NTU — ведущий азиатский технологический и исследовательский университет, известный инженерией, computing, бизнесом, материалами и междисциплинарной наукой, с большим жилым кампусом."
+        "nanyang-technological-university-sg-singapore": "NTU — ведущий азиатский технологический и исследовательский университет, известный инженерией, computing, бизнесом, материалами и междисциплинарной наукой, с большим жилым кампусом.",
+        "astana-medical-university-kaz-astana": "Медицинский университет Астана — крупный медицинский университет в Астане с программами бакалавриата по медицине, стоматологии, общественному здоровью, фармации и смежным направлениям здравоохранения. Официальные страницы программ описывают интегрированное медицинское образование, клиническую подготовку и обучение на казахском, русском и английском языках.",
+        "international-information-technology-university-kaz-almaty": "Международный университет информационных технологий — алматинский IT-университет, основанный в 2009 году. Официальные материалы приемной комиссии описывают англоязычное обучение на бакалавриате, поступление по ЕНТ, внутренний экзамен по английскому языку и программы в сфере искусственного интеллекта, информационной безопасности, данных и цифрового бизнеса.",
+        "satbayev-university-kaz-almaty": "Университет Сатпаев — ведущий технический университет Казахстана в Алматы, ориентированный на инженерное дело, технологии, архитектуру, энергетику, геологию и прикладные исследования. Официальная страница бакалавриата подчеркивает современные лаборатории, исследовательские центры и проекты с индустриальными партнерами.",
+        "kazakhstan-british-technical-university-kaz-almaty": "Казахстанско-Британский технический университет — технический университет в Алматы с англоязычными бакалаврскими программами, индустриальными проектами, современными лабораториями и цифровыми ресурсами. Официальные материалы бакалавриата делают акцент на стажировках, международных стандартах и практических навыках.",
+        "al-farabi-kazakh-national-university-kaz-almaty": "Казахский национальный университет имени аль-Фараби — комплексный национальный университет в Алматы с более чем сотней специальностей бакалавриата на разных факультетах. Официальные материалы описывают КазНУ как инновационный центр профессионального образования и развития конкурентоспособной личности.",
+        "l-n-gumilyov-eurasian-national-university-kaz-astana": "Евразийский национальный университет имени Л.Н. Гумилева — национальный университет в Астане. Официальные материалы бакалавриата выделяют расположение в столице, международные партнерства, активную студенческую жизнь, таблицы пороговых баллов и возможности академической мобильности.",
+        "narxoz-university-kaz-almaty": "Университет Нархоз — частный некоммерческий университет в Алматы, ориентированный на экономику, менеджмент, право, цифровые технологии и социальные науки. Официальные страницы представляют бакалавриат, пять школ, международные партнерства и поддержку поступающих из Казахстана и других стран.",
+        "kimep-university-kaz-almaty": "Университет КИМЭП — англоязычный университет в Алматы с программами бакалавриата в бизнесе, социальных науках, праве, образовании и гуманитарных направлениях. Официальные материалы описывают круглогодичную работу приемной комиссии, онлайн-заявку, оплату по кредитам и обучение через колледжи университета.",
+        "asfendiyarov-kazakh-national-medical-university-kaz-almaty": "Казахский национальный медицинский университет имени С.Д. Асфендиярова — старейший медицинский университет Алматы с бакалаврскими программами по медицине, общественному здоровью, фармации, сестринскому делу и другим направлениям здравоохранения. Официальные страницы поступления описывают пороги ЕНТ для здравоохранения, психометрический экзамен и этапы зачисления.",
+        "abai-kazakh-national-pedagogical-university-kaz-almaty": "Казахский национальный педагогический университет имени Абая — первый вуз Казахстана и крупный педагогический университет в Алматы. Официальные материалы и профиль QS описывают подготовку педагогов, гуманитарные, социальные и IT-направления на нескольких факультетах."
       }
     }
   }

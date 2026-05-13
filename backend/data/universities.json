@@ -19817,5 +19817,3375 @@
       "size_source_url": "https://astanait.edu.kz/en/students-dormitory/",
       "size_note": "Small bucket reflects AITU's urban academic footprint and nearby student-house complex in Astana."
     }
+  },
+  {
+    "id": "astana-medical-university-kaz-astana",
+    "name": "Astana Medical University",
+    "rank": null,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Astana",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 51.181453,
+      "lon": 71.416157
+    },
+    "website": "https://amu.edu.kz/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Medicine",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "6 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "medicine",
+            "health sciences"
+          ]
+        },
+        {
+          "name": "Dentistry",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "5 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "medicine",
+            "health sciences"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Medicine",
+        "Dentistry"
+      ],
+      "major_tags": [
+        "medicine",
+        "health sciences"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Astana Medical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "Astana Medical University bachelor programs",
+              "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+            },
+            {
+              "label": "Astana Medical University incoming students",
+              "url": "https://amu.edu.kz/en/postupayushchim/"
+            }
+          ],
+          "provenance": {
+            "source": "Astana Medical University bachelor programs",
+            "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Astana Medical University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "Astana Medical University bachelor programs",
+              "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+            },
+            {
+              "label": "Astana Medical University incoming students",
+              "url": "https://amu.edu.kz/en/postupayushchim/"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Medicine",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Astana Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Medicine.",
+            "notes": "Stored as verified-null because no official public Medicine admit-count table was found.",
+            "sources": [
+              {
+                "label": "Astana Medical University bachelor programs",
+                "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+              }
+            ],
+            "provenance": {
+              "source": "Astana Medical University bachelor programs",
+              "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Astana Medical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Astana Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Dentistry",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Astana Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Dentistry.",
+            "notes": "Stored as verified-null because no official public Dentistry admit-count table was found.",
+            "sources": [
+              {
+                "label": "Astana Medical University bachelor programs",
+                "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+              }
+            ],
+            "provenance": {
+              "source": "Astana Medical University bachelor programs",
+              "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Astana Medical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Astana Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 6000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 6000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://amu.edu.kz/en/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "amu_healthcare_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "Psychometric or special medical-field admission step when required by the official medical-university rules"
+        ],
+        "funding_options": [
+          {
+            "id": "amu_healthcare_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 70
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "amu_healthcare_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 70
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "Astana Medical University bachelor route for healthcare applicants using UNT results and the required medical-field admission documents or psychometric step."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://amu.edu.kz/en/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/"
+      },
+      {
+        "topic": "description",
+        "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://amu.edu.kz/upload/iblock/80d/80dca4c5dd205fa38b5df03567b3070e.pdf"
+      }
+    ],
+    "description": "Astana Medical University is a major medical university in Astana with bachelor programs in medicine, dentistry, public health, pharmacy and related healthcare fields. Official program pages describe integrated medical education, clinical training and multilingual instruction in Kazakh, Russian and English.",
+    "tags": [
+      "medicine",
+      "health sciences",
+      "clinical training",
+      "public health",
+      "research"
+    ],
+    "description_source": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+    "factors": {
+      "practice_vs_science": 0.62,
+      "social_vs_hardcore": 0.72,
+      "budget_vs_prestige": 0.08,
+      "city_vs_outside_city": 0.9825,
+      "city_vs_campus": 0.9825
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "medical",
+        "city": "Astana"
+      }
+    },
+    "major_focus": [
+      "medicine",
+      "health sciences"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": null,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/astana-medical-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": false,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "not_published",
+          "method": "No official QS World University Rankings 2026 position is published for Astana Medical University on the official QS WUR 2026 table."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 6000,
+          "unit": "usd_per_year",
+          "source": "Astana Medical University price list for educational services 2025-2026",
+          "source_url": "https://amu.edu.kz/en/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 3022000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/astana-medical-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
+      "status": "not_published",
+      "verified_at": "2026-05-02",
+      "note": "No official QS World University Rankings 2026 position is published for Astana Medical University on the official QS WUR 2026 table."
+    },
+    "student_life": {
+      "size": "large",
+      "size_source_url": "https://amu.edu.kz/",
+      "size_note": "Large bucket reflects the university's multi-school medical profile and urban campus in Astana."
+    }
+  },
+  {
+    "id": "international-information-technology-university-kaz-almaty",
+    "name": "International Information Technology University",
+    "rank": null,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.235,
+      "lon": 76.909
+    },
+    "website": "https://iitu.edu.kz/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Artificial Intelligence",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
+        },
+        {
+          "name": "Information Security",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "cybersecurity"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Artificial Intelligence",
+        "Information Security"
+      ],
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "cybersecurity"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official International Information Technology University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "IITU bachelor's degree process of admission",
+              "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+            },
+            {
+              "label": "IITU bachelor admission page",
+              "url": "https://admission.iitu.edu.kz/bachelor_degree_eng"
+            }
+          ],
+          "provenance": {
+            "source": "IITU bachelor's degree process of admission",
+            "source_url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for International Information Technology University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "IITU bachelor's degree process of admission",
+              "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+            },
+            {
+              "label": "IITU bachelor admission page",
+              "url": "https://admission.iitu.edu.kz/bachelor_degree_eng"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Artificial Intelligence",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official International Information Technology University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Artificial Intelligence.",
+            "notes": "Stored as verified-null because no official public Artificial Intelligence admit-count table was found.",
+            "sources": [
+              {
+                "label": "IITU bachelor's degree process of admission",
+                "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+              }
+            ],
+            "provenance": {
+              "source": "IITU bachelor's degree process of admission",
+              "source_url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official International Information Technology University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official International Information Technology University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Information Security",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official International Information Technology University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Information Security.",
+            "notes": "Stored as verified-null because no official public Information Security admit-count table was found.",
+            "sources": [
+              {
+                "label": "IITU bachelor's degree process of admission",
+                "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+              }
+            ],
+            "provenance": {
+              "source": "IITU bachelor's degree process of admission",
+              "source_url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official International Information Technology University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official International Information Technology University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 2800,
+      "costs_breakdown_year_usd": {
+        "Tuition": 2800
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://iitu.edu.kz/ru/articles/ac/bachelors-prices/"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "iitu_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 3,
+            "requirements": {
+              "IELTS": 5,
+              "TOEFL_iBT_0_120": 46
+            },
+            "notes": "English-medium route accepts an English certificate or an internal university English placement/test route where the official admissions page allows it."
+          }
+        ],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available",
+          "IELTS certificate if available or IITU English language test"
+        ],
+        "funding_options": [
+          {
+            "id": "iitu_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 50
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "iitu_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 80
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "IITU bachelor route for applicants using UNT results, document submission through Platonus and English placement or certificate evidence for English-medium study."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "extra_requirements",
+        "url": "https://iitu.edu.kz/en/articles/ac/bachelors-degree-process-of-admission/"
+      },
+      {
+        "topic": "programs",
+        "url": "https://admission.iitu.edu.kz/bachelor_degree_eng"
+      },
+      {
+        "topic": "finance",
+        "url": "https://iitu.edu.kz/ru/articles/ac/bachelors-prices/"
+      },
+      {
+        "topic": "description",
+        "url": "https://iitu.edu.kz/en/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://iitu.edu.kz/en/"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://iitu.edu.kz/en/articles/ac/bachelors-minimum-points/"
+      }
+    ],
+    "description": "International Information Technology University is an Almaty-based IT university established in 2009. Official admissions materials describe English-focused bachelor study, UNT-based admission for Kazakhstan applicants, internal English testing and programs across artificial intelligence, information security, data and digital business.",
+    "tags": [
+      "computer science",
+      "engineering",
+      "cybersecurity",
+      "innovation",
+      "digital technology"
+    ],
+    "description_source": "https://iitu.edu.kz/en/",
+    "factors": {
+      "practice_vs_science": 0.58,
+      "social_vs_hardcore": 0.42,
+      "budget_vs_prestige": 0.05,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "technical",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "cybersecurity"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": null,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/international-information-technology-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": false,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "not_published",
+          "method": "No official QS World University Rankings 2026 position is published for International Information Technology University on the official QS WUR 2026 table."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 2800,
+          "unit": "usd_per_year",
+          "source": "IITU bachelor tuition prices",
+          "source_url": "https://iitu.edu.kz/ru/articles/ac/bachelors-prices/",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 1410000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/international-information-technology-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
+      "status": "not_published",
+      "verified_at": "2026-05-02",
+      "note": "No official QS World University Rankings 2026 position is published for International Information Technology University on the official QS WUR 2026 table."
+    },
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://iitu.edu.kz/en/",
+      "size_note": "Medium bucket reflects IITU's compact city campus and IT-focused student community in Almaty."
+    }
+  },
+  {
+    "id": "satbayev-university-kaz-almaty",
+    "name": "Satbayev University",
+    "rank": 331,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.236358,
+      "lon": 76.930679
+    },
+    "website": "https://satbayev.university/en",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
+        },
+        {
+          "name": "Petroleum Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "natural resources"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Computer Science",
+        "Petroleum Engineering"
+      ],
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "natural resources"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Satbayev University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "Satbayev University undergraduate applicant guide",
+              "url": "https://satbayev.university/en/entrant-guide"
+            },
+            {
+              "label": "Satbayev University undergraduate page",
+              "url": "https://satbayev.university/en/undergraduate"
+            }
+          ],
+          "provenance": {
+            "source": "Satbayev University undergraduate applicant guide",
+            "source_url": "https://satbayev.university/en/entrant-guide",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Satbayev University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "Satbayev University undergraduate applicant guide",
+              "url": "https://satbayev.university/en/entrant-guide"
+            },
+            {
+              "label": "Satbayev University undergraduate page",
+              "url": "https://satbayev.university/en/undergraduate"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Computer Science",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Satbayev University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Computer Science.",
+            "notes": "Stored as verified-null because no official public Computer Science admit-count table was found.",
+            "sources": [
+              {
+                "label": "Satbayev University undergraduate applicant guide",
+                "url": "https://satbayev.university/en/entrant-guide"
+              }
+            ],
+            "provenance": {
+              "source": "Satbayev University undergraduate applicant guide",
+              "source_url": "https://satbayev.university/en/entrant-guide",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Satbayev University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Satbayev University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Petroleum Engineering",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Satbayev University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Petroleum Engineering.",
+            "notes": "Stored as verified-null because no official public Petroleum Engineering admit-count table was found.",
+            "sources": [
+              {
+                "label": "Satbayev University undergraduate applicant guide",
+                "url": "https://satbayev.university/en/entrant-guide"
+              }
+            ],
+            "provenance": {
+              "source": "Satbayev University undergraduate applicant guide",
+              "source_url": "https://satbayev.university/en/entrant-guide",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Satbayev University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Satbayev University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 3200,
+      "costs_breakdown_year_usd": {
+        "Tuition": 3200
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://official.satbayev.university/en/dlya-studentov/stoimost-obucheniya"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "satbayev_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available"
+        ],
+        "funding_options": [
+          {
+            "id": "satbayev_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 80
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "satbayev_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 80
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "Satbayev University bachelor route for applicants using UNT results, profile subjects and admission documents; the official entrant guide states an 80-point university UNT threshold."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://satbayev.university/en/undergraduate"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://satbayev.university/en/entrant-guide"
+      },
+      {
+        "topic": "finance",
+        "url": "https://official.satbayev.university/en/dlya-studentov/stoimost-obucheniya"
+      },
+      {
+        "topic": "description",
+        "url": "https://satbayev.university/en/undergraduate"
+      },
+      {
+        "topic": "tags",
+        "url": "https://satbayev.university/en/undergraduate"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://satbayev.university/en/entrant-guide"
+      }
+    ],
+    "description": "Satbayev University is Kazakhstan's leading technical university in Almaty, focused on engineering, technology, architecture, energy, geology and applied research. Its official undergraduate page emphasizes modern laboratories, research centers and industry-oriented projects.",
+    "tags": [
+      "engineering",
+      "computer science",
+      "technology",
+      "research",
+      "natural resources"
+    ],
+    "description_source": "https://satbayev.university/en/undergraduate",
+    "factors": {
+      "practice_vs_science": 0.58,
+      "social_vs_hardcore": 0.42,
+      "budget_vs_prestige": 0.05,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "technical",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "natural resources"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 331,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct QS World University Rankings 2026 position for Satbayev University."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 3200,
+          "unit": "usd_per_year",
+          "source": "Satbayev University cost of study page and bachelor tuition fees 2025-2026",
+          "source_url": "https://official.satbayev.university/en/dlya-studentov/stoimost-obucheniya",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 1600000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
+      "status": "official",
+      "verified_at": "2026-05-02",
+      "note": "Satbayev University is listed at #331 in the QS World University Rankings 2026."
+    },
+    "student_life": {
+      "size": "large",
+      "size_source_url": "https://satbayev.university/en",
+      "size_note": "Large bucket reflects Satbayev University's multi-institute technical campus in central Almaty."
+    }
+  },
+  {
+    "id": "kazakhstan-british-technical-university-kaz-almaty",
+    "name": "Kazakhstan-British Technical University",
+    "rank": null,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.255726,
+      "lon": 76.943133
+    },
+    "website": "https://kbtu.edu.kz/en",
+    "academics": {
+      "programs": [
+        {
+          "name": "Information Systems",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ]
+        },
+        {
+          "name": "Oil and Gas Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "natural resources"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Information Systems",
+        "Oil and Gas Engineering"
+      ],
+      "major_tags": [
+        "computer science",
+        "engineering",
+        "natural resources"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Kazakhstan-British Technical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "KBTU admissions",
+              "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+            },
+            {
+              "label": "KBTU undergraduate admission",
+              "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+            }
+          ],
+          "provenance": {
+            "source": "KBTU admissions",
+            "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Kazakhstan-British Technical University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "KBTU admissions",
+              "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+            },
+            {
+              "label": "KBTU undergraduate admission",
+              "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Information Systems",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Kazakhstan-British Technical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Information Systems.",
+            "notes": "Stored as verified-null because no official public Information Systems admit-count table was found.",
+            "sources": [
+              {
+                "label": "KBTU admissions",
+                "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+              }
+            ],
+            "provenance": {
+              "source": "KBTU admissions",
+              "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Kazakhstan-British Technical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Kazakhstan-British Technical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Oil and Gas Engineering",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Kazakhstan-British Technical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Oil and Gas Engineering.",
+            "notes": "Stored as verified-null because no official public Oil and Gas Engineering admit-count table was found.",
+            "sources": [
+              {
+                "label": "KBTU admissions",
+                "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+              }
+            ],
+            "provenance": {
+              "source": "KBTU admissions",
+              "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Kazakhstan-British Technical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Kazakhstan-British Technical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 5000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 5000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://kbtu.edu.kz/en/kbtu-admissions"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "kbtu_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 4,
+            "requirements": {
+              "IELTS": 5.5,
+              "TOEFL_iBT_0_120": 46
+            },
+            "notes": "English-medium route uses IELTS/TOEFL or an internal English placement route according to official admissions materials."
+          }
+        ],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available",
+          "English proficiency certificate: IELTS 5.5 / TOEFL iBT 46 / STEP KBTU B1 / Duolingo intermediate where applicable"
+        ],
+        "funding_options": [
+          {
+            "id": "kbtu_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 50
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "kbtu_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 110
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "KBTU bachelor route for applicants admitted on tuition or government grant basis using UNT results and the official English-proficiency route."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+      },
+      {
+        "topic": "finance",
+        "url": "https://kbtu.edu.kz/en/kbtu-admissions"
+      },
+      {
+        "topic": "description",
+        "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+      },
+      {
+        "topic": "tags",
+        "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://kbtu.edu.kz/ru/shkoly/shkola-informatsionnykh-tekhnologij-i-inzhenerii/bakalavriat-shkoly-informatsionnykh-tekhnologij"
+      }
+    ],
+    "description": "Kazakhstan-British Technical University is an Almaty technical university whose undergraduate materials emphasize English-medium instruction, industry-developed programs, modern laboratories, digital resources, internships and international certificates depending on the program.",
+    "tags": [
+      "engineering",
+      "computer science",
+      "business",
+      "industry partnerships",
+      "english-medium"
+    ],
+    "description_source": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
+    "factors": {
+      "practice_vs_science": 0.58,
+      "social_vs_hardcore": 0.42,
+      "budget_vs_prestige": 0.05,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "technical",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "natural resources"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": null,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/kazakh-british-technical-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": false,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "not_published",
+          "method": "Kazakhstan-British Technical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 5000,
+          "unit": "usd_per_year",
+          "source": "KBTU admissions tuition fees",
+          "source_url": "https://kbtu.edu.kz/en/kbtu-admissions",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 2500000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/kazakh-british-technical-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
+      "status": "not_published",
+      "verified_at": "2026-05-02",
+      "note": "Kazakhstan-British Technical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
+    },
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://kbtu.edu.kz/en",
+      "size_note": "Medium bucket reflects KBTU's urban academic building and specialized technical/business schools in central Almaty."
+    }
+  },
+  {
+    "id": "al-farabi-kazakh-national-university-kaz-almaty",
+    "name": "Al-Farabi Kazakh National University",
+    "rank": 166,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.220567,
+      "lon": 76.923318
+    },
+    "website": "https://www.kaznu.kz/en",
+    "academics": {
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
+        },
+        {
+          "name": "Economics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business",
+            "economics"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Computer Science",
+        "Economics"
+      ],
+      "major_tags": [
+        "computer science",
+        "business",
+        "economics"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Al-Farabi Kazakh National University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "Al-Farabi KazNU bachelor applicants",
+              "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+            },
+            {
+              "label": "Al-Farabi KazNU bachelor courses",
+              "url": "https://www.kaznu.kz/en/3360"
+            }
+          ],
+          "provenance": {
+            "source": "Al-Farabi KazNU bachelor applicants",
+            "source_url": "https://welcome.kaznu.kz/ru/welcome/bachelor",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Al-Farabi Kazakh National University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "Al-Farabi KazNU bachelor applicants",
+              "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+            },
+            {
+              "label": "Al-Farabi KazNU bachelor courses",
+              "url": "https://www.kaznu.kz/en/3360"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Computer Science",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Al-Farabi Kazakh National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Computer Science.",
+            "notes": "Stored as verified-null because no official public Computer Science admit-count table was found.",
+            "sources": [
+              {
+                "label": "Al-Farabi KazNU bachelor applicants",
+                "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+              }
+            ],
+            "provenance": {
+              "source": "Al-Farabi KazNU bachelor applicants",
+              "source_url": "https://welcome.kaznu.kz/ru/welcome/bachelor",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Al-Farabi Kazakh National University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Al-Farabi Kazakh National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Economics",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Al-Farabi Kazakh National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Economics.",
+            "notes": "Stored as verified-null because no official public Economics admit-count table was found.",
+            "sources": [
+              {
+                "label": "Al-Farabi KazNU bachelor applicants",
+                "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+              }
+            ],
+            "provenance": {
+              "source": "Al-Farabi KazNU bachelor applicants",
+              "source_url": "https://welcome.kaznu.kz/ru/welcome/bachelor",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Al-Farabi Kazakh National University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Al-Farabi Kazakh National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 3100,
+      "costs_breakdown_year_usd": {
+        "Tuition": 3100
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://welcome.kaznu.kz/ru/19388/"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "kaznu_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available"
+        ],
+        "funding_options": [
+          {
+            "id": "kaznu_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 65
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "kaznu_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 65
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "Al-Farabi Kazakh National University bachelor route using UNT results, profile subjects, published thresholds and university admission documents."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://www.kaznu.kz/en/3360"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+      },
+      {
+        "topic": "finance",
+        "url": "https://welcome.kaznu.kz/ru/19388/"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.kaznu.kz/en/3360"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.kaznu.kz/en/3360"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://welcome.kaznu.kz/ru/welcome/bachelor"
+      }
+    ],
+    "description": "Al-Farabi Kazakh National University is a comprehensive national university in Almaty with more than 100 bachelor specialities across its faculties. Official materials describe KazNU as an innovative center for professional education and competitive personal development.",
+    "tags": [
+      "comprehensive university",
+      "computer science",
+      "economics",
+      "research",
+      "student life"
+    ],
+    "description_source": "https://www.kaznu.kz/en/3360",
+    "factors": {
+      "practice_vs_science": 0.66,
+      "social_vs_hardcore": 0.5,
+      "budget_vs_prestige": 0.08,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "comprehensive",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "computer science",
+      "business",
+      "economics"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 166,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/al-farabi-kazakh-national-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct QS World University Rankings 2026 position for Al-Farabi Kazakh National University."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 3100,
+          "unit": "usd_per_year",
+          "source": "Al-Farabi KazNU bachelor tuition 2025-2026",
+          "source_url": "https://welcome.kaznu.kz/ru/19388/",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 1566000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/al-farabi-kazakh-national-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
+      "status": "official",
+      "verified_at": "2026-05-02",
+      "note": "Al-Farabi Kazakh National University is listed at #166 in the QS World University Rankings 2026."
+    },
+    "student_life": {
+      "size": "large",
+      "size_source_url": "https://www.kaznu.kz/en",
+      "size_note": "Large bucket reflects KazNU's broad multi-faculty campus, dormitory network and student organizations in Almaty."
+    }
+  },
+  {
+    "id": "l-n-gumilyov-eurasian-national-university-kaz-astana",
+    "name": "L.N. Gumilyov Eurasian National University",
+    "rank": 317,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Astana",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 51.157817,
+      "lon": 71.467785
+    },
+    "website": "https://enu.kz/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "International Relations",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "social sciences",
+            "international relations"
+          ]
+        },
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "International Relations",
+        "Computer Science"
+      ],
+      "major_tags": [
+        "social sciences",
+        "international relations",
+        "computer science"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official L.N. Gumilyov Eurasian National University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "ENU bachelor applicants",
+              "url": "https://enu.kz/en/page/applicants/bachelor"
+            }
+          ],
+          "provenance": {
+            "source": "ENU bachelor applicants",
+            "source_url": "https://enu.kz/en/page/applicants/bachelor",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for L.N. Gumilyov Eurasian National University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "ENU bachelor applicants",
+              "url": "https://enu.kz/en/page/applicants/bachelor"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "International Relations",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official L.N. Gumilyov Eurasian National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for International Relations.",
+            "notes": "Stored as verified-null because no official public International Relations admit-count table was found.",
+            "sources": [
+              {
+                "label": "ENU bachelor applicants",
+                "url": "https://enu.kz/en/page/applicants/bachelor"
+              }
+            ],
+            "provenance": {
+              "source": "ENU bachelor applicants",
+              "source_url": "https://enu.kz/en/page/applicants/bachelor",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official L.N. Gumilyov Eurasian National University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official L.N. Gumilyov Eurasian National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Computer Science",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official L.N. Gumilyov Eurasian National University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Computer Science.",
+            "notes": "Stored as verified-null because no official public Computer Science admit-count table was found.",
+            "sources": [
+              {
+                "label": "ENU bachelor applicants",
+                "url": "https://enu.kz/en/page/applicants/bachelor"
+              }
+            ],
+            "provenance": {
+              "source": "ENU bachelor applicants",
+              "source_url": "https://enu.kz/en/page/applicants/bachelor",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official L.N. Gumilyov Eurasian National University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official L.N. Gumilyov Eurasian National University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 3000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 3000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://enu.kz/en/page/applicants/bachelor"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "enu_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available"
+        ],
+        "funding_options": [
+          {
+            "id": "enu_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 110
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "enu_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 110
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "ENU bachelor route using UNT results, published educational-program thresholds, required documents and the university admission committee flow."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://enu.kz/en/page/applicants/bachelor"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://enu.kz/en/page/applicants/bachelor"
+      },
+      {
+        "topic": "finance",
+        "url": "https://enu.kz/en/page/applicants/bachelor"
+      },
+      {
+        "topic": "description",
+        "url": "https://enu.kz/en/page/applicants/bachelor"
+      },
+      {
+        "topic": "tags",
+        "url": "https://enu.kz/en/page/applicants/bachelor"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://enu.kz/en/page/applicants/bachelor"
+      }
+    ],
+    "description": "L.N. Gumilyov Eurasian National University is a national university in Astana. Official bachelor materials highlight its capital-city location, international partnerships, active student life, educational-program threshold tables and opportunities for academic mobility.",
+    "tags": [
+      "comprehensive university",
+      "international relations",
+      "computer science",
+      "research",
+      "academic mobility"
+    ],
+    "description_source": "https://enu.kz/en/page/applicants/bachelor",
+    "factors": {
+      "practice_vs_science": 0.66,
+      "social_vs_hardcore": 0.5,
+      "budget_vs_prestige": 0.08,
+      "city_vs_outside_city": 0.9825,
+      "city_vs_campus": 0.9825
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "comprehensive",
+        "city": "Astana"
+      }
+    },
+    "major_focus": [
+      "social sciences",
+      "international relations",
+      "computer science"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 317,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://enu.kz/en/news/5092",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct QS World University Rankings 2026 position for L.N. Gumilyov Eurasian National University."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 3000,
+          "unit": "usd_per_year",
+          "source": "ENU bachelor tuition fees 2025-2026",
+          "source_url": "https://enu.kz/en/page/applicants/bachelor",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 1500000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://enu.kz/en/news/5092",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
+      "status": "official",
+      "verified_at": "2026-05-02",
+      "note": "L.N. Gumilyov Eurasian National University is listed at #317 in the QS World University Rankings 2026."
+    },
+    "student_life": {
+      "size": "large",
+      "size_source_url": "https://enu.kz/en/",
+      "size_note": "Large bucket reflects ENU's broad national-university profile and multi-building campus in Astana."
+    }
+  },
+  {
+    "id": "narxoz-university-kaz-almaty",
+    "name": "Narxoz University",
+    "rank": null,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.214942,
+      "lon": 76.870596
+    },
+    "website": "https://en.narxoz.kz/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Economics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business",
+            "economics"
+          ]
+        },
+        {
+          "name": "Digital Business",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business",
+            "computer science"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Economics",
+        "Digital Business"
+      ],
+      "major_tags": [
+        "business",
+        "economics",
+        "computer science"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Narxoz University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "Narxoz foreign applicant checklist",
+              "url": "https://en.narxoz.kz/admission/checklist"
+            },
+            {
+              "label": "Narxoz bachelor admission",
+              "url": "https://narxoz.kz/admission/specificity/bachelor/"
+            }
+          ],
+          "provenance": {
+            "source": "Narxoz foreign applicant checklist",
+            "source_url": "https://en.narxoz.kz/admission/checklist",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Narxoz University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "Narxoz foreign applicant checklist",
+              "url": "https://en.narxoz.kz/admission/checklist"
+            },
+            {
+              "label": "Narxoz bachelor admission",
+              "url": "https://narxoz.kz/admission/specificity/bachelor/"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Economics",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Narxoz University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Economics.",
+            "notes": "Stored as verified-null because no official public Economics admit-count table was found.",
+            "sources": [
+              {
+                "label": "Narxoz foreign applicant checklist",
+                "url": "https://en.narxoz.kz/admission/checklist"
+              }
+            ],
+            "provenance": {
+              "source": "Narxoz foreign applicant checklist",
+              "source_url": "https://en.narxoz.kz/admission/checklist",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Narxoz University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Narxoz University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Digital Business",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Narxoz University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Digital Business.",
+            "notes": "Stored as verified-null because no official public Digital Business admit-count table was found.",
+            "sources": [
+              {
+                "label": "Narxoz foreign applicant checklist",
+                "url": "https://en.narxoz.kz/admission/checklist"
+              }
+            ],
+            "provenance": {
+              "source": "Narxoz foreign applicant checklist",
+              "source_url": "https://en.narxoz.kz/admission/checklist",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Narxoz University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Narxoz University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 3000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 3000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://en.narxoz.kz/admission/checklist"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "narxoz_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available"
+        ],
+        "funding_options": [
+          {
+            "id": "narxoz_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 50
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "narxoz_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 50
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "Narxoz bachelor route for applicants submitting official documents, UNT certificate where applicable and tuition-payment documents through the admissions flow."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://en.narxoz.kz/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://en.narxoz.kz/admission/checklist"
+      },
+      {
+        "topic": "finance",
+        "url": "https://en.narxoz.kz/admission/checklist"
+      },
+      {
+        "topic": "description",
+        "url": "https://en.narxoz.kz/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://en.narxoz.kz/"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://en.narxoz.kz/admission/specificity/bachelor/"
+      }
+    ],
+    "description": "Narxoz University is an Almaty private non-profit university focused on economics, management, law, digital technologies and social sciences. Official pages present undergraduate study, five schools, international partnerships and admissions support for local and international applicants.",
+    "tags": [
+      "business",
+      "economics",
+      "law",
+      "digital technology",
+      "international partnerships"
+    ],
+    "description_source": "https://en.narxoz.kz/",
+    "factors": {
+      "practice_vs_science": 0.28,
+      "social_vs_hardcore": 0.35,
+      "budget_vs_prestige": 0.1,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "business",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "business",
+      "economics",
+      "computer science"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": null,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/narxoz-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": false,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "not_published",
+          "method": "Narxoz University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 3000,
+          "unit": "usd_per_year",
+          "source": "Narxoz University admissions checklist and tuition-payment guidance",
+          "source_url": "https://en.narxoz.kz/admission/checklist",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 1500000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/narxoz-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
+      "status": "not_published",
+      "verified_at": "2026-05-02",
+      "note": "Narxoz University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
+    },
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://en.narxoz.kz/",
+      "size_note": "Medium bucket reflects Narxoz University's city campus and school-based academic structure in Almaty."
+    }
+  },
+  {
+    "id": "kimep-university-kaz-almaty",
+    "name": "KIMEP University",
+    "rank": null,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.242317,
+      "lon": 76.953853
+    },
+    "website": "https://www.kimep.kz/prospective-students/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Management",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business"
+          ]
+        },
+        {
+          "name": "International Law",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "law",
+            "international relations"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Management",
+        "International Law"
+      ],
+      "major_tags": [
+        "business",
+        "law",
+        "international relations"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official KIMEP University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "KIMEP undergraduate admission",
+              "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+            },
+            {
+              "label": "KIMEP admission",
+              "url": "https://www.kimep.kz/prospective-students/en/admission/"
+            }
+          ],
+          "provenance": {
+            "source": "KIMEP undergraduate admission",
+            "source_url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for KIMEP University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "KIMEP undergraduate admission",
+              "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+            },
+            {
+              "label": "KIMEP admission",
+              "url": "https://www.kimep.kz/prospective-students/en/admission/"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Management",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official KIMEP University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Management.",
+            "notes": "Stored as verified-null because no official public Management admit-count table was found.",
+            "sources": [
+              {
+                "label": "KIMEP undergraduate admission",
+                "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+              }
+            ],
+            "provenance": {
+              "source": "KIMEP undergraduate admission",
+              "source_url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official KIMEP University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official KIMEP University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "International Law",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official KIMEP University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for International Law.",
+            "notes": "Stored as verified-null because no official public International Law admit-count table was found.",
+            "sources": [
+              {
+                "label": "KIMEP undergraduate admission",
+                "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+              }
+            ],
+            "provenance": {
+              "source": "KIMEP undergraduate admission",
+              "source_url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official KIMEP University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official KIMEP University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 8700,
+      "costs_breakdown_year_usd": {
+        "Tuition": 8700
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://www.kimep.kz/prospective-students/files/2025/06/tuition_fees_ugrad_eng-3.pdf"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "kimep_undergraduate",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "any",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "min_cefr": 4,
+            "requirements": {
+              "IELTS": 5.5,
+              "TOEFL_iBT_0_120": 46
+            },
+            "notes": "English-medium route uses IELTS/TOEFL or an internal English placement route according to official admissions materials."
+          }
+        ],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available",
+          "KIMEP online application",
+          "English proficiency evidence or KIMEP English placement/testing route",
+          "Motivational essay where required"
+        ],
+        "funding_options": [
+          {
+            "id": "kimep_undergraduate_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 50
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "kimep_undergraduate_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 50
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "KIMEP undergraduate route using Kazakhstan UNT where applicable, KIMEP application documents and English proficiency or internal placement/testing."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://www.kimep.kz/bang-college-of-business/en/bachelor-of-management/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://www.kimep.kz/prospective-students/files/2025/06/tuition_fees_ugrad_eng-3.pdf"
+      },
+      {
+        "topic": "description",
+        "url": "https://www.kimep.kz/prospective-students/en/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.kimep.kz/prospective-students/en/"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://www.kimep.kz/prospective-students/en/admission/high-school-graduates/"
+      }
+    ],
+    "description": "KIMEP University is an English-medium university in Almaty with undergraduate programs in business, social sciences, law, education and humanities. Official materials describe year-round admissions support, online application, tuition-per-credit billing and undergraduate pathways through its colleges.",
+    "tags": [
+      "business",
+      "law",
+      "english-medium",
+      "international relations",
+      "student life"
+    ],
+    "description_source": "https://www.kimep.kz/prospective-students/en/",
+    "factors": {
+      "practice_vs_science": 0.28,
+      "social_vs_hardcore": 0.35,
+      "budget_vs_prestige": 0.1,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "business",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "business",
+      "law",
+      "international relations"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": null,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": false,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "not_published",
+          "method": "No official QS World University Rankings 2026 position is published for KIMEP University on the official QS WUR 2026 table."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 8700,
+          "unit": "usd_per_year",
+          "source": "KIMEP University undergraduate tuition and fees 2025-2026",
+          "source_url": "https://www.kimep.kz/prospective-students/files/2025/06/tuition_fees_ugrad_eng-3.pdf",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 4352700,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
+      "status": "not_published",
+      "verified_at": "2026-05-02",
+      "note": "No official QS World University Rankings 2026 position is published for KIMEP University on the official QS WUR 2026 table."
+    },
+    "student_life": {
+      "size": "medium",
+      "size_source_url": "https://www.kimep.kz/prospective-students/en/",
+      "size_note": "Medium bucket reflects KIMEP's compact central Almaty campus and college-based undergraduate community."
+    }
+  },
+  {
+    "id": "asfendiyarov-kazakh-national-medical-university-kaz-almaty",
+    "name": "Asfendiyarov Kazakh National Medical University",
+    "rank": null,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.2531,
+      "lon": 76.931731
+    },
+    "website": "https://kaznmu.edu.kz/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Medicine",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "6 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "medicine",
+            "health sciences"
+          ]
+        },
+        {
+          "name": "Public Health",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "medicine",
+            "public health"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Medicine",
+        "Public Health"
+      ],
+      "major_tags": [
+        "medicine",
+        "health sciences",
+        "public health"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Asfendiyarov Kazakh National Medical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "KazNMU bachelor's degree applicants",
+              "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+            },
+            {
+              "label": "KazNMU bachelor's educational programs",
+              "url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/"
+            }
+          ],
+          "provenance": {
+            "source": "KazNMU bachelor's degree applicants",
+            "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Asfendiyarov Kazakh National Medical University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "KazNMU bachelor's degree applicants",
+              "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+            },
+            {
+              "label": "KazNMU bachelor's educational programs",
+              "url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Medicine",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Asfendiyarov Kazakh National Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Medicine.",
+            "notes": "Stored as verified-null because no official public Medicine admit-count table was found.",
+            "sources": [
+              {
+                "label": "KazNMU bachelor's degree applicants",
+                "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+              }
+            ],
+            "provenance": {
+              "source": "KazNMU bachelor's degree applicants",
+              "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Asfendiyarov Kazakh National Medical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Asfendiyarov Kazakh National Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Public Health",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Asfendiyarov Kazakh National Medical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Public Health.",
+            "notes": "Stored as verified-null because no official public Public Health admit-count table was found.",
+            "sources": [
+              {
+                "label": "KazNMU bachelor's degree applicants",
+                "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+              }
+            ],
+            "provenance": {
+              "source": "KazNMU bachelor's degree applicants",
+              "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Asfendiyarov Kazakh National Medical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Asfendiyarov Kazakh National Medical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 6000,
+      "costs_breakdown_year_usd": {
+        "Tuition": 6000
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "kaznmu_healthcare_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "Psychometric or special medical-field admission step when required by the official medical-university rules"
+        ],
+        "funding_options": [
+          {
+            "id": "kaznmu_healthcare_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 70
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "kaznmu_healthcare_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 70
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "KazNMU healthcare bachelor route using UNT results, chemistry/biology profile subjects, psychometric examination where required and official enrollment steps."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      },
+      {
+        "topic": "description",
+        "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      }
+    ],
+    "description": "Asfendiyarov Kazakh National Medical University is a long-standing Almaty medical university with bachelor programs in medicine, public health, pharmacy, nursing and related healthcare fields. Official applicant pages describe UNT thresholds for healthcare, psychometric examination and enrollment stages.",
+    "tags": [
+      "medicine",
+      "health sciences",
+      "public health",
+      "clinical training",
+      "research"
+    ],
+    "description_source": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+    "factors": {
+      "practice_vs_science": 0.62,
+      "social_vs_hardcore": 0.72,
+      "budget_vs_prestige": 0.08,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "medical",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "medicine",
+      "health sciences",
+      "public health"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": null,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/asfendiyarov-kazakh-national-medical-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": false,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "not_published",
+          "method": "Asfendiyarov Kazakh National Medical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 6000,
+          "unit": "usd_per_year",
+          "source": "KazNMU bachelor's degree admissions",
+          "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 3000000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/asfendiyarov-kazakh-national-medical-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": false,
+      "status": "not_published",
+      "verified_at": "2026-05-02",
+      "note": "Asfendiyarov Kazakh National Medical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
+    },
+    "student_life": {
+      "size": "large",
+      "size_source_url": "https://kaznmu.edu.kz/en/",
+      "size_note": "Large bucket reflects KazNMU's multi-school medical profile and central Almaty campus."
+    }
+  },
+  {
+    "id": "abai-kazakh-national-pedagogical-university-kaz-almaty",
+    "name": "Abai Kazakh National Pedagogical University",
+    "rank": 628,
+    "location": {
+      "country": "Kazakhstan",
+      "city": "Almaty",
+      "state": ""
+    },
+    "coordinates": {
+      "lat": 43.256322,
+      "lon": 76.954136
+    },
+    "website": "https://abaiuniversity.edu.kz/en/",
+    "academics": {
+      "programs": [
+        {
+          "name": "Pedagogy and Psychology",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "education",
+            "social sciences"
+          ]
+        },
+        {
+          "name": "Informatics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "duration": "4 years",
+          "language": [
+            "Kazakh",
+            "Russian",
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "education",
+            "computer science"
+          ]
+        }
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "majors": [
+        "Pedagogy and Psychology",
+        "Informatics"
+      ],
+      "major_tags": [
+        "education",
+        "social sciences",
+        "computer science"
+      ],
+      "acceptance_rate_percent": null,
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "semantics": "Official Abai Kazakh National Pedagogical University admissions materials publish bachelor routes and requirements, but no public university-wide undergraduate applicant/admit totals.",
+          "sources": [
+            {
+              "label": "Abai KazNPU bachelor admission conditions",
+              "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+            }
+          ],
+          "provenance": {
+            "source": "Abai KazNPU bachelor admission conditions",
+            "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+            "verified_at": "2026-05-02",
+            "status": "official",
+            "confidence": "high",
+            "method": "Verified-null: no official public undergraduate applicant/admit totals were found for Abai Kazakh National Pedagogical University."
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "program_metrics_not_published",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official program-level public selectivity data is not published for the reviewed current bachelor programs, so UniSearch stores verified-null rows instead of inventing acceptance rates.",
+          "sources": [
+            {
+              "label": "Abai KazNPU bachelor admission conditions",
+              "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Pedagogy and Psychology",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Abai Kazakh National Pedagogical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Pedagogy and Psychology.",
+            "notes": "Stored as verified-null because no official public Pedagogy and Psychology admit-count table was found.",
+            "sources": [
+              {
+                "label": "Abai KazNPU bachelor admission conditions",
+                "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+              }
+            ],
+            "provenance": {
+              "source": "Abai KazNPU bachelor admission conditions",
+              "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Abai Kazakh National Pedagogical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Abai Kazakh National Pedagogical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          },
+          {
+            "program_name": "Informatics",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "The reviewed official Abai Kazakh National Pedagogical University bachelor admissions materials publish admission routes, documents, thresholds or program information, but do not publish program-specific applicants/admitted totals for Informatics.",
+            "notes": "Stored as verified-null because no official public Informatics admit-count table was found.",
+            "sources": [
+              {
+                "label": "Abai KazNPU bachelor admission conditions",
+                "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+              }
+            ],
+            "provenance": {
+              "source": "Abai KazNPU bachelor admission conditions",
+              "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+              "verified_at": "2026-05-02",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Abai Kazakh National Pedagogical University materials do not publish a public program-level admit table for this bachelor program.",
+              "basis": {
+                "summary": "Official Abai Kazakh National Pedagogical University materials were checked for bachelor admission and program information; public program-level admit totals were not published."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 2400,
+      "costs_breakdown_year_usd": {
+        "Tuition": 2400
+      },
+      "financial_aid": {
+        "merit_based": true,
+        "need_based": false
+      },
+      "costs_breakdown_source_urls": [
+        "https://abaiuniversity.edu.kz/en/3000/notice/"
+      ],
+      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
+      "costs_breakdown_status": "official_tuition_and_fees_only"
+    },
+    "outcomes": {},
+    "admission_tracks": [
+      {
+        "id": "abai_kaznpu_unt",
+        "label": "UNT Admission",
+        "scholarships": [],
+        "study_mode": "On-campus",
+        "language_requirements_mode": "none",
+        "language_requirements": [],
+        "extra_requirements": [
+          "UNT certificate",
+          "Secondary education certificate or diploma",
+          "Identity document",
+          "Medical certificate with fluorography",
+          "Vaccination card",
+          "3x4 photos",
+          "State grant certificate if available"
+        ],
+        "funding_options": [
+          {
+            "id": "abai_kaznpu_unt_paid",
+            "label": "Paid Admission",
+            "requirements": {
+              "UNT": 75
+            },
+            "funding_type": "paid",
+            "track_badge": "Paid",
+            "description": "Fee-paying bachelor place for applicants admitted through the UNT route."
+          },
+          {
+            "id": "abai_kaznpu_unt_grant",
+            "label": "State Grant",
+            "requirements": {
+              "UNT": 75
+            },
+            "funding_type": "grant",
+            "track_badge": "Grant",
+            "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
+            "extra_requirements": [
+              "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
+            ]
+          }
+        ],
+        "description": "Abai KazNPU bachelor route using UNT results; official conditions state higher thresholds for pedagogical sciences and required admission documents."
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "programs",
+        "url": "https://abaiuniversity.edu.kz/en/"
+      },
+      {
+        "topic": "extra_requirements",
+        "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+      },
+      {
+        "topic": "finance",
+        "url": "https://abaiuniversity.edu.kz/en/3000/notice/"
+      },
+      {
+        "topic": "description",
+        "url": "https://abaiuniversity.edu.kz/en/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://abaiuniversity.edu.kz/en/"
+      },
+      {
+        "topic": "admission_thresholds",
+        "url": "https://abaiuniversity.edu.kz/en/42614/news/"
+      }
+    ],
+    "description": "Abai Kazakh National Pedagogical University is Kazakhstan's first higher education institution and a major pedagogical university in Almaty. Official materials and QS profile describe broad teacher-training, humanities, social-science and informatics programs across multiple faculties.",
+    "tags": [
+      "education",
+      "pedagogy",
+      "social sciences",
+      "computer science",
+      "research"
+    ],
+    "description_source": "https://abaiuniversity.edu.kz/en/",
+    "factors": {
+      "practice_vs_science": 0.45,
+      "social_vs_hardcore": 0.45,
+      "budget_vs_prestige": 0.08,
+      "city_vs_outside_city": 0.9976,
+      "city_vs_campus": 0.9976
+    },
+    "factors_meta": {
+      "version": "curated_kz_import_v1",
+      "computed_at": "2026-05-02T00:00:00Z",
+      "method": "Curated initial UniSearch proxy factors for Kazakhstan import, based on official academic focus, city context, and tuition. These are not official university metrics.",
+      "raw_metrics": {
+        "profile_kind": "pedagogical",
+        "city": "Almaty"
+      }
+    },
+    "major_focus": [
+      "education",
+      "social sciences",
+      "computer science"
+    ],
+    "fact_provenance": {
+      "schema_version": 1,
+      "facts": {
+        "rank": {
+          "value": 628,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/universities/abai-kazakh-national-pedagogical-university",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-05-02",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct QS World University Rankings 2026 position for Abai Kazakh National Pedagogical University."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 2400,
+          "unit": "usd_per_year",
+          "source": "Abai KazNPU bachelor admission conditions",
+          "source_url": "https://abaiuniversity.edu.kz/en/3000/notice/",
+          "verified_at": "2026-05-02",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "USD value is a rounded UniSearch conversion from the official KZT tuition basis; it excludes non-tuition living-cost estimates.",
+          "basis": {
+            "academic_year": "2025-2026",
+            "currency": "KZT",
+            "annual_tuition_kzt": 1200000,
+            "conversion_note": "Rounded with 500 KZT per USD for catalog comparability.",
+            "display_breakdown_policy": "official_tuition_and_fees_only"
+          }
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/universities/abai-kazakh-national-pedagogical-university",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
+      "status": "official",
+      "verified_at": "2026-05-02",
+      "note": "Abai Kazakh National Pedagogical University is listed at #628 in the QS World University Rankings 2026."
+    },
+    "student_life": {
+      "size": "large",
+      "size_source_url": "https://abaiuniversity.edu.kz/en/",
+      "size_note": "Large bucket reflects Abai KazNPU's national pedagogical profile and multiple educational buildings in Almaty."
+    }
   }
 ]

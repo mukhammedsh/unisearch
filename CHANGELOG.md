@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.9.0 (2026-05-13) - Kazakhstan Catalog Expansion
+
+Status:
+- synchronized runtime/package version to `3.9.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- added 10 Kazakhstan bachelor-level universities: Astana Medical University, International Information Technology University, Satbayev University, Kazakhstan-British Technical University, Al-Farabi Kazakh National University, L.N. Gumilyov Eurasian National University, Narxoz University, KIMEP University, Asfendiyarov Kazakh National Medical University, and Abai Kazakh National Pedagogical University;
+- added official-source admissions and fact provenance for the new Kazakhstan universities, including verified-null admissions/selectivity records where official applicant/admit totals are not published;
+- added official tuition-derived annual cost entries, corrected Kazakhstan UNT admission thresholds, removed unsupported GPA pseudo-requirements, and clarified that state-grant values are eligibility thresholds rather than guaranteed grant cutoffs;
+- added Almaty to supported Kazakhstan locations and added hidden search aliases, Russian city/major/tag translations, university descriptions, track labels, program names, and admission text for the new universities;
+- added curated logo and campus thumbnail assets, including full and small variants, for the 10 new Kazakhstan universities;
+- updated service-worker behavior so university media assets use a network-first strategy, service-worker registration bypasses cache for updates, and the service-worker entry file has an explicit version bump;
+- documented optional local Graphify usage in `AGENTS.md` and `CLAUDE.md` without making Graphify a project requirement.
+
 ## 3.8.2 (2026-05-01) - Backend Dependency Refresh
 
 Status:

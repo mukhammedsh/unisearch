@@ -33,7 +33,10 @@ async function registerServiceWorker() {
   try {
     const swScriptUrl = frontendStaticAsset("sw.js");
     const swScope = frontendStaticAsset("");
-    await navigator.serviceWorker.register(swScriptUrl, { scope: swScope.endsWith("/") ? swScope : `${swScope}/` });
+    await navigator.serviceWorker.register(swScriptUrl, {
+      scope: swScope.endsWith("/") ? swScope : `${swScope}/`,
+      updateViaCache: "none",
+    });
   } catch (e) {
     console.warn("Service worker registration failed:", e);
   }

@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-04-19-1";
+const SW_VERSION = "2026-05-05-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -49,6 +49,10 @@ function isImageRequest(request, url) {
   return false;
 }
 
+function isUniversityAssetRequest(url) {
+  return normalizeApiPath(url.pathname.toLowerCase()).startsWith("/universities/assets/");
+}
+
 function isApiRequest(request, url) {
   if (request.method !== "GET") return false;
   if (!/^https?:$/i.test(url.protocol)) return false;
@@ -82,6 +86,11 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
+
+  if (isUniversityAssetRequest(url)) {
+    event.respondWith(networkFirst(request, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
+    return;
+  }
 
   if (isImageRequest(request, url)) {
     event.respondWith(staleWhileRevalidate(event, request, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
@@ -121,6 +130,22 @@ async function staleWhileRevalidate(event, request, cacheName, maxEntries) {
   if (networkResponse) return networkResponse;
 
   return new Response("Offline", { status: 503, statusText: "Offline" });
+}
+
+async function networkFirst(request, cacheName, maxEntries) {
+  const cache = await caches.open(cacheName);
+  try {
+    const response = await fetch(request);
+    if (response && isCacheableResponse(response)) {
+      await cache.put(request, response.clone());
+      await trimCache(cacheName, maxEntries);
+    }
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    return new Response("Offline", { status: 503, statusText: "Offline" });
+  }
 }
 
 function isCacheableResponse(response) {

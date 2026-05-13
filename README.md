@@ -73,7 +73,7 @@ Prerequisites:
 
 ## Project snapshot
 - Product scope is bachelor-level university discovery and decision support.
-- Current catalog coverage: 40 universities across 13 countries.
+- Current catalog coverage: 50 universities across 13 countries.
 - Business logic and data shaping live in the FastAPI backend; the frontend is static Vanilla JS/HTML/CSS.
 - UI languages are English (`eng`) and Russian (`ru`), with university translations served by `/universities/translations`.
 - University facts and admissions data are conservative: official sources only, with missing values preferred over guesses.
@@ -456,6 +456,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `3.9.0` on `2026-05-13`
 - `3.8.2` on `2026-05-01`
 - `3.8.1` on `2026-05-01`
 - `3.8.0` on `2026-04-30`
