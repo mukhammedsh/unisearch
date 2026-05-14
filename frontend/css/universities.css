@@ -6762,16 +6762,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root:not([data-theme="dark"]) .uni-card.uni-card--compare-selected {
-  background:
-    linear-gradient(180deg, rgba(87, 21, 219, 0.055), rgba(87, 21, 219, 0.015)),
-    var(--surface-solid);
+  background-color: #f7f4ff;
   border-color: rgba(87, 21, 219, 0.46);
 }
 
 :root:not([data-theme="dark"]) .compare-config-column .admission-option-card:has(.track-select-btn.is-active) {
-  background:
-    linear-gradient(180deg, rgba(87, 21, 219, 0.075), rgba(87, 21, 219, 0.02)),
-    var(--surface-solid);
+  background-color: #f7f4ff;
   border-color: rgba(87, 21, 219, 0.46);
 }
 

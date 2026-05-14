@@ -5265,9 +5265,7 @@
 
 :root:not([data-theme="dark"]) .admission-option-card:has(.track-select-btn.is-active),
 :root:not([data-theme="dark"]) .track-card:has(.track-select-btn.is-active) {
-  background:
-    linear-gradient(180deg, rgba(87, 21, 219, 0.075), rgba(87, 21, 219, 0.018)),
-    var(--card);
+  background-color: #f7f4ff;
   border-color: rgba(87, 21, 219, 0.46);
 }
 
