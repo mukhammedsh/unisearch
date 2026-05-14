@@ -348,8 +348,8 @@
 .about-title {
   max-width: 780px;
   font-size: clamp(34px, 5vw, 58px);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
+  line-height: 1.02;
+  letter-spacing: 0;
 }
 
 .about-lead {
@@ -447,8 +447,70 @@
 .team-card-body h3 {
   margin: 0;
   font-size: 26px;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   line-height: 1.1;
+}
+
+/* ===== 2026 About Layout Density Pass ===== */
+.about-shell {
+  gap: 18px;
+}
+
+.about-shell-section {
+  margin-bottom: 0;
+}
+
+.about-shell-section + .about-shell-section {
+  margin-top: 16px;
+}
+
+.about-shell-divider {
+  margin: 14px 0;
+}
+
+.about-hero {
+  padding-bottom: 2px;
+}
+
+.about-lead {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.about-proof-grid,
+.about-principles-grid,
+.team-grid,
+.about-contact-grid {
+  gap: 12px;
+}
+
+.about-proof-card,
+.about-principle-card,
+.team-card,
+.about-contact-card {
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.about-proof-label,
+.contact-label,
+.team-role {
+  letter-spacing: 0;
+}
+
+.about-proof-label {
+  margin-bottom: 6px;
+}
+
+.about-proof-value,
+.about-principle-card p,
+.team-bio,
+.contact-note {
+  line-height: 1.45;
+}
+
+.team-card-body h3 {
+  font-size: 22px;
 }
 
 .team-role {
@@ -484,6 +546,14 @@
     border-radius: 20px;
   }
 
+  .about-shell-section + .about-shell-section {
+    margin-top: 12px;
+  }
+
+  .about-shell-divider {
+    margin: 12px 0;
+  }
+
   .about-title {
     font-size: 32px;
   }
@@ -508,4 +578,70 @@
   .team-bio {
     font-size: 14px;
   }
+}
+
+/* ===== 2026 About Light Surface Separation ===== */
+:root:not([data-theme="dark"]) body[data-page="about"] {
+  background:
+    radial-gradient(circle at top right, rgba(87, 21, 219, 0.075), transparent 30%),
+    linear-gradient(180deg, #f8fafc 0%, #e9eef6 100%);
+}
+
+:root:not([data-theme="dark"]) .about-shell {
+  background:
+    linear-gradient(180deg, rgba(87, 21, 219, 0.045), rgba(87, 21, 219, 0.008) 46%, transparent),
+    var(--surface-solid);
+  border-color: var(--line-strong);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .about-proof-card,
+:root:not([data-theme="dark"]) .about-principle-card,
+:root:not([data-theme="dark"]) .team-card,
+:root:not([data-theme="dark"]) .about-contact-card,
+:root:not([data-theme="dark"]) .about-link {
+  background: var(--surface-soft);
+  border-color: var(--line-strong);
+}
+
+:root:not([data-theme="dark"]) .about-eyebrow,
+:root:not([data-theme="dark"]) .about-kicker {
+  width: fit-content;
+  padding: 4px 8px;
+  border: 1px solid rgba(87, 21, 219, 0.18);
+  border-radius: 10px;
+  background: rgba(87, 21, 219, 0.08);
+  color: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .about-lead,
+:root:not([data-theme="dark"]) .about-principle-card p,
+:root:not([data-theme="dark"]) .team-bio,
+:root:not([data-theme="dark"]) .contact-note {
+  color: var(--text-muted);
+}
+
+:root:not([data-theme="dark"]) .about-tag,
+:root:not([data-theme="dark"]) .about-proof-label,
+:root:not([data-theme="dark"]) .team-role,
+:root:not([data-theme="dark"]) .contact-label {
+  color: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .about-tag {
+  background: rgba(87, 21, 219, 0.08);
+  border-color: rgba(87, 21, 219, 0.18);
+}
+
+:root:not([data-theme="dark"]) .about-shell-divider {
+  background: var(--line-strong);
+}
+
+:root:not([data-theme="dark"]) .about-proof-card:hover,
+:root:not([data-theme="dark"]) .about-principle-card:hover,
+:root:not([data-theme="dark"]) .team-card:hover,
+:root:not([data-theme="dark"]) .about-contact-card:hover,
+:root:not([data-theme="dark"]) .about-link:hover {
+  background: rgba(87, 21, 219, 0.055);
+  border-color: rgba(87, 21, 219, 0.32);
 }

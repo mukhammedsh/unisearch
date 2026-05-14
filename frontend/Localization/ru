@@ -12,7 +12,7 @@ about.contact_title: Свяжитесь с нами
 about.email_note: Основной контакт по вопросам проекта.
 about.eyebrow: О нас
 about.github_note: Код, коммиты и обновления проекта.
-about.lead: UniSearch создан абитуриентами для абитуриентов. Наша цель — сделать выбор университета более понятным, простым и практичным.
+about.lead: Наша цель — сделать выбор университета более понятным, простым и практичным.
 about.name.lead: Шабдалулы Мухаммед
 about.name.planning: Рашидов Ерболат
 about.proof.product.body: Меньше декоративного шума, больше полезного сравнения: сколько стоит, как поступать и что реально подходит вашему профилю.
@@ -299,7 +299,7 @@ ranking.title: Глобальный рейтинг университетов
 ranking.tools_aria: Фильтры рейтинга
 ranking.search_placeholder: Поиск университета или города...
 ranking.country_filter: Фильтр по стране
-ranking.country_all: Все страны
+ranking.country_all: Глобально
 ranking.source_note: В рейтинге используются официальные источники, когда они доступны. Остальные позиции явно помечены как оценки или проверенные вручную данные.
 ranking.empty.title: В рейтинге нет совпадений
 ranking.empty.body: Попробуйте другой поиск или фильтр по стране.
@@ -510,8 +510,8 @@ universities.tradeoff.finance: Цена и престиж
 universities.tradeoff.finance.left: Бюджет и гранты
 universities.tradeoff.finance.right: Престиж и более высокая цена
 universities.tradeoff.location: Расположение
-universities.tradeoff.location.left: Большой город
-universities.tradeoff.location.right: Вне большого города
+universities.tradeoff.location.left: Город
+universities.tradeoff.location.right: За городом
 universities.tradeoff.balanced: Сбалансировано (50/50)
 universities.help.open: Показать объяснение
 universities.help.country: Фильтрует университеты по стране. Работает вместе с выбором региона и города.
@@ -522,7 +522,7 @@ universities.help.sort_strategy: UniFit подстраивает порядок 
 universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
 universities.help.tradeoff.atmosphere: Примерно показывает ваш выбор между более социальной студенческой средой и более академически интенсивной.
 universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные варианты.
-universities.help.tradeoff.location: Слева приоритет у университетов в крупных городах, справа — у университетов вне крупных городов.
+universities.help.tradeoff.location: Слева приоритет у университетов в городе, справа — у университетов за городом.
 universities.sort_ai: {fit}: умная ИИ-сортировка
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
@@ -832,7 +832,9 @@ admission.track.select: Выбрать
 admission.track.selected: Выбрано
 admission.track.recommended: Рекомендовано
 admission.track.funding_program: Программа финансирования
+admission.track.funding_program_short: Программа
 admission.track.funding_source: Источник финансирования
+admission.track.funding_source_short: Источник
 admission.track.select_tooltip: Выбрать этот вариант поступления, чтобы показывать шанс именно по нему и учитывать его в алгоритме UniFit.
 admission.chance_method.profile_short: По профилю зачисленных
 admission.chance_method.profile_detail: На основе профиля баллов зачисленных, а также ваших языковых данных, бюджета и того, насколько вы проходите по требованиям.

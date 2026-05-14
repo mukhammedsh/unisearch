@@ -3982,3 +3982,206 @@ body .has-sliding-indicator .active::after {
     position: fixed;
   }
 }
+
+/* ===== 2026 Modal Layout Density Pass ===== */
+.profile-card,
+.settings-card {
+  border-radius: 16px;
+}
+
+.profile-header {
+  padding: 18px 20px 14px;
+}
+
+.profile-body {
+  padding: 14px 20px 18px;
+  gap: 14px;
+}
+
+.profile-progress,
+.profile-section-tabs {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.profile-section-tabs {
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.profile-section-tab {
+  min-height: 38px;
+  padding-top: 8px;
+  padding-bottom: 10px;
+}
+
+.profile-field {
+  gap: 6px;
+}
+
+.profile-input {
+  min-height: 42px;
+  padding: 10px 12px;
+}
+
+.profile-block,
+.profile-exam-item,
+.settings-row {
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.profile-exam-form,
+.profile-exam-form--with-special,
+.profile-exam-form--with-special.profile-exam-form--grades,
+.profile-exam-form--with-special.profile-exam-form--breakdown,
+.lang-add-grid,
+.lang-exam-grid,
+.profile-exam-breakdown-row {
+  gap: 8px;
+}
+
+.profile-exam-special-grid {
+  gap: 6px;
+}
+
+.mini-label,
+.profile-label,
+.profile-subtitle {
+  letter-spacing: 0;
+}
+
+.settings-card {
+  gap: 14px;
+  padding: 18px;
+}
+
+.settings-header {
+  gap: 14px;
+  padding-bottom: 12px;
+}
+
+.settings-list {
+  gap: 10px;
+}
+
+.settings-copy p {
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .profile-header,
+  .profile-body,
+  .settings-card {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .profile-progress,
+  .profile-section-tabs {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+
+  .profile-section-tabs {
+    gap: 8px;
+  }
+
+  .profile-exam-form,
+  .profile-exam-form--with-special,
+  .profile-exam-form--with-special.profile-exam-form--grades,
+  .profile-exam-form--with-special.profile-exam-form--breakdown,
+  .lang-add-grid,
+  .lang-exam-grid,
+  .profile-exam-breakdown-row,
+  .settings-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== 2026 Light Theme Surface Separation ===== */
+:root:not([data-theme="dark"]) {
+  --bg: #e9eef6;
+  --bg-soft: #f3f6fb;
+  --surface: rgba(255, 255, 255, 0.96);
+  --surface-solid: #ffffff;
+  --surface-soft: #f5f7fb;
+  --accent-soft: rgba(87, 21, 219, 0.13);
+  --accent-faint: rgba(87, 21, 219, 0.07);
+  --accent-panel: #f3efff;
+  --line: rgba(17, 24, 39, 0.16);
+  --line-strong: rgba(17, 24, 39, 0.28);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.12);
+  color-scheme: light;
+}
+
+:root:not([data-theme="dark"]) body {
+  background:
+    linear-gradient(180deg, #f8fafc 0%, var(--bg) 320px),
+    var(--bg);
+}
+
+:root:not([data-theme="dark"]) .navbar,
+:root:not([data-theme="dark"]) .site-footer,
+:root:not([data-theme="dark"]) .profile-card,
+:root:not([data-theme="dark"]) .settings-card,
+:root:not([data-theme="dark"]) .custom-options {
+  background: var(--surface-solid);
+  border-color: var(--line-strong);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .profile-card,
+:root:not([data-theme="dark"]) .settings-card,
+:root:not([data-theme="dark"]) .custom-options {
+  box-shadow: var(--shadow-md);
+}
+
+:root:not([data-theme="dark"]) .navbar {
+  border-bottom-color: var(--line-strong);
+}
+
+:root:not([data-theme="dark"]) .theme-btn,
+:root:not([data-theme="dark"]) .settings-trigger-btn,
+:root:not([data-theme="dark"]) .profile-trigger-btn,
+:root:not([data-theme="dark"]) .menu-btn,
+:root:not([data-theme="dark"]) .lang-switch,
+:root:not([data-theme="dark"]) .custom-select-trigger,
+:root:not([data-theme="dark"]) .profile-block,
+:root:not([data-theme="dark"]) .profile-exam-item,
+:root:not([data-theme="dark"]) .settings-row,
+:root:not([data-theme="dark"]) .profile-input,
+:root:not([data-theme="dark"]) .profile-name-input {
+  background: var(--surface-soft);
+  border-color: var(--line-strong);
+}
+
+:root:not([data-theme="dark"]) .theme-btn:hover,
+:root:not([data-theme="dark"]) .settings-trigger-btn:hover,
+:root:not([data-theme="dark"]) .profile-trigger-btn:hover,
+:root:not([data-theme="dark"]) .menu-btn:hover,
+:root:not([data-theme="dark"]) .custom-select-trigger:hover,
+:root:not([data-theme="dark"]) .custom-select-wrapper.open .custom-select-trigger {
+  background: var(--accent-panel);
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--line-strong));
+  color: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .profile-progress-fill,
+:root:not([data-theme="dark"]) .profile-section-tab.is-active::after,
+:root:not([data-theme="dark"]) .navbar-center a.is-active::after,
+:root:not([data-theme="dark"]) .navbar-center .active::after {
+  background: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .profile-section-tab.is-active,
+:root:not([data-theme="dark"]) .custom-option.selected {
+  color: var(--accent);
+  background: var(--accent-panel);
+}
+
+:root:not([data-theme="dark"]) .center-loading-spinner {
+  border-color: #d7dce6;
+  border-top-color: var(--accent);
+}

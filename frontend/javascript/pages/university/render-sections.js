@@ -1,6 +1,7 @@
 import {
   aiName,
   escapeHtml,
+  escapeHtmlAttr,
   getSelectedAdmissionTrack,
   moneyUSD,
   motionPress,
@@ -37,6 +38,27 @@ import {
   translateCostBreakdownLabel,
   unknownFieldText,
 } from "../_shared.js";
+
+function fundingMetaShortLabel(label) {
+  const normalized = String(label || "").trim().toLowerCase();
+  if (normalized === String(t("admission.track.funding_program", "Funding program")).trim().toLowerCase()) {
+    return t("admission.track.funding_program_short", "Program");
+  }
+  if (normalized === String(t("admission.track.funding_source", "Funding source")).trim().toLowerCase()) {
+    return t("admission.track.funding_source_short", "Source");
+  }
+  return label;
+}
+
+function renderFundingMetaTags(fundingMeta) {
+  if (!Array.isArray(fundingMeta) || !fundingMeta.length) return "";
+
+  return `
+    <div class="admission-option-meta">
+      ${fundingMeta.map(([label, value]) => `<span class="tag" title="${escapeHtmlAttr(`${label}: ${value}`)}"><small>${escapeHtml(fundingMetaShortLabel(label))}</small> <span>${escapeHtml(value)}</span></span>`).join("")}
+    </div>
+  `;
+}
 
 export function renderAdmissionSection({
   annualCostForTrack,
@@ -102,7 +124,6 @@ export function renderAdmissionSection({
       const isSelectedTrack = Boolean(effectiveSelectedTrackKey && trackKey === effectiveSelectedTrackKey);
 
       const selectionBadges = [];
-      if (isSelectedTrack) selectionBadges.push(escapeHtml(t("admission.track.selected", "Selected")));
       if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
 
       const selectionBadgeHtml = selectionBadges.length
@@ -165,8 +186,12 @@ export function renderAdmissionSection({
         ? trTrackLabel(optionLabelRaw)
         : "";
       const fundingMeta = [
-        option.funding_program ? trTrackDescription(university.id, option.id, option.funding_program) : "",
-        option.funding_source ? trTrackDescription(university.id, option.id, option.funding_source) : "",
+        option.funding_program
+          ? [t("admission.track.funding_program", "Funding program"), trTrackDescription(university.id, option.id, option.funding_program)]
+          : null,
+        option.funding_source
+          ? [t("admission.track.funding_source", "Funding source"), trTrackDescription(university.id, option.id, option.funding_source)]
+          : null,
       ].filter(Boolean);
 
       return `
@@ -180,11 +205,7 @@ export function renderAdmissionSection({
             ${selectionBadgeHtml}
           </div>
 
-          ${fundingMeta.length ? `
-            <div class="admission-option-meta">
-              ${fundingMeta.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
-            </div>
-          ` : ""}
+          ${renderFundingMetaTags(fundingMeta)}
 
           <div class="track-cost-preview${isGrantTrack ? " track-cost-preview--grant" : ""}">
             <strong>${escapeHtml(priceTitle)}:</strong> ${escapeHtml(priceValue)}
@@ -346,8 +367,12 @@ export function renderFinanceSection({
             ? trTrackLabel(optionLabelRaw)
             : "";
           const fundingMeta = [
-            option.funding_program ? trTrackDescription(university.id, option.id, option.funding_program) : "",
-            option.funding_source ? trTrackDescription(university.id, option.id, option.funding_source) : "",
+            option.funding_program
+              ? [t("admission.track.funding_program", "Funding program"), trTrackDescription(university.id, option.id, option.funding_program)]
+              : null,
+            option.funding_source
+              ? [t("admission.track.funding_source", "Funding source"), trTrackDescription(university.id, option.id, option.funding_source)]
+              : null,
           ].filter(Boolean);
 
           const totalTitle = isGrantTrack
@@ -383,11 +408,7 @@ export function renderFinanceSection({
                 ${renderTrackFundingBadge(option)}
                 ${optionLabel ? `<div class="finance-option-label">${escapeHtml(optionLabel)}</div>` : ""}
               </div>
-              ${fundingMeta.length ? `
-                <div class="admission-option-meta">
-                  ${fundingMeta.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
-                </div>
-              ` : ""}
+              ${renderFundingMetaTags(fundingMeta)}
 
               <div class="finance-option-total${isGrantTrack ? " finance-option-total--grant" : ""}">
                 <strong>${escapeHtml(totalTitle)}:</strong> ${escapeHtml(totalText)}

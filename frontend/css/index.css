@@ -470,3 +470,62 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
     margin-bottom: 16px;
   }
 }
+
+/* ===== 2026 Home Light Surface Separation ===== */
+:root:not([data-theme="dark"]) {
+  --home-bg: #e9eef6;
+  --home-surface: #ffffff;
+  --home-surface-soft: #f5f7fb;
+  --home-surface-elevated: #ffffff;
+  --home-line: rgba(17, 24, 39, 0.24);
+  --home-accent-soft: rgba(93, 23, 234, 0.12);
+}
+
+:root:not([data-theme="dark"]) body[data-page="home"] {
+  background:
+    radial-gradient(circle at top right, rgba(93, 23, 234, 0.08), transparent 34%),
+    linear-gradient(180deg, #f8fafc 0%, var(--home-bg) 100%);
+}
+
+:root:not([data-theme="dark"]) .hero-rail {
+  padding: 18px 20px;
+  border: 1px solid var(--home-line);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(93, 23, 234, 0.055), rgba(93, 23, 234, 0.015)),
+    var(--home-surface);
+}
+
+:root:not([data-theme="dark"]) .hero-kicker,
+:root:not([data-theme="dark"]) .hero-rail__eyebrow {
+  width: fit-content;
+  padding: 4px 8px;
+  border: 1px solid rgba(93, 23, 234, 0.18);
+  border-radius: 10px;
+  background: var(--home-accent-soft);
+  color: var(--home-accent);
+}
+
+:root:not([data-theme="dark"]) .home-secondary-btn {
+  background: var(--home-surface);
+}
+
+:root:not([data-theme="dark"]) .home-secondary-btn:hover {
+  background: var(--home-accent-soft);
+  border-color: rgba(93, 23, 234, 0.34);
+  color: var(--home-accent);
+}
+
+:root:not([data-theme="dark"]) .home-secondary-btn,
+:root:not([data-theme="dark"]) .home-links,
+:root:not([data-theme="dark"]) .hero-fact {
+  border-color: var(--home-line);
+}
+
+:root:not([data-theme="dark"]) .hero-fact__value {
+  color: var(--home-accent);
+}
+
+:root:not([data-theme="dark"]) .home-links a:hover {
+  color: var(--home-accent);
+}

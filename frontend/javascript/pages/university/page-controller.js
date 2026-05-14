@@ -347,7 +347,7 @@ export async function initUniversityPage() {
     const priceEl = document.getElementById("detailPrice");
     let financeSummarySyncRaf = 0;
     const applyFinanceSummaryCardHeights = () => {
-      const scholarshipCard = scholarshipEl;
+      const scholarshipCard = scholarshipEl?.closest?.(".scholarship-card") || scholarshipEl;
       const totalPriceCard = priceEl?.closest?.(".total-price-card") || null;
       if (!scholarshipCard || !totalPriceCard) return;
       scholarshipCard.style.minHeight = "";
@@ -379,6 +379,8 @@ export async function initUniversityPage() {
         syncFinanceSummaryCardHeights();
       });
       if (scholarshipEl) detailFinanceResizeObserver.observe(scholarshipEl);
+      const scholarshipCard = scholarshipEl?.closest?.(".scholarship-card") || null;
+      if (scholarshipCard) detailFinanceResizeObserver.observe(scholarshipCard);
       const totalPriceCard = priceEl?.closest?.(".total-price-card") || null;
       if (totalPriceCard) detailFinanceResizeObserver.observe(totalPriceCard);
       const financeSummaryContainer = scholarshipEl?.closest?.(".finance-summary-container") || null;

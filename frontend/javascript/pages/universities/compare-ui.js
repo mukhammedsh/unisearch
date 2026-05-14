@@ -418,15 +418,10 @@ export function renderCompareTrackChanceBadge(trackChance) {
     `;
   }
   const tone = chanceTone(chance);
-  const chanceModel = String(trackChance?.chanceModel || "").trim().toLowerCase();
-  const method = chanceModel === "estimated_fallback"
-    ? t("admission.chance_method.estimated_short", "Estimated")
-    : "";
   return `
     <div class="compare-track-chance ${tone.cls}">
       <span>${escapeHtml(aiName("chance"))}</span>
       <strong>${chance}%</strong>
-      ${method ? `<small>${escapeHtml(method)}</small>` : ""}
     </div>
   `;
 }
@@ -456,6 +451,16 @@ export function renderCompareAdmissionOptionCard(u, entry, options = {}) {
       ? [t("admission.track.funding_source", "Funding source"), trTrackDescription(id, option.id, option.funding_source)]
       : null,
   ].filter(Boolean);
+  const fundingMetaShortLabel = (label) => {
+    const normalized = String(label || "").trim().toLowerCase();
+    if (normalized === String(t("admission.track.funding_program", "Funding program")).trim().toLowerCase()) {
+      return t("admission.track.funding_program_short", "Program");
+    }
+    if (normalized === String(t("admission.track.funding_source", "Funding source")).trim().toLowerCase()) {
+      return t("admission.track.funding_source_short", "Source");
+    }
+    return label;
+  };
   
   const price = (() => {
     const finance = (option?.finance_override && typeof option.finance_override === "object") ? option.finance_override : (u?.finance || {});
@@ -483,7 +488,6 @@ export function renderCompareAdmissionOptionCard(u, entry, options = {}) {
   const avgContent = avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
   
   const selectionBadges = [];
-  if (selected) selectionBadges.push(escapeHtml(t("admission.track.selected", "Selected")));
   if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
   const selectionBadgeHtml = selectionBadges.length
     ? `<div class="track-selection-badge">${selectionBadges.join(" / ")}</div>`
@@ -501,7 +505,7 @@ export function renderCompareAdmissionOptionCard(u, entry, options = {}) {
           ${selectionBadgeHtml}
         </div>
       </div>
-      ${fundingMeta.length ? `<div class="admission-option-meta">${fundingMeta.map(([label, value]) => `<span class="tag"><small>${escapeHtml(label)}</small>${escapeHtml(value)}</span>`).join("")}</div>` : ""}
+      ${fundingMeta.length ? `<div class="admission-option-meta">${fundingMeta.map(([label, value]) => `<span class="tag" title="${escapeHtmlAttr(`${label}: ${value}`)}"><small>${escapeHtml(fundingMetaShortLabel(label))}</small> <span>${escapeHtml(value)}</span></span>`).join("")}</div>` : ""}
 
       <div class="track-cost-preview${isGrantTrack ? " track-cost-preview--grant" : ""}">
         <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceText)}
@@ -569,8 +573,5 @@ export function renderCompareConfigurePage(container, universities, options = {}
         `;
       }).join("")}
     </section>
-    <div class="compare-config-footer">
-      <button class="compare-results-action compare-results-action--large" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
-    </div>
   `;
 }

@@ -402,7 +402,7 @@ export async function initRankingPage() {
     if (countrySelect) {
       const prev = String(countrySelect.value || "");
       const countries = Array.from(new Set(items.map((item) => String(item?.location?.country || "").trim()).filter(Boolean))).sort();
-      countrySelect.innerHTML = `<option value="">${escapeHtml(t("ranking.country_all", "All countries"))}</option>`
+      countrySelect.innerHTML = `<option value="">${escapeHtml(t("ranking.country_all", "Global"))}</option>`
         + countries.map((country) => `<option value="${escapeHtmlAttr(country)}">${escapeHtml(trCountry(country))}</option>`).join("");
       countrySelect.value = countries.includes(prev) ? prev : "";
       initCustomSelect("rankingCountrySelect");

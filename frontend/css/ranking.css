@@ -794,3 +794,163 @@
         height: 38px;
     }
 }
+
+/* ===== 2026 Ranking Layout Density Pass ===== */
+.rank-container {
+    padding-top: 24px;
+}
+
+.rank-header {
+    margin-bottom: 22px;
+}
+
+.rank-header h1 {
+    margin-bottom: 8px;
+}
+
+.rank-tools {
+    gap: 10px;
+    margin: 0 0 12px;
+}
+
+.rank-search,
+.rank-country-filter {
+    min-height: 44px;
+}
+
+.rank-source-note {
+    margin: 0 0 14px;
+    line-height: 1.45;
+}
+
+.rank-card {
+    grid-template-columns: 64px 56px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 16px;
+}
+
+.rank-logo {
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+    margin-right: 0;
+}
+
+.rank-title {
+    margin-bottom: 3px;
+    line-height: 1.25;
+}
+
+.rank-source {
+    margin-top: 8px;
+    padding: 5px 9px;
+    border-radius: 12px;
+}
+
+.rank-badge {
+    border-radius: 12px;
+    padding: 6px 9px;
+}
+
+@media (max-width: 700px) {
+    .rank-container {
+        padding-top: 18px;
+    }
+
+    .rank-header {
+        margin-bottom: 18px;
+    }
+
+    .rank-card {
+        grid-template-columns: 44px minmax(48px, auto) minmax(0, 1fr);
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .rank-num {
+        font-size: 22px;
+    }
+
+    .rank-logo {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+    }
+}
+
+/* ===== 2026 Ranking Light Surface Separation ===== */
+:root:not([data-theme="dark"]) body[data-page="ranking"] {
+    background:
+        radial-gradient(circle at top right, rgba(87, 21, 219, 0.08), transparent 32%),
+        linear-gradient(180deg, #f8fafc 0%, #e9eef6 100%);
+}
+
+:root:not([data-theme="dark"]) .rank-container {
+    color: var(--text);
+}
+
+:root:not([data-theme="dark"]) .rank-header h1 {
+    color: var(--text);
+}
+
+:root:not([data-theme="dark"]) .rank-header p,
+:root:not([data-theme="dark"]) .rank-source-note {
+    color: var(--text-muted);
+}
+
+:root:not([data-theme="dark"]) .rank-search,
+:root:not([data-theme="dark"]) .rank-country-filter .custom-select-trigger,
+:root:not([data-theme="dark"]) .rank-card,
+:root:not([data-theme="dark"]) .rank-search-suggestions {
+    background: var(--surface-solid);
+    border-color: var(--line-strong);
+}
+
+:root:not([data-theme="dark"]) .rank-card {
+    background:
+        linear-gradient(180deg, rgba(87, 21, 219, 0.025), transparent 56%),
+        var(--surface-solid);
+    box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .rank-card:hover {
+    background:
+        linear-gradient(180deg, rgba(87, 21, 219, 0.065), rgba(87, 21, 219, 0.014)),
+        var(--surface-solid);
+    border-color: rgba(87, 21, 219, 0.36);
+}
+
+:root:not([data-theme="dark"]) .rank-logo,
+:root:not([data-theme="dark"]) .rank-badge,
+:root:not([data-theme="dark"]) .rank-source,
+:root:not([data-theme="dark"]) .rank-search-suggestion {
+    background: var(--surface-soft);
+    border-color: var(--line-strong);
+}
+
+:root:not([data-theme="dark"]) .rank-logo {
+    background: #ffffff;
+}
+
+:root:not([data-theme="dark"]) .rank-num {
+    color: #4b5563;
+}
+
+:root:not([data-theme="dark"]) .rank-badge {
+    background: rgba(87, 21, 219, 0.075);
+    border-color: rgba(87, 21, 219, 0.22);
+    color: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .rank-source {
+    color: var(--text-muted);
+}
+
+:root:not([data-theme="dark"]) .rank-search:focus-within,
+:root:not([data-theme="dark"]) .rank-country-filter .custom-select-trigger:focus,
+:root:not([data-theme="dark"]) .rank-country-filter .custom-select-trigger[aria-expanded="true"] {
+    border-color: rgba(87, 21, 219, 0.38);
+    box-shadow: 0 0 0 3px rgba(87, 21, 219, 0.1);
+}

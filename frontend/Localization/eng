@@ -25,7 +25,7 @@ about.contact_title: Contact us
 about.email_note: Main contact for project questions.
 about.eyebrow: About Us
 about.github_note: Code, commits, and project updates.
-about.lead: UniSearch is built by abiturients for abiturients. Our goal is to make university discovery clearer, easier, and more practical for real application planning.
+about.lead: Our goal is to make university discovery clearer, easier, and more practical for real application planning.
 about.name.lead: Shabdaluly Mukhammed
 about.name.planning: Rashidov Yerbolat
 about.proof.product.body: Less decorative noise, more useful comparison: what it costs, how to apply, and what looks realistic for your profile.
@@ -298,7 +298,7 @@ ranking.title: Global University Ranking
 ranking.tools_aria: Ranking filters
 ranking.search_placeholder: Search university or city...
 ranking.country_filter: Country filter
-ranking.country_all: All countries
+ranking.country_all: Global
 ranking.source_note: Ranking uses official sources when available. Other entries are clearly marked as estimates or reviewed data.
 ranking.empty.title: No ranking matches
 ranking.empty.body: Try a different search or country filter.
@@ -509,8 +509,8 @@ universities.tradeoff.finance: Cost vs Prestige
 universities.tradeoff.finance.left: Budget & Grants
 universities.tradeoff.finance.right: Prestige & Higher Cost
 universities.tradeoff.location: Location
-universities.tradeoff.location.left: Big City
-universities.tradeoff.location.right: Outside Big City
+universities.tradeoff.location.left: City
+universities.tradeoff.location.right: Outside City
 universities.tradeoff.balanced: Balanced (50/50)
 universities.help.open: Show explanation
 universities.help.country: Filters universities by country. Works together with city and region selectors.
@@ -521,7 +521,7 @@ universities.help.sort_strategy: {fit} sorts using your profile. Other modes sor
 universities.help.tradeoff.focus: Choose whether you want more practice-oriented study or more theory and research.
 universities.help.tradeoff.atmosphere: Approximate preference between a more social student environment and a more academically intense one.
 universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals.
-universities.help.tradeoff.location: Left side favors universities in larger cities. Right side favors universities outside major cities.
+universities.help.tradeoff.location: Left side favors universities in cities. Right side favors universities outside the city.
 universities.sort_ai: {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
@@ -830,7 +830,9 @@ admission.track.select: Select
 admission.track.selected: Selected
 admission.track.recommended: Recommended
 admission.track.funding_program: Funding program
+admission.track.funding_program_short: Program
 admission.track.funding_source: Funding source
+admission.track.funding_source_short: Source
 admission.track.select_tooltip: Select this admission track to use it for admission chance display and for UniFit ranking.
 admission.chance.need_exam_data_track: Need exam data to see the chance for this track.
 average_admitted_unavailable: No verified average admitted data published.

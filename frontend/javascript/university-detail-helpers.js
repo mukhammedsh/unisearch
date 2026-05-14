@@ -452,6 +452,7 @@ export function renderUniChanceSummary(uniChance) {
     || translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.");
   const chanceMethodShort = chanceModelShort(chanceModel);
   const chanceAccuracy = chanceAccuracyNote(chanceModel);
+  const chancePercentClass = chanceAccuracy ? "chance-low-confidence" : tone.cls;
   const activeTrackRaw = String(uniChance.bestTrackLabel || "").trim();
   const activeTrackLabel = activeTrackRaw
     ? translateTrackLabel(activeTrackRaw, activeTrackRaw)
@@ -479,7 +480,7 @@ export function renderUniChanceSummary(uniChance) {
             <div class="chance-sub">${escapeHtml(chanceSub)}</div>
           </div>
           <div class="chance-percent-wrap">
-            <div class="chance-percent ${tone.cls}">${chance}%</div>
+            <div class="chance-percent ${chancePercentClass}">${chance}%</div>
             ${chanceAccuracy ? `<div class="chance-percent-note">${escapeHtml(chanceAccuracy)}</div>` : ""}
           </div>
         </div>
@@ -501,11 +502,7 @@ export function renderTrackChanceChip(trackChance) {
     return `<div class="chance-track-chip">${escapeHtml(noDataLabel)}</div>`;
   }
   const tone = chanceTone(chance);
-  const chanceModel = String(trackChance?.chanceModel || "").trim().toLowerCase();
-  const suffix = chanceModel === "estimated_fallback"
-    ? ` • ${escapeHtml(chanceModelShort(chanceModel))}`
-    : "";
-  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%${suffix}</div>`;
+  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
 }
 
 export function renderTrackFundingBadge(track) {

@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 3.9.2 (2026-05-14) - Light Theme and Admissions UI Polish
+
+Status:
+- synchronized runtime/package version to `3.9.2` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- improved the light theme across Home, Universities, Ranking, Guide, About, shared navigation, profile/settings modals, comparison, and university detail pages with stronger surface separation, clearer borders, and visible purple active/selected states while preserving the flat dark-theme style;
+- tightened layout density and mobile behavior for About, Guide, Ranking, Universities catalog/compare, profile/settings modals, and university detail admission/finance sections;
+- refined compare and university detail admission-track cards by shortening funding program/source labels, moving full values into tooltips, removing duplicated selected/fallback method text from compact chance chips, and keeping selected-track emphasis purple;
+- reworked the university detail finance scholarship card structure and height synchronization so scholarship and total-cost summary cards align reliably;
+- updated visible copy and localization for About lead text, Ranking global filter wording, location tradeoff labels/help text, and new admission funding label shortcuts in English and Russian;
+- removed the decorative globe prefix from the Universities country filter fallback;
+- refreshed full and small thumbnail assets for Astana IT University, International Information Technology University, Kazakhstan-British Technical University, and KIMEP University.
+
 ## 3.9.1 (2026-05-13) - University Detail Route Fix
 
 Status:

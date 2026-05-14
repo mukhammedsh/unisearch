@@ -2129,15 +2129,10 @@ export function initUniversitiesPage() {
             `;
         }
         const tone = chanceTone(chance);
-        const chanceModel = String(trackChance?.chanceModel || "").trim().toLowerCase();
-        const method = chanceModel === "estimated_fallback"
-            ? t("admission.chance_method.estimated_short", "Estimated")
-            : "";
         return `
             <div class="compare-track-chance ${tone.cls}">
                 <span>${escapeHtml(aiName("chance"))}</span>
                 <strong>${chance}%</strong>
-                ${method ? `<small>${escapeHtml(method)}</small>` : ""}
             </div>
         `;
     };
@@ -2163,6 +2158,16 @@ export function initUniversitiesPage() {
                 ? [t("admission.track.funding_source", "Funding source"), trTrackDescription(id, option.id, option.funding_source)]
                 : null,
         ].filter(Boolean);
+        const fundingMetaShortLabel = (label) => {
+            const normalized = String(label || "").trim().toLowerCase();
+            if (normalized === String(t("admission.track.funding_program", "Funding program")).trim().toLowerCase()) {
+                return t("admission.track.funding_program_short", "Program");
+            }
+            if (normalized === String(t("admission.track.funding_source", "Funding source")).trim().toLowerCase()) {
+                return t("admission.track.funding_source_short", "Source");
+            }
+            return label;
+        };
         const price = (() => {
             const finance = (option?.finance_override && typeof option.finance_override === "object") ? option.finance_override : (u?.finance || {});
             const profileMode = normalizeStudyModeForCost(loadProfile()?.studyMode || loadProfile()?.study_mode || "");
@@ -2188,7 +2193,6 @@ export function initUniversitiesPage() {
         const minContent = minList || `<div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>`;
         const avgContent = avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
         const selectionBadges = [];
-        if (selected) selectionBadges.push(escapeHtml(t("admission.track.selected", "Selected")));
         if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
         const selectionBadgeHtml = selectionBadges.length
             ? `<div class="track-selection-badge">${selectionBadges.join(" / ")}</div>`
@@ -2206,7 +2210,7 @@ export function initUniversitiesPage() {
                         ${selectionBadgeHtml}
                     </div>
                 </div>
-                ${fundingMeta.length ? `<div class="admission-option-meta">${fundingMeta.map(([label, value]) => `<span class="tag"><small>${escapeHtml(label)}</small>${escapeHtml(value)}</span>`).join("")}</div>` : ""}
+                ${fundingMeta.length ? `<div class="admission-option-meta">${fundingMeta.map(([label, value]) => `<span class="tag" title="${escapeHtmlAttr(`${label}: ${value}`)}"><small>${escapeHtml(fundingMetaShortLabel(label))}</small> <span>${escapeHtml(value)}</span></span>`).join("")}</div>` : ""}
 
                 <div class="track-cost-preview${isGrantTrack ? " track-cost-preview--grant" : ""}">
                     <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceText)}
@@ -2335,9 +2339,6 @@ export function initUniversitiesPage() {
                     `;
                 }).join("")}
             </section>
-            <div class="compare-config-footer">
-                <button class="compare-results-action compare-results-action--large" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
-            </div>
         `;
         applyPercentWidths(el.compareResultsPane);
         markMotionEnter(el.compareResultsPane, ".compare-config-column, .admission-option-card", { limit: 16, staggerMs: 18 });
@@ -4247,7 +4248,7 @@ export function initUniversitiesPage() {
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">&#x1F30D; ${escapeHtml(t("universities.global", "Global"))}</option>`;
+        let html = `<option value="">${escapeHtml(t("universities.global", "Global"))}</option>`;
         countries.forEach(c => { 
             const isSelected = (c === currentVal) ? "selected" : ""; 
             const value = String(c || "");
