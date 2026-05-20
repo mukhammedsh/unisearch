@@ -2,6 +2,17 @@
 
 All notable project changes should be recorded here.
 
+## 4.1.0 (2026-05-20) - PR Intake and Dependency Refresh
+
+Status:
+- synchronized runtime/package version to `4.1.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- updated the Playwright test runner to `@playwright/test` `1.60.0`;
+- updated backend runtime dependencies: Uvicorn `0.47.0`, Pydantic `2.13.4`, torch `2.12.0+cpu`, sentence-transformers `5.5.0`, and Sentry SDK `2.60.0`;
+- added frontend unit coverage for `escapeHtml` and `escapeHtmlAttr`, including null/undefined handling, non-string values, HTML entities, and numeric range stabilization;
+- cached university detail tab buttons and panes during tab setup so tab clicks do not repeat DOM-wide queries;
+- made the university factor refresh script request delay configurable through `UNISEARCH_FACTOR_REFRESH_REQUEST_DELAY_SEC` while keeping a conservative default delay for public APIs;
+- sanitized College Scorecard API keys in public university source URLs during catalog loading so private keys cannot leak through API/UI payloads if a data refresh writes one into source metadata.
+
 ## 4.0.0 (2026-05-20) - Admission Choices and Light Theme Refresh
 
 Status:

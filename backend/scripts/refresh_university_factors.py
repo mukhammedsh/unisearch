@@ -15,6 +15,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import math
+import os
 import re
 import time
 import urllib.parse
@@ -30,6 +31,7 @@ UNIVERSITIES_PATH = ROOT / "backend" / "data" / "universities.json"
 OPENALEX_BASE = "https://api.openalex.org/institutions"
 OPEN_METEO_BASE = "https://geocoding-api.open-meteo.com/v1/search"
 WIKIDATA_SPARQL_BASE = "https://query.wikidata.org/sparql"
+REQUEST_DELAY_SEC_ENV = "UNISEARCH_FACTOR_REFRESH_REQUEST_DELAY_SEC"
 
 COUNTRY_CODE_MAP = {
     "USA": "US",
@@ -62,6 +64,20 @@ COUNTRY_WIKIDATA_QID_MAP = {
     "Kazakhstan": "Q232",
     "Australia": "Q408",
 }
+
+
+def _request_delay_sec() -> float:
+    raw = os.getenv(REQUEST_DELAY_SEC_ENV, "0.12").strip()
+    try:
+        return max(0.0, float(raw))
+    except ValueError:
+        return 0.12
+
+
+def _sleep_between_requests() -> None:
+    delay = _request_delay_sec()
+    if delay > 0:
+        time.sleep(delay)
 
 
 def _http_get_json(url: str, timeout_sec: float = 25.0) -> Dict[str, Any]:
@@ -391,13 +407,13 @@ def main() -> None:
             openalex_row, openalex_url = _fetch_openalex_institution(university)
         except Exception as exc:
             print(f"  OpenAlex lookup failed: {exc}")
-        time.sleep(0.12)
+        _sleep_between_requests()
 
         try:
             geocode_row, geocode_url = _fetch_city_population(university)
         except Exception as exc:
             print(f"  Open-Meteo lookup failed: {exc}")
-        time.sleep(0.12)
+        _sleep_between_requests()
 
         finance = university.get("finance")
         finance = finance if isinstance(finance, dict) else {}
@@ -411,7 +427,7 @@ def main() -> None:
                 population = _safe_num(wikidata_population)
             except Exception as exc:
                 print(f"  Wikidata population lookup failed: {exc}")
-            time.sleep(0.12)
+            _sleep_between_requests()
 
         staged.append(
             {

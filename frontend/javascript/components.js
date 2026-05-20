@@ -604,11 +604,12 @@ export function setupTabs() {
   if (tabsRoot.dataset.bound === "1") return;
   tabsRoot.dataset.bound = "1";
 
+  const buttons = Array.from(tabsRoot.querySelectorAll(".d-tab-btn"));
+  const panes = Array.from(document.querySelectorAll(".d-tab-pane"));
+
   tabsRoot.addEventListener("click", (e) => {
     const btn = e.target instanceof Element ? e.target.closest(".d-tab-btn") : null;
     if (!btn || !tabsRoot.contains(btn)) return;
-    const buttons = document.querySelectorAll(".d-tab-btn");
-    const panes = document.querySelectorAll(".d-tab-pane");
     buttons.forEach((b) => b.classList.remove("active"));
     panes.forEach((p) => p.classList.remove("active"));
     btn.classList.add("active");

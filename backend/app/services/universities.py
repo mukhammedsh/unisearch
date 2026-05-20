@@ -2,6 +2,7 @@ import copy
 import hashlib
 import json
 import re
+import urllib.parse
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import file_mtime
@@ -34,9 +35,49 @@ def _uniq_non_empty(items: List[Any]) -> List[str]:
     return out
 
 
+def _sanitize_public_source_url(value: str) -> str:
+    try:
+        parsed = urllib.parse.urlsplit(value)
+    except ValueError:
+        return value
+    if parsed.hostname != COLLEGE_SCORECARD_HOST:
+        return value
+    if not parsed.path.startswith(COLLEGE_SCORECARD_PATH_PREFIX):
+        return value
+
+    pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    changed = False
+    sanitized_pairs = []
+    for key, item_value in pairs:
+        if key == "api_key" and item_value != COLLEGE_SCORECARD_PUBLIC_API_KEY:
+            sanitized_pairs.append((key, COLLEGE_SCORECARD_PUBLIC_API_KEY))
+            changed = True
+        else:
+            sanitized_pairs.append((key, item_value))
+    if not changed:
+        return value
+
+    return urllib.parse.urlunsplit(
+        parsed._replace(query=urllib.parse.urlencode(sanitized_pairs, doseq=True))
+    )
+
+
+def _sanitize_public_source_urls(data: Any) -> Any:
+    if isinstance(data, str):
+        return _sanitize_public_source_url(data)
+    if isinstance(data, list):
+        return [_sanitize_public_source_urls(item) for item in data]
+    if isinstance(data, dict):
+        return {key: _sanitize_public_source_urls(value) for key, value in data.items()}
+    return data
+
+
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
 UNIVERSITY_DETAIL_REPR_VERSION = 4
+COLLEGE_SCORECARD_PUBLIC_API_KEY = "DEMO_KEY"
+COLLEGE_SCORECARD_HOST = "api.data.gov"
+COLLEGE_SCORECARD_PATH_PREFIX = "/ed/collegescorecard/"
 
 _HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
     "mit-usa-cambridge": ["MIT", "МИТ"],
@@ -1815,6 +1856,7 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
                 data = json.load(f)
             if not isinstance(data, list):
                 data = []
+            data = _sanitize_public_source_urls(data)
         except Exception:
             data = []
 
