@@ -34,7 +34,7 @@ import {
   unknownFieldText,
   writeIdListStorage,
 } from "../_shared.js";
-import { getTrackFundingOptions } from "../../university-detail-helpers.js";
+import { getAdmissionChoicesFromCategories } from "../../university-detail-helpers.js";
 
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
@@ -242,8 +242,7 @@ export async function initUniversityPage() {
     const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
     const annualCostForTrack = (track) => modeAwareAnnualCost(((track && track.finance_override) || university.finance || {}), profileStudyMode);
     const minPrice = (() => {
-      const fundingOptions = (Array.isArray(university.admission_tracks) ? university.admission_tracks : [])
-        .flatMap((track) => getTrackFundingOptions(track));
+      const fundingOptions = getAdmissionChoicesFromCategories(university.admission_categories);
       let value = modeAwareAnnualCost(university.finance || {}, profileStudyMode);
       if (fundingOptions.length) {
         const prices = fundingOptions
@@ -279,7 +278,7 @@ export async function initUniversityPage() {
     bindDetailActions({ id, minPrice, translatedName, university, universityId });
 
     let uniChance = null;
-    let uniChanceByTrackKey = new Map();
+    let uniChanceByChoiceKey = new Map();
     let uniRoi = null;
 
     const recomputeUniChance = async () => {
@@ -296,7 +295,7 @@ export async function initUniversityPage() {
         console.error("Failed to compute UniChance on backend:", error);
         uniChance = null;
       }
-      uniChanceByTrackKey = new Map((uniChance?.tracks || []).map((track) => [String(track.trackKey), track]));
+      uniChanceByChoiceKey = new Map((uniChance?.choices || []).map((choice) => [String(choice.choiceKey), choice]));
     };
 
     const recomputeUniRoi = async () => {
@@ -332,7 +331,7 @@ export async function initUniversityPage() {
         annualCostForTrack,
         container: document.getElementById("detailRequirements"),
         uniChance,
-        uniChanceByTrackKey,
+        uniChanceByChoiceKey,
         university,
       });
     };

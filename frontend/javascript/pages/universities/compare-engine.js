@@ -9,7 +9,7 @@ import {
   unknownFieldText
 } from "../_shared.js";
 import { translateWord, humanizeMachineLabel, translateTemplate } from "../../university-translations.js";
-import { getTrackFundingOptions, trackLookupKey } from "../../university-detail-helpers.js";
+import { getAdmissionChoicesFromCategories, renderTrackFundingBadge } from "../../university-detail-helpers.js";
 
 /**
  * Pure logic for university comparison
@@ -65,41 +65,67 @@ export function compareAcceptanceText(u) {
   return rate !== null ? `${rate}%` : t("common.na", "N/A");
 }
 
-export function compareTrackLabel(u, choiceKey) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks.find(t => t.id === choiceKey) || tracks[0];
-  return track ? trTrackLabel(track.label) : t("common.na", "N/A");
+export function compareChoiceKey(selection) {
+  if (!selection) return "";
+  if (typeof selection === "object" && !Array.isArray(selection)) {
+    return String(selection.choiceKey || selection.choice_key || "").trim();
+  }
+  return String(selection || "").trim();
 }
 
-export function compareFundingChoiceText(u, choiceKey) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks.find(t => t.id === choiceKey) || tracks[0];
-  if (!track) return t("common.na", "N/A");
-  return track.is_grant ? t("universities.compare.funding.grant", "Grant/Scholarship") : t("universities.compare.funding.paid", "Self-funded / Paid");
+export function compareSelectedChoice(u, selection) {
+  const key = compareChoiceKey(selection);
+  const entries = compareAdmissionOptionEntries(u);
+  return (key ? entries.find((entry) => entry.key === key) : null)?.option || entries[0]?.option || null;
 }
 
-export function compareRequirementsText(u, choiceKey) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks.find(t => t.id === choiceKey) || tracks[0];
-  if (!track) return t("common.na", "N/A");
-  const reqs = [];
-  if (track.min_gpa) reqs.push(`GPA ${track.min_gpa}`);
-  if (Array.isArray(track.exams) && track.exams.length) reqs.push(t("universities.compare.exams_required", "Exams required"));
-  return reqs.length ? reqs.join(", ") : t("universities.compare.standard_requirements", "Standard");
+export function compareTrackLabel(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  if (!choice) return t("common.na", "N/A");
+  const category = String(choice.category_label || choice.category_id || "").trim();
+  const profile = String(choice.requirement_profile_label || choice.requirement_profile_id || "").trim();
+  return Array.from(new Set([category, profile].filter(Boolean).map((item) => trTrackLabel(item)))).join(" - ") || t("common.na", "N/A");
 }
 
-export function compareLanguageProofText(u, choiceKey) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks.find(t => t.id === choiceKey) || tracks[0];
-  if (!track || !Array.isArray(track.language_requirements) || !track.language_requirements.length) return t("common.na", "N/A");
-  return track.language_requirements.map(lr => lr.code).join(", ");
+export function compareFundingChoiceText(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  if (!choice) return t("common.na", "N/A");
+  const badgeHtml = renderTrackFundingBadge(choice);
+  const badge = (new DOMParser().parseFromString(badgeHtml, "text/html")).body.textContent?.trim() || "";
+  const label = String(choice.label || "").trim();
+  const profileLabel = String(choice.requirement_profile_label || "").trim();
+  const categoryLabel = String(choice.category_label || "").trim();
+  const fundingLabel = label && label !== profileLabel && label !== categoryLabel ? trTrackLabel(label) : "";
+  return [badge, fundingLabel].filter(Boolean).join(" - ") || t("common.na", "N/A");
 }
 
-export function compareSelectedAnnualCost(u, choiceKey) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks.find(t => t.id === choiceKey) || tracks[0];
-  if (!track) return toFiniteNumber(nested(u, ["finance", "total_cost_year_usd"], 0));
-  return toFiniteNumber(track.total_cost_year_usd) || toFiniteNumber(nested(u, ["finance", "total_cost_year_usd"], 0));
+export function compareRequirementsText(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  const req = (choice?.requirements && typeof choice.requirements === "object") ? choice.requirements : {};
+  const rows = Object.entries(req)
+    .filter(([, value]) => value !== null && value !== undefined && value !== "")
+    .map(([key, value]) => `${getExamDisplayName(key)} ${value}`);
+  return rows.length ? rows.slice(0, 3).join(", ") : t("common.na", "N/A");
+}
+
+export function compareLanguageProofText(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  const requirements = Array.isArray(choice?.language_requirements) ? choice.language_requirements : [];
+  const rows = [];
+  requirements.forEach((entry) => {
+    const req = (entry?.requirements && typeof entry.requirements === "object") ? entry.requirements : {};
+    Object.entries(req).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") rows.push(`${getExamDisplayName(key)} ${value}`);
+    });
+    if (entry?.accept_native) rows.push(t("universities.compare.native_ok", "native accepted"));
+  });
+  return rows.length ? Array.from(new Set(rows)).slice(0, 4).join(", ") : t("common.na", "N/A");
+}
+
+export function compareSelectedAnnualCost(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  const finance = (choice?.finance_override && typeof choice.finance_override === "object") ? choice.finance_override : (u?.finance || {});
+  return toFiniteNumber(finance?.total_cost_year_usd) || toFiniteNumber(nested(u, ["finance", "total_cost_year_usd"], 0));
 }
 
 export function compareCostBreakdownNumber(u, type) {
@@ -167,51 +193,40 @@ export function collectCompareExamKeys(universities, selector) {
   return Array.from(keys);
 }
 
-export function compareSelectedRequirementKeys(u) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks[0];
-  if (!track || !Array.isArray(track.exams)) return [];
-  return track.exams.map(e => e.id);
+export function compareSelectedRequirementKeys(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  return Object.keys((choice?.requirements && typeof choice.requirements === "object") ? choice.requirements : {});
 }
 
-export function compareSelectedAverageKeys(u) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks[0];
-  if (!track || !track.stats_avg) return [];
-  return Object.keys(track.stats_avg);
+export function compareSelectedAverageKeys(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  return Object.keys((choice?.stats_avg && typeof choice.stats_avg === "object") ? choice.stats_avg : {});
 }
 
-export function compareSelectedLanguageRequirementKeys(u) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks[0];
-  if (!track || !Array.isArray(track.language_requirements)) return [];
+export function compareSelectedLanguageRequirementKeys(u, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  const requirements = Array.isArray(choice?.language_requirements) ? choice.language_requirements : [];
   const keys = new Set();
-  track.language_requirements.forEach(lr => {
+  requirements.forEach(lr => {
     if (lr.requirements) Object.keys(lr.requirements).forEach(k => keys.add(k));
   });
   return Array.from(keys);
 }
 
-export function compareRequirementValue(u, examId) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks[0];
-  if (!track || !Array.isArray(track.exams)) return null;
-  const exam = track.exams.find(e => e.id === examId);
-  return exam ? toFiniteNumber(exam.min_score) : null;
+export function compareRequirementValue(u, examId, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  return toFiniteNumber(choice?.requirements?.[examId]);
 }
 
-export function compareAverageScoreValue(u, examId) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks[0];
-  if (!track || !track.stats_avg) return null;
-  return toFiniteNumber(track.stats_avg[examId]);
+export function compareAverageScoreValue(u, examId, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  return toFiniteNumber(choice?.stats_avg?.[examId]);
 }
 
-export function compareLanguageRequirementValue(u, examId) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  const track = tracks[0];
-  if (!track || !Array.isArray(track.language_requirements)) return null;
-  for (const lr of track.language_requirements) {
+export function compareLanguageRequirementValue(u, examId, selection) {
+  const choice = compareSelectedChoice(u, selection);
+  const requirements = Array.isArray(choice?.language_requirements) ? choice.language_requirements : [];
+  for (const lr of requirements) {
     if (lr.requirements && lr.requirements[examId] !== undefined) {
       return toFiniteNumber(lr.requirements[examId]);
     }
@@ -354,7 +369,7 @@ export function buildCompareSpecs(universities, choices = new Map()) {
       key: "selected_track",
       section: "admissions",
       category: "admissions",
-      label: t("universities.compare.row.selected_track", "Selected track"),
+      label: t("universities.compare.row.selected_track", "Requirement profile"),
       type: "text",
       direction: "neutral",
       getter: (u) => compareTrackLabel(u, choices.get(String(u?.id))),
@@ -496,7 +511,9 @@ export function buildCompareSpecs(universities, choices = new Map()) {
     },
   ];
 
-  const requirementKeys = collectCompareExamKeys(universities, compareSelectedRequirementKeys);
+  const selectionFor = (u) => choices.get(String(u?.id || ""));
+
+  const requirementKeys = collectCompareExamKeys(universities, (u) => compareSelectedRequirementKeys(u, selectionFor(u)));
   requirementKeys.forEach((examId) => {
     specs.push({
       key: `req_${examId}`,
@@ -505,12 +522,12 @@ export function buildCompareSpecs(universities, choices = new Map()) {
       label: tFormat("universities.compare.row.exam_requirement", { exam: getExamDisplayName(examId) }, `${getExamDisplayName(examId)} requirement`),
       type: "number",
       direction: "lower",
-      getter: (u) => compareRequirementValue(u, examId),
+      getter: (u) => compareRequirementValue(u, examId, selectionFor(u)),
       formatter: compareScoreText,
     });
   });
 
-  const averageScoreKeys = collectCompareExamKeys(universities, compareSelectedAverageKeys);
+  const averageScoreKeys = collectCompareExamKeys(universities, (u) => compareSelectedAverageKeys(u, selectionFor(u)));
   averageScoreKeys.forEach((examId) => {
     specs.push({
       key: `avg_${examId}`,
@@ -519,12 +536,12 @@ export function buildCompareSpecs(universities, choices = new Map()) {
       label: tFormat("universities.compare.row.exam_average", { exam: getExamDisplayName(examId) }, `${getExamDisplayName(examId)} admitted score`),
       type: "number",
       direction: "higher",
-      getter: (u) => compareAverageScoreValue(u, examId),
+      getter: (u) => compareAverageScoreValue(u, examId, selectionFor(u)),
       formatter: compareScoreText,
     });
   });
 
-  const languageRequirementKeys = collectCompareExamKeys(universities, compareSelectedLanguageRequirementKeys);
+  const languageRequirementKeys = collectCompareExamKeys(universities, (u) => compareSelectedLanguageRequirementKeys(u, selectionFor(u)));
   languageRequirementKeys.forEach((examId) => {
     specs.push({
       key: `lang_${examId}`,
@@ -533,7 +550,7 @@ export function buildCompareSpecs(universities, choices = new Map()) {
       label: tFormat("universities.compare.row.language_exam_requirement", { exam: getExamDisplayName(examId) }, `${getExamDisplayName(examId)} language minimum`),
       type: "number",
       direction: "lower",
-      getter: (u) => compareLanguageRequirementValue(u, examId),
+      getter: (u) => compareLanguageRequirementValue(u, examId, selectionFor(u)),
       formatter: compareScoreText,
     });
   });
@@ -732,22 +749,17 @@ export function formatCompareCost(value, fallbackKey = "placeholder.field.cost",
 }
 
 export function compareAdmissionOptionEntries(u) {
-  const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-  return tracks.flatMap((track, trackIdx) => {
-    const options = getTrackFundingOptions(track);
-    return options.map((option, optionIdx) => ({
-      track,
-      option,
-      trackIdx,
-      optionIdx,
-      key: trackLookupKey(option, optionIdx),
-    }));
-  }).filter((entry) => entry.key && entry.option);
+  const choices = getAdmissionChoicesFromCategories(u?.admission_categories);
+  return choices.map((option, choiceIdx) => ({
+    option,
+    choiceIdx,
+    key: String(option?.choice_key || option?.choiceKey || option?.id || "").trim(),
+  })).filter((entry) => entry.key && entry.option);
 }
 
 export function compareSelectedAdmissionEntry(u, choices) {
   const uniId = String(u?.id || "");
-  const choiceKey = choices.get(uniId);
+  const choiceKey = compareChoiceKey(choices.get(uniId));
   if (!choiceKey) return null;
   const entries = compareAdmissionOptionEntries(u);
   return entries.find((e) => e.key === choiceKey) || null;

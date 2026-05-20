@@ -4185,3 +4185,63 @@ body .has-sliding-indicator .active::after {
   border-color: #d7dce6;
   border-top-color: var(--accent);
 }
+
+/* ===== 2026 Light Theme Dark-Parity Pass ===== */
+:root:not([data-theme="dark"]) {
+  --bg: #f4f5f6;
+  --bg-soft: #fafafa;
+  --surface: rgba(255, 255, 255, 0.94);
+  --surface-solid: #ffffff;
+  --surface-soft: #f6f7f8;
+  --accent-soft: rgba(87, 21, 219, 0.12);
+  --accent-faint: rgba(87, 21, 219, 0.07);
+  --accent-panel: rgba(87, 21, 219, 0.08);
+  --text: #111111;
+  --text-muted: #555555;
+  --line: rgba(0, 0, 0, 0.09);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --shadow-sm: none;
+  --shadow-md: 0 18px 38px rgba(0, 0, 0, 0.12);
+}
+
+:root:not([data-theme="dark"]) body {
+  background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
+}
+
+:root:not([data-theme="dark"]) .navbar {
+  background: rgba(255, 255, 255, 0.86);
+  border-bottom-color: var(--line);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .site-footer,
+:root:not([data-theme="dark"]) .custom-options {
+  background: var(--surface-solid);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .theme-btn,
+:root:not([data-theme="dark"]) .settings-trigger-btn,
+:root:not([data-theme="dark"]) .profile-trigger-btn,
+:root:not([data-theme="dark"]) .menu-btn,
+:root:not([data-theme="dark"]) .lang-switch,
+:root:not([data-theme="dark"]) .custom-select-trigger,
+:root:not([data-theme="dark"]) .profile-block,
+:root:not([data-theme="dark"]) .profile-exam-item,
+:root:not([data-theme="dark"]) .settings-row,
+:root:not([data-theme="dark"]) .profile-input,
+:root:not([data-theme="dark"]) .profile-name-input {
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .theme-btn:hover,
+:root:not([data-theme="dark"]) .settings-trigger-btn:hover,
+:root:not([data-theme="dark"]) .profile-trigger-btn:hover,
+:root:not([data-theme="dark"]) .menu-btn:hover,
+:root:not([data-theme="dark"]) .custom-select-trigger:hover,
+:root:not([data-theme="dark"]) .custom-select-wrapper.open .custom-select-trigger {
+  background: var(--accent-panel);
+  border-color: rgba(87, 21, 219, 0.24);
+  color: var(--accent);
+}

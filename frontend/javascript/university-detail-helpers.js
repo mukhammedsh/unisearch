@@ -1,4 +1,4 @@
-import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, formatExamValue, getExamDisplayName, loadProfile } from "./utils.js";
+import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, formatExamValue, getExamDisplayName } from "./utils.js";
 import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
@@ -338,12 +338,83 @@ export function renderLanguageRequirements(track) {
   `;
 }
 
-export function trackLookupKey(track, idx) {
-  const id = String(track?.id || "").trim();
-  if (id) return id;
-  const label = String(track?.label || "").trim();
-  if (label) return `label:${label}`;
-  return `track:${idx}`;
+export function admissionChoiceKey(category, profile, funding = null) {
+  const parts = [
+    String(category?.id || "").trim(),
+    String(profile?.id || "").trim(),
+    String(funding?.id || "").trim(),
+  ].filter(Boolean);
+  return parts.join("::");
+}
+
+function admissionFundingOptions(category, profile) {
+  const profileOptions = Array.isArray(profile?.funding_options)
+    ? profile.funding_options.filter(isPlainObject)
+    : [];
+  if (profileOptions.length) return profileOptions;
+  const categoryOptions = Array.isArray(category?.funding_options)
+    ? category.funding_options.filter(isPlainObject)
+    : [];
+  return categoryOptions;
+}
+
+export function getAdmissionChoicesFromCategories(categories) {
+  if (!Array.isArray(categories)) return [];
+  const choices = [];
+  categories.forEach((category) => {
+    if (!isPlainObject(category)) return;
+    const profiles = Array.isArray(category.requirement_profiles)
+      ? category.requirement_profiles.filter(isPlainObject)
+      : [];
+    const effectiveProfiles = profiles.length
+      ? profiles
+      : [{ id: "general", label: category.label || "General requirements" }];
+
+    effectiveProfiles.forEach((profile) => {
+      const options = admissionFundingOptions(category, profile);
+      const effectiveOptions = options.length ? options : [null];
+      effectiveOptions.forEach((funding, fundingIdx) => {
+        const mergedRequirements = mergeTrackVariantDict(
+          mergeTrackVariantDict(category.requirements, profile.requirements),
+          funding?.requirements,
+        );
+        const key = admissionChoiceKey(category, profile, funding);
+        const choice = {
+          ...category,
+          ...profile,
+          ...(funding || {}),
+          id: key || String(profile.id || category.id || `choice:${fundingIdx}`),
+          choice_key: key,
+          category_id: String(category.id || "").trim(),
+          category_label: category.label,
+          requirement_profile_id: String(profile.id || "").trim(),
+          requirement_profile_label: profile.label,
+          funding_option_id: String(funding?.id || "").trim(),
+          requirements: mergedRequirements || {},
+          stats_avg: filterStatsAvgForRequirements(
+            mergeTrackVariantDict(mergeTrackVariantDict(category.stats_avg, profile.stats_avg), funding?.stats_avg),
+            mergedRequirements,
+          ) || {},
+          finance_override: mergeTrackVariantDict(
+            mergeTrackVariantDict(category.finance_override, profile.finance_override),
+            funding?.finance_override,
+          ) || null,
+          language_requirements: funding?.language_requirements || profile.language_requirements || category.language_requirements || [],
+          language_requirements_mode: funding?.language_requirements_mode || profile.language_requirements_mode || category.language_requirements_mode,
+          extra_requirements: funding?.extra_requirements || profile.extra_requirements || category.extra_requirements || [],
+          scholarships: profile.scholarships || category.scholarships || [],
+          applicable_majors: profile.applicable_majors || category.applicable_majors || [],
+          scope: profile.scope || category.scope || "general",
+          program_ids: profile.program_ids || category.program_ids || [],
+          program_names: profile.program_names || category.program_names || [],
+          __funding_option_index: fundingIdx,
+          __is_funding_option: Boolean(funding),
+        };
+        choices.push(choice);
+      });
+    });
+  });
+  return choices;
 }
 
 export function chanceTone(chance) {
@@ -402,7 +473,7 @@ function chanceNoDataHelpNote(uniChance) {
   if (reason !== "missing_exam_score") return "";
   return t(
     "admission.chance.need_exam_data_track",
-    "Need exam data to see the chance for this track."
+    "Need exam data to see the chance for this requirement profile."
   );
 }
 
@@ -419,7 +490,7 @@ export function renderUniChanceSummary(uniChance) {
           <div class="chance-percent chance-low">?</div>
         </div>
         <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
-        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_track", "Best track"))}</div>
+        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_choice", "Best choice"))}</div>
       </div>
     `;
   }
@@ -453,24 +524,26 @@ export function renderUniChanceSummary(uniChance) {
   const chanceMethodShort = chanceModelShort(chanceModel);
   const chanceAccuracy = chanceAccuracyNote(chanceModel);
   const chancePercentClass = chanceAccuracy ? "chance-low-confidence" : tone.cls;
-  const activeTrackRaw = String(uniChance.bestTrackLabel || "").trim();
-  const activeTrackLabel = activeTrackRaw
-    ? translateTrackLabel(activeTrackRaw, activeTrackRaw)
-    : translateUnknownWord("placeholder.field.best_track", "Best track");
-  const recommendedTrackRaw = String(uniChance.recommendedTrackLabel || uniChance.bestTrackLabel || "").trim();
-  const recommendedTrackLabel = recommendedTrackRaw
-    ? translateTrackLabel(recommendedTrackRaw, recommendedTrackRaw)
-    : translateUnknownWord("placeholder.field.best_track", "Best track");
+  const activeChoiceRaw = String(uniChance.bestChoiceLabel || "").trim();
+  const activeChoiceLabel = activeChoiceRaw
+    ? translateTrackLabel(activeChoiceRaw, activeChoiceRaw)
+    : translateUnknownWord("placeholder.field.best_choice", "Best choice");
+  const recommendedChoiceRaw = String(uniChance.recommendedChoiceLabel || uniChance.bestChoiceLabel || "").trim();
+  const recommendedChoiceLabel = recommendedChoiceRaw
+    ? translateTrackLabel(recommendedChoiceRaw, recommendedChoiceRaw)
+    : translateUnknownWord("placeholder.field.best_choice", "Best choice");
+  const bestKey = String(uniChance?.bestChoiceKey || "").trim();
+  const recommendedKey = String(uniChance?.recommendedChoiceKey || "").trim();
   const selectedByUser = Boolean(
     uniChance?.selectedByUser
-    && String(uniChance?.bestTrackKey || "").trim()
-    && String(uniChance?.bestTrackKey || "").trim() !== String(uniChance?.recommendedTrackKey || "").trim()
+    && bestKey
+    && bestKey !== recommendedKey
   );
-  const trackLabelTitle = selectedByUser
-    ? t("admission.track.selected", "Selected track")
-    : translateWord("best_track", "Best track");
-  const recommendationFoot = selectedByUser && recommendedTrackLabel && recommendedTrackLabel !== activeTrackLabel
-    ? ` • ${escapeHtml(t("admission.track.recommended", "Recommended"))}: <strong>${escapeHtml(recommendedTrackLabel)}</strong>`
+  const choiceLabelTitle = selectedByUser
+    ? t("admission.choice.selected", "Selected choice")
+    : translateWord("best_choice", "Best choice");
+  const recommendationFoot = selectedByUser && recommendedChoiceLabel && recommendedChoiceLabel !== activeChoiceLabel
+    ? ` • ${escapeHtml(t("admission.choice.recommended", "Recommended"))}: <strong>${escapeHtml(recommendedChoiceLabel)}</strong>`
     : "";
   return `
       <div class="chance-panel">
@@ -485,7 +558,7 @@ export function renderUniChanceSummary(uniChance) {
           </div>
         </div>
         <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
-        <div class="chance-foot">${escapeHtml(trackLabelTitle)}: <strong>${escapeHtml(activeTrackLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}${chanceMethodShort ? ` • ${escapeHtml(chanceMethodShort)}` : ""}</div>
+        <div class="chance-foot">${escapeHtml(choiceLabelTitle)}: <strong>${escapeHtml(activeChoiceLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}${chanceMethodShort ? ` • ${escapeHtml(chanceMethodShort)}` : ""}</div>
       </div>
   `;
 }
@@ -524,12 +597,6 @@ export function getTrackFundingType(track) {
   return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
 }
 
-function normalizeFundingPreference(value) {
-  const raw = String(value || "").trim().toLowerCase();
-  if (raw === "grant" || raw === "paid") return raw;
-  return "any";
-}
-
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
@@ -566,63 +633,4 @@ function filterStatsAvgForRequirements(statsAvg, requirements) {
     if (canonical && allowed.has(canonical)) filtered[key] = value;
   }
   return filtered;
-}
-
-export function getTrackFundingOptions(track) {
-  const baseTrack = isPlainObject(track) ? track : {};
-  const rawOptions = Array.isArray(baseTrack.funding_options)
-    ? baseTrack.funding_options.filter(isPlainObject)
-    : [];
-
-  if (!rawOptions.length) {
-    return [{
-      ...baseTrack,
-      __parent_track_id: String(baseTrack.id || "").trim(),
-      __parent_track_label: String(baseTrack.label || "").trim(),
-      __funding_option_index: 0,
-      __is_funding_option: false,
-    }];
-  }
-
-  return rawOptions.map((option, optionIdx) => {
-    const mergedRequirements = mergeTrackVariantDict(baseTrack.requirements, option.requirements);
-    const merged = {
-      ...baseTrack,
-      ...option,
-      requirements: mergedRequirements,
-      stats_avg: filterStatsAvgForRequirements(
-        mergeTrackVariantDict(baseTrack.stats_avg, option.stats_avg),
-        mergedRequirements
-      ),
-      finance_override: mergeTrackVariantDict(baseTrack.finance_override, option.finance_override),
-      __parent_track_id: String(baseTrack.id || "").trim(),
-      __parent_track_label: String(baseTrack.label || "").trim(),
-      __funding_option_index: optionIdx,
-      __is_funding_option: true,
-    };
-
-    delete merged.funding_options;
-
-    if (!String(merged.id || "").trim()) merged.id = baseTrack.id;
-    if (!String(merged.label || "").trim()) merged.label = baseTrack.label;
-
-    return merged;
-  });
-}
-
-export function filterTrackFundingOptions(track, fundingFilter = "all") {
-  const options = getTrackFundingOptions(track);
-  if (fundingFilter === "all") return options;
-  return options.filter((option) => getTrackFundingType(option) === fundingFilter);
-}
-
-export function trackHasFundingOption(track, fundingFilter = "all") {
-  if (fundingFilter === "all") return true;
-  return filterTrackFundingOptions(track, fundingFilter).length > 0;
-}
-
-export function readAdmissionTrackFilterFromProfile() {
-  const profile = loadProfile();
-  const pref = normalizeFundingPreference(profile?.fundingType || profile?.funding_type || "any");
-  return pref === "any" ? "all" : pref;
 }

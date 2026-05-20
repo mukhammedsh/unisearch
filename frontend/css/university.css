@@ -1813,6 +1813,283 @@
   font-weight: 600;
 }
 
+.admission-program-selector {
+  display: flex;
+  gap: 18px;
+  margin: 18px 0 0;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.admission-program-option,
+.requirement-profile-tab {
+  appearance: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.25;
+  padding: 10px 2px 11px;
+  white-space: nowrap;
+  transition:
+    color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admission-program-option:hover,
+.requirement-profile-tab:hover {
+  color: var(--text);
+}
+
+.admission-program-option:focus-visible,
+.requirement-profile-tab:focus-visible,
+.track-select-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admission-program-option.is-active,
+.requirement-profile-tab.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.admission-scope-note {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.admission-category-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.admission-category-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-solid);
+  padding: 18px;
+}
+
+.admission-category-head,
+.requirement-profile-head,
+.admission-funding-option {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.admission-category-kicker,
+.requirement-profile-kicker,
+.admission-funding-title {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.admission-category-title,
+.requirement-profile-title {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.requirement-profile-title {
+  font-size: 16px;
+}
+
+.admission-category-description {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.admission-category-count,
+.track-selection-badge {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 750;
+  padding: 6px 9px;
+}
+
+.admission-applicable-programs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.admission-applicable-programs .tag,
+.admission-option-meta .tag {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 8px;
+}
+
+.requirement-profile-tabs {
+  display: flex;
+  gap: 18px;
+  margin-top: 16px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.requirement-profile-panel {
+  padding-top: 16px;
+}
+
+.requirement-profile-badges,
+.admission-funding-option-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.admission-requirement-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.admission-funding-block {
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.admission-funding-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.admission-funding-option {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 14px;
+  flex-wrap: wrap;
+}
+
+.admission-funding-option.is-active {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: var(--surface-soft);
+}
+
+.admission-funding-option--grant {
+  border-color: var(--grant-soft-strong);
+}
+
+.admission-funding-option-main {
+  min-width: 240px;
+  flex: 1 1 360px;
+}
+
+.admission-funding-option-side {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.admission-funding-diff,
+.admission-funding-diff-note {
+  flex: 1 0 100%;
+}
+
+.admission-funding-diff {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.admission-funding-diff-kicker,
+.admission-funding-diff-title {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.admission-funding-diff-section {
+  display: grid;
+  gap: 6px;
+}
+
+.admission-funding-diff-content .track-exam-group {
+  margin: 0;
+}
+
+.admission-funding-diff-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admission-funding-diff-note {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .admission-category-card {
+    padding: 14px;
+  }
+
+  .admission-category-head,
+  .requirement-profile-head,
+  .admission-funding-option,
+  .admission-funding-option-side {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admission-requirement-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .track-select-btn {
+    width: 100%;
+  }
+}
+
 .track-title {
   margin: 0;
   color: #111827;
@@ -2150,7 +2427,7 @@
 .finance-summary-container {
     display: flex;
     gap: 20px;
-    margin-bottom: 40px; /* Отступ снизу перед треками */
+    margin-bottom: 40px; /* Отступ снизу перед вариантами поступления */
     align-items: flex-start; /* Чтобы блоки не растягивались лишнего */
     flex-wrap: wrap; 
 }
@@ -5288,4 +5565,85 @@
 #tab-admission .d-box,
 #tab-finance .finance-box {
   border-radius: 0;
+}
+
+/* ===== 2026 Detail Light Dark-Parity Pass ===== */
+:root:not([data-theme="dark"]) .d-page {
+  --bg: #f4f5f6;
+  --card: #ffffff;
+  --line: rgba(0, 0, 0, 0.09);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --surface-soft: #f6f7f8;
+  --accent-panel: rgba(87, 21, 219, 0.08);
+  --shadow: none;
+}
+
+:root:not([data-theme="dark"]) body[data-page="university"],
+:root:not([data-theme="dark"]) .d-page {
+  background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
+}
+
+:root:not([data-theme="dark"]) .d-page-scope,
+:root:not([data-theme="dark"]) .d-card,
+:root:not([data-theme="dark"]) .d-head,
+:root:not([data-theme="dark"]) .d-tabs,
+:root:not([data-theme="dark"]) .d-tab-content,
+:root:not([data-theme="dark"]) #tab-finance .finance-box,
+:root:not([data-theme="dark"]) #tab-admission .d-box,
+:root:not([data-theme="dark"]) #tab-general .d-box,
+:root:not([data-theme="dark"]) #tab-programs .d-box,
+:root:not([data-theme="dark"]) .finance-track-group,
+:root:not([data-theme="dark"]) .finance-option-card,
+:root:not([data-theme="dark"]) .admission-option-card,
+:root:not([data-theme="dark"]) .track-card,
+:root:not([data-theme="dark"]) .scholarship-card,
+:root:not([data-theme="dark"]) .total-price-card {
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .d-page-scope {
+  border-left-color: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .d-back:hover,
+:root:not([data-theme="dark"]) .d-site-link:hover,
+:root:not([data-theme="dark"]) .d-info,
+:root:not([data-theme="dark"]) .uni-tag,
+:root:not([data-theme="dark"]) .d-quick-stat,
+:root:not([data-theme="dark"]) .uni-tags-wrap,
+:root:not([data-theme="dark"]) .chance-panel,
+:root:not([data-theme="dark"]) .admission-filter-row,
+:root:not([data-theme="dark"]) .track-funding-options-block,
+:root:not([data-theme="dark"]) .track-cost-preview,
+:root:not([data-theme="dark"]) .finance-option-total,
+:root:not([data-theme="dark"]) .track-extra-req,
+:root:not([data-theme="dark"]) .track-stats-box,
+:root:not([data-theme="dark"]) .track-lang-rules,
+:root:not([data-theme="dark"]) .track-lang-rule-card,
+:root:not([data-theme="dark"]) .cost-legend-row,
+:root:not([data-theme="dark"]) .cost-legend-single {
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .finance-track-group--grant,
+:root:not([data-theme="dark"]) .finance-option-card--grant,
+:root:not([data-theme="dark"]) .admission-option-card--grant,
+:root:not([data-theme="dark"]) .track-card--grant {
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+:root:not([data-theme="dark"]) .finance-track-group--grant .finance-option-card,
+:root:not([data-theme="dark"]) .finance-option-card--grant,
+:root:not([data-theme="dark"]) .scholarship-card {
+  background: rgba(16, 185, 129, 0.08);
+}
+
+:root:not([data-theme="dark"]) .total-price-card,
+:root:not([data-theme="dark"]) .admission-option-card:has(.track-select-btn.is-active),
+:root:not([data-theme="dark"]) .track-card:has(.track-select-btn.is-active) {
+  background: rgba(87, 21, 219, 0.07);
+  border-color: rgba(87, 21, 219, 0.30);
 }

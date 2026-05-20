@@ -39,12 +39,18 @@ class UniversityListProjectionTests(unittest.TestCase):
                         }
                     ]
                 },
-                "admission_tracks": [
+                "admission_categories": [
                     {
                         "id": "t1",
                         "label": "Grant Track",
-                        "funding_type": "grant",
-                        "scholarships": [{"name": "Top Talent"}],
+                        "requirement_profiles": [
+                            {
+                                "id": "grant",
+                                "label": "Grant",
+                                "funding_options": [{"id": "grant", "label": "Grant", "funding_type": "grant"}],
+                                "scholarships": [{"name": "Top Talent"}],
+                            }
+                        ],
                     }
                 ],
                 "matchData": {"finalScore": 91.2},
@@ -69,7 +75,7 @@ class UniversityListProjectionTests(unittest.TestCase):
         self.assertIn("finance", row)
         self.assertIn("academics", row)
         self.assertNotIn("description", row)
-        self.assertNotIn("admission_tracks", row)
+        self.assertNotIn("admission_categories", row)
 
     def test_full_mode_keeps_detailed_payload(self):
         items, meta = self._mock_data()
@@ -79,7 +85,7 @@ class UniversityListProjectionTests(unittest.TestCase):
         row = (result.get("items") or [None])[0]
         self.assertIsInstance(row, dict)
         self.assertIn("description", row)
-        self.assertIn("admission_tracks", row)
+        self.assertIn("admission_categories", row)
 
     def test_card_mode_uses_tuition_only_cost_for_online_format(self):
         items, meta = self._mock_data()

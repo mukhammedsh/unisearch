@@ -61,12 +61,12 @@ export function routeCompareSelection(queryOrParams = "") {
   return routeUniversities(params);
 }
 
-export function routeCompareResults(ids = [], tracks = [], queryOrParams = "") {
+export function routeCompareResults(ids = [], choices = [], queryOrParams = "") {
   const params = new URLSearchParams(toQueryString(queryOrParams));
   params.set("tab", "compare");
   params.set("compare", "results");
   if (Array.isArray(ids) && ids.length) params.set("ids", ids.join(","));
-  if (Array.isArray(tracks) && tracks.length) params.set("tracks", tracks.join(","));
+  if (Array.isArray(choices) && choices.length) params.set("choices", choices.join(","));
   return routeUniversities(params);
 }
 

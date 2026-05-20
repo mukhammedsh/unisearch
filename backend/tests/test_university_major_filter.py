@@ -22,7 +22,7 @@ class UniversityMajorFilterTests(unittest.TestCase):
                         }
                     ]
                 },
-                "admission_tracks": [],
+                "admission_categories": [],
             },
             {
                 "id": "u-biz",
@@ -37,7 +37,7 @@ class UniversityMajorFilterTests(unittest.TestCase):
                         }
                     ]
                 },
-                "admission_tracks": [],
+                "admission_categories": [],
             },
         ]
 

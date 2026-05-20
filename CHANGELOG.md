@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 4.0.0 (2026-05-20) - Admission Choices and Light Theme Refresh
+
+Status:
+- synchronized runtime/package version to `4.0.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`;
+- replaced the flat `admission_tracks` model with structured `admission_categories`, `requirement_profiles`, and `funding_options` so programs, requirements, and funding routes can be represented separately;
+- migrated profile and API selection payloads from `selectedAdmissionTracks` to `selectedAdmissionChoices`, preserving explicit program, category, requirement profile, funding option, and choice keys;
+- updated UniChance, UniFit scoring, university list filtering/search, ML text matching, compare mode, and detail pages to score and display the selected admission choice instead of the old track-only contract;
+- refreshed university detail admission and finance sections with category/profile/funding option cards, compact funding badges, choice-aware chance values, and selection persistence;
+- applied a broad light-theme refresh across Home, Universities, Ranking, Guide, About, global navigation, profile/settings surfaces, comparison, and university detail pages while keeping the flat dark-theme structure;
+- updated English and Russian localization for the admission-choice model, funding-option labels, compare rows, guide text, and related empty/fallback states;
+- replaced old admission-track compatibility tests with category/funding-option coverage and updated backend and Playwright regressions for the new choice-based contract.
+
 ## 3.9.2 (2026-05-14) - Light Theme and Admissions UI Polish
 
 Status:

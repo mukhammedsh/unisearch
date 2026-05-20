@@ -33,16 +33,13 @@ import {
   applyPercentWidths,
   chanceTone,
   clusterMarkerLogoHtml,
+  getAdmissionChoicesFromCategories,
   getTrackFundingType,
-  getTrackFundingOptions,
   mapMarkerLogoHtml,
-  renderExamGroup,
   renderGroupedExamPairRows,
   renderTrackChanceChip,
   renderTrackFundingBadge,
   renderUniChanceSummary,
-  splitExamEntries,
-  trackLookupKey,
 } from "../university-detail-helpers.js";
 
 import { setupTabs, renderNoConnection } from "../components.js";
@@ -103,7 +100,6 @@ import {
   translateCostBreakdownLabel,
   costBreakdownCoverageNote,
   trackCefrLabel,
-  renderTrackLanguageExamGroup,
   localizeRoiLabel,
   renderRoiBox,
   ruPlural,
@@ -304,6 +300,7 @@ export function initUniversitiesPage() {
     setupScopeNotice();
     setupSlidingIndicator("#universitiesSectionTabs", ".u-section-tab", "is-active");
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
+    const updateViewModeIndicator = setupSlidingIndicator(".view-toggles", ".view-btn", "active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -340,7 +337,7 @@ export function initUniversitiesPage() {
         ? initialCompareParam
         : "select";
     const initialTab = normalizeUniversitiesTab(pageParams.get("tab") || (initialCompareStage === "results" || initialCompareStage === "configure" ? "compare" : "catalog"));
-    const initialCompareTracks = String(pageParams.get("tracks") || "").split(",");
+    const initialCompareChoices = String(pageParams.get("choices") || "").split(",");
 
     const savedState = loadFilters();
     const defaultSortMode = hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc";
@@ -416,6 +413,39 @@ export function initUniversitiesPage() {
     let compareAdmissionChoices = new Map();
     let compareChancesByUniId = new Map();
 
+    const compareChoiceKey = (selection) => {
+        if (!selection || typeof selection !== "object" || Array.isArray(selection)) return "";
+        return String(selection.choiceKey || selection.choice_key || "").trim();
+    };
+
+    const normalizeCompareAdmissionSelection = (selection) => {
+        if (!selection || typeof selection !== "object" || Array.isArray(selection)) return null;
+        const choiceKey = compareChoiceKey(selection);
+        if (!choiceKey) return null;
+        return {
+            programId: String(selection.programId || selection.program_id || "").trim(),
+            programName: String(selection.programName || selection.program_name || "").trim(),
+            categoryId: String(selection.categoryId || selection.category_id || "").trim(),
+            requirementProfileId: String(selection.requirementProfileId || selection.requirement_profile_id || "").trim(),
+            fundingOptionId: String(selection.fundingOptionId || selection.funding_option_id || "").trim(),
+            choiceKey,
+        };
+    };
+
+    const compareAdmissionSelectionFromEntry = (entry) => {
+        const option = entry?.option || {};
+        const programIds = Array.isArray(option?.program_ids) ? option.program_ids : [];
+        const programNames = Array.isArray(option?.program_names) ? option.program_names : [];
+        return {
+            programId: String(programIds[0] || "").trim(),
+            programName: String(programNames[0] || "").trim(),
+            categoryId: String(option?.category_id || "").trim(),
+            requirementProfileId: String(option?.requirement_profile_id || "").trim(),
+            fundingOptionId: String(option?.funding_option_id || "").trim(),
+            choiceKey: String(entry?.key || option?.choice_key || option?.choiceKey || option?.id || "").trim(),
+        };
+    };
+
     const optionTextForValue = (selectEl, value) => {
         if (!selectEl) return "";
         const opt = Array.from(selectEl.options || []).find((item) => String(item.value || "") === String(value || ""));
@@ -488,16 +518,16 @@ export function initUniversitiesPage() {
         if (isCompareResultsMode() || isCompareConfigureMode()) {
             params.set("compare", state.compareStage);
             params.set("ids", state.compareResultIds.join(","));
-            const tracks = state.compareResultIds.map(id => compareAdmissionChoices.get(id) || "").join(",");
-            if (tracks.replace(/,/g, "")) params.set("tracks", tracks);
+            const choices = state.compareResultIds.map(id => compareChoiceKey(compareAdmissionChoices.get(id))).join(",");
+            if (choices.replace(/,/g, "")) params.set("choices", choices);
         } else if (isCompareSelectionMode()) {
             params.set("compare", "select");
             params.delete("ids");
-            params.delete("tracks");
+            params.delete("choices");
         } else {
             params.delete("compare");
             params.delete("ids");
-            params.delete("tracks");
+            params.delete("choices");
         }
         return params;
     };
@@ -637,7 +667,9 @@ export function initUniversitiesPage() {
         try {
             const raw = JSON.parse(localStorage.getItem(COMPARE_ADMISSION_CHOICES_KEY) || "{}");
             if (!raw || typeof raw !== "object" || Array.isArray(raw)) return new Map();
-            return new Map(Object.entries(raw).map(([id, key]) => [String(id || "").trim(), String(key || "").trim()]).filter(([id, key]) => id && key));
+            return new Map(Object.entries(raw)
+                .map(([id, selection]) => [String(id || "").trim(), normalizeCompareAdmissionSelection(selection)])
+                .filter(([id, selection]) => id && selection));
         } catch (e) {
             return new Map();
         }
@@ -645,10 +677,10 @@ export function initUniversitiesPage() {
     const writeCompareAdmissionChoices = () => {
         const pairSet = new Set(comparePairIds());
         const data = {};
-        compareAdmissionChoices.forEach((key, id) => {
+        compareAdmissionChoices.forEach((selection, id) => {
             const cleanId = String(id || "").trim();
-            const cleanKey = String(key || "").trim();
-            if (pairSet.has(cleanId) && cleanKey) data[cleanId] = cleanKey;
+            const normalized = normalizeCompareAdmissionSelection(selection);
+            if (pairSet.has(cleanId) && normalized) data[cleanId] = normalized;
         });
         try {
             localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(data));
@@ -657,10 +689,11 @@ export function initUniversitiesPage() {
         }
     };
     compareAdmissionChoices = readCompareAdmissionChoices();
-    if (initialCompareStage !== "select" && initialCompareTracks.length) {
+    if (initialCompareStage !== "select" && initialCompareChoices.length) {
         initialCompareIds.forEach((id, index) => {
-            if (initialCompareTracks[index]) {
-                compareAdmissionChoices.set(id, initialCompareTracks[index]);
+            const choiceKey = String(initialCompareChoices[index] || "").trim();
+            if (choiceKey) {
+                compareAdmissionChoices.set(id, { choiceKey });
             }
         });
         writeCompareAdmissionChoices();
@@ -960,28 +993,22 @@ export function initUniversitiesPage() {
     };
 
     const compareAdmissionOptionEntries = (u) => {
-        const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-        return tracks.flatMap((track, trackIdx) => {
-            const options = getTrackFundingOptions(track);
-            return options.map((option, optionIdx) => ({
-                track,
-                option,
-                trackIdx,
-                optionIdx,
-                key: trackLookupKey(option, optionIdx),
-            }));
-        }).filter((entry) => entry.key && entry.option);
+        const choices = getAdmissionChoicesFromCategories(u?.admission_categories);
+        return choices.map((choice, choiceIdx) => ({
+            option: choice,
+            choiceIdx,
+            key: String(choice?.choice_key || choice?.choiceKey || choice?.id || "").trim(),
+        })).filter((entry) => entry.key && entry.option);
     };
 
     const compareSelectedAdmissionEntry = (u) => {
         const uniId = String(u?.id || "").trim();
-        const selectedKey = String(compareAdmissionChoices.get(uniId) || "").trim();
+        const selectedKey = compareChoiceKey(compareAdmissionChoices.get(uniId));
         if (!selectedKey) return null;
         return compareAdmissionOptionEntries(u).find((entry) => entry.key === selectedKey) || null;
     };
 
     const compareSelectedAdmissionOption = (u) => compareSelectedAdmissionEntry(u)?.option || null;
-    const compareSelectedAdmissionTrack = (u) => compareSelectedAdmissionEntry(u)?.track || null;
     const compareSelectedFinance = (u) => {
         const option = compareSelectedAdmissionOption(u);
         return (option?.finance_override && typeof option.finance_override === "object")
@@ -998,17 +1025,20 @@ export function initUniversitiesPage() {
     };
 
     const compareTrackCountText = (u) => {
-        const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-        const options = tracks.reduce((sum, track) => sum + (Array.isArray(track?.funding_options) ? Math.max(track.funding_options.length, 1) : 1), 0);
-        if (!tracks.length) return t("common.na", "N/A");
-        return tFormat("universities.compare.track_count", { count: String(tracks.length), options: String(options) }, `${tracks.length} tracks / ${options} options`);
+        const categories = Array.isArray(u?.admission_categories) ? u.admission_categories : [];
+        const options = compareAdmissionOptionEntries(u).length;
+        if (!categories.length) return t("common.na", "N/A");
+        return tFormat("universities.compare.track_count", { count: String(categories.length), options: String(options) }, `${categories.length} categories / ${options} choices`);
     };
 
     const compareTrackLabel = (u) => {
-        const track = compareSelectedAdmissionTrack(u);
-        if (!track) return t("common.na", "N/A");
-        const label = String(track?.label || track?.id || "");
-        return trTrackLabel(track?.label || "") || translateTrackLabel(label, label);
+        const option = compareSelectedAdmissionOption(u);
+        if (!option) return t("common.na", "N/A");
+        const categoryRaw = String(option?.category_label || option?.category_id || "").trim();
+        const profileRaw = String(option?.requirement_profile_label || option?.requirement_profile_id || "").trim();
+        const category = categoryRaw ? trTrackLabel(categoryRaw) || translateTrackLabel(categoryRaw, categoryRaw) : "";
+        const profile = profileRaw ? trTrackLabel(profileRaw) || translateTrackLabel(profileRaw, profileRaw) : "";
+        return Array.from(new Set([category, profile].filter(Boolean))).join(" - ") || t("common.na", "N/A");
     };
 
     const compareFundingChoiceText = (u) => {
@@ -1016,8 +1046,9 @@ export function initUniversitiesPage() {
         if (!option) return t("common.na", "N/A");
         const badge = new DOMParser().parseFromString(renderTrackFundingBadge(option), "text/html").body.textContent?.trim() || "";
         const optionLabelRaw = String(option?.label || "").trim();
-        const parentLabelRaw = String(option?.__parent_track_label || "").trim();
-        const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";
+        const profileLabelRaw = String(option?.requirement_profile_label || "").trim();
+        const categoryLabelRaw = String(option?.category_label || "").trim();
+        const optionLabel = optionLabelRaw && optionLabelRaw !== profileLabelRaw && optionLabelRaw !== categoryLabelRaw ? trTrackLabel(optionLabelRaw) : "";
         return [badge, optionLabel].filter(Boolean).join(" - ") || compareAidText(u);
     };
 
@@ -1177,18 +1208,13 @@ export function initUniversitiesPage() {
     };
 
     const compareFundingOptionCount = (u) => {
-        const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
-        return tracks.reduce((sum, track) => {
-            const options = Array.isArray(track?.funding_options) ? track.funding_options.length : 0;
-            return sum + Math.max(options, 1);
-        }, 0);
+        return compareAdmissionOptionEntries(u).length;
     };
 
     const compareExtraRequirementCount = (u) => {
-        const tracks = Array.isArray(u?.admission_tracks) ? u.admission_tracks : [];
         const extras = new Set();
-        tracks.forEach((track) => {
-            const rows = Array.isArray(track?.extra_requirements) ? track.extra_requirements : [];
+        compareAdmissionOptionEntries(u).forEach((entry) => {
+            const rows = Array.isArray(entry?.option?.extra_requirements) ? entry.option.extra_requirements : [];
             rows.forEach((item) => {
                 const clean = String(item || "").trim();
                 if (clean) extras.add(clean);
@@ -1336,7 +1362,7 @@ export function initUniversitiesPage() {
         },
         admissions: {
             title: t("universities.compare.category.admissions.title", "Admissions"),
-            subtitle: t("universities.compare.category.admissions.subtitle", "Access, tracks, and requirements"),
+            subtitle: t("universities.compare.category.admissions.subtitle", "Access, requirement profiles, and funding"),
             icon: "academic-cap",
         },
         finance: {
@@ -1499,7 +1525,7 @@ export function initUniversitiesPage() {
                 key: "selected_track",
                 section: "admissions",
                 category: "admissions",
-                label: t("universities.compare.row.selected_track", "Selected track"),
+                label: t("universities.compare.row.selected_track", "Requirement profile"),
                 type: "text",
                 direction: "neutral",
                 getter: compareTrackLabel,
@@ -2084,8 +2110,8 @@ export function initUniversitiesPage() {
                 </div>
                 ${(() => {
                     const uniChance = compareChancesByUniId.get(id);
-                    const selectedKey = compareAdmissionChoices.get(id);
-                    const trackChance = (uniChance?.tracks || []).find((x) => String(x.trackKey) === selectedKey);
+                    const selectedKey = compareChoiceKey(compareAdmissionChoices.get(id));
+                    const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === selectedKey);
                     return trackChance ? `<div class="compare-uni-card__chance">${renderTrackChanceChip(trackChance)}</div>` : "";
                 })()}
                 ${badges.length ? `<div class="compare-uni-card__badges">${badges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join("")}</div>` : ""}
@@ -2139,17 +2165,20 @@ export function initUniversitiesPage() {
 
     const renderCompareAdmissionOptionCard = (u, entry) => {
         const id = String(u?.id || "");
-        const { track, option, key } = entry;
-        const selected = compareAdmissionChoices.get(id) === key;
+        const { option, key } = entry;
+        const selected = compareChoiceKey(compareAdmissionChoices.get(id)) === key;
         const uniChance = compareChancesByUniId.get(id);
-        const trackChance = (uniChance?.tracks || []).find((x) => String(x.trackKey) === key);
-        const recommendedKey = String(uniChance?.recommendedTrackKey || "").trim();
+        const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === key);
+        const recommendedKey = String(uniChance?.recommendedChoiceKey || "").trim();
         const isRecommendedTrack = Boolean(recommendedKey && key === recommendedKey);
         const optionLabelRaw = String(option?.label || "").trim();
-        const parentLabelRaw = String(track?.label || "").trim();
-        const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";
-        const parentLabel = parentLabelRaw ? trTrackLabel(parentLabelRaw) : "";
-        const titleLabel = optionLabel || parentLabel || translateUnknownWord("placeholder.field.admission_tracks", "Admission tracks");
+        const profileLabelRaw = String(option?.requirement_profile_label || option?.requirement_profile_id || "").trim();
+        const categoryLabelRaw = String(option?.category_label || option?.category_id || "").trim();
+        const profileLabel = profileLabelRaw ? trTrackLabel(profileLabelRaw) : "";
+        const categoryLabel = categoryLabelRaw ? trTrackLabel(categoryLabelRaw) : "";
+        const titleLabel = Array.from(new Set([categoryLabel, profileLabel].filter(Boolean))).join(" - ")
+            || (optionLabelRaw ? trTrackLabel(optionLabelRaw) : "")
+            || translateUnknownWord("placeholder.field.admission_categories", "Admission categories");
         const fundingMeta = [
             option?.funding_program
                 ? [t("admission.track.funding_program", "Funding program"), trTrackDescription(id, option.id, option.funding_program)]
@@ -2176,24 +2205,8 @@ export function initUniversitiesPage() {
         const priceText = Number.isFinite(Number(price)) ? moneyUSD(price) : unknownFieldText("placeholder.field.cost", "Cost");
         const isGrantTrack = getTrackFundingType(option) === "grant";
 
-        const requirements = option?.requirements || {};
-        const minParts = splitExamEntries(requirements);
-        const minList = [
-            renderExamGroup(translateWord("academic_requirements", "Academic requirements"), minParts.acad, "#2563eb"),
-            renderTrackLanguageExamGroup(option, "requirements"),
-        ].filter(Boolean).join("");
-
-        const statsAvg = option?.stats_avg || {};
-        const avgParts = splitExamEntries(statsAvg);
-        const avgList = [
-            renderExamGroup(translateWord("academic_average", "Academic average"), avgParts.acad, "#2563eb"),
-            renderTrackLanguageExamGroup(option, "average"),
-        ].filter(Boolean).join("");
-
-        const minContent = minList || `<div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>`;
-        const avgContent = avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
         const selectionBadges = [];
-        if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
+        if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.choice.recommended", "Recommended")));
         const selectionBadgeHtml = selectionBadges.length
             ? `<div class="track-selection-badge">${selectionBadges.join(" / ")}</div>`
             : "";
@@ -2216,22 +2229,9 @@ export function initUniversitiesPage() {
                     <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceText)}
                 </div>
 
-                <div class="track-stats-grid">
-                    <div class="track-stats-box track-stats-box--min">
-                        <div class="track-stats-title">${escapeHtml(translateWord("minimum_to_apply", "Minimum to apply"))}</div>
-                        <div class="track-stats-values">${minContent}</div>
-                    </div>
-                    <div class="track-stats-box track-stats-box--avg">
-                        <div class="track-stats-title track-stats-title--avg">
-                            ${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}
-                        </div>
-                        <div class="track-stats-values">${avgContent}</div>
-                    </div>
-                </div>
-
                 <div class="track-select-row">
-                    <button class="track-select-btn${selected ? " is-active" : ""}" type="button" data-action="select-compare-admission" data-uni-id="${escapeHtmlAttr(id)}" data-option-key="${escapeHtmlAttr(key)}"${selected ? " disabled" : ""}>
-                        ${escapeHtml(selected ? t("admission.track.selected", "Selected") : t("admission.track.select", "Select"))}
+                    <button class="track-select-btn${selected ? " is-active" : ""}" type="button" data-action="select-compare-admission" data-uni-id="${escapeHtmlAttr(id)}" data-option-key="${escapeHtmlAttr(key)}" data-program-id="${escapeHtmlAttr(compareAdmissionSelectionFromEntry(entry).programId)}" data-program-name="${escapeHtmlAttr(compareAdmissionSelectionFromEntry(entry).programName)}" data-category-id="${escapeHtmlAttr(compareAdmissionSelectionFromEntry(entry).categoryId)}" data-requirement-profile-id="${escapeHtmlAttr(compareAdmissionSelectionFromEntry(entry).requirementProfileId)}" data-funding-option-id="${escapeHtmlAttr(compareAdmissionSelectionFromEntry(entry).fundingOptionId)}"${selected ? " disabled" : ""}>
+                        ${escapeHtml(selected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
                     </button>
                 </div>
             </article>
@@ -2240,7 +2240,7 @@ export function initUniversitiesPage() {
 
     const compareConfigurationReady = (universities) => universities.every((u) => {
         const id = String(u?.id || "");
-        return Boolean(compareAdmissionChoices.get(id) && compareSelectedAdmissionEntry(u));
+        return Boolean(compareChoiceKey(compareAdmissionChoices.get(id)) && compareSelectedAdmissionEntry(u));
     });
 
     const renderCompareConfigurePage = async (ids) => {
@@ -2285,16 +2285,15 @@ export function initUniversitiesPage() {
             const id = String(u?.id || "");
             if (id) {
                 const entries = compareAdmissionOptionEntries(u);
-                const currentKey = String(compareAdmissionChoices.get(id) || "").trim();
+                const currentKey = compareChoiceKey(compareAdmissionChoices.get(id));
                 const hasValidChoice = Boolean(currentKey && entries.some((entry) => entry.key === currentKey));
                 if (hasValidChoice) return;
 
                 const uniChance = compareChancesByUniId.get(id);
-                const recommendedKey = String(uniChance?.selectedTrackKey || uniChance?.recommendedTrackKey || uniChance?.bestTrackKey || "").trim();
+                const recommendedKey = String(uniChance?.selectedChoiceKey || uniChance?.recommendedChoiceKey || uniChance?.bestChoiceKey || "").trim();
                 if (entries.length) {
                     const match = recommendedKey ? entries.find(e => e.key === recommendedKey) : null;
-                    const finalKey = match ? match.key : entries[0].key;
-                    compareAdmissionChoices.set(id, finalKey);
+                    compareAdmissionChoices.set(id, compareAdmissionSelectionFromEntry(match || entries[0]));
                     changedChoices = true;
                 }
             }
@@ -2309,31 +2308,31 @@ export function initUniversitiesPage() {
             <div class="compare-results-head compare-results-head--pair">
                 <div>
                     <p class="compare-results-kicker">${escapeHtml(t("universities.compare.configure.kicker", "Before comparison"))}</p>
-                    <h1>${escapeHtml(t("universities.compare.configure.title", "Choose tracks and funding"))}</h1>
-                    <p class="compare-config-subtitle">${escapeHtml(t("universities.compare.configure.subtitle", "Pick one admission track and one funding option for each university. The comparison will use these selected options for requirements, language proof, cost, and funding."))}</p>
+                    <h1>${escapeHtml(t("universities.compare.configure.title", "Choose admission choices"))}</h1>
+                    <p class="compare-config-subtitle">${escapeHtml(t("universities.compare.configure.subtitle", "Pick one admission category, requirement profile, and funding option for each university. The comparison will use that choice for requirements, language proof, cost, and funding."))}</p>
                 </div>
                 <div class="compare-results-actions">
                     <button class="compare-results-action compare-results-action--ghost" type="button" data-action="back-to-compare-select">${escapeHtml(t("universities.compare.results.back_to_selection", "Back to selection"))}</button>
                     <button class="compare-results-action" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
                 </div>
             </div>
-            <section class="compare-config-panel" aria-label="${escapeHtmlAttr(t("universities.compare.configure.title", "Choose tracks and funding"))}">
+            <section class="compare-config-panel" aria-label="${escapeHtmlAttr(t("universities.compare.configure.title", "Choose admission choices"))}">
                 ${universities.map((u, index) => {
                     const id = String(u?.id || "");
                     const entries = compareAdmissionOptionEntries(u);
-                    const selected = compareAdmissionChoices.get(id);
+                    const selected = compareChoiceKey(compareAdmissionChoices.get(id));
                     return `
                         <article class="compare-config-column" data-uni-id="${escapeHtmlAttr(id)}">
                             <div class="compare-config-column__head">
                                 <span>${escapeHtml(compareSlotLabel(index))}</span>
                                 <h2>${escapeHtml(compareUniversityName(u))}</h2>
-                                <p>${escapeHtml(selected ? t("universities.compare.configure.selected", "Track and funding selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
+                                <p>${escapeHtml(selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
                             </div>
                             <div class="compare-config-chance">
                                 ${renderUniChanceSummary(compareChancesByUniId.get(id))}
                             </div>
                             <div class="compare-config-options">
-                                ${entries.length ? entries.map((entry) => renderCompareAdmissionOptionCard(u, entry)).join("") : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_tracks", "Admission tracks"))}</div>`}
+                                ${entries.length ? entries.map((entry) => renderCompareAdmissionOptionCard(u, entry)).join("") : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`}
                             </div>
                         </article>
                     `;
@@ -2528,7 +2527,7 @@ export function initUniversitiesPage() {
                 tone: metrics.highestAcceptanceId === String(u?.id || "") ? "best" : "",
                 sub: compareSourceText(u, "acceptance_rate_percent"),
             })),
-            compareDataRow(t("universities.compare.row.selected_track", "Selected track"), universities, compareTrackLabel),
+            compareDataRow(t("universities.compare.row.selected_track", "Requirement profile"), universities, compareTrackLabel),
             compareDataRow(t("universities.compare.row.funding_choice", "Selected funding"), universities, compareFundingChoiceText),
             compareDataRow(t("universities.compare.row.requirements", "Minimum requirements"), universities, compareRequirementsText),
             compareDataRow(t("universities.compare.row.avg_scores", "Admitted score context"), universities, compareAverageScoreText),
@@ -2966,17 +2965,17 @@ export function initUniversitiesPage() {
                 desc: t("tour.step3.desc", "Start broad, then narrow by country, city, cost range, study level, and funding type."),
                 points: [
                     t("tour.step3.point1", "Adjust tuition min/max with the slider."),
-                    t("tour.step3.point2", "Use grant/paid track filter for finance planning."),
+                    t("tour.step3.point2", "Use the grant/paid funding filter for finance planning."),
                     t("tour.step3.point3", "Use map view to spot location clusters."),
                 ],
                 action: "",
             },
             {
                 kicker: t("tour.step4.kicker", "Step 3"),
-                title: t("tour.step4.title", "Open details and compare tracks"),
-                desc: t("tour.step4.desc", "Click any card to inspect admissions, finance, and requirements per track."),
+                title: t("tour.step4.title", "Open details and compare admission choices"),
+                desc: t("tour.step4.desc", "Click any card to inspect admission categories, requirement profiles, finance, and requirements."),
                 points: [
-                    tFormat("tour.step4.point1", { chance: aiName("chance") }, `Review ${aiName("chance")} by track in the detail page.`),
+                    tFormat("tour.step4.point1", { chance: aiName("chance") }, `Review ${aiName("chance")} by selected requirement profile in the detail page.`),
                     t("tour.step4.point2", "Check Admission and Costs tabs for requirement and funding details."),
                     t("tour.step4.point3", "Compare yearly cost and scholarships before applying."),
                 ],
@@ -3595,7 +3594,14 @@ export function initUniversitiesPage() {
             const uniId = String(actionButton.getAttribute("data-uni-id") || "").trim();
             const optionKey = String(actionButton.getAttribute("data-option-key") || "").trim();
             if (!uniId || !optionKey) return;
-            compareAdmissionChoices.set(uniId, optionKey);
+            compareAdmissionChoices.set(uniId, {
+                programId: String(actionButton.getAttribute("data-program-id") || "").trim(),
+                programName: String(actionButton.getAttribute("data-program-name") || "").trim(),
+                categoryId: String(actionButton.getAttribute("data-category-id") || "").trim(),
+                requirementProfileId: String(actionButton.getAttribute("data-requirement-profile-id") || "").trim(),
+                fundingOptionId: String(actionButton.getAttribute("data-funding-option-id") || "").trim(),
+                choiceKey: optionKey,
+            });
             writeCompareAdmissionChoices();
             setSectionUrl(true);
             renderCompareConfigurePage(state.compareResultIds).catch((err) => console.error(err));
@@ -3707,6 +3713,7 @@ export function initUniversitiesPage() {
             if (el.mapStage) el.mapStage.style.display = "grid";
             el.btnList.classList.remove("active");
             el.btnMap.classList.add("active");
+            updateViewModeIndicator?.(el.btnMap);
             replayMotion(el.mapStage, "motion-panel-enter", { timeoutMs: 420 });
             replayMotion(el.btnMap, "motion-state-pulse", { timeoutMs: 520 });
             await initMap();
@@ -3718,6 +3725,7 @@ export function initUniversitiesPage() {
             if (el.mapStage) el.mapStage.style.display = "none";
             el.btnList.classList.add("active");
             el.btnMap.classList.remove("active");
+            updateViewModeIndicator?.(el.btnList);
             replayMotion(el.list, "motion-panel-enter", { timeoutMs: 420 });
             replayMotion(el.btnList, "motion-state-pulse", { timeoutMs: 520 });
             if (shouldFetch) fetchAndRender();
@@ -4569,7 +4577,7 @@ export function initUniversitiesPage() {
         });
         const match = u.matchData || {};
 
-        // Базовая цена (трековая, если algo её дал)
+        // Базовая цена по выбранному варианту, если алгоритм её дал.
         const baseCost =
         (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
         (match.cost !== undefined ? match.cost : null) ??

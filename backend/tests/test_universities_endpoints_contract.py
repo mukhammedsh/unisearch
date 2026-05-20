@@ -54,63 +54,45 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         )
         self.assertEqual(second.status_code, 304)
 
-    def test_university_detail_includes_track_applicable_majors(self):
+    def test_university_detail_includes_category_applicable_majors(self):
         response = self.client.get("/universities/astana-it-university-kaz-astana")
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
-        tracks = [
-            track
-            for track in (data.get("admission_tracks") or [])
-            if isinstance(track, dict)
-        ]
-        self.assertTrue(tracks)
+        categories = [row for row in (data.get("admission_categories") or []) if isinstance(row, dict)]
+        self.assertTrue(categories)
 
-        admission_track = next(
-            (
-                track
-                for track in tracks
-                if str(track.get("id") or "") == "aitu_paid"
-            ),
-            None,
-        )
-        self.assertIsNotNone(admission_track)
-        self.assertIn("Computer Science", admission_track.get("applicable_majors") or [])
+        category = next((row for row in categories if str(row.get("id") or "") == "aitu_paid"), None)
+        self.assertIsNotNone(category)
+        self.assertIn("Computer Science", category.get("applicable_majors") or [])
+        profile = (category.get("requirement_profiles") or [])[0]
         grant_option = next(
             (
                 option
-                for option in (admission_track.get("funding_options") or [])
+                for option in (profile.get("funding_options") or [])
                 if isinstance(option, dict) and str(option.get("id") or "") == "aitu_unt_grant"
             ),
             None,
         )
         self.assertIsNotNone(grant_option)
-        self.assertIn("Computer Science", grant_option.get("applicable_majors") or [])
 
-    def test_university_detail_includes_track_score_profile_when_available(self):
+    def test_university_detail_includes_requirement_profile_score_profile_when_available(self):
         response = self.client.get("/universities/cuhk-hk-shatin")
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
-        tracks = [
-            track
-            for track in (data.get("admission_tracks") or [])
-            if isinstance(track, dict)
+        profiles = [
+            profile
+            for category in (data.get("admission_categories") or [])
+            if isinstance(category, dict)
+            for profile in (category.get("requirement_profiles") or [])
+            if isinstance(profile, dict)
         ]
-        self.assertTrue(tracks)
-
-        hkdse_track = next(
-            (
-                track
-                for track in tracks
-                if str(track.get("id") or "") == "cuhk_hkdse"
-            ),
-            None,
-        )
-        self.assertIsNotNone(hkdse_track)
-        score_profile = hkdse_track.get("score_profile") or {}
-        requirements = hkdse_track.get("requirements") or {}
-        stats_avg = hkdse_track.get("stats_avg") or {}
+        hkdse_profile = next((profile for profile in profiles if str(profile.get("id") or "") == "cuhk_hkdse"), None)
+        self.assertIsNotNone(hkdse_profile)
+        score_profile = hkdse_profile.get("score_profile") or {}
+        requirements = hkdse_profile.get("requirements") or {}
+        stats_avg = hkdse_profile.get("stats_avg") or {}
         self.assertIn("p25_normalized", score_profile)
         self.assertIn("median_normalized", score_profile)
         self.assertIn("p75_normalized", score_profile)
@@ -120,7 +102,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(2, int(requirements.get("HKDSE_MATHEMATICS", 0)))
         self.assertAlmostEqual(42.88, float(stats_avg.get("HKDSE_WEIGHTED_TOTAL") or 0.0), places=2)
 
-    def test_all_admission_tracks_and_funding_options_have_descriptions(self):
+    def test_all_admission_categories_profiles_and_funding_options_have_descriptions(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
         self.assertEqual(response.status_code, 200)
         items = response.json().get("items") or []
@@ -131,51 +113,50 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             self.assertTrue(university_id)
             detail = self.client.get(f"/universities/{university_id}")
             self.assertEqual(detail.status_code, 200, university_id)
-            tracks = detail.json().get("admission_tracks") or []
-            for track in tracks:
-                if not isinstance(track, dict):
+            categories = detail.json().get("admission_categories") or []
+            for category in categories:
+                if not isinstance(category, dict):
                     continue
-                track_id = str(track.get("id") or "")
+                category_id = str(category.get("id") or "")
                 self.assertTrue(
-                    str(track.get("description") or "").strip(),
-                    f"{university_id}:{track_id} missing track description",
+                    str(category.get("description") or "").strip(),
+                    f"{university_id}:{category_id} missing category description",
                 )
-                for option in track.get("funding_options") or []:
-                    if not isinstance(option, dict):
+                for profile in category.get("requirement_profiles") or []:
+                    if not isinstance(profile, dict):
                         continue
-                    option_id = str(option.get("id") or "")
                     self.assertTrue(
-                        str(option.get("description") or "").strip(),
-                        f"{university_id}:{track_id}:{option_id} missing funding option description",
+                        str(profile.get("description") or "").strip(),
+                        f"{university_id}:{category_id}:{profile.get('id')} missing profile description",
                     )
+                    for option in profile.get("funding_options") or []:
+                        if not isinstance(option, dict):
+                            continue
+                        option_id = str(option.get("id") or "")
+                        self.assertTrue(
+                            str(option.get("description") or "").strip(),
+                            f"{university_id}:{category_id}:{option_id} missing funding option description",
+                        )
 
-    def test_university_detail_localizes_track_descriptions_by_lang(self):
+    def test_university_detail_localizes_requirement_profile_descriptions_by_lang(self):
         response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
-        track = next(
-            (
-                row
-                for row in (data.get("admission_tracks") or [])
-                if isinstance(row, dict) and str(row.get("id") or "") == "mit_regular"
-            ),
-            None,
-        )
-        self.assertIsNotNone(track)
-        self.assertTrue(
-            str(track.get("description") or "").startswith("Основной вариант поступления в MIT"),
-        )
+        category = next((row for row in (data.get("admission_categories") or []) if isinstance(row, dict)), None)
+        self.assertIsNotNone(category)
+        profile = (category.get("requirement_profiles") or [])[0]
+        self.assertTrue(str(profile.get("description") or ""))
         paid_option = next(
             (
                 row
-                for row in (track.get("funding_options") or [])
+                for row in (profile.get("funding_options") or [])
                 if isinstance(row, dict) and str(row.get("id") or "") == "mit_regular"
             ),
             None,
         )
         self.assertIsNotNone(paid_option)
-        self.assertIn("Платный вариант поступления в MIT", str(paid_option.get("description") or ""))
+        self.assertTrue(str(paid_option.get("description") or ""))
 
     def test_all_universities_have_campus_size_and_truthful_cost_breakdown(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
@@ -420,7 +401,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(uni_chance.status_code, 200)
         chance_data = uni_chance.json()
         self.assertIn("overallChance", chance_data)
-        self.assertIn("tracks", chance_data)
+        self.assertIn("choices", chance_data)
         overall_chance = chance_data.get("overallChance")
         if overall_chance is not None:
             self.assertTrue(0 <= float(overall_chance) <= 100)

@@ -94,7 +94,7 @@ export function initGuidePage() {
       OSSDCERT: t("guide.academic.ossdcert", "OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions."),
     };
     const base = descriptions[normalized]
-      || t("guide.academic.default", "This is an academic metric used by one or more admission tracks in the UniSearch dataset.");
+      || t("guide.academic.default", "This is an academic metric used by one or more requirement profiles in the UniSearch dataset.");
     const scale = scoreScaleText(cfg);
     return withExamLabel(`${base}${scale ? ` ${scale}` : ""}`.trim(), labelText);
   }
@@ -110,13 +110,13 @@ export function initGuidePage() {
     else if (key.includes("DUOLINGO") || key.includes("DET")) base = t("guide.language.det", "Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.");
     else if (key.includes("PTE")) base = t("guide.language.pte", "PTE Academic is a computer-based English proficiency test used in international admissions.");
     else if (key.includes("CAMBRIDGE")) base = t("guide.language.cambridge", "Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.");
-    else if (key.includes("TESTDAF") || key.includes("DSH")) base = t("guide.language.german", "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study tracks.");
+    else if (key.includes("TESTDAF") || key.includes("DSH")) base = t("guide.language.german", "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study options.");
     else if (key.includes("DELF") || key.includes("DALF") || key.includes("TCF") || key.includes("TEF")) base = t("guide.language.french", "These exams assess French proficiency and are used for French-language academic eligibility.");
     else if (key.includes("NT2")) base = t("guide.language.dutch", "NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.");
     else if (key.includes("HSK")) base = t("guide.language.hsk", "HSK measures Chinese language proficiency for academic and formal language use.");
     else if (key.includes("JLPT")) base = t("guide.language.jlpt", "JLPT measures Japanese language proficiency across standard difficulty levels.");
     else if (key.includes("TOPIK")) base = t("guide.language.topik", "TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.");
-    else if (langCode) base = tFormat("guide.language.by_code", { code: String(langCode).toUpperCase() }, `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission tracks.`);
+    else if (langCode) base = tFormat("guide.language.by_code", { code: String(langCode).toUpperCase() }, `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission choices.`);
 
     const scale = scoreScaleText(cfg);
     return withExamLabel(`${base}${scale ? ` ${scale}` : ""}`.trim(), labelText);
@@ -129,9 +129,9 @@ export function initGuidePage() {
       { term: fitName, desc: tFormat("guide.glossary.fit", { fit: fitName }, `${fitName} is the smart sorting mode based on your profile.`) },
       { term: chanceName, desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is an estimated admission chance based on your data.`) },
       { term: t("guide.glossary.term.swr", "Data Cache"), desc: t("guide.glossary.swr", "Cache behavior: we first show saved data, then refresh it in the background.") },
-      { term: t("guide.glossary.term.admission_track", "Admission Track"), desc: t("guide.glossary.admission_track", "A specific way to apply to a university (e.g., direct, exam-based, scholarship path).") },
-      { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Minimum scores to be considered for a track.") },
-      { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "Average scores of admitted students on that track.") },
+      { term: t("guide.glossary.term.admission_track", "Admission Choice"), desc: t("guide.glossary.admission_track", "A selected combination of admission category, requirement profile, and funding option.") },
+      { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Minimum scores to be considered for a requirement profile.") },
+      { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "Average scores of admitted students for that requirement profile.") },
       { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam.") },
       { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Return on Investment compares estimated graduate salary with the cost of one study year.") },
       { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "A university-side-by-side view that scans comparable published metrics and explains key differences.") },
@@ -191,7 +191,7 @@ export function initGuidePage() {
       const examLabel = getExamDisplayName(id, { locale: getCurrentLanguage() });
       return `<li>${escapeHtml(describeAcademicExam(id, cfg, examLabel))}</li>`;
     }).join("");
-    academicWrap.innerHTML = `<p>${escapeHtml(t("guide.academic.intro", "The following academic exams are currently used by UniSearch for admission track matching and recommendation quality."))}</p><ul class="guide-list">${items}</ul>`;
+    academicWrap.innerHTML = `<p>${escapeHtml(t("guide.academic.intro", "The following academic exams are currently used by UniSearch for requirement profile matching and recommendation quality."))}</p><ul class="guide-list">${items}</ul>`;
   }
 
   function renderLanguageExams() {

@@ -149,8 +149,13 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
         self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
         self.send_header(
             "Content-Security-Policy-Report-Only",
-            "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
+            "default-src 'self'; connect-src 'self' http://127.0.0.1:* http://localhost:*; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
         )
+
+
+class FrontendThreadingHTTPServer(ThreadingHTTPServer):
+    daemon_threads = True
+    request_queue_size = 128
 
 
 def main() -> None:
@@ -171,7 +176,7 @@ def main() -> None:
         **handler_kwargs,
     )
 
-    with ThreadingHTTPServer((args.host, args.port), handler_class) as httpd:
+    with FrontendThreadingHTTPServer((args.host, args.port), handler_class) as httpd:
         httpd.file_index = file_index
         print("[frontend-dev-server] serving indexed frontend files")
         httpd.serve_forever()

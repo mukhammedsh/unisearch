@@ -3,7 +3,7 @@ import unittest
 
 from app.services import exams as exams_service
 from app.services import universities as uni_service
-from app.services.ai_scoring import _track_key, estimate_uni_chance
+from app.services.ai_scoring import _admission_choice_key, estimate_uni_chance
 
 
 _NUMERIC_EXAM_RANGES = {
@@ -81,8 +81,8 @@ def _add_exam(profile, exam_id, score):
     profile.setdefault("exams", []).append({"id": exam_key, "score": score})
 
 
-def _language_rules(track):
-    raw = track.get("language_requirements")
+def _language_rules(choice):
+    raw = choice.get("language_requirements")
     if isinstance(raw, dict) and isinstance(raw.get("items"), list):
         return [row for row in raw.get("items", []) if isinstance(row, dict)]
     if isinstance(raw, dict):
@@ -119,8 +119,8 @@ def _add_language(profile, rule):
     profile.setdefault("languages", []).append({"code": code, "kind": "cefr", "cefr": cefr})
 
 
-def _profile_for_track_percentile(university, track, track_index, percentile_key):
-    score_profile = track.get("score_profile") if isinstance(track.get("score_profile"), dict) else {}
+def _profile_for_choice_percentile(university, choice, choice_index, percentile_key):
+    score_profile = choice.get("score_profile") if isinstance(choice.get("score_profile"), dict) else {}
     target = score_profile.get(percentile_key)
     if target is None:
         return None
@@ -136,14 +136,19 @@ def _profile_for_track_percentile(university, track, track_index, percentile_key
     profile = {
         "locale": "eng",
         "budget": 1_000_000,
-        "selectedAdmissionTracks": {
-            str(university.get("id") or ""): _track_key(track, track_index),
+        "selectedAdmissionChoices": {
+            str(university.get("id") or ""): {
+                "categoryId": str(choice.get("category_id") or "").strip(),
+                "requirementProfileId": str(choice.get("requirement_profile_id") or "").strip(),
+                "fundingOptionId": str(choice.get("funding_option_id") or "").strip(),
+                "choiceKey": _admission_choice_key(choice, choice_index),
+            },
         },
     }
     _add_exam(profile, primary_exam, raw_score)
 
-    requirements = track.get("requirements") if isinstance(track.get("requirements"), dict) else {}
-    averages = track.get("stats_avg") if isinstance(track.get("stats_avg"), dict) else {}
+    requirements = choice.get("requirements") if isinstance(choice.get("requirements"), dict) else {}
+    averages = choice.get("stats_avg") if isinstance(choice.get("stats_avg"), dict) else {}
     for exam_id, min_score in requirements.items():
         exam_key = str(exam_id or "").strip().upper()
         if exam_key == primary_exam:
@@ -153,37 +158,60 @@ def _profile_for_track_percentile(university, track, track_index, percentile_key
         else:
             _add_exam(profile, exam_key, max(float(min_score or 0.0), float(averages.get(exam_id) or min_score or 0.0)))
 
-    for rule in _language_rules(track):
+    for rule in _language_rules(choice):
         _add_language(profile, rule)
     return profile
 
 
-def _single_track_university(university, track, keep_score_profile):
+def _single_choice_university(university, choice, keep_score_profile):
     out = copy.deepcopy(university)
-    one_track = copy.deepcopy(track)
-    if not keep_score_profile:
-        one_track.pop("score_profile", None)
-    out["admission_tracks"] = [one_track]
+    profile = {
+        "id": choice.get("requirement_profile_id") or choice.get("id") or "profile",
+        "label": choice.get("requirement_profile_label") or choice.get("label") or "Requirement profile",
+        "requirements": copy.deepcopy(choice.get("requirements") if isinstance(choice.get("requirements"), dict) else {}),
+        "stats_avg": copy.deepcopy(choice.get("stats_avg") if isinstance(choice.get("stats_avg"), dict) else {}),
+    }
+    for key in (
+        "language_requirements",
+        "language_requirements_mode",
+        "extra_requirements",
+        "scholarships",
+        "applicable_majors",
+        "scope",
+    ):
+        if key in choice:
+            profile[key] = copy.deepcopy(choice.get(key))
+    if keep_score_profile and isinstance(choice.get("score_profile"), dict):
+        profile["score_profile"] = copy.deepcopy(choice.get("score_profile"))
+
+    out["admission_categories"] = [
+        {
+            "id": choice.get("category_id") or "category",
+            "label": choice.get("category_label") or "Admission category",
+            "scope": choice.get("scope") or "general",
+            "requirement_profiles": [profile],
+        }
+    ]
     return out
 
 
 class UniChanceFallbackCalibrationTests(unittest.TestCase):
-    def test_estimated_fallback_is_calibrated_against_score_profile_tracks(self):
+    def test_estimated_fallback_is_calibrated_against_score_profile_choices(self):
         comparisons = []
 
         for university in uni_service.list_universities(limit=10000).get("items", []):
-            tracks = uni_service.expand_admission_track_variants(university.get("admission_tracks"))
-            for track_index, track in enumerate(tracks):
-                if not isinstance(track, dict) or not isinstance(track.get("score_profile"), dict):
+            choices = uni_service.expand_admission_choices(university.get("admission_categories"))
+            for choice_index, choice in enumerate(choices):
+                if not isinstance(choice, dict) or not isinstance(choice.get("score_profile"), dict):
                     continue
-                score_profile = track["score_profile"]
+                score_profile = choice["score_profile"]
                 for label, key in (("p25", "p25_normalized"), ("median", "median_normalized"), ("p75", "p75_normalized")):
-                    profile = _profile_for_track_percentile(university, track, track_index, key)
+                    profile = _profile_for_choice_percentile(university, choice, choice_index, key)
                     if profile is None:
                         continue
 
-                    exact = estimate_uni_chance(_single_track_university(university, track, True), profile)
-                    fallback = estimate_uni_chance(_single_track_university(university, track, False), profile)
+                    exact = estimate_uni_chance(_single_choice_university(university, choice, True), profile)
+                    fallback = estimate_uni_chance(_single_choice_university(university, choice, False), profile)
                     exact_chance = exact.get("overallChance")
                     fallback_chance = fallback.get("overallChance")
                     if exact_chance is None or fallback_chance is None:
@@ -192,7 +220,7 @@ class UniChanceFallbackCalibrationTests(unittest.TestCase):
                     comparisons.append(
                         {
                             "university": university.get("id"),
-                            "track": _track_key(track, track_index),
+                            "choice": _admission_choice_key(choice, choice_index),
                             "point": label,
                             "exam": str(score_profile.get("exam_id") or "").upper(),
                             "exact": int(exact_chance),

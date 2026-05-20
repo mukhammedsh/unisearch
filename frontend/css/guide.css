@@ -686,3 +686,52 @@ body[data-page="guide"] .guide-page{
     background: #e9eef6;
   }
 }
+
+/* ===== 2026 Guide Light Dark-Parity Pass ===== */
+:root:not([data-theme="dark"]) body[data-page="guide"]{
+  background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
+}
+
+:root:not([data-theme="dark"]) .guide-sidebar {
+  background: transparent;
+}
+
+@media (max-width: 980px){
+  :root:not([data-theme="dark"]) .guide-sidebar{
+    background: #f4f5f6;
+  }
+}
+
+:root:not([data-theme="dark"]) .guide-nav,
+:root:not([data-theme="dark"]) .guide-section{
+  background: var(--surface-solid);
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .guide-nav {
+  background: var(--surface-solid);
+}
+
+:root:not([data-theme="dark"]) .guide-nav a:hover,
+:root:not([data-theme="dark"]) .guide-nav a.is-active{
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.035);
+}
+
+:root:not([data-theme="dark"]) .guide-section.is-active{
+  border-color: rgba(87, 21, 219, 0.22);
+  background: var(--surface-solid);
+}
+
+:root:not([data-theme="dark"]) .guide-card,
+:root:not([data-theme="dark"]) .guide-flow-step{
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .guide-tag,
+:root:not([data-theme="dark"]) .guide-doc code {
+  background: rgba(87, 21, 219, 0.08);
+  border-color: rgba(87, 21, 219, 0.18);
+}

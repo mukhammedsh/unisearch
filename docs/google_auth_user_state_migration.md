@@ -27,7 +27,7 @@
   - `interests`
   - `studyMode`
   - `fundingType`
-  - `selectedAdmissionTracks`
+  - `selectedAdmissionChoices`
 
 Backend target:
 - Таблица/коллекция `user_profiles`.
@@ -39,37 +39,49 @@ Backend target:
   - возможно `PATCH /me/profile` для отдельных секций.
 
 Важно:
-- `selectedAdmissionTracks` сейчас внутри профиля, но логически это отдельное user-state. При переносе лучше вынести отдельно, чтобы смена профиля не стирала выбор трека.
+- `selectedAdmissionChoices` сейчас внутри профиля, но логически это отдельное user-state. При переносе лучше вынести отдельно, чтобы смена профиля не стирала выбор варианта поступления.
 
-### Выбранные треки поступления
+### Выбранные варианты поступления
 
-- Сейчас хранится внутри `unisearch_profile.selectedAdmissionTracks`
-- Основные функции: `getSelectedAdmissionTrack`, `saveSelectedAdmissionTrack`
+- Сейчас хранится внутри `unisearch_profile.selectedAdmissionChoices`
+- Основные функции: `getSelectedAdmissionChoice`, `saveSelectedAdmissionChoice`
 - Файл: `frontend/javascript/utils.js`
 - Использование:
-  - `frontend/javascript/pages/university.js` — выбор активного admission track на detail-странице.
+  - `frontend/javascript/pages/university.js` — выбор активного admission choice на detail-странице.
 
 Формат сейчас:
 
 ```json
 {
-  "selectedAdmissionTracks": {
-    "mit-usa-cambridge": "undergraduate_regular_decision"
+  "selectedAdmissionChoices": {
+    "mit-usa-cambridge": {
+      "programId": "computer_science",
+      "programName": "Computer Science",
+      "categoryId": "regular_undergraduate",
+      "requirementProfileId": "sat",
+      "fundingOptionId": "paid",
+      "choiceKey": "regular_undergraduate::sat::paid"
+    }
   }
 }
 ```
 
 Backend target:
-- Таблица/коллекция `user_selected_admission_tracks`.
+- Таблица/коллекция `user_selected_admission_choices`.
 - Поля:
   - `user_id`
   - `university_id`
-  - `track_key`
+  - `program_id`
+  - `program_name`
+  - `category_id`
+  - `requirement_profile_id`
+  - `funding_option_id`
+  - `choice_key`
   - `updated_at`
 - API:
-  - `GET /me/selected-admission-tracks`
-  - `PUT /me/universities/{university_id}/selected-admission-track`
-  - `DELETE /me/universities/{university_id}/selected-admission-track`
+  - `GET /me/selected-admission-choices`
+  - `PUT /me/universities/{university_id}/selected-admission-choice`
+  - `DELETE /me/universities/{university_id}/selected-admission-choice`
 
 ### Избранные университеты
 
@@ -253,10 +265,10 @@ user_recent_universities
 - viewed_at
 - view_count
 
-user_selected_admission_tracks
+user_selected_admission_choices
 - user_id
 - university_id
-- track_key
+- choice_key
 - updated_at
 
 user_catalog_preferences
@@ -275,7 +287,7 @@ user_compare_universities
 ## Миграционная стратегия
 
 1. Добавить Google Auth и endpoint `GET /me`.
-2. Добавить backend API для профиля, избранного, recent, фильтров и выбранных треков.
+2. Добавить backend API для профиля, избранного, recent, фильтров и выбранных вариантов поступления.
 3. На frontend сделать `userState` слой:
    - authenticated: читать/писать через API;
    - guest: читать/писать через текущий localStorage.
@@ -284,7 +296,7 @@ user_compare_universities
    - избранные;
    - недавно открытые;
    - фильтры;
-   - выбранные треки;
+   - выбранные варианты поступления;
    - compare, если решим сохранять.
 5. После успешного импорта не удалять localStorage сразу. Лучше поставить marker `imported_to_user_id`, чтобы избежать повторного импорта и дать rollback.
 6. Все server writes делать optimistic с откатом UI при ошибке.
@@ -293,19 +305,19 @@ user_compare_universities
    - избранные: union.
    - recent: merge по `viewed_at`, максимум 12.
    - фильтры: last updated wins.
-   - selected tracks: last updated per university wins.
+   - selected admission choices: last updated per university wins.
 
 ## Где начинать рефакторинг
 
 1. `frontend/javascript/utils.js`
-   - вынести `loadProfile/saveProfile`, `loadFilters/saveFilters`, `getSelectedAdmissionTrack/saveSelectedAdmissionTrack` за интерфейс `userState`.
+   - вынести `loadProfile/saveProfile`, `loadFilters/saveFilters`, `getSelectedAdmissionChoice/saveSelectedAdmissionChoice` за интерфейс `userState`.
 2. `frontend/javascript/pages/_shared.js`
    - вынести `readIdListStorage/writeIdListStorage/rememberRecentUniversity` в тот же слой или отдельный `userUniversityState`.
 3. `frontend/javascript/pages/universities.js`
    - заменить прямое чтение `Set(readIdListStorage(...))` на async загрузку user state.
    - фильтр `only_saved` должен использовать backend query.
 4. `frontend/javascript/pages/university.js`
-   - заменить `rememberRecentUniversity` и selected track helpers на API-aware слой.
+   - заменить `rememberRecentUniversity` и selected admission choice helpers на API-aware слой.
 5. Backend:
    - добавить user модели и endpoints до переписывания UI, чтобы frontend можно было переключать постепенно.
 

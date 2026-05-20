@@ -6798,3 +6798,119 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background: rgba(87, 21, 219, 0.13);
   border-color: rgba(87, 21, 219, 0.42);
 }
+
+/* ===== 2026 Catalog Light Dark-Parity Pass ===== */
+:root:not([data-theme="dark"]) {
+  --bg: #f4f5f6;
+  --card: #ffffff;
+  --surface-solid: #ffffff;
+  --surface-soft: #f6f7f8;
+  --muted: #555555;
+  --line: rgba(0, 0, 0, 0.09);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --shadow: none;
+  --slider-track-inactive: #e2e2e4;
+  --grant-soft: rgba(16, 185, 129, 0.10);
+  --grant-soft-strong: rgba(16, 185, 129, 0.16);
+}
+
+:root:not([data-theme="dark"]) .u-page {
+  background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
+}
+
+:root:not([data-theme="dark"]) .u-page-scope__inner,
+:root:not([data-theme="dark"]) .u-top,
+:root:not([data-theme="dark"]) .u-filter-card,
+:root:not([data-theme="dark"]) .u-recent,
+:root:not([data-theme="dark"]) .u-shortlist,
+:root:not([data-theme="dark"]) .u-mobile-filter-summary,
+:root:not([data-theme="dark"]) .uni-card,
+:root:not([data-theme="dark"]) .u-map-results,
+:root:not([data-theme="dark"]) .u-map-result-card,
+:root:not([data-theme="dark"]) .u-map-container,
+:root:not([data-theme="dark"]) .compare-config-column,
+:root:not([data-theme="dark"]) .compare-analysis-block,
+:root:not([data-theme="dark"]) .compare-results-empty,
+:root:not([data-theme="dark"]) .compare-uni-card,
+:root:not([data-theme="dark"]) .compare-table-wrap {
+  background: var(--surface-solid);
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .u-page-scope__inner,
+:root:not([data-theme="dark"]) .u-filter-card,
+:root:not([data-theme="dark"]) .u-top {
+  background: var(--surface-solid);
+}
+
+:root:not([data-theme="dark"]) .u-input,
+:root:not([data-theme="dark"]) .u-select,
+:root:not([data-theme="dark"]) .u-search input,
+:root:not([data-theme="dark"]) .u-reset,
+:root:not([data-theme="dark"]) .view-toggles,
+:root:not([data-theme="dark"]) .view-btn,
+:root:not([data-theme="dark"]) .page-btn,
+:root:not([data-theme="dark"]) .uni-pill,
+:root:not([data-theme="dark"]) .compare-config-column .track-stats-box,
+:root:not([data-theme="dark"]) .compare-config-column .track-exam-group,
+:root:not([data-theme="dark"]) .compare-config-column .admission-option-meta .tag,
+:root:not([data-theme="dark"]) .compare-config-column .track-cost-preview {
+  background: var(--surface-soft);
+  border-color: var(--line);
+  color: var(--text);
+}
+
+:root:not([data-theme="dark"]) .u-section-tabs {
+  border-bottom-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .u-section-tab.is-active,
+:root:not([data-theme="dark"]) .view-btn.active,
+:root:not([data-theme="dark"]) .page-btn.active {
+  color: var(--accent);
+}
+
+.view-toggles.has-sliding-indicator {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.view-toggles.has-sliding-indicator .sliding-indicator {
+  top: 4px;
+  bottom: 4px;
+  height: auto;
+  border-radius: 10px;
+  background: var(--accent-faint, rgba(87, 21, 219, 0.10));
+  z-index: 0;
+}
+
+.view-toggles.has-sliding-indicator .view-btn {
+  position: relative;
+  z-index: 1;
+}
+
+.view-toggles.has-sliding-indicator .view-btn.active {
+  background: transparent;
+}
+
+:root:not([data-theme="dark"]) .view-btn.active,
+:root:not([data-theme="dark"]) .page-btn.active {
+  border-color: rgba(87, 21, 219, 0.18);
+}
+
+:root:not([data-theme="dark"]) .uni-card:hover {
+  border-color: rgba(87, 21, 219, 0.24);
+}
+
+:root:not([data-theme="dark"]) .uni-card.uni-card--compare-selected,
+:root:not([data-theme="dark"]) .compare-config-column .admission-option-card:has(.track-select-btn.is-active) {
+  background-color: rgba(87, 21, 219, 0.07);
+  border-color: rgba(87, 21, 219, 0.30);
+}
+
+:root:not([data-theme="dark"]) .compare-config-column .admission-option-card {
+  background: var(--surface-solid);
+  border-color: var(--line);
+}

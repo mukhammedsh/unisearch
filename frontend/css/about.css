@@ -645,3 +645,51 @@
   background: rgba(87, 21, 219, 0.055);
   border-color: rgba(87, 21, 219, 0.32);
 }
+
+/* ===== 2026 About Light Dark-Parity Pass ===== */
+:root:not([data-theme="dark"]) body[data-page="about"] {
+  background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
+}
+
+:root:not([data-theme="dark"]) .about-shell {
+  background: var(--surface-solid);
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .about-proof-card,
+:root:not([data-theme="dark"]) .about-principle-card,
+:root:not([data-theme="dark"]) .team-card,
+:root:not([data-theme="dark"]) .about-contact-card,
+:root:not([data-theme="dark"]) .about-link {
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .about-eyebrow,
+:root:not([data-theme="dark"]) .about-kicker {
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #555555;
+}
+
+:root:not([data-theme="dark"]) .about-tag {
+  background: rgba(87, 21, 219, 0.08);
+  border-color: rgba(87, 21, 219, 0.18);
+}
+
+:root:not([data-theme="dark"]) .about-shell-divider {
+  background: var(--line);
+}
+
+:root:not([data-theme="dark"]) .about-proof-card:hover,
+:root:not([data-theme="dark"]) .about-principle-card:hover,
+:root:not([data-theme="dark"]) .team-card:hover,
+:root:not([data-theme="dark"]) .about-contact-card:hover,
+:root:not([data-theme="dark"]) .about-link:hover {
+  background: var(--surface-soft);
+  border-color: rgba(87, 21, 219, 0.24);
+}

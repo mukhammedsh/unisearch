@@ -123,8 +123,9 @@ function normalizeSlash(filePath) {
 }
 
 function listTrackedFiles() {
-  const output = execFileSync("git", ["ls-files", "-z"], { encoding: "buffer" });
-  return output
+  const tracked = execFileSync("git", ["ls-files", "-z"], { encoding: "buffer" });
+  const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard", "-z"], { encoding: "buffer" });
+  return Buffer.concat([tracked, untracked])
     .toString("utf8")
     .split("\0")
     .filter(Boolean)
@@ -132,7 +133,7 @@ function listTrackedFiles() {
 }
 
 function shouldSkipFile(filePath) {
-  if (!existsSync(filePath)) return true;
+  if (!existsSync(filePath)) return false;
   if ([...SKIP_DIRS].some((dir) => filePath === dir || filePath.startsWith(`${dir}/`))) return true;
   if (EXTENSIONLESS_TEXT_FILES.has(filePath)) return false;
   return TEXT_EXTENSIONS.has(path.extname(filePath).toLowerCase());

@@ -48,16 +48,19 @@ test("universities tabs host ranking and comparison results in one workspace", a
   await expect(page.locator("#compareResultsPane")).toContainText("UniChance");
   const configureText = await page.locator("#compareResultsPane").textContent();
   expect(configureText).not.toMatch(/(?:Ð|Рќ|вЂ)/);
-  await expect(page).toHaveURL(/tracks=/);
+  await expect(page).toHaveURL(/choices=/);
   const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
   await expect(continueCompareButton).toBeEnabled();
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await page.evaluate(() => { window.scrollTo(0, document.body.scrollHeight); });
-  // The scroll might not occur if the screen is too tall to overflow
-  await expect.poll(() => page.evaluate(() => window.scrollY || document.body.scrollHeight <= window.innerHeight)).toBeTruthy();
+  const configureCanScroll = await page.evaluate(() => document.documentElement.scrollHeight > window.innerHeight + 4);
+  if (configureCanScroll) {
+    await page.evaluate(() => { window.scrollTo(0, document.documentElement.scrollHeight); });
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  }
   await continueCompareButton.click();
   await expect(page).toHaveURL(/compare=results/);
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(2);
+  if (configureCanScroll) {
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(2);
+  }
   await expect(page.locator(".compare-key-differences")).toBeVisible();
   await expect(page.locator(".compare-reason-group")).toHaveCount(2);
   await expect(page.locator(".compare-uni-card")).toHaveCount(2);

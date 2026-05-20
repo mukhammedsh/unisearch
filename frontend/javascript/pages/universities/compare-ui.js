@@ -21,14 +21,11 @@ import {
   renderTrackChanceChip, 
   renderTrackFundingBadge, 
   getTrackFundingType,
-  splitExamEntries,
-  renderExamGroup,
   renderUniChanceSummary,
   chanceTone,
   getTrackFundingType as getEngineFundingType,
 } from "../../university-detail-helpers.js";
 import { 
-  renderTrackLanguageExamGroup,
   modeAwareAnnualCost,
 } from "../_shared.js";
 import { moneyUSD } from "../../utils.js";
@@ -51,6 +48,7 @@ import {
   COMPARE_PAIR_SIZE,
   normalizeCompareIdList,
   compareAdmissionOptionEntries,
+  compareChoiceKey,
   trTrackLabel as trEngineTrackLabel,
 } from "./compare-engine.js";
 
@@ -75,8 +73,8 @@ export function renderCompareCard(u, index, options = {}) {
   const name = compareUniversityName(u);
   
   const uniChance = chances.get(id);
-  const selectedKey = choices.get(id);
-  const trackChance = (uniChance?.tracks || []).find((x) => String(x.trackKey) === selectedKey);
+  const selectedKey = compareChoiceKey(choices.get(id));
+  const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === selectedKey);
   const chanceHtml = trackChance ? `<div class="compare-uni-card__chance">${renderTrackChanceChip(trackChance)}</div>` : "";
 
   return `
@@ -428,20 +426,23 @@ export function renderCompareTrackChanceBadge(trackChance) {
 
 export function renderCompareAdmissionOptionCard(u, entry, options = {}) {
   const id = String(u?.id || "");
-  const { track, option, key } = entry;
+  const { option, key } = entry;
   const choices = options.choices || new Map();
   const chances = options.chances || new Map();
-  const selected = choices.get(id) === key;
+  const selected = compareChoiceKey(choices.get(id)) === key;
   const uniChance = chances.get(id);
-  const trackChance = (uniChance?.tracks || []).find((x) => String(x.trackKey) === key);
-  const recommendedKey = String(uniChance?.recommendedTrackKey || "").trim();
-  const isRecommendedTrack = Boolean(recommendedKey && key === recommendedKey);
+  const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === key);
+  const recommendedKey = String(uniChance?.recommendedChoiceKey || "").trim();
+  const isRecommendedChoice = Boolean(recommendedKey && key === recommendedKey);
   
   const optionLabelRaw = String(option?.label || "").trim();
-  const parentLabelRaw = String(track?.label || "").trim();
-  const optionLabel = optionLabelRaw && optionLabelRaw !== parentLabelRaw ? trTrackLabel(optionLabelRaw) : "";
-  const parentLabel = parentLabelRaw ? trTrackLabel(parentLabelRaw) : "";
-  const titleLabel = optionLabel || parentLabel || translateUnknownWord("placeholder.field.admission_tracks", "Admission tracks");
+  const profileLabelRaw = String(option?.requirement_profile_label || option?.requirement_profile_id || "").trim();
+  const categoryLabelRaw = String(option?.category_label || option?.category_id || "").trim();
+  const profileLabel = profileLabelRaw ? trTrackLabel(profileLabelRaw) : "";
+  const categoryLabel = categoryLabelRaw ? trTrackLabel(categoryLabelRaw) : "";
+  const titleLabel = Array.from(new Set([categoryLabel, profileLabel].filter(Boolean))).join(" - ")
+    || (optionLabelRaw ? trTrackLabel(optionLabelRaw) : "")
+    || translateUnknownWord("placeholder.field.admission_categories", "Admission categories");
   
   const fundingMeta = [
     option?.funding_program
@@ -470,25 +471,8 @@ export function renderCompareAdmissionOptionCard(u, entry, options = {}) {
   const priceText = Number.isFinite(Number(price)) ? moneyUSD(price) : unknownFieldText("placeholder.field.cost", "Cost");
   const isGrantTrack = getTrackFundingType(option) === "grant";
 
-  const requirements = option?.requirements || {};
-  const minParts = splitExamEntries(requirements);
-  const minList = [
-    renderExamGroup(translateWord("academic_requirements", "Academic requirements"), minParts.acad, "#2563eb"),
-    renderTrackLanguageExamGroup(option, "requirements"),
-  ].filter(Boolean).join("");
-
-  const statsAvg = option?.stats_avg || {};
-  const avgParts = splitExamEntries(statsAvg);
-  const avgList = [
-    renderExamGroup(translateWord("academic_average", "Academic average"), avgParts.acad, "#2563eb"),
-    renderTrackLanguageExamGroup(option, "average"),
-  ].filter(Boolean).join("");
-
-  const minContent = minList || `<div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>`;
-  const avgContent = avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`;
-  
   const selectionBadges = [];
-  if (isRecommendedTrack) selectionBadges.push(escapeHtml(t("admission.track.recommended", "Recommended")));
+  if (isRecommendedChoice) selectionBadges.push(escapeHtml(t("admission.choice.recommended", "Recommended")));
   const selectionBadgeHtml = selectionBadges.length
     ? `<div class="track-selection-badge">${selectionBadges.join(" / ")}</div>`
     : "";
@@ -511,22 +495,9 @@ export function renderCompareAdmissionOptionCard(u, entry, options = {}) {
         <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceText)}
       </div>
 
-      <div class="track-stats-grid">
-        <div class="track-stats-box track-stats-box--min">
-          <div class="track-stats-title">${escapeHtml(translateWord("minimum_to_apply", "Minimum to apply"))}</div>
-          <div class="track-stats-values">${minContent}</div>
-        </div>
-        <div class="track-stats-box track-stats-box--avg">
-          <div class="track-stats-title track-stats-title--avg">
-            ${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}
-          </div>
-          <div class="track-stats-values">${avgContent}</div>
-        </div>
-      </div>
-
       <div class="track-select-row">
         <button class="track-select-btn${selected ? " is-active" : ""}" type="button" data-action="select-compare-admission" data-uni-id="${escapeHtmlAttr(id)}" data-option-key="${escapeHtmlAttr(key)}"${selected ? " disabled" : ""}>
-          ${escapeHtml(selected ? t("admission.track.selected", "Selected") : t("admission.track.select", "Select"))}
+          ${escapeHtml(selected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
         </button>
       </div>
     </article>
@@ -543,31 +514,31 @@ export function renderCompareConfigurePage(container, universities, options = {}
     <div class="compare-results-head compare-results-head--pair">
       <div>
         <p class="compare-results-kicker">${escapeHtml(t("universities.compare.configure.kicker", "Before comparison"))}</p>
-        <h1>${escapeHtml(t("universities.compare.configure.title", "Choose tracks and funding"))}</h1>
-        <p class="compare-config-subtitle">${escapeHtml(t("universities.compare.configure.subtitle", "Pick one admission track and one funding option for each university. The comparison will use these selected options for requirements, language proof, cost, and funding."))}</p>
+        <h1>${escapeHtml(t("universities.compare.configure.title", "Choose admission choices"))}</h1>
+        <p class="compare-config-subtitle">${escapeHtml(t("universities.compare.configure.subtitle", "Pick one admission category, requirement profile, and funding option for each university. The comparison will use that choice for requirements, language proof, cost, and funding."))}</p>
       </div>
       <div class="compare-results-actions">
         <button class="compare-results-action compare-results-action--ghost" type="button" data-action="back-to-compare-select">${escapeHtml(t("universities.compare.results.back_to_selection", "Back to selection"))}</button>
         <button class="compare-results-action" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
       </div>
     </div>
-    <section class="compare-config-panel" aria-label="${escapeHtmlAttr(t("universities.compare.configure.title", "Choose tracks and funding"))}">
+    <section class="compare-config-panel" aria-label="${escapeHtmlAttr(t("universities.compare.configure.title", "Choose admission choices"))}">
       ${universities.map((u, index) => {
         const id = String(u?.id || "");
         const entries = compareAdmissionOptionEntries(u);
-        const selected = choices.get(id);
+        const selected = compareChoiceKey(choices.get(id));
         return `
           <article class="compare-config-column" data-uni-id="${escapeHtmlAttr(id)}">
             <div class="compare-config-column__head">
               <span>${escapeHtml(renderCompareSlotLabel(index))}</span>
               <h2>${escapeHtml(compareUniversityName(u))}</h2>
-              <p>${escapeHtml(selected ? t("universities.compare.configure.selected", "Track and funding selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
+              <p>${escapeHtml(selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
             </div>
             <div class="compare-config-chance">
               ${renderUniChanceSummary(chances.get(id))}
             </div>
             <div class="compare-config-options">
-              ${entries.length ? entries.map((entry) => renderCompareAdmissionOptionCard(u, entry, options)).join("") : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_tracks", "Admission tracks"))}</div>`}
+              ${entries.length ? entries.map((entry) => renderCompareAdmissionOptionCard(u, entry, options)).join("") : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`}
             </div>
           </article>
         `;

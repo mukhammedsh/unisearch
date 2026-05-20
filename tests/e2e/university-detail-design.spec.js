@@ -67,14 +67,14 @@ for (const scenario of cases) {
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
 
     const admissionSurfaces = await page.evaluate(() => {
-      const visibleCards = Array.from(document.querySelectorAll("#tab-admission .track-card")).filter(
+      const visibleCards = Array.from(document.querySelectorAll("#tab-admission .admission-category-card")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
-      const visiblePreviews = Array.from(document.querySelectorAll("#tab-admission .track-cost-preview")).filter(
+      const visibleFundingOptions = Array.from(document.querySelectorAll("#tab-admission .admission-funding-option")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
       const firstCardStyle = visibleCards[0] ? getComputedStyle(visibleCards[0]) : null;
-      const firstPreviewStyle = visiblePreviews[0] ? getComputedStyle(visiblePreviews[0]) : null;
+      const firstFundingOptionStyle = visibleFundingOptions[0] ? getComputedStyle(visibleFundingOptions[0]) : null;
       const admissionPanel = document.querySelector("#tab-admission .d-box");
       const admissionPanelStyle = admissionPanel ? getComputedStyle(admissionPanel) : null;
       const chanceWrap = document.querySelector("#tab-admission .chance-percent-wrap");
@@ -86,7 +86,7 @@ for (const scenario of cases) {
         chanceDirection: chanceWrapStyle ? chanceWrapStyle.flexDirection : "",
         cardRadius: firstCardStyle ? parseFloat(firstCardStyle.borderTopLeftRadius) : 0,
         cardBackgroundImage: firstCardStyle ? firstCardStyle.backgroundImage : "",
-        previewBackgroundImage: firstPreviewStyle ? firstPreviewStyle.backgroundImage : "none",
+        fundingBackgroundImage: firstFundingOptionStyle ? firstFundingOptionStyle.backgroundImage : "none",
       };
     });
 
@@ -95,7 +95,7 @@ for (const scenario of cases) {
     expect(admissionSurfaces.chanceDirection).toBe(scenario.width <= 640 ? "row" : "column");
     expect(admissionSurfaces.cardRadius).toBeGreaterThanOrEqual(16);
     expect(admissionSurfaces.cardBackgroundImage).toBe("none");
-    expect(admissionSurfaces.previewBackgroundImage).toBe("none");
+    expect(admissionSurfaces.fundingBackgroundImage).toBe("none");
 
     await page.click(".d-tab-btn[data-tab='tab-finance']");
     await expect(page.locator("#tab-finance")).toHaveClass(/active/);

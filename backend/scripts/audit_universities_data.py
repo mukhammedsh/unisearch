@@ -33,7 +33,7 @@ REQUIRED_TOP_LEVEL_KEYS = (
     "website",
     "academics",
     "finance",
-    "admission_tracks",
+    "admission_categories",
     "description",
     "tags",
     "description_source",
@@ -148,33 +148,55 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
                         if _is_non_empty_text(url):
                             yield f"academics.admissions.programs[{p_idx}]/{name}/sources[{s_idx}]", str(url).strip()
 
-    tracks = university.get("admission_tracks")
-    if not isinstance(tracks, list):
+    categories = university.get("admission_categories")
+    if not isinstance(categories, list):
         return
-    for t_idx, track in enumerate(tracks):
-        if not isinstance(track, dict):
+    for c_idx, category in enumerate(categories):
+        if not isinstance(category, dict):
             continue
-        track_id = str(track.get("id") or f"track_{t_idx}").strip()
-        track_source_url = track.get("stats_avg_source_url")
-        if _is_non_empty_text(track_source_url):
-            yield (
-                f"admission_tracks[{t_idx}]/{track_id}/stats_avg_source_url",
-                str(track_source_url).strip(),
-            )
-
-        lang_reqs = track.get("language_requirements")
-        if not isinstance(lang_reqs, list):
+        category_id = str(category.get("id") or f"category_{c_idx}").strip()
+        profiles = category.get("requirement_profiles")
+        if not isinstance(profiles, list):
             continue
-        for lr_idx, row in enumerate(lang_reqs):
-            if not isinstance(row, dict):
+        for p_idx, profile in enumerate(profiles):
+            if not isinstance(profile, dict):
                 continue
-            code = str(row.get("code") or f"lang_{lr_idx}").strip()
-            source_url = row.get("stats_avg_source_url")
-            if _is_non_empty_text(source_url):
+            profile_id = str(profile.get("id") or f"profile_{p_idx}").strip()
+            profile_source_url = profile.get("stats_avg_source_url")
+            if _is_non_empty_text(profile_source_url):
                 yield (
-                    f"admission_tracks[{t_idx}]/{track_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
-                    str(source_url).strip(),
+                    f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/stats_avg_source_url",
+                    str(profile_source_url).strip(),
                 )
+
+            lang_reqs = profile.get("language_requirements")
+            if isinstance(lang_reqs, list):
+                for lr_idx, row in enumerate(lang_reqs):
+                    if not isinstance(row, dict):
+                        continue
+                    code = str(row.get("code") or f"lang_{lr_idx}").strip()
+                    source_url = row.get("stats_avg_source_url")
+                    if _is_non_empty_text(source_url):
+                        yield (
+                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
+                            str(source_url).strip(),
+                        )
+
+            funding_options = profile.get("funding_options")
+            if not isinstance(funding_options, list):
+                funding_options = category.get("funding_options")
+            if not isinstance(funding_options, list):
+                continue
+            for f_idx, funding in enumerate(funding_options):
+                if not isinstance(funding, dict):
+                    continue
+                funding_id = str(funding.get("id") or f"funding_{f_idx}").strip()
+                funding_source_url = funding.get("stats_avg_source_url")
+                if _is_non_empty_text(funding_source_url):
+                    yield (
+                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/funding_options[{f_idx}]/{funding_id}/stats_avg_source_url",
+                        str(funding_source_url).strip(),
+                    )
 
 
 def _program_acceptance_values(academics: Dict[str, Any]) -> List[float]:
@@ -395,37 +417,66 @@ def audit_dataset(
                 if aid_m != aid.get("merit_based") or aid_n != aid.get("need_based"):
                     warnings.append(f"{uid}: finance.financial_aid values are not strict booleans")
 
-        tracks = row.get("admission_tracks")
-        if not isinstance(tracks, list) or not tracks:
-            errors.append(f"{uid}: admission_tracks is missing or empty")
+        categories = row.get("admission_categories")
+        if not isinstance(categories, list) or not categories:
+            errors.append(f"{uid}: admission_categories is missing or empty")
         else:
-            for t_idx, track in enumerate(tracks):
-                if not isinstance(track, dict):
-                    errors.append(f"{uid}: admission_tracks[{t_idx}] must be object")
+            for c_idx, category in enumerate(categories):
+                if not isinstance(category, dict):
+                    errors.append(f"{uid}: admission_categories[{c_idx}] must be object")
                     continue
-                if not _is_non_empty_text(track.get("id")):
-                    errors.append(f"{uid}: admission_tracks[{t_idx}].id is empty")
-                if not _is_non_empty_text(track.get("label")):
-                    errors.append(f"{uid}: admission_tracks[{t_idx}].label is empty")
-                f_type = str(track.get("funding_type") or "").strip().lower()
-                if f_type not in ("grant", "paid"):
-                    warnings.append(f"{uid}: admission_tracks[{t_idx}].funding_type is '{f_type or 'empty'}'")
-                track_avg = track.get("stats_avg")
-                if isinstance(track_avg, dict) and track_avg and not _is_non_empty_text(track.get("stats_avg_source_url")):
-                    warnings.append(f"{uid}: admission_tracks[{t_idx}].stats_avg has no stats_avg_source_url")
+                if not _is_non_empty_text(category.get("id")):
+                    errors.append(f"{uid}: admission_categories[{c_idx}].id is empty")
+                if not _is_non_empty_text(category.get("label")):
+                    errors.append(f"{uid}: admission_categories[{c_idx}].label is empty")
+                scope = str(category.get("scope") or "").strip().lower()
+                if scope not in ("general", "program", "program_group"):
+                    warnings.append(f"{uid}: admission_categories[{c_idx}].scope is '{scope or 'empty'}'")
 
-                lang_reqs = track.get("language_requirements")
-                if not isinstance(lang_reqs, list):
+                profiles = category.get("requirement_profiles")
+                if not isinstance(profiles, list) or not profiles:
+                    errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles is missing or empty")
                     continue
-                for lr_idx, lang_rule in enumerate(lang_reqs):
-                    if not isinstance(lang_rule, dict):
-                        errors.append(f"{uid}: admission_tracks[{t_idx}].language_requirements[{lr_idx}] must be object")
+                for p_idx, profile in enumerate(profiles):
+                    if not isinstance(profile, dict):
+                        errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}] must be object")
                         continue
-                    lang_avg = lang_rule.get("stats_avg")
-                    if isinstance(lang_avg, dict) and lang_avg and not _is_non_empty_text(lang_rule.get("stats_avg_source_url")):
-                        warnings.append(
-                            f"{uid}: admission_tracks[{t_idx}].language_requirements[{lr_idx}].stats_avg has no stats_avg_source_url"
-                        )
+                    if not _is_non_empty_text(profile.get("id")):
+                        errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].id is empty")
+                    if not _is_non_empty_text(profile.get("label")):
+                        errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].label is empty")
+                    profile_avg = profile.get("stats_avg")
+                    if isinstance(profile_avg, dict) and profile_avg and not _is_non_empty_text(profile.get("stats_avg_source_url")):
+                        warnings.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].stats_avg has no stats_avg_source_url")
+
+                    lang_reqs = profile.get("language_requirements")
+                    if isinstance(lang_reqs, list):
+                        for lr_idx, lang_rule in enumerate(lang_reqs):
+                            if not isinstance(lang_rule, dict):
+                                errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].language_requirements[{lr_idx}] must be object")
+                                continue
+                            lang_avg = lang_rule.get("stats_avg")
+                            if isinstance(lang_avg, dict) and lang_avg and not _is_non_empty_text(lang_rule.get("stats_avg_source_url")):
+                                warnings.append(
+                                    f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].language_requirements[{lr_idx}].stats_avg has no stats_avg_source_url"
+                                )
+
+                    funding_options = profile.get("funding_options")
+                    if not isinstance(funding_options, list):
+                        funding_options = category.get("funding_options")
+                    if not isinstance(funding_options, list):
+                        continue
+                    for f_idx, funding in enumerate(funding_options):
+                        if not isinstance(funding, dict):
+                            errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].funding_options[{f_idx}] must be object")
+                            continue
+                        if not _is_non_empty_text(funding.get("id")):
+                            errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].funding_options[{f_idx}].id is empty")
+                        if not _is_non_empty_text(funding.get("label")):
+                            errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].funding_options[{f_idx}].label is empty")
+                        f_type = str(funding.get("funding_type") or "").strip().lower()
+                        if f_type not in ("grant", "paid"):
+                            warnings.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].funding_options[{f_idx}].funding_type is '{f_type or 'empty'}'")
 
         fact_provenance = row.get("fact_provenance")
         if not isinstance(fact_provenance, dict):

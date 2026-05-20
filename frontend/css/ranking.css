@@ -954,3 +954,42 @@
     border-color: rgba(87, 21, 219, 0.38);
     box-shadow: 0 0 0 3px rgba(87, 21, 219, 0.1);
 }
+
+/* ===== 2026 Ranking Light Dark-Parity Pass ===== */
+:root:not([data-theme="dark"]) body[data-page="ranking"] {
+    background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
+}
+
+:root:not([data-theme="dark"]) .rank-search,
+:root:not([data-theme="dark"]) .rank-country-filter .custom-select-trigger,
+:root:not([data-theme="dark"]) .rank-card,
+:root:not([data-theme="dark"]) .rank-search-suggestions {
+    background: var(--surface-solid);
+    border-color: var(--line);
+    box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .rank-card,
+:root:not([data-theme="dark"]) .rank-card:hover {
+    background: var(--surface-solid);
+}
+
+:root:not([data-theme="dark"]) .rank-card:hover {
+    border-color: rgba(87, 21, 219, 0.24);
+}
+
+:root:not([data-theme="dark"]) .rank-logo,
+:root:not([data-theme="dark"]) .rank-badge,
+:root:not([data-theme="dark"]) .rank-source,
+:root:not([data-theme="dark"]) .rank-search-suggestion {
+    background: var(--surface-soft);
+    border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .rank-logo {
+    background: #ffffff;
+}
+
+:root:not([data-theme="dark"]) .rank-num {
+    color: #555555;
+}

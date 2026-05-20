@@ -15,7 +15,6 @@ base_cost_before_grant: Base Cost (before grant)
 admission.track.funding_options: Funding options
 admission.track.options_count: {count} funding options
 extra_requirements: Extra requirements
-no_tracks_selected_filter: No tracks for selected filter
 about.bio.lead: Responsible for all code and implementation of key ideas.
 about.bio.planning: Responsible for most of the ideas, improvements and tests of the site.
 about.contact.email: Email
@@ -40,13 +39,13 @@ about.team_kicker: Our Team
 about.title: We are the abiturient team behind UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
-guide.admission.p1: An admission track is one concrete way to enter the same university.
+guide.admission.p1: An admission category is a real applicant route, and requirement profiles are the score variants inside it.
 guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.
 guide.admission.p3: Mode any means one language proof is enough. Mode all means every listed proof is required.
-guide.admission.p4: Scholarships and aid can noticeably reduce total cost, so always check track details.
-guide.admission.title: How to read admission tracks
+guide.admission.p4: Scholarships and aid can noticeably reduce total cost, so always check the selected funding option.
+guide.admission.title: How to read admission categories
 guide.exam_basics.p1: Admissions usually need two parts: academic scores and proof of language proficiency.
-guide.exam_basics.p2: Requirements differ by country and university, so check each track directly.
+guide.exam_basics.p2: Requirements differ by country, university, program, and requirement profile, so check the selected choice directly.
 guide.exam_basics.p3: Language requirements are especially important for international programs.
 guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
 guide.exam_basics.title: Exam Basics (Admissions)
@@ -82,7 +81,7 @@ guide.tags.standard.over_budget: Over Budget: shown when estimated annual cost i
 guide.tags.standard.over_budget_aid: Over Budget • Aid Available: shown when cost is above budget but aid exists.
 guide.tags.ai_note: Tags that work only when UniFit selected as sort strategy.
 guide.tags.ai_title: AI Tags
-guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a track.
+guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a requirement profile.
 guide.tags.ai.your_vibe: Your Vibe: shown for very strong preference match (focus, atmosphere, location).
 guide.tags.ai.top_match: Good Match: shown for a good preference match that does not reach Your Vibe level.
 guide.tags.ai.likely_grant: Likely Grant: shown when grant-oriented chance is strong.
@@ -99,7 +98,7 @@ guide.roi.p5: Use ROI together with tuition, aid, admission chance, and program 
 guide.comparison.title: University comparison
 guide.comparison.p1: Comparison is inside Universities, in the Comparing tab. The catalog keeps normal navigation, so selecting universities for comparison happens only in that dedicated tab.
 guide.comparison.p2: Open Comparing, choose universities from cards or the map, then press Compare. Clicking a selected card again removes it from the shortlist.
-guide.comparison.p3: The results page scans comparable published parameters: ranking, cost, aid, acceptance, tracks, requirements, common exams, language minimums, bachelor programs, study formats, salary, and data confidence.
+guide.comparison.p3: The results page scans comparable published parameters: ranking, cost, aid, acceptance, admission categories, requirement profiles, funding, common exams, language minimums, bachelor programs, study formats, salary, and data confidence.
 guide.comparison.p4: Key differences explain practical reasons to choose each university. Overview scores are relative only to the selected universities, and the detailed table highlights the strongest value in each row.
 guide.comparison.note: Missing official data is shown as unavailable instead of being invented. Use comparison as a decision aid together with official university sources.
 guide.comparison.flow_aria: How comparison works
@@ -110,13 +109,13 @@ guide.comparison.step2.body: Build a results page from the shortlist.
 guide.comparison.step3.title: 3. Read
 guide.comparison.step3.body: Check key differences, scores, table highlights, and conclusion.
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
-guide.unichance.p2: The estimate is based on your data: scores, language, budget, and selected track requirements.
+guide.unichance.p2: The estimate is based on your data: scores, language, budget, and the selected requirement profile.
 guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
-guide.unichance.p4: Check Best Track to see where your chance is strongest inside that university.
+guide.unichance.p4: Check the recommended choice to see where your chance is strongest inside that university.
 guide.unichance.title: {chance} (estimated admission chance 0‑100)
 guide.unifit.p1: {fit} builds a university list for you. It uses your filters, budget, preferred locations, and profile data.
 guide.unifit.p2: If exam or language data is missing, you still see options, but we mark that extra proof may be needed.
-guide.unifit.p3: One university can have several admission tracks. We check each track separately, so your best option may be inside a lower-ranked university.
+guide.unifit.p3: One university can have several admission categories and requirement profiles. We check each choice separately, so your best option may be inside a lower-ranked university.
 guide.unifit.p4: When you update profile data, the order updates too. This is expected: results always reflect your current information.
 guide.unifit.title: {fit} (smart sorting)
 home.feature.ai_desc: {fit} helps sort options for you, and {chance} shows an estimated admission chance.
@@ -125,7 +124,7 @@ home.feature.data_desc: We gather requirements, costs, and scholarships in one p
 home.feature.data_title: Simple Comparison
 home.feature.finance_desc: See tuition and study costs, plus grant or discount options when they are available in the data.
 home.feature.finance_title: Financial Clarity
-home.scope.bachelor_only: Current recommendations and analytics cover bachelor's degree tracks only.
+home.scope.bachelor_only: Current recommendations and analytics cover bachelor's degree options only.
 home.hero.rankings: View Rankings
 home.hero.start: Start Matching
 home.journey.kicker: University matching
@@ -135,7 +134,7 @@ home.journey.step1.title: Fill your profile
 home.journey.step1.desc: Add budget, GPA, exams, and languages for accurate matching.
 home.journey.step2.title: Set filters
 home.journey.step2.desc: Select country, city, and cost range.
-home.journey.step3.title: Compare tracks
+home.journey.step3.title: Compare admission choices
 home.journey.step3.desc: Open university cards to review admission paths, cost, and scholarship potential.
 home.stats.countries: Countries
 home.stats.universities_one: university
@@ -383,7 +382,7 @@ universities.compare.row.aid: Aid
 universities.compare.aid_both: Merit scholarships + need-based aid
 universities.compare.aid_merit: Merit scholarships
 universities.compare.aid_need: Need-based financial aid
-universities.compare.track_count: {count} tracks / {options} options
+universities.compare.track_count: {count} categories / {options} choices
 universities.compare.native_ok: native accepted
 universities.compare.verified_count: {sources} sources / {facts} facts
 universities.compare.remove: Remove from comparison
@@ -401,9 +400,9 @@ universities.compare.row.website: Website
 universities.compare.row.programs: Programs shown
 universities.compare.row.study_mode: Study mode
 universities.compare.row.language: Program language
-universities.compare.row.tracks: Admission tracks
-universities.compare.row.main_track: Main track
-universities.compare.row.selected_track: Selected track
+universities.compare.row.tracks: Admission choices
+universities.compare.row.main_track: Main category
+universities.compare.row.selected_track: Requirement profile
 universities.compare.row.funding_choice: Selected funding
 universities.compare.row.requirements: Minimum requirements
 universities.compare.row.avg_scores: Admitted score context
@@ -425,9 +424,9 @@ universities.compare.results.back_to_selection: Back to selection
 universities.compare.results.empty_title: No comparison yet
 universities.compare.results.empty_body: Select exactly two universities to build a comparison pair.
 universities.compare.configure.kicker: Before comparison
-universities.compare.configure.title: Choose tracks and funding
-universities.compare.configure.subtitle: Pick one admission track and one funding option for each university. The comparison will use these selected options for requirements, language proof, cost, and funding.
-universities.compare.configure.selected: Track and funding selected
+universities.compare.configure.title: Choose admission choices
+universities.compare.configure.subtitle: Pick one admission category, requirement profile, and funding option for each university. The comparison will use that choice for requirements, language proof, cost, and funding.
+universities.compare.configure.selected: Admission choice selected
 universities.compare.configure.required: Select one option before comparing
 universities.compare.insight.budget_title: Budget
 universities.compare.insight.budget: Among selected universities, {name} is best on budget at {cost} per year.
@@ -456,7 +455,7 @@ universities.compare.row.language_exam_requirement: {exam} language minimum
 universities.compare.category.prestige.title: Prestige
 universities.compare.category.prestige.subtitle: Rank and selectivity signals
 universities.compare.category.admissions.title: Admissions
-universities.compare.category.admissions.subtitle: Access, tracks, and requirements
+universities.compare.category.admissions.subtitle: Access, requirement profiles, and funding
 universities.compare.category.finance.title: Finance
 universities.compare.category.finance.subtitle: Cost and aid flexibility
 universities.compare.category.academics.title: Academics
@@ -603,7 +602,7 @@ university.back_to_list: Back to list
 university.chat_assistant: Chat Assistant
 university.clear: Clear
 university.discounts_scholarships: Discounts & Scholarships
-university.entry_requirements: Entry Requirements
+university.entry_requirements: Admission Categories
 university.error_loading: Error loading details.
 university.error_no_id: Error: No ID provided.
 university.loading: Loading university details
@@ -645,7 +644,6 @@ placeholder.field.global_rank: Global rank
 placeholder.field.description: Description
 placeholder.field.program_name: Program name
 placeholder.field.programs: Programs
-placeholder.field.admission_tracks: Admission tracks
 placeholder.field.applicable_majors: Applicable majors
 placeholder.field.track_name: Track name
 placeholder.field.track_description: Track description
@@ -668,7 +666,7 @@ placeholder.field.universities_count: Universities count
 placeholder.field.countries_count: Countries count
 guide.academic.act: ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.
 guide.academic.aptotal: AP Total reflects combined performance across multiple Advanced Placement subjects.
-guide.academic.default: This is an academic metric used by one or more admission tracks in the UniSearch dataset.
+guide.academic.default: This is an academic metric used by one or more requirement profiles in the UniSearch dataset.
 guide.academic.gpa: GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency.
 guide.academic.ibdiploma: IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.
 guide.academic.alevelcert: A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score.
@@ -676,11 +674,11 @@ guide.academic.hkdselevel: HKDSE level uses the Hong Kong secondary-school scale
 guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification.
 guide.academic.germanabiturcert: German Abitur certificate is the standard qualification granting access to German universities.
 guide.academic.ossdcert: OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions.
-guide.academic.intro: The following academic exams are currently used by UniSearch for admission track matching and recommendation quality.
+guide.academic.intro: The following academic exams are currently used by UniSearch for requirement profile matching and recommendation quality.
 guide.academic.nuettotal: This is a combined entrance test score used in specific institutional admission routes.
 guide.academic.sat: SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics.
 guide.academic.unt: UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways.
-guide.glossary.admission_track: A specific way to apply to a university (e.g., direct, exam-based, scholarship path).
+guide.glossary.admission_track: A selected combination of admission category, requirement profile, and funding option.
 guide.glossary.chance: {chance} is an estimated admission chance based on your data.
 guide.glossary.fit: {fit} is the smart sorting mode based on your profile.
 guide.glossary.intro: Short definitions of the terms you see on the site.
@@ -690,10 +688,10 @@ guide.glossary.roi: Return on Investment compares estimated graduate salary with
 guide.glossary.comparison: A university-side-by-side view that scans comparable published metrics and explains key differences.
 guide.glossary.mode_all: You must satisfy every listed language requirement.
 guide.glossary.mode_any: You need to satisfy at least one listed language option.
-guide.glossary.requirements: Minimum scores to be considered for a track.
-guide.glossary.stats_avg: Average scores of admitted students on that track.
+guide.glossary.requirements: Minimum scores to be considered for a requirement profile.
+guide.glossary.stats_avg: Average scores of admitted students for that requirement profile.
 guide.glossary.swr: Cache behavior: we first show saved data, then refresh it in the background.
-guide.glossary.term.admission_track: Admission Track
+guide.glossary.term.admission_track: Admission Choice
 guide.glossary.term.language_requirements: Language Requirements
 guide.glossary.term.match_score: Match Score
 guide.glossary.term.roi: ROI
@@ -703,13 +701,13 @@ guide.glossary.term.mode_any: Mode = any
 guide.glossary.term.requirements: Requirements
 guide.glossary.term.stats_avg: Average (Admitted)
 guide.glossary.term.swr: Data Cache
-guide.language.by_code: This exam is used as language proof for {code}-language admission tracks.
+guide.language.by_code: This exam is used as language proof for {code}-language admission choices.
 guide.language.cambridge: Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.
 guide.language.default: This language proficiency exam is used to verify readiness for study in the program language.
 guide.language.det: Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.
 guide.language.dutch: NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.
 guide.language.french: These exams assess French proficiency and are used for French-language academic eligibility.
-guide.language.german: TestDaF and DSH are German-language proficiency exams commonly required for German-taught study tracks.
+guide.language.german: TestDaF and DSH are German-language proficiency exams commonly required for German-taught study options.
 guide.language.hsk: HSK measures Chinese language proficiency for academic and formal language use.
 guide.language.ielts: IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.
 guide.language.jlpt: JLPT measures Japanese language proficiency across standard difficulty levels.
@@ -813,15 +811,15 @@ tour.step2.title: Fill your profile first
 tour.step3.desc: Start broad, then narrow by country, city, cost range, study level, and funding type.
 tour.step3.kicker: Step 2
 tour.step3.point1: Adjust tuition min/max with the slider.
-tour.step3.point2: Use grant/paid track filter for finance planning.
+tour.step3.point2: Use the grant/paid funding filter for finance planning.
 tour.step3.point3: Use map view to spot location clusters.
 tour.step3.title: Use filtering strategically
-tour.step4.desc: Click any card to inspect admissions, finance, and requirements per track.
+tour.step4.desc: Click any card to inspect admission categories, requirement profiles, finance, and requirements.
 tour.step4.kicker: Step 3
-tour.step4.point1: Review {chance} by track in the detail page.
+tour.step4.point1: Review {chance} by selected requirement profile in the detail page.
 tour.step4.point2: Check Admission and Costs tabs for requirement and funding details.
 tour.step4.point3: Compare yearly cost and scholarships before applying.
-tour.step4.title: Open details and compare tracks
+tour.step4.title: Open details and compare admission choices
 unifit.warning.cancel: Cancel
 unifit.warning.confirm: Okay I understand
 unifit.warning.desc: UniFit is more accurate when your profile includes exam or language scores.
@@ -833,8 +831,8 @@ admission.track.funding_program: Funding program
 admission.track.funding_program_short: Program
 admission.track.funding_source: Funding source
 admission.track.funding_source_short: Source
-admission.track.select_tooltip: Select this admission track to use it for admission chance display and for UniFit ranking.
-admission.chance.need_exam_data_track: Need exam data to see the chance for this track.
+admission.track.select_tooltip: Select this admission choice to use it for admission chance display and for UniFit ranking.
+admission.chance.need_exam_data_track: Need exam data to see the chance for this requirement profile.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
 admission.chance_method.profile_short: Profile-based
@@ -860,7 +858,7 @@ error404.link.about: Project and contacts
 title.index: UniSearch | Compare Universities by Cost, Admissions, and Fit
 home.hero.title: Find your dream university
 home.hero.title_html: Find your <span class="text-gradient">dream</span> university
-home.hero.desc: Start with the catalog, then compare cost, admission tracks, and your estimated chance in one place.
+home.hero.desc: Start with the catalog, then compare cost, admission choices, and your estimated chance in one place.
 home.hero.profile: Open Profile
 home.hero.catalog: Open University Catalog
 home.hero.metrics_aria: UniSearch coverage
@@ -877,7 +875,7 @@ home.preview.title: Go from broad search to a real shortlist.
 home.preview.desc: Use your profile to filter universities, review cost early, and open track details before applying.
 home.preview.point1: Filter by budget, country, exam, and {fit}.
 home.preview.point2: See estimated cost and aid context early.
-home.preview.point3: Compare requirements and {chance} by track.
+home.preview.point3: Compare requirements and {chance} by requirement profile.
 home.preview.shortlist_aria: Example shortlist preview
 home.preview.shortlist_title: MIT Computer Science
 home.preview.shortlist_meta: Saved shortlist • 3 key signals visible
@@ -940,8 +938,8 @@ home.workflow.step1.title: Fill in your profile
 home.workflow.step1.desc: Add your budget, GPA, exams, languages, and preferences so the ranking becomes personal.
 home.workflow.step2.title: Filter and sort strategically
 home.workflow.step2.desc: Use country, city, cost, funding type, and {fit} to move from broad search to a real shortlist.
-home.workflow.step3.title: Open details and compare tracks
-home.workflow.step3.desc: Check admissions, finance, and your estimated chance by track before you decide where to apply.
+home.workflow.step3.title: Open details and compare admission choices
+home.workflow.step3.desc: Check admissions, finance, and your estimated chance by requirement profile before you decide where to apply.
 home.workflow.cta_profile: Start with Profile
 home.workflow.cta_catalog: Go to university catalog
 home.workflow.side1.kicker: Ranking
@@ -1005,3 +1003,29 @@ languages.updated_value: Updated {language} {exam}: {value}
 error.no_connection.title: No Internet Connection
 error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.
 error.retry: Retry
+placeholder.field.admission_categories: Admission categories
+placeholder.field.admission_category: Admission category
+placeholder.field.requirement_profile: Requirement profile
+placeholder.field.best_choice: Best choice
+admission.category: Admission category
+admission.profile: Requirement profile
+admission.profile.general: General
+admission.profile_count: {count} profiles
+admission.profile.tabs_label: Requirement profiles
+admission.scope.general: General
+admission.scope.program_specific: Program-specific
+admission.program.selector_label: Program selection
+admission.program.general_requirements: General requirements
+admission.program.not_selected_note: Select a program when available. Requirements can differ by program.
+admission.program.using_general_note: No program-specific score data is published here, so general requirements are shown.
+admission.funding_options: Funding options
+admission.funding_option_fallback: Funding option
+admission.funding_differences: Funding-specific differences
+admission.funding_minimum_override: Minimum changes
+admission.funding_average_override: Average admitted changes
+admission.funding_extra_override: Additional requirements
+admission.funding_no_specific_requirements: No separate funding-specific requirements are listed in the data. Use the selected profile requirements above.
+admission.funding_competitive_grant_note: The requirements above are the entry minimums for this profile. The grant is awarded separately through competition or ranking; no separate grant cutoff is listed in the data.
+admission.choice.select: Select
+admission.choice.selected: Selected
+admission.choice.recommended: Recommended

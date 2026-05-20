@@ -81,17 +81,17 @@ export function showUniversitiesTour(markUniversitiesTourSeen) {
                 desc: t("tour.step3.desc", "Start broad, then narrow by country, city, cost range, study level, and funding type."),
                 points: [
                     t("tour.step3.point1", "Adjust tuition min/max with the slider."),
-                    t("tour.step3.point2", "Use grant/paid track filter for finance planning."),
+                    t("tour.step3.point2", "Use the grant/paid funding filter for finance planning."),
                     t("tour.step3.point3", "Use map view to spot location clusters."),
                 ],
                 action: "",
             },
             {
                 kicker: t("tour.step4.kicker", "Step 3"),
-                title: t("tour.step4.title", "Open details and compare tracks"),
-                desc: t("tour.step4.desc", "Click any card to inspect admissions, finance, and requirements per track."),
+                title: t("tour.step4.title", "Open details and compare admission choices"),
+                desc: t("tour.step4.desc", "Click any card to inspect admission categories, requirement profiles, finance, and requirements."),
                 points: [
-                    tFormat("tour.step4.point1", { chance: aiName("chance") }, `Review ${aiName("chance")} by track in the detail page.`),
+                    tFormat("tour.step4.point1", { chance: aiName("chance") }, `Review ${aiName("chance")} by selected requirement profile in the detail page.`),
                     t("tour.step4.point2", "Check Admission and Costs tabs for requirement and funding details."),
                     t("tour.step4.point3", "Compare yearly cost and scholarships before applying."),
                 ],

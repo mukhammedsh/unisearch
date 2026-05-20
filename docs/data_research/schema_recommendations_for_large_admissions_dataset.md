@@ -12,7 +12,7 @@ Status date: 2026-03-25
 - university-level admission signal currently lives in `academics.acceptance_rate_percent`
 - program-level values can live in `academics.programs[].acceptance_rate_percent`
 - official provenance already exists in `academics.acceptance_rate_percent_meta` and `fact_provenance.facts`
-- user-facing admissions requirements live separately in `admission_tracks[]`
+- user-facing admissions requirements live separately in `admission_categories[].requirement_profiles[]`
 
 ## Recommended Minimal Schema
 

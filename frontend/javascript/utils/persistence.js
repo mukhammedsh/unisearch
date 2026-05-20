@@ -25,7 +25,7 @@ const PROFILE_DEFAULTS = {
   interests: "",
   studyMode: "Any",
   fundingType: "any",
-  selectedAdmissionTracks: {},
+  selectedAdmissionChoices: {},
 };
 
 function clamp(value, min, max) {
@@ -53,6 +53,20 @@ function canonicalProfileExamKey(examId) {
   return String(examId || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
+function normalizeAdmissionChoiceSelection(selection) {
+  if (!selection || typeof selection !== "object" || Array.isArray(selection)) return null;
+  const choiceKey = String(selection.choiceKey || selection.choice_key || "").trim();
+  if (!choiceKey) return null;
+  return {
+    programId: String(selection.programId || selection.program_id || "").trim(),
+    programName: String(selection.programName || selection.program_name || "").trim(),
+    categoryId: String(selection.categoryId || selection.category_id || "").trim(),
+    requirementProfileId: String(selection.requirementProfileId || selection.requirement_profile_id || "").trim(),
+    fundingOptionId: String(selection.fundingOptionId || selection.funding_option_id || "").trim(),
+    choiceKey,
+  };
+}
+
 export function normalizeProfileData(profile) {
   const out = { ...PROFILE_DEFAULTS, ...(profile || {}) };
   out.name = String(out.name || PROFILE_DEFAULTS.name).trim() || PROFILE_DEFAULTS.name;
@@ -62,11 +76,11 @@ export function normalizeProfileData(profile) {
   const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
   out.fundingType = fundingRaw === "grant" || fundingRaw === "paid" ? fundingRaw : PROFILE_DEFAULTS.fundingType;
   out.interests = String(out.interests ?? "").trim().slice(0, 1200);
-  out.selectedAdmissionTracks = out.selectedAdmissionTracks && typeof out.selectedAdmissionTracks === "object" && !Array.isArray(out.selectedAdmissionTracks)
+  out.selectedAdmissionChoices = out.selectedAdmissionChoices && typeof out.selectedAdmissionChoices === "object" && !Array.isArray(out.selectedAdmissionChoices)
     ? Object.fromEntries(
-      Object.entries(out.selectedAdmissionTracks)
-        .map(([universityId, trackKey]) => [String(universityId || "").trim(), String(trackKey || "").trim()])
-        .filter(([universityId, trackKey]) => universityId && trackKey),
+      Object.entries(out.selectedAdmissionChoices)
+        .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
+        .filter(([universityId, selection]) => universityId && selection),
     )
     : {};
 
@@ -239,14 +253,14 @@ export function loadProfileForApi() {
     })
     .filter(Boolean);
 
-  if (profile?.selectedAdmissionTracks && typeof profile.selectedAdmissionTracks === "object" && !Array.isArray(profile.selectedAdmissionTracks)) {
-    payload.selectedAdmissionTracks = Object.fromEntries(
-      Object.entries(profile.selectedAdmissionTracks)
-        .map(([universityId, trackKey]) => [String(universityId || "").trim(), String(trackKey || "").trim()])
-        .filter(([universityId, trackKey]) => universityId && trackKey),
+  if (profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object" && !Array.isArray(profile.selectedAdmissionChoices)) {
+    payload.selectedAdmissionChoices = Object.fromEntries(
+      Object.entries(profile.selectedAdmissionChoices)
+        .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
+        .filter(([universityId, selection]) => universityId && selection),
     );
   }
-  if (!payload.selectedAdmissionTracks || !Object.keys(payload.selectedAdmissionTracks).length) delete payload.selectedAdmissionTracks;
+  if (!payload.selectedAdmissionChoices || !Object.keys(payload.selectedAdmissionChoices).length) delete payload.selectedAdmissionChoices;
   if (!String(payload.interests || "").trim()) delete payload.interests;
   if (!String(payload.major || "").trim()) delete payload.major;
   if (!String(payload.name || "").trim()) delete payload.name;
@@ -265,23 +279,23 @@ export function saveProfile(profile) {
   window.dispatchEvent(new Event("profileUpdated"));
 }
 
-export function getSelectedAdmissionTrack(universityId) {
+export function getSelectedAdmissionChoice(universityId) {
   const universityKey = String(universityId || "").trim();
   if (!universityKey) return "";
-  return String(loadProfile()?.selectedAdmissionTracks?.[universityKey] || "").trim();
+  return String(loadProfile()?.selectedAdmissionChoices?.[universityKey]?.choiceKey || "").trim();
 }
 
-export function saveSelectedAdmissionTrack(universityId, trackKey) {
+export function saveSelectedAdmissionChoice(universityId, selection) {
   const universityKey = String(universityId || "").trim();
   if (!universityKey) return;
   const profile = normalizeProfileData(loadProfile());
   const selections = {
-    ...(profile.selectedAdmissionTracks && typeof profile.selectedAdmissionTracks === "object" ? profile.selectedAdmissionTracks : {}),
+    ...(profile.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object" ? profile.selectedAdmissionChoices : {}),
   };
-  const normalizedTrackKey = String(trackKey || "").trim();
-  if (normalizedTrackKey) selections[universityKey] = normalizedTrackKey;
+  const normalizedSelection = normalizeAdmissionChoiceSelection(selection);
+  if (normalizedSelection) selections[universityKey] = normalizedSelection;
   else delete selections[universityKey];
-  profile.selectedAdmissionTracks = selections;
+  profile.selectedAdmissionChoices = selections;
   saveProfile(profile);
 }
 

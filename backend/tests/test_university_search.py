@@ -25,7 +25,7 @@ class UniversitySearchTests(unittest.TestCase):
                         }
                     ]
                 },
-                "admission_tracks": [],
+                "admission_categories": [],
             },
             {
                 "id": "u-biz",
@@ -42,7 +42,7 @@ class UniversitySearchTests(unittest.TestCase):
                         }
                     ]
                 },
-                "admission_tracks": [],
+                "admission_categories": [],
             },
         ]
 
@@ -83,7 +83,7 @@ class UniversitySearchTests(unittest.TestCase):
                 "description": "Public research university in Astana.",
                 "tags": ["research", "engineering"],
                 "academics": {"programs": []},
-                "admission_tracks": [],
+                "admission_categories": [],
             }
         ]
 
@@ -104,7 +104,7 @@ class UniversitySearchTests(unittest.TestCase):
                 "description": "University focused on digital education.",
                 "tags": ["ict", "computer science"],
                 "academics": {"programs": []},
-                "admission_tracks": [],
+                "admission_categories": [],
             }
         ]
 
@@ -123,7 +123,7 @@ class UniversitySearchTests(unittest.TestCase):
                 "name": "Astana IT University",
                 "location": {"country": "Kazakhstan", "city": "Astana", "state": ""},
                 "academics": {"programs": []},
-                "admission_tracks": [],
+                "admission_categories": [],
             }
         )
 
@@ -140,7 +140,7 @@ class UniversitySearchTests(unittest.TestCase):
                 "description": "Public research university in Astana.",
                 "tags": ["research", "engineering"],
                 "academics": {"programs": []},
-                "admission_tracks": [],
+                "admission_categories": [],
             }
         ]
 

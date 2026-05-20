@@ -350,21 +350,28 @@ class MLRecommender:
                 major_focus_text = _safe_text(major_focus)
 
             admission_bits: List[str] = []
-            tracks = uni.get("admission_tracks", [])
-            if isinstance(tracks, list):
-                for track in tracks:
-                    if not isinstance(track, dict):
+            categories = uni.get("admission_categories", [])
+            if isinstance(categories, list):
+                for category in categories:
+                    if not isinstance(category, dict):
                         continue
-                    admission_bits.append(_safe_text(track.get("label")))
-                    admission_bits.append(_safe_text(track.get("description")))
-                    mode_val = track.get("study_mode")
+                    admission_bits.append(_safe_text(category.get("label")))
+                    admission_bits.append(_safe_text(category.get("description")))
+                    mode_val = category.get("study_mode")
                     if isinstance(mode_val, list):
                         admission_bits.extend(_safe_text(x) for x in mode_val if _safe_text(x))
                     else:
                         admission_bits.append(_safe_text(mode_val))
-                    extra = track.get("extra_requirements")
+                    extra = category.get("extra_requirements")
                     if isinstance(extra, list):
                         admission_bits.extend(_safe_text(x) for x in extra if _safe_text(x))
+                    profiles = category.get("requirement_profiles")
+                    if isinstance(profiles, list):
+                        for profile in profiles:
+                            if not isinstance(profile, dict):
+                                continue
+                            admission_bits.append(_safe_text(profile.get("label")))
+                            admission_bits.append(_safe_text(profile.get("description")))
 
             admission_text = " ".join(part for part in admission_bits if part)
 

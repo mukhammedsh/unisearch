@@ -91,7 +91,7 @@ class ProfilePayload(BaseModel):
     locale: Optional[str] = Field(default=None, max_length=16)
     studyMode: str = Field(default="", max_length=40)
     fundingType: str = Field(default="", max_length=20)
-    selectedAdmissionTracks: Dict[str, str] = Field(default_factory=dict)
+    selectedAdmissionChoices: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: List[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
 
@@ -101,8 +101,8 @@ class ProfilePayload(BaseModel):
         if not isinstance(value, dict):
             return value
         data = dict(value)
-        if "selectedAdmissionTracks" not in data and isinstance(data.get("selected_admission_tracks"), dict):
-            data["selectedAdmissionTracks"] = data.get("selected_admission_tracks")
+        if "selectedAdmissionChoices" not in data and isinstance(data.get("selected_admission_choices"), dict):
+            data["selectedAdmissionChoices"] = data.get("selected_admission_choices")
         return data
 
     @field_validator("name", "major", "studyMode", "fundingType", mode="before")
@@ -115,17 +115,26 @@ class ProfilePayload(BaseModel):
     def _normalize_optional_text(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
 
-    @field_validator("selectedAdmissionTracks", mode="before")
+    @field_validator("selectedAdmissionChoices", mode="before")
     @classmethod
-    def _normalize_selected_tracks(cls, value: Any) -> Dict[str, str]:
+    def _normalize_selected_choices(cls, value: Any) -> Dict[str, Dict[str, str]]:
         if not isinstance(value, dict):
             return {}
-        out: Dict[str, str] = {}
-        for uni_id, track_key in value.items():
+        out: Dict[str, Dict[str, str]] = {}
+        for uni_id, selection in value.items():
             uni = _strip_or_none(uni_id)
-            track = _strip_or_none(track_key)
-            if uni and track:
-                out[uni] = track
+            if not uni or not isinstance(selection, dict):
+                continue
+            choice = _strip_or_none(selection.get("choiceKey") or selection.get("choice_key"))
+            if choice:
+                out[uni] = {
+                    "programId": _strip_or_empty(selection.get("programId") or selection.get("program_id")),
+                    "programName": _strip_or_empty(selection.get("programName") or selection.get("program_name")),
+                    "categoryId": _strip_or_empty(selection.get("categoryId") or selection.get("category_id")),
+                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId") or selection.get("requirement_profile_id")),
+                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId") or selection.get("funding_option_id")),
+                    "choiceKey": choice,
+                }
         return out
 
 

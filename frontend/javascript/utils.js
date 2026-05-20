@@ -5,4 +5,4 @@ export { safeLocalStorage, safeSessionStorage, createSafeStorage } from "./utils
 export { EXAM_CONFIG, LANG_CONFIG, CITY_OPTIONS_BY_COUNTRY, MAJOR_OPTIONS, FALLBACK_LANG_LIMITS, canonicalizeExamId, getExamConfig, getExamInputMode, getExamLevelBands, getExamBandShortLabel, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, formatExamValue, getExamDisplayName, getLangExamLimits, clampNumberToLimits, applyNumberInputLimits, applyLanguageExamInputLimits } from "./utils/config.js";
 export { stabilizeNumericRanges, escapeHtml, escapeHtmlAttr, bindImageFallbacks, nested, initials, moneyUSD, formatPlural, getFlagImg, showToast, removeToast } from "./utils/format.js";
 export { initCustomSelect, setupSlidingIndicator } from "./utils/selects.js";
-export { loadProfile, loadProfileForApi, saveProfile, getSelectedAdmissionTrack, saveSelectedAdmissionTrack, saveFilters, loadFilters, normalizeProfileData } from "./utils/persistence.js";
+export { loadProfile, loadProfileForApi, saveProfile, getSelectedAdmissionChoice, saveSelectedAdmissionChoice, saveFilters, loadFilters, normalizeProfileData } from "./utils/persistence.js";

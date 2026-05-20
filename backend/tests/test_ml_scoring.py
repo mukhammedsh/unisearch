@@ -33,13 +33,20 @@ class MlRecommenderTests(unittest.TestCase):
                 "academics": {"programs": [{"name": "Computer Science"}]},
                 "tags": ["ai", "robotics"],
                 "major_focus": ["ai", "computer science"],
-                "admission_tracks": [
+                "admission_categories": [
                     {
                         "id": "direct-ai",
-                        "label": "Direct AI Track",
-                        "description": "Deep learning and machine vision",
+                        "label": "Direct AI Category",
+                        "description": "Bachelor AI admission",
                         "study_mode": ["On-campus", "Online"],
                         "extra_requirements": ["Portfolio"],
+                        "requirement_profiles": [
+                            {
+                                "id": "direct-ai",
+                                "label": "Direct AI Profile",
+                                "description": "Deep learning and machine vision",
+                            }
+                        ],
                     }
                 ],
             },
@@ -60,12 +67,13 @@ class MlRecommenderTests(unittest.TestCase):
         MLRecommender._instance = None
         self._tmp.cleanup()
 
-    def test_prepare_text_features_includes_admission_track_fields(self):
+    def test_prepare_text_features_includes_admission_category_fields(self):
         docs = self.recommender.prepare_text_features(self.universities)
         self.assertEqual(2, len(docs))
         doc = docs[0].lower()
 
-        self.assertIn("direct ai track", doc)
+        self.assertIn("direct ai category", doc)
+        self.assertIn("direct ai profile", doc)
         self.assertIn("deep learning and machine vision", doc)
         self.assertIn("portfolio", doc)
         self.assertTrue(("on-campus" in doc) or ("on campus" in doc))

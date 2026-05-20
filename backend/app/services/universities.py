@@ -332,52 +332,57 @@ def _localize_university_payload(university: Dict[str, Any], search_lang: Any) -
                         _translate_program_name(x, lang) for x in p.get("major_tags", [])
                     ]
 
-    def localize_track_payload(track: Dict[str, Any]) -> None:
-        if not isinstance(track, dict):
+    def localize_admission_payload(row: Dict[str, Any]) -> None:
+        if not isinstance(row, dict):
             return
 
-        track["label"] = _translate_track_label(track.get("label"), lang)
-        track["track_badge"] = _translate_admission_text(track.get("track_badge"), lang)
-        track["description"] = _translate_admission_text(track.get("description"), lang)
-        track["funding_program"] = _translate_admission_text(track.get("funding_program"), lang)
-        track["funding_source"] = _translate_admission_text(track.get("funding_source"), lang)
-        if isinstance(track.get("applicable_majors"), list):
-            track["applicable_majors"] = [
-                _translate_program_name(x, lang) for x in track.get("applicable_majors", [])
+        row["label"] = _translate_track_label(row.get("label"), lang)
+        row["track_badge"] = _translate_admission_text(row.get("track_badge"), lang)
+        row["description"] = _translate_admission_text(row.get("description"), lang)
+        row["funding_program"] = _translate_admission_text(row.get("funding_program"), lang)
+        row["funding_source"] = _translate_admission_text(row.get("funding_source"), lang)
+        if isinstance(row.get("applicable_majors"), list):
+            row["applicable_majors"] = [
+                _translate_program_name(x, lang) for x in row.get("applicable_majors", [])
             ]
-        if isinstance(track.get("study_mode"), (str, list)):
-            track["study_mode"] = _translate_maybe_list(
-                track.get("study_mode"),
+        if isinstance(row.get("study_mode"), (str, list)):
+            row["study_mode"] = _translate_maybe_list(
+                row.get("study_mode"),
                 lambda x: _translate_group_value("study_mode", x, lang),
             )
-        if isinstance(track.get("extra_requirements"), list):
-            track["extra_requirements"] = [
-                _translate_admission_text(x, lang) for x in track.get("extra_requirements", [])
+        if isinstance(row.get("extra_requirements"), list):
+            row["extra_requirements"] = [
+                _translate_admission_text(x, lang) for x in row.get("extra_requirements", [])
             ]
 
-        lang_reqs = track.get("language_requirements")
+        lang_reqs = row.get("language_requirements")
         if isinstance(lang_reqs, list):
-            for row in lang_reqs:
-                if not isinstance(row, dict):
+            for lang_row in lang_reqs:
+                if not isinstance(lang_row, dict):
                     continue
-                row["code"] = _translate_group_value("language", row.get("code"), lang)
+                lang_row["code"] = _translate_group_value("language", lang_row.get("code"), lang)
 
-        scholarships = track.get("scholarships")
+        scholarships = row.get("scholarships")
         if isinstance(scholarships, list):
             for scholarship in scholarships:
                 if not isinstance(scholarship, dict):
                     continue
                 scholarship["name"] = _translate_admission_text(scholarship.get("name"), lang)
 
-        funding_options = track.get("funding_options")
+        funding_options = row.get("funding_options")
         if isinstance(funding_options, list):
             for option in funding_options:
-                localize_track_payload(option)
+                localize_admission_payload(option)
 
-    tracks = u.get("admission_tracks")
-    if isinstance(tracks, list):
-        for track in tracks:
-            localize_track_payload(track)
+        requirement_profiles = row.get("requirement_profiles")
+        if isinstance(requirement_profiles, list):
+            for profile in requirement_profiles:
+                localize_admission_payload(profile)
+
+    categories = u.get("admission_categories")
+    if isinstance(categories, list):
+        for category in categories:
+            localize_admission_payload(category)
 
     return u
 
@@ -884,72 +889,114 @@ def _filter_variant_stats_avg_for_requirements(stats_avg: Any, requirements: Any
     return filtered
 
 
-def _expand_track_funding_options(track: Dict[str, Any]) -> List[Dict[str, Any]]:
-    if not isinstance(track, dict):
+def _choice_key(category_id: Any, profile_id: Any, funding_id: Any = "") -> str:
+    parts = [
+        str(category_id or "").strip(),
+        str(profile_id or "").strip(),
+        str(funding_id or "").strip(),
+    ]
+    return "::".join(part for part in parts if part)
+
+
+def _funding_options_from_profile_or_category(category: Dict[str, Any], profile: Dict[str, Any]) -> List[Dict[str, Any]]:
+    profile_options = profile.get("funding_options")
+    if isinstance(profile_options, list) and profile_options:
+        return [copy.deepcopy(row) for row in profile_options if isinstance(row, dict)]
+    category_options = category.get("funding_options")
+    if isinstance(category_options, list) and category_options:
+        return [copy.deepcopy(row) for row in category_options if isinstance(row, dict)]
+    return []
+
+
+def _admission_choice_from_parts(
+    category: Dict[str, Any],
+    profile: Dict[str, Any],
+    funding: Optional[Dict[str, Any]] = None,
+    funding_idx: int = 0,
+) -> Dict[str, Any]:
+    funding = funding if isinstance(funding, dict) else {}
+    category_id = str(category.get("id") or "").strip()
+    profile_id = str(profile.get("id") or "").strip()
+    funding_id = str(funding.get("id") or "").strip()
+    choice_key = _choice_key(category_id, profile_id, funding_id)
+
+    merged_requirements = _merge_track_variant_dict(
+        _merge_track_variant_dict(category.get("requirements"), profile.get("requirements")),
+        funding.get("requirements"),
+    )
+    merged_stats_avg = _merge_track_variant_dict(
+        _merge_track_variant_dict(category.get("stats_avg"), profile.get("stats_avg")),
+        funding.get("stats_avg"),
+    )
+    merged_stats_avg = _filter_variant_stats_avg_for_requirements(merged_stats_avg, merged_requirements)
+    merged_finance_override = _merge_track_variant_dict(
+        _merge_track_variant_dict(category.get("finance_override"), profile.get("finance_override")),
+        funding.get("finance_override"),
+    )
+
+    choice: Dict[str, Any] = {
+        "id": choice_key or profile_id or category_id or f"choice:{funding_idx}",
+        "choice_key": choice_key,
+        "category_id": category_id,
+        "category_label": category.get("label"),
+        "requirement_profile_id": profile_id,
+        "requirement_profile_label": profile.get("label"),
+        "funding_option_id": funding_id,
+        "label": profile.get("label") or category.get("label"),
+        "description": profile.get("description") or category.get("description"),
+        "study_mode": profile.get("study_mode", category.get("study_mode")),
+        "language_requirements": copy.deepcopy(profile.get("language_requirements", category.get("language_requirements"))),
+        "language_requirements_mode": profile.get("language_requirements_mode", category.get("language_requirements_mode")),
+        "extra_requirements": copy.deepcopy(profile.get("extra_requirements", category.get("extra_requirements"))),
+        "scholarships": copy.deepcopy(profile.get("scholarships", category.get("scholarships", []))),
+        "applicable_majors": copy.deepcopy(profile.get("applicable_majors", category.get("applicable_majors", []))),
+        "scope": copy.deepcopy(profile.get("scope", category.get("scope"))),
+        "program_ids": copy.deepcopy(profile.get("program_ids", category.get("program_ids", []))),
+        "program_names": copy.deepcopy(profile.get("program_names", category.get("program_names", []))),
+    }
+    if isinstance(merged_requirements, dict) and merged_requirements:
+        choice["requirements"] = merged_requirements
+    if isinstance(merged_stats_avg, dict) and merged_stats_avg:
+        choice["stats_avg"] = merged_stats_avg
+    if isinstance(merged_finance_override, dict) and merged_finance_override:
+        choice["finance_override"] = merged_finance_override
+    score_profile = funding.get("score_profile") or profile.get("score_profile")
+    if isinstance(score_profile, dict) and score_profile:
+        choice["score_profile"] = copy.deepcopy(score_profile)
+    if funding_id:
+        choice["funding_type"] = funding.get("funding_type")
+        choice["track_badge"] = funding.get("track_badge")
+        choice["funding_program"] = funding.get("funding_program")
+        choice["funding_source"] = funding.get("funding_source")
+        choice["funding_label"] = funding.get("label")
+        choice["funding_description"] = funding.get("description")
+        choice["label"] = funding.get("label") or choice.get("label")
+        if funding.get("extra_requirements"):
+            choice["extra_requirements"] = copy.deepcopy(funding.get("extra_requirements"))
+        if funding.get("applicable_majors"):
+            choice["applicable_majors"] = copy.deepcopy(funding.get("applicable_majors"))
+    return choice
+
+
+def expand_admission_choices(categories: Any) -> List[Dict[str, Any]]:
+    if not isinstance(categories, list):
         return []
 
-    raw_options = track.get("funding_options")
-    options = [row for row in raw_options if isinstance(row, dict)] if isinstance(raw_options, list) else []
-    if not options:
-        return [copy.deepcopy(track)]
-
-    base_track = copy.deepcopy(track)
-    base_track.pop("funding_options", None)
     expanded: List[Dict[str, Any]] = []
-
-    for option in options:
-        variant = copy.deepcopy(base_track)
-        option_copy = copy.deepcopy(option)
-        option_copy.pop("funding_options", None)
-
-        merged_requirements = _merge_track_variant_dict(
-            base_track.get("requirements"),
-            option_copy.pop("requirements", None),
-        )
-        if isinstance(merged_requirements, dict) and merged_requirements:
-            variant["requirements"] = merged_requirements
-        else:
-            variant.pop("requirements", None)
-
-        merged_stats_avg = _merge_track_variant_dict(
-            base_track.get("stats_avg"),
-            option_copy.pop("stats_avg", None),
-        )
-        merged_stats_avg = _filter_variant_stats_avg_for_requirements(
-            merged_stats_avg,
-            merged_requirements,
-        )
-        if isinstance(merged_stats_avg, dict) and merged_stats_avg:
-            variant["stats_avg"] = merged_stats_avg
-        else:
-            variant.pop("stats_avg", None)
-
-        merged_finance_override = _merge_track_variant_dict(
-            base_track.get("finance_override"),
-            option_copy.pop("finance_override", None),
-        )
-        if isinstance(merged_finance_override, dict) and merged_finance_override:
-            variant["finance_override"] = merged_finance_override
-
-        variant.update(option_copy)
-        if not str(variant.get("id") or "").strip():
-            variant["id"] = base_track.get("id")
-        if not str(variant.get("label") or "").strip():
-            variant["label"] = base_track.get("label")
-        expanded.append(variant)
-
-    return expanded or [base_track]
-
-
-def expand_admission_track_variants(tracks: Any) -> List[Dict[str, Any]]:
-    if not isinstance(tracks, list):
-        return []
-
-    expanded: List[Dict[str, Any]] = []
-    for track in tracks:
-        if not isinstance(track, dict):
+    for category in categories:
+        if not isinstance(category, dict):
             continue
-        expanded.extend(_expand_track_funding_options(track))
+        profiles = category.get("requirement_profiles")
+        profile_rows = [row for row in profiles if isinstance(row, dict)] if isinstance(profiles, list) else []
+        if not profile_rows:
+            profile_rows = [{"id": "general", "label": category.get("label") or "General requirements"}]
+        for profile in profile_rows:
+            options = _funding_options_from_profile_or_category(category, profile)
+            if not options:
+                expanded.append(_admission_choice_from_parts(category, profile))
+                continue
+            for option_idx, option in enumerate(options):
+                expanded.append(_admission_choice_from_parts(category, profile, option, option_idx))
     return expanded
 
 
@@ -1411,53 +1458,46 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
         if vals:
             academics["acceptance_rate_percent"] = round(sum(vals) / len(vals), 2)
 
-    tracks = u.get("admission_tracks")
-    if isinstance(tracks, list):
-        kept_tracks: List[Dict[str, Any]] = []
-        for raw_track in tracks:
-            if not isinstance(raw_track, dict):
+    categories = u.get("admission_categories")
+    if isinstance(categories, list):
+        kept_categories: List[Dict[str, Any]] = []
+        for raw_category in categories:
+            if not isinstance(raw_category, dict):
                 continue
 
-            track = copy.deepcopy(raw_track)
-            derived_majors = _derive_track_applicable_majors(u, track)
+            category = copy.deepcopy(raw_category)
+            derived_majors = _derive_track_applicable_majors(u, category)
             if derived_majors:
-                track["applicable_majors"] = derived_majors
-            track["score_profile"] = _derive_track_score_profile(u, track)
-            if track.get("score_profile"):
-                sp = track["score_profile"]
-                exam_id = sp.get("exam_id")
-                median = sp.get("median_raw")
-                if exam_id and median is not None:
-                    if "stats_avg" not in track or not isinstance(track["stats_avg"], dict):
-                        track["stats_avg"] = {}
-                    if exam_id not in track["stats_avg"]:
-                        track["stats_avg"][exam_id] = median
+                category["applicable_majors"] = derived_majors
 
-            raw_options = track.get("funding_options")
-            if isinstance(raw_options, list) and raw_options:
-                expanded_options = _expand_track_funding_options(track)
-                normalized_options: List[Dict[str, Any]] = []
-                for option_idx, raw_option in enumerate(raw_options):
-                    if not isinstance(raw_option, dict):
-                        continue
-                    option = copy.deepcopy(raw_option)
-                    variant = expanded_options[option_idx] if option_idx < len(expanded_options) else None
-                    if isinstance(variant, dict):
-                        option_majors = variant.get("applicable_majors")
-                        if isinstance(option_majors, list) and option_majors:
-                            option["applicable_majors"] = copy.deepcopy(option_majors)
-                        option_stats_avg = variant.get("stats_avg")
-                        if isinstance(option_stats_avg, dict):
-                            option["stats_avg"] = copy.deepcopy(option_stats_avg)
-                        option_score_profile = variant.get("score_profile")
-                        if isinstance(option_score_profile, dict) and option_score_profile:
-                            option["score_profile"] = copy.deepcopy(option_score_profile)
-                    normalized_options.append(option)
-                track["funding_options"] = normalized_options
+            raw_profiles = category.get("requirement_profiles")
+            profiles = [row for row in raw_profiles if isinstance(row, dict)] if isinstance(raw_profiles, list) else []
+            normalized_profiles: List[Dict[str, Any]] = []
+            for raw_profile in profiles:
+                profile = copy.deepcopy(raw_profile)
+                context = copy.deepcopy(category)
+                context.update(profile)
+                profile_majors = profile.get("applicable_majors") or category.get("applicable_majors")
+                if profile_majors:
+                    profile["applicable_majors"] = copy.deepcopy(profile_majors)
+                    context["applicable_majors"] = copy.deepcopy(profile_majors)
+                score_profile = _derive_track_score_profile(u, context)
+                if score_profile:
+                    profile["score_profile"] = score_profile
+                    exam_id = score_profile.get("exam_id")
+                    median = score_profile.get("median_raw")
+                    if exam_id and median is not None:
+                        if "stats_avg" not in profile or not isinstance(profile["stats_avg"], dict):
+                            profile["stats_avg"] = {}
+                        if exam_id not in profile["stats_avg"]:
+                            profile["stats_avg"][exam_id] = median
+                if _should_keep_track_for_product_scope(u, profile):
+                    normalized_profiles.append(profile)
+            category["requirement_profiles"] = normalized_profiles
 
-            if _should_keep_track_for_product_scope(u, track):
-                kept_tracks.append(track)
-        u["admission_tracks"] = kept_tracks
+            if _should_keep_track_for_product_scope(u, category) and normalized_profiles:
+                kept_categories.append(category)
+        u["admission_categories"] = kept_categories
 
     _filter_academics_for_product_scope(academics)
 
@@ -1591,16 +1631,16 @@ def _has_any_aid(u: Dict[str, Any]) -> bool:
             if _to_bool(aid.get("merit_based")) or _to_bool(aid.get("need_based")):
                 return True
 
-    tracks = expand_admission_track_variants(u.get("admission_tracks"))
-    if not tracks:
+    choices = expand_admission_choices(u.get("admission_categories"))
+    if not choices:
         return False
 
-    for track in tracks:
-        if not isinstance(track, dict):
+    for choice in choices:
+        if not isinstance(choice, dict):
             continue
-        if _safe_lower(track.get("funding_type")) == "grant":
+        if _safe_lower(choice.get("funding_type")) == "grant":
             return True
-        scholarships = track.get("scholarships")
+        scholarships = choice.get("scholarships")
         if isinstance(scholarships, list) and len(scholarships) > 0:
             return True
     return False
@@ -1999,9 +2039,9 @@ def list_universities(
                 (u, m)
                 for (u, m) in pairs
                 if any(
-                    _safe_lower(t.get("funding_type")) == ft
-                    for t in expand_admission_track_variants(u.get("admission_tracks"))
-                    if isinstance(t, dict)
+                    _safe_lower(choice.get("funding_type")) == ft
+                    for choice in expand_admission_choices(u.get("admission_categories"))
+                    if isinstance(choice, dict)
                 )
             ]
 

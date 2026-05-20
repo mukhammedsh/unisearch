@@ -315,7 +315,7 @@ def get_universities_translations(
     return uni_service.get_university_translation_bundle(search_lang)
 
 
-@router.get("/universities/{university_id}", summary="University detail", description="Returns full details for a single university, including admission tracks, finance, programs, and student life. Supports ETag caching and language localization.")
+@router.get("/universities/{university_id}", summary="University detail", description="Returns full details for a single university, including admission categories, finance, programs, and student life. Supports ETag caching and language localization.")
 def get_university(
     university_id: str,
     lang: Optional[str] = Query(None, max_length=16),

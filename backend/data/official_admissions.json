@@ -2074,7 +2074,7 @@
         "kind": "competition_ratio_only",
         "acceptance_rate_percent": null,
         "counts": null,
-        "semantics": "Official admission-track tables publish quota, applicants, and competition ratio, but KAIST recruits without departments and students choose a major later.",
+        "semantics": "Official applicant-route tables publish quota, applicants, and competition ratio, but KAIST recruits without departments and students choose a major later.",
         "sources": [
           {
             "url": "https://admission.kaist.ac.kr/undergraduate/admission/rsub/2024"

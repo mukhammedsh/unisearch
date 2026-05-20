@@ -2,7 +2,11 @@ import unittest
 from unittest.mock import Mock, patch
 
 from app.services import universities as uni_service
-from app.services.ai_scoring import _build_user_context, estimate_uni_chance, sort_universities_ai
+from app.services.ai_scoring import (
+    _build_user_context,
+    estimate_uni_chance as _estimate_uni_chance,
+    sort_universities_ai as _sort_universities_ai,
+)
 
 
 def _demo_score_profile(exam_id="GPA", p25=60, median=75, p75=90, acceptance_rate_percent=None):
@@ -17,6 +21,63 @@ def _demo_score_profile(exam_id="GPA", p25=60, median=75, p75=90, acceptance_rat
     if acceptance_rate_percent is not None:
         profile["acceptance_rate_percent"] = float(acceptance_rate_percent)
     return profile
+
+
+def _admission_category(category_id, label, profiles, **overrides):
+    row = {
+        "id": category_id,
+        "label": label,
+        "scope": {"level": "bachelor", "type": "general", "program_ids": [], "program_names": []},
+        "requirement_profiles": profiles,
+    }
+    row.update(overrides)
+    return row
+
+
+def _choice_selection(choice_key):
+    parts = str(choice_key or "").split("::")
+    return {
+        "categoryId": parts[0] if len(parts) > 0 else "",
+        "requirementProfileId": parts[1] if len(parts) > 1 else "",
+        "fundingOptionId": parts[2] if len(parts) > 2 else "",
+        "choiceKey": choice_key,
+    }
+
+
+def _categories_from_requirement_profiles(profiles):
+    categories = []
+    for profile_row in profiles or []:
+        profile = {
+            "id": profile_row.get("id"),
+            "label": profile_row.get("label"),
+        }
+        for key in ("requirements", "stats_avg", "score_profile", "language_requirements", "language_requirements_mode", "extra_requirements", "scholarships", "finance_override"):
+            if key in profile_row:
+                profile[key] = profile_row[key]
+        if profile_row.get("funding_options"):
+            profile["funding_options"] = profile_row.get("funding_options")
+        elif profile_row.get("funding_type"):
+            profile["funding_options"] = [
+                {
+                    "id": profile_row.get("id"),
+                    "label": profile_row.get("label"),
+                    "funding_type": profile_row.get("funding_type"),
+                    "track_badge": profile_row.get("track_badge"),
+                    "funding_program": profile_row.get("funding_program"),
+                    "funding_source": profile_row.get("funding_source"),
+                    "finance_override": profile_row.get("finance_override"),
+                }
+            ]
+        categories.append(_admission_category(profile_row.get("id") or "general", profile_row.get("label") or "General admission", [profile]))
+    return categories
+
+
+def estimate_uni_chance(university, profile=None):
+    return _estimate_uni_chance(university, profile)
+
+
+def sort_universities_ai(items, profile=None, **kwargs):
+    return _sort_universities_ai(items, profile, **kwargs)
 
 
 class AiScoringTests(unittest.TestCase):
@@ -101,7 +162,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.70,
                     "city_vs_campus": 0.20,
                 },
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "default",
                         "label": "Default",
@@ -109,7 +170,7 @@ class AiScoringTests(unittest.TestCase):
                         "stats_avg": {},
                         "scholarships": [],
                     }
-                ],
+                ]),
             },
             {
                 "id": "u2",
@@ -123,7 +184,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.25,
                     "city_vs_campus": 0.85,
                 },
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "default",
                         "label": "Default",
@@ -131,7 +192,7 @@ class AiScoringTests(unittest.TestCase):
                         "stats_avg": {},
                         "scholarships": [],
                     }
-                ],
+                ]),
             },
         ]
         profile = {"budget": 40000, "interests": "ai robotics"}
@@ -169,7 +230,7 @@ class AiScoringTests(unittest.TestCase):
                 "rank": 100,
                 "finance": {"total_cost_year_usd": 30000, "financial_aid": {"merit_based": False, "need_based": False}},
                 "academics": {"acceptance_rate_percent": 45},
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "default",
                         "label": "Default",
@@ -177,7 +238,7 @@ class AiScoringTests(unittest.TestCase):
                         "stats_avg": {},
                         "scholarships": [],
                     }
-                ],
+                ]),
             }
         ]
         profile = {"budget": 40000, "interests": "ai robotics"}
@@ -203,7 +264,7 @@ class AiScoringTests(unittest.TestCase):
                 "rank": 100,
                 "finance": {"total_cost_year_usd": 30000, "financial_aid": {"merit_based": False, "need_based": False}},
                 "academics": {"acceptance_rate_percent": 45},
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "default",
                         "label": "Default",
@@ -211,7 +272,7 @@ class AiScoringTests(unittest.TestCase):
                         "stats_avg": {},
                         "scholarships": [],
                     }
-                ],
+                ]),
             }
         ]
         profile = {"budget": 40000, "interests": "хочу ai", "locale": "rus"}
@@ -242,7 +303,7 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": True, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 45},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
@@ -254,7 +315,7 @@ class AiScoringTests(unittest.TestCase):
                         {"code": "en", "min_cefr": 4, "accept_native": True}
                     ],
                 }
-            ],
+            ]),
         }
         profile = {
             "gpa": 92,
@@ -266,12 +327,12 @@ class AiScoringTests(unittest.TestCase):
         result = estimate_uni_chance(university, profile)
 
         self.assertIn("overallChance", result)
-        self.assertIn("tracks", result)
-        self.assertIn("bestTrackLabel", result)
+        self.assertIn("choices", result)
+        self.assertIn("bestChoiceLabel", result)
         self.assertFalse(result.get("missingEvidence", True))
         self.assertGreaterEqual(int(result.get("overallChance", 0)), 0)
         self.assertLessEqual(int(result.get("overallChance", 0)), 100)
-        self.assertTrue(len(result.get("tracks", [])) >= 1)
+        self.assertTrue(len(result.get("choices", [])) >= 1)
 
     def test_estimate_uni_chance_respects_user_selected_track_override(self):
         university = {
@@ -283,7 +344,7 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 50},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "safe",
                     "label": "Safe Track",
@@ -298,20 +359,20 @@ class AiScoringTests(unittest.TestCase):
                     "stats_avg": {"GPA": 98},
                     "score_profile": _demo_score_profile("GPA", p25=78, median=92, p75=97, acceptance_rate_percent=50),
                 },
-            ],
+            ]),
         }
         profile = {
             "gpa": 92,
             "budget": 25000,
-            "selectedAdmissionTracks": {"manual-track-u": "stretch"},
+            "selectedAdmissionChoices": {"manual-track-u": _choice_selection("stretch::stretch")},
         }
 
         result = estimate_uni_chance(university, profile)
 
-        self.assertEqual("stretch", str(result.get("bestTrackKey", "")))
-        self.assertEqual("safe", str(result.get("recommendedTrackKey", "")))
+        self.assertEqual("stretch::stretch", str(result.get("bestChoiceKey", "")))
+        self.assertEqual("safe::safe", str(result.get("recommendedChoiceKey", "")))
         self.assertTrue(bool(result.get("selectedByUser")))
-        self.assertEqual("user", str(result.get("trackSelectionSource", "")))
+        self.assertEqual("user", str(result.get("choiceSelectionSource", "")))
 
     def legacy_estimate_uni_chance_returns_no_data_without_score_profile(self):
         university = {
@@ -323,14 +384,14 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 42},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
                     "requirements": {"GPA": 80},
                     "stats_avg": {"GPA": 88},
                 }
-            ],
+            ]),
         }
         profile = {"locale": "rus", "gpa": 92, "budget": 25000}
 
@@ -351,14 +412,14 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 42},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
                     "requirements": {"GPA": 80},
                     "stats_avg": {"GPA": 88},
                 }
-            ],
+            ]),
         }
         profile = {"locale": "rus", "gpa": 92, "budget": 25000}
 
@@ -380,14 +441,14 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 42},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
                     "requirements": {"GPA": 80},
                     "stats_avg": {"GPA": 88},
                 }
-            ],
+            ]),
         }
         profile = {"locale": "rus", "budget": 25000}
 
@@ -409,14 +470,14 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 42},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
                     "requirements": {},
                     "stats_avg": {},
                 }
-            ],
+            ]),
         }
         profile = {"locale": "rus", "budget": 25000}
 
@@ -436,14 +497,14 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 42},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
                     "requirements": {"GPA": 80, "SAT": 1300},
                     "stats_avg": {"GPA": 88, "SAT": 1420},
                 }
-            ],
+            ]),
         }
         profile = {
             "locale": "rus",
@@ -468,7 +529,7 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 42},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "main",
                     "label": "Main Track",
@@ -479,7 +540,7 @@ class AiScoringTests(unittest.TestCase):
                         {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 7.0}}
                     ],
                 }
-            ],
+            ]),
         }
         profile = {
             "locale": "rus",
@@ -504,7 +565,7 @@ class AiScoringTests(unittest.TestCase):
             "gpa": 92,
             "exams": [{"id": "SAT", "score": 1480}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
-            "selectedAdmissionTracks": {"nazarbayev-university-kaz-astana": "nu_sat_applicants"},
+            "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_sat_applicants::nu_sat_applicants")},
         }
         act_profile = {
             "locale": "rus",
@@ -512,7 +573,7 @@ class AiScoringTests(unittest.TestCase):
             "gpa": 92,
             "exams": [{"id": "ACT", "score": 31}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
-            "selectedAdmissionTracks": {"nazarbayev-university-kaz-astana": "nu_act_applicants"},
+            "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_act_applicants::nu_act_applicants")},
         }
         nuet_profile = {
             "locale": "rus",
@@ -520,7 +581,7 @@ class AiScoringTests(unittest.TestCase):
             "gpa": 92,
             "exams": [{"id": "NUET", "score": 195}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
-            "selectedAdmissionTracks": {"nazarbayev-university-kaz-astana": "nu_nuet_undergraduate"},
+            "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_nuet_undergraduate::nu_nuet_undergraduate")},
         }
 
         sat_result = estimate_uni_chance(university, sat_profile)
@@ -529,17 +590,17 @@ class AiScoringTests(unittest.TestCase):
 
         self.assertIsNotNone(sat_result.get("overallChance"))
         self.assertTrue(bool(sat_result.get("chanceAvailable")))
-        self.assertEqual("nu_sat_applicants", str(sat_result.get("bestTrackKey") or ""))
+        self.assertEqual("nu_regular_undergraduate::nu_sat_applicants::nu_sat_applicants", str(sat_result.get("bestChoiceKey") or ""))
         self.assertEqual("official_score_profile", str(sat_result.get("chanceModel") or ""))
 
         self.assertIsNotNone(act_result.get("overallChance"))
         self.assertTrue(bool(act_result.get("chanceAvailable")))
-        self.assertEqual("nu_act_applicants", str(act_result.get("bestTrackKey") or ""))
+        self.assertEqual("nu_regular_undergraduate::nu_act_applicants::nu_act_applicants", str(act_result.get("bestChoiceKey") or ""))
         self.assertEqual("estimated_fallback", str(act_result.get("chanceModel") or ""))
 
         self.assertIsNotNone(nuet_result.get("overallChance"))
         self.assertTrue(bool(nuet_result.get("chanceAvailable")))
-        self.assertEqual("nu_nuet_undergraduate", str(nuet_result.get("bestTrackKey") or ""))
+        self.assertEqual("nu_regular_undergraduate::nu_nuet_undergraduate::nu_nuet_undergraduate", str(nuet_result.get("bestChoiceKey") or ""))
 
     def test_estimate_uni_chance_uses_cuhk_weighted_total_score_profile(self):
         university = uni_service.get_university_by_id("cuhk-hk-shatin")
@@ -551,14 +612,14 @@ class AiScoringTests(unittest.TestCase):
             "gpa": 90,
             "exams": [{"id": "HKDSE_WEIGHTED_TOTAL", "score": 43.0}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
-            "selectedAdmissionTracks": {"cuhk-hk-shatin": "cuhk_hkdse"},
+            "selectedAdmissionChoices": {"cuhk-hk-shatin": _choice_selection("cuhk_hkdse::cuhk_hkdse")},
         }
 
         result = estimate_uni_chance(university, profile)
 
         self.assertIsNotNone(result.get("overallChance"))
         self.assertTrue(bool(result.get("chanceAvailable")))
-        self.assertEqual("cuhk_hkdse", str(result.get("bestTrackKey") or ""))
+        self.assertEqual("cuhk_hkdse::cuhk_hkdse", str(result.get("bestChoiceKey") or ""))
         self.assertEqual("official_score_profile", str(result.get("chanceModel") or ""))
 
     def test_estimate_uni_chance_accepts_raw_a_level_grades(self):
@@ -568,7 +629,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 12000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 40},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "alevel_track",
                     "label": "A-Level Track",
@@ -584,7 +645,7 @@ class AiScoringTests(unittest.TestCase):
                     ],
                     "language_requirements_mode": "any",
                 }
-            ],
+            ]),
         }
         profile = {
             "budget": 25000,
@@ -622,12 +683,12 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 1},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     **base_track,
                     "score_profile": _demo_score_profile("GPA", p25=50, median=65, p75=80, acceptance_rate_percent=1),
                 }
-            ],
+            ]),
         }
         university_high = {
             "id": "u-high-acc",
@@ -635,12 +696,12 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 95},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     **base_track,
                     "score_profile": _demo_score_profile("GPA", p25=50, median=65, p75=80, acceptance_rate_percent=95),
                 }
-            ],
+            ]),
         }
         profile = {"gpa": 100, "budget": 20000}
 
@@ -666,7 +727,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 1},
-            "admission_tracks": [{**base_track}],
+            "admission_categories": _categories_from_requirement_profiles([{**base_track}]),
         }
         university_high = {
             "id": "u-high-fallback",
@@ -674,7 +735,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 95},
-            "admission_tracks": [{**base_track}],
+            "admission_categories": _categories_from_requirement_profiles([{**base_track}]),
         }
         profile = {"gpa": 100, "budget": 20000}
 
@@ -700,7 +761,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 40},
-            "admission_tracks": [{**base_track}],
+            "admission_categories": _categories_from_requirement_profiles([{**base_track}]),
         }
         university_profile = {
             "id": "u-profile-calibrated",
@@ -708,12 +769,12 @@ class AiScoringTests(unittest.TestCase):
             "rank": 50,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 40},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     **base_track,
                     "score_profile": _demo_score_profile("GPA", p25=55, median=70, p75=85, acceptance_rate_percent=40),
                 }
-            ],
+            ]),
         }
         profile = {"gpa": 85, "budget": 20000}
 
@@ -736,7 +797,7 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 35},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "eth_direct",
                     "label": "Direct Entry",
@@ -754,7 +815,7 @@ class AiScoringTests(unittest.TestCase):
                         }
                     ],
                 }
-            ],
+            ]),
         }
 
         profile_de_b2 = {
@@ -787,7 +848,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.5,
                 },
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "safe",
                         "label": "Safe Track",
@@ -804,14 +865,14 @@ class AiScoringTests(unittest.TestCase):
                         "score_profile": _demo_score_profile("GPA", p25=78, median=92, p75=97, acceptance_rate_percent=45),
                         "finance_override": {"total_cost_year_usd": 12000},
                     },
-                ],
+                ]),
             }
         ]
         profile_auto = {"gpa": 92, "budget": 30000}
         profile_manual = {
             "gpa": 92,
             "budget": 30000,
-            "selectedAdmissionTracks": {"u-manual": "stretch"},
+            "selectedAdmissionChoices": {"u-manual": _choice_selection("stretch::stretch")},
         }
 
         auto_result = sort_universities_ai(items, profile=profile_auto, budget_vs_prestige=100, funding_type="any")
@@ -820,11 +881,11 @@ class AiScoringTests(unittest.TestCase):
         auto_match = auto_result[0].get("matchData", {})
         manual_match = manual_result[0].get("matchData", {})
 
-        self.assertEqual("safe", str(auto_match.get("trackKey", "")))
-        self.assertEqual("stretch", str(manual_match.get("trackKey", "")))
-        self.assertEqual("safe", str(manual_match.get("recommendedTrackKey", "")))
+        self.assertEqual("safe::safe", str(auto_match.get("choiceKey", "")))
+        self.assertEqual("stretch::stretch", str(manual_match.get("choiceKey", "")))
+        self.assertEqual("safe::safe", str(manual_match.get("recommendedChoiceKey", "")))
         self.assertTrue(bool(manual_match.get("selectedByUser")))
-        self.assertEqual("user", str(manual_match.get("trackSelectionSource", "")))
+        self.assertEqual("user", str(manual_match.get("choiceSelectionSource", "")))
         self.assertLess(int(manual_match.get("selectedChance", 0)), int(auto_match.get("selectedChance", 0)))
 
     def test_jlpt_uses_best_lower_score_when_duplicate_exam_entries_exist(self):
@@ -834,7 +895,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 80,
             "finance": {"total_cost_year_usd": 10000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 60},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "jp-track",
                     "label": "JP Track",
@@ -842,7 +903,7 @@ class AiScoringTests(unittest.TestCase):
                     "stats_avg": {"JLPT_N": 2},
                     "score_profile": _demo_score_profile("GPA", p25=55, median=70, p75=85, acceptance_rate_percent=60),
                 }
-            ],
+            ]),
         }
         profile_worse_only = {
             "gpa": 90,
@@ -870,7 +931,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 120,
             "finance": {"total_cost_year_usd": 16000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 45},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "track-main",
                     "label": "Main Track",
@@ -882,7 +943,7 @@ class AiScoringTests(unittest.TestCase):
                         {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 7.0}}
                     ],
                 }
-            ],
+            ]),
         }
         profile = {
             "budget": 25000,
@@ -892,7 +953,7 @@ class AiScoringTests(unittest.TestCase):
 
         chance = estimate_uni_chance(university, profile)
         self.assertGreater(int(chance.get("overallChance", 0)), 0)
-        track = (chance.get("tracks") or [{}])[0]
+        track = (chance.get("choices") or [{}])[0]
         self.assertTrue(bool(track.get("conditional")))
         self.assertGreaterEqual(int((track.get("details") or {}).get("conditionalRequirements", 0)), 1)
 
@@ -903,14 +964,14 @@ class AiScoringTests(unittest.TestCase):
             "rank": 120,
             "finance": {"total_cost_year_usd": 16000, "financial_aid": {"merit_based": False, "need_based": False}},
             "academics": {"acceptance_rate_percent": 45},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "track-main",
                     "label": "Main Track",
                     "requirements": {"UNT": 110},
                     "stats_avg": {"UNT": 120},
                 }
-            ],
+            ]),
         }
         profile = {
             "budget": 25000,
@@ -942,7 +1003,7 @@ class AiScoringTests(unittest.TestCase):
                     "financial_aid": {"merit_based": False, "need_based": False},
                 },
                 "academics": {"acceptance_rate_percent": 50},
-                "admission_tracks": [{"id": "t1", "label": "Default", "requirements": {}, "stats_avg": {}}],
+                "admission_categories": _categories_from_requirement_profiles([{"id": "t1", "label": "Default", "requirements": {}, "stats_avg": {}}]),
             }
         ]
         profile = {"budget": 12000, "studyMode": "Online"}
@@ -969,7 +1030,7 @@ class AiScoringTests(unittest.TestCase):
                 "financial_aid": {"merit_based": False, "need_based": False},
             },
             "academics": {"acceptance_rate_percent": 40},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "track-1",
                     "label": "Default",
@@ -977,7 +1038,7 @@ class AiScoringTests(unittest.TestCase):
                     "stats_avg": {"GPA": 90},
                     "score_profile": _demo_score_profile("GPA", p25=55, median=70, p75=85, acceptance_rate_percent=40),
                 }
-            ],
+            ]),
         }
         profile_oncampus = {"gpa": 85, "budget": 12000, "studyMode": "On-campus"}
         profile_online = {"gpa": 85, "budget": 12000, "studyMode": "Online"}
@@ -985,8 +1046,8 @@ class AiScoringTests(unittest.TestCase):
         chance_oncampus = estimate_uni_chance(university, profile_oncampus)
         chance_online = estimate_uni_chance(university, profile_online)
 
-        oncampus_aff = int(((chance_oncampus.get("tracks") or [{}])[0].get("details") or {}).get("affordability", 0))
-        online_aff = int(((chance_online.get("tracks") or [{}])[0].get("details") or {}).get("affordability", 0))
+        oncampus_aff = int(((chance_oncampus.get("choices") or [{}])[0].get("details") or {}).get("affordability", 0))
+        online_aff = int(((chance_online.get("choices") or [{}])[0].get("details") or {}).get("affordability", 0))
         self.assertGreater(online_aff, oncampus_aff)
         self.assertGreaterEqual(int(chance_online.get("overallChance", 0)), int(chance_oncampus.get("overallChance", 0)))
 
@@ -1005,7 +1066,7 @@ class AiScoringTests(unittest.TestCase):
                     "financial_aid": {"merit_based": False, "need_based": False},
                 },
                 "academics": {"acceptance_rate_percent": 50},
-                "admission_tracks": [{"id": "t1", "label": "Default", "requirements": {}, "stats_avg": {}}],
+                "admission_categories": _categories_from_requirement_profiles([{"id": "t1", "label": "Default", "requirements": {}, "stats_avg": {}}]),
             }
         ]
         profile = {"budget": 1000, "studyMode": "Online"}
@@ -1030,7 +1091,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.5,
                 },
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "paid-easy",
                         "label": "Paid Easy",
@@ -1039,7 +1100,7 @@ class AiScoringTests(unittest.TestCase):
                         "stats_avg": {"GPA": 78},
                         "score_profile": _demo_score_profile("GPA", p25=45, median=60, p75=75, acceptance_rate_percent=40),
                     }
-                ],
+                ]),
             },
             {
                 "id": "u-grant-strong",
@@ -1053,7 +1114,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.5,
                 },
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "grant-medium",
                         "label": "Grant Medium",
@@ -1062,7 +1123,7 @@ class AiScoringTests(unittest.TestCase):
                         "stats_avg": {"GPA": 88},
                         "score_profile": _demo_score_profile("GPA", p25=55, median=72, p75=84, acceptance_rate_percent=40),
                     }
-                ],
+                ]),
             },
         ]
         profile = {"gpa": 90, "budget": 40000, "studyMode": "On-campus"}
@@ -1089,7 +1150,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.1,
                 },
-                "admission_tracks": [{"id": "city", "label": "City", "requirements": {"GPA": 82}, "stats_avg": {"GPA": 88}}],
+                "admission_categories": _categories_from_requirement_profiles([{"id": "city", "label": "City", "requirements": {"GPA": 82}, "stats_avg": {"GPA": 88}}]),
             },
             {
                 "id": "u-campus",
@@ -1103,7 +1164,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.9,
                 },
-                "admission_tracks": [{"id": "campus", "label": "Campus", "requirements": {"GPA": 82}, "stats_avg": {"GPA": 88}}],
+                "admission_categories": _categories_from_requirement_profiles([{"id": "campus", "label": "Campus", "requirements": {"GPA": 82}, "stats_avg": {"GPA": 88}}]),
             },
         ]
         profile = {"gpa": 90, "budget": 40000, "studyMode": "On-campus"}
@@ -1128,7 +1189,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.5,
                 },
-                "admission_tracks": [
+                "admission_categories": _categories_from_requirement_profiles([
                     {
                         "id": "grant-track",
                         "label": "Grant Track",
@@ -1140,7 +1201,7 @@ class AiScoringTests(unittest.TestCase):
                             {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 7.0}}
                         ],
                     }
-                ],
+                ]),
             }
         ]
         profile = {"gpa": 95, "budget": 30000}
@@ -1173,7 +1234,7 @@ class AiScoringTests(unittest.TestCase):
                 "budget_vs_prestige": 0.5,
                 "city_vs_campus": 0.5,
             },
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "grant-track",
                     "label": "Grant Track",
@@ -1182,7 +1243,7 @@ class AiScoringTests(unittest.TestCase):
                     "stats_avg": {"GPA": 75},
                     "score_profile": _demo_score_profile("GPA", p25=40, median=55, p75=72, acceptance_rate_percent=70),
                 }
-            ],
+            ]),
         }
         paid_item = {
             "id": "u-paid-route",
@@ -1196,7 +1257,7 @@ class AiScoringTests(unittest.TestCase):
                 "budget_vs_prestige": 0.5,
                 "city_vs_campus": 0.5,
             },
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "paid-track",
                     "label": "Paid Track",
@@ -1205,7 +1266,7 @@ class AiScoringTests(unittest.TestCase):
                     "stats_avg": {"GPA": 70},
                     "score_profile": _demo_score_profile("GPA", p25=38, median=52, p75=68, acceptance_rate_percent=75),
                 }
-            ],
+            ]),
         }
         profile = {"gpa": 95, "budget": 40000}
 
@@ -1225,7 +1286,7 @@ class AiScoringTests(unittest.TestCase):
             "rank": 70,
             "finance": {"total_cost_year_usd": 18000, "financial_aid": {"merit_based": True, "need_based": False}},
             "academics": {"acceptance_rate_percent": 40},
-            "admission_tracks": [
+            "admission_categories": _categories_from_requirement_profiles([
                 {
                     "id": "direct",
                     "label": "Direct Admission",
@@ -1250,7 +1311,7 @@ class AiScoringTests(unittest.TestCase):
                         },
                     ],
                 }
-            ],
+            ]),
         }
         profile = {
             "gpa": 92,
@@ -1260,9 +1321,10 @@ class AiScoringTests(unittest.TestCase):
 
         result = estimate_uni_chance(university, profile)
 
-        self.assertEqual("direct-grant", str(result.get("bestTrackId") or ""))
+        self.assertEqual("direct::direct::direct-grant", str(result.get("bestChoiceKey") or ""))
+        self.assertEqual("direct-grant", str(result.get("fundingOptionId") or ""))
         self.assertEqual("grant", str(result.get("fundingType") or ""))
-        self.assertEqual(["direct-grant"], [str(row.get("trackId") or "") for row in (result.get("tracks") or [])])
+        self.assertEqual(["direct-grant"], [str(row.get("fundingOptionId") or "") for row in (result.get("choices") or [])])
 
 if __name__ == "__main__":
     unittest.main()

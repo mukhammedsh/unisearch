@@ -14,8 +14,6 @@ import {
   moneyUSD,
   loadProfile,
   loadProfileForApi,
-  getSelectedAdmissionTrack,
-  saveSelectedAdmissionTrack,
   getFlagImg,
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
@@ -34,7 +32,6 @@ import {
   applyPercentWidths,
   clusterMarkerLogoHtml,
   getTrackFundingType,
-  getTrackFundingOptions,
   mapMarkerLogoHtml,
   renderExamGroup,
   renderGroupedExamPairRows,
@@ -42,7 +39,6 @@ import {
   renderTrackFundingBadge,
   renderUniChanceSummary,
   splitExamEntries,
-  trackLookupKey,
 } from "../university-detail-helpers.js";
 
 import { setupTabs, renderNoConnection } from "../components.js";
