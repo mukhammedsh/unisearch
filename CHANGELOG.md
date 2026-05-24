@@ -2,6 +2,11 @@
 
 All notable project changes should be recorded here.
 
+## 4.5.0 (2026-05-24)
+- Fixed CI test `test_university_detail_contains_only_bachelor_exams_and_levels` by strictly sanitizing internal data to guarantee `Master` references are completely eliminated from bachelor `study_levels`.
+- Refactored frontend and backend logic to support enhanced product scope constraints, ensuring only bachelor levels are shown and processed.
+- Updated E2E test suites to validate strict bachelor constraints and track major tracking functionality.
+
 ## 4.4.0 (2026-05-24)
 - Expanded Playwright E2E testing suite with tests for dynamic i18n translation, responsive layout overflow, UniChance calculator validation, and UniFit sliders interaction.
 

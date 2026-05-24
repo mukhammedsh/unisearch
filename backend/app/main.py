@@ -1,5 +1,6 @@
 import threading
 import logging
+import mimetypes
 import time
 import uuid
 from contextlib import asynccontextmanager
@@ -40,6 +41,8 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
 )
+
+mimetypes.add_type("image/webp", ".webp")
 logger = logging.getLogger("unisearch.api")
 
 

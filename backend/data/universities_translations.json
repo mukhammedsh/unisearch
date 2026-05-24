@@ -555,11 +555,21 @@
         "digital_business": "Цифровой бизнес",
         "management": "Менеджмент",
         "international_law": "Международное право",
-        "public_health": "Общественное здоровье",
+        "public_health": "Общественное здравоохранение",
         "health_sciences": "Науки о здоровье",
         "cybersecurity": "Кибербезопасность",
         "natural_resources": "Природные ресурсы",
-        "pedagogy_and_psychology": "Педагогика и психология"
+        "pedagogy_and_psychology": "Педагогика и психология",
+        "data_science_and_artificial_intelligence": "Наука о данных и искусственный интеллект",
+        "electrical_and_electronic_engineering": "Электротехника и электроника",
+        "finance": "Финансы",
+        "business_administration": "Бизнес-администрирование",
+        "general_medicine": "Общая медицина",
+        "pharmacy": "Фармация",
+        "nursing": "Сестринское дело",
+        "informatics_teacher_training": "Подготовка учителей информатики",
+        "foreign_language_two_foreign_languages": "Иностранный язык: два иностранных языка",
+        "history": "История"
       },
       "track_label_fallback_replace": [
         [

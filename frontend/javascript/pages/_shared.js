@@ -1009,9 +1009,15 @@ export function fundingPreferenceToQueryValue(value) {
 
 export function uniThumbnailSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
-  const forceFull = !!opts.forceFull;
-  const folder = forceFull ? "thumbnails" : "thumbnails-small";
-  return buildApiUrl(`universities/assets/${folder}/${safeId}.jpg`);
+  const size = String(opts.size || "").trim().toLowerCase();
+  const format = String(opts.format || "jpg").trim().toLowerCase() === "webp" ? "webp" : "jpg";
+  const forceFull = !!opts.forceFull || size === "full" || size === "large";
+  const folder = forceFull
+    ? "thumbnails"
+    : size === "medium"
+      ? "thumbnails-medium"
+      : "thumbnails-small";
+  return buildApiUrl(`universities/assets/${folder}/${safeId}.${format}`);
 }
 
 export function uniLogoSrc(universityId, opts = {}) {

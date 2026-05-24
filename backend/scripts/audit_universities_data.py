@@ -40,6 +40,9 @@ REQUIRED_TOP_LEVEL_KEYS = (
     "major_focus",
     "fact_provenance",
 )
+PROGRAM_NAME_ALLOWLIST_BY_PHRASE = {
+    "bachelor of advanced computing": {"university-of-sydney-au-sydney"},
+}
 
 
 def _is_non_empty_text(value: Any) -> bool:
@@ -338,6 +341,13 @@ def audit_dataset(
                         continue
                     if not _is_non_empty_text(program.get("name")):
                         errors.append(f"{uid}: academics.programs[{p_idx}].name is empty")
+                    else:
+                        program_name = str(program.get("name") or "").strip().lower()
+                        for phrase, allowed_ids in PROGRAM_NAME_ALLOWLIST_BY_PHRASE.items():
+                            if phrase in program_name and uid not in allowed_ids:
+                                errors.append(
+                                    f"{uid}: academics.programs[{p_idx}].name looks copied from another institution: {program.get('name')}"
+                                )
 
             acceptance = academics.get("acceptance_rate_percent")
             if acceptance is not None:

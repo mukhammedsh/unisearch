@@ -4678,7 +4678,10 @@ export function initUniversitiesPage() {
         const logoSrc = uniLogoSrc(id);
         const logoSrcFull = uniLogoSrc(id, { forceFull: true });
         const thumbSrc = uniThumbnailSrc(id);
+        const thumbSrcMedium = uniThumbnailSrc(id, { size: "medium" });
         const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
+        const thumbSrcFullFallback = uniThumbnailSrc(id, { forceFull: true, format: "jpg" });
+        const thumbSrcset = `${thumbSrc} 640w, ${thumbSrcMedium} 960w, ${thumbSrcFull} 1600w`;
         const loadingAttr = idx < 4 ? "eager" : "lazy";
         const fetchPriorityAttr = idx < 2 ? "high" : "auto";
         const detailHref = routeUniversityDetail(id);
@@ -4719,7 +4722,7 @@ export function initUniversitiesPage() {
         return `
         <article class="uni-card${isCompared ? " uni-card--compare-selected" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
             <div class="uni-media">
-            <img class="uni-media-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFull)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
+            <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
             <div class="uni-card-actions">
                 ${saveActionHtml}
                 ${compareActionHtml}

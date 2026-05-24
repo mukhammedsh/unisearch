@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Pre-commit hook to verify UTF-8 encoding without BOM.
+# Runs the check:encoding script defined in package.json.
+
+echo "Running encoding check..."
+npm run check:encoding
+
+if [ $? -ne 0 ]; then
+  echo "Encoding check failed. Please run 'npm run fix:encoding' to fix the issues."
+  exit 1
+fi

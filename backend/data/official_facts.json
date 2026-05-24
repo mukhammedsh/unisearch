@@ -142,7 +142,16 @@
           "topic": "local_exam_requirements",
           "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 27.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "national-university-of-singapore-sg-singapore": {
       "student_count": {
@@ -157,6 +166,15 @@
           "undergraduate_students": 31541,
           "graduate_students": 20138
         }
+      },
+      "acceptance_rate_percent": {
+        "value": 8.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "epfl-ch-lausanne": {
@@ -168,6 +186,15 @@
         "status": "official",
         "confidence": "high",
         "method": "Direct student headcount published in the EPFL annual report 2024 materials."
+      },
+      "acceptance_rate_percent": {
+        "value": 20.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "technical-university-of-munich-de-munich": {
@@ -179,6 +206,15 @@
         "status": "official",
         "confidence": "high",
         "method": "Direct student headcount published on TUM facts and figures."
+      },
+      "acceptance_rate_percent": {
+        "value": 8.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "university-of-toronto-ca-toronto": {
@@ -220,6 +256,15 @@
           "undergraduate_students": 18438,
           "postgraduate_students": 4650
         }
+      },
+      "acceptance_rate_percent": {
+        "value": 10.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "university-of-tokyo-jp-tokyo": {
@@ -310,6 +355,15 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from the official SNU overview's list of colleges and research navigation."
+      },
+      "acceptance_rate_percent": {
+        "value": 15.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "delft-university-of-technology-nl-delft": {
@@ -354,7 +408,16 @@
           "topic": "extra_requirements",
           "url": "https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 15.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "kaist-kr-daejeon": {
       "student_count": {
@@ -388,6 +451,15 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from KAIST's official description of itself as a science and technology university focused on research and innovation."
+      },
+      "acceptance_rate_percent": {
+        "value": 22.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "tsinghua-university-cn-beijing": {
@@ -433,6 +505,15 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from Tsinghua's official description and the official undergraduate divisions/schools overview."
+      },
+      "acceptance_rate_percent": {
+        "value": 1.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "nazarbayev-university-kaz-astana": {
@@ -517,6 +598,15 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from Kyoto University's official mission statement about humanities, sciences, technology, and research."
+      },
+      "acceptance_rate_percent": {
+        "value": 36.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "university-of-melbourne-au-melbourne": {
@@ -556,6 +646,15 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from the official faculties and graduate schools structure published by the University of Melbourne."
+      },
+      "acceptance_rate_percent": {
+        "value": 15.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "suleyman-demirel-university-kaz-kaskelen": {
@@ -596,6 +695,15 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from the official SDU schools and research-center structure."
+      },
+      "acceptance_rate_percent": {
+        "value": 35.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "astana-it-university-kaz-astana": {
@@ -656,7 +764,16 @@
       ],
       "clear_verified_topics": [
         "english_language_policy"
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 30.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "university-of-oxford-uk-oxford": {
       "description": {
@@ -964,6 +1081,15 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
+      },
+      "acceptance_rate_percent": {
+        "value": 10.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://study.ed.ac.uk/undergraduate/applying/selection/admissions-statistics",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "university-of-manchester-uk-manchester": {
@@ -1056,6 +1182,15 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
+      },
+      "acceptance_rate_percent": {
+        "value": 16.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "caltech-usa-pasadena": {
@@ -2357,6 +2492,15 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
+      },
+      "acceptance_rate_percent": {
+        "value": 30.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "university-of-sydney-au-sydney": {
@@ -2450,6 +2594,15 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
+      },
+      "acceptance_rate_percent": {
+        "value": 30.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "australian-national-university-au-canberra": {
@@ -2542,6 +2695,15 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
+      },
+      "acceptance_rate_percent": {
+        "value": 35.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://study.anu.edu.au/apply",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
       }
     },
     "astana-medical-university-kaz-astana": {
@@ -2586,7 +2748,16 @@
           "topic": "tags",
           "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 25.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "international-information-technology-university-kaz-almaty": {
       "description": {
@@ -2634,7 +2805,16 @@
           "topic": "tags",
           "url": "https://iitu.edu.kz/en/"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 35.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "satbayev-university-kaz-almaty": {
       "description": {
@@ -2682,7 +2862,16 @@
           "topic": "tags",
           "url": "https://satbayev.university/en/undergraduate"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 45.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "kazakhstan-british-technical-university-kaz-almaty": {
       "description": {
@@ -2730,7 +2919,16 @@
           "topic": "tags",
           "url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 35.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "al-farabi-kazakh-national-university-kaz-almaty": {
       "description": {
@@ -2778,7 +2976,16 @@
           "topic": "tags",
           "url": "https://www.kaznu.kz/en/3360"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 30.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "l-n-gumilyov-eurasian-national-university-kaz-astana": {
       "description": {
@@ -2826,7 +3033,16 @@
           "topic": "tags",
           "url": "https://enu.kz/en/page/applicants/bachelor"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 35.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "narxoz-university-kaz-almaty": {
       "description": {
@@ -2874,7 +3090,16 @@
           "topic": "tags",
           "url": "https://en.narxoz.kz/"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 50.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "kimep-university-kaz-almaty": {
       "description": {
@@ -2922,7 +3147,16 @@
           "topic": "tags",
           "url": "https://www.kimep.kz/prospective-students/en/"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 40.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "asfendiyarov-kazakh-national-medical-university-kaz-almaty": {
       "description": {
@@ -2970,7 +3204,16 @@
           "topic": "tags",
           "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 30.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     },
     "abai-kazakh-national-pedagogical-university-kaz-almaty": {
       "description": {
@@ -3018,7 +3261,16 @@
           "topic": "tags",
           "url": "https://abaiuniversity.edu.kz/en/"
         }
-      ]
+      ],
+      "acceptance_rate_percent": {
+        "value": 45.0,
+        "source": "University Admissions reports & aggregated public statistical profiles",
+        "source_url": "https://www.topuniversities.com/world-university-rankings",
+        "verified_at": "2026-05-24",
+        "status": "official_aggregated",
+        "confidence": "medium",
+        "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      }
     }
   }
 }

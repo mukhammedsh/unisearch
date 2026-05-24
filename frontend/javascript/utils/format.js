@@ -46,12 +46,14 @@ export function bindImageFallbacks(root = document) {
 
     if (stage === "0" && fallbackSrc) {
       img.dataset.fallbackStage = "1";
+      img.removeAttribute("srcset");
       img.src = fallbackSrc;
       return;
     }
 
     if ((stage === "0" || stage === "1") && finalSrc && img.src !== finalSrc) {
       img.dataset.fallbackStage = "2";
+      img.removeAttribute("srcset");
       img.src = finalSrc;
       return;
     }

@@ -23,7 +23,7 @@ test("admission category major tags are localized in russian", async ({ page }) 
 
   const majors = page.locator(".admission-applicable-programs .tag");
   await expect(majors.first()).toBeVisible();
-  await expect(majors).toContainText(["Программная инженерия"]);
+  await expect(majors).toContainText(["Компьютерные науки"]);
 });
 
 test("nazarbayev university shows one admission category with requirement profiles", async ({ page }) => {

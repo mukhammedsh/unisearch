@@ -21,19 +21,48 @@ const LOCALES = [
 ];
 
 async function switchLanguage(page, langCode) {
+  const isAlreadyActive = await page.evaluate((expectedLang) => {
+    const select = document.getElementById("languageSelect");
+    const htmlLang = expectedLang === "rus" ? "ru" : "en";
+    return select && select.value === expectedLang && select.dataset.loading !== "1" && document.documentElement.lang === htmlLang;
+  }, langCode);
+
+  if (isAlreadyActive) {
+    return;
+  }
+
+  const langPromise = page.evaluate((expectedLang) => {
+    return new Promise((resolve) => {
+      const handler = (e) => {
+        if (e.detail?.language === expectedLang) {
+          window.removeEventListener("languageChanged", handler);
+          resolve(true);
+        }
+      };
+      window.addEventListener("languageChanged", handler);
+      setTimeout(() => {
+        window.removeEventListener("languageChanged", handler);
+        resolve(false);
+      }, 5000);
+    });
+  }, langCode);
+
   await page.evaluate((nextLang) => {
     const select = document.getElementById("languageSelect");
     if (!select) return;
     select.value = nextLang;
     select.dispatchEvent(new Event("change", { bubbles: true }));
   }, langCode);
+
   await expect(page.locator("#languageSelect")).toHaveValue(langCode);
+  await langPromise;
+  await expect(page.locator("#languageSelect")).not.toBeDisabled();
 }
 
 test("universities page updates key UI texts for eng/rus", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/universities.html");
-  await page.waitForSelector("#languageSelect", { state: "attached" });
+  await expect(page.locator("#profileBtn")).toBeVisible();
 
   for (const locale of LOCALES) {
     await switchLanguage(page, locale.code);
@@ -46,7 +75,7 @@ test("universities page updates key UI texts for eng/rus", async ({ page }) => {
 test("university detail page updates key UI texts for eng/rus", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/university.html?id=suleyman-demirel-university-kaz-kaskelen");
-  await page.waitForSelector("#languageSelect", { state: "attached" });
+  await expect(page.locator("#profileBtn")).toBeVisible();
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toHaveText("University Name");
   await expect(page.locator("#detailLocation img.flag-icon-inline")).toHaveCount(1);

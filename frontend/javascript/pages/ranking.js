@@ -141,9 +141,15 @@ function rankingStatusLabel(status) {
 
 function uniThumbnailSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
-  const forceFull = !!opts.forceFull;
-  const folder = forceFull ? "thumbnails" : "thumbnails-small";
-  return buildApiUrl(`universities/assets/${folder}/${safeId}.jpg`);
+  const size = String(opts.size || "").trim().toLowerCase();
+  const format = String(opts.format || "jpg").trim().toLowerCase() === "webp" ? "webp" : "jpg";
+  const forceFull = !!opts.forceFull || size === "full" || size === "large";
+  const folder = forceFull
+    ? "thumbnails"
+    : size === "medium"
+      ? "thumbnails-medium"
+      : "thumbnails-small";
+  return buildApiUrl(`universities/assets/${folder}/${safeId}.${format}`);
 }
 
 function uniLogoSrc(universityId, opts = {}) {
@@ -340,7 +346,10 @@ export async function initRankingPage() {
       const logoSrc = uniLogoSrc(university.id);
       const logoSrcFull = uniLogoSrc(university.id, { forceFull: true });
       const thumbSrc = uniThumbnailSrc(university.id);
+      const thumbSrcMedium = uniThumbnailSrc(university.id, { size: "medium" });
       const thumbSrcFull = uniThumbnailSrc(university.id, { forceFull: true });
+      const thumbSrcFullFallback = uniThumbnailSrc(university.id, { forceFull: true, format: "jpg" });
+      const thumbSrcset = `${thumbSrc} 640w, ${thumbSrcMedium} 960w, ${thumbSrcFull} 1600w`;
       const loadingAttr = index < 4 ? "eager" : "lazy";
       const fetchPriorityAttr = index < 2 ? "high" : "auto";
       const cityRaw = String(university?.location?.city || "");
@@ -373,7 +382,7 @@ export async function initRankingPage() {
 
       return `
         <a href="${routeUniversityDetail(university.id)}" class="rank-card"${universityLinkAttrs()}${sourceTitleAttr}>
-          <img class="rank-bg-img" src="${thumbSrc}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFull)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
+          <img class="rank-bg-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
           <div class="rank-num ${rankClass}${hasOfficialRank ? "" : " rank-num--meta"}">${rankDisplay}</div>
           <div class="rank-logo">
             <img src="${logoSrc}" alt="${initials(universityName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(universityName))}">
