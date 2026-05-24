@@ -2,6 +2,9 @@
 
 All notable project changes should be recorded here.
 
+## 4.4.0 (2026-05-24)
+- Expanded Playwright E2E testing suite with tests for dynamic i18n translation, responsive layout overflow, UniChance calculator validation, and UniFit sliders interaction.
+
 ## 4.3.0 (2026-05-24)
 - Enhanced backend infrastructure scripts with database enrichment and deep audit capabilities.
 - Added extensive backend test coverage including concurrency stress testing, bachelor contract enforcement, infrastructure hygiene, and multilingual ML scoring regression.
