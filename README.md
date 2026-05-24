@@ -102,6 +102,7 @@ Storage:
 - `backend/data/university_assets/logos/`
 - `backend/data/university_assets/logos-small/`
 - `backend/data/university_assets/thumbnails/`
+- `backend/data/university_assets/thumbnails-medium/`
 - `backend/data/university_assets/thumbnails-small/`
 
 Serving:
@@ -110,6 +111,19 @@ Serving:
 Example URLs:
 - `/universities/assets/logos-small/mit-usa-cambridge.png`
 - `/universities/assets/thumbnails/mit-usa-cambridge.jpg`
+- `/universities/assets/thumbnails/mit-usa-cambridge.webp`
+
+Thumbnail size contract:
+- `thumbnails/`: 1600x900 JPG + WebP for detail-page hero media
+- `thumbnails-medium/`: 960x540 JPG + WebP for responsive desktop/card media
+- `thumbnails-small/`: 640x360 JPG + WebP for compact catalog and ranking cards
+
+JPG files stay as source/fallback assets. WebP files are the preferred frontend delivery format.
+
+Before committing media changes, run:
+```bash
+npm run audit:images
+```
 
 ## API overview
 General:
@@ -456,6 +470,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `4.2.0` on `2026-05-24`
 - `4.0.0` on `2026-05-20`
 - `3.9.2` on `2026-05-14`
 - `3.9.1` on `2026-05-13`

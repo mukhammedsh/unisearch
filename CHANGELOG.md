@@ -2,6 +2,10 @@
 
 All notable project changes should be recorded here.
 
+## 4.2.0 (2026-05-24)
+- Added automated scripts to generate small thumbnails for university assets and audited image integrity.
+- Generated small WEBP variants for all existing university thumbnails.
+
 ## 4.1.0 (2026-05-20) - PR Intake and Dependency Refresh
 
 Status:

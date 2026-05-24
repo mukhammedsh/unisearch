@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -9,6 +9,7 @@
     "dev:backend": "node scripts/dev-backend.mjs",
     "dev:frontend": "node scripts/dev-frontend.mjs",
     "audit:data": "python backend/scripts/audit_universities_data.py",
+    "audit:images": "node scripts/audit-university-images.mjs",
     "audit:performance": "node scripts/performance-audit.mjs",
     "check:i18n": "node scripts/i18n-check.mjs",
     "check:encoding": "node scripts/check-encoding.mjs",
@@ -19,7 +20,8 @@
     "test:unit": "node --test tests/unit/*.test.mjs",
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
     "test:e2e:nightly": "npx playwright test --project=chromium --project=firefox --project=webkit",
-    "test:all": "npm run check:version && npm run check:encoding && npm run test:backend && npm run test:e2e:pr"
+    "test:all": "npm run check:version && npm run check:encoding && npm run test:backend && npm run test:e2e:pr",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@heroicons/react": "^2.2.0",
