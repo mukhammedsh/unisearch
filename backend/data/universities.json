@@ -397,7 +397,7 @@
         "url": "https://mitadmissions.org/apply/process/stats/"
       }
     ],
-    "description": "MIT's mission is to advance knowledge and educate students in science, technology, and other areas of scholarship that will best serve the nation and the world. The Institute emphasizes education, research, and innovation in pursuit of that mission.",
+    "description": "Massachusetts Institute of Technology is a leading private research university in Cambridge, Massachusetts, recognized for its rigorous programs in engineering, physical sciences, and economics.",
     "tags": [
       "engineering",
       "computer_science",
@@ -1802,7 +1802,7 @@
         "url": "https://ucomm.stanford.edu/cds/"
       }
     ],
-    "description": "Stanford says its mission is to create and share knowledge and prepare students to contribute to the world. With seven schools on one campus, it offers programs across arts and humanities, natural and social sciences, engineering, medicine, law, education, and business, and highlights interdisciplinary research and innovation.",
+    "description": "Stanford University is a private research institution in California, recognized for its interdisciplinary academic programs and proximity to the technology hub of Silicon Valley.",
     "tags": [
       "humanities",
       "social_sciences",
@@ -2349,7 +2349,7 @@
         "url": "https://college.harvard.edu/admissions/admissions-statistics"
       }
     ],
-    "description": "Harvard describes its community as learning, researching, teaching, and working in pursuit of truth, knowledge, and a better world. The university combines liberal arts, science, engineering, and other fields within a strong research environment.",
+    "description": "Harvard University is a private Ivy League research university in Cambridge, Massachusetts, offering comprehensive undergraduate and graduate programs across diverse academic disciplines.",
     "tags": [
       "engineering",
       "business",
@@ -3576,7 +3576,7 @@
         "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
       }
     ],
-    "description": "ETH Zurich describes itself as a university for science and technology founded in 1855. It is a federal government university with departments spanning engineering, computer science, natural sciences, and humanities and social sciences.",
+    "description": "ETH Zurich is a public research university in Switzerland, focused primarily on science, technology, engineering, and mathematics, with a strong emphasis on foundational and applied research.",
     "tags": [
       "science_and_technology",
       "engineering",
@@ -4174,7 +4174,7 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       }
     ],
-    "description": "NUS aspires to be a leading global university dedicated to quality education, influential research, and visionary enterprise in service of society. It is Singapore's flagship university with colleges and faculties in arts and social sciences, business, computing, design and engineering, law, medicine, and science.",
+    "description": "The National University of Singapore is a comprehensive research university offering diverse undergraduate and postgraduate programs with an emphasis on Asian perspectives.",
     "tags": [
       "national_university",
       "research",
@@ -6500,7 +6500,7 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       }
     ],
-    "description": "TUM emphasizes excellence in research, teaching, and innovation and organizes its academics into schools such as Computation, Information and Technology; Engineering and Design; Natural Sciences; Life Sciences; Medicine and Health; Management; and Social Sciences and Technology.",
+    "description": "The Technical University of Munich is a public research university in Germany, specializing in engineering, natural sciences, life sciences, and medicine.",
     "tags": [
       "computer_science",
       "engineering",
@@ -7012,7 +7012,7 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       }
     ],
-    "description": "EPFL is a science and technology institution in Switzerland and a technical university focused on teaching, research, and innovation. Its schools include engineering, computer and communication sciences, basic sciences, life sciences, architecture and civil/environmental engineering, and management of technology.",
+    "description": "EPFL is a public research institution in Lausanne, Switzerland, specializing in natural sciences and engineering, known for its emphasis on innovation and technology transfer.",
     "tags": [
       "science_and_technology",
       "engineering",
@@ -8275,7 +8275,7 @@
         "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf"
       }
     ],
-    "description": "U of T describes itself as a top research-intensive university focused on discovery, innovation, and global impact. Its faculties and divisions include Applied Science and Engineering, Arts and Science, Law, Management, Medicine, Education, and others across three campuses.",
+    "description": "The University of Toronto is a public research university in Canada, offering a wide array of undergraduate and graduate programs and recognized for its strong research output.",
     "tags": [
       "research",
       "engineering",
@@ -8880,7 +8880,7 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       }
     ],
-    "description": "CUHK's mission is to preserve, create, apply, and disseminate knowledge through teaching, research, and public service across a comprehensive range of disciplines, and its vision is to be a first-class comprehensive research university with bilingual and multicultural dimensions. The university has a collegiate system and faculties of arts, business, education, engineering, law, medicine, science, and social science.",
+    "description": "The Chinese University of Hong Kong is a public research university offering a bilingual education and a collegiate system, with diverse programs across multiple disciplines.",
     "tags": [
       "research",
       "comprehensive",
@@ -26823,7 +26823,10 @@
           }
         ],
         "program_ids": [],
-        "program_names": []
+        "program_names": [],
+        "applicable_majors": [
+          "Все программы"
+        ]
       }
     ]
   },

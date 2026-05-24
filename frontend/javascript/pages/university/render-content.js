@@ -275,9 +275,11 @@ export function renderProgramsSection({
           const extraRows = Object.entries(program)
             .filter(([key, value]) => !knownKeys.has(key) && value !== null && value !== undefined && value !== "")
             .map(([key, value]) => ({
-              label: isMajorTagField(key)
-                ? t("placeholder.field.applicable_majors", "Applicable majors")
-                : prettyField(key),
+              label: (key === "major_tags" || key === "majors")
+                ? translateWord("fields_of_study", "Fields of study")
+                : (key === "applicable_majors"
+                  ? t("placeholder.field.applicable_majors", "Applicable majors")
+                  : prettyField(key)),
               key,
               rawValue: value,
               value: formatProgramValue(key, value),

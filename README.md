@@ -470,6 +470,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `4.5.1` on `2026-05-25`
 - `4.5.0` on `2026-05-24`
 - `4.4.0` on `2026-05-24`
 - `4.3.0` on `2026-05-24`

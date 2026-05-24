@@ -2,6 +2,11 @@
 
 All notable project changes should be recorded here.
 
+## 4.5.1 (2026-05-25)
+- Added test data for Narxoz University and expanded university data testing scripts.
+- Updated `universities.json` and `universities_translations.json` to include detailed descriptions for newly added universities and the new `fields_of_study` translation.
+- Modified frontend programs section rendering to use `fields_of_study` for localized program tags.
+
 ## 4.5.0 (2026-05-24)
 - Fixed CI test `test_university_detail_contains_only_bachelor_exams_and_levels` by strictly sanitizing internal data to guarantee `Master` references are completely eliminated from bachelor `study_levels`.
 - Refactored frontend and backend logic to support enhanced product scope constraints, ensuring only bachelor levels are shown and processed.
