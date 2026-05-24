@@ -2,6 +2,10 @@
 
 All notable project changes should be recorded here.
 
+## 4.3.0 (2026-05-24)
+- Enhanced backend infrastructure scripts with database enrichment and deep audit capabilities.
+- Added extensive backend test coverage including concurrency stress testing, bachelor contract enforcement, infrastructure hygiene, and multilingual ML scoring regression.
+
 ## 4.2.0 (2026-05-24)
 - Added automated scripts to generate small thumbnails for university assets and audited image integrity.
 - Generated small WEBP variants for all existing university thumbnails.
