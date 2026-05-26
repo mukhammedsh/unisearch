@@ -124,6 +124,7 @@ Before committing media changes, run:
 ```bash
 npm run audit:images
 ```
+The audit checks dimensions, byte-size contracts, WebP/JPG fallback pairs, and decoded WebP visual similarity against the JPG fallback.
 
 ## API overview
 General:
@@ -470,6 +471,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
+- `4.5.2` on `2026-05-26`
 - `4.5.1` on `2026-05-25`
 - `4.5.0` on `2026-05-24`
 - `4.4.0` on `2026-05-24`

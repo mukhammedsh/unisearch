@@ -1010,7 +1010,7 @@ export function fundingPreferenceToQueryValue(value) {
 export function uniThumbnailSrc(universityId, opts = {}) {
   const safeId = safePathSegment(universityId);
   const size = String(opts.size || "").trim().toLowerCase();
-  const format = String(opts.format || "jpg").trim().toLowerCase() === "webp" ? "webp" : "jpg";
+  const format = String(opts.format || "webp").trim().toLowerCase() === "jpg" ? "jpg" : "webp";
   const forceFull = !!opts.forceFull || size === "full" || size === "large";
   const folder = forceFull
     ? "thumbnails"

@@ -9,6 +9,7 @@ import {
   formatFundingOptionsCount,
   normalizeFundingPreference,
   normalizeUrl,
+  uniThumbnailSrc,
 } from '../../frontend/javascript/pages/_shared.js';
 
 test('normalizeFundingPreference', async (t) => {
@@ -107,5 +108,29 @@ test('formatFundingOptionsCount', async (t) => {
     assert.strictEqual(formatFundingOptionsCount(5), '5 вариантов финансирования');
     assert.strictEqual(formatFundingOptionsCount(11), '11 вариантов финансирования');
     setLanguage('eng', { persist: false, emit: false });
+  });
+});
+
+test('uniThumbnailSrc', async (t) => {
+  await t.test('uses WebP thumbnails by default', () => {
+    assert.strictEqual(
+      uniThumbnailSrc('mit-usa-cambridge'),
+      'http://localhost:8000/universities/assets/thumbnails-small/mit-usa-cambridge.webp',
+    );
+    assert.strictEqual(
+      uniThumbnailSrc('mit-usa-cambridge', { size: 'medium' }),
+      'http://localhost:8000/universities/assets/thumbnails-medium/mit-usa-cambridge.webp',
+    );
+    assert.strictEqual(
+      uniThumbnailSrc('mit-usa-cambridge', { forceFull: true }),
+      'http://localhost:8000/universities/assets/thumbnails/mit-usa-cambridge.webp',
+    );
+  });
+
+  await t.test('keeps explicit JPG fallback paths available', () => {
+    assert.strictEqual(
+      uniThumbnailSrc('mit-usa-cambridge', { forceFull: true, format: 'jpg' }),
+      'http://localhost:8000/universities/assets/thumbnails/mit-usa-cambridge.jpg',
+    );
   });
 });

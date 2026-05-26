@@ -41,6 +41,16 @@ let detailLanguageChangedHandler = null;
 let detailFinanceResizeHandler = null;
 let detailFinanceResizeObserver = null;
 
+function cssString(value) {
+  return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function thumbnailBackgroundImage(universityId) {
+  const webp = cssString(uniThumbnailSrc(universityId, { forceFull: true }));
+  const jpg = cssString(uniThumbnailSrc(universityId, { forceFull: true, format: "jpg" }));
+  return `image-set(url("${webp}") type("image/webp"), url("${jpg}") type("image/jpeg"))`;
+}
+
 function cleanupDetailListeners() {
   if (detailProfileUpdatedHandler) {
     window.removeEventListener("profileUpdated", detailProfileUpdatedHandler);
@@ -134,7 +144,7 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
   const coverEl = document.getElementById("detailCover");
-  if (coverEl) coverEl.style.backgroundImage = `url('${uniThumbnailSrc(universityId, { forceFull: true })}')`;
+  if (coverEl) coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
 
   const logoEl = document.getElementById("detailLogo");
   if (logoEl) {

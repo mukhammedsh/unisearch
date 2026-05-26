@@ -2,6 +2,12 @@
 
 All notable project changes should be recorded here.
 
+## 4.5.2 (2026-05-26)
+- Switched university thumbnails to WebP-first delivery while preserving explicit JPG fallback paths.
+- Updated university detail covers to use WebP/JPG `image-set` backgrounds for full-size hero images.
+- Added WebP visual similarity auditing to catch distorted or corrupted generated variants.
+- Refreshed full, medium, and small JPG/WebP cover variants for selected Kazakhstan universities with weaker full-screen image quality.
+
 ## 4.5.1 (2026-05-25)
 - Added test data for Narxoz University and expanded university data testing scripts.
 - Updated `universities.json` and `universities_translations.json` to include detailed descriptions for newly added universities and the new `fields_of_study` translation.

@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -9,7 +9,7 @@
     "dev:backend": "node scripts/dev-backend.mjs",
     "dev:frontend": "node scripts/dev-frontend.mjs",
     "audit:data": "python backend/scripts/audit_universities_data.py",
-    "audit:images": "node scripts/audit-university-images.mjs",
+    "audit:images": "node scripts/audit-university-images.mjs && python scripts/audit-university-webp-visual.py",
     "audit:performance": "node scripts/performance-audit.mjs",
     "check:i18n": "node scripts/i18n-check.mjs",
     "check:encoding": "node scripts/check-encoding.mjs",
