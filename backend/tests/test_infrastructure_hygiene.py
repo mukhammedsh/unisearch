@@ -26,8 +26,6 @@ class InfrastructureHygieneTests(unittest.TestCase):
             ".venv",
             "__pycache__",
             "test_infrastructure_hygiene.py",  # Исключаем сам этот файл
-            "GRAPH_REPORT.md",
-            "graphify-out",
         ]
 
         invalid_files = []

@@ -2,6 +2,10 @@
 
 All notable project changes should be recorded here.
 
+## 4.6.1 (2026-05-31)
+- Removed the local Graphify ignore/instruction exceptions so generated Graphify artifacts are treated by the standard repository hygiene rules.
+- Synchronized runtime/package version to `4.6.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.6.0 (2026-05-30)
 - Fixed security scan findings across ops-route guarding, request body limiting, Redis rate limiting, frontend source links, translation debug logs, and manual HTTP data auditing.
 - Upgraded Starlette to `1.2.0` and `prometheus-fastapi-instrumentator` to `8.0.0` to remove the audited Starlette advisory while keeping metrics support compatible.

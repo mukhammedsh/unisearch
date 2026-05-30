@@ -247,8 +247,5 @@ kotlin-learning/
 # Local maintainer-only release notes
 MAINTAINER_RELEASE.md
 
-# Graphify output
-graphify-out/
-
 # Local agent tool config
 .agents/
