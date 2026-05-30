@@ -1029,3 +1029,37 @@ admission.funding_competitive_grant_note: The requirements above are the entry m
 admission.choice.select: Select
 admission.choice.selected: Selected
 admission.choice.recommended: Recommended
+admission.chance.factors_label: Why this estimate changed
+admission.chance.factor_hint: Planning signal only; not an exact causal contribution.
+admission.chance.badge.foundation_required: Foundation may be required
+admission.chance.badge.foundation_required_note: Direct bachelor entry may require A-Levels, IB, AP, SAT, or a foundation route.
+admission.chance.badge.need_aware: Need-aware aid
+admission.chance.badge.need_aware_note: Requesting significant financial aid can affect admission at this institution.
+admission.chance.badge.need_blind: Need-blind review
+admission.chance.badge.need_blind_note: Financial need is not expected to lower the admission review in this estimate.
+admission.chance.factor.missing_evidence.label: Profile evidence missing
+admission.chance.factor.missing_evidence.message: Some exam or language evidence is missing, so the estimate is less certain.
+admission.chance.factor.conditional_requirements.label: Conditional requirements
+admission.chance.factor.conditional_requirements.message: Some requirements are conditional because matching evidence is missing.
+admission.chance.factor.requirements_gap.label: Requirements gap
+admission.chance.factor.requirements_gap.message: At least one published requirement is below the expected level.
+admission.chance.factor.academic_strength.label: Strong academic profile
+admission.chance.factor.academic_strength.message: Academic scores are strong for this requirement profile.
+admission.chance.factor.academic_gap.label: Weak academic profile
+admission.chance.factor.academic_gap.message: Academic scores are weak for this requirement profile.
+admission.chance.factor.language_strength.label: Strong language proof
+admission.chance.factor.language_strength.message: Language evidence is strong for the published requirements.
+admission.chance.factor.language_gap.label: Language proof gap
+admission.chance.factor.language_gap.message: Language evidence is weak or incomplete for this route.
+admission.chance.factor.affordability_fit.label: Budget fit
+admission.chance.factor.affordability_fit.message: Estimated yearly cost is within the profile budget context.
+admission.chance.factor.affordability_gap.label: High cost
+admission.chance.factor.affordability_gap.message: Estimated yearly cost is high compared with the profile budget context.
+admission.chance.factor.scholarship_support.label: Funding support
+admission.chance.factor.scholarship_support.message: Scholarship or grant context improves affordability in the estimate.
+admission.chance.factor.high_selectivity.label: High selectivity
+admission.chance.factor.high_selectivity.message: Published acceptance context indicates a more competitive route.
+admission.chance.factor.accessibility_signal.label: More accessible route
+admission.chance.factor.accessibility_signal.message: Published acceptance context indicates a more accessible admission route.
+admission.chance.factor.insufficient_data.label: Insufficient data
+admission.chance.factor.insufficient_data.message: There is not enough verified admission data to estimate this route.

@@ -1,5 +1,6 @@
-import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, formatExamValue, getExamDisplayName } from "./utils.js";
+import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, escapeHtmlAttr, formatExamValue, getExamDisplayName } from "./utils.js";
 import { getCurrentLanguage, t } from "./i18n.js";
+import { heroIcon } from "./icons.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
 
 export function mapMarkerLogoHtml(logoUrl) {
@@ -564,18 +565,147 @@ export function renderUniChanceSummary(uniChance) {
 }
 
 export function renderTrackChanceChip(trackChance) {
+  const badgesHtml = renderTrackChanceBadges(trackChance?.badges);
+
+  let chipHtml = "";
   if (!trackChance) {
-    return `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
+    chipHtml = `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
+  } else {
+    const chance = parseChanceValue(trackChance?.chancePercent);
+    if (chance === null) {
+      const noDataLabel = String(
+        trackChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
+      ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
+      chipHtml = `<div class="chance-track-chip">${escapeHtml(noDataLabel)}</div>`;
+    } else {
+      const tone = chanceTone(chance);
+      chipHtml = `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
+    }
   }
-  const chance = parseChanceValue(trackChance?.chancePercent);
-  if (chance === null) {
-    const noDataLabel = String(
-      trackChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
-    ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
-    return `<div class="chance-track-chip">${escapeHtml(noDataLabel)}</div>`;
+
+  return `${badgesHtml}${chipHtml}`;
+}
+
+export function renderTrackFactors(trackChance) {
+  const factors = Array.isArray(trackChance?.factors) ? trackChance.factors : [];
+  const factorChips = factors.map(renderTrackFactorChip).filter(Boolean);
+  if (!factorChips.length) return "";
+
+  return `
+    <div class="track-factors-badges" aria-label="${escapeHtmlAttr(t("admission.chance.factors_label", "Why this estimate changed"))}">
+      <span class="track-factors-label">${escapeHtml(t("admission.chance.factors_label", "Why this estimate changed"))}</span>
+      ${factorChips.join("")}
+    </div>
+  `;
+}
+
+function normalizeTrackBadgeKey(value) {
+  const key = String(value || "").trim().toLowerCase();
+  if (!key) return "";
+  if (key === "missing_curriculum" || key === "foundation_required") return "foundation_required";
+  if (key === "need_aware_penalty" || key === "need_aware") return "need_aware";
+  if (key === "need_blind") return "need_blind";
+  return "";
+}
+
+function trackBadgeConfig(value) {
+  const key = normalizeTrackBadgeKey(value);
+  if (key === "foundation_required") {
+    return {
+      cls: "admission-chance-badge--warn",
+      icon: "exclamation-triangle",
+      label: t("admission.chance.badge.foundation_required", "Foundation may be required"),
+      note: t("admission.chance.badge.foundation_required_note", "Direct bachelor entry may require A-Levels, IB, AP, SAT, or a foundation route."),
+    };
   }
-  const tone = chanceTone(chance);
-  return `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
+  if (key === "need_aware") {
+    return {
+      cls: "admission-chance-badge--warn",
+      icon: "exclamation-triangle",
+      label: t("admission.chance.badge.need_aware", "Need-aware aid"),
+      note: t("admission.chance.badge.need_aware_note", "Requesting significant financial aid can affect admission at this institution."),
+    };
+  }
+  if (key === "need_blind") {
+    return {
+      cls: "admission-chance-badge--neutral",
+      icon: "information-circle",
+      label: t("admission.chance.badge.need_blind", "Need-blind review"),
+      note: t("admission.chance.badge.need_blind_note", "Financial need is not expected to lower the admission review in this estimate."),
+    };
+  }
+  return null;
+}
+
+function renderTrackChanceBadges(badges) {
+  if (!Array.isArray(badges) || !badges.length) return "";
+  const rendered = badges.map((badge) => {
+    const config = trackBadgeConfig(badge);
+    if (!config) return "";
+    return `
+      <span class="admission-chance-badge ${config.cls}" title="${escapeHtmlAttr(config.note)}" aria-label="${escapeHtmlAttr(`${config.label}. ${config.note}`)}">
+        ${heroIcon(config.icon, "ui-icon ui-icon--14 admission-chance-badge__icon")}
+        <span>${escapeHtml(config.label)}</span>
+      </span>
+    `;
+  }).filter(Boolean);
+  return rendered.join("");
+}
+
+function factorTone(status) {
+  const normalized = String(status || "").trim().toLowerCase();
+  if (normalized === "positive") return { cls: "factor-positive", icon: "check-circle" };
+  if (normalized === "negative") return { cls: "factor-negative", icon: "exclamation-triangle" };
+  return { cls: "factor-neutral", icon: "information-circle" };
+}
+
+const TRACK_FACTOR_I18N_KEYS = new Set([
+  "missing_evidence",
+  "conditional_requirements",
+  "requirements_gap",
+  "academic_strength",
+  "academic_gap",
+  "language_strength",
+  "language_gap",
+  "affordability_fit",
+  "affordability_gap",
+  "scholarship_support",
+  "high_selectivity",
+  "accessibility_signal",
+  "insufficient_data",
+]);
+
+function normalizeTrackFactorKey(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function localizedTrackFactorText(factor) {
+  const key = normalizeTrackFactorKey(factor?.key);
+  const labelFallback = String(factor?.label || "").trim();
+  const messageFallback = String(factor?.message || factor?.impact_text || "").trim();
+  if (!TRACK_FACTOR_I18N_KEYS.has(key)) {
+    return { label: labelFallback, message: messageFallback };
+  }
+  return {
+    label: t(`admission.chance.factor.${key}.label`, labelFallback),
+    message: t(`admission.chance.factor.${key}.message`, messageFallback),
+  };
+}
+
+function renderTrackFactorChip(factor) {
+  if (!factor || typeof factor !== "object" || Array.isArray(factor)) return "";
+  const { label, message } = localizedTrackFactorText(factor);
+  if (!label && !message) return "";
+
+  const tone = factorTone(factor.status);
+  const text = label && message ? `${label}: ${message}` : (label || message);
+  const title = `${text}. ${t("admission.chance.factor_hint", "Planning signal only; not an exact causal contribution.")}`;
+  return `
+    <span class="track-factor-chip ${tone.cls}" title="${escapeHtmlAttr(title)}">
+      ${heroIcon(tone.icon, "ui-icon ui-icon--14 track-factor-chip__icon")}
+      <span>${escapeHtml(text)}</span>
+    </span>
+  `;
 }
 
 export function renderTrackFundingBadge(track) {

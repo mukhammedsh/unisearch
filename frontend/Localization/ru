@@ -1028,3 +1028,37 @@ admission.funding_competitive_grant_note: Требования выше — ми
 admission.choice.select: Выбрать
 admission.choice.selected: Выбрано
 admission.choice.recommended: Рекомендовано
+admission.chance.factors_label: Что повлияло на оценку
+admission.chance.factor_hint: Только ориентир для планирования, не точный причинный вклад.
+admission.chance.badge.foundation_required: Может потребоваться подготовительная программа
+admission.chance.badge.foundation_required_note: Для прямого поступления на бакалавриат могут потребоваться A-Levels, IB, AP, SAT или подготовительный маршрут.
+admission.chance.badge.need_aware: Финансовая нуждаемость учитывается
+admission.chance.badge.need_aware_note: Запрос значительной финансовой помощи может влиять на рассмотрение в этом вузе.
+admission.chance.badge.need_blind: Финансовая нуждаемость не учитывается
+admission.chance.badge.need_blind_note: Финансовая нуждаемость не должна снижать оценку поступления в этой модели.
+admission.chance.factor.missing_evidence.label: Не хватает данных профиля
+admission.chance.factor.missing_evidence.message: Не указаны часть экзаменов или языковых подтверждений, поэтому оценка менее уверенная.
+admission.chance.factor.conditional_requirements.label: Условные требования
+admission.chance.factor.conditional_requirements.message: По части требований не найдено подходящее подтверждение в профиле.
+admission.chance.factor.requirements_gap.label: Разрыв по требованиям
+admission.chance.factor.requirements_gap.message: Минимум по одному опубликованному требованию ниже ожидаемого уровня.
+admission.chance.factor.academic_strength.label: Сильный академический профиль
+admission.chance.factor.academic_strength.message: Академические баллы хорошо подходят для этого профиля требований.
+admission.chance.factor.academic_gap.label: Слабый академический профиль
+admission.chance.factor.academic_gap.message: Академические баллы выглядят слабо для этого профиля требований.
+admission.chance.factor.language_strength.label: Сильное языковое подтверждение
+admission.chance.factor.language_strength.message: Языковые данные хорошо соответствуют опубликованным требованиям.
+admission.chance.factor.language_gap.label: Недостаточно языковых данных
+admission.chance.factor.language_gap.message: Языковые данные слабые или неполные для этого маршрута.
+admission.chance.factor.affordability_fit.label: Подходит по бюджету
+admission.chance.factor.affordability_fit.message: Ориентировочная годовая стоимость укладывается в бюджетный контекст профиля.
+admission.chance.factor.affordability_gap.label: Высокая стоимость
+admission.chance.factor.affordability_gap.message: Ориентировочная годовая стоимость высока относительно бюджета в профиле.
+admission.chance.factor.scholarship_support.label: Есть поддержка финансирования
+admission.chance.factor.scholarship_support.message: Стипендия или грант улучшает финансовую сторону оценки.
+admission.chance.factor.high_selectivity.label: Высокая селективность
+admission.chance.factor.high_selectivity.message: Опубликованные данные указывают на более конкурсный маршрут.
+admission.chance.factor.accessibility_signal.label: Более доступный маршрут
+admission.chance.factor.accessibility_signal.message: Опубликованные данные указывают на более доступный маршрут поступления.
+admission.chance.factor.insufficient_data.label: Недостаточно данных
+admission.chance.factor.insufficient_data.message: Не хватает проверенных данных о поступлении, чтобы уверенно оценить этот маршрут.

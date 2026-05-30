@@ -5647,3 +5647,89 @@
   background: rgba(87, 21, 219, 0.07);
   border-color: rgba(87, 21, 219, 0.30);
 }
+
+/* =========================================
+   ADMISSION CHANCE SIGNALS
+   ========================================= */
+.admission-chance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 4px 9px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.track-factors-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.track-factors-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.track-factor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.25;
+  padding: 4px 9px;
+  border-radius: 10px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.admission-chance-badge__icon,
+.track-factor-chip__icon {
+  flex: 0 0 auto;
+  color: currentColor;
+}
+
+.admission-chance-badge--neutral,
+.track-factor-chip.factor-neutral {
+  color: var(--text-muted);
+}
+
+.admission-chance-badge--warn,
+.track-factor-chip.factor-negative,
+.track-factor-chip.factor-positive {
+  color: var(--text);
+}
+
+.track-factor-chip.factor-positive {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+}
+
+.admission-chance-badge--warn,
+.track-factor-chip.factor-negative {
+  border-color: color-mix(in srgb, var(--text-muted) 30%, var(--line));
+}
+
+@media (max-width: 680px) {
+  .admission-chance-badge,
+  .track-factor-chip {
+    flex: 1 1 100%;
+  }
+}

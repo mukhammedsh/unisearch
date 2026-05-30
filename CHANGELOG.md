@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 4.7.1 (2026-05-31)
+- Restored the admission requirement-profile tab structure and rendered UniChance badges/factors as compact calm UI signals using Heroicons and localization keys.
+- Added English and Russian UI localization for all known UniChance factor keys, with backend factor labels/messages kept as fallback text for unknown keys.
+- Removed mixed English/Russian badge wording in the Russian UI for foundation, need-aware, and need-blind admission signals.
+- Added frontend unit coverage for localized UniChance factor rendering and badge fallback behavior.
+- Synchronized runtime/package version to `4.7.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.7.0 (2026-05-31)
 - Added `POST /api/universities/compare-profiles` to return UniChance and ROI results for multiple universities in one request, including id normalization, unknown-id null rows, and private short-lived cache headers.
 - Reworked UniChance explanation output to use stable machine-readable `factors` and verified `badges` without artificial country-level penalties or exact `impact_pct` claims.

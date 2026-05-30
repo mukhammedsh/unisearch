@@ -17,6 +17,7 @@ import {
   getTrackFundingType,
   renderExamGroup,
   renderTrackChanceChip,
+  renderTrackFactors,
   renderTrackFundingBadge,
   renderUniChanceSummary,
   splitExamEntries,
@@ -417,6 +418,7 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
                   ${isRecommended ? `<span class="track-selection-badge">${escapeHtml(t("admission.choice.recommended", "Recommended"))}</span>` : ""}
                   ${renderTrackChanceChip(chance)}
                 </div>
+                ${renderTrackFactors(chance)}
                 ${renderFundingMetaTags(fundingMeta)}
               </div>
               <div class="admission-funding-option-side">
@@ -537,6 +539,7 @@ export function renderAdmissionSection({
               ${!profileHasFundingOptions ? renderTrackChanceChip(activeChoiceChance) : ""}
             </div>
           </div>
+          ${!profileHasFundingOptions ? renderTrackFactors(activeChoiceChance) : ""}
 
           ${renderChoiceRequirements({ category, funding: null, profile: activeProfile, university })}
 
@@ -564,6 +567,7 @@ export function renderAdmissionSection({
       renderAdmissionSection({ annualCostForTrack, container, uniChance, uniChanceByChoiceKey: chanceByChoice, university });
     });
   });
+
   container.querySelectorAll("[data-requirement-profile]").forEach((button) => {
     button.addEventListener("click", () => {
       motionPress(button);
@@ -573,6 +577,7 @@ export function renderAdmissionSection({
       renderAdmissionSection({ annualCostForTrack, container, uniChance, uniChanceByChoiceKey: chanceByChoice, university });
     });
   });
+
   container.querySelectorAll("[data-admission-choice]").forEach((button) => {
     button.addEventListener("click", () => {
       if (button.disabled) return;
