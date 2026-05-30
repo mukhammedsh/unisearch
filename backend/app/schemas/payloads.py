@@ -4,6 +4,10 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 
 MAX_LIST_ITEMS = 50
+MAX_DETAILS_KEYS = 32
+MAX_DETAILS_DEPTH = 4
+MAX_SELECTED_ADMISSION_CHOICES = 100
+MAX_SELECTED_CHOICE_KEYS = 16
 
 
 def _strip_or_none(value: Any) -> Optional[str]:
@@ -17,6 +21,28 @@ def _strip_or_empty(value: Any) -> str:
     if value is None:
         return ""
     return str(value).strip()
+
+
+def _bounded_dict(value: Any, *, max_keys: int, max_depth: int, field_name: str) -> Dict[str, Any]:
+    if not isinstance(value, dict):
+        return {}
+
+    def visit(node: Any, depth: int) -> None:
+        if depth > max_depth:
+            raise ValueError(f"{field_name} is too deeply nested")
+        if isinstance(node, dict):
+            if len(node) > max_keys:
+                raise ValueError(f"{field_name} has too many keys")
+            for item in node.values():
+                visit(item, depth + 1)
+        elif isinstance(node, list):
+            if len(node) > MAX_LIST_ITEMS:
+                raise ValueError(f"{field_name} has too many list items")
+            for item in node:
+                visit(item, depth + 1)
+
+    visit(value, 1)
+    return value
 
 
 class ProfileExamInput(BaseModel):
@@ -35,6 +61,11 @@ class ProfileExamInput(BaseModel):
     @classmethod
     def _validate_exam_keys(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
+
+    @field_validator("details", mode="before")
+    @classmethod
+    def _validate_details(cls, value: Any) -> Dict[str, Any]:
+        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
 
     @model_validator(mode="after")
     def _ensure_exam_id(self) -> "ProfileExamInput":
@@ -65,6 +96,11 @@ class ProfileLanguageInput(BaseModel):
     @classmethod
     def _validate_lang_fields(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
+
+    @field_validator("details", mode="before")
+    @classmethod
+    def _validate_details(cls, value: Any) -> Dict[str, Any]:
+        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
 
     @model_validator(mode="after")
     def _ensure_language_shape(self) -> "ProfileLanguageInput":
@@ -120,11 +156,15 @@ class ProfilePayload(BaseModel):
     def _normalize_selected_choices(cls, value: Any) -> Dict[str, Dict[str, str]]:
         if not isinstance(value, dict):
             return {}
+        if len(value) > MAX_SELECTED_ADMISSION_CHOICES:
+            raise ValueError("selectedAdmissionChoices has too many entries")
         out: Dict[str, Dict[str, str]] = {}
         for uni_id, selection in value.items():
             uni = _strip_or_none(uni_id)
             if not uni or not isinstance(selection, dict):
                 continue
+            if len(selection) > MAX_SELECTED_CHOICE_KEYS:
+                raise ValueError("selectedAdmissionChoices entry has too many keys")
             choice = _strip_or_none(selection.get("choiceKey") or selection.get("choice_key"))
             if choice:
                 out[uni] = {
@@ -208,6 +248,11 @@ class ExamValidateRequest(BaseModel):
             return None
         return out
 
+    @field_validator("details", mode="before")
+    @classmethod
+    def _validate_details(cls, value: Any) -> Dict[str, Any]:
+        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
+
     @model_validator(mode="after")
     def _ensure_exam_validate_shape(self) -> "ExamValidateRequest":
         if not self.exam:
@@ -234,6 +279,11 @@ class LanguageValidateRequest(BaseModel):
     @classmethod
     def _normalize_language_fields(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
+
+    @field_validator("details", mode="before")
+    @classmethod
+    def _validate_details(cls, value: Any) -> Dict[str, Any]:
+        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
 
     @model_validator(mode="after")
     def _ensure_language_validation_shape(self) -> "LanguageValidateRequest":

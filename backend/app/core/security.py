@@ -67,6 +67,31 @@ class SlidingWindowRateLimiter:
 
 
 class RedisSlidingWindowRateLimiter:
+    _CHECK_SCRIPT = """
+local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local cutoff = tonumber(ARGV[2])
+local limit = tonumber(ARGV[3])
+local ttl = tonumber(ARGV[4])
+local member = ARGV[5]
+
+redis.call('ZREMRANGEBYSCORE', key, 0, cutoff)
+local count = redis.call('ZCARD', key)
+if count >= limit then
+    local oldest = redis.call('ZRANGE', key, 0, 0, 'WITHSCORES')
+    local oldest_ts = now
+    if oldest and oldest[2] then
+        oldest_ts = tonumber(oldest[2]) or now
+    end
+    return {0, 0, math.max(0, ttl - (now - oldest_ts))}
+end
+
+redis.call('ZADD', key, now, member)
+redis.call('EXPIRE', key, ttl + 1)
+local count_after = redis.call('ZCARD', key)
+return {1, math.max(0, limit - count_after), 0}
+"""
+
     def __init__(self, limit: int, window_seconds: int, redis_client: Any, key_prefix: str = "rate-limit"):
         self.limit = max(1, int(limit))
         self.window_seconds = max(1, int(window_seconds))
@@ -84,35 +109,20 @@ class RedisSlidingWindowRateLimiter:
 
         redis_key = self._key(key)
         cutoff = current - self.window_seconds
-        try:
-            pipe = self._redis.pipeline(transaction=True)
-            pipe.zremrangebyscore(redis_key, 0, cutoff)
-            pipe.zcard(redis_key)
-            pipe.zrange(redis_key, 0, 0, withscores=True)
-            _, existing_count, oldest_rows = pipe.execute()
-            count = int(existing_count or 0)
-        except Exception:
-            return self._fallback.check(key, now=current)
-
-        if count >= self.limit:
-            oldest_ts = current
-            if oldest_rows:
-                try:
-                    oldest_ts = float(oldest_rows[0][1])
-                except Exception:
-                    oldest_ts = current
-            retry_after = max(0.0, self.window_seconds - (current - oldest_ts))
-            return False, 0, retry_after
-
         member = f"{current:.6f}:{uuid.uuid4().hex}"
         try:
-            pipe = self._redis.pipeline(transaction=True)
-            pipe.zadd(redis_key, {member: current})
-            pipe.expire(redis_key, self.window_seconds + 1)
-            pipe.zcard(redis_key)
-            _, _, count_after = pipe.execute()
-            remaining = max(0, self.limit - int(count_after or 0))
-            return True, remaining, 0.0
+            result = self._redis.eval(
+                self._CHECK_SCRIPT,
+                1,
+                redis_key,
+                current,
+                cutoff,
+                self.limit,
+                self.window_seconds,
+                member,
+            )
+            allowed, remaining, retry_after = result or [0, 0, self.window_seconds]
+            return bool(int(allowed)), int(remaining or 0), float(retry_after or 0.0)
         except Exception:
             return self._fallback.check(key, now=current)
 
@@ -152,8 +162,16 @@ def request_client_ip(request: Optional[Request]) -> str:
     return direct_host or "unknown"
 
 
+def request_scope_path(request: Optional[Request]) -> str:
+    if request is None:
+        return ""
+    scope = getattr(request, "scope", {}) or {}
+    path = str(scope.get("path") or "").strip()
+    return path or "/"
+
+
 def is_protected_ops_request(request: Request) -> bool:
-    path = str(request.url.path or "")
+    path = request_scope_path(request)
     if path.startswith("/ops/"):
         return True
     if path == str(METRICS_PATH or "/metrics"):

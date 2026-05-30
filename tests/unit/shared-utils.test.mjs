@@ -9,8 +9,10 @@ import {
   formatFundingOptionsCount,
   normalizeFundingPreference,
   normalizeUrl,
+  safeUrl,
   uniThumbnailSrc,
 } from '../../frontend/javascript/pages/_shared.js';
+import fs from 'node:fs';
 
 test('normalizeFundingPreference', async (t) => {
   await t.test('should return grant for grant', () => {
@@ -68,6 +70,24 @@ test('normalizeUrl', async (t) => {
     assert.strictEqual(normalizeUrl('mailto:test@example.com'), '');
     assert.strictEqual(normalizeUrl('http//example.com'), '');
   });
+});
+
+test('safeUrl', async (t) => {
+  await t.test('allows only http and https URLs after normalization', () => {
+    assert.strictEqual(safeUrl('https://example.com/path'), 'https://example.com/path');
+    assert.strictEqual(safeUrl('www.example.com/source'), 'https://www.example.com/source');
+    assert.strictEqual(safeUrl('javascript:alert(1)'), '');
+    assert.strictEqual(safeUrl('data:text/html,<script>alert(1)</script>'), '');
+    assert.strictEqual(safeUrl('ftp://example.com/file'), '');
+  });
+});
+
+test('map CDN assets are pinned with SRI', () => {
+  const source = fs.readFileSync(new URL('../../frontend/javascript/pages/universities.js', import.meta.url), 'utf8');
+  assert.match(source, /leaflet@1\.9\.4\/dist\/leaflet\.js/);
+  assert.match(source, /leaflet\.markercluster@1\.4\.1\/dist\/leaflet\.markercluster\.js/);
+  assert.match(source, /integrity: "sha384-/);
+  assert.match(source, /script\.integrity = asset\.integrity/);
 });
 
 test('cleanDecoratedText', async (t) => {

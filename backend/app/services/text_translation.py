@@ -42,11 +42,9 @@ _PROVIDER_STATUS_CACHE_LOCK = threading.Lock()
 _PROVIDER_STATUS_CACHE_TTL_SEC = 20.0
 
 
-def _preview_text(value: Any, max_len: int = 180) -> str:
-    raw = str(value or "").replace("\n", " ").strip()
-    if len(raw) <= max_len:
-        return raw
-    return f"{raw[:max_len]}..."
+def _text_fingerprint(value: Any) -> str:
+    raw = str(value or "")
+    return hashlib.sha256(raw.encode("utf-8", errors="ignore")).hexdigest()[:16]
 
 
 def _debug_log(event: str, **fields: Any) -> None:
@@ -311,7 +309,7 @@ def translate_interest_text_for_ml(
     _debug_log(
         "request_received",
         source_hint=str(source_hint or ""),
-        text_preview=_preview_text(raw),
+        text_hash=_text_fingerprint(raw),
         text_len=len(raw),
     )
     if not raw:
@@ -367,7 +365,7 @@ def translate_interest_text_for_ml(
             provider=provider,
             detected_source=detected_source,
             translated=bool(out.get("translated")),
-            out_preview=_preview_text(out.get("text")),
+            out_text_hash=_text_fingerprint(out.get("text")),
         )
         return out
 
@@ -399,7 +397,8 @@ def translate_interest_text_for_ml(
             provider=provider,
             detected_source=detected_source,
             error=str(exc),
-            text_preview=_preview_text(raw),
+            text_hash=_text_fingerprint(raw),
+            text_len=len(raw),
         )
         return {
             "text": raw,
@@ -424,8 +423,10 @@ def translate_interest_text_for_ml(
         provider=provider,
         detected_source=detected_source,
         translated=bool(out.get("translated")),
-        in_preview=_preview_text(raw),
-        out_preview=_preview_text(translated_text),
+        in_text_hash=_text_fingerprint(raw),
+        out_text_hash=_text_fingerprint(translated_text),
+        in_text_len=len(raw),
+        out_text_len=len(translated_text),
     )
     _cache_set(cache_key, out)
     return out

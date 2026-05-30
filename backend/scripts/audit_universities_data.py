@@ -9,9 +9,10 @@ Usage examples:
 from __future__ import annotations
 
 import argparse
+import ipaddress
 import json
 import re
-import ssl
+import socket
 import sys
 import time
 from collections import Counter
@@ -19,7 +20,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -56,6 +57,45 @@ def _is_http_url(value: Any) -> bool:
     return parsed.scheme in ("http", "https") and bool(parsed.netloc)
 
 
+def _is_public_ip(address: str) -> bool:
+    try:
+        ip = ipaddress.ip_address(address)
+    except ValueError:
+        return False
+    return not (
+        ip.is_private
+        or ip.is_loopback
+        or ip.is_link_local
+        or ip.is_multicast
+        or ip.is_reserved
+        or ip.is_unspecified
+    )
+
+
+def _public_http_url_reason(value: Any) -> str:
+    if not _is_http_url(value):
+        return "URL must use http/https and include a host"
+    parsed = urlparse(str(value).strip())
+    host = str(parsed.hostname or "").strip()
+    if not host:
+        return "URL host is empty"
+    try:
+        infos = socket.getaddrinfo(host, parsed.port or (443 if parsed.scheme == "https" else 80), type=socket.SOCK_STREAM)
+    except OSError:
+        return "URL host cannot be resolved"
+    addresses = {str(row[4][0]) for row in infos if row and row[4]}
+    if not addresses:
+        return "URL host has no resolved addresses"
+    blocked = sorted(address for address in addresses if not _is_public_ip(address))
+    if blocked:
+        return f"URL resolves to non-public address: {blocked[0]}"
+    return ""
+
+
+def _is_public_http_url(value: Any) -> bool:
+    return _public_http_url_reason(value) == ""
+
+
 def _clamp_http_timeout(value: float) -> float:
     try:
         out = float(value)
@@ -64,7 +104,18 @@ def _clamp_http_timeout(value: float) -> float:
     return max(0.8, min(out, 40.0))
 
 
+class _SafeRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        reason = _public_http_url_reason(newurl)
+        if reason:
+            raise URLError(f"blocked redirect: {reason}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 def _http_status(url: str, timeout_sec: float) -> Tuple[Optional[int], str]:
+    reason = _public_http_url_reason(url)
+    if reason:
+        return None, url
     req = Request(
         url,
         headers={
@@ -72,8 +123,9 @@ def _http_status(url: str, timeout_sec: float) -> Tuple[Optional[int], str]:
             "Accept": "text/html,application/json,*/*;q=0.1",
         },
     )
+    opener = build_opener(_SafeRedirectHandler)
     try:
-        with urlopen(req, timeout=timeout_sec) as resp:  # noqa: S310
+        with opener.open(req, timeout=timeout_sec) as resp:
             status = int(getattr(resp, "status", 200))
             final_url = str(resp.geturl() or url)
             return status, final_url
@@ -551,6 +603,10 @@ def audit_dataset(
                 if not _is_http_url(source_url):
                     errors.append(f"{uid}: invalid URL in {source_key}: {source_url}")
                     continue
+                unsafe_reason = _public_http_url_reason(source_url)
+                if unsafe_reason:
+                    errors.append(f"{uid}: unsafe URL in {source_key}: {source_url} ({unsafe_reason})")
+                    continue
                 if _has_suspicious_url_chars(source_url):
                     errors.append(f"{uid}: non-ascii URL in {source_key}: {source_url}")
                     continue
@@ -564,8 +620,10 @@ def audit_dataset(
                 elif status >= 400:
                     # 401/403 are often anti-bot responses for valid pages.
                     warnings.append(f"{uid}: {status} in {source_key}: {source_url}")
-                if final_url and final_url != source_url and not _is_http_url(final_url):
-                    warnings.append(f"{uid}: non-http redirect in {source_key}: {source_url} -> {final_url}")
+                if final_url and final_url != source_url:
+                    redirect_reason = _public_http_url_reason(final_url)
+                    if redirect_reason:
+                        errors.append(f"{uid}: unsafe redirect in {source_key}: {source_url} -> {final_url} ({redirect_reason})")
                 time.sleep(0.01)
 
     return errors, warnings
@@ -604,9 +662,6 @@ def main() -> None:
 
     timeout_sec = _clamp_http_timeout(args.http_timeout)
     max_urls_per_uni = max(1, int(args.max_urls_per_university))
-
-    # Avoid TLS handshake failures on some sites with strict cert chains.
-    ssl._create_default_https_context = ssl._create_unverified_context
 
     errors, warnings = audit_dataset(
         data_path=data_path,

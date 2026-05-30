@@ -1,4 +1,4 @@
-import { escapeHtml, markMotionEnter } from "../../utils.js";
+import { escapeHtml, escapeHtmlAttr, markMotionEnter } from "../../utils.js";
 import { t } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
 import { translateWord } from "../../university-translations.js";
@@ -19,6 +19,7 @@ import {
   trUniversityDescription,
   unknownFieldText,
   unknownLabelText,
+  safeUrl,
   toFiniteNumber,
 } from "../_shared.js";
 
@@ -35,7 +36,7 @@ export function renderOverviewSection({
   const acceptanceDisplay = acceptanceRate === null
     ? t("common.no_data", "No data")
     : `${Math.round(acceptanceRate * 100) / 100}%`;
-  const acceptanceSourceUrl = acceptanceMeta?.source_url ? String(acceptanceMeta.source_url).trim() : "";
+  const acceptanceSourceUrl = safeUrl(acceptanceMeta?.source_url);
   const acceptanceSourceLabel = String(acceptanceMeta?.source || "").trim() || t("university.admissions.official_source", "Official source");
   const acceptanceChecked = String(acceptanceMeta?.verified_at || "").trim();
   const acceptanceBasis = acceptanceMeta?.basis && typeof acceptanceMeta.basis === "object" ? acceptanceMeta.basis : {};
@@ -53,7 +54,7 @@ export function renderOverviewSection({
         ${acceptanceCycle ? `<span>${escapeHtml(t("university.admissions.cycle", "Cycle"))}: ${escapeHtml(acceptanceCycle)}</span>` : ""}
         ${acceptanceApplicants !== null ? `<span>${escapeHtml(t("university.admissions.counts.applicants", "Applicants"))}: ${escapeHtml(formatUiNumber(acceptanceApplicants))}</span>` : ""}
         ${acceptanceAdmitted !== null ? `<span>${escapeHtml(t("university.admissions.counts.admitted", "Admitted"))}: ${escapeHtml(formatUiNumber(acceptanceAdmitted))}</span>` : ""}
-        <span><a href="${escapeHtml(acceptanceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a></span>
+        <span><a href="${escapeHtmlAttr(acceptanceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a></span>
       </span>
     </span>
   ` : "";

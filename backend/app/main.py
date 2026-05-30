@@ -18,6 +18,7 @@ from app.core.security import (
     ops_request_is_authorized,
     protected_ops_response,
     request_client_ip,
+    request_scope_path,
 )
 from app.core.settings import (
     APP_VERSION,
@@ -88,8 +89,60 @@ _EXPENSIVE_POST_PATHS = {
 }
 
 
+class RequestBodyTooLarge(RuntimeError):
+    pass
+
+
+class RequestBodyLimitMiddleware:
+    def __init__(self, app, max_body_bytes: int):
+        self.app = app
+        self.max_body_bytes = max(0, int(max_body_bytes))
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") != "http" or self.max_body_bytes <= 0:
+            await self.app(scope, receive, send)
+            return
+
+        consumed = 0
+        response_started = False
+        body_too_large = False
+
+        async def limited_receive():
+            nonlocal consumed, body_too_large
+            if body_too_large:
+                return {"type": "http.disconnect"}
+            message = await receive()
+            if message.get("type") == "http.request":
+                consumed += len(message.get("body") or b"")
+                if consumed > self.max_body_bytes:
+                    body_too_large = True
+                    return {"type": "http.disconnect"}
+            return message
+
+        async def send_wrapper(message):
+            nonlocal response_started
+            if body_too_large:
+                return
+            if message.get("type") == "http.response.start":
+                response_started = True
+            await send(message)
+
+        try:
+            await self.app(scope, limited_receive, send_wrapper)
+        except RequestBodyTooLarge:
+            if response_started:
+                raise
+            response = _apply_security_headers(JSONResponse({"detail": "Request body too large"}, status_code=413))
+            await response(scope, receive, send)
+            return
+
+        if body_too_large and not response_started:
+            response = _apply_security_headers(JSONResponse({"detail": "Request body too large"}, status_code=413))
+            await response(scope, receive, send)
+
+
 def _is_expensive_request(request: Request) -> bool:
-    path = str(request.url.path or "")
+    path = request_scope_path(request)
     if request.method.upper() != "POST":
         return False
     if path in _EXPENSIVE_POST_PATHS:
@@ -105,11 +158,12 @@ def _security_headers() -> dict[str, str]:
         "X-Frame-Options": "DENY",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
-        "Content-Security-Policy-Report-Only": (
+        "Content-Security-Policy": (
             "default-src 'self'; "
             "connect-src 'self' http://127.0.0.1:* http://localhost:*; "
-            "img-src 'self' data:; "
-            "style-src 'self' 'unsafe-inline'; "
+            "script-src 'self' https://unpkg.com; "
+            "img-src 'self' data: https://unpkg.com https://*.tile.openstreetmap.org; "
+            "style-src 'self' 'unsafe-inline' https://unpkg.com; "
             "base-uri 'self'; "
             "frame-ancestors 'none'; "
             "object-src 'none'"
@@ -184,7 +238,7 @@ def _rate_limit_result(request: Request) -> tuple[Response | None, dict[str, str
             GLOBAL_RATE_LIMIT_WINDOW_SEC,
         )
 
-    request_key = f"{client_key}:{request.method.upper()}:{request.url.path}"
+    request_key = f"{client_key}:{request.method.upper()}:{request_scope_path(request)}"
     allowed, remaining, retry_after = _EXPENSIVE_RATE_LIMITER.check(request_key)
     if not allowed:
         return _rate_limit_response(
@@ -206,7 +260,7 @@ def _log_request_failure(request: Request, request_id: str, start: float) -> Non
         "request_failed request_id=%s method=%s path=%s duration_ms=%.2f",
         request_id,
         request.method,
-        request.url.path,
+        request_scope_path(request),
         duration_ms,
     )
 
@@ -224,7 +278,7 @@ def _finalize_request_response(
         "request_ok request_id=%s method=%s path=%s status=%s duration_ms=%.2f",
         request_id,
         request.method,
-        request.url.path,
+        request_scope_path(request),
         response.status_code,
         duration_ms,
     )
@@ -278,6 +332,12 @@ async def request_metrics(request: Request, call_next):
         raise
 
     return _finalize_request_response(response, request, request_id, start)
+
+
+app.add_middleware(
+    RequestBodyLimitMiddleware,
+    max_body_bytes=REQUEST_BODY_MAX_BYTES,
+)
 
 
 app.include_router(root.router)

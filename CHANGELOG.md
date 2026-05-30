@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 4.6.0 (2026-05-30)
+- Fixed security scan findings across ops-route guarding, request body limiting, Redis rate limiting, frontend source links, translation debug logs, and manual HTTP data auditing.
+- Upgraded Starlette to `1.2.0` and `prometheus-fastapi-instrumentator` to `8.0.0` to remove the audited Starlette advisory while keeping metrics support compatible.
+- Enforced CSP headers and pinned Leaflet/markercluster CDN assets with SRI for the universities map.
+- Removed leftover root-level Narxoz scratch files and temporary test artifacts from the repository.
+- Synchronized runtime/package version to `4.6.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.5.2 (2026-05-26)
 - Switched university thumbnails to WebP-first delivery while preserving explicit JPG fallback paths.
 - Updated university detail covers to use WebP/JPG `image-set` backgrounds for full-size hero images.
