@@ -1003,15 +1003,32 @@
 .u-tour-modal {
   position: fixed;
   inset: 0;
-  z-index: 2100;
+  z-index: var(--z-modal);
   display: none;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.u-tour-modal.is-open {
+.u-tour-modal.is-open,
+.u-tour-modal.is-closing {
   display: flex;
+}
+
+.u-tour-modal.is-open .u-tour-backdrop {
+  animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
+}
+
+.u-tour-modal.is-open .u-tour-card {
+  animation: uTourCardIn var(--motion-medium) var(--motion-ease-enter) both;
+}
+
+.u-tour-modal.is-closing .u-tour-backdrop {
+  animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
+}
+
+.u-tour-modal.is-closing .u-tour-card {
+  animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
 .u-tour-backdrop {
@@ -1030,7 +1047,6 @@
   border-radius: 18px;
   box-shadow: 0 24px 54px rgba(15, 23, 42, 0.32);
   padding: 22px 22px 16px;
-  animation: uTourCardIn 0.22s ease-out both;
 }
 
 @keyframes uTourCardIn {
@@ -2125,7 +2141,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   position: fixed;
   left: 50%;
   bottom: 24px;
-  z-index: 1001;
+  z-index: var(--z-tray);
   transform: translateX(-50%);
   width: min(820px, calc(100vw - 32px));
   padding: 12px 14px;
@@ -2263,15 +2279,32 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-modal {
   position: fixed;
   inset: 0;
-  z-index: 10020;
+  z-index: var(--z-modal-raised);
   display: none;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.compare-modal.is-open {
+.compare-modal.is-open,
+.compare-modal.is-closing {
   display: flex;
+}
+
+.compare-modal.is-open .compare-modal__backdrop {
+  animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
+}
+
+.compare-modal.is-open .compare-modal__card {
+  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
+}
+
+.compare-modal.is-closing .compare-modal__backdrop {
+  animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
+}
+
+.compare-modal.is-closing .compare-modal__card {
+  animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
 .compare-modal__backdrop {
@@ -3705,11 +3738,28 @@ body.universities-compare-mode .uni-action-btn--favorite {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: var(--z-modal-raised);
 }
 
-.unifit-warning-modal.is-open {
+.unifit-warning-modal.is-open,
+.unifit-warning-modal.is-closing {
   display: flex;
+}
+
+.unifit-warning-modal.is-open .unifit-warning-backdrop {
+  animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
+}
+
+.unifit-warning-modal.is-open .unifit-warning-card {
+  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
+}
+
+.unifit-warning-modal.is-closing .unifit-warning-backdrop {
+  animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
+}
+
+.unifit-warning-modal.is-closing .unifit-warning-card {
+  animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
 .unifit-warning-backdrop {
@@ -3947,7 +3997,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .map-marker-container:hover {
   transform: scale(1.2);
   border-color: #111;
-  z-index: 10000;
+  z-index: 2;
   cursor: pointer;
 }
 
@@ -4891,7 +4941,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 999;
+    z-index: var(--z-drawer);
     background: rgba(15, 23, 42, 0.45);
     backdrop-filter: blur(6px);
     display: flex;
@@ -4950,7 +5000,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     bottom: 32px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1002;
+    z-index: var(--z-docked-control);
     transition: transform 0.2s ease, background-color 0.2s ease;
   }
 
@@ -6468,9 +6518,21 @@ body.universities-compare-mode .uni-action-btn--favorite {
   .u-shortlist__remove,
   .compare-tray,
   .compare-tray__btn,
+  .compare-modal.is-open .compare-modal__backdrop,
+  .compare-modal.is-open .compare-modal__card,
+  .compare-modal.is-closing .compare-modal__backdrop,
+  .compare-modal.is-closing .compare-modal__card,
   .page-btn,
   .u-sidebar,
   .u-filter-card,
+  .u-tour-modal.is-open .u-tour-backdrop,
+  .u-tour-modal.is-open .u-tour-card,
+  .u-tour-modal.is-closing .u-tour-backdrop,
+  .u-tour-modal.is-closing .u-tour-card,
+  .unifit-warning-modal.is-open .unifit-warning-backdrop,
+  .unifit-warning-modal.is-open .unifit-warning-card,
+  .unifit-warning-modal.is-closing .unifit-warning-backdrop,
+  .unifit-warning-modal.is-closing .unifit-warning-card,
   .u-mobile-filter-btn,
   .u-map-result-card,
   .is-skeleton .uni-media,
@@ -6506,7 +6568,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
   .u-sidebar {
     top: var(--nav-height, 72px);
-    z-index: 1003;
+    z-index: var(--z-drawer);
   }
 
   .u-filter-card {
@@ -6869,30 +6931,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root:not([data-theme="dark"]) .view-btn.active,
 :root:not([data-theme="dark"]) .page-btn.active {
   color: var(--accent);
-}
-
-.view-toggles.has-sliding-indicator {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.view-toggles.has-sliding-indicator .sliding-indicator {
-  top: 4px;
-  bottom: 4px;
-  height: auto;
-  border-radius: 10px;
-  background: var(--accent-faint, rgba(87, 21, 219, 0.10));
-  z-index: 0;
-}
-
-.view-toggles.has-sliding-indicator .view-btn {
-  position: relative;
-  z-index: 1;
-}
-
-.view-toggles.has-sliding-indicator .view-btn.active {
-  background: transparent;
 }
 
 :root:not([data-theme="dark"]) .view-btn.active,

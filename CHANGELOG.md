@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 4.7.2 (2026-05-31)
+- Fixed layered catalog view-toggle animation by removing the extra sliding indicator, press pop, and state pulse from the list/map switch while keeping one stable active state.
+- Standardized modal and tour close animations through a shared closing helper so settings, compare, tour, and UniFit warning layers exit cleanly before being hidden.
+- Replaced ad hoc high `z-index` values in shared UI and universities surfaces with named z-layer variables.
+- Added Playwright motion regression coverage for modal exits and the list/map view toggle.
+- Synchronized runtime/package version to `4.7.2` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.7.1 (2026-05-31)
 - Restored the admission requirement-profile tab structure and rendered UniChance badges/factors as compact calm UI signals using Heroicons and localization keys.
 - Added English and Russian UI localization for all known UniChance factor keys, with backend factor labels/messages kept as fallback text for unknown keys.

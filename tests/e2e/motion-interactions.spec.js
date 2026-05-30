@@ -59,6 +59,70 @@ test("universities favorite and compare motion preserves pressed states", async 
   ).toBe(0);
 });
 
+test("floating motion layers close cleanly and stay above docked controls", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+
+  await page.click("#settingsBtn");
+  await expect(page.locator("#settingsModal")).toHaveClass(/is-open/);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#settingsModal")).toHaveClass(/is-closing/);
+  await expect.poll(async () =>
+    page.locator("#settingsModal.is-open, #settingsModal.is-closing").count()
+  ).toBe(0);
+  await expect(page.locator("#settingsModal")).toHaveAttribute("aria-hidden", "true");
+
+  await page.goto("/universities.html");
+  await page.evaluate(() => localStorage.removeItem("unisearch_profile"));
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  await page.evaluate(() => {
+    const select = document.getElementById("sortSelect");
+    select.value = "uni_ai";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  const warningModal = page.locator("#unifitWarningModal");
+  await expect(warningModal).toHaveClass(/is-open/);
+  await page.keyboard.press("Escape");
+  await expect(warningModal).toHaveClass(/is-closing/);
+  await expect.poll(async () =>
+    page.locator("#unifitWarningModal.is-open, #unifitWarningModal.is-closing").count()
+  ).toBe(0);
+  await expect(warningModal).toHaveAttribute("aria-hidden", "true");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.click("#mobileFilterToggle");
+  await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
+  const layers = await page.evaluate(() => {
+    const asNumber = (value) => Number.parseInt(String(value || "0"), 10) || 0;
+    return {
+      drawer: asNumber(getComputedStyle(document.getElementById("uSidebar")).zIndex),
+      dockedControl: asNumber(getComputedStyle(document.getElementById("mobileFilterToggle")).zIndex),
+    };
+  });
+  expect(layers.drawer).toBeGreaterThan(layers.dockedControl);
+});
+
+test("view mode toggle uses one stable active state", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/universities.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
+  await page.click("#viewMapBtn");
+  await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
+  await expect(page.locator("#viewListBtn")).not.toHaveClass(/active/);
+  await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
+  await expect.poll(async () =>
+    page.locator("#viewListBtn.motion-press-pop, #viewListBtn.motion-state-pulse, #viewMapBtn.motion-press-pop, #viewMapBtn.motion-state-pulse").count()
+  ).toBe(0);
+
+  await page.click("#viewListBtn");
+  await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
+  await expect(page.locator("#viewMapBtn")).not.toHaveClass(/active/);
+  await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
+});
+
 test("university detail category switching leaves one active pane", async ({ page }) => {
   await page.goto("/university.html?id=mit-usa-cambridge");
   await expect(page.locator("#detailCard")).toBeVisible();

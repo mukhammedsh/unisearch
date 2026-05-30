@@ -13,6 +13,16 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
   --footer-icon-filter: none;
+  --z-nav: 1000;
+  --z-dropdown: 1200;
+  --z-docked-control: 1300;
+  --z-drawer: 2000;
+  --z-tray: 2200;
+  --z-modal: 8000;
+  --z-modal-raised: 8200;
+  --z-toast: 9000;
+  --z-loading-bar: 9400;
+  --z-initial-loader: 10000;
 }
 
 :root[data-theme="dark"] {
@@ -111,7 +121,7 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  z-index: 14000;
+  z-index: var(--z-loading-bar);
   transition: opacity 0.16s ease, visibility 0.16s ease;
 }
 
@@ -263,7 +273,7 @@ html, body {
   background: var(--surface);
   border-bottom: 1px solid var(--line);
   box-shadow: var(--shadow-sm);
-  z-index: 1000;
+  z-index: var(--z-nav);
 }
 
 .navbar-left,
@@ -525,7 +535,7 @@ html, body {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: var(--z-modal);
   padding: 12px; /* Adds breathing room on small screens */
 }
 
@@ -547,7 +557,8 @@ html, body {
   animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
 }
 
-.profile-modal.is-closing .profile-backdrop {
+.profile-modal.is-closing .profile-backdrop,
+.settings-modal.is-closing .settings-backdrop {
   animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
@@ -1120,11 +1131,12 @@ html, body {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 9998;
+  z-index: var(--z-modal);
   padding: 16px;
 }
 
-.settings-modal.is-open {
+.settings-modal.is-open,
+.settings-modal.is-closing {
   display: flex;
 }
 
@@ -1543,10 +1555,11 @@ html, body {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 10010;
+  z-index: var(--z-modal-raised);
 }
 
-.profile-confirm-modal.is-open{
+.profile-confirm-modal.is-open,
+.profile-confirm-modal.is-closing{
   display: flex;
 }
 
@@ -1765,7 +1778,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 9999;
+  z-index: var(--z-toast);
   pointer-events: none;
 }
 
@@ -1992,7 +2005,7 @@ html, body {
   visibility: hidden;
   pointer-events: none;
   transform: translateY(-10px);
-  z-index: 9999;
+  z-index: var(--z-dropdown);
   max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -2334,7 +2347,7 @@ html, body {
     top: 100%;
     left: 0;
     right: 0;
-    z-index: 1001;
+    z-index: var(--z-drawer);
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -2559,6 +2572,7 @@ html, body {
   .profile-modal.is-open .profile-backdrop,
   .profile-modal.is-open .profile-card,
   .profile-confirm-modal.is-open .profile-confirm-card,
+  .settings-modal.is-closing .settings-backdrop,
   .settings-modal.is-closing .settings-card,
   .profile-modal.is-closing .profile-backdrop,
   .profile-modal.is-closing .profile-card,
@@ -2648,7 +2662,7 @@ h6,
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: var(--z-nav);
   height: 72px;
   padding: 0 28px;
   background: rgba(255, 255, 255, 0.82);
@@ -2798,7 +2812,7 @@ h6,
     background: var(--surface-solid);
     border-bottom: 1px solid var(--line);
     padding: 10px 20px;
-    z-index: 1001;
+    z-index: calc(var(--z-nav) + 1);
     opacity: 0;
     max-height: 0;
     overflow: hidden;
@@ -2850,7 +2864,7 @@ body.route-loading main {
   position: fixed;
   inset: 0;
   background: var(--bg);
-  z-index: 99999;
+  z-index: var(--z-initial-loader);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3387,7 +3401,7 @@ canvas {
     top: var(--nav-height);
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: var(--z-nav);
     order: 3;
     width: 100%;
     flex: none;

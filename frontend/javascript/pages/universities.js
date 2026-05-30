@@ -27,6 +27,7 @@ import {
   replayMotion,
   setupSlidingIndicator,
   bindImageFallbacks,
+  closeMotionLayer,
 } from "../utils.js";
 
 import {
@@ -300,7 +301,6 @@ export function initUniversitiesPage() {
     setupScopeNotice();
     setupSlidingIndicator("#universitiesSectionTabs", ".u-section-tab", "is-active");
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
-    const updateViewModeIndicator = setupSlidingIndicator(".view-toggles", ".view-btn", "active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -881,12 +881,23 @@ export function initUniversitiesPage() {
         return false;
     };
 
+    const closeCompareModal = (modal) => {
+        if (!modal) return;
+        const finish = () => {
+            modal.classList.remove("is-open", "is-closing");
+            modal.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+        };
+        closeMotionLayer(modal, finish);
+    };
+
     const ensureCompareModal = () => {
         let modal = document.getElementById("compareModal");
         if (modal) return modal;
         modal = document.createElement("div");
         modal.id = "compareModal";
         modal.className = "compare-modal";
+        modal.setAttribute("aria-hidden", "true");
         modal.innerHTML = `
             <div class="compare-modal__backdrop" data-action="close-compare-modal"></div>
             <div class="compare-modal__card" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle">
@@ -901,14 +912,12 @@ export function initUniversitiesPage() {
         modal.addEventListener("click", (event) => {
             const action = event.target instanceof Element ? event.target.closest("[data-action]")?.getAttribute("data-action") : "";
             if (action === "close-compare-modal") {
-                modal.classList.remove("is-open");
-                document.body.style.overflow = "";
+                closeCompareModal(modal);
             }
         });
         document.addEventListener("keydown", (event) => {
             if (event.key !== "Escape" || !modal.classList.contains("is-open")) return;
-            modal.classList.remove("is-open");
-            document.body.style.overflow = "";
+            closeCompareModal(modal);
         });
         return modal;
     };
@@ -2471,7 +2480,9 @@ export function initUniversitiesPage() {
                 <div class="skeleton-line" style="width: 76%; height: 96px;"></div>
             </div>
         `;
+        modal.classList.remove("is-closing");
         modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
         window.setTimeout(() => modal.querySelector(".compare-modal__close")?.focus(), 0);
 
@@ -2481,7 +2492,7 @@ export function initUniversitiesPage() {
             fetchUniversityDetailCached,
         });
 
-        if (!modal.classList.contains("is-open") || universities.length !== COMPARE_PAIR_SIZE) return;
+        if (!modal.classList.contains("is-open") || modal.classList.contains("is-closing") || universities.length !== COMPARE_PAIR_SIZE) return;
         const metrics = compareMetrics(universities);
         const cardHtml = universities.map((u) => {
             const id = String(u?.id || "");
@@ -2574,8 +2585,7 @@ export function initUniversitiesPage() {
                 persistSavedAndCompare();
                 syncCardActionState();
                 if (comparePairIds().length !== COMPARE_PAIR_SIZE) {
-                    modal.classList.remove("is-open");
-                    document.body.style.overflow = "";
+                    closeCompareModal(modal);
                     return;
                 }
                 openCompareModal().catch((err) => console.error(err));
@@ -3022,20 +3032,23 @@ export function initUniversitiesPage() {
                 if (!profileBtn) return;
 
                 isPausedForProfile = true;
-                modal.classList.remove("is-open");
-                modal.setAttribute("aria-hidden", "true");
-                modal.style.display = "none";
+                closeMotionLayer(modal, () => {
+                    modal.classList.remove("is-open", "is-closing");
+                    modal.setAttribute("aria-hidden", "true");
+                    modal.style.display = "none";
+                    profileBtn.click();
+                });
 
                 const onProfileClosed = () => {
                     isPausedForProfile = false;
                     modal.style.display = "flex";
+                    modal.classList.remove("is-closing");
                     modal.classList.add("is-open");
                     modal.setAttribute("aria-hidden", "false");
                     nextBtn?.focus();
                 };
 
                 window.addEventListener("profileModalClosed", onProfileClosed, { once: true });
-                profileBtn.click();
             });
 
             prevBtn.disabled = idx === 0;
@@ -3054,10 +3067,12 @@ export function initUniversitiesPage() {
             skipBtn?.removeEventListener("click", onSkip);
             closeEls.forEach((el) => el.removeEventListener("click", onSkip));
             document.removeEventListener("keydown", onKey);
-            modal.classList.remove("is-open");
-            modal.setAttribute("aria-hidden", "true");
-            modal.style.display = "none";
-            resolve();
+            closeMotionLayer(modal, () => {
+                modal.classList.remove("is-open", "is-closing");
+                modal.setAttribute("aria-hidden", "true");
+                modal.style.display = "none";
+                resolve();
+            });
         };
 
         const onNext = () => {
@@ -3101,6 +3116,7 @@ export function initUniversitiesPage() {
         document.addEventListener("keydown", onKey);
 
         modal.style.display = "flex";
+        modal.classList.remove("is-closing");
         modal.classList.add("is-open");
         modal.setAttribute("aria-hidden", "false");
         nextBtn?.focus();
@@ -3143,10 +3159,12 @@ export function initUniversitiesPage() {
             okBtn?.removeEventListener("click", onOk);
             cancelEls.forEach((el) => el.removeEventListener("click", onCancel));
             document.removeEventListener("keydown", onKey);
-            modal.classList.remove("is-open");
-            modal.setAttribute("aria-hidden", "true");
-            modal.style.display = "none";
-            resolve(result);
+            closeMotionLayer(modal, () => {
+                modal.classList.remove("is-open", "is-closing");
+                modal.setAttribute("aria-hidden", "true");
+                modal.style.display = "none";
+                resolve(result);
+            });
         };
 
         const onOk = () => cleanup(true);
@@ -3163,6 +3181,7 @@ export function initUniversitiesPage() {
         document.addEventListener("keydown", onKey);
 
         modal.style.display = "flex";
+        modal.classList.remove("is-closing");
         modal.classList.add("is-open");
         modal.removeAttribute("aria-hidden");
         okBtn?.focus();
@@ -3643,11 +3662,9 @@ export function initUniversitiesPage() {
     });
 
     el.btnList?.addEventListener("click", () => {
-        motionPress(el.btnList);
         switchView("list", true).catch((err) => console.error(err));
     });
     el.btnMap?.addEventListener("click", () => {
-        motionPress(el.btnMap);
         switchView("map", true).catch((err) => console.error(err));
     });
 
@@ -3734,9 +3751,7 @@ export function initUniversitiesPage() {
             if (el.mapStage) el.mapStage.style.display = "grid";
             el.btnList.classList.remove("active");
             el.btnMap.classList.add("active");
-            updateViewModeIndicator?.(el.btnMap);
             replayMotion(el.mapStage, "motion-panel-enter", { timeoutMs: 420 });
-            replayMotion(el.btnMap, "motion-state-pulse", { timeoutMs: 520 });
             await initMap();
             setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
             if (shouldFetch) fetchAndRender(); 
@@ -3746,9 +3761,7 @@ export function initUniversitiesPage() {
             if (el.mapStage) el.mapStage.style.display = "none";
             el.btnList.classList.add("active");
             el.btnMap.classList.remove("active");
-            updateViewModeIndicator?.(el.btnList);
             replayMotion(el.list, "motion-panel-enter", { timeoutMs: 420 });
-            replayMotion(el.btnList, "motion-state-pulse", { timeoutMs: 520 });
             if (shouldFetch) fetchAndRender();
         }
     }

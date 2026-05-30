@@ -93,6 +93,33 @@ export function animateElementOut(node, callback, options = {}) {
   window.setTimeout(finish, timeoutMs);
 }
 
+export function closeMotionLayer(node, finish, options = {}) {
+  if (!node) {
+    if (typeof finish === "function") finish();
+    return;
+  }
+
+  const className = String(options.className || "is-closing");
+  const timeoutMs = Number(options.timeoutMs || 180);
+  const shouldAnimate = !prefersReducedMotion() && node.classList.contains("is-open");
+
+  if (!shouldAnimate) {
+    if (typeof finish === "function") finish();
+    return;
+  }
+
+  let done = false;
+  const complete = () => {
+    if (done) return;
+    done = true;
+    node.classList.remove(className);
+    if (typeof finish === "function") finish();
+  };
+
+  node.classList.add(className);
+  window.setTimeout(complete, timeoutMs);
+}
+
 export function debounce(fn, ms = 250) {
   let timer = null;
   return (...args) => {

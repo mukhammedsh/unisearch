@@ -1,4 +1,4 @@
-export { API_BASE, AI_FUNCTIONS, aiName, frontendStaticAsset, $, prefersReducedMotion, replayMotion, motionPress, markMotionEnter, animateElementOut, initGlobalApiLoadingIndicator, debounce, setUrlParams } from "./utils/runtime.js";
+export { API_BASE, AI_FUNCTIONS, aiName, frontendStaticAsset, $, prefersReducedMotion, replayMotion, motionPress, markMotionEnter, animateElementOut, closeMotionLayer, initGlobalApiLoadingIndicator, debounce, setUrlParams } from "./utils/runtime.js";
 export { getCurrentTheme, applyTheme, initTheme, toggleTheme } from "./utils/theme.js";
 export { I18N_STORAGE_KEY, API_LANG_DEFAULT, API_LANG_SUPPORTED, normalizeUiLanguageForApi, getUiLanguageForApi } from "./utils/locale.js";
 export { safeLocalStorage, safeSessionStorage, createSafeStorage } from "./utils/safe-storage.js";
