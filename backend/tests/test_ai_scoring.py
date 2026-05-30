@@ -334,6 +334,89 @@ class AiScoringTests(unittest.TestCase):
         self.assertLessEqual(int(result.get("overallChance", 0)), 100)
         self.assertTrue(len(result.get("choices", [])) >= 1)
 
+    def test_estimate_uni_chance_returns_machine_readable_factors(self):
+        university = {
+            "id": "factor-u",
+            "name": "Factor University",
+            "rank": 100,
+            "finance": {
+                "total_cost_year_usd": 12000,
+                "financial_aid": {"merit_based": True, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 45},
+            "admission_categories": _categories_from_requirement_profiles([
+                {
+                    "id": "main",
+                    "label": "Main Track",
+                    "requirements": {"GPA": 88, "SAT": 1250},
+                    "stats_avg": {"GPA": 93, "SAT": 1420},
+                    "score_profile": _demo_score_profile("SAT", p25=68, median=82, p75=93, acceptance_rate_percent=45),
+                    "language_requirements_mode": "all",
+                    "language_requirements": [
+                        {"code": "en", "min_cefr": 4, "accept_native": True}
+                    ],
+                }
+            ]),
+        }
+        profile = {
+            "locale": "rus",
+            "gpa": 92,
+            "budget": 20000,
+            "exams": [{"id": "SAT", "score": 1360}],
+            "languages": [{"code": "en", "kind": "native"}],
+        }
+
+        result = estimate_uni_chance(university, profile)
+        choices = result.get("choices") or []
+        self.assertTrue(choices)
+        factors = choices[0].get("factors") or []
+        self.assertTrue(factors)
+
+        allowed_statuses = {"positive", "negative", "neutral"}
+        allowed_severities = {"low", "medium", "high"}
+        for factor in factors:
+            with self.subTest(factor=factor):
+                self.assertIsInstance(factor.get("key"), str)
+                self.assertTrue(factor.get("key"))
+                self.assertIn(factor.get("status"), allowed_statuses)
+                self.assertIsInstance(factor.get("label"), str)
+                self.assertIsInstance(factor.get("message"), str)
+                self.assertIn(factor.get("severity"), allowed_severities)
+                self.assertNotIn("impact_pct", factor)
+                self.assertNotIn("impact_text", factor)
+                self.assertTrue(str(factor.get("label", "")).isascii())
+                self.assertTrue(str(factor.get("message", "")).isascii())
+
+    def test_estimate_uni_chance_does_not_apply_country_level_penalty_without_data_flag(self):
+        university = {
+            "id": "uk-no-explicit-penalty-u",
+            "name": "UK No Explicit Penalty University",
+            "country": "UK",
+            "rank": 100,
+            "finance": {
+                "total_cost_year_usd": 12000,
+                "financial_aid": {"merit_based": False, "need_based": False},
+            },
+            "academics": {"acceptance_rate_percent": 45},
+            "admission_categories": _categories_from_requirement_profiles([
+                {
+                    "id": "main",
+                    "label": "Main Track",
+                    "requirements": {"GPA": 80},
+                    "stats_avg": {"GPA": 88},
+                    "score_profile": _demo_score_profile("GPA", p25=60, median=75, p75=90, acceptance_rate_percent=45),
+                }
+            ]),
+        }
+        profile = {"locale": "eng", "gpa": 95, "budget": 25000}
+
+        result = estimate_uni_chance(university, profile)
+        choice = (result.get("choices") or [{}])[0]
+
+        self.assertGreater(int(choice.get("chancePercent") or 0), 0)
+        self.assertNotIn("foundation_required", choice.get("badges") or [])
+        self.assertNotIn("need_aware", choice.get("badges") or [])
+
     def test_estimate_uni_chance_respects_user_selected_track_override(self):
         university = {
             "id": "manual-track-u",

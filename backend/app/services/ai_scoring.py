@@ -1565,6 +1565,177 @@ def sort_universities_ai(
     return out
 
 
+def _choice_text_blob(choice: Dict[str, Any]) -> str:
+    parts: List[str] = []
+    for key in (
+        "id",
+        "choice_key",
+        "label",
+        "description",
+        "category_label",
+        "requirement_profile_label",
+        "funding_program",
+        "funding_source",
+        "track_badge",
+    ):
+        value = choice.get(key)
+        if isinstance(value, str):
+            parts.append(value)
+    return " ".join(parts).lower()
+
+
+def _track_verified_badges(choice: Dict[str, Any]) -> List[str]:
+    blob = _choice_text_blob(choice)
+    badges: List[str] = []
+    if "need-blind" in blob or "need blind" in blob:
+        badges.append("need_blind")
+    return badges
+
+
+def _chance_factor(
+    key: str,
+    status: str,
+    label: str,
+    message: str,
+    severity: str = "medium",
+) -> Dict[str, str]:
+    return {
+        "key": key,
+        "status": status,
+        "label": label,
+        "message": message,
+        "severity": severity,
+    }
+
+
+def _build_chance_factors(
+    *,
+    academic: float,
+    language: float,
+    affordability: float,
+    selectivity: float,
+    scholarship_boost: float,
+    missing_evidence: bool,
+    conditional_requirements: int,
+    hard_pass_all: bool,
+    chance_available: bool,
+) -> List[Dict[str, str]]:
+    factors: List[Dict[str, str]] = []
+
+    if missing_evidence:
+        factors.append(_chance_factor(
+            "missing_evidence",
+            "neutral",
+            "Profile evidence",
+            "Some exam or language evidence is missing, so the estimate is less certain.",
+            "medium",
+        ))
+    if conditional_requirements > 0:
+        factors.append(_chance_factor(
+            "conditional_requirements",
+            "negative",
+            "Requirements",
+            "Some requirements are conditional because matching evidence is missing.",
+            "medium",
+        ))
+    elif not hard_pass_all:
+        factors.append(_chance_factor(
+            "requirements_gap",
+            "negative",
+            "Requirements",
+            "At least one published requirement is below the expected level.",
+            "high",
+        ))
+
+    if academic >= 0.8:
+        factors.append(_chance_factor(
+            "academic_strength",
+            "positive",
+            "Academic profile",
+            "Academic scores are strong for this requirement profile.",
+            "medium",
+        ))
+    elif academic < 0.4:
+        factors.append(_chance_factor(
+            "academic_gap",
+            "negative",
+            "Academic profile",
+            "Academic scores are weak for this requirement profile.",
+            "high",
+        ))
+
+    if language >= 0.8:
+        factors.append(_chance_factor(
+            "language_strength",
+            "positive",
+            "Language proof",
+            "Language evidence is strong for the published requirements.",
+            "low",
+        ))
+    elif language < 0.5:
+        factors.append(_chance_factor(
+            "language_gap",
+            "negative",
+            "Language proof",
+            "Language evidence is weak or incomplete for this route.",
+            "medium",
+        ))
+
+    if affordability >= 0.8:
+        factors.append(_chance_factor(
+            "affordability_fit",
+            "positive",
+            "Affordability",
+            "Estimated yearly cost is within the profile budget context.",
+            "low",
+        ))
+    elif affordability <= 0.3:
+        factors.append(_chance_factor(
+            "affordability_gap",
+            "negative",
+            "Affordability",
+            "Estimated yearly cost is high compared with the profile budget context.",
+            "medium",
+        ))
+
+    if scholarship_boost > 0:
+        factors.append(_chance_factor(
+            "scholarship_support",
+            "positive",
+            "Scholarships",
+            "Scholarship or grant context improves affordability in the estimate.",
+            "low",
+        ))
+
+    if selectivity <= 0.35:
+        factors.append(_chance_factor(
+            "high_selectivity",
+            "negative",
+            "Selectivity",
+            "Published acceptance context indicates a more competitive route.",
+            "medium",
+        ))
+    elif selectivity >= 0.75:
+        factors.append(_chance_factor(
+            "accessibility_signal",
+            "positive",
+            "Selectivity",
+            "Published acceptance context indicates a more accessible route.",
+            "low",
+        ))
+
+    if not chance_available and not factors:
+        factors.append(_chance_factor(
+            "insufficient_data",
+            "neutral",
+            "Data coverage",
+            "There is not enough verified admission data to estimate this route.",
+            "medium",
+        ))
+
+    return factors
+
+
 def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
     lang_cfg = _language_config()
@@ -1647,6 +1818,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         confidence = "no_data"
         chance_model = "none"
 
+        track_badges = _track_verified_badges(choice)
+
         can_use_zero_fallback = (not has_evidence) and (not isinstance(score_profile, dict)) and choice_has_required_evidence
         if not has_evidence and not can_use_zero_fallback:
             no_data_reason = "missing_evidence"
@@ -1719,6 +1892,18 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         if chance_pct is None:
             chance_model = "none"
 
+        factors = _build_chance_factors(
+            academic=academic,
+            language=language,
+            affordability=affordability,
+            selectivity=selectivity,
+            scholarship_boost=scholarship_boost,
+            missing_evidence=bool(fit.get("missingEvidence")) or no_data_reason == "missing_evidence",
+            conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
+            hard_pass_all=bool(fit.get("hardPassAll")),
+            chance_available=chance_pct is not None,
+        )
+
         per_choice.append(
             {
                 "choiceKey": _admission_choice_key(choice, idx),
@@ -1729,6 +1914,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                 "fundingOptionId": str(choice.get("funding_option_id") or ""),
                 "chancePercent": chance_pct,
                 "level": _chance_level(chance_pct) if chance_pct is not None else _no_data_chance_level(profile),
+                "badges": track_badges,
+                "factors": factors,
                 "conditional": bool(fit.get("conditional")),
                 "chanceAvailable": chance_pct is not None,
                 "reason": no_data_reason,

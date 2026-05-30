@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException, Query, Request, Response
 from app.core.redis_store import cache_get_json, cache_set_json
 from app.core.security import request_client_ip
 from app.core.settings import AI_SORT_CACHE_TTL_SEC, REDIS_CACHE_TTL_SEC
-from app.schemas import ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas import CompareProfilesRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
 from app.services import ai_scoring as ai_scoring_service
@@ -376,6 +376,36 @@ def get_university_roi(
     if response is not None:
         response.headers["Cache-Control"] = "private, max-age=30"
     return ai_scoring_service.estimate_university_roi(university, profile)
+
+
+@router.post(
+    "/universities/compare-profiles",
+    summary="Batch compare universities",
+    description="Evaluates admission chance and ROI for multiple universities at once based on user profile.",
+)
+def compare_universities_profiles(
+    payload: CompareProfilesRequest,
+    response: Response = None,
+):
+    profile = to_profile_dict(payload.profile)
+    results = {}
+
+    for uni_id in payload.university_ids:
+        uni = uni_service.get_university_by_id(uni_id)
+        if uni:
+            chance = ai_scoring_service.estimate_uni_chance(uni, profile)
+            roi = ai_scoring_service.estimate_university_roi(uni, profile)
+            results[uni_id] = {
+                "uniChance": chance,
+                "roi": roi,
+            }
+        else:
+            results[uni_id] = None
+
+    if response is not None:
+        response.headers["Cache-Control"] = "private, max-age=30"
+
+    return results
 
 
 @router.get("/locations", summary="Available locations", description="Returns a tree of countries, regions, and cities that have universities in the catalog.")

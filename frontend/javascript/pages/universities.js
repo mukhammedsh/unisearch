@@ -46,7 +46,7 @@ import { setupTabs, renderNoConnection } from "../components.js";
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { extractUniversityIdFromLocation, navigateToAppRoute, routeUniversities, routeUniversityDetail } from "../routes.js";
-import { fetchCompareChances, loadCompareUniversities, resolveAiSortResult } from "./universities/compare-helpers.js";
+import { fetchCompareProfiles, loadCompareUniversities, resolveAiSortResult } from "./universities/compare-helpers.js";
 import {
   humanizeMachineLabel,
   initUniversityTranslations,
@@ -2274,11 +2274,12 @@ export function initUniversitiesPage() {
             return;
         }
 
-        compareChancesByUniId = await fetchCompareChances(cleanIds, {
+        const compareProfiles = await fetchCompareProfiles(cleanIds, {
             apiBase: API_BASE,
             fetchImpl: fetch,
             loadProfileForApi,
         });
+        compareChancesByUniId = compareProfiles.chances;
 
         let changedChoices = false;
         universities.forEach((u) => {
@@ -2370,11 +2371,12 @@ export function initUniversitiesPage() {
             getUniversityDisplayNameById,
             fetchUniversityDetailCached,
         });
-        compareChancesByUniId = await fetchCompareChances(cleanIds, {
+        const compareProfiles = await fetchCompareProfiles(cleanIds, {
             apiBase: API_BASE,
             fetchImpl: fetch,
             loadProfileForApi,
         });
+        compareChancesByUniId = compareProfiles.chances;
 
         if (!isCompareResultsMode()) return;
         if (universities.length !== COMPARE_PAIR_SIZE) {

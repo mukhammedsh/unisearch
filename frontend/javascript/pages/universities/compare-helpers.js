@@ -23,7 +23,7 @@ export async function loadCompareUniversities(ids, options = {}) {
   return universities.filter(Boolean);
 }
 
-export async function fetchCompareChances(ids, options = {}) {
+export async function fetchCompareProfiles(ids, options = {}) {
   const apiBase = String(options.apiBase || "");
   const fetchImpl = typeof options.fetchImpl === "function" ? options.fetchImpl : fetch;
   const loadProfileForApi = typeof options.loadProfileForApi === "function"
@@ -33,21 +33,72 @@ export async function fetchCompareChances(ids, options = {}) {
     ? ids.map((id) => String(id || "").trim()).filter(Boolean)
     : [];
 
-  const chances = await Promise.all(cleanIds.map(async (id) => {
-    try {
-      const response = await fetchImpl(`${apiBase}/universities/${encodeURIComponent(id)}/uni-chance`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile: loadProfileForApi() }),
-      });
-      if (!response.ok) return null;
-      return await response.json();
-    } catch (error) {
-      return null;
-    }
+  if (!cleanIds.length) {
+    return { chances: new Map(), rois: new Map() };
+  }
+
+  const profile = loadProfileForApi();
+  try {
+    const response = await fetchImpl(`${apiBase}/universities/compare-profiles`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ university_ids: cleanIds, profile }),
+    });
+
+    if (!response.ok) throw new Error("Compare request failed");
+
+    const results = await response.json();
+    const chances = new Map();
+    const rois = new Map();
+
+    cleanIds.forEach((id) => {
+      const data = results[id];
+      if (data) {
+        chances.set(id, data.uniChance);
+        rois.set(id, data.roi);
+      } else {
+        chances.set(id, null);
+        rois.set(id, null);
+      }
+    });
+
+    return { chances, rois };
+  } catch (error) {
+    return fetchCompareProfilesIndividually(cleanIds, { apiBase, fetchImpl, profile });
+  }
+}
+
+async function fetchJsonOrNull(fetchImpl, url, profile) {
+  try {
+    const response = await fetchImpl(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ profile }),
+    });
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+async function fetchCompareProfilesIndividually(ids, options = {}) {
+  const apiBase = String(options.apiBase || "");
+  const fetchImpl = typeof options.fetchImpl === "function" ? options.fetchImpl : fetch;
+  const profile = options.profile || {};
+  const rows = await Promise.all(ids.map(async (id) => {
+    const encodedId = encodeURIComponent(id);
+    const [chance, roi] = await Promise.all([
+      fetchJsonOrNull(fetchImpl, `${apiBase}/universities/${encodedId}/uni-chance`, profile),
+      fetchJsonOrNull(fetchImpl, `${apiBase}/universities/${encodedId}/roi`, profile),
+    ]);
+    return [id, chance, roi];
   }));
 
-  return new Map(cleanIds.map((id, index) => [id, chances[index]]));
+  return {
+    chances: new Map(rows.map(([id, chance]) => [id, chance])),
+    rois: new Map(rows.map(([id, , roi]) => [id, roi])),
+  };
 }
 
 export async function resolveAiSortResult(options = {}) {

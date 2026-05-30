@@ -1,4 +1,5 @@
 from app.schemas.payloads import (
+    CompareProfilesRequest,
     ExamValidateRequest,
     LanguageValidateRequest,
     ProfileOnlyRequest,
@@ -7,6 +8,7 @@ from app.schemas.payloads import (
 )
 
 __all__ = [
+    "CompareProfilesRequest",
     "ExamValidateRequest",
     "LanguageValidateRequest",
     "ProfileOnlyRequest",

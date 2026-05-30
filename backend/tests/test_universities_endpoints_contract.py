@@ -18,6 +18,15 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertTrue(items)
         return str((items[0] or {}).get("id") or "")
 
+    def _first_university_ids(self, limit: int = 2):
+        response = self.client.get(f"/universities?limit={limit}&fields=card")
+        self.assertEqual(response.status_code, 200)
+        items = response.json().get("items") or []
+        ids = [str((row or {}).get("id") or "") for row in items]
+        ids = [uni_id for uni_id in ids if uni_id]
+        self.assertGreaterEqual(len(ids), limit)
+        return ids[:limit]
+
     def test_list_locations_and_stats_contracts(self):
         list_response = self.client.get("/universities?limit=5&fields=card&sort=name_asc")
         self.assertEqual(list_response.status_code, 200)
@@ -427,6 +436,69 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         for key in ("roi_value", "roi_label", "roi_tone", "context_type"):
             self.assertIn(key, roi_data)
         self.assertGreaterEqual(float(roi_data.get("roi_value", 0.0)), 0.0)
+
+    def test_compare_profiles_batch_contract_matches_single_endpoints(self):
+        university_ids = self._first_university_ids(2)
+        profile = {
+            "locale": "eng",
+            "budget": 30000,
+            "gpa": 92,
+            "major": "Computer Science",
+            "fundingType": "any",
+            "exams": [{"exam": "SAT", "score": 1420}],
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
+        }
+
+        batch = self.client.post(
+            "/universities/compare-profiles",
+            json={"university_ids": university_ids, "profile": profile},
+        )
+        self.assertEqual(batch.status_code, 200)
+        self.assertIn("private, max-age=30", batch.headers.get("Cache-Control", ""))
+        data = batch.json()
+        self.assertEqual(university_ids, list(data.keys()))
+
+        for university_id in university_ids:
+            with self.subTest(university_id=university_id):
+                row = data.get(university_id)
+                self.assertIsInstance(row, dict)
+                self.assertIn("uniChance", row)
+                self.assertIn("roi", row)
+
+                single_chance = self.client.post(
+                    f"/universities/{university_id}/uni-chance",
+                    json={"profile": profile},
+                )
+                single_roi = self.client.post(
+                    f"/universities/{university_id}/roi",
+                    json={"profile": profile},
+                )
+                self.assertEqual(single_chance.status_code, 200)
+                self.assertEqual(single_roi.status_code, 200)
+                self.assertEqual(single_chance.json().get("overallChance"), row["uniChance"].get("overallChance"))
+                self.assertEqual(single_chance.json().get("bestChoiceKey"), row["uniChance"].get("bestChoiceKey"))
+                self.assertEqual(single_roi.json().get("roi_value"), row["roi"].get("roi_value"))
+                self.assertEqual(single_roi.json().get("roi_tone"), row["roi"].get("roi_tone"))
+
+    def test_compare_profiles_batch_handles_unknown_empty_and_duplicate_ids(self):
+        university_id = self._first_university_id()
+        response = self.client.post(
+            "/universities/compare-profiles",
+            json={"university_ids": ["", university_id, university_id, "missing-university-id"], "profile": {}},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual([university_id, "missing-university-id"], list(data.keys()))
+        self.assertIsInstance(data.get(university_id), dict)
+        self.assertIsNone(data.get("missing-university-id"))
+
+    def test_compare_profiles_batch_rejects_too_many_ids(self):
+        ids = [f"u-{idx}" for idx in range(51)]
+        response = self.client.post(
+            "/universities/compare-profiles",
+            json={"university_ids": ids, "profile": {}},
+        )
+        self.assertEqual(response.status_code, 422)
 
     def test_roi_uses_official_salary_data_for_supported_universities(self):
         supported_ids = [

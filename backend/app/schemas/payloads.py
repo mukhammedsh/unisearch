@@ -229,6 +229,28 @@ class ProfileOnlyRequest(BaseModel):
     profile: ProfilePayload = Field(default_factory=ProfilePayload)
 
 
+class CompareProfilesRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    university_ids: List[str] = Field(..., max_length=MAX_LIST_ITEMS)
+    profile: ProfilePayload = Field(default_factory=ProfilePayload)
+
+    @field_validator("university_ids", mode="before")
+    @classmethod
+    def _normalize_university_ids(cls, value: Any) -> List[str]:
+        if not isinstance(value, list):
+            return value
+        out: List[str] = []
+        seen = set()
+        for item in value:
+            uni_id = _strip_or_none(item)
+            if not uni_id or uni_id in seen:
+                continue
+            seen.add(uni_id)
+            out.append(uni_id)
+        return out
+
+
 class ExamValidateRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 

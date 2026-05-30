@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 4.7.0 (2026-05-31)
+- Added `POST /api/universities/compare-profiles` to return UniChance and ROI results for multiple universities in one request, including id normalization, unknown-id null rows, and private short-lived cache headers.
+- Reworked UniChance explanation output to use stable machine-readable `factors` and verified `badges` without artificial country-level penalties or exact `impact_pct` claims.
+- Updated compare loading to use the batch endpoint with a fallback to the previous per-university UniChance and ROI requests.
+- Added backend contract coverage for the batch endpoint and UniChance factor shape, plus frontend unit coverage for compare batch/fallback behavior.
+- Synchronized runtime/package version to `4.7.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.6.1 (2026-05-31)
 - Removed the local Graphify ignore/instruction exceptions so generated Graphify artifacts are treated by the standard repository hygiene rules.
 - Synchronized runtime/package version to `4.6.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
