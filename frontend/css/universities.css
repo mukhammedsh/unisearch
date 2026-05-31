@@ -1393,13 +1393,17 @@
 
 .uni-card--compare-selected {
   border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
-  box-shadow:
-    inset 0 0 0 2px color-mix(in srgb, var(--accent) 62%, transparent),
-    0 10px 28px rgba(87, 21, 219, 0.14);
+  box-shadow: 0 10px 28px rgba(87, 21, 219, 0.14);
 }
 
 .uni-card--compare-selected::after {
-  content: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--accent) 64%, transparent);
+  pointer-events: none;
 }
 
 .uni-media {
@@ -3402,6 +3406,38 @@ body.universities-compare-mode .uni-action-btn--favorite {
   text-transform: uppercase;
 }
 
+.compare-config-column .compare-option-facts {
+  display: grid;
+  gap: 7px;
+}
+
+.compare-config-column .compare-option-fact {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-solid);
+  display: grid;
+  gap: 3px;
+}
+
+.compare-config-column .compare-option-fact span {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.compare-config-column .compare-option-fact strong {
+  min-width: 0;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
 .compare-config-column .track-cost-preview {
   padding: 10px 12px;
   border: 1px solid rgba(79, 70, 229, 0.16);
@@ -4916,9 +4952,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .uni-card.uni-card--compare-selected,
 :root[data-theme="dark"] .uni-card.uni-card--compare-selected {
   border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
-  box-shadow:
-    inset 0 0 0 2px color-mix(in srgb, var(--accent) 62%, transparent),
-    0 10px 28px rgba(87, 21, 219, 0.14);
+  box-shadow: 0 10px 28px rgba(87, 21, 219, 0.14);
 }
 
 :root[data-theme="dark"] .uni-logo {
@@ -5806,6 +5840,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .compare-config-column .admission-option-card,
 :root[data-theme="dark"] .compare-config-column .track-stats-box,
 :root[data-theme="dark"] .compare-config-column .track-exam-group,
+:root[data-theme="dark"] .compare-config-column .compare-option-fact,
 :root[data-theme="dark"] .compare-config-column .admission-option-meta .tag,
 :root[data-theme="dark"] .compare-config-chance .chance-panel,
 :root[data-theme="dark"] .compare-track-chance {

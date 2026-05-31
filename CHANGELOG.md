@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 4.8.0 (2026-06-01)
+- Reworked university comparison admission choices so configure cards show academic minimums, admitted-score context, language proof, extra requirements, and funding-specific differences before students continue to results.
+- Preserved `score_profile` and funding-specific requirements through frontend admission-choice flattening so SAT/UNT/GPA context and grant-vs-paid cutoffs appear in comparison.
+- Split comparison results admission rows into decision-grade groups for selected route, academic minimums, admitted score context, language proof, documents/interviews/portfolio, funding, and unique exam requirements.
+- Fixed direct compare links so URL `ids` and `choices` override stale saved comparison state, and fixed Russian bachelor-program counts for localized `Бакалавриат` values.
+- Removed unused duplicate comparison modules and expanded unit/E2E coverage for admission flattening, configure cards, results rows, deep links, and Russian comparison text.
+- Fixed the selected comparison-card outline so the purple selection ring is consistent over both the image and body sections.
+- Synchronized runtime/package version to `4.8.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.7.2 (2026-05-31)
 - Fixed layered catalog view-toggle animation by removing the extra sliding indicator, press pop, and state pulse from the list/map switch while keeping one stable active state.
 - Standardized modal and tour close animations through a shared closing helper so settings, compare, tour, and UniFit warning layers exit cleanly before being hidden.

@@ -403,11 +403,15 @@ universities.compare.row.language: Program language
 universities.compare.row.tracks: Admission choices
 universities.compare.row.main_track: Main category
 universities.compare.row.selected_track: Requirement profile
+universities.compare.row.selected_route: Selected route
 universities.compare.row.funding_choice: Selected funding
 universities.compare.row.requirements: Minimum requirements
+universities.compare.row.academic_minimums: Academic minimums
 universities.compare.row.avg_scores: Admitted score context
+universities.compare.row.funding_requirements: Funding-specific requirements
 universities.compare.row.language_proof: Language proof
 universities.compare.row.extra_requirements: Extra requirements
+universities.compare.row.application_materials: Documents / interview / portfolio
 universities.compare.row.total_cost: Total / year
 universities.compare.row.tuition_fees: Tuition + fees
 universities.compare.row.living_costs: Living cost items
@@ -428,6 +432,20 @@ universities.compare.configure.title: Choose admission choices
 universities.compare.configure.subtitle: Pick one admission category, requirement profile, and funding option for each university. The comparison will use that choice for requirements, language proof, cost, and funding.
 universities.compare.configure.selected: Admission choice selected
 universities.compare.configure.required: Select one option before comparing
+universities.compare.configure.academic_minimums: Academic minimums
+universities.compare.configure.admitted_context: Admitted score context
+universities.compare.configure.language_proof: Language proof
+universities.compare.configure.extra_requirements: Extra requirements
+universities.compare.configure.funding_requirements: Funding-specific requirements
+universities.compare.configure.no_academic_minimums: No published academic minimums
+universities.compare.configure.no_admitted_scores: No published admitted-score context
+universities.compare.configure.no_language_proof: No separate language proof listed
+universities.compare.configure.no_funding_delta: No separate funding-specific score cutoff in the data
+universities.compare.configure.language_any: Any of
+universities.compare.configure.language_all: All required
+universities.compare.configure.score_profile_range: {exam} median {median} (25-75%: {low}-{high})
+universities.compare.configure.score_profile_median: {exam} median {median}
+universities.compare.configure.funding_delta_from: {value} (standard {base})
 universities.compare.insight.budget_title: Budget
 universities.compare.insight.budget: Among selected universities, {name} is best on budget at {cost} per year.
 universities.compare.insight.budget_with_delta: {name} has the strongest budget signal at {cost} per year, about {percent} lower than the other selected universities on average.
@@ -1007,6 +1025,7 @@ placeholder.field.admission_categories: Admission categories
 placeholder.field.admission_category: Admission category
 placeholder.field.requirement_profile: Requirement profile
 placeholder.field.best_choice: Best choice
+best_choice: Best choice
 admission.category: Admission category
 admission.profile: Requirement profile
 admission.profile.general: General

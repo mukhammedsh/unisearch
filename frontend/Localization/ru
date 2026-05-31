@@ -404,11 +404,15 @@ universities.compare.row.language: Язык программ
 universities.compare.row.tracks: Варианты поступления
 universities.compare.row.main_track: Основная категория
 universities.compare.row.selected_track: Профиль требований
+universities.compare.row.selected_route: Выбранный маршрут
 universities.compare.row.funding_choice: Выбранное финансирование
 universities.compare.row.requirements: Минимальные требования
+universities.compare.row.academic_minimums: Академические минимумы
 universities.compare.row.avg_scores: Баллы поступивших
+universities.compare.row.funding_requirements: Требования финансирования
 universities.compare.row.language_proof: Подтверждение языка
 universities.compare.row.extra_requirements: Доп. требования
+universities.compare.row.application_materials: Документы / интервью / портфолио
 universities.compare.row.total_cost: Итого в год
 universities.compare.row.tuition_fees: Обучение + сборы
 universities.compare.row.living_costs: Жизненные расходы
@@ -429,6 +433,20 @@ universities.compare.configure.title: Выберите варианты пост
 universities.compare.configure.subtitle: Выберите категорию поступления, профиль требований и вариант финансирования для каждого университета. Сравнение возьмет требования, языковой экзамен, стоимость и финансирование из этого выбора.
 universities.compare.configure.selected: Вариант поступления выбран
 universities.compare.configure.required: Выберите один вариант перед сравнением
+universities.compare.configure.academic_minimums: Академические минимумы
+universities.compare.configure.admitted_context: Баллы поступивших
+universities.compare.configure.language_proof: Подтверждение языка
+universities.compare.configure.extra_requirements: Доп. требования
+universities.compare.configure.funding_requirements: Требования финансирования
+universities.compare.configure.no_academic_minimums: Опубликованных академических минимумов нет
+universities.compare.configure.no_admitted_scores: Опубликованных баллов поступивших нет
+universities.compare.configure.no_language_proof: Отдельное подтверждение языка не указано
+universities.compare.configure.no_funding_delta: Отдельный порог для финансирования в данных не указан
+universities.compare.configure.language_any: Достаточно одного
+universities.compare.configure.language_all: Нужны все
+universities.compare.configure.score_profile_range: {exam}: медиана {median} (25-75%: {low}-{high})
+universities.compare.configure.score_profile_median: {exam}: медиана {median}
+universities.compare.configure.funding_delta_from: {value} (обычно {base})
 universities.compare.insight.budget_title: Бюджет
 universities.compare.insight.budget: Среди выбранных университетов {name} лучший по бюджету: {cost} в год.
 universities.compare.insight.budget_with_delta: {name} даёт самый сильный бюджетный сигнал: {cost} в год, примерно на {percent} ниже среднего по остальным выбранным университетам.
@@ -1006,6 +1024,7 @@ placeholder.field.admission_categories: Категории поступлени�
 placeholder.field.admission_category: Категория поступления
 placeholder.field.requirement_profile: Профиль требований
 placeholder.field.best_choice: Лучший вариант
+best_choice: Лучший вариант
 admission.category: Категория поступления
 admission.profile: Профиль требований
 admission.profile.general: Общее

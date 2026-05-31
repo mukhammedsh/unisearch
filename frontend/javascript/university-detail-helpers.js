@@ -375,10 +375,13 @@ export function getAdmissionChoicesFromCategories(categories) {
       const options = admissionFundingOptions(category, profile);
       const effectiveOptions = options.length ? options : [null];
       effectiveOptions.forEach((funding, fundingIdx) => {
+        const baseRequirements = mergeTrackVariantDict(category.requirements, profile.requirements) || {};
+        const fundingRequirements = isPlainObject(funding?.requirements) ? { ...funding.requirements } : {};
         const mergedRequirements = mergeTrackVariantDict(
-          mergeTrackVariantDict(category.requirements, profile.requirements),
-          funding?.requirements,
+          baseRequirements,
+          fundingRequirements,
         );
+        const scoreProfile = funding?.score_profile || profile.score_profile || category.score_profile;
         const key = admissionChoiceKey(category, profile, funding);
         const choice = {
           ...category,
@@ -392,6 +395,8 @@ export function getAdmissionChoicesFromCategories(categories) {
           requirement_profile_label: profile.label,
           funding_option_id: String(funding?.id || "").trim(),
           requirements: mergedRequirements || {},
+          base_requirements: baseRequirements,
+          funding_requirements: fundingRequirements,
           stats_avg: filterStatsAvgForRequirements(
             mergeTrackVariantDict(mergeTrackVariantDict(category.stats_avg, profile.stats_avg), funding?.stats_avg),
             mergedRequirements,
@@ -411,6 +416,9 @@ export function getAdmissionChoicesFromCategories(categories) {
           __funding_option_index: fundingIdx,
           __is_funding_option: Boolean(funding),
         };
+        if (isPlainObject(scoreProfile)) {
+          choice.score_profile = { ...scoreProfile };
+        }
         choices.push(choice);
       });
     });

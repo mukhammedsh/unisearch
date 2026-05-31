@@ -407,8 +407,14 @@ export function initUniversitiesPage() {
     let uniFitWarningShownInSession = false;
     let lastRenderedItems = [];
     let savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
-    let compareUniversityIds = new Set(normalizeCompareIdList(readIdListStorage(COMPARE_UNIVERSITIES_KEY)));
-    state.compareResultIds.forEach((id) => compareUniversityIds.add(id));
+    let compareUniversityIds = new Set(
+        initialCompareIds.length === COMPARE_PAIR_SIZE
+            ? initialCompareIds
+            : normalizeCompareIdList(readIdListStorage(COMPARE_UNIVERSITIES_KEY))
+    );
+    if (initialCompareIds.length !== COMPARE_PAIR_SIZE) {
+        state.compareResultIds.forEach((id) => compareUniversityIds.add(id));
+    }
     compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
     let compareAdmissionChoices = new Map();
     let compareChancesByUniId = new Map();
@@ -958,12 +964,17 @@ export function initUniversitiesPage() {
         return t("common.na", "N/A");
     };
 
+    const isBachelorStudyLevel = (level) => {
+        const normalized = String(level || "").trim().toLowerCase();
+        return /bachelor|undergraduate|бакалавр|бакалавриат/.test(normalized);
+    };
+
     const compareBachelorPrograms = (u) => {
         const programs = Array.isArray(u?.academics?.programs) ? u.academics.programs : [];
         return programs.filter((program) => {
             const levels = Array.isArray(program?.study_levels) ? program.study_levels : [];
             if (!levels.length) return true;
-            return levels.some((level) => /bachelor|undergraduate/i.test(String(level || "")));
+            return levels.some(isBachelorStudyLevel);
         });
     };
 
@@ -1061,6 +1072,22 @@ export function initUniversitiesPage() {
         return [badge, optionLabel].filter(Boolean).join(" - ") || compareAidText(u);
     };
 
+    const compareFundingRequirementsText = (u) => {
+        const entry = compareSelectedAdmissionEntry(u);
+        if (!entry) return t("common.na", "N/A");
+        const entries = compareAdmissionOptionEntries(u);
+        const delta = compareOptionFundingDeltaPreview(entry, entries);
+        if (delta) return delta;
+
+        const option = entry.option || {};
+        const fundingProgram = String(option?.funding_program || "").trim();
+        const fundingSource = String(option?.funding_source || "").trim();
+        const parts = [];
+        if (fundingProgram) parts.push(trTrackDescription(String(u?.id || ""), option.id, fundingProgram));
+        if (fundingSource) parts.push(trTrackDescription(String(u?.id || ""), option.id, fundingSource));
+        return parts.length ? parts.join(" - ") : t("common.na", "N/A");
+    };
+
     const compareRequirementsText = (u) => {
         const option = compareSelectedAdmissionOption(u);
         const req = (option?.requirements && typeof option.requirements === "object") ? option.requirements : {};
@@ -1072,6 +1099,8 @@ export function initUniversitiesPage() {
 
     const compareAverageScoreText = (u) => {
         const option = compareSelectedAdmissionOption(u);
+        const scoreProfile = compareOptionScoreProfilePreview(option);
+        if (scoreProfile) return scoreProfile;
         const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
         const rows = Object.entries(stats)
             .filter(([, value]) => value !== null && value !== undefined && value !== "")
@@ -1285,7 +1314,11 @@ export function initUniversitiesPage() {
     const compareSelectedAverageKeys = (u) => {
         const option = compareSelectedAdmissionOption(u);
         const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
-        return Object.keys(stats).filter((key) => compareAverageScoreValue(u, key) !== null);
+        const keys = Object.keys(stats).filter((key) => compareAverageScoreValue(u, key) !== null);
+        const scoreProfile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
+        const profileExam = String(scoreProfile?.exam_id || "").trim();
+        if (profileExam && compareAverageScoreValue(u, profileExam) !== null) keys.push(profileExam);
+        return Array.from(new Set(keys));
     };
 
     const compareSelectedLanguageRequirementKeys = (u) => {
@@ -1315,7 +1348,14 @@ export function initUniversitiesPage() {
             const n = toFiniteNumber(value);
             if (n !== null) values.push(n);
         });
-        return values.length ? Math.max(...values) : null;
+        if (values.length) return Math.max(...values);
+        const scoreProfile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
+        const compatible = Array.isArray(scoreProfile?.compatible_exam_ids) ? scoreProfile.compatible_exam_ids : [];
+        const profileExams = [scoreProfile?.exam_id, ...compatible].map(canonicalizeExamId).filter(Boolean);
+        if (profileExams.includes(canonicalizeExamId(examId))) {
+            return toFiniteNumber(scoreProfile?.median_raw ?? scoreProfile?.median_normalized);
+        }
+        return null;
     };
 
     const compareLanguageRequirementValue = (u, examId) => {
@@ -1346,7 +1386,6 @@ export function initUniversitiesPage() {
             });
         });
         return Array.from(byKey.entries())
-            .filter(([, count]) => count >= 2)
             .map(([key]) => key)
             .slice(0, 8);
     };
@@ -1531,10 +1570,10 @@ export function initUniversitiesPage() {
                 weight: 1.2,
             },
             {
-                key: "selected_track",
+                key: "selected_route",
                 section: "admissions",
                 category: "admissions",
-                label: t("universities.compare.row.selected_track", "Requirement profile"),
+                label: t("universities.compare.row.selected_route", "Selected route"),
                 type: "text",
                 direction: "neutral",
                 getter: compareTrackLabel,
@@ -1556,10 +1595,32 @@ export function initUniversitiesPage() {
                 key: "requirements",
                 section: "admissions",
                 category: "admissions",
-                label: t("universities.compare.row.requirements", "Minimum requirements"),
+                label: t("universities.compare.row.academic_minimums", "Academic minimums"),
                 type: "text",
                 direction: "neutral",
                 getter: compareRequirementsText,
+                score: false,
+                reason: false,
+            },
+            {
+                key: "avg_scores",
+                section: "admissions",
+                category: "prestige",
+                label: t("universities.compare.row.avg_scores", "Admitted score context"),
+                type: "text",
+                direction: "neutral",
+                getter: compareAverageScoreText,
+                score: false,
+                reason: false,
+            },
+            {
+                key: "funding_requirements",
+                section: "admissions",
+                category: "finance",
+                label: t("universities.compare.row.funding_requirements", "Funding-specific requirements"),
+                type: "text",
+                direction: "neutral",
+                getter: compareFundingRequirementsText,
                 score: false,
                 reason: false,
             },
@@ -1571,6 +1632,17 @@ export function initUniversitiesPage() {
                 type: "text",
                 direction: "neutral",
                 getter: compareLanguageProofText,
+                score: false,
+                reason: false,
+            },
+            {
+                key: "extra_requirements",
+                section: "admissions",
+                category: "admissions",
+                label: t("universities.compare.row.application_materials", "Documents / interview / portfolio"),
+                type: "text",
+                direction: "neutral",
+                getter: compareExtraRequirementsText,
                 score: false,
                 reason: false,
             },
@@ -2129,12 +2201,56 @@ export function initUniversitiesPage() {
         `;
     }).join("");
 
-    const compareOptionRequirementsPreview = (option) => {
-        const req = (option?.requirements && typeof option.requirements === "object") ? option.requirements : {};
-        const rows = Object.entries(req)
+    const compareOptionExamDictPreview = (data, limit = 3) => {
+        const rows = Object.entries((data && typeof data === "object") ? data : {})
             .filter(([, value]) => value !== null && value !== undefined && value !== "")
             .map(([key, value]) => `${getExamDisplayName(key)} ${value}`);
-        return rows.length ? rows.slice(0, 3).join(", ") : t("common.na", "N/A");
+        return rows.length ? rows.slice(0, limit).join(", ") : "";
+    };
+
+    const compareOptionRequirementsPreview = (option) => {
+        const req = (option?.requirements && typeof option.requirements === "object") ? option.requirements : {};
+        return compareOptionExamDictPreview(req) || t("universities.compare.configure.no_academic_minimums", "No published academic minimums");
+    };
+
+    const compareOptionAveragePreview = (option) => {
+        const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
+        return compareOptionExamDictPreview(stats) || "";
+    };
+
+    const formatCompareScoreValue = (value) => {
+        const n = toFiniteNumber(value);
+        return n !== null ? formatUiNumber(n, { maximumFractionDigits: 2 }) : "";
+    };
+
+    const compareOptionScoreProfilePreview = (option) => {
+        const profile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
+        if (!profile) return "";
+        const exam = getExamDisplayName(profile.exam_id || (Array.isArray(profile.compatible_exam_ids) ? profile.compatible_exam_ids[0] : ""));
+        const median = formatCompareScoreValue(profile.median_raw ?? profile.median_normalized);
+        const low = formatCompareScoreValue(profile.p25_raw ?? profile.p25_normalized);
+        const high = formatCompareScoreValue(profile.p75_raw ?? profile.p75_normalized);
+        if (median && low && high) {
+            return tFormat(
+                "universities.compare.configure.score_profile_range",
+                { exam, median, low, high },
+                `${exam} median ${median} (25-75%: ${low}-${high})`
+            );
+        }
+        if (median) {
+            return tFormat(
+                "universities.compare.configure.score_profile_median",
+                { exam, median },
+                `${exam} median ${median}`
+            );
+        }
+        return "";
+    };
+
+    const compareOptionAdmittedPreview = (option) => {
+        return compareOptionScoreProfilePreview(option)
+            || compareOptionAveragePreview(option)
+            || t("universities.compare.configure.no_admitted_scores", "No published admitted-score context");
     };
 
     const compareOptionLanguagePreview = (option) => {
@@ -2147,7 +2263,95 @@ export function initUniversitiesPage() {
             });
             if (entry?.accept_native) rows.push(t("universities.compare.native_ok", "native accepted"));
         });
-        return rows.length ? Array.from(new Set(rows)).slice(0, 3).join(", ") : t("common.na", "N/A");
+        if (!rows.length) return t("universities.compare.configure.no_language_proof", "No separate language proof listed");
+        const mode = String(option?.language_requirements_mode || "all").toLowerCase() === "any"
+            ? t("universities.compare.configure.language_any", "Any of")
+            : t("universities.compare.configure.language_all", "All required");
+        return `${mode}: ${Array.from(new Set(rows)).slice(0, 3).join(", ")}`;
+    };
+
+    const compareOptionExtraPreview = (id, option) => {
+        const extras = Array.isArray(option?.extra_requirements) ? option.extra_requirements.filter(Boolean) : [];
+        if (!extras.length) return "";
+        const visible = extras
+            .slice(0, 2)
+            .map((item) => trTrackDescription(id, option?.id, item))
+            .join("; ");
+        const more = extras.length > 2 ? ` +${extras.length - 2}` : "";
+        return `${visible}${more}`;
+    };
+
+    const compareOptionFundingDeltaPreview = (entry, entries) => {
+        const option = entry?.option || {};
+        if (getTrackFundingType(option) !== "grant") return "";
+        const sameRoute = (candidate) => (
+            String(candidate?.option?.category_id || "") === String(option?.category_id || "")
+            && String(candidate?.option?.requirement_profile_id || "") === String(option?.requirement_profile_id || "")
+        );
+        const paidBaseline = (Array.isArray(entries) ? entries : [])
+            .find((candidate) => candidate?.key !== entry?.key && sameRoute(candidate) && getTrackFundingType(candidate.option) === "paid");
+        const baseline = (paidBaseline?.option?.requirements && typeof paidBaseline.option.requirements === "object")
+            ? paidBaseline.option.requirements
+            : ((option?.base_requirements && typeof option.base_requirements === "object") ? option.base_requirements : {});
+        const req = (option?.requirements && typeof option.requirements === "object") ? option.requirements : {};
+        const fundingReq = (option?.funding_requirements && typeof option.funding_requirements === "object") ? option.funding_requirements : {};
+        const keys = Object.keys(req).filter((key) => {
+            if (Object.prototype.hasOwnProperty.call(fundingReq, key)) return true;
+            return baseline[key] !== undefined && String(baseline[key]) !== String(req[key]);
+        });
+        const rows = keys
+            .filter((key) => req[key] !== null && req[key] !== undefined && req[key] !== "")
+            .map((key) => {
+                const baseValue = baseline[key];
+                const current = `${getExamDisplayName(key)} ${req[key]}`;
+                return baseValue !== null && baseValue !== undefined && baseValue !== "" && String(baseValue) !== String(req[key])
+                    ? tFormat(
+                        "universities.compare.configure.funding_delta_from",
+                        { value: current, base: String(baseValue) },
+                        `${current} (standard ${baseValue})`
+                    )
+                    : current;
+            });
+        return rows.length
+            ? rows.slice(0, 3).join(", ")
+            : t("universities.compare.configure.no_funding_delta", "No separate funding-specific score cutoff in the data");
+    };
+
+    const renderCompareOptionFacts = (id, entry, entries) => {
+        const option = entry?.option || {};
+        const facts = [
+            [
+                t("universities.compare.configure.academic_minimums", "Academic minimums"),
+                compareOptionRequirementsPreview(option),
+            ],
+            [
+                t("universities.compare.configure.admitted_context", "Admitted score context"),
+                compareOptionAdmittedPreview(option),
+            ],
+            [
+                t("universities.compare.configure.language_proof", "Language proof"),
+                compareOptionLanguagePreview(option),
+            ],
+        ];
+        const extra = compareOptionExtraPreview(id, option);
+        if (extra) {
+            facts.push([t("universities.compare.configure.extra_requirements", "Extra requirements"), extra]);
+        }
+        const fundingDelta = compareOptionFundingDeltaPreview(entry, entries);
+        if (fundingDelta) {
+            facts.push([t("universities.compare.configure.funding_requirements", "Funding-specific requirements"), fundingDelta]);
+        }
+
+        return `
+            <div class="compare-option-facts">
+                ${facts.map(([label, value]) => `
+                    <div class="compare-option-fact">
+                        <span>${escapeHtml(label)}</span>
+                        <strong>${escapeHtml(value)}</strong>
+                    </div>
+                `).join("")}
+            </div>
+        `;
     };
 
     const renderCompareTrackChanceBadge = (trackChance) => {
@@ -2172,7 +2376,7 @@ export function initUniversitiesPage() {
         `;
     };
 
-    const renderCompareAdmissionOptionCard = (u, entry) => {
+    const renderCompareAdmissionOptionCard = (u, entry, entries = []) => {
         const id = String(u?.id || "");
         const { option, key } = entry;
         const selected = compareChoiceKey(compareAdmissionChoices.get(id)) === key;
@@ -2233,6 +2437,7 @@ export function initUniversitiesPage() {
                     </div>
                 </div>
                 ${fundingMeta.length ? `<div class="admission-option-meta">${fundingMeta.map(([label, value]) => `<span class="tag" title="${escapeHtmlAttr(`${label}: ${value}`)}"><small>${escapeHtml(fundingMetaShortLabel(label))}</small> <span>${escapeHtml(value)}</span></span>`).join("")}</div>` : ""}
+                ${renderCompareOptionFacts(id, entry, entries)}
 
                 <div class="track-cost-preview${isGrantTrack ? " track-cost-preview--grant" : ""}">
                     <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceText)}
@@ -2342,7 +2547,7 @@ export function initUniversitiesPage() {
                                 ${renderUniChanceSummary(compareChancesByUniId.get(id))}
                             </div>
                             <div class="compare-config-options">
-                                ${entries.length ? entries.map((entry) => renderCompareAdmissionOptionCard(u, entry)).join("") : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`}
+                                ${entries.length ? entries.map((entry) => renderCompareAdmissionOptionCard(u, entry, entries)).join("") : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`}
                             </div>
                         </article>
                     `;
@@ -2540,12 +2745,13 @@ export function initUniversitiesPage() {
                 tone: metrics.highestAcceptanceId === String(u?.id || "") ? "best" : "",
                 sub: compareSourceText(u, "acceptance_rate_percent"),
             })),
-            compareDataRow(t("universities.compare.row.selected_track", "Requirement profile"), universities, compareTrackLabel),
+            compareDataRow(t("universities.compare.row.selected_route", "Selected route"), universities, compareTrackLabel),
             compareDataRow(t("universities.compare.row.funding_choice", "Selected funding"), universities, compareFundingChoiceText),
-            compareDataRow(t("universities.compare.row.requirements", "Minimum requirements"), universities, compareRequirementsText),
+            compareDataRow(t("universities.compare.row.academic_minimums", "Academic minimums"), universities, compareRequirementsText),
             compareDataRow(t("universities.compare.row.avg_scores", "Admitted score context"), universities, compareAverageScoreText),
+            compareDataRow(t("universities.compare.row.funding_requirements", "Funding-specific requirements"), universities, compareFundingRequirementsText),
             compareDataRow(t("universities.compare.row.language_proof", "Language proof"), universities, compareLanguageProofText),
-            compareDataRow(t("universities.compare.row.extra_requirements", "Extra requirements"), universities, compareExtraRequirementsText),
+            compareDataRow(t("universities.compare.row.application_materials", "Documents / interview / portfolio"), universities, compareExtraRequirementsText),
             compareSectionRow(t("universities.compare.section.finance", "Finance"), "finance", universities),
             compareDataRow(t("universities.compare.row.total_cost", "Total / year"), universities, (u) => ({
                 text: formatCompareCost(compareSelectedAnnualCost(u)),

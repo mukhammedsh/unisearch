@@ -250,12 +250,17 @@ export function compareAidText(u) {
   return t("common.na", "N/A");
 }
 
+function isBachelorStudyLevel(level) {
+  const normalized = String(level || "").trim().toLowerCase();
+  return /bachelor|undergraduate|бакалавр|бакалавриат/.test(normalized);
+}
+
 export function compareBachelorPrograms(u) {
   const programs = Array.isArray(u?.academics?.programs) ? u.academics.programs : [];
   return programs.filter((program) => {
     const levels = Array.isArray(program?.study_levels) ? program.study_levels : [];
     if (!levels.length) return true;
-    return levels.some((level) => /bachelor|undergraduate/i.test(String(level || "")));
+    return levels.some(isBachelorStudyLevel);
   });
 }
 
