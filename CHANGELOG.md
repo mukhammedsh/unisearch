@@ -2,6 +2,14 @@
 
 All notable project changes should be recorded here.
 
+## 4.9.1 (2026-06-17)
+- Aligned university detail action buttons so Back to list, save, compare, and share sit as one consistent control group with Back to list on the right.
+- Matched map-result cards to list cards by using the muted View details link style with an arrow indicator.
+- Fixed map result logos and map markers so full university logos render without horizontal cropping.
+- Rounded the map-results horizontal scrollbar to match the surrounding panel radius.
+- Fixed recently viewed chips so the pill width stays stable while only the inner text area shrinks when the remove button appears.
+- Synchronized runtime/package version to `4.9.1` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.9.0 (2026-06-17)
 - Rebuilt the frontend motion system around shared duration, easing, page, panel, sheet, list, icon, state, and skeleton motion contracts.
 - Centralized repeated CSS keyframes and motion classes in the global style layer while reducing page-specific animation duplication.

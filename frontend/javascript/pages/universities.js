@@ -2832,6 +2832,17 @@ export function initUniversitiesPage() {
         navigateToAppRoute(href);
     };
 
+    const lockRecentChipWidths = (root) => {
+        if (!root) return;
+        root.querySelectorAll(".u-recent__chip").forEach((chip) => {
+            chip.style.removeProperty("--recent-chip-width");
+            const width = Math.ceil(chip.getBoundingClientRect().width);
+            if (width > 0) {
+                chip.style.setProperty("--recent-chip-width", `${width}px`);
+            }
+        });
+    };
+
     const renderRecentlyViewedBar = () => {
         if (!el.recentlyViewedBar) return;
         const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
@@ -2880,6 +2891,7 @@ export function initUniversitiesPage() {
                 }).join("")}
             </div>
         `;
+        lockRecentChipWidths(el.recentlyViewedBar);
         el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
             const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
             motionPress(clearBtn);
@@ -4033,7 +4045,7 @@ export function initUniversitiesPage() {
                     }
                     const fallbackId = markers[0]?.options?.uniId || "default";
                     const bestId = (best && best.id) ? best.id : fallbackId;
-                    const logoUrl = uniLogoSrc(bestId);
+                    const logoUrl = uniLogoSrc(bestId, { forceFull: true });
                     return L.divIcon({
                         html: clusterMarkerLogoHtml(logoUrl, count - 1),
                         className: "cluster-icon-container",
@@ -4231,7 +4243,7 @@ export function initUniversitiesPage() {
                 const uniId = String(u.id || "");
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
-                    html: mapMarkerLogoHtml(uniLogoSrc(uniId)),
+                    html: mapMarkerLogoHtml(uniLogoSrc(uniId, { forceFull: true })),
                     iconSize: [44, 44],
                     iconAnchor: [22, 22],
                     popupAnchor: [0, -24],

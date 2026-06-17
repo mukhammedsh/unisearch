@@ -1199,8 +1199,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   background: #faf5ff;
   color: var(--accent);
   border-radius: 14px;
@@ -2852,7 +2852,13 @@
   .d-title-row { width: 100%; align-items: flex-start; }
   .d-title { flex-basis: 100%; }
   .d-head-links { width: 100%; justify-content: flex-start; }
-  .d-back { width: 100%; text-align: center; padding: 12px; background-color: #f3e8ff; }
+  .d-back {
+    width: auto;
+    min-height: 44px;
+    text-align: center;
+    padding: 0 12px;
+    background-color: transparent;
+  }
   .d-grid { column-count: 1; }
   
   .d-tabs {
@@ -4505,9 +4511,9 @@
 
   .d-back {
     width: 100%;
+    height: auto;
     text-align: center;
-    order: -1;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -4522,6 +4528,7 @@
   
   .d-site-link {
     width: 100%;
+    height: auto;
     min-height: 46px;
     justify-content: center;
     gap: 8px;
@@ -4722,16 +4729,32 @@
 
 .d-back,
 .d-site-link {
-  min-height: 42px;
+  min-height: 44px;
+  height: 44px;
   border-radius: 14px;
   background: transparent;
   color: var(--text);
   border: 1px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.d-back {
+  flex: 0 0 auto;
+  padding: 0 12px;
+  line-height: 1.2;
+}
+
+.d-site-link {
+  flex: 0 0 44px;
+  width: 44px;
+  padding: 0;
 }
 
 .d-back:hover,
@@ -5360,6 +5383,7 @@
   }
 
   .d-back {
+    flex: 1 1 100%;
     min-height: 46px;
   }
 
@@ -5396,6 +5420,24 @@
 
   .cost-legend-value {
     text-align: left;
+  }
+}
+
+@media (max-width: 720px) {
+  .d-back,
+  .d-site-link {
+    height: auto;
+    min-height: 46px;
+  }
+
+  .d-back {
+    flex: 1 1 100%;
+    width: auto;
+  }
+
+  .d-site-link {
+    flex: 1 1 138px;
+    width: auto;
   }
 }
 

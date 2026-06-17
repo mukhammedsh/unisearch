@@ -77,7 +77,7 @@ export function initMap(containerId = "mapContainer") {
       }
       const fallbackId = markers[0]?.options?.uniId || "default";
       const bestId = (best && best.id) ? best.id : fallbackId;
-      const logoUrl = uniLogoSrc(bestId);
+      const logoUrl = uniLogoSrc(bestId, { forceFull: true });
       return L.divIcon({
         html: clusterMarkerLogoHtml(logoUrl, count - 1),
         className: "cluster-icon-container",
@@ -307,7 +307,7 @@ export function updateMapMarkers(items, options = {}) {
       const uniId = String(u.id || "");
       const customIcon = L.divIcon({
         className: "custom-div-icon",
-        html: mapMarkerLogoHtml(uniLogoSrc(uniId)),
+        html: mapMarkerLogoHtml(uniLogoSrc(uniId, { forceFull: true })),
         iconSize: [44, 44],
         iconAnchor: [22, 22],
         popupAnchor: [0, -24],

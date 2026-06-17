@@ -7,6 +7,17 @@ import { routeUniversityDetail } from "../../routes.js";
  * Recently viewed universities bar
  */
 
+function lockRecentChipWidths(root) {
+  if (!root) return;
+  root.querySelectorAll(".u-recent__chip").forEach((chip) => {
+    chip.style.removeProperty("--recent-chip-width");
+    const width = Math.ceil(chip.getBoundingClientRect().width);
+    if (width > 0) {
+      chip.style.setProperty("--recent-chip-width", `${width}px`);
+    }
+  });
+}
+
 export function renderRecentlyViewedBar(container, options = {}) {
   const {
     recentStorageKey = "unisearch_recent_universities",
@@ -66,6 +77,8 @@ export function renderRecentlyViewedBar(container, options = {}) {
       }).join("")}
     </div>
   `;
+
+  lockRecentChipWidths(container);
 
   container.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
     writeIdListStorage(recentStorageKey, []);

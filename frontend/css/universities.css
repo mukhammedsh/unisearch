@@ -2002,10 +2002,22 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-recent__chip {
-  gap: 6px;
+  position: relative;
+  box-sizing: border-box;
+  inline-size: var(--recent-chip-width, auto);
+  gap: 0;
   max-width: 260px;
   min-height: 38px;
-  padding: 3px 5px 3px 12px;
+  padding: 3px 12px;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    padding-right var(--motion-fast) var(--motion-ease-standard);
+}
+
+.u-recent__chip:hover,
+.u-recent__chip:focus-within {
+  padding-right: 39px;
 }
 
 .u-recent__link {
@@ -2021,6 +2033,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-recent__remove {
+  position: absolute;
+  top: 50%;
+  right: 5px;
   flex: 0 0 auto;
   width: 28px;
   height: 28px;
@@ -2033,7 +2048,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   justify-content: center;
   padding: 0;
   opacity: 0;
-  transform: scale(0.92);
+  transform: translateY(-50%) scale(0.92);
   pointer-events: none;
   cursor: pointer;
   transition:
@@ -2046,7 +2061,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .u-recent__chip:hover .u-recent__remove,
 .u-recent__chip:focus-within .u-recent__remove {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(-50%) scale(1);
   pointer-events: auto;
 }
 
@@ -3986,13 +4001,22 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .marker-img-inner {
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 8px) !important;
+    height: calc(100% - 8px) !important;
+    max-width: calc(100% - 8px) !important;
+    max-height: calc(100% - 8px) !important;
     object-fit: contain; /* Логотип виден целиком */
     object-position: center;
     display: block;
     /* Внутренний отступ (чтобы лого не касалось границ) */
-    transform: scale(0.85); 
+    flex: 0 0 auto;
+}
+
+.leaflet-container .leaflet-marker-pane img.marker-img-inner {
+    width: calc(100% - 8px) !important;
+    height: calc(100% - 8px) !important;
+    max-width: calc(100% - 8px) !important;
+    max-height: calc(100% - 8px) !important;
 }
 
 .map-marker-container:hover {
@@ -5392,6 +5416,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .u-map-results {
   padding: 16px;
+  overflow: hidden;
 }
 
 .u-map-results-loading {
@@ -5473,6 +5498,33 @@ body.universities-compare-mode .uni-action-btn--favorite {
   overflow-y: hidden;
   padding: 0 2px 6px;
   scroll-snap-type: x proximity;
+  border-radius: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 58%, transparent) transparent;
+}
+
+.u-map-results-list::-webkit-scrollbar {
+  height: 12px;
+}
+
+.u-map-results-list::-webkit-scrollbar-track {
+  background: var(--surface-soft);
+  border-radius: 999px;
+}
+
+.u-map-results-list::-webkit-scrollbar-thumb {
+  min-width: 48px;
+  border: 3px solid var(--surface-soft);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-muted) 58%, transparent);
+}
+
+.u-map-results-list::-webkit-scrollbar-button,
+.u-map-results-list::-webkit-scrollbar-corner {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
 }
 
 .u-map-result-card {
@@ -5528,7 +5580,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .u-map-result-logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
 .u-map-result-copy {
@@ -5576,10 +5630,18 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-map-result-link {
-  color: var(--accent);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 12px;
   font-weight: 800;
   text-decoration: none;
+}
+
+.u-map-result-link::after {
+  content: "\2192";
+  flex: 0 0 auto;
 }
 
 .u-map-result-compare,
@@ -5613,6 +5675,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-map-result-link:hover {
+  color: var(--accent);
   text-decoration: underline;
 }
 
