@@ -1513,6 +1513,7 @@ export function initProfileUI() {
 
     if (openBtn) openBtn.onclick = () => {
         resetFields({ preferTransferred: true, consumeTransferred: true });
+        retranslateProfileUi();
         void fetchTranslationRuntimeStatus(API_BASE, false).then((status) => {
             renderInterestsTranslationWarning(status);
         });

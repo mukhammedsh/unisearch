@@ -107,7 +107,9 @@
   padding: 10px 12px;
   font-weight: 700;
   color: var(--text);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-snappy) var(--motion-ease-standard);
   overflow-wrap: anywhere;
 }
 
@@ -227,26 +229,15 @@
   .about-shell,
   .about-shell-section,
   .team-card {
-    animation: about-card-rise 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
   }
 
   .about-shell-section:nth-of-type(3) {
-    animation-delay: 0.08s;
+    animation-delay: var(--motion-instant);
   }
 
   .about-shell-section:nth-of-type(5) {
-    animation-delay: 0.14s;
-  }
-}
-
-@keyframes about-card-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    animation-delay: var(--motion-fast);
   }
 }
 

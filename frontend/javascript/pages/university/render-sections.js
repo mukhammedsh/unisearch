@@ -700,7 +700,7 @@ export function renderFinanceSection({
           const breakdownHtml = breakdownEntries.length > 1
             ? `
               <div class="cost-progress-bar">
-                ${breakdownEntries.map((entry) => `<span class="cost-progress-segment ${entry.colorClass}" style="--fill-width:${entry.percent}%"></span>`).join("")}
+                ${breakdownEntries.map((entry) => `<span class="cost-progress-segment ${entry.colorClass}" style="--fill-width:${entry.percent}%; --fill-scale:${Math.max(0, Math.min(100, Number(entry.percent) || 0)) / 100}"></span>`).join("")}
               </div>
               <div class="cost-legend">
                 ${breakdownEntries.map((entry) => `

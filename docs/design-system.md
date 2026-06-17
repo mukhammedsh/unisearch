@@ -115,10 +115,11 @@ Use tight letter spacing only for large headings. Body text should keep normal r
 
 ## Motion
 
-- Use only `transform`, `opacity`, `background-color`, `border-color`, `color`, and `box-shadow`.
-- Do not use `transition-all`.
-- Use shared motion variables and helpers where possible.
-- Always include or preserve `prefers-reduced-motion` fallbacks.
+- Use the shared tokens in `frontend/css/style.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
+- Use global motion classes before adding component-specific keyframes: `.motion-panel-enter`, `.motion-list-item-enter`, `.motion-row-exit`, `.motion-chip-remove`, `.motion-card-remove`, `.motion-icon-*`, and `.motion-state-pulse`.
+- Page and panel motion should be short fade/lift transitions. Lists may use limited stagger for the first visible items only. Save, compare, remove, and switch feedback should target the icon, thumb, or removed node.
+- Do not use `transition-all`, hardcoded duration/easing values, decorative hover lifts on scanning surfaces, or animated `box-shadow` pulses. Use opacity/transform ring motion for state confirmation.
+- Always include or preserve `prefers-reduced-motion` fallbacks; reduced motion must leave final UI state visible and usable.
 
 ## Responsive Rules
 

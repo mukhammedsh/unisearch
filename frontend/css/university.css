@@ -408,7 +408,10 @@
   color: #2b185e;
   border: 1px solid rgba(87, 21, 219, 0.2);
   box-shadow: 0 2px 8px rgba(87, 21, 219, 0.08);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .uni-tag::before {
@@ -528,7 +531,10 @@
   visibility: hidden;
   transform: translateY(-4px);
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-enter),
+    visibility var(--motion-fast) var(--motion-ease-standard);
   overflow-wrap: anywhere;
 }
 
@@ -590,7 +596,10 @@
   padding: 14px 14px 12px;
   background: linear-gradient(180deg, #ffffff 0%, #fcfaff 100%);
   box-shadow: 0 10px 24px rgba(36, 14, 79, 0.07);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .program-card::before {
@@ -724,11 +733,13 @@
 }
 
 .program-acceptance-fill {
-  width: var(--fill-width, 0%);
+  width: 100%;
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, #7d3cff, #5d17ea);
-  transition: width 0.25s ease;
+  transform: scaleX(var(--fill-scale, 0));
+  transform-origin: left center;
+  transition: transform var(--motion-medium) var(--motion-ease-enter);
 }
 
 .program-card-tags {
@@ -1076,7 +1087,10 @@
   font-size: 12px;
   font-weight: 800;
   text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .admissions-source-link:hover {
@@ -1524,7 +1538,10 @@
   padding: 16px;
   background: linear-gradient(180deg, #ffffff, #fcfbff);
   box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1568,7 +1585,7 @@
 
 .admission-option-card:has(.track-select-btn.is-active) {
   border-color: rgba(99, 102, 241, 0.48);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.14);
+  box-shadow: none;
 }
 
 .admission-option-head,
@@ -1638,7 +1655,9 @@
   border: 1px solid rgba(168, 85, 247, 0.16);
   border-radius: 20px;
   padding: 18px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
   position: relative;
   overflow: hidden;
   box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
@@ -2553,7 +2572,9 @@
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   flex-direction: column;
 }
@@ -2699,7 +2720,7 @@
   width: var(--fill-width, 0%);
   min-width: 0;
   height: 100%;
-  transition: width 0.28s ease;
+  transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
 .cost-color-1,
@@ -2785,11 +2806,6 @@
 .finance-card .cost-legend {
   grid-template-columns: 1fr;
   gap: 10px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================
@@ -2886,7 +2902,7 @@
     border: 1px solid #e5e7eb;
     border-radius: 14px;
     padding: 22px;
-    transition: transform 0.2s;
+    transition: transform var(--motion-snappy) var(--motion-ease-standard);
     overflow-wrap: anywhere;
 }
 
@@ -5065,6 +5081,33 @@
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .d-tab-btn.active::after {
+    animation: motion-underline-snap var(--motion-fast) var(--motion-ease-emphasized) both;
+    transform-origin: left center;
+  }
+
+  .admission-option-card:has(.track-select-btn.is-active),
+  .track-card:has(.track-select-btn.is-active) {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .admission-option-card:has(.track-select-btn.is-active)::after,
+  .track-card:has(.track-select-btn.is-active)::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: 1;
+    border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transform: scale(0.985);
+    animation: motion-state-ring var(--motion-slow) var(--motion-ease-emphasized) both;
+    pointer-events: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .d-tab-btn,
   .d-tab-pane,
@@ -5076,8 +5119,14 @@
   .track-card,
   .finance-card,
   .program-acceptance-fill,
+  .cost-progress-segment,
   .cost-bar-fill {
     transition: none !important;
+    animation: none !important;
+  }
+
+  .admission-option-card:has(.track-select-btn.is-active)::after,
+  .track-card:has(.track-select-btn.is-active)::after {
     animation: none !important;
   }
 }

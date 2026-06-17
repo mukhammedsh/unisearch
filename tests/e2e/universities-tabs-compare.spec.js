@@ -1,10 +1,17 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 
+const MIT_ID = "mit-usa-cambridge";
+const IMPERIAL_ID = "imperial-college-london-uk";
+
 async function clearCompareState(page) {
   await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
     localStorage.removeItem("unisearch_compare_university_ids_v1");
     localStorage.removeItem("unisearch_compare_admission_choices_v1");
+    localStorage.removeItem("unisearch_filters");
+    localStorage.removeItem("unisearch_profile");
+    localStorage.removeItem("unisearch_detail_cache_v3");
   });
 }
 
@@ -26,10 +33,12 @@ test("universities tabs host ranking and comparison results in one workspace", a
   await expect(page.locator('[data-universities-tab="compare"]')).toHaveClass(/is-active/);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
 
-  const cards = page.locator("#universitiesList .uni-card");
-  await expect(cards.first()).toBeVisible();
-  await cards.nth(0).click();
-  await cards.nth(1).click();
+  const mitCard = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
+  const imperialCard = page.locator(`#universitiesList .uni-card[data-uni-id="${IMPERIAL_ID}"]`).first();
+  await expect(mitCard).toBeVisible();
+  await expect(imperialCard).toBeVisible();
+  await mitCard.click();
+  await imperialCard.click();
 
   await expect(page.locator(".compare-tray")).toBeVisible();
   await expect(page.locator(".compare-tray__slot")).toHaveCount(2);
@@ -82,13 +91,13 @@ test("universities tabs host ranking and comparison results in one workspace", a
 
 test("compare mode keeps exactly two universities and shows tray after client route", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.addInitScript(() => {
+  await page.addInitScript(({ mitId, imperialId }) => {
     localStorage.removeItem("unisearch_compare_admission_choices_v1");
     localStorage.setItem("unisearch_compare_university_ids_v1", JSON.stringify([
-      "mit-usa-cambridge",
-      "imperial-college-london-uk",
+      mitId,
+      imperialId,
     ]));
-  });
+  }, { mitId: MIT_ID, imperialId: IMPERIAL_ID });
 
   await page.goto("/index.html");
   await page.locator('[data-link="universities"]').click();

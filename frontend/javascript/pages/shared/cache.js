@@ -7,6 +7,7 @@ const safeLocalStorage = createSafeStorage("local");
 export const DETAIL_CACHE_KEY = "unisearch_detail_cache_v3";
 export const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 export const DETAIL_CACHE_MAX_ITEMS = 24;
+const DETAIL_FETCH_RETRY_DELAY_MS = 120;
 export const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 export const SAVED_UNIVERSITIES_KEY = "unisearch_saved_university_ids_v1";
 export const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
@@ -148,17 +149,33 @@ export async function fetchUniversityDetailCached(universityId) {
   const headers = {};
   if (cached?.etag) headers["If-None-Match"] = cached.etag;
 
+  const waitForRetry = () => new Promise((resolve) => globalThis.setTimeout(resolve, DETAIL_FETCH_RETRY_DELAY_MS));
+
   try {
     const qs = new URLSearchParams({ lang }).toString();
-    const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(key)}?${qs}`, { headers });
-    if (response.status === 304 && cached?.data) {
-      touchDetailCacheEntry(key, lang);
-      return cached.data;
+    const url = `${API_BASE}/universities/${encodeURIComponent(key)}?${qs}`;
+    let lastError = null;
+
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const response = await fetch(url, { headers });
+        if (response.status === 304 && cached?.data) {
+          touchDetailCacheEntry(key, lang);
+          return cached.data;
+        }
+        if (response.ok) {
+          const data = await response.json();
+          setDetailCacheEntry(key, data, response.headers.get("ETag") || "", lang);
+          return data;
+        }
+        lastError = new Error("Backend error");
+      } catch (error) {
+        lastError = error;
+      }
+      if (attempt === 0) await waitForRetry();
     }
-    if (!response.ok) throw new Error("Backend error");
-    const data = await response.json();
-    setDetailCacheEntry(key, data, response.headers.get("ETag") || "", lang);
-    return data;
+
+    throw lastError || new Error("Backend error");
   } catch (error) {
     if (cached?.data) return cached.data;
     throw error;

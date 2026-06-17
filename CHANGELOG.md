@@ -2,6 +2,14 @@
 
 All notable project changes should be recorded here.
 
+## 4.9.0 (2026-06-17)
+- Rebuilt the frontend motion system around shared duration, easing, page, panel, sheet, list, icon, state, and skeleton motion contracts.
+- Centralized repeated CSS keyframes and motion classes in the global style layer while reducing page-specific animation duplication.
+- Reworked save, compare, remove, settings, dropdown, sheet, modal, and list interactions to use restrained opacity/transform feedback instead of passive card hover lifts or layout-affecting transitions.
+- Added practical motion rules to the design system documentation, including reduced-motion behavior and banned hardcoded transition patterns.
+- Expanded Playwright motion coverage for icon microinteractions, dropdowns, mobile sheets, reduced motion, cleanup behavior, and compare tab stability.
+- Synchronized runtime/package version to `4.9.0` across `package.json`, `package-lock.json`, and generated `frontend/env.js`.
+
 ## 4.8.0 (2026-06-01)
 - Reworked university comparison admission choices so configure cards show academic minimums, admitted-score context, language proof, extra requirements, and funding-specific differences before students continue to results.
 - Preserved `score_profile` and funding-specific requirements through frontend admission-choice flattening so SAT/UNT/GPA context and grant-vs-paid cutoffs appear in comparison.

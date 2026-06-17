@@ -2,6 +2,56 @@ const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { selectors } = require("./helpers/selectors");
 
+async function installMotionRecorder(page) {
+  await page.evaluate(() => {
+    window.__motionSeen = [];
+    window.__motionObserver?.disconnect?.();
+    window.__motionObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        const className = String(mutation.target?.getAttribute?.("class") || "");
+        className
+          .split(/\s+/)
+          .filter((name) => name.startsWith("motion-"))
+          .forEach((name) => window.__motionSeen.push(name));
+      });
+    });
+    window.__motionObserver.observe(document.documentElement, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  });
+}
+
+async function expectMotionSeen(page, className) {
+  await expect.poll(async () =>
+    page.evaluate((name) => window.__motionSeen?.includes(name) === true, className)
+  ).toBe(true);
+}
+
+async function expectNoLingeringMotionClasses(page) {
+  await expect.poll(async () =>
+    page.locator([
+      ".motion-press-pop",
+      ".motion-pop",
+      ".motion-state-pulse",
+      ".motion-state-pulse--compare",
+      ".motion-icon-save",
+      ".motion-icon-unsave",
+      ".motion-icon-compare-add",
+      ".motion-icon-compare-remove",
+      ".motion-icon-remove",
+      ".motion-icon-clear",
+      ".motion-switch-toggle",
+      ".motion-row-exit",
+      ".motion-chip-remove",
+      ".motion-card-remove",
+      ".motion-panel-enter",
+      ".motion-list-item-enter",
+    ].join(", ")).count()
+  ).toBe(0);
+}
+
 test("profile category motion keeps tab state and reduced-motion final states stable", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/index.html");
@@ -21,6 +71,7 @@ test("profile category motion keeps tab state and reduced-motion final states st
 });
 
 test("universities favorite and compare motion preserves pressed states", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await markTourAsSeen(page);
   await page.goto("/universities.html");
 
@@ -38,10 +89,12 @@ test("universities favorite and compare motion preserves pressed states", async 
   await expect(refreshedFirstCard).toBeVisible();
   const recentChip = page.locator("#recentlyViewedBar .u-recent__chip").filter({ hasText: firstUniversityName }).first();
   await expect(recentChip).toBeVisible();
+  await installMotionRecorder(page);
 
   const favorite = refreshedFirstCard.locator("[data-card-action='save']");
   await favorite.click();
   await expect(favorite).toHaveAttribute("aria-pressed", "true");
+  await expectMotionSeen(page, "motion-icon-save");
   await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
 
   await page.locator("[data-universities-tab='compare']").click();
@@ -51,12 +104,16 @@ test("universities favorite and compare motion preserves pressed states", async 
   const compare = compareModeCard.locator("[data-card-action='compare']");
   await compare.click();
   await expect(compare).toHaveAttribute("aria-pressed", "true");
+  await expectMotionSeen(page, "motion-icon-compare-add");
   await expect(page.locator("#compareTray")).toBeVisible();
   await expect(recentChip).toBeVisible();
 
-  await expect.poll(async () =>
-    page.locator(".motion-press-pop, .motion-pop, .motion-row-exit").count()
-  ).toBe(0);
+  await recentChip.locator("[data-action='remove-recent']").click();
+  await expectMotionSeen(page, "motion-chip-remove");
+  await expectMotionSeen(page, "motion-icon-remove");
+  await expect(recentChip).toHaveCount(0);
+
+  await expectNoLingeringMotionClasses(page);
 });
 
 test("floating motion layers close cleanly and stay above docked controls", async ({ page }) => {
@@ -103,6 +160,28 @@ test("floating motion layers close cleanly and stay above docked controls", asyn
   expect(layers.drawer).toBeGreaterThan(layers.dockedControl);
 });
 
+test("mobile settings layer uses sheet motion without breaking reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/index.html");
+
+  await page.click("#settingsBtn");
+  await expect(page.locator("#settingsModal")).toHaveClass(/is-open/);
+  await expect.poll(async () =>
+    page.locator("#settingsModal .settings-card").evaluate((node) => getComputedStyle(node).animationName)
+  ).toBe("motion-sheet-in");
+  await installMotionRecorder(page);
+  await page.locator(".settings-switch").first().click();
+  await expectMotionSeen(page, "motion-switch-toggle");
+  await expectNoLingeringMotionClasses(page);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.keyboard.press("Escape");
+  await expect.poll(async () =>
+    page.locator("#settingsModal.is-open, #settingsModal.is-closing").count()
+  ).toBe(0);
+});
+
 test("view mode toggle uses one stable active state", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/universities.html");
@@ -142,11 +221,11 @@ test("university detail tabs stay clickable after client-side route", async ({ p
   await markTourAsSeen(page);
   await page.goto("/universities.html");
 
-  const firstCard = page.locator(".uni-card:not(.is-skeleton)").first();
-  await expect(firstCard).toBeVisible();
-  await firstCard.locator(".uni-card-link-overlay").click();
+  const mitCard = page.locator(".uni-card[data-uni-id='mit-usa-cambridge']").first();
+  await expect(mitCard).toBeVisible();
+  await mitCard.locator(".uni-card-link-overlay").click();
 
-  await expect(page).toHaveURL(/\/university\.html\?id=/);
+  await expect(page).toHaveURL(/\/university\.html\?id=mit-usa-cambridge/);
   await expect(page.locator("#detailCard")).toBeVisible();
 
   await page.click(".d-tab-btn[data-tab='tab-admission']");

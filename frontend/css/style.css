@@ -74,7 +74,7 @@ body {
   border-radius: 50%;
   border: 8px solid #c5cad3;
   border-top-color: #ffffff;
-  animation: center-loading-spin 0.9s linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
   box-shadow: none;
 }
 
@@ -122,7 +122,9 @@ body {
   visibility: hidden;
   pointer-events: none;
   z-index: var(--z-loading-bar);
-  transition: opacity 0.16s ease, visibility 0.16s ease;
+  transition:
+    opacity var(--motion-snappy) var(--motion-ease-standard),
+    visibility var(--motion-snappy) var(--motion-ease-standard);
 }
 
 .global-loading-overlay.is-visible {
@@ -147,46 +149,50 @@ body {
   border-radius: 0 999px 999px 0;
   background: linear-gradient(90deg, var(--accent), var(--accent-strong));
   box-shadow: 0 0 18px rgba(79, 70, 229, 0.32);
-  animation: global-loading-slide 1.05s ease-in-out infinite;
+  animation: global-loading-slide var(--motion-loading-loop, 1.1s) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
 @keyframes global-loading-slide {
   0% {
-    transform: translate3d(-100%, 0, 0) scaleX(0.72);
+    transform: translate3d(-100%, 0, 0) scaleX(0.64);
   }
-  55% {
-    transform: translate3d(52vw, 0, 0) scaleX(1);
+  58% {
+    transform: translate3d(50vw, 0, 0) scaleX(1.08);
   }
   100% {
-    transform: translate3d(100vw, 0, 0) scaleX(0.82);
+    transform: translate3d(100vw, 0, 0) scaleX(0.76);
   }
 }
 
 @keyframes page-enter {
   from {
     opacity: 0;
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes detail-enter {
   from {
     opacity: 0;
+    transform: translateY(10px) scale(0.992);
   }
   to {
     opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   main {
-    animation: page-enter 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation: page-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
 
   .d-card.is-mounted {
-    animation: detail-enter 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation: detail-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
 
   :root.theme-animating body,
@@ -230,9 +236,9 @@ body {
   :root.theme-animating .scholarship-card,
   :root.theme-animating .program-card {
     transition:
-      background-color 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
+      background-color var(--motion-fast) var(--motion-ease-standard),
+      color var(--motion-fast) var(--motion-ease-standard),
+      border-color var(--motion-fast) var(--motion-ease-standard);
   }
 }
 
@@ -825,7 +831,9 @@ html, body {
   opacity: 0;
   transform: translateY(-4px);
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-enter);
   overflow-wrap: anywhere;
 }
 
@@ -1242,6 +1250,7 @@ html, body {
 }
 
 .settings-switch-thumb {
+  --switch-thumb-x: 0;
   position: absolute;
   top: 2px;
   left: 2px;
@@ -1260,6 +1269,7 @@ html, body {
 }
 
 .settings-switch-input:checked + .settings-switch-track .settings-switch-thumb {
+  --switch-thumb-x: 20px;
   transform: translateX(20px);
   background: #ffffff;
 }
@@ -1795,7 +1805,7 @@ html, body {
   font-weight: 600;
   min-width: 250px;
   max-width: 350px;
-  animation: slideIn var(--motion-medium) var(--motion-ease-enter) forwards;
+  animation: motion-toast-in var(--motion-medium) var(--motion-ease-enter) forwards;
   pointer-events: auto;
   border-left: 4px solid var(--accent);
 }
@@ -1859,13 +1869,13 @@ html, body {
   height: 16px;
 }
 
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+@keyframes motion-toast-in {
+  from { transform: translate3d(24px, 0, 0); opacity: 0; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
 }
 
-@keyframes fadeOut {
-  to { transform: translateX(100%); opacity: 0; }
+@keyframes motion-toast-out {
+  to { transform: translate3d(24px, 0, 0); opacity: 0; }
 }
 
 /* ===== Hero ===== */
@@ -1969,7 +1979,7 @@ html, body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
-  transition: transform 0.2s;
+  transition: transform var(--motion-fast) var(--motion-ease-emphasized);
   flex-shrink: 0;
 }
 
@@ -2362,7 +2372,10 @@ html, body {
     opacity: 0;
     overflow: hidden;
     pointer-events: none;
-    transition: max-height 0.25s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      max-height var(--motion-medium) var(--motion-ease-standard),
+      opacity var(--motion-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-fast) var(--motion-ease-standard);
   }
 
   .navbar.is-menu-open .navbar-center {
@@ -2457,12 +2470,17 @@ html, body {
   --shadow-sm: 0 10px 26px rgba(15, 23, 42, 0.06);
   --shadow-md: 0 30px 70px rgba(15, 23, 42, 0.18);
   --motion-instant: 80ms;
+  --motion-snappy: 120ms;
   --motion-fast: 160ms;
-  --motion-medium: 260ms;
+  --motion-medium: 240ms;
+  --motion-slow: 360ms;
+  --motion-spinner-loop: 900ms;
+  --motion-loading-loop: 1.1s;
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ring-color: color-mix(in srgb, var(--accent) 34%, transparent);
 }
 
 :root[data-theme="dark"] {
@@ -2484,24 +2502,81 @@ html, body {
 }
 
 .motion-press-pop {
-  animation: motion-press-pop var(--motion-fast) var(--motion-ease-standard) both;
+  animation: motion-press-pop var(--motion-snappy) var(--motion-ease-standard) both;
+  transform-origin: center;
 }
 
 .motion-pop {
-  animation: motion-pop var(--motion-medium) var(--motion-ease-emphasized) both;
+  animation: motion-pop var(--motion-fast) var(--motion-ease-emphasized) both;
+  transform-origin: center;
 }
 
 .motion-state-pulse {
-  animation: motion-state-pulse 420ms var(--motion-ease-emphasized) both;
+  position: relative;
+  isolation: isolate;
+}
+
+.motion-state-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 3;
+  border: 1px solid var(--motion-ring-color);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.98);
+  animation: motion-state-ring var(--motion-slow) var(--motion-ease-emphasized) both;
+}
+
+.motion-icon-save,
+.motion-icon-unsave,
+.motion-icon-compare-add,
+.motion-icon-compare-remove,
+.motion-icon-remove,
+.motion-icon-clear {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.motion-icon-save {
+  animation: motion-icon-save var(--motion-medium) var(--motion-ease-emphasized) both;
+}
+
+.motion-icon-unsave {
+  animation: motion-icon-unsave var(--motion-fast) var(--motion-ease-standard) both;
+}
+
+.motion-icon-compare-add {
+  animation: motion-icon-compare-add var(--motion-medium) var(--motion-ease-emphasized) both;
+}
+
+.motion-icon-compare-remove,
+.motion-icon-clear,
+.motion-icon-remove {
+  animation: motion-icon-remove var(--motion-fast) var(--motion-ease-standard) both;
+}
+
+.motion-icon-save :is(path, circle, rect, line, polyline),
+.motion-icon-compare-add :is(path, circle, rect, line, polyline) {
+  stroke-dasharray: 36;
+  stroke-dashoffset: 0;
+  animation: motion-svg-stroke-draw var(--motion-slow) var(--motion-ease-standard) both;
+}
+
+.motion-switch-toggle .settings-switch-thumb {
+  animation: motion-switch-thumb var(--motion-fast) var(--motion-ease-emphasized) both;
 }
 
 .motion-fade-lift-enter,
 .motion-panel-enter {
   animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) both;
+  transform-origin: center top;
 }
 
 .motion-list-item-enter {
-  animation: motion-list-item-enter 320ms var(--motion-ease-enter) both;
+  animation: motion-list-item-enter var(--motion-medium) var(--motion-ease-enter) both;
+  transform-origin: center top;
 }
 
 .motion-row-exit {
@@ -2509,36 +2584,83 @@ html, body {
   pointer-events: none !important;
 }
 
+.motion-chip-remove {
+  animation: motion-chip-remove var(--motion-fast) var(--motion-ease-exit) forwards;
+  pointer-events: none !important;
+}
+
+.motion-card-remove {
+  animation: motion-card-remove var(--motion-medium) var(--motion-ease-exit) forwards;
+  pointer-events: none !important;
+}
+
 @keyframes motion-press-pop {
-  0% { transform: scale(1); }
-  48% { transform: scale(0.94); }
-  100% { transform: scale(1); }
+  0% { transform: translateY(0) scale(1); }
+  55% { transform: translateY(1px) scale(0.992); }
+  100% { transform: translateY(0) scale(1); }
 }
 
 @keyframes motion-pop {
-  0% { transform: scale(0.82); opacity: 0.72; }
-  64% { transform: scale(1.08); opacity: 1; }
+  0% { transform: scale(0.96); opacity: 0.78; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes motion-state-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.22); }
-  70% { box-shadow: 0 0 0 9px rgba(79, 70, 229, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+@keyframes motion-state-ring {
+  0% { opacity: 0.48; transform: scale(0.985); }
+  72% { opacity: 0; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes motion-icon-save {
+  0% { transform: scale(0.92) rotate(-6deg); opacity: 0.86; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes motion-icon-unsave {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.92); opacity: 0.82; }
+}
+
+@keyframes motion-icon-compare-add {
+  0% { transform: scale(0.94); opacity: 0.84; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes motion-icon-remove {
+  0% { transform: rotate(0) scale(1); opacity: 1; }
+  100% { transform: rotate(8deg) scale(0.9); opacity: 0.72; }
+}
+
+@keyframes motion-svg-stroke-draw {
+  from { stroke-dashoffset: 36; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes motion-switch-thumb {
+  0% { transform: translateX(var(--switch-thumb-x, 0)) scale(0.96); }
+  100% { transform: translateX(var(--switch-thumb-x, 0)) scale(1); }
 }
 
 @keyframes motion-fade-lift-enter {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes motion-list-item-enter {
-  from { opacity: 0; transform: translateY(10px) scale(0.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes motion-row-exit {
-  to { opacity: 0; transform: translateX(12px) scale(0.98); }
+  to { opacity: 0; transform: translateX(12px); }
+}
+
+@keyframes motion-chip-remove {
+  to { opacity: 0; transform: translateX(10px); }
+}
+
+@keyframes motion-card-remove {
+  to { opacity: 0; transform: translateX(12px); }
 }
 
 @keyframes motion-backdrop-in {
@@ -2551,22 +2673,81 @@ html, body {
 }
 
 @keyframes motion-modal-in {
-  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  from { opacity: 0; transform: translateY(12px) scale(0.992); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes motion-modal-out {
-  to { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 0; transform: translateY(10px) scale(0.982); }
+}
+
+@keyframes motion-sheet-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes motion-sheet-out {
+  to { opacity: 0; transform: translateY(100%) scale(0.992); }
+}
+
+@keyframes motion-anchored-tray-enter {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes motion-slide-forward {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-slide-back {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-fade-lift-soft {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes motion-underline-snap {
+  0% { transform: scaleX(0.86); opacity: 0.72; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .settings-modal.is-open .settings-card,
+  .profile-modal.is-open .profile-card,
+  .profile-confirm-modal.is-open .profile-confirm-card {
+    animation-name: motion-sheet-in;
+  }
+
+  .settings-modal.is-closing .settings-card,
+  .profile-modal.is-closing .profile-card,
+  .profile-confirm-modal.is-closing .profile-confirm-card {
+    animation-name: motion-sheet-out;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .motion-press-pop,
   .motion-pop,
   .motion-state-pulse,
+  .motion-state-pulse::after,
+  .motion-icon-save,
+  .motion-icon-unsave,
+  .motion-icon-compare-add,
+  .motion-icon-compare-remove,
+  .motion-icon-remove,
+  .motion-icon-clear,
+  .motion-switch-toggle,
   .motion-fade-lift-enter,
   .motion-panel-enter,
   .motion-list-item-enter,
   .motion-row-exit,
+  .motion-chip-remove,
+  .motion-card-remove,
+  .toast,
   .settings-modal.is-open .settings-backdrop,
   .settings-modal.is-open .settings-card,
   .profile-modal.is-open .profile-backdrop,
@@ -2685,7 +2866,7 @@ h6,
   font-size: 14px;
   font-weight: 600;
   color: var(--text-muted);
-  transition: color 0.16s ease;
+  transition: color var(--motion-snappy) var(--motion-ease-standard);
 }
 
 .navbar-center a:hover {
@@ -2856,8 +3037,8 @@ body.route-loading main {
   transform: translateY(4px);
   pointer-events: none;
   transition:
-    opacity 160ms var(--motion-ease-standard),
-    transform 160ms var(--motion-ease-standard);
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .site-initial-loader {
@@ -2870,7 +3051,9 @@ body.route-loading main {
   justify-content: center;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition:
+    opacity var(--motion-slow) var(--motion-ease-standard),
+    visibility var(--motion-slow) var(--motion-ease-standard);
 }
 
 .site-initial-loader.is-hidden {
@@ -2885,7 +3068,7 @@ body.route-loading main {
   border-radius: 50%;
   border: 8px solid #c5cad3;
   border-top-color: #ffffff;
-  animation: center-loading-spin 0.9s linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
   box-shadow: none;
 }
 
@@ -2944,7 +3127,7 @@ body.route-loading main {
   );
   background-size: 220% 100%;
   border-radius: 12px;
-  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
 .skeleton-line {
@@ -2958,7 +3141,7 @@ body.route-loading main {
     transparent 100%
   );
   background-size: 220% 100%;
-  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
 /* Common Skeleton Shapes */
@@ -3003,12 +3186,7 @@ body.route-loading main {
 }
 
 .fadeIn {
-  animation: fadeInAnim 0.6s cubic-bezier(0.2, 0, 0.2, 1) both;
-}
-
-@keyframes fadeInAnim {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
 }
 
 .error-icon-wrap {
@@ -3076,7 +3254,7 @@ body.route-loading main {
 }
 
 .error-btn .ui-icon {
-  transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+  transition: transform var(--motion-slow) var(--motion-ease-emphasized);
 }
 
 .error-btn:hover .ui-icon {
@@ -3973,9 +4151,9 @@ canvas {
   width: 1px;
   background: var(--accent);
   transition:
-    transform 220ms var(--motion-ease-emphasized),
-    width 220ms var(--motion-ease-emphasized),
-    opacity 120ms var(--motion-ease-standard);
+    transform var(--motion-medium) var(--motion-ease-emphasized),
+    width var(--motion-medium) var(--motion-ease-emphasized),
+    opacity var(--motion-snappy) var(--motion-ease-standard);
   pointer-events: none;
   transform-origin: left bottom;
   z-index: 10;

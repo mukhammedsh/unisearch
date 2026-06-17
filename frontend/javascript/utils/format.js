@@ -221,7 +221,7 @@ export function showToast(message, type = "error") {
 }
 
 export function removeToast(toast) {
-  toast.style.animation = "fadeOut var(--motion-medium, 0.26s) var(--motion-ease-exit, ease) forwards";
+  toast.style.animation = "motion-toast-out var(--motion-medium, 240ms) var(--motion-ease-exit, ease) forwards";
   toast.addEventListener("animationend", () => {
     if (toast.parentNode) toast.parentNode.removeChild(toast);
   });

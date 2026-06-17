@@ -127,7 +127,11 @@ body[data-page="home"] {
   font-weight: 800;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  transition:
+    transform var(--motion-snappy) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
   overflow: hidden;
   isolation: isolate;
 }
@@ -284,7 +288,9 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   line-height: 1.4;
   font-weight: 800;
   text-decoration: none;
-  transition: color 0.16s ease, transform 0.16s ease;
+  transition:
+    color var(--motion-snappy) var(--motion-ease-standard),
+    transform var(--motion-snappy) var(--motion-ease-standard);
 }
 
 .home-links a:hover {

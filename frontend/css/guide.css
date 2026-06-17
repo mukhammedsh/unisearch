@@ -135,7 +135,7 @@ body[data-page="guide"] .guide-page{
   inset: 0 auto 0 0;
   width: 4px;
   background: transparent;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .guide-section.is-active{

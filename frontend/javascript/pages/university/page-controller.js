@@ -7,6 +7,7 @@ import {
   loadProfileForApi,
   moneyUSD,
   motionPress,
+  replayMotion,
 } from "../../utils.js";
 import { renderNoConnection, setupTabs } from "../../components.js";
 import { t, tFormat } from "../../i18n.js";
@@ -200,6 +201,7 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   saveBtn.onclick = () => {
     const saved = readIdListStorage(SAVED_UNIVERSITIES_KEY);
     const idx = saved.indexOf(university.id);
+    const wasSaved = idx > -1;
     if (idx > -1) {
       saved.splice(idx, 1);
     } else {
@@ -208,6 +210,7 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
     writeIdListStorage(SAVED_UNIVERSITIES_KEY, saved);
     updateSaveBtn();
     motionPress(saveBtn);
+    replayMotion(iconSpan || saveBtn, wasSaved ? "motion-icon-unsave" : "motion-icon-save", { timeoutMs: 320 });
   };
 }
 

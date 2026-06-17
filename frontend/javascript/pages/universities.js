@@ -22,6 +22,7 @@ import {
   EXAM_CONFIG,
   LANG_CONFIG,
   aiName,
+  animateElementOut,
   markMotionEnter,
   motionPress,
   replayMotion,
@@ -831,7 +832,8 @@ export function initUniversitiesPage() {
         const cleanId = String(uniId || "").trim();
         if (!cleanId) return false;
         const currentPair = comparePairIds();
-        if (currentPair.includes(cleanId)) {
+        const wasCompared = currentPair.includes(cleanId);
+        if (wasCompared) {
             setComparePairIds(currentPair.filter((id) => id !== cleanId));
         } else {
             const nextPair = currentPair.length >= COMPARE_PAIR_SIZE
@@ -845,6 +847,11 @@ export function initUniversitiesPage() {
             ? triggerEl
             : Array.from(document.querySelectorAll("[data-uni-id]")).find((node) => node.getAttribute("data-uni-id") === cleanId);
         if (target) replayMotion(target, "motion-state-pulse--compare", { timeoutMs: 520 });
+        replayMotion(
+            target?.querySelector(".uni-action-icon, .u-map-result-action-icon") || target,
+            wasCompared ? "motion-icon-compare-remove" : "motion-icon-compare-add",
+            { timeoutMs: 320 }
+        );
         persistSavedAndCompare();
         return true;
     };
@@ -869,8 +876,11 @@ export function initUniversitiesPage() {
             if (wasSaved) savedUniversityIds.delete(uniId);
             else savedUniversityIds.add(uniId);
             syncCardActionState();
-            replayMotion(actionBtn.querySelector(".uni-action-icon") || actionBtn, "motion-pop", { timeoutMs: 420 });
-            replayMotion(card, "motion-state-pulse", { timeoutMs: 520 });
+            replayMotion(
+                actionBtn.querySelector(".uni-action-icon") || actionBtn,
+                wasSaved ? "motion-icon-unsave" : "motion-icon-save",
+                { timeoutMs: 320 }
+            );
             persistSavedAndCompare();
             if (state.only_saved && wasSaved) {
                 refetch();
@@ -2787,14 +2797,20 @@ export function initUniversitiesPage() {
             btn.addEventListener("click", () => {
                 const id = String(btn.getAttribute("data-uni-id") || "").trim();
                 if (!id) return;
-                compareUniversityIds.delete(id);
-                persistSavedAndCompare();
-                syncCardActionState();
-                if (comparePairIds().length !== COMPARE_PAIR_SIZE) {
-                    closeCompareModal(modal);
-                    return;
-                }
-                openCompareModal().catch((err) => console.error(err));
+                const card = btn.closest(".compare-uni-card");
+                const removeCompare = () => {
+                    compareUniversityIds.delete(id);
+                    persistSavedAndCompare();
+                    syncCardActionState();
+                    if (comparePairIds().length !== COMPARE_PAIR_SIZE) {
+                        closeCompareModal(modal);
+                        return;
+                    }
+                    openCompareModal().catch((err) => console.error(err));
+                };
+                motionPress(btn);
+                replayMotion(btn.querySelector(".compare-remove-icon") || btn, "motion-icon-remove", { timeoutMs: 240 });
+                animateElementOut(card, removeCompare, { className: "motion-card-remove", timeoutMs: 280 });
             });
         });
     };
@@ -2865,8 +2881,13 @@ export function initUniversitiesPage() {
             </div>
         `;
         el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
-            writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
-            renderRecentlyViewedBar();
+            const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
+            motionPress(clearBtn);
+            replayMotion(clearBtn?.querySelector(".u-recent__clear-icon") || clearBtn, "motion-icon-clear", { timeoutMs: 240 });
+            animateElementOut(el.recentlyViewedBar, () => {
+                writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
+                renderRecentlyViewedBar();
+            }, { className: "motion-row-exit", timeoutMs: 280 });
         });
         el.recentlyViewedBar.querySelectorAll('[data-action="remove-recent"]').forEach((button) => {
             button.addEventListener("click", (event) => {
@@ -2874,9 +2895,14 @@ export function initUniversitiesPage() {
                 event.stopPropagation();
                 const uniId = String(button.getAttribute("data-uni-id") || "").trim();
                 if (!uniId) return;
-                const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
-                writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
-                renderRecentlyViewedBar();
+                const chip = button.closest(".u-recent__chip");
+                motionPress(button);
+                replayMotion(button.querySelector(".u-recent__remove-icon") || button, "motion-icon-remove", { timeoutMs: 240 });
+                animateElementOut(chip, () => {
+                    const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
+                    writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
+                    renderRecentlyViewedBar();
+                }, { className: "motion-chip-remove", timeoutMs: 260 });
             });
         });
     };

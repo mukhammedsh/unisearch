@@ -19,6 +19,7 @@ export function applyPercentWidths(rootEl) {
     const raw = Number(node.getAttribute("data-width-pct"));
     const pct = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
     node.style.setProperty("--fill-width", `${pct}%`);
+    node.style.setProperty("--fill-scale", String(pct / 100));
   });
 }
 

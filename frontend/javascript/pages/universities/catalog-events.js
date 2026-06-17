@@ -36,8 +36,11 @@ export function handleCardAction(actionBtn, context = {}) {
     if (wasSaved) savedUniversityIds.delete(uniId);
     else savedUniversityIds.add(uniId);
     syncCardActionState();
-    replayMotion(actionBtn.querySelector(".uni-action-icon") || actionBtn, "motion-pop", { timeoutMs: 420 });
-    replayMotion(card, "motion-state-pulse", { timeoutMs: 520 });
+    replayMotion(
+      actionBtn.querySelector(".uni-action-icon") || actionBtn,
+      wasSaved ? "motion-icon-unsave" : "motion-icon-save",
+      { timeoutMs: 320 }
+    );
     persistSavedAndCompare();
     if (state.only_saved && wasSaved) {
       refetch();
