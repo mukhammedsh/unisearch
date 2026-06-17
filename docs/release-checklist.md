@@ -33,3 +33,10 @@ Use this checklist for release PRs or direct release commits.
    git push origin vX.Y.Z
    ```
 9. Check GitHub Actions for the branch push and tag/release work before calling the release complete.
+10. For a published GitHub Release, verify the release UI contract:
+    ```bash
+    gh release view vX.Y.Z --json assets,body,zipballUrl,tarballUrl
+    ```
+    - custom assets include `unisearch-full-vX.Y.Z.zip`, `unisearch-frontend-vX.Y.Z.zip`, and `unisearch-backend-vX.Y.Z.zip`
+    - the release body contains the Download guide block
+    - GitHub's automatic `Source code (zip)` and `Source code (tar.gz)` links are present and expected

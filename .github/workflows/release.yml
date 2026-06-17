@@ -86,21 +86,76 @@ jobs:
         shell: bash
         run: |
           mkdir -p release
-          zip -r "release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip" frontend
-          zip -r "release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip" \
+          git archive \
+            --format=zip \
+            --prefix="unisearch-${{ steps.vars.outputs.tag }}/" \
+            --output="release/unisearch-full-${{ steps.vars.outputs.tag }}.zip" \
+            HEAD
+          git archive \
+            --format=zip \
+            --output="release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip" \
+            HEAD \
+            frontend
+          git archive \
+            --format=zip \
+            --output="release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip" \
+            HEAD \
             backend/app \
             backend/data \
             backend/requirements.txt \
             backend/requirements-dev.txt \
-            backend/.env.example
+            backend/.env.example \
+            package.json
 
       - name: Upload zip artifacts to GitHub Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.vars.outputs.tag }}
+          overwrite_files: true
+          fail_on_unmatched_files: true
           files: |
+            release/unisearch-full-${{ steps.vars.outputs.tag }}.zip
             release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip
             release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip
+
+      - name: Update release download guide
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.vars.outputs.tag }}
+        run: |
+          gh release view "$TAG" --json body -q .body > release/release-body-current.md
+
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          tag = os.environ["TAG"]
+          start = "<!-- UNISEARCH_DOWNLOAD_GUIDE_START -->"
+          end = "<!-- UNISEARCH_DOWNLOAD_GUIDE_END -->"
+          guide = f"""## Download guide
+
+          - **Local development / full project:** download `unisearch-full-{tag}.zip` (recommended) or GitHub's auto-generated `Source code (zip)`.
+          - **Static frontend deploy:** download `unisearch-frontend-{tag}.zip`; configure `frontend/env.js` for your backend URL.
+          - **Backend deploy:** download `unisearch-backend-{tag}.zip`; it includes the FastAPI app, data, requirements, `.env.example`, and `package.json` for runtime version metadata.
+          - GitHub also shows auto-generated `Source code (zip)` and `Source code (tar.gz)` for every release. They are expected and cannot be removed.
+          """
+
+          body_path = Path("release/release-body-current.md")
+          body = body_path.read_text(encoding="utf-8").rstrip()
+          block = f"{start}\n{guide.strip()}\n{end}"
+
+          if start in body and end in body:
+              prefix = body.split(start, 1)[0].rstrip()
+              suffix = body.split(end, 1)[1].lstrip()
+              next_body = "\n\n".join(part for part in [prefix, block, suffix] if part)
+          else:
+              next_body = "\n\n".join(part for part in [body, block] if part)
+
+          Path("release/release-body-next.md").write_text(next_body + "\n", encoding="utf-8")
+          PY
+
+          gh release edit "$TAG" --notes-file release/release-body-next.md
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v4

@@ -18,6 +18,14 @@ Core capabilities:
 - ROI estimate per university
 - multilingual UI (`eng`, `ru`) with backend-driven localization
 
+## Release downloads
+GitHub Releases show both UniSearch release assets and GitHub's automatic source archives.
+
+- Local development / full project: download `unisearch-full-vX.Y.Z.zip` from the release assets, or use GitHub's automatic `Source code (zip)`. This is the right package for the Quick start and Run locally steps below.
+- Static frontend deploy: download `unisearch-frontend-vX.Y.Z.zip` only when you are deploying the static UI and already have a backend URL or reverse proxy configured.
+- Backend deploy: download `unisearch-backend-vX.Y.Z.zip` only when you are deploying the FastAPI backend package separately.
+- GitHub's automatic `Source code (zip)` and `Source code (tar.gz)` links are expected on every release and cannot be removed.
+
 ## Quick start
 If you just want the project running locally from a fresh clone:
 
@@ -64,6 +72,7 @@ Prerequisites:
 
 ## Read me by task
 - First local launch: see [Run locally](#run-locally)
+- Release asset choices: see [Release downloads](#release-downloads)
 - Runtime and env vars: see [Environment configuration](#environment-configuration)
 - Curated data workflow: see [Data maintenance and provenance](#data-maintenance-and-provenance)
 - Tests and CI: see [Testing](#testing) and [CI policy](#ci-policy)

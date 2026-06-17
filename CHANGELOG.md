@@ -2,6 +2,10 @@
 
 All notable project changes should be recorded here.
 
+## Unreleased
+- Added a full-project release archive alongside the frontend and backend deploy archives, and updated release notes to explain which asset to download.
+- Rebuilt release archive generation around tracked Git contents and included `package.json` in the backend archive so runtime version metadata stays available.
+
 ## 4.9.1 (2026-06-17)
 - Aligned university detail action buttons so Back to list, save, compare, and share sit as one consistent control group with Back to list on the right.
 - Matched map-result cards to list cards by using the muted View details link style with an arrow indicator.
