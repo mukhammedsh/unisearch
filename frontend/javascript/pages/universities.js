@@ -4059,6 +4059,14 @@ export function initUniversitiesPage() {
                 }
             });
             markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
+            mapInstance.on('popupclose', (e) => {
+                if (markersByUniId.size === 0) return;
+                const source = e.popup && typeof e.popup.getSource === "function" ? e.popup.getSource() : e.popup?._source;
+                const closedUniId = source?.options?.uniId;
+                if (closedUniId && closedUniId === activeMapUniId) {
+                    updateMapResultsSelection("");
+                }
+            });
             mapInstance.addLayer(markersLayer);
             return mapInstance;
         })().catch((error) => {

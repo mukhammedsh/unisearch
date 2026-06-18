@@ -91,14 +91,24 @@ export function initMap(containerId = "mapContainer") {
     mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 });
   });
 
+  mapInstance.on('popupclose', (e) => {
+    if (markersByUniId.size === 0) return;
+    const source = e.popup && typeof e.popup.getSource === "function" ? e.popup.getSource() : e.popup?._source;
+    const closedUniId = source?.options?.uniId;
+    if (closedUniId && closedUniId === activeMapUniId) {
+      updateMapResultsSelection("");
+    }
+  });
+
   mapInstance.addLayer(markersLayer);
   return mapInstance;
 }
 
 export function updateMapResultsSelection(uniId, mapResultsContainer) {
   activeMapUniId = String(uniId || "").trim();
-  if (!mapResultsContainer) return;
-  mapResultsContainer.querySelectorAll(".u-map-result-card[data-uni-id]").forEach((card) => {
+  const container = mapResultsContainer || document.getElementById("mapResultsPanel");
+  if (!container) return;
+  container.querySelectorAll(".u-map-result-card[data-uni-id]").forEach((card) => {
     const isActive = card.getAttribute("data-uni-id") === activeMapUniId;
     card.classList.toggle("is-active", isActive);
   });
