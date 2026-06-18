@@ -4,6 +4,9 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.8 (2026-06-18)
+- Added new calibration unit tests for UniChance admission scoring logic (`test_persona_scoring_calibration.py`) using 6 diverse student personas (Alexey, Maria, Dias, Adil, Lisa, and Anonymous) mapped against real-world university data (MIT, TUM, Nazarbayev University) to ensure scoring and eligibility calculations remain accurate and stable.
+
 ## 4.9.7 (2026-06-18) - Merge updates for performance and docs
 - Merged PR #50: `perf: hoist localized university names loading out of metadata building loop` to improve performance by loading translations once.
 - Merged PR #51: `docs: clarify intentional card alignment in finance grid` to clarify CSS intent for finance cards.
