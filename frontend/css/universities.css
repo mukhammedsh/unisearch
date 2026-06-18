@@ -4907,6 +4907,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   margin-top: 10px;
 }
 
+.uni-card.uni-card--compare-selected,
+:root[data-theme="dark"] .uni-card.uni-card--compare-selected {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  box-shadow: 0 10px 28px rgba(87, 21, 219, 0.14);
+}
+
 .uni-rank {
   color: var(--text-muted);
   font-size: 12px;
@@ -7014,17 +7020,96 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: rgba(87, 21, 219, 0.18);
 }
 
-:root:not([data-theme="dark"]) .uni-card:hover {
-  border-color: rgba(87, 21, 219, 0.24);
-}
-
-:root:not([data-theme="dark"]) .uni-card.uni-card--compare-selected,
-:root:not([data-theme="dark"]) .compare-config-column .admission-option-card:has(.track-select-btn.is-active) {
-  background-color: rgba(87, 21, 219, 0.07);
-  border-color: rgba(87, 21, 219, 0.30);
-}
-
 :root:not([data-theme="dark"]) .compare-config-column .admission-option-card {
   background: var(--surface-solid);
   border-color: var(--line);
+}
+
+/* ===== 2026 Catalog Card Hover & Interactive States (Height-Stable) ===== */
+
+.uni-details {
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.uni-details span {
+  display: inline-block;
+  transition: transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+/* Specificity override for normal card hover in light and dark themes */
+:root .uni-card:not(.uni-card--compare-selected):hover {
+  background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--line-strong));
+}
+
+/* Specificity override for compared selected card background and hover states */
+:root:not([data-theme="dark"]) .uni-card.uni-card--compare-selected {
+  background-color: rgba(87, 21, 219, 0.05);
+  border-color: rgba(87, 21, 219, 0.35);
+}
+
+:root[data-theme="dark"] .uni-card.uni-card--compare-selected {
+  background-color: rgba(87, 21, 219, 0.08);
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+}
+
+:root:not([data-theme="dark"]) .uni-card.uni-card--compare-selected:hover {
+  background-color: rgba(87, 21, 219, 0.10);
+  border-color: rgba(87, 21, 219, 0.55);
+}
+
+:root[data-theme="dark"] .uni-card.uni-card--compare-selected:hover {
+  background-color: rgba(87, 21, 219, 0.16);
+  border-color: color-mix(in srgb, var(--accent) 64%, var(--line));
+}
+
+/* Micro-interaction: Link text and arrow slide when card is hovered */
+:root .uni-card:hover .uni-details {
+  color: var(--accent);
+}
+
+:root .uni-card:hover .uni-details span {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+/* ===== 2026 Compare Pane & Map View Card Hover States ===== */
+
+.compare-uni-card {
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+:root .compare-uni-card:hover {
+  background: color-mix(in srgb, var(--accent) 2%, var(--surface-soft));
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
+}
+
+:root .compare-uni-card:hover .compare-uni-card__link {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong));
+  color: var(--accent);
+}
+
+/* Map results view card transitions & hovers */
+:root .u-map-result-card {
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+:root .u-map-result-card:not(.is-selected):not(.is-active):hover {
+  background: var(--surface-solid);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
+}
+
+:root .u-map-result-card.is-active:hover {
+  background: rgba(79, 70, 229, 0.08);
+  border-color: rgba(79, 70, 229, 0.40);
+}
+
+:root .u-map-result-card.is-selected:hover {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface-soft, var(--card)));
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
 }

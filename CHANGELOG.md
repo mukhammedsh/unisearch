@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.3 (2026-06-18) - Hover and Interactive Styles Consolidation
+- Fixed a CSS syntax bug (unmatched closing bracket) at the end of `universities.css`.
+- Replaced basic purple fills and flat hover styling for normal and compared/selected university cards (`.uni-card`) with consolidated, height-stable transition rules.
+- Designed premium hover states for normal cards using subtle accent mixes to background (`var(--surface-soft)`) and border colors.
+- Built interactive states for compared cards (`.compare-uni-card`), highlighting detail links (`.compare-uni-card__link`) on hover.
+- Created responsive hover transitions for map-result cards (`.u-map-result-card`) across normal, active, and selected states.
+
 ## 4.9.2 (2026-06-18) - Guide Scroll and Workspace Navigation Fixes
 - Fixed guide page scroll restoration and active section sync by updating the URL hash on scroll and forcing viewport alignment to the active section hash after dynamic configuration loads.
 - Centralized the "Bachelor's only" notice dismissal on the university detail page, aligning it with the main catalog view and storing the dismissed state in local storage.
