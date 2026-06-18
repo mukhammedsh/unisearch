@@ -10,6 +10,8 @@ All notable project changes should be recorded here.
 - Designed premium hover states for normal cards using subtle accent mixes to background (`var(--surface-soft)`) and border colors.
 - Built interactive states for compared cards (`.compare-uni-card`), highlighting detail links (`.compare-uni-card__link`) on hover.
 - Created responsive hover transitions for map-result cards (`.u-map-result-card`) across normal, active, and selected states.
+- Restored university thumbnail background images on ranking cards with appropriate theme-specific opacity and gradient overlays.
+- Aligned dark-mode university catalog cards with shared surface tokens so list cards no longer appear warmer than the surrounding workspace panels.
 
 ## 4.9.2 (2026-06-18) - Guide Scroll and Workspace Navigation Fixes
 - Fixed guide page scroll restoration and active section sync by updating the URL hash on scroll and forcing viewport alignment to the active section hash after dynamic configuration loads.

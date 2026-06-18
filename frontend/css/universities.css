@@ -1346,7 +1346,7 @@
    UNIVERSITY CARD
    ========================================= */
 .uni-card {
-  background: var(--card);
+  background: var(--surface-solid, var(--card));
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
@@ -4402,8 +4402,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root[data-theme="dark"] .uni-card {
-  background: #1b1b1b;
-  border-color: #383838;
+  background: var(--surface-solid, var(--card));
+  border-color: var(--line);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
 }
 
@@ -5800,9 +5800,10 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .u-top,
 :root[data-theme="dark"] .u-map-results,
 :root[data-theme="dark"] .u-map-result-card,
+:root[data-theme="dark"] .uni-card,
 :root[data-theme="dark"] .u-map-container {
-  background: #17181a;
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
 :root[data-theme="dark"] .u-reset,
