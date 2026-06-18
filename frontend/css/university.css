@@ -105,7 +105,7 @@
   color: var(--text);
   font-size: 15px;
   line-height: 1.35;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .d-page-scope__text {
@@ -129,7 +129,7 @@
   text-align: center;
   font-size: 22px;
   line-height: 1.3;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .d-loading {
@@ -228,7 +228,7 @@
   border: 1px solid rgba(0,0,0,.06);
   border-radius: 12px;
   padding: 10px 12px;
-  font-weight: 900;
+  font-weight: 700;
   box-shadow: 0 10px 18px rgba(0,0,0,.10);
   color: var(--accent);
 }
@@ -245,7 +245,7 @@
   border: 1px solid rgba(0,0,0,.08);
   display: grid;
   place-items: center;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--accent);
   box-shadow: 0 10px 18px rgba(0,0,0,.12);
 }
@@ -331,7 +331,7 @@
 .d-back {
   align-self: center;
   text-decoration: none;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--accent);
   padding: 10px 12px;
   border-radius: 12px;
@@ -428,7 +428,7 @@
 
 .uni-tags-title {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--text);
@@ -490,14 +490,14 @@
 .d-kv--last { border-bottom: 0; }
 .d-kv > span:first-child {
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 500;
   flex: 1 1 55%;
   min-width: 0;
   overflow-wrap: anywhere;
 }
 .d-kv > span:last-child {
   color: var(--text);
-  font-weight: 800;
+  font-weight: 600;
   text-align: right;
   flex: 1 1 45%;
   min-width: 0;
@@ -506,7 +506,7 @@
 
 .d-rank-emphasis {
   color: var(--text);
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.15px;
 }
 
@@ -897,7 +897,7 @@
   display: block;
   margin-bottom: 2px;
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
 }
@@ -939,7 +939,7 @@
 .finance-track-group-head h3 {
   margin: 0;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text);
 }
 
@@ -996,7 +996,7 @@
 
 .admissions-section-title {
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 700;
   color: #241d3a;
   margin-bottom: 6px;
 }
@@ -1036,7 +1036,7 @@
 
 .admissions-summary-eyebrow {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
   color: #667085;
@@ -1045,7 +1045,7 @@
 
 .admissions-summary-value {
   font-size: 24px;
-  font-weight: 1000;
+  font-weight: 700;
   color: #241d3a;
   line-height: 1.15;
   overflow-wrap: anywhere;
@@ -1054,7 +1054,7 @@
 .admissions-summary-sub {
   margin-top: 4px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: #5d17ea;
 }
 
@@ -1070,7 +1070,7 @@
   margin-top: 12px;
   font-size: 12px;
   color: #677487;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .admissions-chip-row {
@@ -1086,7 +1086,7 @@
   border-radius: 999px;
   padding: 5px 9px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.2;
   border: 1px solid transparent;
 }
@@ -1131,7 +1131,7 @@
   background: #ffffff;
   color: #5d17ea;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   text-decoration: none;
   transition:
     transform var(--motion-snappy) var(--motion-ease-standard),
@@ -1147,7 +1147,7 @@
 .admissions-program-title {
   font-size: 15px;
   line-height: 1.4;
-  font-weight: 900;
+  font-weight: 600;
   color: #241d3a;
 }
 
@@ -1339,7 +1339,7 @@
 
 .chance-title {
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 600;
   color: var(--accent);
   letter-spacing: 0.2px;
 }
@@ -1353,7 +1353,7 @@
 
 .chance-percent {
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1;
   white-space: nowrap;
 }
@@ -2159,7 +2159,7 @@
   margin: 0;
   color: #111827;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.3;
 }
 
@@ -2216,7 +2216,7 @@
 
 .track-stats-title {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -2258,7 +2258,7 @@
 
 .track-exam-group-title {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -2309,7 +2309,7 @@
 
 .track-lang-rules-title {
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.38px;
   text-transform: uppercase;
   color: #1e3a8a;
@@ -2397,7 +2397,7 @@
 
 .track-extra-req-title {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
   color: #374151;
@@ -2422,7 +2422,7 @@
 
 .track-grants-title {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
   color: #047857;

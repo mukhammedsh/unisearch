@@ -69,7 +69,7 @@ body[data-page="home"] {
   line-height: 1.4;
   letter-spacing: 0;
   text-transform: none;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .hero-kicker {
@@ -86,7 +86,7 @@ body[data-page="home"] {
   font-size: clamp(42px, 5vw, 74px);
   line-height: 0.98;
   letter-spacing: 0;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--home-ink);
 }
 
@@ -124,7 +124,7 @@ body[data-page="home"] {
   justify-content: center;
   font-size: 15px;
   line-height: 1.2;
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -205,7 +205,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
 .hero-fact__value {
   font-size: 17px;
   line-height: 1;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--home-ink);
 }
 
@@ -216,7 +216,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
 .hero-fact__text {
   font-size: 15px;
   line-height: 1.5;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--home-ink-soft);
 }
 
@@ -237,7 +237,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   font-size: 18px;
   line-height: 1.5;
   letter-spacing: 0;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--home-ink);
 }
 
@@ -253,7 +253,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   margin: 0;
   font-size: 15px;
   line-height: 1.6;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--home-ink-soft);
   position: relative;
   padding-left: 16px;
@@ -286,7 +286,7 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   color: var(--home-ink-soft);
   font-size: 14px;
   line-height: 1.4;
-  font-weight: 800;
+  font-weight: 600;
   text-decoration: none;
   transition:
     color var(--motion-snappy) var(--motion-ease-standard),

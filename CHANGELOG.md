@@ -3,6 +3,7 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Optimized typography hierarchy across the workspace by reducing excessively heavy font-weights (800 and 900) to semibold (600), medium (500), or standard bold (700) across all stylesheets (`style.css`, `index.css`, `about.css`, `guide.css`, `error.css`, `ranking.css`, `universities.css`, `university.css`) to align with Calm Academic Workspace standards.
 
 ## 4.9.3 (2026-06-18) - Hover and Interactive Styles Consolidation
 - Fixed a CSS syntax bug (unmatched closing bracket) at the end of `universities.css`.
@@ -12,6 +13,14 @@ All notable project changes should be recorded here.
 - Created responsive hover transitions for map-result cards (`.u-map-result-card`) across normal, active, and selected states.
 - Restored university thumbnail background images on ranking cards with appropriate theme-specific opacity and gradient overlays.
 - Aligned dark-mode university catalog cards with shared surface tokens so list cards no longer appear warmer than the surrounding workspace panels.
+- Optimized font-weight hierarchy across the project to align with Calm Academic Workspace standards by reducing excessively heavy font-weights (800/900) to semibold (600) or medium (500) for university cards, comparisons, and profile elements.
+- Swapped the non-standard country filter input in ranking views with a standard dropdown layout using `globe-alt` and `.u-select`.
+- Maintained deliberate bold hierarchy (700) only for main H1 titles, textual placeholders, and remove actions to keep UI structured but calm.
+- Removed the legacy comparison modal (`openCompareModal`, `closeCompareModal`) and completely integrated the comparison configuration and results layouts into the inline workspace view (`#compareResultsPane`).
+- Standardized the comparison UI components (configure columns, result headers, trait cards) to use flat `var(--card)` surfaces with `var(--line)` borders and uniform `10px` border radii, removing heavy, outdated drop shadows.
+- Fixed Y-axis alignment in the comparison configuration header so that the UniChance badge, funding track label, and recommendation status align perfectly on the same horizontal center.
+- Expanded the "Additional Requirements" (ДОП. ТРЕБОВАНИЯ) block in the comparison view to display the complete list of requirements instead of truncating them with a `+N` count.
+- Performed extensive font-weight optimizations in the Comparison component, reducing remaining heavy font weights (ranging from `950`, `900`, `850`, `800`, to `750`) down to `600` (semibold) or `500` (medium) for config columns, cost previews, stat boxes, option titles, and traits.
 
 ## 4.9.2 (2026-06-18) - Guide Scroll and Workspace Navigation Fixes
 - Fixed guide page scroll restoration and active section sync by updating the URL hash on scroll and forcing viewport alignment to the active section hash after dynamic configuration loads.

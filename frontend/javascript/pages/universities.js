@@ -900,47 +900,6 @@ export function initUniversitiesPage() {
         return false;
     };
 
-    const closeCompareModal = (modal) => {
-        if (!modal) return;
-        const finish = () => {
-            modal.classList.remove("is-open", "is-closing");
-            modal.setAttribute("aria-hidden", "true");
-            document.body.style.overflow = "";
-        };
-        closeMotionLayer(modal, finish);
-    };
-
-    const ensureCompareModal = () => {
-        let modal = document.getElementById("compareModal");
-        if (modal) return modal;
-        modal = document.createElement("div");
-        modal.id = "compareModal";
-        modal.className = "compare-modal";
-        modal.setAttribute("aria-hidden", "true");
-        modal.innerHTML = `
-            <div class="compare-modal__backdrop" data-action="close-compare-modal"></div>
-            <div class="compare-modal__card" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle">
-                <div class="compare-modal__head">
-                    <h2 class="compare-modal__title" id="compareModalTitle">${escapeHtml(t("universities.compare.title", "Compare universities"))}</h2>
-                    <button class="compare-modal__close" type="button" data-action="close-compare-modal" aria-label="${escapeHtmlAttr(t("common.close", "Close"))}">${renderInlineIcon("x-mark", 18, "compare-modal__close-icon")}</button>
-                </div>
-                <div class="compare-modal__body"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.addEventListener("click", (event) => {
-            const action = event.target instanceof Element ? event.target.closest("[data-action]")?.getAttribute("data-action") : "";
-            if (action === "close-compare-modal") {
-                closeCompareModal(modal);
-            }
-        });
-        document.addEventListener("keydown", (event) => {
-            if (event.key !== "Escape" || !modal.classList.contains("is-open")) return;
-            closeCompareModal(modal);
-        });
-        return modal;
-    };
-
     const formatCompareCost = (value, fallbackKey = "placeholder.field.cost", fallback = "Cost") => {
         const n = toFiniteNumber(value);
         return n !== null ? moneyUSD(n) : unknownFieldText(fallbackKey, fallback);
@@ -2286,12 +2245,7 @@ export function initUniversitiesPage() {
     const compareOptionExtraPreview = (id, option) => {
         const extras = Array.isArray(option?.extra_requirements) ? option.extra_requirements.filter(Boolean) : [];
         if (!extras.length) return "";
-        const visible = extras
-            .slice(0, 2)
-            .map((item) => trTrackDescription(id, option?.id, item))
-            .join("; ");
-        const more = extras.length > 2 ? ` +${extras.length - 2}` : "";
-        return `${visible}${more}`;
+        return extras.map((item) => trTrackDescription(id, option?.id, item)).join("; ");
     };
 
     const compareOptionFundingDeltaPreview = (entry, entries) => {
@@ -2683,139 +2637,6 @@ export function initUniversitiesPage() {
         persistSavedAndCompare();
         await syncSectionVisibility({ shouldFetch: false, updateUrl: true, replaceUrl: false });
         scrollUniversitiesPageTop("auto");
-    };
-
-    const openCompareModal = async () => {
-        const ids = comparePairIds();
-        if (ids.length !== COMPARE_PAIR_SIZE) return;
-        const modal = ensureCompareModal();
-        const body = modal.querySelector(".compare-modal__body");
-        if (!body) return;
-        body.innerHTML = `
-            <div class="compare-loading" role="status">
-                <div class="skeleton-line" style="width: 44%; height: 18px;"></div>
-                <div class="skeleton-line" style="width: 82%; height: 96px;"></div>
-                <div class="skeleton-line" style="width: 76%; height: 96px;"></div>
-            </div>
-        `;
-        modal.classList.remove("is-closing");
-        modal.classList.add("is-open");
-        modal.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-        window.setTimeout(() => modal.querySelector(".compare-modal__close")?.focus(), 0);
-
-        const universities = await loadCompareUniversities(ids, {
-            getRenderedUniversityById,
-            getUniversityDisplayNameById,
-            fetchUniversityDetailCached,
-        });
-
-        if (!modal.classList.contains("is-open") || modal.classList.contains("is-closing") || universities.length !== COMPARE_PAIR_SIZE) return;
-        const metrics = compareMetrics(universities);
-        const cardHtml = universities.map((u) => {
-            const id = String(u?.id || "");
-            const logoSrc = uniLogoSrc(id);
-            const logoSrcFull = uniLogoSrc(id, { forceFull: true });
-            const badges = compareBestBadges(u, metrics);
-            return `
-                <article class="compare-uni-card" data-uni-id="${escapeHtmlAttr(id)}">
-                    <div class="compare-uni-card__head">
-                        <div class="compare-uni-card__logo">
-                            <img src="${logoSrc}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}">
-                        </div>
-                        <button class="compare-uni-card__remove" type="button" data-action="remove-compare" data-uni-id="${escapeHtmlAttr(id)}" aria-label="${escapeHtmlAttr(t("universities.compare.remove", "Remove from comparison"))}">${renderInlineIcon("x-mark", 16, "compare-remove-icon")}</button>
-                    </div>
-                    <h3>${escapeHtml(compareUniversityName(u))}</h3>
-                    <p>${escapeHtml(compareLocationText(u))}</p>
-                    <div class="compare-uni-card__metrics">
-                        <span><small>${escapeHtml(translateWord("global_rank", "Rank"))}</small><strong>${escapeHtml(compareRankText(u))}</strong></span>
-                        <span><small>${escapeHtml(t("universities.card.cost_short", "Cost"))}</small><strong>${escapeHtml(formatCompareCost(compareSelectedAnnualCost(u)))}</strong></span>
-                        <span><small>${escapeHtml(t("ranking.acceptance", "Acceptance"))}</small><strong>${escapeHtml(compareAcceptanceText(u))}</strong></span>
-                    </div>
-                    ${badges.length ? `<div class="compare-uni-card__badges">${badges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join("")}</div>` : ""}
-                    <a class="compare-uni-card__link" href="${routeUniversityDetail(id)}"${universityLinkAttrs()}>${escapeHtml(t("universities.card.view_details", "View details"))}</a>
-                </article>
-            `;
-        }).join("");
-
-        const rowsHtml = [
-            compareSectionRow(t("universities.compare.section.overview", "Overview"), "overview", universities),
-            compareDataRow(t("universities.compare.row.location", "Location"), universities, compareLocationText),
-            compareDataRow(translateWord("global_rank", "Global Rank"), universities, (u) => ({
-                text: compareRankText(u),
-                tone: metrics.bestRankId === String(u?.id || "") ? "best" : "",
-                sub: compareSourceText(u, "rank"),
-            })),
-            compareDataRow(t("universities.compare.row.student_count", "Students"), universities, compareStudentCountText),
-            compareDataRow(t("universities.compare.row.website", "Website"), universities, (u) => safeUrl(u?.website) ? t("universities.compare.available", "Available") : t("common.na", "N/A")),
-            compareSectionRow(t("universities.compare.section.programs", "Programs"), "programs", universities),
-            compareDataRow(t("universities.compare.row.programs", "Programs shown"), universities, compareProgramSummary),
-            compareDataRow(t("universities.compare.row.study_mode", "Study mode"), universities, compareStudyModeText),
-            compareDataRow(t("universities.compare.row.language", "Program language"), universities, compareLanguageSummary),
-            compareSectionRow(t("universities.compare.section.admissions", "Admissions"), "admissions", universities),
-            compareDataRow(t("ranking.acceptance", "Acceptance Rate"), universities, (u) => ({
-                text: compareAcceptanceText(u),
-                tone: metrics.highestAcceptanceId === String(u?.id || "") ? "best" : "",
-                sub: compareSourceText(u, "acceptance_rate_percent"),
-            })),
-            compareDataRow(t("universities.compare.row.selected_route", "Selected route"), universities, compareTrackLabel),
-            compareDataRow(t("universities.compare.row.funding_choice", "Selected funding"), universities, compareFundingChoiceText),
-            compareDataRow(t("universities.compare.row.academic_minimums", "Academic minimums"), universities, compareRequirementsText),
-            compareDataRow(t("universities.compare.row.avg_scores", "Admitted score context"), universities, compareAverageScoreText),
-            compareDataRow(t("universities.compare.row.funding_requirements", "Funding-specific requirements"), universities, compareFundingRequirementsText),
-            compareDataRow(t("universities.compare.row.language_proof", "Language proof"), universities, compareLanguageProofText),
-            compareDataRow(t("universities.compare.row.application_materials", "Documents / interview / portfolio"), universities, compareExtraRequirementsText),
-            compareSectionRow(t("universities.compare.section.finance", "Finance"), "finance", universities),
-            compareDataRow(t("universities.compare.row.total_cost", "Total / year"), universities, (u) => ({
-                text: formatCompareCost(compareSelectedAnnualCost(u)),
-                tone: metrics.lowestCostId === String(u?.id || "") ? "best" : "",
-                sub: compareSourceText(u, "tuition_total_cost_year_usd"),
-            })),
-            compareDataRow(t("universities.compare.row.tuition_fees", "Tuition + fees"), universities, (u) => compareCostBreakdownText(u, "tuition")),
-            compareDataRow(t("universities.compare.row.living_costs", "Living cost items"), universities, (u) => compareCostBreakdownText(u, "living")),
-            compareDataRow(t("universities.compare.row.aid", "Aid"), universities, compareAidText),
-            compareSectionRow(t("universities.compare.section.context", "Context"), "context", universities),
-            compareDataRow(t("universities.compare.row.salary", "Early career salary"), universities, compareOutcomeText),
-            compareDataRow(t("universities.compare.row.data_quality", "Verified data"), universities, compareDataConfidenceText),
-        ].join("");
-
-        body.innerHTML = `
-            <div class="compare-modal__intro">
-                <p>${escapeHtml(t("universities.compare.intro", "Use this view to compare practical decision signals side by side. Highlighted cells mark the strongest value among selected universities."))}</p>
-            </div>
-            <div class="compare-uni-grid">${cardHtml}</div>
-            <div class="compare-table-wrap" style="--compare-columns:${universities.length}; --compare-min-width:${170 + (universities.length * 180)}px;">
-                <table class="compare-table">
-                    <thead>
-                        <tr>
-                            <th>${escapeHtml(t("universities.compare.row.metric", "Metric"))}</th>
-                            ${universities.map((u) => `<th>${escapeHtml(compareUniversityName(u))}</th>`).join("")}
-                        </tr>
-                    </thead>
-                    <tbody>${rowsHtml}</tbody>
-                </table>
-            </div>
-        `;
-        body.querySelectorAll("[data-action='remove-compare']").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const id = String(btn.getAttribute("data-uni-id") || "").trim();
-                if (!id) return;
-                const card = btn.closest(".compare-uni-card");
-                const removeCompare = () => {
-                    compareUniversityIds.delete(id);
-                    persistSavedAndCompare();
-                    syncCardActionState();
-                    if (comparePairIds().length !== COMPARE_PAIR_SIZE) {
-                        closeCompareModal(modal);
-                        return;
-                    }
-                    openCompareModal().catch((err) => console.error(err));
-                };
-                motionPress(btn);
-                replayMotion(btn.querySelector(".compare-remove-icon") || btn, "motion-icon-remove", { timeoutMs: 240 });
-                animateElementOut(card, removeCompare, { className: "motion-card-remove", timeoutMs: 280 });
-            });
-        });
     };
 
     const universityLinkAttrs = () => (

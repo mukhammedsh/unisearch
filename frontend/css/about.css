@@ -44,7 +44,7 @@
   margin: 0;
   font-size: 12px;
   letter-spacing: 1px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   color: #5b6b82;
 }
@@ -77,7 +77,7 @@
   border: 1px solid rgba(87, 21, 219, 0.18);
   color: #5b6b82;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .about-panel {
@@ -105,7 +105,7 @@
   border: 1px solid var(--line);
   background: var(--surface-soft);
   padding: 10px 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
   transition:
     border-color var(--motion-fast) var(--motion-ease-standard),
@@ -142,7 +142,7 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-weight: 800;
+  font-weight: 600;
   color: #5b6b82;
 }
 
@@ -171,13 +171,13 @@
   text-transform: uppercase;
   letter-spacing: 0.7px;
   color: #64748b;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .about-contact-card a {
   display: block;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--accent);
   overflow-wrap: anywhere;
 }
@@ -208,7 +208,7 @@
 
 .team-role {
   margin: 5px 0 10px;
-  font-weight: 700;
+  font-weight: 600;
   color: #5b6b82;
   font-size: 14px;
 }
@@ -221,7 +221,7 @@
 
 .team-meta {
   margin: 12px 0 0;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-muted);
 }
 

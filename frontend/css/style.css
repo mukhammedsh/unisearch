@@ -99,7 +99,7 @@ body {
   text-align: center;
   color: var(--text-muted);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .inline-loading-note--compact {
@@ -619,7 +619,7 @@ html, body {
   align-items: center;
   gap: 10px;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text);
   max-width: 100%;
   overflow: hidden;
@@ -841,7 +841,7 @@ html, body {
   display: block;
   margin-bottom: 6px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .profile-tooltip span{
@@ -1282,7 +1282,7 @@ html, body {
 .settings-switch-text {
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -1419,7 +1419,7 @@ html, body {
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.35;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .profile-section-tabs {
@@ -1445,7 +1445,7 @@ html, body {
   font: inherit;
   font-size: 12px;
   line-height: 1.1;
-  font-weight: 800;
+  font-weight: 600;
   padding: 10px 0 12px;
   cursor: pointer;
   transition:
@@ -1487,7 +1487,7 @@ html, body {
   color: var(--text);
   font: inherit;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   transition:
     border-color var(--motion-fast) var(--motion-ease-standard),
@@ -1537,7 +1537,7 @@ html, body {
 
 .profile-reset-copy strong{
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -1664,7 +1664,7 @@ html, body {
 }
 
 .profile-exam-name{
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -1680,7 +1680,7 @@ html, body {
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   transition:
     border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
@@ -1712,14 +1712,14 @@ html, body {
 .profile-block h3{
   margin: 0;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text);
 }
 
 .mini-label{
   display:block;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-muted);
   margin: 0 0 6px;
 }
@@ -1903,7 +1903,7 @@ html, body {
   color: var(--accent);
   padding: 14px 26px;
   border-radius: 10px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .hero-btn:hover {
@@ -3211,7 +3211,7 @@ body.route-loading main {
 
 .error-title {
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 12px;
   color: var(--text);
   letter-spacing: 0;
@@ -3231,7 +3231,7 @@ body.route-loading main {
   border: none;
   padding: 14px 32px;
   border-radius: 14px;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
   cursor: pointer;
   box-shadow: none;

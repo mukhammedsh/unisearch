@@ -45,7 +45,7 @@ body[data-page="error-404"] main.error-page{
   margin: 0 0 14px;
   font-size: clamp(28px, 5vw, 56px);
   line-height: 1;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.04em;
   text-transform: none;
   color: var(--accent);
@@ -84,7 +84,7 @@ body[data-page="error-404"] main.error-page{
   border-radius: 14px;
   border: 1px solid transparent;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: none;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),

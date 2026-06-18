@@ -40,12 +40,14 @@
           <span data-heroicon="magnifying-glass" data-icon-size="18"></span>
           <input id="rankingSearchInput" type="search" placeholder="Search ranking..." data-i18n-placeholder="ranking.search_placeholder">
         </label>
-        <label class="rank-country-filter">
-          <span data-i18n="ranking.country_filter">Country</span>
-          <select id="rankingCountrySelect">
+        <div class="rank-country-filter u-field">
+          <label class="u-label" for="rankingCountrySelect">
+            <span class="u-label-icon"><span data-heroicon="globe-alt" data-icon-size="16"></span><span data-i18n="ranking.country_filter">Country</span></span>
+          </label>
+          <select id="rankingCountrySelect" class="u-select">
             <option value="" data-i18n="ranking.country_all">Global</option>
           </select>
-        </label>
+        </div>
       </div>
       <p class="rank-source-note" data-i18n="ranking.source_note">Ranks use official published sources where available; universities without a published global rank stay visible after ranked entries.</p>
       
