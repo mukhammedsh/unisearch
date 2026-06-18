@@ -4,6 +4,10 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.6 (2026-06-18) - Performance, Security, and Testing Improvements
+- Added unit tests for `safe-storage.js` to ensure reliable storage functionality (PR #49).
+- Fixed an XSS vulnerability in suggestion rendering by replacing unescaped `innerHTML` with secure DOM APIs (PR #48).
+- Optimized university metadata building by hoisting translation loading out of the per-university loop to improve performance (PR #47).
 ## 4.9.5 (2026-06-18) - Compare Bar Persistent Visibility and Typography Hotfix
 - Fixed persistent visibility of the floating comparison bar (`compare-tray`) by hiding and clearing it when navigating away from the universities catalog page through the client router.
 - Cleaned up comparison bar typography and reduced heavy font-weight settings (800) to semibold (600) for text-helpers and action buttons.

@@ -1545,7 +1545,7 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
     return u
 
 
-def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
+def _build_university_meta(u: Dict[str, Any], rus_names: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
     programs = _iter_programs(u)
     majors = _get_list(u, ["academics", "majors"])
     explicit_major_tags = _get_list(u, ["academics", "major_tags"])
@@ -1575,7 +1575,8 @@ def _build_university_meta(u: Dict[str, Any]) -> Dict[str, Any]:
         ]
     )
     uni_id = str(u.get("id", "")).strip()
-    rus_names = _load_localized_university_names(SEARCH_LANG_RUS)
+    if rus_names is None:
+        rus_names = _load_localized_university_names(SEARCH_LANG_RUS)
 
     country_key = _norm_space(_get_nested(u, ["location", "country"]))
     city_key = _norm_space(_get_nested(u, ["location", "city"]))
@@ -1863,12 +1864,13 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
         out: List[Dict[str, Any]] = []
         meta_list: List[Dict[str, Any]] = []
         by_id: Dict[str, Dict[str, Any]] = {}
+        rus_names = _load_localized_university_names(SEARCH_LANG_RUS)
         for row in data:
             if not isinstance(row, dict):
                 continue
             norm = _normalize_university_schema(row)
             out.append(norm)
-            meta_list.append(_build_university_meta(norm))
+            meta_list.append(_build_university_meta(norm, rus_names=rus_names))
             uid = str(norm.get("id", "")).strip()
             if uid:
                 by_id[uid] = norm
