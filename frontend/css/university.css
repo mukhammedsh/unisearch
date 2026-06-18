@@ -904,8 +904,8 @@
 
 .track-cost-preview--grant,
 .finance-option-total--grant {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(110, 231, 183, 0.18));
-  border-color: rgba(16, 185, 129, 0.24);
+  background: var(--grant-soft);
+  border-color: var(--grant-soft-strong);
   color: #065f46;
 }
 
@@ -2071,6 +2071,12 @@
 
 .admission-funding-option--grant {
   border-color: var(--grant-soft-strong);
+  background: var(--grant-soft);
+}
+
+.admission-funding-option--grant.is-active {
+  border-color: var(--accent);
+  background: var(--grant-soft);
 }
 
 .admission-funding-option-main {
@@ -2098,13 +2104,21 @@
   border-top: 1px solid var(--line);
 }
 
-.admission-funding-diff-kicker,
-.admission-funding-diff-title {
+.admission-funding-diff-kicker {
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 850;
-  letter-spacing: 0;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
+}
+
+.admission-funding-diff-title {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-bottom: 2px;
 }
 
 .admission-funding-diff-section {
@@ -3209,8 +3223,8 @@
 :root[data-theme="dark"] .track-cost-preview--grant,
 :root[data-theme="dark"] .finance-option-total--grant,
 :root[data-theme="dark"] .finance-track-group--grant {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(17, 24, 22, 0.96));
-  border-color: rgba(52, 211, 153, 0.26);
+  background: var(--grant-soft);
+  border-color: var(--grant-soft-strong);
   color: #dcfce7;
 }
 

@@ -3,6 +3,11 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+
+## 4.9.4 (2026-06-18) - University Detail Grant and Funding Differences Layout
+- Fixed dark-mode grant option and estimated cost styling by replacing hardcoded, muddy black-green gradients and background colors with proper system variables (`--grant-soft` and `--grant-soft-strong`).
+- Added soft green backgrounds to grant options in both light and dark themes to make them visually distinct and high-contrast, ensuring selected grant states remain clean and brand-consistent.
+- Resolved confusion around the "Funding-specific differences" (Отличия финансирования) section by separating CSS rules for the kicker and sub-pane titles, changing the section title to standard Sentence case and a normal weight to establish a clear visual hierarchy.
 - Optimized typography hierarchy across the workspace by reducing excessively heavy font-weights (800 and 900) to semibold (600), medium (500), or standard bold (700) across all stylesheets (`style.css`, `index.css`, `about.css`, `guide.css`, `error.css`, `ranking.css`, `universities.css`, `university.css`) to align with Calm Academic Workspace standards.
 
 ## 4.9.3 (2026-06-18) - Hover and Interactive Styles Consolidation
