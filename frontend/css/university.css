@@ -5236,10 +5236,12 @@
 .track-funding-badge,
 .track-selection-badge,
 .tag,
-.track-major-chip {
+.track-major-chip,
+.chance-track-chip {
   max-width: 100%;
   min-height: 24px;
   padding: 4px 8px;
+  margin-top: 0;
   line-height: 1.15;
   white-space: normal;
   overflow-wrap: anywhere;

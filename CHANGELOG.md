@@ -21,6 +21,7 @@ All notable project changes should be recorded here.
 - Fixed Y-axis alignment in the comparison configuration header so that the UniChance badge, funding track label, and recommendation status align perfectly on the same horizontal center.
 - Expanded the "Additional Requirements" (ДОП. ТРЕБОВАНИЯ) block in the comparison view to display the complete list of requirements instead of truncating them with a `+N` count.
 - Performed extensive font-weight optimizations in the Comparison component, reducing remaining heavy font weights (ranging from `950`, `900`, `850`, `800`, to `750`) down to `600` (semibold) or `500` (medium) for config columns, cost previews, stat boxes, option titles, and traits.
+- Normalized the height, padding, line-height, and vertical alignment of the UniChance badge (`.chance-track-chip`, `.compare-track-chance`) on both the university details page and the comparison page to ensure perfect visual consistency with neighboring badges.
 
 ## 4.9.2 (2026-06-18) - Guide Scroll and Workspace Navigation Fixes
 - Fixed guide page scroll restoration and active section sync by updating the URL hash on scroll and forcing viewport alignment to the active section hash after dynamic configuration loads.

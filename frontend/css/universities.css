@@ -2388,8 +2388,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
-  min-height: 34px;
-  padding: 7px 10px;
+  min-height: 24px;
+  padding: 4px 8px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface-soft);
@@ -2397,7 +2397,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.15;
   font-weight: 600;
 }
@@ -3175,16 +3175,16 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .compare-track-chance {
-  min-height: 34px;
-  padding: 5px 8px;
+  box-sizing: border-box;
+  min-height: 24px;
+  padding: 4px 8px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface-solid);
   color: var(--text);
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: baseline;
-  gap: 3px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .compare-track-chance span,
@@ -3199,9 +3199,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .compare-track-chance strong {
   color: currentColor;
-  font-size: 14px;
+  font-size: 11px;
   line-height: 1;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .compare-track-chance small {
@@ -5142,7 +5142,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
   .compare-track-chance {
     width: 100%;
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    justify-content: space-between;
   }
 
   .compare-config-column .track-select-row {
