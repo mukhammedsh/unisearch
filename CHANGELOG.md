@@ -3,6 +3,8 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+
+## 4.9.2 (2026-06-18) - Guide Scroll and Workspace Navigation Fixes
 - Fixed guide page scroll restoration and active section sync by updating the URL hash on scroll and forcing viewport alignment to the active section hash after dynamic configuration loads.
 - Centralized the "Bachelor's only" notice dismissal on the university detail page, aligning it with the main catalog view and storing the dismissed state in local storage.
 - Saved and restored the last active university list tab (Catalog / Comparing / Map) across page reloads and back-navigation through saved filter state.
