@@ -5,10 +5,6 @@
   padding: 0 20px;
 }
 
-body[data-page="guide"] .guide-page{
-  animation: none;
-}
-
 .guide-hero{
   padding: 0 0 22px;
   margin-bottom: 24px;
@@ -44,12 +40,11 @@ body[data-page="guide"] .guide-page{
   display: grid;
   grid-template-columns: minmax(220px, 250px) minmax(0, 1fr);
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .guide-sidebar{
   position: relative;
-  align-self: start;
 }
 
 .guide-nav{
@@ -62,21 +57,10 @@ body[data-page="guide"] .guide-page{
   background: var(--surface-soft);
   max-height: calc(100vh - var(--guide-sidebar-offset) - 16px);
   overflow-y: auto;
-}
-
-.guide-nav.is-floating{
-  position: fixed;
+  position: sticky;
   top: var(--guide-sidebar-offset);
-  left: var(--guide-sidebar-left, 0px);
-  width: var(--guide-sidebar-width, 250px);
 }
 
-.guide-nav.is-stuck-bottom{
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 
 .guide-nav a{
   display: block;

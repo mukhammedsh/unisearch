@@ -583,3 +583,14 @@ html[data-theme="dark"] body[data-page="home"] .home-secondary-btn {
   background: var(--home-accent-soft);
   border-color: rgba(93, 23, 234, 0.24);
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy {
+    animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
+  }
+
+  .hero-rail {
+    animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
+    animation-delay: var(--motion-instant);
+  }
+}

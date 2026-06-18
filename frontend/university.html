@@ -19,9 +19,16 @@
   </div>
   <main class="d-page">
     <div class="d-container">
-      <section class="d-page-scope" aria-label="Current study scope">
-        <p class="d-page-scope__eyebrow" data-i18n="university.scope_badge">Bachelor's only for now</p>
-        <p class="d-page-scope__text" data-i18n="university.scope_summary">This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.</p>
+      <section id="universityScopeNotice" class="d-page-scope" aria-label="Current study scope">
+        <div class="d-page-scope__inner">
+          <div class="d-page-scope__content">
+            <p class="d-page-scope__eyebrow" data-i18n="university.scope_badge">Bachelor's only for now</p>
+            <p class="d-page-scope__text" data-i18n="university.scope_summary">This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.</p>
+          </div>
+          <button id="dismissUniversityScopeNotice" class="d-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
+            <span data-heroicon="x-mark" data-icon-size="18"></span>
+          </button>
+        </div>
       </section>
       <div id="detailState" class="d-state"></div>
       <section id="detailLoading" class="d-loading" aria-hidden="true">
@@ -90,7 +97,7 @@
           
           <div id="tab-general" class="d-tab-pane active">
             <div class="d-box">
-              <div class="d-box-title" data-i18n="university.about_campus">About & Campus</div>
+              <div class="d-box-title" data-i18n="university.about_campus">About &amp; Campus</div>
               <div id="detailExtra" class="d-box-text"></div>
             </div>
             <div class="d-box" style="margin-top: 20px;">
@@ -121,7 +128,7 @@
               <div class="finance-summary-container">
                   <div class="finance-summary-left">
                      <div class="scholarship-card">
-                        <h3 class="scholarship-card__title" data-i18n="university.discounts_scholarships">Discounts & Scholarships</h3>
+                        <h3 class="scholarship-card__title" data-i18n="university.discounts_scholarships">Discounts &amp; Scholarships</h3>
                         <div id="detailScholarshipInfo" class="scholarship-card__body">
                         <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite" data-i18n="university.loading_scholarships">
                           Loading scholarships

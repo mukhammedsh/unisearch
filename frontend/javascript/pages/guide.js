@@ -35,10 +35,6 @@ function bindGuideHashChange(handler) {
 export function initGuidePage() {
   const page = document.getElementById("guidePage");
   if (!page) return;
-  const layout = page.querySelector(".guide-layout");
-  const sidebar = page.querySelector(".guide-sidebar");
-  const stickyNav = page.querySelector(".guide-nav");
-  const desktopGuideMedia = window.matchMedia("(min-width: 981px)");
   const navLinks = Array.from(page.querySelectorAll(".guide-nav a[href^='#guide-']"));
   const sections = Array.from(page.querySelectorAll(".guide-section[id]"));
 
@@ -252,58 +248,21 @@ export function initGuidePage() {
     });
   }
 
-  function resetGuideFloatingNav() {
-    if (!(sidebar instanceof HTMLElement) || !(stickyNav instanceof HTMLElement)) return;
-    stickyNav.classList.remove("is-floating", "is-stuck-bottom");
-    stickyNav.style.removeProperty("--guide-sidebar-left");
-    stickyNav.style.removeProperty("--guide-sidebar-width");
-    sidebar.style.removeProperty("min-height");
-  }
-
-  function syncGuideFloatingNav() {
-    if (!(layout instanceof HTMLElement) || !(sidebar instanceof HTMLElement) || !(stickyNav instanceof HTMLElement)) return;
-    if (!desktopGuideMedia.matches) {
-      resetGuideFloatingNav();
-      return;
-    }
-
-    const offset = parseFloat(getComputedStyle(page).getPropertyValue("--guide-sidebar-offset")) || 82;
-    const sidebarRect = sidebar.getBoundingClientRect();
-    const layoutRect = layout.getBoundingClientRect();
-    const navHeight = stickyNav.offsetHeight;
-    const sidebarTop = window.scrollY + sidebarRect.top;
-    const layoutBottom = window.scrollY + layoutRect.bottom;
-    const stickStart = sidebarTop - offset;
-    const stickEnd = layoutBottom - navHeight - offset;
-
-    sidebar.style.minHeight = `${navHeight}px`;
-    stickyNav.style.setProperty("--guide-sidebar-left", `${Math.round(sidebarRect.left)}px`);
-    stickyNav.style.setProperty("--guide-sidebar-width", `${Math.round(sidebarRect.width)}px`);
-
-    if (window.scrollY <= stickStart) {
-      stickyNav.classList.remove("is-floating", "is-stuck-bottom");
-      return;
-    }
-    if (window.scrollY >= stickEnd) {
-      stickyNav.classList.remove("is-floating");
-      stickyNav.classList.add("is-stuck-bottom");
-      return;
-    }
-
-    stickyNav.classList.remove("is-stuck-bottom");
-    stickyNav.classList.add("is-floating");
-  }
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sectionById = new Map(sections.map((section) => [section.id, section]));
-  const activateSection = (id, { updateHash = false, scroll = false } = {}) => {
+  const activateSection = (id, { updateHash = false, scroll = false, scrollBehavior = null } = {}) => {
     const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
     if (!nextId) return;
     const targetSection = sectionById.get(nextId);
 
+    let sectionChanged = false;
     sections.forEach((section) => {
       const active = section.id === nextId;
       const wasActive = section.classList.contains("is-active");
+      if (active && !wasActive) {
+        sectionChanged = true;
+      }
       section.classList.toggle("is-active", active);
       section.setAttribute("aria-hidden", "false");
       if (active && !wasActive) replayMotion(section, "motion-state-pulse", { timeoutMs: 520 });
@@ -316,12 +275,13 @@ export function initGuidePage() {
       if (active && !wasActive) replayMotion(link, "motion-press-pop", { timeoutMs: 280 });
     });
 
-    if (updateHash) {
+    if (updateHash && sectionChanged) {
       history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
     }
     if (scroll && targetSection) {
+      const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
       targetSection.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
+        behavior,
         block: "start",
       });
     }
@@ -340,7 +300,7 @@ export function initGuidePage() {
   bindGuideHashChange(() => {
     activateSection(String(window.location.hash || "").replace("#", ""), {
       updateHash: false,
-      scroll: false,
+      scroll: true,
     });
   });
 
@@ -368,8 +328,7 @@ export function initGuidePage() {
         }
       }
 
-      if (currentId) activateSection(currentId, { updateHash: false, scroll: false });
-      syncGuideFloatingNav();
+      if (currentId) activateSection(currentId, { updateHash: true, scroll: false });
       scrollTicking = false;
     });
   };
@@ -377,20 +336,24 @@ export function initGuidePage() {
   syncGuideSidebarOffset();
   updateGuideNavHrefs();
   renderAll();
-  activateSection(String(window.location.hash || "").replace("#", ""), { updateHash: false, scroll: false });
+
+  const initialHash = String(window.location.hash || "").replace("#", "");
+  if (initialHash) {
+    activateSection(initialHash, { updateHash: false, scroll: true, scrollBehavior: "auto" });
+  } else {
+    activateSection("", { updateHash: false, scroll: false });
+  }
+
   window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
   window.addEventListener("resize", () => {
     syncGuideSidebarOffset();
-    syncGuideFloatingNav();
     syncActiveSectionFromScroll();
   });
   bindGuideExternalUpdates(() => {
     syncGuideSidebarOffset();
     updateGuideNavHrefs();
     renderAll();
-    syncGuideFloatingNav();
     syncActiveSectionFromScroll();
   });
-  syncGuideFloatingNav();
   syncActiveSectionFromScroll();
 }

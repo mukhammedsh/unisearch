@@ -41,7 +41,7 @@ const LAYOUT_HTML = `
 
   <nav class="navbar-center" id="primaryNav">
     <a href="${routeHome()}" data-route="home" data-link="home" data-i18n="nav.home">Home</a>
-    <a href="${routeUniversities({ tab: "catalog" })}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
+    <a href="${routeUniversities()}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
     <a href="${routeGuide()}" data-route="guide" data-link="guide" data-i18n="nav.guide">Guide</a>
     <a href="${routeAbout()}" data-route="about" data-link="about" data-i18n="nav.about">About Us</a>
   </nav>

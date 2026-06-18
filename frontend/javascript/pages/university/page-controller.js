@@ -75,7 +75,37 @@ function cleanupDetailListeners() {
   }
 }
 
+const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
+
+function setupScopeNotice() {
+  const notice = document.getElementById("universityScopeNotice");
+  if (!notice) return;
+
+  let dismissed = false;
+  try {
+    dismissed = localStorage.getItem(SCOPE_NOTICE_DISMISSED_KEY) === "1";
+  } catch (e) {
+    dismissed = false;
+  }
+
+  notice.hidden = dismissed;
+  if (dismissed) return;
+
+  const dismissBtn = document.getElementById("dismissUniversityScopeNotice");
+  if (!dismissBtn) return;
+
+  dismissBtn.addEventListener("click", () => {
+    notice.hidden = true;
+    try {
+      localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
+    } catch (e) {
+      // Ignore storage errors; the notice still closes for this page view.
+    }
+  });
+}
+
 function renderDetailLocation(university, translatedCity, translatedCountry) {
+
   const locationEl = document.getElementById("detailLocation");
   if (!locationEl) return;
 
@@ -223,6 +253,7 @@ export async function initUniversityPage() {
   const loadingEl = document.getElementById("detailLoading");
 
   cleanupDetailListeners();
+  setupScopeNotice();
   bindInfoTooltips({ wrapSelector: ".d-info-wrap", buttonSelector: ".d-info" });
 
   const setDetailLoading = (isLoading) => {

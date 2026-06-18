@@ -337,10 +337,13 @@ export function initUniversitiesPage() {
     const initialCompareStage = initialCompareIds.length === COMPARE_PAIR_SIZE && ["configure", "results"].includes(initialCompareParam)
         ? initialCompareParam
         : "select";
-    const initialTab = normalizeUniversitiesTab(pageParams.get("tab") || (initialCompareStage === "results" || initialCompareStage === "configure" ? "compare" : "catalog"));
+    const savedState = loadFilters();
+    const tabFromUrl = pageParams.get("tab");
+    const tabFromCompare = (initialCompareStage === "results" || initialCompareStage === "configure") ? "compare" : null;
+    const tabFromSaved = savedState.activeTab || null;
+    const initialTab = normalizeUniversitiesTab(tabFromUrl || tabFromCompare || tabFromSaved || "catalog");
     const initialCompareChoices = String(pageParams.get("choices") || "").split(",");
 
-    const savedState = loadFilters();
     const defaultSortMode = hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc";
     const initialMin = clampTuition(savedState.min_tuition, 0);
     const initialMax = clampTuition(savedState.max_tuition, MAX_TUITION);
@@ -3853,6 +3856,7 @@ export function initUniversitiesPage() {
                 state.compareStage = "select";
             }
             state.page = 1;
+            saveFilters(state);
             syncSectionVisibility({
                 shouldFetch: nextTab !== "ranking" && !isCompareResultsMode(),
                 updateUrl: true,

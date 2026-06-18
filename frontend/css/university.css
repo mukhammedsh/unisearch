@@ -47,11 +47,57 @@
 
 .d-page-scope {
   margin: 0 0 10px;
+}
+
+.d-page-scope[hidden] {
+  display: none;
+}
+
+.d-page-scope__inner {
   padding: 18px 20px;
   border-radius: 18px;
   border: 1px solid var(--line);
   background: var(--card);
   box-shadow: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.d-page-scope__content {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.d-page-scope__dismiss {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-solid);
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.d-page-scope__dismiss:hover,
+.d-page-scope__dismiss:focus-visible {
+  border-color: var(--line-strong);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.d-page-scope__dismiss:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .d-page-scope__eyebrow {

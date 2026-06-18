@@ -316,6 +316,7 @@ export function saveFilters(state) {
     budget_vs_prestige: state.budget_vs_prestige,
     city_vs_campus: state.city_vs_campus,
     viewMode: state.viewMode || "list",
+    activeTab: state.activeTab || "catalog",
   };
   filtersMemoryFallback = { ...payload };
   if (!safeLocalStorage.setJson(FILTERS_KEY, payload)) {
