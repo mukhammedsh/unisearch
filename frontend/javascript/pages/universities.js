@@ -4134,7 +4134,7 @@ export function initUniversitiesPage() {
         const visibleItems = mappedItems.slice(0, 10);
         const preferredId = visibleItems.some((u) => String(u.id || "") === activeMapUniId)
             ? activeMapUniId
-            : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : String(visibleItems[0]?.id || ""));
+            : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
         activeMapUniId = preferredId;
 
         el.mapResults.innerHTML = `
@@ -4301,8 +4301,7 @@ export function initUniversitiesPage() {
         }
 
         if (!focusUniDone) {
-            const fallbackId = activeMapUniId || String(items?.[0]?.id || "");
-            if (fallbackId) updateMapResultsSelection(fallbackId);
+            if (activeMapUniId) updateMapResultsSelection(activeMapUniId);
         }
     }
 

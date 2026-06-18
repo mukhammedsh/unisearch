@@ -172,7 +172,7 @@ export function renderMapResultsPanel(container, items, options = {}) {
   const visibleItems = mappedItems.slice(0, 10);
   const preferredId = visibleItems.some((u) => String(u.id || "") === activeMapUniId)
     ? activeMapUniId
-    : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : String(visibleItems[0]?.id || ""));
+    : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
   activeMapUniId = preferredId;
 
   container.innerHTML = `
@@ -365,8 +365,7 @@ export function updateMapMarkers(items, options = {}) {
   }
 
   if (!focusUniDone) {
-    const fallbackId = activeMapUniId || String(items?.[0]?.id || "");
-    if (fallbackId) updateMapResultsSelection(fallbackId, mapResultsContainer);
+    if (activeMapUniId) updateMapResultsSelection(activeMapUniId, mapResultsContainer);
   }
 }
 
