@@ -324,11 +324,18 @@ export async function initRankingPage() {
         hideSuggestions();
         return;
       }
-      suggestionsNode.innerHTML = rows.slice(0, 7).map((name) => `
-        <button class="rank-search-suggestion" type="button" data-value="${escapeHtmlAttr(name)}" role="option">
-          <span>${escapeHtml(name)}</span>
-        </button>
-      `).join("");
+      suggestionsNode.innerHTML = "";
+      rows.slice(0, 7).forEach((name) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "rank-search-suggestion";
+        btn.setAttribute("data-value", name);
+        btn.setAttribute("role", "option");
+        const span = document.createElement("span");
+        span.textContent = name;
+        btn.appendChild(span);
+        suggestionsNode.appendChild(btn);
+      });
       suggestionsNode.classList.add("is-open");
       markMotionEnter(suggestionsNode, ".rank-search-suggestion", { limit: 7, staggerMs: 14 });
     };

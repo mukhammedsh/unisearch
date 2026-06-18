@@ -137,15 +137,17 @@ export function renderSearchSuggestions(container, items, query, options = {}) {
   }
 
   const visible = items.slice(0, maxItems);
-  container.innerHTML = visible.map((item) => {
+  container.innerHTML = "";
+  visible.forEach((item) => {
     const name = String(item?.name || "");
     const id = String(item?.id || "");
-    return `
-      <button type="button" class="u-search-suggestion" data-uni-id="${escapeHtmlAttr(id)}">
-        ${escapeHtml(name)}
-      </button>
-    `;
-  }).join("");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "u-search-suggestion";
+    btn.setAttribute("data-uni-id", id);
+    btn.textContent = name;
+    container.appendChild(btn);
+  });
 
   container.classList.add("is-open");
 

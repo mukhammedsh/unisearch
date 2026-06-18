@@ -2846,11 +2846,18 @@ export function initUniversitiesPage() {
             hideSearchSuggestions();
             return;
         }
-        node.innerHTML = suggestions.slice(0, 7).map((name) => `
-            <button type="button" class="u-search-suggestion" data-value="${escapeHtmlAttr(name)}" role="option">
-                <span>${escapeHtml(name)}</span>
-            </button>
-        `).join("");
+        node.innerHTML = "";
+        suggestions.slice(0, 7).forEach((name) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "u-search-suggestion";
+            btn.setAttribute("data-value", name);
+            btn.setAttribute("role", "option");
+            const span = document.createElement("span");
+            span.textContent = name;
+            btn.appendChild(span);
+            node.appendChild(btn);
+        });
         node.classList.add("is-open");
         markMotionEnter(node, ".u-search-suggestion", { limit: 7, staggerMs: 14 });
     };
