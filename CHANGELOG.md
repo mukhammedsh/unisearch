@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.5 (2026-06-18) - Compare Bar Persistent Visibility and Typography Hotfix
+- Fixed persistent visibility of the floating comparison bar (`compare-tray`) by hiding and clearing it when navigating away from the universities catalog page through the client router.
+- Cleaned up comparison bar typography and reduced heavy font-weight settings (800) to semibold (600) for text-helpers and action buttons.
+- Replaced the `<strong>` element with `<span>` in the comparison slot name markup to prevent browser-default double bolding of university names.
+
 ## 4.9.4 (2026-06-18) - University Detail Grant and Funding Differences Layout
 - Fixed dark-mode grant option and estimated cost styling by replacing hardcoded, muddy black-green gradients and background colors with proper system variables (`--grant-soft` and `--grant-soft-strong`).
 - Added soft green backgrounds to grant options in both light and dark themes to make them visually distinct and high-contrast, ensuring selected grant states remain clean and brand-consistent.

@@ -2174,7 +2174,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color: var(--text);
   font-size: 11px;
   line-height: 1.25;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .compare-tray__pair {
@@ -2240,7 +2240,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-radius: 10px;
   background: var(--card);
   color: var(--text);
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;

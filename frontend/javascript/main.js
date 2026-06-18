@@ -270,6 +270,13 @@ async function initializeCurrentRoute() {
   syncBodyPageFromRoute();
   const ctx = currentRouteContext();
   hydrateRouteShell(ctx);
+
+  const compareTray = document.getElementById("compareTray");
+  if (compareTray && !ctx.isUniversitiesPage) {
+    compareTray.hidden = true;
+    compareTray.innerHTML = "";
+  }
+
   await initRoutePage(ctx);
 }
 

@@ -748,7 +748,7 @@ export function initUniversitiesPage() {
             return `
                 <div class="compare-tray__slot${id ? "" : " compare-tray__slot--empty"}" role="listitem">
                     <span class="compare-tray__slot-label">${escapeHtml(compareSlotLabel(index))}</span>
-                    <strong class="compare-tray__slot-name">${escapeHtml(name || t("universities.compare.pair_empty", "Empty slot"))}</strong>
+                    <span class="compare-tray__slot-name">${escapeHtml(name || t("universities.compare.pair_empty", "Empty slot"))}</span>
                 </div>
             `;
         }).join("");
