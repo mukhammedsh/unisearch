@@ -4,6 +4,9 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.7 (2026-06-18) - Merge updates for performance and docs
+- Merged PR #50: `perf: hoist localized university names loading out of metadata building loop` to improve performance by loading translations once.
+- Merged PR #51: `docs: clarify intentional card alignment in finance grid` to clarify CSS intent for finance cards.
 ## 4.9.6 (2026-06-18) - Performance, Security, and Testing Improvements
 - Added unit tests for `safe-storage.js` to ensure reliable storage functionality (PR #49).
 - Fixed an XSS vulnerability in suggestion rendering by replacing unescaped `innerHTML` with secure DOM APIs (PR #48).
