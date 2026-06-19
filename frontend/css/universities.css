@@ -2388,7 +2388,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
-  min-height: 24px;
   padding: 4px 8px;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -2396,10 +2395,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color: var(--text);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 6px;
   font-size: 11px;
-  line-height: 1.15;
-  font-weight: 600;
+  line-height: 1;
+  font-weight: 700;
 }
 
 .compare-uni-card__chance .chance-track-chip.chance-high {
@@ -2433,12 +2434,19 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .compare-uni-card__badges span {
-  padding: 4px 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 4px 8px;
   border-radius: 10px;
   background: rgba(250, 204, 21, 0.18);
-  color: #854d0e;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  color: #b45309;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .compare-uni-card__link {
@@ -2622,6 +2630,32 @@ body.universities-compare-mode .uni-action-btn--favorite {
   display: grid;
   justify-items: center;
   gap: 3px;
+}
+
+.compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.12);
+  gap: 4px;
+}
+
+.compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent.chance-low-confidence,
+.compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent-note {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  color: #b45309 !important;
+  font-weight: 800;
 }
 
 .compare-config-chance .chance-percent {
@@ -3114,39 +3148,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   gap: 12px;
 }
 
-.compare-config-column .admission-option-card {
-  box-sizing: border-box;
-  min-width: 0;
-  position: relative;
-  overflow: hidden;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--surface-soft);
-  display: grid;
-  gap: 12px;
-  transition:
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-}
 
-.compare-config-column .admission-option-card:hover {
-  border-color: rgba(79, 70, 229, 0.22);
-  box-shadow: var(--shadow);
-}
-
-.compare-config-column .admission-option-card--grant {
-  border-color: rgba(16, 185, 129, 0.24);
-  background: var(--grant-soft, #ecfdf5);
-}
-
-.compare-config-column .admission-option-card:has(.track-select-btn.is-active) {
-  border-color: rgba(99, 102, 241, 0.48);
-  background: var(--surface-soft);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.14);
-}
 
 .compare-config-column .admission-option-head {
   min-width: 0;
@@ -3223,13 +3225,16 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-config-column .track-funding-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
   width: fit-content;
   padding: 4px 8px;
   border-radius: 10px;
   border: 1px solid transparent;
   font-size: 11px;
-  line-height: 1.15;
-  font-weight: 600;
+  line-height: 1;
+  font-weight: 700;
 }
 
 .compare-config-column .track-selection-badge {
@@ -3371,23 +3376,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   gap: 8px;
 }
 
-.compare-config-column .track-exam-group {
-  padding: 9px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface-soft);
-}
-
-.compare-config-column .track-exam-group-title {
-  margin-bottom: 5px;
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.2;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.compare-config-column .track-exam-group-list,
 .compare-config-column .track-exam-entry-group-list {
   color: var(--text);
   font-size: 12px;
@@ -3478,23 +3466,30 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .compare-admission-option .track-funding-badge {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
   width: fit-content;
   padding: 4px 8px;
   border-radius: 10px;
   background: rgba(55, 65, 81, 0.10);
-  color: #374151;
+  border: 1px solid rgba(55, 65, 81, 0.25);
+  color: #4b5563;
   font-size: 11px;
-  line-height: 1.15;
-  font-weight: 600;
+  line-height: 1;
+  font-weight: 700;
 }
 
 .compare-admission-option .track-funding-badge--grant {
   background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.35);
   color: #047857;
 }
 
 .compare-admission-option .track-funding-badge--paid {
   background: rgba(124, 58, 237, 0.12);
+  border-color: rgba(124, 58, 237, 0.28);
   color: var(--accent);
 }
 
@@ -5745,11 +5740,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .compare-admission-option .track-funding-badge--grant {
   background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.35);
   color: #86efac;
 }
 
 :root[data-theme="dark"] .compare-admission-option .track-funding-badge--paid {
   background: rgba(124, 58, 237, 0.18);
+  border-color: rgba(124, 58, 237, 0.38);
   color: #c4b5fd;
 }
 
@@ -5760,7 +5757,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .compare-config-column .admission-option-card,
 :root[data-theme="dark"] .compare-config-column .track-stats-box,
-:root[data-theme="dark"] .compare-config-column .track-exam-group,
 :root[data-theme="dark"] .compare-config-column .compare-option-fact,
 :root[data-theme="dark"] .compare-config-column .admission-option-meta .tag,
 :root[data-theme="dark"] .compare-config-chance .chance-panel,
@@ -5770,15 +5766,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color: var(--text);
 }
 
-:root[data-theme="dark"] .compare-config-column .admission-option-card--grant {
-  background: rgba(16, 185, 129, 0.10);
-  border-color: rgba(52, 211, 153, 0.28);
-}
 
-:root[data-theme="dark"] .compare-config-column .admission-option-card:has(.track-select-btn.is-active) {
-  background: rgba(129, 140, 248, 0.10);
-  border-color: rgba(129, 140, 248, 0.34);
-}
 
 :root[data-theme="dark"] .compare-config-column .track-cost-preview {
   background: rgba(129, 140, 248, 0.10);
@@ -5871,6 +5859,16 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color: #fbbf24;
 }
 
+:root[data-theme="dark"] .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence {
+  border-color: rgba(251, 191, 36, 0.26);
+  background: rgba(251, 191, 36, 0.12);
+}
+
+:root[data-theme="dark"] .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent.chance-low-confidence,
+:root[data-theme="dark"] .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent-note {
+  color: #fef08a !important;
+}
+
 :root[data-theme="dark"] .u-recent {
   background: #17181a;
   border-color: rgba(255, 255, 255, 0.08);
@@ -5913,7 +5911,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .compare-uni-card__badges span {
   background: rgba(250, 204, 21, 0.18);
-  color: #fde68a;
+  border-color: rgba(250, 204, 21, 0.45);
+  color: #fef08a;
 }
 
 /* ===== 2026 Cross-Page Layout Density Pass ===== */
@@ -6106,19 +6105,16 @@ body.universities-compare-mode .uni-action-btn--favorite {
   gap: 8px;
 }
 
-.compare-config-column .track-stats-box,
-.compare-config-column .track-exam-group {
+.compare-config-column .track-stats-box {
   padding: 10px;
   border-radius: 12px;
 }
 
-.compare-config-column .track-stats-title,
-.compare-config-column .track-exam-group-title {
+.compare-config-column .track-stats-title {
   letter-spacing: 0;
 }
 
 .compare-config-column .track-stats-values,
-.compare-config-column .track-exam-group-list,
 .compare-config-column .track-exam-entry-group-list {
   line-height: 1.38;
 }
@@ -6740,7 +6736,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root:not([data-theme="dark"]) .page-btn,
 :root:not([data-theme="dark"]) .uni-pill,
 :root:not([data-theme="dark"]) .compare-config-column .track-stats-box,
-:root:not([data-theme="dark"]) .compare-config-column .track-exam-group,
 :root:not([data-theme="dark"]) .compare-config-column .admission-option-meta .tag,
 :root:not([data-theme="dark"]) .compare-config-column .track-cost-preview {
   background: var(--surface-soft);
@@ -6780,18 +6775,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: rgba(87, 21, 219, 0.46);
 }
 
-:root:not([data-theme="dark"]) .compare-config-column .admission-option-card:has(.track-select-btn.is-active) {
-  background-color: #f7f4ff;
-  border-color: rgba(87, 21, 219, 0.46);
-}
-
-:root:not([data-theme="dark"]) .compare-config-column .admission-option-card {
-  background: #ffffff;
-  border: 1px solid var(--line-strong);
-  border-color: var(--line-strong);
-}
-
-:root:not([data-theme="dark"]) .compare-config-column .admission-option-card--grant,
 :root:not([data-theme="dark"]) .uni-card .uni-pill--success {
   background: var(--grant-soft);
   border: 1px solid rgba(16, 185, 129, 0.42);
@@ -6867,7 +6850,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root:not([data-theme="dark"]) .page-btn,
 :root:not([data-theme="dark"]) .uni-pill,
 :root:not([data-theme="dark"]) .compare-config-column .track-stats-box,
-:root:not([data-theme="dark"]) .compare-config-column .track-exam-group,
 :root:not([data-theme="dark"]) .compare-config-column .admission-option-meta .tag,
 :root:not([data-theme="dark"]) .compare-config-column .track-cost-preview {
   background: var(--surface-soft);
@@ -6983,3 +6965,126 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background: color-mix(in srgb, var(--accent) 14%, var(--surface-soft, var(--card)));
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
 }
+
+/* ===== 2026 Admission Selection Compact Mode Overrides for Compare Configuration Page ===== */
+.compare-config-column .admission-category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.compare-config-column .admission-category-card {
+  /* Restored default card styles from style.css */
+}
+
+.compare-config-column .admission-category-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.compare-config-column .admission-category-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.compare-config-column .admission-category-kicker,
+.compare-config-column .admission-category-description,
+.compare-config-column .admission-applicable-programs,
+.compare-config-column .requirement-profile-head {
+  display: none;
+}
+
+.compare-config-column .admission-category-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.compare-config-column .requirement-profile-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.compare-config-column .requirement-profile-tab {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.compare-config-column .admission-requirement-grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.compare-config-column .admission-funding-block {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.compare-config-column .admission-funding-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.compare-config-column .admission-funding-option {
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast);
+  cursor: pointer;
+}
+
+.compare-config-column .admission-funding-option--grant {
+  border-color: var(--grant-soft-strong);
+  background: var(--grant-soft);
+}
+
+.compare-config-column .admission-funding-option.is-active {
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+.compare-config-column .admission-funding-option--grant.is-active {
+  border-color: var(--accent);
+  background: var(--grant-soft);
+}
+
+.compare-config-column .admission-funding-option-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.compare-config-column .admission-funding-option-main {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.compare-config-column .admission-funding-option-side {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.compare-config-column .track-select-btn {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 11px;
+}
+
+

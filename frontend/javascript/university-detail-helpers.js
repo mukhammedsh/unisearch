@@ -562,7 +562,7 @@ export function renderUniChanceSummary(uniChance) {
             <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
             <div class="chance-sub">${escapeHtml(chanceSub)}</div>
           </div>
-          <div class="chance-percent-wrap">
+          <div class="chance-percent-wrap${chanceAccuracy ? " chance-percent-wrap--low-confidence" : ""}">
             <div class="chance-percent ${chancePercentClass}">${chance}%</div>
             ${chanceAccuracy ? `<div class="chance-percent-note">${escapeHtml(chanceAccuracy)}</div>` : ""}
           </div>

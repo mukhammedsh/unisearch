@@ -8,6 +8,8 @@
   --text-muted: #555555;
   --surface: #ffffff;
   --surface-soft: #f4f6fb;
+  --grant-soft: #ecfdf5;
+  --grant-soft-strong: #d1fae5;
   --line: rgba(0, 0, 0, 0.08);
   --line-strong: rgba(0, 0, 0, 0.12);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -34,6 +36,8 @@
   --text-muted: #b0b0b0;
   --surface: #1a1a1a;
   --surface-soft: #232323;
+  --grant-soft: #15241c;
+  --grant-soft-strong: #183226;
   --line: #323232;
   --line-strong: #3f3f3f;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
@@ -4437,3 +4441,442 @@ body .has-sliding-indicator .active::after {
   border-color: rgba(87, 21, 219, 0.24);
   color: var(--accent);
 }
+
+/* ===== Shared Admission & Funding Option Cards ===== */
+.track-select-btn {
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.track-select-btn:hover:not(:disabled) {
+  background: var(--surface-solid, var(--surface));
+  border-color: var(--line-strong);
+}
+
+.track-select-btn:disabled,
+.track-select-btn.is-active {
+  cursor: default;
+  background: var(--surface-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.admission-empty-state {
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  text-align: center;
+  font-weight: 600;
+}
+
+.admission-program-selector {
+  display: flex;
+  gap: 18px;
+  margin: 18px 0 0;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.admission-program-option,
+.requirement-profile-tab {
+  appearance: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.25;
+  padding: 10px 2px 11px;
+  white-space: nowrap;
+  transition:
+    color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admission-program-option:hover,
+.requirement-profile-tab:hover {
+  color: var(--text);
+}
+
+.admission-program-option:focus-visible,
+.requirement-profile-tab:focus-visible,
+.track-select-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admission-program-option.is-active,
+.requirement-profile-tab.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.admission-scope-note {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.admission-category-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.admission-category-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-solid);
+  padding: 18px;
+}
+
+.admission-category-head,
+.requirement-profile-head,
+.admission-funding-option {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.admission-category-kicker,
+.requirement-profile-kicker,
+.admission-funding-title {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.admission-category-title,
+.requirement-profile-title {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.requirement-profile-title {
+  font-size: 16px;
+}
+
+.admission-category-description {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.admission-category-count,
+.track-selection-badge {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 750;
+  padding: 6px 9px;
+}
+
+.admission-applicable-programs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.admission-applicable-programs .tag,
+.admission-option-meta .tag {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 8px;
+}
+
+.requirement-profile-tabs {
+  display: flex;
+  gap: 18px;
+  margin-top: 16px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.requirement-profile-panel {
+  padding-top: 16px;
+}
+
+.requirement-profile-badges,
+.admission-funding-option-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.admission-requirement-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.admission-funding-block {
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.admission-funding-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.admission-funding-option {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-soft);
+  padding: 14px;
+  flex-wrap: wrap;
+}
+
+.admission-funding-option.is-active {
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+.admission-funding-option--grant {
+  border-color: var(--grant-soft-strong);
+  background: var(--grant-soft);
+}
+
+.admission-funding-option--grant.is-active {
+  border-color: var(--accent);
+  background: var(--grant-soft);
+}
+
+.admission-funding-option-main {
+  min-width: 240px;
+  flex: 1 1 360px;
+}
+
+.admission-funding-option-side {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.admission-funding-diff,
+.admission-funding-diff-note {
+  flex: 1 0 100%;
+}
+
+.admission-funding-diff {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.admission-funding-diff-kicker {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.admission-funding-diff-title {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-bottom: 2px;
+}
+
+.admission-funding-diff-section {
+  display: grid;
+  gap: 6px;
+}
+
+.admission-funding-diff-content .track-exam-group {
+  margin: 0;
+}
+
+.admission-funding-diff-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admission-funding-diff-note {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .admission-category-card {
+    padding: 14px;
+  }
+
+  .admission-category-head,
+  .requirement-profile-head,
+  .admission-funding-option,
+  .admission-funding-option-side {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admission-requirement-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .track-select-btn {
+    width: 100%;
+  }
+}
+
+/* ===== Track Factors & Badges (Global) ===== */
+.track-factors-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.track-factors-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.track-factor-chip {
+  display: inline-flex;
+  align-items: flex-start; /* Fix for multi-line text alignment */
+  justify-content: flex-start;
+  text-align: left;
+  box-sizing: border-box;
+  gap: 6px;
+  max-width: 100%;
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.35;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.admission-chance-badge__icon,
+.track-factor-chip__icon {
+  flex: 0 0 auto;
+  color: currentColor;
+  margin-top: 1px;
+}
+
+.admission-chance-badge--neutral,
+.track-factor-chip.factor-neutral {
+  color: var(--text-muted);
+}
+
+.admission-chance-badge--warn,
+.track-factor-chip.factor-negative,
+.track-factor-chip.factor-positive {
+  color: var(--text);
+}
+
+.track-factor-chip.factor-positive {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+}
+
+.admission-chance-badge--warn,
+.track-factor-chip.factor-negative {
+  border-color: color-mix(in srgb, var(--text-muted) 30%, var(--line));
+}
+
+@media (max-width: 680px) {
+  .admission-chance-badge,
+  .track-factor-chip {
+    flex: 1 1 100%;
+  }
+}
+
+
+/* ===== Track Extra Requirements (Global) ===== */
+.track-extra-req {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  padding: 10px 12px;
+}
+
+.track-extra-req-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.track-extra-req-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.track-extra-req-list li {
+  margin-bottom: 6px;
+}
+.track-extra-req-list li:last-child {
+  margin-bottom: 0;
+}
+

@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.9 (2026-06-19) - Compare Admission and Badges Rework
+- Reworked the university comparison view to allow selecting admission choices directly within the comparison interface, supporting a new compact mode.
+- Unified and centered all project badges (UniChance, Low confidence, Paid, etc.) across the site, applying consistent borders and clean theme variables.
+- Refactored `renderAdmissionSection` to handle inline choice selection without side-effects on university detail storage.
+- Restored admitted score context and funding-specific requirements in comparison table rows.
+
 ## 4.9.8 (2026-06-18)
 - Added new calibration unit tests for UniChance admission scoring logic (`test_persona_scoring_calibration.py`) using 6 diverse student personas (Alexey, Maria, Dias, Adil, Lisa, and Anonymous) mapped against real-world university data (MIT, TUM, Nazarbayev University) to ensure scoring and eligibility calculations remain accurate and stable.
 

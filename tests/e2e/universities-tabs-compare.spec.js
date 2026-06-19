@@ -52,7 +52,7 @@ test("universities tabs host ranking and comparison results in one workspace", a
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page.locator(".compare-config-column .track-select-btn.is-active")).toHaveCount(2);
   await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(2);
-  await expect(page.locator(".compare-track-chance").first()).toBeVisible();
+  await expect(page.locator(".chance-track-chip").first()).toBeVisible();
   await expect(page.locator(".track-stats-title--avg .track-stats-chance")).toHaveCount(0);
   await expect(page.locator("#compareResultsPane")).toContainText("UniChance");
   const configureText = await page.locator("#compareResultsPane").textContent();
@@ -129,17 +129,16 @@ test("compare configure cards expose admission requirements before continuing", 
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
-  await expect(mitColumn).toContainText("Academic minimums");
-  await expect(mitColumn).toContainText("SAT 1500");
-  await expect(mitColumn).toContainText("GPA 98");
-  await expect(mitColumn).toContainText("SAT median 1,550");
-  await expect(mitColumn).toContainText("IELTS Academic 7.5");
+  await expect(mitColumn).toContainText("Minimum to apply");
+  await expect(mitColumn).toContainText("SAT: 1500");
+  await expect(mitColumn).toContainText("GPA: 98");
+  await expect(mitColumn).toContainText("Average admitted");
+  await expect(mitColumn).toContainText("IELTS Academic: 7.5");
 
   const imperialGrant = page.locator(".compare-config-column", { hasText: "Imperial College London" })
-    .locator(".admission-option-card--grant");
-  await expect(imperialGrant).toContainText("Funding-specific requirements");
-  await expect(imperialGrant).toContainText("GPA 98");
-  await expect(imperialGrant).toContainText("standard 92");
+    .locator(".admission-funding-option--grant");
+  await expect(imperialGrant).toContainText("Funding-specific differences");
+  await expect(imperialGrant).toContainText("GPA: 98");
 });
 
 test("compare results split admission decision rows", async ({ page }) => {

@@ -444,6 +444,9 @@ export function renderAdmissionSection({
   uniChance,
   uniChanceByChoiceKey,
   university,
+  onChoiceSelected,
+  effectiveSelectedChoiceKeyOverride,
+  compactMode = false,
 }) {
   if (!container) return;
   const chanceByChoice = uniChanceByChoiceKey instanceof Map ? uniChanceByChoiceKey : new Map();
@@ -457,7 +460,11 @@ export function renderAdmissionSection({
   const admissionsOverviewHtml = renderAdmissionsOverview(admissionsData);
   const categories = getAdmissionCategories(university);
   if (!categories.length) {
-    container.innerHTML = `${warningHtml}${renderUniChanceSummary(uniChance)}${admissionsOverviewHtml}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
+    if (compactMode) {
+      container.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
+    } else {
+      container.innerHTML = `${warningHtml}${renderUniChanceSummary(uniChance)}${admissionsOverviewHtml}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
+    }
     applyPercentWidths(container);
     markMotionEnter(container, ".admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 12, staggerMs: 18 });
     return;
@@ -470,10 +477,15 @@ export function renderAdmissionSection({
   const visibleCategories = getVisibleAdmissionCategories(categories, selectedProgramKey);
   const bestChoiceKey = String(uniChance?.bestChoiceKey || "").trim();
   const recommendedChoiceKey = String(uniChance?.recommendedChoiceKey || bestChoiceKey || "").trim();
-  const selectedChoiceKey = getSelectedAdmissionChoice(university.id);
+  const selectedChoiceKey = effectiveSelectedChoiceKeyOverride !== undefined
+    ? effectiveSelectedChoiceKeyOverride
+    : getSelectedAdmissionChoice(university.id);
   const effectiveSelectedChoiceKey = selectedChoiceKey || bestChoiceKey;
 
-  let html = warningHtml + renderUniChanceSummary(uniChance) + admissionsOverviewHtml;
+  let html = "";
+  if (!compactMode) {
+    html += warningHtml + renderUniChanceSummary(uniChance) + admissionsOverviewHtml;
+  }
   html += renderProgramSelector(university, categories, selectedProgramKey, hasExplicitProgramSelection);
   if (selectedProgramKey !== GENERAL_PROGRAM_KEY && visibleCategories.every((category) => String(category?.scope || "general").toLowerCase() === "general")) {
     html += `<div class="admission-scope-note">${escapeHtml(t("admission.program.using_general_note", "No program-specific score data is published here, so general requirements are shown."))}</div>`;
@@ -564,7 +576,16 @@ export function renderAdmissionSection({
       motionPress(button);
       const programKey = String(button.getAttribute("data-admission-program") || "").trim() || GENERAL_PROGRAM_KEY;
       admissionProgramSelectionByUniversity.set(universityId, programKey);
-      renderAdmissionSection({ annualCostForTrack, container, uniChance, uniChanceByChoiceKey: chanceByChoice, university });
+      renderAdmissionSection({
+        annualCostForTrack,
+        container,
+        uniChance,
+        uniChanceByChoiceKey: chanceByChoice,
+        university,
+        onChoiceSelected,
+        effectiveSelectedChoiceKeyOverride,
+        compactMode,
+      });
     });
   });
 
@@ -574,7 +595,16 @@ export function renderAdmissionSection({
       const categoryKey = String(button.getAttribute("data-admission-category-key") || "").trim();
       const profileId = String(button.getAttribute("data-requirement-profile") || "").trim();
       if (categoryKey && profileId) admissionProfileSelectionByCategory.set(categoryKey, profileId);
-      renderAdmissionSection({ annualCostForTrack, container, uniChance, uniChanceByChoiceKey: chanceByChoice, university });
+      renderAdmissionSection({
+        annualCostForTrack,
+        container,
+        uniChance,
+        uniChanceByChoiceKey: chanceByChoice,
+        university,
+        onChoiceSelected,
+        effectiveSelectedChoiceKeyOverride,
+        compactMode,
+      });
     });
   });
 
@@ -584,12 +614,17 @@ export function renderAdmissionSection({
       motionPress(button);
       const choiceKey = String(button.getAttribute("data-admission-choice") || "").trim();
       if (!choiceKey) return;
-      saveSelectedAdmissionChoice(university.id, {
+      const selection = {
         categoryId: String(button.getAttribute("data-category-id") || "").trim(),
         requirementProfileId: String(button.getAttribute("data-requirement-profile-id") || "").trim(),
         fundingOptionId: String(button.getAttribute("data-funding-option-id") || "").trim(),
         choiceKey,
-      });
+      };
+      if (typeof onChoiceSelected === "function") {
+        onChoiceSelected(selection);
+      } else {
+        saveSelectedAdmissionChoice(university.id, selection);
+      }
       replayMotion(button.closest(".admission-funding-option") || button.closest(".requirement-profile-panel") || button, "motion-state-pulse", { timeoutMs: 520 });
     });
   });

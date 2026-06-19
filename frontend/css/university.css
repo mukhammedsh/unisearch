@@ -12,9 +12,9 @@
   --bg: #f6f7fb;
   --card: #ffffff;
   --text: #111;
-  --muted: rgba(0,0,0,.58);
-  --line: rgba(0,0,0,.08);
-  --shadow: 0 10px 24px rgba(0,0,0,.06);
+  --muted: rgba(0, 0, 0, 0.58);
+  --line: rgba(0, 0, 0, 0.08);
+  --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 :root[data-theme="dark"] {
   --accent-soft: rgba(87, 21, 219, 0.18);
@@ -25,9 +25,9 @@
   --bg: #0f0f0f;
   --card: #1a1a1a;
   --text: #ededed;
-  --muted: rgba(237,237,237,.72);
+  --muted: rgba(237, 237, 237, 0.72);
   --line: #323232;
-  --shadow: 0 14px 28px rgba(0,0,0,.45);
+  --shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* =========================================
@@ -148,7 +148,7 @@
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
   pointer-events: none;
 }
 
@@ -197,7 +197,7 @@
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: visible;
-  box-shadow: 0 6px 18px rgba(0,0,0,.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
 }
 
 .d-cover {
@@ -214,8 +214,11 @@
 
 .d-cover-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0,0,0,0.4));
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
   border-radius: 0;
 }
 
@@ -225,11 +228,11 @@
   top: 14px;
   z-index: 2;
   background: #fff;
-  border: 1px solid rgba(0,0,0,.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   padding: 10px 12px;
   font-weight: 700;
-  box-shadow: 0 10px 18px rgba(0,0,0,.10);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.1);
   color: var(--accent);
 }
 
@@ -242,12 +245,12 @@
   height: 64px;
   border-radius: 14px;
   background: #fff;
-  border: 1px solid rgba(0,0,0,.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   display: grid;
   place-items: center;
   font-weight: 700;
   color: var(--accent);
-  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
 }
 
 .d-logo-img {
@@ -335,11 +338,13 @@
   color: var(--accent);
   padding: 10px 12px;
   border-radius: 12px;
-  background: rgba(87,21,219,.08);
-  border: 1px solid rgba(87,21,219,.18);
+  background: rgba(87, 21, 219, 0.08);
+  border: 1px solid rgba(87, 21, 219, 0.18);
   white-space: nowrap;
 }
-.d-back:hover { background: rgba(87,21,219,.12); }
+.d-back:hover {
+  background: rgba(87, 21, 219, 0.12);
+}
 
 /* =========================================
    GRID & CONTENT BOXES
@@ -423,7 +428,11 @@
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: linear-gradient(180deg, rgba(87, 21, 219, 0.05), rgba(87, 21, 219, 0.01));
+  background: linear-gradient(
+    180deg,
+    rgba(87, 21, 219, 0.05),
+    rgba(87, 21, 219, 0.01)
+  );
 }
 
 .uni-tags-title {
@@ -483,11 +492,15 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px dashed rgba(0,0,0,.10);
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
   font-size: 14px;
 }
-.d-kv:last-child { border-bottom: 0; }
-.d-kv--last { border-bottom: 0; }
+.d-kv:last-child {
+  border-bottom: 0;
+}
+.d-kv--last {
+  border-bottom: 0;
+}
 .d-kv > span:first-child {
   color: var(--muted);
   font-weight: 500;
@@ -659,8 +672,6 @@
   background: linear-gradient(90deg, #7d3cff, #5d17ea, #00a3ff);
   opacity: 0.95;
 }
-
-
 
 .program-card:hover {
   box-shadow: 0 14px 26px rgba(36, 14, 79, 0.1);
@@ -886,7 +897,11 @@
   margin-top: 0;
   padding: 9px 12px;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(87, 21, 219, 0.08), rgba(168, 85, 247, 0.12));
+  background: linear-gradient(
+    135deg,
+    rgba(87, 21, 219, 0.08),
+    rgba(168, 85, 247, 0.12)
+  );
   border: 1px solid rgba(168, 85, 247, 0.18);
   color: var(--text);
   font-size: 14px;
@@ -918,9 +933,6 @@
   display: grid;
   gap: 12px;
 }
-
-
-
 
 .finance-track-group--grant {
   border-color: #86efac;
@@ -964,7 +976,11 @@
   padding: 16px;
   border: 1px solid rgba(168, 85, 247, 0.12);
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(168, 85, 247, 0.05), rgba(255, 255, 255, 0.88));
+  background: linear-gradient(
+    180deg,
+    rgba(168, 85, 247, 0.05),
+    rgba(255, 255, 255, 0.88)
+  );
   display: grid;
   gap: 12px;
 }
@@ -990,7 +1006,11 @@
   padding: 16px;
   border: 1px solid #e7ddff;
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(123, 63, 242, 0.05), rgba(123, 63, 242, 0.015));
+  background: linear-gradient(
+    180deg,
+    rgba(123, 63, 242, 0.05),
+    rgba(123, 63, 242, 0.015)
+  );
   box-shadow: 0 10px 24px rgba(36, 14, 79, 0.05);
 }
 
@@ -1234,7 +1254,8 @@
 }
 
 .d-tab-pane.active.motion-panel-enter {
-  animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) both;
+  animation: motion-fade-lift-enter var(--motion-medium)
+    var(--motion-ease-enter) both;
 }
 
 .d-tab-content {
@@ -1470,10 +1491,18 @@
   padding: 0;
 }
 
-.chance-fill.chance-high { background: #10b981; }
-.chance-fill.chance-good { background: #22c55e; }
-.chance-fill.chance-medium { background: #f59e0b; }
-.chance-fill.chance-low { background: #ef4444; }
+.chance-fill.chance-high {
+  background: #10b981;
+}
+.chance-fill.chance-good {
+  background: #22c55e;
+}
+.chance-fill.chance-medium {
+  background: #f59e0b;
+}
+.chance-fill.chance-low {
+  background: #ef4444;
+}
 
 .admission-filter-row {
   margin: 12px 0 16px;
@@ -1484,7 +1513,11 @@
   padding: 12px 14px;
   border: 1px solid rgba(168, 85, 247, 0.14);
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(168, 85, 247, 0.08), rgba(255, 255, 255, 0.94));
+  background: linear-gradient(
+    180deg,
+    rgba(168, 85, 247, 0.08),
+    rgba(255, 255, 255, 0.94)
+  );
 }
 
 .admission-filter-label {
@@ -1568,13 +1601,6 @@
   grid-template-columns: 1fr;
 }
 
-
-
-
-
-
-
-
 .admission-option-card,
 .finance-option-card {
   position: relative;
@@ -1593,8 +1619,6 @@
   gap: 12px;
 }
 
-
-
 .admission-option-card::before,
 .finance-option-card::before {
   content: "";
@@ -1603,8 +1627,6 @@
   height: 3px;
   background: linear-gradient(90deg, var(--accent), var(--accent-highlight));
 }
-
-
 
 .admission-option-card:hover,
 .finance-option-card:hover {
@@ -1665,8 +1687,6 @@
   color: var(--accent);
 }
 
-
-
 .track-option-count,
 .track-selection-badge {
   opacity: 1;
@@ -1717,8 +1737,6 @@
   background: linear-gradient(90deg, var(--accent), var(--accent-highlight));
 }
 
-
-
 .track-card + .track-card {
   margin-top: 14px;
 }
@@ -1743,7 +1761,6 @@
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
-
 
 .track-head {
   display: flex;
@@ -2504,82 +2521,82 @@
    FINANCE SUMMARY (ВЕРХНИЙ БЛОК: СКИДКИ + ЦЕНА)
    ========================================= */
 .finance-summary-container {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 40px; /* Отступ снизу перед вариантами поступления */
-    align-items: flex-start; /* Чтобы блоки не растягивались лишнего */
-    flex-wrap: wrap; 
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px; /* Отступ снизу перед вариантами поступления */
+  align-items: flex-start; /* Чтобы блоки не растягивались лишнего */
+  flex-wrap: wrap;
 }
 
 .finance-summary-left {
-    flex: 1; 
-    min-width: 280px;
+  flex: 1;
+  min-width: 280px;
 }
 
 .finance-summary-right {
-    flex: 0 0 300px; 
-    margin-top: 30px;
+  flex: 0 0 300px;
+  margin-top: 30px;
 }
 
 /* Зеленая карточка скидок */
 .scholarship-card {
-    background: #ecfdf5; /* Светло-зеленый */
-    border: 1px solid #10b981;
-    border-radius: 12px;
-    padding: 16px 18px;
-    height: auto; /* Высота по контенту */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 8px;
+  background: #ecfdf5; /* Светло-зеленый */
+  border: 1px solid #10b981;
+  border-radius: 12px;
+  padding: 16px 18px;
+  height: auto; /* Высота по контенту */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
 }
 
 /* Синяя карточка общей цены */
 .total-price-card {
-    background: #f5f0ff; /* Светло-фиолетовый */
-    border: 1px solid #d8c9ff;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    height: auto; /* Высота по контенту */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  background: #f5f0ff; /* Светло-фиолетовый */
+  border: 1px solid #d8c9ff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  height: auto; /* Высота по контенту */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.price-header { 
-    font-weight: 700; 
-    color: var(--accent); 
-    margin-bottom: 0; 
-    font-size: 13px; 
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.price-header {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .price-inline-row {
-    display: inline-flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: nowrap;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
-.price-big { 
-    font-size: 2.2rem; 
-    font-weight: 800; 
-    color: var(--accent); 
-    line-height: 0.95;
+.price-big {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 0.95;
 }
 
-.price-sub { 
-    font-size: 0.95rem; 
-    color: #6b7280; 
-    margin-top: 0; 
-    font-weight: 500;
-    line-height: 1;
-    white-space: nowrap;
+.price-sub {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 0;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .price-prefix {
@@ -2622,7 +2639,7 @@
   grid-template-columns: 1fr;
   gap: 24px;
   margin-top: 10px;
-  
+
   /* Карточки выровнены по верхнему краю согласно дизайн-системе */
   align-items: start;
 }
@@ -2671,7 +2688,7 @@
 }
 
 .finance-card:hover {
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
   border-color: var(--accent);
 }
 
@@ -2711,8 +2728,19 @@
   border-radius: 12px;
   padding: 10px 12px;
 }
-.finance-total small { display: block; font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 0; }
-.finance-total span { font-size: 16px; font-weight: 900; color: var(--accent); }
+.finance-total small {
+  display: block;
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+.finance-total span {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--accent);
+}
 
 .finance-total--grant {
   background: #d1fae5;
@@ -2724,7 +2752,9 @@
   color: #065f46;
 }
 
-.finance-body { padding: 20px; }
+.finance-body {
+  padding: 20px;
+}
 
 .finance-footer {
   background: #f0fdf4;
@@ -2748,22 +2778,24 @@
   font-weight: 500;
 }
 
-.finance-grant-list li { margin-bottom: 4px; }
+.finance-grant-list li {
+  margin-bottom: 4px;
+}
 
 .track-stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 колонки на ПК */
-    gap: 12px;
-    margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 колонки на ПК */
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .cost-legend {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 колонки на ПК */
-    gap: 8px;
-    margin-top: 0;
-    align-items: stretch;
-    grid-auto-rows: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 колонки на ПК */
+  gap: 8px;
+  margin-top: 0;
+  align-items: stretch;
+  grid-auto-rows: auto;
 }
 
 /* Прогресс-бар */
@@ -2902,16 +2934,31 @@
 }
 
 @media (max-width: 768px) {
-  .d-container { padding: 0 10px; }
+  .d-container {
+    padding: 0 10px;
+  }
   .d-cover {
     min-height: 180px;
     max-height: 420px;
   }
-  .d-head { flex-direction: column; gap: 15px; }
-  .d-head-main { width: 100%; }
-  .d-title-row { width: 100%; align-items: flex-start; }
-  .d-title { flex-basis: 100%; }
-  .d-head-links { width: 100%; justify-content: flex-start; }
+  .d-head {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .d-head-main {
+    width: 100%;
+  }
+  .d-title-row {
+    width: 100%;
+    align-items: flex-start;
+  }
+  .d-title {
+    flex-basis: 100%;
+  }
+  .d-head-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
   .d-back {
     width: auto;
     min-height: 44px;
@@ -2919,8 +2966,10 @@
     padding: 0 12px;
     background-color: transparent;
   }
-  .d-grid { column-count: 1; }
-  
+  .d-grid {
+    column-count: 1;
+  }
+
   .d-tabs {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -2951,128 +3000,144 @@
     height: 44px;
     border-radius: 14px;
   }
-  
-  .finance-grid-new { grid-template-columns: 1fr; }
-  
+
+  .finance-grid-new {
+    grid-template-columns: 1fr;
+  }
+
   /* Адаптив для верхней секции финансов */
-  .finance-summary-container { flex-direction: column; }
-  .finance-summary-left { min-width: 0; width: 100%; }
-  .finance-summary-right { flex: auto; width: 100%; }
-  .finance-summary-right { margin-top: 0; }
-  .price-inline-row { gap: 6px; }
-  .price-big { font-size: 2rem; }
+  .finance-summary-container {
+    flex-direction: column;
+  }
+  .finance-summary-left {
+    min-width: 0;
+    width: 100%;
+  }
+  .finance-summary-right {
+    flex: auto;
+    width: 100%;
+  }
+  .finance-summary-right {
+    margin-top: 0;
+  }
+  .price-inline-row {
+    gap: 6px;
+  }
+  .price-big {
+    font-size: 2rem;
+  }
 }
 
 .roi-box {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 22px;
-    transition: transform var(--motion-snappy) var(--motion-ease-standard);
-    overflow-wrap: anywhere;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px;
+  transition: transform var(--motion-snappy) var(--motion-ease-standard);
+  overflow-wrap: anywhere;
 }
 
 .finance-grid-new + .roi-box {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .roi-title {
-    margin: 0 0 10px;
-    color: #5d17ea;
-    font-size: 18px;
+  margin: 0 0 10px;
+  color: #5d17ea;
+  font-size: 18px;
 }
 
 .roi-description {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 20px;
-    line-height: 1.5;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 .roi-context {
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 13px;
-    border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  border: 1px solid transparent;
 }
 
 .roi-context--matched {
-    background: #d1fae5;
-    color: #065f46;
-    border-color: #a7f3d0;
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
 }
 
 .roi-context--missing {
-    background: #fff3cd;
-    color: #856404;
-    border-color: #ffeeba;
+  background: #fff3cd;
+  color: #856404;
+  border-color: #ffeeba;
 }
 
 .roi-context--neutral {
-    background: #f3f4f6;
-    color: #374151;
-    border-color: #e5e7eb;
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #e5e7eb;
 }
 
 .roi-box:hover {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
 }
 
 .roi-metrics-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .roi-metric {
-    flex: 1 1 200px;
-    min-width: 0;
+  flex: 1 1 200px;
+  min-width: 0;
 }
 
 .roi-metric-label {
-    font-size: 12px;
-    color: #666;
-    text-transform: uppercase;
-    font-weight: 700;
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .roi-metric-value {
-    font-size: 24px;
-    font-weight: 800;
-    color: #111;
-    line-height: 1.2;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.2;
 }
 
 .roi-metric-note {
-    font-size: 11px;
-    color: #999;
+  font-size: 11px;
+  color: #999;
 }
 
 .roi-metric-note--tone {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .roi-metric-value--accent {
-    font-size: 32px;
-    font-weight: 900;
+  font-size: 32px;
+  font-weight: 900;
 }
 
 .roi-tone-positive {
-    color: #059669;
+  color: #059669;
 }
 
 .roi-tone-warn {
-    color: #d97706;
+  color: #d97706;
 }
 
 .roi-metrics-divider {
-    width: 1px;
-    height: 50px;
-    background: #eee;
-    flex: 0 0 1px;
+  width: 1px;
+  height: 50px;
+  background: #eee;
+  flex: 0 0 1px;
 }
 
 @media (max-width: 640px) {
@@ -3215,7 +3280,11 @@
 :root[data-theme="dark"] .track-cost-preview,
 :root[data-theme="dark"] .finance-option-total,
 :root[data-theme="dark"] .finance-track-group {
-  background: linear-gradient(135deg, rgba(87, 21, 219, 0.18), rgba(24, 24, 32, 0.96));
+  background: linear-gradient(
+    135deg,
+    rgba(87, 21, 219, 0.18),
+    rgba(24, 24, 32, 0.96)
+  );
   border-color: rgba(168, 85, 247, 0.22);
   color: #ededed;
 }
@@ -3243,7 +3312,7 @@
 :root[data-theme="dark"] .finance-option-card {
   background: linear-gradient(180deg, #1a1820, #141418);
   border-color: rgba(168, 85, 247, 0.2);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
 }
 
 :root[data-theme="dark"] .admission-option-card--grant,
@@ -3253,7 +3322,11 @@
 }
 
 :root[data-theme="dark"] .uni-tags-wrap {
-  background: linear-gradient(180deg, rgba(140, 110, 255, 0.1), rgba(140, 110, 255, 0.03));
+  background: linear-gradient(
+    180deg,
+    rgba(140, 110, 255, 0.1),
+    rgba(140, 110, 255, 0.03)
+  );
   border-color: #3f3f3f;
 }
 
@@ -3584,7 +3657,11 @@
 :root[data-theme="dark"] .admissions-overview,
 :root[data-theme="dark"] .admissions-programs-block {
   border-color: rgba(154, 122, 255, 0.28);
-  background: linear-gradient(180deg, rgba(125, 60, 255, 0.14), rgba(125, 60, 255, 0.05));
+  background: linear-gradient(
+    180deg,
+    rgba(125, 60, 255, 0.14),
+    rgba(125, 60, 255, 0.05)
+  );
 }
 
 :root[data-theme="dark"] .admissions-section-title,
@@ -3713,7 +3790,11 @@
 
 :root[data-theme="dark"] .admission-filter-row {
   border-color: rgba(168, 85, 247, 0.22);
-  background: linear-gradient(180deg, rgba(168, 85, 247, 0.16), rgba(19, 19, 24, 0.94));
+  background: linear-gradient(
+    180deg,
+    rgba(168, 85, 247, 0.16),
+    rgba(19, 19, 24, 0.94)
+  );
 }
 
 :root[data-theme="dark"] .admission-filter-pill--grant,
@@ -3738,7 +3819,11 @@
 
 :root[data-theme="dark"] .track-funding-options-block {
   border-color: rgba(168, 85, 247, 0.18);
-  background: linear-gradient(180deg, rgba(94, 36, 182, 0.14), rgba(18, 18, 24, 0.92));
+  background: linear-gradient(
+    180deg,
+    rgba(94, 36, 182, 0.14),
+    rgba(18, 18, 24, 0.92)
+  );
 }
 
 :root[data-theme="dark"] .chance-track-chip.chance-high {
@@ -4093,7 +4178,11 @@
 }
 
 .d-cover-overlay {
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.34));
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.08),
+    rgba(15, 23, 42, 0.34)
+  );
 }
 
 .d-cover-logo {
@@ -4326,8 +4415,6 @@
   background: var(--accent);
 }
 
-
-
 .admission-option-card:hover,
 .finance-option-card:hover {
   border-color: rgba(79, 70, 229, 0.18);
@@ -4344,8 +4431,6 @@
 .finance-option-card--grant::before {
   background: #10b981;
 }
-
-
 
 .track-cost-preview,
 .track-extra-req,
@@ -4470,8 +4555,6 @@
   grid-template-columns: 1fr;
 }
 
-
-
 .finance-header,
 .track-header {
   align-items: flex-start;
@@ -4585,7 +4668,7 @@
     margin-left: 0;
     margin-top: 14px;
   }
-  
+
   .d-site-link {
     width: 100%;
     height: auto;
@@ -4628,11 +4711,11 @@
     width: 100%;
     text-align: left;
   }
-  
+
   .d-quick-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .d-cover {
     aspect-ratio: 16 / 9;
   }
@@ -5041,7 +5124,8 @@
   box-shadow: none;
 }
 
-:root[data-theme="dark"] .admission-option-card:has(.track-select-btn.is-active) {
+:root[data-theme="dark"]
+  .admission-option-card:has(.track-select-btn.is-active) {
   border-color: rgba(129, 140, 248, 0.42);
   box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.12);
 }
@@ -5166,7 +5250,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .d-tab-btn.active::after {
-    animation: motion-underline-snap var(--motion-fast) var(--motion-ease-emphasized) both;
+    animation: motion-underline-snap var(--motion-fast)
+      var(--motion-ease-emphasized) both;
     transform-origin: left center;
   }
 
@@ -5186,7 +5271,8 @@
     border-radius: inherit;
     opacity: 0;
     transform: scale(0.985);
-    animation: motion-state-ring var(--motion-slow) var(--motion-ease-emphasized) both;
+    animation: motion-state-ring var(--motion-slow)
+      var(--motion-ease-emphasized) both;
     pointer-events: none;
   }
 }
@@ -5641,7 +5727,12 @@
 /* ===== 2026 Detail Light Theme Parity ===== */
 :root:not([data-theme="dark"]) .d-page-scope {
   background:
-    linear-gradient(135deg, rgba(87, 21, 219, 0.08), rgba(87, 21, 219, 0.018) 44%, transparent),
+    linear-gradient(
+      135deg,
+      rgba(87, 21, 219, 0.08),
+      rgba(87, 21, 219, 0.018) 44%,
+      transparent
+    ),
     var(--card);
   border-color: var(--line-strong);
   border-left-color: var(--accent);
@@ -5693,7 +5784,8 @@
   border-color: var(--line-strong);
 }
 
-:root:not([data-theme="dark"]) .admission-option-card:has(.track-select-btn.is-active),
+:root:not([data-theme="dark"])
+  .admission-option-card:has(.track-select-btn.is-active),
 :root:not([data-theme="dark"]) .track-card:has(.track-select-btn.is-active) {
   background-color: #f7f4ff;
   border-color: rgba(87, 21, 219, 0.46);
@@ -5795,10 +5887,11 @@
 }
 
 :root:not([data-theme="dark"]) .total-price-card,
-:root:not([data-theme="dark"]) .admission-option-card:has(.track-select-btn.is-active),
+:root:not([data-theme="dark"])
+  .admission-option-card:has(.track-select-btn.is-active),
 :root:not([data-theme="dark"]) .track-card:has(.track-select-btn.is-active) {
   background: rgba(87, 21, 219, 0.07);
-  border-color: rgba(87, 21, 219, 0.30);
+  border-color: rgba(87, 21, 219, 0.3);
 }
 
 /* =========================================
