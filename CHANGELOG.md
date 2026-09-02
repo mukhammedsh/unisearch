@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 4.9.10 (2026-09-02) - Dependency Updates and CI Toolchain Upgrades
+- Upgraded GitHub Actions workflows to `@v7` (`actions/checkout@v7`, `actions/setup-node@v7`, `actions/setup-python@v7`) across all workflows (PR #58).
+- Updated backend production and development dependencies (`fastapi 0.139.0`, `starlette 1.3.1`, `uvicorn 0.50.0`, `typing-extensions 4.16.0`, `scikit-learn 1.9.0`, `torch 2.12.1+cpu`, `sentence-transformers 5.6.0`, `redis 8.0.1`, `prometheus-fastapi-instrumentator 8.0.2`, `sentry-sdk 2.64.0`, `Pillow 12.3.0`) (PR #56).
+- Upgraded test suite runner `@playwright/test` to `1.61.0` (PR #52).
+
 ## 4.9.9 (2026-06-19) - Compare Admission and Badges Rework
 - Reworked the university comparison view to allow selecting admission choices directly within the comparison interface, supporting a new compact mode.
 - Unified and centered all project badges (UniChance, Low confidence, Paid, etc.) across the site, applying consistent borders and clean theme variables.
