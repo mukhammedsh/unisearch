@@ -4,29 +4,11 @@
   --accent: #5715db;
   --accent2: var(--accent);
   --accent-highlight: #7d3cff;
-  --accent-soft: rgba(87, 21, 219, 0.12);
-  --accent-soft-strong: rgba(87, 21, 219, 0.18);
-  --accent-panel: #f7f7ff;
-  --grant-soft: #ecfdf5;
-  --grant-soft-strong: #d1fae5;
-  --bg: #f6f7fb;
-  --card: #ffffff;
-  --text: #111;
-  --muted: rgba(0, 0, 0, 0.58);
-  --line: rgba(0, 0, 0, 0.08);
+  --muted: var(--text-muted, #64748b);
   --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 :root[data-theme="dark"] {
-  --accent-soft: rgba(87, 21, 219, 0.18);
-  --accent-soft-strong: rgba(87, 21, 219, 0.26);
-  --accent-panel: #22172e;
-  --grant-soft: #15241c;
-  --grant-soft-strong: #183226;
-  --bg: #0f0f0f;
-  --card: #1a1a1a;
-  --text: #ededed;
-  --muted: rgba(237, 237, 237, 0.72);
-  --line: #323232;
+  --muted: var(--text-muted, #94a3b8);
   --shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
 }
 
@@ -4112,36 +4094,6 @@
 }
 
 /* ===== 2026 University Refresh ===== */
-:root {
-  --accent: #5715db;
-  --accent2: var(--accent);
-  --accent-highlight: #7d3cff;
-  --accent-soft: rgba(87, 21, 219, 0.12);
-  --accent-soft-strong: rgba(87, 21, 219, 0.18);
-  --accent-panel: #f7f7ff;
-  --grant-soft: #effaf4;
-  --grant-soft-strong: #dcf4e4;
-  --bg: #eef2f7;
-  --card: #ffffff;
-  --text: #111827;
-  --muted: #667085;
-  --line: rgba(17, 24, 39, 0.08);
-  --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-}
-
-:root[data-theme="dark"] {
-  --accent-soft: rgba(87, 21, 219, 0.16);
-  --accent-soft-strong: rgba(87, 21, 219, 0.24);
-  --accent-panel: #211831;
-  --grant-soft: #16241d;
-  --grant-soft-strong: #1f372b;
-  --bg: #0f1012;
-  --card: #17181a;
-  --text: #f3f4f6;
-  --muted: #a9adb7;
-  --line: rgba(255, 255, 255, 0.08);
-  --shadow: 0 20px 44px rgba(0, 0, 0, 0.34);
-}
 
 .d-page {
   background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
@@ -5067,7 +5019,20 @@
   color: var(--text);
 }
 
-:root[data-theme="dark"] .d-page-scope,
+:root[data-theme="dark"] .d-page-scope {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(87, 21, 219, 0.16),
+      rgba(87, 21, 219, 0.04) 44%,
+      transparent
+    ),
+    var(--surface-solid);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  box-shadow: none;
+}
+
 :root[data-theme="dark"] .d-card,
 :root[data-theme="dark"] .d-head,
 :root[data-theme="dark"] .d-tabs,
@@ -5088,7 +5053,6 @@
 :root[data-theme="dark"] .finance-option-total,
 :root[data-theme="dark"] .track-extra-req,
 :root[data-theme="dark"] .track-stats-box,
-:root[data-theme="dark"] .scholarship-card,
 :root[data-theme="dark"] .total-price-card,
 :root[data-theme="dark"] .roi-box,
 :root[data-theme="dark"] .admissions-overview,
@@ -5099,6 +5063,22 @@
   background-image: none;
   border-color: var(--line);
   box-shadow: none;
+}
+
+:root[data-theme="dark"] .finance-track-group--grant,
+:root[data-theme="dark"] .finance-option-card--grant,
+:root[data-theme="dark"] .admission-option-card--grant,
+:root[data-theme="dark"] .track-card--grant,
+:root[data-theme="dark"] .scholarship-card {
+  background: var(--grant-soft);
+  border-color: rgba(16, 185, 129, 0.32);
+}
+
+:root[data-theme="dark"]
+  .admission-option-card:has(.track-select-btn.is-active),
+:root[data-theme="dark"] .track-card:has(.track-select-btn.is-active) {
+  background: rgba(87, 21, 219, 0.16);
+  border-color: rgba(87, 21, 219, 0.52);
 }
 
 :root[data-theme="dark"] .chance-panel,
@@ -5658,15 +5638,7 @@
   margin-top: 0;
 }
 
-:root:not([data-theme="dark"]) .d-page {
-  --bg: #e9eef6;
-  --card: #ffffff;
-  --line: rgba(17, 24, 39, 0.15);
-  --line-strong: rgba(17, 24, 39, 0.28);
-  --surface-soft: #f5f7fb;
-  --accent-panel: #f3efff;
-  --shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
-}
+
 
 :root:not([data-theme="dark"]) #tab-finance .finance-box,
 :root:not([data-theme="dark"]) #tab-admission .d-box,
@@ -5734,7 +5706,7 @@
       transparent
     ),
     var(--card);
-  border-color: var(--line-strong);
+  border-color: var(--line);
   border-left-color: var(--accent);
 }
 
@@ -5743,16 +5715,16 @@
 :root:not([data-theme="dark"]) .d-tabs,
 :root:not([data-theme="dark"]) .d-tab-content {
   background: var(--card);
-  border-color: var(--line-strong);
+  border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .d-tabs {
-  border-top-color: var(--line-strong);
+  border-top-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .d-tab-content,
 :root:not([data-theme="dark"]) #tab-general .d-box + .d-box {
-  border-top-color: var(--line-strong);
+  border-top-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .d-tab-btn.active,
@@ -5781,7 +5753,7 @@
 :root:not([data-theme="dark"]) .track-lang-rules,
 :root:not([data-theme="dark"]) .track-lang-rule-card {
   background: var(--surface-soft);
-  border-color: var(--line-strong);
+  border-color: var(--line);
 }
 
 :root:not([data-theme="dark"])
@@ -5813,15 +5785,6 @@
 }
 
 /* ===== 2026 Detail Light Dark-Parity Pass ===== */
-:root:not([data-theme="dark"]) .d-page {
-  --bg: #f4f5f6;
-  --card: #ffffff;
-  --line: rgba(0, 0, 0, 0.09);
-  --line-strong: rgba(0, 0, 0, 0.14);
-  --surface-soft: #f6f7f8;
-  --accent-panel: rgba(87, 21, 219, 0.08);
-  --shadow: none;
-}
 
 :root:not([data-theme="dark"]) body[data-page="university"],
 :root:not([data-theme="dark"]) .d-page {

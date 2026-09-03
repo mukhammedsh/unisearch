@@ -170,7 +170,7 @@
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid var(--line);
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     transition:
         transform var(--motion-fast) var(--motion-ease-standard),
@@ -427,39 +427,62 @@
     background: linear-gradient(120deg, rgba(23, 24, 26, 0.72), rgba(23, 24, 26, 0.55));
 }
 
-:root[data-theme="dark"] .rank-badge,
 :root[data-theme="dark"] .rank-source {
     background: var(--surface-soft);
     border-color: var(--line);
+    color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .rank-badge {
+    background: rgba(87, 21, 219, 0.16);
+    border: 1px solid rgba(87, 21, 219, 0.35);
+    color: #c4b5fd;
+}
+
+:root[data-theme="dark"] .rank-badge b {
+    color: #ede9fe;
 }
 
 :root[data-theme="dark"] .rank-logo {
     background: #ffffff;
-    border-color: #d4d4d4;
+    border-color: var(--line);
 }
 
 :root[data-theme="dark"] .rank-num {
-    color: #9a9a9a;
+    color: var(--text-muted);
 }
 
 :root[data-theme="dark"] .rank-1 {
-    color: #FFD700;
+    color: #fbbf24;
+    font-weight: 800;
+    text-shadow: 0 0 14px rgba(251, 191, 36, 0.35);
 }
 
 :root[data-theme="dark"] .rank-2 {
-    color: #C0C0C0;
+    color: #cbd5e1;
+    font-weight: 800;
+    text-shadow: 0 0 14px rgba(203, 213, 225, 0.3);
 }
 
 :root[data-theme="dark"] .rank-3 {
-    color: #CD7F32;
+    color: #fb923c;
+    font-weight: 800;
+    text-shadow: 0 0 14px rgba(251, 146, 60, 0.35);
 }
 
-:root[data-theme="dark"] .rank-badge {
-    color: #e5e5e5;
+:root[data-theme="dark"] .rank-card:has(.rank-1) {
+    border-color: rgba(251, 191, 36, 0.36);
+    background: linear-gradient(180deg, rgba(251, 191, 36, 0.06), transparent 60%), var(--surface-solid);
 }
 
-:root[data-theme="dark"] .rank-badge b {
-    color: #f2f2f2;
+:root[data-theme="dark"] .rank-card:has(.rank-2) {
+    border-color: rgba(203, 213, 225, 0.32);
+    background: linear-gradient(180deg, rgba(203, 213, 225, 0.05), transparent 60%), var(--surface-solid);
+}
+
+:root[data-theme="dark"] .rank-card:has(.rank-3) {
+    border-color: rgba(251, 146, 60, 0.32);
+    background: linear-gradient(180deg, rgba(251, 146, 60, 0.05), transparent 60%), var(--surface-solid);
 }
 
 :root[data-theme="dark"] .rank-error {
@@ -542,19 +565,35 @@
 .rank-2,
 .rank-3 {
     font-size: 30px;
+    font-weight: 800;
     text-shadow: none;
 }
 
 .rank-1 {
-    color: #d4a017;
+    color: #d97706;
 }
 
 .rank-2 {
-    color: #8f98a3;
+    color: #475569;
 }
 
 .rank-3 {
-    color: #b4692d;
+    color: #c2410c;
+}
+
+.rank-card:has(.rank-1) {
+    border-color: rgba(217, 119, 6, 0.35);
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.05), transparent 60%), var(--surface-solid);
+}
+
+.rank-card:has(.rank-2) {
+    border-color: rgba(100, 116, 139, 0.30);
+    background: linear-gradient(180deg, rgba(148, 163, 184, 0.05), transparent 60%), var(--surface-solid);
+}
+
+.rank-card:has(.rank-3) {
+    border-color: rgba(194, 65, 12, 0.30);
+    background: linear-gradient(180deg, rgba(234, 88, 12, 0.05), transparent 60%), var(--surface-solid);
 }
 
 .rank-logo {
@@ -830,7 +869,7 @@
 :root:not([data-theme="dark"]) .rank-card,
 :root:not([data-theme="dark"]) .rank-search-suggestions {
     background: var(--surface-solid);
-    border-color: var(--line-strong);
+    border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .rank-card {
@@ -852,7 +891,7 @@
 :root:not([data-theme="dark"]) .rank-source,
 :root:not([data-theme="dark"]) .rank-search-suggestion {
     background: var(--surface-soft);
-    border-color: var(--line-strong);
+    border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .rank-logo {
@@ -891,27 +930,44 @@
     box-shadow: none;
 }
 
-:root:not([data-theme="dark"]) .rank-card,
-:root:not([data-theme="dark"]) .rank-card:hover {
+:root:not([data-theme="dark"]) .rank-card:not(:has(.rank-1)):not(:has(.rank-2)):not(:has(.rank-3)),
+:root:not([data-theme="dark"]) .rank-card:not(:has(.rank-1)):not(:has(.rank-2)):not(:has(.rank-3)):hover {
     background: var(--surface-solid);
 }
 
 :root:not([data-theme="dark"]) .rank-card:hover {
-    border-color: rgba(87, 21, 219, 0.24);
+    border-color: rgba(87, 21, 219, 0.28);
 }
 
 :root:not([data-theme="dark"]) .rank-logo,
-:root:not([data-theme="dark"]) .rank-badge,
 :root:not([data-theme="dark"]) .rank-source,
 :root:not([data-theme="dark"]) .rank-search-suggestion {
     background: var(--surface-soft);
     border-color: var(--line);
 }
 
+:root:not([data-theme="dark"]) .rank-badge {
+    background: rgba(87, 21, 219, 0.08);
+    border: 1px solid rgba(87, 21, 219, 0.24);
+    color: var(--accent);
+}
+
 :root:not([data-theme="dark"]) .rank-logo {
     background: #ffffff;
 }
 
-:root:not([data-theme="dark"]) .rank-num {
-    color: #555555;
+:root:not([data-theme="dark"]) .rank-num:not(.rank-1):not(.rank-2):not(.rank-3) {
+    color: var(--text-muted);
+}
+
+:root:not([data-theme="dark"]) .rank-1 {
+    color: #d97706;
+}
+
+:root:not([data-theme="dark"]) .rank-2 {
+    color: #475569;
+}
+
+:root:not([data-theme="dark"]) .rank-3 {
+    color: #c2410c;
 }
