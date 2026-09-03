@@ -1,16 +1,16 @@
-body[data-page="error-404"]{
+body[data-page="error-404"] {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-body[data-page="error-404"] main.error-page{
+body[data-page="error-404"] main.error-page {
   animation: none !important;
   opacity: 1;
   transform: none;
 }
 
-.error-page{
+.error-page {
   flex: 1 0 auto;
   width: 100%;
   max-width: 1180px;
@@ -21,27 +21,22 @@ body[data-page="error-404"] main.error-page{
   justify-content: center;
 }
 
-.error-shell{
+.error-shell {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.error-main,
-.error-panel,
-.error-quick{
+.error-main {
+  width: min(880px, 100%);
+  padding: 52px 56px;
+  text-align: center;
   border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--surface-solid);
 }
 
-.error-main{
-  width: min(880px, 100%);
-  padding: 52px 56px;
-  text-align: center;
-}
-
-.error-kicker{
+.error-kicker {
   margin: 0 0 14px;
   font-size: clamp(28px, 5vw, 56px);
   line-height: 1;
@@ -51,7 +46,7 @@ body[data-page="error-404"] main.error-page{
   color: var(--accent);
 }
 
-.error-title{
+.error-title {
   max-width: none;
   margin: 0 0 16px;
   font-size: clamp(34px, 5.6vw, 68px);
@@ -59,7 +54,7 @@ body[data-page="error-404"] main.error-page{
   letter-spacing: -0.06em;
 }
 
-.error-lead{
+.error-lead {
   max-width: 720px;
   margin: 0 auto;
   font-size: 18px;
@@ -67,7 +62,7 @@ body[data-page="error-404"] main.error-page{
   color: var(--text-muted);
 }
 
-.error-actions{
+.error-actions {
   margin-top: 34px;
   display: flex;
   flex-wrap: wrap;
@@ -75,7 +70,7 @@ body[data-page="error-404"] main.error-page{
   gap: 10px;
 }
 
-.error-btn{
+.error-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -93,68 +88,63 @@ body[data-page="error-404"] main.error-page{
     transform var(--motion-snappy) var(--motion-ease-standard);
 }
 
-.error-btn:hover{
+.error-btn:hover {
   border-color: var(--accent);
 }
 
-.error-btn--primary{
+.error-btn--primary {
   color: #ffffff;
   background: var(--accent);
 }
 
-.error-btn--primary:hover{
+.error-btn--primary:hover {
   background: var(--accent-strong);
 }
 
-.error-btn--secondary{
+.error-btn--secondary {
   color: var(--text);
   border-color: var(--line);
   background: var(--surface-soft);
 }
 
-.error-btn--secondary:hover{
+.error-btn--secondary:hover {
   border-color: rgba(79, 70, 229, 0.24);
   background: rgba(79, 70, 229, 0.04);
 }
 
-@media (max-width: 640px){
-  .error-page{
+@media (max-width: 640px) {
+  .error-page {
     padding: 0 12px;
   }
 
-  .error-main{
+  .error-main {
     border-radius: 20px;
     padding: 24px 20px;
   }
 
-  .error-actions{
+  .error-actions {
     flex-direction: column;
   }
 
-  .error-btn{
+  .error-btn {
     width: 100%;
   }
-
 }
 
-@media (prefers-reduced-motion: reduce){
-  .error-btn{
+@media (prefers-reduced-motion: reduce) {
+  .error-btn {
     transition: none;
   }
 }
 
-:root[data-theme="dark"] .error-main{
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .error-main{
+:root[data-theme="dark"] .error-main {
   background: var(--surface);
 }
 
-:root[data-theme="dark"] .error-btn--secondary{
+:root[data-theme="dark"] .error-btn--secondary {
   background: rgba(255, 255, 255, 0.03);
 }
 
-:root[data-theme="dark"] .error-btn--secondary:hover{
+:root[data-theme="dark"] .error-btn--secondary:hover {
   background: rgba(255, 255, 255, 0.05);
 }

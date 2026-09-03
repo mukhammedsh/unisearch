@@ -1899,61 +1899,6 @@ html, body {
   to { transform: translate3d(24px, 0, 0); opacity: 0; }
 }
 
-/* ===== Hero ===== */
-.hero {
-  padding: 120px 20px 80px;
-  text-align: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  color: #ffffff;
-}
-
-.hero h1 {
-  font-size: 44px;
-  margin-bottom: 20px;
-}
-
-.hero p {
-  font-size: 20px;
-  max-width: 900px;
-  margin: 0 auto 30px;
-}
-
-.hero-btn {
-  display: inline-block;
-  background: #ffffff;
-  color: var(--accent);
-  padding: 14px 26px;
-  border-radius: 10px;
-  font-weight: 700;
-}
-
-.hero-btn:hover {
-  background: #f0f0f0;
-}
-
-/* ===== Features ===== */
-.features {
-  max-width: 1100px;
-  margin: 60px auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.feature-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-  text-align: center;
-}
-
-.feature-card h3 {
-  color: var(--accent);
-  margin-bottom: 10px;
-}
-
 /* --- Custom Select (Global dropdown styles) --- */
 .custom-select-wrapper {
   position: relative;
@@ -3078,29 +3023,6 @@ body.route-loading main {
   }
 }
 
-.skeleton-bg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  display: flex;
-  flex-direction: column;
-  padding: 80px 5% 20px;
-  gap: 30px;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.5;
-}
-.skeleton-bg--row {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-}
-.skeleton-bg--grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  width: 100%;
-}
 .skeleton-block {
   background-color: var(--skeleton-base);
   background-image: linear-gradient(
@@ -3130,32 +3052,6 @@ body.route-loading main {
   animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
-/* Common Skeleton Shapes */
-.skel-header-bar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 64px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0;
-}
-.skel-sidebar-col {
-  width: 280px;
-  display: none;
-}
-@media (min-width: 900px) {
-  .skel-sidebar-col { display: flex; flex-direction: column; gap: 20px; }
-}
-.skel-content-col {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.skel-title { height: 40px; width: 60%; border-radius: 6px; }
-.skel-text { height: 20px; width: 100%; border-radius: 4px; }
-.skel-text-short { height: 20px; width: 70%; border-radius: 4px; }
-.skel-card { height: 200px; width: 100%; border-radius: 12px; }
-.skel-hero { height: 350px; width: 100%; border-radius: 24px; }
 /* Error / No Connection Screen */
 .error-screen {
   display: flex;
@@ -3909,71 +3805,6 @@ canvas {
 
   .navbar-logo-link {
     max-width: min(32vw, 132px);
-  }
-}
-
-@media (max-width: 420px) {
-  .navbar {
-    gap: 6px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .navbar-left {
-    flex: 0 0 auto;
-    width: min(30vw, 96px);
-  }
-
-  .logo {
-    height: 30px;
-    max-width: min(30vw, 96px);
-  }
-
-  .navbar-right {
-    gap: 4px;
-  }
-
-  .menu-btn,
-  .theme-btn,
-  .settings-trigger-btn,
-  .profile-trigger-btn,
-  .navbar-right .lang-control .custom-select-trigger {
-    flex-basis: 32px;
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    min-height: 32px;
-    border-radius: 10px;
-  }
-
-  .navbar-right .lang-control .custom-select-wrapper,
-  .navbar-right .lang-control .custom-select-trigger {
-    width: 54px;
-    min-width: 54px;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language {
-    padding: 0 5px;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language::after {
-    display: none;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
-    gap: 3px;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language img {
-    width: 18px;
-    height: 14px;
-  }
-}
-
-@media (max-width: 340px) {
-  .navbar-left {
-    flex: 0 0 100%;
-    width: 100%;
   }
 }
 
