@@ -322,6 +322,27 @@ export function initGuidePage() {
     if (scrollTicking) return;
     scrollTicking = true;
     window.requestAnimationFrame(() => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const windowHeight = window.innerHeight;
+      const docHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+
+      // 1. Самый верх страницы (первые 90px): гарантированно выбирается самый первый пункт
+      if (scrollY <= 90) {
+        activateSection(sections[0].id, { updateHash: true, scroll: false });
+        scrollTicking = false;
+        return;
+      }
+
+      // 2. Самый низ страницы (с запасом 60px): гарантированно выбирается самый последний пункт
+      if ((windowHeight + scrollY) >= (docHeight - 60)) {
+        activateSection(sections[sections.length - 1].id, { updateHash: true, scroll: false });
+        scrollTicking = false;
+        return;
+      }
+
       const viewportTop = 110;
       const viewportBottom = window.innerHeight - 120;
       let currentId = sections[0]?.id || "";

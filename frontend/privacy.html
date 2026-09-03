@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <link rel="icon" href="images/minilogo.png" type="image/png">
+  <title data-i18n="title.privacy">Privacy Policy | UniSearch</title>
+  <script src="javascript/theme-init.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/legal.css" />
+</head>
+<body data-page="privacy">
+  <div id="siteInitialLoader" class="site-initial-loader">
+    <div class="site-initial-loader__spinner"></div>
+  </div>
+
+  <main class="legal-page" id="legalPage">
+    <section class="legal-hero">
+      <span class="legal-hero__badge" data-i18n="privacy.hero.badge">Privacy &amp; Data</span>
+      <h1 data-i18n="privacy.hero.title">Privacy Policy</h1>
+      <p class="legal-hero__subtitle" data-i18n="privacy.hero.subtitle">
+        How UniSearch handles information, stores data locally on your device, and maintains security.
+      </p>
+    </section>
+
+    <div class="legal-layout">
+      <aside class="legal-sidebar">
+        <nav class="legal-nav" aria-label="Privacy sections">
+          <a href="#privacy-intro" data-i18n="privacy.nav.intro">1. Principles</a>
+          <a href="#privacy-local-storage" data-i18n="privacy.nav.local_storage">2. Local Storage</a>
+          <a href="#privacy-google-auth" data-i18n="privacy.nav.google_auth">3. Google Account</a>
+          <a href="#privacy-processing" data-i18n="privacy.nav.processing">4. Server Processing</a>
+          <a href="#privacy-logs" data-i18n="privacy.nav.logs">5. Technical Logs</a>
+          <a href="#privacy-trackers" data-i18n="privacy.nav.trackers">6. Cookies &amp; Tracking</a>
+          <a href="#privacy-rights" data-i18n="privacy.nav.rights">7. Rights &amp; Deletion</a>
+          <a href="#privacy-contacts" data-i18n="privacy.nav.contacts">8. Contacts</a>
+        </nav>
+      </aside>
+
+      <div class="legal-content">
+        <section id="privacy-intro" class="legal-section">
+          <h2 data-i18n="privacy.intro.title">1. Core Principles &amp; Data Minimization</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.intro.p1">
+              UniSearch is built with a privacy-first mindset. Browsing our catalog does not require account registration, nor do we request national IDs, phone numbers, or payment credentials.
+            </p>
+            <p data-i18n="privacy.intro.p2">
+              The platform supports two modes of operation: an anonymous guest mode (default) and an authenticated mode for cross-device profile synchronization.
+            </p>
+          </div>
+        </section>
+
+        <section id="privacy-local-storage" class="legal-section">
+          <h2 data-i18n="privacy.local_storage.title">2. Guest Mode &amp; Client-Side Storage</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.local_storage.p1">
+              When using UniSearch as a guest, your academic metrics and preferences remain strictly on your device inside browser storage (localStorage and sessionStorage). This includes:
+            </p>
+            <ul class="legal-list">
+              <li data-i18n="privacy.local_storage.li1">Academic metrics (GPA, test scores such as SAT, ACT, IELTS, TOEFL, and others).</li>
+              <li data-i18n="privacy.local_storage.li2">Declared academic fields of interest for personalized recommendations.</li>
+              <li data-i18n="privacy.local_storage.li3">Shortlisted universities and recently viewed history.</li>
+              <li data-i18n="privacy.local_storage.li4">Display preferences (light or dark mode, UI language).</li>
+            </ul>
+            <p data-i18n="privacy.local_storage.p2">
+              You maintain full custody of these records. You can purge them at any time by clearing your browser cache or using the reset controls in settings.
+            </p>
+          </div>
+        </section>
+
+        <section id="privacy-google-auth" class="legal-section">
+          <h2 data-i18n="privacy.google_auth.title">3. Authentication via Third-Party Services (Google Sign-In)</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.google_auth.p1">
+              To synchronize saved universities and academic inputs across multiple devices, UniSearch provides optional sign-in through Google (Google Sign-In / OAuth 2.0).
+            </p>
+            <p data-i18n="privacy.google_auth.p2">
+              When authenticating via Google, our application receives only essential public profile details:
+            </p>
+            <ul class="legal-list">
+              <li data-i18n="privacy.google_auth.li1">Email address &mdash; to uniquely identify your user profile.</li>
+              <li data-i18n="privacy.google_auth.li2">Display name and profile picture &mdash; for display in the application navbar.</li>
+              <li data-i18n="privacy.google_auth.li3">Unique Google account identifier.</li>
+            </ul>
+            <div class="legal-callout legal-callout--info">
+              <p data-i18n="privacy.google_auth.callout">
+                UniSearch adheres to the Google API Services User Data Policy, including the Limited Use requirements. We never request or store your Google account password, and we do not sell or transfer Google user data to third parties or advertising brokers.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="privacy-processing" class="legal-section">
+          <h2 data-i18n="privacy.processing.title">4. Algorithmic Recommendations &amp; Server Processing</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.processing.p1">
+              When utilizing smart ranking features like UniFit or exam validations, anonymous numerical metrics are transmitted over secure HTTPS to the UniSearch backend.
+            </p>
+            <p data-i18n="privacy.processing.p2">
+              Calculations occur ephemerally in volatile memory (RAM) to return computed results. Your scores are not retained in persistent databases without your consent and are never tied to personal identifying records.
+            </p>
+          </div>
+        </section>
+
+        <section id="privacy-logs" class="legal-section">
+          <h2 data-i18n="privacy.logs.title">5. Technical Server Logs &amp; Infrastructure Security</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.logs.p1">
+              Standard HTTP network requests automatically log basic connection metadata: client IP address, User-Agent header, and request timestamp.
+            </p>
+            <p data-i18n="privacy.logs.p2">
+              This information is processed solely to safeguard platform infrastructure, mitigate denial-of-service attempts, and enforce API rate limits. Server logs are routinely rotated and purged.
+            </p>
+          </div>
+        </section>
+
+        <section id="privacy-trackers" class="legal-section">
+          <h2 data-i18n="privacy.trackers.title">6. Cookies &amp; Tracking Technology</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.trackers.p1">
+              UniSearch does not deploy commercial marketing trackers, cross-site profiling pixels, or intrusive tracking scripts.
+            </p>
+            <p data-i18n="privacy.trackers.p2">
+              Functional storage tokens are utilized strictly to preserve your interface preferences (such as language and color theme).
+            </p>
+          </div>
+        </section>
+
+        <section id="privacy-rights" class="legal-section">
+          <h2 data-i18n="privacy.rights.title">7. User Rights &amp; Data Erasure</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.rights.p1">
+              In accordance with global privacy principles (including GDPR and CCPA guidelines), you retain full rights to your data and privacy.
+            </p>
+            <p data-i18n="privacy.rights.p2">
+              For guest storage, clearing browser history completely removes all cached information. For synchronized accounts, you may revoke UniSearch permissions in your Google Security settings or request account deletion via support.
+            </p>
+          </div>
+        </section>
+
+        <section id="privacy-contacts" class="legal-section">
+          <h2 data-i18n="privacy.contacts.title">8. Contact &amp; Policy Updates</h2>
+          <div class="legal-doc">
+            <p data-i18n="privacy.contacts.p1">
+              We may update this Privacy Policy periodically as platform capabilities expand. The date of the latest revision is always indicated at the top of the page.
+            </p>
+            <p data-i18n="privacy.contacts.p2">
+              If you have questions or inquiries concerning data handling, contact us via email: unisearch@inbox.ru
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="env.js"></script>
+  <script src="config.js"></script>
+  <script type="module" src="javascript/main.js"></script>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-meta">
+        <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+        <nav class="footer-legal-links" aria-label="Legal navigation" data-i18n-aria-label="footer.legal_nav_aria">
+          <a href="privacy.html" data-route="privacy" data-i18n="footer.privacy">Privacy Policy</a>
+          <span class="footer-divider" aria-hidden="true">&bull;</span>
+          <a href="terms.html" data-route="terms" data-i18n="footer.terms">Terms of Use</a>
+        </nav>
+      </div>
+
+      <div class="social-links">
+        <a href="https://github.com/muxlex/unisearch" target="_blank" rel="noopener noreferrer">
+          <span class="footer-social-label">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -2051,6 +2051,37 @@ html, body {
     color: var(--text);
 }
 
+.footer-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+}
+
+.footer-legal-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-legal-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--motion-fast, 0.15s) ease;
+}
+
+.footer-legal-links a:hover {
+    color: var(--accent);
+}
+
+.footer-divider {
+    color: var(--line-strong, var(--line));
+    font-size: 11px;
+    user-select: none;
+}
+
 .social-links{
     display: inline-flex;
     align-items: center;
