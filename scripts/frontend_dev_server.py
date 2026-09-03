@@ -19,6 +19,10 @@ PRETTY_ROUTE_MAP = {
     "/guide.html": "guide.html",
     "/about": "about.html",
     "/about.html": "about.html",
+    "/privacy": "privacy.html",
+    "/privacy.html": "privacy.html",
+    "/terms": "terms.html",
+    "/terms.html": "terms.html",
     "/404": "404.html",
     "/404.html": "404.html",
 }
@@ -104,7 +108,20 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
     def _lookup_indexed_file(self, relative_path: str) -> Path | None:
         clean_relative = str(relative_path or "").replace("\\", "/").lstrip("/")
         file_index = getattr(self.server, "file_index", {})
-        return file_index.get(clean_relative)
+        if clean_relative in file_index:
+            return file_index[clean_relative]
+
+        base_dir = getattr(self, "directory", None)
+        if base_dir:
+            base_path = Path(base_dir).resolve()
+            candidate = (base_path / clean_relative).resolve()
+            try:
+                if candidate.is_file() and candidate.is_relative_to(base_path):
+                    file_index[clean_relative] = candidate
+                    return candidate
+            except (ValueError, OSError):
+                pass
+        return None
 
     def _send_file(self, file_path: Path, *, include_body: bool, status: int = 200) -> None:
         content_type = self.guess_type(str(file_path))

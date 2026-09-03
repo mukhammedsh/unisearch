@@ -1080,3 +1080,89 @@ admission.chance.factor.accessibility_signal.label: More accessible route
 admission.chance.factor.accessibility_signal.message: Published acceptance context indicates a more accessible admission route.
 admission.chance.factor.insufficient_data.label: Insufficient data
 admission.chance.factor.insufficient_data.message: There is not enough verified admission data to estimate this route.
+title.privacy: Privacy Policy | UniSearch
+title.terms: Terms of Use | UniSearch
+footer.privacy: Privacy Policy
+footer.terms: Terms of Use
+footer.legal_nav_aria: Legal navigation
+privacy.hero.badge: Privacy & Data
+privacy.hero.title: Privacy Policy
+privacy.hero.subtitle: How UniSearch handles information, stores data locally on your device, and maintains security.
+privacy.nav.intro: 1. Principles
+privacy.nav.local_storage: 2. Local Storage
+privacy.nav.google_auth: 3. Google Account
+privacy.nav.processing: 4. Server Processing
+privacy.nav.logs: 5. Technical Logs
+privacy.nav.trackers: 6. Cookies & Tracking
+privacy.nav.rights: 7. Rights & Deletion
+privacy.nav.contacts: 8. Contacts
+privacy.intro.title: 1. Core Principles & Data Minimization
+privacy.intro.p1: UniSearch is built with a privacy-first mindset. Browsing our catalog does not require account registration, nor do we request national IDs, phone numbers, or payment credentials.
+privacy.intro.p2: The platform supports two modes of operation: an anonymous guest mode (default) and an authenticated mode for cross-device profile synchronization.
+privacy.local_storage.title: 2. Guest Mode & Client-Side Storage
+privacy.local_storage.p1: When using UniSearch as a guest, your academic metrics and preferences remain strictly on your device inside browser storage (localStorage and sessionStorage). This includes:
+privacy.local_storage.li1: Academic metrics (GPA, test scores such as SAT, ACT, IELTS, TOEFL, and others).
+privacy.local_storage.li2: Declared academic fields of interest for personalized recommendations.
+privacy.local_storage.li3: Shortlisted universities and recently viewed history.
+privacy.local_storage.li4: Display preferences (light or dark mode, UI language).
+privacy.local_storage.p2: You maintain full custody of these records. You can purge them at any time by clearing your browser cache or using the reset controls in settings.
+privacy.google_auth.title: 3. Authentication via Third-Party Services (Google Sign-In)
+privacy.google_auth.p1: To synchronize saved universities and academic inputs across multiple devices, UniSearch provides optional sign-in through Google (Google Sign-In / OAuth 2.0).
+privacy.google_auth.p2: When authenticating via Google, our application receives only essential public profile details:
+privacy.google_auth.li1: Email address — to uniquely identify your user profile.
+privacy.google_auth.li2: Display name and profile picture — for display in the application navbar.
+privacy.google_auth.li3: Unique Google account identifier.
+privacy.google_auth.callout: UniSearch adheres to the Google API Services User Data Policy, including the Limited Use requirements. We never request or store your Google account password, and we do not sell or transfer Google user data to third parties or advertising brokers.
+privacy.processing.title: 4. Algorithmic Recommendations & Server Processing
+privacy.processing.p1: When utilizing smart ranking features like UniFit or exam validations, anonymous numerical metrics are transmitted over secure HTTPS to the UniSearch backend.
+privacy.processing.p2: Calculations occur ephemerally in volatile memory (RAM) to return computed results. Your scores are not retained in persistent databases without your consent and are never tied to personal identifying records.
+privacy.logs.title: 5. Technical Server Logs & Infrastructure Security
+privacy.logs.p1: Standard HTTP network requests automatically log basic connection metadata: client IP address, User-Agent header, and request timestamp.
+privacy.logs.p2: This information is processed solely to safeguard platform infrastructure, mitigate denial-of-service attempts, and enforce API rate limits. Server logs are routinely rotated and purged.
+privacy.trackers.title: 6. Cookies & Tracking Technology
+privacy.trackers.p1: UniSearch does not deploy commercial marketing trackers, cross-site profiling pixels, or intrusive tracking scripts.
+privacy.trackers.p2: Functional storage tokens are utilized strictly to preserve your interface preferences (such as language and color theme).
+privacy.rights.title: 7. User Rights & Data Erasure
+privacy.rights.p1: In accordance with global privacy principles (including GDPR and CCPA guidelines), you retain full rights to your data and privacy.
+privacy.rights.p2: For guest storage, clearing browser history completely removes all cached information. For synchronized accounts, you may revoke UniSearch permissions in your Google Security settings or request account deletion via support.
+privacy.contacts.title: 8. Contact & Policy Updates
+privacy.contacts.p1: We may update this Privacy Policy periodically as platform capabilities expand. The date of the latest revision is always indicated at the top of the page.
+privacy.contacts.p2: If you have questions or inquiries concerning data handling, contact us via email: unisearch@inbox.ru
+terms.hero.badge: Legal Information
+terms.hero.title: Terms of Use
+terms.hero.subtitle: Rules for using the UniSearch platform, informational status of admissions data, and terms of interaction.
+terms.nav.acceptance: 1. Acceptance of Terms
+terms.nav.purpose: 2. Service Purpose
+terms.nav.disclaimer: 3. Educational Disclaimer
+terms.nav.accounts: 4. User Accounts
+terms.nav.ip: 5. Intellectual Property
+terms.nav.acceptable_use: 6. Acceptable Use
+terms.nav.third_party: 7. Third-Party Links
+terms.nav.updates: 8. Updates & Contact
+terms.acceptance.title: 1. Acceptance of Terms
+terms.acceptance.p1: By accessing or using the UniSearch website and related tools, you acknowledge that you have read, understood, and agreed to these Terms of Use. If you do not agree, please discontinue using the service.
+terms.purpose.title: 2. Scope & Service Purpose
+terms.purpose.p1: UniSearch is an independent academic discovery and search workspace built to help prospective students research undergraduate programs, entrance requirements, tuition rates, and funding options.
+terms.purpose.p2: The catalog is strictly focused on undergraduate studies and aggregates officially published institutional data.
+terms.disclaimer.title: 3. Informational Nature & Educational Disclaimer
+terms.disclaimer.callout: Notice: UniSearch is not an admissions office and is not officially affiliated with the universities listed. Algorithmic scores are preliminary estimates and do not guarantee admission.
+terms.disclaimer.p1: All information presented on this platform (exam thresholds, minimum scores, application deadlines, tuition costs, and scholarships) is provided for general guidance only.
+terms.disclaimer.p2: UniFit (smart sorting) and UniChance (admission chance estimation) are algorithmic guides. They cannot and do not guarantee university acceptance, student visa grants, or financial aid awards.
+terms.disclaimer.p3: Universities may revise admission criteria, tuition rates, and application timelines without prior notice. Applicants bear sole responsibility for verifying final requirements directly on official university portals.
+terms.disclaimer.p4: UniSearch assumes no liability for admissions committee outcomes, missed application deadlines, or financial expenditures incurred by users.
+terms.accounts.title: 4. User Accounts & Security
+terms.accounts.p1: For convenient synchronization of profile metrics and bookmarks across devices, UniSearch may offer sign-in via third-party providers (including Google Sign-In).
+terms.accounts.p2: Users agree not to access accounts belonging to other individuals without authorization and remain responsible for maintaining access security on their personal devices.
+terms.ip.title: 5. Intellectual Property & Fair Use
+terms.ip.p1: University names, crests, official emblems, and campus photographs remain the exclusive trademarks and property of their respective academic institutions. They are utilized in UniSearch strictly for identification and non-commercial educational purposes under fair use doctrine.
+terms.ip.p2: Platform application source code, interface designs, layout architecture, and proprietary algorithms belong to the creators of UniSearch.
+terms.acceptable_use.title: 6. Acceptable Use Policy
+terms.acceptable_use.p1: When accessing or utilizing the platform, users agree not to engage in prohibited activities:
+terms.acceptable_use.li1: Attempting unauthorized access to server infrastructure or circumventing security controls.
+terms.acceptable_use.li2: Denial-of-service attempts, excessive request spamming, or aggressive automated scraping that bypasses API rate limit headers.
+terms.acceptable_use.li3: Using the service to transmit malware, malicious code, or unsolicited communications.
+terms.third_party.title: 7. Third-Party External Links
+terms.third_party.p1: UniSearch links to external university websites, application gateways, and educational resources. We do not manage external content or privacy policies and bear no responsibility for their operations.
+terms.updates.title: 8. Modifications & Contact Information
+terms.updates.p1: We reserve the right to revise these Terms at any time. The current version will always be published on this page with an updated timestamp.
+terms.updates.p2: For any questions or feedback concerning these terms, please contact us at: unisearch@inbox.ru

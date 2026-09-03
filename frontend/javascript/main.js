@@ -4,7 +4,7 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isRankingPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide, routePrivacy, routeTerms } from "./routes.js";
 
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
@@ -15,6 +15,8 @@ const routeModuleLoaders = {
   university: () => import("./pages/university.js"),
   ranking: () => import("./pages/ranking.js"),
   guide: () => import("./pages/guide.js"),
+  privacy: () => import("./pages/legal.js"),
+  terms: () => import("./pages/legal.js"),
 };
 const routeModulePromises = new Map();
 
@@ -124,6 +126,8 @@ function routePageFromPath(pathname) {
   if (isRankingPath(pathname)) return "ranking";
   if (isGuidePath(pathname)) return "guide";
   if (isAboutPath(pathname)) return "about";
+  if (isPrivacyPath(pathname)) return "privacy";
+  if (isTermsPath(pathname)) return "terms";
   return "";
 }
 
@@ -147,6 +151,8 @@ function currentRouteContext() {
     isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
     isRankingPage: Boolean(isRankingPath(path) || document.getElementById("rankingList")),
     isGuidePage: Boolean(isGuidePath(path) || document.getElementById("guidePage")),
+    isPrivacyPage: Boolean(normalizedPage === "privacy" || isPrivacyPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "privacy"),
+    isTermsPage: Boolean(normalizedPage === "terms" || isTermsPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "terms"),
   };
 }
 
@@ -262,6 +268,15 @@ async function initRoutePage(ctx = currentRouteContext()) {
   if (ctx.isRankingPage) {
     const module = await loadRouteModule("ranking");
     return module?.initRankingPage?.();
+  }
+  if (ctx.isPrivacyPage || ctx.isTermsPage) {
+    try {
+      const module = await loadRouteModule(ctx.isPrivacyPage ? "privacy" : "terms");
+      return module?.initLegalPage?.();
+    } catch (e) {
+      console.warn("Legal page interactive module failed to load, keeping static markup:", e);
+      return;
+    }
   }
   return initHomePageStats();
 }
@@ -411,6 +426,10 @@ function shouldHandleLinkClick(event, link) {
   const target = String(link.getAttribute("target") || "").trim().toLowerCase();
   if (target && target !== "_self") return false;
 
+  const rawHref = String(link.getAttribute("href") || "").trim();
+  if (rawHref.startsWith("#")) return false;
+  if (link.closest(".legal-nav, .guide-nav")) return false;
+
   const url = new URL(link.getAttribute("href") || "", window.location.href);
   if (!isAppRouteUrl(url)) return false;
 
@@ -506,7 +525,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("Initialization failed:", error);
     const mainEl = document.querySelector("main") || document.body;
-    if (mainEl && document.body.dataset.page !== "error-404") {
+    const page = String(document.body.dataset.page || "").trim().toLowerCase();
+    const isStaticInformationalPage = ["error-404", "privacy", "terms", "about"].includes(page);
+    if (mainEl && !isStaticInformationalPage) {
       renderNoConnection({
         targetEl: mainEl,
         onRetry: () => window.location.reload()

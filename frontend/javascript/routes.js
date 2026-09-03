@@ -78,6 +78,14 @@ export function routeAbout(queryOrParams = "") {
   return withQuery(usePrettyUrls() ? "/about" : "about.html", queryOrParams);
 }
 
+export function routePrivacy(queryOrParams = "") {
+  return withQuery(usePrettyUrls() ? "/privacy" : "privacy.html", queryOrParams);
+}
+
+export function routeTerms(queryOrParams = "") {
+  return withQuery(usePrettyUrls() ? "/terms" : "terms.html", queryOrParams);
+}
+
 export function routeUniversityDetail(universityId, queryOrParams = "") {
   const id = String(universityId || "").trim();
   if (!id) return routeUniversities(queryOrParams);
@@ -119,6 +127,16 @@ export function isGuidePath(pathname = "") {
 export function isAboutPath(pathname = "") {
   const path = normalizePath(pathname).toLowerCase();
   return /\/about(?:\.html)?$/.test(path);
+}
+
+export function isPrivacyPath(pathname = "") {
+  const path = normalizePath(pathname).toLowerCase();
+  return /\/privacy(?:\.html)?$/.test(path);
+}
+
+export function isTermsPath(pathname = "") {
+  const path = normalizePath(pathname).toLowerCase();
+  return /\/terms(?:\.html)?$/.test(path);
 }
 
 export function getUniversityIdFromPath(pathname = "") {
@@ -165,6 +183,8 @@ export function applyRouteLinks(root = document) {
     if (route === "compare") href = routeCompareSelection(params);
     if (route === "guide") href = routeGuide(params);
     if (route === "about") href = routeAbout(params);
+    if (route === "privacy") href = routePrivacy(params);
+    if (route === "terms") href = routeTerms(params);
 
     if (route === "university") {
       const rawId = String(link.getAttribute("data-route-id") || "").trim();
