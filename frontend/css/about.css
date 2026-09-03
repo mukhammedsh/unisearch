@@ -1,7 +1,12 @@
+/* ==========================================================================
+   UniSearch About Page Stylesheet
+   Direction: Calm Academic Workspace / Apple-Inspired Density & Typography
+   ========================================================================== */
+
 .about-page {
-  max-width: 1200px;
-  margin: 32px auto 80px;
-  padding: 0 18px;
+  max-width: 1440px;
+  margin: 20px auto 64px;
+  padding: 0 28px;
 }
 
 body[data-page="about"] {
@@ -12,34 +17,38 @@ body[data-page="about"] {
   background: var(--bg);
 }
 
+/* --------------------------------------------------------------------------
+   Main Container Shell (Clean panel, unified borders, no stacked gaps)
+   -------------------------------------------------------------------------- */
 .about-shell {
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 16px;
   background: var(--surface-solid);
   box-shadow: none;
-  padding: 34px 34px 28px;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .about-shell-section {
   margin-bottom: 0;
 }
 
-.about-shell-section + .about-shell-section {
-  margin-top: 16px;
-}
-
+/* Separator line without stacked margin (spacing controlled by flex gap) */
 .about-shell-divider {
   height: 1px;
-  margin: 14px 0;
+  margin: 0;
   background: var(--line);
+  border: 0;
 }
 
+/* --------------------------------------------------------------------------
+   Hero Section (Apple-like title & tight line-height copy)
+   -------------------------------------------------------------------------- */
 .about-hero {
   display: block;
-  padding-bottom: 2px;
+  padding-bottom: 0;
 }
 
 .about-hero-copy {
@@ -47,52 +56,51 @@ body[data-page="about"] {
   padding: 0;
 }
 
-.about-eyebrow,
 .about-kicker {
   margin: 0;
-  font-size: 11px;
+  font-size: 11.5px;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.about-title {
-  margin: 10px 0 12px;
-  max-width: 780px;
-  font-size: clamp(34px, 5vw, 58px);
-  line-height: 1.02;
-  letter-spacing: 0;
-  color: var(--text);
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .about-lead {
   margin: 0;
-  max-width: 680px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--text-muted);
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.34;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--text);
 }
 
+/* --------------------------------------------------------------------------
+   Proof Grid & Cards (Snug callout metrics)
+   -------------------------------------------------------------------------- */
 .about-proof-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .about-proof-card {
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--surface-soft);
-  padding: 14px;
+  padding: 12px 15px;
+  transition: border-color var(--motion-fast, 0.15s) ease;
+}
+
+.about-proof-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
 }
 
 .about-proof-label {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   font-size: 11px;
   line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -100,17 +108,21 @@ body[data-page="about"] {
 .about-proof-value {
   margin: 0;
   font-size: 14px;
-  line-height: 1.45;
-  font-weight: 700;
+  line-height: 1.42;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 
+/* --------------------------------------------------------------------------
+   Embedded Content Sections (Contacts & Team)
+   -------------------------------------------------------------------------- */
 .about-section {
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--surface);
   box-shadow: none;
-  padding: 24px;
+  padding: 20px;
 }
 
 .about-section--embedded {
@@ -122,48 +134,51 @@ body[data-page="about"] {
 }
 
 .about-section-head {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .about-section-head h2 {
-  margin: 6px 0 0;
-  font-size: clamp(24px, 3vw, 32px);
-  line-height: 1.15;
+  margin: 4px 0 0;
+  font-size: clamp(20px, 2.2vw, 24px);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
 
+/* Contacts */
 .about-contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
 }
 
 .about-contact-card {
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--surface-soft);
-  padding: 14px;
+  padding: 12px 16px;
   transition:
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard);
+    border-color var(--motion-fast, 0.15s) ease,
+    background-color var(--motion-fast, 0.15s) ease;
 }
 
 .about-contact-card:hover {
-  border-color: rgba(87, 21, 219, 0.24);
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
 }
 
 .contact-label {
-  margin: 0 0 8px;
-  font-size: 12px;
+  margin: 0 0 4px;
+  font-size: 11.5px;
   text-transform: uppercase;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .about-contact-card a {
   display: block;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 600;
   color: var(--accent);
   text-decoration: none;
@@ -171,55 +186,63 @@ body[data-page="about"] {
 }
 
 .contact-note {
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   color: var(--text-muted);
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
 }
 
+/* Team */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .team-card {
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--surface-soft);
-  padding: 14px;
+  padding: 14px 16px;
   transition:
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard);
+    border-color var(--motion-fast, 0.15s) ease,
+    background-color var(--motion-fast, 0.15s) ease;
 }
 
 .team-card:hover {
-  border-color: rgba(87, 21, 219, 0.24);
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
 }
 
 .team-card-body h3 {
   margin: 0;
-  font-size: 22px;
-  letter-spacing: 0;
-  line-height: 1.1;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
   color: var(--text);
 }
 
 .team-role {
-  margin: 4px 0 8px;
+  margin: 3px 0 6px;
   font-weight: 600;
   color: var(--text-muted);
-  font-size: 14px;
-  letter-spacing: 0;
+  font-size: 13.5px;
+  line-height: 1.35;
+  letter-spacing: -0.008em;
 }
 
 .team-bio {
   margin: 0;
   color: var(--text);
-  line-height: 1.45;
+  line-height: 1.44;
   font-size: 14px;
+  letter-spacing: -0.01em;
 }
 
+/* --------------------------------------------------------------------------
+   Animations & Responsive Breakpoints
+   -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   .about-shell,
   .about-shell-section,
@@ -237,49 +260,51 @@ body[data-page="about"] {
 }
 
 @media (max-width: 980px) {
-  .about-proof-grid,
-  .team-grid {
-    grid-template-columns: 1fr;
+  .about-page {
+    margin-top: 16px;
+    padding: 0 var(--mobile-safe-gutter, 16px);
   }
 
   .about-shell {
-    padding: 24px 22px;
+    padding: 20px 18px;
+    gap: 14px;
+  }
+
+  .about-proof-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
 @media (max-width: 640px) {
   .about-page {
-    margin-top: 16px;
+    margin-top: 12px;
     padding: 0 12px;
   }
 
   .about-shell {
-    padding: 18px 14px;
-    border-radius: 20px;
-  }
-
-  .about-shell-section + .about-shell-section {
-    margin-top: 12px;
-  }
-
-  .about-shell-divider {
-    margin: 12px 0;
-  }
-
-  .about-title {
-    font-size: 32px;
+    padding: 16px 14px;
+    border-radius: 14px;
+    gap: 12px;
   }
 
   .about-lead {
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: clamp(16px, 4.5vw, 19px);
+    line-height: 1.38;
+  }
+
+  .about-contact-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .team-card-body h3 {
-    font-size: 22px;
+    font-size: 17px;
   }
 
   .team-bio {
-    font-size: 14px;
+    font-size: 13.5px;
+    line-height: 1.42;
   }
 }
