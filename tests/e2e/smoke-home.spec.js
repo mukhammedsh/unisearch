@@ -16,3 +16,28 @@ test("home smoke: layout, stats, and profile modal are functional", async ({ pag
   await page.click(selectors.profileCloseBtn);
   await expect(page.locator(selectors.profileModal)).not.toHaveClass(/is-open/);
 });
+
+test("home responsive: no horizontal overflow across viewports", async ({ page }) => {
+  await markTourAsSeen(page);
+  const viewports = [
+    { width: 375, height: 667 },
+    { width: 768, height: 1024 },
+    { width: 1280, height: 800 },
+    { width: 1440, height: 900 },
+    { width: 1920, height: 1080 },
+    { width: 2560, height: 1440 },
+  ];
+
+  for (const vp of viewports) {
+    await page.setViewportSize(vp);
+    await page.goto("/index.html");
+
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
+
+    await expect(page.locator(".hero-title")).toBeVisible();
+    await expect(page.locator(".home-hero")).toBeVisible();
+    await expect(page.locator(".home-features")).toBeVisible();
+  }
+});
