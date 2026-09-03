@@ -10,7 +10,7 @@ RewriteRule ^ - [L]
 RewriteRule ^$ index.html [L]
 RewriteRule ^universities/?$ universities.html [L]
 RewriteRule ^universities/[^/]+/?$ university.html [L]
-RewriteRule ^ranking/?$ ranking.html [L]
+RewriteRule ^ranking/?$ universities.html?tab=ranking [QSA,L]
 RewriteRule ^guide/?$ guide.html [L]
 RewriteRule ^about/?$ about.html [L]
 

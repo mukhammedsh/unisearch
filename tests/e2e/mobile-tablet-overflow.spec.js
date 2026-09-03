@@ -121,7 +121,7 @@ for (const viewport of viewports) {
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `universities compare results ${viewport.name}`);
 
-    await page.goto("/ranking.html");
+    await page.goto("/universities.html?tab=ranking");
     await expect(page.locator(".rank-container")).toBeVisible();
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `ranking ${viewport.name}`);

@@ -200,7 +200,7 @@ Open:
 - `http://127.0.0.1:5501/index.html`
 - `http://127.0.0.1:5501/universities.html`
 - `http://127.0.0.1:5501/university.html`
-- `http://127.0.0.1:5501/ranking.html`
+- `http://127.0.0.1:5501/universities.html?tab=ranking`
 - `http://127.0.0.1:5501/guide.html`
 - `http://127.0.0.1:5501/about.html`
 
