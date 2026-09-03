@@ -1,5 +1,3 @@
-/* frontend/css/university.css */
-
 :root {
   --accent: #5715db;
   --accent2: var(--accent);
@@ -7,14 +5,12 @@
   --muted: var(--text-muted, #64748b);
   --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
+
 :root[data-theme="dark"] {
   --muted: var(--text-muted, #94a3b8);
   --shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
 }
 
-/* =========================================
-   PAGE LAYOUT
-   ========================================= */
 .d-page {
   background: var(--bg);
   min-height: calc(100vh - 70px);
@@ -65,10 +61,10 @@
   color: var(--muted);
   cursor: pointer;
   transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
+  background-color var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard),
+  color var(--motion-fast) var(--motion-ease-standard),
+  transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .d-page-scope__dismiss:hover,
@@ -171,9 +167,6 @@
   border-radius: 18px;
 }
 
-/* =========================================
-   HEADER & COVER
-   ========================================= */
 .d-card {
   background: var(--card);
   border: 1px solid var(--line);
@@ -202,20 +195,6 @@
   bottom: 0;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
   border-radius: 0;
-}
-
-.d-cover-price {
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  z-index: 2;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  padding: 10px 12px;
-  font-weight: 700;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.1);
-  color: var(--accent);
 }
 
 .d-cover-logo {
@@ -324,13 +303,11 @@
   border: 1px solid rgba(87, 21, 219, 0.18);
   white-space: nowrap;
 }
+
 .d-back:hover {
   background: rgba(87, 21, 219, 0.12);
 }
 
-/* =========================================
-   GRID & CONTENT BOXES
-   ========================================= */
 .d-grid {
   display: block;
   column-count: 2;
@@ -393,27 +370,15 @@
   color: var(--text);
 }
 
-.uni-description-source {
-  margin: -4px 0 12px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.uni-description-source a {
-  color: #2a5bd7;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 .uni-tags-wrap {
   margin: 0 0 14px;
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: linear-gradient(
-    180deg,
-    rgba(87, 21, 219, 0.05),
-    rgba(87, 21, 219, 0.01)
+  180deg,
+  rgba(87, 21, 219, 0.05),
+  rgba(87, 21, 219, 0.01)
   );
 }
 
@@ -446,9 +411,9 @@
   border: 1px solid rgba(87, 21, 219, 0.2);
   box-shadow: 0 2px 8px rgba(87, 21, 219, 0.08);
   transition:
-    transform var(--motion-snappy) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard);
+  transform var(--motion-snappy) var(--motion-ease-standard),
+  box-shadow var(--motion-fast) var(--motion-ease-standard),
+  background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .uni-tag::before {
@@ -463,6 +428,7 @@
   box-shadow: 0 8px 14px rgba(87, 21, 219, 0.16);
   background: #f8f4ff;
 }
+
 .uni-tag--placeholder,
 .uni-description--placeholder {
   color: #6b7280;
@@ -477,12 +443,15 @@
   border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
   font-size: 14px;
 }
+
 .d-kv:last-child {
   border-bottom: 0;
 }
+
 .d-kv--last {
   border-bottom: 0;
 }
+
 .d-kv > span:first-child {
   color: var(--muted);
   font-weight: 500;
@@ -490,6 +459,7 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
 .d-kv > span:last-child {
   color: var(--text);
   font-weight: 600;
@@ -573,9 +543,9 @@
   transform: translateY(-4px);
   pointer-events: none;
   transition:
-    opacity var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-enter),
-    visibility var(--motion-fast) var(--motion-ease-standard);
+  opacity var(--motion-fast) var(--motion-ease-standard),
+  transform var(--motion-fast) var(--motion-ease-enter),
+  visibility var(--motion-fast) var(--motion-ease-standard);
   overflow-wrap: anywhere;
 }
 
@@ -618,11 +588,9 @@
     left: auto;
     right: 0;
   }
+
 }
 
-/* =========================================
-   PROGRAM CARDS
-   ========================================= */
 .program-list {
   display: grid;
   gap: 14px;
@@ -638,9 +606,9 @@
   background: linear-gradient(180deg, #ffffff 0%, #fcfaff 100%);
   box-shadow: 0 10px 24px rgba(36, 14, 79, 0.07);
   transition:
-    transform var(--motion-snappy) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard);
+  transform var(--motion-snappy) var(--motion-ease-standard),
+  box-shadow var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .program-card::before {
@@ -680,13 +648,6 @@
   font-weight: 800;
   letter-spacing: 0.2px;
   padding: 4px 9px;
-}
-
-.program-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 6px;
 }
 
 .program-pill {
@@ -821,27 +782,6 @@
   text-align: center;
 }
 
-.track-description {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.track-applicable-majors {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  color: var(--text);
-  font-size: 13px;
-}
-
-.track-applicable-majors strong {
-  margin-right: 4px;
-}
-
 .tag {
   display: inline-flex;
   align-items: center;
@@ -862,12 +802,10 @@
   gap: 8px;
 }
 
-.admission-option-card .admission-option-meta,
 .finance-option-card .admission-option-meta {
   margin-top: 0;
 }
 
-.admission-option-title,
 .finance-option-label {
   font-size: 14px;
   font-weight: 800;
@@ -880,9 +818,9 @@
   padding: 9px 12px;
   border-radius: 12px;
   background: linear-gradient(
-    135deg,
-    rgba(87, 21, 219, 0.08),
-    rgba(168, 85, 247, 0.12)
+  135deg,
+  rgba(87, 21, 219, 0.08),
+  rgba(168, 85, 247, 0.12)
   );
   border: 1px solid rgba(168, 85, 247, 0.18);
   color: var(--text);
@@ -954,19 +892,6 @@
   width: 100%;
 }
 
-.track-funding-options-block {
-  padding: 16px;
-  border: 1px solid rgba(168, 85, 247, 0.12);
-  border-radius: 18px;
-  background: linear-gradient(
-    180deg,
-    rgba(168, 85, 247, 0.05),
-    rgba(255, 255, 255, 0.88)
-  );
-  display: grid;
-  gap: 12px;
-}
-
 .track-extra-req-list li {
   margin-bottom: 6px;
 }
@@ -989,9 +914,9 @@
   border: 1px solid #e7ddff;
   border-radius: 16px;
   background: linear-gradient(
-    180deg,
-    rgba(123, 63, 242, 0.05),
-    rgba(123, 63, 242, 0.015)
+  180deg,
+  rgba(123, 63, 242, 0.05),
+  rgba(123, 63, 242, 0.015)
   );
   box-shadow: 0 10px 24px rgba(36, 14, 79, 0.05);
 }
@@ -1093,36 +1018,6 @@
   border: 1px solid transparent;
 }
 
-.admissions-chip--accent {
-  background: #f2eaff;
-  color: #5d17ea;
-  border-color: #dccaff;
-}
-
-.admissions-chip--neutral {
-  background: #f8fafc;
-  color: #334155;
-  border-color: #d9e2ef;
-}
-
-.admissions-chip--muted {
-  background: #f3f4f6;
-  color: #667085;
-  border-color: #d5d8de;
-}
-
-.admissions-chip--warn {
-  background: #fff4e8;
-  color: #b45309;
-  border-color: #f6cf9d;
-}
-
-.admissions-chip--success {
-  background: #ebfff4;
-  color: #047857;
-  border-color: #b4efcb;
-}
-
 .admissions-source-link {
   display: inline-flex;
   align-items: center;
@@ -1136,9 +1031,9 @@
   font-weight: 600;
   text-decoration: none;
   transition:
-    transform var(--motion-snappy) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard);
+  transform var(--motion-snappy) var(--motion-ease-standard),
+  box-shadow var(--motion-fast) var(--motion-ease-standard),
+  background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .admissions-source-link:hover {
@@ -1153,9 +1048,6 @@
   color: #241d3a;
 }
 
-/* =========================================
-   TABS
-   ========================================= */
 .d-tabs {
   display: flex;
   gap: 10px;
@@ -1177,11 +1069,11 @@
   color: #555;
   cursor: pointer;
   transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
+  background-color var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard),
+  color var(--motion-fast) var(--motion-ease-standard),
+  box-shadow var(--motion-fast) var(--motion-ease-standard),
+  transform var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   align-items: center;
   gap: 9px;
@@ -1231,13 +1123,14 @@
 .d-tab-pane {
   display: none;
 }
+
 .d-tab-pane.active {
   display: block;
 }
 
 .d-tab-pane.active.motion-panel-enter {
   animation: motion-fade-lift-enter var(--motion-medium)
-    var(--motion-ease-enter) both;
+  var(--motion-ease-enter) both;
 }
 
 .d-tab-content {
@@ -1254,10 +1147,10 @@
   color: var(--accent);
   border-radius: 14px;
   transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
+  background-color var(--motion-fast) var(--motion-ease-standard),
+  color var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard),
+  transform var(--motion-fast) var(--motion-ease-standard);
   border: 1px solid rgba(87, 21, 219, 0.18);
   flex-shrink: 0;
   line-height: 0;
@@ -1305,15 +1198,13 @@
   color: white;
   border-color: var(--accent);
 }
+
 .d-site-link--disabled {
   opacity: 0.55;
   pointer-events: none;
   cursor: default;
 }
 
-/* =========================================
-   UNICHANCE (ADMISSION PROBABILITY)
-   ========================================= */
 .chance-panel {
   border: 1px solid #e4d8ff;
   background: linear-gradient(135deg, #f5f0ff, #fcfaff);
@@ -1476,69 +1367,17 @@
 .chance-fill.chance-high {
   background: #10b981;
 }
+
 .chance-fill.chance-good {
   background: #22c55e;
 }
+
 .chance-fill.chance-medium {
   background: #f59e0b;
 }
+
 .chance-fill.chance-low {
   background: #ef4444;
-}
-
-.admission-filter-row {
-  margin: 12px 0 16px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 12px 14px;
-  border: 1px solid rgba(168, 85, 247, 0.14);
-  border-radius: 16px;
-  background: linear-gradient(
-    180deg,
-    rgba(168, 85, 247, 0.08),
-    rgba(255, 255, 255, 0.94)
-  );
-}
-
-.admission-filter-label {
-  font-size: 12px;
-  color: #4b5563;
-  font-weight: 700;
-}
-
-.admission-filter-meta {
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.admission-filter-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.admission-filter-pill--grant {
-  color: #065f46;
-  background: rgba(16, 185, 129, 0.2);
-  border-color: rgba(16, 185, 129, 0.55);
-}
-
-.admission-filter-pill--paid {
-  color: #374151;
-  background: rgba(107, 114, 128, 0.12);
-  border-color: rgba(107, 114, 128, 0.35);
-}
-
-.admission-filter-pill--any {
-  color: #3730a3;
-  background: rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.35);
 }
 
 .track-funding-badge {
@@ -1564,17 +1403,8 @@
   border-color: rgba(107, 114, 128, 0.35);
 }
 
-.track-funding-options-block,
 .finance-track-group {
   margin-top: 24px;
-}
-
-.track-funding-options-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  align-items: stretch;
-  grid-auto-rows: 1fr;
 }
 
 .finance-track-options-grid {
@@ -1583,7 +1413,6 @@
   grid-template-columns: 1fr;
 }
 
-.admission-option-card,
 .finance-option-card {
   position: relative;
   overflow: hidden;
@@ -1593,15 +1422,14 @@
   background: linear-gradient(180deg, #ffffff, #fcfbff);
   box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
   transition:
-    transform var(--motion-snappy) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard);
+  transform var(--motion-snappy) var(--motion-ease-standard),
+  box-shadow var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.admission-option-card::before,
 .finance-option-card::before {
   content: "";
   position: absolute;
@@ -1610,37 +1438,26 @@
   background: linear-gradient(90deg, var(--accent), var(--accent-highlight));
 }
 
-.admission-option-card:hover,
 .finance-option-card:hover {
   border-color: rgba(168, 85, 247, 0.32);
   box-shadow: 0 18px 36px rgba(88, 28, 135, 0.12);
 }
 
-.admission-option-card--grant:hover,
 .finance-option-card--grant:hover {
   border-color: #34d399;
   box-shadow: 0 18px 36px rgba(16, 185, 129, 0.14);
 }
 
-.admission-option-card--grant,
 .finance-option-card--grant {
   border-color: #86efac;
   background: linear-gradient(180deg, #f4fff8, #ecfdf5);
 }
 
-.admission-option-card--grant::before,
 .finance-option-card--grant::before {
   background: linear-gradient(90deg, #10b981, #34d399);
 }
 
-.admission-option-card:has(.track-select-btn.is-active) {
-  border-color: rgba(99, 102, 241, 0.48);
-  box-shadow: none;
-}
-
-.admission-option-head,
-.finance-option-head,
-.track-header {
+.finance-option-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1648,14 +1465,6 @@
   flex-wrap: wrap;
 }
 
-.admission-option-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.track-funding-options-title,
 .finance-track-options-title {
   font-weight: 700;
   margin: 0;
@@ -1669,7 +1478,6 @@
   color: var(--accent);
 }
 
-.track-option-count,
 .track-selection-badge {
   opacity: 1;
   font-size: 12px;
@@ -1683,156 +1491,9 @@
   color: var(--accent);
 }
 
-.track-req-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
 .track-select-row {
   margin-top: 14px;
   margin-top: auto;
-}
-
-/* =========================================
-   TRACK CARDS (ADMISSIONS)
-   ========================================= */
-.track-card {
-  background: linear-gradient(180deg, #ffffff, #fbf8ff);
-  border: 1px solid rgba(168, 85, 247, 0.16);
-  border-radius: 20px;
-  padding: 18px;
-  transition:
-    transform var(--motion-snappy) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
-}
-
-.track-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-highlight));
-}
-
-.track-card + .track-card {
-  margin-top: 14px;
-}
-
-.track-card:hover {
-  box-shadow: 0 10px 20px rgba(87, 21, 219, 0.08) !important;
-  border-color: var(--accent) !important;
-}
-
-.track-card--grant:hover {
-  border-color: #34d399 !important;
-  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.14) !important;
-}
-
-.track-card--grant {
-  background: linear-gradient(180deg, #f4fff8, #ecfdf5);
-  border-color: #86efac;
-}
-
-.track-card--grant::before {
-  background: linear-gradient(90deg, #10b981, #34d399);
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
-}
-
-.track-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.track-head-main {
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-.track-head-main p {
-  overflow-wrap: anywhere;
-}
-
-.track-title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.track-status-badges {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.track-status-badge {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 4px 9px;
-  font-size: 11px;
-  font-weight: 800;
-  border: 1px solid transparent;
-}
-
-.track-status-badge--selected {
-  color: #3730a3;
-  background: rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.34);
-}
-
-.track-status-badge--recommended {
-  color: #92400e;
-  background: rgba(245, 158, 11, 0.14);
-  border-color: rgba(245, 158, 11, 0.34);
-}
-
-.track-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  flex: 0 0 auto;
-}
-
-.track-price {
-  text-align: right;
-  flex: 0 0 auto;
-}
-
-.track-card--grant .track-price {
-  background: #d1fae5;
-  border: 1px solid #86efac;
-  border-radius: 12px;
-  padding: 8px 10px;
-}
-
-.track-card--grant .track-price-label {
-  color: #065f46;
-}
-
-.track-card--grant .track-price-value {
-  color: #065f46;
-}
-
-.track-price-label {
-  font-size: 12px;
-  color: #666;
-}
-
-.track-price-value {
-  font-size: 16px;
-  font-weight: 800;
-  color: #111;
 }
 
 .track-select-btn {
@@ -1845,11 +1506,11 @@
   font-weight: 800;
   cursor: pointer;
   transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
+  background-color var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard),
+  color var(--motion-fast) var(--motion-ease-standard),
+  transform var(--motion-fast) var(--motion-ease-standard),
+  box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 .track-select-btn:hover:not(:disabled) {
@@ -1901,9 +1562,9 @@
   padding: 10px 2px 11px;
   white-space: nowrap;
   transition:
-    color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard);
+  color var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard),
+  background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .admission-program-option:hover,
@@ -2166,49 +1827,7 @@
   .track-select-btn {
     width: 100%;
   }
-}
 
-.track-title {
-  margin: 0;
-  color: #111827;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.track-desc {
-  margin: 8px 0 0;
-  color: #4b5563;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.track-major-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.track-major-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 999px;
-  border: 1px solid #dbe5f2;
-  background: #f8fafc;
-  color: #334155;
-  padding: 4px 9px;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.track-major-all {
-  display: inline-flex;
-  margin-top: 8px;
-  color: #64748b;
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .track-stats-box {
@@ -2425,83 +2044,6 @@
   line-height: 1.45;
 }
 
-.track-grants {
-  margin-top: 12px;
-  border-radius: 10px;
-  border: 1px solid #bbf7d0;
-  background: #f0fdf4;
-  padding: 10px 12px;
-}
-
-.track-grants-title {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.35px;
-  text-transform: uppercase;
-  color: #047857;
-  margin-bottom: 8px;
-}
-
-.track-grants-list {
-  display: grid;
-  gap: 8px;
-}
-
-.track-grant-item {
-  border-radius: 8px;
-  border: 1px solid #86efac;
-  background: #ffffff;
-  padding: 8px 10px;
-}
-
-.track-grant-item-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.track-grant-item-name {
-  color: #14532d;
-  font-size: 13px;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.track-grant-item-badge {
-  border-radius: 999px;
-  border: 1px solid #bbf7d0;
-  background: #ecfdf5;
-  color: #166534;
-  padding: 2px 9px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.track-grant-item-conditions {
-  margin-top: 6px;
-  color: #166534;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.track-grant-item-conditions-label {
-  font-weight: 800;
-}
-
-.track-grant-item-empty {
-  margin-top: 6px;
-  color: #64748b;
-  font-size: 12px;
-  font-style: italic;
-}
-
-/* =========================================
-   FINANCE SUMMARY (ВЕРХНИЙ БЛОК: СКИДКИ + ЦЕНА)
-   ========================================= */
 .finance-summary-container {
   display: flex;
   gap: 20px;
@@ -2520,7 +2062,6 @@
   margin-top: 30px;
 }
 
-/* Зеленая карточка скидок */
 .scholarship-card {
   background: #ecfdf5; /* Светло-зеленый */
   border: 1px solid #10b981;
@@ -2534,7 +2075,6 @@
   gap: 8px;
 }
 
-/* Синяя карточка общей цены */
 .total-price-card {
   background: #f5f0ff; /* Светло-фиолетовый */
   border: 1px solid #d8c9ff;
@@ -2613,162 +2153,13 @@
   color: #64748b;
 }
 
-/* =========================================
-   FINANCE CARDS (НИЖНИЙ БЛОК: ТРЕКИ)
-   ========================================= */
 .finance-grid-new {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
   margin-top: 10px;
-
   /* Карточки выровнены по верхнему краю согласно дизайн-системе */
   align-items: start;
-}
-
-.finance-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  overflow: hidden;
-  transition:
-    transform var(--motion-snappy) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-  display: flex;
-  flex-direction: column;
-}
-
-.finance-card--grant {
-  background: #ecfdf5;
-  border-color: #86efac;
-}
-
-.finance-card--grant .finance-header {
-  background: #dcfce7;
-  border-bottom-color: #86efac;
-}
-
-.finance-card--grant .finance-body {
-  background: #ecfdf5;
-}
-
-.finance-card--grant .finance-footer {
-  background: #dcfce7;
-  border-top-color: #86efac;
-}
-
-.finance-card--grant .cost-legend-row {
-  background: #d1fae5;
-  border-color: #86efac;
-}
-
-.finance-card--grant .cost-legend-single {
-  background: #d1fae5;
-  border: 1px solid #86efac;
-  border-radius: 10px;
-  padding: 10px 12px;
-}
-
-.finance-card:hover {
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  border-color: var(--accent);
-}
-
-.finance-header {
-  background: #f8fafc;
-  padding: 20px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.finance-track-name {
-  font-size: 16px;
-  font-weight: 800;
-  color: #1e293b;
-  max-width: none;
-  min-width: 0;
-  flex: 1 1 auto;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
-}
-
-.finance-total {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 2px;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  background: #f5f0ff;
-  border: 1px solid #d8c9ff;
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-.finance-total small {
-  display: block;
-  font-size: 10px;
-  color: #64748b;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 0;
-}
-.finance-total span {
-  font-size: 16px;
-  font-weight: 900;
-  color: var(--accent);
-}
-
-.finance-total--grant {
-  background: #d1fae5;
-  border-color: #86efac;
-}
-
-.finance-total--grant small,
-.finance-total--grant span {
-  color: #065f46;
-}
-
-.finance-body {
-  padding: 20px;
-}
-
-.finance-footer {
-  background: #f0fdf4;
-  padding: 15px 20px;
-  border-top: 1px solid #d1fae5;
-}
-
-.finance-grant-title {
-  font-size: 11px;
-  font-weight: 800;
-  color: #047857;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.finance-grant-list {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 13px;
-  color: #065f46;
-  font-weight: 500;
-}
-
-.finance-grant-list li {
-  margin-bottom: 4px;
-}
-
-.track-stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 колонки на ПК */
-  gap: 12px;
-  margin-top: 16px;
 }
 
 .cost-legend {
@@ -2780,7 +2171,6 @@
   grid-auto-rows: auto;
 }
 
-/* Прогресс-бар */
 .cost-progress-bar {
   margin-bottom: 8px;
   background: #e2e8f0;
@@ -2877,14 +2267,6 @@
   background: rgba(255, 255, 255, 0.68);
 }
 
-.finance-card .cost-legend {
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-
-/* =========================================
-   RESPONSIVE
-   ========================================= */
 @media (max-width: 1024px) and (min-width: 761px) {
   .program-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2913,34 +2295,42 @@
     height: 44px;
     border-radius: 14px;
   }
+
 }
 
 @media (max-width: 768px) {
   .d-container {
     padding: 0 10px;
   }
+
   .d-cover {
     min-height: 180px;
     max-height: 420px;
   }
+
   .d-head {
     flex-direction: column;
     gap: 15px;
   }
+
   .d-head-main {
     width: 100%;
   }
+
   .d-title-row {
     width: 100%;
     align-items: flex-start;
   }
+
   .d-title {
     flex-basis: 100%;
   }
+
   .d-head-links {
     width: 100%;
     justify-content: flex-start;
   }
+
   .d-back {
     width: auto;
     min-height: 44px;
@@ -2948,6 +2338,7 @@
     padding: 0 12px;
     background-color: transparent;
   }
+
   .d-grid {
     column-count: 1;
   }
@@ -2960,6 +2351,7 @@
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
   }
+
   .d-tab-btn {
     flex: 0 0 auto;
     max-width: min(78vw, 280px);
@@ -2970,6 +2362,7 @@
     font-size: 13px;
     border-radius: 20px;
   }
+
   .d-tab-btn span:last-child {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -2977,6 +2370,7 @@
     overflow: hidden;
     text-align: left;
   }
+
   .d-site-link {
     width: 44px;
     height: 44px;
@@ -2987,27 +2381,32 @@
     grid-template-columns: 1fr;
   }
 
-  /* Адаптив для верхней секции финансов */
   .finance-summary-container {
     flex-direction: column;
   }
+
   .finance-summary-left {
     min-width: 0;
     width: 100%;
   }
+
   .finance-summary-right {
     flex: auto;
     width: 100%;
   }
+
   .finance-summary-right {
     margin-top: 0;
   }
+
   .price-inline-row {
     gap: 6px;
   }
+
   .price-big {
     font-size: 2rem;
   }
+
 }
 
 .roi-box {
@@ -3153,43 +2552,6 @@
     overflow-wrap: anywhere;
   }
 
-  .track-head {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .track-side {
-    width: 100%;
-    align-items: flex-start;
-  }
-
-  .track-price {
-    text-align: left;
-  }
-
-  .finance-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 14px;
-  }
-
-  .finance-total {
-    text-align: left;
-  }
-
-  .finance-total span {
-    font-size: 18px;
-  }
-
-  .finance-body {
-    padding: 14px;
-  }
-
-  .finance-footer {
-    padding: 12px 14px;
-  }
-
   .roi-box {
     padding: 18px !important;
   }
@@ -3209,27 +2571,14 @@
   .roi-metrics-divider {
     display: none;
   }
+
 }
 
 @media (max-width: 600px) {
-  /* Делаем Admissions в одну колонку */
-  .track-stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Делаем цены в Costs в одну колонку */
   .cost-legend {
     grid-template-columns: 1fr;
   }
 
-  /* Уменьшаем отступы внутри карточек */
-  .track-card {
-    padding: 15px !important;
-  }
-
-  .finance-card {
-    padding: 0;
-  }
 }
 
 @media (max-width: 480px) {
@@ -3243,6 +2592,7 @@
     gap: 6px;
     border-radius: 18px;
   }
+
 }
 
 :root[data-theme="dark"] .tag {
@@ -3263,9 +2613,9 @@
 :root[data-theme="dark"] .finance-option-total,
 :root[data-theme="dark"] .finance-track-group {
   background: linear-gradient(
-    135deg,
-    rgba(87, 21, 219, 0.18),
-    rgba(24, 24, 32, 0.96)
+  135deg,
+  rgba(87, 21, 219, 0.18),
+  rgba(24, 24, 32, 0.96)
   );
   border-color: rgba(168, 85, 247, 0.22);
   color: #ededed;
@@ -3280,7 +2630,6 @@
 }
 
 :root[data-theme="dark"] .finance-track-group-head h3,
-:root[data-theme="dark"] .admission-option-title,
 :root[data-theme="dark"] .finance-option-label {
   color: #f2f2f2;
 }
@@ -3290,14 +2639,12 @@
   background-image: none;
 }
 
-:root[data-theme="dark"] .admission-option-card,
 :root[data-theme="dark"] .finance-option-card {
   background: linear-gradient(180deg, #1a1820, #141418);
   border-color: rgba(168, 85, 247, 0.2);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
 }
 
-:root[data-theme="dark"] .admission-option-card--grant,
 :root[data-theme="dark"] .finance-option-card--grant {
   background: var(--grant-soft);
   border-color: rgba(52, 211, 153, 0.26);
@@ -3305,9 +2652,9 @@
 
 :root[data-theme="dark"] .uni-tags-wrap {
   background: linear-gradient(
-    180deg,
-    rgba(140, 110, 255, 0.1),
-    rgba(140, 110, 255, 0.03)
+  180deg,
+  rgba(140, 110, 255, 0.1),
+  rgba(140, 110, 255, 0.03)
   );
   border-color: #3f3f3f;
 }
@@ -3326,10 +2673,6 @@
 :root[data-theme="dark"] .uni-tag:hover {
   background: transparent;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.42);
-}
-
-:root[data-theme="dark"] .uni-description-source a {
-  color: #9bb8ff;
 }
 
 :root[data-theme="dark"] .d-info {
@@ -3387,40 +2730,10 @@
 }
 
 :root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .finance-card,
 :root[data-theme="dark"] .total-price-card,
 :root[data-theme="dark"] .scholarship-card {
   background: #171717;
   border-color: var(--line);
-}
-
-:root[data-theme="dark"] .finance-card--grant {
-  background: #13251d;
-  border-color: #2f6b4f;
-}
-
-:root[data-theme="dark"] .finance-card--grant .finance-header {
-  background: #163728;
-  border-bottom-color: #2f6b4f;
-}
-
-:root[data-theme="dark"] .finance-card--grant .finance-body {
-  background: #13251d;
-}
-
-:root[data-theme="dark"] .finance-card--grant .finance-footer {
-  background: #163728;
-  border-top-color: #2f6b4f;
-}
-
-:root[data-theme="dark"] .finance-card--grant .cost-legend-row {
-  background: #163728;
-  border-color: #2f6b4f;
-}
-
-:root[data-theme="dark"] .finance-card--grant .cost-legend-single {
-  background: #163728;
-  border-color: #2f6b4f;
 }
 
 :root[data-theme="dark"] .chance-warning {
@@ -3430,16 +2743,13 @@
 }
 
 :root[data-theme="dark"] .chance-title,
-:root[data-theme="dark"] .price-header,
-:root[data-theme="dark"] .finance-track-name {
+:root[data-theme="dark"] .price-header {
   color: var(--accent);
 }
 
 :root[data-theme="dark"] .chance-sub,
 :root[data-theme="dark"] .chance-foot,
-:root[data-theme="dark"] .price-sub,
-:root[data-theme="dark"] .finance-total small,
-:root[data-theme="dark"] .finance-grant-list {
+:root[data-theme="dark"] .price-sub {
   color: var(--muted);
 }
 
@@ -3457,8 +2767,8 @@
 
 :root[data-theme="dark"] .d-page-scope {
   background:
-    linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(168, 85, 247, 0.06)),
-    var(--card);
+  linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(168, 85, 247, 0.06)),
+  var(--card);
   border-color: rgba(168, 85, 247, 0.28);
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
 }
@@ -3473,37 +2783,8 @@
   color: #93c5fd;
 }
 
-:root[data-theme="dark"] .finance-total {
-  background: #23163a;
-  border-color: #4c2ca8;
-}
-
-:root[data-theme="dark"] .finance-total--grant {
-  background: #163728;
-  border-color: #2f6b4f;
-}
-
-:root[data-theme="dark"] .finance-total--grant small,
-:root[data-theme="dark"] .finance-total--grant span {
-  color: #dcfce7;
-}
-
-:root[data-theme="dark"] .finance-header,
-:root[data-theme="dark"] .finance-footer {
-  background: #222222;
-  border-color: var(--line);
-}
-
 :root[data-theme="dark"] .cost-progress-bar {
   background: #3f3f3f;
-}
-
-:root[data-theme="dark"] .track-price-label {
-  color: #c3c3c3;
-}
-
-:root[data-theme="dark"] .track-price-value {
-  color: #f2f2f2;
 }
 
 :root[data-theme="dark"] .roi-metric-label {
@@ -3580,39 +2861,18 @@
   background: rgba(87, 21, 219, 0.24);
 }
 
-:root[data-theme="dark"] .d-cover-price,
 :root[data-theme="dark"] .d-cover-logo {
   background: #f8fafc;
   border-color: #d2d2d2;
   color: var(--accent);
 }
 
-:root[data-theme="dark"] .track-card,
 :root[data-theme="dark"] .roi-box {
   background: #161616;
   border-color: #3f3f3f !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
-:root[data-theme="dark"] .track-card--grant {
-  background: #13251d !important;
-  border-color: #2f6b4f !important;
-}
-
-:root[data-theme="dark"] .track-card--grant .track-price {
-  background: #163728;
-  border-color: #2f6b4f;
-}
-
-:root[data-theme="dark"] .track-card--grant .track-price-label {
-  color: #bbf7d0;
-}
-
-:root[data-theme="dark"] .track-card--grant .track-price-value {
-  color: #dcfce7;
-}
-
-:root[data-theme="dark"] .track-card:hover,
 :root[data-theme="dark"] .roi-box:hover {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
 }
@@ -3640,9 +2900,9 @@
 :root[data-theme="dark"] .admissions-programs-block {
   border-color: rgba(154, 122, 255, 0.28);
   background: linear-gradient(
-    180deg,
-    rgba(125, 60, 255, 0.14),
-    rgba(125, 60, 255, 0.05)
+  180deg,
+  rgba(125, 60, 255, 0.14),
+  rgba(125, 60, 255, 0.05)
   );
 }
 
@@ -3665,36 +2925,6 @@
   border-color: rgba(154, 122, 255, 0.24);
   background: rgba(17, 19, 24, 0.9);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
-}
-
-:root[data-theme="dark"] .admissions-chip--accent {
-  background: rgba(125, 60, 255, 0.2);
-  border-color: rgba(188, 163, 255, 0.28);
-  color: #d9c7ff;
-}
-
-:root[data-theme="dark"] .admissions-chip--neutral {
-  background: rgba(148, 163, 184, 0.12);
-  border-color: rgba(148, 163, 184, 0.22);
-  color: #e2e8f0;
-}
-
-:root[data-theme="dark"] .admissions-chip--muted {
-  background: rgba(107, 114, 128, 0.18);
-  border-color: rgba(148, 163, 184, 0.2);
-  color: #d1d5db;
-}
-
-:root[data-theme="dark"] .admissions-chip--warn {
-  background: rgba(180, 83, 9, 0.2);
-  border-color: rgba(245, 158, 11, 0.28);
-  color: #fbbf24;
-}
-
-:root[data-theme="dark"] .admissions-chip--success {
-  background: rgba(4, 120, 87, 0.18);
-  border-color: rgba(52, 211, 153, 0.24);
-  color: #86efac;
 }
 
 :root[data-theme="dark"] .admissions-source-link {
@@ -3762,50 +2992,16 @@
   color: #a8adb8;
 }
 
-:root[data-theme="dark"] .admission-filter-label {
-  color: #c3c7d0;
-}
-
-:root[data-theme="dark"] .admission-filter-meta {
-  color: #9ca3af;
-}
-
-:root[data-theme="dark"] .admission-filter-row {
-  border-color: rgba(168, 85, 247, 0.22);
-  background: linear-gradient(
-    180deg,
-    rgba(168, 85, 247, 0.16),
-    rgba(19, 19, 24, 0.94)
-  );
-}
-
-:root[data-theme="dark"] .admission-filter-pill--grant,
 :root[data-theme="dark"] .track-funding-badge--grant {
   color: #bbf7d0;
   background: rgba(34, 197, 94, 0.3);
   border-color: rgba(74, 222, 128, 0.6);
 }
 
-:root[data-theme="dark"] .admission-filter-pill--paid,
 :root[data-theme="dark"] .track-funding-badge--paid {
   color: #d1d5db;
   background: rgba(148, 163, 184, 0.17);
   border-color: rgba(148, 163, 184, 0.42);
-}
-
-:root[data-theme="dark"] .admission-filter-pill--any {
-  color: #c4b5fd;
-  background: rgba(129, 140, 248, 0.2);
-  border-color: rgba(129, 140, 248, 0.44);
-}
-
-:root[data-theme="dark"] .track-funding-options-block {
-  border-color: rgba(168, 85, 247, 0.18);
-  background: linear-gradient(
-    180deg,
-    rgba(94, 36, 182, 0.14),
-    rgba(18, 18, 24, 0.92)
-  );
 }
 
 :root[data-theme="dark"] .chance-track-chip.chance-high {
@@ -3843,67 +3039,25 @@
     gap: 6px;
   }
 
-  .program-card-meta {
-    justify-content: flex-start;
-  }
 }
 
 :root[data-theme="dark"] .d-state-error {
   color: #f87171;
 }
 
-:root[data-theme="dark"] #detailRequirements .track-card {
-  background: var(--card) !important;
-  background-image: none !important;
-  border-color: var(--line) !important;
-  color: #e2e2e2 !important;
-}
-
-:root[data-theme="dark"] #detailRequirements .track-card.track-card--grant {
-  background: var(--grant-soft) !important;
-  background-image: none !important;
-  border-color: rgba(52, 211, 153, 0.28) !important;
-}
-
-:root[data-theme="dark"] .track-title {
-  color: #e5e7eb;
-}
-
-:root[data-theme="dark"] .track-option-count,
 :root[data-theme="dark"] .track-selection-badge,
-:root[data-theme="dark"] .track-funding-options-title,
 :root[data-theme="dark"] .finance-track-options-title {
   color: #ddd6fe;
   background: rgba(168, 85, 247, 0.16);
   border-color: rgba(196, 181, 253, 0.22);
 }
 
-:root[data-theme="dark"] .track-status-badge--selected {
-  color: #c7d2fe;
-  background: rgba(99, 102, 241, 0.18);
-  border-color: rgba(129, 140, 248, 0.36);
-}
-
-:root[data-theme="dark"] .track-status-badge--recommended {
-  color: #fcd34d;
-  background: rgba(245, 158, 11, 0.16);
-  border-color: rgba(245, 158, 11, 0.34);
-}
-
-:root[data-theme="dark"] .track-desc,
-:root[data-theme="dark"] .track-major-all,
 :root[data-theme="dark"] .track-muted-italic,
 :root[data-theme="dark"] .finance-breakdown-note,
 :root[data-theme="dark"] .track-stats-values,
 :root[data-theme="dark"] .track-exam-group-list,
 :root[data-theme="dark"] .track-lang-rule-requirements {
   color: #c3c7d0;
-}
-
-:root[data-theme="dark"] .track-major-chip {
-  background: #1f242f;
-  border-color: #374151;
-  color: #dbe4f2;
 }
 
 :root[data-theme="dark"] .track-select-btn {
@@ -4026,35 +3180,6 @@
   color: #c3c7d0;
 }
 
-:root[data-theme="dark"] .track-grants {
-  background: #16271f;
-  border-color: #2f4f42;
-}
-
-:root[data-theme="dark"] .track-grants-title {
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .track-grant-item {
-  background: #1f2a23;
-  border-color: #2f4f42;
-}
-
-:root[data-theme="dark"] .track-grant-item-name {
-  color: #bbf7d0;
-}
-
-:root[data-theme="dark"] .track-grant-item-badge {
-  background: #164e2f;
-  border-color: #2f7048;
-  color: #dcfce7;
-}
-
-:root[data-theme="dark"] .track-grant-item-conditions,
-:root[data-theme="dark"] .track-grant-item-empty {
-  color: #c3c7d0;
-}
-
 :root[data-theme="dark"] .admission-empty-state {
   background: #1b1b1b;
   border-color: #3f3f3f;
@@ -4093,8 +3218,6 @@
   border-color: #3f3f3f !important;
 }
 
-/* ===== 2026 University Refresh ===== */
-
 .d-page {
   background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
   padding: 24px 0 72px;
@@ -4131,9 +3254,9 @@
 
 .d-cover-overlay {
   background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.08),
-    rgba(15, 23, 42, 0.34)
+  180deg,
+  rgba(15, 23, 42, 0.08),
+  rgba(15, 23, 42, 0.34)
   );
 }
 
@@ -4347,13 +3470,6 @@
   border-radius: 12px;
 }
 
-.admission-filter-row {
-  border-color: var(--line);
-  border-radius: 16px;
-  background: var(--surface-soft);
-}
-
-.admission-option-card,
 .finance-option-card {
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -4361,25 +3477,21 @@
   box-shadow: none;
 }
 
-.admission-option-card::before,
 .finance-option-card::before {
   height: 2px;
   background: var(--accent);
 }
 
-.admission-option-card:hover,
 .finance-option-card:hover {
   border-color: rgba(79, 70, 229, 0.18);
   box-shadow: var(--shadow);
 }
 
-.admission-option-card--grant,
 .finance-option-card--grant {
   border-color: rgba(16, 185, 129, 0.2);
   background: var(--grant-soft);
 }
 
-.admission-option-card--grant::before,
 .finance-option-card--grant::before {
   background: #10b981;
 }
@@ -4387,7 +3499,6 @@
 .track-cost-preview,
 .track-extra-req,
 .track-stats-box,
-.finance-card,
 .scholarship-card,
 .total-price-card {
   box-shadow: none;
@@ -4397,7 +3508,6 @@
 :root[data-theme="dark"] .d-card,
 :root[data-theme="dark"] #tab-admission .d-box,
 :root[data-theme="dark"] #tab-finance .finance-box,
-:root[data-theme="dark"] .admission-option-card,
 :root[data-theme="dark"] .finance-option-card {
   box-shadow: none;
 }
@@ -4417,6 +3527,7 @@
   .d-quick-stats {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
+
 }
 
 @media (max-width: 720px) {
@@ -4432,9 +3543,9 @@
   .d-box {
     padding: 18px 16px;
   }
+
 }
 
-/* ===== 2026 University Polish ===== */
 :root[data-theme="dark"] .d-page {
   background: linear-gradient(180deg, #131416 0%, #0f1012 100%);
 }
@@ -4498,44 +3609,12 @@
   border-top-color: transparent;
 }
 
-.track-funding-options-grid {
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-}
-
 .finance-track-options-grid,
 .finance-grid-new {
   grid-template-columns: 1fr;
 }
 
-.finance-header,
-.track-header {
-  align-items: flex-start;
-}
-
-.finance-track-name {
-  max-width: 100%;
-  min-width: 0;
-  font-size: 15px;
-  line-height: 1.35;
-  text-wrap: balance;
-  overflow-wrap: break-word;
-}
-
-.track-side {
-  min-width: 124px;
-}
-
-.track-price {
-  min-width: 120px;
-}
-
-.track-price-value,
-.finance-total span {
-  line-height: 1.2;
-}
-
-#tab-finance .cost-legend,
-.finance-card .cost-legend {
+#tab-finance .cost-legend {
   grid-template-columns: 1fr;
 }
 
@@ -4582,11 +3661,11 @@
 }
 
 @media (max-width: 980px) {
-  .track-funding-options-grid,
   .finance-track-options-grid,
   .finance-grid-new {
     grid-template-columns: 1fr;
   }
+
 }
 
 @media (max-width: 720px) {
@@ -4645,11 +3724,6 @@
     padding: 13px 4px 15px;
   }
 
-  .track-side,
-  .track-price {
-    min-width: 0;
-  }
-
   .d-kv {
     flex-direction: column;
     align-items: flex-start;
@@ -4671,6 +3745,7 @@
   .d-cover {
     aspect-ratio: 16 / 9;
   }
+
 }
 
 @media (max-width: 380px) {
@@ -4747,13 +3822,7 @@
     padding: 16px 12px;
   }
 
-  .track-funding-options-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .admission-option-card,
-  .finance-option-card,
-  .track-card {
+  .finance-option-card {
     border-radius: 16px;
   }
 
@@ -4762,9 +3831,9 @@
   .track-cost-preview {
     min-width: 0;
   }
+
 }
 
-/* ===== 2026 University Detail Alignment ===== */
 .d-page {
   background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
 }
@@ -4799,14 +3868,6 @@
   border-radius: inherit;
 }
 
-.d-cover-price {
-  border-color: var(--line);
-  border-radius: 14px;
-  background: var(--surface-solid);
-  color: var(--accent);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-}
-
 .d-cover-logo {
   border-color: var(--line);
   border-radius: 18px;
@@ -4834,10 +3895,10 @@
   align-items: center;
   justify-content: center;
   transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
+  background-color var(--motion-fast) var(--motion-ease-standard),
+  border-color var(--motion-fast) var(--motion-ease-standard),
+  color var(--motion-fast) var(--motion-ease-standard),
+  transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .d-back {
@@ -4932,14 +3993,9 @@
 #tab-admission .d-box,
 #tab-finance .finance-box,
 .chance-panel,
-.admission-filter-row,
-.admission-option-card,
 .finance-option-card,
-.track-card,
 .program-card,
-.finance-card,
 .finance-track-group,
-.track-funding-options-block,
 .track-cost-preview,
 .finance-option-total,
 .track-extra-req,
@@ -4959,9 +4015,7 @@
 }
 
 .chance-panel,
-.admission-filter-row,
 .uni-tags-wrap,
-.track-funding-options-block,
 .track-cost-preview,
 .finance-option-total,
 .track-extra-req,
@@ -4970,26 +4024,19 @@
 }
 
 .program-card::before,
-.admission-option-card::before,
 .finance-option-card::before,
 #tab-admission .d-box::before,
 #tab-finance .finance-box::before {
   display: none;
 }
 
-.admission-option-card:hover,
 .finance-option-card:hover,
-.track-card:hover,
-.program-card:hover,
-.finance-card:hover {
+.program-card:hover {
   border-color: rgba(79, 70, 229, 0.18);
   box-shadow: var(--shadow);
 }
 
-.admission-option-card--grant,
 .finance-option-card--grant,
-.track-card--grant,
-.finance-card--grant,
 .finance-track-group--grant {
   border-color: rgba(16, 185, 129, 0.22);
   background: var(--grant-soft);
@@ -5021,13 +4068,13 @@
 
 :root[data-theme="dark"] .d-page-scope {
   background:
-    linear-gradient(
-      135deg,
-      rgba(87, 21, 219, 0.16),
-      rgba(87, 21, 219, 0.04) 44%,
-      transparent
-    ),
-    var(--surface-solid);
+  linear-gradient(
+  135deg,
+  rgba(87, 21, 219, 0.16),
+  rgba(87, 21, 219, 0.04) 44%,
+  transparent
+  ),
+  var(--surface-solid);
   border: 1px solid var(--line);
   border-left: 3px solid var(--accent);
   box-shadow: none;
@@ -5041,14 +4088,9 @@
 :root[data-theme="dark"] #tab-admission .d-box,
 :root[data-theme="dark"] #tab-finance .finance-box,
 :root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .admission-filter-row,
-:root[data-theme="dark"] .admission-option-card,
 :root[data-theme="dark"] .finance-option-card,
-:root[data-theme="dark"] .track-card,
 :root[data-theme="dark"] .program-card,
-:root[data-theme="dark"] .finance-card,
 :root[data-theme="dark"] .finance-track-group,
-:root[data-theme="dark"] .track-funding-options-block,
 :root[data-theme="dark"] .track-cost-preview,
 :root[data-theme="dark"] .finance-option-total,
 :root[data-theme="dark"] .track-extra-req,
@@ -5067,24 +4109,13 @@
 
 :root[data-theme="dark"] .finance-track-group--grant,
 :root[data-theme="dark"] .finance-option-card--grant,
-:root[data-theme="dark"] .admission-option-card--grant,
-:root[data-theme="dark"] .track-card--grant,
 :root[data-theme="dark"] .scholarship-card {
   background: var(--grant-soft);
   border-color: rgba(16, 185, 129, 0.32);
 }
 
-:root[data-theme="dark"]
-  .admission-option-card:has(.track-select-btn.is-active),
-:root[data-theme="dark"] .track-card:has(.track-select-btn.is-active) {
-  background: rgba(87, 21, 219, 0.16);
-  border-color: rgba(87, 21, 219, 0.52);
-}
-
 :root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .admission-filter-row,
 :root[data-theme="dark"] .uni-tags-wrap,
-:root[data-theme="dark"] .track-funding-options-block,
 :root[data-theme="dark"] .track-cost-preview,
 :root[data-theme="dark"] .finance-option-total,
 :root[data-theme="dark"] .track-extra-req,
@@ -5092,22 +4123,9 @@
   background: var(--surface-soft);
 }
 
-:root[data-theme="dark"] .d-cover-price {
-  background: var(--surface-solid);
-  border-color: var(--line);
-  color: var(--text);
-  box-shadow: none;
-}
-
 :root[data-theme="dark"] .d-cover-logo {
   background: #ffffff;
   box-shadow: none;
-}
-
-:root[data-theme="dark"]
-  .admission-option-card:has(.track-select-btn.is-active) {
-  border-color: rgba(129, 140, 248, 0.42);
-  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.12);
 }
 
 :root[data-theme="dark"] .d-back,
@@ -5150,29 +4168,12 @@
   box-shadow: none;
 }
 
-:root[data-theme="dark"] .admission-option-card--grant,
 :root[data-theme="dark"] .finance-option-card--grant,
-:root[data-theme="dark"] .track-card--grant,
-:root[data-theme="dark"] .finance-card--grant,
 :root[data-theme="dark"] .finance-track-group--grant,
 :root[data-theme="dark"] .track-cost-preview--grant,
 :root[data-theme="dark"] .finance-option-total--grant {
   border-color: rgba(52, 211, 153, 0.28);
   background: var(--grant-soft);
-}
-
-:root[data-theme="dark"] #detailRequirements .track-card,
-:root[data-theme="dark"] #detailRequirements .track-card.track-card--grant {
-  background: var(--card) !important;
-  background-image: none !important;
-  border-color: var(--line) !important;
-  box-shadow: none !important;
-  color: var(--text) !important;
-}
-
-:root[data-theme="dark"] #detailRequirements .track-card.track-card--grant {
-  background: var(--grant-soft) !important;
-  border-color: rgba(52, 211, 153, 0.28) !important;
 }
 
 @media (max-width: 720px) {
@@ -5208,6 +4209,7 @@
   #tab-finance .finance-box {
     padding: 18px 16px;
   }
+
 }
 
 @media (max-width: 380px) {
@@ -5226,35 +4228,16 @@
   .d-tab-btn {
     min-width: 96px;
   }
+
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .d-tab-btn.active::after {
     animation: motion-underline-snap var(--motion-fast)
-      var(--motion-ease-emphasized) both;
+    var(--motion-ease-emphasized) both;
     transform-origin: left center;
   }
 
-  .admission-option-card:has(.track-select-btn.is-active),
-  .track-card:has(.track-select-btn.is-active) {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .admission-option-card:has(.track-select-btn.is-active)::after,
-  .track-card:has(.track-select-btn.is-active)::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    z-index: 1;
-    border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
-    border-radius: inherit;
-    opacity: 0;
-    transform: scale(0.985);
-    animation: motion-state-ring var(--motion-slow)
-      var(--motion-ease-emphasized) both;
-    pointer-events: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5263,60 +4246,39 @@
   .d-site-link,
   .track-select-btn,
   .program-card,
-  .admission-option-card,
   .finance-option-card,
-  .track-card,
-  .finance-card,
   .program-acceptance-fill,
-  .cost-progress-segment,
-  .cost-bar-fill {
+  .cost-progress-segment {
     transition: none !important;
     animation: none !important;
   }
 
-  .admission-option-card:has(.track-select-btn.is-active)::after,
-  .track-card:has(.track-select-btn.is-active)::after {
-    animation: none !important;
-  }
 }
 
-/* ===== 2026 Layout Density Pass ===== */
 .d-box,
 #tab-admission .d-box,
 #tab-finance .finance-box {
   padding: 20px 22px;
 }
 
-.admission-filter-row,
-.track-funding-options-block,
 .finance-track-group {
   padding: 14px;
   gap: 10px;
 }
 
-.admission-option-card,
-.finance-option-card,
-.track-card {
+.finance-option-card {
   padding: 14px;
   gap: 10px;
 }
 
-.admission-option-head,
-.finance-option-head,
-.track-header {
+.finance-option-head {
   align-items: flex-start;
   gap: 8px 12px;
-}
-
-.admission-option-title-wrap {
-  flex: 1 1 320px;
-  gap: 7px;
 }
 
 .track-funding-badge,
 .track-selection-badge,
 .tag,
-.track-major-chip,
 .chance-track-chip {
   max-width: 100%;
   min-height: 24px;
@@ -5371,24 +4333,17 @@
   letter-spacing: 0;
 }
 
-.track-stats-grid {
-  gap: 10px;
-  margin-top: 0;
-}
-
 .track-stats-box,
 .track-exam-group,
 .track-lang-rule-card,
-.track-extra-req,
-.track-grants {
+.track-extra-req {
   padding: 10px;
 }
 
 .track-stats-title,
 .track-exam-group-title,
 .track-lang-rules-title,
-.track-extra-req-title,
-.track-grants-title {
+.track-extra-req-title {
   margin-bottom: 6px;
   letter-spacing: 0;
 }
@@ -5414,29 +4369,17 @@
 }
 
 @media (max-width: 720px) {
-  .admission-option-card,
-  .finance-option-card,
-  .track-card {
+  .finance-option-card {
     padding: 12px;
-  }
-
-  .admission-option-title-wrap {
-    flex-basis: 100%;
   }
 
   .track-cost-preview,
   .finance-option-total {
     align-items: flex-start;
   }
+
 }
 
-@media (max-width: 520px) {
-  .track-stats-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ===== 2026 University Detail Device UX ===== */
 @media (max-width: 980px) {
   .d-page {
     padding-top: 18px;
@@ -5469,6 +4412,7 @@
   .d-tab-btn {
     flex: 0 0 auto;
   }
+
 }
 
 @media (max-width: 640px) {
@@ -5521,24 +4465,13 @@
 
   .admissions-summary-grid,
   .admissions-program-grid,
-  .track-req-grid,
   .program-list {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .track-header,
-  .admission-option-head,
   .finance-option-head {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .track-side,
-  .track-price,
-  .finance-total {
-    width: 100%;
-    text-align: left;
-    align-items: flex-start;
   }
 
   .cost-legend-row {
@@ -5549,6 +4482,7 @@
   .cost-legend-value {
     text-align: left;
   }
+
 }
 
 @media (max-width: 720px) {
@@ -5567,6 +4501,7 @@
     flex: 1 1 138px;
     width: auto;
   }
+
 }
 
 @media (max-width: 420px) {
@@ -5597,9 +4532,9 @@
   #tab-finance .finance-box {
     padding: 16px 12px;
   }
+
 }
 
-/* ===== 2026 Finance Light Separation Fix ===== */
 .finance-summary-container {
   gap: 16px;
   margin-bottom: 6px;
@@ -5638,16 +4573,12 @@
   margin-top: 0;
 }
 
-
-
 :root:not([data-theme="dark"]) #tab-finance .finance-box,
 :root:not([data-theme="dark"]) #tab-admission .d-box,
 :root:not([data-theme="dark"]) #tab-general .d-box,
 :root:not([data-theme="dark"]) #tab-programs .d-box,
 :root:not([data-theme="dark"]) .finance-track-group,
 :root:not([data-theme="dark"]) .finance-option-card,
-:root:not([data-theme="dark"]) .admission-option-card,
-:root:not([data-theme="dark"]) .track-card,
 :root:not([data-theme="dark"]) .track-stats-box,
 :root:not([data-theme="dark"]) .track-cost-preview,
 :root:not([data-theme="dark"]) .finance-option-total,
@@ -5661,8 +4592,7 @@
 }
 
 :root:not([data-theme="dark"]) .finance-track-group,
-:root:not([data-theme="dark"]) .finance-option-card,
-:root:not([data-theme="dark"]) .admission-option-card {
+:root:not([data-theme="dark"]) .finance-option-card {
   background: #ffffff;
 }
 
@@ -5675,9 +4605,7 @@
 }
 
 :root:not([data-theme="dark"]) .finance-track-group--grant,
-:root:not([data-theme="dark"]) .finance-option-card--grant,
-:root:not([data-theme="dark"]) .admission-option-card--grant,
-:root:not([data-theme="dark"]) .track-card--grant {
+:root:not([data-theme="dark"]) .finance-option-card--grant {
   border-color: rgba(16, 185, 129, 0.38);
 }
 
@@ -5696,16 +4624,15 @@
   border-color: rgba(87, 21, 219, 0.26);
 }
 
-/* ===== 2026 Detail Light Theme Parity ===== */
 :root:not([data-theme="dark"]) .d-page-scope {
   background:
-    linear-gradient(
-      135deg,
-      rgba(87, 21, 219, 0.08),
-      rgba(87, 21, 219, 0.018) 44%,
-      transparent
-    ),
-    var(--card);
+  linear-gradient(
+  135deg,
+  rgba(87, 21, 219, 0.08),
+  rgba(87, 21, 219, 0.018) 44%,
+  transparent
+  ),
+  var(--card);
   border-color: var(--line);
   border-left-color: var(--accent);
 }
@@ -5744,8 +4671,6 @@
 :root:not([data-theme="dark"]) .d-quick-stat,
 :root:not([data-theme="dark"]) .uni-tags-wrap,
 :root:not([data-theme="dark"]) .chance-panel,
-:root:not([data-theme="dark"]) .admission-filter-row,
-:root:not([data-theme="dark"]) .track-funding-options-block,
 :root:not([data-theme="dark"]) .track-cost-preview,
 :root:not([data-theme="dark"]) .finance-option-total,
 :root:not([data-theme="dark"]) .track-extra-req,
@@ -5756,13 +4681,6 @@
   border-color: var(--line);
 }
 
-:root:not([data-theme="dark"])
-  .admission-option-card:has(.track-select-btn.is-active),
-:root:not([data-theme="dark"]) .track-card:has(.track-select-btn.is-active) {
-  background-color: #f7f4ff;
-  border-color: rgba(87, 21, 219, 0.46);
-}
-
 :root:not([data-theme="dark"]) .track-select-btn:disabled,
 :root:not([data-theme="dark"]) .track-select-btn.is-active {
   color: #3730a3;
@@ -5770,21 +4688,15 @@
   border-color: rgba(87, 21, 219, 0.42);
 }
 
-:root:not([data-theme="dark"]) .admission-option-card:hover,
 :root:not([data-theme="dark"]) .finance-option-card:hover,
-:root:not([data-theme="dark"]) .track-card:hover,
-:root:not([data-theme="dark"]) .program-card:hover,
-:root:not([data-theme="dark"]) .finance-card:hover {
+:root:not([data-theme="dark"]) .program-card:hover {
   border-color: rgba(87, 21, 219, 0.32);
 }
 
-/* Keep all primary tab panels visually connected to the same detail shell. */
 #tab-admission .d-box,
 #tab-finance .finance-box {
   border-radius: 0;
 }
-
-/* ===== 2026 Detail Light Dark-Parity Pass ===== */
 
 :root:not([data-theme="dark"]) body[data-page="university"],
 :root:not([data-theme="dark"]) .d-page {
@@ -5802,8 +4714,6 @@
 :root:not([data-theme="dark"]) #tab-programs .d-box,
 :root:not([data-theme="dark"]) .finance-track-group,
 :root:not([data-theme="dark"]) .finance-option-card,
-:root:not([data-theme="dark"]) .admission-option-card,
-:root:not([data-theme="dark"]) .track-card,
 :root:not([data-theme="dark"]) .scholarship-card,
 :root:not([data-theme="dark"]) .total-price-card {
   background: var(--card);
@@ -5822,8 +4732,6 @@
 :root:not([data-theme="dark"]) .d-quick-stat,
 :root:not([data-theme="dark"]) .uni-tags-wrap,
 :root:not([data-theme="dark"]) .chance-panel,
-:root:not([data-theme="dark"]) .admission-filter-row,
-:root:not([data-theme="dark"]) .track-funding-options-block,
 :root:not([data-theme="dark"]) .track-cost-preview,
 :root:not([data-theme="dark"]) .finance-option-total,
 :root:not([data-theme="dark"]) .track-extra-req,
@@ -5837,9 +4745,7 @@
 }
 
 :root:not([data-theme="dark"]) .finance-track-group--grant,
-:root:not([data-theme="dark"]) .finance-option-card--grant,
-:root:not([data-theme="dark"]) .admission-option-card--grant,
-:root:not([data-theme="dark"]) .track-card--grant {
+:root:not([data-theme="dark"]) .finance-option-card--grant {
   border-color: rgba(16, 185, 129, 0.28);
 }
 
@@ -5849,17 +4755,11 @@
   background: rgba(16, 185, 129, 0.08);
 }
 
-:root:not([data-theme="dark"]) .total-price-card,
-:root:not([data-theme="dark"])
-  .admission-option-card:has(.track-select-btn.is-active),
-:root:not([data-theme="dark"]) .track-card:has(.track-select-btn.is-active) {
+:root:not([data-theme="dark"]) .total-price-card {
   background: rgba(87, 21, 219, 0.07);
   border-color: rgba(87, 21, 219, 0.3);
 }
 
-/* =========================================
-   ADMISSION CHANCE SIGNALS
-   ========================================= */
 .admission-chance-badge {
   display: inline-flex;
   align-items: center;
@@ -5877,68 +4777,3 @@
   overflow-wrap: anywhere;
 }
 
-.track-factors-badges {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.track-factors-label {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.track-factor-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  max-width: 100%;
-  font-size: 11.5px;
-  font-weight: 650;
-  line-height: 1.25;
-  padding: 4px 9px;
-  border-radius: 10px;
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  color: var(--text-muted);
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.admission-chance-badge__icon,
-.track-factor-chip__icon {
-  flex: 0 0 auto;
-  color: currentColor;
-}
-
-.admission-chance-badge--neutral,
-.track-factor-chip.factor-neutral {
-  color: var(--text-muted);
-}
-
-.admission-chance-badge--warn,
-.track-factor-chip.factor-negative,
-.track-factor-chip.factor-positive {
-  color: var(--text);
-}
-
-.track-factor-chip.factor-positive {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
-}
-
-.admission-chance-badge--warn,
-.track-factor-chip.factor-negative {
-  border-color: color-mix(in srgb, var(--text-muted) 30%, var(--line));
-}
-
-@media (max-width: 680px) {
-  .admission-chance-badge,
-  .track-factor-chip {
-    flex: 1 1 100%;
-  }
-}

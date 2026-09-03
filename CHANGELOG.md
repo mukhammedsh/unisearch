@@ -10,6 +10,7 @@ All notable project changes should be recorded here.
 - Fixed guide section navigation in `guide.js` to scroll to top for `#guide-unifit` to preserve hero visibility, with manual scroll restoration on initial page load.
 - Redesigned ranking podium cards (`.rank-1`, `.rank-2`, `.rank-3`) in `ranking.css` with distinct gold, silver, and bronze ambient borders and gradient backdrops.
 - Polished catalog and comparison surfaces (`universities.css`, `university.css`, `about.css`), refining active compare buttons, selected card states, and grant track treatments.
+- Cleaned up redundant code, ghost selectors, and dead CSS classes across all stylesheets (`about.css`, `error.css`, `guide.css`, `index.css`, `ranking.css`, `style.css`, `universities.css`, `university.css`), removing over 3,700 lines of unused styles and duplicate override passes while strictly maintaining responsiveness and design system fidelity.
 
 ## 4.9.10 (2026-09-02) - Dependency Updates and CI Toolchain Upgrades
 - Upgraded GitHub Actions workflows to `@v7` (`actions/checkout@v7`, `actions/setup-node@v7`, `actions/setup-python@v7`) across all workflows (PR #58).

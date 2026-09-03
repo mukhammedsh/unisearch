@@ -1,15 +1,56 @@
-.rank-container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-.rank-header { text-align: center; margin-bottom: 40px; }
-.rank-header h1 { font-size: 36px; margin-bottom: 10px; color: #111; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.rank-header p { color: #666; font-size: 16px; }
+.rank-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 56px;
+    color: var(--text);
+}
 
+body[data-page="ranking"] {
+    background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
+}
+
+:root[data-theme="dark"] body[data-page="ranking"] {
+    background: var(--bg);
+}
+
+.rank-header {
+    max-width: 980px;
+    margin-bottom: 22px;
+    text-align: left;
+}
+
+.rank-header h1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: clamp(34px, 4.2vw, 52px);
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: var(--text);
+}
+
+.rank-header p {
+    max-width: 620px;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.rank-title-icon {
+    color: var(--accent);
+}
+
+/* --- Ranking Tools & Filters --- */
 .rank-tools {
     --rank-control-height: 48px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 174px;
-    gap: 12px;
+    gap: 10px;
     align-items: end;
-    margin: -12px 0 14px;
+    margin: 0 0 12px;
 }
 
 .rank-search {
@@ -24,6 +65,15 @@
     min-height: var(--rank-control-height);
     padding: 0 14px;
     position: relative;
+    box-shadow: none;
+    transition:
+        border-color var(--motion-fast) var(--motion-ease-standard),
+        box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.rank-search:focus-within {
+    border-color: rgba(87, 21, 219, 0.38);
+    box-shadow: 0 0 0 3px rgba(87, 21, 219, 0.1);
 }
 
 .rank-search input {
@@ -57,18 +107,6 @@
 
 .rank-country-filter .custom-select-trigger {
     min-height: var(--rank-control-height);
-}
-
-.rank-country-filter .u-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
 }
 
 .rank-search-suggestions {
@@ -119,13 +157,6 @@
         transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.rank-search-suggestion:hover,
-.rank-search-suggestion:focus-visible {
-    background: rgba(87, 21, 219, 0.08);
-    outline: none;
-    transform: translateX(2px);
-}
-
 .rank-search-suggestion span {
     min-width: 0;
     overflow: hidden;
@@ -141,11 +172,11 @@
 }
 
 .rank-source-note {
-    margin: 0 0 18px;
+    margin: 0 0 14px;
     color: var(--text-muted);
     font-size: 13px;
-    line-height: 1.55;
-    text-align: center;
+    line-height: 1.45;
+    text-align: left;
 }
 
 .rank-empty {
@@ -163,375 +194,22 @@
     color: var(--text);
 }
 
+/* --- Ranking Card --- */
 .rank-card {
-    display: flex;
-    align-items: center;
-    background: white;
+    display: grid;
+    grid-template-columns: 64px 56px minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 14px 16px;
     border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
     border: 1px solid var(--line);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    transition:
-        transform var(--motion-fast) var(--motion-ease-standard),
-        box-shadow var(--motion-fast) var(--motion-ease-standard);
+    background: var(--surface-solid);
+    box-shadow: none;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
     position: relative;
     overflow: hidden;
-}
-
-.rank-card--skeleton {
-    pointer-events: none;
-}
-
-.rank-skeleton-num {
-    width: 48px;
-    height: 26px;
-    align-self: center;
-}
-
-.rank-skeleton-badge {
-    grid-column: 3;
-    width: 160px;
-    height: 30px;
-    border-radius: 12px;
-}
-
-.rank-card > * {
-    position: relative;
-    z-index: 2;
-}
-
-.rank-bg-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.52;
-    filter: brightness(0.68) saturate(1.08);
-    z-index: 0;
-    pointer-events: none;
-}
-
-.rank-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, rgba(255,255,255,0.54), rgba(255,255,255,0.4));
-    z-index: 1;
-    pointer-events: none;
-}
-.rank-card:hover {
-    box-shadow: 0 12px 30px rgba(93, 23, 234, 0.15);
-    border-color: rgba(93, 23, 234, 0.4);
-}
-
-.rank-num {
-    font-size: 28px;
-    font-weight: 700;
-    width: 60px;
-    text-align: center;
-    color: #999;
-    margin-right: 20px;
-}
-.rank-num--meta {
-    width: 92px;
-    font-size: 12px;
-    line-height: 1.2;
-    text-align: left;
-    color: #374151;
-}
-/* Цвета медалей для топ-3 */
-.rank-1 { color: #FFD700; text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5); font-size: 36px; }
-.rank-2 { color: #C0C0C0; text-shadow: 0 2px 10px rgba(192, 192, 192, 0.5); font-size: 34px; }
-.rank-3 { color: #CD7F32; text-shadow: 0 2px 10px rgba(205, 127, 50, 0.5); font-size: 32px; }
-
-.rank-logo {
-    width: 64px;
-    height: 64px;
-    flex: 0 0 64px;
-    border-radius: 12px;
-    margin-right: 20px;
-    background: #fff;
-    border: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px;
-    overflow: hidden;
-}
-.rank-logo img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    object-position: center;
-    background: #fff;
-    border-radius: 8px;
-}
-
-.rank-info { flex-grow: 1; min-width: 0; }
-.rank-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-.rank-loc { font-size: 14px; color: #666; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-.rank-loc-icon { flex: 0 0 auto; color: var(--accent); align-self: center; }
-.rank-loc-city { white-space: nowrap; }
-.rank-loc-country { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-.rank-loc-text { margin-left: 1px; }
-.rank-title-icon { color: #b45309; display: inline-flex; align-items: center; justify-content: center; line-height: 0; }
-.rank-title-icon .ui-icon { width: 28px; height: 28px; }
-
-.rank-badge {
-    background: #f3f4f6;
-    color: #374151;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    line-height: 1.15;
-}
-
-.rank-source {
-    margin-top: 10px;
-    font-size: 13px;
-    color: #888;
-    background: #f9f9f9;
-    display: block;
-    max-width: 100%;
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid #eee;
-    line-height: 1.35;
-    white-space: normal;
-    overflow-wrap: anywhere;
-}
-
-.rank-source--meta {
-    font-size: 12px;
-    color: #6b7280;
-}
-
-.rank-error {
-    padding: 20px;
-    text-align: center;
-    color: #dc2626;
-    font-weight: 700;
-    border-radius: 12px;
-    border: 1px solid #fecdd3;
-    background: #fff1f2;
-}
-.rank-source a {
-    color: #5d17ea;
-    font-weight: 600;
-    text-decoration: none;
-}
-.rank-source a:hover {
-    text-decoration: underline;
-}
-
-/* --- Адаптивность для телефонов --- */
-@media (max-width: 600px) {
-    /* Уменьшаем отступы контейнера */
-    .rank-container {
-        padding: 20px 15px;
-    }
-
-    /* Заголовок страницы поменьше */
-    .rank-header h1 {
-        font-size: 28px;
-    }
-
-    /* Карточка рейтинга */
-    .rank-card {
-        flex-wrap: wrap; /* Разрешаем перенос элементов */
-        padding: 15px;
-        gap: 10px;       /* Отступ между элементами */
-    }
-
-    .rank-tools {
-        grid-template-columns: 1fr;
-        margin-top: -8px;
-    }
-
-    .rank-source-note {
-        text-align: left;
-    }
-
-    /* Номер места (#1) */
-    .rank-num {
-        font-size: 20px;
-        width: 30px;     /* Уменьшаем ширину */
-        margin-right: 5px;
-    }
-
-    /* Логотип */
-    .rank-logo {
-        width: 48px;
-        height: 48px;
-        flex: 0 0 48px;
-        margin-right: 10px;
-        border-radius: 10px;
-    }
-
-    /* Инфо об университете растягиваем */
-    .rank-info {
-        flex: 1; /* Занимает всё оставшееся место в строке */
-        min-width: 120px; /* Чтобы текст не сжимался в 0 */
-    }
-    
-    .rank-title {
-        font-size: 16px;
-        line-height: 1.3;
-    }
-
-    .rank-loc {
-        font-size: 13px;
-    }
-
-    /* Бейдж переносим на новую строку на всю ширину */
-    .rank-badge {
-        width: 100%;
-        margin-top: 5px;
-        text-align: center;
-        background-color: #f8f9fa; /* Делаем фон чуть заметнее */
-        border: 1px solid #eee;
-    }
-}
-
-:root[data-theme="dark"] .rank-header h1,
-:root[data-theme="dark"] .rank-title {
-    color: var(--text);
-}
-
-:root[data-theme="dark"] .rank-header p,
-:root[data-theme="dark"] .rank-loc,
-:root[data-theme="dark"] .rank-source {
-    color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .rank-card {
-    background: var(--surface-solid);
-    border-color: var(--line);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
-}
-
-:root[data-theme="dark"] .rank-bg-img {
-    opacity: 0.32;
-    filter: grayscale(100%) brightness(40%) contrast(90%);
-}
-
-:root[data-theme="dark"] .rank-card::after {
-    background: linear-gradient(120deg, rgba(23, 24, 26, 0.72), rgba(23, 24, 26, 0.55));
-}
-
-:root[data-theme="dark"] .rank-source {
-    background: var(--surface-soft);
-    border-color: var(--line);
-    color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .rank-badge {
-    background: rgba(87, 21, 219, 0.16);
-    border: 1px solid rgba(87, 21, 219, 0.35);
-    color: #c4b5fd;
-}
-
-:root[data-theme="dark"] .rank-badge b {
-    color: #ede9fe;
-}
-
-:root[data-theme="dark"] .rank-logo {
-    background: #ffffff;
-    border-color: var(--line);
-}
-
-:root[data-theme="dark"] .rank-num {
-    color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .rank-1 {
-    color: #fbbf24;
-    font-weight: 800;
-    text-shadow: 0 0 14px rgba(251, 191, 36, 0.35);
-}
-
-:root[data-theme="dark"] .rank-2 {
-    color: #cbd5e1;
-    font-weight: 800;
-    text-shadow: 0 0 14px rgba(203, 213, 225, 0.3);
-}
-
-:root[data-theme="dark"] .rank-3 {
-    color: #fb923c;
-    font-weight: 800;
-    text-shadow: 0 0 14px rgba(251, 146, 60, 0.35);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-1) {
-    border-color: rgba(251, 191, 36, 0.36);
-    background: linear-gradient(180deg, rgba(251, 191, 36, 0.06), transparent 60%), var(--surface-solid);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-2) {
-    border-color: rgba(203, 213, 225, 0.32);
-    background: linear-gradient(180deg, rgba(203, 213, 225, 0.05), transparent 60%), var(--surface-solid);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-3) {
-    border-color: rgba(251, 146, 60, 0.32);
-    background: linear-gradient(180deg, rgba(251, 146, 60, 0.05), transparent 60%), var(--surface-solid);
-}
-
-:root[data-theme="dark"] .rank-error {
-    color: #fca5a5;
-    border-color: #7f1d1d;
-    background: #2a1114;
-}
-
-/* ===== 2026 Ranking Refresh ===== */
-.rank-container {
-    max-width: 1100px;
-    padding: 32px 20px 56px;
-}
-
-.rank-header {
-    max-width: 980px;
-    margin-bottom: 28px;
-    text-align: left;
-}
-
-.rank-header h1 {
-    justify-content: flex-start;
-    gap: 12px;
-    margin-bottom: 12px;
-    font-size: clamp(34px, 4.2vw, 52px);
-    letter-spacing: 0;
-}
-
-.rank-header p {
-    max-width: 620px;
-    font-size: 17px;
-    line-height: 1.6;
-    color: var(--text-muted);
-}
-
-.rank-title-icon {
-    color: var(--accent);
-}
-
-.rank-card {
-    display: grid;
-    grid-template-columns: 76px 60px minmax(0, 1fr);
-    gap: 14px;
-    margin-bottom: 12px;
-    padding: 16px 18px;
-    border-radius: 18px;
-    border: 1px solid var(--line);
-    background: var(--surface-solid);
-    box-shadow: none;
     transition:
         background-color var(--motion-fast) var(--motion-ease-standard),
         border-color var(--motion-fast) var(--motion-ease-standard),
@@ -539,34 +217,29 @@
 }
 
 .rank-card:hover {
-    transform: none;
-    border-color: rgba(79, 70, 229, 0.18);
-    box-shadow: none;
+    border-color: rgba(87, 21, 219, 0.28);
     background: var(--surface-soft);
+}
+
+.rank-bg-img {
+    display: none;
 }
 
 .rank-num {
     grid-row: 1 / span 2;
     width: auto;
-    margin-right: 0;
-    font-size: 30px;
+    font-size: 28px;
+    font-weight: 800;
     line-height: 1;
     color: var(--text-muted);
+    align-self: center;
 }
 
 .rank-num--meta {
-    width: auto;
     font-size: 12px;
     line-height: 1.35;
+    font-weight: 600;
     color: var(--text-muted);
-}
-
-.rank-1,
-.rank-2,
-.rank-3 {
-    font-size: 30px;
-    font-weight: 800;
-    text-shadow: none;
 }
 
 .rank-1 {
@@ -579,6 +252,10 @@
 
 .rank-3 {
     color: #c2410c;
+}
+
+:root[data-theme="dark"] .rank-2 {
+    color: #94a3b8;
 }
 
 .rank-card:has(.rank-1) {
@@ -598,30 +275,59 @@
 
 .rank-logo {
     grid-row: 1 / span 2;
-    width: 64px;
-    height: 64px;
-    margin-right: 0;
-    border-radius: 16px;
-    box-shadow: none;
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    align-self: center;
+}
+
+.rank-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .rank-info {
     grid-column: 3;
     min-width: 0;
     padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .rank-title {
-    margin-bottom: 6px;
-    font-size: 21px;
-    line-height: 1.24;
+    margin-bottom: 3px;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.25;
     letter-spacing: 0;
+    color: var(--text);
     overflow-wrap: anywhere;
 }
 
 .rank-loc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.4;
+    color: var(--text-muted);
+}
+
+.rank-loc-city {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.rank-loc-country {
     color: var(--text-muted);
 }
 
@@ -629,81 +335,36 @@
     grid-column: 3;
     justify-self: start;
     align-self: start;
-    padding: 8px 12px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--surface-soft);
-    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(87, 21, 219, 0.24);
+    background: rgba(87, 21, 219, 0.08);
+    color: var(--accent);
     font-size: 12px;
     font-weight: 600;
+    line-height: 1.2;
+    margin-top: 6px;
 }
 
-@media (max-width: 600px) {
-    .rank-container {
-        padding: 16px 12px 48px;
-    }
-
-    .rank-card {
-        grid-template-columns: 42px 42px minmax(0, 1fr);
-        gap: 10px;
-        padding: 12px;
-    }
-
-    .rank-num {
-        font-size: 20px;
-    }
-
-    .rank-1, .rank-2, .rank-3 {
-        font-size: 24px;
-    }
-
-    .rank-logo {
-        width: 42px;
-        height: 42px;
-        border-radius: 10px;
-    }
-
-    .rank-title {
-        font-size: 15px;
-        margin-bottom: 4px;
-    }
-
-    .rank-loc {
-        font-size: 12px;
-    }
-
-    .rank-badge {
-        grid-column: 1 / -1;
-        width: 100%;
-        text-align: center;
-        padding: 6px;
-        font-size: 11px;
-    }
+/* --- Skeleton State --- */
+.rank-card--skeleton {
+    pointer-events: none;
 }
 
-:root[data-theme="dark"] .rank-num--meta {
-    color: var(--text);
+.rank-skeleton-num {
+    width: 48px;
+    height: 26px;
+    align-self: center;
 }
 
-@media (max-width: 600px) {
-    .rank-num--meta {
-        width: 100%;
-        font-size: 12px;
-        margin-right: 0;
-        text-align: left;
-    }
+.rank-skeleton-badge {
+    grid-column: 3;
+    width: 160px;
+    height: 28px;
+    border-radius: 10px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .rank-search-suggestions,
-    .rank-search-suggestion,
-    .rank-card {
-        transition: none !important;
-        animation: none !important;
-    }
-}
-
-/* ===== 2026 Ranking Device UX ===== */
+/* --- Responsive Breakpoints --- */
 @media (max-width: 760px) {
     .rank-container {
         padding-left: var(--mobile-safe-gutter, 16px);
@@ -711,8 +372,8 @@
     }
 
     .rank-header h1 {
-        font-size: clamp(30px, 9vw, 42px);
-        line-height: 1.05;
+        font-size: clamp(28px, 8vw, 40px);
+        line-height: 1.1;
     }
 
     .rank-header p {
@@ -733,11 +394,49 @@
     .rank-country-filter .custom-select-trigger {
         width: 100%;
     }
+}
 
-    .rank-search,
-    .rank-country-filter,
-    .rank-country-filter .custom-select-trigger {
-        min-height: var(--rank-control-height);
+@media (max-width: 600px) {
+    .rank-container {
+        padding-top: 16px;
+        padding-bottom: 48px;
+    }
+
+    .rank-card {
+        grid-template-columns: 42px 42px minmax(0, 1fr);
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .rank-num {
+        font-size: 20px;
+    }
+
+    .rank-num--meta {
+        font-size: 11px;
+    }
+
+    .rank-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+    }
+
+    .rank-title {
+        font-size: 15px;
+        margin-bottom: 2px;
+    }
+
+    .rank-loc {
+        font-size: 12px;
+    }
+
+    .rank-badge {
+        grid-column: 1 / -1;
+        width: 100%;
+        text-align: center;
+        padding: 6px;
+        font-size: 11px;
     }
 }
 
@@ -748,226 +447,23 @@
     }
 
     .rank-card {
-        grid-template-columns: 38px 38px minmax(0, 1fr);
+        grid-template-columns: 36px 36px minmax(0, 1fr);
         gap: 8px;
         padding: 10px;
     }
 
     .rank-logo {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
     }
 }
 
-/* ===== 2026 Ranking Layout Density Pass ===== */
-.rank-container {
-    padding-top: 24px;
-}
-
-.rank-header {
-    margin-bottom: 22px;
-}
-
-.rank-header h1 {
-    margin-bottom: 8px;
-}
-
-.rank-tools {
-    gap: 10px;
-    margin: 0 0 12px;
-}
-
-.rank-search,
-.rank-country-filter,
-.rank-country-filter .custom-select-trigger {
-    min-height: var(--rank-control-height);
-}
-
-.rank-source-note {
-    margin: 0 0 14px;
-    line-height: 1.45;
-}
-
-.rank-card {
-    grid-template-columns: 64px 56px minmax(0, 1fr);
-    gap: 12px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    border-radius: 16px;
-}
-
-.rank-logo {
-    width: 56px;
-    height: 56px;
-    flex-basis: 56px;
-    margin-right: 0;
-}
-
-.rank-title {
-    margin-bottom: 3px;
-    line-height: 1.25;
-}
-
-.rank-source {
-    margin-top: 8px;
-    padding: 5px 9px;
-    border-radius: 12px;
-}
-
-.rank-badge {
-    border-radius: 12px;
-    padding: 6px 9px;
-}
-
-@media (max-width: 700px) {
-    .rank-container {
-        padding-top: 18px;
-    }
-
-    .rank-header {
-        margin-bottom: 18px;
-    }
-
+@media (prefers-reduced-motion: reduce) {
+    .rank-search-suggestions,
+    .rank-search-suggestion,
     .rank-card {
-        grid-template-columns: 44px minmax(48px, auto) minmax(0, 1fr);
-        gap: 10px;
-        padding: 12px;
-    }
-
-    .rank-num {
-        font-size: 22px;
-    }
-
-    .rank-logo {
-        width: 48px;
-        height: 48px;
-        flex-basis: 48px;
+        transition: none !important;
+        animation: none !important;
     }
 }
 
-/* ===== 2026 Ranking Light Surface Separation ===== */
-:root:not([data-theme="dark"]) body[data-page="ranking"] {
-    background:
-        radial-gradient(circle at top right, rgba(87, 21, 219, 0.08), transparent 32%),
-        linear-gradient(180deg, #f8fafc 0%, #e9eef6 100%);
-}
-
-:root:not([data-theme="dark"]) .rank-container {
-    color: var(--text);
-}
-
-:root:not([data-theme="dark"]) .rank-header h1 {
-    color: var(--text);
-}
-
-:root:not([data-theme="dark"]) .rank-header p,
-:root:not([data-theme="dark"]) .rank-source-note {
-    color: var(--text-muted);
-}
-
-:root:not([data-theme="dark"]) .rank-search,
-:root:not([data-theme="dark"]) .rank-card,
-:root:not([data-theme="dark"]) .rank-search-suggestions {
-    background: var(--surface-solid);
-    border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .rank-card {
-    background:
-        linear-gradient(180deg, rgba(87, 21, 219, 0.025), transparent 56%),
-        var(--surface-solid);
-    box-shadow: none;
-}
-
-:root:not([data-theme="dark"]) .rank-card:hover {
-    background:
-        linear-gradient(180deg, rgba(87, 21, 219, 0.065), rgba(87, 21, 219, 0.014)),
-        var(--surface-solid);
-    border-color: rgba(87, 21, 219, 0.36);
-}
-
-:root:not([data-theme="dark"]) .rank-logo,
-:root:not([data-theme="dark"]) .rank-badge,
-:root:not([data-theme="dark"]) .rank-source,
-:root:not([data-theme="dark"]) .rank-search-suggestion {
-    background: var(--surface-soft);
-    border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .rank-logo {
-    background: #ffffff;
-}
-
-:root:not([data-theme="dark"]) .rank-num {
-    color: #4b5563;
-}
-
-:root:not([data-theme="dark"]) .rank-badge {
-    background: rgba(87, 21, 219, 0.075);
-    border-color: rgba(87, 21, 219, 0.22);
-    color: var(--accent);
-}
-
-:root:not([data-theme="dark"]) .rank-source {
-    color: var(--text-muted);
-}
-
-:root:not([data-theme="dark"]) .rank-search:focus-within {
-    border-color: rgba(87, 21, 219, 0.38);
-    box-shadow: 0 0 0 3px rgba(87, 21, 219, 0.1);
-}
-
-/* ===== 2026 Ranking Light Dark-Parity Pass ===== */
-:root:not([data-theme="dark"]) body[data-page="ranking"] {
-    background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
-}
-
-:root:not([data-theme="dark"]) .rank-search,
-:root:not([data-theme="dark"]) .rank-card,
-:root:not([data-theme="dark"]) .rank-search-suggestions {
-    background: var(--surface-solid);
-    border-color: var(--line);
-    box-shadow: none;
-}
-
-:root:not([data-theme="dark"]) .rank-card:not(:has(.rank-1)):not(:has(.rank-2)):not(:has(.rank-3)),
-:root:not([data-theme="dark"]) .rank-card:not(:has(.rank-1)):not(:has(.rank-2)):not(:has(.rank-3)):hover {
-    background: var(--surface-solid);
-}
-
-:root:not([data-theme="dark"]) .rank-card:hover {
-    border-color: rgba(87, 21, 219, 0.28);
-}
-
-:root:not([data-theme="dark"]) .rank-logo,
-:root:not([data-theme="dark"]) .rank-source,
-:root:not([data-theme="dark"]) .rank-search-suggestion {
-    background: var(--surface-soft);
-    border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .rank-badge {
-    background: rgba(87, 21, 219, 0.08);
-    border: 1px solid rgba(87, 21, 219, 0.24);
-    color: var(--accent);
-}
-
-:root:not([data-theme="dark"]) .rank-logo {
-    background: #ffffff;
-}
-
-:root:not([data-theme="dark"]) .rank-num:not(.rank-1):not(.rank-2):not(.rank-3) {
-    color: var(--text-muted);
-}
-
-:root:not([data-theme="dark"]) .rank-1 {
-    color: #d97706;
-}
-
-:root:not([data-theme="dark"]) .rank-2 {
-    color: #475569;
-}
-
-:root:not([data-theme="dark"]) .rank-3 {
-    color: #c2410c;
-}

@@ -232,46 +232,6 @@
   color: var(--text);
 }
 
-/* Grid & Cards (for structured data inside guide) */
-.guide-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.guide-grid--2col {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-}
-
-.guide-card {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px 16px;
-  background: var(--surface-soft);
-  transition: border-color var(--motion-fast, 0.15s) ease;
-}
-
-.guide-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
-}
-
-.guide-card h4,
-.guide-card h5 {
-  margin: 0 0 4px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--text);
-}
-
-.guide-card p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 14.5px;
-  line-height: 1.48;
-}
-
 /* Tags Groups */
 .guide-tags-group + .guide-tags-group {
   margin-top: 16px;
@@ -504,18 +464,13 @@
     font-size: 15px;
     padding-left: 18px;
   }
-
-  .guide-grid,
-  .guide-grid--2col {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .guide-nav a,
   .guide-section,
-  .guide-card,
   .guide-flow-step {
     transition: none;
   }
 }
+
