@@ -5,6 +5,7 @@ All notable project changes should be recorded here.
 ## Unreleased
 - Switched theme toggling to instantaneous transitions: removed `.theme-animating` transition block from `style.css` and suppressed lingering color transitions during theme switches in `theme.js` to eliminate desynchronized color animation delay and reduce client rendering overhead.
 - Overhauled `about.html` and `about.css` following Calm Academic Workspace and Apple-inspired density: expanded canvas to `1440px`, removed bloated hero headers in favor of a concise mission headline as H1, eliminated stacked gap duplication, tightened line-heights on wrapped text, and aligned card geometry to 12-16px radii.
+- Redesigned home page (`index.html`, `index.css`): replaced single flat wrapper card with an open two-section layout — centered hero with enlarged title (`clamp(34px, 5vw, 52px)`), centered metric strip, and a separate features section with Heroicons (`funnel`, `banknotes`, `sparkles`) in accent-tinted icon wells; secondary button contrast corrected (`surface-solid` background); all responsive breakpoints (980px, 640px, 380px) updated accordingly; no new i18n keys added.
 
 ## 5.0.0 (2026-09-03) - Frontend Design System Realignment and Guide Refresh
 - Consolidated base theme variables and design tokens (`--bg`, `--surface-solid`, `--surface-soft`, `--line`, `--grant-soft`) in `style.css` and removed redundant override blocks across stylesheets.
