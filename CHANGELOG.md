@@ -3,6 +3,7 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Switched theme toggling to instantaneous transitions: removed `.theme-animating` transition block from `style.css` and suppressed lingering color transitions during theme switches in `theme.js` to eliminate desynchronized color animation delay and reduce client rendering overhead.
 - Overhauled `about.html` and `about.css` following Calm Academic Workspace and Apple-inspired density: expanded canvas to `1440px`, removed bloated hero headers in favor of a concise mission headline as H1, eliminated stacked gap duplication, tightened line-heights on wrapped text, and aligned card geometry to 12-16px radii.
 
 ## 5.0.0 (2026-09-03) - Frontend Design System Realignment and Guide Refresh

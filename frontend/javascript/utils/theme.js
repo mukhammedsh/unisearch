@@ -5,8 +5,39 @@ const THEME_LIGHT = "light";
 const THEME_DARK = "dark";
 
 let themeWatchBound = false;
-let themeAnimTimer = 0;
-let themeAnimFrame = 0;
+let disableTransitionsTimer = 0;
+let disableTransitionsStyle = null;
+
+function disableTransitionsTemporarily() {
+  if (typeof document === "undefined" || !document.head) return;
+  if (!disableTransitionsStyle) {
+    disableTransitionsStyle = document.createElement("style");
+    disableTransitionsStyle.textContent =
+      "*, *::before, *::after { -webkit-transition: none !important; -moz-transition: none !important; -o-transition: none !important; -ms-transition: none !important; transition: none !important; }";
+    document.head.appendChild(disableTransitionsStyle);
+  }
+  if (disableTransitionsTimer && typeof window !== "undefined" && typeof window.cancelAnimationFrame === "function") {
+    window.cancelAnimationFrame(disableTransitionsTimer);
+    disableTransitionsTimer = 0;
+  }
+  if (typeof window !== "undefined" && typeof window.getComputedStyle === "function" && document.body) {
+    window.getComputedStyle(document.body).opacity;
+  }
+  if (typeof window !== "undefined" && typeof window.requestAnimationFrame === "function") {
+    disableTransitionsTimer = window.requestAnimationFrame(() => {
+      disableTransitionsTimer = window.requestAnimationFrame(() => {
+        if (disableTransitionsStyle) {
+          disableTransitionsStyle.remove();
+          disableTransitionsStyle = null;
+        }
+        disableTransitionsTimer = 0;
+      });
+    });
+  } else if (disableTransitionsStyle) {
+    disableTransitionsStyle.remove();
+    disableTransitionsStyle = null;
+  }
+}
 
 function readStoredTheme() {
   const value = safeLocalStorage.get(THEME_STORAGE_KEY);
@@ -32,28 +63,12 @@ export function getCurrentTheme() {
 export function applyTheme(theme, options = {}) {
   const nextTheme = theme === THEME_DARK ? THEME_DARK : THEME_LIGHT;
   const persist = Boolean(options.persist);
-  const animate = options.animate !== false;
   const root = document.documentElement;
-  const applyNow = () => {
-    root.setAttribute("data-theme", nextTheme);
-    root.style.colorScheme = nextTheme;
-  };
 
-  if (animate) {
-    root.classList.add("theme-animating");
-    if (themeAnimFrame) window.cancelAnimationFrame(themeAnimFrame);
-    if (themeAnimTimer) window.clearTimeout(themeAnimTimer);
-    themeAnimFrame = window.requestAnimationFrame(() => {
-      themeAnimFrame = 0;
-      applyNow();
-      themeAnimTimer = window.setTimeout(() => {
-        root.classList.remove("theme-animating");
-        themeAnimTimer = 0;
-      }, 220);
-    });
-  } else {
-    applyNow();
-  }
+  disableTransitionsTemporarily();
+  root.classList.remove("theme-animating");
+  root.setAttribute("data-theme", nextTheme);
+  root.style.colorScheme = nextTheme;
 
   if (persist) {
     safeLocalStorage.set(THEME_STORAGE_KEY, nextTheme);

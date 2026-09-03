@@ -215,51 +215,6 @@ body {
     animation: detail-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
 
-  :root.theme-animating body,
-  :root.theme-animating .navbar,
-  :root.theme-animating .theme-btn,
-  :root.theme-animating .settings-trigger-btn,
-  :root.theme-animating .profile-trigger-btn,
-  :root.theme-animating .menu-btn,
-  :root.theme-animating .lang-switch,
-  :root.theme-animating .profile-card,
-  :root.theme-animating .profile-input,
-  :root.theme-animating .profile-name-input,
-  :root.theme-animating .profile-block,
-  :root.theme-animating .profile-exam-item,
-  :root.theme-animating .lang-item,
-  :root.theme-animating .custom-select-trigger,
-  :root.theme-animating .custom-options,
-  :root.theme-animating .custom-option,
-  :root.theme-animating .site-footer,
-  :root.theme-animating .hero-section,
-  :root.theme-animating .stats-section,
-  :root.theme-animating .feature-box,
-  :root.theme-animating .mockup-card,
-  :root.theme-animating .u-card,
-  :root.theme-animating .uni-card,
-  :root.theme-animating .u-panel,
-  :root.theme-animating .u-input,
-  :root.theme-animating .u-select,
-  :root.theme-animating .u-reset,
-  :root.theme-animating .page-btn,
-  :root.theme-animating .view-toggles,
-  :root.theme-animating .rank-card,
-  :root.theme-animating .rank-badge,
-  :root.theme-animating .d-card,
-  :root.theme-animating .d-box,
-  :root.theme-animating .track-card,
-  :root.theme-animating .roi-box,
-  :root.theme-animating .chance-panel,
-  :root.theme-animating .finance-card,
-  :root.theme-animating .total-price-card,
-  :root.theme-animating .scholarship-card,
-  :root.theme-animating .program-card {
-    transition:
-      background-color var(--motion-fast) var(--motion-ease-standard),
-      color var(--motion-fast) var(--motion-ease-standard),
-      border-color var(--motion-fast) var(--motion-ease-standard);
-  }
 }
 
 a {
