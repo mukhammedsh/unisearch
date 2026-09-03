@@ -259,12 +259,10 @@
 
     <section id="universitiesRankingPane" class="u-tab-pane u-tab-pane--ranking" data-universities-pane="ranking" hidden>
       <div class="rank-container">
-        <div class="rank-header">
-          <h1><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="24"></span> <span data-i18n="ranking.title">Global University Ranking</span></h1>
-          <p data-i18n="ranking.subtitle">Popular universities by study quality and opportunities (2026)</p>
-        </div>
-
         <div class="rank-tools" aria-label="Ranking filters" data-i18n-aria-label="ranking.tools_aria">
+          <div class="rank-header">
+            <h1><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="22"></span> <span data-i18n="ranking.title">Global University Ranking</span></h1>
+          </div>
           <label class="rank-search">
             <span data-heroicon="magnifying-glass" data-icon-size="18"></span>
             <input id="rankingSearchInput" type="search" placeholder="Search ranking..." data-i18n-placeholder="ranking.search_placeholder">
@@ -278,7 +276,6 @@
             </select>
           </div>
         </div>
-        <p class="rank-source-note" data-i18n="ranking.source_note">Ranking uses official sources when available. Other entries are clearly marked as estimates or reviewed data.</p>
 
         <div id="rankingList" class="ranking-list">
           <div class="inline-loading-note" role="status" aria-live="polite" data-i18n="ranking.loading">
