@@ -15,8 +15,6 @@ PRETTY_ROUTE_MAP = {
     "/index.html": "index.html",
     "/universities": "universities.html",
     "/universities.html": "universities.html",
-    "/ranking": "ranking.html",
-    "/ranking.html": "ranking.html",
     "/guide": "guide.html",
     "/guide.html": "guide.html",
     "/about": "about.html",
