@@ -3,6 +3,7 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Overhauled `about.html` and `about.css` following Calm Academic Workspace and Apple-inspired density: expanded canvas to `1440px`, removed bloated hero headers in favor of a concise mission headline as H1, eliminated stacked gap duplication, tightened line-heights on wrapped text, and aligned card geometry to 12-16px radii.
 
 ## 5.0.0 (2026-09-03) - Frontend Design System Realignment and Guide Refresh
 - Consolidated base theme variables and design tokens (`--bg`, `--surface-solid`, `--surface-soft`, `--line`, `--grant-soft`) in `style.css` and removed redundant override blocks across stylesheets.
