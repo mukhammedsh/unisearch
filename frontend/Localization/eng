@@ -49,10 +49,8 @@ guide.exam_basics.p2: Requirements differ by country, university, program, and r
 guide.exam_basics.p3: Language requirements are especially important for international programs.
 guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
 guide.exam_basics.title: Exam Basics (Admissions)
-guide.eyebrow: UniSearch Guide
 guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Glossary
-guide.intro: This page explains, in plain language, what profile data we use and how to read your results.
 guide.language_exams.title: Language Exams
 guide.loading_language_config: Loading language exam config
 guide.ml.p1: In the Interests field, write what matters to you: major, city, budget, scholarships, campus style, and so on.
@@ -88,7 +86,7 @@ guide.tags.ai.likely_grant: Likely Grant: shown when grant-oriented chance is st
 guide.tags.ai.paid_admission: Paid Admission: shown when general admission chance is strong in paid route.
 guide.tags.ai.requirements_met: Requirements Met: shown when minimum requirements are satisfied.
 guide.tags.ai.below_requirements: Below Requirements: shown when minimum requirements are not satisfied.
-guide.title: How UniSearch works in simple words
+guide.title: UniSearch Guide
 guide.roi.title: ROI (return on investment)
 guide.roi.p1: ROI compares the estimated early-career graduate salary with the estimated cost of one study year.
 guide.roi.p2: In simple terms, it helps you see whether the financial outcome looks strong relative to what you pay for education.

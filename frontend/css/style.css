@@ -1,19 +1,27 @@
-/* ===== Base ===== */
+/* ===== Base Palette & Semantic Tokens ===== */
 :root {
+  --font-sans: "Segoe UI", Arial, sans-serif;
+  --font-display: "Segoe UI", Arial, sans-serif;
   --accent: #5715db;
-  --accent-strong: #5715db;
-  --bg: #ffffff;
-  --bg-soft: #f8fafc;
-  --text: #111111;
-  --text-muted: #555555;
-  --surface: #ffffff;
-  --surface-soft: #f4f6fb;
-  --grant-soft: #ecfdf5;
-  --grant-soft-strong: #d1fae5;
-  --line: rgba(0, 0, 0, 0.08);
-  --line-strong: rgba(0, 0, 0, 0.12);
+  --accent-strong: #3f0ea8;
+  --accent-soft: rgba(87, 21, 219, 0.12);
+  --accent-faint: rgba(87, 21, 219, 0.06);
+  --accent-panel: rgba(87, 21, 219, 0.08);
+  --bg: #f4f5f7;
+  --bg-soft: #edf0f4;
+  --surface-solid: #ffffff;
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-soft: #f1f3f7;
+  --card: var(--surface-solid);
+  --text: #111827;
+  --text-muted: #64748b;
+  --line: rgba(15, 23, 42, 0.20);
+  --line-strong: rgba(15, 23, 42, 0.30);
+  --line-faint: rgba(15, 23, 42, 0.10);
+  --grant-soft: rgba(16, 185, 129, 0.10);
+  --grant-soft-strong: rgba(16, 185, 129, 0.18);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.12);
   --footer-icon-filter: none;
   --z-nav: 1000;
   --z-dropdown: 1200;
@@ -25,24 +33,32 @@
   --z-toast: 9000;
   --z-loading-bar: 9400;
   --z-initial-loader: 10000;
+  color-scheme: light;
 }
 
 :root[data-theme="dark"] {
   --accent: #5715db;
-  --accent-strong: #5715db;
-  --bg: #0f0f0f;
-  --bg-soft: #141414;
-  --text: #ededed;
-  --text-muted: #b0b0b0;
-  --surface: #1a1a1a;
-  --surface-soft: #232323;
-  --grant-soft: #15241c;
-  --grant-soft-strong: #183226;
-  --line: #323232;
-  --line-strong: #3f3f3f;
+  --accent-strong: #3f0ea8;
+  --accent-soft: rgba(87, 21, 219, 0.18);
+  --accent-faint: rgba(87, 21, 219, 0.12);
+  --accent-panel: rgba(87, 21, 219, 0.16);
+  --bg: #0c0d0e;
+  --bg-soft: #141517;
+  --surface-solid: #18191b;
+  --surface: rgba(24, 25, 27, 0.88);
+  --surface-soft: #222427;
+  --card: var(--surface-solid);
+  --text: #f3f4f6;
+  --text-muted: #94a3b8;
+  --line: rgba(255, 255, 255, 0.20);
+  --line-strong: rgba(255, 255, 255, 0.30);
+  --line-faint: rgba(255, 255, 255, 0.10);
+  --grant-soft: rgba(16, 185, 129, 0.14);
+  --grant-soft-strong: rgba(16, 185, 129, 0.24);
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
-  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.5);
   --footer-icon-filter: invert(1);
+  color-scheme: dark;
 }
 
 * {
@@ -594,6 +610,7 @@ html, body {
   width: min(760px, 96vw);      /* Slightly wider on large screens */
   max-height: 92vh;             /* Prevents overflow beyond the viewport */
   background: var(--surface-solid);
+  border: 1px solid var(--line);
   border-radius: 18px;
   box-shadow: var(--shadow-md);
   z-index: 1;
@@ -1343,7 +1360,7 @@ html, body {
 
 :root[data-theme="dark"] .profile-info{
   background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--line);
   color: #c9c9d6;
 }
 
@@ -2454,25 +2471,8 @@ html, body {
   }
 }
 
-/* ===== 2026 Product Refresh ===== */
+/* ===== 2026 Product Refresh Motion Tokens ===== */
 :root {
-  --font-sans: "Segoe UI", Arial, sans-serif;
-  --font-display: "Segoe UI", Arial, sans-serif;
-  --accent: #5715db;
-  --accent-strong: #3f0ea8;
-  --accent-soft: rgba(87, 21, 219, 0.12);
-  --accent-faint: rgba(87, 21, 219, 0.06);
-  --bg: #f3f5f9;
-  --bg-soft: #edf1f6;
-  --text: #111827;
-  --text-muted: #667085;
-  --surface: rgba(255, 255, 255, 0.88);
-  --surface-solid: #ffffff;
-  --surface-soft: #f8fafc;
-  --line: rgba(17, 24, 39, 0.08);
-  --line-strong: rgba(17, 24, 39, 0.16);
-  --shadow-sm: 0 10px 26px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 30px 70px rgba(15, 23, 42, 0.18);
   --motion-instant: 80ms;
   --motion-snappy: 120ms;
   --motion-fast: 160ms;
@@ -2485,24 +2485,6 @@ html, body {
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
   --motion-ring-color: color-mix(in srgb, var(--accent) 34%, transparent);
-}
-
-:root[data-theme="dark"] {
-  --accent: #5715db;
-  --accent-strong: #3f0ea8;
-  --accent-soft: rgba(87, 21, 219, 0.18);
-  --accent-faint: rgba(87, 21, 219, 0.1);
-  --bg: #0f1012;
-  --bg-soft: #141516;
-  --text: #f3f4f6;
-  --text-muted: #a9adb7;
-  --surface: rgba(20, 21, 23, 0.9);
-  --surface-solid: #17181a;
-  --surface-soft: #1d1f22;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --shadow-sm: 0 12px 30px rgba(0, 0, 0, 0.34);
-  --shadow-md: 0 28px 76px rgba(0, 0, 0, 0.5);
 }
 
 .motion-press-pop {
@@ -4295,47 +4277,28 @@ body .has-sliding-indicator .active::after {
   }
 }
 
-/* ===== 2026 Light Theme Surface Separation ===== */
-:root:not([data-theme="dark"]) {
-  --bg: #e9eef6;
-  --bg-soft: #f3f6fb;
-  --surface: rgba(255, 255, 255, 0.96);
-  --surface-solid: #ffffff;
-  --surface-soft: #f5f7fb;
-  --accent-soft: rgba(87, 21, 219, 0.13);
-  --accent-faint: rgba(87, 21, 219, 0.07);
-  --accent-panel: #f3efff;
-  --line: rgba(17, 24, 39, 0.16);
-  --line-strong: rgba(17, 24, 39, 0.28);
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.12);
-  color-scheme: light;
-}
-
+/* ===== 2026 Surface & Component Alignment ===== */
 :root:not([data-theme="dark"]) body {
-  background:
-    linear-gradient(180deg, #f8fafc 0%, var(--bg) 320px),
-    var(--bg);
-}
-
-:root:not([data-theme="dark"]) .navbar,
-:root:not([data-theme="dark"]) .site-footer,
-:root:not([data-theme="dark"]) .profile-card,
-:root:not([data-theme="dark"]) .settings-card,
-:root:not([data-theme="dark"]) .custom-options {
-  background: var(--surface-solid);
-  border-color: var(--line-strong);
-  box-shadow: none;
-}
-
-:root:not([data-theme="dark"]) .profile-card,
-:root:not([data-theme="dark"]) .settings-card,
-:root:not([data-theme="dark"]) .custom-options {
-  box-shadow: var(--shadow-md);
+  background: var(--bg);
 }
 
 :root:not([data-theme="dark"]) .navbar {
-  border-bottom-color: var(--line-strong);
+  background: var(--surface);
+  border-bottom-color: var(--line);
+  box-shadow: none;
+}
+
+:root:not([data-theme="dark"]) .site-footer,
+:root:not([data-theme="dark"]) .custom-options {
+  background: var(--surface-solid);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .profile-card,
+:root:not([data-theme="dark"]) .settings-card {
+  background: var(--surface-solid);
+  border-color: var(--line);
+  box-shadow: var(--shadow-md);
 }
 
 :root:not([data-theme="dark"]) .theme-btn,
@@ -4350,7 +4313,7 @@ body .has-sliding-indicator .active::after {
 :root:not([data-theme="dark"]) .profile-input,
 :root:not([data-theme="dark"]) .profile-name-input {
   background: var(--surface-soft);
-  border-color: var(--line-strong);
+  border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .theme-btn:hover,
@@ -4360,7 +4323,7 @@ body .has-sliding-indicator .active::after {
 :root:not([data-theme="dark"]) .custom-select-trigger:hover,
 :root:not([data-theme="dark"]) .custom-select-wrapper.open .custom-select-trigger {
   background: var(--accent-panel);
-  border-color: color-mix(in srgb, var(--accent) 38%, var(--line-strong));
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
   color: var(--accent);
 }
 
@@ -4380,66 +4343,6 @@ body .has-sliding-indicator .active::after {
 :root:not([data-theme="dark"]) .center-loading-spinner {
   border-color: #d7dce6;
   border-top-color: var(--accent);
-}
-
-/* ===== 2026 Light Theme Dark-Parity Pass ===== */
-:root:not([data-theme="dark"]) {
-  --bg: #f4f5f6;
-  --bg-soft: #fafafa;
-  --surface: rgba(255, 255, 255, 0.94);
-  --surface-solid: #ffffff;
-  --surface-soft: #f6f7f8;
-  --accent-soft: rgba(87, 21, 219, 0.12);
-  --accent-faint: rgba(87, 21, 219, 0.07);
-  --accent-panel: rgba(87, 21, 219, 0.08);
-  --text: #111111;
-  --text-muted: #555555;
-  --line: rgba(0, 0, 0, 0.09);
-  --line-strong: rgba(0, 0, 0, 0.14);
-  --shadow-sm: none;
-  --shadow-md: 0 18px 38px rgba(0, 0, 0, 0.12);
-}
-
-:root:not([data-theme="dark"]) body {
-  background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
-}
-
-:root:not([data-theme="dark"]) .navbar {
-  background: rgba(255, 255, 255, 0.86);
-  border-bottom-color: var(--line);
-  box-shadow: none;
-}
-
-:root:not([data-theme="dark"]) .site-footer,
-:root:not([data-theme="dark"]) .custom-options {
-  background: var(--surface-solid);
-  border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .theme-btn,
-:root:not([data-theme="dark"]) .settings-trigger-btn,
-:root:not([data-theme="dark"]) .profile-trigger-btn,
-:root:not([data-theme="dark"]) .menu-btn,
-:root:not([data-theme="dark"]) .lang-switch,
-:root:not([data-theme="dark"]) .custom-select-trigger,
-:root:not([data-theme="dark"]) .profile-block,
-:root:not([data-theme="dark"]) .profile-exam-item,
-:root:not([data-theme="dark"]) .settings-row,
-:root:not([data-theme="dark"]) .profile-input,
-:root:not([data-theme="dark"]) .profile-name-input {
-  background: var(--surface-soft);
-  border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .theme-btn:hover,
-:root:not([data-theme="dark"]) .settings-trigger-btn:hover,
-:root:not([data-theme="dark"]) .profile-trigger-btn:hover,
-:root:not([data-theme="dark"]) .menu-btn:hover,
-:root:not([data-theme="dark"]) .custom-select-trigger:hover,
-:root:not([data-theme="dark"]) .custom-select-wrapper.open .custom-select-trigger {
-  background: var(--accent-panel);
-  border-color: rgba(87, 21, 219, 0.24);
-  color: var(--accent);
 }
 
 /* ===== Shared Admission & Funding Option Cards ===== */
@@ -4476,7 +4379,7 @@ body .has-sliding-indicator .active::after {
 .admission-empty-state {
   margin-top: 10px;
   padding: 14px 16px;
-  border: 1px dashed var(--line-strong);
+  border: 1px dashed var(--line);
   border-radius: 12px;
   background: var(--surface-soft);
   color: var(--text-muted);

@@ -280,10 +280,23 @@ export function initGuidePage() {
     }
     if (scroll && targetSection) {
       const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
-      targetSection.scrollIntoView({
-        behavior,
-        block: "start",
-      });
+      // ИСКЛЮЧЕНИЕ для #guide-unifit:
+      // Первая секция находится сразу под шапкой (hero-блоком).
+      // Если использовать обычный scrollIntoView для #guide-unifit, страница прокручивается вниз,
+      // срезая заголовок и вступительный текст гайда.
+      // Поэтому для #guide-unifit всегда прокручиваем в самый верх страницы (0, 0).
+      if (nextId === "guide-unifit") {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior,
+        });
+      } else {
+        targetSection.scrollIntoView({
+          behavior,
+          block: "start",
+        });
+      }
     }
   };
 
@@ -338,10 +351,23 @@ export function initGuidePage() {
   renderAll();
 
   const initialHash = String(window.location.hash || "").replace("#", "");
-  if (initialHash) {
+  // ИСКЛЮЧЕНИЕ для #guide-unifit при начальной загрузке страницы:
+  // Если страница открывается без хеша или с хешем первой секции (#guide-unifit),
+  // отключаем прокрутку к секции и принудительно открываем страницу с самого верха (top: 0),
+  // чтобы заголовок страницы (hero-блок) оставался видимым и не срезался.
+  if (initialHash && initialHash !== "guide-unifit") {
     activateSection(initialHash, { updateHash: false, scroll: true, scrollBehavior: "auto" });
   } else {
-    activateSection("", { updateHash: false, scroll: false });
+    activateSection(sections[0]?.id || "guide-unifit", { updateHash: false, scroll: false });
+    if (window.history && "scrollRestoration" in window.history) {
+      try {
+        window.history.scrollRestoration = "manual";
+      } catch {}
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    });
   }
 
   window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });

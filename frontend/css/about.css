@@ -582,7 +582,7 @@
   background:
     linear-gradient(180deg, rgba(87, 21, 219, 0.045), rgba(87, 21, 219, 0.008) 46%, transparent),
     var(--surface-solid);
-  border-color: var(--line-strong);
+  border-color: var(--line);
   box-shadow: none;
 }
 
@@ -592,7 +592,7 @@
 :root:not([data-theme="dark"]) .about-contact-card,
 :root:not([data-theme="dark"]) .about-link {
   background: var(--surface-soft);
-  border-color: var(--line-strong);
+  border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .about-eyebrow,
@@ -625,7 +625,7 @@
 }
 
 :root:not([data-theme="dark"]) .about-shell-divider {
-  background: var(--line-strong);
+  background: var(--line);
 }
 
 :root:not([data-theme="dark"]) .about-proof-card:hover,

@@ -1,24 +1,16 @@
 :root {
   --accent: #5715db;
   --accent2: var(--accent);
-  --bg: #f6f7fb;
-  --card: #ffffff;
-  --text: #111;
-  --muted: rgba(0, 0, 0, .58);
-  --line: rgba(0, 0, 0, .08);
+  --muted: var(--text-muted, #64748b);
   --shadow: 0 10px 24px rgba(0, 0, 0, .06);
   --slider-track-inactive: #d4d8e0;
   --slider-track-active: #5715db;
 }
 
 :root[data-theme="dark"] {
-  --bg: #0f0f0f;
-  --card: #1a1a1a;
-  --text: #ededed;
-  --muted: rgba(237, 237, 237, .72);
-  --line: #323232;
+  --muted: var(--text-muted, #94a3b8);
   --shadow: 0 14px 28px rgba(0, 0, 0, .45);
-  --slider-track-inactive: #303030;
+  --slider-track-inactive: #2b2e35;
 }
 
 /* =========================================
@@ -1792,9 +1784,15 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .uni-action-btn--compare.is-active {
-  background: var(--surface-soft);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: #16a34a;
+  border-color: #15803d;
+  color: #ffffff;
+}
+
+.uni-action-btn--compare.is-active:hover {
+  background: #15803d;
+  border-color: #166534;
+  color: #ffffff;
 }
 
 .uni-action-btn--compare.motion-state-pulse--compare {
@@ -1810,7 +1808,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   inset: -3px;
   z-index: 1;
   border-radius: inherit;
-  border: 1px solid var(--accent);
+  border: 1px solid #16a34a;
   opacity: 0;
   transform: scale(0.96);
   animation: motion-state-ring var(--motion-slow) var(--motion-ease-emphasized) both;
@@ -1818,9 +1816,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .uni-action-btn--compare.is-active.motion-state-pulse--compare {
-  background: var(--surface-soft) !important;
-  border-color: var(--accent) !important;
-  color: var(--accent) !important;
+  background: #16a34a !important;
+  border-color: #15803d !important;
+  color: #ffffff !important;
 }
 
 .uni-action-btn--favorite.is-active .uni-action-icon {
@@ -4225,8 +4223,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root[data-theme="dark"] .u-page-scope__inner {
-  background: var(--card);
-  border-color: var(--line);
+  background:
+    linear-gradient(135deg, rgba(87, 21, 219, 0.16), rgba(87, 21, 219, 0.04) 42%, transparent),
+    var(--surface-solid);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
   box-shadow: none;
 }
 
@@ -4418,31 +4419,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 /* ===== 2026 Catalog Refresh ===== */
 :root {
-  --accent: #5715db;
-  --accent-strong: #3f0ea8;
-  --accent-soft: rgba(87, 21, 219, 0.12);
-  --accent-faint: rgba(87, 21, 219, 0.06);
-  --bg: #eef2f7;
-  --card: #ffffff;
-  --text: #111827;
-  --muted: #667085;
-  --line: rgba(17, 24, 39, 0.08);
-  --shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
   --slider-track-inactive: #d5dbe6;
   --slider-track-active: var(--accent);
 }
 
 :root[data-theme="dark"] {
-  --accent: #5715db;
-  --accent-strong: #3f0ea8;
-  --accent-soft: rgba(87, 21, 219, 0.18);
-  --accent-faint: rgba(87, 21, 219, 0.1);
-  --bg: #0f1012;
-  --card: #17181a;
-  --text: #f3f4f6;
-  --muted: #a9adb7;
-  --line: rgba(255, 255, 255, 0.08);
-  --shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
   --slider-track-inactive: #2a2c31;
 }
 
@@ -4792,9 +4773,15 @@ body.universities-compare-mode .uni-action-btn--favorite {
   margin-top: 10px;
 }
 
-.uni-card.uni-card--compare-selected,
+.uni-card.uni-card--compare-selected {
+  background-color: #f7f4ff;
+  border-color: rgba(87, 21, 219, 0.46);
+  box-shadow: var(--shadow-sm);
+}
+
 :root[data-theme="dark"] .uni-card.uni-card--compare-selected {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  background: rgba(87, 21, 219, 0.16);
+  border-color: rgba(87, 21, 219, 0.52);
   box-shadow: var(--shadow-sm);
 }
 
@@ -4818,7 +4805,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   min-height: 0;
 }
 
-:root[data-theme="dark"] .u-page-scope__inner,
 :root[data-theme="dark"] .u-top,
 :root[data-theme="dark"] .uni-card,
 :root[data-theme="dark"] .u-map-container,
@@ -4832,12 +4818,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .uni-price {
   background: rgba(22, 23, 24, 0.94);
-}
-
-.uni-card.uni-card--compare-selected,
-:root[data-theme="dark"] .uni-card.uni-card--compare-selected {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
-  box-shadow: var(--shadow-sm);
 }
 
 :root[data-theme="dark"] .uni-logo {
@@ -5688,7 +5668,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .custom-options,
 :root[data-theme="dark"] .custom-option {
   background: #1d1f22;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--line);
   color: var(--text);
 }
 
@@ -5723,8 +5703,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .compare-results-action--ghost,
 :root[data-theme="dark"] .compare-uni-card,
 :root[data-theme="dark"] .compare-uni-card__logo {
-  background: #1d1f22;
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--surface-soft);
+  border-color: var(--line);
   color: var(--text);
 }
 
@@ -5733,8 +5713,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root[data-theme="dark"] .compare-uni-card__logo {
-  background: #fff;
-  border-color: rgba(0, 0, 0, .08);
+  background: #ffffff;
+  border-color: var(--line);
   color: var(--accent);
 }
 
@@ -5762,7 +5742,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .compare-config-chance .chance-panel,
 :root[data-theme="dark"] .compare-track-chance {
   background: #1d1f22;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--line);
   color: var(--text);
 }
 
@@ -5871,13 +5851,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .u-recent {
   background: #17181a;
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--line);
   color: var(--text);
 }
 
 :root[data-theme="dark"] .u-recent__chip {
   background: #141517;
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--line);
   color: var(--text);
 }
 
@@ -6143,7 +6123,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .uni-metric {
   background: rgba(255, 255, 255, 0.035);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--line);
 }
 
 :root[data-theme="dark"] .uni-action-btn {
@@ -6286,7 +6266,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .uni-card .uni-price {
   background: rgba(22, 23, 24, 0.96);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--line);
   color: #f3f4f6;
 }
 
@@ -6318,11 +6298,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 :root[data-theme="dark"] .u-toggle-track {
   background: #1d1f22;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--line);
 }
 
 :root[data-theme="dark"] .u-saved-filter {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--line);
 }
 
 :root[data-theme="dark"] .u-toggle-input:checked + .u-toggle-track {
@@ -6679,18 +6659,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 /* ===== 2026 Catalog/Compare Light Surface Separation ===== */
-:root:not([data-theme="dark"]) {
-  --bg: #e9eef6;
-  --card: #ffffff;
-  --surface-solid: #ffffff;
-  --surface-soft: #f5f7fb;
-  --accent-soft: rgba(87, 21, 219, 0.13);
-  --accent-faint: rgba(87, 21, 219, 0.075);
-  --line: rgba(17, 24, 39, 0.15);
-  --line-strong: rgba(17, 24, 39, 0.28);
-  --grant-soft: #eaf8f0;
-  --grant-soft-strong: #d8f2e3;
-}
 
 :root:not([data-theme="dark"]) .u-page {
   background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
@@ -6710,8 +6678,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root:not([data-theme="dark"]) .compare-uni-card,
 :root:not([data-theme="dark"]) .compare-table-wrap {
   background: var(--surface-solid);
-  border: 1px solid var(--line-strong);
-  border-color: var(--line-strong);
+  border: 1px solid var(--line);
+  border-color: var(--line);
   box-shadow: none;
 }
 
@@ -6739,12 +6707,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root:not([data-theme="dark"]) .compare-config-column .admission-option-meta .tag,
 :root:not([data-theme="dark"]) .compare-config-column .track-cost-preview {
   background: var(--surface-soft);
-  border: 1px solid var(--line-strong);
-  border-color: var(--line-strong);
+  border: 1px solid var(--line);
+  border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .u-section-tabs {
-  border-bottom-color: var(--line-strong);
+  border-bottom-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .u-section-tab.is-active,
@@ -6763,7 +6731,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root:not([data-theme="dark"]) .u-recent__chip,
 :root:not([data-theme="dark"]) .u-shortlist__chip {
   background: var(--surface-soft);
-  border-color: var(--line-strong);
+  border-color: var(--line);
 }
 
 :root:not([data-theme="dark"]) .uni-card:hover {
@@ -6797,19 +6765,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 /* ===== 2026 Catalog Light Dark-Parity Pass ===== */
-:root:not([data-theme="dark"]) {
-  --bg: #f4f5f6;
-  --card: #ffffff;
-  --surface-solid: #ffffff;
-  --surface-soft: #f6f7f8;
-  --muted: #555555;
-  --line: rgba(0, 0, 0, 0.09);
-  --line-strong: rgba(0, 0, 0, 0.14);
-  --shadow: none;
-  --slider-track-inactive: #e2e2e4;
-  --grant-soft: rgba(16, 185, 129, 0.10);
-  --grant-soft-strong: rgba(16, 185, 129, 0.16);
-}
 
 :root:not([data-theme="dark"]) .u-page {
   background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
