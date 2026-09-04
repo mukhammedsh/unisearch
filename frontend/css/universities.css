@@ -23,10 +23,12 @@
   max-width: 1320px;
   margin: 0 auto 18px;
   padding: 0 18px;
+  overflow-anchor: none;
 }
 
-.u-page-scope[hidden] {
-  display: none;
+.u-page-scope[hidden],
+html.scope-notice-dismissed #universitiesScopeNotice {
+  display: none !important;
 }
 
 .u-page-scope__inner {
@@ -444,6 +446,7 @@
   position: relative;
   align-self: start;
   --u-loading-top: 86px;
+  overflow-anchor: none;
 }
 
 .u-top {
@@ -1118,6 +1121,7 @@
   grid-template-columns: repeat(4, minmax(220px, 1fr));
   gap: 16px;
   align-items: stretch;
+  overflow-anchor: none;
 }
 
 .u-skeleton-grid {
@@ -1126,6 +1130,7 @@
   gap: 16px;
   align-items: stretch;
   min-height: 372px;
+  overflow-anchor: none;
 }
 
 .is-skeleton .uni-media,

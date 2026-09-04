@@ -4,8 +4,10 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide, routePrivacy, routeTerms } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide, routePrivacy, routeProfile, routeTerms } from "./routes.js";
+import { safeSessionStorage } from "./utils/safe-storage.js";
 
+const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 const GUIDE_SECTION_HASH_RE = /^#guide-[a-z0-9-]+$/i;
@@ -17,6 +19,7 @@ const routeModuleLoaders = {
   guide: () => import("./pages/guide.js"),
   privacy: () => import("./pages/legal.js"),
   terms: () => import("./pages/legal.js"),
+  profile: () => import("./pages/profile.js"),
 };
 const routeModulePromises = new Map();
 
@@ -85,7 +88,7 @@ function maybeWakeBackend() {
 
 function initHomePageActions() {
   const profileTrigger = document.getElementById("profileBtn");
-  if (!(profileTrigger instanceof HTMLButtonElement)) return;
+  if (!(profileTrigger instanceof HTMLElement)) return;
 
   ["homeOpenProfileBtn", "homeWorkflowProfileBtn"].forEach((id) => {
     const btn = document.getElementById(id);
@@ -128,6 +131,7 @@ function routePageFromPath(pathname) {
   if (isAboutPath(pathname)) return "about";
   if (isPrivacyPath(pathname)) return "privacy";
   if (isTermsPath(pathname)) return "terms";
+  if (isProfilePath(pathname)) return "profile";
   return "";
 }
 
@@ -153,6 +157,7 @@ function currentRouteContext() {
     isGuidePage: Boolean(isGuidePath(path) || document.getElementById("guidePage")),
     isPrivacyPage: Boolean(normalizedPage === "privacy" || isPrivacyPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "privacy"),
     isTermsPage: Boolean(normalizedPage === "terms" || isTermsPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "terms"),
+    isProfilePage: Boolean(normalizedPage === "profile" || isProfilePath(path) || (document.getElementById("profilePage") && document.body.dataset.page === "profile")),
   };
 }
 
@@ -278,6 +283,14 @@ async function initRoutePage(ctx = currentRouteContext()) {
       return;
     }
   }
+  if (ctx.isProfilePage) {
+    const [module] = await Promise.all([
+      loadRouteModule("profile"),
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
+    return module?.initProfilePage?.();
+  }
   return initHomePageStats();
 }
 
@@ -363,6 +376,10 @@ async function loadAppRoute(rawHref, options = {}) {
   }
 
   const currentUrl = new URL(window.location.href);
+  if (isProfilePath(url.pathname) && !isProfilePath(currentUrl.pathname)) {
+    safeSessionStorage.set(PROFILE_RETURN_URL_KEY, currentUrl.href);
+  }
+
   const sameDocumentPath = url.pathname === currentUrl.pathname && url.search === currentUrl.search;
   if (!options.force && sameDocumentPath && url.hash && url.hash !== currentUrl.hash) {
     window.history.pushState({ appRoute: true }, "", url.href);
@@ -397,6 +414,7 @@ async function loadAppRoute(rawHref, options = {}) {
     if (options.history !== false) {
       const method = options.replace ? "replaceState" : "pushState";
       window.history[method]({ appRoute: true }, "", url.href);
+      safeSessionStorage.remove("unisearch_universities_scroll");
     }
 
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });

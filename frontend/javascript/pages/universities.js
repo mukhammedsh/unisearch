@@ -29,6 +29,7 @@ import {
   setupSlidingIndicator,
   bindImageFallbacks,
   closeMotionLayer,
+  safeSessionStorage,
 } from "../utils.js";
 
 import {
@@ -163,12 +164,42 @@ let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
 let __universitiesMapCardActionHandler = null;
 let __universitiesSettingsChangedHandler = null;
+let __universitiesScrollHandler = null;
+let __universitiesPagehideHandler = null;
+let __universitiesBeforeunloadHandler = null;
 
 export function initUniversitiesPage() {
     const MAX_TUITION = 150000;
     const MIN_RANGE_GAP = 100;
     const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
     const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
+    const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
+
+    if (window.history && "scrollRestoration" in window.history) {
+        try {
+            window.history.scrollRestoration = "manual";
+        } catch (e) {}
+    }
+
+    const saveCurrentScrollPosition = () => {
+        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
+        const currentY = Math.max(0, Math.round(window.scrollY || window.pageYOffset || 0));
+        safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(currentY));
+    };
+
+    const clearSavedScrollPosition = () => {
+        safeSessionStorage.remove(UNIVERSITIES_SCROLL_KEY);
+    };
+
+    const restoreScrollPosition = () => {
+        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
+        const rawY = safeSessionStorage.get(UNIVERSITIES_SCROLL_KEY);
+        const targetY = rawY !== null ? Math.max(0, parseInt(rawY, 10) || 0) : 0;
+        window.requestAnimationFrame(() => {
+            window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
+        });
+    };
+
     const clampTuition = (value, fallback = 0) => {
         const n = Number(value);
         if (!Number.isFinite(n)) return fallback;
@@ -269,10 +300,14 @@ export function initUniversitiesPage() {
         }
 
         el.scopeNotice.hidden = dismissed;
+        if (dismissed) {
+            document.documentElement.classList.add("scope-notice-dismissed");
+        }
         if (dismissed || !el.scopeNoticeDismiss) return;
 
         el.scopeNoticeDismiss.addEventListener("click", () => {
             el.scopeNotice.hidden = true;
+            document.documentElement.classList.add("scope-notice-dismissed");
             try {
                 localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
             } catch (e) {
@@ -297,6 +332,18 @@ export function initUniversitiesPage() {
     if (__universitiesSettingsChangedHandler) {
         window.removeEventListener("settingsChanged", __universitiesSettingsChangedHandler);
         __universitiesSettingsChangedHandler = null;
+    }
+    if (__universitiesScrollHandler) {
+        window.removeEventListener("scroll", __universitiesScrollHandler);
+        __universitiesScrollHandler = null;
+    }
+    if (__universitiesPagehideHandler) {
+        window.removeEventListener("pagehide", __universitiesPagehideHandler);
+        __universitiesPagehideHandler = null;
+    }
+    if (__universitiesBeforeunloadHandler) {
+        window.removeEventListener("beforeunload", __universitiesBeforeunloadHandler);
+        __universitiesBeforeunloadHandler = null;
     }
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
@@ -409,6 +456,7 @@ export function initUniversitiesPage() {
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     let hasInitialListPaint = false;
+    let hasRestoredInitialScroll = false;
     let uniFitWarningShownInSession = false;
     let lastRenderedItems = [];
     let savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
@@ -3311,6 +3359,7 @@ export function initUniversitiesPage() {
 
     const refetch = debounce(() => { 
         state.page = 1; 
+        clearSavedScrollPosition();
         updateMobileFilterUi();
         saveFilters(state);
         fetchAndRender(); 
@@ -3415,6 +3464,7 @@ export function initUniversitiesPage() {
     );
 
     el.resetBtn?.addEventListener("click", () => {
+        clearSavedScrollPosition();
         Object.assign(state, {
             q: "",
             country: "",
@@ -3532,6 +3582,7 @@ export function initUniversitiesPage() {
                 state.compareStage = "select";
             }
             state.page = 1;
+            clearSavedScrollPosition();
             saveFilters(state);
             syncSectionVisibility({
                 shouldFetch: nextTab !== "ranking" && !isCompareResultsMode(),
@@ -3665,6 +3716,23 @@ export function initUniversitiesPage() {
         renderRecentlyViewedBar();
     };
     window.addEventListener("settingsChanged", __universitiesSettingsChangedHandler);
+
+    let scrollSaveTimer = null;
+    const onCatalogScroll = () => {
+        if (scrollSaveTimer) return;
+        scrollSaveTimer = window.setTimeout(() => {
+            scrollSaveTimer = null;
+            saveCurrentScrollPosition();
+        }, 150);
+    };
+
+    __universitiesScrollHandler = onCatalogScroll;
+    __universitiesPagehideHandler = saveCurrentScrollPosition;
+    __universitiesBeforeunloadHandler = saveCurrentScrollPosition;
+
+    window.addEventListener("scroll", __universitiesScrollHandler, { passive: true });
+    window.addEventListener("pagehide", __universitiesPagehideHandler);
+    window.addEventListener("beforeunload", __universitiesBeforeunloadHandler);
 
     async function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
@@ -4510,6 +4578,10 @@ export function initUniversitiesPage() {
         } finally {
         if (runSeq === fetchRunSeq) {
             setUniversitiesLoading(false);
+            if (!hasRestoredInitialScroll) {
+                hasRestoredInitialScroll = true;
+                restoreScrollPosition();
+            }
             if (firstVisitTourPending) {
                 firstVisitTourPending = false;
                 window.setTimeout(async () => {
@@ -4723,7 +4795,7 @@ export function initUniversitiesPage() {
         if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
         if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} ›`); html += createBtn(totalPages, "»"); }
         el.pagination.innerHTML = html;
-        el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
+        el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; clearSavedScrollPosition(); fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
     }
 }
 

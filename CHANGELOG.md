@@ -3,6 +3,8 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Added dedicated Applicant Profile page (`profile.html`, `profile.css`, `profile.js`) with responsive card layout, sticky toolbar, Heroicons action buttons, completion progress indicator, and client routing (`/profile`), refactoring profile modal markup out of global layout.
+- Fixed scroll jumping and offset on university catalog reload (`universities.html`, `universities.css`, `universities.js`, `main.js`): switched to manual scroll restoration to prevent premature coordinate clamping before API cards load, suppressed skeleton layout shifts with `overflow-anchor: none` and early scope-notice class application, and implemented exact scroll coordinate persistence in session storage.
 - Restored ranking card university thumbnail backgrounds with subtle theme-aware overlay gradients and enhanced gold, silver, and bronze podium card backdrops (`ranking.css`).
 - Streamlined ranking tab layout and header density (`universities.html`, `ranking.css`): removed redundant subtitle and source note copy, reduced heading size to a calm academic scale (`clamp(20px, 2.2vw, 26px)`), integrated the title directly above the search input in the toolbar grid (`row-gap: 8px`) aligned with the country filter, and eliminated excess container padding to pull the interface closer to the mode navigation tabs.
 - Switched theme toggling to instantaneous transitions: removed `.theme-animating` transition block from `style.css` and suppressed lingering color transitions during theme switches in `theme.js` to eliminate desynchronized color animation delay and reduce client rendering overhead.

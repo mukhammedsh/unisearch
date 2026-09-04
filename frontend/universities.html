@@ -7,6 +7,13 @@
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.universities">Universities | UniSearch</title>
   <script src="javascript/theme-init.js"></script>
+  <script>
+    try {
+      if (localStorage.getItem("unisearch_universities_scope_notice_dismissed") === "1") {
+        document.documentElement.classList.add("scope-notice-dismissed");
+      }
+    } catch (e) {}
+  </script>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/universities.css" />
