@@ -10,7 +10,7 @@ import {
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { routeAbout, routeGuide, routeHome, routeUniversities } from "./routes.js";
+import { routeAbout, routeGuide, routeHome, routeProfile, routeUniversities } from "./routes.js";
 import {
   bindThemeUiSync,
   NAV_LOGO_DARK,
@@ -21,6 +21,9 @@ import {
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
 import { SETTING_STORE_RECENT_UNIVERSITIES, SETTING_OPEN_UNIVERSITIES_NEW_TAB } from "./settings.js";
+import { safeSessionStorage } from "./utils/safe-storage.js";
+
+const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
 
 // HTML-код меню и профиля (вшит прямо сюда, чтобы избежать проблем с загрузкой файлов)
@@ -65,16 +68,16 @@ const LAYOUT_HTML = `
       data-i18n-title="nav.settings"
       data-i18n-aria-label="nav.settings"
     >${heroIcon("cog-6-tooth", "ui-icon ui-icon--18")}</button>
-    <button
+    <a
       class="profile-trigger-btn"
       id="profileBtn"
-      type="button"
+      href="${routeProfile()}"
+      data-route="profile"
       title="Profile"
       aria-label="Profile"
-      aria-haspopup="dialog"
       data-i18n-title="nav.profile"
       data-i18n-aria-label="nav.profile"
-    >${heroIcon("user-circle", "ui-icon ui-icon--18")}</button>
+    >${heroIcon("user-circle", "ui-icon ui-icon--18")}</a>
   </div>
 </header>
 
@@ -115,236 +118,6 @@ const LAYOUT_HTML = `
       </article>
     </div>
   </section>
-</div>
-
-<div class="profile-modal" id="profileModal">
-  <div class="profile-backdrop" data-close="profile"></div>
-  <div class="profile-card" role="dialog">
-    <div class="profile-header">
-      <div class="profile-title">
-        <div class="profile-username">
-          <span id="profileNameDisplay">User</span>
-          <input id="profileNameInput" class="profile-name-input" type="text" value="User" minlength="3" maxlength="16" />
-          <button class="icon-btn" id="editNameBtn" title="Edit Name" data-i18n-title="profile.action.edit_name">
-            ${heroIcon("pencil-square", "ui-icon ui-icon--18")}
-          </button>
-        </div>
-        <div class="profile-subtitle" data-i18n="nav.profile">Profile</div>
-      </div>
-      <button class="icon-btn profile-close" id="profileCloseBtn" title="Close" data-i18n-title="profile.action.close">
-        ${heroIcon("x-mark", "ui-icon ui-icon--18")}
-      </button>
-    </div>
-
-    <div id="usernameError" class="profile-error profile-error--username"></div>
-
-    <div class="profile-progress" id="profileProgressText" data-i18n="profile.progress.empty">Complete your profile for better matches.</div>
-    <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
-      <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">Basics</button>
-      <button class="profile-section-tab" type="button" data-profile-tab="scores" role="tab" aria-selected="false" data-i18n="profile.section.scores">Scores</button>
-      <button class="profile-section-tab" type="button" data-profile-tab="languages" role="tab" aria-selected="false" data-i18n="profile.section.languages">Languages</button>
-      <button class="profile-section-tab" type="button" data-profile-tab="preferences" role="tab" aria-selected="false" data-i18n="profile.section.preferences">Preferences</button>
-    </div>
-
-    <div class="profile-body">
-      
-      <div class="profile-field" data-profile-section="basics">
-        <label class="profile-label" data-i18n="profile.label.budget">Total Budget (USD / year)</label>
-        <div class="profile-budget">
-          <input id="budgetInput" class="profile-input" type="text" placeholder="e.g. 20000" data-i18n-placeholder="profile.placeholder.budget" />
-        </div>
-        <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0вЂ‘1,000,000</div>
-      </div>
-
-      <div class="profile-field" data-profile-section="basics">
-        <label class="profile-label" data-i18n="profile.label.study_mode">Preferred Study Mode</label>
-        <select id="studyModeSelect" class="profile-input profile-input--select">
-           <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
-           <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
-           <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
-        </select>
-      </div>
-
-      <div class="profile-field" data-profile-section="basics">
-        <label class="profile-label" data-i18n="profile.label.funding_type">Preferred Funding Type</label>
-        <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
-           <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
-           <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
-           <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
-        </select>
-        <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
-          <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">Budget is under $1000. Maybe you need Grant only.</span>
-          <div class="profile-budget-grant-hint__actions">
-            <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">Set Grant only</button>
-            <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="profile-field" data-profile-section="preferences">
-        <label class="profile-label" data-i18n="profile.label.major">Intended Major</label>
-        <select id="profileMajorSelect" class="profile-input profile-input--select">
-           <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
-        </select>
-      </div>
-
-      <div class="profile-field" data-profile-section="preferences">
-        <label class="profile-label" data-i18n="profile.label.interests">What You Want in a University</label>
-        <textarea
-          id="profileInterestsInput"
-          class="profile-input"
-          rows="4"
-          maxlength="1200"
-          placeholder="Example: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies"
-          data-i18n-placeholder="profile.placeholder.interests"
-        ></textarea>
-        <div
-          id="profileInterestsLangWarning"
-          class="profile-interests-warning"
-          hidden
-          data-i18n="profile.warning.interests_english_only"
-        >If automatic translation is unavailable, write this field in English.</div>
-        <div class="profile-hint" data-i18n="profile.hint.interests">Write what matters to you in a university so UniSearch can sort results more personally.</div>
-        <div class="profile-interest-chips" aria-label="Interest examples" data-i18n-aria-label="profile.interest_examples">
-          <button type="button" data-interest-chip="computer science, scholarships, internships" data-i18n="profile.interest_chip.tech">Tech + scholarships</button>
-          <button type="button" data-interest-chip="big city, strong student life, internships" data-i18n="profile.interest_chip.city">Big city</button>
-          <button type="button" data-interest-chip="research labs, science, academic environment" data-i18n="profile.interest_chip.research">Research labs</button>
-        </div>
-      </div>
-
-      <div class="profile-field" data-profile-section="scores">
-        <div class="profile-label-row">
-          <label class="profile-label" for="gpaInput" data-i18n="profile.label.gpa">GPA (Percent)</label>
-          <span class="profile-info-wrap">
-            <button
-              type="button"
-              class="profile-info"
-              aria-label="How GPA works here"
-              data-i18n-aria-label="profile.gpa_info_title"
-            >${heroIcon("information-circle", "ui-icon ui-icon--14")}</button>
-            <span class="profile-tooltip" role="tooltip">
-              <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
-              <span data-i18n="profile.gpa_info_tooltip">Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.</span>
-            </span>
-          </span>
-        </div>
-        <div class="profile-budget profile-budget--with-unit">
-          <input id="gpaInput" class="profile-input" type="number" min="0" max="100" step="0.1" placeholder="e.g. 92" data-i18n-placeholder="profile.placeholder.gpa" />
-          <span class="profile-unit" data-i18n="profile.unit.gpa">% (0 to 100)</span>
-        </div>
-      </div>
-
-      <div class="profile-field" data-profile-section="scores">
-        <label class="profile-label" data-i18n="profile.label.exams">Exams (list, optional)</label>
-        
-        <div class="profile-exam-form">
-          <select id="examNameSelect" class="profile-input profile-input--select">
-             <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
-             <option value="IELTS">IELTS</option>
-             <option value="TOEFL">TOEFL</option>
-             <option value="SAT">SAT</option>
-             <option value="ACT">ACT</option>
-          </select>
-
-          <input id="examScoreInput" class="profile-input" type="number" step="0.1" placeholder="Score" data-i18n-placeholder="profile.placeholder.score" />
-          <div id="examSpecialInputContainer" class="profile-exam-special" hidden></div>
-          <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
-        </div>
-        
-        <div id="examError" class="profile-error"></div>
-        <div id="examList" class="profile-exam-list"></div>
-      </div>
-
-      <section class="profile-block" id="languagesBlock" data-profile-section="languages">
-        <div class="profile-block-head">
-            <h3 data-i18n="profile.languages">Languages</h3>
-        </div>
-
-        <div class="lang-add-grid lang-add-grid--compact">
-            <div>
-            <span class="mini-label" data-i18n="profile.language">Language</span>
-            <select id="langCode" class="profile-input" data-flags="off"></select>
-            </div>
-
-            <div>
-            <span class="mini-label" data-i18n="profile.type">Type</span>
-            <select id="langKind" class="profile-input"></select>
-            </div>
-
-            <div id="cefrContainer" class="profile-lang-conditional">
-            <span class="mini-label" data-i18n="profile.cefr">CEFR</span>
-            <select id="langCefr" class="profile-input">
-                <option value="1">A1</option>
-                <option value="2">A2</option>
-                <option value="3">B1</option>
-                <option value="4">B2</option>
-                <option value="5">C1</option>
-                <option value="6">C2</option>
-            </select>
-            </div>
-
-            <div id="examContainer" class="profile-lang-conditional">
-            <span class="mini-label" data-i18n="profile.exam">Exam</span>
-            <select id="langExam" class="profile-input" data-flags="off"></select>
-            </div>
-
-            <div id="scoreContainer" class="profile-lang-conditional">
-            <span class="mini-label" data-i18n="profile.score">Score</span>
-            <input id="langExamScore"
-                    type="text"
-                    inputmode="decimal"
-                    class="profile-input"
-                    placeholder="Score (e.g. 7.5)"
-                    data-i18n-placeholder="profile.placeholder.lang_score" />
-            </div>
-
-            <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
-
-            <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
-        </div>
-
-        <div id="langList" class="lang-list"></div>
-        </section>
-
-      <div class="profile-actions">
-        <span id="profileSaveState" class="profile-save-state" data-i18n="profile.state.saved">Saved</span>
-        <button id="saveProfileBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.action.save_all">Save Profile</button>
-      </div>
-
-      <div class="profile-reset-zone">
-        <div class="profile-reset-copy">
-          <strong data-i18n="profile.reset.title">Reset profile data</strong>
-          <span data-i18n="profile.reset.note">Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.</span>
-        </div>
-        <button id="resetProfileBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.cta">Reset data</button>
-      </div>
-
-  </div>
-</div>
-
-<div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
-  <div class="profile-confirm-backdrop" data-close="unsaved"></div>
-  <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle">
-    <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
-    <p data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
-    <div class="profile-confirm-actions">
-      <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
-      <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
-      <button id="profileSaveAndCloseBtn" class="profile-add" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
-    </div>
-  </div>
-</div>
-
-<div class="profile-confirm-modal" id="profileResetModal" aria-hidden="true">
-  <div class="profile-confirm-backdrop" data-close="reset"></div>
-  <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileResetTitle">
-    <h3 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h3>
-    <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
-    <div class="profile-confirm-actions">
-      <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.reset.cancel">Cancel</button>
-      <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
-    </div>
-  </div>
 </div>
 
 <div id="toast-container" class="toast-container"></div>
@@ -430,45 +203,23 @@ function initThemeToggleUi() {
     }
 }
 
-let profileUiPromise = null;
-
-function bindLazyProfileUi() {
+function bindProfileNavAction() {
     const profileBtn = document.getElementById("profileBtn");
-    if (!profileBtn || profileBtn.dataset.profileLazyBound === "1") return;
-    profileBtn.dataset.profileLazyBound = "1";
+    if (!profileBtn || profileBtn.dataset.profileBound === "1") return;
+    profileBtn.dataset.profileBound = "1";
 
-    const loadProfileUi = async () => {
-        if (!profileUiPromise) {
-            profileUiPromise = Promise.all([
-                import("./components/profile-ui.js"),
-                initUniversityTranslations().catch(() => null),
-            ]).then(([module]) => {
-                module.initProfileUI?.();
-                return module;
-            });
+    profileBtn.addEventListener("click", (event) => {
+        const isProfile = Boolean(
+            document.body.dataset.page === "profile" ||
+            /\/profile(?:\.html)?$/i.test(window.location.pathname)
+        );
+        if (isProfile) {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            safeSessionStorage.set(PROFILE_RETURN_URL_KEY, window.location.href);
         }
-        return profileUiPromise;
-    };
-
-    const onProfileClick = async (event) => {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        profileBtn.disabled = true;
-        try {
-            await loadProfileUi();
-            profileBtn.removeEventListener("click", onProfileClick, true);
-            profileBtn.dataset.profileLazyBound = "loaded";
-            profileBtn.disabled = false;
-            profileBtn.click();
-        } catch (error) {
-            profileUiPromise = null;
-            console.error("Profile UI failed to load:", error);
-        } finally {
-            profileBtn.disabled = false;
-        }
-    };
-
-    profileBtn.addEventListener("click", onProfileClick, true);
+    });
 }
 
 function syncAdaptiveNavbarLayout() {
@@ -562,7 +313,7 @@ function initLanguageSwitcher() {
 }
 
 export async function loadGlobalLayout() {
-    if (document.getElementById("profileModal")) return;
+    if (document.querySelector(".navbar")) return;
     try {
         document.body.insertAdjacentHTML("afterbegin", resolveLayoutMarkup(LAYOUT_HTML));
         syncNavbarLogo();
@@ -592,7 +343,7 @@ export async function loadGlobalLayout() {
         initSettingsUI();
 
         // Запускаем логику профиля
-        bindLazyProfileUi();
+        bindProfileNavAction();
 
     } catch (error) {
         console.error("Error loading layout:", error);

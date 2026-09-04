@@ -37,22 +37,36 @@ import {
   shouldStoreRecentUniversities,
   writeSettingsArray,
 } from "../settings.js";
-let __profileInited = false;
-export function initProfileUI() {
-    if (__profileInited) return;
-    __profileInited = true;
+import { hydrateHeroIcons } from "../icons.js";
+import { safeSessionStorage } from "../utils/safe-storage.js";
+import { isProfilePath, navigateToAppRoute, routeHome, routeUniversities } from "../routes.js";
 
+const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
+
+export function initProfileUI() {
     const modal = document.getElementById("profileModal");
     if (!modal) {
         console.error("initProfileUI: profile modal is missing");
         return;
     }
 
-    modal.setAttribute("aria-hidden", "true");
-    bindInfoTooltips({ root: modal, wrapSelector: ".profile-info-wrap", buttonSelector: ".profile-info" });
-
     if (modal.dataset.bound === "1") return;
     modal.dataset.bound = "1";
+
+    const isDedicatedPage = Boolean(
+        document.body.dataset.page === "profile" ||
+        isProfilePath(window.location.pathname) ||
+        document.getElementById("profilePage")
+    );
+
+    if (!isDedicatedPage) {
+        modal.setAttribute("aria-hidden", "true");
+    } else {
+        modal.removeAttribute("aria-hidden");
+    }
+
+    hydrateHeroIcons(modal);
+    bindInfoTooltips({ root: modal, wrapSelector: ".profile-info-wrap", buttonSelector: ".profile-info" });
 
     const updateProfileTabsIndicator = setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
 
@@ -171,6 +185,7 @@ export function initProfileUI() {
     let savedSignature = "";
     let lowBudgetGrantHintDismissed = false;
     const profileProgressText = document.getElementById("profileProgressText");
+    const profileProgressFill = document.getElementById("profileProgressFill");
     const profileSectionTabs = Array.from(modal.querySelectorAll(".profile-section-tab"));
     const profileSectionNodes = Array.from(modal.querySelectorAll("[data-profile-section]"));
 
@@ -190,7 +205,6 @@ export function initProfileUI() {
     };
 
     const updateProfileProgress = () => {
-        if (!profileProgressText) return;
         let completed = 0;
         const total = 5;
         if (String(profile.budget || "").trim()) completed += 1;
@@ -198,9 +212,15 @@ export function initProfileUI() {
         if (String(profile.interests || "").trim()) completed += 1;
         if (String(profile.gpa || "").trim() || (Array.isArray(profile.exams) && profile.exams.length)) completed += 1;
         if (Array.isArray(profile.languages) && profile.languages.length) completed += 1;
-        profileProgressText.textContent = completed
-            ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
-            : t("profile.progress.empty", "Complete your profile for better matches.");
+        if (profileProgressText) {
+            profileProgressText.textContent = completed
+                ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
+                : t("profile.progress.empty", "Complete your profile for better matches.");
+        }
+        if (profileProgressFill) {
+            const pct = Math.round((completed / total) * 100);
+            profileProgressFill.style.width = `${pct}%`;
+        }
     };
 
     profileSectionTabs.forEach((tab) => {
@@ -1328,25 +1348,53 @@ export function initProfileUI() {
     };
 
     const closeImmediately = () => {
-        if (!modal.classList.contains("is-open")) return;
+        if (!modal.classList.contains("is-open") && !isDedicatedPage) return;
 
         closeUnsavedDialog(false);
         closeResetDialog(false);
-        if (openBtn) openBtn.focus();
 
         const finish = () => {
+            window.dispatchEvent(new Event("profileModalClosed"));
+            if (isDedicatedPage) {
+                const returnUrl = safeSessionStorage.get(PROFILE_RETURN_URL_KEY, "");
+                if (returnUrl) {
+                    safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
+                    try {
+                        const parsed = new URL(returnUrl, window.location.href);
+                        if (parsed.origin === window.location.origin && !isProfilePath(parsed.pathname)) {
+                            if (window.history.length > 1) {
+                                window.history.back();
+                            } else {
+                                navigateToAppRoute(parsed.href);
+                            }
+                            return;
+                        }
+                    } catch (_) {}
+                }
+
+                if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
+                    window.history.back();
+                } else {
+                    navigateToAppRoute(routeHome());
+                }
+                return;
+            }
             modal.classList.remove("is-open", "is-closing");
             modal.style.display = "none";
             modal.setAttribute("aria-hidden", "true");
-            window.dispatchEvent(new Event("profileModalClosed"));
+            if (openBtn) openBtn.focus();
             resetFields();
         };
         if (prefersReducedMotion()) {
             finish();
             return;
         }
-        modal.classList.add("is-closing");
-        window.setTimeout(finish, 180);
+        if (!isDedicatedPage) {
+            modal.classList.add("is-closing");
+            window.setTimeout(finish, 180);
+        } else {
+            finish();
+        }
     };
 
     const closeForLanguageSwitch = () => {
@@ -1386,7 +1434,7 @@ export function initProfileUI() {
     };
 
     const requestClose = () => {
-        if (!modal.classList.contains("is-open")) return;
+        if (!modal.classList.contains("is-open") && !isDedicatedPage) return;
         syncInputsToDraft();
         if (!refreshSaveState()) {
             closeImmediately();
@@ -1511,19 +1559,11 @@ export function initProfileUI() {
         openResetDialog();
     });
 
-    if (openBtn) openBtn.onclick = () => {
-        resetFields({ preferTransferred: true, consumeTransferred: true });
+    const openProfile = ({ preferTransferred = true, consumeTransferred = true } = {}) => {
+        resetFields({ preferTransferred, consumeTransferred });
         retranslateProfileUi();
         void fetchTranslationRuntimeStatus(API_BASE, false).then((status) => {
             renderInterestsTranslationWarning(status);
-        });
-        window.dispatchEvent(new Event("profileModalOpened"));
-        modal.classList.remove("is-closing");
-        modal.classList.add("is-open");
-        modal.style.display = "flex";
-        modal.removeAttribute("aria-hidden");
-        requestAnimationFrame(() => {
-            updateProfileTabsIndicator?.();
         });
 
         if (typeof initCustomSelect === "function") {
@@ -1533,7 +1573,22 @@ export function initProfileUI() {
             initCustomSelect("profileMajorSelect");
         }
         refreshExamActionButton();
+        updateProfileProgress();
+        hydrateHeroIcons(modal);
+
+        window.dispatchEvent(new Event("profileModalOpened"));
+        modal.classList.remove("is-closing");
+        modal.classList.add("is-open");
+        if (!isDedicatedPage) {
+            modal.style.display = "flex";
+        }
+        modal.removeAttribute("aria-hidden");
+        requestAnimationFrame(() => {
+            updateProfileTabsIndicator?.();
+        });
     };
+
+    if (openBtn) openBtn.onclick = () => openProfile({ preferTransferred: true, consumeTransferred: true });
 
     if (closeBtn) closeBtn.onclick = requestClose;
     if (backdrop) backdrop.onclick = requestClose;
@@ -1806,5 +1861,9 @@ export function initProfileUI() {
         };
     }
 
-    resetFields({ preferTransferred: true, consumeTransferred: false });
+    if (isDedicatedPage) {
+        openProfile({ preferTransferred: true, consumeTransferred: false });
+    } else {
+        resetFields({ preferTransferred: true, consumeTransferred: false });
+    }
 }

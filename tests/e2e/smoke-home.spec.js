@@ -2,7 +2,7 @@ const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { selectors } = require("./helpers/selectors");
 
-test("home smoke: layout, stats, and profile modal are functional", async ({ page }) => {
+test("home smoke: layout, stats, and profile navigation are functional", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
 
@@ -12,9 +12,10 @@ test("home smoke: layout, stats, and profile modal are functional", async ({ pag
   await expect(page.locator(selectors.profileBtn)).toBeVisible();
 
   await page.click(selectors.profileBtn);
+  await expect(page).toHaveURL(/profile/);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
   await page.click(selectors.profileCloseBtn);
-  await expect(page.locator(selectors.profileModal)).not.toHaveClass(/is-open/);
+  await expect(page).not.toHaveURL(/profile/);
 });
 
 test("home responsive: no horizontal overflow across viewports", async ({ page }) => {

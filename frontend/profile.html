@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <link rel="icon" href="images/minilogo.png" type="image/png">
+  <title data-i18n="title.profile">Applicant Profile | UniSearch</title>
+  <script src="javascript/theme-init.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body data-page="profile">
+  <div id="siteInitialLoader" class="site-initial-loader">
+    <div class="site-initial-loader__spinner"></div>
+  </div>
+
+  <main class="profile-page" id="profilePage">
+    <section class="profile-shell" id="profileModal" role="region" aria-label="Applicant Profile">
+      
+      <!-- Top Header & Primary Action Bar -->
+      <header class="profile-hero">
+        <div class="profile-hero-meta">
+          <span class="profile-kicker" data-i18n="profile.kicker">Applicant Workspace</span>
+          
+          <div class="profile-username" id="profileUsernameDiv">
+            <span id="profileNameDisplay" class="profile-username-label">User</span>
+            <input
+              id="profileNameInput"
+              class="profile-name-input"
+              type="text"
+              value="User"
+              minlength="3"
+              maxlength="16"
+              aria-label="Edit username"
+            />
+            <button
+              class="icon-btn profile-edit-name-btn"
+              id="editNameBtn"
+              type="button"
+              title="Edit Name"
+              aria-label="Edit Name"
+              data-i18n-title="profile.action.edit_name"
+              data-i18n-aria-label="profile.action.edit_name"
+            >
+              <span data-heroicon="pencil-square" data-icon-size="18"></span>
+            </button>
+          </div>
+          <div id="usernameError" class="profile-error profile-error--username"></div>
+
+          <p class="profile-subtitle" data-i18n="profile.page_subtitle">
+            Configure your academic profile, budget, and test scores for personalized UniFit matching and admission chance estimates.
+          </p>
+        </div>
+
+        <div class="profile-hero-actions">
+          <div class="profile-status-wrap">
+            <span id="profileSaveState" class="profile-save-state" data-i18n="profile.state.saved">Saved</span>
+          </div>
+          <button
+            class="profile-action-btn profile-action-btn--secondary"
+            id="profileCloseBtn"
+            type="button"
+            title="Return to previous page"
+            data-i18n-title="profile.action.back_desc"
+          >
+            <span data-heroicon="arrow-left" data-icon-size="16"></span>
+            <span data-i18n="profile.action.back">Back</span>
+          </button>
+          <button
+            class="profile-action-btn profile-action-btn--primary"
+            id="saveProfileBtn"
+            type="button"
+          >
+            <span data-heroicon="check" data-icon-size="16"></span>
+            <span data-i18n="profile.action.save_all">Save Profile</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Completion Banner & Progress -->
+      <section class="profile-progress-card" aria-label="Profile progress">
+        <div class="profile-progress-info">
+          <div class="profile-progress-badge">
+            <span data-heroicon="chart-bar" data-icon-size="16"></span>
+            <span class="profile-progress-label" data-i18n="profile.progress.title">Profile Completion</span>
+          </div>
+          <p class="profile-progress-text" id="profileProgressText" data-i18n="profile.progress.empty">
+            Complete your profile for better matches.
+          </p>
+        </div>
+        <div class="profile-progress-meter" aria-hidden="true">
+          <div class="profile-progress-track">
+            <div class="profile-progress-fill" id="profileProgressFill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Navigation Underline Tabs -->
+      <nav class="profile-section-tabs-bar" aria-label="Profile sections">
+        <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
+          <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">
+            Basics
+          </button>
+          <button class="profile-section-tab" type="button" data-profile-tab="scores" role="tab" aria-selected="false" data-i18n="profile.section.scores">
+            Scores
+          </button>
+          <button class="profile-section-tab" type="button" data-profile-tab="languages" role="tab" aria-selected="false" data-i18n="profile.section.languages">
+            Languages
+          </button>
+          <button class="profile-section-tab" type="button" data-profile-tab="preferences" role="tab" aria-selected="false" data-i18n="profile.section.preferences">
+            Preferences
+          </button>
+        </div>
+      </nav>
+
+      <!-- Profile Body Sections -->
+      <div class="profile-body">
+
+        <!-- ==================== SECTION: BASICS ==================== -->
+        <div class="profile-section-panel" data-profile-section="basics">
+          <div class="profile-grid profile-grid--2col">
+            
+            <!-- Budget Card -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.budget">Total Budget (USD / year)</h3>
+                <p class="profile-card-desc" data-i18n="profile.field.budget.desc">
+                  Your planned tuition and living expense budget per academic year in USD.
+                </p>
+              </div>
+
+              <div class="profile-field">
+                <div class="profile-budget profile-budget--with-unit">
+                  <input
+                    id="budgetInput"
+                    class="profile-input"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="e.g. 20000"
+                    data-i18n-placeholder="profile.placeholder.budget"
+                  />
+                  <span class="profile-unit" data-i18n="profile.unit.usd_year">USD / year</span>
+                </div>
+                <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0–1,000,000</div>
+              </div>
+
+              <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
+                <div class="profile-budget-grant-hint__content">
+                  <span data-heroicon="sparkles" data-icon-size="16"></span>
+                  <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
+                    Budget is under $1000. Maybe you need Grant only.
+                  </span>
+                </div>
+                <div class="profile-budget-grant-hint__actions">
+                  <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
+                    Set Grant only
+                  </button>
+                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint">
+                    <span data-heroicon="x-mark" data-icon-size="16"></span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Study Format & Funding Type Card -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.study_mode">Preferred Study Mode</h3>
+                <p class="profile-card-desc" data-i18n="profile.field.study_mode.desc">
+                  Filter programs by preferred attendance format.
+                </p>
+              </div>
+
+              <div class="profile-field">
+                <select id="studyModeSelect" class="profile-input profile-input--select">
+                  <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
+                  <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
+                  <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
+                </select>
+              </div>
+
+              <div class="profile-divider" aria-hidden="true"></div>
+
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.funding_type">Preferred Funding Type</h3>
+                <p class="profile-card-desc" data-i18n="profile.field.funding.desc">
+                  Choose whether you seek full scholarships/grants or self-funded seats.
+                </p>
+              </div>
+
+              <div class="profile-field">
+                <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
+                  <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
+                  <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
+                  <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
+                </select>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- ==================== SECTION: SCORES ==================== -->
+        <div class="profile-section-panel" data-profile-section="scores">
+          
+          <!-- GPA Card -->
+          <article class="profile-card-block">
+            <div class="profile-card-head">
+              <div class="profile-label-row">
+                <h3 class="profile-card-title" data-i18n="profile.label.gpa">GPA (Percent)</h3>
+                <span class="profile-info-wrap">
+                  <button
+                    type="button"
+                    class="profile-info"
+                    aria-label="How GPA works here"
+                    data-i18n-aria-label="profile.gpa_info_title"
+                  >
+                    <span data-heroicon="information-circle" data-icon-size="16"></span>
+                  </button>
+                  <span class="profile-tooltip" role="tooltip">
+                    <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
+                    <span data-i18n="profile.gpa_info_tooltip">
+                      Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <p class="profile-card-desc" data-i18n="profile.field.gpa.desc">
+                Enter your cumulative GPA normalized to a 0–100% scale.
+              </p>
+            </div>
+
+            <div class="profile-field profile-field--compact">
+              <div class="profile-budget profile-budget--with-unit">
+                <input
+                  id="gpaInput"
+                  class="profile-input"
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="e.g. 92"
+                  data-i18n-placeholder="profile.placeholder.gpa"
+                />
+                <span class="profile-unit" data-i18n="profile.unit.gpa">% (0 to 100)</span>
+              </div>
+              <div class="profile-hint" data-i18n="profile.hint.gpa">
+                Use percent here. UniSearch uses it only as a normalized estimate for matching.
+              </div>
+            </div>
+          </article>
+
+          <!-- Standardized Exams Card -->
+          <article class="profile-card-block">
+            <div class="profile-card-head">
+              <h3 class="profile-card-title" data-i18n="profile.label.exams">Exams (list, optional)</h3>
+              <p class="profile-card-desc">
+                Select standardized tests (IELTS, TOEFL, SAT, ACT, A-Levels) to unlock accurate admission chances.
+              </p>
+            </div>
+
+            <div class="profile-exam-form">
+              <div class="profile-exam-form-controls">
+                <div class="profile-exam-select-wrap">
+                  <select id="examNameSelect" class="profile-input profile-input--select">
+                    <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
+                    <option value="IELTS">IELTS</option>
+                    <option value="TOEFL">TOEFL</option>
+                    <option value="SAT">SAT</option>
+                    <option value="ACT">ACT</option>
+                  </select>
+                </div>
+
+                <div class="profile-exam-score-wrap">
+                  <input
+                    id="examScoreInput"
+                    class="profile-input"
+                    type="number"
+                    step="0.1"
+                    placeholder="Score"
+                    data-i18n-placeholder="profile.placeholder.score"
+                  />
+                </div>
+
+                <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+              </div>
+
+              <div id="examSpecialInputContainer" class="profile-exam-special" hidden></div>
+              <div id="examError" class="profile-error"></div>
+            </div>
+
+            <div class="profile-exam-list-wrap">
+              <div id="examList" class="profile-exam-list"></div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- ==================== SECTION: LANGUAGES ==================== -->
+        <div class="profile-section-panel" data-profile-section="languages">
+          
+          <section class="profile-card-block" id="languagesBlock">
+            <div class="profile-card-head">
+              <h3 class="profile-card-title" data-i18n="profile.languages">Languages</h3>
+              <p class="profile-card-desc">
+                Add your native language or international certificates (IELTS, TOEFL, CEFR) for requirement evaluation.
+              </p>
+            </div>
+
+            <div class="lang-add-grid lang-add-grid--compact">
+              <div class="lang-control-item">
+                <span class="mini-label" data-i18n="profile.language">Language</span>
+                <select id="langCode" class="profile-input" data-flags="off"></select>
+              </div>
+
+              <div class="lang-control-item">
+                <span class="mini-label" data-i18n="profile.type">Type</span>
+                <select id="langKind" class="profile-input"></select>
+              </div>
+
+              <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
+                <span class="mini-label" data-i18n="profile.cefr">CEFR</span>
+                <select id="langCefr" class="profile-input">
+                  <option value="1">A1</option>
+                  <option value="2">A2</option>
+                  <option value="3">B1</option>
+                  <option value="4">B2</option>
+                  <option value="5">C1</option>
+                  <option value="6">C2</option>
+                </select>
+              </div>
+
+              <div id="examContainer" class="profile-lang-conditional lang-control-item">
+                <span class="mini-label" data-i18n="profile.exam">Exam</span>
+                <select id="langExam" class="profile-input" data-flags="off"></select>
+              </div>
+
+              <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
+                <span class="mini-label" data-i18n="profile.score">Score</span>
+                <input
+                  id="langExamScore"
+                  type="text"
+                  inputmode="decimal"
+                  class="profile-input"
+                  placeholder="Score (e.g. 7.5)"
+                  data-i18n-placeholder="profile.placeholder.lang_score"
+                />
+              </div>
+
+              <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
+
+              <div class="lang-control-btn-wrap">
+                <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+              </div>
+            </div>
+
+            <div class="profile-lang-list-wrap">
+              <div id="langList" class="lang-list"></div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- ==================== SECTION: PREFERENCES ==================== -->
+        <div class="profile-section-panel" data-profile-section="preferences">
+          
+          <article class="profile-card-block">
+            <div class="profile-card-head">
+              <h3 class="profile-card-title" data-i18n="profile.label.major">Intended Major</h3>
+              <p class="profile-card-desc" data-i18n="profile.field.major.desc">
+                Select your target academic field to rank relevant programs.
+              </p>
+            </div>
+
+            <div class="profile-field profile-field--compact">
+              <select id="profileMajorSelect" class="profile-input profile-input--select">
+                <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
+              </select>
+            </div>
+          </article>
+
+          <article class="profile-card-block">
+            <div class="profile-card-head">
+              <h3 class="profile-card-title" data-i18n="profile.label.interests">What You Want in a University</h3>
+              <p class="profile-card-desc" data-i18n="profile.field.interests.desc">
+                Describe special interests, campus preferences, research focus, or target cities.
+              </p>
+            </div>
+
+            <div class="profile-field">
+              <textarea
+                id="profileInterestsInput"
+                class="profile-input profile-input--textarea"
+                rows="4"
+                maxlength="1200"
+                placeholder="Example: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies"
+                data-i18n-placeholder="profile.placeholder.interests"
+              ></textarea>
+              
+              <div
+                id="profileInterestsLangWarning"
+                class="profile-interests-warning"
+                hidden
+                data-i18n="profile.warning.interests_english_only"
+              >
+                If automatic translation is unavailable, write this field in English.
+              </div>
+
+              <div class="profile-hint" data-i18n="profile.hint.interests">
+                Write what matters to you in a university so UniSearch can sort results more personally.
+              </div>
+
+              <div class="profile-interest-chips" aria-label="Interest examples" data-i18n-aria-label="profile.interest_examples">
+                <button type="button" data-interest-chip="computer science, scholarships, internships" data-i18n="profile.interest_chip.tech">
+                  Tech + scholarships
+                </button>
+                <button type="button" data-interest-chip="big city, strong student life, internships" data-i18n="profile.interest_chip.city">
+                  Big city
+                </button>
+                <button type="button" data-interest-chip="research labs, science, academic environment" data-i18n="profile.interest_chip.research">
+                  Research labs
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+
+      <!-- Footer Reset Zone -->
+      <footer class="profile-footer-zone">
+        <div class="profile-reset-zone">
+          <div class="profile-reset-copy">
+            <strong data-i18n="profile.reset.title">Reset profile data</strong>
+            <span data-i18n="profile.reset.note">
+              Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.
+            </span>
+          </div>
+          <button id="resetProfileBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.cta">
+            Reset data
+          </button>
+        </div>
+      </footer>
+
+    </section>
+  </main>
+
+  <!-- Confirmations: Unsaved Changes -->
+  <div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
+    <div class="profile-confirm-backdrop" data-close="unsaved"></div>
+    <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle">
+      <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
+      <p data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
+      <div class="profile-confirm-actions">
+        <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
+        <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
+        <button id="profileSaveAndCloseBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmations: Reset Profile -->
+  <div class="profile-confirm-modal" id="profileResetModal" aria-hidden="true">
+    <div class="profile-confirm-backdrop" data-close="reset"></div>
+    <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileResetTitle">
+      <h3 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h3>
+      <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
+      <div class="profile-confirm-actions">
+        <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.reset.cancel">Cancel</button>
+        <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="env.js"></script>
+  <script src="config.js"></script>
+  <script type="module" src="javascript/main.js"></script>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-meta">
+        <p data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+        <nav class="footer-legal-links" aria-label="Legal navigation" data-i18n-aria-label="footer.legal_nav_aria">
+          <a href="privacy.html" data-route="privacy" data-i18n="footer.privacy">Privacy Policy</a>
+          <span class="footer-divider" aria-hidden="true">&bull;</span>
+          <a href="terms.html" data-route="terms" data-i18n="footer.terms">Terms of Use</a>
+        </nav>
+      </div>
+
+      <div class="social-links">
+        <a href="https://github.com/muxlex/unisearch" target="_blank" rel="noopener noreferrer">
+          <span class="footer-social-label">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

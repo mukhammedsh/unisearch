@@ -273,6 +273,19 @@ profile.interest_examples: Interest examples
 profile.interest_chip.tech: Tech + scholarships
 profile.interest_chip.city: Big city
 profile.interest_chip.research: Research labs
+profile.kicker: Applicant Workspace
+profile.page_subtitle: Configure your academic profile, budget, and test scores for personalized UniFit matching and admission chance estimates.
+profile.action.back: Back
+profile.action.back_desc: Return to previous page
+profile.progress.title: Profile Completion
+profile.empty_exams: No exams added yet. Select an exam above to add your scores.
+profile.empty_languages: No languages added yet. Add your native language or test certification.
+profile.field.budget.desc: Your planned tuition and living expense budget per academic year in USD.
+profile.field.study_mode.desc: Filter programs by preferred attendance format.
+profile.field.funding.desc: Choose whether you seek full scholarships/grants or self-funded seats.
+profile.field.gpa.desc: Enter your cumulative GPA normalized to a 0–100% scale.
+profile.field.major.desc: Select your target academic field to rank relevant programs.
+profile.field.interests.desc: Describe special interests, campus preferences, research focus, or target cities.
 ranking.acceptance: Acceptance Rate
 ranking.failed: Failed to load ranking.
 ranking.loading: Loading ranking
@@ -301,6 +314,7 @@ ranking.empty.title: No ranking matches
 ranking.empty.body: Try a different search or country filter.
 ranking.suggestion.alias: Alias
 title.about: About Us | UniSearch
+title.profile: Applicant Profile | UniSearch
 title.guide: Guide | UniSearch
 title.ranking: Global Ranking | UniSearch
 title.universities: Universities | UniSearch
