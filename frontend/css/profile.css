@@ -4,16 +4,12 @@
    ========================================================================== */
 
 .profile-page {
-  max-width: 1360px;
-  margin: 24px auto 80px;
-  padding: 0 28px;
+  max-width: 860px;
+  margin: 28px auto 80px;
+  padding: 0 24px;
 }
 
 body[data-page="profile"] {
-  background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
-}
-
-:root[data-theme="dark"] body[data-page="profile"] {
   background: var(--bg);
 }
 
@@ -22,12 +18,12 @@ body[data-page="profile"] {
    -------------------------------------------------------------------------- */
 .profile-shell {
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface-solid);
-  padding: 32px 36px;
+  padding: 28px 32px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
   box-shadow: none;
 }
 
@@ -38,21 +34,22 @@ body[data-page="profile"] {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 24px;
-  padding-bottom: 24px;
+  gap: 20px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--line);
 }
 
 .profile-hero-meta {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-width: 760px;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .profile-kicker {
   margin: 0;
-  font-size: 11.5px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
@@ -62,27 +59,29 @@ body[data-page="profile"] {
 .profile-username {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .profile-username-label {
   margin: 0;
-  font-size: clamp(24px, 2.8vw, 34px);
-  line-height: 1.15;
+  font-size: clamp(22px, 2.5vw, 30px);
+  line-height: 1;
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   color: var(--text);
+  /* Slight vertical shift to visually align the baseline-heavy text with the center of the button */
+  transform: translateY(-2px);
 }
 
 .profile-name-input {
   display: none;
-  font-size: clamp(18px, 2.2vw, 24px);
+  font-size: clamp(17px, 2vw, 22px);
   font-weight: 700;
   color: var(--text);
   background: var(--surface-soft);
   border: 1px solid var(--accent);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 4px 12px;
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
@@ -97,8 +96,8 @@ body[data-page="profile"] {
 }
 
 .profile-edit-name-btn {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
@@ -108,9 +107,9 @@ body[data-page="profile"] {
   justify-content: center;
   cursor: pointer;
   transition:
-    background-color var(--motion-fast, 0.15s) ease,
-    color var(--motion-fast, 0.15s) ease,
-    border-color var(--motion-fast, 0.15s) ease;
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .profile-edit-name-btn:hover {
@@ -119,17 +118,25 @@ body[data-page="profile"] {
   border-color: var(--accent);
 }
 
+.profile-edit-name-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .profile-subtitle {
   margin: 0;
-  font-size: 14.5px;
+  font-size: 13.5px;
   line-height: 1.55;
   color: var(--text-muted);
 }
 
+/* --------------------------------------------------------------------------
+   Hero Action Bar
+   -------------------------------------------------------------------------- */
 .profile-hero-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -139,14 +146,17 @@ body[data-page="profile"] {
 }
 
 .profile-save-state {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 8px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
   color: var(--text-muted);
-  transition: all var(--motion-fast, 0.15s) ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .profile-save-state.is-dirty {
@@ -161,37 +171,43 @@ body[data-page="profile"] {
 }
 
 .profile-action-btn {
-  height: 42px;
-  padding: 0 16px;
+  height: 38px;
+  padding: 0 14px;
   border-radius: 10px;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
+  white-space: nowrap;
   transition:
-    background-color var(--motion-fast, 0.15s) ease,
-    border-color var(--motion-fast, 0.15s) ease,
-    transform var(--motion-fast, 0.15s) ease;
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
 }
 
 .profile-action-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+}
+
+.profile-action-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .profile-action-btn--primary {
   background: var(--accent);
-  color: #ffffff;
+  color: #fff;
   border: 1px solid transparent;
 }
 
 .profile-action-btn--primary:hover:not(:disabled) {
-  background: var(--accent-strong, color-mix(in srgb, var(--accent) 85%, #000));
+  background: var(--accent-strong);
 }
 
 .profile-action-btn--primary:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -213,24 +229,24 @@ body[data-page="profile"] {
   background: var(--surface-soft);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 16px 20px;
+  padding: 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .profile-progress-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .profile-progress-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -239,14 +255,14 @@ body[data-page="profile"] {
 
 .profile-progress-text {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text);
 }
 
 .profile-progress-track {
   width: 100%;
-  height: 6px;
+  height: 5px;
   background: var(--line);
   border-radius: 999px;
   overflow: hidden;
@@ -256,7 +272,7 @@ body[data-page="profile"] {
   height: 100%;
   background: var(--accent);
   border-radius: 999px;
-  transition: width var(--motion-medium, 0.28s) cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --------------------------------------------------------------------------
@@ -268,9 +284,10 @@ body[data-page="profile"] {
 }
 
 .profile-section-tabs {
+  --sliding-indicator-extra-width: 0px;
   position: relative;
   display: flex;
-  gap: 6px;
+  gap: 4px;
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -284,14 +301,14 @@ body[data-page="profile"] {
   position: relative;
   background: none;
   border: none;
-  padding: 12px 18px;
-  font-size: 14.5px;
+  padding: 10px 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
   border-radius: 8px 8px 0 0;
   white-space: nowrap;
-  transition: color var(--motion-fast, 0.15s) ease;
+  transition: color 0.15s ease;
 }
 
 .profile-section-tab:hover {
@@ -303,20 +320,10 @@ body[data-page="profile"] {
   font-weight: 700;
 }
 
-/* Active underline sliding indicator */
-.profile-section-tabs::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: var(--tab-left, 0px);
-  width: var(--tab-width, 0px);
-  height: 2px;
-  background: var(--accent);
-  border-radius: 2px;
-  transition:
-    left var(--motion-fast, 0.18s) cubic-bezier(0.16, 1, 0.3, 1),
-    width var(--motion-fast, 0.18s) cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
+.profile-section-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 6px;
 }
 
 /* --------------------------------------------------------------------------
@@ -328,43 +335,53 @@ body[data-page="profile"] {
   gap: 20px;
 }
 
+.profile-section-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .profile-section-panel.is-section-hidden {
   display: none !important;
 }
 
 .profile-grid {
   display: grid;
-  gap: 20px;
+  gap: 16px;
+  align-items: start;
 }
 
 .profile-grid--2col {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+/* --------------------------------------------------------------------------
+   Card Block (Section Content Containers)
+   -------------------------------------------------------------------------- */
 .profile-card-block {
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--surface-soft);
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  transition: border-color var(--motion-fast, 0.15s) ease;
+  gap: 14px;
+  transition: border-color 0.15s ease;
 }
 
 .profile-card-block:hover {
-  border-color: color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
 }
 
 .profile-card-head {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .profile-card-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.01em;
@@ -372,15 +389,15 @@ body[data-page="profile"] {
 
 .profile-card-desc {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: var(--text-muted);
 }
 
 .profile-divider {
   height: 1px;
   background: var(--line);
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -389,39 +406,20 @@ body[data-page="profile"] {
 .profile-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .profile-field--compact {
-  max-width: 480px;
-}
-
-.profile-budget--with-unit {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.profile-budget--with-unit .profile-input {
-  padding-right: 90px;
-}
-
-.profile-unit {
-  position: absolute;
-  right: 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  pointer-events: none;
+  max-width: 420px;
 }
 
 /* IMPORTANT FIX: Prevent arbitrary stretching of interests textarea */
 #profileInterestsInput,
 textarea.profile-input,
 .profile-input--textarea {
-  resize: vertical !important;
-  min-height: 110px;
-  max-height: 260px;
+  resize: none !important;
+  min-height: 100px;
+  max-height: 240px;
   line-height: 1.6;
   font-family: inherit;
   width: 100%;
@@ -429,13 +427,13 @@ textarea.profile-input,
 }
 
 .profile-interests-warning {
-  font-size: 12.5px;
+  font-size: 12px;
   color: #b45309;
   background: color-mix(in srgb, #f59e0b 14%, var(--surface-solid));
   border: 1px solid color-mix(in srgb, #f59e0b 40%, var(--line));
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 8px 12px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 :root[data-theme="dark"] .profile-interests-warning {
@@ -446,20 +444,23 @@ textarea.profile-input,
 .profile-interest-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
+  gap: 6px;
+  margin-top: 2px;
 }
 
 .profile-interest-chips button {
   background: var(--surface-solid);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 12.5px;
+  padding: 5px 10px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text);
   cursor: pointer;
-  transition: all var(--motion-fast, 0.15s) ease;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .profile-interest-chips button:hover {
@@ -468,48 +469,65 @@ textarea.profile-input,
   background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
 }
 
+.profile-interest-chips button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* --------------------------------------------------------------------------
    Exam Form and List
    -------------------------------------------------------------------------- */
 .profile-exam-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  align-items: stretch;
 }
 
 .profile-exam-form-controls {
   display: grid;
-  grid-template-columns: minmax(180px, 1.2fr) minmax(120px, 1fr) auto;
-  gap: 10px;
+  grid-template-columns: minmax(160px, 1.2fr) minmax(100px, 1fr) auto;
+  gap: 8px;
   align-items: center;
 }
 
 .profile-add {
-  height: 44px;
-  padding: 0 20px;
+  height: 42px;
+  padding: 0 18px;
   border-radius: 10px;
-  border: 1px solid var(--accent);
+  border: 1px solid transparent;
   background: var(--accent);
-  color: #ffffff;
-  font-size: 13.5px;
+  color: #fff;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--motion-fast, 0.15s) ease;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
 }
 
 .profile-add:hover {
-  background: var(--accent-strong, color-mix(in srgb, var(--accent) 85%, #000));
+  background: var(--accent-strong);
+}
+
+.profile-add:active {
+  transform: scale(0.97);
+}
+
+.profile-add:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .profile-exam-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 10px;
-  margin-top: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
 }
 
 /* --------------------------------------------------------------------------
@@ -517,19 +535,19 @@ textarea.profile-input,
    -------------------------------------------------------------------------- */
 .lang-add-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) auto;
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
+  gap: 8px;
   align-items: end;
 }
 
 .lang-control-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .lang-control-item .mini-label {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -543,17 +561,103 @@ textarea.profile-input,
 
 .lang-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 10px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   Exam & Language Items (Rendered list cards)
+   -------------------------------------------------------------------------- */
+.profile-exam-item,
+.lang-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--surface-solid);
+  box-shadow: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.profile-exam-item:hover,
+.lang-item:hover {
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+}
+
+.profile-exam-meta,
+.lang-item__main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.profile-exam-name,
+.lang-item strong {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.profile-exam-score,
+.lang-item small {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.profile-delete {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.profile-delete:hover {
+  background: color-mix(in srgb, #ef4444 8%, var(--surface-solid));
+  border-color: color-mix(in srgb, #ef4444 40%, var(--line));
+  color: #ef4444;
+}
+
+.profile-delete:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.profile-add--secondary {
+  background: var(--surface-soft);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.profile-add--secondary:hover {
+  background: var(--surface);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
 }
 
 /* --------------------------------------------------------------------------
    Footer Reset Zone
    -------------------------------------------------------------------------- */
 .profile-footer-zone {
-  margin-top: 12px;
-  padding-top: 24px;
+  margin-top: 8px;
+  padding-top: 20px;
   border-top: 1px solid var(--line);
 }
 
@@ -561,48 +665,77 @@ textarea.profile-input,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  padding: 18px 22px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, #ef4444 26%, var(--line));
-  background: color-mix(in srgb, #ef4444 4%, var(--surface-solid));
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, #ef4444 22%, var(--line));
+  background: color-mix(in srgb, #ef4444 3%, var(--surface-solid));
 }
 
 .profile-reset-copy {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .profile-reset-copy strong {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--text);
 }
 
 .profile-reset-copy span {
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .profile-delete--danger {
-  padding: 9px 16px;
-  border-radius: 8px;
-  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
   font-weight: 600;
-  border: 1px solid color-mix(in srgb, #ef4444 50%, var(--line));
+  border: 1px solid color-mix(in srgb, #ef4444 45%, var(--line));
   background: var(--surface-solid);
   color: #ef4444;
   cursor: pointer;
-  transition: all var(--motion-fast, 0.15s) ease;
   white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .profile-delete--danger:hover {
   background: #ef4444;
-  color: #ffffff;
+  color: #fff;
   border-color: #ef4444;
+}
+
+.profile-delete--danger:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .profile-progress-fill,
+  .sliding-indicator,
+  .profile-action-btn,
+  .profile-save-state,
+  .profile-card-block,
+  .profile-edit-name-btn,
+  .profile-interest-chips button,
+  .profile-add,
+  .profile-add--secondary,
+  .profile-delete,
+  .profile-delete--danger,
+  .profile-exam-item,
+  .lang-item {
+    transition: none !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -612,7 +745,7 @@ textarea.profile-input,
   .profile-hero {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 14px;
   }
 
   .profile-hero-actions {
@@ -639,14 +772,14 @@ textarea.profile-input,
 
 @media (max-width: 768px) {
   .profile-page {
-    padding: 0 16px;
-    margin: 16px auto 60px;
+    padding: 0 14px;
+    margin: 14px auto 48px;
   }
 
   .profile-shell {
-    padding: 20px 18px;
+    padding: 18px 16px;
     border-radius: 14px;
-    gap: 20px;
+    gap: 18px;
   }
 
   .profile-hero-actions {
@@ -668,11 +801,11 @@ textarea.profile-input,
   .profile-progress-info {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
+    gap: 4px;
   }
 
   .profile-card-block {
-    padding: 16px;
+    padding: 16px 14px;
   }
 
   .profile-exam-form-controls {
@@ -686,12 +819,17 @@ textarea.profile-input,
   .profile-reset-zone {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
   }
 
   .profile-reset-zone .profile-delete--danger {
     width: 100%;
     text-align: center;
+  }
+
+  .profile-section-tab {
+    padding: 9px 12px;
+    font-size: 13px;
   }
 }
 
@@ -701,6 +839,14 @@ textarea.profile-input,
   }
 
   .profile-username-label {
-    font-size: 22px;
+    font-size: 20px;
+  }
+
+  .profile-card-title {
+    font-size: 14px;
+  }
+
+  .profile-subtitle {
+    font-size: 12.5px;
   }
 }

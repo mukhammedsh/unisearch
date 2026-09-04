@@ -867,10 +867,13 @@ html, body {
   font-weight: 700;
   color: var(--text-muted);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
-  padding: 10px 12px;
-  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  padding: 12px 14px;
+  border-radius: 12px;
   white-space: nowrap;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .profile-hint{
@@ -1610,6 +1613,9 @@ html, body {
   font-size: 12px;
   color: #d21e1e;
 }
+.profile-error:empty {
+  display: none;
+}
 
 .profile-error--username{
   margin: -4px 0 6px;
@@ -2237,7 +2243,7 @@ html, body {
   .profile-budget--with-unit .profile-unit{
     grid-column: 1 / -1;
     width: fit-content;
-    padding: 8px 10px;
+    padding: 10px 12px;
   }
   .profile-budget-grant-hint{
     flex-wrap: wrap;

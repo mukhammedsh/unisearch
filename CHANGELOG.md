@@ -3,6 +3,7 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Fixed profile layout inconsistencies: aligned 'User' label visually with the edit button, removed redundant subtitle text from the hero block, disabled manual resizing for textareas, prevented the budget card from vertical stretching, fixed the 'Select Exam' form inputs shrinking to the right by using `align-items: stretch`, and eliminated the massive blank space below empty exam forms by hiding the empty error container (`profile.css`, `style.css`, `profile.html`).
 - Added dedicated Applicant Profile page (`profile.html`, `profile.css`, `profile.js`) with responsive card layout, sticky toolbar, Heroicons action buttons, completion progress indicator, and client routing (`/profile`), refactoring profile modal markup out of global layout.
 - Fixed scroll jumping and offset on university catalog reload (`universities.html`, `universities.css`, `universities.js`, `main.js`): switched to manual scroll restoration to prevent premature coordinate clamping before API cards load, suppressed skeleton layout shifts with `overflow-anchor: none` and early scope-notice class application, and implemented exact scroll coordinate persistence in session storage.
 - Restored ranking card university thumbnail backgrounds with subtle theme-aware overlay gradients and enhanced gold, silver, and bronze podium card backdrops (`ranking.css`).
