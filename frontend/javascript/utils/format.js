@@ -1,5 +1,5 @@
 import { heroIcon } from "../icons.js";
-import { frontendStaticAsset, prefersReducedMotion } from "./runtime.js";
+import { frontendStaticAsset } from "./runtime.js";
 
 export function stabilizeNumericRanges(text) {
   return String(text || "").replace(/(\d[\d\s.,]*)\s*-\s*(\d[\d\s.,]*)/g, (_, left, right) => {
@@ -246,11 +246,6 @@ export function removeToast(toast) {
     }
   };
 
-  if (prefersReducedMotion()) {
-    finish();
-    return;
-  }
-
   let removed = false;
   const cleanup = () => {
     if (removed) return;
@@ -262,10 +257,10 @@ export function removeToast(toast) {
     toast.classList.add("is-leaving");
   }
   if (toast.style) {
-    toast.style.animation = "motion-toast-out var(--motion-medium, 240ms) var(--motion-ease-exit, ease) forwards";
+    toast.style.animation = "motion-toast-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards";
   }
   if (typeof toast.addEventListener === "function") {
     toast.addEventListener("animationend", cleanup, { once: true });
   }
-  window.setTimeout(cleanup, 280);
+  window.setTimeout(cleanup, 1000);
 }

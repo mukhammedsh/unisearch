@@ -101,57 +101,46 @@ test('showToast and removeToast', async (t) => {
     }
   });
 
-  await t.test('removeToast removes immediately when prefers-reduced-motion is active', () => {
+  await t.test('removeToast removes on animationend', () => {
     let removed = false;
+    let listener = null;
     const toast = {
       dataset: {},
       parentNode: {},
       remove: () => { removed = true; },
       classList: { add: () => {} },
       style: {},
-      addEventListener: () => {},
+      addEventListener: (evt, cb) => {
+        if (evt === 'animationend') listener = cb;
+      },
     };
 
-    const origMatchMedia = global.window.matchMedia;
-    global.window.matchMedia = (query) => ({
-      matches: query.includes('prefers-reduced-motion'),
-      addEventListener: () => {},
-      removeEventListener: () => {},
-    });
+    removeToast(toast);
+    assert.strictEqual(removed, false);
+    assert.strictEqual(toast.dataset.dismissing, '1');
 
-    try {
-      removeToast(toast);
-      assert.strictEqual(removed, true);
-      assert.strictEqual(toast.dataset.dismissing, '1');
-    } finally {
-      global.window.matchMedia = origMatchMedia;
-    }
+    if (listener) listener();
+    assert.strictEqual(removed, true);
   });
 
   await t.test('removeToast is idempotent and does not run twice', () => {
     let callCount = 0;
+    let listener = null;
     const toast = {
       dataset: {},
       parentNode: {},
       remove: () => { callCount++; },
       classList: { add: () => {} },
       style: {},
-      addEventListener: () => {},
+      addEventListener: (evt, cb) => {
+        if (evt === 'animationend') listener = cb;
+      },
     };
 
-    const origMatchMedia = global.window.matchMedia;
-    global.window.matchMedia = (query) => ({
-      matches: true,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-    });
-
-    try {
-      removeToast(toast);
-      removeToast(toast);
-      assert.strictEqual(callCount, 1);
-    } finally {
-      global.window.matchMedia = origMatchMedia;
-    }
+    removeToast(toast);
+    removeToast(toast);
+    assert.strictEqual(toast.dataset.dismissing, '1');
+    if (listener) listener();
+    assert.strictEqual(callCount, 1);
   });
 });
