@@ -286,6 +286,9 @@ profile.field.funding.desc: Choose whether you seek full scholarships/grants or 
 profile.field.gpa.desc: Enter your cumulative GPA normalized to a 0–100% scale.
 profile.field.major.desc: Select your target academic field to rank relevant programs.
 profile.field.interests.desc: Describe special interests, campus preferences, research focus, or target cities.
+profile.field.exams.desc: Select standardized tests (IELTS, TOEFL, SAT, ACT, A-Levels) to unlock accurate admission chances.
+profile.field.languages.desc: Add your native language or international certificates (IELTS, TOEFL, CEFR) for requirement evaluation.
+profile.aria.applicant_profile: Applicant Profile
 ranking.acceptance: Acceptance Rate
 ranking.failed: Failed to load ranking.
 ranking.loading: Loading ranking
@@ -1008,7 +1011,7 @@ profile.exam_subject_optional_slot: Optional subject {index}
 profile.exam_subject_placeholder: Select subject
 profile.exam_subject_choose_first: Choose a subject first
 profile.exam_breakdown_hint: Enter scores by subject. Required subjects stay fixed, and you can choose {min}-{max} extra subjects where needed.
-profile.exam_total_placeholder: {label}
+profile.exam_total_placeholder: Overall total
 profile.exam_subject_required_count: Choose at least {count} subjects for {exam}
 profile.exam_error_range: {exam} must be between {min} and {max}
 profile.exam_error_step: {exam} must use step {step}

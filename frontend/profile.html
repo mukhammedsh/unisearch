@@ -17,7 +17,7 @@
   </div>
 
   <main class="profile-page" id="profilePage">
-    <section class="profile-shell" id="profileModal" role="region" aria-label="Applicant Profile">
+    <section class="profile-shell" id="profileModal" role="region" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
       
       <!-- Top Header & Primary Action Bar -->
       <header class="profile-hero">
@@ -34,6 +34,7 @@
               minlength="3"
               maxlength="16"
               aria-label="Edit username"
+              data-i18n-aria-label="profile.action.edit_name"
             />
             <button
               class="icon-btn profile-edit-name-btn"
@@ -78,7 +79,7 @@
       </header>
 
       <!-- Completion Banner & Progress -->
-      <section class="profile-progress-card" aria-label="Profile progress">
+      <section class="profile-progress-card" aria-label="Profile progress" data-i18n-aria-label="profile.progress.title">
         <div class="profile-progress-info">
           <div class="profile-progress-badge">
             <span data-heroicon="chart-bar" data-icon-size="16"></span>
@@ -96,7 +97,7 @@
       </section>
 
       <!-- Section Navigation Underline Tabs -->
-      <nav class="profile-section-tabs-bar" aria-label="Profile sections">
+      <nav class="profile-section-tabs-bar" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
         <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
           <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">
             Basics
@@ -155,7 +156,7 @@
                   <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
                     Set Grant only
                   </button>
-                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint">
+                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
                     <span data-heroicon="x-mark" data-icon-size="16"></span>
                   </button>
                 </div>
@@ -254,7 +255,7 @@
           <article class="profile-card-block">
             <div class="profile-card-head">
               <h3 class="profile-card-title" data-i18n="profile.label.exams">Exams (list, optional)</h3>
-              <p class="profile-card-desc">
+              <p class="profile-card-desc" data-i18n="profile.field.exams.desc">
                 Select standardized tests (IELTS, TOEFL, SAT, ACT, A-Levels) to unlock accurate admission chances.
               </p>
             </div>
@@ -302,7 +303,7 @@
           <section class="profile-card-block" id="languagesBlock">
             <div class="profile-card-head">
               <h3 class="profile-card-title" data-i18n="profile.languages">Languages</h3>
-              <p class="profile-card-desc">
+              <p class="profile-card-desc" data-i18n="profile.field.languages.desc">
                 Add your native language or international certificates (IELTS, TOEFL, CEFR) for requirement evaluation.
               </p>
             </div>

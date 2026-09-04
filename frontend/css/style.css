@@ -1804,6 +1804,10 @@ html, body {
   color: #065f46;
 }
 
+.toast.is-leaving {
+  pointer-events: none;
+}
+
 .toast-message {
   display: inline-flex;
   align-items: center;

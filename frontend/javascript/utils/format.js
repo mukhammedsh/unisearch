@@ -1,5 +1,5 @@
 import { heroIcon } from "../icons.js";
-import { frontendStaticAsset } from "./runtime.js";
+import { frontendStaticAsset, prefersReducedMotion } from "./runtime.js";
 
 export function stabilizeNumericRanges(text) {
   return String(text || "").replace(/(\d[\d\s.,]*)\s*-\s*(\d[\d\s.,]*)/g, (_, left, right) => {
@@ -215,14 +215,57 @@ export function showToast(message, type = "error") {
     ? heroIcon("check-circle", "ui-icon ui-icon--18 toast-icon")
     : heroIcon("exclamation-triangle", "ui-icon ui-icon--18 toast-icon");
   toast.innerHTML = `<span class="toast-message">${icon}<span>${escapeHtml(message)}</span></span><button class="toast-close" type="button" aria-label="Close">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
-  toast.querySelector(".toast-close").onclick = () => removeToast(toast);
-  window.setTimeout(() => removeToast(toast), 3000);
+
+  const dismiss = () => {
+    removeToast(toast);
+  };
+
+  const closeBtn = typeof toast.querySelector === "function"
+    ? toast.querySelector(".toast-close")
+    : null;
+  if (closeBtn) closeBtn.onclick = dismiss;
+  toast._dismissTimer = window.setTimeout(dismiss, 3000);
   container.appendChild(toast);
 }
 
 export function removeToast(toast) {
-  toast.style.animation = "motion-toast-out var(--motion-medium, 240ms) var(--motion-ease-exit, ease) forwards";
-  toast.addEventListener("animationend", () => {
-    if (toast.parentNode) toast.parentNode.removeChild(toast);
-  });
+  if (!toast || !toast.parentNode) return;
+  if (toast._dismissTimer) {
+    window.clearTimeout(toast._dismissTimer);
+    toast._dismissTimer = null;
+  }
+  if (!toast.dataset) toast.dataset = {};
+  if (toast.dataset.dismissing === "1") return;
+  toast.dataset.dismissing = "1";
+
+  const finish = () => {
+    if (typeof toast.remove === "function") {
+      toast.remove();
+    } else if (toast.parentNode && typeof toast.parentNode.removeChild === "function") {
+      toast.parentNode.removeChild(toast);
+    }
+  };
+
+  if (prefersReducedMotion()) {
+    finish();
+    return;
+  }
+
+  let removed = false;
+  const cleanup = () => {
+    if (removed) return;
+    removed = true;
+    finish();
+  };
+
+  if (toast.classList && typeof toast.classList.add === "function") {
+    toast.classList.add("is-leaving");
+  }
+  if (toast.style) {
+    toast.style.animation = "motion-toast-out var(--motion-medium, 240ms) var(--motion-ease-exit, ease) forwards";
+  }
+  if (typeof toast.addEventListener === "function") {
+    toast.addEventListener("animationend", cleanup, { once: true });
+  }
+  window.setTimeout(cleanup, 280);
 }

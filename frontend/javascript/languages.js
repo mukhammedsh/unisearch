@@ -12,7 +12,7 @@ import {
   markMotionEnter,
   motionPress,
 } from "./utils.js";
-import { t, tFormat } from "./i18n.js";
+import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 
 const KIND_NATIVE = "native";
 const KIND_CEFR = "cefr";
@@ -220,7 +220,7 @@ function formatLanguageExamValue(cfg, entry) {
       const childExam = String(item.exam || item.id || item.exam_id || "").trim();
       const value = formatValuePart(item);
       if (!childExam || !value) return;
-      parts.push(`${getExamDisplayName(childExam, { langCode: entry.code })} ${value}`);
+      parts.push(`${getExamDisplayName(childExam, { langCode: entry.code, locale: getCurrentLanguage() })} ${value}`);
     });
     if (parts.length) return parts.join(", ");
   }
@@ -233,7 +233,7 @@ function formatLanguageExamValue(cfg, entry) {
 }
 
 function formatLanguageValidationToast(code, examId, detailRaw) {
-  const examLabel = getExamDisplayName(examId, { langCode: code });
+  const examLabel = getExamDisplayName(examId, { langCode: code, locale: getCurrentLanguage() });
   const detail = String(detailRaw || "").trim();
   if (!detail) {
     return tFormat("languages.error.generic", { exam: examLabel }, `Could not save ${examLabel}`);
@@ -287,7 +287,7 @@ function validateExamScore(examObj, code, rawInput, { required = true } = {}) {
     return { error: t("languages.error.enter_score", "Enter score") };
   }
 
-  const examLabel = getExamDisplayName(examObj?.id, { langCode: code });
+  const examLabel = getExamDisplayName(examObj?.id, { langCode: code, locale: getCurrentLanguage() });
   const examType = String(examObj?.type || "").trim().toLowerCase();
   if (examType === "int" && !Number.isInteger(score)) {
     return {
@@ -455,7 +455,7 @@ export function initLanguagesPanel() {
       list.forEach((examObj) => {
         const opt = document.createElement("option");
         opt.value = examObj.id;
-        opt.textContent = getExamDisplayName(examObj.id, { langCode: code });
+        opt.textContent = getExamDisplayName(examObj.id, { langCode: code, locale: getCurrentLanguage() });
         if (opt.value === current) {
           placeholder.selected = false;
           opt.selected = true;
@@ -484,7 +484,7 @@ export function initLanguagesPanel() {
           meta = ` — ${escapeHtml(CEFR_LABEL[entry.level] || String(entry.level))}`;
         }
         if (entry.kind === KIND_EXAM) {
-          const exLabel = escapeHtml(getExamDisplayName(entry.exam, { langCode: entry.code }));
+          const exLabel = escapeHtml(getExamDisplayName(entry.exam, { langCode: entry.code, locale: getCurrentLanguage() }));
           const valueLabel = escapeHtml(formatLanguageExamValue(cfg, entry));
           meta = valueLabel ? ` — ${exLabel}: ${valueLabel}` : ` — ${exLabel}`;
         }
@@ -551,8 +551,8 @@ export function initLanguagesPanel() {
             return `
               <div class="profile-exam-breakdown-row" data-lang-breakdown-row="${escapeHtml(def.exam)}">
                 <div class="profile-exam-breakdown-subject">
-                  <span class="mini-label">${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase() }))}</span>
-                  <div class="profile-exam-breakdown-chip">${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase() }))}</div>
+                  <span class="mini-label">${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase(), locale: getCurrentLanguage() }))}</span>
+                  <div class="profile-exam-breakdown-chip">${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase(), locale: getCurrentLanguage() }))}</div>
                 </div>
                 <div class="profile-exam-breakdown-score">
                   <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
@@ -814,7 +814,7 @@ export function initLanguagesPanel() {
 
         if (entry.kind === KIND_EXAM) {
           const langLabel = getLangLabel(cfg, entry.code);
-          const examLabel = getExamDisplayName(entry.exam, { langCode: entry.code });
+          const examLabel = getExamDisplayName(entry.exam, { langCode: entry.code, locale: getCurrentLanguage() });
           const valueLabel = formatLanguageExamValue(cfg, entry);
           showToast(
             valueLabel

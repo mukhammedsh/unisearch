@@ -2,7 +2,7 @@ import './setup.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert';
 
-import { escapeHtml, escapeHtmlAttr } from '../../frontend/javascript/utils/format.js';
+import { escapeHtml, escapeHtmlAttr, showToast, removeToast } from '../../frontend/javascript/utils/format.js';
 
 test('escapeHtml', async (t) => {
   await t.test('escapes standard HTML characters', () => {
@@ -67,5 +67,91 @@ test('escapeHtmlAttr', async (t) => {
     assert.strictEqual(escapeHtmlAttr(123), '123');
     assert.strictEqual(escapeHtmlAttr(true), 'true');
     assert.strictEqual(escapeHtmlAttr(false), 'false');
+  });
+});
+
+test('showToast and removeToast', async (t) => {
+  await t.test('does not throw when toast-container is missing', () => {
+    assert.doesNotThrow(() => showToast('Missing container'));
+  });
+
+  await t.test('creates toast and removes it on dismiss', () => {
+    const toasts = [];
+    const container = {
+      appendChild: (node) => toasts.push(node),
+    };
+    const origGetElementById = global.document.getElementById;
+    global.document.getElementById = (id) => (id === 'toast-container' ? container : null);
+
+    try {
+      showToast('Action successful', 'success');
+      assert.strictEqual(toasts.length, 1);
+      const toast = toasts[0];
+      assert.strictEqual(toast.className, 'toast success');
+
+      toast.parentNode = container;
+      toast.remove = () => {
+        const idx = toasts.indexOf(toast);
+        if (idx !== -1) toasts.splice(idx, 1);
+      };
+
+      removeToast(toast);
+    } finally {
+      global.document.getElementById = origGetElementById;
+    }
+  });
+
+  await t.test('removeToast removes immediately when prefers-reduced-motion is active', () => {
+    let removed = false;
+    const toast = {
+      dataset: {},
+      parentNode: {},
+      remove: () => { removed = true; },
+      classList: { add: () => {} },
+      style: {},
+      addEventListener: () => {},
+    };
+
+    const origMatchMedia = global.window.matchMedia;
+    global.window.matchMedia = (query) => ({
+      matches: query.includes('prefers-reduced-motion'),
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    });
+
+    try {
+      removeToast(toast);
+      assert.strictEqual(removed, true);
+      assert.strictEqual(toast.dataset.dismissing, '1');
+    } finally {
+      global.window.matchMedia = origMatchMedia;
+    }
+  });
+
+  await t.test('removeToast is idempotent and does not run twice', () => {
+    let callCount = 0;
+    const toast = {
+      dataset: {},
+      parentNode: {},
+      remove: () => { callCount++; },
+      classList: { add: () => {} },
+      style: {},
+      addEventListener: () => {},
+    };
+
+    const origMatchMedia = global.window.matchMedia;
+    global.window.matchMedia = (query) => ({
+      matches: true,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    });
+
+    try {
+      removeToast(toast);
+      removeToast(toast);
+      assert.strictEqual(callCount, 1);
+    } finally {
+      global.window.matchMedia = origMatchMedia;
+    }
   });
 });

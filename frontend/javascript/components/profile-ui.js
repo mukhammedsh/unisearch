@@ -227,6 +227,7 @@ export function initProfileUI() {
         tab.addEventListener("click", () => setProfileSection(tab.dataset.profileTab || "basics"));
     });
     setProfileSection("basics");
+    setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
     const getNameDraft = () => String(nameInput?.value || "").trim();
@@ -359,7 +360,7 @@ export function initProfileUI() {
 
             const opt = document.createElement("option");
             opt.value = normalized || examKey;
-            opt.textContent = getExamDisplayName(normalized || examKey);
+            opt.textContent = getExamDisplayName(normalized || examKey, { locale: getCurrentLanguage() });
             examNameSelect.appendChild(opt);
         });
 
@@ -400,14 +401,14 @@ export function initProfileUI() {
                 if (typeof item === "string") {
                     const exam = canonicalizeExamId(item);
                     if (!exam) return null;
-                    return { exam, label: getExamDisplayName(exam), required: defaultRequired };
+                    return { exam, label: getExamDisplayName(exam, { locale: getCurrentLanguage() }), required: defaultRequired };
                 }
                 if (!item || typeof item !== "object") return null;
                 const exam = canonicalizeExamId(item.exam || item.id || item.exam_id || "");
                 if (!exam) return null;
                 return {
                     exam,
-                    label: String(getExamDisplayName(exam) || item.label || exam).trim(),
+                    label: String(getExamDisplayName(exam, { locale: getCurrentLanguage() }) || item.label || exam).trim(),
                     required: item.required === undefined ? defaultRequired : !!item.required,
                 };
             })
@@ -597,7 +598,7 @@ export function initProfileUI() {
                     state.components.push({ exam, score: null });
                     continue;
                 }
-                const label = String(row.getAttribute("data-breakdown-label") || getExamDisplayName(exam)).trim();
+                const label = String(row.getAttribute("data-breakdown-label") || getExamDisplayName(exam, { locale: getCurrentLanguage() })).trim();
                 if (!silent) showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
                 return null;
             }
@@ -623,7 +624,7 @@ export function initProfileUI() {
                     state.components.push({ exam, score: null });
                     continue;
                 }
-                const label = getExamDisplayName(exam);
+                const label = getExamDisplayName(exam, { locale: getCurrentLanguage() });
                 if (!silent) showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
                 return null;
             }
@@ -923,8 +924,8 @@ export function initProfileUI() {
                 showToast(
                     tFormat(
                         "profile.exam_grade_required",
-                        { exam: getExamDisplayName(examId), count: minCount },
-                        `Choose ${minCount} grades for ${getExamDisplayName(examId)}`
+                        { exam: getExamDisplayName(examId, { locale: getCurrentLanguage() }), count: minCount },
+                        `Choose ${minCount} grades for ${getExamDisplayName(examId, { locale: getCurrentLanguage() })}`
                     ),
                     "error"
                 );
@@ -951,8 +952,8 @@ export function initProfileUI() {
                 showToast(
                     tFormat(
                         "profile.exam_subject_required_count",
-                        { count: selectableMin, exam: getExamDisplayName(examId) },
-                        `Choose at least ${selectableMin} subjects for ${getExamDisplayName(examId)}`
+                        { count: selectableMin, exam: getExamDisplayName(examId, { locale: getCurrentLanguage() }) },
+                        `Choose at least ${selectableMin} subjects for ${getExamDisplayName(examId, { locale: getCurrentLanguage() })}`
                     ),
                     "error"
                 );
@@ -986,7 +987,7 @@ export function initProfileUI() {
     };
 
     const formatExamValidationToast = (examId, detailRaw) => {
-        const examLabel = getExamDisplayName(examId);
+        const examLabel = getExamDisplayName(examId, { locale: getCurrentLanguage() });
         const detail = String(detailRaw || "").trim();
         if (!detail) {
             return tFormat("profile.exam_error_generic", { exam: examLabel }, `Could not save ${examLabel}`);
@@ -1012,7 +1013,7 @@ export function initProfileUI() {
 
         const subjectNameFrom = (rawValue) => {
             const normalized = canonicalizeExamId(rawValue);
-            if (normalized && examConfigFor(normalized)) return getExamDisplayName(normalized);
+            if (normalized && examConfigFor(normalized)) return getExamDisplayName(normalized, { locale: getCurrentLanguage() });
             return String(rawValue || "").trim();
         };
 
@@ -1229,7 +1230,7 @@ export function initProfileUI() {
             examList.innerHTML = profile.exams.map((ex, i) => `
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
-                        <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam))}</span>
+                        <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam, { locale: getCurrentLanguage() }))}</span>
                         <span class="profile-exam-score">${escapeHtml(formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }))}</span>
                     </div>
                     <button data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
@@ -1787,7 +1788,7 @@ export function initProfileUI() {
                 }
 
                 const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
-                const examLabel = getExamDisplayName(examId || name);
+                const examLabel = getExamDisplayName(examId || name, { locale: getCurrentLanguage() });
                 const savedValue = formatExamValue(examId || name, json, { context: "profile", locale: getCurrentLanguage() });
                 if (!Array.isArray(profile.exams)) profile.exams = [];
                 const existingIndex = profile.exams.findIndex((e) =>
