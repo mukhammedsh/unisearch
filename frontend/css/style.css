@@ -1787,9 +1787,10 @@ html, body {
   font-weight: 600;
   min-width: 250px;
   max-width: 350px;
-  animation: motion-toast-in var(--motion-medium) var(--motion-ease-enter) forwards;
+  animation: motion-toast-in var(--motion-medium, 260ms) var(--motion-ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
   pointer-events: auto;
   border-left: 4px solid var(--accent);
+  will-change: transform, opacity;
 }
 
 .toast.error {
@@ -1806,6 +1807,8 @@ html, body {
 
 .toast.is-leaving {
   pointer-events: none;
+  animation: motion-toast-out var(--motion-medium, 260ms) var(--motion-ease-exit, cubic-bezier(0.4, 0, 0.2, 1)) forwards;
+  will-change: transform, opacity;
 }
 
 .toast-message {
@@ -1856,12 +1859,25 @@ html, body {
 }
 
 @keyframes motion-toast-in {
-  from { transform: translate3d(24px, 0, 0); opacity: 0; }
-  to { transform: translate3d(0, 0, 0); opacity: 1; }
+  from {
+    transform: translate3d(calc(100% + 40px), 0, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
 }
 
 @keyframes motion-toast-out {
-  to { transform: translate3d(24px, 0, 0); opacity: 0; }
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(calc(100% + 40px), 0, 0);
+    opacity: 0;
+  }
 }
 
 /* --- Custom Select (Global dropdown styles) --- */
@@ -2674,7 +2690,6 @@ html, body {
   .motion-row-exit,
   .motion-chip-remove,
   .motion-card-remove,
-  .toast,
   .settings-modal.is-open .settings-backdrop,
   .settings-modal.is-open .settings-card,
   .profile-modal.is-open .profile-backdrop,
