@@ -4,6 +4,7 @@ import {
   MAJOR_OPTIONS,
   animateElementOut,
   canonicalizeExamId,
+  clearProfile,
   escapeHtml,
   formatExamValue,
   frontendStaticAsset,
@@ -26,6 +27,7 @@ import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import {
+  clearProfileDraftTransfer,
   consumeProfileDraftAfterReload,
   fetchTranslationRuntimeStatus,
   persistProfileDraftForReload,
@@ -325,7 +327,7 @@ export function initProfileUI() {
     };
 
     window.__unisearchProfileDraft = {
-        isActive: () => modal.classList.contains("is-open"),
+        isActive: () => isDedicatedPage || modal.classList.contains("is-open"),
         get: () => cloneProfile(profile),
         set: (nextProfile) => {
             setProfileDraft(nextProfile);
@@ -1251,6 +1253,19 @@ export function initProfileUI() {
         if (profileFundingTypeSelect) profileFundingTypeSelect.value = normalizeFundingType(profile.fundingType);
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
+        if (examNameSelect) examNameSelect.value = "";
+        if (examScoreInput) examScoreInput.value = "";
+        if (examSpecialInputContainer) {
+            examSpecialInputContainer.innerHTML = "";
+            examSpecialInputContainer.style.display = "none";
+            delete examSpecialInputContainer.dataset.breakdownExam;
+        }
+        if (typeof initCustomSelect === "function") {
+            initCustomSelect("studyModeSelect");
+            initCustomSelect("profileFundingTypeSelect");
+            initCustomSelect("profileMajorSelect");
+            initCustomSelect("examNameSelect");
+        }
         renderInterestsTranslationWarning(null);
         fetchTranslationRuntimeStatus(API_BASE).then((status) => renderInterestsTranslationWarning(status)).catch(() => {});
         renderProfileData();
@@ -1427,7 +1442,12 @@ export function initProfileUI() {
     };
 
     const openResetDialog = () => {
-        if (!resetModal) return;
+        if (!resetModal) {
+            if (window.confirm(t("profile.reset.confirm_message", "This will remove all saved profile data on this device and set the profile back to empty values."))) {
+                resetProfileData();
+            }
+            return;
+        }
         resetModal.style.display = "flex";
         resetModal.classList.remove("is-closing");
         resetModal.classList.add("is-open");
@@ -1545,12 +1565,15 @@ export function initProfileUI() {
     const resetProfileData = () => {
         lowBudgetGrantHintDismissed = false;
         transferredProfileDraft = null;
+        clearProfileDraftTransfer();
+        safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
+        clearProfile();
         const emptyProfile = ensureProfileShape({});
-        saveProfile(emptyProfile);
         setProfileDraft(emptyProfile, { markAsSaved: true });
         applyDraftToInputs();
         renderLowBudgetGrantHint();
         closeResetDialog(false);
+        window.dispatchEvent(new Event("profileUpdated"));
         showToast(t("profile.reset.done", "Profile data reset"), "success");
     };
 

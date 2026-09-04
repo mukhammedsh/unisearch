@@ -445,34 +445,33 @@
       </footer>
 
     </section>
+    <!-- Confirmations: Unsaved Changes -->
+    <div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
+      <div class="profile-confirm-backdrop" data-close="unsaved"></div>
+      <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle">
+        <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
+        <p data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
+        <div class="profile-confirm-actions">
+          <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
+          <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
+          <button id="profileSaveAndCloseBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmations: Reset Profile -->
+    <div class="profile-confirm-modal" id="profileResetModal" aria-hidden="true">
+      <div class="profile-confirm-backdrop" data-close="reset"></div>
+      <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileResetTitle">
+        <h3 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h3>
+        <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
+        <div class="profile-confirm-actions">
+          <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.reset.cancel">Cancel</button>
+          <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
+        </div>
+      </div>
+    </div>
   </main>
-
-  <!-- Confirmations: Unsaved Changes -->
-  <div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
-    <div class="profile-confirm-backdrop" data-close="unsaved"></div>
-    <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle">
-      <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
-      <p data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
-      <div class="profile-confirm-actions">
-        <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
-        <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
-        <button id="profileSaveAndCloseBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Confirmations: Reset Profile -->
-  <div class="profile-confirm-modal" id="profileResetModal" aria-hidden="true">
-    <div class="profile-confirm-backdrop" data-close="reset"></div>
-    <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileResetTitle">
-      <h3 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h3>
-      <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
-      <div class="profile-confirm-actions">
-        <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.reset.cancel">Cancel</button>
-        <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
-      </div>
-    </div>
-  </div>
 
   <script src="env.js"></script>
   <script src="config.js"></script>

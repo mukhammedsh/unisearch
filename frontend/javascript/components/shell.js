@@ -92,6 +92,10 @@ export function persistProfileDraftForReload(reason = "reload", nextLanguage = "
   });
 }
 
+export function clearProfileDraftTransfer() {
+  safeSessionStorage.remove(PROFILE_DRAFT_TRANSFER_KEY);
+}
+
 export function consumeProfileDraftAfterReload() {
   const parsed = safeSessionStorage.getJson(PROFILE_DRAFT_TRANSFER_KEY, null);
   safeSessionStorage.remove(PROFILE_DRAFT_TRANSFER_KEY);

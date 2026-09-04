@@ -6,6 +6,11 @@ import {
   safeSessionStorage,
   createSafeStorage
 } from '../../frontend/javascript/utils/safe-storage.js';
+import {
+  loadProfile,
+  saveProfile,
+  clearProfile,
+} from '../../frontend/javascript/utils/persistence.js';
 
 describe('safe-storage.js', () => {
   let mockLocalStorage;
@@ -118,6 +123,46 @@ describe('safe-storage.js', () => {
     test('setJson handles serialization/storage errors gracefully', () => {
         global.window.localStorage.setItem = () => { throw new Error('storage error'); };
         assert.strictEqual(safeLocalStorage.setJson('any', { a: 1 }), false);
+    });
+  });
+
+  describe('Profile Persistence and Reset', () => {
+    test('saveProfile persists normalized profile and clearProfile purges localStorage', () => {
+      let dispatched = [];
+      global.window.dispatchEvent = (event) => {
+        dispatched.push(event?.type || event);
+      };
+
+      saveProfile({
+        name: 'Alex',
+        budget: 18000,
+        gpa: 92,
+        studyMode: 'Online',
+        interests: 'Physics',
+      });
+
+      assert.ok(mockLocalStorage['unisearch_profile'], 'profile should be in localStorage');
+      const stored = JSON.parse(mockLocalStorage['unisearch_profile']);
+      assert.strictEqual(stored.name, 'Alex');
+      assert.strictEqual(stored.budget, 18000);
+      assert.strictEqual(stored.gpa, 92);
+      assert.ok(dispatched.includes('profileUpdated'));
+
+      dispatched = [];
+      clearProfile();
+
+      assert.strictEqual(mockLocalStorage['unisearch_profile'], undefined, 'unisearch_profile must be removed from localStorage');
+      assert.ok(dispatched.includes('profileUpdated'), 'clearProfile must dispatch profileUpdated');
+
+      const loaded = loadProfile();
+      assert.strictEqual(loaded.name, 'User');
+      assert.strictEqual(loaded.budget, '');
+      assert.strictEqual(loaded.gpa, '');
+      assert.strictEqual(loaded.interests, '');
+      assert.strictEqual(loaded.studyMode, 'Any');
+      assert.strictEqual(loaded.fundingType, 'any');
+      assert.deepStrictEqual(loaded.exams, []);
+      assert.deepStrictEqual(loaded.languages, []);
     });
   });
 });
