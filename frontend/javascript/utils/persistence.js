@@ -39,7 +39,10 @@ function roundToStep(value, min, step) {
 }
 
 function clampWithConfig(score, config) {
-  let value = Number(score);
+  if (score === "" || score === null || score === undefined) return null;
+  const raw = typeof score === "string" ? score.trim() : score;
+  if (raw === "") return null;
+  let value = Number(raw);
   if (!Number.isFinite(value)) return null;
   const min = Number.isFinite(Number(config?.min)) ? Number(config.min) : -Infinity;
   const max = Number.isFinite(Number(config?.max)) ? Number(config.max) : Infinity;
@@ -276,6 +279,12 @@ export function saveProfile(profile) {
   if (!safeLocalStorage.setJson(PROFILE_STORAGE_KEY, normalized)) {
     console.warn("Failed to persist profile in localStorage; using in-memory fallback.");
   }
+  window.dispatchEvent(new Event("profileUpdated"));
+}
+
+export function clearProfile() {
+  profileMemoryFallback = null;
+  safeLocalStorage.remove(PROFILE_STORAGE_KEY);
   window.dispatchEvent(new Event("profileUpdated"));
 }
 

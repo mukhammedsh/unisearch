@@ -866,6 +866,7 @@ export function initLanguagesPanel() {
 
     window.addEventListener("profileModalOpened", renderForm);
     window.addEventListener("languageChanged", renderForm);
+    window.addEventListener("profileUpdated", renderForm);
   };
 
   if (!getConfigOrNull()) {
