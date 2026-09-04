@@ -86,6 +86,10 @@ export function routeTerms(queryOrParams = "") {
   return withQuery(usePrettyUrls() ? "/terms" : "terms.html", queryOrParams);
 }
 
+export function routeProfile(queryOrParams = "") {
+  return withQuery(usePrettyUrls() ? "/profile" : "profile.html", queryOrParams);
+}
+
 export function routeUniversityDetail(universityId, queryOrParams = "") {
   const id = String(universityId || "").trim();
   if (!id) return routeUniversities(queryOrParams);
@@ -139,6 +143,11 @@ export function isTermsPath(pathname = "") {
   return /\/terms(?:\.html)?$/.test(path);
 }
 
+export function isProfilePath(pathname = "") {
+  const path = normalizePath(pathname).toLowerCase();
+  return /\/profile(?:\.html)?$/.test(path);
+}
+
 export function getUniversityIdFromPath(pathname = "") {
   const path = normalizePath(pathname);
   const match = path.match(/\/universities\/([^/]+)$/i);
@@ -185,6 +194,7 @@ export function applyRouteLinks(root = document) {
     if (route === "about") href = routeAbout(params);
     if (route === "privacy") href = routePrivacy(params);
     if (route === "terms") href = routeTerms(params);
+    if (route === "profile") href = routeProfile(params);
 
     if (route === "university") {
       const rawId = String(link.getAttribute("data-route-id") || "").trim();

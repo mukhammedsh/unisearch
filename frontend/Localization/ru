@@ -274,6 +274,19 @@ profile.interest_examples: Примеры интересов
 profile.interest_chip.tech: IT + стипендии
 profile.interest_chip.city: Большой город
 profile.interest_chip.research: Исследовательские лаборатории
+profile.kicker: Кабинет абитуриента
+profile.page_subtitle: Настройте параметры бюджета, оценок и экзаменов для персонализированного подбора UniFit и расчета шансов поступления.
+profile.action.back: Назад
+profile.action.back_desc: Вернуться на предыдущую страницу
+profile.progress.title: Заполненность профиля
+profile.empty_exams: Экзамены еще не добавлены. Выберите экзамен выше, чтобы добавить баллы.
+profile.empty_languages: Языки еще не добавлены. Укажите родной язык или сертификат тестирования.
+profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в USD.
+profile.field.study_mode.desc: Фильтрация программ по предпочтительному формату обучения.
+profile.field.funding.desc: Выберите, интересуют ли вас только гранты или также платное обучение.
+profile.field.gpa.desc: Укажите средний балл аттестата, нормализованный по шкале от 0 до 100%.
+profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
+profile.field.interests.desc: Опишите особые пожелания: направление исследований, тип кампуса, города и компании.
 ranking.acceptance: Процент зачисления
 ranking.failed: Не удалось загрузить рейтинг.
 ranking.loading: Загрузка рейтинга
@@ -302,6 +315,7 @@ ranking.empty.title: В рейтинге нет совпадений
 ranking.empty.body: Попробуйте другой поиск или фильтр по стране.
 ranking.suggestion.alias: Аббревиатура
 title.about: О нас | UniSearch
+title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
 title.ranking: Глобальный рейтинг университетов | UniSearch
 title.universities: Университеты | UniSearch
