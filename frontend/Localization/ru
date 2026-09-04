@@ -287,6 +287,9 @@ profile.field.funding.desc: Выберите, интересуют ли вас �
 profile.field.gpa.desc: Укажите средний балл аттестата, нормализованный по шкале от 0 до 100%.
 profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
 profile.field.interests.desc: Опишите особые пожелания: направление исследований, тип кампуса, города и компании.
+profile.field.exams.desc: Выберите стандартизированные тесты (IELTS, TOEFL, SAT, ACT, A-Levels) для точной оценки шансов поступления.
+profile.field.languages.desc: Укажите родной язык или международные сертификаты (IELTS, TOEFL, CEFR) для проверки языковых требований.
+profile.aria.applicant_profile: Профиль абитуриента
 ranking.acceptance: Процент зачисления
 ranking.failed: Не удалось загрузить рейтинг.
 ranking.loading: Загрузка рейтинга
@@ -1007,7 +1010,7 @@ profile.exam_subject_optional_slot: Доп. предмет {index}
 profile.exam_subject_placeholder: Выберите предмет
 profile.exam_subject_choose_first: Сначала выберите предмет
 profile.exam_breakdown_hint: Введите баллы по предметам. Обязательные предметы остаются фиксированными, а где нужно, можно выбрать ещё {min}-{max} предметов.
-profile.exam_total_placeholder: {label}
+profile.exam_total_placeholder: Общий балл
 profile.exam_subject_required_count: Выберите как минимум {count} предмета для {exam}
 profile.exam_error_range: {exam} должен быть в диапазоне от {min} до {max}
 profile.exam_error_step: Для {exam} нужно использовать шаг {step}
