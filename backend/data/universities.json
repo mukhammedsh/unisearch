@@ -443,15 +443,15 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 1.0,
+          "position": 1,
           "status": "official"
         },
-        "total_cost_year_usd": 85960.0,
+        "total_cost_year_usd": 85960,
         "derived_signals": {
           "research_signal_raw": 14.600489148758616,
           "hardcore_signal_0_1": 0.979848,
           "research_norm_0_1": 0.955217,
-          "official_rank_norm_0_1": 0.0,
+          "official_rank_norm_0_1": 0,
           "tuition_norm_0_1": 0.878238,
           "city_population_norm_0_1": 0.005098
         }
@@ -477,7 +477,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 85960.0,
+          "value": 85960,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.eecs.mit.edu/academics/undergraduate-programs/",
@@ -1313,10 +1313,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 2.0,
+          "position": 2,
           "status": "official"
         },
-        "total_cost_year_usd": 74541.0,
+        "total_cost_year_usd": 74541,
         "derived_signals": {
           "research_signal_raw": 14.362650815264908,
           "hardcore_signal_0_1": 0.971968,
@@ -1346,7 +1346,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 74541.0,
+          "value": 74541,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/ug/beng-meng-computing/",
@@ -1750,7 +1750,7 @@
       "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 119600.0
+      "average_early_career_salary_usd": 119600
     },
     "verified_sources": [
       {
@@ -1819,8 +1819,8 @@
       "practice_vs_science": 0.9753,
       "social_vs_hardcore": 0.9872,
       "budget_vs_prestige": 0.9901,
-      "city_vs_outside_city": 1.0,
-      "city_vs_campus": 1.0
+      "city_vs_outside_city": 1,
+      "city_vs_campus": 1
     },
     "factors_meta": {
       "version": "internet_v1",
@@ -1848,17 +1848,17 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 3.0,
+          "position": 3,
           "status": "official"
         },
-        "total_cost_year_usd": 97545.0,
+        "total_cost_year_usd": 97545,
         "derived_signals": {
           "research_signal_raw": 14.90817892567731,
           "hardcore_signal_0_1": 0.987152,
           "research_norm_0_1": 0.975347,
           "official_rank_norm_0_1": 0.00319,
-          "tuition_norm_0_1": 1.0,
-          "city_population_norm_0_1": 0.0
+          "tuition_norm_0_1": 1,
+          "city_population_norm_0_1": 0
         }
       }
     },
@@ -1881,7 +1881,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 97545.0,
+          "value": 97545,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://majors.stanford.edu/majors/computer-science",
@@ -2362,7 +2362,7 @@
     ],
     "description_source": "https://www.harvard.edu/about/",
     "factors": {
-      "practice_vs_science": 1.0,
+      "practice_vs_science": 1,
       "social_vs_hardcore": 0.9965,
       "budget_vs_prestige": 0.9848,
       "city_vs_outside_city": 0.9949,
@@ -2394,14 +2394,14 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 5.0,
+          "position": 5,
           "status": "official"
         },
-        "total_cost_year_usd": 95134.0,
+        "total_cost_year_usd": 95134,
         "derived_signals": {
           "research_signal_raw": 15.285001440017242,
           "hardcore_signal_0_1": 0.996491,
-          "research_norm_0_1": 1.0,
+          "research_norm_0_1": 1,
           "official_rank_norm_0_1": 0.00638,
           "tuition_norm_0_1": 0.97466,
           "city_population_norm_0_1": 0.005098
@@ -2427,7 +2427,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 95134.0,
+          "value": 95134,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://seas.harvard.edu/computer-science",
@@ -2948,10 +2948,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 4.0,
+          "position": 4,
           "status": "official"
         },
-        "total_cost_year_usd": 70300.0,
+        "total_cost_year_usd": 70300,
         "derived_signals": {
           "research_signal_raw": 14.759835236642358,
           "hardcore_signal_0_1": 0.981907,
@@ -2982,7 +2982,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 70300.0,
+          "value": 70300,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science",
@@ -3500,7 +3500,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 27.0,
+      "acceptance_rate_percent": 27,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -3621,10 +3621,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 7.0,
+          "position": 7,
           "status": "official"
         },
-        "total_cost_year_usd": 28000.0,
+        "total_cost_year_usd": 28000,
         "derived_signals": {
           "research_signal_raw": 13.931361869402844,
           "hardcore_signal_0_1": 0.954885,
@@ -3654,7 +3654,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 28000.0,
+          "value": 28000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://inf.ethz.ch/studies.html",
@@ -3673,7 +3673,7 @@
           "method": "Direct student headcount published in the ETH Zurich annual report teaching section."
         },
         "acceptance_rate_percent": {
-          "value": 27.0,
+          "value": 27,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -4075,7 +4075,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 8.0,
+      "acceptance_rate_percent": 8,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -4102,7 +4102,7 @@
       "costs_breakdown_status": "official_tuition_and_fees_only"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 52100.0
+      "average_early_career_salary_usd": 52100
     },
     "verified_sources": [
       {
@@ -4220,10 +4220,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 8.0,
+          "position": 8,
           "status": "official"
         },
-        "total_cost_year_usd": 32000.0,
+        "total_cost_year_usd": 32000,
         "derived_signals": {
           "research_signal_raw": 13.93502601391346,
           "hardcore_signal_0_1": 0.954116,
@@ -4253,7 +4253,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 32000.0,
+          "value": 32000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.comp.nus.edu.sg/programmes/",
@@ -4276,7 +4276,7 @@
           }
         },
         "acceptance_rate_percent": {
-          "value": 8.0,
+          "value": 8,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -4797,10 +4797,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 6.0,
+          "position": 6,
           "status": "official"
         },
-        "total_cost_year_usd": 69800.0,
+        "total_cost_year_usd": 69800,
         "derived_signals": {
           "research_signal_raw": 14.558605662689427,
           "hardcore_signal_0_1": 0.974228,
@@ -4831,7 +4831,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 69800.0,
+          "value": 69800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science",
@@ -5378,7 +5378,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 1.0,
+      "acceptance_rate_percent": 1,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -5469,8 +5469,8 @@
       "practice_vs_science": 0.9284,
       "social_vs_hardcore": 0.9538,
       "budget_vs_prestige": 0.4161,
-      "city_vs_outside_city": 0.0,
-      "city_vs_campus": 0.0
+      "city_vs_outside_city": 0,
+      "city_vs_campus": 0
     },
     "factors_meta": {
       "version": "internet_v1",
@@ -5498,17 +5498,17 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 17.0,
+          "position": 17,
           "status": "official"
         },
-        "total_cost_year_usd": 9500.0,
+        "total_cost_year_usd": 9500,
         "derived_signals": {
           "research_signal_raw": 14.191215349470497,
           "hardcore_signal_0_1": 0.953763,
           "research_norm_0_1": 0.928441,
           "official_rank_norm_0_1": 0.025518,
           "tuition_norm_0_1": 0.074623,
-          "city_population_norm_0_1": 1.0
+          "city_population_norm_0_1": 1
         }
       }
     },
@@ -5532,7 +5532,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 9500.0,
+          "value": 9500,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://international.join-tsinghua.edu.cn/Divisions1.htm",
@@ -5556,7 +5556,7 @@
           }
         },
         "acceptance_rate_percent": {
-          "value": 1.0,
+          "value": 1,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -5917,7 +5917,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 15.0,
+      "acceptance_rate_percent": 15,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -6036,10 +6036,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 19.0,
+          "position": 19,
           "status": "official"
         },
-        "total_cost_year_usd": 52000.0,
+        "total_cost_year_usd": 52000,
         "derived_signals": {
           "research_signal_raw": 14.136401607802132,
           "hardcore_signal_0_1": 0.950395,
@@ -6070,7 +6070,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 52000.0,
+          "value": 52000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure",
@@ -6089,7 +6089,7 @@
           "method": "Direct student headcount published in the University of Melbourne facts and figures."
         },
         "acceptance_rate_percent": {
-          "value": 15.0,
+          "value": 15,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -6422,7 +6422,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 8.0,
+      "acceptance_rate_percent": 8,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -6547,10 +6547,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 22.0,
+          "position": 22,
           "status": "official"
         },
-        "total_cost_year_usd": 19000.0,
+        "total_cost_year_usd": 19000,
         "derived_signals": {
           "research_signal_raw": 13.708547417798124,
           "hardcore_signal_0_1": 0.935167,
@@ -6580,7 +6580,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 19000.0,
+          "value": 19000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc",
@@ -6599,7 +6599,7 @@
           "method": "Direct student headcount published on TUM facts and figures."
         },
         "acceptance_rate_percent": {
-          "value": 8.0,
+          "value": 8,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -6935,7 +6935,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 20.0,
+      "acceptance_rate_percent": 20,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -7058,10 +7058,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 22.0,
+          "position": 22,
           "status": "official"
         },
-        "total_cost_year_usd": 25000.0,
+        "total_cost_year_usd": 25000,
         "derived_signals": {
           "research_signal_raw": 13.674366123273265,
           "hardcore_signal_0_1": 0.934161,
@@ -7091,7 +7091,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 25000.0,
+          "value": 25000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/",
@@ -7110,7 +7110,7 @@
           "method": "Direct student headcount published in the EPFL annual report 2024 materials."
         },
         "acceptance_rate_percent": {
-          "value": 20.0,
+          "value": 20,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -7600,10 +7600,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 10.0,
+          "position": 10,
           "status": "official"
         },
-        "total_cost_year_usd": 88509.0,
+        "total_cost_year_usd": 88509,
         "derived_signals": {
           "research_signal_raw": 14.158816475105597,
           "hardcore_signal_0_1": 0.95895,
@@ -7634,7 +7634,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 88509.0,
+          "value": 88509,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cms.caltech.edu/academics/computer-science",
@@ -8321,10 +8321,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 29.0,
+          "position": 29,
           "status": "official"
         },
-        "total_cost_year_usd": 62000.0,
+        "total_cost_year_usd": 62000,
         "derived_signals": {
           "research_signal_raw": 14.676330436948081,
           "hardcore_signal_0_1": 0.957519,
@@ -8354,7 +8354,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 62000.0,
+          "value": 62000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://web.cs.toronto.edu/",
@@ -8801,7 +8801,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 10.0,
+      "acceptance_rate_percent": 10,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -8929,10 +8929,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 32.0,
+          "position": 32,
           "status": "official"
         },
-        "total_cost_year_usd": 33354.0,
+        "total_cost_year_usd": 33354,
         "derived_signals": {
           "research_signal_raw": 13.636674566079387,
           "hardcore_signal_0_1": 0.924279,
@@ -8963,7 +8963,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 33354.0,
+          "value": 33354,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cse.cuhk.edu.hk/about/department/",
@@ -8986,7 +8986,7 @@
           }
         },
         "acceptance_rate_percent": {
-          "value": 10.0,
+          "value": 10,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -9828,10 +9828,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 36.0,
+          "position": 36,
           "status": "official"
         },
-        "total_cost_year_usd": 16000.0,
+        "total_cost_year_usd": 16000,
         "derived_signals": {
           "research_signal_raw": 14.497657062002862,
           "hardcore_signal_0_1": 0.946118,
@@ -9859,7 +9859,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 16000.0,
+          "value": 16000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html",
@@ -10361,10 +10361,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 13.0,
+          "position": 13,
           "status": "official"
         },
-        "total_cost_year_usd": 93243.0,
+        "total_cost_year_usd": 93243,
         "derived_signals": {
           "research_signal_raw": 14.177905345091999,
           "hardcore_signal_0_1": 0.95688,
@@ -10396,7 +10396,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 93243.0,
+          "value": 93243,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://cs.uchicago.edu/education/undergraduate-programs/",
@@ -10817,7 +10817,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 15.0,
+      "acceptance_rate_percent": 15,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -10937,10 +10937,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 38.0,
+          "position": 38,
           "status": "official"
         },
-        "total_cost_year_usd": 15000.0,
+        "total_cost_year_usd": 15000,
         "derived_signals": {
           "research_signal_raw": 13.791116139455447,
           "hardcore_signal_0_1": 0.923563,
@@ -10971,7 +10971,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 15000.0,
+          "value": 15000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://en.snu.ac.kr/academics/programs/undergraduate",
@@ -10990,7 +10990,7 @@
           "method": "Direct enrolled student count published on the official Seoul National University site."
         },
         "acceptance_rate_percent": {
-          "value": 15.0,
+          "value": 15,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -11365,7 +11365,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 15.0,
+      "acceptance_rate_percent": 15,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -11475,10 +11475,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 47.0,
+          "position": 47,
           "status": "official"
         },
-        "total_cost_year_usd": 36000.0,
+        "total_cost_year_usd": 36000,
         "derived_signals": {
           "research_signal_raw": 13.31207071332918,
           "hardcore_signal_0_1": 0.901565,
@@ -11509,7 +11509,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 36000.0,
+          "value": 36000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
@@ -11531,7 +11531,7 @@
           }
         },
         "acceptance_rate_percent": {
-          "value": 15.0,
+          "value": 15,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -12006,10 +12006,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 15.0,
+          "position": 15,
           "status": "official"
         },
-        "total_cost_year_usd": 90078.0,
+        "total_cost_year_usd": 90078,
         "derived_signals": {
           "research_signal_raw": 14.500796533627415,
           "hardcore_signal_0_1": 0.964632,
@@ -12041,7 +12041,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 90078.0,
+          "value": 90078,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cis.upenn.edu/undergraduate/",
@@ -12467,7 +12467,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 36.0,
+      "acceptance_rate_percent": 36,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -12578,10 +12578,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 57.0,
+          "position": 57,
           "status": "official"
         },
-        "total_cost_year_usd": 16500.0,
+        "total_cost_year_usd": 16500,
         "derived_signals": {
           "research_signal_raw": 14.127021424297022,
           "hardcore_signal_0_1": 0.916786,
@@ -12609,7 +12609,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 16500.0,
+          "value": 16500,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
@@ -12628,7 +12628,7 @@
           "method": "Direct student headcount published on the Kyoto University profile page."
         },
         "acceptance_rate_percent": {
-          "value": 36.0,
+          "value": 36,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -13106,10 +13106,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 16.0,
+          "position": 16,
           "status": "official"
         },
-        "total_cost_year_usd": 90579.0,
+        "total_cost_year_usd": 90579,
         "derived_signals": {
           "research_signal_raw": 14.602650519485309,
           "hardcore_signal_0_1": 0.966753,
@@ -13140,7 +13140,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 90579.0,
+          "value": 90579,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cs.cornell.edu/undergrad",
@@ -13680,10 +13680,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 17.0,
+          "position": 17,
           "status": "official"
         },
-        "total_cost_year_usd": 82459.0,
+        "total_cost_year_usd": 82459,
         "derived_signals": {
           "research_signal_raw": 14.59152935719441,
           "hardcore_signal_0_1": 0.965549,
@@ -13714,7 +13714,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 82459.0,
+          "value": 82459,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://eecs.berkeley.edu/academics/undergraduate/",
@@ -14023,7 +14023,7 @@
         "natural sciences",
         "psychology"
       ],
-      "acceptance_rate_percent": 30.0,
+      "acceptance_rate_percent": 30,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -14239,10 +14239,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 20.0,
+          "position": 20,
           "status": "official"
         },
-        "total_cost_year_usd": 52800.0,
+        "total_cost_year_usd": 52800,
         "derived_signals": {
           "research_signal_raw": 8.77193300177699,
           "hardcore_signal_0_1": 0.791585,
@@ -14273,7 +14273,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 52800.0,
+          "value": 52800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.unsw.edu.au/study/undergraduate/computer-science",
@@ -14292,7 +14292,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 30.0,
+          "value": 30,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.unsw.edu.au/study/how-to-apply/undergraduate",
@@ -14795,10 +14795,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 21.0,
+          "position": 21,
           "status": "official"
         },
-        "total_cost_year_usd": 89214.0,
+        "total_cost_year_usd": 89214,
         "derived_signals": {
           "research_signal_raw": 14.509606772789752,
           "hardcore_signal_0_1": 0.959628,
@@ -14830,7 +14830,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 89214.0,
+          "value": 89214,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://cpsc.yale.edu/undergraduate-program",
@@ -15370,10 +15370,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 25.0,
+          "position": 25,
           "status": "official"
         },
-        "total_cost_year_usd": 85080.0,
+        "total_cost_year_usd": 85080,
         "derived_signals": {
           "research_signal_raw": 13.931339292729419,
           "hardcore_signal_0_1": 0.939095,
@@ -15404,7 +15404,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 85080.0,
+          "value": 85080,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cs.princeton.edu/academics/undergraduate",
@@ -15718,7 +15718,7 @@
         "natural sciences",
         "psychology"
       ],
-      "acceptance_rate_percent": 30.0,
+      "acceptance_rate_percent": 30,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -15935,10 +15935,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 25.0,
+          "position": 25,
           "status": "official"
         },
-        "total_cost_year_usd": 54400.0,
+        "total_cost_year_usd": 54400,
         "derived_signals": {
           "research_signal_raw": 14.054690407512465,
           "hardcore_signal_0_1": 0.942726,
@@ -15969,7 +15969,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 54400.0,
+          "value": 54400,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html",
@@ -15988,7 +15988,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 30.0,
+          "value": 30,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.sydney.edu.au/study/applying/admission-pathways/international-students.html",
@@ -16486,10 +16486,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 27.0,
+          "position": 27,
           "status": "official"
         },
-        "total_cost_year_usd": 47200.0,
+        "total_cost_year_usd": 47200,
         "derived_signals": {
           "research_signal_raw": 14.020871074183432,
           "hardcore_signal_0_1": 0.939976,
@@ -16520,7 +16520,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 47200.0,
+          "value": 47200,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cs.mcgill.ca/academic/undergrad/",
@@ -17047,10 +17047,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 24.0,
+          "position": 24,
           "status": "official"
         },
-        "total_cost_year_usd": 87363.0,
+        "total_cost_year_usd": 87363,
         "derived_signals": {
           "research_signal_raw": 14.803362188901394,
           "hardcore_signal_0_1": 0.965645,
@@ -17082,7 +17082,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 87363.0,
+          "value": 87363,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://engineering.jhu.edu/computer-science/academics/undergraduate-studies/",
@@ -17399,7 +17399,7 @@
         "natural sciences",
         "psychology"
       ],
-      "acceptance_rate_percent": 35.0,
+      "acceptance_rate_percent": 35,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -17615,10 +17615,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 32.0,
+          "position": 32,
           "status": "official"
         },
-        "total_cost_year_usd": 51200.0,
+        "total_cost_year_usd": 51200,
         "derived_signals": {
           "research_signal_raw": 13.530306618429291,
           "hardcore_signal_0_1": 0.921148,
@@ -17649,7 +17649,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 51200.0,
+          "value": 51200,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://programsandcourses.anu.edu.au/program/bcomp",
@@ -17668,7 +17668,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 35.0,
+          "value": 35,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://study.anu.edu.au/apply",
@@ -17944,7 +17944,7 @@
         "natural sciences",
         "psychology"
       ],
-      "acceptance_rate_percent": 10.0,
+      "acceptance_rate_percent": 10,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -18160,10 +18160,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 34.0,
+          "position": 34,
           "status": "official"
         },
-        "total_cost_year_usd": 62600.0,
+        "total_cost_year_usd": 62600,
         "derived_signals": {
           "research_signal_raw": 13.993081260588678,
           "hardcore_signal_0_1": 0.933018,
@@ -18194,7 +18194,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 62600.0,
+          "value": 62600,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400",
@@ -18213,7 +18213,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 10.0,
+          "value": 10,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://study.ed.ac.uk/undergraduate/applying/selection/admissions-statistics",
@@ -18492,7 +18492,7 @@
         "natural sciences",
         "psychology"
       ],
-      "acceptance_rate_percent": 16.0,
+      "acceptance_rate_percent": 16,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -18716,10 +18716,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 35.0,
+          "position": 35,
           "status": "official"
         },
-        "total_cost_year_usd": 59800.0,
+        "total_cost_year_usd": 59800,
         "derived_signals": {
           "research_signal_raw": 14.066524844082586,
           "hardcore_signal_0_1": 0.934303,
@@ -18750,7 +18750,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 59800.0,
+          "value": 59800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/",
@@ -18769,7 +18769,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 16.0,
+          "value": 16,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.manchester.ac.uk/study/undergraduate/applications/",
@@ -19412,10 +19412,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 38.0,
+          "position": 38,
           "status": "official"
         },
-        "total_cost_year_usd": 91287.0,
+        "total_cost_year_usd": 91287,
         "derived_signals": {
           "research_signal_raw": 14.439836449219646,
           "hardcore_signal_0_1": 0.942662,
@@ -19447,7 +19447,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 91287.0,
+          "value": 91287,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cs.columbia.edu/education/undergraduate/",
@@ -19983,10 +19983,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 40.0,
+          "position": 40,
           "status": "official"
         },
-        "total_cost_year_usd": 50100.0,
+        "total_cost_year_usd": 50100,
         "derived_signals": {
           "research_signal_raw": 14.19984014250064,
           "hardcore_signal_0_1": 0.933842,
@@ -20017,7 +20017,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 50100.0,
+          "value": 50100,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cs.ubc.ca/students/undergrad",
@@ -20036,7 +20036,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 52.0,
+          "value": 52,
           "unit": "percent",
           "source": "UBC Vancouver Campus Fact Sheet Winter 2023",
           "source_url": "https://pair.ok.ubc.ca/wp-content/uploads/sites/145/2024/02/Factsheets_2024_February.pdf",
@@ -20545,10 +20545,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 46.0,
+          "position": 46,
           "status": "official"
         },
-        "total_cost_year_usd": 76190.0,
+        "total_cost_year_usd": 76190,
         "derived_signals": {
           "research_signal_raw": 13.70558578702933,
           "hardcore_signal_0_1": 0.914027,
@@ -20579,7 +20579,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 76190.0,
+          "value": 76190,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cs.ucla.edu/undergraduate-study/",
@@ -21114,10 +21114,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 119.0,
+          "position": 119,
           "status": "official"
         },
-        "total_cost_year_usd": 51700.0,
+        "total_cost_year_usd": 51700,
         "derived_signals": {
           "research_signal_raw": 13.202038960455575,
           "hardcore_signal_0_1": 0.835168,
@@ -21148,7 +21148,7 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 51700.0,
+          "value": 51700,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://uwaterloo.ca/future-students/programs/computer-science",
@@ -21167,7 +21167,7 @@
           "method": "Curated from the university's published facts / quick-facts materials."
         },
         "acceptance_rate_percent": {
-          "value": 55.0,
+          "value": 55,
           "unit": "percent",
           "source": "University of Waterloo Undergraduate Admissions 2019-2023 Senate brief",
           "source_url": "https://uwaterloo.ca/secretariat/sites/default/files/uploads/documents/sfc-2024-02-07-agenda-package_0.pdf",
@@ -21550,7 +21550,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 22.0,
+      "acceptance_rate_percent": 22,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -21667,7 +21667,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 14000.0,
+        "total_cost_year_usd": 14000,
         "derived_signals": {
           "research_signal_raw": 13.049729095928543,
           "hardcore_signal_0_1": 0.659192,
@@ -21698,7 +21698,7 @@
           "method": "No official QS World University Rankings 2026 position is published because KAIST was excluded from the 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 14000.0,
+          "value": 14000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://engineering.kaist.ac.kr/education/department",
@@ -21717,7 +21717,7 @@
           "method": "Direct student headcount published by KAIST."
         },
         "acceptance_rate_percent": {
-          "value": 22.0,
+          "value": 22,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -22229,7 +22229,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 19500.0,
+        "total_cost_year_usd": 19500,
         "derived_signals": {
           "research_signal_raw": 10.603795915637956,
           "hardcore_signal_0_1": 0.587182,
@@ -22260,7 +22260,7 @@
           "method": "No official QS World University Rankings 2026 position is published for Nazarbayev University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 19500.0,
+          "value": 19500,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
@@ -22279,7 +22279,7 @@
           "method": "Direct student headcount published on the official Nazarbayev University About page."
         },
         "acceptance_rate_percent": {
-          "value": 21.0,
+          "value": 21,
           "unit": "percent",
           "source": "Admissions Statistics on Nazarbayev University",
           "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
@@ -22768,7 +22768,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 35.0,
+      "acceptance_rate_percent": 35,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -22889,13 +22889,13 @@
           "country_code": "KZ",
           "admin1": "Almaty Region",
           "population": null,
-          "population_wikidata_fallback": 79499.0
+          "population_wikidata_fallback": 79499
         },
         "rank": {
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 8500.0,
+        "total_cost_year_usd": 8500,
         "derived_signals": {
           "research_signal_raw": 9.58540440838301,
           "hardcore_signal_0_1": 0.5572,
@@ -22926,7 +22926,7 @@
           "method": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 8500.0,
+          "value": 8500,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://sdu.edu.kz/en/information-system-example/",
@@ -22945,7 +22945,7 @@
           "method": "Direct active enrollee count published on the SDU students page."
         },
         "acceptance_rate_percent": {
-          "value": 35.0,
+          "value": 35,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -23025,7 +23025,38 @@
                 },
                 "funding_type": "grant",
                 "track_badge": "Grant",
-                "description": "Same SDU undergraduate route, with competition for Kazakhstan state grant funding based on UNT results."
+                "description": "Same SDU undergraduate route, with competition for Kazakhstan state grant funding based on UNT results.",
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "sdu_unt_paid-grant-sdu-internal-grant",
+                "label": "Profile - SDU Internal Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "SDU Internal Grant",
+                "funding_source": "University",
+                "funding_description": "Гранты олимпиады SPT и внутренние образовательные гранты (до 100%)",
+                "description": "Гранты олимпиады SPT и внутренние образовательные гранты (до 100%)",
+                "requirements": {
+                  "UNT": 105,
+                  "GPA": 80
+                }
+              },
+              {
+                "id": "sdu_unt_paid-grant-kazenergy-grant",
+                "label": "Profile - KAZENERGY Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "KAZENERGY Grant",
+                "funding_source": "Corporate",
+                "funding_description": "Образовательные гранты Ассоциации «KAZENERGY»",
+                "description": "Образовательные гранты Ассоциации «KAZENERGY»",
+                "requirements": {
+                  "UNT": 105,
+                  "GPA": 80
+                }
               }
             ]
           }
@@ -23282,7 +23313,7 @@
           }
         ]
       },
-      "acceptance_rate_percent": 30.0,
+      "acceptance_rate_percent": 30,
       "acceptance_rate_percent_meta": {
         "source": "University Admissions reports & aggregated public statistical profiles",
         "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -23365,7 +23396,7 @@
     ],
     "description_source": "https://astanait.edu.kz/en/about-aitu/",
     "factors": {
-      "practice_vs_science": 0.0,
+      "practice_vs_science": 0,
       "social_vs_hardcore": 0.275,
       "budget_vs_prestige": 0.029,
       "city_vs_outside_city": 0.9825,
@@ -23400,11 +23431,11 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 7000.0,
+        "total_cost_year_usd": 7000,
         "derived_signals": {
-          "research_signal_raw": 0.0,
+          "research_signal_raw": 0,
           "hardcore_signal_0_1": 0.275,
-          "research_norm_0_1": 0.0,
+          "research_norm_0_1": 0,
           "official_rank_norm_0_1": null,
           "tuition_norm_0_1": 0.048347,
           "city_population_norm_0_1": 0.017512
@@ -23431,7 +23462,7 @@
           "method": "No official QS World University Rankings 2026 position is published for Astana IT University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 7000.0,
+          "value": 7000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://astanait.edu.kz/en/bachelor/",
@@ -23458,7 +23489,7 @@
           }
         },
         "acceptance_rate_percent": {
-          "value": 30.0,
+          "value": 30,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -23539,7 +23570,38 @@
                 },
                 "funding_type": "grant",
                 "track_badge": "Grant",
-                "description": "Same AITU undergraduate route, with competition for state or rector grant funding for stronger applicants."
+                "description": "Same AITU undergraduate route, with competition for state or rector grant funding for stronger applicants.",
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "aitu_paid-grant-aitu-excellence-discount",
+                "label": "Profile - AITU Excellence Discount (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "AITU Excellence Discount",
+                "funding_source": "University",
+                "funding_description": "Внутренние скидки AITU (до 30%) за Алтын Белгі, отличную успеваемость и олимпиады",
+                "description": "Внутренние скидки AITU (до 30%) за Алтын Белгі, отличную успеваемость и олимпиады",
+                "requirements": {
+                  "UNT": 125,
+                  "GPA": 70
+                }
+              },
+              {
+                "id": "aitu_paid-grant-kazakhstan-khalkyna-fund",
+                "label": "Profile - Kazakhstan Khalkyna Fund (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Kazakhstan Khalkyna Fund",
+                "funding_source": "Foundation",
+                "funding_description": "Гранты ОФ «Қазақстан халқына»",
+                "description": "Гранты ОФ «Қазақстан халқына»",
+                "requirements": {
+                  "UNT": 125,
+                  "GPA": 70
+                }
               }
             ]
           }
@@ -23658,7 +23720,7 @@
         "medicine",
         "social_sciences"
       ],
-      "acceptance_rate_percent": 25.0,
+      "acceptance_rate_percent": 25,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -23775,9 +23837,9 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 4200.0,
+      "total_cost_year_usd": 4200,
       "costs_breakdown_year_usd": {
-        "Tuition": 4200.0
+        "Tuition": 4200
       },
       "financial_aid": {
         "merit_based": true,
@@ -23861,7 +23923,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 4200.0,
+        "total_cost_year_usd": 4200,
         "derived_signals": {
           "research_signal_raw": 9.04354244068313,
           "hardcore_signal_0_1": 0.541248,
@@ -23892,7 +23954,7 @@
           "method": "No official QS World University Rankings 2026 position is published for Astana Medical University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 4200.0,
+          "value": 4200,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
@@ -23901,7 +23963,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 25.0,
+          "value": 25,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -23966,7 +24028,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант МЗ РК / МНВО РК"
+              },
+              {
+                "id": "amu_healthcare_unt-grant-akimat-regional-grant",
+                "label": "Profile - Akimat Regional Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Akimat Regional Grant",
+                "funding_source": "State",
+                "funding_description": "Целевые гранты местных исполнительных органов (Акиматов)",
+                "description": "Целевые гранты местных исполнительных органов (Акиматов)"
+              },
+              {
+                "id": "amu_healthcare_unt-grant-amu-internal-discount",
+                "label": "Profile - AMU Internal Discount (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "AMU Internal Discount",
+                "funding_source": "University",
+                "funding_description": "Внутренние скидки НАО «МУА» за отличную успеваемость и социальные льготы",
+                "description": "Внутренние скидки НАО «МУА» за отличную успеваемость и социальные льготы"
               }
             ],
             "requirements": {
@@ -24124,7 +24209,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 35.0,
+      "acceptance_rate_percent": 35,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -24331,7 +24416,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 2800.0,
+        "total_cost_year_usd": 2800,
         "derived_signals": {
           "research_signal_raw": 7.8323575195308415,
           "hardcore_signal_0_1": 0.50559,
@@ -24363,7 +24448,7 @@
           "method": "No official QS World University Rankings 2026 position is published for International Information Technology University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 2800.0,
+          "value": 2800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://admission.iitu.edu.kz/bachelor_degree_eng",
@@ -24372,7 +24457,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 35.0,
+          "value": 35,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -24455,7 +24540,36 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "iitu_unt-grant-iitu-merit-grant",
+                "label": "Profile - IITU Merit Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "IITU Merit Grant",
+                "funding_source": "University",
+                "funding_description": "Внутренний грант МУИТ — скидка 100% за особые достижения",
+                "description": "Внутренний грант МУИТ — скидка 100% за особые достижения",
+                "requirements": {
+                  "UNT": 80
+                }
+              },
+              {
+                "id": "iitu_unt-grant-iitu-competition-grant",
+                "label": "Profile - IITU Competition Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "IITU Competition Grant",
+                "funding_source": "University",
+                "funding_description": "Гранты и скидки победителям олимпиад АО «МУИТ»",
+                "description": "Гранты и скидки победителям олимпиад АО «МУИТ»",
+                "requirements": {
+                  "UNT": 80
+                }
               }
             ]
           }
@@ -24610,7 +24724,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 45.0,
+      "acceptance_rate_percent": 45,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -24814,10 +24928,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 331.0,
+          "position": 331,
           "status": "official"
         },
-        "total_cost_year_usd": 3200.0,
+        "total_cost_year_usd": 3200,
         "derived_signals": {
           "research_signal_raw": 9.230891426288665,
           "hardcore_signal_0_1": 0.53229,
@@ -24849,7 +24963,7 @@
           "method": "Satbayev University is listed at #331 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 3200.0,
+          "value": 3200,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://satbayev.university/en/undergraduate",
@@ -24858,7 +24972,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 45.0,
+          "value": 45,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -24923,7 +25037,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "satbayev_unt-grant-satbayev-university-grant",
+                "label": "Profile - Satbayev University Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Satbayev University Grant",
+                "funding_source": "University",
+                "funding_description": "Внутренний грант с 100% покрытием для Алтын белгі, победителей олимпиад и уязвимых слоев",
+                "description": "Внутренний грант с 100% покрытием для Алтын белгі, победителей олимпиад и уязвимых слоев"
+              },
+              {
+                "id": "satbayev_unt-grant-aidar-assaubayev-scholarship",
+                "label": "Profile - Aidar Assaubayev Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Aidar Assaubayev Scholarship",
+                "funding_source": "Corporate",
+                "funding_description": "Именная стипендия для горно-металлургических специальностей",
+                "description": "Именная стипендия для горно-металлургических специальностей"
               }
             ],
             "requirements": {
@@ -25081,7 +25218,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 35.0,
+      "acceptance_rate_percent": 35,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -25288,7 +25425,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 5000.0,
+        "total_cost_year_usd": 5000,
         "derived_signals": {
           "research_signal_raw": 8.411391209594399,
           "hardcore_signal_0_1": 0.522637,
@@ -25320,7 +25457,7 @@
           "method": "Kazakhstan-British Technical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
         },
         "tuition_total_cost_year_usd": {
-          "value": 5000.0,
+          "value": 5000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
@@ -25329,7 +25466,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 35.0,
+          "value": 35,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -25412,7 +25549,36 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "kbtu_unt-grant-kbtu-internal-grant",
+                "label": "Profile - KBTU Internal Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "KBTU Internal Grant",
+                "funding_source": "University",
+                "funding_description": "Внутренний образовательный грант КБТУ за призовые места в олимпиадах",
+                "description": "Внутренний образовательный грант КБТУ за призовые места в олимпиадах",
+                "requirements": {
+                  "UNT": 110
+                }
+              },
+              {
+                "id": "kbtu_unt-grant-kbtu-alumni-scholarship",
+                "label": "Profile - KBTU Alumni Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "KBTU Alumni Scholarship",
+                "funding_source": "University",
+                "funding_description": "Именная стипендия Ассоциации выпускников «KBTU Alumni»",
+                "description": "Именная стипендия Ассоциации выпускников «KBTU Alumni»",
+                "requirements": {
+                  "UNT": 110
+                }
               }
             ]
           }
@@ -25567,7 +25733,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 30.0,
+      "acceptance_rate_percent": 30,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -25771,10 +25937,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 166.0,
+          "position": 166,
           "status": "official"
         },
-        "total_cost_year_usd": 3100.0,
+        "total_cost_year_usd": 3100,
         "derived_signals": {
           "research_signal_raw": 10.357721309401963,
           "hardcore_signal_0_1": 0.710201,
@@ -25806,7 +25972,7 @@
           "method": "Al-Farabi Kazakh National University is listed at #166 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 3100.0,
+          "value": 3100,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.kaznu.kz/en/3360",
@@ -25815,7 +25981,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 30.0,
+          "value": 30,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -25880,7 +26046,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "kaznu_unt-grant-rector-educational-grant",
+                "label": "Profile - Rector Educational Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Rector Educational Grant",
+                "funding_source": "University",
+                "funding_description": "Грант ректора КазНУ для абитуриентов с высокими баллами и обладателей Алтын Белгі",
+                "description": "Грант ректора КазНУ для абитуриентов с высокими баллами и обладателей Алтын Белгі"
+              },
+              {
+                "id": "kaznu_unt-grant-al-farabi-olympiad-grant",
+                "label": "Profile - Al-Farabi Olympiad Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Al-Farabi Olympiad Grant",
+                "funding_source": "University",
+                "funding_description": "Грант победителям Республиканской олимпиады «Аль-Фараби»",
+                "description": "Грант победителям Республиканской олимпиады «Аль-Фараби»"
               }
             ],
             "requirements": {
@@ -26038,7 +26227,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 35.0,
+      "acceptance_rate_percent": 35,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -26147,9 +26336,9 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 2800.0,
+      "total_cost_year_usd": 2800,
       "costs_breakdown_year_usd": {
-        "Tuition": 2800.0
+        "Tuition": 2800
       },
       "financial_aid": {
         "merit_based": true,
@@ -26234,10 +26423,10 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 317.0,
+          "position": 317,
           "status": "official"
         },
-        "total_cost_year_usd": 2800.0,
+        "total_cost_year_usd": 2800,
         "derived_signals": {
           "research_signal_raw": 9.916241460799103,
           "hardcore_signal_0_1": 0.564747,
@@ -26269,7 +26458,7 @@
           "method": "L.N. Gumilyov Eurasian National University is listed at #317 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 2800.0,
+          "value": 2800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://enu.kz/en/page/applicants/bachelor",
@@ -26278,7 +26467,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 35.0,
+          "value": 35,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -26343,7 +26532,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "enu_unt-grant-military-conscript-grant",
+                "label": "Profile - Military Conscript Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Military Conscript Grant",
+                "funding_source": "University",
+                "funding_description": "Внутренние гранты для отслуживших срочную воинскую службу",
+                "description": "Внутренние гранты для отслуживших срочную воинскую службу"
+              },
+              {
+                "id": "enu_unt-grant-kultegin-scholarship",
+                "label": "Profile - Kultegin Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Kultegin Scholarship",
+                "funding_source": "University",
+                "funding_description": "Стипендия университета «Күлтегін» за достижения",
+                "description": "Стипендия университета «Күлтегін» за достижения"
               }
             ],
             "requirements": {
@@ -26501,7 +26713,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 50.0,
+      "acceptance_rate_percent": 50,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -26618,9 +26830,9 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 3100.0,
+      "total_cost_year_usd": 3100,
       "costs_breakdown_year_usd": {
-        "Tuition": 3100.0
+        "Tuition": 3100
       },
       "financial_aid": {
         "merit_based": true,
@@ -26708,7 +26920,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 3100.0,
+        "total_cost_year_usd": 3100,
         "derived_signals": {
           "research_signal_raw": 7.534474753201718,
           "hardcore_signal_0_1": 0.49682,
@@ -26740,7 +26952,7 @@
           "method": "Narxoz University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
         },
         "tuition_total_cost_year_usd": {
-          "value": 3100.0,
+          "value": 3100,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://en.narxoz.kz/",
@@ -26749,7 +26961,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 50.0,
+          "value": 50,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -26814,7 +27026,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК"
+              },
+              {
+                "id": "narxoz_unt-grant-narxoz-challenge-grant",
+                "label": "Profile - Narxoz Challenge Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Narxoz Challenge Grant",
+                "funding_source": "University",
+                "funding_description": "Образовательные гранты конкурса «Narxoz Challenge» (до 100%)",
+                "description": "Образовательные гранты конкурса «Narxoz Challenge» (до 100%)"
+              },
+              {
+                "id": "narxoz_unt-grant-verny-capital-grant",
+                "label": "Profile - Verny Capital Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Verny Capital Grant",
+                "funding_source": "Corporate",
+                "funding_description": "Гранты ГК «Верный Капитал» для программ двойного диплома",
+                "description": "Гранты ГК «Верный Капитал» для программ двойного диплома"
               }
             ],
             "requirements": {
@@ -26975,7 +27210,7 @@
         "economics",
         "engineering"
       ],
-      "acceptance_rate_percent": 40.0,
+      "acceptance_rate_percent": 40,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -27182,7 +27417,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 8700.0,
+        "total_cost_year_usd": 8700,
         "derived_signals": {
           "research_signal_raw": 8.376860889012129,
           "hardcore_signal_0_1": 0.52162,
@@ -27214,7 +27449,7 @@
           "method": "No official QS World University Rankings 2026 position is published for KIMEP University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 8700.0,
+          "value": 8700,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.kimep.kz/bang-college-of-business/en/bachelor-of-management/",
@@ -27223,7 +27458,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 40.0,
+          "value": 40,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -27302,7 +27537,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "Intellectual Olympiad Scholarship",
+                "funding_source": "University",
+                "funding_description": "100% and 50% tuition coverage for olympiad winners"
+              },
+              {
+                "id": "kimep_undergraduate-grant-qurmet-scholarship",
+                "label": "Profile - Qurmet Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Qurmet Scholarship",
+                "funding_source": "University",
+                "funding_description": "100% tuition discount for outstanding applicants",
+                "description": "100% tuition discount for outstanding applicants"
+              },
+              {
+                "id": "kimep_undergraduate-grant-altyn-belgi-scholarship",
+                "label": "Profile - Altyn Belgi Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Altyn Belgi Scholarship",
+                "funding_source": "University",
+                "funding_description": "50% tuition discount for Altyn Belgi holders",
+                "description": "50% tuition discount for Altyn Belgi holders"
               }
             ],
             "requirements": {
@@ -27424,7 +27682,7 @@
         "medicine",
         "social_sciences"
       ],
-      "acceptance_rate_percent": 30.0,
+      "acceptance_rate_percent": 30,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -27541,9 +27799,9 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 4500.0,
+      "total_cost_year_usd": 4500,
       "costs_breakdown_year_usd": {
-        "Tuition": 4500.0
+        "Tuition": 4500
       },
       "financial_aid": {
         "merit_based": true,
@@ -27631,7 +27889,7 @@
           "position": null,
           "status": "not_published"
         },
-        "total_cost_year_usd": 4500.0,
+        "total_cost_year_usd": 4500,
         "derived_signals": {
           "research_signal_raw": 8.883990144074462,
           "hardcore_signal_0_1": 0.53655,
@@ -27663,7 +27921,7 @@
           "method": "Asfendiyarov Kazakh National Medical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
         },
         "tuition_total_cost_year_usd": {
-          "value": 4500.0,
+          "value": 4500,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/",
@@ -27672,7 +27930,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 30.0,
+          "value": 30,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -27737,7 +27995,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант РК (МЗ РК и МНВО РК)"
+              },
+              {
+                "id": "kaznmu_healthcare_unt-grant-akimat-regional-grant",
+                "label": "Profile - Akimat Regional Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Akimat Regional Grant",
+                "funding_source": "State",
+                "funding_description": "Гранты акимата г. Алматы и областных акиматов",
+                "description": "Гранты акимата г. Алматы и областных акиматов"
+              },
+              {
+                "id": "kaznmu_healthcare_unt-grant-kazakhstan-khalkyna-fund",
+                "label": "Profile - Kazakhstan Khalkyna Fund (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Kazakhstan Khalkyna Fund",
+                "funding_source": "Foundation",
+                "funding_description": "Грант Общественного фонда «Қазақстан халқына»",
+                "description": "Грант Общественного фонда «Қазақстан халқына»"
               }
             ],
             "requirements": {
@@ -27860,7 +28141,7 @@
         "mathematics",
         "psychology"
       ],
-      "acceptance_rate_percent": 45.0,
+      "acceptance_rate_percent": 45,
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -28056,16 +28337,16 @@
           "population_wikidata_fallback": null
         },
         "rank": {
-          "position": 628.0,
+          "position": 628,
           "status": "official"
         },
-        "total_cost_year_usd": 2400.0,
+        "total_cost_year_usd": 2400,
         "derived_signals": {
           "research_signal_raw": 8.517252626412297,
           "hardcore_signal_0_1": 0.250753,
           "research_norm_0_1": 0.557229,
-          "official_rank_norm_0_1": 1.0,
-          "tuition_norm_0_1": 0.0,
+          "official_rank_norm_0_1": 1,
+          "tuition_norm_0_1": 0,
           "city_population_norm_0_1": 0.103616
         }
       }
@@ -28091,7 +28372,7 @@
           "method": "Abai Kazakh National Pedagogical University is listed at #628 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 2400.0,
+          "value": 2400,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://abaiuniversity.edu.kz/en/",
@@ -28100,7 +28381,7 @@
           "status": "curated"
         },
         "acceptance_rate_percent": {
-          "value": 45.0,
+          "value": 45,
           "unit": "percent",
           "source": "University Admissions reports & aggregated public statistical profiles",
           "source_url": "https://www.topuniversities.com/world-university-rankings",
@@ -28165,7 +28446,30 @@
                 "description": "State-grant competition route based on official UNT eligibility thresholds; final grant awards are competitive and not a fixed university-wide score.",
                 "extra_requirements": [
                   "State grant award is competitive; the shown UNT value is an official eligibility threshold, not a guaranteed grant cutoff."
-                ]
+                ],
+                "funding_program": "State Educational Grant",
+                "funding_source": "State",
+                "funding_description": "Государственный образовательный грант (вкл. целевые педагогические квоты)"
+              },
+              {
+                "id": "abai_kaznpu_unt-grant-rector-grant",
+                "label": "Profile - Rector Grant (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Rector Grant",
+                "funding_source": "University",
+                "funding_description": "Грант ректора КазНПУ имени Абая",
+                "description": "Грант ректора КазНПУ имени Абая"
+              },
+              {
+                "id": "abai_kaznpu_unt-grant-abai-scholarship",
+                "label": "Profile - Abai Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Abai Scholarship",
+                "funding_source": "University",
+                "funding_description": "Стипендия имени Абая для лучших студентов",
+                "description": "Стипендия имени Абая для лучших студентов"
               }
             ],
             "requirements": {

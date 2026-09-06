@@ -470,14 +470,7 @@ def audit_dataset(
             total_cost = finance.get("total_cost_year_usd")
             if not isinstance(total_cost, (int, float)) or float(total_cost) < 0:
                 errors.append(f"{uid}: finance.total_cost_year_usd must be non-negative number")
-            aid = finance.get("financial_aid")
-            if not isinstance(aid, dict):
-                errors.append(f"{uid}: finance.financial_aid must be object")
-            else:
-                aid_m = _bool_or_default(aid.get("merit_based"))
-                aid_n = _bool_or_default(aid.get("need_based"))
-                if aid_m != aid.get("merit_based") or aid_n != aid.get("need_based"):
-                    warnings.append(f"{uid}: finance.financial_aid values are not strict booleans")
+
 
         categories = row.get("admission_categories")
         if not isinstance(categories, list) or not categories:

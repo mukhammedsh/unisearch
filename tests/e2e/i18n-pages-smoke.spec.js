@@ -86,5 +86,8 @@ test("university detail page updates key UI texts for eng/rus", async ({ page })
     await expect(page.locator("[data-i18n='university.back_to_list']")).toContainText(locale.backToList);
     await expect(page.locator(".d-tab-btn[data-tab='tab-programs'] [data-i18n='university.tab.programs']")).toContainText(locale.programsTab);
     await expect(page.locator("#detailLocation img.flag-icon-inline")).toHaveCount(1);
+    await expect(page.locator("#detailScholarshipInfo")).toContainText(
+      locale.code === "rus" ? "Внутренний грант SDU" : "SDU Internal Grant",
+    );
   }
 });

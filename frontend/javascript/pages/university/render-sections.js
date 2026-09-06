@@ -14,6 +14,7 @@ import {
   admissionChoiceKey,
   applyPercentWidths,
   getAdmissionChoicesFromCategories,
+  getGrantsFromCategories,
   getTrackFundingType,
   renderExamGroup,
   renderTrackChanceChip,
@@ -645,20 +646,20 @@ export function renderFinanceSection({
 }) {
   if (university.finance) {
     if (scholarshipContainer) {
-      const aid = university.finance.financial_aid || {};
-      const hasMerit = typeof aid.merit_based === "boolean";
-      const hasNeed = typeof aid.need_based === "boolean";
-      const meritHtml = hasMerit
-        ? (aid.merit_based
-          ? renderScholarshipLine("check-circle", "scholarship-line--positive", translateWord("merit_based_scholarships_available", "Merit-based scholarships available"))
-          : renderScholarshipLine("x-circle", "scholarship-line--muted", translateWord("no_merit_based_scholarships", "No merit-based scholarships")))
-        : renderScholarshipLine("question-mark-circle", "scholarship-line--muted", unknownFieldText("placeholder.field.merit_scholarships", "Merit-based scholarships"));
-      const needHtml = hasNeed
-        ? (aid.need_based
-          ? renderScholarshipLine("check-circle", "scholarship-line--positive", translateWord("need_based_financial_aid", "Need-based financial aid"))
-          : renderScholarshipLine("x-circle", "scholarship-line--muted", translateWord("no_need_based_aid", "No need-based aid")))
-        : renderScholarshipLine("question-mark-circle", "scholarship-line--muted", unknownFieldText("placeholder.field.need_based_aid", "Need-based aid"));
-      scholarshipContainer.innerHTML = meritHtml + needHtml;
+      const grants = getGrantsFromCategories(university.admission_categories);
+      if (grants.length > 0) {
+        let grantsHtml = "";
+        grants.forEach((grant) => {
+          grantsHtml += renderScholarshipLine(
+            "check-circle",
+            "scholarship-line--positive",
+            trTrackDescription(university.id, grant.id, grant.name),
+          );
+        });
+        scholarshipContainer.innerHTML = grantsHtml;
+      } else {
+        scholarshipContainer.innerHTML = renderScholarshipLine("x-circle", "scholarship-line--muted", translateWord("no_grants_available", "No grants available"));
+      }
     }
 
     if (priceEl) {

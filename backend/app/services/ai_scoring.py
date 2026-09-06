@@ -1397,39 +1397,8 @@ def sort_universities_ai(
         for idx, choice in enumerate(choices):
             choice_key = _admission_choice_key(choice, idx)
             fit = _track_fit(choice, ctx["userScores"], ctx["userLanguages"], lang_cfg, mode="sort")
-            scholarships = choice.get("scholarships", [])
-            scholarships = scholarships if isinstance(scholarships, list) else []
-
-            eligible_scholar = None
-            best_scholar_potential = 0.0
-            for sch in scholarships:
-                if not isinstance(sch, dict):
-                    continue
-                req = sch.get("requirements", {})
-                req = req if isinstance(req, dict) else {}
-                if not req:
-                    best_scholar_potential = max(best_scholar_potential, 0.60)
-                    if eligible_scholar is None:
-                        eligible_scholar = sch
-                    continue
-                s_weighted = 0.0
-                s_weights = 0.0
-                pass_all = True
-                for exam_id, min_val in req.items():
-                    user = _get_user_score(ctx["userScores"], exam_id, ctx["userLanguages"])
-                    rr = _score_requirement(user, min_val, None, higher_is_better=_is_higher_better(exam_id), mode="sort")
-                    w = _exam_weight(exam_id, mode="sort")
-                    s_weighted += float(rr.get("score", 0.0)) * w
-                    s_weights += w
-                    if not bool(rr.get("pass")):
-                        pass_all = False
-                sch_fit = (s_weighted / s_weights) if s_weights > 0 else 0.60
-                best_scholar_potential = max(best_scholar_potential, sch_fit)
-                if pass_all and (eligible_scholar is None or sch_fit >= best_scholar_potential):
-                    eligible_scholar = sch
-
-            aid_any = bool(scholarships) or bool((((row.get("finance") or {}).get("financial_aid") or {}).get("merit_based"))) or bool((((row.get("finance") or {}).get("financial_aid") or {}).get("need_based")))
-            aid_eligible = eligible_scholar is not None
+            aid_any = choice.get("funding_type") == "grant"
+            aid_eligible = aid_any  # If the choice is a grant track, it's eligible (requirements are already merged into choice["requirements"])
 
             acceptance = _acceptance_score(row, mode="sort")
             admit = _clamp01(float(fit.get("fit", 0.0)) * (0.55 + 0.45 * acceptance))
@@ -1450,8 +1419,16 @@ def sort_universities_ai(
             )
             ml_score = row_ml_score
 
-            amount = _to_num((eligible_scholar or {}).get("amount")) if isinstance(eligible_scholar, dict) else None
-            final_price = max(0.0, cost - amount) if (aid_eligible and amount is not None) else cost
+            amount = None
+            if aid_eligible:
+                aid_pot_score = 0.60
+                aid_fit_score = 0.60
+
+            sc = float(fit.get("fit", 0.0))
+            if aid_eligible:
+                sc = _clamp01((sc * 0.8) + (aid_fit_score * 0.2))
+
+            final_price = cost
             match_data = {
                 "choiceKey": choice_key,
                 "choiceId": str(choice.get("id") or "choice"),
@@ -1462,14 +1439,14 @@ def sort_universities_ai(
                 "finalPrice": final_price,
                 "aidAny": aid_any,
                 "aidEligible": aid_eligible,
-                "grantName": str((eligible_scholar or {}).get("name") or "") if isinstance(eligible_scholar, dict) else "",
+                "grantName": str(choice.get("funding_program") or "") if aid_any else "",
                 "admitChance": admit,
                 "meetMinRequirements": bool(fit.get("hardPassAll")) and not bool(fit.get("conditional")),
                 "missingRequiredEvidence": bool(fit.get("missingEvidence")),
                 "conditional": bool(fit.get("conditional")),
                 "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
                 "costYearUSD": cost,
-                "grantPotential": best_scholar_potential,
+                "grantPotential": 0.60 if aid_eligible else 0.0,
                 "grantEligible": aid_eligible,
                 "hardScore": hard_score,
                 "distanceScore": _clamp01(1.0 - preference_mismatch),
@@ -1796,7 +1773,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         language = float(fit.get("langScore", 0.0))
         selectivity = _acceptance_score(university, mode="chance")
         choice_has_required_evidence = _track_has_required_evidence(choice)
-        aid_any = bool((((university.get("finance") or {}).get("financial_aid") or {}).get("merit_based"))) or bool((((university.get("finance") or {}).get("financial_aid") or {}).get("need_based"))) or bool(choice.get("scholarships"))
+        aid_any = choice.get("funding_type") == "grant"
+
         affordability = _affordability_score(
             university,
             choice,
@@ -1806,7 +1784,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
             mode="chance",
             preferred_mode=preferred_mode,
         )
-        scholarship_boost = 0.08 if bool(choice.get("scholarships")) else 0.0
+
 
         feasibility_gate = _clamp(1.0 - 0.78 * float(fit.get("failRatio", 0.0)), 0.18, 1.0)
         score_profile = _track_score_profile(choice)
@@ -1821,6 +1799,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         track_badges = _track_verified_badges(choice)
 
         can_use_zero_fallback = (not has_evidence) and (not isinstance(score_profile, dict)) and choice_has_required_evidence
+        scholarship_boost = 0.0
         if not has_evidence and not can_use_zero_fallback:
             no_data_reason = "missing_evidence"
         else:
@@ -1840,7 +1819,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                         no_data_reason = "no_score_profile"
                     else:
                         context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
-                        chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + scholarship_boost)
+                        effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
+                        chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + effective_boost)
                         chance_pct = int(round(chance01 * 100.0))
                         range_low = chance_meta.get("rangeLowPercent")
                         range_high = chance_meta.get("rangeHighPercent")
@@ -1859,7 +1839,8 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                 chance01_raw = _to_num(chance_meta.get("chance01"))
                 if chance01_raw is not None:
                     context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
-                    chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + scholarship_boost)
+                    effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
+                    chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + effective_boost)
                     chance_pct = int(round(chance01 * 100.0))
                     range_low = chance_meta.get("rangeLowPercent")
                     range_high = chance_meta.get("rangeHighPercent")

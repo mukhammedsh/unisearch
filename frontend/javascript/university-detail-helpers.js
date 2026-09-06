@@ -360,6 +360,27 @@ function admissionFundingOptions(category, profile) {
   return categoryOptions;
 }
 
+export function getGrantsFromCategories(categories) {
+  const choices = getAdmissionChoicesFromCategories(categories);
+  const grants = [];
+  const seenIds = new Set();
+  choices.forEach(choice => {
+    if (choice.funding_type === "grant" && choice.funding_program) {
+      if (!seenIds.has(choice.funding_program)) {
+        seenIds.add(choice.funding_program);
+        grants.push({
+          id: choice.id,
+          name: choice.funding_program,
+          source: choice.funding_source,
+          description: choice.funding_description || choice.description,
+          track_badge: choice.track_badge || "Grant"
+        });
+      }
+    }
+  });
+  return grants;
+}
+
 export function getAdmissionChoicesFromCategories(categories) {
   if (!Array.isArray(categories)) return [];
   const choices = [];

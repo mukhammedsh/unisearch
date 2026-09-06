@@ -342,6 +342,7 @@ universities.why.your_vibe: Этот университет особенно х�
 universities.why.likely_grant: Если для вас важен грант, у этого университета сильный прогноз именно по грантовому варианту.
 universities.why.paid_admission: Если вы готовы рассматривать платное обучение, у этого университета высокий общий шанс поступления.
 universities.badge.aid_available: Доступна финансовая помощь
+no_grants_available: Нет доступных грантов
 universities.badge.aid_likely: Вероятен грант или финансовая помощь (без штрафа по бюджету)
 universities.badge.below_requirements: Ниже требований
 universities.badge.over_budget: Выше бюджета
@@ -396,7 +397,7 @@ universities.compare.row.metric: Метрика
 universities.compare.row.location: Локация
 universities.compare.row.aid: Финансовая помощь
 universities.compare.aid_both: Стипендии за достижения + помощь по финансовой нуждаемости
-universities.compare.aid_merit: Стипендии за достижения
+universities.compare.aid_merit: Гранты и стипендии
 universities.compare.aid_need: Помощь по финансовой нуждаемости
 universities.compare.track_count: {count} категорий / {options} вариантов
 universities.compare.native_ok: родной язык принимается
