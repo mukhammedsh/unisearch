@@ -20,7 +20,8 @@ Use existing CSS variables instead of new hard-coded palettes:
 - Accent: `--accent` (`#4f46e5`) and `--accent-strong`.
 - Backgrounds: `--bg`, `--bg-soft`, `--surface`, `--surface-solid`, `--surface-soft`.
 - Text: `--text`, `--text-muted`.
-- Borders: `--line`, `--line-strong`.
+- Borders: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`.
+- Radius: `--radius-xs` (4px), `--radius-sm` (8px), `--radius-md` (10px), `--radius-base` (12px), `--radius-lg` (16px), `--radius-xl` (20px), `--radius-full` (999px for progress/switches), `--radius-circle` (50%).
 - Motion: `--motion-fast`, `--motion-medium`, `--motion-ease-standard`, `--motion-ease-enter`, `--motion-ease-exit`.
 
 When a page has older local tokens such as `--card`, `--muted`, or older purple accent values, map them back toward the shared tokens rather than expanding the local palette.

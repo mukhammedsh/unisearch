@@ -306,7 +306,7 @@ body[data-page="profile"] {
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
-  border-radius: 8px 8px 0 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   white-space: nowrap;
   transition: color 0.15s ease;
 }
@@ -323,7 +323,7 @@ body[data-page="profile"] {
 .profile-section-tab:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: -2px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 /* --------------------------------------------------------------------------
@@ -707,13 +707,13 @@ textarea.profile-input,
 }
 
 .profile-delete--danger:hover {
-  background: #ef4444;
+  background: var(--line-danger);
   color: #fff;
-  border-color: #ef4444;
+  border-color: var(--line-danger);
 }
 
 .profile-delete--danger:focus-visible {
-  outline: 2px solid #ef4444;
+  outline: 2px solid var(--line-danger);
   outline-offset: 2px;
 }
 

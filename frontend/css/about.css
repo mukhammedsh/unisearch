@@ -10,10 +10,6 @@
 }
 
 body[data-page="about"] {
-  background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
-}
-
-:root[data-theme="dark"] body[data-page="about"] {
   background: var(--bg);
 }
 

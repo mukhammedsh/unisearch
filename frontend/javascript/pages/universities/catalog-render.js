@@ -197,8 +197,12 @@ export function renderUniversityCard(u, options = {}) {
     ? `<button class="uni-action-btn uni-action-btn--compare${isCompared ? " is-active" : ""}" type="button" data-card-action="compare" aria-pressed="${isCompared ? "true" : "false"}" title="${escapeHtmlAttr(compareLabel)}" aria-label="${escapeHtmlAttr(compareLabel)}">${renderInlineIcon(isCompared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon")}</button>`
     : "";
 
+  const hasFitContent = Boolean(badgesHTML || whyText);
+  const fitClass = hasFitContent ? " uni-card--has-fit" : " uni-card--compact";
+  const separatorHtml = hasFitContent ? `<div class="uni-card-separator" aria-hidden="true"></div>` : "";
+
   return `
-    <article class="uni-card${isCompared ? " uni-card--compare-selected" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
+    <article class="uni-card${fitClass}${isCompared ? " uni-card--compare-selected" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
       <div class="uni-media">
         <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
         <div class="uni-card-actions">
@@ -212,7 +216,7 @@ export function renderUniversityCard(u, options = {}) {
         <h3 class="uni-title" title="${safeName}">${safeName}</h3>
         ${locHtml}
         ${metricsHtml}
-        <div class="uni-card-separator" aria-hidden="true"></div>
+        ${separatorHtml}
         ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
         ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
         <div class="uni-footer">

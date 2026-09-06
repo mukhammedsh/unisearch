@@ -219,25 +219,18 @@ test("compare results count localized bachelor programs in Russian", async ({ pa
   await expect(table).toContainText("Официальный источник");
 });
 
-test("compare rework: diff toggle, best cell highlights, track selector in results, and detail page compare button", async ({ page }) => {
+test("compare rework: diff toggle, best cell highlights, and track selector in results", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto(`/university.html?id=${MIT_ID}`);
   await page.evaluate(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
-    localStorage.removeItem("unisearch_compare_university_ids_v1");
+    localStorage.setItem("unisearch_compare_university_ids_v1", JSON.stringify(["mit-usa-cambridge"]));
     localStorage.removeItem("unisearch_compare_admission_choices_v1");
   });
   await page.reload();
 
-  // 1. Check detail page compare button
-  const detailCompareBtn = page.locator("#detailCompareBtn");
-  await expect(detailCompareBtn).toBeVisible();
-  await expect(detailCompareBtn).toHaveAttribute("aria-pressed", "false");
-  await detailCompareBtn.click();
-  await expect(detailCompareBtn).toHaveAttribute("aria-pressed", "true");
-  await expect.poll(async () => page.evaluate(() =>
-    JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").includes("mit-usa-cambridge")
-  )).toBe(true);
+  // 1. Ensure detail page does not have compare button
+  await expect(page.locator("#detailCompareBtn")).toHaveCount(0);
 
   // 2. Open comparison in catalog
   await page.goto("/universities.html?tab=compare");
