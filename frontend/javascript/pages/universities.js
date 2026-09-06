@@ -2515,12 +2515,22 @@ export function initUniversitiesPage() {
                 ${universities.map((u, index) => {
                     const id = String(u?.id || "");
                     const selected = compareChoiceKey(compareAdmissionChoices.get(id));
+                    const logoSrc = uniLogoSrc(id);
+                    const logoSrcFull = uniLogoSrc(id, { forceFull: true });
+                    const uniName = compareUniversityName(u);
+                    const location = compareLocationText(u);
                     return `
                         <article class="compare-config-column" data-uni-id="${escapeHtmlAttr(id)}">
                             <div class="compare-config-column__head">
-                                <span>${escapeHtml(compareSlotLabel(index))}</span>
-                                <h2>${escapeHtml(compareUniversityName(u))}</h2>
-                                <p>${escapeHtml(selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
+                                <div class="compare-config-column__identity">
+                                    <span class="compare-config-column__slot">${escapeHtml(compareSlotLabel(index))}</span>
+                                    <div class="compare-config-column__logo">
+                                        <img src="${logoSrc}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(uniName))}">
+                                    </div>
+                                </div>
+                                <h2>${escapeHtml(uniName)}</h2>
+                                ${location ? `<p class="compare-config-column__location">${escapeHtml(location)}</p>` : ""}
+                                <p class="compare-config-column__status">${escapeHtml(selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
                             </div>
                             <div class="compare-config-chance">
                                 ${renderUniChanceSummary(compareChancesByUniId.get(id))}
