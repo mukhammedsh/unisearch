@@ -6,10 +6,6 @@
 }
 
 body[data-page="ranking"] {
-    background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
-}
-
-:root[data-theme="dark"] body[data-page="ranking"] {
     background: var(--bg);
 }
 
@@ -61,7 +57,7 @@ body[data-page="ranking"] {
     align-items: center;
     gap: 10px;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: var(--radius-base);
     background: var(--surface-solid);
     color: var(--text-muted);
     min-height: var(--rank-control-height);
@@ -75,8 +71,8 @@ body[data-page="ranking"] {
 }
 
 .rank-search:focus-within {
-    border-color: rgba(87, 21, 219, 0.38);
-    box-shadow: 0 0 0 3px rgba(87, 21, 219, 0.1);
+    border-color: var(--line-accent);
+    box-shadow: 0 0 0 3px var(--accent-panel);
 }
 
 .rank-search input {
@@ -130,7 +126,7 @@ body[data-page="ranking"] {
     gap: 4px;
     padding: 8px;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: var(--radius-base);
     background: var(--surface-solid);
     box-shadow: 0 16px 38px rgba(0, 0, 0, 0.16);
     opacity: 0;
@@ -154,7 +150,7 @@ body[data-page="ranking"] {
     min-height: 42px;
     padding: 8px 10px;
     border: 0;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     background: transparent;
     color: var(--text);
     text-align: left;
@@ -193,7 +189,7 @@ body[data-page="ranking"] {
 .rank-empty {
     padding: 22px;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     background: var(--surface-solid);
     color: var(--text-muted);
     display: grid;
@@ -212,7 +208,7 @@ body[data-page="ranking"] {
     gap: 12px;
     margin-bottom: 10px;
     padding: 14px 16px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     border: 1px solid var(--line);
     background: var(--surface-solid);
     box-shadow: none;
@@ -228,7 +224,7 @@ body[data-page="ranking"] {
 }
 
 .rank-card:hover {
-    border-color: rgba(87, 21, 219, 0.28);
+    border-color: var(--line-accent);
     background: var(--surface-soft);
 }
 
@@ -322,92 +318,38 @@ body[data-page="ranking"] {
 
 .rank-card:has(.rank-1) {
     border-color: rgba(217, 119, 6, 0.45);
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 60%), var(--surface-solid);
-}
-
-.rank-card:has(.rank-1)::after {
-    background: linear-gradient(90deg, rgba(254, 243, 199, 0.86) 0%, rgba(253, 230, 138, 0.70) 20%, rgba(254, 243, 199, 0.45) 60%, rgba(254, 243, 199, 0.18) 100%);
 }
 
 .rank-card:has(.rank-1):hover {
     border-color: rgba(217, 119, 6, 0.60);
 }
 
-.rank-card:has(.rank-1):hover::after {
-    background: linear-gradient(90deg, rgba(254, 243, 199, 0.80) 0%, rgba(253, 230, 138, 0.62) 20%, rgba(254, 243, 199, 0.36) 60%, rgba(254, 243, 199, 0.14) 100%);
-}
-
 .rank-card:has(.rank-2) {
     border-color: rgba(100, 116, 139, 0.42);
-    background: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(100, 116, 139, 0.06) 60%), var(--surface-solid);
-}
-
-.rank-card:has(.rank-2)::after {
-    background: linear-gradient(90deg, rgba(241, 245, 249, 0.88) 0%, rgba(226, 232, 240, 0.72) 20%, rgba(241, 245, 249, 0.45) 60%, rgba(241, 245, 249, 0.18) 100%);
 }
 
 .rank-card:has(.rank-2):hover {
     border-color: rgba(100, 116, 139, 0.58);
 }
 
-.rank-card:has(.rank-2):hover::after {
-    background: linear-gradient(90deg, rgba(241, 245, 249, 0.82) 0%, rgba(226, 232, 240, 0.65) 20%, rgba(241, 245, 249, 0.36) 60%, rgba(241, 245, 249, 0.14) 100%);
-}
-
 .rank-card:has(.rank-3) {
     border-color: rgba(194, 65, 12, 0.40);
-    background: linear-gradient(135deg, rgba(234, 88, 12, 0.14) 0%, rgba(194, 65, 12, 0.05) 60%), var(--surface-solid);
-}
-
-.rank-card:has(.rank-3)::after {
-    background: linear-gradient(90deg, rgba(255, 237, 213, 0.86) 0%, rgba(254, 215, 170, 0.70) 20%, rgba(255, 237, 213, 0.45) 60%, rgba(255, 237, 213, 0.18) 100%);
 }
 
 .rank-card:has(.rank-3):hover {
     border-color: rgba(194, 65, 12, 0.58);
 }
 
-.rank-card:has(.rank-3):hover::after {
-    background: linear-gradient(90deg, rgba(255, 237, 213, 0.80) 0%, rgba(254, 215, 170, 0.62) 20%, rgba(255, 237, 213, 0.36) 60%, rgba(255, 237, 213, 0.14) 100%);
-}
-
 :root[data-theme="dark"] .rank-card:has(.rank-1) {
     border-color: rgba(245, 158, 11, 0.40);
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(180, 83, 9, 0.06) 60%), var(--surface-solid);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-1)::after {
-    background: linear-gradient(90deg, rgba(42, 28, 10, 0.88) 0%, rgba(42, 28, 10, 0.76) 20%, rgba(35, 24, 10, 0.50) 60%, rgba(35, 24, 10, 0.22) 100%);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-1):hover::after {
-    background: linear-gradient(90deg, rgba(48, 32, 12, 0.84) 0%, rgba(48, 32, 12, 0.70) 20%, rgba(38, 26, 12, 0.42) 60%, rgba(38, 26, 12, 0.18) 100%);
 }
 
 :root[data-theme="dark"] .rank-card:has(.rank-2) {
     border-color: rgba(148, 163, 184, 0.38);
-    background: linear-gradient(135deg, rgba(148, 163, 184, 0.14) 0%, rgba(71, 85, 105, 0.06) 60%), var(--surface-solid);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-2)::after {
-    background: linear-gradient(90deg, rgba(26, 32, 42, 0.88) 0%, rgba(26, 32, 42, 0.78) 20%, rgba(22, 28, 36, 0.50) 60%, rgba(22, 28, 36, 0.22) 100%);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-2):hover::after {
-    background: linear-gradient(90deg, rgba(30, 38, 50, 0.84) 0%, rgba(30, 38, 50, 0.72) 20%, rgba(25, 32, 42, 0.42) 60%, rgba(25, 32, 42, 0.18) 100%);
 }
 
 :root[data-theme="dark"] .rank-card:has(.rank-3) {
     border-color: rgba(234, 88, 12, 0.38);
-    background: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, rgba(154, 52, 18, 0.06) 60%), var(--surface-solid);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-3)::after {
-    background: linear-gradient(90deg, rgba(42, 22, 12, 0.88) 0%, rgba(42, 22, 12, 0.76) 20%, rgba(35, 18, 10, 0.50) 60%, rgba(35, 18, 10, 0.22) 100%);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-3):hover::after {
-    background: linear-gradient(90deg, rgba(48, 25, 14, 0.84) 0%, rgba(48, 25, 14, 0.70) 20%, rgba(40, 20, 12, 0.42) 60%, rgba(40, 20, 12, 0.18) 100%);
 }
 
 .rank-logo {
@@ -415,8 +357,8 @@ body[data-page="ranking"] {
     width: 56px;
     height: 56px;
     flex-basis: 56px;
-    border-radius: 14px;
-    background: #ffffff;
+    border-radius: var(--radius-base);
+    background: var(--surface-solid);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
@@ -477,8 +419,8 @@ body[data-page="ranking"] {
     justify-self: start;
     align-self: start;
     padding: 6px 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(87, 21, 219, 0.24);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line-accent);
     background: rgba(87, 21, 219, 0.08);
     color: var(--accent);
     font-size: 12px;
@@ -502,7 +444,7 @@ body[data-page="ranking"] {
     grid-column: 3;
     width: 160px;
     height: 28px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 /* --- Responsive Breakpoints --- */
@@ -568,7 +510,7 @@ body[data-page="ranking"] {
     .rank-logo {
         width: 42px;
         height: 42px;
-        border-radius: 10px;
+        border-radius: var(--radius-sm);
     }
 
     .rank-title {

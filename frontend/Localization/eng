@@ -915,7 +915,7 @@ error404.link.guide: Learn how UniSearch works
 error404.link.about: Project and contacts
 title.index: UniSearch | Compare Universities by Cost, Admissions, and Fit
 home.hero.title: Find your dream university
-home.hero.title_html: Find your <span class="text-gradient">dream</span> university
+home.hero.title_html: Find your dream university
 home.hero.desc: Start with the catalog, then compare cost, admission choices, and your estimated chance in one place.
 home.hero.profile: Open Profile
 home.hero.catalog: Open University Catalog

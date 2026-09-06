@@ -7,15 +7,11 @@
    Page Canvas
    -------------------------------------------------------------------------- */
 body[data-page="home"] {
-  background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
+  background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-:root[data-theme="dark"] body[data-page="home"] {
-  background: var(--bg);
 }
 
 .home-page {
@@ -60,19 +56,6 @@ body[data-page="home"] {
   color: var(--text);
 }
 
-.text-gradient {
-  background: linear-gradient(120deg, #5d17ea 0%, #7c3aed 60%, #1f2b65 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-:root[data-theme="dark"] .text-gradient {
-  background: linear-gradient(120deg, #8b5cf6 0%, #a78bfa 60%, #c4b5fd 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 .hero-desc {
   margin: 0;

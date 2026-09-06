@@ -75,7 +75,7 @@ export function setUniversitiesLoading(elements, isLoading, viewMode = "list") {
               <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
               <div class="skeleton-line" style="width: 58%;"></div>
               <div class="skeleton-line" style="width: 72%;"></div>
-              <div class="skeleton-line" style="width: 100%; height: 68px; border-radius: 12px; margin-top: 8px;"></div>
+              <div class="skeleton-line" style="width: 100%; height: 38px; border-radius: 10px; margin-top: 4px;"></div>
               <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
             </div>
           </article>

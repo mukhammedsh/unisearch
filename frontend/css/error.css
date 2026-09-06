@@ -7,10 +7,6 @@ body[data-page="error-404"] {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
-}
-
-:root[data-theme="dark"] body[data-page="error-404"] {
   background: var(--bg);
 }
 
@@ -213,7 +209,7 @@ body[data-page="error-404"] main.error-page {
   flex-shrink: 0;
   width: 22px;
   height: 22px;
-  border-radius: 6px;
+  border-radius: var(--radius-xs);
   background: var(--accent-soft);
   color: var(--accent);
   font-size: 12px;

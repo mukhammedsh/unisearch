@@ -914,7 +914,7 @@ error404.link.guide: Узнать, как работает UniSearch
 error404.link.about: О проекте и контактах
 title.index: UniSearch | Сравнение университетов по стоимости, поступлению и соответствию
 home.hero.title: Найди университет мечты
-home.hero.title_html: Найди университет <span class="text-gradient">мечты</span>
+home.hero.title_html: Найди университет мечты
 home.hero.desc: Начните с каталога, а затем сравнивайте стоимость, варианты поступления и примерный шанс поступления в одном месте.
 home.hero.profile: Открыть профиль
 home.hero.catalog: Открыть каталог университетов

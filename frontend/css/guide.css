@@ -118,7 +118,7 @@
   bottom: 18px;
   left: 0;
   width: 3.5px;
-  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
   background: transparent;
   transition: background-color var(--motion-fast, 0.15s) ease;
 }
@@ -175,7 +175,7 @@
   padding: 10px 14px;
   background: var(--surface-soft);
   border-left: 3px solid var(--accent);
-  border-radius: 6px 10px 10px 6px;
+  border-radius: var(--radius-md);
   color: var(--text-muted);
   font-size: 14.5px;
   line-height: 1.48;
@@ -186,7 +186,7 @@
   font-size: 13px;
   margin: 0;
   padding: 4px 10px;
-  border-radius: 4px 8px 8px 4px;
+  border-radius: var(--radius-sm);
 }
 
 /* Lists (tight rhythm without giant gaps between bullets) */
@@ -259,7 +259,7 @@
 .guide-doc code {
   display: inline-block;
   padding: 2px 7px;
-  border-radius: 5px;
+  border-radius: var(--radius-xs);
   background: color-mix(in srgb, var(--accent) 8%, var(--surface-soft));
   border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--accent);
@@ -282,7 +282,7 @@
   min-width: 0;
   padding: 12px 15px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-base);
   background: var(--surface-soft);
   display: flex;
   flex-direction: column;
@@ -311,13 +311,13 @@
    Theme-specific adjustments
    -------------------------------------------------------------------------- */
 :root:not([data-theme="dark"]) body[data-page="guide"] {
-  background: linear-gradient(180deg, #fafafa 0%, #f4f5f6 100%);
+  background: var(--bg);
 }
 
 :root[data-theme="dark"] .guide-nav a.is-active {
   background: color-mix(in srgb, var(--accent) 15%, var(--surface-solid));
   color: #a5b4fc;
-  border-left-color: #818cf8;
+  border-left-color: var(--accent);
 }
 
 :root[data-theme="dark"] .guide-section.is-active {
@@ -327,7 +327,7 @@
 :root[data-theme="dark"] .guide-tag,
 :root[data-theme="dark"] .guide-doc code {
   background: rgba(129, 140, 248, 0.12);
-  border-color: rgba(129, 140, 248, 0.25);
+  border-color: var(--line-accent);
   color: #a5b4fc;
 }
 
