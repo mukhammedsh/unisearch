@@ -977,11 +977,21 @@ export function initUniversitiesPage() {
     };
 
     const compareAidText = (u) => {
-        const merit = nested(u, ["finance", "financial_aid", "merit_based"], false);
-        const need = nested(u, ["finance", "financial_aid", "need_based"], false);
-        if (merit && need) return t("universities.compare.aid_both", "Merit scholarships + need-based aid");
-        if (merit) return t("universities.compare.aid_merit", "Merit scholarships");
-        if (need) return t("universities.compare.aid_need", "Need-based financial aid");
+        let hasGrant = false;
+        if (Array.isArray(u?.admission_categories)) {
+            for (const cat of u.admission_categories) {
+                if (Array.isArray(cat.requirement_profiles)) {
+                    for (const prof of cat.requirement_profiles) {
+                        if (Array.isArray(prof.funding_options)) {
+                            if (prof.funding_options.some(f => f.funding_type === "grant")) {
+                                hasGrant = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (hasGrant) return t("universities.compare.aid_merit", "Grants & Scholarships");
         return t("common.na", "N/A");
     };
 
@@ -4646,7 +4656,21 @@ export function initUniversitiesPage() {
         const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
         const meetsMinRequirements = match.meetMinRequirements === true && !hasConditionalExamWarning;
         const belowRequirements = match.meetMinRequirements === false;
-        const aidAny = !!(match.aidAny || match.aidEligible || nested(u, ["finance", "financial_aid", "merit_based"], false) || nested(u, ["finance", "financial_aid", "need_based"], false));
+        let hasGrant = false;
+        if (Array.isArray(u?.admission_categories)) {
+            for (const cat of u.admission_categories) {
+                if (Array.isArray(cat.requirement_profiles)) {
+                    for (const prof of cat.requirement_profiles) {
+                        if (Array.isArray(prof.funding_options)) {
+                            if (prof.funding_options.some(f => f.funding_type === "grant")) {
+                                hasGrant = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        const aidAny = !!(match.aidAny || match.aidEligible || hasGrant);
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
         const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);
 

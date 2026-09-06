@@ -153,9 +153,8 @@ test("UniFit card keeps all badges and switches to compact mode when badge count
         rank: 7,
         location: { country: "USA", city: "Boston" },
         finance: {
-          total_cost_year_usd: 98000,
-          financial_aid: { merit_based: true, need_based: true },
-        },
+          total_cost_year_usd: 98000
+          },
         academics: { acceptance_rate_percent: 17 },
         matchData: {
           finalPrice: 98000,
@@ -210,9 +209,8 @@ test("UniFit card badge logic caps at 5 computed status badges", async ({ page }
         rank: 9,
         location: { country: "USA", city: "Boston" },
         finance: {
-          total_cost_year_usd: 96000,
-          financial_aid: { merit_based: true, need_based: true },
-        },
+          total_cost_year_usd: 96000
+          },
         academics: { acceptance_rate_percent: 15 },
         matchData: {
           finalPrice: 96000,
@@ -250,7 +248,7 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
   await page.route("**/universities/ai-sort", async (route) => {
     const base = {
       location: { country: "USA", city: "Boston" },
-      finance: { total_cost_year_usd: 30000, financial_aid: { merit_based: false, need_based: false } },
+      finance: { total_cost_year_usd: 30000 },
       academics: { acceptance_rate_percent: 40 },
       matchData: {
         finalPrice: 30000,
@@ -304,7 +302,7 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
         ...base,
         id: "epfl-ch-lausanne",
         name: "Count 4",
-        finance: { total_cost_year_usd: 30000, financial_aid: { merit_based: true, need_based: false } },
+        finance: { total_cost_year_usd: 30000 },
         matchData: {
           ...base.matchData,
           preferenceMismatch: 0.08, // Your Vibe
@@ -318,7 +316,7 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
         ...base,
         id: "technical-university-of-munich-de-munich",
         name: "Count 5",
-        finance: { total_cost_year_usd: 90000, financial_aid: { merit_based: true, need_based: true } },
+        finance: { total_cost_year_usd: 90000 },
         matchData: {
           ...base.matchData,
           finalPrice: 90000, // Over budget

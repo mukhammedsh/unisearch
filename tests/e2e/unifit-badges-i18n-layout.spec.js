@@ -32,8 +32,7 @@ for (const locale of locales) {
           rank: 11,
           location: { country: "USA", city: "Boston" },
           finance: {
-            total_cost_year_usd: 90000,
-            financial_aid: { merit_based: true, need_based: true },
+            total_cost_year_usd: 90000
           },
           academics: { acceptance_rate_percent: 19 },
           matchData: {

@@ -341,6 +341,7 @@ universities.why.your_vibe: This university strongly matches your Focus, Atmosph
 universities.why.likely_grant: In grant-priority mode, this university has a strong grant admission chance.
 universities.why.paid_admission: In willing-to-pay mode, this university has a strong general admission chance.
 universities.badge.aid_available: Aid Available
+no_grants_available: No grants available
 universities.badge.aid_likely: Grant/Aid Likely (no budget penalty)
 universities.badge.below_requirements: Below Requirements
 universities.badge.over_budget: Over Budget
@@ -395,7 +396,7 @@ universities.compare.row.metric: Metric
 universities.compare.row.location: Location
 universities.compare.row.aid: Aid
 universities.compare.aid_both: Merit scholarships + need-based aid
-universities.compare.aid_merit: Merit scholarships
+universities.compare.aid_merit: Grants & Scholarships
 universities.compare.aid_need: Need-based financial aid
 universities.compare.track_count: {count} categories / {options} choices
 universities.compare.native_ok: native accepted
