@@ -251,7 +251,7 @@
    -------------------------------------------------------------------------- */
 :root[data-theme="dark"] .legal-nav a.is-active {
   background: color-mix(in srgb, var(--accent) 15%, var(--surface-solid));
-  color: #a5b4fc;
+  color: var(--accent);
   border-left-color: var(--accent);
 }
 

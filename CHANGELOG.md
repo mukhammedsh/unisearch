@@ -2,7 +2,12 @@
 
 All notable project changes should be recorded here.
 
-## Unreleased
+## 5.0.0 (2026-09-07) - Workspace Realignment, Applicant Profile, and Theme Palette Standardization
+- Standardized theme color palette and interactive accents (`style.css`, `universities.css`, `university.css`, `guide.css`, `legal.css`, `ranking.css`):
+  - Eliminated unpredictable purple text styling and hardcoded dark/white text shades across titles, metric cards, pricing headers, and admission summaries by anchoring typography strictly to semantic tokens (`var(--text)` and `var(--text-muted)`).
+  - Removed disruptive `:root:not([data-theme="dark"])` selector wrappers that stripped active tabs, scope indicators, interactive button hovers, and progress indicators when switching to dark mode, ensuring accent states (`var(--accent)`, `var(--line-accent)`, `var(--accent-panel)`) remain visually consistent across both light and dark themes.
+  - Unified university detail section tabs into clean, transparent underline-tabs with an animated accent indicator in both themes, eliminating legacy solid purple pill buttons and glow shadows in dark mode.
+  - Standardized `.center-loading-spinner`, info tooltips (`.u-info`, `.d-info`), navigation links, and back buttons with theme-resilient borders and hover states.
 - Standardized design system tokens, refined catalog card density, and decluttered university detail view (`docs/design-system.md`, `style.css`, `universities.css`, `university.css`, `ranking.css`, `index.css`, `guide.css`, `legal.css`, `profile.css`, `error.css`, `university.html`, `index.html`, `catalog-render.js`, `page-controller.js`):
   - **Design tokens & borders:** formalized line tokens (`--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`) and unified radius scale (`--radius-xs` to `--radius-circle`) in `docs/design-system.md` and `style.css`, replacing arbitrary inline radii and color literals across all stylesheets.
   - **Calm backgrounds:** eliminated synthetic vertical page gradients on body and main containers across home, about, guide, ranking, legal, and universities views in favor of solid `var(--bg)` and flat surface tokens per Calm Academic Workspace guidelines.
@@ -38,8 +43,6 @@ All notable project changes should be recorded here.
 - Registered `/privacy` and `/terms` routes in client router (`routes.js`, `main.js`), bypassing client-side route interception for in-page anchors (`.legal-nav`, `.guide-nav`) and exempting static informational pages (`privacy`, `terms`, `about`, `error-404`) from backend connection error overlays.
 - Improved scroll-spy boundary handling in `guide.js` to snap to top section when `scrollY <= 90px` and bottom section near page end.
 - Added pretty routing and dynamic indexed file lookup fallback to `frontend_dev_server.py`.
-
-## 5.0.0 (2026-09-03) - Frontend Design System Realignment and Guide Refresh
 - Consolidated base theme variables and design tokens (`--bg`, `--surface-solid`, `--surface-soft`, `--line`, `--grant-soft`) in `style.css` and removed redundant override blocks across stylesheets.
 - Overhauled `guide.css` and `guide.html` typography and density following Calm Academic Workspace patterns, cleaning up hero header hierarchy and localization keys.
 - Fixed guide section navigation in `guide.js` to scroll to top for `#guide-unifit` to preserve hero visibility, with manual scroll restoration on initial page load.

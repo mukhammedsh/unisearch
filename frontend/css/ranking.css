@@ -421,7 +421,7 @@ body[data-page="ranking"] {
     padding: 6px 10px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--line-accent);
-    background: rgba(87, 21, 219, 0.08);
+    background: var(--accent-panel);
     color: var(--accent);
     font-size: 12px;
     font-weight: 600;
