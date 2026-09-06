@@ -1193,6 +1193,18 @@
   border-color: #f59e0b;
 }
 
+.d-site-link.is-compared {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-solid));
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.d-site-link.is-compared:hover {
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-solid));
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 .d-site-link:hover {
   background: var(--accent);
   color: white;

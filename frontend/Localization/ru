@@ -403,8 +403,11 @@ universities.compare.track_count: {count} категорий / {options} вар�
 universities.compare.native_ok: родной язык принимается
 universities.compare.verified_count: {sources} источников / {facts} фактов
 universities.compare.remove: Убрать из сравнения
-universities.compare.badge.best_rank: Лучший рейтинг
-universities.compare.badge.lowest_cost: Самая низкая стоимость
+universities.compare.diff_only: Только различия
+universities.compare.all_rows: Все параметры
+universities.compare.change_track: Сменить трек
+universities.compare.badge.best_rank: Выше рейтинг
+universities.compare.badge.lowest_cost: Ниже стоимость
 universities.compare.badge.more_accessible: Выше шанс
 universities.compare.badge.aid: Финансовая помощь
 universities.compare.section.overview: Обзор
@@ -515,7 +518,14 @@ universities.compare.differences.subtitle: Показываем самые за�
 universities.compare.differences.reasons_for: {name}
 universities.compare.differences.no_clear_advantage: Явного опубликованного преимущества по сопоставимым метрикам не найдено.
 universities.compare.overview.title: Обзор
-universities.compare.overview.subtitle: Шкала 0-100 работает только внутри этого сравнения: 100 получает более сильный выбранный университет в категории, это не абсолютная оценка университета.
+universities.compare.overview.subtitle: Сравнение сильных сторон: показывает, у какого университета преимущество в каждой категории на основе официальных данных.
+universities.compare.overview.advantage_label: Преимущество: {name}
+universities.compare.overview.advantage_desc: {name} имеет более сильные показатели в категории «{category}».
+universities.compare.overview.parity: Паритет
+universities.compare.overview.parity_desc: Одинаковые опубликованные показатели в этой категории.
+universities.compare.overview.lead_status: Преимущество
+universities.compare.overview.baseline_status: Базовый уровень
+universities.compare.overview.parity_status: Равные условия
 universities.compare.score_value: {score}/100
 universities.compare.tests.title: Тесты и характеристики
 universities.compare.tests.subtitle: Детальная таблица опубликованных значений. Зелёные ячейки появляются только там, где один университет уникально сильнее в этой строке.
@@ -523,11 +533,22 @@ universities.compare.conclusion.title: Итоги
 universities.compare.conclusion.body: Лучшие относительные совпадения по категориям: {summary}. Финальное решение лучше принимать по подсвеченным строкам таблицы и официальным источникам.
 universities.compare.conclusion.empty: Выбранные университеты близки по опубликованным сопоставимым метрикам. Проверьте подсвеченные строки таблицы и официальные источники перед финальным решением.
 universities.compare.reason.rank: Лучший опубликованный рейтинг: {value}.
+universities.compare.reason.rank_vs: Лучший опубликованный рейтинг: {value} (на {diff} {positions} лучше, чем {baseline} — {baseline_value}).
+universities.compare.reason.position_one: позицию
+universities.compare.reason.position_few: позиции
+universities.compare.reason.position_many: позиций
 universities.compare.reason.higher_percent: {metric}: {value} вместо {baseline}.
 universities.compare.reason.lower_percent: {metric}: {value} вместо {baseline}.
 universities.compare.reason.highest: Самый высокий показатель: {metric} — {value}.
 universities.compare.reason.lowest: Самый низкий показатель: {metric} — {value}.
 universities.compare.reason.best: {metric}: {value}.
+facts.status.official: Официальный источник
+facts.status.official_aggregated: Официальные сводные данные
+facts.status.official_derived: Официальные расчетные данные
+facts.status.official_external: Внешний официальный источник
+facts.status.curated: Курируемые данные
+facts.status.reviewed: Проверено
+facts.status.not_published: Не опубликовано
 universities.recent.title: Недавно открытые
 universities.recent.clear_all: Очистить все
 universities.recent.remove: Убрать {university} из недавно открытых
@@ -580,6 +601,9 @@ university.action.map: Карта
 university.action.save: Сохранить в избранное
 university.action.save_label: Сохранить
 university.action.saved: Сохранено
+university.action.compare: Добавить к сравнению
+university.action.compare_label: Сравнить
+university.action.compare_active: В сравнении
 university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
 university.scope_badge: Пока только бакалавриат

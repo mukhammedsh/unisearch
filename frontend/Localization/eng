@@ -402,9 +402,12 @@ universities.compare.track_count: {count} categories / {options} choices
 universities.compare.native_ok: native accepted
 universities.compare.verified_count: {sources} sources / {facts} facts
 universities.compare.remove: Remove from comparison
-universities.compare.badge.best_rank: Best rank
-universities.compare.badge.lowest_cost: Lowest cost
-universities.compare.badge.more_accessible: More accessible
+universities.compare.diff_only: Differences only
+universities.compare.all_rows: All metrics
+universities.compare.change_track: Change track
+universities.compare.badge.best_rank: Higher rank
+universities.compare.badge.lowest_cost: Lower cost
+universities.compare.badge.more_accessible: Higher acceptance
 universities.compare.badge.aid: Financial aid
 universities.compare.section.overview: Overview
 universities.compare.section.programs: Programs
@@ -514,7 +517,14 @@ universities.compare.differences.subtitle: Shows the clearest published advantag
 universities.compare.differences.reasons_for: {name}
 universities.compare.differences.no_clear_advantage: No clear published advantage found across comparable metrics.
 universities.compare.overview.title: Overview
-universities.compare.overview.subtitle: 0-100 within this comparison only: 100 marks the stronger selected university in that category, not an absolute university score.
+universities.compare.overview.subtitle: Category breakdown: highlights which university holds the relative advantage based on published data.
+universities.compare.overview.advantage_label: Advantage: {name}
+universities.compare.overview.advantage_desc: {name} holds stronger published indicators in {category}.
+universities.compare.overview.parity: Parity
+universities.compare.overview.parity_desc: Equal published indicators in this category.
+universities.compare.overview.lead_status: Advantage
+universities.compare.overview.baseline_status: Baseline
+universities.compare.overview.parity_status: Equal
 universities.compare.score_value: {score}/100
 universities.compare.tests.title: Tests and characteristics
 universities.compare.tests.subtitle: Detailed table of published values. Green cells appear only when one university is uniquely stronger in that row.
@@ -522,11 +532,22 @@ universities.compare.conclusion.title: Conclusion
 universities.compare.conclusion.body: Best relative fits by category: {summary}. Use the highlighted table rows and official sources before making the final decision.
 universities.compare.conclusion.empty: The selected universities are close on the comparable published metrics. Use the highlighted table rows and official sources before making the final decision.
 universities.compare.reason.rank: Best published rank: {value}.
+universities.compare.reason.rank_vs: Best published rank: {value} ({diff} {positions} better than {baseline} — {baseline_value}).
+universities.compare.reason.position_one: position
+universities.compare.reason.position_few: positions
+universities.compare.reason.position_many: positions
 universities.compare.reason.higher_percent: {metric}: {value} instead of {baseline}.
 universities.compare.reason.lower_percent: {metric}: {value} instead of {baseline}.
 universities.compare.reason.highest: Highest {metric}: {value}.
 universities.compare.reason.lowest: Lowest {metric}: {value}.
 universities.compare.reason.best: {metric}: {value}.
+facts.status.official: Official
+facts.status.official_aggregated: Official Aggregated
+facts.status.official_derived: Official Derived
+facts.status.official_external: Official External
+facts.status.curated: Curated
+facts.status.reviewed: Reviewed
+facts.status.not_published: Not Published
 universities.recent.title: Recently viewed
 universities.recent.clear_all: Clear all
 universities.recent.remove: Remove {university} from recently viewed
@@ -579,6 +600,9 @@ university.action.map: Map
 university.action.save: Save to favorites
 university.action.save_label: Save
 university.action.saved: Saved
+university.action.compare: Add to comparison
+university.action.compare_label: Compare
+university.action.compare_active: In comparison
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
 university.scope_badge: Bachelor's only for now

@@ -196,3 +196,26 @@ export function translateProgramName(value, fallback = "") {
 
   return map[keyify(raw)] || raw;
 }
+
+export function translateFactSource(value, fallback = "") {
+  const raw = String(value || fallback || "").trim();
+  if (!raw) return String(fallback || "");
+  if (normalizeLang(getCurrentLanguage()) === "eng") return raw;
+
+  const pack = getPack();
+  const map = pack && typeof pack.fact_sources === "object" ? pack.fact_sources : null;
+  if (map && map[raw]) return String(map[raw]);
+
+  const exact = pack && typeof pack.admission_exact === "object" ? pack.admission_exact : null;
+  if (exact && exact[raw]) return String(exact[raw]);
+
+  return translateAdmissionText(raw, raw);
+}
+
+export function translateFactStatus(value, fallback = "") {
+  const raw = String(value || fallback || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+  if (!raw) return String(fallback || "");
+  const fallbackLabel = humanizeMachineLabel(raw, raw);
+  return typeof t === "function" ? t(`facts.status.${raw}`, fallbackLabel) : fallbackLabel;
+}
+

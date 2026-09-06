@@ -12,6 +12,7 @@ import {
   escapeHtmlAttr,
   initials,
   moneyUSD,
+  formatPlural,
   loadProfile,
   loadProfileForApi,
   getFlagImg,
@@ -50,7 +51,12 @@ import { setupTabs, renderNoConnection } from "../components.js";
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { extractUniversityIdFromLocation, navigateToAppRoute, routeUniversities, routeUniversityDetail } from "../routes.js";
-import { fetchCompareProfiles, loadCompareUniversities, resolveAiSortResult } from "./universities/compare-helpers.js";
+import { 
+  compareAdmissionChoiceOptionLabel,
+  fetchCompareProfiles, 
+  loadCompareUniversities, 
+  resolveAiSortResult 
+} from "./universities/compare-helpers.js";
 import { renderAdmissionSection } from "./university/render-sections.js";
 import {
   humanizeMachineLabel,
@@ -97,6 +103,8 @@ import {
   trTrackLabel,
   trTrackDescription,
   trProgramName,
+  trFactSource,
+  trFactStatus,
   unknownFieldText,
   unknownLabelText,
   textOrUnknown,
@@ -417,6 +425,7 @@ export function initUniversitiesPage() {
         activeTab: initialTab,
         compareStage: initialCompareStage,
         compareResultIds: initialCompareIds,
+        compareDiffOnly: false,
         viewMode: savedState.viewMode || "list", page: 1, limit: 24,
     };
     if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
@@ -472,6 +481,7 @@ export function initUniversitiesPage() {
     compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
     let compareAdmissionChoices = new Map();
     let compareChancesByUniId = new Map();
+    let lastLoadedCompareUniversities = [];
 
     const compareChoiceKey = (selection) => {
         if (!selection || typeof selection !== "object" || Array.isArray(selection)) return "";
@@ -721,7 +731,8 @@ export function initUniversitiesPage() {
     };
     const comparePairSlots = () => {
         const ids = comparePairIds();
-        return Array.from({ length: COMPARE_PAIR_SIZE }, (_, index) => ids[index] || "");
+        const slotCount = Math.max(2, Math.min(MAX_COMPARE_UNIVERSITIES, ids.length));
+        return Array.from({ length: slotCount }, (_, index) => ids[index] || "");
     };
     const readCompareAdmissionChoices = () => {
         try {
@@ -763,7 +774,7 @@ export function initUniversitiesPage() {
         { number: String(index + 1) },
         `University ${index + 1}`
     );
-    const isComparePairReady = () => comparePairIds().length === COMPARE_PAIR_SIZE;
+    const isComparePairReady = () => comparePairIds().length >= 2;
 
     const syncCompareSelectionFromStorage = () => {
         const rawIds = readIdListStorage(COMPARE_UNIVERSITIES_KEY);
@@ -795,15 +806,26 @@ export function initUniversitiesPage() {
             : t("universities.compare.need_more", "Choose the second university");
         const slotsHtml = comparePairSlots().map((id, index) => {
             const name = id ? getUniversityDisplayNameById(id) : "";
+            const logoSrc = id ? uniLogoSrc(id) : "";
+            const removeLabel = t("universities.compare.remove", "Remove from comparison");
             return `
                 <div class="compare-tray__slot${id ? "" : " compare-tray__slot--empty"}" role="listitem">
                     <span class="compare-tray__slot-label">${escapeHtml(compareSlotLabel(index))}</span>
-                    <span class="compare-tray__slot-name">${escapeHtml(name || t("universities.compare.pair_empty", "Empty slot"))}</span>
+                    <div class="compare-tray__slot-row">
+                        ${logoSrc ? `<img class="compare-tray__slot-logo" src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy">` : ""}
+                        <span class="compare-tray__slot-name" title="${escapeHtmlAttr(name || "")}">${escapeHtml(name || t("universities.compare.pair_empty", "Empty slot"))}</span>
+                        ${id ? `
+                            <button class="compare-tray__slot-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
+                                ${renderInlineIcon("x-mark", 14)}
+                            </button>
+                        ` : ""}
+                    </div>
                 </div>
             `;
         }).join("");
         el.compareTray.innerHTML = `
             <div class="compare-tray__header">
+                <span class="compare-tray__count-badge">${ids.length}/${MAX_COMPARE_UNIVERSITIES}</span>
                 <span class="compare-tray__text">${escapeHtml(helperText)}</span>
             </div>
             <div class="compare-tray__body">
@@ -889,7 +911,7 @@ export function initUniversitiesPage() {
         if (wasCompared) {
             setComparePairIds(currentPair.filter((id) => id !== cleanId));
         } else {
-            const nextPair = currentPair.length >= COMPARE_PAIR_SIZE
+            const nextPair = currentPair.length >= MAX_COMPARE_UNIVERSITIES
                 ? currentPair.slice(1)
                 : currentPair.slice();
             nextPair.push(cleanId);
@@ -1006,15 +1028,30 @@ export function initUniversitiesPage() {
         });
     };
 
-    const compareProgramSummary = (u) => {
+    const compareBachelorProgramNames = (u) => {
         const programs = compareBachelorPrograms(u);
-        if (!programs.length) return t("common.na", "N/A");
-        const names = programs
-            .map((program) => translateProgramName(String(u?.id || ""), String(program?.name || "").trim()))
-            .filter(Boolean);
+        return Array.from(new Set(
+            programs
+                .map((program) => {
+                    const name = String(program?.name || "").trim();
+                    return name ? trProgramName(name) : "";
+                })
+                .filter(Boolean)
+        ));
+    };
+
+    const compareProgramSummary = (u) => {
+        const names = compareBachelorProgramNames(u);
+        if (!names.length) return t("common.na", "N/A");
         const visible = names.slice(0, 2).join(", ");
-        const more = names.length > 2 ? ` +${names.length - 2}` : "";
-        return visible ? `${visible}${more}` : t("common.na", "N/A");
+        const remaining = names.length - 2;
+        const more = remaining > 0 ? ` +${remaining}` : "";
+        return `${visible}${more}`;
+    };
+
+    const compareProgramTitle = (u) => {
+        const names = compareBachelorProgramNames(u);
+        return names.length > 2 ? names.join(", ") : "";
     };
 
     const compareLanguageSummary = (u) => {
@@ -1219,7 +1256,10 @@ export function initUniversitiesPage() {
         const option = compareSelectedAdmissionOption(u);
         const extras = Array.isArray(option?.extra_requirements) ? option.extra_requirements.filter(Boolean) : [];
         if (!extras.length) return t("common.na", "N/A");
-        const visible = extras.slice(0, 2).join("; ");
+        const visible = extras
+            .slice(0, 2)
+            .map((item) => trTrackDescription(String(u?.id || ""), option?.id, item))
+            .join("; ");
         const more = extras.length > 2 ? ` +${extras.length - 2}` : "";
         return `${visible}${more}`;
     };
@@ -1246,7 +1286,10 @@ export function initUniversitiesPage() {
         const fact = nested(u, ["fact_provenance", "facts", factKey], null);
         const source = String(fact?.source || "").trim();
         const status = String(fact?.status || u?.rank_meta?.status || "").trim();
-        const parts = [source, status ? humanizeMachineLabel(status, status) : ""].filter(Boolean);
+        const parts = [
+            source ? trFactSource(source) : "",
+            status ? trFactStatus(status) : "",
+        ].filter(Boolean);
         return parts.length ? parts.join(" - ") : t("common.na", "N/A");
     };
 
@@ -1485,9 +1528,9 @@ export function initUniversitiesPage() {
     const compareBestBadges = (u, metrics) => {
         const badges = [];
         const id = String(u?.id || "");
-        if (id && metrics.bestRankId === id) badges.push(t("universities.compare.badge.best_rank", "Best rank"));
-        if (id && metrics.lowestCostId === id) badges.push(t("universities.compare.badge.lowest_cost", "Lowest cost"));
-        if (id && metrics.highestAcceptanceId === id) badges.push(t("universities.compare.badge.more_accessible", "More accessible"));
+        if (id && metrics.bestRankId === id) badges.push(t("universities.compare.badge.best_rank", "Higher rank"));
+        if (id && metrics.lowestCostId === id) badges.push(t("universities.compare.badge.lowest_cost", "Lower cost"));
+        if (id && metrics.highestAcceptanceId === id) badges.push(t("universities.compare.badge.more_accessible", "Higher acceptance"));
         if ((metrics.bestBySpec?.get("aid") || new Set()).has(id)) {
             badges.push(compareAidText(u));
         }
@@ -1635,6 +1678,7 @@ export function initUniversitiesPage() {
                 type: "text",
                 direction: "neutral",
                 getter: compareProgramSummary,
+                titleGetter: compareProgramTitle,
                 score: false,
                 reason: false,
             },
@@ -1794,28 +1838,6 @@ export function initUniversitiesPage() {
                 weight: 1.1,
             },
             {
-                key: "verified_sources",
-                section: "data",
-                category: "data",
-                label: t("universities.compare.row.verified_sources", "Verified sources"),
-                type: "number",
-                direction: "higher",
-                getter: compareVerifiedSourceCount,
-                formatter: compareCountText,
-                reason: false,
-            },
-            {
-                key: "verified_facts",
-                section: "data",
-                category: "data",
-                label: t("universities.compare.row.verified_facts", "Verified facts"),
-                type: "number",
-                direction: "higher",
-                getter: compareVerifiedFactCount,
-                formatter: compareCountText,
-                reason: false,
-            },
-            {
                 key: "data_quality",
                 section: "data",
                 category: "data",
@@ -1939,7 +1961,8 @@ export function initUniversitiesPage() {
     const compareCell = (text, opts = {}) => {
         const tone = opts.tone ? ` compare-cell--${opts.tone}` : "";
         const sub = opts.sub ? `<small>${escapeHtml(opts.sub)}</small>` : "";
-        return `<td class="compare-cell${tone}"><span>${escapeHtml(text || t("common.na", "N/A"))}</span>${sub}</td>`;
+        const titleAttr = opts.title ? ` title="${escapeHtmlAttr(opts.title)}"` : "";
+        return `<td class="compare-cell${tone}"${titleAttr}><span>${escapeHtml(text || t("common.na", "N/A"))}</span>${sub}</td>`;
     };
 
     const compareSectionRow = (label, kind, universities, renderValue) => `
@@ -1948,16 +1971,24 @@ export function initUniversitiesPage() {
         </tr>
     `;
 
-    const compareDataRow = (label, universities, renderValue) => `
-        <tr>
-            <td>${escapeHtml(label)}</td>
-            ${universities.map((u) => {
-                const value = renderValue(u);
-                if (value && typeof value === "object") return compareCell(value.text, value);
-                return compareCell(String(value || ""));
-            }).join("")}
-        </tr>
-    `;
+    const compareDataRow = (label, universities, renderValue, section = "") => {
+        const renderedCells = universities.map((u) => {
+            const value = renderValue(u);
+            if (value && typeof value === "object") return value;
+            return { text: String(value || ""), tone: "", sub: "", title: "" };
+        });
+        const isIdentical = renderedCells.length > 1 && renderedCells.every((c) => (
+            String(c.text || "").trim().toLowerCase() === String(renderedCells[0]?.text || "").trim().toLowerCase()
+        ));
+        const identicalClass = isIdentical ? " compare-row--identical" : "";
+        const sectionAttr = section ? ` data-row-section="${escapeHtmlAttr(section)}"` : "";
+        return `
+            <tr class="compare-table__row${identicalClass}"${sectionAttr}>
+                <td>${escapeHtml(label)}</td>
+                ${renderedCells.map((c) => compareCell(c.text, c)).join("")}
+            </tr>
+        `;
+    };
 
     const compareSpecValue = (spec, u, metrics) => {
         const raw = compareSpecRawValue(spec, u);
@@ -1969,6 +2000,7 @@ export function initUniversitiesPage() {
             text,
             tone: bestIds.has(String(u?.id || "")) ? "best" : "",
             sub: spec.sourceKey ? compareSourceText(u, spec.sourceKey) : "",
+            title: spec.titleGetter ? spec.titleGetter(u) : "",
         };
     };
 
@@ -1987,7 +2019,7 @@ export function initUniversitiesPage() {
                 ? compareSectionRow(sections[spec.section] || humanizeMachineLabel(spec.section, spec.section), spec.section, universities)
                 : "";
             currentSection = spec.section;
-            return `${sectionHtml}${compareDataRow(spec.label, universities, (u) => compareSpecValue(spec, u, metrics))}`;
+            return `${sectionHtml}${compareDataRow(spec.label, universities, (u) => compareSpecValue(spec, u, metrics), spec.section)}`;
         }).join("");
     };
 
@@ -2015,6 +2047,35 @@ export function initUniversitiesPage() {
         const valueText = spec.formatter ? spec.formatter(row.value, row.university) : String(row.value);
         const baselineText = baseline ? (spec.formatter ? spec.formatter(baseline.value, baseline.university) : String(baseline.value)) : "";
         if (spec.reasonMode === "rank") {
+            const baselineRank = baseline && Number.isFinite(baseline.value) ? baseline.value : null;
+            if (baselineRank !== null) {
+                const diff = Math.abs(baselineRank - row.value);
+                const baselineName = compareUniversityName(baseline.university);
+                if (diff > 0) {
+                    const positionsWord = formatPlural(
+                        diff,
+                        [
+                            t("universities.compare.reason.position_one", "position"),
+                            t("universities.compare.reason.position_few", "positions"),
+                            t("universities.compare.reason.position_many", "positions"),
+                        ],
+                        getCurrentLanguage()
+                    );
+                    return tFormat(
+                        "universities.compare.reason.rank_vs",
+                        {
+                            name,
+                            metric,
+                            value: valueText,
+                            baseline: baselineName,
+                            baseline_value: baselineText,
+                            diff: String(diff),
+                            positions: positionsWord,
+                        },
+                        `Best published rank: ${valueText} (${diff} ${positionsWord} better than ${baselineName} — ${baselineText}).`
+                    );
+                }
+            }
             return tFormat(
                 "universities.compare.reason.rank",
                 { name, metric, value: valueText },
@@ -2130,10 +2191,10 @@ export function initUniversitiesPage() {
 
     const compareNormalizedScore = (value, min, max, direction) => {
         if (!Number.isFinite(value) || !Number.isFinite(min) || !Number.isFinite(max)) return null;
-        if (Math.abs(max - min) <= 0.000001) return 50;
+        if (Math.abs(max - min) <= 0.000001) return 80;
         const normalized = (value - min) / (max - min);
-        const score = direction === "lower" ? (1 - normalized) : normalized;
-        return Math.max(0, Math.min(100, Math.round(score * 100)));
+        const relative = direction === "lower" ? (1 - normalized) : normalized;
+        return Math.max(0, Math.min(100, Math.round(60 + relative * 40)));
     };
 
     const buildCompareCategoryScores = (universities, metrics) => {
@@ -2171,6 +2232,7 @@ export function initUniversitiesPage() {
     const buildCompareOverviewHtml = (universities, metrics) => {
         const categoryMeta = compareCategoryMeta();
         const scores = buildCompareCategoryScores(universities, metrics);
+        const advantages = buildCompareAdvantages(universities, metrics);
         const categories = Object.keys(categoryMeta).filter((category) => (
             universities.some((u) => scores.get(String(u?.id || ""))?.has(category))
         ));
@@ -2181,36 +2243,96 @@ export function initUniversitiesPage() {
                     <div class="compare-block-icon">${renderInlineIcon("clipboard-document-list", 20, "compare-block-icon-svg")}</div>
                     <div>
                         <h2 id="compareOverviewTitle">${escapeHtml(t("universities.compare.overview.title", "Overview"))}</h2>
-                        <p>${escapeHtml(t("universities.compare.overview.subtitle", "0-100 within this comparison only: 100 marks the stronger selected university in that category, not an absolute university score."))}</p>
+                        <p>${escapeHtml(t("universities.compare.overview.subtitle", "Category breakdown: highlights which university holds the relative advantage based on published data."))}</p>
                     </div>
                 </div>
                 <div class="compare-score-grid">
                     ${categories.map((category) => {
                         const meta = categoryMeta[category];
+                        const ranked = universities
+                            .map((u) => ({
+                                university: u,
+                                id: String(u?.id || ""),
+                                score: scores.get(String(u?.id || ""))?.get(category),
+                            }))
+                            .filter((row) => Number.isFinite(row.score))
+                            .sort((a, b) => b.score - a.score);
+
+                        const hasMultiple = ranked.length >= 2;
+                        const isTie = hasMultiple && Math.abs(ranked[0].score - ranked[1].score) <= 3;
+                        const winner = !isTie && ranked.length > 0 ? ranked[0].university : null;
+                        const winnerId = winner ? String(winner.id || "") : "";
+                        const winnerName = winner ? compareUniversityName(winner) : "";
+
+                        let reasonText = "";
+                        if (winner) {
+                            const reasonItem = (advantages.get(winnerId) || []).find((item) => item.category === category);
+                            if (reasonItem && reasonItem.text) {
+                                reasonText = reasonItem.text;
+                            } else {
+                                reasonText = tFormat(
+                                    "universities.compare.overview.advantage_desc",
+                                    { name: winnerName, category: meta.title },
+                                    `${winnerName} holds stronger published indicators in ${meta.title}.`
+                                );
+                            }
+                        } else {
+                            reasonText = t("universities.compare.overview.parity_desc", "Equal published indicators in this category.");
+                        }
+
+                        const leadBadgeText = winner ? tFormat("universities.compare.overview.advantage_label", { name: winnerName }, `Advantage: ${winnerName}`) : "";
+
                         return `
                             <article class="compare-score-card">
                                 <div class="compare-score-card__head">
-                                    <span>${renderInlineIcon(meta.icon, 18, "compare-score-card-icon")}</span>
-                                    <div>
-                                        <h3>${escapeHtml(meta.title)}</h3>
-                                        <p>${escapeHtml(meta.subtitle)}</p>
+                                    <div class="compare-score-card__meta">
+                                        <span class="compare-score-card-icon-wrap">${renderInlineIcon(meta.icon, 16, "compare-score-card-icon")}</span>
+                                        <div>
+                                            <h3>${escapeHtml(meta.title)}</h3>
+                                            <p>${escapeHtml(meta.subtitle)}</p>
+                                        </div>
                                     </div>
+                                    ${winner ? `
+                                        <span class="compare-verdict-badge compare-verdict-badge--lead" title="${escapeHtmlAttr(leadBadgeText)}">
+                                            <span>${escapeHtml(leadBadgeText)}</span>
+                                        </span>
+                                    ` : `
+                                        <span class="compare-verdict-badge compare-verdict-badge--parity">
+                                            <span class="compare-verdict-badge-dot" aria-hidden="true"></span>
+                                            <span>${escapeHtml(t("universities.compare.overview.parity", "Parity"))}</span>
+                                        </span>
+                                    `}
                                 </div>
-                                <div class="compare-score-list">
-                                    ${universities.map((u) => {
-                                        const id = String(u?.id || "");
-                                        const score = scores.get(id)?.get(category);
-                                        const width = Number.isFinite(score) ? Math.max(0, score) : 0;
-                                        return `
-                                            <div class="compare-score-row">
-                                                <div class="compare-score-row__top">
-                                                    <span>${escapeHtml(compareUniversityName(u))}</span>
-                                                    <strong>${Number.isFinite(score) ? tFormat("universities.compare.score_value", { score: String(score) }, `${score}/100`) : t("common.na", "N/A")}</strong>
+                                <div class="compare-score-card__body">
+                                    <p class="compare-score-card__reason">${escapeHtml(reasonText)}</p>
+                                    <div class="compare-score-participants">
+                                        ${universities.map((u) => {
+                                            const id = String(u?.id || "");
+                                            const isLead = Boolean(winner && id === winnerId);
+                                            const logoSrc = uniLogoSrc(id);
+                                            const logoSrcFull = uniLogoSrc(id, { forceFull: true });
+                                            const uniName = compareUniversityName(u);
+                                            let statusLabel = "";
+                                            if (winner) {
+                                                statusLabel = isLead
+                                                    ? t("universities.compare.overview.lead_status", "Advantage")
+                                                    : t("universities.compare.overview.baseline_status", "Baseline");
+                                            } else {
+                                                statusLabel = t("universities.compare.overview.parity_status", "Equal");
+                                            }
+                                            return `
+                                                <div class="compare-score-participant${isLead ? " is-lead" : ""}">
+                                                    <div class="compare-score-participant__info">
+                                                        <span class="compare-score-participant__logo">
+                                                            <img src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(uniName))}">
+                                                        </span>
+                                                        <span class="compare-score-participant__name">${escapeHtml(uniName)}</span>
+                                                    </div>
+                                                    <span class="compare-score-participant__status">${escapeHtml(statusLabel)}</span>
                                                 </div>
-                                                <div class="compare-score-track" aria-hidden="true"><span style="width:${width}%"></span></div>
-                                            </div>
-                                        `;
-                                    }).join("")}
+                                            `;
+                                        }).join("")}
+                                    </div>
                                 </div>
                             </article>
                         `;
@@ -2286,6 +2408,23 @@ export function initUniversitiesPage() {
                     const selectedKey = compareChoiceKey(compareAdmissionChoices.get(id));
                     const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === selectedKey);
                     return trackChance ? `<div class="compare-uni-card__chance">${renderTrackChanceChip(trackChance)}</div>` : "";
+                })()}
+                ${(() => {
+                    const entries = compareAdmissionOptionEntries(u);
+                    if (entries.length <= 1) return "";
+                    const selectedKey = compareChoiceKey(compareAdmissionChoices.get(id));
+                    return `
+                        <div class="compare-uni-card__track">
+                            <label class="compare-uni-card__track-label" for="track-select-${escapeHtmlAttr(id)}">${escapeHtml(t("universities.compare.change_track", "Change track"))}</label>
+                            <select class="compare-track-select" id="track-select-${escapeHtmlAttr(id)}" data-uni-id="${escapeHtmlAttr(id)}" data-action="change-compare-track" aria-label="${escapeHtmlAttr(t("universities.compare.change_track", "Change track"))}">
+                                ${entries.map((e) => {
+                                    const label = compareAdmissionChoiceOptionLabel(e, u);
+                                    const isSelected = e.key === selectedKey;
+                                    return `<option value="${escapeHtmlAttr(e.key)}"${isSelected ? " selected" : ""}>${escapeHtml(label || e.key)}</option>`;
+                                }).join("")}
+                            </select>
+                        </div>
+                    `;
                 })()}
                 ${badges.length ? `<div class="compare-uni-card__badges">${badges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join("")}</div>` : ""}
                 <a class="compare-uni-card__link" href="${routeUniversityDetail(id)}"${universityLinkAttrs()}>${escapeHtml(t("universities.card.view_details", "View details"))}</a>
@@ -2427,6 +2566,19 @@ export function initUniversitiesPage() {
         markMotionEnter(el.compareResultsPane, ".compare-config-column, .admission-category-card", { limit: 16, staggerMs: 18 });
     };
 
+    const updateDiffOnlySections = (tableWrap, isDiffOnly) => {
+        if (!tableWrap) return;
+        tableWrap.classList.toggle("is-diff-only", isDiffOnly);
+        const sectionRows = tableWrap.querySelectorAll(".compare-table__section-row");
+        sectionRows.forEach((sectionRow) => {
+            const section = sectionRow.getAttribute("data-section");
+            const dataRows = Array.from(tableWrap.querySelectorAll(`tr[data-row-section="${section}"]`));
+            if (!dataRows.length) return;
+            const allHidden = isDiffOnly && dataRows.every((r) => r.classList.contains("compare-row--identical"));
+            sectionRow.style.display = allHidden ? "none" : "";
+        });
+    };
+
     const renderCompareResultsPage = async (ids) => {
         if (!el.compareResultsPane) return;
         const cleanIds = normalizeCompareIdList(Array.isArray(ids) ? ids : []);
@@ -2460,6 +2612,7 @@ export function initUniversitiesPage() {
             loadProfileForApi,
         });
         compareChancesByUniId = compareProfiles.chances;
+        lastLoadedCompareUniversities = universities;
 
         if (!isCompareResultsMode()) return;
         if (universities.length !== COMPARE_PAIR_SIZE) {
@@ -2496,12 +2649,19 @@ export function initUniversitiesPage() {
             <section class="compare-analysis-block compare-tests" aria-labelledby="compareTestsTitle">
                 <div class="compare-block-head">
                     <div class="compare-block-icon">${renderInlineIcon("document-check", 20, "compare-block-icon-svg")}</div>
-                    <div>
+                    <div class="compare-block-title-wrap">
                         <h2 id="compareTestsTitle">${escapeHtml(t("universities.compare.tests.title", "Tests and characteristics"))}</h2>
                         <p>${escapeHtml(t("universities.compare.tests.subtitle", "Detailed table of published values. Green cells mark the strongest comparable value in each row."))}</p>
                     </div>
+                    <div class="compare-block-tools">
+                        <label class="compare-diff-toggle" title="${escapeHtmlAttr(t("universities.compare.diff_only", "Differences only"))}">
+                            <input type="checkbox" data-action="toggle-diff-only"${state.compareDiffOnly ? " checked" : ""}>
+                            <span class="compare-diff-toggle__track"><span class="compare-diff-toggle__thumb"></span></span>
+                            <span class="compare-diff-toggle__label">${escapeHtml(t("universities.compare.diff_only", "Differences only"))}</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="compare-table-wrap compare-table-wrap--pair">
+                <div class="compare-table-wrap compare-table-wrap--pair${state.compareDiffOnly ? " is-diff-only" : ""}">
                     <table class="compare-table">
                         <thead>
                             <tr>
@@ -2515,6 +2675,10 @@ export function initUniversitiesPage() {
             </section>
             ${conclusionHtml}
         `;
+        const initialTableWrap = el.compareResultsPane.querySelector(".compare-table-wrap");
+        if (initialTableWrap && state.compareDiffOnly) {
+            updateDiffOnlySections(initialTableWrap, true);
+        }
         bindImageFallbacks(el.compareResultsPane);
         markMotionEnter(el.compareResultsPane, ".compare-analysis-block, .compare-uni-card", { limit: 12, staggerMs: 18 });
     };
@@ -3570,6 +3734,12 @@ export function initUniversitiesPage() {
                 syncSectionVisibility({ shouldFetch: false, replaceUrl: true }).catch((err) => console.error(err));
             }
         }
+        if (action === "remove-compare-slot") {
+            const slotUniId = String(actionButton?.getAttribute("data-uni-id") || "").trim();
+            if (slotUniId) {
+                toggleCompareUniversity(slotUniId);
+            }
+        }
         if (action === "open-compare") {
             openCompareResultsPage().catch((err) => console.error(err));
         }
@@ -3639,6 +3809,34 @@ export function initUniversitiesPage() {
             state.compareStage = "select";
             persistSavedAndCompare();
             syncSectionVisibility({ shouldFetch: false, updateUrl: true, replaceUrl: false }).catch((err) => console.error(err));
+        }
+    });
+
+    el.compareResultsPane?.addEventListener("change", async (event) => {
+        const select = event.target instanceof HTMLSelectElement ? event.target : null;
+        if (select && select.getAttribute("data-action") === "change-compare-track") {
+            const uniId = String(select.getAttribute("data-uni-id") || "").trim();
+            const newKey = select.value;
+            const university = lastLoadedCompareUniversities?.find((u) => String(u?.id || "") === uniId);
+            if (university) {
+                const entry = compareAdmissionOptionEntries(university).find((e) => e.key === newKey);
+                if (entry) {
+                    compareAdmissionChoices.set(uniId, compareAdmissionSelectionFromEntry(entry));
+                    writeCompareAdmissionChoices();
+                    setSectionUrl(true);
+                    await renderCompareResultsPage(state.compareResultIds);
+                }
+            }
+            return;
+        }
+
+        const checkbox = event.target instanceof HTMLInputElement ? event.target : null;
+        if (checkbox && checkbox.getAttribute("data-action") === "toggle-diff-only") {
+            state.compareDiffOnly = checkbox.checked;
+            const tableWrap = el.compareResultsPane?.querySelector(".compare-table-wrap");
+            if (tableWrap) {
+                updateDiffOnlySections(tableWrap, checkbox.checked);
+            }
         }
     });
 

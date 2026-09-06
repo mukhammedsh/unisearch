@@ -17,7 +17,9 @@ import { initUniversityTranslations } from "../../university-translations.js";
 import { renderExtraSection, renderOverviewSection, renderProgramsSection } from "./render-content.js";
 import { renderAdmissionSection, renderFinanceSection } from "./render-sections.js";
 import {
+  COMPARE_UNIVERSITIES_KEY,
   fetchUniversityDetailCached,
+  MAX_COMPARE_UNIVERSITIES,
   modeAwareAnnualCost,
   normalizeStudyModeForCost,
   readIdListStorage,
@@ -242,6 +244,53 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
     motionPress(saveBtn);
     replayMotion(iconSpan || saveBtn, wasSaved ? "motion-icon-unsave" : "motion-icon-save", { timeoutMs: 320 });
   };
+
+  const compareBtn = document.getElementById("detailCompareBtn");
+  if (compareBtn) {
+    const compareIconSpan = compareBtn.querySelector(".uni-action-icon");
+    if (compareIconSpan) compareIconSpan.removeAttribute("data-heroicon");
+    const uniId = String(university?.id || id || "").trim();
+
+    const updateCompareBtn = () => {
+      const compareIds = readIdListStorage(COMPARE_UNIVERSITIES_KEY);
+      const isCompared = uniId ? compareIds.includes(uniId) : false;
+      compareBtn.setAttribute("aria-pressed", isCompared ? "true" : "false");
+      compareBtn.classList.toggle("is-compared", isCompared);
+      compareBtn.classList.toggle("is-active", isCompared);
+      if (compareIconSpan) {
+        compareIconSpan.innerHTML = renderInlineIcon(isCompared ? "check-circle" : "adjustments-horizontal", 20);
+      }
+      const labelEl = compareBtn.querySelector(".d-site-link-label");
+      if (labelEl) {
+        labelEl.textContent = isCompared
+          ? t("university.action.compare_active", "In compare")
+          : t("university.action.compare_label", "Compare");
+      }
+      compareBtn.title = isCompared
+        ? t("university.action.compare_active", "In compare")
+        : t("university.action.compare", "Add to compare");
+    };
+
+    updateCompareBtn();
+    compareBtn.onclick = () => {
+      if (!uniId) return;
+      let compareIds = readIdListStorage(COMPARE_UNIVERSITIES_KEY);
+      const idx = compareIds.indexOf(uniId);
+      const wasCompared = idx > -1;
+      if (wasCompared) {
+        compareIds = compareIds.filter((item) => item !== uniId);
+      } else {
+        if (compareIds.length >= MAX_COMPARE_UNIVERSITIES) {
+          compareIds = compareIds.slice(1);
+        }
+        compareIds.push(uniId);
+      }
+      writeIdListStorage(COMPARE_UNIVERSITIES_KEY, compareIds);
+      updateCompareBtn();
+      motionPress(compareBtn);
+      replayMotion(compareIconSpan || compareBtn, wasCompared ? "motion-icon-compare-remove" : "motion-icon-compare-add", { timeoutMs: 320 });
+    };
+  }
 }
 
 export async function initUniversityPage() {

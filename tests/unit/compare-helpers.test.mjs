@@ -20,7 +20,15 @@ globalThis.localStorage = globalThis.localStorage || {
   setItem() {},
 };
 
-const { fetchCompareProfiles } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
+const {
+  fetchCompareProfiles,
+  compareBachelorProgramNames,
+  compareProgramSummary,
+  compareProgramTitle,
+  compareSourceText,
+  compareExtraRequirementsText,
+  compareAdmissionChoiceOptionLabel,
+} = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
 
 function response(body, ok = true, status = ok ? 200 : 500) {
   return {
@@ -94,3 +102,113 @@ test("fetchCompareProfiles falls back to individual endpoints when batch fails",
   assert.equal(result.chances.get("u-a").overallChance, 80);
   assert.equal(result.rois.get("u-b").roi_value, 0.7);
 });
+
+test("compareBachelorProgramNames deduplicates and formats program summary", () => {
+  const uni = {
+    id: "al-farabi-kazakh-national-university-kaz-almaty",
+    academics: {
+      programs: [
+        { name: "Computer Science", study_levels: ["Bachelor"] },
+        { name: "Computer Science", study_levels: ["Bachelor"] },
+        { name: "Software Engineering", study_levels: ["Bachelor"] },
+        { name: "Data Science", study_levels: ["Bachelor"] },
+        { name: "Master of AI", study_levels: ["Master"] },
+      ],
+    },
+  };
+
+  const names = compareBachelorProgramNames(uni);
+  assert.deepEqual(names, ["Computer Science", "Software Engineering", "Data Science"]);
+
+  const summary = compareProgramSummary(uni);
+  assert.equal(summary, "Computer Science, Software Engineering +1");
+
+  const title = compareProgramTitle(uni);
+  assert.equal(title, "Computer Science, Software Engineering, Data Science");
+});
+
+test("compareProgramSummary handles empty programs gracefully", () => {
+  assert.equal(compareProgramSummary({}), "N/A");
+  assert.equal(compareProgramTitle({}), "");
+});
+
+test("compareSourceText formats source and status", () => {
+  const uni = {
+    id: "mit-usa-cambridge",
+    fact_provenance: {
+      facts: {
+        rank: {
+          source: "QS World University Rankings 2026",
+          status: "official",
+        },
+        acceptance_rate_percent: {
+          source: "University Admissions reports & aggregated public statistical profiles",
+          status: "official_aggregated",
+        },
+      },
+    },
+  };
+
+  assert.equal(
+    compareSourceText(uni, "rank"),
+    "QS World University Rankings 2026 - Official"
+  );
+  assert.equal(
+    compareSourceText(uni, "acceptance_rate_percent"),
+    "University Admissions reports & aggregated public statistical profiles - Official Aggregated"
+  );
+});
+
+test("compareExtraRequirementsText truncates with count", () => {
+  const uni = {
+    id: "oxford",
+    admission_categories: [
+      {
+        requirement_profiles: [
+          {
+            extra_requirements: ["Motivation letter", "Interview", "Portfolio"],
+          },
+        ],
+      },
+    ],
+  };
+
+  const text = compareExtraRequirementsText(uni);
+  assert.equal(text, "Motivation letter; Interview +1");
+});
+
+test("compareAdmissionChoiceOptionLabel formats clean and distinguishable labels", () => {
+  const paidEntry = {
+    option: {
+      category_label: "UNT Admission",
+      requirement_profile_label: "UNT",
+      funding_type: "paid",
+      label: "Paid Admission",
+    },
+  };
+  const grantEntry = {
+    option: {
+      category_label: "UNT Admission",
+      requirement_profile_label: "UNT",
+      funding_type: "grant",
+      funding_program: "State Educational Grant",
+      label: "State Grant",
+    },
+  };
+  const rectorEntry = {
+    option: {
+      category_label: "UNT Admission",
+      requirement_profile_label: "UNT",
+      funding_type: "grant",
+      funding_program: "Rector Grant",
+      label: "Profile - Rector Grant (Grant)",
+    },
+  };
+
+  const uni = { id: "abai-kazakh-national-pedagogical-university-kaz-almaty" };
+
+  assert.equal(compareAdmissionChoiceOptionLabel(paidEntry, uni), "UNT · Paid");
+  assert.equal(compareAdmissionChoiceOptionLabel(grantEntry, uni), "UNT · State Grant");
+  assert.equal(compareAdmissionChoiceOptionLabel(rectorEntry, uni), "UNT · Rector Grant");
+});
+

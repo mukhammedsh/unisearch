@@ -208,6 +208,8 @@ import {
   translateDataValue, 
   translateProgramName, 
   translateTrackLabel, 
+  translateWord,
+  translateAdmissionText,
   humanizeMachineLabel 
 } from "../../university-translations.js";
 import { 
@@ -272,15 +274,33 @@ export function compareBachelorPrograms(u) {
   });
 }
 
-export function compareProgramSummary(u) {
+export function compareBachelorProgramNames(u) {
   const programs = compareBachelorPrograms(u);
-  if (!programs.length) return t("common.na", "N/A");
-  const names = programs
-    .map((program) => translateProgramName(String(u?.id || ""), String(program?.name || "").trim()))
-    .filter(Boolean);
+  return Array.from(new Set(
+    programs
+      .map((program) => {
+        const name = String(program?.name || "").trim();
+        if (!name) return "";
+        if (typeof trProgramName === "function") return trProgramName(name);
+        if (typeof translateProgramName === "function") return translateProgramName(name, name);
+        return name;
+      })
+      .filter(Boolean)
+  ));
+}
+
+export function compareProgramSummary(u) {
+  const names = compareBachelorProgramNames(u);
+  if (!names.length) return typeof t === "function" ? t("common.na", "N/A") : "N/A";
   const visible = names.slice(0, 2).join(", ");
-  const more = names.length > 2 ? ` +${names.length - 2}` : "";
-  return visible ? `${visible}${more}` : t("common.na", "N/A");
+  const remaining = names.length - 2;
+  const more = remaining > 0 ? ` +${remaining}` : "";
+  return `${visible}${more}`;
+}
+
+export function compareProgramTitle(u) {
+  const names = compareBachelorProgramNames(u);
+  return names.length > 2 ? names.join(", ") : "";
 }
 
 export function compareLanguageSummary(u) {
@@ -315,14 +335,85 @@ export function compareAdmissionOptionEntries(u) {
   })).filter((entry) => entry.key && entry.option);
 }
 
+export function compareAdmissionChoiceOptionLabel(entry, u) {
+  const opt = entry?.option || entry || {};
+  const catRaw = String(opt.category_label || opt.category_id || "").trim();
+  const profRaw = String(opt.requirement_profile_label || opt.requirement_profile_id || "").trim();
+
+  let cat = trTrackLabel(catRaw) || translateTrackLabel(catRaw, catRaw);
+  let prof = trTrackLabel(profRaw) || translateTrackLabel(profRaw, profRaw);
+
+  const lang = typeof getCurrentLanguage === "function" ? getCurrentLanguage() : "eng";
+  const isRu = lang === "ru" || lang === "rus";
+
+  // Clean UNT / general redundancy (e.g. "UNT Admission" and "UNT")
+  if (/^UNT Admission$/i.test(catRaw) || /поступление по ент/i.test(cat)) {
+    cat = isRu ? "ЕНТ" : "UNT";
+  }
+  if (/^UNT$/i.test(profRaw)) {
+    prof = isRu ? "ЕНТ" : "UNT";
+  }
+
+  const parts = [];
+  if (cat && (!prof || cat.toLowerCase() !== prof.toLowerCase())) {
+    parts.push(cat);
+  }
+  if (prof && (!cat || cat.toLowerCase() !== prof.toLowerCase())) {
+    parts.push(prof);
+  } else if (!parts.length && cat) {
+    parts.push(cat);
+  }
+
+  const fType = String(opt.funding_type || "").toLowerCase();
+  const fProg = String(opt.funding_program || "").trim();
+  const fDesc = String(opt.funding_description || "").trim();
+  const fLabel = String(opt.label || "").trim();
+
+  let fundText = "";
+  if (fType === "paid") {
+    fundText = translateWord("filter_paid", isRu ? "Платное" : "Paid");
+  } else if (fType === "grant") {
+    let grantName = "";
+    if (/State Educational Grant|State Grant/i.test(fProg) || /State Grant/i.test(fLabel)) {
+      grantName = isRu ? "Государственный грант" : "State Grant";
+    } else if (/Rector/i.test(fProg) || /Rector/i.test(fLabel)) {
+      grantName = isRu ? "Грант ректора" : "Rector Grant";
+    } else if (/Abai/i.test(fProg) || /Abai/i.test(fLabel)) {
+      grantName = isRu ? "Стипендия им. Абая" : "Abai Scholarship";
+    } else if (/Al-Farabi Olympiad/i.test(fProg)) {
+      grantName = isRu ? "Олимпиадный грант" : "Al-Farabi Olympiad Grant";
+    } else if (fProg) {
+      grantName = isRu ? (trTrackDescription(u?.id, opt.id, fProg) || fProg) : fProg;
+    } else if (fDesc && fDesc.length < 35) {
+      grantName = fDesc;
+    } else if (fLabel && !/^profile/i.test(fLabel)) {
+      grantName = isRu ? (trTrackLabel(fLabel) || translateTrackLabel(fLabel, fLabel)) : fLabel;
+    } else {
+      grantName = translateWord("filter_grant", isRu ? "Грант" : "Grant");
+    }
+
+    if (grantName && !/грант|стипенди|grant|scholarship|aid/i.test(grantName)) {
+      grantName += isRu ? " (Грант)" : " (Grant)";
+    }
+    fundText = grantName;
+  }
+
+  if (fundText) parts.push(fundText);
+  return parts.join(" · ") || opt.choice_key || opt.id || "";
+}
+
 export function compareSelectedAdmissionEntry(u, compareAdmissionChoices) {
+  const entries = compareAdmissionOptionEntries(u);
+  if (!entries.length) return null;
   const uniId = String(u?.id || "").trim();
-  const selection = compareAdmissionChoices.get(uniId);
+  const selection = compareAdmissionChoices && typeof compareAdmissionChoices.get === "function"
+    ? compareAdmissionChoices.get(uniId)
+    : null;
   const selectedKey = typeof selection === "object" && selection
     ? String(selection.choiceKey || selection.choice_key || "").trim()
     : String(selection || "").trim();
-  if (!selectedKey) return null;
-  return compareAdmissionOptionEntries(u).find((entry) => entry.key === selectedKey) || null;
+  if (!selectedKey) return entries[0] || null;
+  return entries.find((entry) => entry.key === selectedKey) || entries[0] || null;
 }
 
 export function compareSelectedAdmissionOption(u, compareAdmissionChoices) {
@@ -406,8 +497,11 @@ export function compareLanguageProofText(u, compareAdmissionChoices) {
 export function compareExtraRequirementsText(u, compareAdmissionChoices) {
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   const extras = Array.isArray(option?.extra_requirements) ? option.extra_requirements.filter(Boolean) : [];
-  if (!extras.length) return t("common.na", "N/A");
-  const visible = extras.slice(0, 2).join("; ");
+  if (!extras.length) return typeof t === "function" ? t("common.na", "N/A") : "N/A";
+  const visible = extras
+    .slice(0, 2)
+    .map((item) => (typeof trTrackDescription === "function" ? trTrackDescription(String(u?.id || ""), option?.id, item) : (typeof translateAdmissionText === "function" ? translateAdmissionText(item, item) : item)))
+    .join("; ");
   const more = extras.length > 2 ? ` +${extras.length - 2}` : "";
   return `${visible}${more}`;
 }
@@ -434,8 +528,14 @@ export function compareSourceText(u, factKey) {
   const fact = nested(u, ["fact_provenance", "facts", factKey], null);
   const source = String(fact?.source || "").trim();
   const status = String(fact?.status || u?.rank_meta?.status || "").trim();
-  const parts = [source, status ? humanizeMachineLabel(status, status) : ""].filter(Boolean);
-  return parts.length ? parts.join(" - ") : t("common.na", "N/A");
+  const translatedSource = source
+    ? (typeof trFactSource === "function" ? trFactSource(source) : (typeof translateFactSource === "function" ? translateFactSource(source, source) : source))
+    : "";
+  const translatedStatus = status
+    ? (typeof trFactStatus === "function" ? trFactStatus(status) : (typeof translateFactStatus === "function" ? translateFactStatus(status, status) : (typeof humanizeMachineLabel === "function" ? humanizeMachineLabel(status, status) : status)))
+    : "";
+  const parts = [translatedSource, translatedStatus].filter(Boolean);
+  return parts.length ? parts.join(" - ") : (typeof t === "function" ? t("common.na", "N/A") : "N/A");
 }
 
 export function compareDataConfidenceText(u) {
