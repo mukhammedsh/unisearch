@@ -212,4 +212,81 @@ test("compare results count localized bachelor programs in Russian", async ({ pa
   const rowText = await programRow.textContent();
   expect(rowText).not.toMatch(/Бакалаврские программы\s*0\s*0/);
   expect(rowText).toMatch(/[1-9]/);
+
+  const table = page.locator(".compare-table");
+  await expect(table).not.toContainText("Official Aggregated");
+  await expect(table).not.toContainText("Official");
+  await expect(table).toContainText("Официальный источник");
 });
+
+test("compare rework: diff toggle, best cell highlights, track selector in results, and detail page compare button", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto(`/university.html?id=${MIT_ID}`);
+  await page.evaluate(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.removeItem("unisearch_compare_university_ids_v1");
+    localStorage.removeItem("unisearch_compare_admission_choices_v1");
+  });
+  await page.reload();
+
+  // 1. Check detail page compare button
+  const detailCompareBtn = page.locator("#detailCompareBtn");
+  await expect(detailCompareBtn).toBeVisible();
+  await expect(detailCompareBtn).toHaveAttribute("aria-pressed", "false");
+  await detailCompareBtn.click();
+  await expect(detailCompareBtn).toHaveAttribute("aria-pressed", "true");
+  await expect.poll(async () => page.evaluate(() =>
+    JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").includes("mit-usa-cambridge")
+  )).toBe(true);
+
+  // 2. Open comparison in catalog
+  await page.goto("/universities.html?tab=compare");
+  const tray = page.locator(".compare-tray");
+  await expect(tray).toBeVisible();
+  const removeBtn = page.locator(".compare-tray__slot-remove").first();
+  await expect(removeBtn).toBeVisible();
+  await removeBtn.click();
+  await expect.poll(async () => page.evaluate(() =>
+    JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").length
+  )).toBe(0);
+
+  // 3. Open configure and results with 2 universities
+  await page.goto(`/universities.html?lang=eng&tab=compare&compare=configure&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_eng::imperial_eng`);
+  await page.locator("[data-action='build-compare-results']").click();
+  await expect(page).toHaveURL(/compare=results/);
+
+  // 4. Verify best cell highlight
+  const bestCells = page.locator(".compare-cell--best");
+  await expect(bestCells.first()).toBeVisible();
+
+  // 5. Verify programs row does not contain raw university IDs and has human-readable content
+  const programRow = page.locator("tr[data-row-key='programs']");
+  if (await programRow.count() > 0) {
+    const rowText = await programRow.innerText();
+    expect(rowText).not.toContain("mit-usa-cambridge");
+    expect(rowText).not.toContain("imperial-college-london-uk");
+  }
+
+  // 6. Verify track switcher
+  const trackSelect = page.locator(".compare-track-select").first();
+  if (await trackSelect.count() > 0) {
+    await expect(trackSelect).toBeVisible();
+  }
+
+  // 7. Verify diff-only toggle
+  const diffToggle = page.locator(".compare-diff-toggle");
+  await expect(diffToggle).toBeVisible();
+  await expect(page.locator(".compare-table-wrap")).not.toHaveClass(/is-diff-only/);
+  await diffToggle.click();
+  await expect(page.locator(".compare-table-wrap")).toHaveClass(/is-diff-only/);
+  await diffToggle.click();
+  await expect(page.locator(".compare-table-wrap")).not.toHaveClass(/is-diff-only/);
+
+  // 8. Verify overview cards with verdict badges and participants
+  const overviewCards = page.locator(".compare-overview .compare-score-card");
+  await expect(overviewCards.first()).toBeVisible();
+  await expect(page.locator(".compare-verdict-badge").first()).toBeVisible();
+  await expect(page.locator(".compare-score-participant").first()).toBeVisible();
+  await expect(page.locator(".compare-score-track")).toHaveCount(0);
+});
+

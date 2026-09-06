@@ -55,6 +55,8 @@ import {
   initUniversityTranslations,
   translateAdmissionText,
   translateDataValue,
+  translateFactSource,
+  translateFactStatus,
   translateProgramName,
   translateTrackLabel,
   translateTemplate,
@@ -292,6 +294,18 @@ export function trProgramName(value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
   return translateProgramName(raw, raw);
+}
+
+export function trFactSource(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return translateFactSource(raw, raw);
+}
+
+export function trFactStatus(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return translateFactStatus(raw, raw);
 }
 
 export function unknownFieldText(fieldKey, fallbackField) {
@@ -657,18 +671,20 @@ export function admissionsSignalSummary(row) {
 export function admissionsPrimarySource(entry) {
   const provenanceUrl = safeUrl(entry?.provenance?.source_url);
   if (provenanceUrl) {
+    const rawLabel = String(entry?.provenance?.source || "").trim();
     return {
       url: provenanceUrl,
-      label: String(entry?.provenance?.source || "").trim() || t("university.admissions.official_source", "Official source"),
+      label: (rawLabel ? trFactSource(rawLabel) : "") || t("university.admissions.official_source", "Official source"),
     };
   }
   const sources = Array.isArray(entry?.sources) ? entry.sources : [];
   for (const source of sources) {
     const href = safeUrl(source?.url);
     if (!href) continue;
+    const rawLabel = String(source?.label || "").trim();
     return {
       url: href,
-      label: String(source?.label || "").trim() || t("university.admissions.official_source", "Official source"),
+      label: (rawLabel ? trFactSource(rawLabel) : "") || t("university.admissions.official_source", "Official source"),
     };
   }
   return null;
