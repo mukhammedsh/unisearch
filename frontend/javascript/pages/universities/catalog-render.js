@@ -22,6 +22,7 @@ import {
 } from "../_shared.js";
 import { translateWord } from "../../university-translations.js";
 import { routeUniversityDetail } from "../../routes.js";
+import { getGrantsFromCategories } from "../../university-detail-helpers.js";
 
 /**
  * Rendering logic for university catalog cards and pagination
@@ -88,7 +89,8 @@ export function renderUniversityCard(u, options = {}) {
   const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
   const meetsMinRequirements = match.meetMinRequirements === true && !hasConditionalExamWarning;
   const belowRequirements = match.meetMinRequirements === false;
-  const aidAny = !!(match.aidAny || match.aidEligible || nested(u, ["finance", "financial_aid", "merit_based"], false) || nested(u, ["finance", "financial_aid", "need_based"], false));
+  const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
+  const aidAny = !!(match.aidAny || match.aidEligible || hasGrant);
   const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
   const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);
 

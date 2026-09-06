@@ -201,7 +201,8 @@ import {
   unknownFieldText,
   ruPlural,
   modeAwareAnnualCost,
-  normalizeStudyModeForCost
+  normalizeStudyModeForCost,
+  trTrackDescription,
 } from "../_shared.js";
 import { 
   translateDataValue, 
@@ -211,6 +212,7 @@ import {
 } from "../../university-translations.js";
 import { 
   getAdmissionChoicesFromCategories,
+  getGrantsFromCategories,
   renderTrackFundingBadge, 
 } from "../../university-detail-helpers.js";
 
@@ -242,12 +244,18 @@ export function compareAcceptanceText(u) {
 }
 
 export function compareAidText(u) {
-  const merit = nested(u, ["finance", "financial_aid", "merit_based"], false);
-  const need = nested(u, ["finance", "financial_aid", "need_based"], false);
-  if (merit && need) return t("universities.compare.aid_both", "Merit scholarships + need-based aid");
-  if (merit) return t("universities.compare.aid_merit", "Merit scholarships");
-  if (need) return t("universities.compare.aid_need", "Need-based financial aid");
-  return t("common.na", "N/A");
+  const grants = getGrantsFromCategories(u?.admission_categories);
+  if (Array.isArray(grants) && grants.length > 0) {
+    const names = Array.from(
+      new Set(
+        grants.map((g) => trTrackDescription(u?.id, g.id, g.name)).filter(Boolean)
+      )
+    );
+    if (names.length > 0) {
+      return names.join(", ");
+    }
+  }
+  return t("no_grants_available", "No grants available");
 }
 
 function isBachelorStudyLevel(level) {
@@ -537,9 +545,8 @@ export function compareExtraRequirementCount(u) {
 }
 
 export function compareAidScore(u) {
-  const merit = nested(u, ["finance", "financial_aid", "merit_based"], false) ? 1 : 0;
-  const need = nested(u, ["finance", "financial_aid", "need_based"], false) ? 1 : 0;
-  return merit + need;
+  const grants = getGrantsFromCategories(u?.admission_categories);
+  return Array.isArray(grants) ? grants.length : 0;
 }
 
 export function compareCostBreakdownNumber(u, mode, compareAdmissionChoices) {

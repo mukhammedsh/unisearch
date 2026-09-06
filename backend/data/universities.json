@@ -3101,6 +3101,25 @@
               "MAT admissions test and interview shortlist where required",
               "Computer Science requires A-Level Mathematics; if Further Mathematics is available at school, Oxford strongly recommends and often expects it.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-oxford-uk-oxford_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Oxford."
+              },
+              {
+                "id": "university-of-oxford-uk-oxford_a_level-grant-reach-oxford-scholarship",
+                "label": "A-Level - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
+                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+              }
             ]
           },
           {
@@ -3119,6 +3138,25 @@
               "Interview or admissions test where required by the course",
               "Typical Oxford Computer Science IB offer is 39 points including core points with 7,6,6 at Higher Level and 7 in Higher Level Mathematics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-oxford-uk-oxford_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Oxford."
+              },
+              {
+                "id": "university-of-oxford-uk-oxford_ib-grant-reach-oxford-scholarship",
+                "label": "IB Diploma - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
+                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+              }
             ]
           },
           {
@@ -3139,6 +3177,25 @@
               "Interview or admissions test where required by the course",
               "Oxford Computer Science accepts either four APs at grade 5 including AP Calculus BC and two other mathematics or science subjects, or three APs at grade 5 including AP Calculus BC plus the stated SAT threshold.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-oxford-uk-oxford_sat_ap",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Oxford."
+              },
+              {
+                "id": "university-of-oxford-uk-oxford_sat_ap-grant-reach-oxford-scholarship",
+                "label": "SAT - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
+                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+              }
             ]
           }
         ],
@@ -3218,6 +3275,25 @@
               "Mathematics and Computer Science usually expects A* in Mathematics and A* in Further Mathematics when Further Mathematics is available.",
               "If Further Mathematics is not available, Oxford may instead make an A*AA offer with A* in Mathematics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-oxford-uk-oxford_a_level_maths_cs",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Oxford."
+              },
+              {
+                "id": "university-of-oxford-uk-oxford_a_level_maths_cs-grant-reach-oxford-scholarship",
+                "label": "A-Level - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
+                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+              }
             ]
           },
           {
@@ -3236,6 +3312,25 @@
               "Interview or admissions test where required by the course",
               "Typical Oxford Mathematics and Computer Science IB offer is 39 points including core points with 7,6,6 at Higher Level and 7 in Higher Level Mathematics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-oxford-uk-oxford_ib_maths_cs",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Oxford."
+              },
+              {
+                "id": "university-of-oxford-uk-oxford_ib_maths_cs-grant-reach-oxford-scholarship",
+                "label": "IB Diploma - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
+                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+              }
             ]
           },
           {
@@ -3255,6 +3350,25 @@
               "Interview or admissions test where required by the course",
               "Oxford Mathematics and Computer Science accepts either four APs at grade 5 including AP Calculus BC, or three APs at grade 5 including AP Calculus BC plus the stated SAT threshold.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-oxford-uk-oxford_sat_ap_maths_cs",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Oxford."
+              },
+              {
+                "id": "university-of-oxford-uk-oxford_sat_ap_maths_cs-grant-reach-oxford-scholarship",
+                "label": "SAT - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
+                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+              }
             ]
           }
         ],
@@ -4949,6 +5063,25 @@
               "Interview or admissions test where required by the course",
               "Computer Science requires A-Level Mathematics; some Cambridge Colleges also ask for Further Mathematics at A Level or AS Level when available.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-cambridge-uk-cambridge_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Cambridge."
+              },
+              {
+                "id": "university-of-cambridge-uk-cambridge_a_level-grant-cambridge-trust-scholarship",
+                "label": "A-Level - Cambridge Trust Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Cambridge Trust Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants.",
+                "description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants."
+              }
             ]
           },
           {
@@ -4967,6 +5100,25 @@
               "Interview or admissions test where required by the course",
               "Computer Science typical Cambridge IB offer is 41-42 points with 7,7,6 at Higher Level and Higher Level Mathematics required.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-cambridge-uk-cambridge_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Cambridge."
+              },
+              {
+                "id": "university-of-cambridge-uk-cambridge_ib-grant-cambridge-trust-scholarship",
+                "label": "IB Diploma - Cambridge Trust Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Cambridge Trust Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants.",
+                "description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants."
+              }
             ]
           },
           {
@@ -4986,6 +5138,25 @@
               "Interview or admissions test where required by the course",
               "For Cambridge science courses, U.S. applicants normally need a minimum combined SAT score of 1500 with Mathematics 750+ alongside at least five AP scores of 5 in course-related subjects.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-cambridge-uk-cambridge_sat_ap",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Cambridge."
+              },
+              {
+                "id": "university-of-cambridge-uk-cambridge_sat_ap-grant-cambridge-trust-scholarship",
+                "label": "SAT - Cambridge Trust Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Cambridge Trust Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants.",
+                "description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants."
+              }
             ]
           }
         ],
@@ -5063,6 +5234,25 @@
               "Interview or admissions test where required by the course",
               "Engineering requires A-Level Mathematics and Physics; some Cambridge Colleges also expect or recommend Further Mathematics when available.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-cambridge-uk-cambridge_a_level_engineering",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Cambridge."
+              },
+              {
+                "id": "university-of-cambridge-uk-cambridge_a_level_engineering-grant-cambridge-trust-scholarship",
+                "label": "A-Level - Cambridge Trust Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Cambridge Trust Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants.",
+                "description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants."
+              }
             ]
           },
           {
@@ -5082,6 +5272,25 @@
               "Interview or admissions test where required by the course",
               "Engineering typical Cambridge IB offer is 41-42 points with 7,7,6 at Higher Level including Higher Level Mathematics and Physics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-cambridge-uk-cambridge_ib_engineering",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Cambridge."
+              },
+              {
+                "id": "university-of-cambridge-uk-cambridge_ib_engineering-grant-cambridge-trust-scholarship",
+                "label": "IB Diploma - Cambridge Trust Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Cambridge Trust Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants.",
+                "description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants."
+              }
             ]
           },
           {
@@ -5101,6 +5310,25 @@
               "Interview or admissions test where required by the course",
               "For Cambridge science courses, U.S. applicants normally need a minimum combined SAT score of 1500 with Mathematics 750+ alongside at least five AP scores of 5 in course-related subjects.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-cambridge-uk-cambridge_sat_ap_engineering",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Cambridge."
+              },
+              {
+                "id": "university-of-cambridge-uk-cambridge_sat_ap_engineering-grant-cambridge-trust-scholarship",
+                "label": "SAT - Cambridge Trust Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Cambridge Trust Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants.",
+                "description": "Same Cambridge undergraduate route, with Cambridge Trust scholarship support considered for outstanding international applicants."
+              }
             ]
           }
         ],
@@ -14379,7 +14607,26 @@
             "description": "International undergraduate route for applicants using school-leaving qualifications accepted by the university for direct entry.",
             "requirements": {
               "GPA": 88
-            }
+            },
+            "funding_options": [
+              {
+                "id": "unsw-sydney-au-sydney_international",
+                "label": "General",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on General route at University of New South Wales."
+              },
+              {
+                "id": "unsw-sydney-au-sydney_international-grant-unsw-scientia-scholarship",
+                "label": "General - UNSW International Scientia Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "UNSW International Scientia Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admission route, with consideration for the UNSW International Scientia Coursework Scholarship covering full or partial tuition.",
+                "description": "Same undergraduate admission route, with consideration for the UNSW International Scientia Coursework Scholarship covering full or partial tuition."
+              }
+            ]
           },
           {
             "id": "unsw-sydney-au-sydney_ib",
@@ -14387,7 +14634,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 33
-            }
+            },
+            "funding_options": [
+              {
+                "id": "unsw-sydney-au-sydney_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of New South Wales."
+              },
+              {
+                "id": "unsw-sydney-au-sydney_ib-grant-unsw-scientia-scholarship",
+                "label": "IB Diploma - UNSW International Scientia Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "UNSW International Scientia Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admission route, with consideration for the UNSW International Scientia Coursework Scholarship covering full or partial tuition.",
+                "description": "Same undergraduate admission route, with consideration for the UNSW International Scientia Coursework Scholarship covering full or partial tuition."
+              }
+            ]
           },
           {
             "id": "unsw-sydney-au-sydney_a_level",
@@ -14395,7 +14661,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 14
-            }
+            },
+            "funding_options": [
+              {
+                "id": "unsw-sydney-au-sydney_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of New South Wales."
+              },
+              {
+                "id": "unsw-sydney-au-sydney_a_level-grant-unsw-scientia-scholarship",
+                "label": "A-Level - UNSW International Scientia Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "UNSW International Scientia Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate admission route, with consideration for the UNSW International Scientia Coursework Scholarship covering full or partial tuition.",
+                "description": "Same undergraduate admission route, with consideration for the UNSW International Scientia Coursework Scholarship covering full or partial tuition."
+              }
+            ]
           }
         ],
         "program_ids": [
@@ -16074,7 +16359,26 @@
             "description": "International undergraduate route for applicants using school-leaving qualifications accepted by the university for direct entry.",
             "requirements": {
               "GPA": 88
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-sydney-au-sydney_international",
+                "label": "General",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on General route at University of Sydney."
+              },
+              {
+                "id": "university-of-sydney-au-sydney_international-grant-sydney-vc-scholarship",
+                "label": "General - Vice-Chancellor's International Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Vice-Chancellor's International Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants.",
+                "description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants."
+              }
+            ]
           },
           {
             "id": "university-of-sydney-au-sydney_ib",
@@ -16082,7 +16386,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 33
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-sydney-au-sydney_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Sydney."
+              },
+              {
+                "id": "university-of-sydney-au-sydney_ib-grant-sydney-vc-scholarship",
+                "label": "IB Diploma - Vice-Chancellor's International Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Vice-Chancellor's International Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants.",
+                "description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants."
+              }
+            ]
           },
           {
             "id": "university-of-sydney-au-sydney_a_level",
@@ -16090,7 +16413,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 14
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-sydney-au-sydney_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Sydney."
+              },
+              {
+                "id": "university-of-sydney-au-sydney_a_level-grant-sydney-vc-scholarship",
+                "label": "A-Level - Vice-Chancellor's International Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Vice-Chancellor's International Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants.",
+                "description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants."
+              }
+            ]
           }
         ],
         "program_ids": [
@@ -16632,7 +16974,26 @@
             "description": "Standard undergraduate route for applicants using internationally recognized secondary-school grades reviewed in the university's normal admissions process.",
             "requirements": {
               "GPA": 90
-            }
+            },
+            "funding_options": [
+              {
+                "id": "mcgill-university-ca-montreal_general",
+                "label": "General",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on General route at McGill University."
+              },
+              {
+                "id": "mcgill-university-ca-montreal_general-grant-mcgill-entrance-scholarship",
+                "label": "General - McGill Major Entrance Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "McGill Major Entrance Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates.",
+                "description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates."
+              }
+            ]
           },
           {
             "id": "mcgill-university-ca-montreal_ib",
@@ -16640,7 +17001,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 34
-            }
+            },
+            "funding_options": [
+              {
+                "id": "mcgill-university-ca-montreal_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at McGill University."
+              },
+              {
+                "id": "mcgill-university-ca-montreal_ib-grant-mcgill-entrance-scholarship",
+                "label": "IB Diploma - McGill Major Entrance Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "McGill Major Entrance Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates.",
+                "description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates."
+              }
+            ]
           },
           {
             "id": "mcgill-university-ca-montreal_a_level",
@@ -16648,7 +17028,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 14
-            }
+            },
+            "funding_options": [
+              {
+                "id": "mcgill-university-ca-montreal_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at McGill University."
+              },
+              {
+                "id": "mcgill-university-ca-montreal_a_level-grant-mcgill-entrance-scholarship",
+                "label": "A-Level - McGill Major Entrance Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "McGill Major Entrance Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates.",
+                "description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates."
+              }
+            ]
           }
         ],
         "program_ids": [
@@ -17754,7 +18153,26 @@
             "description": "International undergraduate route for applicants using school-leaving qualifications accepted by the university for direct entry.",
             "requirements": {
               "GPA": 89
-            }
+            },
+            "funding_options": [
+              {
+                "id": "australian-national-university-au-canberra_international",
+                "label": "General",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on General route at Australian National University."
+              },
+              {
+                "id": "australian-national-university-au-canberra_international-grant-anu-chancellors-scholarship",
+                "label": "General - ANU Chancellor's International Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "ANU Chancellor's International Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction.",
+                "description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction."
+              }
+            ]
           },
           {
             "id": "australian-national-university-au-canberra_ib",
@@ -17762,7 +18180,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 34
-            }
+            },
+            "funding_options": [
+              {
+                "id": "australian-national-university-au-canberra_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at Australian National University."
+              },
+              {
+                "id": "australian-national-university-au-canberra_ib-grant-anu-chancellors-scholarship",
+                "label": "IB Diploma - ANU Chancellor's International Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "ANU Chancellor's International Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction.",
+                "description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction."
+              }
+            ]
           },
           {
             "id": "australian-national-university-au-canberra_a_level",
@@ -17770,7 +18207,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 14
-            }
+            },
+            "funding_options": [
+              {
+                "id": "australian-national-university-au-canberra_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at Australian National University."
+              },
+              {
+                "id": "australian-national-university-au-canberra_a_level-grant-anu-chancellors-scholarship",
+                "label": "A-Level - ANU Chancellor's International Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "ANU Chancellor's International Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction.",
+                "description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction."
+              }
+            ]
           }
         ],
         "program_ids": [
@@ -18301,7 +18757,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 15
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-edinburgh-uk-edinburgh_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Edinburgh."
+              },
+              {
+                "id": "university-of-edinburgh-uk-edinburgh_a_level-grant-edinburgh-global-scholarship",
+                "label": "A-Level - Edinburgh Global Undergraduate Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Edinburgh Global Undergraduate Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with competitive consideration for the Edinburgh Global Undergraduate Scholarship for international students.",
+                "description": "Same undergraduate route, with competitive consideration for the Edinburgh Global Undergraduate Scholarship for international students."
+              }
+            ]
           },
           {
             "id": "university-of-edinburgh-uk-edinburgh_ib",
@@ -18309,7 +18784,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 36
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-edinburgh-uk-edinburgh_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Edinburgh."
+              },
+              {
+                "id": "university-of-edinburgh-uk-edinburgh_ib-grant-edinburgh-global-scholarship",
+                "label": "IB Diploma - Edinburgh Global Undergraduate Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Edinburgh Global Undergraduate Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with competitive consideration for the Edinburgh Global Undergraduate Scholarship for international students.",
+                "description": "Same undergraduate route, with competitive consideration for the Edinburgh Global Undergraduate Scholarship for international students."
+              }
+            ]
           },
           {
             "id": "university-of-edinburgh-uk-edinburgh_sat_ap",
@@ -18318,7 +18812,26 @@
             "requirements": {
               "SAT": 1400,
               "AP_Total": 18
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-edinburgh-uk-edinburgh_sat_ap",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Edinburgh."
+              },
+              {
+                "id": "university-of-edinburgh-uk-edinburgh_sat_ap-grant-edinburgh-global-scholarship",
+                "label": "SAT - Edinburgh Global Undergraduate Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Edinburgh Global Undergraduate Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with competitive consideration for the Edinburgh Global Undergraduate Scholarship for international students.",
+                "description": "Same undergraduate route, with competitive consideration for the Edinburgh Global Undergraduate Scholarship for international students."
+              }
+            ]
           }
         ],
         "program_ids": [
@@ -18862,6 +19375,25 @@
               "Interview or admissions test where required by the course",
               "Manchester Computer Science typically requires A*AA including A* in Mathematics and at least one other science subject such as Computer Science, Further Mathematics, Biology, Chemistry or Physics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-manchester-uk-manchester_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Manchester."
+              },
+              {
+                "id": "university-of-manchester-uk-manchester_a_level-grant-manchester-global-futures",
+                "label": "A-Level - Manchester Global Futures Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Manchester Global Futures Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants.",
+                "description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants."
+              }
             ]
           },
           {
@@ -18880,6 +19412,25 @@
               "Interview or admissions test where required by the course",
               "Manchester Computer Science typically requires 37 points overall with 7,6,6 at Higher Level including Higher Level Mathematics and at least one other science subject.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-manchester-uk-manchester_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Manchester."
+              },
+              {
+                "id": "university-of-manchester-uk-manchester_ib-grant-manchester-global-futures",
+                "label": "IB Diploma - Manchester Global Futures Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Manchester Global Futures Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants.",
+                "description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants."
+              }
             ]
           },
           {
@@ -18899,6 +19450,25 @@
               "For U.S. applicants, Manchester uses SAT 1290 as a GCSE-equivalent benchmark and typically expects AP results equivalent to the course's A-Level offer.",
               "Computer Science applicants normally need AP subjects that cover Mathematics and the relevant science-subject expectation.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-manchester-uk-manchester_sat_ap",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Manchester."
+              },
+              {
+                "id": "university-of-manchester-uk-manchester_sat_ap-grant-manchester-global-futures",
+                "label": "SAT - Manchester Global Futures Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Manchester Global Futures Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants.",
+                "description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants."
+              }
             ]
           }
         ],
@@ -18976,6 +19546,25 @@
               "Interview or admissions test where required by the course",
               "Manchester Mechanical Engineering typically requires A*A*A including Mathematics, Physics and one other subject.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-manchester-uk-manchester_a_level_mechanical_engineering",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Manchester."
+              },
+              {
+                "id": "university-of-manchester-uk-manchester_a_level_mechanical_engineering-grant-manchester-global-futures",
+                "label": "A-Level - Manchester Global Futures Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Manchester Global Futures Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants.",
+                "description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants."
+              }
             ]
           },
           {
@@ -18995,6 +19584,25 @@
               "Interview or admissions test where required by the course",
               "Manchester Mechanical Engineering typically requires 38 points overall with 7,7,6 at Higher Level including Higher Level Mathematics and Physics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-manchester-uk-manchester_ib_mechanical_engineering",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Manchester."
+              },
+              {
+                "id": "university-of-manchester-uk-manchester_ib_mechanical_engineering-grant-manchester-global-futures",
+                "label": "IB Diploma - Manchester Global Futures Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Manchester Global Futures Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants.",
+                "description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants."
+              }
             ]
           },
           {
@@ -19014,6 +19622,25 @@
               "For U.S. applicants, Manchester uses SAT 1290 as a GCSE-equivalent benchmark and typically expects AP results equivalent to the course's A-Level offer.",
               "Mechanical Engineering applicants normally need AP subjects that cover Mathematics and Physics.",
               "English-language proof where applicable"
+            ],
+            "funding_options": [
+              {
+                "id": "university-of-manchester-uk-manchester_sat_ap_mechanical_engineering",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on SAT route at University of Manchester."
+              },
+              {
+                "id": "university-of-manchester-uk-manchester_sat_ap_mechanical_engineering-grant-manchester-global-futures",
+                "label": "SAT - Manchester Global Futures Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Manchester Global Futures Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants.",
+                "description": "Same undergraduate route, with consideration for the Manchester Global Futures Scholarship merit awards for international undergraduate applicants."
+              }
             ]
           }
         ],
@@ -20129,7 +20756,26 @@
             "description": "Standard undergraduate route for applicants using internationally recognized secondary-school grades reviewed in the university's normal admissions process.",
             "requirements": {
               "GPA": 91
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-british-columbia-ca-vancouver_general",
+                "label": "General",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on General route at University of British Columbia."
+              },
+              {
+                "id": "university-of-british-columbia-ca-vancouver_general-grant-ubc-imes-scholarship",
+                "label": "General - International Major Entrance Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "International Major Entrance Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same UBC undergraduate route, with consideration for the International Major Entrance Scholarship (IMES) for exceptional international students entering undergraduate study.",
+                "description": "Same UBC undergraduate route, with consideration for the International Major Entrance Scholarship (IMES) for exceptional international students entering undergraduate study."
+              }
+            ]
           },
           {
             "id": "university-of-british-columbia-ca-vancouver_ib",
@@ -20137,7 +20783,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 34
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-british-columbia-ca-vancouver_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of British Columbia."
+              },
+              {
+                "id": "university-of-british-columbia-ca-vancouver_ib-grant-ubc-imes-scholarship",
+                "label": "IB Diploma - International Major Entrance Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "International Major Entrance Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same UBC undergraduate route, with consideration for the International Major Entrance Scholarship (IMES) for exceptional international students entering undergraduate study.",
+                "description": "Same UBC undergraduate route, with consideration for the International Major Entrance Scholarship (IMES) for exceptional international students entering undergraduate study."
+              }
+            ]
           },
           {
             "id": "university-of-british-columbia-ca-vancouver_a_level",
@@ -20145,7 +20810,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 14
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-british-columbia-ca-vancouver_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of British Columbia."
+              },
+              {
+                "id": "university-of-british-columbia-ca-vancouver_a_level-grant-ubc-imes-scholarship",
+                "label": "A-Level - International Major Entrance Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "International Major Entrance Scholarship",
+                "funding_source": "merit",
+                "funding_description": "Same UBC undergraduate route, with consideration for the International Major Entrance Scholarship (IMES) for exceptional international students entering undergraduate study.",
+                "description": "Same UBC undergraduate route, with consideration for the International Major Entrance Scholarship (IMES) for exceptional international students entering undergraduate study."
+              }
+            ]
           }
         ],
         "program_ids": [
@@ -21265,7 +21949,26 @@
             "description": "Standard undergraduate route for applicants using internationally recognized secondary-school grades reviewed in the university's normal admissions process.",
             "requirements": {
               "GPA": 92
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-waterloo-ca-waterloo_general",
+                "label": "General",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on General route at University of Waterloo."
+              },
+              {
+                "id": "university-of-waterloo-ca-waterloo_general-grant-waterloo-presidents-scholarship",
+                "label": "General - President's Scholarship of Distinction (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "President's Scholarship of Distinction",
+                "funding_source": "merit",
+                "funding_description": "Same Waterloo undergraduate route, with automatic consideration for the President's Scholarship of Distinction for top admitted applicants.",
+                "description": "Same Waterloo undergraduate route, with automatic consideration for the President's Scholarship of Distinction for top admitted applicants."
+              }
+            ]
           },
           {
             "id": "university-of-waterloo-ca-waterloo_ib",
@@ -21273,7 +21976,26 @@
             "description": "Direct undergraduate route for applicants presenting the IB Diploma with a competitive total and relevant subjects.",
             "requirements": {
               "IB_Diploma": 35
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-waterloo-ca-waterloo_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on IB Diploma route at University of Waterloo."
+              },
+              {
+                "id": "university-of-waterloo-ca-waterloo_ib-grant-waterloo-presidents-scholarship",
+                "label": "IB Diploma - President's Scholarship of Distinction (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "President's Scholarship of Distinction",
+                "funding_source": "merit",
+                "funding_description": "Same Waterloo undergraduate route, with automatic consideration for the President's Scholarship of Distinction for top admitted applicants.",
+                "description": "Same Waterloo undergraduate route, with automatic consideration for the President's Scholarship of Distinction for top admitted applicants."
+              }
+            ]
           },
           {
             "id": "university-of-waterloo-ca-waterloo_a_level",
@@ -21281,7 +22003,26 @@
             "description": "Direct undergraduate route for applicants presenting full A-Level results or predicted grades accepted by the university.",
             "requirements": {
               "A_LEVEL_CERT": 15
-            }
+            },
+            "funding_options": [
+              {
+                "id": "university-of-waterloo-ca-waterloo_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on A-Level route at University of Waterloo."
+              },
+              {
+                "id": "university-of-waterloo-ca-waterloo_a_level-grant-waterloo-presidents-scholarship",
+                "label": "A-Level - President's Scholarship of Distinction (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "President's Scholarship of Distinction",
+                "funding_source": "merit",
+                "funding_description": "Same Waterloo undergraduate route, with automatic consideration for the President's Scholarship of Distinction for top admitted applicants.",
+                "description": "Same Waterloo undergraduate route, with automatic consideration for the President's Scholarship of Distinction for top admitted applicants."
+              }
+            ]
           }
         ],
         "program_ids": [
