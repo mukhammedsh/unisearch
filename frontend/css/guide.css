@@ -260,9 +260,9 @@
   display: inline-block;
   padding: 2px 7px;
   border-radius: var(--radius-xs);
-  background: color-mix(in srgb, var(--accent) 8%, var(--surface-soft));
-  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-  color: var(--accent);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  color: var(--text);
   font-family: inherit;
   font-size: 13.5px;
   font-weight: 600;
@@ -310,13 +310,13 @@
 /* --------------------------------------------------------------------------
    Theme-specific adjustments
    -------------------------------------------------------------------------- */
-:root:not([data-theme="dark"]) body[data-page="guide"] {
+body[data-page="guide"] {
   background: var(--bg);
 }
 
 :root[data-theme="dark"] .guide-nav a.is-active {
   background: color-mix(in srgb, var(--accent) 15%, var(--surface-solid));
-  color: #a5b4fc;
+  color: var(--accent);
   border-left-color: var(--accent);
 }
 
@@ -326,9 +326,9 @@
 
 :root[data-theme="dark"] .guide-tag,
 :root[data-theme="dark"] .guide-doc code {
-  background: rgba(129, 140, 248, 0.12);
-  border-color: var(--line-accent);
-  color: #a5b4fc;
+  background: var(--surface-soft);
+  border-color: var(--line);
+  color: var(--text);
 }
 
 /* --------------------------------------------------------------------------

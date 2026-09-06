@@ -296,16 +296,23 @@
   align-self: center;
   text-decoration: none;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text);
   padding: 10px 12px;
   border-radius: 12px;
-  background: rgba(87, 21, 219, 0.08);
-  border: 1px solid rgba(87, 21, 219, 0.18);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
   white-space: nowrap;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.d-back:hover {
-  background: rgba(87, 21, 219, 0.12);
+.d-back:hover,
+.d-back:focus-visible {
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
 }
 
 .d-grid {
@@ -482,8 +489,8 @@
   box-sizing: border-box;
   border-radius: var(--radius-circle);
   border: 1px solid var(--line);
-  background: var(--surface-solid);
-  color: var(--accent);
+  background: var(--surface-soft);
+  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -493,6 +500,18 @@
   cursor: pointer;
   padding: 0;
   appearance: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.d-info:hover,
+.d-info:focus-visible,
+.d-info-wrap.is-open .d-info {
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
 }
 
 .d-info > * {
@@ -936,7 +955,7 @@
 .admissions-summary-value {
   font-size: 24px;
   font-weight: 700;
-  color: #241d3a;
+  color: var(--text);
   line-height: 1.15;
   overflow-wrap: anywhere;
 }
@@ -945,7 +964,7 @@
   margin-top: 4px;
   font-size: 13px;
   font-weight: 600;
-  color: #5d17ea;
+  color: var(--text-muted);
 }
 
 .admissions-summary-note,
@@ -953,7 +972,7 @@
   margin: 12px 0 0;
   font-size: 13px;
   line-height: 1.5;
-  color: #5f6b7d;
+  color: var(--text-muted);
 }
 
 .admissions-summary-meta {
@@ -1062,16 +1081,16 @@
 }
 
 .d-tab-btn:hover {
-  background-color: #f8f9fa;
-  border-color: #bbb;
-  color: #333;
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--text);
 }
 
 .d-tab-btn.active {
-  background-color: var(--accent);
-  color: white;
-  border-color: var(--accent);
-  box-shadow: 0 4px 10px rgba(87, 21, 219, 0.2);
+  background-color: transparent;
+  color: var(--accent);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .d-back:focus-visible,
@@ -1196,14 +1215,14 @@
 
 .chance-title {
   font-size: 13px;
-  font-weight: 600;
-  color: var(--accent);
+  font-weight: 700;
+  color: var(--text);
   letter-spacing: 0.2px;
 }
 
 .chance-sub {
   font-size: 12px;
-  color: #475569;
+  color: var(--text-muted);
   margin-top: 4px;
   max-width: 700px;
 }
@@ -1415,28 +1434,22 @@
 }
 
 .finance-track-options-title {
+  font-size: 13px;
   font-weight: 700;
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-self: start;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--line-accent);
-  background: var(--accent-soft);
-  color: var(--accent);
+  margin: 0 0 10px;
+  color: var(--text);
 }
 
 .track-selection-badge {
   opacity: 1;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
   border: 1px solid var(--line-accent);
-  background: var(--accent-soft);
+  background: var(--accent-panel);
   color: var(--accent);
 }
 
@@ -1446,43 +1459,43 @@
 }
 
 .track-select-btn {
-  border: 1px solid rgba(87, 21, 219, 0.18);
-  background: rgba(87, 21, 219, 0.08);
-  color: var(--accent);
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
   border-radius: 10px;
-  padding: 9px 14px;
+  padding: 8px 14px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   transition:
-  background-color var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
-  color var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard),
-  box-shadow var(--motion-fast) var(--motion-ease-standard);
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .track-select-btn:hover:not(:disabled) {
-  background: rgba(87, 21, 219, 0.13);
-  border-color: rgba(87, 21, 219, 0.28);
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
 }
 
 .track-select-btn:disabled,
 .track-select-btn.is-active {
   cursor: default;
-  background: rgba(99, 102, 241, 0.12);
-  color: #3730a3;
-  border-color: rgba(99, 102, 241, 0.42);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.12);
+  background: var(--accent-panel);
+  color: var(--accent);
+  border-color: var(--line-accent);
+  box-shadow: none;
 }
 
 .admission-empty-state {
   margin-top: 10px;
   padding: 14px 16px;
-  border: 1px dashed #d1d5db;
+  border: 1px dashed var(--line);
   border-radius: 12px;
-  background: #f8fafc;
-  color: #64748b;
+  background: var(--surface-soft);
+  color: var(--text-muted);
   text-align: center;
   font-weight: 600;
 }
@@ -2056,12 +2069,12 @@
 }
 
 .total-price-card {
-  background: #f5f0ff; /* Светло-фиолетовый */
-  border: 1px solid #d8c9ff;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
-  height: auto; /* Высота по контенту */
+  height: auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -2070,9 +2083,9 @@
 
 .price-header {
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text-muted);
   margin-bottom: 0;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -2088,13 +2101,13 @@
 .price-big {
   font-size: 2.2rem;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--text);
   line-height: 0.95;
 }
 
 .price-sub {
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-top: 0;
   font-weight: 500;
   line-height: 1;
@@ -2390,11 +2403,10 @@
 }
 
 .roi-box {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--card);
+  border: 1px solid var(--line);
   border-radius: 14px;
   padding: 22px;
-  transition: transform var(--motion-snappy) var(--motion-ease-standard);
   overflow-wrap: anywhere;
 }
 
@@ -2404,13 +2416,14 @@
 
 .roi-title {
   margin: 0 0 10px;
-  color: #5d17ea;
+  color: var(--text);
   font-size: 18px;
+  font-weight: 700;
 }
 
 .roi-description {
   font-size: 13px;
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 20px;
   line-height: 1.5;
 }
@@ -2436,13 +2449,13 @@
 }
 
 .roi-context--neutral {
-  background: #f3f4f6;
-  color: #374151;
-  border-color: #e5e7eb;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  border-color: var(--line);
 }
 
 .roi-box:hover {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+  border-color: var(--line-accent);
 }
 
 .roi-metrics-row {
@@ -2460,7 +2473,7 @@
 
 .roi-metric-label {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -2468,13 +2481,13 @@
 .roi-metric-value {
   font-size: 24px;
   font-weight: 800;
-  color: #111;
+  color: var(--text);
   line-height: 1.2;
 }
 
 .roi-metric-note {
   font-size: 11px;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .roi-metric-note--tone {
@@ -2497,7 +2510,7 @@
 .roi-metrics-divider {
   width: 1px;
   height: 50px;
-  background: #eee;
+  background: var(--line);
   flex: 0 0 1px;
 }
 
@@ -2647,12 +2660,6 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.42);
 }
 
-:root[data-theme="dark"] .d-info {
-  background: #1a1a1a;
-  border-color: #4a4a4a;
-  color: #b48cff;
-}
-
 :root[data-theme="dark"] .d-tooltip {
   background: #f4f4f5;
   color: #18181b;
@@ -2676,29 +2683,29 @@
 }
 
 :root[data-theme="dark"] .d-tab-btn {
-  background: #171717;
-  border-color: var(--line);
+  background: transparent;
+  border-color: transparent;
   color: var(--muted);
 }
 
 :root[data-theme="dark"] .d-tab-btn:hover {
-  background-color: #222222;
-  border-color: var(--line);
+  background-color: transparent;
+  border-color: transparent;
   color: var(--text);
 }
 
 :root[data-theme="dark"] .d-tab-btn.active,
 :root[data-theme="dark"] .d-tab-btn.active:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(87, 21, 219, 0.32);
+  background: transparent;
+  border-color: transparent;
+  color: var(--accent);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .d-site-link {
-  background: #171717;
+  background: transparent;
   border-color: var(--line);
-  color: var(--accent);
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .chance-panel,
@@ -2714,9 +2721,12 @@
   color: #fcd9a5;
 }
 
-:root[data-theme="dark"] .chance-title,
+:root[data-theme="dark"] .chance-title {
+  color: var(--text);
+}
+
 :root[data-theme="dark"] .price-header {
-  color: var(--accent);
+  color: var(--text-muted);
 }
 
 :root[data-theme="dark"] .chance-sub,
@@ -2744,7 +2754,7 @@
 }
 
 :root[data-theme="dark"] .d-page-scope__text {
-  color: #efe7ff;
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .chance-inline-note {
@@ -2770,7 +2780,7 @@
 }
 
 :root[data-theme="dark"] .roi-title {
-  color: var(--accent);
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .roi-description {
@@ -2822,13 +2832,15 @@
 }
 
 :root[data-theme="dark"] .d-back {
-  color: var(--accent);
-  background: rgba(87, 21, 219, 0.16);
-  border-color: rgba(87, 21, 219, 0.34);
+  background: transparent;
+  border-color: var(--line);
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .d-back:hover {
-  background: rgba(87, 21, 219, 0.24);
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
 }
 
 :root[data-theme="dark"] .d-cover-logo {
@@ -2838,13 +2850,14 @@
 }
 
 :root[data-theme="dark"] .roi-box {
-  background: #161616;
-  border-color: #3f3f3f !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .roi-box:hover {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+  border-color: var(--line-accent);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .program-card {
@@ -2854,12 +2867,12 @@
 }
 
 :root[data-theme="dark"] .program-card:hover {
-  border-color: rgba(87, 21, 219, 0.45);
+  border-color: var(--line-accent);
   box-shadow: none;
 }
 
 :root[data-theme="dark"] .program-card-title {
-  color: #f3efff;
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .admissions-overview,
@@ -2871,7 +2884,7 @@
 :root[data-theme="dark"] .admissions-section-title,
 :root[data-theme="dark"] .admissions-summary-value,
 :root[data-theme="dark"] .admissions-program-title {
-  color: #f5f3ff;
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .admissions-section-note,
@@ -2879,14 +2892,14 @@
 :root[data-theme="dark"] .admissions-program-note,
 :root[data-theme="dark"] .admissions-summary-meta,
 :root[data-theme="dark"] .admissions-summary-eyebrow {
-  color: rgba(237, 237, 237, 0.75);
+  color: var(--text-muted);
 }
 
 :root[data-theme="dark"] .admissions-summary-card,
 :root[data-theme="dark"] .admissions-program-card {
-  border-color: rgba(154, 122, 255, 0.24);
-  background: rgba(17, 19, 24, 0.9);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+  border-color: var(--line);
+  background: var(--surface-solid);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .admissions-source-link {
@@ -3007,11 +3020,16 @@
   color: #f87171;
 }
 
-:root[data-theme="dark"] .track-selection-badge,
+:root[data-theme="dark"] .track-selection-badge {
+  color: var(--accent);
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+}
+
 :root[data-theme="dark"] .finance-track-options-title {
-  color: #ddd6fe;
-  background: rgba(168, 85, 247, 0.16);
-  border-color: rgba(196, 181, 253, 0.22);
+  color: var(--text);
+  background: transparent;
+  border: none;
 }
 
 :root[data-theme="dark"] .track-muted-italic,
@@ -3019,26 +3037,27 @@
 :root[data-theme="dark"] .track-stats-values,
 :root[data-theme="dark"] .track-exam-group-list,
 :root[data-theme="dark"] .track-lang-rule-requirements {
-  color: #c3c7d0;
+  color: var(--text-muted);
 }
 
 :root[data-theme="dark"] .track-select-btn {
-  background: rgba(129, 140, 248, 0.12);
-  border-color: rgba(129, 140, 248, 0.28);
-  color: #c7d2fe;
+  background: var(--surface-soft);
+  border-color: var(--line);
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .track-select-btn:hover:not(:disabled) {
-  background: rgba(129, 140, 248, 0.18);
-  border-color: rgba(129, 140, 248, 0.4);
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
 }
 
 :root[data-theme="dark"] .track-select-btn:disabled,
 :root[data-theme="dark"] .track-select-btn.is-active {
-  background: rgba(129, 140, 248, 0.16);
-  border-color: rgba(129, 140, 248, 0.42);
-  color: #c7d2fe;
-  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.12);
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .track-stats-box--min {
@@ -3814,8 +3833,8 @@
 }
 
 .d-card {
-  border: none;
-  border-radius: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
   background: var(--card);
   box-shadow: none;
   overflow: visible;
@@ -3823,13 +3842,13 @@
 }
 
 .d-cover {
-  border-radius: 0;
+  border-radius: 20px 20px 0 0;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
 }
 
 .d-cover-overlay {
-  border-radius: 0;
+  border-radius: inherit;
 }
 
 .d-cover-logo {
@@ -3938,7 +3957,7 @@
 
 .d-tab-content {
   border-top: 0;
-  border-radius: 0;
+  border-radius: 0 0 20px 20px;
   background: var(--card);
 }
 
@@ -4136,11 +4155,15 @@
 
 @media (max-width: 720px) {
   .d-card {
-    border-radius: 0;
+    border-radius: 20px;
   }
 
   .d-cover {
-    border-radius: 0;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .d-tab-content {
+    border-radius: 0 0 20px 20px;
   }
 
   .d-head {
@@ -4172,15 +4195,15 @@
 
 @media (max-width: 380px) {
   .d-card {
-    border-radius: 0;
+    border-radius: 18px;
   }
 
   .d-cover {
-    border-radius: 0;
+    border-radius: 18px 18px 0 0;
   }
 
   .d-tab-content {
-    border-radius: 0;
+    border-radius: 0 0 18px 18px;
   }
 
   .d-tab-btn {
@@ -4531,117 +4554,27 @@
   margin-top: 0;
 }
 
-:root:not([data-theme="dark"]) #tab-finance .finance-box,
-:root:not([data-theme="dark"]) #tab-admission .d-box,
-:root:not([data-theme="dark"]) #tab-general .d-box,
-:root:not([data-theme="dark"]) #tab-programs .d-box,
-:root:not([data-theme="dark"]) .finance-track-group,
-:root:not([data-theme="dark"]) .finance-option-card,
-:root:not([data-theme="dark"]) .track-stats-box,
-:root:not([data-theme="dark"]) .track-cost-preview,
-:root:not([data-theme="dark"]) .finance-option-total,
-:root:not([data-theme="dark"]) .cost-legend-row,
-:root:not([data-theme="dark"]) .cost-legend-single,
-:root:not([data-theme="dark"]) .scholarship-card,
-:root:not([data-theme="dark"]) .total-price-card {
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--line-strong);
+body[data-page="university"],
+.d-page {
+  background: var(--bg);
 }
 
-:root:not([data-theme="dark"]) .finance-track-group,
-:root:not([data-theme="dark"]) .finance-option-card {
-  background: #ffffff;
-}
-
-:root:not([data-theme="dark"]) .track-cost-preview,
-:root:not([data-theme="dark"]) .finance-option-total,
-:root:not([data-theme="dark"]) .cost-legend-row,
-:root:not([data-theme="dark"]) .cost-legend-single,
-:root:not([data-theme="dark"]) .track-stats-box {
-  background: var(--surface-soft);
-}
-
-:root:not([data-theme="dark"]) .finance-track-group--grant,
-:root:not([data-theme="dark"]) .finance-option-card--grant {
-  border-color: rgba(16, 185, 129, 0.38);
-}
-
-:root:not([data-theme="dark"]) .finance-track-group--grant .finance-option-card,
-:root:not([data-theme="dark"]) .finance-option-card--grant {
-  background: #f3fcf7;
-}
-
-:root:not([data-theme="dark"]) .scholarship-card {
-  background: #f0fdf7;
-  border-color: rgba(16, 185, 129, 0.42);
-}
-
-:root:not([data-theme="dark"]) .total-price-card {
-  background: #f7f4ff;
-  border-color: rgba(87, 21, 219, 0.26);
-}
-
-:root:not([data-theme="dark"]) .d-page-scope {
+.d-page-scope,
+.d-card,
+.d-head,
+.d-tabs,
+.d-tab-content,
+#tab-finance .finance-box,
+#tab-admission .d-box,
+#tab-general .d-box,
+#tab-programs .d-box,
+.finance-track-group,
+.finance-option-card,
+.scholarship-card,
+.total-price-card {
   background: var(--card);
   border-color: var(--line);
-  border-left-color: var(--accent);
-}
-
-:root:not([data-theme="dark"]) .d-card,
-:root:not([data-theme="dark"]) .d-head,
-:root:not([data-theme="dark"]) .d-tabs,
-:root:not([data-theme="dark"]) .d-tab-content {
-  background: var(--card);
-  border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .d-tabs {
-  border-top-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .d-tab-content,
-:root:not([data-theme="dark"]) #tab-general .d-box + .d-box {
-  border-top-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .d-tab-btn.active,
-:root:not([data-theme="dark"]) .d-site-link:hover,
-:root:not([data-theme="dark"]) .d-back:hover {
-  color: var(--accent);
-}
-
-:root:not([data-theme="dark"]) .d-back:hover,
-:root:not([data-theme="dark"]) .d-site-link:hover,
-:root:not([data-theme="dark"]) .d-info,
-:root:not([data-theme="dark"]) .uni-tag {
-  background: var(--accent-panel);
-  border-color: rgba(87, 21, 219, 0.24);
-}
-
-:root:not([data-theme="dark"]) .d-quick-stat,
-:root:not([data-theme="dark"]) .uni-tags-wrap,
-:root:not([data-theme="dark"]) .chance-panel,
-:root:not([data-theme="dark"]) .track-cost-preview,
-:root:not([data-theme="dark"]) .finance-option-total,
-:root:not([data-theme="dark"]) .track-extra-req,
-:root:not([data-theme="dark"]) .track-stats-box,
-:root:not([data-theme="dark"]) .track-lang-rules,
-:root:not([data-theme="dark"]) .track-lang-rule-card {
-  background: var(--surface-soft);
-  border-color: var(--line);
-}
-
-:root:not([data-theme="dark"]) .track-select-btn:disabled,
-:root:not([data-theme="dark"]) .track-select-btn.is-active {
-  color: #3730a3;
-  background: rgba(87, 21, 219, 0.13);
-  border-color: rgba(87, 21, 219, 0.42);
-}
-
-:root:not([data-theme="dark"]) .finance-option-card:hover,
-:root:not([data-theme="dark"]) .program-card:hover {
-  border-color: rgba(87, 21, 219, 0.32);
+  box-shadow: none;
 }
 
 #tab-admission .d-box,
@@ -4649,66 +4582,66 @@
   border-radius: 0;
 }
 
-:root:not([data-theme="dark"]) body[data-page="university"],
-:root:not([data-theme="dark"]) .d-page {
-  background: var(--bg);
-}
-
-:root:not([data-theme="dark"]) .d-page-scope,
-:root:not([data-theme="dark"]) .d-card,
-:root:not([data-theme="dark"]) .d-head,
-:root:not([data-theme="dark"]) .d-tabs,
-:root:not([data-theme="dark"]) .d-tab-content,
-:root:not([data-theme="dark"]) #tab-finance .finance-box,
-:root:not([data-theme="dark"]) #tab-admission .d-box,
-:root:not([data-theme="dark"]) #tab-general .d-box,
-:root:not([data-theme="dark"]) #tab-programs .d-box,
-:root:not([data-theme="dark"]) .finance-track-group,
-:root:not([data-theme="dark"]) .finance-option-card,
-:root:not([data-theme="dark"]) .scholarship-card,
-:root:not([data-theme="dark"]) .total-price-card {
-  background: var(--card);
-  border-color: var(--line);
-  box-shadow: none;
-}
-
-:root:not([data-theme="dark"]) .d-page-scope {
+.d-page-scope {
   border-left-color: var(--accent);
 }
 
-:root:not([data-theme="dark"]) .d-back:hover,
-:root:not([data-theme="dark"]) .d-site-link:hover,
-:root:not([data-theme="dark"]) .d-info,
-:root:not([data-theme="dark"]) .uni-tag,
-:root:not([data-theme="dark"]) .d-quick-stat,
-:root:not([data-theme="dark"]) .uni-tags-wrap,
-:root:not([data-theme="dark"]) .chance-panel,
-:root:not([data-theme="dark"]) .track-cost-preview,
-:root:not([data-theme="dark"]) .finance-option-total,
-:root:not([data-theme="dark"]) .track-extra-req,
-:root:not([data-theme="dark"]) .track-stats-box,
-:root:not([data-theme="dark"]) .track-lang-rules,
-:root:not([data-theme="dark"]) .track-lang-rule-card,
-:root:not([data-theme="dark"]) .cost-legend-row,
-:root:not([data-theme="dark"]) .cost-legend-single {
+.d-back:hover,
+.d-site-link:hover {
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
+}
+
+.d-info {
+  background: var(--surface-soft);
+  border-color: var(--line);
+  color: var(--text-muted);
+}
+
+.d-info:hover,
+.d-info:focus-visible,
+.d-info-wrap.is-open .d-info {
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
+  color: var(--accent);
+}
+
+.uni-tag,
+.d-quick-stat,
+.uni-tags-wrap,
+.chance-panel,
+.track-cost-preview,
+.finance-option-total,
+.track-extra-req,
+.track-stats-box,
+.track-lang-rules,
+.track-lang-rule-card,
+.cost-legend-row,
+.cost-legend-single {
   background: var(--surface-soft);
   border-color: var(--line);
 }
 
-:root:not([data-theme="dark"]) .finance-track-group--grant,
-:root:not([data-theme="dark"]) .finance-option-card--grant {
-  border-color: rgba(16, 185, 129, 0.28);
+.finance-option-card:hover,
+.program-card:hover {
+  border-color: var(--line-accent);
 }
 
-:root:not([data-theme="dark"]) .finance-track-group--grant .finance-option-card,
-:root:not([data-theme="dark"]) .finance-option-card--grant,
-:root:not([data-theme="dark"]) .scholarship-card {
+.finance-track-group--grant,
+.finance-option-card--grant {
+  border-color: rgba(16, 185, 129, 0.32);
+}
+
+.finance-track-group--grant .finance-option-card,
+.finance-option-card--grant,
+.scholarship-card {
   background: rgba(16, 185, 129, 0.08);
 }
 
-:root:not([data-theme="dark"]) .total-price-card {
-  background: rgba(87, 21, 219, 0.07);
-  border-color: rgba(87, 21, 219, 0.3);
+.total-price-card {
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 .admission-chance-badge {
