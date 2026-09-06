@@ -1419,16 +1419,23 @@ def sort_universities_ai(
             )
             ml_score = row_ml_score
 
-            amount = None
+            track_fit_score = float(fit.get("fit", 0.0))
+            grant_potential = track_fit_score if aid_eligible else 0.0
+            sc = track_fit_score
             if aid_eligible:
-                aid_pot_score = 0.60
-                aid_fit_score = 0.60
+                sc = _clamp01((sc * 0.8) + (grant_potential * 0.2))
 
-            sc = float(fit.get("fit", 0.0))
             if aid_eligible:
-                sc = _clamp01((sc * 0.8) + (aid_fit_score * 0.2))
+                finance = _finance_for_cost(row, choice)
+                breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
+                tuition = _extract_tuition_cost(breakdown)
+                if tuition is not None and tuition > 0:
+                    final_price = max(0.0, cost - float(tuition))
+                else:
+                    final_price = 0.0
+            else:
+                final_price = cost
 
-            final_price = cost
             match_data = {
                 "choiceKey": choice_key,
                 "choiceId": str(choice.get("id") or "choice"),
@@ -1446,7 +1453,7 @@ def sort_universities_ai(
                 "conditional": bool(fit.get("conditional")),
                 "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
                 "costYearUSD": cost,
-                "grantPotential": 0.60 if aid_eligible else 0.0,
+                "grantPotential": grant_potential,
                 "grantEligible": aid_eligible,
                 "hardScore": hard_score,
                 "distanceScore": _clamp01(1.0 - preference_mismatch),

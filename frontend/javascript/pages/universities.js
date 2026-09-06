@@ -37,6 +37,7 @@ import {
   chanceTone,
   clusterMarkerLogoHtml,
   getAdmissionChoicesFromCategories,
+  getGrantsFromCategories,
   getTrackFundingType,
   mapMarkerLogoHtml,
   renderGroupedExamPairRows,
@@ -977,22 +978,18 @@ export function initUniversitiesPage() {
     };
 
     const compareAidText = (u) => {
-        let hasGrant = false;
-        if (Array.isArray(u?.admission_categories)) {
-            for (const cat of u.admission_categories) {
-                if (Array.isArray(cat.requirement_profiles)) {
-                    for (const prof of cat.requirement_profiles) {
-                        if (Array.isArray(prof.funding_options)) {
-                            if (prof.funding_options.some(f => f.funding_type === "grant")) {
-                                hasGrant = true;
-                            }
-                        }
-                    }
-                }
+        const grants = getGrantsFromCategories(u?.admission_categories);
+        if (Array.isArray(grants) && grants.length > 0) {
+            const names = Array.from(
+                new Set(
+                    grants.map((g) => trTrackDescription(u?.id, g.id, g.name)).filter(Boolean)
+                )
+            );
+            if (names.length > 0) {
+                return names.join(", ");
             }
         }
-        if (hasGrant) return t("universities.compare.aid_merit", "Grants & Scholarships");
-        return t("common.na", "N/A");
+        return t("no_grants_available", "No grants available");
     };
 
     const isBachelorStudyLevel = (level) => {
@@ -1358,9 +1355,8 @@ export function initUniversitiesPage() {
     };
 
     const compareAidScore = (u) => {
-        const merit = nested(u, ["finance", "financial_aid", "merit_based"], false) ? 1 : 0;
-        const need = nested(u, ["finance", "financial_aid", "need_based"], false) ? 1 : 0;
-        return merit + need;
+        const grants = getGrantsFromCategories(u?.admission_categories);
+        return Array.isArray(grants) ? grants.length : 0;
     };
 
     const compareCostBreakdownNumber = (u, mode) => {
@@ -4656,20 +4652,7 @@ export function initUniversitiesPage() {
         const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
         const meetsMinRequirements = match.meetMinRequirements === true && !hasConditionalExamWarning;
         const belowRequirements = match.meetMinRequirements === false;
-        let hasGrant = false;
-        if (Array.isArray(u?.admission_categories)) {
-            for (const cat of u.admission_categories) {
-                if (Array.isArray(cat.requirement_profiles)) {
-                    for (const prof of cat.requirement_profiles) {
-                        if (Array.isArray(prof.funding_options)) {
-                            if (prof.funding_options.some(f => f.funding_type === "grant")) {
-                                hasGrant = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
         const aidAny = !!(match.aidAny || match.aidEligible || hasGrant);
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
         const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);

@@ -59,6 +59,35 @@ Good reference:
 
 - `frontend/css/university.css`, especially the final `2026 University Refresh` and later polish overrides.
 
+## Spacing and Grid System
+
+UniSearch uses a strict 8-point spatial system (with 4px half-steps for compact UI). Follow these rules to prevent layout drift, double margins, and responsive collapse:
+
+### 1. Layout Ownership Principle
+- Reusable components (cards, badges, list items, buttons) must have zero external margins (`margin: 0`).
+- The parent container is solely responsible for positioning and spacing child elements via `display: flex` / `display: grid` and `gap`.
+- The only acceptable margin on flex/grid children is auto-alignment (`margin-left: auto` or `margin-top: auto`).
+
+### 2. Preventing Double Spacing (Spacing Stacks)
+- **Never mix `gap` and child `margin`:** If a flex/grid container has `gap: 16px`, child elements must not have `margin-bottom` or `margin-right`.
+- **Zero margins at container boundaries:** Inside any container that has `padding`, the first child must have `margin-top: 0` and the last child must have `margin-bottom: 0` (e.g., `:first-child { margin-top: 0; }` and `:last-child { margin-bottom: 0; }`).
+- **Single-layer padding responsibility:** Do not stack identical padding across nested wrapper divs (e.g. section padding + container padding + inner card padding). Allocate padding only to the visual surface boundary.
+- **No negative margin compensation:** Never use negative margins (`margin-top: -Npx`) to counteract unwanted gaps or line-height offsets. Eliminate the source margin or align the typography instead.
+
+### 3. Spacing Scale
+- `4px`: Micro-spacing (icon + label, pill internal spacing).
+- `8px`: Compact element spacing (tag lists, badge groups, button icon gap).
+- `12px`: Moderate spacing (subtitles, secondary metadata, compact form fields).
+- `16px`: Standard grid gap, input row spacing, mobile card padding.
+- `20px`: Default desktop card padding, standard vertical rhythm between distinct blocks.
+- `24px`: Section gap, toolbar-to-grid spacing, major card padding.
+- `32px`: Spacing between major independent page sections.
+- `48px / 64px`: Page header top/bottom hero spacing on desktop.
+
+### 4. Responsive Spacing
+- On desktop, page container padding is `24px` to `32px`.
+- On tablet/mobile (`<= 768px` and `<= 480px`), compress outer padding to `12px - 16px` and card padding to `12px - 16px`. Ensure layout paddings do not exceed 20% of total viewport width.
+
 ## Components
 
 ### Buttons
