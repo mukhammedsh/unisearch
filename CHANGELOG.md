@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Synchronized university card and admission requirements styling on comparison configuration view with the university detail page (`style.css`, `university.css`, `universities.css`, `universities.js`):
+  - Hoisted admission track requirements and score preview styles (`.track-stats-box`, `.track-stats-box--min`, `.track-stats-box--avg`, `.track-exam-group`, `.track-lang-rules`, `.track-cost-preview`, `.track-select-row`) into shared `style.css` so thresholds and exam criteria render with full visual fidelity on `universities.html?tab=compare&compare=configure`.
+  - Refined additional requirements and funding difference lists (`.track-extra-req`, `.admission-funding-diff-list`) with custom accent dot bullets (`::before`), subtle border dividers, and calibrated 4/8px spacing across both comparison and university detail pages.
+  - Added full university identity block (slot index, official logo, full university name, location, and selection status) to comparison column headers.
 - Overhauled university comparison UI and workflow according to Calm Academic Workspace guidelines (`universities.js`, `universities.css`, `university.html`, `compare-helpers.js`, `_shared.js`, `university-translations.js`):
   - **Overview category verdicts:** replaced arbitrary 0-100 progress bars with clean category cards displaying explicit lead and parity badges, concrete metric-backed reasons with position deltas (e.g. rank position difference comparing both universities and annual tuition deltas), and participant status rows.
   - **Detail page compare action:** added an interactive compare button (`#detailCompareBtn`) in the university detail header with two-way selection sync across pages.

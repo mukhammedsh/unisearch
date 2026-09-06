@@ -4483,10 +4483,41 @@ body .has-sliding-indicator .active::after {
 
 .admission-funding-diff-list {
   margin: 0;
-  padding-left: 18px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
   color: var(--text);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.45;
+}
+
+.admission-funding-diff-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.admission-funding-diff-list li:first-child {
+  padding-top: 2px;
+}
+
+.admission-funding-diff-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.admission-funding-diff-list li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+  opacity: 0.85;
 }
 
 .admission-funding-diff-note {
@@ -4591,37 +4622,391 @@ body .has-sliding-indicator .active::after {
   }
 }
 
-
 /* ===== Track Extra Requirements (Global) ===== */
 .track-extra-req {
   margin-top: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
-  padding: 10px 12px;
+  padding: 12px 14px;
 }
 
 .track-extra-req-title {
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.35px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .track-extra-req-list {
   margin: 0;
-  padding-left: 18px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.track-extra-req-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.45;
+  border-bottom: 1px solid var(--line);
+}
+
+.track-extra-req-list li:first-child {
+  padding-top: 2px;
+}
+
+.track-extra-req-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.track-extra-req-list li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+  opacity: 0.85;
+}
+
+/* ===== Track Stats Boxes & Minimums (Global) ===== */
+.track-stats-box {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--surface-soft);
+}
+
+.track-stats-box--min {
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+.track-stats-box--avg {
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+:root:not([data-theme="dark"]) .track-stats-box--avg {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+:root[data-theme="dark"] .track-stats-box--avg {
+  background: #14221b;
+  border-color: #274d39;
+}
+
+.track-stats-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.track-stats-title--avg {
+  color: #065f46;
+}
+
+:root[data-theme="dark"] .track-stats-title--avg {
+  color: #86efac;
+}
+
+.track-stats-values {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.track-muted-italic {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ===== Track Exam Groups (Global) ===== */
+.track-exam-group {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-solid);
+  padding: 10px;
+}
+
+.track-exam-group + .track-exam-group {
+  margin-top: 8px;
+}
+
+.track-exam-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+}
+
+.track-exam-group-list {
+  display: grid;
+  gap: 4px;
   color: var(--text);
   font-size: 13px;
   line-height: 1.4;
 }
 
-.track-extra-req-list li {
-  margin-bottom: 6px;
+.track-exam-group--neutral {
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
-.track-extra-req-list li:last-child {
-  margin-bottom: 0;
+
+:root:not([data-theme="dark"]) .track-exam-group--neutral {
+  background: #f9fafb;
+  border-color: #e5e7eb;
 }
+
+:root[data-theme="dark"] .track-exam-group--neutral {
+  background: #202227;
+  border-color: #383c44;
+}
+
+:root[data-theme="dark"] .track-exam-group--neutral .track-exam-group-title {
+  color: #94a3b8;
+}
+
+.track-exam-group--info {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.track-exam-group--info .track-exam-group-title {
+  color: #1d4ed8;
+}
+
+:root[data-theme="dark"] .track-exam-group--info {
+  background: #1f2431;
+  border-color: #334155;
+}
+
+:root[data-theme="dark"] .track-exam-group--info .track-exam-group-title {
+  color: #93c5fd;
+}
+
+.track-exam-group--success {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.track-exam-group--success .track-exam-group-title {
+  color: #047857;
+}
+
+:root[data-theme="dark"] .track-exam-group--success {
+  background: #16271f;
+  border-color: #2f4f42;
+}
+
+:root[data-theme="dark"] .track-exam-group--success .track-exam-group-title {
+  color: #86efac;
+}
+
+/* ===== Track Language Requirements (Global) ===== */
+.track-lang-rules {
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  padding: 12px;
+}
+
+:root:not([data-theme="dark"]) .track-lang-rules {
+  border-color: #dbeafe;
+  background: #f8fbff;
+}
+
+:root[data-theme="dark"] .track-lang-rules {
+  background: #1b2230;
+  border-color: #334155;
+}
+
+.track-lang-rules-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+:root:not([data-theme="dark"]) .track-lang-rules-title {
+  color: #1e3a8a;
+}
+
+:root[data-theme="dark"] .track-lang-rules-title {
+  color: #bfdbfe;
+}
+
+.track-lang-rules-mode {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+:root:not([data-theme="dark"]) .track-lang-rules-mode {
+  color: #1d4ed8;
+}
+
+:root[data-theme="dark"] .track-lang-rules-mode {
+  color: #93c5fd;
+}
+
+.track-lang-rules-list {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.track-lang-rule-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-solid);
+  padding: 10px;
+}
+
+:root:not([data-theme="dark"]) .track-lang-rule-card {
+  border-color: #c7d2fe;
+  background: #ffffff;
+}
+
+:root[data-theme="dark"] .track-lang-rule-card {
+  background: #1f2431;
+  border-color: #334155;
+}
+
+.track-lang-rule-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.track-lang-rule-code {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+:root:not([data-theme="dark"]) .track-lang-rule-code {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+:root[data-theme="dark"] .track-lang-rule-code {
+  background: #1d2740;
+  border-color: #334155;
+  color: #bfdbfe;
+}
+
+.track-lang-rule-native {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: #166534;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+:root:not([data-theme="dark"]) .track-lang-rule-native {
+  border-color: #bbf7d0;
+  background: #ecfdf5;
+  color: #166534;
+}
+
+:root[data-theme="dark"] .track-lang-rule-native {
+  background: #16271f;
+  border-color: #2f4f42;
+  color: #86efac;
+}
+
+.track-lang-rule-cefr {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+:root:not([data-theme="dark"]) .track-lang-rule-cefr {
+  color: #1e3a8a;
+}
+
+:root[data-theme="dark"] .track-lang-rule-cefr {
+  color: #bfdbfe;
+}
+
+.track-lang-rule-requirements,
+.track-lang-rule-average {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.track-lang-rule-average {
+  color: #166534;
+}
+
+:root[data-theme="dark"] .track-lang-rule-average {
+  color: #86efac;
+}
+
+/* ===== Track Cost Preview & Actions (Global) ===== */
+.track-cost-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.track-cost-preview--grant {
+  border-color: var(--grant-soft-strong);
+  background: var(--grant-soft);
+}
+
+.track-cost-preview strong {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.track-select-row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 
