@@ -167,13 +167,3 @@ def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any]
     score += sum(weight * TOKEN_MATCH_MULTIPLIER for weight in token_weights)
     score += ALL_TOKENS_MATCH_BONUS
     return score
-
-
-def score_query(meta_row: Dict[str, Any], query: Any) -> Optional[float]:
-    pq = prepare_query(query)
-    if pq is None:
-        return 0.0
-    pm = prepare_search_meta(meta_row)
-    if pm is None:
-        return None
-    return score_prepared(pm, pq)
