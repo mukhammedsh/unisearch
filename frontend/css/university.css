@@ -2844,9 +2844,9 @@
 }
 
 :root[data-theme="dark"] .d-cover-logo {
-  background: #f8fafc;
+  background: #ffffff !important;
   border-color: #d2d2d2;
-  color: var(--accent);
+  color: #0f172a;
 }
 
 :root[data-theme="dark"] .roi-box {
@@ -4659,5 +4659,14 @@ body[data-page="university"],
   color: var(--text-muted);
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+/* Гарантированный белый фон для логотипа университета */
+.d-cover-logo,
+.d-logo-img,
+:root[data-theme="dark"] .d-cover-logo,
+:root[data-theme="dark"] .d-logo-img {
+  background: #ffffff !important;
+  color: #0f172a;
 }
 

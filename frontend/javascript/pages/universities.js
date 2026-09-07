@@ -2,6 +2,7 @@
 
 import {
   API_BASE,
+  $,
   debounce,
   loadFilters,
   saveFilters,

@@ -1,12 +1,15 @@
 /* 2. components.js - Элементы интерфейса */
 import {
   getCurrentTheme,
+  initCustomSelect,
   motionPress,
   replayMotion,
+  setupSlidingIndicator,
   toggleTheme,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
+import { initUniversityTranslations } from "./university-translations.js";
 import { routeAbout, routeGuide, routeHome, routeProfile, routeUniversities } from "./routes.js";
 import {
   bindThemeUiSync,
@@ -18,6 +21,9 @@ import {
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
 import { SETTING_STORE_RECENT_UNIVERSITIES, SETTING_OPEN_UNIVERSITIES_NEW_TAB } from "./settings.js";
+import { safeSessionStorage } from "./utils/safe-storage.js";
+
+const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
 // Базовый HTML-каркас шапки навигации и модального окна настроек
 const LAYOUT_HTML = `
