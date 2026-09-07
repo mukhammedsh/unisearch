@@ -3,6 +3,26 @@
 All notable project changes should be recorded here.
 
 ## 5.0.0 (2026-09-07) - Workspace Realignment, Applicant Profile, and Theme Palette Standardization
+- Hardened legal compliance, transparency, and Safe Harbor notices (`privacy.html`, `terms.html`, `Localization/eng`, `Localization/ru`):
+  - Updated operator disclosures to identify project creators (high school students Shabdaluly Mukhammed and Rashidov Yerbolat from Zhanaozen BIL, Kazakhstan) and contact email (`unisearch@inbox.ru`).
+  - Formally differentiated current local-first storage from future roadmap items by marking Google Sign-In as in-development.
+  - Added full disclosure for third-party interactive map resources (OpenStreetMap tile requests and unpkg Leaflet CDN).
+  - Enacted a 48-hour Notice & Takedown procedure and Nominative Fair Use disclaimers for institutional marks, alongside educational AS IS warranty disclaimers.
+- Enhanced API security and error resilience (`backend/app/core/settings.py`, `backend/app/main.py`, `backend/.env.example`, `backend/tests/test_api_hardening.py`):
+  - Introduced `DOCS_ENABLED` setting to automatically hide interactive documentation (`/docs`, `/redoc`, `/openapi.json`) in production environments while keeping it active during local development.
+  - Implemented centralized JSON 500 error handling in FastAPI middleware and exception handlers, ensuring unexpected internal errors return structured JSON (`{"detail": "Internal server error"}`) with security headers and `X-Request-Id` instead of plain text, eliminating frontend JSON parse crashes.
+- Implemented comprehensive SEO, indexing rules, and rich social preview cards (`robots.txt`, `sitemap.xml`, HTML templates, `frontend/images/`):
+  - Added `frontend/robots.txt` disallowing internal paths (`/api/`, `/ops/`) and referencing the sitemap.
+  - Added `frontend/sitemap.xml` defining priority rankings and change frequencies for all public routes.
+  - Integrated high-resolution Open Graph (`og:*`) and Twitter Card (`summary_large_image`) meta tags, theme color (`#5715db`), and descriptive summaries across all HTML pages, backed by official preview cards (`unisearch-preview.png`). Added `noindex` protection to `404.html`.
+- Cleaned up unimported orphan files from `frontend/javascript/pages/universities/`:
+  - Removed 8 abandoned modular catalog files (`catalog-api.js`, `catalog-events.js`, `catalog-map.js`, `catalog-recent.js`, `catalog-render.js`, `catalog-state.js`, `catalog-states.js`, `catalog-tours.js`).
+  - Validated and retained `compare-helpers.js`, which is actively utilized by comparison logic and unit tests.
+- Expanded automated test coverage and CI reliability (`.github/workflows/tests.yml`, `backend/tests/`, `tests/unit/`, `tests/e2e/`):
+  - Switched workflow dependency installation from `npm install` to deterministic `npm ci`.
+  - Added 4 new modular frontend unit test suites (`tests/unit/locale.test.mjs`, `tests/unit/persistence.test.mjs`, `tests/unit/routes.test.mjs`, `tests/unit/runtime.test.mjs`).
+  - Added backend contract and admissions unit tests for batch profile comparison and track-level funding option overrides (`test_admission_funding_options.py`, `test_universities_endpoints_contract.py`).
+  - Hardened E2E test suites with resilient assertions and mocked AI sorting (`unichance-calculator-validation.spec.js`, `unifit-full-flow.spec.js`, `unifit-sliders-interaction.spec.js`, `universities-filter-i18n.spec.js`), removing brittle sleep delays.
 - Standardized theme color palette and interactive accents (`style.css`, `universities.css`, `university.css`, `guide.css`, `legal.css`, `ranking.css`):
   - Eliminated unpredictable purple text styling and hardcoded dark/white text shades across titles, metric cards, pricing headers, and admission summaries by anchoring typography strictly to semantic tokens (`var(--text)` and `var(--text-muted)`).
   - Removed disruptive `:root:not([data-theme="dark"])` selector wrappers that stripped active tabs, scope indicators, interactive button hovers, and progress indicators when switching to dark mode, ensuring accent states (`var(--accent)`, `var(--line-accent)`, `var(--accent-panel)`) remain visually consistent across both light and dark themes.

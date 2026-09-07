@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /ops/
+
+Sitemap: https://unisearch-frontend.onrender.com/sitemap.xml

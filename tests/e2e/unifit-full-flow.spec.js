@@ -112,9 +112,8 @@ test.describe("UniFit end-to-end flow", () => {
     const cardText = await firstCard.textContent();
     expect(cardText.length).toBeGreaterThan(0);
 
-    // The card should show a price or cost indicator from matchData
-    const hasPrice = await firstCard.locator(".uni-price, .uni-cost, [class*='price'], [class*='cost']").count();
-    expect(hasPrice).toBeGreaterThanOrEqual(0); // optional — some cards may not show price
+    // The mocked response includes Harvard's $80,000 annual cost; render it in the card.
+    await expect(firstCard.locator(".uni-price")).toContainText(/80[,\s]?000/);
   });
 
   test("empty profile uses regular sorting and still returns results", async ({ page }) => {

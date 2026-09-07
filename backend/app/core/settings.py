@@ -83,6 +83,10 @@ except Exception:
 
 OPS_ADMIN_TOKEN = os.getenv("OPS_ADMIN_TOKEN", "").strip()
 OPS_ADMIN_HEADER = os.getenv("OPS_ADMIN_HEADER", "X-UniSearch-Ops-Token").strip() or "X-UniSearch-Ops-Token"
+DOCS_ENABLED = _env_bool(
+    "DOCS_ENABLED",
+    "1" if BACKEND_HOST in ("127.0.0.1", "localhost") else "0",
+)
 TRUST_X_FORWARDED_FOR = _env_bool("TRUST_X_FORWARDED_FOR", "0")
 TRUSTED_PROXY_IPS = [
     value.strip()

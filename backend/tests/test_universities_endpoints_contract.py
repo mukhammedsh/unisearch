@@ -519,6 +519,29 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                 self.assertNotEqual("no_salary_data", str(data.get("context_type", "")))
                 self.assertGreater(float(data.get("salary_used_usd", 0.0)), 0.0)
 
+    def test_compare_profiles_batch_empty_list(self):
+        response = self.client.post(
+            "/universities/compare-profiles",
+            json={"university_ids": [], "profile": {}},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual({}, response.json())
+
+    def test_university_detail_preserves_track_funding_options(self):
+        response = self.client.get("/universities/nazarbayev-university-kaz-astana")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        categories = data.get("admission_categories") or []
+        self.assertTrue(categories)
+        profiles = categories[0].get("requirement_profiles") or []
+        sat_profile = next((p for p in profiles if p.get("id") == "nu_sat_applicants"), None)
+        self.assertIsNotNone(sat_profile)
+        funding_options = sat_profile.get("funding_options") or []
+        self.assertGreaterEqual(len(funding_options), 2)
+        funding_types = {opt.get("funding_type") for opt in funding_options}
+        self.assertIn("grant", funding_types)
+        self.assertIn("paid", funding_types)
+
 
 if __name__ == "__main__":
     unittest.main()
