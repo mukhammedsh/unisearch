@@ -1,5 +1,3 @@
-import re
-from decimal import InvalidOperation
 from typing import Any, Dict, List, Optional, Union
 
 from app.services import exam_support

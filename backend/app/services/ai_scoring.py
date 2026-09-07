@@ -10,8 +10,6 @@ from app.services.finance_modes import (
     extract_tuition_cost as _extract_tuition_cost,
     mode_breakdown_from_finance as _mode_breakdown_from_finance,
     mode_total_from_finance as _mode_total_from_finance,
-    mode_value_from_map as _mode_value_from_map,
-    normalize_cost_key as _normalize_cost_key,
     normalize_study_mode as _normalize_study_mode,
 )
 from app.services import languages as languages_service

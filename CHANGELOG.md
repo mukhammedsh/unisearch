@@ -2,7 +2,12 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.0 (2026-09-07) - Workspace Realignment, Applicant Profile, and Theme Palette Standardization
+## 5.0.0 (2026-09-07) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Modularized large monolithic files and eliminated dead code across frontend and backend (`universities.js`, `universities.py`, `profile-ui.js`, `compare-specs.js`, `university_tracks.py`):
+  - Decomposed `frontend/javascript/pages/universities.js` (-1,690 lines) by extracting tour/warning modals (`tour-modals.js`), comparison metrics and specifications (`compare-specs.js`), and choice helpers (`compare-helpers.js`).
+  - Modularized `frontend/javascript/components/profile-ui.js` (-590 lines) by extracting exam breakdown parsing, subject combos, and special exam inputs into `profile/exam-breakdowns.js`.
+  - Refactored `backend/app/services/universities.py` (-668 lines) by extracting admission track extraction, canonical major resolution, score profiles, and grant derivation into `university_tracks.py`.
+  - Pruned dead code and unused helpers across `search.py` (`score_query`), `ai_scoring.py` (`_mode_value_from_map`, `_normalize_cost_key`), `university-detail-helpers.js`, and `universities.js`.
 - Hardened legal compliance, transparency, and Safe Harbor notices (`privacy.html`, `terms.html`, `Localization/eng`, `Localization/ru`):
   - Updated operator disclosures to identify project creators (high school students Shabdaluly Mukhammed and Rashidov Yerbolat from Zhanaozen BIL, Kazakhstan) and contact email (`unisearch@inbox.ru`).
   - Formally differentiated current local-first storage from future roadmap items by marking Google Sign-In as in-development.

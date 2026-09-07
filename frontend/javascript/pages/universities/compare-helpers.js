@@ -203,6 +203,11 @@ import {
   modeAwareAnnualCost,
   normalizeStudyModeForCost,
   trTrackDescription,
+  COMPARE_ADMISSION_CHOICES_KEY,
+  formatCampusSizeValue,
+  trProgramName,
+  trFactSource,
+  trFactStatus,
 } from "../_shared.js";
 import { 
   translateDataValue, 
@@ -402,12 +407,75 @@ export function compareAdmissionChoiceOptionLabel(entry, u) {
   return parts.join(" · ") || opt.choice_key || opt.id || "";
 }
 
-export function compareSelectedAdmissionEntry(u, compareAdmissionChoices) {
+export function compareChoiceKey(selection) {
+  if (!selection || typeof selection !== "object" || Array.isArray(selection)) return "";
+  return String(selection.choiceKey || selection.choice_key || "").trim();
+}
+
+export function normalizeCompareAdmissionSelection(selection) {
+  if (!selection || typeof selection !== "object" || Array.isArray(selection)) return null;
+  const choiceKey = compareChoiceKey(selection);
+  if (!choiceKey) return null;
+  return {
+    programId: String(selection.programId || selection.program_id || "").trim(),
+    programName: String(selection.programName || selection.program_name || "").trim(),
+    categoryId: String(selection.categoryId || selection.category_id || "").trim(),
+    requirementProfileId: String(selection.requirementProfileId || selection.requirement_profile_id || "").trim(),
+    fundingOptionId: String(selection.fundingOptionId || selection.funding_option_id || "").trim(),
+    choiceKey,
+  };
+}
+
+export function compareAdmissionSelectionFromEntry(entry) {
+  const option = entry?.option || {};
+  const programIds = Array.isArray(option?.program_ids) ? option.program_ids : [];
+  const programNames = Array.isArray(option?.program_names) ? option.program_names : [];
+  return {
+    programId: String(programIds[0] || "").trim(),
+    programName: String(programNames[0] || "").trim(),
+    categoryId: String(option?.category_id || "").trim(),
+    requirementProfileId: String(option?.requirement_profile_id || "").trim(),
+    fundingOptionId: String(option?.funding_option_id || "").trim(),
+    choiceKey: String(entry?.key || "").trim(),
+  };
+}
+
+export function readCompareAdmissionChoices() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(COMPARE_ADMISSION_CHOICES_KEY) || "{}");
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return new Map();
+    return new Map(Object.entries(raw)
+      .map(([id, selection]) => [String(id || "").trim(), normalizeCompareAdmissionSelection(selection)])
+      .filter(([id, selection]) => id && selection));
+  } catch (e) {
+    return new Map();
+  }
+}
+
+export function writeCompareAdmissionChoices(choicesMap, activeIds = []) {
+  const pairSet = new Set((Array.isArray(activeIds) ? activeIds : []).map(id => String(id || "").trim()).filter(Boolean));
+  const data = {};
+  if (choicesMap && typeof choicesMap.forEach === "function") {
+    choicesMap.forEach((selection, id) => {
+      const cleanId = String(id || "").trim();
+      const normalized = normalizeCompareAdmissionSelection(selection);
+      if ((!pairSet.size || pairSet.has(cleanId)) && normalized) data[cleanId] = normalized;
+    });
+  }
+  try {
+    localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(data));
+  } catch (e) {
+    // Ignore storage failures
+  }
+}
+
+export function compareSelectedAdmissionEntry(u, compareAdmissionChoices = null) {
   const entries = compareAdmissionOptionEntries(u);
   if (!entries.length) return null;
   const uniId = String(u?.id || "").trim();
-  const selection = compareAdmissionChoices && typeof compareAdmissionChoices.get === "function"
-    ? compareAdmissionChoices.get(uniId)
+  const choices = compareAdmissionChoices || readCompareAdmissionChoices();
+  const selection = choices && typeof choices.get === "function"
+    ? choices.get(uniId)
     : null;
   const selectedKey = typeof selection === "object" && selection
     ? String(selection.choiceKey || selection.choice_key || "").trim()
@@ -416,18 +484,18 @@ export function compareSelectedAdmissionEntry(u, compareAdmissionChoices) {
   return entries.find((entry) => entry.key === selectedKey) || entries[0] || null;
 }
 
-export function compareSelectedAdmissionOption(u, compareAdmissionChoices) {
+export function compareSelectedAdmissionOption(u, compareAdmissionChoices = null) {
   return compareSelectedAdmissionEntry(u, compareAdmissionChoices)?.option || null;
 }
 
-export function compareSelectedFinance(u, compareAdmissionChoices) {
+export function compareSelectedFinance(u, compareAdmissionChoices = null) {
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   return (option?.finance_override && typeof option.finance_override === "object")
     ? option.finance_override
     : (u?.finance || {});
 }
 
-export function compareSelectedAnnualCost(u, compareAdmissionChoices) {
+export function compareSelectedAnnualCost(u, compareAdmissionChoices = null) {
   const finance = compareSelectedFinance(u, compareAdmissionChoices);
   const profileMode = normalizeStudyModeForCost(loadProfile()?.studyMode || loadProfile()?.study_mode || "");
   const modeCost = modeAwareAnnualCost(finance, profileMode);
