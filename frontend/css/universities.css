@@ -1131,6 +1131,19 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   overflow-anchor: none;
 }
 
+.u-catalog-stage {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: start;
+}
+
+.u-catalog-stage > .u-skeleton-grid,
+.u-catalog-stage > .u-grid {
+  grid-area: 1 / 1;
+  width: 100%;
+}
+
 .u-skeleton-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(252px, 1fr));
@@ -1138,23 +1151,22 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   align-items: stretch;
   min-height: 304px;
   overflow-anchor: none;
+  opacity: 1;
+  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+}
+
+.u-skeleton-grid.is-fading-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .is-skeleton .uni-media,
 .is-skeleton .uni-logo,
 .is-skeleton .uni-price,
 .is-skeleton .skeleton-line {
+  position: relative;
+  overflow: hidden;
   background-color: var(--skeleton-base, var(--surface-soft, rgba(0, 0, 0, 0.04)));
-  background-image: linear-gradient(
-  100deg,
-  transparent 0%,
-  transparent 34%,
-  var(--skeleton-highlight, rgba(255, 255, 255, 0.42)) 46%,
-  transparent 58%,
-  transparent 100%
-  );
-  background-size: 220% 100%;
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
   border: none;
 }
 
@@ -1163,14 +1175,46 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 :root[data-theme="dark"] .is-skeleton .uni-price,
 :root[data-theme="dark"] .is-skeleton .skeleton-line {
   background-color: var(--skeleton-base, var(--surface-soft, rgba(255, 255, 255, 0.04)));
-  background-image: linear-gradient(
-  100deg,
-  transparent 0%,
-  transparent 34%,
-  var(--skeleton-highlight, rgba(255, 255, 255, 0.14)) 46%,
-  transparent 58%,
-  transparent 100%
+}
+
+.is-skeleton .uni-media::after,
+.is-skeleton .uni-logo::after,
+.is-skeleton .uni-price::after,
+.is-skeleton .skeleton-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate3d(-100%, 0, 0);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--skeleton-highlight, rgba(255, 255, 255, 0.42)) 50%,
+    transparent 100%
   );
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+:root[data-theme="dark"] .is-skeleton .uni-media::after,
+:root[data-theme="dark"] .is-skeleton .uni-logo::after,
+:root[data-theme="dark"] .is-skeleton .uni-price::after,
+:root[data-theme="dark"] .is-skeleton .skeleton-line::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--skeleton-highlight, rgba(255, 255, 255, 0.14)) 50%,
+    transparent 100%
+  );
+}
+
+.is-skeleton .uni-media::after {
+  z-index: 1;
+}
+
+.is-skeleton .uni-price,
+.is-skeleton .uni-logo {
+  z-index: 2;
 }
 
 .is-skeleton .skeleton-line {
@@ -1183,10 +1227,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   pointer-events: none;
 }
 
-.u-skeleton-card .uni-media::after {
-  display: none;
-}
-
 .u-skeleton-card .uni-price {
   border: none;
   box-shadow: none;
@@ -1194,6 +1234,14 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-skeleton-card .uni-body {
   gap: 8px;
+}
+
+.u-grid {
+  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+}
+
+.u-grid.is-fetching {
+  opacity: 0.72;
 }
 
 .u-map-stage.is-loading .u-map-container {
@@ -1237,7 +1285,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   var(--surface-soft);
   background-size: auto, auto, auto, auto, 220% 100%, auto, auto, auto;
   opacity: 0.92;
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
 .u-map-stage.is-loading .u-map-container::after {
@@ -1249,7 +1297,16 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   var(--surface-solid);
   background-size: 220% 100%, auto;
   border: 1px solid var(--line);
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+}
+
+@keyframes skeleton-bg-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
 }
 
 .uni-card {
@@ -4861,7 +4918,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   transparent 100%
   );
   background-size: 220% 100%;
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
   border-color: transparent;
 }
 

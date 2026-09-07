@@ -1,5 +1,5 @@
 import { loadGlobalLayout, renderNoConnection } from "./components.js";
-import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset } from "./utils.js";
+import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset, prefersReducedMotion } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
@@ -319,7 +319,7 @@ function stylesheetKeyFrom(link, baseUrl) {
   }
 }
 
-function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
+async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
   const nextTitle = nextDoc.querySelector("title");
   if (nextTitle) {
     const currentTitle = document.querySelector("title");
@@ -334,14 +334,34 @@ function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
       .filter(Boolean)
   );
 
+  const stylePromises = [];
   nextDoc.querySelectorAll('link[rel~="stylesheet"][href]').forEach((link) => {
     const key = stylesheetKeyFrom(link, routeUrl);
     if (!key || existingStyles.has(key)) return;
     const clone = document.importNode(link, true);
     clone.setAttribute("href", key);
+
+    const waitPromise = new Promise((resolve) => {
+      let resolved = false;
+      const done = () => {
+        if (!resolved) {
+          resolved = true;
+          resolve();
+        }
+      };
+      clone.addEventListener("load", done, { once: true });
+      clone.addEventListener("error", done, { once: true });
+      window.setTimeout(done, 150);
+    });
+    stylePromises.push(waitPromise);
+
     document.head.appendChild(clone);
     existingStyles.add(key);
   });
+
+  if (stylePromises.length > 0) {
+    await Promise.all(stylePromises);
+  }
 }
 
 function replaceRouteDom(nextDoc) {
@@ -368,6 +388,67 @@ function replaceRouteDom(nextDoc) {
 }
 
 let appRouteNavigationInFlight = null;
+const routeHtmlCache = new Map();
+const ROUTE_CACHE_MAX_SIZE = 20;
+const ROUTE_CACHE_TTL_MS = 30000;
+
+function getCachedRouteHtml(urlHref) {
+  const entry = routeHtmlCache.get(urlHref);
+  if (!entry) return null;
+  if (Date.now() - entry.savedAt > ROUTE_CACHE_TTL_MS) {
+    routeHtmlCache.delete(urlHref);
+    return null;
+  }
+  return entry.html;
+}
+
+function setCachedRouteHtml(urlHref, html) {
+  if (routeHtmlCache.size >= ROUTE_CACHE_MAX_SIZE) {
+    const oldestKey = routeHtmlCache.keys().next().value;
+    if (oldestKey) routeHtmlCache.delete(oldestKey);
+  }
+  routeHtmlCache.set(urlHref, { html, savedAt: Date.now() });
+}
+
+async function fetchRouteHtml(urlHref, signal) {
+  const cached = getCachedRouteHtml(urlHref);
+  if (cached) return cached;
+  const response = await fetch(urlHref, {
+    credentials: "same-origin",
+    headers: { Accept: "text/html" },
+    signal,
+  });
+  if (!response.ok) throw new Error(`Route load failed: ${response.status}`);
+  const html = await response.text();
+  setCachedRouteHtml(urlHref, html);
+  return html;
+}
+
+export function prefetchRoute(href) {
+  if (typeof window === "undefined") return;
+  try {
+    const url = new URL(href, window.location.href);
+    if (!isAppRouteUrl(url)) return;
+    if (getCachedRouteHtml(url.href)) return;
+    fetchRouteHtml(url.href).catch(() => {});
+  } catch (e) {}
+}
+
+function shouldPrefetchLink(link) {
+  if (!link) return false;
+  if (link.hasAttribute("download")) return false;
+  const target = String(link.getAttribute("target") || "").trim().toLowerCase();
+  if (target && target !== "_self") return false;
+  const rawHref = String(link.getAttribute("href") || "").trim();
+  if (!rawHref || rawHref.startsWith("#")) return false;
+  if (link.closest(".legal-nav, .guide-nav")) return false;
+  try {
+    const url = new URL(link.getAttribute("href") || "", window.location.href);
+    return isAppRouteUrl(url);
+  } catch (e) {
+    return false;
+  }
+}
 
 async function loadAppRoute(rawHref, options = {}) {
   const url = new URL(rawHref, window.location.href);
@@ -400,25 +481,41 @@ async function loadAppRoute(rawHref, options = {}) {
   document.body.classList.add("route-loading");
 
   try {
-    const response = await fetch(url.href, {
-      credentials: "same-origin",
-      headers: { Accept: "text/html" },
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`Route load failed: ${response.status}`);
-    const html = await response.text();
+    const html = await fetchRouteHtml(url.href, controller.signal);
     const nextDoc = new DOMParser().parseFromString(html, "text/html");
 
-    syncDocumentHeadFromRoute(nextDoc, url.href);
-    replaceRouteDom(nextDoc);
+    await syncDocumentHeadFromRoute(nextDoc, url.href);
 
-    if (options.history !== false) {
-      const method = options.replace ? "replaceState" : "pushState";
-      window.history[method]({ appRoute: true }, "", url.href);
-      safeSessionStorage.remove("unisearch_universities_scroll");
+    const updateDomAndState = () => {
+      replaceRouteDom(nextDoc);
+
+      if (options.history !== false) {
+        const method = options.replace ? "replaceState" : "pushState";
+        window.history[method]({ appRoute: true }, "", url.href);
+        safeSessionStorage.remove("unisearch_universities_scroll");
+      }
+
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    };
+
+    const supportsViewTransition = typeof document.startViewTransition === "function" && !prefersReducedMotion();
+
+    if (supportsViewTransition) {
+      const transition = document.startViewTransition(() => {
+        updateDomAndState();
+      });
+      await transition.finished.catch(() => {});
+    } else if (!prefersReducedMotion()) {
+      const currentMain = document.querySelector("main");
+      if (currentMain) {
+        currentMain.classList.add("page-exit");
+        await new Promise((resolve) => window.setTimeout(resolve, 110));
+      }
+      updateDomAndState();
+    } else {
+      updateDomAndState();
     }
 
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     await initializeCurrentRoute();
     if (url.hash) {
       window.requestAnimationFrame(() => {
@@ -460,6 +557,14 @@ function shouldHandleLinkClick(event, link) {
 function installClientRouter() {
   if (window.__unisearchClientRouterInstalled) return;
   window.__unisearchClientRouterInstalled = true;
+
+  document.addEventListener("pointerover", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const link = target?.closest("a[href]");
+    if (shouldPrefetchLink(link)) {
+      prefetchRoute(link.href);
+    }
+  }, { passive: true });
 
   document.addEventListener("click", (event) => {
     const target = event.target instanceof Element ? event.target : null;

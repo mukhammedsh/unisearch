@@ -113,10 +113,13 @@
 .d-loading {
   display: none;
   margin-bottom: 16px;
+  opacity: 0;
+  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 .d-loading.is-visible {
   display: block;
+  opacity: 1;
 }
 
 .d-loading-card {

@@ -397,6 +397,11 @@ export function initUniversitiesPage() {
 
     const CACHE_TTL_MS = 30000;
     const AI_FAST_FALLBACK_MS = 450;
+    const SKELETON_SHOW_DELAY_MS = 120;
+    const SKELETON_FADE_MS = 160;
+    let skeletonShowTimer = 0;
+    let skeletonFadeTimer = 0;
+    let isSkeletonCurrentlyVisible = false;
     let lastFetchKey = "";
     let lastFetchPayload = null;
     let lastFetchAt = 0;
@@ -1475,12 +1480,45 @@ export function initUniversitiesPage() {
 
     function setUniversitiesLoading(isLoading) {
         const mapMode = state.viewMode === "map";
-        const showListSkeleton = !!isLoading && !mapMode;
+
+        if (skeletonFadeTimer) {
+            clearTimeout(skeletonFadeTimer);
+            skeletonFadeTimer = 0;
+        }
+
         if (el.content) {
             el.content.setAttribute("aria-busy", isLoading ? "true" : "false");
         }
-        if (el.skeleton) {
-            if (showListSkeleton) {
+        if (el.mapStage) {
+            el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode);
+        }
+        if (el.mapResults) {
+            el.mapResults.setAttribute("aria-busy", isLoading && mapMode ? "true" : "false");
+            if (isLoading && mapMode) renderMapLoadingSkeleton();
+        }
+
+        if (mapMode) {
+            if (skeletonShowTimer) {
+                clearTimeout(skeletonShowTimer);
+                skeletonShowTimer = 0;
+            }
+            if (el.skeleton) {
+                el.skeleton.style.display = "none";
+                el.skeleton.setAttribute("aria-hidden", "true");
+                el.skeleton.classList.remove("is-fading-out");
+            }
+            isSkeletonCurrentlyVisible = false;
+            if (el.list) el.list.style.display = "none";
+            return;
+        }
+
+        if (isLoading) {
+            if (el.list) {
+                el.list.classList.add("is-fetching");
+            }
+
+            const showSkeletonDom = () => {
+                if (!el.skeleton) return;
                 const skeletonCount = getUniversitiesSkeletonCount();
                 if (!el.skeleton.innerHTML.trim() || el.skeleton.dataset.count !== String(skeletonCount)) {
                     el.skeleton.dataset.count = String(skeletonCount);
@@ -1504,26 +1542,67 @@ export function initUniversitiesPage() {
                         </article>
                     `).join("");
                 }
+                el.skeleton.classList.remove("is-fading-out");
                 el.skeleton.style.display = "grid";
                 el.skeleton.setAttribute("aria-hidden", "false");
+                isSkeletonCurrentlyVisible = true;
+                if (el.list) {
+                    el.list.style.visibility = "hidden";
+                }
+                if (el.pagination) {
+                    el.pagination.style.visibility = "hidden";
+                }
+            };
+
+            const hasExistingCards = Boolean(hasInitialListPaint && el.list && el.list.children.length > 0);
+            if (!hasExistingCards) {
+                if (skeletonShowTimer) {
+                    clearTimeout(skeletonShowTimer);
+                    skeletonShowTimer = 0;
+                }
+                showSkeletonDom();
+            } else if (!isSkeletonCurrentlyVisible && !skeletonShowTimer) {
+                skeletonShowTimer = window.setTimeout(() => {
+                    skeletonShowTimer = 0;
+                    showSkeletonDom();
+                }, SKELETON_SHOW_DELAY_MS);
+            }
+            return;
+        }
+
+        // isLoading === false
+        if (skeletonShowTimer) {
+            clearTimeout(skeletonShowTimer);
+            skeletonShowTimer = 0;
+        }
+
+        if (el.list) {
+            el.list.classList.remove("is-fetching");
+            el.list.style.display = "grid";
+            el.list.style.visibility = "visible";
+        }
+        if (el.pagination) {
+            el.pagination.style.visibility = "visible";
+        }
+
+        if (el.skeleton) {
+            if (isSkeletonCurrentlyVisible) {
+                el.skeleton.classList.add("is-fading-out");
+                el.skeleton.setAttribute("aria-hidden", "true");
+                skeletonFadeTimer = window.setTimeout(() => {
+                    skeletonFadeTimer = 0;
+                    if (el.skeleton) {
+                        el.skeleton.style.display = "none";
+                        el.skeleton.classList.remove("is-fading-out");
+                    }
+                    isSkeletonCurrentlyVisible = false;
+                }, SKELETON_FADE_MS);
             } else {
                 el.skeleton.style.display = "none";
                 el.skeleton.setAttribute("aria-hidden", "true");
+                el.skeleton.classList.remove("is-fading-out");
+                isSkeletonCurrentlyVisible = false;
             }
-        }
-        if (el.list) {
-            el.list.style.display = mapMode ? "none" : "grid";
-            el.list.style.visibility = showListSkeleton ? "hidden" : "visible";
-        }
-        if (el.pagination && !mapMode) {
-            el.pagination.style.visibility = showListSkeleton ? "hidden" : "visible";
-        }
-        if (el.mapStage) {
-            el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode);
-        }
-        if (el.mapResults) {
-            el.mapResults.setAttribute("aria-busy", isLoading && mapMode ? "true" : "false");
-            if (isLoading && mapMode) renderMapLoadingSkeleton();
         }
     }
 
@@ -2915,11 +2994,13 @@ export function initUniversitiesPage() {
             sort: state.sort,
         });
         setUniversitiesLoading(true);
-        if (el.total) el.total.textContent = "0";
-        renderUniversitiesState();
-        if (state.viewMode === 'list') el.list.innerHTML = "";
+        if (!hasInitialListPaint) {
+            if (el.total) el.total.textContent = "0";
+            renderUniversitiesState();
+            if (state.viewMode === 'list') el.list.innerHTML = "";
+            if (el.pagination) el.pagination.innerHTML = "";
+        }
         if (state.viewMode === "map" && !mapInstance) await initMap();
-        if (el.pagination) el.pagination.innerHTML = "";
 
         const urlParams = sectionUrlParams();
         const apiParams = buildParams(true);
