@@ -88,11 +88,17 @@ DOCS_ENABLED = _env_bool(
     "1" if BACKEND_HOST in ("127.0.0.1", "localhost") else "0",
 )
 TRUST_X_FORWARDED_FOR = _env_bool("TRUST_X_FORWARDED_FOR", "0")
+TRUST_PRIVATE_NETWORK_PROXIES = _env_bool("TRUST_PRIVATE_NETWORK_PROXIES", "1")
+TRUST_CF_CONNECTING_IP = _env_bool("TRUST_CF_CONNECTING_IP", "1")
 TRUSTED_PROXY_IPS = [
     value.strip()
     for value in os.getenv("TRUSTED_PROXY_IPS", "").split(",")
     if value.strip()
 ]
+try:
+    COMPARE_PROFILES_CACHE_TTL_SEC = float(os.getenv("COMPARE_PROFILES_CACHE_TTL_SEC", "60") or 60)
+except Exception:
+    COMPARE_PROFILES_CACHE_TTL_SEC = 60.0
 try:
     REQUEST_BODY_MAX_BYTES = int(os.getenv("REQUEST_BODY_MAX_BYTES", "131072") or 131072)
 except Exception:

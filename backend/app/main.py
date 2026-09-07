@@ -92,6 +92,7 @@ _EXPENSIVE_RATE_LIMITER = build_rate_limiter(
 )
 _EXPENSIVE_POST_PATHS = {
     "/universities/ai-sort",
+    "/universities/compare-profiles",
     "/exams/validate",
     "/languages/validate",
 }
@@ -211,6 +212,8 @@ def _content_length(request: Request) -> int:
 def _request_guard_response(request: Request) -> Response | None:
     if is_protected_ops_request(request) and not ops_request_is_authorized(request):
         return protected_ops_response()
+    if len(str(getattr(request, "url", None) and request.url.query or "")) > 4096:
+        return _apply_security_headers(JSONResponse({"detail": "Query string too long"}, status_code=414))
     if REQUEST_BODY_MAX_BYTES <= 0:
         return None
     if _content_length(request) <= REQUEST_BODY_MAX_BYTES:
@@ -313,6 +316,8 @@ app.add_middleware(
         "X-RateLimit-Window",
         "Retry-After",
         "X-Redis-Cache",
+        "X-AI-Sort-Cache",
+        "X-Compare-Cache",
     ],
 )
 

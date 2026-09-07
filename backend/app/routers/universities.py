@@ -2,13 +2,18 @@ import hashlib
 import json
 import threading
 import time
+from collections import OrderedDict
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 
 from app.core.redis_store import cache_get_json, cache_set_json
 from app.core.security import request_client_ip
-from app.core.settings import AI_SORT_CACHE_TTL_SEC, REDIS_CACHE_TTL_SEC
+from app.core.settings import (
+    AI_SORT_CACHE_TTL_SEC,
+    COMPARE_PROFILES_CACHE_TTL_SEC,
+    REDIS_CACHE_TTL_SEC,
+)
 from app.schemas import CompareProfilesRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
@@ -17,9 +22,14 @@ from app.services import ai_scoring as ai_scoring_service
 
 router = APIRouter()
 _AI_SORT_CACHE_TTL_SEC = max(15.0, float(AI_SORT_CACHE_TTL_SEC))
-_AI_SORT_CACHE_MAX_ITEMS = 48
-_AI_SORT_CACHE: Dict[str, Dict[str, Any]] = {}
+_AI_SORT_CACHE_MAX_ITEMS = 512
+_AI_SORT_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
 _AI_SORT_CACHE_LOCK = threading.Lock()
+
+_COMPARE_PROFILES_CACHE_TTL_SEC = max(15.0, float(COMPARE_PROFILES_CACHE_TTL_SEC))
+_COMPARE_PROFILES_CACHE_MAX_ITEMS = 512
+_COMPARE_PROFILES_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
+_COMPARE_PROFILES_CACHE_LOCK = threading.Lock()
 
 
 def _etag_matches(if_none_match: str, etag: str) -> bool:
@@ -60,27 +70,47 @@ def _resolve_search_lang(explicit_lang: Any, request: Optional[Request]) -> str:
     return _normalize_search_lang(_request_locale_hint(request))
 
 
+def _quantize_slider_value(val: Any) -> Optional[int]:
+    if val is None:
+        return None
+    try:
+        return int(round(float(val)))
+    except (ValueError, TypeError):
+        return None
+
+
 def _ai_sort_cache_key(payload: UniversitiesAiSortRequest) -> str:
     raw = payload.model_dump(exclude_none=True)
     raw.pop("page", None)
     raw.pop("limit", None)
+    for field in (
+        "practice_vs_science",
+        "social_vs_hardcore",
+        "budget_vs_prestige",
+        "city_vs_campus",
+        "ai_balance",
+        "admission_bias",
+    ):
+        if field in raw:
+            raw[field] = _quantize_slider_value(raw[field])
+    profile = raw.get("profile")
+    if isinstance(profile, dict):
+        interests = str(profile.get("interests") or "").strip().lower()
+        if interests:
+            profile["interests"] = " ".join(interests.split())
     return json.dumps(raw, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
 
 
 def _ai_sort_cache_get(key: str) -> Optional[List[Dict[str, Any]]]:
     now = time.time()
     with _AI_SORT_CACHE_LOCK:
-        stale_keys = [
-            k
-            for k, row in _AI_SORT_CACHE.items()
-            if (now - float(row.get("ts", 0.0))) > _AI_SORT_CACHE_TTL_SEC
-        ]
-        for stale in stale_keys:
-            _AI_SORT_CACHE.pop(stale, None)
-
         row = _AI_SORT_CACHE.get(key)
         if not row:
             return None
+        if (now - float(row.get("ts", 0.0))) > _AI_SORT_CACHE_TTL_SEC:
+            _AI_SORT_CACHE.pop(key, None)
+            return None
+        _AI_SORT_CACHE.move_to_end(key)
         return row.get("items")
 
 
@@ -91,19 +121,34 @@ def _ai_sort_cache_set(key: str, items: List[Dict[str, Any]]) -> None:
             "ts": now,
             "items": items,
         }
-        if len(_AI_SORT_CACHE) <= _AI_SORT_CACHE_MAX_ITEMS:
-            return
+        _AI_SORT_CACHE.move_to_end(key)
+        while len(_AI_SORT_CACHE) > _AI_SORT_CACHE_MAX_ITEMS:
+            _AI_SORT_CACHE.popitem(last=False)
 
-        overflow = len(_AI_SORT_CACHE) - _AI_SORT_CACHE_MAX_ITEMS
-        if overflow <= 0:
-            return
-        oldest_keys = sorted(
-            _AI_SORT_CACHE.keys(),
-            key=lambda k: float(_AI_SORT_CACHE[k].get("ts", 0.0)),
-        )
-        candidates = [k for k in oldest_keys if k != key]
-        for stale in candidates[:overflow]:
-            _AI_SORT_CACHE.pop(stale, None)
+
+def _compare_profiles_cache_get(key: str) -> Optional[Dict[str, Any]]:
+    now = time.time()
+    with _COMPARE_PROFILES_CACHE_LOCK:
+        row = _COMPARE_PROFILES_CACHE.get(key)
+        if not row:
+            return None
+        if (now - float(row.get("ts", 0.0))) > _COMPARE_PROFILES_CACHE_TTL_SEC:
+            _COMPARE_PROFILES_CACHE.pop(key, None)
+            return None
+        _COMPARE_PROFILES_CACHE.move_to_end(key)
+        return row.get("results")
+
+
+def _compare_profiles_cache_set(key: str, results: Dict[str, Any]) -> None:
+    now = time.time()
+    with _COMPARE_PROFILES_CACHE_LOCK:
+        _COMPARE_PROFILES_CACHE[key] = {
+            "ts": now,
+            "results": results,
+        }
+        _COMPARE_PROFILES_CACHE.move_to_end(key)
+        while len(_COMPARE_PROFILES_CACHE) > _COMPARE_PROFILES_CACHE_MAX_ITEMS:
+            _COMPARE_PROFILES_CACHE.popitem(last=False)
 
 
 def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
@@ -160,7 +205,7 @@ def list_universities(
     }
     redis_cache_key = _cache_key("api:universities:list", cache_payload)
 
-    use_redis_cache = limit <= 500
+    use_redis_cache = True
     if use_redis_cache:
         cached = cache_get_json(redis_cache_key)
         if isinstance(cached, dict):
@@ -388,8 +433,23 @@ def compare_universities_profiles(
     response: Response = None,
 ):
     profile = to_profile_dict(payload.profile)
-    results = {}
+    uni_ids = sorted(str(uid).strip() for uid in payload.university_ids if str(uid).strip())
+    cache_payload = {
+        "ids": uni_ids,
+        "profile": profile,
+    }
+    redis_cache_key = _cache_key("api:compare-profiles", cache_payload)
+    cached = cache_get_json(redis_cache_key)
+    if not isinstance(cached, dict):
+        cached = _compare_profiles_cache_get(redis_cache_key)
 
+    if isinstance(cached, dict):
+        if response is not None:
+            response.headers["Cache-Control"] = "private, max-age=30"
+            response.headers["X-Compare-Cache"] = "HIT"
+        return cached
+
+    results = {}
     for uni_id in payload.university_ids:
         uni = uni_service.get_university_by_id(uni_id)
         if uni:
@@ -402,8 +462,12 @@ def compare_universities_profiles(
         else:
             results[uni_id] = None
 
+    cache_set_json(redis_cache_key, results, ttl_seconds=int(_COMPARE_PROFILES_CACHE_TTL_SEC))
+    _compare_profiles_cache_set(redis_cache_key, results)
+
     if response is not None:
         response.headers["Cache-Control"] = "private, max-age=30"
+        response.headers["X-Compare-Cache"] = "MISS"
 
     return results
 

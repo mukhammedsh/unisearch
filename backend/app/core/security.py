@@ -1,8 +1,9 @@
 import hmac
+import ipaddress
 import threading
 import time
 import uuid
-from collections import deque
+from collections import OrderedDict, deque
 from typing import Any, Deque, Dict, Optional, Tuple
 
 from fastapi import Request
@@ -12,6 +13,8 @@ from app.core.settings import (
     METRICS_PATH,
     OPS_ADMIN_HEADER,
     OPS_ADMIN_TOKEN,
+    TRUST_CF_CONNECTING_IP,
+    TRUST_PRIVATE_NETWORK_PROXIES,
     TRUST_X_FORWARDED_FOR,
     TRUSTED_PROXY_IPS,
 )
@@ -23,7 +26,7 @@ class SlidingWindowRateLimiter:
         self.limit = max(1, int(limit))
         self.window_seconds = max(1, int(window_seconds))
         self.max_keys = max(16, int(max_keys))
-        self._events: Dict[str, Deque[float]] = {}
+        self._events: OrderedDict[str, Deque[float]] = OrderedDict()
         self._lock = threading.Lock()
 
     def _evict_stale(self, now: float) -> None:
@@ -45,6 +48,8 @@ class SlidingWindowRateLimiter:
             if q is None:
                 q = deque()
                 self._events[key] = q
+            else:
+                self._events.move_to_end(key)
 
             if len(q) >= self.limit:
                 retry_after = max(0.0, self.window_seconds - (current - q[0]))
@@ -53,15 +58,11 @@ class SlidingWindowRateLimiter:
             q.append(current)
             remaining = max(0, self.limit - len(q))
 
-            if len(self._events) > self.max_keys:
-                self._evict_stale(current)
-                if len(self._events) > self.max_keys:
-                    oldest_key = min(
-                        self._events.keys(),
-                        key=lambda k: self._events[k][0] if self._events.get(k) else current,
-                    )
-                    if oldest_key != key:
-                        self._events.pop(oldest_key, None)
+            while len(self._events) > self.max_keys:
+                oldest_key, _ = self._events.popitem(last=False)
+                if oldest_key == key:
+                    self._events[oldest_key] = q
+                    break
 
             return True, remaining, 0.0
 
@@ -144,6 +145,34 @@ def build_rate_limiter(
     )
 
 
+_PRIVATE_NETWORKS = (
+    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("172.16.0.0/12"),
+    ipaddress.ip_network("192.168.0.0/16"),
+    ipaddress.ip_network("127.0.0.0/8"),
+    ipaddress.ip_network("169.254.0.0/16"),
+    ipaddress.ip_network("::1/128"),
+    ipaddress.ip_network("fc00::/7"),
+    ipaddress.ip_network("fe80::/10"),
+)
+
+
+def _is_trusted_proxy_host(direct_host: str) -> bool:
+    if not direct_host or direct_host == "unknown":
+        return False
+    if direct_host in set(TRUSTED_PROXY_IPS):
+        return True
+    if TRUST_X_FORWARDED_FOR and not TRUSTED_PROXY_IPS:
+        return True
+    if TRUST_PRIVATE_NETWORK_PROXIES:
+        try:
+            ip_obj = ipaddress.ip_address(direct_host)
+            return ip_obj.is_loopback or any(ip_obj in net for net in _PRIVATE_NETWORKS)
+        except ValueError:
+            return False
+    return False
+
+
 def request_client_ip(request: Optional[Request]) -> str:
     if request is None:
         return "unknown"
@@ -152,7 +181,12 @@ def request_client_ip(request: Optional[Request]) -> str:
     if request.client and request.client.host:
         direct_host = str(request.client.host).strip()
 
-    if TRUST_X_FORWARDED_FOR and direct_host and direct_host in set(TRUSTED_PROXY_IPS):
+    if _is_trusted_proxy_host(direct_host):
+        if TRUST_CF_CONNECTING_IP:
+            cf_ip = str(request.headers.get("cf-connecting-ip", "")).strip()
+            if cf_ip:
+                return cf_ip
+
         xff = str(request.headers.get("x-forwarded-for", "")).strip()
         if xff:
             first = xff.split(",")[0].strip()
