@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.0 (2026-09-07) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Modernized page transitions and hardware-accelerated skeleton loading (`main.js`, `universities.js`, `style.css`, `universities.css`, `university.css`, `universities.html`):
+  - Upgraded skeleton shimmer animation from CPU `background-position` to GPU-accelerated `transform: translate3d` via pseudo-elements with `will-change: transform`, eliminating render paint cycles and mobile frame drops.
+  - Implemented anti-flicker delay (120ms) and `.u-catalog-stage` grid container with smooth fade-out (160ms) to prevent layout shifts (CLS = 0) and remove skeleton flashing on fast queries.
+  - Integrated native View Transitions API (`document.startViewTransition`) with fixed navbar isolation, graceful `.page-exit` fallback, stylesheet load gating to prevent FOUC, and hover prefetching for instant page navigation.
 - Fixed frontend initialization runtime ReferenceErrors and enforced uniform white background for university logos:
   - Restored missing imports and exports across `components.js`, `main.js`, `runtime.js`, `utils.js`, `universities.js`, and `_shared.js` (`setupSlidingIndicator`, `initCustomSelect`, `initLanguagesPanel`, `translateUnknownWord`, `routeGuide`, `$`, `moneyUSD`, `escapeHtmlAttr`, `tFormat`, `translateTemplate`, `PROFILE_RETURN_URL_KEY`), preventing startup exceptions from falsely triggering the offline/no-connection screen.
   - Enforced a uniform `#ffffff` background and high-contrast `#0f172a` fallback text for university logos and emblems across all themes, including dark mode, across catalog cards, ranking rows, detail view, comparison tables/cards/trays, and map result items (`universities.css`, `ranking.css`, `university.css`).

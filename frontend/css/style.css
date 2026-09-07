@@ -222,6 +222,42 @@ body {
   }
 }
 
+@keyframes page-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.page-exit {
+  opacity: 0 !important;
+  transform: translateY(-4px) !important;
+  transition: opacity var(--motion-fast, 120ms) var(--motion-ease-standard, ease),
+              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease) !important;
+  pointer-events: none !important;
+}
+
+/* View Transitions API (Chrome 111+, Edge, Safari 18+) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--motion-fast, 160ms);
+  animation-timing-function: var(--motion-ease-standard, ease);
+}
+
+.navbar {
+  view-transition-name: main-navbar;
+}
+
+::view-transition-old(main-navbar),
+::view-transition-new(main-navbar) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   main {
     animation: page-enter var(--motion-slow) var(--motion-ease-enter) both;
@@ -2739,10 +2775,34 @@ html, body {
   .center-loading-spinner,
   .skeleton-block,
   .skeleton-line,
+  .skeleton-block::after,
+  .skeleton-line::after,
   .is-skeleton .uni-media,
   .is-skeleton .uni-logo,
-  .is-skeleton .uni-price {
+  .is-skeleton .uni-price,
+  .is-skeleton .uni-media::after,
+  .is-skeleton .uni-logo::after,
+  .is-skeleton .uni-price::after,
+  .is-skeleton .skeleton-line::after {
     animation: none !important;
+  }
+
+  .skeleton-block::after,
+  .skeleton-line::after,
+  .is-skeleton .uni-media::after,
+  .is-skeleton .uni-logo::after,
+  .is-skeleton .uni-price::after,
+  .is-skeleton .skeleton-line::after {
+    display: none !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  .page-exit {
+    transition: none !important;
   }
 }
 
@@ -2986,12 +3046,7 @@ h6,
 }
 
 body.route-loading main {
-  opacity: 0.72;
-  transform: translateY(4px);
   pointer-events: none;
-  transition:
-    opacity var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .site-initial-loader {
@@ -3038,41 +3093,41 @@ body.route-loading main {
 
 @keyframes skeleton-shimmer {
   0% {
-    background-position: 120% 0;
+    transform: translate3d(-100%, 0, 0);
   }
   100% {
-    background-position: -120% 0;
+    transform: translate3d(100%, 0, 0);
   }
+}
+
+.skeleton-block,
+.skeleton-line {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--skeleton-base);
 }
 
 .skeleton-block {
-  background-color: var(--skeleton-base);
-  background-image: linear-gradient(
-    100deg,
-    transparent 0%,
-    transparent 34%,
-    var(--skeleton-highlight) 46%,
-    transparent 58%,
-    transparent 100%
-  );
-  background-size: 220% 100%;
   border-radius: 12px;
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
-.skeleton-line {
-  background-color: var(--skeleton-base);
-  background-image: linear-gradient(
-    100deg,
+.skeleton-block::after,
+.skeleton-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate3d(-100%, 0, 0);
+  background: linear-gradient(
+    90deg,
     transparent 0%,
-    transparent 34%,
-    var(--skeleton-highlight) 46%,
-    transparent 58%,
+    var(--skeleton-highlight) 50%,
     transparent 100%
   );
-  background-size: 220% 100%;
   animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  pointer-events: none;
+  will-change: transform;
 }
+
 
 /* Error / No Connection Screen */
 .error-screen {
