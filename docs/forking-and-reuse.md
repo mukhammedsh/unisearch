@@ -1,6 +1,8 @@
 # Forking and reuse
 
-UniSearch is licensed under the MIT License. You may copy, modify, redistribute, sublicense, and use the project commercially, as long as the original license and copyright notice are preserved.
+UniSearch source code and software are licensed under the MIT License. You may copy, modify, redistribute, sublicense, and use the project commercially, as long as the original license and copyright notice are preserved.
+
+Third-party university trademarks, logos, and campus photography (`backend/data/university_assets/`) are excluded from the MIT License and are provided for educational and nominative identification purposes only.
 
 This guide is for people who want to run their own version of the project.
 
@@ -13,6 +15,7 @@ Replace project-specific settings and public identity:
 - deployment platform settings;
 - analytics, monitoring, or error-reporting DSNs;
 - branding, copy, and public demo links;
+- third-party university media assets (ensure compliance with trademark/copyright policies or provide your own assets);
 - GitHub repository badges and workflow links;
 - `OPS_ADMIN_TOKEN`, `.env`, cookies, logs, and any local-only values.
 

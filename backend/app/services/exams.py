@@ -119,7 +119,6 @@ def _coerce_subject_breakdown_submission(
         raise ValueError(f"{exam_key} extra scores must be a list")
 
     component_defs = {row["exam"]: row for row in fixed_defs + selectable_defs}
-    fixed_ids = {row["exam"] for row in fixed_defs}
     selectable_ids = {row["exam"] for row in selectable_defs}
     extra_defs_map = {row["exam"]: row for row in extra_defs}
     distinct_components = bool(scheme.get("distinct_components", True))

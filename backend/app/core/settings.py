@@ -1,6 +1,6 @@
 import os
 from app.core.env import load_local_env
-from app.core.version import APP_VERSION
+from app.core.version import APP_VERSION as APP_VERSION
 
 
 load_local_env()

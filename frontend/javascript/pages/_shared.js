@@ -2,71 +2,30 @@
 
 import {
   API_BASE,
-  $,
-  debounce,
-  loadFilters,
-  saveFilters,
-  setUrlParams,
-  nested,
   escapeHtml,
-  escapeHtmlAttr,
-  initials,
-  moneyUSD,
-  loadProfile,
-  loadProfileForApi,
-  getFlagImg,
-  initCustomSelect,
-  CITY_OPTIONS_BY_COUNTRY,
-  getExamDisplayName,
-  canonicalizeExamId,
-  EXAM_CONFIG,
-  LANG_CONFIG,
-  aiName,
-  animateElementOut,
-  markMotionEnter,
-  motionPress,
-  replayMotion,
 } from "../utils.js";
 
 import {
-  applyPercentWidths,
-  clusterMarkerLogoHtml,
-  getTrackFundingType,
-  mapMarkerLogoHtml,
-  renderExamGroup,
   renderGroupedExamPairRows,
-  renderTrackChanceChip,
-  renderTrackFundingBadge,
-  renderUniChanceSummary,
-  splitExamEntries,
 } from "../university-detail-helpers.js";
 
-import { setupTabs, renderNoConnection } from "../components.js";
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
-import { getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { extractUniversityIdFromLocation, routeUniversities, routeUniversityDetail } from "../routes.js";
-import {
-  SETTING_STORE_RECENT_UNIVERSITIES,
-  SETTING_OPEN_UNIVERSITIES_NEW_TAB,
-  shouldStoreRecentUniversities,
-} from "../settings.js";
+import { getCurrentLanguage, t } from "../i18n.js";
 import {
   humanizeMachineLabel,
-  initUniversityTranslations,
   translateAdmissionText,
   translateDataValue,
   translateFactSource,
   translateFactStatus,
   translateProgramName,
   translateTrackLabel,
-  translateTemplate,
   translateUniversityDescription,
   translateUniversityName,
   translateUnknownField,
   translateUnknownWord,
   translateWord,
 } from "../university-translations.js";
-import { bindInfoTooltips } from "../tooltip.js";
+
 import {
   COMPARE_ADMISSION_CHOICES_KEY,
   COMPARE_UNIVERSITIES_KEY,
@@ -202,44 +161,6 @@ export function renderLocationMarkup({
   }
   const iconHtml = showIcon ? renderInlineIcon("map-pin", 14, iconClass) : "";
   return `<div class="${wrapperClass}">${iconHtml}${parts.join("")}</div>`;
-}
-
-export let rankingBadgeResizeBound = false;
-export let rankingBadgeResizeRaf = 0;
-export let rankingFetchController = null;
-
-export function fitRankingBadgeText(container) {
-  if (!container) return;
-  const badges = Array.from(container.querySelectorAll(".rank-badge"));
-  badges.forEach((badge) => {
-    const baseSize = 13;
-    const minSize = 9;
-    let size = baseSize;
-    badge.style.fontSize = `${baseSize}px`;
-    badge.style.whiteSpace = "nowrap";
-
-    // Keep single-line badge text, shrinking only as much as needed.
-    while (badge.scrollWidth > badge.clientWidth && size > minSize) {
-      size -= 0.25;
-      badge.style.fontSize = `${size.toFixed(2)}px`;
-    }
-  });
-}
-
-export function ensureRankingBadgeResizeHandler() {
-  if (rankingBadgeResizeBound) return;
-  const onViewportChange = () => {
-    if (rankingBadgeResizeRaf) cancelAnimationFrame(rankingBadgeResizeRaf);
-    rankingBadgeResizeRaf = requestAnimationFrame(() => {
-      rankingBadgeResizeRaf = 0;
-      const listEl = document.getElementById("rankingList");
-      if (!listEl) return;
-      fitRankingBadgeText(listEl);
-    });
-  };
-  window.addEventListener("resize", onViewportChange, { passive: true });
-  window.addEventListener("orientationchange", onViewportChange, { passive: true });
-  rankingBadgeResizeBound = true;
 }
 
 export function trCountry(value) {
