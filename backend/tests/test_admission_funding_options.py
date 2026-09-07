@@ -78,6 +78,50 @@ class FundingOptionsTests(unittest.TestCase):
         self.assertEqual(1200, int((choices["direct::sat::paid"].get("requirements") or {}).get("SAT", 0)))
         self.assertEqual(1400, int((choices["direct::sat::grant"].get("requirements") or {}).get("SAT", 0)))
 
+    def test_expand_admission_choices_without_funding_options_preserves_single_choice(self):
+        categories = [
+            _category(
+                "direct",
+                [
+                    {
+                        "id": "regular_admission",
+                        "label": "Regular Admission",
+                        "requirements": {"GPA": 85, "SAT": 1300},
+                    }
+                ],
+            )
+        ]
+        choices = uni_service.expand_admission_choices(categories)
+        self.assertEqual(1, len(choices))
+        choice = choices[0]
+        self.assertEqual("direct::regular_admission", str(choice.get("choiceKey") or choice.get("choice_key")))
+        self.assertEqual(85, int((choice.get("requirements") or {}).get("GPA", 0)))
+        self.assertEqual(1300, int((choice.get("requirements") or {}).get("SAT", 0)))
+
+    def test_expand_admission_choices_funding_requirements_override_profile(self):
+        categories = [
+            _category(
+                "cat_stem",
+                [
+                    {
+                        "id": "track_sat",
+                        "label": "SAT Track",
+                        "requirements": {"SAT": 1200, "GPA": 75},
+                        "funding_options": [
+                            {"id": "merit_grant", "label": "Full Merit Grant", "requirements": {"SAT": 1450}, "funding_type": "grant"},
+                        ],
+                    }
+                ],
+            )
+        ]
+        choices = uni_service.expand_admission_choices(categories)
+        self.assertEqual(1, len(choices))
+        choice = choices[0]
+        self.assertEqual("cat_stem::track_sat::merit_grant", str(choice.get("choiceKey") or choice.get("choice_key")))
+        # Funding option SAT requirement (1450) overrides profile SAT requirement (1200), GPA is preserved (75)
+        self.assertEqual(1450, int((choice.get("requirements") or {}).get("SAT", 0)))
+        self.assertEqual(75, int((choice.get("requirements") or {}).get("GPA", 0)))
+
     def test_real_dataset_exposes_nu_as_one_category_with_funding_options_per_profile(self):
         university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
         self.assertIsNotNone(university)

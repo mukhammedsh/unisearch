@@ -6,6 +6,30 @@
   <base href="./" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
   <title data-i18n="title.privacy">Privacy Policy | UniSearch</title>
+  <meta name="description" content="Privacy Policy for UniSearch. Transparent local-first data storage, cookie-free operation, and third-party service disclosures." />
+  <meta name="theme-color" content="#5715db" />
+
+  <!-- Open Graph / Facebook / Telegram -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="UniSearch" />
+  <meta property="og:url" content="https://unisearch-frontend.onrender.com/privacy.html" />
+  <meta property="og:title" content="Privacy Policy | UniSearch" />
+  <meta property="og:description" content="How UniSearch handles user data with local-first storage, no advertising cookies, and secure practices." />
+  <meta property="og:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
+  <meta property="og:image:secure_url" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1586" />
+  <meta property="og:image:height" content="992" />
+  <meta property="og:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://unisearch-frontend.onrender.com/privacy.html" />
+  <meta name="twitter:title" content="Privacy Policy | UniSearch" />
+  <meta name="twitter:description" content="How UniSearch handles user data with local-first storage and no tracking cookies." />
+  <meta name="twitter:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
+  <meta name="twitter:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+
   <script src="javascript/theme-init.js"></script>
 
   <link rel="stylesheet" href="css/style.css" />
@@ -71,8 +95,13 @@
         </section>
 
         <section id="privacy-google-auth" class="legal-section">
-          <h2 data-i18n="privacy.google_auth.title">3. Authentication via Third-Party Services (Google Sign-In)</h2>
+          <h2 data-i18n="privacy.google_auth.title">3. Authentication via Third-Party Services (Google Sign-In) &mdash; In Development</h2>
           <div class="legal-doc">
+            <div class="legal-callout legal-callout--info">
+              <p data-i18n="privacy.google_auth.status_notice">
+                This feature is currently under active development and is inactive in the current release. The guidelines below describe how user data will be handled once authentication is enabled.
+              </p>
+            </div>
             <p data-i18n="privacy.google_auth.p1">
               To synchronize saved universities and academic inputs across multiple devices, UniSearch provides optional sign-in through Google (Google Sign-In / OAuth 2.0).
             </p>
@@ -113,6 +142,9 @@
             <p data-i18n="privacy.logs.p2">
               This information is processed solely to safeguard platform infrastructure, mitigate denial-of-service attempts, and enforce API rate limits. Server logs are routinely rotated and purged.
             </p>
+            <p data-i18n="privacy.logs.osm_notice">
+              Interactive Map &amp; External Assets: when browsing the catalog map, your browser fetches map tiles from OpenStreetMap servers and the Leaflet library via unpkg CDN. During these requests, these external services receive standard technical IP metadata to transmit visual map tiles. UniSearch never shares user profile inputs or academic metrics with external map providers.
+            </p>
           </div>
         </section>
 
@@ -141,8 +173,11 @@
         </section>
 
         <section id="privacy-contacts" class="legal-section">
-          <h2 data-i18n="privacy.contacts.title">8. Contact &amp; Policy Updates</h2>
+          <h2 data-i18n="privacy.contacts.title">8. Project Operators, Contact &amp; Policy Updates</h2>
           <div class="legal-doc">
+            <p data-i18n="privacy.contacts.operators">
+              Project Operators: UniSearch is an independent, non-commercial educational project created and maintained by high school students Shabdaluly Mukhammed and Rashidov Yerbolat (Zhanaozen Bilim-Innovation Lyceum, Republic of Kazakhstan).
+            </p>
             <p data-i18n="privacy.contacts.p1">
               We may update this Privacy Policy periodically as platform capabilities expand. The date of the latest revision is always indicated at the top of the page.
             </p>

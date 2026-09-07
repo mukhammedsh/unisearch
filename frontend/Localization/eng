@@ -1148,7 +1148,8 @@ privacy.local_storage.li2: Declared academic fields of interest for personalized
 privacy.local_storage.li3: Shortlisted universities and recently viewed history.
 privacy.local_storage.li4: Display preferences (light or dark mode, UI language).
 privacy.local_storage.p2: You maintain full custody of these records. You can purge them at any time by clearing your browser cache or using the reset controls in settings.
-privacy.google_auth.title: 3. Authentication via Third-Party Services (Google Sign-In)
+privacy.google_auth.title: 3. Authentication via Third-Party Services (Google Sign-In) — In Development
+privacy.google_auth.status_notice: This feature is currently under active development and is inactive in the current release. The guidelines below describe how user data will be handled once authentication is enabled.
 privacy.google_auth.p1: To synchronize saved universities and academic inputs across multiple devices, UniSearch provides optional sign-in through Google (Google Sign-In / OAuth 2.0).
 privacy.google_auth.p2: When authenticating via Google, our application receives only essential public profile details:
 privacy.google_auth.li1: Email address — to uniquely identify your user profile.
@@ -1161,13 +1162,15 @@ privacy.processing.p2: Calculations occur ephemerally in volatile memory (RAM) t
 privacy.logs.title: 5. Technical Server Logs & Infrastructure Security
 privacy.logs.p1: Standard HTTP network requests automatically log basic connection metadata: client IP address, User-Agent header, and request timestamp.
 privacy.logs.p2: This information is processed solely to safeguard platform infrastructure, mitigate denial-of-service attempts, and enforce API rate limits. Server logs are routinely rotated and purged.
+privacy.logs.osm_notice: Interactive Map & External Assets: when browsing the catalog map, your browser fetches map tiles from OpenStreetMap servers and the Leaflet library via unpkg CDN. During these requests, these external services receive standard technical IP metadata to transmit visual map tiles. UniSearch never shares user profile inputs or academic metrics with external map providers.
 privacy.trackers.title: 6. Cookies & Tracking Technology
 privacy.trackers.p1: UniSearch does not deploy commercial marketing trackers, cross-site profiling pixels, or intrusive tracking scripts.
 privacy.trackers.p2: Functional storage tokens are utilized strictly to preserve your interface preferences (such as language and color theme).
 privacy.rights.title: 7. User Rights & Data Erasure
 privacy.rights.p1: In accordance with global privacy principles (including GDPR and CCPA guidelines), you retain full rights to your data and privacy.
 privacy.rights.p2: For guest storage, clearing browser history completely removes all cached information. For synchronized accounts, you may revoke UniSearch permissions in your Google Security settings or request account deletion via support.
-privacy.contacts.title: 8. Contact & Policy Updates
+privacy.contacts.title: 8. Project Operators, Contact & Policy Updates
+privacy.contacts.operators: Project Operators: UniSearch is an independent, non-commercial educational project created and maintained by high school students Shabdaluly Mukhammed and Rashidov Yerbolat (Zhanaozen Bilim-Innovation Lyceum, Republic of Kazakhstan).
 privacy.contacts.p1: We may update this Privacy Policy periodically as platform capabilities expand. The date of the latest revision is always indicated at the top of the page.
 privacy.contacts.p2: If you have questions or inquiries concerning data handling, contact us via email: unisearch@inbox.ru
 terms.hero.badge: Legal Information
@@ -1188,16 +1191,20 @@ terms.purpose.p1: UniSearch is an independent academic discovery and search work
 terms.purpose.p2: The catalog is strictly focused on undergraduate studies and aggregates officially published institutional data.
 terms.disclaimer.title: 3. Informational Nature & Educational Disclaimer
 terms.disclaimer.callout: Notice: UniSearch is not an admissions office and is not officially affiliated with the universities listed. Algorithmic scores are preliminary estimates and do not guarantee admission.
+terms.disclaimer.educational_status: UniSearch is an independent, non-commercial research initiative developed by high school students as an applied educational endeavor. The service is not an official admissions office, accredited governmental body, or formal admissions agency.
+terms.disclaimer.as_is: All services, algorithmic models (UniFit, UniChance), and catalog listings are provided strictly on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind. While we strive for data freshness, requirements can shift. Users bear sole responsibility for verifying final criteria directly on official university portals.
 terms.disclaimer.p1: All information presented on this platform (exam thresholds, minimum scores, application deadlines, tuition costs, and scholarships) is provided for general guidance only.
 terms.disclaimer.p2: UniFit (smart sorting) and UniChance (admission chance estimation) are algorithmic guides. They cannot and do not guarantee university acceptance, student visa grants, or financial aid awards.
 terms.disclaimer.p3: Universities may revise admission criteria, tuition rates, and application timelines without prior notice. Applicants bear sole responsibility for verifying final requirements directly on official university portals.
 terms.disclaimer.p4: UniSearch assumes no liability for admissions committee outcomes, missed application deadlines, or financial expenditures incurred by users.
 terms.accounts.title: 4. User Accounts & Security
-terms.accounts.p1: For convenient synchronization of profile metrics and bookmarks across devices, UniSearch may offer sign-in via third-party providers (including Google Sign-In).
+terms.accounts.p1: For convenient synchronization of profile metrics and bookmarks across devices, UniSearch may offer sign-in via third-party providers (including Google Sign-In). This functionality is currently in development.
 terms.accounts.p2: Users agree not to access accounts belonging to other individuals without authorization and remain responsible for maintaining access security on their personal devices.
 terms.ip.title: 5. Intellectual Property & Fair Use
+terms.ip.non_affiliation: UniSearch is an independent catalog and is not affiliated with, sponsored by, or endorsed by any universities listed on the platform. All university names, crests, logos, and trademarks belong to their respective owners and are used strictly for informational reference (Nominative Fair Use).
 terms.ip.p1: University names, crests, official emblems, and campus photographs remain the exclusive trademarks and property of their respective academic institutions. They are utilized in UniSearch strictly for identification and non-commercial educational purposes under fair use doctrine.
 terms.ip.p2: Platform application source code, interface designs, layout architecture, and proprietary algorithms belong to the creators of UniSearch.
+terms.ip.takedown: Notice & Takedown Procedure: if you are an authorized university representative or intellectual property owner and wish to request the removal or adjustment of any logo, name, or institutional reference, please notify us at unisearch@inbox.ru. We will review and address the request within 48 hours.
 terms.acceptable_use.title: 6. Acceptable Use Policy
 terms.acceptable_use.p1: When accessing or utilizing the platform, users agree not to engage in prohibited activities:
 terms.acceptable_use.li1: Attempting unauthorized access to server infrastructure or circumventing security controls.
@@ -1205,6 +1212,7 @@ terms.acceptable_use.li2: Denial-of-service attempts, excessive request spamming
 terms.acceptable_use.li3: Using the service to transmit malware, malicious code, or unsolicited communications.
 terms.third_party.title: 7. Third-Party External Links
 terms.third_party.p1: UniSearch links to external university websites, application gateways, and educational resources. We do not manage external content or privacy policies and bear no responsibility for their operations.
-terms.updates.title: 8. Modifications & Contact Information
+terms.updates.title: 8. Project Operators, Modifications & Contact Information
+terms.updates.operators: Project Creators: UniSearch was created by students Shabdaluly Mukhammed and Rashidov Yerbolat (Zhanaozen Bilim-Innovation Lyceum, Republic of Kazakhstan).
 terms.updates.p1: We reserve the right to revise these Terms at any time. The current version will always be published on this page with an updated timestamp.
 terms.updates.p2: For any questions or feedback concerning these terms, please contact us at: unisearch@inbox.ru

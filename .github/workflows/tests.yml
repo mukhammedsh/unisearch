@@ -77,7 +77,7 @@ jobs:
           pip install -r backend/requirements.txt
 
       - name: Install node dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run i18n consistency checks
         run: npm run check:i18n
@@ -124,7 +124,7 @@ jobs:
           pip install -r backend/requirements.txt
 
       - name: Install node dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run i18n consistency checks
         run: npm run check:i18n

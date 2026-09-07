@@ -89,7 +89,6 @@ test("universities filter dropdowns update translated option text after language
   expect(before.country.customOptionTexts).toEqual(before.country.nativeOptionTexts);
 
   await switchLanguage(page, "rus");
-  await page.waitForTimeout(1000); // Wait for custom select to re-render
 
   await expect.poll(async () => {
     const snapshot = await snapshotFilterOptions(page);

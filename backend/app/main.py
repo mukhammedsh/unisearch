@@ -25,6 +25,7 @@ from app.core.settings import (
     AUTO_WARMUP_ON_STARTUP,
     BACKEND_HOST,
     BACKEND_PORT,
+    DOCS_ENABLED,
     EXPENSIVE_RATE_LIMIT_REQUESTS,
     EXPENSIVE_RATE_LIMIT_WINDOW_SEC,
     FRONTEND_ORIGINS,
@@ -69,7 +70,14 @@ async def _lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="UniSearch AI API", version=APP_VERSION, lifespan=_lifespan)
+app = FastAPI(
+    title="UniSearch AI API",
+    version=APP_VERSION,
+    lifespan=_lifespan,
+    docs_url="/docs" if DOCS_ENABLED else None,
+    redoc_url="/redoc" if DOCS_ENABLED else None,
+    openapi_url="/openapi.json" if DOCS_ENABLED else None,
+)
 setup_observability(app)
 
 _GLOBAL_RATE_LIMITER = build_rate_limiter(
@@ -315,6 +323,16 @@ app.mount(
 )
 
 
+@app.exception_handler(Exception)
+async def global_unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    logger.exception("unhandled_route_exception path=%s error=%s", request_scope_path(request), exc)
+    response = JSONResponse(
+        {"detail": "Internal server error"},
+        status_code=500,
+    )
+    return _apply_security_headers(response)
+
+
 @app.middleware("http")
 async def request_metrics(request: Request, call_next):
     request_id = str(uuid.uuid4())
@@ -329,7 +347,7 @@ async def request_metrics(request: Request, call_next):
         response.headers.update(rate_headers)
     except Exception:
         _log_request_failure(request, request_id, start)
-        raise
+        response = JSONResponse({"detail": "Internal server error"}, status_code=500)
 
     return _finalize_request_response(response, request, request_id, start)
 

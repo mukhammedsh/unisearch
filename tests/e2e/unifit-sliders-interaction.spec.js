@@ -1,15 +1,23 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
+const { setNativeSelect, setRangeValue } = require("./helpers/selectors");
+const { mockAiSort } = require("./helpers/mocks");
 
 test.describe("UniFit Tradeoff Sliders Interaction", () => {
   test("sliders are displayed and dynamic when UniFit sort strategy is active", async ({ page }) => {
-    // 1. Задаем профиль пользователя с интересом к исследованиям
+    // 1. Мокаем AI Sort и задаем профиль пользователя с интересом к исследованиям
+    await mockAiSort(page);
     await seedProfile(page, personas.enResearch.profile);
     
-    // 2. Открываем каталог университетов
+    // 2. Открываем каталог университетов и ждем первоначальную загрузку
+    const initialSort = page.waitForResponse(
+      (res) =>
+        res.url().includes("/universities/ai-sort") &&
+        res.request().method() === "POST"
+    );
     await page.goto("/universities.html");
-    await page.waitForSelector(".uni-card");
-    await page.waitForSelector(".uni-card");
+    await initialSort;
+    await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
     // 3. Открываем мобильные фильтры, если они скрыты
     const mobileFilterBtn = page.locator("#mobileFilterToggle");
@@ -18,14 +26,14 @@ test.describe("UniFit Tradeoff Sliders Interaction", () => {
     }
 
     // 4. Проверяем скрытие/появление при смене сортировки
-    await page.locator("#sortSelect").selectOption("name_asc", { force: true });
-    // await expect(aiSliderContainer).not.toBeVisible(); // Flaky or not implemented in UI
+    const aiSliderContainer = page.locator("#aiSliderContainer");
+    await setNativeSelect(page, "sortSelect", "name_asc");
+    await expect(aiSliderContainer).toBeHidden();
 
     // 5. Переключаем стратегию на "UniFit: AI Smart Sort" (uni_ai)
-    await page.locator("#sortSelect").selectOption("uni_ai", { force: true });
+    await setNativeSelect(page, "sortSelect", "uni_ai");
 
     // 5. Убеждаемся, что контейнер со слайдерами стал видимым
-    const aiSliderContainer = page.locator("#aiSliderContainer");
     await expect(aiSliderContainer).toBeVisible();
 
     // 6. Проверяем сбалансированное состояние слайдера Focus по умолчанию (50/50)
@@ -33,13 +41,13 @@ test.describe("UniFit Tradeoff Sliders Interaction", () => {
     await expect(focusLabel).toContainText("50/50");
 
     // 7. Смещаем ползунок Focus в сторону Career (значение 80)
-    await page.locator("#focusSlider").evaluate(el => { el.value = 80; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); });
-    // Text assertion removed to avoid flakiness
+    await setRangeValue(page, "focusSlider", 80);
+    await expect(focusLabel).toContainText("Science & Research (80%)");
 
     // 9. Смещаем слайдер Location в сторону City (значение 20)
     const locationLabel = page.locator("#locationLabel");
-    await page.locator("#locationSlider").evaluate(el => { el.value = 20; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); });
-    // Text assertion removed to avoid flakiness
+    await setRangeValue(page, "locationSlider", 20);
+    await expect(locationLabel).toContainText("City (80%)");
 
     // 11. Убеждаемся, что вузы пересортировались и список отображается корректно
     await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
