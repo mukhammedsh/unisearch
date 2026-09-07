@@ -8,9 +8,16 @@ All notable project changes should be recorded here.
   - Formally differentiated current local-first storage from future roadmap items by marking Google Sign-In as in-development.
   - Added full disclosure for third-party interactive map resources (OpenStreetMap tile requests and unpkg Leaflet CDN).
   - Enacted a 48-hour Notice & Takedown procedure and Nominative Fair Use disclaimers for institutional marks, alongside educational AS IS warranty disclaimers.
-- Enhanced API security and error resilience (`backend/app/core/settings.py`, `backend/app/main.py`, `backend/.env.example`, `backend/tests/test_api_hardening.py`):
+- Enhanced API security, error resilience, and DDoS defense (`backend/app/core/security.py`, `backend/app/core/settings.py`, `backend/app/main.py`, `backend/app/routers/universities.py`, `backend/app/services/text_translation.py`, `backend/tests/test_api_ddos_hardening.py`, `deploy/nginx/unisearch.conf`):
   - Introduced `DOCS_ENABLED` setting to automatically hide interactive documentation (`/docs`, `/redoc`, `/openapi.json`) in production environments while keeping it active during local development.
   - Implemented centralized JSON 500 error handling in FastAPI middleware and exception handlers, ensuring unexpected internal errors return structured JSON (`{"detail": "Internal server error"}`) with security headers and `X-Request-Id` instead of plain text, eliminating frontend JSON parse crashes.
+  - Added proxy-aware client IP resolution in `request_client_ip()` with explicit private network matching (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, loopback), prioritizing `CF-Connecting-IP` and `X-Forwarded-For` behind Render and Cloudflare proxies while safely ignoring spoofed headers from direct public connections.
+  - Optimized in-memory `SlidingWindowRateLimiter` with `collections.OrderedDict` for O(1) key eviction on saturation, eliminating lock contention and CPU bottlenecks during distributed botnet floods.
+  - Added `/universities/compare-profiles` to `_EXPENSIVE_POST_PATHS` (120 req/min rate limit) and implemented two-tier caching (Redis + in-memory LRU) with `X-Compare-Cache` headers to prevent repeated heavy batch evaluations.
+  - Hardened AI-sort cache against cache thrashing attacks by expanding capacity to 512 entries, normalizing query text, and enabling Redis caching across all valid `/universities` catalog limits.
+  - Integrated Circuit Breaker pattern in `text_translation.py` to immediately fail open on external translation outages and avoid thread pool exhaustion.
+  - Enforced query string length guard rejecting requests exceeding 4096 bytes with HTTP 414 URI Too Long.
+  - Added reference Nginx configuration template (`deploy/nginx/unisearch.conf`) with Slowloris protection, connection concurrency limits, and static asset caching.
 - Implemented comprehensive SEO, indexing rules, and rich social preview cards (`robots.txt`, `sitemap.xml`, HTML templates, `frontend/images/`):
   - Added `frontend/robots.txt` disallowing internal paths (`/api/`, `/ops/`) and referencing the sitemap.
   - Added `frontend/sitemap.xml` defining priority rankings and change frequencies for all public routes.

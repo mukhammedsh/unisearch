@@ -3,6 +3,7 @@ import json
 import logging
 import threading
 import time
+from collections import OrderedDict
 from typing import Any, Dict, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request as UrlRequest, urlopen
@@ -26,7 +27,7 @@ from app.core.settings import (
 )
 
 
-_TRANSLATION_CACHE: Dict[str, Dict[str, Any]] = {}
+_TRANSLATION_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
 _TRANSLATION_CACHE_LOCK = threading.Lock()
 _TRANSLATION_REDIS_KEY_PREFIX = "translation:ml-interest"
 _TRANSLATION_RATE_LIMITER = build_rate_limiter(
@@ -35,6 +36,8 @@ _TRANSLATION_RATE_LIMITER = build_rate_limiter(
     redis_key_prefix="translation:rate-limit",
 )
 _PROVIDER_BACKOFF_UNTIL = 0.0
+_PROVIDER_CONSECUTIVE_FAILURES = 0
+_PROVIDER_CIRCUIT_STATE = "CLOSED"
 _PROVIDER_BACKOFF_LOCK = threading.Lock()
 _LOGGER = logging.getLogger("unisearch.translation")
 _PROVIDER_STATUS_CACHE: Dict[str, Any] = {"ts": 0.0, "value": None}
@@ -91,17 +94,13 @@ def _cache_get(key: str) -> Optional[Dict[str, Any]]:
 
     now = time.time()
     with _TRANSLATION_CACHE_LOCK:
-        stale = [
-            k
-            for k, row in _TRANSLATION_CACHE.items()
-            if (now - float(row.get("ts", 0.0))) > ML_INTEREST_TRANSLATION_CACHE_TTL_SEC
-        ]
-        for stale_key in stale:
-            _TRANSLATION_CACHE.pop(stale_key, None)
-
         row = _TRANSLATION_CACHE.get(key)
         if not row:
             return None
+        if (now - float(row.get("ts", 0.0))) > ML_INTEREST_TRANSLATION_CACHE_TTL_SEC:
+            _TRANSLATION_CACHE.pop(key, None)
+            return None
+        _TRANSLATION_CACHE.move_to_end(key)
         return {
             "text": str(row.get("text") or ""),
             "translated": bool(row.get("translated")),
@@ -129,31 +128,48 @@ def _cache_set(key: str, value: Dict[str, Any]) -> None:
             "ts": now,
             **row,
         }
-        if len(_TRANSLATION_CACHE) <= ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS:
-            return
-
-        overflow = len(_TRANSLATION_CACHE) - ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS
-        if overflow <= 0:
-            return
-        oldest_keys = sorted(
-            _TRANSLATION_CACHE.keys(),
-            key=lambda k: float(_TRANSLATION_CACHE[k].get("ts", 0.0)),
-        )
-        for stale_key in oldest_keys[:overflow]:
-            _TRANSLATION_CACHE.pop(stale_key, None)
+        _TRANSLATION_CACHE.move_to_end(key)
+        while len(_TRANSLATION_CACHE) > ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS:
+            _TRANSLATION_CACHE.popitem(last=False)
 
 
-def _provider_in_backoff() -> bool:
+def _provider_record_success() -> None:
+    global _PROVIDER_CONSECUTIVE_FAILURES, _PROVIDER_CIRCUIT_STATE, _PROVIDER_BACKOFF_UNTIL
     with _PROVIDER_BACKOFF_LOCK:
-        return time.time() < _PROVIDER_BACKOFF_UNTIL
+        _PROVIDER_CONSECUTIVE_FAILURES = 0
+        _PROVIDER_CIRCUIT_STATE = "CLOSED"
+        _PROVIDER_BACKOFF_UNTIL = 0.0
 
 
-def _provider_set_backoff() -> None:
-    global _PROVIDER_BACKOFF_UNTIL
+def _provider_record_failure() -> None:
+    global _PROVIDER_CONSECUTIVE_FAILURES, _PROVIDER_CIRCUIT_STATE, _PROVIDER_BACKOFF_UNTIL
     if ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC <= 0:
         return
     with _PROVIDER_BACKOFF_LOCK:
-        _PROVIDER_BACKOFF_UNTIL = time.time() + float(ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC)
+        _PROVIDER_CONSECUTIVE_FAILURES += 1
+        backoff_duration = float(ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC)
+        if _PROVIDER_CONSECUTIVE_FAILURES >= 2 or _PROVIDER_CIRCUIT_STATE == "HALF_OPEN":
+            _PROVIDER_CIRCUIT_STATE = "OPEN"
+            multiplier = min(4, 2 ** (_PROVIDER_CONSECUTIVE_FAILURES - 2))
+            _PROVIDER_BACKOFF_UNTIL = time.time() + (backoff_duration * multiplier)
+        else:
+            _PROVIDER_BACKOFF_UNTIL = time.time() + backoff_duration
+
+
+def _provider_set_backoff() -> None:
+    _provider_record_failure()
+
+
+def _provider_in_backoff() -> bool:
+    global _PROVIDER_CIRCUIT_STATE
+    with _PROVIDER_BACKOFF_LOCK:
+        now = time.time()
+        if now < _PROVIDER_BACKOFF_UNTIL:
+            return True
+        if _PROVIDER_CIRCUIT_STATE == "OPEN":
+            _PROVIDER_CIRCUIT_STATE = "HALF_OPEN"
+            return False
+        return False
 
 
 def _http_post_json(url: str, body: Dict[str, Any], timeout_sec: float) -> Dict[str, Any]:
@@ -390,6 +406,7 @@ def translate_interest_text_for_ml(
 
     try:
         translated_text = _libretranslate_request(raw, source_lang or "auto", target)
+        _provider_record_success()
     except Exception as exc:
         _provider_set_backoff()
         _debug_log(
