@@ -8,11 +8,14 @@ All notable project changes should be recorded here.
   - Modularized `frontend/javascript/components/profile-ui.js` (-590 lines) by extracting exam breakdown parsing, subject combos, and special exam inputs into `profile/exam-breakdowns.js`.
   - Refactored `backend/app/services/universities.py` (-668 lines) by extracting admission track extraction, canonical major resolution, score profiles, and grant derivation into `university_tracks.py`.
   - Pruned dead code and unused helpers across `search.py` (`score_query`), `ai_scoring.py` (`_mode_value_from_map`, `_normalize_cost_key`), `university-detail-helpers.js`, and `universities.js`.
-- Hardened legal compliance, transparency, and Safe Harbor notices (`privacy.html`, `terms.html`, `Localization/eng`, `Localization/ru`):
+- Hardened legal compliance, transparency, and Safe Harbor notices (`LICENSE`, `THIRD_PARTY_NOTICES.md`, `privacy.html`, `terms.html`, `docs/forking-and-reuse.md`, `backend/data/university_assets/README.md`, `Localization/eng`, `Localization/ru`):
   - Updated operator disclosures to identify project creators (high school students Shabdaluly Mukhammed and Rashidov Yerbolat from Zhanaozen BIL, Kazakhstan) and contact email (`unisearch@inbox.ru`).
+  - Explicitly excluded university trademarks, logos, and campus thumbnail photographs from the project's root MIT License, scoping the open-source software license strictly to original codebase and assets.
+  - Formally established a Nominative Fair Use and Educational Media policy for university emblems and campus imagery in `THIRD_PARTY_NOTICES.md` and `backend/data/university_assets/README.md`.
+  - Expanded the active Notice & Takedown procedure in terms of use and localization dictionaries to protect photographers and copyright holders, guaranteeing a 48-hour response window for attribution credit, adjustments, or removal requests.
   - Formally differentiated current local-first storage from future roadmap items by marking Google Sign-In as in-development.
   - Added full disclosure for third-party interactive map resources (OpenStreetMap tile requests and unpkg Leaflet CDN).
-  - Enacted a 48-hour Notice & Takedown procedure and Nominative Fair Use disclaimers for institutional marks, alongside educational AS IS warranty disclaimers.
+  - Added fork compliance guidelines in `docs/forking-and-reuse.md` regarding third-party institutional media assets.
 - Enhanced API security, error resilience, and DDoS defense (`backend/app/core/security.py`, `backend/app/core/settings.py`, `backend/app/main.py`, `backend/app/routers/universities.py`, `backend/app/services/text_translation.py`, `backend/tests/test_api_ddos_hardening.py`, `deploy/nginx/unisearch.conf`):
   - Introduced `DOCS_ENABLED` setting to automatically hide interactive documentation (`/docs`, `/redoc`, `/openapi.json`) in production environments while keeping it active during local development.
   - Implemented centralized JSON 500 error handling in FastAPI middleware and exception handlers, ensuring unexpected internal errors return structured JSON (`{"detail": "Internal server error"}`) with security headers and `X-Request-Id` instead of plain text, eliminating frontend JSON parse crashes.

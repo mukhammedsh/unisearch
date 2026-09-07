@@ -86,7 +86,7 @@ class InfrastructureHygieneTests(unittest.TestCase):
                 detected_issues.append(f"{desc}: {matches}")
 
         if detected_issues:
-            self.fail(f"В .env.example обнаружены подозрительные значения (секреты):\n" + "\n".join(detected_issues))
+            self.fail("В .env.example обнаружены подозрительные значения (секреты):\n" + "\n".join(detected_issues))
 
     def test_files_encoding_utf8_without_bom(self):
         """Проверяет, что файлы исходного кода используют UTF-8 без BOM."""
@@ -113,7 +113,7 @@ class InfrastructureHygieneTests(unittest.TestCase):
                     invalid_files.append(relative_path)
 
         if invalid_files:
-            self.fail(f"Найдены файлы с BOM (UTF-8-BOM), перекодируйте их в UTF-8 без BOM:\n" + "\n".join(invalid_files))
+            self.fail("Найдены файлы с BOM (UTF-8-BOM), перекодируйте их в UTF-8 без BOM:\n" + "\n".join(invalid_files))
 
 
 if __name__ == "__main__":

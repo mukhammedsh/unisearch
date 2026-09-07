@@ -7,7 +7,6 @@ import {
   clearProfile,
   escapeHtml,
   formatExamValue,
-  frontendStaticAsset,
   getExamConfig,
   getExamDisplayName,
   getExamInputMode,
@@ -29,20 +28,11 @@ import {
   clearProfileDraftTransfer,
   consumeProfileDraftAfterReload,
   fetchTranslationRuntimeStatus,
-  persistProfileDraftForReload,
 } from "./shell.js";
-import {
-  getSettingValue,
-  readSettingsArray,
-  setSettingValue,
-  shouldStoreRecentUniversities,
-  writeSettingsArray,
-} from "../settings.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { isProfilePath, navigateToAppRoute, routeHome, routeUniversities } from "../routes.js";
+import { isProfilePath, navigateToAppRoute, routeHome } from "../routes.js";
 import {
-  parseAlevelGrades,
   breakdownSchemeFor,
   buildBreakdownState,
   readSubjectBreakdownDraft as readSubjectBreakdownDraftFromModule,

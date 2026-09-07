@@ -1,5 +1,4 @@
 import unittest
-from typing import Any, Dict
 
 from app.services import universities as uni_service
 from app.services.ai_scoring import estimate_uni_chance

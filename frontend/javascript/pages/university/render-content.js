@@ -7,7 +7,6 @@ import {
   formatCampusSizeValue,
   formatUiNumber,
   localizeDuration,
-  renderAdmissionsOverview,
   renderInlineIcon,
   renderProgramAdmissionsSignals,
   rankingStatusLabel,

@@ -1,13 +1,11 @@
 import { loadGlobalLayout, renderNoConnection } from "./components.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset } from "./utils.js";
-import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
-import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide, routePrivacy, routeProfile, routeTerms } from "./routes.js";
+import { initUniversityTranslations } from "./university-translations.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
-const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 const BACKEND_WAKE_PING_KEY = "unisearch_backend_wake_ping_ts";
 const BACKEND_WAKE_PING_INTERVAL_MS = 4 * 60_000;
 const GUIDE_SECTION_HASH_RE = /^#guide-[a-z0-9-]+$/i;

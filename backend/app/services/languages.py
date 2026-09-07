@@ -264,8 +264,6 @@ def get_languages_config() -> Dict[str, Any]:
 
 
 def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:
-    # ВСЕГДА читаем актуальный languages.json (а не LANGUAGES_CONFIG, который грузится один раз)
-    cfg = load_languages() or {}
     idx = get_languages_index()
 
     code = str(payload.get("code", "")).strip().lower()

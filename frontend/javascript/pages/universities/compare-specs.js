@@ -15,7 +15,6 @@ import {
   toFiniteNumber,
   uniLogoSrc,
   renderInlineIcon,
-  trTrackLabel,
   trTrackDescription,
 } from "../_shared.js";
 
@@ -25,39 +24,27 @@ import {
 } from "../../university-translations.js";
 
 import { getTrackFundingType } from "../../university-detail-helpers.js";
-import { heroIcon } from "../../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 
 import {
   compareUniversityName,
   compareLocationText,
-  compareRankText,
-  compareAcceptanceText,
   compareAidText,
-  compareBachelorPrograms,
-  compareBachelorProgramNames,
   compareProgramSummary,
   compareProgramTitle,
-  compareLanguageSummary,
   compareStudyModeText,
   compareAdmissionOptionEntries,
-  compareAdmissionChoiceOptionLabel,
   compareSelectedAdmissionEntry,
   compareSelectedAdmissionOption,
-  compareSelectedFinance,
   compareSelectedAnnualCost,
-  compareTrackCountText,
   compareTrackLabel,
   compareFundingChoiceText,
   compareRequirementsText,
   compareAverageScoreText,
   compareLanguageProofText,
   compareExtraRequirementsText,
-  compareCostBreakdownText,
   compareSourceText,
   compareDataConfidenceText,
-  compareOutcomeText,
-  compareStudentCountText,
   compareCountText,
   comparePercentText,
   compareScoreText,
@@ -66,8 +53,6 @@ import {
   compareLanguageCount,
   compareStudyFormatCount,
   compareMajorTagCount,
-  compareFundingOptionCount,
-  compareExtraRequirementCount,
   compareAidScore,
   compareCostBreakdownNumber,
 } from "./compare-helpers.js";

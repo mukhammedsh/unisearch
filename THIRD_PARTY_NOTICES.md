@@ -48,8 +48,26 @@ This project uses or references the following third-party icon and brand assets.
   - The GitHub mark is used only to link to the project's GitHub page
   - It should remain visually secondary to the UniSearch brand and should not be used to represent the project itself
 
+## 4. University Trademarks, Logos, and Campus Imagery
+
+- Subject: University names, official emblems, logos, and campus photographs
+- Assets location:
+  - `backend/data/university_assets/logos/` (and `logos-small/`)
+  - `backend/data/university_assets/thumbnails/` (and `thumbnails-medium/`, `thumbnails-small/`)
+- Rights & Ownership:
+  - University names, logos, crests, and emblems are registered or unregistered trademarks and intellectual property of their respective academic institutions.
+  - Campus photographs are the intellectual property of their respective photographers, copyright holders, or academic institutions.
+  - The root MIT License of this project does **NOT** apply to any third-party university trademarks, logos, or campus photographs.
+- Permitted Usage in UniSearch:
+  - Included solely for non-commercial educational, informational, and identification purposes (Nominative Fair Use) to assist prospective undergraduate students in recognizing institutions.
+  - Use of these assets does not imply any official affiliation with, endorsement by, or sponsorship from the respective academic institutions.
+- Notice & Takedown Policy:
+  - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or immediate removal, please contact us at **unisearch@inbox.ru** or open a GitHub Issue.
+  - Requests are acknowledged and addressed within 48 hours.
+
 ## Summary
 
-- Main UI icon pack: Heroicons
-- Country flags: flag-icons
+- Main UI icon pack: Heroicons (MIT)
+- Country flags: flag-icons (MIT)
 - Brand/social mark: GitHub logomark under GitHub brand usage rules
+- University assets (logos and campus photos): Property of respective institutions and copyright holders; excluded from the MIT License; used under Nominative Fair Use with an active 48-hour Notice & Takedown procedure.

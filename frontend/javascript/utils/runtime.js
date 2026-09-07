@@ -3,7 +3,6 @@ const inferredApiBase = `${window.location?.protocol || "http:"}//${window.locat
 export const API_BASE = window.API_BASE_URL || inferredApiBase;
 export const AI_DEFAULTS = { fit: "UniFit", chance: "UniChance" };
 export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
-export const $ = (id) => document.getElementById(id);
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
