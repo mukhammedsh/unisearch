@@ -3,6 +3,8 @@
 import {
   API_BASE,
   escapeHtml,
+  escapeHtmlAttr,
+  moneyUSD,
 } from "../utils.js";
 
 import {
@@ -10,7 +12,7 @@ import {
 } from "../university-detail-helpers.js";
 
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
-import { getCurrentLanguage, t } from "../i18n.js";
+import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import {
   humanizeMachineLabel,
   translateAdmissionText,
@@ -19,6 +21,7 @@ import {
   translateFactStatus,
   translateProgramName,
   translateTrackLabel,
+  translateTemplate,
   translateUniversityDescription,
   translateUniversityName,
   translateUnknownField,

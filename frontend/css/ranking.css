@@ -358,13 +358,20 @@ body[data-page="ranking"] {
     height: 56px;
     flex-basis: 56px;
     border-radius: var(--radius-base);
-    background: var(--surface-solid);
+    background: #ffffff;
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     align-self: center;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+:root[data-theme="dark"] .rank-logo {
+    background: #ffffff !important;
+    color: #0f172a;
 }
 
 .rank-logo img {
@@ -557,4 +564,12 @@ body[data-page="ranking"] {
         animation: none !important;
     }
 }
+
+/* Гарантированный белый фон для логотипов в рейтинге */
+.rank-logo,
+:root[data-theme="dark"] .rank-logo {
+    background: #ffffff !important;
+    color: #0f172a;
+}
+
 

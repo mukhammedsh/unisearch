@@ -1350,12 +1350,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   width: 52px;
   height: 52px;
   border-radius: var(--radius-base);
-  background: var(--surface-solid);
+  background: #ffffff;
   border: 1px solid var(--line);
   display: grid;
   place-items: center;
   font-weight: 700;
-  color: var(--accent);
+  color: #0f172a;
   box-shadow: none;
 }
 
@@ -2010,7 +2010,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   height: 24px;
   border-radius: var(--radius-xs);
   object-fit: contain;
-  background: var(--surface-solid);
+  background: #ffffff;
   border: 1px solid var(--line);
   padding: 2px;
   flex-shrink: 0;
@@ -3003,10 +3003,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-radius: var(--radius-xs);
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--surface-solid);
+  background: #ffffff;
+  border: 1px solid var(--line);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #0f172a;
 }
 
 .compare-score-participant__logo img {
@@ -3128,10 +3130,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   height: 36px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: var(--surface-soft);
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #0f172a;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -3816,8 +3819,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .u-search input,
 :root[data-theme="dark"] .view-toggles,
 :root[data-theme="dark"] .page-btn,
-:root[data-theme="dark"] .uni-price,
-:root[data-theme="dark"] .uni-logo {
+:root[data-theme="dark"] .uni-price {
   background: #171717;
   color: var(--text);
   border-color: var(--line);
@@ -3951,9 +3953,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root[data-theme="dark"] .uni-card .uni-logo {
-  background: var(--surface-solid);
+  background: #ffffff;
   border-color: var(--line);
-  color: var(--text);
+  color: #0f172a;
 }
 
 :root[data-theme="dark"] .uni-card .uni-pill--warn {
@@ -5246,8 +5248,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .compare-config-column,
 :root[data-theme="dark"] .compare-results-empty,
 :root[data-theme="dark"] .compare-results-action--ghost,
-:root[data-theme="dark"] .compare-uni-card,
-:root[data-theme="dark"] .compare-uni-card__logo {
+:root[data-theme="dark"] .compare-uni-card {
   background: var(--surface-soft);
   border-color: var(--line);
   color: var(--text);
@@ -5257,10 +5258,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background: var(--surface-solid);
 }
 
-:root[data-theme="dark"] .compare-uni-card__logo {
-  background: #ffffff;
+:root[data-theme="dark"] .compare-uni-card__logo,
+:root[data-theme="dark"] .compare-tray__slot-logo,
+:root[data-theme="dark"] .compare-score-participant__logo,
+:root[data-theme="dark"] .compare-config-column__logo {
+  background: #ffffff !important;
   border-color: var(--line);
-  color: var(--accent);
+  color: #0f172a;
 }
 
 :root[data-theme="dark"] .compare-config-column {
@@ -6165,4 +6169,30 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background: color-mix(in srgb, var(--accent) 14%, var(--surface-soft, var(--card)));
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
 }
+
+/* Гарантированный белый фон у всех логотипов и иконок университетов в любой теме */
+.uni-logo,
+.uni-card .uni-logo,
+.compare-tray__slot-logo,
+.compare-uni-card__logo,
+.compare-score-participant__logo,
+.compare-config-column__logo,
+.u-map-result-logo,
+.map-marker-container {
+  background: #ffffff !important;
+  color: #0f172a;
+}
+
+:root[data-theme="dark"] .uni-logo,
+:root[data-theme="dark"] .uni-card .uni-logo,
+:root[data-theme="dark"] .compare-tray__slot-logo,
+:root[data-theme="dark"] .compare-uni-card__logo,
+:root[data-theme="dark"] .compare-score-participant__logo,
+:root[data-theme="dark"] .compare-config-column__logo,
+:root[data-theme="dark"] .u-map-result-logo,
+:root[data-theme="dark"] .map-marker-container {
+  background: #ffffff !important;
+  color: #0f172a;
+}
+
 

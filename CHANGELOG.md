@@ -3,6 +3,9 @@
 All notable project changes should be recorded here.
 
 ## 5.0.0 (2026-09-07) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Fixed frontend initialization runtime ReferenceErrors and enforced uniform white background for university logos:
+  - Restored missing imports and exports across `components.js`, `main.js`, `runtime.js`, `utils.js`, `universities.js`, and `_shared.js` (`setupSlidingIndicator`, `initCustomSelect`, `initLanguagesPanel`, `translateUnknownWord`, `routeGuide`, `$`, `moneyUSD`, `escapeHtmlAttr`, `tFormat`, `translateTemplate`, `PROFILE_RETURN_URL_KEY`), preventing startup exceptions from falsely triggering the offline/no-connection screen.
+  - Enforced a uniform `#ffffff` background and high-contrast `#0f172a` fallback text for university logos and emblems across all themes, including dark mode, across catalog cards, ranking rows, detail view, comparison tables/cards/trays, and map result items (`universities.css`, `ranking.css`, `university.css`).
 - Modularized large monolithic files and eliminated dead code across frontend and backend (`universities.js`, `universities.py`, `profile-ui.js`, `compare-specs.js`, `university_tracks.py`):
   - Decomposed `frontend/javascript/pages/universities.js` (-1,690 lines) by extracting tour/warning modals (`tour-modals.js`), comparison metrics and specifications (`compare-specs.js`), and choice helpers (`compare-helpers.js`).
   - Modularized `frontend/javascript/components/profile-ui.js` (-590 lines) by extracting exam breakdown parsing, subject combos, and special exam inputs into `profile/exam-breakdowns.js`.
