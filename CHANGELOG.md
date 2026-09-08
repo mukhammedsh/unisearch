@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.0 (2026-09-07) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Fixed CI and E2E test suite regressions from dual-scale GPA and score profile update (`university-detail-helpers.js`, `universities.css`, `universities-tabs-compare.spec.js`, `motion-interactions.spec.js`, `i18n-pages-smoke.spec.js`):
+  - Ensured `.chance-percent-wrap` container is preserved in `renderUniChanceSummary` when applicant profile has missing evidence (`chanceRaw === null`), and kept localized active choice title.
+  - Added explicit `z-index: 2` on `.u-recent__remove` to prevent chip link from intercepting click events, and added hover state before click in motion E2E test.
+  - Updated comparison E2E tests to expect 4.0 canonical GPA values (`3.92` / `3.68`), decomposed Imperial College London track key (`imperial_sat`), and updated Russian abbreviation for SDU («СДУ»).
 - Implemented dual-scale GPA (4.0 Intl / 5.0 KZ & CIS), calibrated AI scoring, and added official UNT score profiles (`profile.html`, `profile-ui.js`, `profile.css`, `ai_scoring.py`, `ml_scoring.py`, `universities.json`, `universities_translations.json`, `compare-specs.js`, `compare-helpers.js`, `university-detail-helpers.js`):
   - Overhauled GPA input across frontend and backend from legacy percentages (0–100%) to dual-scale grading: canonical 4.0 international scale (US, NIS standard) and 5.0 certificate scale (Kazakhstan and CIS), with interactive scale selector buttons (`#gpaScale4Btn`, `#gpaScale5Btn`), localized placeholders (`3.80` vs `4.75`), and units (`/ 4.0` vs `/ 5.0`).
   - Added robust GPA normalization in `persistence.js` and `ai_scoring.py` (`_normalize_gpa_score`), converting 5.0-scale GPAs to canonical 4.0 for API payloads and scoring while rejecting legacy percentage inputs (> 5.0).

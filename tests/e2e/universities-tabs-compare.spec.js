@@ -131,14 +131,14 @@ test("compare configure cards expose admission requirements before continuing", 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
   await expect(mitColumn).toContainText("Minimum to apply");
   await expect(mitColumn).toContainText("SAT: 1500");
-  await expect(mitColumn).toContainText("GPA: 98");
+  await expect(mitColumn).toContainText("GPA: 3.92");
   await expect(mitColumn).toContainText("Average admitted");
   await expect(mitColumn).toContainText("IELTS Academic: 7.5");
 
   const imperialGrant = page.locator(".compare-config-column", { hasText: "Imperial College London" })
     .locator(".admission-funding-option--grant");
   await expect(imperialGrant).toContainText("Funding-specific differences");
-  await expect(imperialGrant).toContainText("GPA: 98");
+  await expect(imperialGrant).toContainText("Total: 18 pts");
 });
 
 test("compare results split admission decision rows", async ({ page }) => {
@@ -148,7 +148,7 @@ test("compare results split admission decision rows", async ({ page }) => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
   });
 
-  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_eng::imperial_eng-grant-president-s-scholarship");
+  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat-grant-president-s-scholarship");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
 
   await page.locator("[data-action='build-compare-results']").click();
@@ -161,8 +161,8 @@ test("compare results split admission decision rows", async ({ page }) => {
   await expect(table).toContainText("Language proof");
   await expect(table).toContainText("Documents / interview / portfolio");
   await expect(table).toContainText("IELTS Listening language minimum");
-  await expect(table).toContainText("GPA 98");
-  await expect(table).toContainText("standard 92");
+  await expect(table).toContainText("GPA 3.92");
+  await expect(table).toContainText("standard 3.68");
 });
 
 test("compare deep link ids and choices override stale localStorage", async ({ page }) => {
@@ -178,7 +178,7 @@ test("compare deep link ids and choices override stale localStorage", async ({ p
     }));
   });
 
-  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_eng::imperial_eng");
+  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page.locator("#compareResultsPane")).toContainText("Massachusetts Institute of Technology");
   await expect(page.locator("#compareResultsPane")).toContainText("Imperial College London");
@@ -244,7 +244,7 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   )).toBe(0);
 
   // 3. Open configure and results with 2 universities
-  await page.goto(`/universities.html?lang=eng&tab=compare&compare=configure&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_eng::imperial_eng`);
+  await page.goto(`/universities.html?lang=eng&tab=compare&compare=configure&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat`);
   await page.locator("[data-action='build-compare-results']").click();
   await expect(page).toHaveURL(/compare=results/);
 

@@ -108,6 +108,7 @@ test("universities favorite and compare motion preserves pressed states", async 
   await expect(page.locator("#compareTray")).toBeVisible();
   await expect(recentChip).toBeVisible();
 
+  await recentChip.hover();
   await recentChip.locator("[data-action='remove-recent']").click();
   await expectMotionSeen(page, "motion-chip-remove");
   await expectMotionSeen(page, "motion-icon-remove");

@@ -1920,6 +1920,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   position: absolute;
   top: 50%;
   right: 5px;
+  z-index: 2;
   flex: 0 0 auto;
   width: 28px;
   height: 28px;

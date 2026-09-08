@@ -445,7 +445,9 @@ export function renderUniChanceSummary(uniChance) {
             <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
             <div class="chance-sub">${escapeHtml(translateUnknownField(chanceTitle, "Admission probability"))}</div>
           </div>
-          <div class="chance-percent chance-low">?</div>
+          <div class="chance-percent-wrap">
+            <div class="chance-percent chance-low">?</div>
+          </div>
         </div>
         <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
         <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_choice", "Best choice"))}</div>
@@ -453,35 +455,6 @@ export function renderUniChanceSummary(uniChance) {
     `;
   }
   const chanceRaw = parseChanceValue(uniChance?.overallChance);
-  if (chanceRaw === null) {
-    const noDataTitle = t("common.no_data", "No data");
-    const noDataLabel = String(
-      uniChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
-    ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
-    const helpNote = chanceNoDataHelpNote(uniChance) || (noDataLabel !== noDataTitle ? noDataLabel : "");
-    return `
-      <div class="chance-panel">
-        <div class="chance-head">
-          <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-            <div class="chance-sub">${escapeHtml(noDataTitle)}</div>
-          </div>
-          <div class="chance-percent chance-low">?</div>
-        </div>
-        <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
-        ${helpNote ? `<div class="chance-inline-note">${escapeHtml(helpNote)}</div>` : ""}
-        <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>
-      </div>
-    `;
-  }
-  const chance = chanceRaw;
-  const tone = chanceTone(chance);
-  const chanceModel = String(uniChance?.chanceModel || "").trim();
-  const chanceSub = chanceModelDetail(chanceModel)
-    || translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.");
-  const chanceMethodShort = chanceModelShort(chanceModel);
-  const chanceAccuracy = chanceAccuracyNote(chanceModel);
-  const chancePercentClass = chanceAccuracy ? "chance-low-confidence" : tone.cls;
   const activeChoiceRaw = String(uniChance.bestChoiceLabel || "").trim();
   const activeChoiceLabel = activeChoiceRaw
     ? translateTrackLabel(activeChoiceRaw, activeChoiceRaw)
@@ -503,6 +476,41 @@ export function renderUniChanceSummary(uniChance) {
   const recommendationFoot = selectedByUser && recommendedChoiceLabel && recommendedChoiceLabel !== activeChoiceLabel
     ? ` • ${escapeHtml(t("admission.choice.recommended", "Recommended"))}: <strong>${escapeHtml(recommendedChoiceLabel)}</strong>`
     : "";
+
+  if (chanceRaw === null) {
+    const noDataTitle = t("common.no_data", "No data");
+    const noDataLabel = String(
+      uniChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
+    ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
+    const helpNote = chanceNoDataHelpNote(uniChance) || (noDataLabel !== noDataTitle ? noDataLabel : "");
+    const footContent = activeChoiceRaw
+      ? `${escapeHtml(choiceLabelTitle)}: <strong>${escapeHtml(activeChoiceLabel)}</strong>${recommendationFoot}`
+      : escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"));
+    return `
+      <div class="chance-panel">
+        <div class="chance-head">
+          <div>
+            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
+            <div class="chance-sub">${escapeHtml(noDataTitle)}</div>
+          </div>
+          <div class="chance-percent-wrap">
+            <div class="chance-percent chance-low">?</div>
+          </div>
+        </div>
+        <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
+        ${helpNote ? `<div class="chance-inline-note">${escapeHtml(helpNote)}</div>` : ""}
+        <div class="chance-foot">${footContent}</div>
+      </div>
+    `;
+  }
+  const chance = chanceRaw;
+  const tone = chanceTone(chance);
+  const chanceModel = String(uniChance?.chanceModel || "").trim();
+  const chanceSub = chanceModelDetail(chanceModel)
+    || translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.");
+  const chanceMethodShort = chanceModelShort(chanceModel);
+  const chanceAccuracy = chanceAccuracyNote(chanceModel);
+  const chancePercentClass = chanceAccuracy ? "chance-low-confidence" : tone.cls;
   return `
       <div class="chance-panel">
         <div class="chance-head">
