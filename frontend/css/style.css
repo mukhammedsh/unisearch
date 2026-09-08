@@ -81,12 +81,21 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: "Noto Sans", "Segoe UI", Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
   padding-top: 70px;
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Shared centered loading spinner */
@@ -256,6 +265,11 @@ body {
 ::view-transition-new(main-navbar) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -2122,6 +2136,8 @@ html, body {
     padding: 20px 0;
     margin-top: auto;
     border-top: 1px solid var(--line);
+    width: 100%;
+    flex-shrink: 0;
 }
 
 .footer-content {

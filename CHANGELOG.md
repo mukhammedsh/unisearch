@@ -3,6 +3,11 @@
 All notable project changes should be recorded here.
 
 ## 5.0.0 (2026-09-08) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Implemented global sticky-footer architecture and resolved top-docked footer regressions (`style.css`, `universities.css`, `university.css`, `index.css`, `error.css`, `footer-sticky.spec.js`):
+  - Configured full-height column flex context on `html` (`height: 100%`) and `body` (`min-height: 100%; min-height: 100dvh; display: flex; flex-direction: column;`), unlocking true sticky footer behavior via `margin-top: auto` on `.site-footer` across all 9 site pages.
+  - Set `flex: 1 0 auto` and `width: 100%` on semantic `<main>`, ensuring content areas expand to claim available viewport height on short pages (e.g. `about.html`, `404.html`, empty search states) without floating the footer mid-screen.
+  - Removed obsolete and rigid `min-height: calc(100vh - 70px)` workarounds from `.u-page` and `.d-page`, eliminating phantom 60px overscroll on pages with compact content.
+  - Added comprehensive automated E2E test suite (`tests/e2e/footer-sticky.spec.js`) verifying bottom alignment on high-resolution viewports (1440x1080) and zero-content edge cases with 0px deviation.
 - Overhauled navigation scrollspy, catalog pagination UI, and track slider calibration (`guide.js`, `legal.js`, `universities.js`, `universities.css`, `icons.js`, `scrollspy.test.mjs`):
   - Replaced error-prone height-and-distance scrollspy scoring with a deterministic top-anchor sequential probe relative to the sticky navbar, ensuring short intermediate sections are never skipped during scrolling.
   - Added programmatic scroll guards (`startProgrammaticScroll`, `stopProgrammaticScroll`) to prevent scroll listeners from fighting anchor and hash clicks.
