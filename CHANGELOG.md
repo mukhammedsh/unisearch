@@ -2,6 +2,17 @@
 
 All notable project changes should be recorded here.
 
+## 5.0.1 (2026-09-08) - University Detail Layout Refinements and Admission Track Polish
+- Polished university detail page layout across General and Admission tabs (`university.html`, `university.css`, `page-controller.js`, `render-content.js`, `render-sections.js`):
+  - Streamlined hero card by removing duplicate acceptance rate badge beneath location line.
+  - Eliminated excessive whitespace in the General tab (`#tab-general`) between "About & Campus" and "Overview" sections, introducing a clean divider border (`1px solid var(--line)`) and harmonized 20px spacing rhythm.
+  - Redesigned admission category major tags to display as clean bold typography with subtle divider styling, replacing heavy boxed pill tags.
+  - Reorganized funding option cards by placing the selection action and estimated cost notice into the top right header (`.admission-funding-option-side`), removing excessive 360px vertical whitespace.
+  - Aligned evaluation status text along the left X-axis with chance factor headings and score indicators.
+  - Added visual divider between average and minimum score requirement categories in admission requirement profiles.
+- Expanded localization and translations for admission tracks and major tags (`universities_translations.json`, `Localization/eng`, `Localization/ru`, `university-translations.js`, `_shared.js`, `university-detail-helpers.js`, `universities.py`).
+- Added automated layout and spacing invariant tests for university detail cards in Playwright suite (`tests/e2e/university-track-majors.spec.js`).
+
 ## 5.0.0 (2026-09-08) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
 - Implemented global sticky-footer architecture and resolved top-docked footer regressions (`style.css`, `universities.css`, `university.css`, `index.css`, `error.css`, `footer-sticky.spec.js`):
   - Configured full-height column flex context on `html` (`height: 100%`) and `body` (`min-height: 100%; min-height: 100dvh; display: flex; flex-direction: column;`), unlocking true sticky footer behavior via `margin-top: auto` on `.site-footer` across all 9 site pages.

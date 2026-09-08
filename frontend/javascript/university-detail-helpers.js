@@ -148,9 +148,27 @@ function getCompositeParentExam(examId, opts = {}) {
   return "";
 }
 
+function localizeCompositeLabel(label) {
+  const norm = String(label || "").trim().toLowerCase();
+  if (norm === "overall") return t("exam.component.overall", "Overall");
+  if (norm === "total") return t("exam.component.total", "Total");
+  if (norm === "listening") return t("exam.component.listening", "Listening");
+  if (norm === "reading") return t("exam.component.reading", "Reading");
+  if (norm === "writing") return t("exam.component.writing", "Writing");
+  if (norm === "speaking") return t("exam.component.speaking", "Speaking");
+  return label;
+}
+
 function compositeChildLabel(parentExamId, childExamId, opts = {}) {
   const localized = getExamDisplayName(childExamId, opts);
-  if (localized) return localized;
+  if (localized) {
+    const rawExamId = String(childExamId || "").trim().toLowerCase();
+    if (rawExamId.includes("listening")) return t("exam.component.listening", localized);
+    if (rawExamId.includes("reading")) return t("exam.component.reading", localized);
+    if (rawExamId.includes("writing")) return t("exam.component.writing", localized);
+    if (rawExamId.includes("speaking")) return t("exam.component.speaking", localized);
+    return localized;
+  }
   const scheme = getCompositeScheme(parentExamId, opts);
   const defs = [
     ...normalizeCompositeDefs(scheme?.fixed_components),
@@ -158,8 +176,8 @@ function compositeChildLabel(parentExamId, childExamId, opts = {}) {
     ...normalizeCompositeDefs(scheme?.extra_scores),
   ];
   const found = defs.find((row) => String(row.exam || "").trim() === String(childExamId || "").trim());
-  if (found?.label) return found.label;
-  return String(childExamId || "").trim();
+  if (found?.label) return localizeCompositeLabel(found.label);
+  return localizeCompositeLabel(String(childExamId || "").trim());
 }
 
 function compositeEntryOrder(parentExamId, examId, opts = {}) {
@@ -217,7 +235,8 @@ export function renderGroupedExamPairRows(pairs, opts = {}) {
       }
 
       const scheme = getCompositeScheme(parentExamId, opts);
-      const totalLabel = String(scheme?.parent_score_label || "").trim() || translateWord("total_per_year", "Total").split("/")[0].trim() || "Total";
+      const totalLabelRaw = String(scheme?.parent_score_label || "").trim() || translateWord("total_per_year", "Total").split("/")[0].trim() || "Total";
+      const totalLabel = localizeCompositeLabel(totalLabelRaw);
       return `
         <div class="track-exam-entry-group">
           <div class="track-exam-entry-group-title"><strong>${escapeHtml(parentLabel)}</strong></div>

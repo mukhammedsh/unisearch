@@ -240,7 +240,7 @@ function renderProgramSelector(university, categories, selectedProgramKey, hasEx
 }
 
 function translatedProfileLabel(profile) {
-  return trTrackLabel(profile?.label || "") || unknownFieldText("placeholder.field.requirement_profile", "Requirement profile");
+  return trTrackLabel(profile?.label || profile?.name || "") || unknownFieldText("placeholder.field.requirement_profile", "Requirement profile");
 }
 
 function renderApplicablePrograms(category, profile) {
@@ -412,23 +412,25 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
           ].filter(Boolean);
           return `
             <div class="admission-funding-option${isGrant ? " admission-funding-option--grant" : ""}${isSelected ? " is-active" : ""}" data-choice-key="${escapeHtmlAttr(choiceKey)}">
-              <div class="admission-funding-option-main">
+              <div class="admission-funding-option-header">
                 <div class="admission-funding-option-title">
                   ${renderTrackFundingBadge(funding)}
-                  <strong>${escapeHtml(trTrackLabel(funding.label || "") || t("admission.funding_option_fallback", "Funding option"))}</strong>
+                  <strong>${escapeHtml(trTrackLabel(funding.label || funding.name || "") || t("admission.funding_option_fallback", "Funding option"))}</strong>
                   ${isRecommended ? `<span class="track-selection-badge">${escapeHtml(t("admission.choice.recommended", "Recommended"))}</span>` : ""}
                   ${renderTrackChanceChip(chance)}
                 </div>
+                <div class="admission-funding-option-side">
+                  <div class="track-cost-preview${isGrant ? " track-cost-preview--grant" : ""}">
+                    <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceValue)}
+                  </div>
+                  <button type="button" class="track-select-btn${isSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey, funding, profile })} ${isSelected ? "disabled" : ""}>
+                    ${escapeHtml(isSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
+                  </button>
+                </div>
+              </div>
+              <div class="admission-funding-option-main">
                 ${renderTrackFactors(chance)}
                 ${renderFundingMetaTags(fundingMeta)}
-              </div>
-              <div class="admission-funding-option-side">
-                <div class="track-cost-preview${isGrant ? " track-cost-preview--grant" : ""}">
-                  <strong>${escapeHtml(translateWord("est_cost", "Est. Cost"))}:</strong> ${escapeHtml(priceValue)}
-                </div>
-                <button type="button" class="track-select-btn${isSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey, funding, profile })} ${isSelected ? "disabled" : ""}>
-                  ${escapeHtml(isSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
-                </button>
               </div>
               ${renderFundingDifferences({ category, funding, profile, university })}
             </div>
@@ -499,7 +501,7 @@ export function renderAdmissionSection({
     const categoryKey = `${universityId}:${category.id || categoryIdx}`;
     const selectedProfileId = admissionProfileSelectionByCategory.get(categoryKey);
     const activeProfile = profileRows.find((profile) => String(profile.id || "") === selectedProfileId) || profileRows[0];
-    const categoryLabel = trTrackLabel(category.label || "") || unknownFieldText("placeholder.field.admission_category", "Admission category");
+    const categoryLabel = trTrackLabel(category.label || category.name || "") || unknownFieldText("placeholder.field.admission_category", "Admission category");
     const categoryDescription = trTrackDescription(university.id, category.id, category.description || "");
     const scopeLabel = String(category.scope || "general").toLowerCase() === "general"
       ? t("admission.scope.general", "General")
@@ -525,6 +527,7 @@ export function renderAdmissionSection({
 
         ${renderApplicablePrograms(category, activeProfile)}
 
+        ${profileRows.length > 1 ? `
         <div class="requirement-profile-tabs" role="tablist" aria-label="${escapeHtmlAttr(t("admission.profile.tabs_label", "Requirement profiles"))}">
           ${profileRows.map((profile) => {
             const active = profile === activeProfile;
@@ -540,18 +543,23 @@ export function renderAdmissionSection({
             `;
           }).join("")}
         </div>
+        ` : ""}
 
         <div class="requirement-profile-panel">
+          ${(profileRows.length > 1 || profileIsRecommended || (!profileHasFundingOptions && activeChoiceChance)) ? `
           <div class="requirement-profile-head">
+            ${profileRows.length > 1 ? `
             <div>
               <div class="requirement-profile-kicker">${escapeHtml(t("admission.profile", "Requirement profile"))}</div>
               <h4 class="requirement-profile-title">${escapeHtml(activeProfileLabel)}</h4>
             </div>
+            ` : `<div></div>`}
             <div class="requirement-profile-badges">
               ${profileIsRecommended ? `<span class="track-selection-badge">${escapeHtml(t("admission.choice.recommended", "Recommended"))}</span>` : ""}
               ${!profileHasFundingOptions ? renderTrackChanceChip(activeChoiceChance) : ""}
             </div>
           </div>
+          ` : ""}
           ${!profileHasFundingOptions ? renderTrackFactors(activeChoiceChance) : ""}
 
           ${renderChoiceRequirements({ category, funding: null, profile: activeProfile, university })}
@@ -720,7 +728,7 @@ export function renderFinanceSection({
             .filter((entry) => entry.value > 0);
           const breakdownNote = costBreakdownCoverageNote(financeData || {}, breakdownEntries, total);
 
-          const optionLabel = trTrackLabel(option.funding_label || option.label || option.requirement_profile_label || "");
+          const optionLabel = trTrackLabel(option.funding_label || option.label || option.name || option.requirement_profile_label || "");
           const fundingMeta = [
             option.funding_program
               ? [t("admission.track.funding_program", "Funding program"), trTrackDescription(university.id, option.id, option.funding_program)]
