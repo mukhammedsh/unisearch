@@ -49,163 +49,215 @@ export function initLegalPage() {
     });
   }
 
-  const activateSection = (sectionId, { updateHash = false, scroll = false, scrollBehavior = null } = {}) => {
-    const targetId = String(sectionId || "").trim();
-    const nextId = sectionById.has(targetId) ? targetId : (sections[0]?.id || "");
-    if (!nextId) return;
+    function scrollNavIntoView(link) {
+      if (!link || window.innerWidth > 980) return;
+      const nav = link.closest(".legal-nav");
+      if (!nav) return;
 
-    const targetSection = sectionById.get(nextId);
+      const navRect = nav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      const isOffLeft = linkRect.left < navRect.left + 16;
+      const isOffRight = linkRect.right > navRect.right - 16;
 
-    let sectionChanged = false;
-    sections.forEach((s) => {
-      const active = s.id === nextId;
-      const wasActive = s.classList.contains("is-active");
-      if (active && !wasActive) sectionChanged = true;
-      s.classList.toggle("is-active", active);
-    });
+      if (isOffLeft || isOffRight) {
+        const scrollTarget = link.offsetLeft - (nav.clientWidth - link.clientWidth) / 2;
+        nav.scrollTo({
+          left: Math.max(0, scrollTarget),
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      }
+    }
+
+    let isProgrammaticScrolling = false;
+    let scrollEndTimeout = null;
+
+    const stopProgrammaticScroll = () => {
+      if (isProgrammaticScrolling) {
+        isProgrammaticScrolling = false;
+        if (scrollEndTimeout) {
+          clearTimeout(scrollEndTimeout);
+          scrollEndTimeout = null;
+        }
+      }
+    };
+
+    const startProgrammaticScroll = () => {
+      isProgrammaticScrolling = true;
+      if (scrollEndTimeout) clearTimeout(scrollEndTimeout);
+      scrollEndTimeout = setTimeout(() => {
+        isProgrammaticScrolling = false;
+        scrollEndTimeout = null;
+      }, 700);
+    };
+
+    window.addEventListener("scrollend", stopProgrammaticScroll, { passive: true });
+    window.addEventListener("wheel", stopProgrammaticScroll, { passive: true });
+    window.addEventListener("touchstart", stopProgrammaticScroll, { passive: true });
+
+    const activateSection = (sectionId, { updateHash = false, scroll = false, scrollBehavior = null } = {}) => {
+      const targetId = String(sectionId || "").trim();
+      const nextId = sectionById.has(targetId) ? targetId : (sections[0]?.id || "");
+      if (!nextId) return;
+
+      const targetSection = sectionById.get(nextId);
+
+      let sectionChanged = false;
+      sections.forEach((s) => {
+        const active = s.id === nextId;
+        const wasActive = s.classList.contains("is-active");
+        if (active && !wasActive) sectionChanged = true;
+        s.classList.toggle("is-active", active);
+      });
+
+      navLinks.forEach((link) => {
+        const linkId = getTargetIdFromHref(link.dataset.legalHash || link.getAttribute("href"));
+        const isActive = linkId === nextId;
+        link.classList.toggle("is-active", isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "page");
+          scrollNavIntoView(link);
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+
+      if (updateHash && sectionChanged) {
+        const currentHash = String(window.location.hash || "").replace("#", "");
+        if (currentHash !== nextId) {
+          try {
+            history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
+          } catch (e) {
+            // ignore
+          }
+        }
+      }
+
+      if (scroll && targetSection) {
+        const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
+        // Первая секция находится прямо под шапкой (hero-блоком).
+        // Чтобы не срезать заголовок, прокручиваем в самый верх страницы (0, 0).
+        if (nextId === sections[0]?.id) {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior,
+          });
+        } else {
+          targetSection.scrollIntoView({
+            behavior,
+            block: "start",
+          });
+        }
+      }
+    };
 
     navLinks.forEach((link) => {
-      const linkId = getTargetIdFromHref(link.dataset.legalHash || link.getAttribute("href"));
-      const isActive = linkId === nextId;
-      link.classList.toggle("is-active", isActive);
-      if (isActive) {
-        link.setAttribute("aria-current", "page");
-        // Scroll horizontal navigation ribbon into view on mobile
-        if (typeof link.scrollIntoView === "function" && window.innerWidth <= 980) {
-          link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-        }
-      } else {
-        link.removeAttribute("aria-current");
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const targetId = getTargetIdFromHref(link.dataset.legalHash || link.getAttribute("href"));
+        startProgrammaticScroll();
+        activateSection(targetId, { updateHash: true, scroll: true });
+      });
+    });
+
+    bindLegalHashChange(() => {
+      const hash = String(window.location.hash || "").replace("#", "");
+      if (hash && sectionById.has(hash)) {
+        startProgrammaticScroll();
+        activateSection(hash, { updateHash: false, scroll: true });
+      } else if (!hash) {
+        startProgrammaticScroll();
+        activateSection(sections[0]?.id, { updateHash: false, scroll: true });
       }
     });
 
-    if (updateHash && sectionChanged) {
-      const currentHash = String(window.location.hash || "").replace("#", "");
-      if (currentHash !== nextId) {
-        try {
-          history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
-        } catch (e) {
-          // ignore
-        }
+    function getAnchorTop() {
+      const isMobile = window.innerWidth <= 980;
+      if (isMobile) {
+        const navbar = document.querySelector(".navbar");
+        const navHeight = navbar instanceof HTMLElement ? navbar.getBoundingClientRect().height : 70;
+        return navHeight + 75;
       }
+      return 115;
     }
 
-    if (scroll && targetSection) {
-      const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
-      // Первая секция находится прямо под шапкой (hero-блоком).
-      // Чтобы не срезать заголовок, прокручиваем в самый верх страницы (0, 0).
-      if (nextId === sections[0]?.id) {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior,
-        });
-      } else {
-        targetSection.scrollIntoView({
-          behavior,
-          block: "start",
-        });
-      }
-    }
-  };
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const targetId = getTargetIdFromHref(link.dataset.legalHash || link.getAttribute("href"));
-      activateSection(targetId, { updateHash: true, scroll: true });
-    });
-  });
-
-  bindLegalHashChange(() => {
-    const hash = String(window.location.hash || "").replace("#", "");
-    if (hash && sectionById.has(hash)) {
-      activateSection(hash, { updateHash: false, scroll: true });
-    } else if (!hash) {
-      activateSection(sections[0]?.id, { updateHash: false, scroll: true });
-    }
-  });
-
-  let scrollTicking = false;
-  const syncActiveSectionFromScroll = () => {
-    if (scrollTicking) return;
-    scrollTicking = true;
-    window.requestAnimationFrame(() => {
-      const scrollY = window.scrollY || window.pageYOffset || 0;
-      const windowHeight = window.innerHeight;
-      const docHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-
-      // 1. Самый верх страницы (первые 90px): гарантированно выбирается самый верхний пункт
-      if (scrollY <= 90) {
-        activateSection(sections[0].id, { updateHash: true, scroll: false });
+    let scrollTicking = false;
+    const syncActiveSectionFromScroll = () => {
+      if (isProgrammaticScrolling) return;
+      if (scrollTicking) return;
+      scrollTicking = true;
+      window.requestAnimationFrame(() => {
         scrollTicking = false;
-        return;
-      }
+        if (isProgrammaticScrolling) return;
 
-      // 2. Самый низ страницы (с запасом 60px): гарантированно выбирается самый нижний пункт
-      if ((windowHeight + scrollY) >= (docHeight - 60)) {
-        activateSection(sections[sections.length - 1].id, { updateHash: true, scroll: false });
-        scrollTicking = false;
-        return;
-      }
+        const scrollY = window.scrollY || window.pageYOffset || 0;
+        const windowHeight = window.innerHeight;
+        const docHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight
+        );
 
-      // 3. Средняя часть страницы: выбор секции по наилучшему перекрытию области чтения
-      const viewportTop = 110;
-      const viewportBottom = windowHeight - 120;
-      let currentId = sections[0]?.id || "";
-      let bestScore = Number.NEGATIVE_INFINITY;
-
-      for (const section of sections) {
-        const rect = section.getBoundingClientRect();
-        const visibleTop = Math.max(rect.top, viewportTop);
-        const visibleBottom = Math.min(rect.bottom, viewportBottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        const distancePenalty = Math.abs(rect.top - viewportTop) * 0.08;
-        const score = visibleHeight - distancePenalty;
-
-        if (score > bestScore) {
-          bestScore = score;
-          currentId = section.id;
+        // 1. Самый низ страницы: принудительно выбирается последний пункт
+        if (Math.ceil(windowHeight + scrollY) >= docHeight - 30) {
+          activateSection(sections[sections.length - 1].id, { updateHash: true, scroll: false });
+          return;
         }
-      }
 
-      if (currentId) {
-        activateSection(currentId, { updateHash: true, scroll: false });
-      }
-      scrollTicking = false;
-    });
-  };
+        const anchorTop = getAnchorTop();
 
-  updateLegalNavHrefs();
-  window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
+        // 2. Самый верх страницы: если первая секция еще не дошла до зоны чтения
+        const firstRect = sections[0].getBoundingClientRect();
+        if (scrollY < 40 || firstRect.top > anchorTop) {
+          const shouldUpdateHash = Boolean(window.location.hash);
+          activateSection(sections[0].id, { updateHash: shouldUpdateHash, scroll: false });
+          return;
+        }
 
-  bindLegalExternalUpdates(() => {
+        // 3. Последовательный зонд: находим последнюю секцию, верх которой прошел линию чтения
+        let currentId = sections[0].id;
+        for (let i = 0; i < sections.length; i++) {
+          const rect = sections[i].getBoundingClientRect();
+          if (rect.top <= anchorTop) {
+            currentId = sections[i].id;
+          } else {
+            break;
+          }
+        }
+
+        if (currentId) {
+          activateSection(currentId, { updateHash: true, scroll: false });
+        }
+      });
+    };
+
     updateLegalNavHrefs();
-    syncActiveSectionFromScroll();
-  });
+    window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
 
-  // Начальная позиция при открытии страницы
-  const initialHash = String(window.location.hash || "").replace("#", "");
-  if (initialHash && sectionById.has(initialHash)) {
-    if (initialHash === sections[0]?.id) {
-      activateSection(initialHash, { updateHash: false, scroll: false });
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    bindLegalExternalUpdates(() => {
+      updateLegalNavHrefs();
+      syncActiveSectionFromScroll();
+    });
+
+    // Начальная позиция при открытии страницы
+    const initialHash = String(window.location.hash || "").replace("#", "");
+    if (initialHash && sectionById.has(initialHash)) {
+      startProgrammaticScroll();
+      if (initialHash === sections[0]?.id) {
+        activateSection(initialHash, { updateHash: false, scroll: false });
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      } else {
+        activateSection(initialHash, { updateHash: false, scroll: true, scrollBehavior: "auto" });
+      }
     } else {
-      activateSection(initialHash, { updateHash: false, scroll: true, scrollBehavior: "auto" });
+      activateSection(sections[0]?.id, { updateHash: false, scroll: false });
+      if (window.history && "scrollRestoration" in window.history) {
+        try {
+          window.history.scrollRestoration = "manual";
+        } catch {}
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-  } else {
-    activateSection(sections[0]?.id, { updateHash: false, scroll: false });
-    if (window.history && "scrollRestoration" in window.history) {
-      try {
-        window.history.scrollRestoration = "manual";
-      } catch {}
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }
 
-  syncActiveSectionFromScroll();
+    syncActiveSectionFromScroll();
 }

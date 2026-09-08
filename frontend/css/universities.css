@@ -643,14 +643,20 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .dual-slider-container {
   position: relative;
   width: 100%;
-  height: 6px;
-  margin-top: 5px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
 }
 
 .slider-track {
   position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
   width: 100%;
-  height: 100%;
+  height: 6px;
+  transform: translateY(-50%);
   background: var(--slider-track-inactive);
   border-radius: var(--radius-full);
   z-index: 1;
@@ -658,17 +664,17 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .dual-slider-container input[type="range"] {
   position: absolute;
-  /* Центрируем строго по вертикали */
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
   left: 0;
   width: 100%;
-  height: 20px; /* Высота кликабельной области (должна быть >= высоте кружка) */
+  height: 20px;
   -webkit-appearance: none;
-  pointer-events: none; /* Пропускаем клики сквозь, ловим только на thumb */
-  background: none;
+  appearance: none;
+  pointer-events: none;
+  background: transparent;
+  border: none;
   z-index: 2;
-  margin: 0; /* Важно: убираем отступы */
+  margin: 0;
   padding: 0;
 }
 
@@ -676,25 +682,27 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 6px;
   background: transparent;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-full);
 }
 
 .dual-slider-container input[type="range"]::-moz-range-track {
   height: 6px;
   background: transparent;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-full);
 }
 
 .dual-slider-container input[type="range"]::-moz-range-progress {
   height: 6px;
   background: transparent;
-  border-radius: 10px;
+  border-radius: var(--radius-full);
 }
 
 .dual-slider-container input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  pointer-events: auto; /* Включаем клики для кругляшка */
+  appearance: none;
+  box-sizing: border-box;
+  pointer-events: auto;
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -706,6 +714,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .dual-slider-container input[type="range"]::-moz-range-thumb {
+  box-sizing: border-box;
   pointer-events: auto;
   width: 18px;
   height: 18px;
@@ -788,6 +797,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .tradeoff-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  box-sizing: border-box;
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -812,6 +822,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .tradeoff-slider::-moz-range-thumb {
+  box-sizing: border-box;
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -851,6 +862,10 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .view-btn .ui-icon {
   width: 18px;
   height: 18px;
+}
+
+.view-btn + .view-btn {
+  border-left: 1px solid var(--line);
 }
 
 .view-btn:hover {
@@ -3454,29 +3469,76 @@ body.universities-compare-mode .uni-action-btn--favorite {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   min-width: 40px;
   height: 40px;
   padding: 0 12px;
-  background: var(--card);
+  background: var(--surface-solid, var(--card));
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   font-family: inherit;
   font-weight: 600;
   font-size: 14px;
-  color: var(--muted);
+  line-height: 1;
+  text-align: center;
+  color: var(--text);
   cursor: pointer;
   transition:
-  border-color var(--motion-fast) var(--motion-ease-standard),
-  color var(--motion-fast) var(--motion-ease-standard),
-  background-color var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard);
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
   user-select: none;
+  box-sizing: border-box;
+}
+
+.page-btn--num,
+.page-btn--first,
+.page-btn--last {
+  padding: 0 8px;
+}
+
+.page-btn--prev,
+.page-btn--next {
+  padding: 0 14px;
+}
+
+.page-btn__text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+}
+
+.page-btn__icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  stroke-width: 2.2;
+}
+
+.page-btn__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.page-btn__symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 15px;
 }
 
 .page-btn:hover {
-  border-color: var(--accent);
+  border-color: var(--line-accent);
   color: var(--accent);
-  background: rgba(87, 21, 219, 0.04);
+  background: var(--accent-faint);
 }
 
 .page-btn:active {
@@ -3484,18 +3546,23 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .page-btn--active {
-  background: var(--accent) !important;
-  border-color: var(--accent) !important;
-  color: #ffffff !important;
+  background: var(--accent-soft) !important;
+  border-color: var(--line-accent) !important;
+  color: var(--text) !important;
   cursor: default;
   pointer-events: none;
 }
 
 .page-dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--muted);
   font-weight: 600;
   letter-spacing: 1px;
   padding: 0 4px;
+  line-height: 1;
+  height: 40px;
 }
 
 .custom-map-popup .leaflet-popup-content-wrapper {
@@ -3876,7 +3943,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .u-select,
 :root[data-theme="dark"] .u-search input,
 :root[data-theme="dark"] .view-toggles,
-:root[data-theme="dark"] .page-btn,
 :root[data-theme="dark"] .uni-price {
   background: #171717;
   color: var(--text);
@@ -5274,8 +5340,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 :root[data-theme="dark"] .u-select,
 :root[data-theme="dark"] .u-search input,
 :root[data-theme="dark"] .view-toggles,
-:root[data-theme="dark"] .view-btn,
-:root[data-theme="dark"] .page-btn,
 :root[data-theme="dark"] .custom-select-trigger,
 :root[data-theme="dark"] .custom-options,
 :root[data-theme="dark"] .custom-option {
@@ -6112,8 +6176,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .u-search input,
 .u-reset,
 .view-toggles,
-.view-btn,
-.page-btn,
 .uni-pill,
 .u-recent__chip {
   background: var(--surface-soft);
@@ -6127,17 +6189,28 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-section-tab.is-active,
-.view-btn.active,
-.page-btn.active,
-.page-btn--active {
+.view-btn.active {
   color: var(--accent);
 }
 
-.view-btn.active,
+.view-btn {
+  border: none !important;
+  background: transparent;
+}
+
+.view-btn + .view-btn {
+  border-left: 1px solid var(--line) !important;
+}
+
+.view-btn.active {
+  background: var(--accent-soft) !important;
+}
+
 .page-btn.active,
 .page-btn--active {
   background: var(--accent-soft) !important;
   border-color: var(--line-accent) !important;
+  color: var(--text) !important;
 }
 
 .uni-card:hover {

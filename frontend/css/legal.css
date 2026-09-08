@@ -19,21 +19,6 @@
   border-bottom: 1px solid var(--line);
 }
 
-.legal-hero__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: var(--surface-soft);
-  color: var(--text-muted);
-  border: 1px solid var(--line);
-  margin-bottom: 12px;
-}
 
 .legal-hero h1 {
   margin: 0 0 8px;

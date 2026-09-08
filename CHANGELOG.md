@@ -2,7 +2,21 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.0 (2026-09-07) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+## 5.0.0 (2026-09-08) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Overhauled navigation scrollspy, catalog pagination UI, and track slider calibration (`guide.js`, `legal.js`, `universities.js`, `universities.css`, `icons.js`, `scrollspy.test.mjs`):
+  - Replaced error-prone height-and-distance scrollspy scoring with a deterministic top-anchor sequential probe relative to the sticky navbar, ensuring short intermediate sections are never skipped during scrolling.
+  - Added programmatic scroll guards (`startProgrammaticScroll`, `stopProgrammaticScroll`) to prevent scroll listeners from fighting anchor and hash clicks.
+  - Implemented automatic horizontal scroll centering (`scrollGuideNavIntoView`) for sticky subnavigation on mobile devices (<= 980px).
+  - Added dedicated unit test suite (`tests/unit/scrollspy.test.mjs`) proving non-skipping section traversal and verifying regression against the legacy formula.
+  - Redesigned catalog pagination controls with official Heroicons (`chevron-double-left`, `chevron-left`, `chevron-right`, `chevron-double-right`), `.page-btn__text` wrapper, and modernized 12px border radius.
+  - Calibrated dual-range slider thumb position offset calculation (`fillTrack`), eliminating visual misalignment between 18px slider thumbs and highlighted track gradient bounds.
+  - Added `chevron-right` icon definition in `icons.js`.
+- Standardized site-wide footer metadata layout and streamlined home hero metrics (`index.html`, `index.css`, `style.css`, `legal.css`, all HTML templates):
+  - Streamlined home page hero facts into a focused 2-column strip (universities and countries), removing redundant bachelor's mode badge and optimizing narrow mobile displays down to 340px.
+  - Unified footer copyright and legal navigation across all pages (`index.html`, `about.html`, `universities.html`, `university.html`, `profile.html`, `guide.html`, `terms.html`, `privacy.html`, `404.html`) with `.footer-copy` and centered dot dividers.
+  - Refined custom select triggers and navbar control buttons with SVG mask chevrons and coherent accent hover states.
+- Codified Zero-Vibe Engineering Protocol in `AGENTS.md`:
+  - Added section 8 establishing strict architectural engineering standards: root-cause analysis over band-aid fixes, prohibition of silent failures and zombie code, mandatory 4 UI states (Loading, Empty, Error, Disabled), and schema contract enforcement.
 - Fixed CI and E2E test suite regressions from dual-scale GPA and score profile update (`university-detail-helpers.js`, `universities.css`, `universities-tabs-compare.spec.js`, `motion-interactions.spec.js`, `i18n-pages-smoke.spec.js`):
   - Ensured `.chance-percent-wrap` container is preserved in `renderUniChanceSummary` when applicant profile has missing evidence (`chanceRaw === null`), and kept localized active choice title.
   - Added explicit `z-index: 2` on `.u-recent__remove` to prevent chip link from intercepting click events, and added hover state before click in motion E2E test.
