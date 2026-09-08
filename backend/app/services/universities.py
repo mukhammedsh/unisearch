@@ -257,7 +257,11 @@ def _translate_program_name(value: Any, search_lang: Any) -> str:
     table = (
         pack.get("program_names") if isinstance(pack.get("program_names"), dict) else {}
     )
-    return str(table.get(_keyify(raw), raw))
+    if _keyify(raw) in table:
+        return str(table[_keyify(raw)])
+    if raw in table:
+        return str(table[raw])
+    return raw
 
 
 def _translate_admission_text(value: Any, search_lang: Any) -> str:
@@ -274,6 +278,9 @@ def _translate_admission_text(value: Any, search_lang: Any) -> str:
     )
     if raw in exact:
         return str(exact[raw])
+    norm_quotes = re.sub(r"[\u2018\u2019`]", "'", raw)
+    if norm_quotes in exact:
+        return str(exact[norm_quotes])
     rules = (
         pack.get("admission_replace")
         if isinstance(pack.get("admission_replace"), list)
@@ -300,6 +307,8 @@ def _translate_track_label(value: Any, search_lang: Any) -> str:
     direct = table.get(_keyify(raw))
     if direct:
         return str(direct)
+    if raw in table:
+        return str(table[raw])
     out = _translate_admission_text(raw, search_lang)
     fallback_rules = (
         pack.get("track_label_fallback_replace")
@@ -440,9 +449,10 @@ def _localize_university_payload(
         if not isinstance(row, dict):
             return
 
-        row["label"] = _translate_track_label(row.get("label"), lang)
+        row["label"] = _translate_track_label(row.get("label") or row.get("name"), lang)
         row["track_badge"] = _translate_admission_text(row.get("track_badge"), lang)
         row["description"] = _translate_admission_text(row.get("description"), lang)
+        row["funding_description"] = _translate_admission_text(row.get("funding_description"), lang)
         row["funding_program"] = _translate_admission_text(row.get("funding_program"), lang)
         row["funding_source"] = _translate_admission_text(row.get("funding_source"), lang)
         if isinstance(row.get("applicable_majors"), list):
@@ -472,7 +482,7 @@ def _localize_university_payload(
                 if not isinstance(scholarship, dict):
                     continue
                 scholarship["name"] = _translate_admission_text(
-                    scholarship.get("name"), lang
+                    scholarship.get("name") or scholarship.get("label"), lang
                 )
 
         funding_options = row.get("funding_options")

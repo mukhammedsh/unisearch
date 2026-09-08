@@ -131,32 +131,6 @@ function renderDetailLocation(university, translatedCity, translatedCountry) {
   locationEl.innerHTML = `${cityHtml}${countryHtml}`;
 }
 
-function renderDetailQuickStats({ acceptanceRate }) {
-  const quickStatsEl = document.getElementById("detailQuickStats");
-  if (!quickStatsEl) return;
-
-  const quickStats = [];
-  if (acceptanceRate !== null) {
-    quickStats.push({
-      label: t("ranking.acceptance", "Acceptance Rate"),
-      value: `${Math.round(acceptanceRate * 100) / 100}%`,
-    });
-  }
-
-  if (!quickStats.length) {
-    quickStatsEl.innerHTML = "";
-    quickStatsEl.style.display = "none";
-    return;
-  }
-
-  quickStatsEl.innerHTML = quickStats.map((item) => `
-    <div class="d-quick-stat">
-      <span class="d-quick-stat-label">${escapeHtml(item.label)}</span>
-      <span class="d-quick-stat-value">${escapeHtml(String(item.value))}</span>
-    </div>
-  `).join("");
-  quickStatsEl.style.display = "grid";
-}
 
 function bindDetailActions({ id, minPrice, translatedName, university, universityId }) {
   const setTxt = (elementId, value) => {
@@ -273,7 +247,10 @@ export async function initUniversityPage() {
     setDetailLoading(true);
     if (stateEl) stateEl.textContent = "";
 
-    const university = await fetchUniversityDetailCached(id);
+    const [university] = await Promise.all([
+      fetchUniversityDetailCached(id),
+      initUniversityTranslations().catch(() => null),
+    ]);
     const universityId = String(university.id || id);
     rememberRecentUniversity(universityId);
 
@@ -318,7 +295,6 @@ export async function initUniversityPage() {
     }
 
     renderDetailLocation(university, translatedCity, translatedCountry);
-    renderDetailQuickStats({ acceptanceRate });
     bindDetailActions({ id, minPrice, translatedName, university, universityId });
 
     let uniChance = null;

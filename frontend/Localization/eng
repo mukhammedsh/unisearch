@@ -1222,3 +1222,13 @@ terms.updates.title: 8. Project Operators, Modifications & Contact Information
 terms.updates.operators: Project Creators: UniSearch was created by students Shabdaluly Mukhammed and Rashidov Yerbolat (Zhanaozen Bilim-Innovation Lyceum, Republic of Kazakhstan).
 terms.updates.p1: We reserve the right to revise these Terms at any time. The current version will always be published on this page with an updated timestamp.
 terms.updates.p2: For any questions or feedback concerning these terms, please contact us at: unisearch@inbox.ru
+fields_of_study: Fields of study
+exam.component.overall: Overall
+exam.component.total: Total
+exam.component.listening: Listening
+exam.component.reading: Reading
+exam.component.writing: Writing
+exam.component.speaking: Speaking
+common.yes: Yes
+common.no: No
+

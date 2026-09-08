@@ -1221,3 +1221,12 @@ terms.updates.title: 8. Операторы проекта, изменения у
 terms.updates.operators: Авторы проекта: UniSearch разработан учащимися Шабдалулы Мухаммедом и Рашидовым Ерболатом (Лицей-интернат «Білім-Инновация», г. Жанаозен, Республика Казахстан).
 terms.updates.p1: Мы оставляем за собой право вносить изменения в настоящие Условия. Актуальная редакция публикуется на данной странице с указанием даты последнего обновления.
 terms.updates.p2: По всем вопросам, связанным с условиями использования платформы, обращайтесь по адресу: unisearch@inbox.ru
+fields_of_study: Направления
+exam.component.overall: Общий балл
+exam.component.total: Общий балл
+exam.component.listening: Аудирование (Listening)
+exam.component.reading: Чтение (Reading)
+exam.component.writing: Письмо (Writing)
+exam.component.speaking: Говорение (Speaking)
+common.yes: Да
+common.no: Нет

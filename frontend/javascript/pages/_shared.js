@@ -740,21 +740,22 @@ export function renderAdmissionsOverview(admissions) {
   const universityRate = toFiniteNumber(universityWide?.acceptance_rate_percent);
   const universityValue = universityRate !== null
     ? formatAdmissionsPercent(universityRate)
-    : t("university.admissions.no_university_rate", "No official university-wide acceptance rate published.");
+    : "—";
   const universitySub = universityRate !== null
     ? admissionsRateLabel(universityWide)
-    : admissionsStatusLabel(universityWide?.status);
+    : t("university.admissions.no_university_rate", "No official university-wide acceptance rate published.");
   const universityChecked = String(universityWide?.provenance?.verified_at || data?.status_date || "").trim();
 
   let programValue = "";
   let programSub = "";
   const programStatus = String(programLevel?.status || "").trim().toLowerCase();
-  if (programStatus === "official_counts" || programStatus === "official_signals" || programStatus === "competition_ratio_only") {
+  const hasProgramMetrics = programStatus === "official_counts" || programStatus === "official_signals" || programStatus === "competition_ratio_only";
+  if (hasProgramMetrics) {
     programValue = formatUiNumber(publishedProgramRows.length);
     programSub = tFormat("university.admissions.rows_count", { count: formatUiNumber(publishedProgramRows.length) }, `${publishedProgramRows.length} official rows`);
   } else {
-    programValue = t("university.admissions.no_program_metrics", "No separate official program-level metric published.");
-    programSub = admissionsStatusLabel(programLevel?.status);
+    programValue = "—";
+    programSub = t("university.admissions.no_program_metrics", "No separate official program-level metric published.");
   }
   const programChecked = String(data?.status_date || "").trim();
 
@@ -764,7 +765,7 @@ export function renderAdmissionsOverview(admissions) {
       ? t("university.admissions.signal.entry_standard", "Official published grade profile or entry standard.")
       : programStatus === "competition_ratio_only"
         ? t("university.admissions.signal.competition_ratio", "Official published competition-ratio style signal.")
-        : t("university.admissions.signal.verified_null", "No separate official program-level metric published.");
+        : "";
 
   return `
     <section class="admissions-overview">
@@ -790,7 +791,7 @@ export function renderAdmissionsOverview(admissions) {
           <div class="admissions-summary-eyebrow">${escapeHtml(t("university.admissions.program_level", "Program-level"))}</div>
           <div class="admissions-summary-value">${escapeHtml(programValue)}</div>
           <div class="admissions-summary-sub">${escapeHtml(programSub)}</div>
-          <p class="admissions-summary-note">${escapeHtml(programNote)}</p>
+          ${programNote ? `<p class="admissions-summary-note">${escapeHtml(programNote)}</p>` : ""}
           ${programChecked ? `<div class="admissions-summary-meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(programChecked)}</div>` : ""}
         </article>
       </div>

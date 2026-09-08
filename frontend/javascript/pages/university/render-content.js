@@ -184,7 +184,7 @@ export function renderProgramsSection({
         return raw;
       }).join(", ");
     }
-    if (typeof value === "boolean") return value ? "Yes" : "No";
+    if (typeof value === "boolean") return value ? t("common.yes", "Yes") : t("common.no", "No");
     if (String(key) === "acceptance_rate_percent") return `${value}%`;
     if (String(key) === "study_mode") return trStudyMode(String(value));
     if (String(key) === "duration") return localizeDuration(value);
@@ -289,11 +289,11 @@ export function renderProgramsSection({
           return `
             <div class="program-card">
               <div class="program-card-head">
-                <span class="program-card-index">${escapeHtml(translateWord("program", "Program"))} ${idx + 1}</span>
+                <span class="program-card-kicker">${escapeHtml(translateWord("program", "Program"))} ${idx + 1}</span>
               </div>
-              <div class="program-card-title">
+              <h3 class="program-card-title">
                 ${escapeHtml(trProgramName(program.name || "") || unknownFieldText("placeholder.field.program_name", "Program name"))}
-              </div>
+              </h3>
               <div class="program-card-rows">
                 ${allRows.map((row) => `
                   <div class="program-card-row">

@@ -96,7 +96,9 @@ export function translateWord(key, fallback = "") {
 
   const pack = getPack();
   const words = pack && typeof pack.words === "object" ? pack.words : null;
+  const common = pack && typeof pack.common === "object" ? pack.common : null;
   if (words && words[k] != null) return String(words[k]);
+  if (common && common[k] != null) return String(common[k]);
 
   return String(t(k, String(fallback || "")) || String(fallback || ""));
 }
@@ -151,7 +153,11 @@ export function translateAdmissionText(value, fallback = "") {
 
   const pack = getPack();
   const exact = pack && typeof pack.admission_exact === "object" ? pack.admission_exact : null;
-  if (exact && exact[raw]) return String(exact[raw]);
+  if (exact) {
+    if (exact[raw]) return String(exact[raw]);
+    const normQuotes = raw.replace(/[\u2018\u2019`]/g, "'");
+    if (exact[normQuotes]) return String(exact[normQuotes]);
+  }
 
   const rules = pack && Array.isArray(pack.admission_replace) ? pack.admission_replace : [];
   let out = raw;
@@ -170,8 +176,9 @@ export function translateTrackLabel(value, fallback = "") {
   const pack = getPack();
   const map = pack && typeof pack.track_labels === "object" ? pack.track_labels : null;
   if (map) {
-    const exact = map[keyify(raw)];
-    if (exact) return String(exact);
+    const k = keyify(raw);
+    if (map[k]) return String(map[k]);
+    if (map[raw]) return String(map[raw]);
   }
 
   let out = translateAdmissionText(raw, raw);
@@ -192,9 +199,13 @@ export function translateProgramName(value, fallback = "") {
 
   const pack = getPack();
   const map = pack && typeof pack.program_names === "object" ? pack.program_names : null;
-  if (!map) return raw;
+  if (map) {
+    const k = keyify(raw);
+    if (map[k]) return String(map[k]);
+    if (map[raw]) return String(map[raw]);
+  }
 
-  return map[keyify(raw)] || raw;
+  return raw;
 }
 
 export function translateFactSource(value, fallback = "") {
