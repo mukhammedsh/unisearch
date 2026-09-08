@@ -203,16 +203,16 @@ profile.exam_updated: Updated {exam} to {score}
 profile.exam_updated_simple: Updated {exam}
 profile.gpa_cleared: GPA cleared
 profile.gpa_must_number: GPA must be a number
-profile.gpa_range: GPA must be between {min} and {max}%
+profile.gpa_range: GPA must be between {min} and {max}
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
 profile.hint.budget_range: Range: 0‑1,000,000
 profile.hint.low_budget_grant: Budget is under $1000. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
-profile.hint.gpa: Use percent here. UniSearch uses it only as a normalized estimate for matching.
+profile.hint.gpa: Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
 profile.gpa_info_title: How GPA works here
-profile.gpa_info_tooltip: Enter GPA as percent from 0 to 100. This is a UniSearch-only format for matching and estimates. Real universities review your original transcript and grading scale in context.
+profile.gpa_info_tooltip: Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
 profile.hint.interests: Write what matters to you in a university so UniSearch can sort results more personally.
 profile.warning.interests_english_only: Automatic translation is unavailable, please write this field in English.
 profile.interests_saved: Interests saved
@@ -220,7 +220,11 @@ profile.saved_all: Profile saved
 profile.label.budget: Total Budget (USD / year)
 profile.label.exams: Exams (list, optional)
 profile.label.funding_type: Preferred Funding Type
-profile.label.gpa: GPA (Percent)
+profile.label.gpa: Grade Point Average (GPA)
+profile.scale.gpa_4: 4.0 (US / Intl)
+profile.scale.gpa_5: 5.0 (KZ / CIS)
+profile.unit.gpa_4: / 4.0
+profile.unit.gpa_5: / 5.0
 profile.label.interests: What You Want in a University
 profile.label.major: Intended Major
 profile.label.study_mode: Preferred Study Mode
@@ -238,7 +242,7 @@ profile.option.study_mode_any: Any (All formats)
 profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
 profile.placeholder.budget: e.g. 20000
-profile.placeholder.gpa: e.g. 92
+profile.placeholder.gpa: e.g. 3.80
 profile.placeholder.interests: Example: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies
 profile.placeholder.lang_score: Score (e.g. 7.5)
 profile.placeholder.score: Score
@@ -260,7 +264,7 @@ profile.reset.confirm: Reset data
 profile.reset.done: Profile data reset
 profile.score: Score
 profile.type: Type
-profile.unit.gpa: % (0 to 100)
+profile.unit.gpa: / 4.0
 profile.unit.usd_year: USD / year
 profile.progress.empty: Complete your profile for better matches.
 profile.progress.count: {completed}/{total} profile areas complete
@@ -283,7 +287,7 @@ profile.empty_languages: No languages added yet. Add your native language or tes
 profile.field.budget.desc: Your planned tuition and living expense budget per academic year in USD.
 profile.field.study_mode.desc: Filter programs by preferred attendance format.
 profile.field.funding.desc: Choose whether you seek full scholarships/grants or self-funded seats.
-profile.field.gpa.desc: Enter your cumulative GPA normalized to a 0–100% scale.
+profile.field.gpa.desc: Select your grading scale (4.0 or 5.0) and enter your cumulative GPA.
 profile.field.major.desc: Select your target academic field to rank relevant programs.
 profile.field.interests.desc: Describe special interests, campus preferences, research focus, or target cities.
 profile.field.exams.desc: Select standardized tests (IELTS, TOEFL, SAT, ACT, A-Levels) to unlock accurate admission chances.
@@ -945,7 +949,7 @@ home.preview.profile.title: Your planning inputs
 home.preview.profile.budget_label: Budget
 home.preview.profile.budget_value: $20k / year
 home.preview.profile.gpa_label: GPA
-home.preview.profile.gpa_value: 92 / 100
+home.preview.profile.gpa_value: 3.8 / 4.0
 home.preview.profile.exam_label: Exam
 home.preview.profile.exam_value: IELTS 7.5
 home.preview.profile.interests_label: Interests
@@ -1116,6 +1120,8 @@ admission.chance.factor.affordability_gap.label: High cost
 admission.chance.factor.affordability_gap.message: Estimated yearly cost is high compared with the profile budget context.
 admission.chance.factor.scholarship_support.label: Funding support
 admission.chance.factor.scholarship_support.message: Scholarship or grant context improves affordability in the estimate.
+admission.chance.factor.holistic_review_selectivity.label: Holistic review
+admission.chance.factor.holistic_review_selectivity.message: At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.
 admission.chance.factor.high_selectivity.label: High selectivity
 admission.chance.factor.high_selectivity.message: Published acceptance context indicates a more competitive route.
 admission.chance.factor.accessibility_signal.label: More accessible route

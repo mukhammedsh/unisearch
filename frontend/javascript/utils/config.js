@@ -6,7 +6,7 @@ import { createSafeStorage } from "./safe-storage.js";
 const DEFAULT_EXAM_CONFIG = {
   SAT: { label: "SAT", labels: { eng: "SAT", rus: "SAT" }, input_mode: "number", min: 400, max: 1600, type: "int", step: 10 },
   ACT: { label: "ACT", labels: { eng: "ACT", rus: "ACT" }, input_mode: "number", min: 1, max: 36, type: "int", step: 1 },
-  GPA: { label: "GPA", labels: { eng: "GPA", rus: "GPA" }, input_mode: "number", min: 0, max: 100, type: "int", step: 1 },
+  GPA: { label: "GPA", labels: { eng: "GPA", rus: "GPA" }, input_mode: "number", min: 0, max: 4, type: "float", step: 0.01 },
   IELTS: { min: 0, max: 9, type: "float", step: 0.5 },
   TOEFL: { min: 0, max: 120, type: "int", step: 1 },
   UNT: { label: "UNT (Kazakhstan)", labels: { eng: "UNT (Kazakhstan)", rus: "ЕНТ" }, input_mode: "number", min: 0, max: 140, type: "int", step: 1 },
@@ -435,7 +435,15 @@ export function formatExamValue(examId, valueOrEntry, options = {}) {
     if (band) return options?.includeLevelPrefix === false ? band : `${words.level} ${band}`;
   }
 
-  if (normalizedId === "GPA" && Number.isFinite(Number(score))) return `${score}%`;
+  if (normalizedId === "GPA" && Number.isFinite(Number(score))) {
+    const s = Number(score);
+    const str = s.toFixed(2).replace(/\.?0+$/, "");
+    const valStr = str === "" ? "0" : str;
+    if (options?.includeScale === false) return valStr;
+    const isScale5 = Number(options?.scale) === 5 || Number(options?.gpaScale) === 5 || Number(entry?.scale) === 5 || Number(entry?.gpaScale) === 5 || s > 4.0;
+    const scale = isScale5 ? "5.0" : "4.0";
+    return `${valStr} (/${scale})`;
+  }
 
   const canonId = canonicalExamKey(normalizedId);
   const needsPointsSuffix = ["ALEVELCERT", "APTOTAL", "IBDIPLOMA", "NUETTOTAL", "NUET", "HKDSEWEIGHTEDTOTAL"].includes(canonId);

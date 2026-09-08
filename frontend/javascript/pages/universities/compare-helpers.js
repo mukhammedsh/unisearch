@@ -186,7 +186,8 @@ import {
   nested, 
   loadProfile, 
   moneyUSD, 
-  getExamDisplayName 
+  getExamDisplayName,
+  formatExamValue,
 } from "../../utils.js";
 import { 
   toFiniteNumber, 
@@ -535,7 +536,7 @@ export function compareRequirementsText(u, compareAdmissionChoices) {
   const req = (option?.requirements && typeof option.requirements === "object") ? option.requirements : {};
   const rows = Object.entries(req || {})
     .filter(([, value]) => value !== null && value !== undefined && value !== "")
-    .map(([key, value]) => `${getExamDisplayName(key)} ${value}`);
+    .map(([key, value]) => `${getExamDisplayName(key)} ${formatExamValue(key, value)}`);
   return rows.length ? rows.slice(0, 3).join(", ") : t("common.na", "N/A");
 }
 
@@ -544,7 +545,7 @@ export function compareAverageScoreText(u, compareAdmissionChoices) {
   const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
   const rows = Object.entries(stats)
     .filter(([, value]) => value !== null && value !== undefined && value !== "")
-    .map(([key, value]) => `${getExamDisplayName(key)} ${value}`);
+    .map(([key, value]) => `${getExamDisplayName(key)} ${formatExamValue(key, value)}`);
   return rows.length ? rows.slice(0, 3).join(", ") : t("common.na", "N/A");
 }
 
@@ -555,7 +556,7 @@ export function compareLanguageProofText(u, compareAdmissionChoices) {
   requirements.forEach((entry) => {
     const req = (entry?.requirements && typeof entry.requirements === "object") ? entry.requirements : {};
     Object.entries(req).forEach(([key, value]) => {
-      if (value !== null && value !== undefined && value !== "") rows.push(`${getExamDisplayName(key)} ${value}`);
+      if (value !== null && value !== undefined && value !== "") rows.push(`${getExamDisplayName(key)} ${formatExamValue(key, value)}`);
     });
     if (entry?.accept_native) rows.push(t("universities.compare.native_ok", "native accepted"));
   });

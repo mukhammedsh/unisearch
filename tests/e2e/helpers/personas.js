@@ -6,7 +6,8 @@ const personas = {
     profile: {
       name: "Aruzhan Dev",
       budget: 26000,
-      gpa: 96,
+      gpa: 3.84,
+      gpaScale: 4,
       major: "Computer Science",
       interests: "Хочу AI research кампус в США, gamedev и ui/ux.",
       studyMode: "On-campus",
@@ -19,7 +20,8 @@ const personas = {
     profile: {
       name: "Maya Research",
       budget: 52000,
-      gpa: 98,
+      gpa: 3.92,
+      gpaScale: 4,
       major: "Engineering",
       interests: "Robotics, machine vision, embedded systems, and applied AI labs.",
       studyMode: "On-campus",

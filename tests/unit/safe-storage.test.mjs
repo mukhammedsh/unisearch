@@ -136,7 +136,7 @@ describe('safe-storage.js', () => {
       saveProfile({
         name: 'Alex',
         budget: 18000,
-        gpa: 92,
+        gpa: 3.8,
         studyMode: 'Online',
         interests: 'Physics',
       });
@@ -145,7 +145,7 @@ describe('safe-storage.js', () => {
       const stored = JSON.parse(mockLocalStorage['unisearch_profile']);
       assert.strictEqual(stored.name, 'Alex');
       assert.strictEqual(stored.budget, 18000);
-      assert.strictEqual(stored.gpa, 92);
+      assert.strictEqual(stored.gpa, 3.8);
       assert.ok(dispatched.includes('profileUpdated'));
 
       dispatched = [];

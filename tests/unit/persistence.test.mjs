@@ -80,11 +80,24 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
     test('extracts GPA from exams list if gpa field is empty', () => {
       const profile = normalizeProfileData({
         gpa: '',
-        exams: [{ id: 'GPA', score: 92 }],
+        exams: [{ id: 'GPA', score: 3.8 }],
       });
-      assert.strictEqual(profile.gpa, 92);
+      assert.strictEqual(profile.gpa, 3.8);
       // GPA exam is consumed into profile.gpa and removed from exams array
       assert.strictEqual(profile.exams.length, 0);
+    });
+
+    test('normalizes gpaScale to 4 or 5 and clamps gpa accordingly', () => {
+      const p4 = normalizeProfileData({ gpa: 4.5, gpaScale: 4 });
+      assert.strictEqual(p4.gpaScale, 4);
+      assert.strictEqual(p4.gpa, 4); // clamped to 4
+
+      const p5 = normalizeProfileData({ gpa: 4.85, gpaScale: 5 });
+      assert.strictEqual(p5.gpaScale, 5);
+      assert.strictEqual(p5.gpa, 4.85);
+
+      const pDefault = normalizeProfileData({ gpaScale: 999 });
+      assert.strictEqual(pDefault.gpaScale, 4);
     });
 
     test('normalizes languages: handles native, cefr, and exam correctly', () => {
@@ -154,7 +167,8 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       saveProfile({
         name: 'Alice',
         budget: 50000,
-        gpa: 88,
+        gpa: 3.8,
+        gpaScale: 4,
         major: 'Physics',
         interests: 'Quantum computing',
         fundingType: 'grant',
@@ -165,7 +179,8 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       const apiPayload = loadProfileForApi();
       assert.strictEqual(apiPayload.name, 'Alice');
       assert.strictEqual(apiPayload.budget, 50000);
-      assert.strictEqual(apiPayload.gpa, 88);
+      assert.strictEqual(apiPayload.gpa, 3.8);
+      assert.strictEqual(apiPayload.gpa_scale, 4);
       assert.strictEqual(apiPayload.major, 'Physics');
       assert.strictEqual(apiPayload.interests, 'Quantum computing');
       assert.strictEqual(apiPayload.fundingType, 'grant');
@@ -174,6 +189,18 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(apiPayload.exams[0].score, 1550);
       assert.strictEqual(apiPayload.languages.length, 1);
       assert.ok(apiPayload.locale, 'apiPayload should include locale');
+    });
+
+    test('normalizes 5.0 scale GPA to 4.0 for API payload', () => {
+      saveProfile({
+        name: 'Bob',
+        gpa: 4.8,
+        gpaScale: 5,
+      });
+
+      const apiPayload = loadProfileForApi();
+      assert.strictEqual(apiPayload.gpa, 3.84);
+      assert.strictEqual(apiPayload.gpa_scale, 4);
     });
 
     test('strips empty optional fields in loadProfileForApi', () => {

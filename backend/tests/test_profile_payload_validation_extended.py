@@ -64,13 +64,21 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test_rejects_gpa_over_5_0(self):
+        response = self._post_ai_sort(
+            {
+                "gpa": 95,
+            }
+        )
+        self.assertEqual(response.status_code, 422)
+
     def test_accepts_valid_rich_profile_payload(self):
         response = self._post_ai_sort(
             {
                 "name": "Valid User",
                 "locale": "eng",
                 "budget": 35000,
-                "gpa": 95,
+                "gpa": 3.8,
                 "major": "Computer Science",
                 "interests": "ai robotics research",
                 "studyMode": "On-campus",

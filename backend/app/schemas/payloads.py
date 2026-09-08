@@ -121,7 +121,9 @@ class ProfilePayload(BaseModel):
 
     name: str = Field(default="", max_length=64)
     budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
-    gpa: Optional[float] = Field(default=None, ge=0, le=100)
+    gpa: Optional[float] = Field(default=None, ge=0, le=5.0)
+    gpa_scale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
+    gpaScale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
     major: str = Field(default="", max_length=120)
     interests: Optional[str] = Field(default=None, max_length=1200)
     locale: Optional[str] = Field(default=None, max_length=16)
@@ -139,6 +141,8 @@ class ProfilePayload(BaseModel):
         data = dict(value)
         if "selectedAdmissionChoices" not in data and isinstance(data.get("selected_admission_choices"), dict):
             data["selectedAdmissionChoices"] = data.get("selected_admission_choices")
+        if "gpa_scale" not in data and "gpaScale" in data:
+            data["gpa_scale"] = data.get("gpaScale")
         return data
 
     @field_validator("name", "major", "studyMode", "fundingType", mode="before")

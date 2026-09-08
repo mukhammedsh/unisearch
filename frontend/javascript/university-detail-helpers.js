@@ -627,6 +627,7 @@ const TRACK_FACTOR_I18N_KEYS = new Set([
   "affordability_fit",
   "affordability_gap",
   "scholarship_support",
+  "holistic_review_selectivity",
   "high_selectivity",
   "accessibility_signal",
   "insufficient_data",

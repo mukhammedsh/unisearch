@@ -32,7 +32,7 @@ class FundingOptionsTests(unittest.TestCase):
                         {
                             "id": "sat",
                             "label": "SAT",
-                            "requirements": {"GPA": 80},
+                            "requirements": {"GPA": 3.2},
                             "funding_options": [
                                 {"id": "paid", "label": "Paid", "requirements": {"SAT": 1200}, "funding_type": "paid"},
                                 {"id": "grant", "label": "Grant", "requirements": {"SAT": 1400}, "funding_type": "grant"},
@@ -61,7 +61,7 @@ class FundingOptionsTests(unittest.TestCase):
                     {
                         "id": "sat",
                         "label": "SAT",
-                        "requirements": {"GPA": 80},
+                        "requirements": {"GPA": 3.2},
                         "funding_options": [
                             {"id": "paid", "label": "Paid", "requirements": {"SAT": 1200}, "funding_type": "paid"},
                             {"id": "grant", "label": "Grant", "requirements": {"SAT": 1400}, "funding_type": "grant"},
@@ -74,7 +74,7 @@ class FundingOptionsTests(unittest.TestCase):
         choices = {str(choice.get("choiceKey") or choice.get("choice_key")): choice for choice in uni_service.expand_admission_choices(categories)}
 
         self.assertEqual({"direct::sat::paid", "direct::sat::grant"}, set(choices))
-        self.assertEqual(80, int((choices["direct::sat::paid"].get("requirements") or {}).get("GPA", 0)))
+        self.assertEqual(3.2, float((choices["direct::sat::paid"].get("requirements") or {}).get("GPA", 0)))
         self.assertEqual(1200, int((choices["direct::sat::paid"].get("requirements") or {}).get("SAT", 0)))
         self.assertEqual(1400, int((choices["direct::sat::grant"].get("requirements") or {}).get("SAT", 0)))
 
@@ -86,7 +86,7 @@ class FundingOptionsTests(unittest.TestCase):
                     {
                         "id": "regular_admission",
                         "label": "Regular Admission",
-                        "requirements": {"GPA": 85, "SAT": 1300},
+                        "requirements": {"GPA": 3.4, "SAT": 1300},
                     }
                 ],
             )
@@ -95,7 +95,7 @@ class FundingOptionsTests(unittest.TestCase):
         self.assertEqual(1, len(choices))
         choice = choices[0]
         self.assertEqual("direct::regular_admission", str(choice.get("choiceKey") or choice.get("choice_key")))
-        self.assertEqual(85, int((choice.get("requirements") or {}).get("GPA", 0)))
+        self.assertEqual(3.4, float((choice.get("requirements") or {}).get("GPA", 0)))
         self.assertEqual(1300, int((choice.get("requirements") or {}).get("SAT", 0)))
 
     def test_expand_admission_choices_funding_requirements_override_profile(self):
@@ -106,7 +106,7 @@ class FundingOptionsTests(unittest.TestCase):
                     {
                         "id": "track_sat",
                         "label": "SAT Track",
-                        "requirements": {"SAT": 1200, "GPA": 75},
+                        "requirements": {"SAT": 1200, "GPA": 3.0},
                         "funding_options": [
                             {"id": "merit_grant", "label": "Full Merit Grant", "requirements": {"SAT": 1450}, "funding_type": "grant"},
                         ],
@@ -118,9 +118,9 @@ class FundingOptionsTests(unittest.TestCase):
         self.assertEqual(1, len(choices))
         choice = choices[0]
         self.assertEqual("cat_stem::track_sat::merit_grant", str(choice.get("choiceKey") or choice.get("choice_key")))
-        # Funding option SAT requirement (1450) overrides profile SAT requirement (1200), GPA is preserved (75)
+        # Funding option SAT requirement (1450) overrides profile SAT requirement (1200), GPA is preserved (3.0)
         self.assertEqual(1450, int((choice.get("requirements") or {}).get("SAT", 0)))
-        self.assertEqual(75, int((choice.get("requirements") or {}).get("GPA", 0)))
+        self.assertEqual(3.0, float((choice.get("requirements") or {}).get("GPA", 0)))
 
     def test_real_dataset_exposes_nu_as_one_category_with_funding_options_per_profile(self):
         university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")

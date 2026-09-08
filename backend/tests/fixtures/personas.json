@@ -5,7 +5,7 @@
     "profile": {
       "name": "Aruzhan Dev",
       "budget": 26000,
-      "gpa": 96,
+      "gpa": 3.84,
       "major": "Computer Science",
       "interests": "Хочу сильный AI research кампус в США, интересуют gamedev и ui/ux лаборатории.",
       "studyMode": "On-campus",
@@ -36,7 +36,7 @@
     "profile": {
       "name": "Maya Research",
       "budget": 52000,
-      "gpa": 98,
+      "gpa": 3.92,
       "major": "Engineering",
       "interests": "Looking for robotics, embedded systems, and machine vision with strong publications.",
       "studyMode": "On-campus",

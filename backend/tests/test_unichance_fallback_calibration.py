@@ -7,7 +7,7 @@ from app.services.ai_scoring import _admission_choice_key, estimate_uni_chance
 
 
 _NUMERIC_EXAM_RANGES = {
-    "GPA": (0, 100),
+    "GPA": (0, 4),
     "SAT": (400, 1600),
     "ACT": (1, 36),
     "UNT": (0, 140),

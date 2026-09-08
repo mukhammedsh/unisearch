@@ -19,6 +19,7 @@ const PROFILE_DEFAULTS = {
   name: "User",
   budget: "",
   gpa: "",
+  gpaScale: 4,
   exams: [],
   languages: [],
   major: "",
@@ -87,10 +88,14 @@ export function normalizeProfileData(profile) {
     )
     : {};
 
-  const gpaConfig = EXAM_CONFIG?.GPA || EXAM_CONFIG?.gpa || { min: 0, max: 100, step: 1 };
+  const gpaScale = Number(out.gpaScale) === 5 ? 5 : 4;
+  out.gpaScale = gpaScale;
+  const gpaMax = gpaScale === 5 ? 5 : 4;
   const clampGpa = (value) => {
-    const normalized = clampWithConfig(value, gpaConfig);
-    return Number.isFinite(normalized) ? normalized : null;
+    if (value === "" || value === null || value === undefined) return null;
+    const num = Number(value);
+    if (!Number.isFinite(num)) return null;
+    return Math.max(0, Math.min(gpaMax, Math.round(num * 100) / 100));
   };
   let normalizedGpa = clampGpa(out.gpa);
 
@@ -210,8 +215,17 @@ export function loadProfileForApi() {
   else delete payload.budget;
 
   const gpa = Number(profile?.gpa);
-  if (Number.isFinite(gpa) && gpa >= 0) payload.gpa = gpa;
-  else delete payload.gpa;
+  const gpaScale = Number(profile?.gpaScale) === 5 ? 5 : 4;
+  if (Number.isFinite(gpa) && gpa >= 0) {
+    const gpaNormalized = gpaScale === 5 ? Math.round((gpa / 5.0) * 4.0 * 100) / 100 : gpa;
+    payload.gpa = gpaNormalized;
+    payload.gpa_scale = 4;
+    payload.gpaScale = 4;
+    payload.gpa_raw = gpa;
+    payload.user_gpa_scale = gpaScale;
+  } else {
+    delete payload.gpa;
+  }
 
   payload.exams = (Array.isArray(profile?.exams) ? profile.exams : [])
     .map((row) => {

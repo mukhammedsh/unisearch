@@ -8,6 +8,7 @@ import {
   formatPlural,
   getExamDisplayName,
   canonicalizeExamId,
+  formatExamValue,
 } from "../../utils.js";
 
 import {
@@ -71,10 +72,18 @@ export const formatCompareScoreValue = (value) => {
 export const compareOptionScoreProfilePreview = (option) => {
     const profile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
     if (!profile) return "";
-    const exam = getExamDisplayName(profile.exam_id || (Array.isArray(profile.compatible_exam_ids) ? profile.compatible_exam_ids[0] : ""));
-    const median = formatCompareScoreValue(profile.median_raw ?? profile.median_normalized);
-    const low = formatCompareScoreValue(profile.p25_raw ?? profile.p25_normalized);
-    const high = formatCompareScoreValue(profile.p75_raw ?? profile.p75_normalized);
+    const rawExamId = profile.exam_id || (Array.isArray(profile.compatible_exam_ids) ? profile.compatible_exam_ids[0] : "");
+    const exam = getExamDisplayName(rawExamId);
+    const isGpa = canonicalizeExamId(rawExamId) === "GPA";
+    const formatScore = (val) => {
+        if (isGpa) {
+            return formatExamValue("GPA", val, { scale: profile?.scale });
+        }
+        return formatCompareScoreValue(val);
+    };
+    const median = formatScore(profile.median_raw ?? profile.median_normalized);
+    const low = formatScore(profile.p25_raw ?? profile.p25_normalized);
+    const high = formatScore(profile.p75_raw ?? profile.p75_normalized);
     if (median && low && high) {
         return tFormat(
             "universities.compare.configure.score_profile_range",
@@ -114,12 +123,14 @@ export const compareOptionFundingDeltaPreview = (entry, entries) => {
         .filter((key) => req[key] !== null && req[key] !== undefined && req[key] !== "")
         .map((key) => {
             const baseValue = baseline[key];
-            const current = `${getExamDisplayName(key)} ${req[key]}`;
+            const currentVal = formatExamValue(key, req[key]);
+            const current = `${getExamDisplayName(key)} ${currentVal}`;
+            const formattedBase = formatExamValue(key, baseValue);
             return baseValue !== null && baseValue !== undefined && baseValue !== "" && String(baseValue) !== String(req[key])
                 ? tFormat(
                     "universities.compare.configure.funding_delta_from",
-                    { value: current, base: String(baseValue) },
-                    `${current} (standard ${baseValue})`
+                    { value: current, base: formattedBase },
+                    `${current} (standard ${formattedBase})`
                 )
                 : current;
         });
@@ -590,7 +601,7 @@ export const buildCompareSpecs = (universities) => {
             type: "number",
             direction: "lower",
             getter: (u) => compareRequirementValue(u, examId),
-            formatter: compareScoreText,
+            formatter: (value) => (canonicalizeExamId(examId) === "GPA" ? formatExamValue("GPA", value) : compareScoreText(value)),
         });
     });
 
@@ -604,7 +615,7 @@ export const buildCompareSpecs = (universities) => {
             type: "number",
             direction: "higher",
             getter: (u) => compareAverageScoreValue(u, examId),
-            formatter: compareScoreText,
+            formatter: (value) => (canonicalizeExamId(examId) === "GPA" ? formatExamValue("GPA", value) : compareScoreText(value)),
         });
     });
 
@@ -1087,4 +1098,4 @@ export const buildCompareConclusionHtml = (universities, metrics) => {
         </section>
     `;
 };
-
+
