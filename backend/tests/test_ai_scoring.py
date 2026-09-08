@@ -307,8 +307,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 88, "SAT": 1250},
-                    "stats_avg": {"GPA": 93, "SAT": 1420},
+                    "requirements": {"GPA": 3.52, "SAT": 1250},
+                    "stats_avg": {"GPA": 3.72, "SAT": 1420},
                     "score_profile": _demo_score_profile("SAT", p25=68, median=82, p75=93, acceptance_rate_percent=45),
                     "language_requirements_mode": "all",
                     "language_requirements": [
@@ -318,7 +318,7 @@ class AiScoringTests(unittest.TestCase):
             ]),
         }
         profile = {
-            "gpa": 92,
+            "gpa": 3.68,
             "budget": 20000,
             "exams": [{"id": "SAT", "score": 1360}],
             "languages": [{"code": "en", "kind": "native"}],
@@ -348,8 +348,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 88, "SAT": 1250},
-                    "stats_avg": {"GPA": 93, "SAT": 1420},
+                    "requirements": {"GPA": 3.52, "SAT": 1250},
+                    "stats_avg": {"GPA": 3.72, "SAT": 1420},
                     "score_profile": _demo_score_profile("SAT", p25=68, median=82, p75=93, acceptance_rate_percent=45),
                     "language_requirements_mode": "all",
                     "language_requirements": [
@@ -360,7 +360,7 @@ class AiScoringTests(unittest.TestCase):
         }
         profile = {
             "locale": "rus",
-            "gpa": 92,
+            "gpa": 3.68,
             "budget": 20000,
             "exams": [{"id": "SAT", "score": 1360}],
             "languages": [{"code": "en", "kind": "native"}],
@@ -402,13 +402,13 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 80},
-                    "stats_avg": {"GPA": 88},
+                    "requirements": {"GPA": 3.2},
+                    "stats_avg": {"GPA": 3.52},
                     "score_profile": _demo_score_profile("GPA", p25=60, median=75, p75=90, acceptance_rate_percent=45),
                 }
             ]),
         }
-        profile = {"locale": "eng", "gpa": 95, "budget": 25000}
+        profile = {"locale": "eng", "gpa": 3.8, "budget": 25000}
 
         result = estimate_uni_chance(university, profile)
         choice = (result.get("choices") or [{}])[0]
@@ -431,21 +431,21 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "safe",
                     "label": "Safe Track",
-                    "requirements": {"GPA": 75},
-                    "stats_avg": {"GPA": 82},
+                    "requirements": {"GPA": 3.0},
+                    "stats_avg": {"GPA": 3.28},
                     "score_profile": _demo_score_profile("GPA", p25=58, median=72, p75=84, acceptance_rate_percent=50),
                 },
                 {
                     "id": "stretch",
                     "label": "Stretch Track",
-                    "requirements": {"GPA": 95},
-                    "stats_avg": {"GPA": 98},
+                    "requirements": {"GPA": 3.8},
+                    "stats_avg": {"GPA": 3.92},
                     "score_profile": _demo_score_profile("GPA", p25=78, median=92, p75=97, acceptance_rate_percent=50),
                 },
             ]),
         }
         profile = {
-            "gpa": 92,
+            "gpa": 3.68,
             "budget": 25000,
             "selectedAdmissionChoices": {"manual-track-u": _choice_selection("stretch::stretch")},
         }
@@ -471,12 +471,12 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 80},
-                    "stats_avg": {"GPA": 88},
+                    "requirements": {"GPA": 3.2},
+                    "stats_avg": {"GPA": 3.52},
                 }
             ]),
         }
-        profile = {"locale": "rus", "gpa": 92, "budget": 25000}
+        profile = {"locale": "rus", "gpa": 3.68, "budget": 25000}
 
         result = estimate_uni_chance(university, profile)
 
@@ -499,12 +499,12 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 80},
-                    "stats_avg": {"GPA": 88},
+                    "requirements": {"GPA": 3.2},
+                    "stats_avg": {"GPA": 3.52},
                 }
             ]),
         }
-        profile = {"locale": "rus", "gpa": 92, "budget": 25000}
+        profile = {"locale": "rus", "gpa": 3.68, "budget": 25000}
 
         result = estimate_uni_chance(university, profile)
 
@@ -528,8 +528,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 80},
-                    "stats_avg": {"GPA": 88},
+                    "requirements": {"GPA": 3.2},
+                    "stats_avg": {"GPA": 3.52},
                 }
             ]),
         }
@@ -584,15 +584,15 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 80, "SAT": 1300},
-                    "stats_avg": {"GPA": 88, "SAT": 1420},
+                    "requirements": {"GPA": 3.2, "SAT": 1300},
+                    "stats_avg": {"GPA": 3.52, "SAT": 1420},
                 }
             ]),
         }
         profile = {
             "locale": "rus",
             "budget": 25000,
-            "gpa": 92,
+            "gpa": 3.68,
             "exams": [{"id": "SAT", "score": 1200}],
         }
 
@@ -616,8 +616,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "main",
                     "label": "Main Track",
-                    "requirements": {"GPA": 80, "SAT": 1300},
-                    "stats_avg": {"GPA": 88, "SAT": 1420},
+                    "requirements": {"GPA": 3.2, "SAT": 1300},
+                    "stats_avg": {"GPA": 3.52, "SAT": 1420},
                     "language_requirements_mode": "all",
                     "language_requirements": [
                         {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 7.0}}
@@ -628,7 +628,7 @@ class AiScoringTests(unittest.TestCase):
         profile = {
             "locale": "rus",
             "budget": 25000,
-            "gpa": 92,
+            "gpa": 3.68,
             "exams": [{"id": "SAT", "score": 1380}],
         }
 
@@ -645,7 +645,7 @@ class AiScoringTests(unittest.TestCase):
         sat_profile = {
             "locale": "rus",
             "budget": 15000,
-            "gpa": 92,
+            "gpa": 3.68,
             "exams": [{"id": "SAT", "score": 1480}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
             "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_sat_applicants::nu_sat_applicants")},
@@ -653,7 +653,7 @@ class AiScoringTests(unittest.TestCase):
         act_profile = {
             "locale": "rus",
             "budget": 15000,
-            "gpa": 92,
+            "gpa": 3.68,
             "exams": [{"id": "ACT", "score": 31}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
             "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_act_applicants::nu_act_applicants")},
@@ -661,7 +661,7 @@ class AiScoringTests(unittest.TestCase):
         nuet_profile = {
             "locale": "rus",
             "budget": 15000,
-            "gpa": 92,
+            "gpa": 3.68,
             "exams": [{"id": "NUET", "score": 195}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
             "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_nuet_undergraduate::nu_nuet_undergraduate")},
@@ -692,7 +692,7 @@ class AiScoringTests(unittest.TestCase):
         profile = {
             "locale": "eng",
             "budget": 60000,
-            "gpa": 90,
+            "gpa": 3.6,
             "exams": [{"id": "HKDSE_WEIGHTED_TOTAL", "score": 43.0}],
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
             "selectedAdmissionChoices": {"cuhk-hk-shatin": _choice_selection("cuhk_hkdse::cuhk_hkdse")},
@@ -757,8 +757,8 @@ class AiScoringTests(unittest.TestCase):
         base_track = {
             "id": "profile-track",
             "label": "Profile Track",
-            "requirements": {"GPA": 80},
-            "stats_avg": {"GPA": 90},
+            "requirements": {"GPA": 3.2},
+            "stats_avg": {"GPA": 3.6},
         }
         university_low = {
             "id": "u-low-acc",
@@ -786,7 +786,7 @@ class AiScoringTests(unittest.TestCase):
                 }
             ]),
         }
-        profile = {"gpa": 100, "budget": 20000}
+        profile = {"gpa": 4.0, "budget": 20000}
 
         low_result = estimate_uni_chance(university_low, profile)
         high_result = estimate_uni_chance(university_high, profile)
@@ -801,8 +801,8 @@ class AiScoringTests(unittest.TestCase):
         base_track = {
             "id": "fallback-track",
             "label": "Fallback Track",
-            "requirements": {"GPA": 80},
-            "stats_avg": {"GPA": 90},
+            "requirements": {"GPA": 3.2},
+            "stats_avg": {"GPA": 3.6},
         }
         university_low = {
             "id": "u-low-fallback",
@@ -820,7 +820,7 @@ class AiScoringTests(unittest.TestCase):
             "academics": {"acceptance_rate_percent": 95},
             "admission_categories": _categories_from_requirement_profiles([{**base_track}]),
         }
-        profile = {"gpa": 100, "budget": 20000}
+        profile = {"gpa": 4.0, "budget": 20000}
 
         low_result = estimate_uni_chance(university_low, profile)
         high_result = estimate_uni_chance(university_high, profile)
@@ -835,8 +835,8 @@ class AiScoringTests(unittest.TestCase):
         base_track = {
             "id": "calibrated-track",
             "label": "Calibrated Track",
-            "requirements": {"GPA": 80},
-            "stats_avg": {"GPA": 90},
+            "requirements": {"GPA": 3.2},
+            "stats_avg": {"GPA": 3.6},
         }
         university_fallback = {
             "id": "u-fallback-calibrated",
@@ -859,7 +859,7 @@ class AiScoringTests(unittest.TestCase):
                 }
             ]),
         }
-        profile = {"gpa": 85, "budget": 20000}
+        profile = {"gpa": 3.4, "budget": 20000}
 
         fallback_result = estimate_uni_chance(university_fallback, profile)
         profile_result = estimate_uni_chance(university_profile, profile)
@@ -884,8 +884,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "eth_direct",
                     "label": "Direct Entry",
-                    "requirements": {"GPA": 90},
-                    "stats_avg": {"GPA": 96},
+                    "requirements": {"GPA": 3.6},
+                    "stats_avg": {"GPA": 3.84},
                     "score_profile": _demo_score_profile("GPA", p25=60, median=78, p75=90, acceptance_rate_percent=35),
                     "language_requirements_mode": "all",
                     "language_requirements": [
@@ -902,12 +902,12 @@ class AiScoringTests(unittest.TestCase):
         }
 
         profile_de_b2 = {
-            "gpa": 93,
+            "gpa": 3.72,
             "budget": 30000,
             "languages": [{"code": "de", "kind": "cefr", "level": 4}],
         }
         profile_de_c1 = {
-            "gpa": 93,
+            "gpa": 3.72,
             "budget": 30000,
             "languages": [{"code": "de", "kind": "cefr", "level": 5}],
         }
@@ -935,25 +935,25 @@ class AiScoringTests(unittest.TestCase):
                     {
                         "id": "safe",
                         "label": "Safe Track",
-                        "requirements": {"GPA": 75},
-                        "stats_avg": {"GPA": 82},
+                        "requirements": {"GPA": 3.0},
+                        "stats_avg": {"GPA": 3.28},
                         "score_profile": _demo_score_profile("GPA", p25=58, median=72, p75=84, acceptance_rate_percent=45),
                         "finance_override": {"total_cost_year_usd": 22000},
                     },
                     {
                         "id": "stretch",
                         "label": "Stretch Track",
-                        "requirements": {"GPA": 95},
-                        "stats_avg": {"GPA": 98},
+                        "requirements": {"GPA": 3.8},
+                        "stats_avg": {"GPA": 3.92},
                         "score_profile": _demo_score_profile("GPA", p25=78, median=92, p75=97, acceptance_rate_percent=45),
                         "finance_override": {"total_cost_year_usd": 12000},
                     },
                 ]),
             }
         ]
-        profile_auto = {"gpa": 92, "budget": 30000}
+        profile_auto = {"gpa": 3.68, "budget": 30000}
         profile_manual = {
-            "gpa": 92,
+            "gpa": 3.68,
             "budget": 30000,
             "selectedAdmissionChoices": {"u-manual": _choice_selection("stretch::stretch")},
         }
@@ -989,12 +989,12 @@ class AiScoringTests(unittest.TestCase):
             ]),
         }
         profile_worse_only = {
-            "gpa": 90,
+            "gpa": 3.6,
             "budget": 20000,
             "exams": [{"id": "JLPT_N", "score": 3}],
         }
         profile_with_better_duplicate = {
-            "gpa": 90,
+            "gpa": 3.6,
             "budget": 20000,
             "exams": [
                 {"id": "JLPT_N", "score": 3},
@@ -1117,14 +1117,14 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "track-1",
                     "label": "Default",
-                    "requirements": {"GPA": 80},
-                    "stats_avg": {"GPA": 90},
+                    "requirements": {"GPA": 3.2},
+                    "stats_avg": {"GPA": 3.6},
                     "score_profile": _demo_score_profile("GPA", p25=55, median=70, p75=85, acceptance_rate_percent=40),
                 }
             ]),
         }
-        profile_oncampus = {"gpa": 85, "budget": 12000, "studyMode": "On-campus"}
-        profile_online = {"gpa": 85, "budget": 12000, "studyMode": "Online"}
+        profile_oncampus = {"gpa": 3.4, "budget": 12000, "studyMode": "On-campus"}
+        profile_online = {"gpa": 3.4, "budget": 12000, "studyMode": "Online"}
 
         chance_oncampus = estimate_uni_chance(university, profile_oncampus)
         chance_online = estimate_uni_chance(university, profile_online)
@@ -1179,8 +1179,8 @@ class AiScoringTests(unittest.TestCase):
                         "id": "paid-easy",
                         "label": "Paid Easy",
                         "funding_type": "paid",
-                        "requirements": {"GPA": 70},
-                        "stats_avg": {"GPA": 78},
+                        "requirements": {"GPA": 2.8},
+                        "stats_avg": {"GPA": 3.12},
                         "score_profile": _demo_score_profile("GPA", p25=45, median=60, p75=75, acceptance_rate_percent=40),
                     }
                 ]),
@@ -1202,14 +1202,14 @@ class AiScoringTests(unittest.TestCase):
                         "id": "grant-medium",
                         "label": "Grant Medium",
                         "funding_type": "grant",
-                        "requirements": {"GPA": 82},
-                        "stats_avg": {"GPA": 88},
+                        "requirements": {"GPA": 3.28},
+                        "stats_avg": {"GPA": 3.52},
                         "score_profile": _demo_score_profile("GPA", p25=55, median=72, p75=84, acceptance_rate_percent=40),
                     }
                 ]),
             },
         ]
-        profile = {"gpa": 90, "budget": 40000, "studyMode": "On-campus"}
+        profile = {"gpa": 3.6, "budget": 40000, "studyMode": "On-campus"}
 
         grant_mode = sort_universities_ai(items, profile=profile, budget_vs_prestige=0, funding_type="any")
         general_mode = sort_universities_ai(items, profile=profile, budget_vs_prestige=100, funding_type="any")
@@ -1233,7 +1233,7 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.1,
                 },
-                "admission_categories": _categories_from_requirement_profiles([{"id": "city", "label": "City", "requirements": {"GPA": 82}, "stats_avg": {"GPA": 88}}]),
+                "admission_categories": _categories_from_requirement_profiles([{"id": "city", "label": "City", "requirements": {"GPA": 3.28}, "stats_avg": {"GPA": 3.52}}]),
             },
             {
                 "id": "u-campus",
@@ -1247,10 +1247,10 @@ class AiScoringTests(unittest.TestCase):
                     "budget_vs_prestige": 0.5,
                     "city_vs_campus": 0.9,
                 },
-                "admission_categories": _categories_from_requirement_profiles([{"id": "campus", "label": "Campus", "requirements": {"GPA": 82}, "stats_avg": {"GPA": 88}}]),
+                "admission_categories": _categories_from_requirement_profiles([{"id": "campus", "label": "Campus", "requirements": {"GPA": 3.28}, "stats_avg": {"GPA": 3.52}}]),
             },
         ]
-        profile = {"gpa": 90, "budget": 40000, "studyMode": "On-campus"}
+        profile = {"gpa": 3.6, "budget": 40000, "studyMode": "On-campus"}
 
         city_result = sort_universities_ai(items, profile=profile, city_vs_campus=0, funding_type="any")
         campus_result = sort_universities_ai(items, profile=profile, city_vs_campus=100, funding_type="any")
@@ -1277,8 +1277,8 @@ class AiScoringTests(unittest.TestCase):
                         "id": "grant-track",
                         "label": "Grant Track",
                         "funding_type": "grant",
-                        "requirements": {"GPA": 80},
-                        "stats_avg": {"GPA": 90},
+                        "requirements": {"GPA": 3.2},
+                        "stats_avg": {"GPA": 3.6},
                         "language_requirements_mode": "all",
                         "language_requirements": [
                             {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 7.0}}
@@ -1287,7 +1287,7 @@ class AiScoringTests(unittest.TestCase):
                 ]),
             }
         ]
-        profile = {"gpa": 95, "budget": 30000}
+        profile = {"gpa": 3.8, "budget": 30000}
 
         result = sort_universities_ai(
             items,
@@ -1322,8 +1322,8 @@ class AiScoringTests(unittest.TestCase):
                     "id": "grant-track",
                     "label": "Grant Track",
                     "funding_type": "grant",
-                    "requirements": {"GPA": 65},
-                    "stats_avg": {"GPA": 75},
+                    "requirements": {"GPA": 2.6},
+                    "stats_avg": {"GPA": 3.0},
                     "score_profile": _demo_score_profile("GPA", p25=40, median=55, p75=72, acceptance_rate_percent=70),
                 }
             ]),
@@ -1345,13 +1345,13 @@ class AiScoringTests(unittest.TestCase):
                     "id": "paid-track",
                     "label": "Paid Track",
                     "funding_type": "paid",
-                    "requirements": {"GPA": 60},
-                    "stats_avg": {"GPA": 70},
+                    "requirements": {"GPA": 2.4},
+                    "stats_avg": {"GPA": 2.8},
                     "score_profile": _demo_score_profile("GPA", p25=38, median=52, p75=68, acceptance_rate_percent=75),
                 }
             ]),
         }
-        profile = {"gpa": 95, "budget": 40000}
+        profile = {"gpa": 3.8, "budget": 40000}
 
         grant_result = sort_universities_ai([grant_item], profile=profile, budget_vs_prestige=0, funding_type="any")
         paid_result = sort_universities_ai([paid_item], profile=profile, budget_vs_prestige=100, funding_type="any")
@@ -1373,8 +1373,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "direct",
                     "label": "Direct Admission",
-                    "requirements": {"GPA": 80},
-                    "stats_avg": {"GPA": 88},
+                    "requirements": {"GPA": 3.2},
+                    "stats_avg": {"GPA": 3.52},
                     "funding_options": [
                         {
                             "id": "direct",
@@ -1397,7 +1397,7 @@ class AiScoringTests(unittest.TestCase):
             ]),
         }
         profile = {
-            "gpa": 92,
+            "gpa": 3.68,
             "fundingType": "grant",
             "exams": [{"exam": "SAT", "score": 1450}],
         }

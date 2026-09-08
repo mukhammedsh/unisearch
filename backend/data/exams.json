@@ -76,10 +76,10 @@
     },
     "input_mode": "number",
     "min": 0,
-    "max": 100,
-    "type": "int",
-    "step": 1,
-    "notes": "Stored as percent (0-100)."
+    "max": 4,
+    "type": "float",
+    "step": 0.01,
+    "notes": "Stored on canonical 4.0 scale."
   },
   "UNT": {
     "label": "UNT (Kazakhstan)",

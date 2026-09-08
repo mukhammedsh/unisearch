@@ -85,6 +85,10 @@ export function initProfileUI() {
     const nameInput = document.getElementById("profileNameInput");
     const budgetInput = document.getElementById("budgetInput");
     const gpaInput = document.getElementById("gpaInput");
+    const gpaScale4Btn = document.getElementById("gpaScale4Btn");
+    const gpaScale5Btn = document.getElementById("gpaScale5Btn");
+    const gpaUnit = document.getElementById("gpaUnit");
+    const gpaHint = document.getElementById("gpaHint");
     const nameDisplay = document.getElementById("profileNameDisplay");
 
     const examNameSelect = document.getElementById("examNameSelect");
@@ -166,6 +170,7 @@ export function initProfileUI() {
             name: String(p.name || "").trim(),
             budget: String(p.budget ?? "").trim(),
             gpa: String(p.gpa ?? "").trim(),
+            gpaScale: Number(p.gpaScale) === 5 ? 5 : 4,
             major: String(p.major || "").trim(),
             interests: String(p.interests || "").trim(),
             studyMode: String(p.studyMode || "Any").trim() || "Any",
@@ -693,6 +698,7 @@ export function initProfileUI() {
     const syncInputsToDraft = () => {
         if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
         if (gpaInput) profile.gpa = String(gpaInput.value || "").trim();
+        profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         if (studyModeSelect) profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
         if (profileFundingTypeSelect) profile.fundingType = normalizeFundingType(profileFundingTypeSelect.value);
         if (profileMajorSelect) profile.major = String(profileMajorSelect.value || "").trim();
@@ -754,6 +760,31 @@ export function initProfileUI() {
         return { ok: true, value: val };
     };
 
+    const updateGpaScaleUI = (scale) => {
+        const s = scale === 5 ? 5 : 4;
+        profile.gpaScale = s;
+        if (gpaScale4Btn && gpaScale5Btn) {
+            gpaScale4Btn.classList.toggle("is-active", s === 4);
+            gpaScale5Btn.classList.toggle("is-active", s === 5);
+            gpaScale4Btn.setAttribute("aria-checked", s === 4 ? "true" : "false");
+            gpaScale5Btn.setAttribute("aria-checked", s === 5 ? "true" : "false");
+        }
+        if (gpaInput) {
+            gpaInput.max = String(s);
+            gpaInput.placeholder = s === 5 ? "4.80" : "3.80";
+        }
+        if (gpaUnit) {
+            const unitKey = s === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4";
+            gpaUnit.setAttribute("data-i18n", unitKey);
+            gpaUnit.textContent = s === 5 ? "/ 5.0" : "/ 4.0";
+        }
+        if (gpaHint) {
+            gpaHint.textContent = s === 5
+                ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)")
+                : t("profile.scale.gpa_4", "4.0 (US / Intl)");
+        }
+    };
+
     const validateGpaInput = () => {
         const rawVal = String(gpaInput?.value || "").trim();
         if (!rawVal) return { ok: true, value: "" };
@@ -764,23 +795,15 @@ export function initProfileUI() {
             return { ok: false, value: "" };
         }
 
-        const cfg = EXAM_CONFIG?.GPA || { min: 0, max: 100, step: 1 };
-        const min = Number.isFinite(Number(cfg?.min)) ? Number(cfg.min) : 0;
-        const max = Number.isFinite(Number(cfg?.max)) ? Number(cfg.max) : 100;
-        const step = Number.isFinite(Number(cfg?.step)) ? Number(cfg.step) : 1;
+        const scale = Number(profile.gpaScale) === 5 ? 5 : 4;
+        const min = 0;
+        const max = scale;
 
         if (val < min || val > max) {
-            showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}%`), "error");
+            showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}`), "error");
             return { ok: false, value: "" };
         }
-        if (step > 0) {
-            const k = (val - min) / step;
-            if (Math.abs(k - Math.round(k)) > 1e-9) {
-                showToast(tFormat("profile.gpa_step", { step }, `GPA must use step ${step}`), "error");
-                return { ok: false, value: "" };
-            }
-        }
-        return { ok: true, value: Number(Math.round(val * 1000) / 1000) };
+        return { ok: true, value: Number(Math.round(val * 100) / 100) };
     };
 
     const renderProfileData = () => {
@@ -804,6 +827,7 @@ export function initProfileUI() {
         if (nameInput) nameInput.value = profile.name;
         if (nameDisplay) nameDisplay.textContent = profile.name;
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
+        updateGpaScaleUI(Number(profile.gpaScale) === 5 ? 5 : 4);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
         if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
@@ -869,6 +893,7 @@ export function initProfileUI() {
 
         profile.budget = budgetCheck.value;
         profile.gpa = gpaCheck.value;
+        profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         profile.interests = getInterestsDraft();
         profile.studyMode = String(studyModeSelect?.value || profile.studyMode || "Any").trim() || "Any";
         profile.fundingType = normalizeFundingType(profileFundingTypeSelect?.value || profile.fundingType || "any");
@@ -1088,6 +1113,23 @@ export function initProfileUI() {
             saveAllProfileChanges(true);
         });
     }
+
+    const setGpaScale = (scale) => {
+        const nextScale = scale === 5 ? 5 : 4;
+        if (Number(profile.gpaScale) === nextScale) return;
+        updateGpaScaleUI(nextScale);
+        refreshSaveState();
+    };
+
+    gpaScale4Btn?.addEventListener("click", () => {
+        motionPress(gpaScale4Btn);
+        setGpaScale(4);
+    });
+
+    gpaScale5Btn?.addEventListener("click", () => {
+        motionPress(gpaScale5Btn);
+        setGpaScale(5);
+    });
 
     if (saveProfileBtn) {
         saveProfileBtn.addEventListener("click", () => {

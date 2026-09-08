@@ -17,7 +17,7 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await page.fill(selectors.budgetInput, "23000");
 
   await openProfileTab(page, "scores");
-  await page.fill(selectors.gpaInput, "95");
+  await page.fill(selectors.gpaInput, "3.8");
   await page.waitForFunction(() => {
     const select = document.getElementById("examNameSelect");
     return !!select && select.options.length > 1;
@@ -56,7 +56,7 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await expect(page.locator(selectors.nameInput)).toHaveValue("Aruzhan Dev");
   await expect(page.locator(selectors.budgetInput)).toHaveValue("23000");
   await openProfileTab(page, "scores");
-  await expect(page.locator(selectors.gpaInput)).toHaveValue("95");
+  await expect(page.locator(selectors.gpaInput)).toHaveValue("3.8");
   await expect(page.locator(selectors.examList)).toContainText("ACT");
   await openProfileTab(page, "preferences");
   await expect(page.locator(selectors.interestsInput)).toHaveValue(naturalInterestText);

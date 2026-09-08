@@ -33,7 +33,7 @@ test("profile keeps edits in-session when localStorage is unavailable", async ({
 
   await page.fill(selectors.budgetInput, "12000");
   await openProfileTab(page, "scores");
-  await page.fill(selectors.gpaInput, "87");
+  await page.fill(selectors.gpaInput, "3.5");
   await page.click(selectors.saveProfileBtn);
 
   await page.click(selectors.profileCloseBtn);
@@ -41,5 +41,5 @@ test("profile keeps edits in-session when localStorage is unavailable", async ({
 
   await expect(page.locator(selectors.budgetInput)).toHaveValue("12000");
   await openProfileTab(page, "scores");
-  await expect(page.locator(selectors.gpaInput)).toHaveValue("87");
+  await expect(page.locator(selectors.gpaInput)).toHaveValue("3.5");
 });

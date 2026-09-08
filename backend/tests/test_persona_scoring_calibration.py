@@ -18,14 +18,14 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_alexey_german_budget_persona(self):
         """
-        Алексей: GPA 85, без SAT, IELTS 6.5, бюджет $10,000.
+        Алексей: GPA 3.40, без SAT, IELTS 6.5, бюджет $10,000.
         Должен проходить в TUM (Германия) с средним шансом,
         но отсекаться в MIT и NU из-за отсутствия SAT.
         """
         profile = {
             "locale": "eng",
             "budget": 10000,
-            "gpa": 85.0,
+            "gpa": 3.40,
             "exams": [],
             "languages": [
                 {"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}
@@ -51,14 +51,14 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_maria_top_ivy_persona(self):
         """
-        Мария: GPA 98, SAT 1560, IELTS 8.0, бюджет $100,000.
+        Мария: GPA 3.92, SAT 1560, IELTS 8.0, бюджет $100,000.
         Должна иметь высокие шансы везде, но в MIT шанс должен быть реалистичным (не 100%)
         из-за жесткого общего конкурса (low acceptance rate).
         """
         profile = {
             "locale": "eng",
             "budget": 100000,
-            "gpa": 98.0,
+            "gpa": 3.92,
             "exams": [
                 {"id": "SAT", "score": 1560}
             ],
@@ -88,14 +88,14 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_dias_average_kazakh_persona(self):
         """
-        Диас: GPA 82, SAT 1350, IELTS 6.0, бюджет $15,000.
+        Диас: GPA 3.28, SAT 1350, IELTS 6.0, бюджет $15,000.
         Не проходит жесткие языковые и балльные пороги в MIT и TUM.
         В NU имеет крайне низкий (околонулевой) шанс.
         """
         profile = {
             "locale": "eng",
             "budget": 15000,
-            "gpa": 82.0,
+            "gpa": 3.28,
             "exams": [
                 {"id": "SAT", "score": 1350}
             ],
@@ -123,7 +123,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_adil_zero_budget_genius(self):
         """
-        Адиль: GPA 95, SAT 1550, IELTS 7.5, бюджет $0.
+        Адиль: GPA 3.80, SAT 1550, IELTS 7.5, бюджет $0.
         Имеет высокие баллы, но нулевой бюджет.
         В MIT из-за Need-based Aid шанс сохраняется, но пенализируется (от 20% до 40%).
         В TUM и NU шанс также сохраняется за счет бесплатного обучения / грантов (от 45% до 90%).
@@ -131,7 +131,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         profile = {
             "locale": "eng",
             "budget": 0,
-            "gpa": 95.0,
+            "gpa": 3.80,
             "exams": [
                 {"id": "SAT", "score": 1550}
             ],
@@ -161,14 +161,14 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_lisa_borderline_ielts(self):
         """
-        Лиза: GPA 90, SAT 1480, IELTS 6.5, бюджет $50,000.
+        Лиза: GPA 3.60, SAT 1480, IELTS 6.5, бюджет $50,000.
         Срезается в MIT (минимальный IELTS 7.5).
         Проходит в TUM (IELTS 6.5 >= 6.5) и в NU (IELTS 6.5 >= 6.5).
         """
         profile = {
             "locale": "eng",
             "budget": 50000,
-            "gpa": 90.0,
+            "gpa": 3.60,
             "exams": [
                 {"id": "SAT", "score": 1480}
             ],

@@ -3,6 +3,17 @@
 All notable project changes should be recorded here.
 
 ## 5.0.0 (2026-09-07) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
+- Implemented dual-scale GPA (4.0 Intl / 5.0 KZ & CIS), calibrated AI scoring, and added official UNT score profiles (`profile.html`, `profile-ui.js`, `profile.css`, `ai_scoring.py`, `ml_scoring.py`, `universities.json`, `universities_translations.json`, `compare-specs.js`, `compare-helpers.js`, `university-detail-helpers.js`):
+  - Overhauled GPA input across frontend and backend from legacy percentages (0–100%) to dual-scale grading: canonical 4.0 international scale (US, NIS standard) and 5.0 certificate scale (Kazakhstan and CIS), with interactive scale selector buttons (`#gpaScale4Btn`, `#gpaScale5Btn`), localized placeholders (`3.80` vs `4.75`), and units (`/ 4.0` vs `/ 5.0`).
+  - Added robust GPA normalization in `persistence.js` and `ai_scoring.py` (`_normalize_gpa_score`), converting 5.0-scale GPAs to canonical 4.0 for API payloads and scoring while rejecting legacy percentage inputs (> 5.0).
+  - Updated API schema validation in `payloads.py` and `exams.json` to enforce `gpa <= 5.0`, supporting optional `gpa_scale` field with validator aliases and float precision (0.01 step).
+  - Enriched AI sorting and ML matching in `ai_scoring.py` and `ml_scoring.py`: incorporated `budget_vs_prestige` delta into preference mismatch, increased semantic similarity penalty weight to 0.35, added major penalty for low-relevance queries, and rescaled multilingual-e5 embeddings to expand contrast above baseline background noise.
+  - Introduced `holistic_review_selectivity` factor with bilingual localization for highly selective universities (<10% acceptance rate), highlighting that standardized scores serve as a screening baseline while admissions depend on olympiads, essays, and extracurriculars.
+  - Normalized GPA requirements across all 50 universities in `universities.json` to canonical 4.0 float values.
+  - Decomposed international university admission tracks into explicit curriculum pathways with dedicated scholarships for Imperial College London (`_a_level`, `_ib`, `_sat`), University of Melbourne, University of Toronto, and University of Tokyo (PEAK).
+  - Enriched all 12 Kazakhstani universities (KBTU, AITU, IITU, SDU, KazNU, ENU, Satbayev, KazNMU, AMU, Abai KazNPU, KIMEP, Narxoz) with verified UNT/ENT `score_profile` distributions (p25, median, p75) and calibrated minimum scores to activate the official score profile chance model.
+  - Updated comparison specifications and university detail views (`compare-specs.js`, `compare-helpers.js`, `university-detail-helpers.js`) to format GPA and exam thresholds using `formatExamValue` with scale indicators.
+  - Added comprehensive automated test suites (`test_intl_scoring_calibration.py`, `test_kazakhstan_unt_scoring.py`) and updated existing unit and E2E regression tests.
 - Modernized page transitions and hardware-accelerated skeleton loading (`main.js`, `universities.js`, `style.css`, `universities.css`, `university.css`, `universities.html`):
   - Upgraded skeleton shimmer animation from CPU `background-position` to GPU-accelerated `transform: translate3d` via pseudo-elements with `will-change: transform`, eliminating render paint cycles and mobile frame drops.
   - Implemented anti-flicker delay (120ms) and `.u-catalog-stage` grid container with smooth fade-out (160ms) to prevent layout shifts (CLS = 0) and remove skeleton flashing on fast queries.

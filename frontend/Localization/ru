@@ -204,16 +204,16 @@ profile.exam_updated: Обновлено: {exam}, балл {score}
 profile.exam_updated_simple: Обновлено: {exam}
 profile.gpa_cleared: GPA очищен
 profile.gpa_must_number: GPA должен быть числом
-profile.gpa_range: GPA должен быть от {min} до {max}%
+profile.gpa_range: GPA должен быть от {min} до {max}
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
 profile.hint.budget_range: Диапазон: 0‑1,000,000
 profile.hint.low_budget_grant: Бюджет меньше $1000. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
-profile.hint.gpa: Здесь GPA нужно указывать в процентах. UniSearch использует это только как нормализованный ориентир для подбора.
+profile.hint.gpa: Выберите шкалу 4.0 (США / Международная) или 5.0 (Казахстан / СНГ).
 profile.gpa_info_title: Как GPA работает здесь
-profile.gpa_info_tooltip: Укажите GPA в процентах от 0 до 100. Это внутренний формат UniSearch для подбора и примерных оценок. Реальные университеты смотрят ваш оригинальный аттестат или транскрипт и шкалу оценивания в контексте школы.
+profile.gpa_info_tooltip: Выберите шкалу оценивания: 4.0 (международный стандарт, США, НИШ) или 5.0 (школьный аттестат Казахстана и стран СНГ). Система автоматически сопоставит ваш балл с требованиями любого университета.
 profile.hint.interests: Напишите, что для вас важно в университете, чтобы UniSearch точнее отсортировал результаты.
 profile.warning.interests_english_only: Автоперевод недоступен, пожалуйста, заполните это поле на английском.
 profile.interests_saved: Интересы сохранены
@@ -221,7 +221,11 @@ profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет (USD / год)
 profile.label.exams: Экзамены (список, необязательно)
 profile.label.funding_type: Предпочтительный тип финансирования
-profile.label.gpa: GPA (в процентах)
+profile.label.gpa: Средний балл (GPA)
+profile.scale.gpa_4: 4.0 (США / Intl)
+profile.scale.gpa_5: 5.0 (KZ / СНГ)
+profile.unit.gpa_4: / 4.0
+profile.unit.gpa_5: / 5.0
 profile.label.interests: Что вы хотите от университета
 profile.label.major: Планируемая специальность
 profile.label.study_mode: Предпочтительный формат обучения
@@ -239,7 +243,7 @@ profile.option.study_mode_any: Любой (все форматы)
 profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, 20000
-profile.placeholder.gpa: например, 92
+profile.placeholder.gpa: например, 3.80
 profile.placeholder.interests: Например, на английском: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
@@ -261,7 +265,7 @@ profile.reset.confirm: Сбросить данные
 profile.reset.done: Данные профиля сброшены
 profile.score: Балл
 profile.type: Тип
-profile.unit.gpa: % (от 0 до 100)
+profile.unit.gpa: / 4.0
 profile.unit.usd_year: USD / год
 profile.progress.empty: Заполните профиль, чтобы подбор стал точнее.
 profile.progress.count: Заполнено разделов профиля: {completed}/{total}
@@ -284,7 +288,7 @@ profile.empty_languages: Языки еще не добавлены. Укажит
 profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в USD.
 profile.field.study_mode.desc: Фильтрация программ по предпочтительному формату обучения.
 profile.field.funding.desc: Выберите, интересуют ли вас только гранты или также платное обучение.
-profile.field.gpa.desc: Укажите средний балл аттестата, нормализованный по шкале от 0 до 100%.
+profile.field.gpa.desc: Выберите систему оценивания (4.0 или 5.0) и укажите средний балл аттестата.
 profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
 profile.field.interests.desc: Опишите особые пожелания: направление исследований, тип кампуса, города и компании.
 profile.field.exams.desc: Выберите стандартизированные тесты (IELTS, TOEFL, SAT, ACT, A-Levels) для точной оценки шансов поступления.
@@ -944,7 +948,7 @@ home.preview.profile.title: Ваши входные данные
 home.preview.profile.budget_label: Бюджет
 home.preview.profile.budget_value: $20k / год
 home.preview.profile.gpa_label: GPA
-home.preview.profile.gpa_value: 92 / 100
+home.preview.profile.gpa_value: 3.8 / 4.0
 home.preview.profile.exam_label: Экзамен
 home.preview.profile.exam_value: IELTS 7.5
 home.preview.profile.interests_label: Интересы
@@ -1115,6 +1119,8 @@ admission.chance.factor.affordability_gap.label: Высокая стоимост
 admission.chance.factor.affordability_gap.message: Ориентировочная годовая стоимость высока относительно бюджета в профиле.
 admission.chance.factor.scholarship_support.label: Есть поддержка финансирования
 admission.chance.factor.scholarship_support.message: Стипендия или грант улучшает финансовую сторону оценки.
+admission.chance.factor.holistic_review_selectivity.label: Комплексное рассмотрение
+admission.chance.factor.holistic_review_selectivity.message: В вузах с приемом <10% баллы тестов — лишь базовый фильтр. Решающую роль играют олимпиады, эссе и внеучебные достижения.
 admission.chance.factor.high_selectivity.label: Высокая селективность
 admission.chance.factor.high_selectivity.message: Опубликованные данные указывают на более конкурсный маршрут.
 admission.chance.factor.accessibility_signal.label: Более доступный маршрут

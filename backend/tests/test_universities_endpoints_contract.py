@@ -387,7 +387,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         profile = {
             "locale": "eng",
             "budget": 30000,
-            "gpa": 92,
+            "gpa": 3.68,
             "major": "Computer Science",
             "interests": "ai and robotics",
             "studyMode": "On-campus",
@@ -442,7 +442,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         profile = {
             "locale": "eng",
             "budget": 30000,
-            "gpa": 92,
+            "gpa": 3.68,
             "major": "Computer Science",
             "fundingType": "any",
             "exams": [{"exam": "SAT", "score": 1420}],

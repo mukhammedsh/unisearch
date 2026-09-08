@@ -11,7 +11,7 @@ test("reset profile button clears profile inputs and removes profile from localS
   // Fill in profile data
   await page.fill(selectors.budgetInput, "15000");
   await openProfileTab(page, "scores");
-  await page.fill(selectors.gpaInput, "90");
+  await page.fill(selectors.gpaInput, "3.6");
   await page.click(selectors.saveProfileBtn);
 
   // Verify stored in localStorage

@@ -17,7 +17,7 @@ test.describe("UniChance Calculator Validation", () => {
   });
 
   test("user with strong profile sees positive admission chances and high chance badges", async ({ page }) => {
-    // 1. Задаем сильный профиль (ruStemGrant: SAT 1490, IELTS 7.5, GPA 96)
+    // 1. Задаем сильный профиль (ruStemGrant: SAT 1490, IELTS 7.5, GPA 3.84)
     await seedProfile(page, personas.ruStemGrant.profile);
 
     // 2. Открываем страницу Nazarbayev University

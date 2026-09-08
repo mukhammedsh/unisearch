@@ -28,6 +28,8 @@ const {
   compareSourceText,
   compareExtraRequirementsText,
   compareAdmissionChoiceOptionLabel,
+  compareRequirementsText,
+  compareAverageScoreText,
 } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
 
 function response(body, ok = true, status = ok ? 200 : 500) {
@@ -44,7 +46,7 @@ test("fetchCompareProfiles maps batch chances and rois", async () => {
   const calls = [];
   const result = await fetchCompareProfiles([" u-a ", "u-b"], {
     apiBase: "/api",
-    loadProfileForApi: () => ({ gpa: 91 }),
+    loadProfileForApi: () => ({ gpa: 3.8 }),
     fetchImpl: async (url, options) => {
       calls.push({ url, body: JSON.parse(options.body) });
       assert.equal(url, "/api/universities/compare-profiles");
@@ -56,7 +58,7 @@ test("fetchCompareProfiles maps batch chances and rois", async () => {
   });
 
   assert.equal(calls.length, 1);
-  assert.deepEqual(calls[0].body, { university_ids: ["u-a", "u-b"], profile: { gpa: 91 } });
+  assert.deepEqual(calls[0].body, { university_ids: ["u-a", "u-b"], profile: { gpa: 3.8 } });
   assert.equal(result.chances.get("u-a").overallChance, 70);
   assert.equal(result.rois.get("u-b").roi_value, 0.8);
 });
@@ -211,4 +213,42 @@ test("compareAdmissionChoiceOptionLabel formats clean and distinguishable labels
   assert.equal(compareAdmissionChoiceOptionLabel(grantEntry, uni), "UNT · State Grant");
   assert.equal(compareAdmissionChoiceOptionLabel(rectorEntry, uni), "UNT · Rector Grant");
 });
+
+test("formatExamValue formats GPA on 4.0 and 5.0 scales explicitly without percent", async () => {
+  const { formatExamValue } = await import("../../frontend/javascript/utils.js");
+  assert.equal(formatExamValue("GPA", 3.8), "3.8 (/4.0)");
+  assert.equal(formatExamValue("GPA", 4), "4 (/4.0)");
+  assert.equal(formatExamValue("GPA", 4.75, { scale: 5 }), "4.75 (/5.0)");
+  assert.equal(formatExamValue("GPA", 4.85), "4.85 (/5.0)");
+  assert.equal(formatExamValue("GPA", 3.8, { includeScale: false }), "3.8");
+});
+
+test("compareRequirementsText and compareAverageScoreText format GPA with scale", () => {
+  const uni = {
+    id: "test-uni",
+    admission_categories: [
+      {
+        id: "cat1",
+        requirements: { GPA: 3.5, SAT: 1400 },
+        stats_avg: { GPA: 3.85, SAT: 1480 },
+        requirement_profiles: [
+          {
+            id: "prof1",
+            requirements: { GPA: 3.5, SAT: 1400 },
+            stats_avg: { GPA: 3.85, SAT: 1480 },
+          },
+        ],
+      },
+    ],
+  };
+
+  const reqText = compareRequirementsText(uni);
+  assert.match(reqText, /GPA 3\.5 \(\/4\.0\)/);
+  assert.match(reqText, /SAT 1400/);
+
+  const avgText = compareAverageScoreText(uni);
+  assert.match(avgText, /GPA 3\.85 \(\/4\.0\)/);
+  assert.match(avgText, /SAT 1480/);
+});
+
 

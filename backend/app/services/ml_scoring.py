@@ -509,7 +509,9 @@ class MLRecommender:
             if query_vec is None or len(query_vec) == 0:
                 return None
             sims = self._semantic_embeddings @ query_vec[0]  # type: ignore[operator]
-            sims01 = np.clip((sims + 1.0) / 2.0, 0.0, 1.0)
+            # Rescale cosine similarities to expand contrast between relevant programs and background noise:
+            # Baseline background embedding similarity for multilingual-e5 is around ~0.55-0.60.
+            sims01 = np.clip((sims - 0.55) / 0.35, 0.0, 1.0)
 
             out: Dict[str, float] = {}
             for uid, score in zip(self._university_ids, sims01):

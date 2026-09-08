@@ -201,11 +201,26 @@ def _set_best_score(dst: Dict[str, float], exam_id: Any, score: Any) -> None:
             dst[key] = max(prev, val) if higher_is_better else min(prev, val)
 
 
+def _normalize_gpa_score(val: Any, scale: Any = None) -> Optional[float]:
+    num = _to_num(val)
+    if num is None or num < 0.0 or num > 5.0:
+        return None
+    scale_num = _to_num(scale)
+    if scale_num is not None and scale_num == 5.0:
+        return round((num / 5.0) * 4.0, 2)
+    if 0.0 <= num <= 4.0:
+        return round(float(num), 2)
+    return round((num / 5.0) * 4.0, 2)
+
+
 def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Dict[str, Any]:
     user_scores: Dict[str, float] = {}
     user_languages: Dict[str, Dict[str, Any]] = {}
 
-    _set_best_score(user_scores, "GPA", profile.get("gpa"))
+    scale = profile.get("gpa_scale") or profile.get("gpaScale")
+    normalized_gpa = _normalize_gpa_score(profile.get("gpa"), scale=scale)
+    if normalized_gpa is not None:
+        _set_best_score(user_scores, "GPA", normalized_gpa)
 
     for row in profile.get("exams", []) or []:
         if not isinstance(row, dict):
@@ -531,10 +546,14 @@ def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_language
     for exam_id, min_val in req.items():
         if has_structured_lang and _is_language_exam_key(exam_id):
             continue
+        if str(exam_id or "").strip().upper() == "GPA":
+            min_val = _normalize_gpa_score(min_val)
         user = _get_user_score(user_scores, exam_id, user_languages)
         if user is None:
             missing_evidence = True
         avg_val = avg.get(exam_id) if exam_id in avg else None
+        if str(exam_id or "").strip().upper() == "GPA" and avg_val is not None:
+            avg_val = _normalize_gpa_score(avg_val)
         higher = _is_higher_better(exam_id)
         rr = _score_requirement(user, min_val, avg_val, higher_is_better=higher, mode=mode)
         if bool(rr.get("conditional")):
@@ -1267,8 +1286,9 @@ def sort_universities_ai(
                 float(distance_deltas.get("practice_vs_science", 0.0))
                 + float(distance_deltas.get("social_vs_hardcore", 0.0))
                 + float(distance_deltas.get("city_vs_campus", 0.0))
+                + float(distance_deltas.get("budget_vs_prestige", 0.0))
             )
-            / 3.0
+            / 4.0
         )
         chance_general = estimate_uni_chance(row, profile_any)
         chance_grant = estimate_uni_chance(row, profile_grant)
@@ -1314,10 +1334,14 @@ def sort_universities_ai(
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
         if use_ml:
             semantic_penalty = _clamp01(1.0 - row_ml_score)
+            major_penalty = 0.0
+            if interest_text and row_ml_score < 0.05:
+                major_penalty = 0.35 * _clamp01((0.05 - row_ml_score) / 0.05)
             final_score = _clamp01(
-                (0.50 * preference_mismatch)
-                + (0.35 * admission_risk)
-                + (0.15 * semantic_penalty)
+                (0.35 * preference_mismatch)
+                + (0.30 * admission_risk)
+                + (0.35 * semantic_penalty)
+                + major_penalty
             )
         else:
             final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
@@ -1689,7 +1713,15 @@ def _build_chance_factors(
             "low",
         ))
 
-    if selectivity <= 0.35:
+    if selectivity <= 0.25:
+        factors.append(_chance_factor(
+            "holistic_review_selectivity",
+            "neutral",
+            "Holistic review",
+            "At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.",
+            "medium",
+        ))
+    elif selectivity <= 0.35:
         factors.append(_chance_factor(
             "high_selectivity",
             "negative",

@@ -53,6 +53,26 @@ test("renderTrackFactors localizes known factor keys in Russian", () => {
   assert.doesNotMatch(html, /Academic scores are strong/);
 });
 
+test("renderTrackFactors localizes holistic_review_selectivity in Russian", () => {
+  setLanguage("rus", { persist: false, emit: false });
+
+  const html = renderTrackFactors({
+    factors: [
+      {
+        key: "holistic_review_selectivity",
+        status: "neutral",
+        label: "Holistic review",
+        message: "At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.",
+      },
+    ],
+  });
+
+  assert.match(html, /Комплексное рассмотрение/);
+  assert.match(html, /В вузах с приемом (&lt;|<)10% баллы тестов — лишь базовый фильтр/);
+  assert.doesNotMatch(html, /Holistic review/);
+  assert.doesNotMatch(html, /screening baseline/);
+});
+
 test("renderTrackFactors keeps backend fallback for unknown factor keys", () => {
   setLanguage("rus", { persist: false, emit: false });
 
@@ -90,7 +110,7 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
     {
       id: "regular",
       label: "Regular",
-      requirements: { GPA: 80 },
+      requirements: { GPA: 3.2 },
       language_requirements: [
         { code: "en", requirements: { IELTS: 6.5 }, accept_native: true },
       ],
@@ -118,7 +138,7 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
               id: "grant",
               label: "Grant",
               funding_type: "grant",
-              requirements: { SAT: 1400, GPA: 90 },
+              requirements: { SAT: 1400, GPA: 3.6 },
               finance_override: { total_cost_year_usd: 10000 },
             },
           ],
@@ -130,17 +150,17 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
   const paid = choices.find((choice) => choice.funding_option_id === "paid");
   const grant = choices.find((choice) => choice.funding_option_id === "grant");
 
-  assert.deepEqual(paid.requirements, { GPA: 80, SAT: 1200 });
-  assert.deepEqual(paid.base_requirements, { GPA: 80, SAT: 1200 });
+  assert.deepEqual(paid.requirements, { GPA: 3.2, SAT: 1200 });
+  assert.deepEqual(paid.base_requirements, { GPA: 3.2, SAT: 1200 });
   assert.deepEqual(paid.funding_requirements, { SAT: 1200 });
   assert.equal(paid.score_profile.exam_id, "SAT");
   assert.equal(paid.stats_avg.SAT, 1320);
   assert.equal(paid.finance_override.total_cost_year_usd, 30000);
   assert.equal(paid.language_requirements[0].requirements.IELTS, 6.5);
 
-  assert.deepEqual(grant.requirements, { GPA: 90, SAT: 1400 });
-  assert.deepEqual(grant.base_requirements, { GPA: 80, SAT: 1200 });
-  assert.deepEqual(grant.funding_requirements, { SAT: 1400, GPA: 90 });
+  assert.deepEqual(grant.requirements, { GPA: 3.6, SAT: 1400 });
+  assert.deepEqual(grant.base_requirements, { GPA: 3.2, SAT: 1200 });
+  assert.deepEqual(grant.funding_requirements, { SAT: 1400, GPA: 3.6 });
   assert.equal(grant.score_profile.median_raw, 1320);
   assert.equal(grant.finance_override.total_cost_year_usd, 10000);
 });
