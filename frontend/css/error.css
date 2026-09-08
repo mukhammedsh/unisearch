@@ -4,9 +4,6 @@
    ========================================================================== */
 
 body[data-page="error-404"] {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   background: var(--bg);
 }
 
