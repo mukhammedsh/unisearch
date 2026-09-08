@@ -37,6 +37,7 @@ import {
 } from "../university-detail-helpers.js";
 
 import { renderNoConnection } from "../components.js";
+import { heroIcon } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { navigateToAppRoute, routeUniversityDetail } from "../routes.js";
 import { 
@@ -1609,12 +1610,31 @@ export function initUniversitiesPage() {
     // --- Sliders ---
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
-        const minVal = parseInt(el.minSlider.value); const maxVal = parseInt(el.maxSlider.value); const maxRange = parseInt(el.maxSlider.max);
-        const percent1 = (minVal / maxRange) * 100; const percent2 = (maxVal / maxRange) * 100;
+        const minVal = Number(el.minSlider.value) || 0;
+        const maxVal = Number(el.maxSlider.value) || 0;
+        const minLimit = Number(el.minSlider.min) || 0;
+        const maxRange = Number(el.maxSlider.max) || 150000;
+        const rangeSpan = Math.max(1, maxRange - minLimit);
+
+        const r1 = Math.max(0, Math.min(1, (minVal - minLimit) / rangeSpan));
+        const r2 = Math.max(0, Math.min(1, (maxVal - minLimit) / rangeSpan));
+
+        const thumbSize = 18;
+        const getThumbPos = (r) => {
+            const pct = (r * 100).toFixed(2);
+            const offset = (0.5 - r) * thumbSize;
+            if (Math.abs(offset) < 0.001) return `${pct}%`;
+            const sign = offset >= 0 ? "+" : "-";
+            return `calc(${pct}% ${sign} ${Math.abs(offset).toFixed(2)}px)`;
+        };
+
+        const pos1 = getThumbPos(r1);
+        const pos2 = getThumbPos(r2);
+
         const styles = getComputedStyle(document.documentElement);
         const inactive = (styles.getPropertyValue("--slider-track-inactive") || "#d4d8e0").trim();
         const active = (styles.getPropertyValue("--slider-track-active") || "#5d17ea").trim();
-        el.track.style.background = `linear-gradient(to right, ${inactive} ${percent1}%, ${active} ${percent1}%, ${active} ${percent2}%, ${inactive} ${percent2}%)`;
+        el.track.style.background = `linear-gradient(to right, ${inactive} 0%, ${inactive} ${pos1}, ${active} ${pos1}, ${active} ${pos2}, ${inactive} ${pos2}, ${inactive} 100%)`;
     }
     function slideMin() {
         let minVal = parseInt(el.minSlider.value);
@@ -3264,14 +3284,54 @@ export function initUniversitiesPage() {
         const totalPages = Math.ceil(total / state.limit);
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
         let html = ""; const p = state.page; const maxVisible = 5;
-        const createBtn = (page, text, isActive = false) => { const activeClass = isActive ? "page-btn--active" : ""; return `<button class="page-btn ${activeClass}" data-page="${page}">${text}</button>`; };
-        if (p > 1) { html += createBtn(1, "«"); html += createBtn(p - 1, `‹ ${escapeHtml(t("universities.pagination.prev", "Prev"))}`); }
+        const createBtn = (page, content, isActive = false, extraClass = "") => {
+            const activeClass = isActive ? "page-btn--active" : "";
+            const classes = ["page-btn", activeClass, extraClass].filter(Boolean).join(" ");
+            return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ''}>${content}</button>`;
+        };
+        if (p > 1) {
+            html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first");
+            html += createBtn(p - 1, `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`, false, "page-btn--nav page-btn--prev");
+        }
         let startPage, endPage;
-        if (totalPages <= maxVisible) { startPage = 1; endPage = totalPages; } else { const maxPagesBefore = Math.floor(maxVisible / 2); const maxPagesAfter = Math.ceil(maxVisible / 2) - 1; if (p <= maxPagesBefore + 1) { startPage = 1; endPage = maxVisible; } else if (p + maxPagesAfter >= totalPages) { startPage = totalPages - maxVisible + 1; endPage = totalPages; } else { startPage = p - maxPagesBefore; endPage = p + maxPagesAfter; } }
-        if (startPage > 1) html += `<span class="page-dots">...</span>`; for (let i = startPage; i <= endPage; i++) { html += createBtn(i, i, i === p); } if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        if (p < totalPages) { html += createBtn(p + 1, `${escapeHtml(t("universities.pagination.next", "Next"))} ›`); html += createBtn(totalPages, "»"); }
+        if (totalPages <= maxVisible) {
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            const maxPagesBefore = Math.floor(maxVisible / 2);
+            const maxPagesAfter = Math.ceil(maxVisible / 2) - 1;
+            if (p <= maxPagesBefore + 1) {
+                startPage = 1;
+                endPage = maxVisible;
+            } else if (p + maxPagesAfter >= totalPages) {
+                startPage = totalPages - maxVisible + 1;
+                endPage = totalPages;
+            } else {
+                startPage = p - maxPagesBefore;
+                endPage = p + maxPagesAfter;
+            }
+        }
+        if (startPage > 1) html += `<span class="page-dots">...</span>`;
+        for (let i = startPage; i <= endPage; i++) {
+            html += createBtn(i, `<span class="page-btn__text">${i}</span>`, i === p, "page-btn--num");
+        }
+        if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
+        if (p < totalPages) {
+            html += createBtn(p + 1, `<span class="page-btn__text">${escapeHtml(t("universities.pagination.next", "Next"))}</span>${heroIcon("chevron-right", "page-btn__icon", { "stroke-width": 2 })}`, false, "page-btn--nav page-btn--next");
+            html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last");
+        }
         el.pagination.innerHTML = html;
-        el.pagination.querySelectorAll("button").forEach(b => { b.onclick = () => { const newPage = Number(b.dataset.page); if (newPage && newPage !== state.page) { state.page = newPage; clearSavedScrollPosition(); fetchAndRender(); window.scrollTo({top: 0, behavior: 'smooth'}); } }; });
+        el.pagination.querySelectorAll("button").forEach(b => {
+            b.onclick = () => {
+                const newPage = Number(b.dataset.page);
+                if (newPage && newPage !== state.page) {
+                    state.page = newPage;
+                    clearSavedScrollPosition();
+                    fetchAndRender();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            };
+        });
     }
 }
 

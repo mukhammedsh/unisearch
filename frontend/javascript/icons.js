@@ -182,6 +182,54 @@ const ICONS = {
     },
     "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\" />"
   },
+  "chevron-double-left": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5\" />"
+  },
+  "chevron-double-right": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5\" />"
+  },
+  "chevron-left": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15.75 19.5 8.25 12l7.5-7.5\" />"
+  },
+  "chevron-right": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m8.25 4.5 7.5 7.5-7.5 7.5\" />"
+  },
   "clipboard-document-list": {
     "attrs": {
       "xmlns": "http://www.w3.org/2000/svg",
