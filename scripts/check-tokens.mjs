@@ -31,6 +31,14 @@ function suggestToken(colorStr) {
   return "var(--surface-solid) / var(--text) / var(--line)";
 }
 
+function listCssFiles(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) return listCssFiles(entryPath);
+    return entry.isFile() && entry.name.endsWith(".css") ? [entryPath] : [];
+  });
+}
+
 function scanCssFile(filePath) {
   const content = fs.readFileSync(filePath, "utf8");
   const relPath = path.relative(rootDir, filePath).replace(/\\/g, "/");
@@ -106,11 +114,8 @@ function run() {
     process.exit(1);
   }
 
-  const cssFiles = fs
-    .readdirSync(cssDir)
-    .filter((f) => f.endsWith(".css"))
-    .filter((f) => !targetFile || f.includes(targetFile))
-    .map((f) => path.join(cssDir, f))
+  const cssFiles = listCssFiles(cssDir)
+    .filter((filePath) => !targetFile || filePath.includes(targetFile))
     .sort();
 
   const scanResults = cssFiles.map(scanCssFile);

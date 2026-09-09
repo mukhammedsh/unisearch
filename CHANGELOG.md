@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.2 (In progress) - Design System Scale Standardization, Layering & Radius Tokenization, and Automated Design Lint Guard
+- Modularized university catalog stylesheet architecture (`universities.css`, `frontend/css/universities/`, `scripts/check-tokens.mjs`, `scripts/check-design-lint.mjs`):
+  - Refactored monolithic `universities.css` into seven ordered modules (`01-shell-controls.css` through `07-responsive.css`) with architectural documentation (`README.md`).
+  - Integrated trailing high-specificity rules directly into component declarations, eliminating the final override layer with `!important`.
+  - Extended CSS token guard and design linter scripts with recursive file traversal to validate all nested CSS modules against zero-violation standards.
 - Improved interaction reliability and accessibility across the frontend:
   - Added consistent pressed, disabled, loading, focus-visible, and reduced-motion states; custom selects now support keyboard navigation and WAI-ARIA combobox semantics.
   - Added inline localized validation feedback for profile name, budget, and GPA fields, including `aria-invalid`, `aria-describedby`, focus return, and alert announcements.
