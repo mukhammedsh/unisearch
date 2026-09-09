@@ -223,7 +223,7 @@ body[data-page="profile"] {
 .profile-progress-card {
   background: var(--surface-soft);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-5);
   display: flex;
   flex-direction: column;
@@ -697,7 +697,7 @@ textarea.profile-input,
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--line-danger);
   background: var(--color-danger-bg);
 }
@@ -808,7 +808,7 @@ textarea.profile-input,
 
   .profile-shell {
     padding: var(--space-5) var(--space-4);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     gap: var(--space-5);
   }
 

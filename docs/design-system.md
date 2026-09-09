@@ -203,8 +203,47 @@ When cleaning up legacy or vibe-coded CSS, map values according to this standard
 | `padding: 22px` / `padding: 26px`| `var(--space-6)` (`24px`) | Standardize major surface padding |
 | `padding: 30px` / `gap: 30px` | `var(--space-8)` (`32px`) | Snap macro spacing to 32px |
 | `margin: 0 !important` | Remove `!important`, fix cascade | Clean specificity conflicts |
+| `border-radius: 14px` | `var(--radius-base)` (12px) or `var(--radius-lg)` (16px) | Snap arbitrary radius to design token |
+| `border-radius: 6px` | `var(--radius-sm)` (8px) | Snap arbitrary chip/badge radius to token |
+| `z-index: 60` / `80` / `100` | `var(--z-dropdown)` or local stacking context | Eliminate layer escalation race |
 
 Use tight letter spacing only for large headings. Body text should keep normal readability.
+
+## Border-Radius System
+
+UniSearch uses unified border-radii tokens to avoid visual clutter and haphazard corner curves:
+
+| Token | Value | Target Components |
+| :--- | :--- | :--- |
+| `--radius-xs` | `4px` | Micro-elements, progress bar tracks, small status pips |
+| `--radius-sm` | `8px` | Badges, filter chips, compact tags, tooltips |
+| `--radius-md` | `10px` | Small dropdown items, inner control groups |
+| `--radius-base` | `12px` | Search inputs, filter dropdown menus, action buttons |
+| `--radius-lg` | `16px` | Standard data cards, secondary layout containers |
+| `--radius-xl` | `20px` | Hero sections, modals, major page shells |
+| `--radius-full` | `999px` | Circular counter badges, pill status indicators |
+
+Arbitrary pixel values (`6px`, `7px`, `9px`, `14px`, `18px`) and `!important` on border-radius are strictly prohibited and enforced by `npm run check:design-lint`.
+
+## Layering and Z-Index System
+
+To eliminate the "Z-Index escalation race" (`z-index: 15`, `60`, `80`, `100`, `420`), UniSearch enforces strict stacking context discipline:
+
+1. **Stacking Context Isolation:** Complex widgets with internal layers (maps, sticky data tables) must create their own stacking context via `isolation: isolate`.
+2. **Local Layers:** Within an isolated context, only micro-layers (`-1`, `0`, `1`, `2`) are permitted for pseudo-elements and sticky columns/headers.
+3. **Global Semantic Layers:** Cross-component layering must use the standard tokens declared in `frontend/css/style.css`:
+   - `--z-nav` (`1000`): Sticky page header and primary navigation bar.
+   - `--z-dropdown` (`1200`): Search suggestions, autocomplete popups, custom select menus.
+   - `--z-docked-control` (`1300`): Floating action buttons, docked bottom comparison bar.
+   - `--z-drawer` (`2000`): Slide-over filter drawers on tablet/mobile.
+   - `--z-tray` (`2200`): Sticky bottom sheet notifications.
+   - `--z-modal` (`8000`): Modal dialogs and dark backdrops.
+   - `--z-modal-raised` (`8200`): Secondary nested dialogs or confirm prompts.
+   - `--z-toast` (`9000`): Global toast alerts and notification banners.
+   - `--z-loading-bar` (`9400`): Top progress bar during page navigation.
+   - `--z-initial-loader` (`10000`): First-paint loading splash screen.
+
+Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded by `npm run check:design-lint`.
 
 ## Color and Theme Rules
 

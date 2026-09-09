@@ -160,7 +160,7 @@ body[data-page="home"] {
 .hero-fact {
   margin: 0;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: 16px 20px;
   display: flex;
@@ -414,7 +414,7 @@ body[data-page="home"] {
 
   .feature-card {
     padding: 20px;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
   }
 }
 

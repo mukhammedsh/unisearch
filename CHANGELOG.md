@@ -2,20 +2,26 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.2 (In progress) - Design System Scale Standardization, Typography Tokenization, and Automated Design Lint Guard
+## 5.0.2 (In progress) - Design System Scale Standardization, Layering & Radius Tokenization, and Automated Design Lint Guard
 - Standardized typography and spatial grid scale across all 10 CSS files according to Calm Academic Workspace specifications (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):
   - 100% eliminated fractional font-size declarations (35 -> 0), converting all arbitrary fractions (`11.5px`, `13.5px`, `14.5px`, `15.5px`, etc.) to semantic design tokens.
   - 100% eliminated non-scale font-size declarations across the entire codebase (33 -> 0), mapping all legacy pixel values (`15px`, `17px`, `19px`, `22px`, `26px`, `9px`) to unified scale tokens (`--text-xs` through `--text-3xl`).
   - 100% eliminated layout compensation hacks and negative margins across all stylesheets, replacing negative breakout offsets with clean component-level ownership and natural spacing.
-  - Achieved zero violations (0 violations) in 7 out of 10 stylesheets (`about.css`, `error.css`, `guide.css`, `index.css`, `legal.css`, `profile.css`, `ranking.css`).
-  - Reduced total design lint violations from 885 to 684 (-201 violations, -22.7%).
-- Introduced semantic typography and spacing design tokens in `frontend/css/style.css`:
-  - Type scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
-  - Leading tokens: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
-  - 4/8px Spacing scale: `--space-1` (4px) through `--space-16` (64px).
-- Created automated Design Lint Guard tool (`scripts/check-design-lint.mjs`, `scripts/design-lint-baseline.json`, `npm run check:design-lint`):
-  - Integrated into `package.json` `"test:all"` pipeline to enforce strict regression prevention for typography, fractional pixels, negative margins, and non-4px grid deviations.
-- Updated Design System documentation (`docs/design-system.md`) with comprehensive token specification tables, migration matrices, and grid rules.
+  - Achieved zero violations (0 violations) across ALL 10 stylesheets, completely clearing the baseline from 885 violations to 0 (100% resolution).
+- Expanded automated Design Lint Guard tool (`scripts/check-design-lint.mjs`, `scripts/design-lint-baseline.json`, `npm run check:design-lint`):
+  - Added strict validation for `z-index`: prohibited arbitrary magic numbers (420, 80, 60, etc.) in favor of semantic `--z-*` tokens and micro-layers `[-1, 0, 1, 2]`.
+  - Added strict validation for `border-radius`: prohibited non-scale pixel values (`14px`, `18px`, `6px`) and `!important` on radii, enforcing the unified scale.
+  - Configured `--strict` mode by default in `package.json` for `npm run check:design-lint` and integrated into `"test:all"`.
+- Standardized Layering, Z-Index, and Radius Architecture:
+  - Eliminated all 42 legacy arbitrary `z-index` declarations across stylesheets, adopting semantic tokens (`--z-nav`, `--z-dropdown`, `--z-docked-control`, `--z-drawer`, `--z-tray`, `--z-modal`, `--z-toast`).
+  - Standardized border radii on `--radius-xs` (4px), `--radius-sm` (8px), `--radius-base` (10px), `--radius-md` (12px), `--radius-lg` (16px), and `--radius-xl` (20px).
+  - Normalized padding, margin, and gap to the strict 4/8px spatial scale and eliminated `!important` hacks on spacing.
+  - Updated Design System specification (`docs/design-system.md`) with Border-Radius System, Z-Index Layering tables, and migration matrices.
+- Repaired CSS Syntax & Resolved Interactive Component Bugs (`universities.css`, `university.css`):
+  - Fixed syntax errors and bracket balance issues identified during AST audit, restoring desktop controls and mobile media queries.
+  - Resolved click interception between `.uni-card-actions` and `.uni-card-link-overlay`.
+  - Fixed UniFit filter tooltips (`.u-tooltip`): restored initial hidden state (`opacity: 0; visibility: hidden;`) and hover/click disclosure behavior; added automated E2E test in `tests/e2e/universities-ai-sort-flow.spec.js`.
+  - Fixed list/map view mode toggle (`.view-toggles` / `.view-btn`): restored `display: inline-flex` and `overflow: hidden`, eliminating button gap whitespace and preventing purple active/hover background bleed over rounded container bounds.
 
 ## 5.0.1 (2026-09-09) - University Detail Layout Refinements, Admission Track Polish, and Complete Zero-Hardcode CSS Tokens Refactor
 - Completed full CSS design system refactoring and zero-hardcoded-colors milestone (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):

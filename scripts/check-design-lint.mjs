@@ -16,6 +16,10 @@ const targetFile = process.argv.find((a) => a.startsWith("--file="))?.split("=")
 
 // Allowed font sizes in px: 0, 10, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64
 const ALLOWED_FONT_SIZES = new Set([0, 10, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64]);
+// Allowed border-radii in px: 0, 1, 2, 4, 8, 10, 12, 16, 20
+const ALLOWED_RADII = new Set([0, 1, 2, 4, 8, 10, 12, 16, 20]);
+// Allowed raw z-indices (local pseudo/stacking context only): -1, 0, 1, 2
+const ALLOWED_Z_INDICES = new Set([-1, 0, 1, 2]);
 
 function suggestFontToken(pxVal) {
   if (pxVal <= 11.5) return "var(--text-xs) (11px)";
@@ -40,6 +44,24 @@ function suggestSpacingToken(pxVal) {
   if (rounded === 48) return "var(--space-12) (48px)";
   if (rounded === 64) return "var(--space-16) (64px)";
   return `${rounded}px`;
+}
+
+function suggestRadiusToken(pxVal) {
+  if (pxVal <= 5) return "var(--radius-xs) (4px)";
+  if (pxVal <= 9) return "var(--radius-sm) (8px)";
+  if (pxVal <= 11) return "var(--radius-md) (10px)";
+  if (pxVal <= 13) return "var(--radius-base) (12px)";
+  if (pxVal <= 17) return "var(--radius-lg) (16px)";
+  return "var(--radius-xl) (20px)";
+}
+
+function suggestZIndexToken(num) {
+  if (num >= 8000) return "var(--z-modal) (8000)";
+  if (num >= 2000) return "var(--z-drawer) (2000)";
+  if (num >= 1200) return "var(--z-dropdown) (1200)";
+  if (num >= 1000) return "var(--z-nav) (1000)";
+  if (num >= 40) return "var(--z-dropdown) (1200) or isolate parent stacking context";
+  return "Local layer 0, 1, 2 or isolate stacking context";
 }
 
 function scanCssFile(filePath) {
@@ -157,6 +179,56 @@ function scanCssFile(filePath) {
               message: `Arbitrary ${prop} value "${m[0]}" violates 4/8px grid scale`,
               code: rawLine.trim(),
               suggestion: suggestSpacingToken(absNum),
+            });
+          }
+        }
+      }
+    }
+
+    // 5. Check z-index (prevent arbitrary layer escalation)
+    const zMatch = line.match(/\bz-index\s*:\s*([^;]+);/i);
+    if (zMatch) {
+      const valStr = zMatch[1].trim();
+      if (!valStr.includes("var(") && !valStr.includes("calc(") && !["auto", "inherit", "initial", "unset"].includes(valStr)) {
+        const num = parseInt(valStr, 10);
+        if (isNaN(num) || !ALLOWED_Z_INDICES.has(num)) {
+          violations.push({
+            line: i + 1,
+            type: "layer-z-index-arbitrary",
+            message: `Arbitrary z-index "${valStr}" violates layering scale`,
+            code: rawLine.trim(),
+            suggestion: suggestZIndexToken(num),
+          });
+        }
+      }
+    }
+
+    // 6. Check border-radius (!important and non-scale radius)
+    if (/\bborder(-[a-z]+)*-radius\s*:[^;]+!important/i.test(line)) {
+      violations.push({
+        line: i + 1,
+        type: "radius-important-hack",
+        message: `!important on border-radius is forbidden`,
+        code: rawLine.trim(),
+        suggestion: "Eliminate specificity conflict instead of using !important",
+      });
+    }
+
+    const radiusMatch = line.match(/\bborder(-[a-z]+)*-radius\s*:\s*([^;]+);/i);
+    if (radiusMatch) {
+      const valStr = radiusMatch[2].trim();
+      if (!valStr.includes("calc(") && !valStr.includes("clamp(") && !valStr.includes("var(") && !valStr.includes("%") && !valStr.includes("999px") && !valStr.includes("9999px")) {
+        const pxMatches = valStr.matchAll(/(-?\d+(\.\d+)?)px\b/gi);
+        for (const m of pxMatches) {
+          const num = parseFloat(m[1]);
+          const absNum = Math.abs(num);
+          if (!ALLOWED_RADII.has(absNum)) {
+            violations.push({
+              line: i + 1,
+              type: "radius-non-scale",
+              message: `Non-scale border-radius "${m[0]}" violates radius scale`,
+              code: rawLine.trim(),
+              suggestion: suggestRadiusToken(absNum),
             });
           }
         }

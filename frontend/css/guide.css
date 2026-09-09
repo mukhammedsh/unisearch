@@ -44,7 +44,7 @@
 .guide-sidebar {
   position: sticky;
   top: var(--guide-sidebar-offset);
-  z-index: 10;
+  z-index: 1;
 }
 
 .guide-nav {
@@ -53,7 +53,7 @@
   width: 100%;
   padding: var(--space-2);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: var(--surface-solid);
   max-height: calc(100vh - var(--guide-sidebar-offset) - 24px);
   overflow-y: auto;
@@ -374,7 +374,7 @@ body[data-page="guide"] {
     background: var(--bg);
     border-bottom: 1px solid var(--line);
     position: sticky;
-    z-index: 100;
+    z-index: 2;
     box-sizing: border-box;
     max-width: 100%;
   }
@@ -417,7 +417,7 @@ body[data-page="guide"] {
   .guide-section {
     scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
     padding: var(--space-4);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     margin-bottom: var(--space-3);
   }
 

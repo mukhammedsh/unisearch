@@ -15,7 +15,7 @@
     "check:encoding": "node scripts/check-encoding.mjs",
     "check:version": "node scripts/check-version-sync.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
-    "check:design-lint": "node scripts/check-design-lint.mjs",
+    "check:design-lint": "node scripts/check-design-lint.mjs --strict",
     "fix:encoding": "node scripts/check-encoding.mjs --fix",
     "sync:heroicons": "node scripts/sync-heroicons.mjs",
     "test:backend": "node scripts/test-backend.mjs",

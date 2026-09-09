@@ -82,3 +82,32 @@ test("universities page uses AI sort with realistic search/filter interactions",
   )).toBe(60);
   await expect(page.locator(selectors.locationLabel)).not.toHaveText("");
 });
+
+test("unifit tradeoff tooltips are hidden by default and toggle on interaction", async ({ page }) => {
+  await seedProfile(page, personas.ruStemGrant.profile);
+  await page.goto("/universities.html");
+
+  const tooltips = page.locator(".u-tooltip");
+  const count = await tooltips.count();
+  expect(count).toBeGreaterThan(0);
+
+  // All tooltips must be hidden by default
+  for (let i = 0; i < count; i++) {
+    const tooltip = tooltips.nth(i);
+    const opacity = await tooltip.evaluate((el) => window.getComputedStyle(el).opacity);
+    const visibility = await tooltip.evaluate((el) => window.getComputedStyle(el).visibility);
+    expect(opacity).toBe("0");
+    expect(visibility).toBe("hidden");
+  }
+
+  // Clicking an info button opens its tooltip
+  const firstInfoBtn = page.locator(".u-info").first();
+  await firstInfoBtn.click();
+  const activeTooltip = firstInfoBtn.locator("..").locator(".u-tooltip");
+  await expect(activeTooltip).toBeVisible();
+
+  // Clicking outside closes the tooltip
+  await page.locator("body").click({ position: { x: 10, y: 10 } });
+  await expect(activeTooltip).toBeHidden();
+});
+

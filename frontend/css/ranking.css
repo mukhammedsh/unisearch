@@ -121,7 +121,7 @@ body[data-page="ranking"] {
     left: 0;
     right: 0;
     top: calc(100% + 8px);
-    z-index: 80;
+    z-index: var(--z-dropdown);
     display: grid;
     gap: 4px;
     padding: 8px;

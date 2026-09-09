@@ -152,7 +152,7 @@ body[data-page="error-404"] main.error-page {
 .error-panel,
 .error-quick {
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
   padding: var(--space-5);
   display: flex;
@@ -320,7 +320,7 @@ body[data-page="error-404"] main.error-page {
 
   .error-shell {
     padding: var(--space-4);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     gap: 12px;
   }
 
