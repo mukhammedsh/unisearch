@@ -99,9 +99,8 @@ const LAYOUT_HTML = `
           <p data-i18n="settings.option.store_recent.desc">When enabled, UniSearch adds universities you open to the local recently viewed list on this device.</p>
         </div>
         <label class="settings-switch">
-          <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_STORE_RECENT_UNIVERSITIES}" />
+          <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Save recently opened" data-i18n-aria-label="settings.option.store_recent.title" data-setting-input="${SETTING_STORE_RECENT_UNIVERSITIES}" />
           <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
-          <span class="settings-switch-text" data-i18n="settings.type.bool">Off / on</span>
         </label>
       </article>
       <article class="settings-row" data-setting-key="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}">
@@ -110,9 +109,8 @@ const LAYOUT_HTML = `
           <p data-i18n="settings.option.open_universities_new_tab.desc">When enabled, university cards and recently viewed links open detail pages in a separate browser tab while keeping the current list in place.</p>
         </div>
         <label class="settings-switch">
-          <input class="settings-switch-input" type="checkbox" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
+          <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Open universities in a new tab" data-i18n-aria-label="settings.option.open_universities_new_tab.title" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
           <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
-          <span class="settings-switch-text" data-i18n="settings.type.bool">Off / on</span>
         </label>
       </article>
     </div>
@@ -404,9 +402,21 @@ export function renderNoConnection(options = {}) {
     applyTranslations(container);
     const btn = container.querySelector("#errorRetryBtn");
     if (btn && typeof onRetry === "function") {
-      btn.onclick = (e) => {
+      btn.onclick = async (e) => {
         e.preventDefault();
-        onRetry();
+        if (btn.disabled || btn.classList.contains("is-loading")) return;
+        btn.disabled = true;
+        btn.classList.add("is-loading");
+        btn.setAttribute("aria-busy", "true");
+        try {
+          await Promise.resolve(onRetry());
+        } finally {
+          if (document.body.contains(btn)) {
+            btn.disabled = false;
+            btn.classList.remove("is-loading");
+            btn.removeAttribute("aria-busy");
+          }
+        }
       };
     }
   }

@@ -114,8 +114,10 @@ body[data-page="error-404"] main.error-page {
     border-color var(--motion-fast, 0.15s) ease;
 }
 
-.error-btn:hover {
-  border-color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .error-btn:hover {
+    border-color: var(--accent);
+  }
 }
 
 .error-btn--primary {
@@ -123,9 +125,11 @@ body[data-page="error-404"] main.error-page {
   background: var(--accent);
 }
 
-.error-btn--primary:hover {
-  background: var(--accent-strong);
-  border-color: var(--accent-strong);
+@media (hover: hover) and (pointer: fine) {
+  .error-btn--primary:hover {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+  }
 }
 
 .error-btn--secondary {
@@ -134,9 +138,11 @@ body[data-page="error-404"] main.error-page {
   background: var(--surface-soft);
 }
 
-.error-btn--secondary:hover {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
-  background: var(--surface-solid);
+@media (hover: hover) and (pointer: fine) {
+  .error-btn--secondary:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+    background: var(--surface-solid);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -253,9 +259,11 @@ body[data-page="error-404"] main.error-page {
     background-color var(--motion-fast, 0.15s) ease;
 }
 
-.error-nav-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
-  background: var(--surface-solid);
+@media (hover: hover) and (pointer: fine) {
+  .error-nav-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+    background: var(--surface-solid);
+  }
 }
 
 .error-nav-content {
@@ -289,9 +297,11 @@ body[data-page="error-404"] main.error-page {
     color var(--motion-fast, 0.15s) ease;
 }
 
-.error-nav-card:hover .error-nav-arrow {
-  transform: translateX(3px);
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .error-nav-card:hover .error-nav-arrow {
+    transform: translateX(3px);
+    color: var(--accent);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -365,8 +375,10 @@ body[data-page="error-404"] main.error-page {
   background: var(--surface-soft);
 }
 
-:root[data-theme="dark"] .error-nav-card:hover {
-  background: var(--surface-solid);
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme="dark"] .error-nav-card:hover {
+    background: var(--surface-solid);
+  }
 }
 
 

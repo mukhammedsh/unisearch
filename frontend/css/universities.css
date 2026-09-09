@@ -56,11 +56,18 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-page-scope__dismiss:hover,
 .u-page-scope__dismiss:focus-visible {
   border-color: var(--line-strong);
   background: var(--surface-soft);
   color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-page-scope__dismiss:hover {
+    border-color: var(--line-strong);
+    background: var(--surface-soft);
+    color: var(--text);
+  }
 }
 
 .u-page-scope__dismiss:active {
@@ -114,10 +121,15 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-section-tab:hover,
 .u-section-tab:focus-visible,
 .u-section-tab.is-active {
   color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-section-tab:hover {
+    color: var(--text);
+  }
 }
 
 .u-section-tab:focus-visible {
@@ -202,8 +214,10 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font-size: 12px;
 }
 
-.u-reset:hover {
-  background: var(--accent-faint);
+@media (hover: hover) and (pointer: fine) {
+  .u-reset:hover {
+    background: var(--accent-faint);
+  }
 }
 
 .u-filter-close {
@@ -258,7 +272,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-saved-filter__btn:hover,
 .u-saved-filter__btn:focus-visible {
   color: var(--text);
   outline: none;
@@ -266,6 +279,13 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-saved-filter__btn:focus-visible {
   box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-saved-filter__btn:hover {
+    color: var(--text);
+    outline: none;
+  }
 }
 
 .u-saved-filter__btn.is-active {
@@ -357,10 +377,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--accent);
 }
 
-.u-info:hover {
-  border-color: var(--line-accent);
-  background: var(--accent-panel);
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .u-info:hover {
+    border-color: var(--line-accent);
+    background: var(--accent-panel);
+    color: var(--accent);
+  }
 }
 
 .u-info:focus-visible {
@@ -396,12 +418,19 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   overflow-wrap: anywhere;
 }
 
-.u-info-wrap:hover .u-tooltip,
 .u-info-wrap:focus-within .u-tooltip,
 .u-info-wrap.is-open .u-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-info-wrap:hover .u-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 
 .u-input,
@@ -530,11 +559,18 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-search-suggestion:hover,
 .u-search-suggestion:focus-visible {
   background: var(--accent-panel);
   outline: none;
   transform: translateX(2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-search-suggestion:hover {
+    background: var(--accent-panel);
+    outline: none;
+    transform: translateX(2px);
+  }
 }
 
 .u-search-suggestion span {
@@ -595,8 +631,10 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text-muted);
 }
 
-.u-search input:hover {
-  border-color: color-mix(in srgb, var(--text-muted) 35%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .u-search input:hover {
+    border-color: color-mix(in srgb, var(--text-muted) 35%, var(--line));
+  }
 }
 
 .u-search input:focus {
@@ -632,11 +670,18 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 16px;
 }
 
-.u-search-clear:hover,
 .u-search-clear:focus-visible {
   background: var(--surface-soft);
   color: var(--text);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-search-clear:hover {
+    background: var(--surface-soft);
+    color: var(--text);
+    outline: none;
+  }
 }
 
 .u-search-clear[hidden] {
@@ -950,10 +995,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .view-btn + .view-btn {
   border-left: 1px solid var(--line);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .view-btn:hover {
   background: var(--surface-soft);
   color: var(--accent);
+}
 }
 
 .view-btn.active {
@@ -966,6 +1013,10 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-reset:focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.u-state:not(:empty) {
+  margin-bottom: var(--space-5);
 }
 
 .u-state-card {
@@ -999,6 +1050,48 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.5;
+}
+
+.u-state-card__actions {
+  margin-top: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.u-state-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.u-state-card__btn .ui-icon,
+.u-state-card__btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+
+.u-state-card__btn:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+}
+
+.u-state-card__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .u-tour-modal {
@@ -1063,7 +1156,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   cursor: pointer;
   font-size: 18px;
   line-height: 1;
-  display: none !important;
+  display: none;
 }
 
 .u-tour-progress {
@@ -1167,9 +1260,11 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .u-tour-inline-btn:hover {
   background: var(--accent-panel);
+}
 }
 
 .u-tour-actions {
@@ -1203,11 +1298,13 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text-inverse);
   min-width: 84px;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .u-tour-btn:hover,
 .u-tour-inline-btn:hover,
 .u-tour-close:hover {
   filter: brightness(0.98);
+}
 }
 
 .u-grid {
@@ -1394,10 +1491,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 100%;
   min-height: 304px;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .uni-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
+}
 }
 
 .universities-compare-mode .uni-card {
@@ -1742,11 +1841,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: var(--line-grant);
   color: var(--text-inverse);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .uni-action-btn--compare.is-active:hover {
   background: var(--color-success);
   border-color: var(--line-grant);
   color: var(--text-inverse);
+}
 }
 
 .uni-action-btn--compare.motion-state-pulse--compare {
@@ -1778,9 +1879,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .uni-action-btn--favorite.is-active .uni-action-icon {
   fill: currentColor;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .uni-action-btn:hover {
   color: var(--accent);
+}
 }
 
 .u-mobile-filter-summary {
@@ -1907,11 +2010,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color var(--motion-fast) var(--motion-ease-standard),
   color var(--motion-fast) var(--motion-ease-standard);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .u-recent__clear:hover {
   background: var(--accent-panel);
   border-color: var(--line-accent);
   color: var(--accent);
+}
 }
 
 .u-recent__items {
@@ -1948,9 +2053,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color var(--motion-fast) var(--motion-ease-standard),
   background-color var(--motion-fast) var(--motion-ease-standard);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .u-recent__chip:hover {
   border-color: var(--accent);
+}
 }
 
 .u-recent__chip {
@@ -1967,9 +2074,14 @@ body.universities-compare-mode .uni-action-btn--favorite {
   padding-right var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-recent__chip:hover,
 .u-recent__chip:focus-within {
   padding-right: 39px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-recent__chip:hover {
+    padding-right: 39px;
+  }
 }
 
 .u-recent__link {
@@ -2011,16 +2123,25 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-recent__chip:hover .u-recent__remove,
 .u-recent__chip:focus-within .u-recent__remove {
   opacity: 1;
   transform: translateY(-50%) scale(1);
   pointer-events: auto;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .u-recent__chip:hover .u-recent__remove {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    pointer-events: auto;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+
 .u-recent__remove:hover {
   background: color-mix(in srgb, var(--color-danger) 14%, transparent);
   color: var(--color-danger);
+}
 }
 
 .compare-tray {
@@ -2169,10 +2290,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   flex-shrink: 0;
   transition: color var(--motion-fast), background-color var(--motion-fast);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-tray__slot-remove:hover {
   color: var(--color-danger-muted);
   background: var(--color-danger-bg);
+}
 }
 
 .compare-tray__actions {
@@ -2203,10 +2326,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
     color var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-tray__btn:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
+}
 }
 
 .compare-tray__btn--primary {
@@ -2214,11 +2339,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: var(--accent);
   color: var(--text-inverse);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-tray__btn--primary:hover:not(:disabled) {
   background: var(--accent-strong);
   border-color: var(--accent-strong);
   color: var(--text-inverse);
+}
 }
 
 .compare-tray__btn:disabled {
@@ -2436,9 +2563,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   cursor: pointer;
   transition: border-color var(--motion-fast), background-color var(--motion-fast);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-track-select:hover {
   border-color: var(--line-strong);
+}
 }
 
 .compare-track-select:focus {
@@ -2460,11 +2589,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   font-size: 13px;
   font-weight: 700;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-uni-card__link:hover {
   border-color: var(--accent);
   color: var(--accent);
   transform: translateY(-1px);
+}
 }
 
 .compare-table-wrap {
@@ -2669,13 +2800,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent.chance-low-confidence,
 .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent-note {
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
   padding: 0;
-  box-shadow: none !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  color: var(--color-warning) !important;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+  color: var(--color-warning);
   font-weight: 800;
 }
 
@@ -2783,10 +2914,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background: var(--card);
   color: var(--text);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-results-action:hover {
   border-color: var(--accent);
   transform: translateY(-1px);
+}
 }
 
 .compare-results-empty {
@@ -2836,9 +2969,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color: var(--text-muted);
   transition: color var(--motion-fast);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .compare-diff-toggle:hover {
   color: var(--text);
+}
 }
 
 .compare-diff-toggle input {
@@ -3395,9 +3530,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   align-items: center;
   gap: 8px;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .uni-details:hover {
   color: var(--accent);
+}
 }
 
 .unifit-warning-modal {
@@ -3505,9 +3642,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: var(--accent);
   color: var(--text-inverse);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .unifit-warning-btn:hover {
   filter: brightness(0.98);
+}
 }
 
 .u-pagination {
@@ -3588,11 +3727,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   line-height: 1;
   font-size: var(--text-base);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .page-btn:hover {
   border-color: var(--line-accent);
   color: var(--accent);
   background: var(--accent-faint);
+}
 }
 
 .page-btn:active {
@@ -3600,9 +3741,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .page-btn--active {
-  background: var(--accent-soft) !important;
-  border-color: var(--line-accent) !important;
-  color: var(--text) !important;
+  background: var(--accent-soft);
+  border-color: var(--line-accent);
+  color: var(--text);
   cursor: default;
   pointer-events: none;
 }
@@ -3666,9 +3807,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   right: 8px !important;
   z-index: 2;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .custom-map-popup .leaflet-popup-close-button:hover {
   color: var(--text-muted) !important;
+}
 }
 
 .custom-div-icon {
@@ -3710,12 +3853,14 @@ body.universities-compare-mode .uni-action-btn--favorite {
   max-width: calc(100% - 8px) !important;
   max-height: calc(100% - 8px) !important;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .map-marker-container:hover {
   transform: scale(1.2);
   border-color: var(--text);
   z-index: 2;
   cursor: pointer;
+}
 }
 
 .map-marker-container.no-logo {
@@ -4052,10 +4197,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   color: var(--text-muted);
   border-color: var(--line);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .u-reset:hover {
   background: var(--surface-soft);
   color: var(--text);
+}
 }
 
 .u-input,
@@ -4180,11 +4327,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .uni-card--has-fit {
   min-height: 388px;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .uni-card:hover {
   transform: none;
   border-color: var(--line-accent);
   box-shadow: var(--shadow-md);
+}
 }
 
 .uni-media {
@@ -4314,9 +4463,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   font-size: 12px;
   font-weight: 800;
 }
+@media (hover: hover) and (pointer: fine) {
 
 .uni-details:hover {
   color: var(--accent);
+}
 }
 
 .map-card-wrapper .uni-card {
@@ -4363,7 +4514,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
     border-radius: 0;
     border-left: 1px solid var(--line);
     position: relative;
-    top: 0 !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     background: var(--card);
@@ -4662,7 +4812,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-tour-close {
-    display: inline-flex !important;
+    display: inline-flex;
   }
 
   .u-tour-actions,
@@ -4686,19 +4836,19 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-sidebar {
-    position: static !important;
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
+    position: static;
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .u-filter-card {
-    position: sticky !important;
-    top: 90px !important;
-    width: 100% !important;
-    transform: none !important;
-    transition: none !important;
+    position: sticky;
+    top: 90px;
+    width: 100%;
+    transform: none;
+    transition: none;
   }
 
 }
@@ -4958,6 +5108,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color var(--motion-fast) var(--motion-ease-standard),
   transform var(--motion-fast) var(--motion-ease-standard);
 }
+@media (hover: hover) and (pointer: fine) {
 
 .u-map-result-compare:hover,
 .u-map-result-compare-link:hover {
@@ -4965,10 +5116,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
   text-decoration: none;
   transform: translateY(-1px);
 }
+}
+@media (hover: hover) and (pointer: fine) {
 
 .u-map-result-link:hover {
   color: var(--accent);
   text-decoration: underline;
+}
 }
 
 .u-map-container {
@@ -5721,16 +5875,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .u-section-tab.is-active {
   color: var(--accent);
 }
-
-.page-btn.active,
-.page-btn--active {
-  background: var(--accent-soft) !important;
-  border-color: var(--line-accent) !important;
-  color: var(--text) !important;
-}
+@media (hover: hover) and (pointer: fine) {
 
 .uni-card:hover {
   border-color: var(--line-accent);
+}
 }
 
 .uni-card.uni-card--compare-selected {
@@ -5755,28 +5904,38 @@ body.universities-compare-mode .uni-action-btn--favorite {
   transition: transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-:root .uni-card:not(.uni-card--compare-selected):hover {
-  background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
-  border-color: color-mix(in srgb, var(--accent) 36%, var(--line-strong));
+@media (hover: hover) and (pointer: fine) {
+  :root .uni-card:not(.uni-card--compare-selected):hover {
+    background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
+    border-color: color-mix(in srgb, var(--accent) 36%, var(--line-strong));
+  }
+
+  .uni-card.uni-card--compare-selected:hover {
+    background-color: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  :root .uni-card:hover .uni-details {
+    color: var(--accent);
+  }
+
+  :root .uni-card:hover .uni-details span {
+    transform: translateX(4px);
+    color: var(--accent);
+  }
 }
 
-.uni-card.uni-card--compare-selected {
-  background-color: var(--accent-panel);
-  border-color: var(--line-accent);
+:root .uni-card:active {
+  transform: scale(0.985);
+  border-color: var(--line-strong);
+  transition: transform 0.05s ease, border-color 0.05s ease;
 }
 
-.uni-card.uni-card--compare-selected:hover {
-  background-color: var(--accent-soft);
-  border-color: var(--accent);
-}
-
-:root .uni-card:hover .uni-details {
-  color: var(--accent);
-}
-
-:root .uni-card:hover .uni-details span {
-  transform: translateX(4px);
-  color: var(--accent);
+@media (prefers-reduced-motion: reduce) {
+  :root .uni-card:active {
+    transform: none;
+    border-color: var(--line-strong);
+  }
 }
 
 .compare-uni-card {
@@ -5785,14 +5944,29 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-:root .compare-uni-card:hover {
-  background: color-mix(in srgb, var(--accent) 2%, var(--surface-soft));
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
+@media (hover: hover) and (pointer: fine) {
+  :root .compare-uni-card:hover {
+    background: color-mix(in srgb, var(--accent) 2%, var(--surface-soft));
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
+  }
+
+  :root .compare-uni-card:hover .compare-uni-card__link {
+    border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong));
+    color: var(--accent);
+  }
 }
 
-:root .compare-uni-card:hover .compare-uni-card__link {
-  border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong));
-  color: var(--accent);
+:root .compare-uni-card:active {
+  transform: scale(0.985);
+  border-color: var(--line-strong);
+  transition: transform 0.05s ease, border-color 0.05s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root .compare-uni-card:active {
+    transform: none;
+    border-color: var(--line-strong);
+  }
 }
 
 :root .u-map-result-card {
@@ -5801,20 +5975,26 @@ body.universities-compare-mode .uni-action-btn--favorite {
   background-color var(--motion-fast) var(--motion-ease-standard),
   transform var(--motion-fast) var(--motion-ease-standard);
 }
+@media (hover: hover) and (pointer: fine) {
 
 :root .u-map-result-card:not(.is-selected):not(.is-active):hover {
   background: var(--surface-solid);
   border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
 }
+}
+@media (hover: hover) and (pointer: fine) {
 
 :root .u-map-result-card.is-active:hover {
   background: var(--accent-panel);
   border-color: var(--line-accent);
 }
+}
+@media (hover: hover) and (pointer: fine) {
 
 :root .u-map-result-card.is-selected:hover {
   background: color-mix(in srgb, var(--accent) 14%, var(--surface-soft, var(--card)));
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+}
 }
 
 /* Гарантированный контрастный фон у всех логотипов и иконок университетов в любой теме */

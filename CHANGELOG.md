@@ -3,6 +3,11 @@
 All notable project changes should be recorded here.
 
 ## 5.0.2 (In progress) - Design System Scale Standardization, Layering & Radius Tokenization, and Automated Design Lint Guard
+- Improved interaction reliability and accessibility across the frontend:
+  - Added consistent pressed, disabled, loading, focus-visible, and reduced-motion states; custom selects now support keyboard navigation and WAI-ARIA combobox semantics.
+  - Added inline localized validation feedback for profile name, budget, and GPA fields, including `aria-invalid`, `aria-describedby`, focus return, and alert announcements.
+  - Added reset actions to empty catalog and ranking states, stable disabled pagination controls, guarded retry actions, and race-free ranking suggestions.
+  - Isolated every hover effect to fine-pointer devices and reduced obsolete CSS priority overrides without changing Leaflet, hidden-state, or reduced-motion safeguards.
 - Standardized typography and spatial grid scale across all 10 CSS files according to Calm Academic Workspace specifications (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):
   - 100% eliminated fractional font-size declarations (35 -> 0), converting all arbitrary fractions (`11.5px`, `13.5px`, `14.5px`, `15.5px`, etc.) to semantic design tokens.
   - 100% eliminated non-scale font-size declarations across the entire codebase (33 -> 0), mapping all legacy pixel values (`15px`, `17px`, `19px`, `22px`, `26px`, `9px`) to unified scale tokens (`--text-xs` through `--text-3xl`).

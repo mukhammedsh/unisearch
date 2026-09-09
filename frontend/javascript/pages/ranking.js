@@ -6,8 +6,10 @@ import {
   initials,
   initCustomSelect,
   markMotionEnter,
+  motionPress,
   replayMotion,
 } from "../utils.js";
+import { heroIcon } from "../icons.js";
 import { renderNoConnection } from "../components.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { routeUniversityDetail } from "../routes.js";
@@ -407,6 +409,12 @@ export async function initRankingPage() {
           <div class="rank-empty" role="status">
             <strong>${escapeHtml(t("ranking.empty.title", "No ranking matches"))}</strong>
             <span>${escapeHtml(t("ranking.empty.body", "Try a different search or country filter."))}</span>
+            <div class="rank-empty__actions">
+              <button type="button" class="rank-empty__btn" data-action="reset-ranking-filters">
+                ${heroIcon("arrow-path", 16)}
+                <span>${escapeHtml(t("ranking.empty.reset_filters", "Reset filters"))}</span>
+              </button>
+            </div>
           </div>
         `;
       }
@@ -439,16 +447,34 @@ export async function initRankingPage() {
 
     if (searchInput) {
       searchInput.oninput = applyRankingFilters;
-      searchInput.onblur = () => window.setTimeout(hideSuggestions, 160);
+      searchInput.onblur = hideSuggestions;
     }
-    suggestionsNode?.addEventListener("click", (event) => {
+    const selectSuggestion = (event) => {
       const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
       if (!btn || !searchInput) return;
       searchInput.value = String(btn.getAttribute("data-value") || "");
       applyRankingFilters();
       hideSuggestions();
+    };
+    suggestionsNode?.addEventListener("pointerdown", (event) => {
+      const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
+      if (!btn) return;
+      event.preventDefault();
+      selectSuggestion(event);
     });
+    suggestionsNode?.addEventListener("click", selectSuggestion);
     if (countrySelect) countrySelect.onchange = applyRankingFilters;
+    listEl.addEventListener("click", (event) => {
+      const resetBtn = event.target instanceof Element ? event.target.closest('[data-action="reset-ranking-filters"]') : null;
+      if (!resetBtn) return;
+      motionPress(resetBtn);
+      if (searchInput) searchInput.value = "";
+      if (countrySelect) {
+        countrySelect.value = "";
+        initCustomSelect("rankingCountrySelect");
+      }
+      applyRankingFilters();
+    });
     applyRankingFilters();
   } catch (err) {
     if (err?.name === "AbortError") return;

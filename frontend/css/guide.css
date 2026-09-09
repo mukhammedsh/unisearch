@@ -78,9 +78,11 @@
     border-color var(--motion-fast, 0.15s) ease;
 }
 
-.guide-nav a:hover {
-  color: var(--text);
-  background: var(--surface-soft);
+@media (hover: hover) and (pointer: fine) {
+  .guide-nav a:hover {
+    color: var(--text);
+    background: var(--surface-soft);
+  }
 }
 
 .guide-nav a.is-active {
@@ -290,8 +292,10 @@
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
-.guide-flow-step:hover {
-  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .guide-flow-step:hover {
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  }
 }
 
 .guide-flow-step strong {

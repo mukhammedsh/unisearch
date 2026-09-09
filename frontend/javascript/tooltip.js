@@ -18,6 +18,8 @@ export function bindInfoTooltips(options = {}) {
   const closeAll = () => {
     root.querySelectorAll(`${wrapSelector}.${openClass}`).forEach((wrap) => {
       wrap.classList.remove(openClass);
+      const btn = wrap.querySelector(buttonSelector);
+      if (btn) btn.setAttribute("aria-expanded", "false");
     });
   };
 
@@ -33,12 +35,28 @@ export function bindInfoTooltips(options = {}) {
       evt.stopPropagation();
       const willOpen = !wrap.classList.contains(openClass);
       closeAll();
-      if (willOpen) wrap.classList.add(openClass);
+      if (willOpen) {
+        wrap.classList.add(openClass);
+        btn.setAttribute("aria-expanded", "true");
+      }
       return;
     }
 
     if (!target.closest(wrapSelector)) {
       closeAll();
+    }
+  });
+
+  root.addEventListener("keydown", (evt) => {
+    if (evt.key === "Escape") {
+      const openWraps = root.querySelectorAll(`${wrapSelector}.${openClass}`);
+      if (!openWraps.length) return;
+      const lastOpen = openWraps[openWraps.length - 1];
+      const btn = lastOpen.querySelector(buttonSelector);
+      closeAll();
+      if (btn) {
+        try { btn.focus(); } catch (e) {}
+      }
     }
   });
 
@@ -52,6 +70,7 @@ export function bindInfoTooltips(options = {}) {
     const timer = window.setTimeout(() => {
       closeAll();
       wrap.classList.add(openClass);
+      btn.setAttribute("aria-expanded", "true");
       holdTimers.delete(btn);
     }, holdDelayMs);
     holdTimers.set(btn, timer);

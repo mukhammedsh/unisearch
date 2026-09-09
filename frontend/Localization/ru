@@ -320,6 +320,7 @@ ranking.country_all: Глобально
 ranking.source_note: В рейтинге используются официальные источники, когда они доступны. Остальные позиции явно помечены как оценки или проверенные вручную данные.
 ranking.empty.title: В рейтинге нет совпадений
 ranking.empty.body: Попробуйте другой поиск или фильтр по стране.
+ranking.empty.reset_filters: Сбросить фильтры
 ranking.suggestion.alias: Аббревиатура
 title.about: О нас | UniSearch
 title.profile: Профиль абитуриента | UniSearch
@@ -382,6 +383,7 @@ universities.map_panel.title: Результаты на карте
 universities.pagination.next: Далее
 universities.pagination.prev: Назад
 universities.reset: Сброс
+universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
 universities.search_clear: Очистить поиск
 universities.select_country_first: Сначала выберите страну

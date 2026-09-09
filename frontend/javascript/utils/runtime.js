@@ -134,6 +134,46 @@ export function setUrlParams(params) {
   window.history.replaceState({}, "", url.toString());
 }
 
+export function trapFocus(container) {
+  if (!container || typeof container.querySelectorAll !== "function") return () => {};
+
+  const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  const getFocusable = () => {
+    return Array.from(container.querySelectorAll(focusableSelector)).filter((el) => {
+      return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+    });
+  };
+
+  const handleKeydown = (e) => {
+    if (e.key !== "Tab") return;
+    const focusable = getFocusable();
+    if (!focusable.length) {
+      e.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first || !container.contains(document.activeElement)) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last || !container.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+
+  container.addEventListener("keydown", handleKeydown);
+  return () => {
+    container.removeEventListener("keydown", handleKeydown);
+  };
+}
+
 function getRequestUrl(input) {
   if (typeof input === "string") return input;
   if (input && typeof input.url === "string") return input.url;

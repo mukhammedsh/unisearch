@@ -78,8 +78,10 @@ body[data-page="about"] {
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
-.about-proof-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .about-proof-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  }
 }
 
 .about-proof-card:focus-visible {
@@ -158,8 +160,10 @@ body[data-page="about"] {
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
-.about-contact-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .about-contact-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  }
 }
 
 .contact-label {
@@ -182,8 +186,10 @@ body[data-page="about"] {
   transition: color var(--motion-fast, 0.15s) ease;
 }
 
-.about-contact-card a:hover {
-  color: var(--accent-strong);
+@media (hover: hover) and (pointer: fine) {
+  .about-contact-card a:hover {
+    color: var(--accent-strong);
+  }
 }
 
 .about-contact-card a:focus-visible {
@@ -217,8 +223,10 @@ body[data-page="about"] {
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
-.team-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .team-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  }
 }
 
 .team-card-body h3 {

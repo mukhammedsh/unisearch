@@ -195,10 +195,43 @@ body[data-page="ranking"] {
     display: grid;
     gap: var(--space-2);
     text-align: center;
+    justify-items: center;
 }
 
 .rank-empty strong {
     color: var(--text);
+}
+
+.rank-empty__actions {
+    margin-top: var(--space-2);
+}
+
+.rank-empty__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: var(--surface-soft);
+    color: var(--text);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .rank-empty__btn:hover {
+        background: var(--surface);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+}
+
+.rank-empty__btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 /* --- Ranking Card --- */
@@ -223,9 +256,11 @@ body[data-page="ranking"] {
         transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.rank-card:hover {
-    border-color: var(--line-accent);
-    background: var(--surface-soft);
+@media (hover: hover) and (pointer: fine) {
+    .rank-card:hover {
+        border-color: var(--line-accent);
+        background: var(--surface-soft);
+    }
 }
 
 .rank-card > *:not(.rank-bg-img) {
@@ -257,12 +292,27 @@ body[data-page="ranking"] {
     transition: background var(--motion-fast) var(--motion-ease-standard);
 }
 
-.rank-card:hover .rank-bg-img {
-    opacity: 0.60;
+@media (hover: hover) and (pointer: fine) {
+    .rank-card:hover .rank-bg-img {
+        opacity: 0.60;
+    }
+
+    .rank-card:hover::after {
+        background: linear-gradient(90deg, var(--surface-soft) 0%, color-mix(in srgb, var(--surface-soft) 84%, transparent) 18%, color-mix(in srgb, var(--surface-soft) 50%, transparent) 55%, color-mix(in srgb, var(--surface-soft) 20%, transparent) 100%);
+    }
 }
 
-.rank-card:hover::after {
-    background: linear-gradient(90deg, var(--surface-soft) 0%, color-mix(in srgb, var(--surface-soft) 84%, transparent) 18%, color-mix(in srgb, var(--surface-soft) 50%, transparent) 55%, color-mix(in srgb, var(--surface-soft) 20%, transparent) 100%);
+.rank-card:active {
+    transform: scale(0.985);
+    border-color: var(--line-strong);
+    transition: transform 0.05s ease, border-color 0.05s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rank-card:active {
+        transform: none;
+        border-color: var(--line-strong);
+    }
 }
 
 :root[data-theme="dark"] .rank-bg-img {
@@ -270,8 +320,10 @@ body[data-page="ranking"] {
     filter: brightness(0.78) saturate(1.12);
 }
 
-:root[data-theme="dark"] .rank-card:hover .rank-bg-img {
-    opacity: 0.50;
+@media (hover: hover) and (pointer: fine) {
+    :root[data-theme="dark"] .rank-card:hover .rank-bg-img {
+        opacity: 0.50;
+    }
 }
 
 
@@ -308,15 +360,7 @@ body[data-page="ranking"] {
     border-color: var(--line-warning);
 }
 
-.rank-card:has(.rank-1):hover {
-    border-color: var(--line-warning);
-}
-
 .rank-card:has(.rank-2) {
-    border-color: var(--line-strong);
-}
-
-.rank-card:has(.rank-2):hover {
     border-color: var(--line-strong);
 }
 
@@ -324,8 +368,15 @@ body[data-page="ranking"] {
     border-color: var(--line-warning);
 }
 
-.rank-card:has(.rank-3):hover {
-    border-color: var(--line-warning);
+@media (hover: hover) and (pointer: fine) {
+    .rank-card:has(.rank-1):hover,
+    .rank-card:has(.rank-3):hover {
+        border-color: var(--line-warning);
+    }
+
+    .rank-card:has(.rank-2):hover {
+        border-color: var(--line-strong);
+    }
 }
 
 .rank-logo {

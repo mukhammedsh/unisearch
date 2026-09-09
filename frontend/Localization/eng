@@ -319,6 +319,7 @@ ranking.country_all: Global
 ranking.source_note: Ranking uses official sources when available. Other entries are clearly marked as estimates or reviewed data.
 ranking.empty.title: No ranking matches
 ranking.empty.body: Try a different search or country filter.
+ranking.empty.reset_filters: Reset filters
 ranking.suggestion.alias: Alias
 title.about: About Us | UniSearch
 title.profile: Applicant Profile | UniSearch
@@ -381,6 +382,7 @@ universities.map_panel.title: Results on the map
 universities.pagination.next: Next
 universities.pagination.prev: Prev
 universities.reset: Reset
+universities.empty.reset_filters: Reset filters
 universities.search_placeholder: Search university...
 universities.search_clear: Clear search
 universities.select_country_first: Select country first

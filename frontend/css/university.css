@@ -65,7 +65,14 @@
   transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.d-page-scope__dismiss:hover,
+@media (hover: hover) and (pointer: fine) {
+  .d-page-scope__dismiss:hover {
+    border-color: var(--line-strong);
+    background: var(--surface-soft);
+    color: var(--text);
+  }
+}
+
 .d-page-scope__dismiss:focus-visible {
   border-color: var(--line-strong);
   background: var(--surface-soft);
@@ -112,12 +119,16 @@
   display: none;
   margin-bottom: 16px;
   opacity: 0;
-  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 .d-loading.is-visible {
   display: block;
-  opacity: 1;
+  animation: d-loading-fade-in var(--motion-fast, 160ms) var(--motion-ease-standard, ease) forwards;
+}
+
+@keyframes d-loading-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .d-loading-card {
@@ -309,7 +320,14 @@
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.d-back:hover,
+@media (hover: hover) and (pointer: fine) {
+  .d-back:hover {
+    background: var(--accent-panel);
+    border-color: var(--line-accent);
+    color: var(--accent);
+  }
+}
+
 .d-back:focus-visible {
   background: var(--accent-panel);
   border-color: var(--line-accent);
@@ -419,10 +437,12 @@
   background: var(--accent);
 }
 
-.uni-tag:hover {
-  box-shadow: none;
-  border-color: var(--line-accent);
-  background: var(--surface-soft);
+@media (hover: hover) and (pointer: fine) {
+  .uni-tag:hover {
+    box-shadow: none;
+    border-color: var(--line-accent);
+    background: var(--surface-soft);
+  }
 }
 
 .uni-tag--placeholder,
@@ -507,7 +527,14 @@
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.d-info:hover,
+@media (hover: hover) and (pointer: fine) {
+  .d-info:hover {
+    background: var(--accent-panel);
+    border-color: var(--line-accent);
+    color: var(--accent);
+  }
+}
+
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
@@ -576,11 +603,21 @@
   text-decoration: underline;
 }
 
-.d-tooltip a:hover {
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .d-tooltip a:hover {
+    color: var(--text);
+  }
 }
 
-.d-info-wrap:hover .d-tooltip,
+@media (hover: hover) and (pointer: fine) {
+  .d-info-wrap:hover .d-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
 .d-info-wrap:focus-within .d-tooltip,
 .d-info-wrap.is-open .d-tooltip {
   opacity: 1;
@@ -616,9 +653,11 @@
   border-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.program-card:hover {
-  box-shadow: none;
-  border-color: var(--line-accent);
+@media (hover: hover) and (pointer: fine) {
+  .program-card:hover {
+    box-shadow: none;
+    border-color: var(--line-accent);
+  }
 }
 
 .program-card-head {
@@ -1017,9 +1056,11 @@
   background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.admissions-source-link:hover {
-  box-shadow: none;
-  background: var(--surface-soft);
+@media (hover: hover) and (pointer: fine) {
+  .admissions-source-link:hover {
+    box-shadow: none;
+    background: var(--surface-soft);
+  }
 }
 
 .admissions-program-title {
@@ -1079,10 +1120,12 @@
   min-width: 0;
 }
 
-.d-tab-btn:hover {
-  background-color: transparent;
-  border-color: transparent;
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .d-tab-btn:hover {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--text);
+  }
 }
 
 .d-tab-btn.active {
@@ -1168,16 +1211,20 @@
   fill: currentColor;
 }
 
-.d-site-link.is-saved:hover {
-  background: var(--color-warning-bg);
-  color: var(--color-warning);
-  border-color: var(--line-warning);
+@media (hover: hover) and (pointer: fine) {
+  .d-site-link.is-saved:hover {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+    border-color: var(--line-warning);
+  }
 }
 
-.d-site-link:hover {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .d-site-link:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
 }
 
 .d-site-link--disabled {
@@ -1411,12 +1458,16 @@
   gap: 12px;
 }
 
-.finance-option-card:hover {
-  border-color: var(--line-accent);
+@media (hover: hover) and (pointer: fine) {
+  .finance-option-card:hover {
+    border-color: var(--line-accent);
+  }
 }
 
-.finance-option-card--grant:hover {
-  border-color: var(--line-grant);
+@media (hover: hover) and (pointer: fine) {
+  .finance-option-card--grant:hover {
+    border-color: var(--line-grant);
+  }
 }
 
 .finance-option-card--grant {
@@ -1473,10 +1524,12 @@
     transform var(--motion-fast) var(--motion-ease-standard);
 }
 
-.track-select-btn:hover:not(:disabled) {
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .track-select-btn:hover:not(:disabled) {
+    background: var(--accent-panel);
+    border-color: var(--line-accent);
+    color: var(--accent);
+  }
 }
 
 .track-select-btn:disabled,
@@ -1528,9 +1581,11 @@
   background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.admission-program-option:hover,
-.requirement-profile-tab:hover {
+@media (hover: hover) and (pointer: fine) {
+  .admission-program-option:hover,
+  .requirement-profile-tab:hover {
   color: var(--text);
+  }
 }
 
 .admission-program-option:focus-visible,
@@ -2453,8 +2508,10 @@
   border-color: var(--line);
 }
 
-.roi-box:hover {
-  border-color: var(--line-accent);
+@media (hover: hover) and (pointer: fine) {
+  .roi-box:hover {
+    border-color: var(--line-accent);
+  }
 }
 
 .roi-metrics-row {
@@ -2708,8 +2765,10 @@
   border: 1px solid var(--line);
 }
 
-.d-back:hover {
-  background: var(--surface-soft);
+@media (hover: hover) and (pointer: fine) {
+  .d-back:hover {
+    background: var(--surface-soft);
+  }
 }
 
 .d-tabs {
@@ -2739,10 +2798,12 @@
   flex: 0 0 auto; /* Prevent tabs from shrinking */
 }
 
-.d-tab-btn:hover {
-  transform: none;
-  background: transparent;
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .d-tab-btn:hover {
+    transform: none;
+    background: transparent;
+    color: var(--text);
+  }
 }
 
 .d-tab-btn.active {
@@ -2773,10 +2834,12 @@
   border-color: var(--line);
 }
 
-.d-site-link:hover {
-  background: var(--surface-soft);
-  color: var(--accent);
-  border-color: var(--line-accent);
+@media (hover: hover) and (pointer: fine) {
+  .d-site-link:hover {
+    background: var(--surface-soft);
+    color: var(--accent);
+    border-color: var(--line-accent);
+  }
 }
 
 .d-box {
@@ -2821,10 +2884,12 @@
   background: var(--accent);
 }
 
-.uni-tag:hover {
-  transform: none;
-  background: transparent;
-  box-shadow: none;
+@media (hover: hover) and (pointer: fine) {
+  .uni-tag:hover {
+    transform: none;
+    background: transparent;
+    box-shadow: none;
+  }
 }
 
 .d-kv {
@@ -2861,9 +2926,11 @@
   background: var(--accent);
 }
 
-.finance-option-card:hover {
-  border-color: var(--line-accent);
-  box-shadow: none;
+@media (hover: hover) and (pointer: fine) {
+  .finance-option-card:hover {
+    border-color: var(--line-accent);
+    box-shadow: none;
+  }
 }
 
 .finance-option-card--grant {
@@ -3281,11 +3348,13 @@
   padding: 0;
 }
 
-.d-back:hover,
-.d-site-link:hover {
+@media (hover: hover) and (pointer: fine) {
+  .d-back:hover,
+  .d-site-link:hover {
   background: var(--surface-soft);
   color: var(--accent);
   border-color: var(--line-accent);
+  }
 }
 
 .d-site-link.is-saved {
@@ -3316,10 +3385,12 @@
   justify-content: center;
 }
 
-.d-tab-btn:hover {
-  transform: none;
-  background: transparent;
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .d-tab-btn:hover {
+    transform: none;
+    background: transparent;
+    color: var(--text);
+  }
 }
 
 .d-tab-btn.active {
@@ -3395,11 +3466,12 @@
   display: none;
 }
 
-.finance-option-card:hover,
-.finance-option-card:hover,
-.program-card:hover {
-  border-color: var(--line-accent);
-  box-shadow: none;
+@media (hover: hover) and (pointer: fine) {
+  .finance-option-card:hover,
+  .program-card:hover {
+    border-color: var(--line-accent);
+    box-shadow: none;
+  }
 }
 
 .finance-option-card--grant,
@@ -3826,11 +3898,11 @@
 
 .scholarship-card {
   width: 100%;
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 16px 20px;
-  box-shadow: none !important;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -3839,8 +3911,8 @@
 }
 
 :root[data-theme="dark"] .scholarship-card {
-  background: var(--surface-soft) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 .scholarship-card__title {
@@ -3869,20 +3941,20 @@
 }
 
 .scholarship-line--positive {
-  color: var(--text-grant) !important;
+  color: var(--text-grant);
 }
 
 .scholarship-line--muted {
-  color: var(--text-muted) !important;
+  color: var(--text-muted);
 }
 
 .total-price-card {
   width: 100%;
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 16px 20px;
-  box-shadow: none !important;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -3893,8 +3965,8 @@
 }
 
 :root[data-theme="dark"] .total-price-card {
-  background: var(--surface-soft) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 .price-header {
@@ -3955,10 +4027,10 @@ body[data-page="university"],
 #tab-admission .d-box,
 #tab-general .d-box,
 #tab-programs .d-box {
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
   border-radius: 0;
-  box-shadow: none !important;
+  box-shadow: none;
   padding: 24px;
 }
 
@@ -3967,10 +4039,10 @@ body[data-page="university"],
 :root[data-theme="dark"] #tab-admission .d-box,
 :root[data-theme="dark"] #tab-general .d-box,
 :root[data-theme="dark"] #tab-programs .d-box {
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
   border-radius: 0;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
@@ -3987,7 +4059,7 @@ body[data-page="university"],
   }
 
   #tab-general .d-box + .d-box {
-    border-top: 1px solid var(--line) !important;
+    border-top: 1px solid var(--line);
     padding-top: 16px;
   }
 }
@@ -3997,24 +4069,26 @@ body[data-page="university"],
 }
 
 #tab-general .d-box + .d-box {
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
   padding-top: 20px;
   margin-top: 0;
 }
 
 :root[data-theme="dark"] #tab-general .d-box + .d-box {
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .d-page-scope {
   border-left-color: var(--accent);
 }
 
-.d-back:hover,
-.d-site-link:hover {
+@media (hover: hover) and (pointer: fine) {
+  .d-back:hover,
+  .d-site-link:hover {
   background: var(--accent-panel);
   border-color: var(--line-accent);
   color: var(--accent);
+  }
 }
 
 .d-info {
@@ -4023,7 +4097,14 @@ body[data-page="university"],
   color: var(--text-muted);
 }
 
-.d-info:hover,
+@media (hover: hover) and (pointer: fine) {
+  .d-info:hover {
+    background: var(--accent-panel);
+    border-color: var(--line-accent);
+    color: var(--accent);
+  }
+}
+
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
@@ -4046,17 +4127,17 @@ body[data-page="university"],
 .uni-tags-wrap {
   margin: 0 0 16px;
   padding: 0;
-  border: none !important;
+  border: none;
   border-radius: 0;
-  background: transparent !important;
+  background: transparent;
 }
 
 .finance-track-group {
-  border: none !important;
+  border: none;
   border-radius: 0;
   padding: 0;
-  background: transparent !important;
-  box-shadow: none !important;
+  background: transparent;
+  box-shadow: none;
   display: grid;
   gap: 16px;
 }
@@ -4064,18 +4145,18 @@ body[data-page="university"],
 .finance-track-group + .finance-track-group {
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .finance-track-group--grant {
-  border: none !important;
-  background: transparent !important;
+  border: none;
+  background: transparent;
 }
 
 :root[data-theme="dark"] .finance-track-group,
 :root[data-theme="dark"] .finance-track-group--grant {
-  background: transparent !important;
-  border-color: var(--line) !important;
+  background: transparent;
+  border-color: var(--line);
 }
 
 .finance-track-group-head {
@@ -4106,53 +4187,55 @@ body[data-page="university"],
 }
 
 .finance-track-options-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 20px !important;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
 @media (max-width: 860px) {
   .finance-track-options-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 
 .finance-track-options-grid:has(> :only-child) {
-  grid-template-columns: minmax(0, 640px) !important;
+  grid-template-columns: minmax(0, 640px);
 }
 
 .finance-option-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 20px;
-  box-shadow: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  min-height: auto !important;
-  gap: 16px !important;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease) !important;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: auto;
+  gap: 16px;
+  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
-.finance-option-card:hover,
-.program-card:hover {
-  border-color: var(--line-accent) !important;
+@media (hover: hover) and (pointer: fine) {
+  .finance-option-card:hover,
+  .program-card:hover {
+  border-color: var(--line-accent);
+  }
 }
 
 .finance-option-card--grant {
-  border-color: var(--line-grant) !important;
-  background: var(--surface-solid) !important;
+  border-color: var(--line-grant);
+  background: var(--surface-solid);
 }
 
 :root[data-theme="dark"] .finance-option-card {
-  background: var(--surface-solid) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
 :root[data-theme="dark"] .finance-option-card--grant {
-  border-color: var(--line-grant) !important;
-  background: var(--surface-solid) !important;
+  border-color: var(--line-grant);
+  background: var(--surface-solid);
 }
 
 .finance-option-card .cost-breakdown-list {
@@ -4166,10 +4249,10 @@ body[data-page="university"],
   gap: 8px;
   padding: 12px 0 0;
   margin-top: 0;
-  border: none !important;
-  border-top: 1px solid var(--line) !important;
+  border: none;
+  border-top: 1px solid var(--line);
   border-radius: 0;
-  background: transparent !important;
+  background: transparent;
   color: var(--text);
   font-size: var(--text-base);
 }
@@ -4183,27 +4266,27 @@ body[data-page="university"],
 }
 
 .finance-option-total--grant {
-  border-top-color: var(--line-grant) !important;
-  background: transparent !important;
+  border-top-color: var(--line-grant);
+  background: transparent;
   color: var(--text);
 }
 
 :root[data-theme="dark"] .finance-option-total,
 :root[data-theme="dark"] .finance-option-total--grant {
-  background: transparent !important;
+  background: transparent;
   color: var(--text);
-  border-top-color: var(--line) !important;
+  border-top-color: var(--line);
 }
 
 :root[data-theme="dark"] .finance-option-total--grant {
-  border-top-color: var(--line-grant) !important;
+  border-top-color: var(--line-grant);
 }
 
 .cost-legend-single {
-  border: none !important;
+  border: none;
   border-radius: 0;
   padding: 8px 0;
-  background: transparent !important;
+  background: transparent;
   font-size: 13px;
   color: var(--text-muted);
 }
@@ -4218,276 +4301,278 @@ body[data-page="university"],
    ==================================================================== */
 
 .chance-inline-note {
-  border: none !important;
-  background: transparent !important;
+  border: none;
+  background: transparent;
   padding: 8px 0 0;
   margin-top: 8px;
-  color: var(--text-muted) !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .admissions-overview,
 .admissions-programs-block {
   margin-top: 24px;
   padding: 0;
-  border: none !important;
+  border: none;
   border-radius: 0;
-  background: transparent !important;
-  box-shadow: none !important;
+  background: transparent;
+  box-shadow: none;
 }
 
 .admissions-summary-card,
 .admissions-program-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 20px;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .admissions-summary-card,
 :root[data-theme="dark"] .admissions-program-card {
-  background: var(--surface-solid) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
 .admission-category-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 24px;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
-  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .admission-category-card {
-  background: var(--surface-solid) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
 .track-stats-box {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 20px;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 :root[data-theme="dark"] .track-stats-box {
-  background: var(--surface-soft) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 .track-stats-title {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 4px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--line) !important;
+  border-bottom: 1px solid var(--line);
 }
 
 .track-exam-group {
-  border: none !important;
-  background: transparent !important;
+  border: none;
+  background: transparent;
   border-radius: 0;
   padding: 0;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .track-exam-group + .track-exam-group {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .track-exam-group-title {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
 .track-exam-group--info .track-exam-group-title,
 .track-exam-group--success .track-exam-group-title,
 .track-exam-group--neutral .track-exam-group-title {
-  color: var(--text-muted) !important;
+  color: var(--text-muted);
 }
 
 :root[data-theme="dark"] .track-exam-group--info .track-exam-group-title,
 :root[data-theme="dark"] .track-exam-group--success .track-exam-group-title,
 :root[data-theme="dark"] .track-exam-group--neutral .track-exam-group-title {
-  color: var(--text-muted) !important;
+  color: var(--text-muted);
 }
 
 .track-exam-group-list {
-  display: grid !important;
-  gap: 4px !important;
-  color: var(--text) !important;
-  font-size: 13px !important;
-  line-height: 1.5 !important;
+  display: grid;
+  gap: 4px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 :root[data-theme="dark"] .track-exam-group-list {
-  color: var(--text) !important;
+  color: var(--text);
 }
 
 .track-extra-req {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 16px 20px;
   margin-top: 16px;
 }
 
 :root[data-theme="dark"] .track-extra-req {
-  background: var(--surface-soft) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 .track-extra-req-title {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 8px;
 }
 
 .admission-funding-block {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .admission-funding-title {
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 12px;
 }
 
 .admission-funding-list {
-  display: grid !important;
-  gap: 16px !important;
+  display: grid;
+  gap: 16px;
 }
 
 .admission-funding-option {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 20px 20px;
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: flex-start !important;
-  justify-content: space-between !important;
-  gap: 16px !important;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease), background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease) !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease), background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
-.admission-funding-option:hover {
-  border-color: var(--line-accent) !important;
+@media (hover: hover) and (pointer: fine) {
+  .admission-funding-option:hover {
+    border-color: var(--line-accent);
+  }
 }
 
 .admission-funding-option.is-active {
-  border-color: var(--accent) !important;
-  background: var(--surface-soft) !important;
+  border-color: var(--accent);
+  background: var(--surface-soft);
 }
 
 .admission-funding-option--grant {
-  border-color: var(--line-grant) !important;
-  background: var(--surface-soft) !important;
+  border-color: var(--line-grant);
+  background: var(--surface-soft);
 }
 
 .admission-funding-option--grant.is-active {
-  border-color: var(--accent) !important;
-  background: var(--surface-soft) !important;
+  border-color: var(--accent);
+  background: var(--surface-soft);
 }
 
 :root[data-theme="dark"] .admission-funding-option {
-  background: var(--surface-soft) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 :root[data-theme="dark"] .admission-funding-option.is-active {
-  background: var(--surface-soft) !important;
-  border-color: var(--accent) !important;
+  background: var(--surface-soft);
+  border-color: var(--accent);
 }
 
 :root[data-theme="dark"] .admission-funding-option--grant {
-  background: var(--surface-soft) !important;
-  border-color: var(--line-grant) !important;
+  background: var(--surface-soft);
+  border-color: var(--line-grant);
 }
 
 .admission-funding-diff {
-  flex: 1 0 100% !important;
-  display: grid !important;
-  gap: 8px !important;
+  flex: 1 0 100%;
+  display: grid;
+  gap: 8px;
   margin-top: 6px;
   padding-top: 12px;
-  border-top: 1px dashed var(--line) !important;
+  border-top: 1px dashed var(--line);
 }
 
 .admission-funding-diff-kicker {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .admission-funding-diff-title {
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .admission-funding-diff-note {
-  flex: 1 0 100% !important;
+  flex: 1 0 100%;
   margin-top: 6px;
   padding-top: 8px;
-  border-top: 1px dashed var(--line) !important;
-  color: var(--text-muted) !important;
-  font-size: 12px !important;
-  line-height: 1.45 !important;
+  border-top: 1px dashed var(--line);
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .track-factors-badges {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 2px;
   margin-bottom: 4px;
 }
 
 .track-factors-label {
-  display: block !important;
-  width: 100% !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: var(--text-muted) !important;
+  display: block;
+  width: 100%;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
   margin: 0 0 2px;
-  line-height: 1.3 !important;
+  line-height: 1.3;
 }
 
 .track-factor-chip {
   padding: 4px 8px;
-  font-size: 11px !important;
+  font-size: 11px;
   border-radius: var(--radius-sm);
-  background: var(--surface-soft) !important;
-  border: 1px solid var(--line) !important;
-  line-height: 1.3 !important;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  line-height: 1.3;
 }
 
 .admission-option-meta {
@@ -4499,14 +4584,14 @@ body[data-page="university"],
 
 .admission-option-meta .tag {
   padding: 4px 8px;
-  font-size: 11px !important;
+  font-size: 11px;
   border-radius: var(--radius-sm);
 }
 
 .track-cost-preview {
-  border: none !important;
+  border: none;
   border-radius: 0;
-  background: transparent !important;
+  background: transparent;
   padding: 0;
   font-size: 14px;
   color: var(--text);
@@ -4521,8 +4606,8 @@ body[data-page="university"],
 }
 
 .track-cost-preview--grant {
-  border: none !important;
-  background: transparent !important;
+  border: none;
+  background: transparent;
   color: var(--text-grant);
 }
 
@@ -4546,7 +4631,7 @@ body[data-page="university"],
 /* Гарантированный контрастный фон для логотипа университета */
 .d-cover-logo,
 .d-logo-img {
-  background: var(--surface-badge) !important;
+  background: var(--surface-badge);
   color: var(--surface-badge-text);
 }
 
@@ -4562,10 +4647,10 @@ body[data-page="university"],
 #detailQuickStats,
 .d-quick-stats,
 .d-quick-stat {
-  display: none !important;
+  display: none;
   margin: 0;
   padding: 0;
-  border: none !important;
+  border: none;
 }
 
 .d-head {
@@ -4580,366 +4665,368 @@ body[data-page="university"],
 
 .d-location {
   margin-top: 6px;
-  font-size: 14px !important;
-  color: var(--text-muted) !important;
+  font-size: 14px;
+  color: var(--text-muted);
 }
 
 /* 2. Вкладка «Программы» (Programs) */
 .program-list {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 16px !important;
-  align-items: stretch !important;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
 }
 
 @media (max-width: 820px) {
   .program-list {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
 .program-card {
-  position: relative !important;
-  border: 1px solid var(--line) !important;
+  position: relative;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 20px 20px;
-  box-shadow: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
-  box-sizing: border-box !important;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease) !important;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 :root[data-theme="dark"] .program-card {
-  background: var(--surface-solid) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
-.program-card:hover {
-  border-color: var(--line-accent) !important;
-  transform: none !important;
-  box-shadow: none !important;
+@media (hover: hover) and (pointer: fine) {
+  .program-card:hover {
+    border-color: var(--line-accent);
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .program-card-head {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  gap: 8px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
   margin: 0;
   padding: 0;
 }
 
 .program-card-kicker {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .program-card-title {
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
-  line-height: 1.35 !important;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
   margin: 0;
 }
 
 :root[data-theme="dark"] .program-card-title {
-  color: var(--text) !important;
+  color: var(--text);
 }
 
 .program-card-rows {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .program-card-row {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: baseline !important;
-  gap: 12px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid var(--line) !important;
-  border-top: none !important;
-  box-sizing: border-box !important;
+  border-bottom: 1px solid var(--line);
+  border-top: none;
+  box-sizing: border-box;
 }
 
 .program-card-row:last-child {
-  border-bottom: none !important;
+  border-bottom: none;
   padding-bottom: 0;
 }
 
 .program-card-label {
-  color: var(--text-muted) !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-  flex: 0 0 auto !important;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
   margin: 0;
 }
 
 .program-card-value {
-  color: var(--text) !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  text-align: right !important;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
   margin: 0;
-  line-height: 1.4 !important;
+  line-height: 1.4;
 }
 
 .program-card-value--empty {
-  color: var(--text-muted) !important;
-  font-weight: 500 !important;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .program-card-tags {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: flex-end !important;
-  gap: 8px !important;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .program-tag {
-  display: inline-flex !important;
-  align-items: center !important;
+  display: inline-flex;
+  align-items: center;
   border-radius: var(--radius-sm, 8px);
-  border: 1px solid var(--line) !important;
-  background: var(--surface-soft) !important;
-  color: var(--text-muted) !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
   padding: 4px 8px;
-  line-height: 1.3 !important;
+  line-height: 1.3;
 }
 
 :root[data-theme="dark"] .program-tag {
-  background: var(--surface-soft) !important;
-  border-color: var(--line) !important;
-  color: var(--text-muted) !important;
+  background: var(--surface-soft);
+  border-color: var(--line);
+  color: var(--text-muted);
 }
 
 .program-acceptance {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  gap: 4px !important;
-  width: 100% !important;
-  max-width: 140px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  width: 100%;
+  max-width: 140px;
 }
 
 .program-acceptance-head {
-  display: flex !important;
-  justify-content: flex-end !important;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .program-acceptance-track {
-  width: 100% !important;
-  height: 6px !important;
+  width: 100%;
+  height: 6px;
   border-radius: 999px;
-  background: var(--line) !important;
-  overflow: hidden !important;
+  background: var(--line);
+  overflow: hidden;
 }
 
 .program-acceptance-fill {
-  height: 100% !important;
+  height: 100%;
   border-radius: 999px;
-  background: var(--accent) !important;
+  background: var(--accent);
 }
 
 .program-pill {
   border-radius: var(--radius-sm, 8px);
-  border: 1px solid var(--line) !important;
-  background: var(--surface-soft) !important;
-  color: var(--text-muted) !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
   padding: 4px 8px;
 }
 
 .program-pill--accent {
-  border-color: var(--line-accent) !important;
-  background: var(--accent-panel, var(--accent-faint)) !important;
-  color: var(--accent) !important;
+  border-color: var(--line-accent);
+  background: var(--accent-panel, var(--accent-faint));
+  color: var(--accent);
 }
 
 @media (max-width: 640px) {
   .program-card {
     padding: 16px 16px;
-    gap: 12px !important;
+    gap: 12px;
   }
   .program-card-row {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 4px !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
     padding: 8px 0;
   }
   .program-card-value {
-    text-align: left !important;
+    text-align: left;
   }
   .program-card-tags {
-    justify-content: flex-start !important;
+    justify-content: flex-start;
   }
   .program-acceptance {
-    max-width: 100% !important;
-    align-items: flex-start !important;
+    max-width: 100%;
+    align-items: flex-start;
   }
   .program-acceptance-head {
-    justify-content: flex-start !important;
+    justify-content: flex-start;
   }
 }
 
 .admissions-programs-block {
-  border: none !important;
-  border-top: 1px solid var(--line) !important;
+  border: none;
+  border-top: 1px solid var(--line);
   margin-top: 24px;
   padding-top: 20px;
-  background: transparent !important;
-  box-shadow: none !important;
+  background: transparent;
+  box-shadow: none;
   border-radius: 0;
 }
 
 .admissions-section-title {
-  font-size: var(--text-base) !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text);
   margin-bottom: 4px;
 }
 
 .admissions-section-note {
-  color: var(--text-muted) !important;
-  font-size: 13px !important;
-  line-height: 1.5 !important;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
   margin: 0 0 16px;
 }
 
 .admissions-program-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 16px !important;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
 @media (max-width: 820px) {
   .admissions-program-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
 .admissions-program-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 20px;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .admissions-program-card {
-  background: var(--surface-solid) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
 /* 3. Вкладка «Поступление» (Admission) — Ликвидация вложенных окон */
 .admission-category-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 24px;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
   .admission-category-card {
     padding: 16px;
-    gap: 8px !important;
+    gap: 8px;
   }
 }
 
 .admission-category-head {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  gap: 16px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .admission-category-kicker {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
 .admission-category-title {
   margin: 0 0 8px;
-  font-size: 18px !important;
-  font-weight: 800 !important;
-  color: var(--text) !important;
-  line-height: 1.3 !important;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.3;
 }
 
 .admission-category-description {
   margin: 0;
-  font-size: 13px !important;
-  line-height: 1.45 !important;
-  color: var(--text-muted) !important;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-muted);
 }
 
 .admission-category-count {
-  flex: 0 0 auto !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: var(--text-muted) !important;
-  background: var(--surface-soft) !important;
-  border: 1px solid var(--line) !important;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
   border-radius: var(--radius-sm, 8px);
   padding: 4px 8px;
 }
 
 /* Специальности без отдельной плашки/фона — чистый жирный текст с симметричными отступами */
 .admission-applicable-programs {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: baseline !important;
-  gap: 8px !important;
-  border-top: 1px solid var(--line) !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  border-top: 1px solid var(--line);
   padding-top: 6px;
   padding-bottom: 0;
   margin: 0;
-  color: var(--text-muted) !important;
-  font-size: 13px !important;
-  line-height: 1.3 !important;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.3;
 }
 
 .admission-applicable-programs strong {
-  color: var(--text-muted) !important;
-  font-weight: 600 !important;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .admission-applicable-programs .tag {
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
   border-radius: 0;
   padding: 0;
-  box-shadow: none !important;
-  color: var(--text) !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  line-height: inherit !important;
-  display: inline !important;
+  box-shadow: none;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: inherit;
+  display: inline;
 }
 
 .admission-applicable-programs .tag + .tag::before {
@@ -4949,12 +5036,12 @@ body[data-page="university"],
 }
 
 .requirement-profile-tabs {
-  display: flex !important;
-  gap: 8px !important;
-  border-bottom: 1px solid var(--line) !important;
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
   margin-top: 4px;
-  overflow-x: auto !important;
-  scrollbar-width: none !important;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .requirement-profile-tabs::-webkit-scrollbar {
@@ -4962,76 +5049,78 @@ body[data-page="university"],
 }
 
 .requirement-profile-tab {
-  border: none !important;
-  background: transparent !important;
-  border-bottom: 2px solid transparent !important;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid transparent;
   border-radius: 0;
   padding: 8px 12px;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  color: var(--text-muted) !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  transition: color var(--motion-fast, 160ms), border-color var(--motion-fast, 160ms) !important;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--motion-fast, 160ms), border-color var(--motion-fast, 160ms);
 }
 
-.requirement-profile-tab:hover {
-  color: var(--text) !important;
+@media (hover: hover) and (pointer: fine) {
+  .requirement-profile-tab:hover {
+    color: var(--text);
+  }
 }
 
 .requirement-profile-tab.is-active {
-  color: var(--accent) !important;
-  border-bottom-color: var(--accent) !important;
-  font-weight: 700 !important;
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 700;
 }
 
 .requirement-profile-panel {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .requirement-profile-head {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  gap: 12px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .requirement-profile-kicker {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .requirement-profile-title {
   margin: 2px 0 0;
-  font-size: var(--text-base) !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text);
 }
 
 /* Сетка требований: разделительная линия между мин и средними баллами */
 .admission-requirement-grid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 20px !important;
-  border-top: 1px solid var(--line) !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  border-top: 1px solid var(--line);
   padding-top: 6px;
   margin-top: 0;
 }
 
 .track-stats-box {
-  border: none !important;
+  border: none;
   border-radius: 0;
-  background: transparent !important;
+  background: transparent;
   padding: 0;
-  box-shadow: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .track-stats-box--min {
@@ -5039,223 +5128,225 @@ body[data-page="university"],
 }
 
 .track-stats-box--avg {
-  border-left: 1px solid var(--line) !important;
+  border-left: 1px solid var(--line);
   padding-left: 20px;
 }
 
 :root[data-theme="dark"] .track-stats-box {
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
 }
 
 :root[data-theme="dark"] .track-stats-box--avg {
-  border-left: 1px solid var(--line) !important;
+  border-left: 1px solid var(--line);
 }
 
 @media (max-width: 720px) {
   .admission-requirement-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .track-stats-box--min {
     padding-right: 0;
   }
   .track-stats-box--avg {
-    border-left: none !important;
-    border-top: 1px solid var(--line) !important;
+    border-left: none;
+    border-top: 1px solid var(--line);
     padding-left: 0;
     padding-top: 10px;
   }
   :root[data-theme="dark"] .track-stats-box--avg {
-    border-left: none !important;
-    border-top: 1px solid var(--line) !important;
+    border-left: none;
+    border-top: 1px solid var(--line);
   }
 }
 
 .track-stats-title {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 0;
   padding-bottom: 4px;
-  border-bottom: 1px solid var(--line) !important;
+  border-bottom: 1px solid var(--line);
 }
 
 .track-extra-req {
-  border: none !important;
-  border-top: 1px solid var(--line) !important;
+  border: none;
+  border-top: 1px solid var(--line);
   border-radius: 0;
-  background: transparent !important;
+  background: transparent;
   padding: 12px 0 0;
   margin-top: 2px;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .track-extra-req {
-  background: transparent !important;
-  border-color: var(--line) !important;
+  background: transparent;
+  border-color: var(--line);
 }
 
 .track-extra-req-title {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
 .track-extra-req-list {
   margin: 0;
   padding-left: 18px;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 4px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 /* Опции финансирования в Поступлении: компактные строки */
 .admission-funding-block {
   margin-top: 8px;
   padding-top: 16px;
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .admission-funding-title {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 12px;
 }
 
 .admission-funding-list {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .admission-funding-option {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-base, 12px);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 16px 16px;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  gap: 8px !important;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
-.admission-funding-option:hover {
-  border-color: var(--line-accent) !important;
+@media (hover: hover) and (pointer: fine) {
+  .admission-funding-option:hover {
+    border-color: var(--line-accent);
+  }
 }
 
 .admission-funding-option.is-active {
-  border-color: var(--accent) !important;
-  background: var(--surface-soft) !important;
+  border-color: var(--accent);
+  background: var(--surface-soft);
 }
 
 .admission-funding-option--grant {
-  border-color: var(--line-grant) !important;
+  border-color: var(--line-grant);
 }
 
 .admission-funding-option--grant.is-active {
-  border-color: var(--accent) !important;
+  border-color: var(--accent);
 }
 
 .admission-funding-option-header {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  gap: 16px !important;
-  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
 }
 
 .admission-funding-option-title {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-  min-height: 32px !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 32px;
 }
 
 .admission-funding-option-main {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-  width: 100% !important;
-  flex: none !important;
-  min-height: auto !important;
-  height: auto !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  flex: none;
+  min-height: auto;
+  height: auto;
 }
 
 .admission-funding-option-main:empty {
-  display: none !important;
+  display: none;
 }
 
 .admission-funding-diff,
 .admission-funding-diff-note {
-  flex: none !important;
-  width: 100% !important;
-  min-height: auto !important;
-  height: auto !important;
+  flex: none;
+  width: 100%;
+  min-height: auto;
+  height: auto;
 }
 
 .admission-funding-option-side {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  flex: 0 0 auto !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
   margin-top: 0;
 }
 
 /* Выравнивание информационного текста о нехватке данных строго по левому краю */
 .admission-funding-option .chance-track-chip:not(.chance-high):not(.chance-good):not(.chance-medium):not(.chance-low),
 .requirement-profile-panel .chance-track-chip:not(.chance-high):not(.chance-good):not(.chance-medium):not(.chance-low) {
-  display: block !important;
-  flex: 1 0 100% !important;
-  width: 100% !important;
+  display: block;
+  flex: 1 0 100%;
+  width: 100%;
   padding: 0;
   margin: 2px 0 0;
-  border: none !important;
-  background: transparent !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  line-height: 1.4 !important;
-  color: var(--text-muted) !important;
-  min-height: auto !important;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-muted);
+  min-height: auto;
 }
 
 @media (max-width: 640px) {
   .admission-funding-option {
     padding: 12px 16px;
-    gap: 8px !important;
+    gap: 8px;
   }
   .admission-funding-option-header {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
   .admission-funding-option-side {
-    justify-content: space-between !important;
-    border-top: 1px dashed var(--line) !important;
+    justify-content: space-between;
+    border-top: 1px dashed var(--line);
     padding-top: 8px;
     margin-top: 2px;
   }
 }
 
 .chance-panel {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 20px 20px;
   margin-bottom: 20px;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 @media (max-width: 640px) {
@@ -5267,257 +5358,259 @@ body[data-page="university"],
 
 /* 4. Вкладка «Стоимость» (Costs / Finance) */
 .finance-summary-container {
-  display: grid !important;
-  grid-template-columns: 1fr minmax(260px, 320px) !important;
-  gap: 16px !important;
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 320px);
+  gap: 16px;
   margin-bottom: 24px;
-  align-items: stretch !important;
+  align-items: stretch;
 }
 
 @media (max-width: 768px) {
   .finance-summary-container {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
     margin-bottom: 16px;
   }
 }
 
 .scholarship-card,
 .total-price-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-soft) !important;
+  background: var(--surface-soft);
   padding: 20px 20px;
-  box-shadow: none !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .scholarship-card {
-  gap: 8px !important;
+  gap: 8px;
 }
 
 .scholarship-card__title,
 .price-header {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin: 0;
-  line-height: 1.2 !important;
+  line-height: 1.2;
 }
 
 .total-price-card {
-  align-items: center !important;
-  text-align: center !important;
-  gap: 8px !important;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
 }
 
 .price-inline-row {
-  display: inline-flex !important;
-  align-items: baseline !important;
-  justify-content: center !important;
-  gap: 8px !important;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
 }
 
 .price-big {
-  font-size: var(--text-2xl) !important;
-  font-weight: 800 !important;
-  color: var(--text) !important;
-  line-height: 1.1 !important;
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
 }
 
 .price-sub {
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  color: var(--text-muted) !important;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .finance-track-group {
-  border: none !important;
-  background: transparent !important;
+  border: none;
+  background: transparent;
   padding: 0;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .finance-track-group + .finance-track-group {
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid var(--line);
 }
 
 .finance-track-group-head h3 {
   margin: 0;
-  font-size: 16px !important;
-  font-weight: 800 !important;
-  color: var(--text) !important;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
 }
 
 .finance-track-group-head p {
   margin: 2px 0 0;
-  font-size: 13px !important;
-  color: var(--text-muted) !important;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .finance-track-options-title {
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .finance-track-options-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 16px !important;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
 @media (max-width: 860px) {
   .finance-track-options-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
 .finance-option-card {
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid) !important;
+  background: var(--surface-solid);
   padding: 20px 20px;
-  box-shadow: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease) !important;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
-.finance-option-card:hover {
-  border-color: var(--line-accent) !important;
+@media (hover: hover) and (pointer: fine) {
+  .finance-option-card:hover {
+    border-color: var(--line-accent);
+  }
 }
 
 .finance-option-card--grant {
-  border-color: var(--line-grant) !important;
+  border-color: var(--line-grant);
 }
 
 .cost-progress-bar {
-  display: flex !important;
-  height: 6px !important;
+  display: flex;
+  height: 6px;
   border-radius: 999px;
-  overflow: hidden !important;
-  background: var(--line) !important;
-  gap: 1px !important;
+  overflow: hidden;
+  background: var(--line);
+  gap: 1px;
 }
 
 .cost-legend {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  border-top: 1px solid var(--line) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--line);
   margin-top: 4px;
 }
 
 .cost-legend-row {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  gap: 12px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid var(--line) !important;
-  background: transparent !important;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
 }
 
 .cost-legend-row:last-child {
-  border-bottom: none !important;
+  border-bottom: none;
   padding-bottom: 0;
 }
 
 .cost-legend-label-wrap {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .cost-legend-dot {
-  width: 8px !important;
-  height: 8px !important;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  flex: 0 0 auto !important;
+  flex: 0 0 auto;
 }
 
 .cost-legend-label {
-  font-size: 12px !important;
-  color: var(--text-muted) !important;
-  font-weight: 600 !important;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .cost-legend-value {
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
 }
 
 /* Блок окупаемости (ROI) на токенах Calm Academic */
 .roi-box {
-  background: var(--surface-solid) !important;
-  border: 1px solid var(--line) !important;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg, 16px);
   padding: 20px;
-  box-shadow: none !important;
+  box-shadow: none;
   margin-top: 24px;
 }
 
 :root[data-theme="dark"] .roi-box {
-  background: var(--surface-solid) !important;
-  border-color: var(--line) !important;
+  background: var(--surface-solid);
+  border-color: var(--line);
 }
 
 .roi-title {
   margin: 0 0 8px;
-  color: var(--text) !important;
-  font-size: var(--text-md) !important;
-  font-weight: 800 !important;
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: 800;
 }
 
 .roi-description {
-  font-size: 13px !important;
-  color: var(--text-muted) !important;
+  font-size: 13px;
+  color: var(--text-muted);
   margin-bottom: 16px;
-  line-height: 1.5 !important;
+  line-height: 1.5;
 }
 
 .roi-context {
   padding: 12px 16px;
   border-radius: var(--radius-sm, 8px);
-  font-size: 13px !important;
-  line-height: 1.45 !important;
-  border: 1px solid var(--line) !important;
-  background: var(--surface-soft) !important;
-  color: var(--text) !important;
+  font-size: 13px;
+  line-height: 1.45;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
   margin-bottom: 14px;
 }
 
 .roi-context--matched {
-  border-color: var(--line-grant) !important;
-  background: var(--surface-soft) !important;
-  color: var(--text) !important;
+  border-color: var(--line-grant);
+  background: var(--surface-soft);
+  color: var(--text);
 }
 
 .roi-context--missing {
-  border-color: var(--line) !important;
-  background: var(--surface-soft) !important;
-  color: var(--text) !important;
+  border-color: var(--line);
+  background: var(--surface-soft);
+  color: var(--text);
 }
 
 .roi-context--neutral {
-  border-color: var(--line) !important;
-  background: var(--surface-soft) !important;
-  color: var(--text-muted) !important;
+  border-color: var(--line);
+  background: var(--surface-soft);
+  color: var(--text-muted);
 }
 
 

@@ -87,6 +87,12 @@ body[data-page="profile"] {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
+.profile-name-input.is-invalid,
+.profile-name-input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--line-danger);
+}
+
 .profile-username.is-editing .profile-username-label {
   display: none;
 }
@@ -112,10 +118,12 @@ body[data-page="profile"] {
     border-color 0.15s ease;
 }
 
-.profile-edit-name-btn:hover {
-  background: var(--surface);
-  color: var(--text);
-  border-color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .profile-edit-name-btn:hover {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--accent);
+  }
 }
 
 .profile-edit-name-btn:focus-visible {
@@ -197,8 +205,10 @@ body[data-page="profile"] {
   border: 1px solid transparent;
 }
 
-.profile-action-btn--primary:hover:not(:disabled) {
-  background: var(--accent-strong);
+@media (hover: hover) and (pointer: fine) {
+  .profile-action-btn--primary:hover:not(:disabled) {
+    background: var(--accent-strong);
+  }
 }
 
 .profile-action-btn--primary:disabled {
@@ -212,9 +222,11 @@ body[data-page="profile"] {
   border: 1px solid var(--line);
 }
 
-.profile-action-btn--secondary:hover {
-  background: var(--surface);
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .profile-action-btn--secondary:hover {
+    background: var(--surface);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -306,8 +318,10 @@ body[data-page="profile"] {
   transition: color 0.15s ease;
 }
 
-.profile-section-tab:hover {
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .profile-section-tab:hover {
+    color: var(--text);
+  }
 }
 
 .profile-section-tab.is-active {
@@ -364,8 +378,10 @@ body[data-page="profile"] {
   transition: border-color 0.15s ease;
 }
 
-.profile-card-block:hover {
-  border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .profile-card-block:hover {
+    border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
+  }
 }
 
 .profile-card-head {
@@ -431,9 +447,11 @@ body[data-page="profile"] {
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.profile-scale-btn:hover:not(.is-active) {
-  color: var(--text);
-  background: var(--surface);
+@media (hover: hover) and (pointer: fine) {
+  .profile-scale-btn:hover:not(.is-active) {
+    color: var(--text);
+    background: var(--surface);
+  }
 }
 
 .profile-scale-btn.is-active {
@@ -452,7 +470,7 @@ body[data-page="profile"] {
 #profileInterestsInput,
 textarea.profile-input,
 .profile-input--textarea {
-  resize: none !important;
+  resize: none;
   min-height: 100px;
   max-height: 240px;
   line-height: 1.6;
@@ -493,10 +511,12 @@ textarea.profile-input,
     background-color 0.15s ease;
 }
 
-.profile-interest-chips button:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
+@media (hover: hover) and (pointer: fine) {
+  .profile-interest-chips button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
+  }
 }
 
 .profile-interest-chips button:focus-visible {
@@ -540,8 +560,10 @@ textarea.profile-input,
     transform 0.1s ease;
 }
 
-.profile-add:hover {
-  background: var(--accent-strong);
+@media (hover: hover) and (pointer: fine) {
+  .profile-add:hover {
+    background: var(--accent-strong);
+  }
 }
 
 .profile-add:active {
@@ -615,9 +637,11 @@ textarea.profile-input,
     background-color 0.15s ease;
 }
 
-.profile-exam-item:hover,
-.lang-item:hover {
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .profile-exam-item:hover,
+  .lang-item:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  }
 }
 
 .profile-exam-meta,
@@ -660,10 +684,12 @@ textarea.profile-input,
     border-color 0.15s ease;
 }
 
-.profile-delete:hover {
-  background: var(--color-danger-bg);
-  border-color: var(--line-danger);
-  color: var(--color-danger);
+@media (hover: hover) and (pointer: fine) {
+  .profile-delete:hover {
+    background: var(--color-danger-bg);
+    border-color: var(--line-danger);
+    color: var(--color-danger);
+  }
 }
 
 .profile-delete:focus-visible {
@@ -677,9 +703,11 @@ textarea.profile-input,
   border: 1px solid var(--line);
 }
 
-.profile-add--secondary:hover {
-  background: var(--surface);
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .profile-add--secondary:hover {
+    background: var(--surface);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -736,10 +764,12 @@ textarea.profile-input,
     border-color 0.15s ease;
 }
 
-.profile-delete--danger:hover {
-  background: var(--color-danger);
-  color: var(--text-inverse);
-  border-color: var(--color-danger);
+@media (hover: hover) and (pointer: fine) {
+  .profile-delete--danger:hover {
+    background: var(--color-danger);
+    color: var(--text-inverse);
+    border-color: var(--color-danger);
+  }
 }
 
 .profile-delete--danger:focus-visible {

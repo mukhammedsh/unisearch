@@ -1432,10 +1432,18 @@ export function initUniversitiesPage() {
         }
 
         if (emptyText) {
+            const showResetBtn = !state.only_saved;
             blocks.push(`
                 <div class="u-state-card u-state-card--empty" role="status">
                     <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.empty_title", "No results for current filters"))}</div>
                     <div class="u-state-card__text">${escapeHtml(emptyText)}</div>
+                    ${showResetBtn ? `
+                    <div class="u-state-card__actions">
+                        <button type="button" class="u-state-card__btn" data-action="reset-filters">
+                            ${heroIcon("arrow-path", 16)}
+                            <span>${escapeHtml(t("universities.empty.reset_filters", "Reset filters"))}</span>
+                        </button>
+                    </div>` : ""}
                 </div>
             `.trim());
         }
@@ -1948,7 +1956,7 @@ export function initUniversitiesPage() {
         el.locationLabel
     );
 
-    el.resetBtn?.addEventListener("click", () => {
+    function handleResetAllFilters() {
         clearSavedScrollPosition();
         Object.assign(state, {
             q: "",
@@ -1974,6 +1982,18 @@ export function initUniversitiesPage() {
         updateSliderVisibility(); 
         updateMobileFilterUi();
         fetchAndRender();
+    }
+
+    el.resetBtn?.addEventListener("click", () => {
+        motionPress(el.resetBtn);
+        handleResetAllFilters();
+    });
+
+    el.state?.addEventListener("click", (e) => {
+        const btn = e.target instanceof Element ? e.target.closest('[data-action="reset-filters"]') : null;
+        if (!btn) return;
+        motionPress(btn);
+        handleResetAllFilters();
     });
 
     el.list.addEventListener("click", (e) => {
@@ -2984,6 +3004,8 @@ export function initUniversitiesPage() {
             hasInitialListPaint = true;
 
             if (!items.length) {
+                if (el.list) el.list.innerHTML = "";
+                if (el.pagination) el.pagination.innerHTML = "";
                 renderUniversitiesState({
                     warningText,
                     emptyText: state.only_saved
@@ -3303,15 +3325,14 @@ export function initUniversitiesPage() {
         const totalPages = Math.ceil(total / state.limit);
         if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
         let html = ""; const p = state.page; const maxVisible = 5;
-        const createBtn = (page, content, isActive = false, extraClass = "") => {
+        const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
             const activeClass = isActive ? "page-btn--active" : "";
-            const classes = ["page-btn", activeClass, extraClass].filter(Boolean).join(" ");
-            return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ''}>${content}</button>`;
+            const disabledClass = isDisabled ? "page-btn--disabled" : "";
+            const classes = ["page-btn", activeClass, disabledClass, extraClass].filter(Boolean).join(" ");
+            return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ''}${isDisabled ? ' disabled' : ''}>${content}</button>`;
         };
-        if (p > 1) {
-            html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first");
-            html += createBtn(p - 1, `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`, false, "page-btn--nav page-btn--prev");
-        }
+        html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first", p <= 1);
+        html += createBtn(Math.max(1, p - 1), `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`, false, "page-btn--nav page-btn--prev", p <= 1);
         let startPage, endPage;
         if (totalPages <= maxVisible) {
             startPage = 1;
@@ -3335,10 +3356,8 @@ export function initUniversitiesPage() {
             html += createBtn(i, `<span class="page-btn__text">${i}</span>`, i === p, "page-btn--num");
         }
         if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        if (p < totalPages) {
-            html += createBtn(p + 1, `<span class="page-btn__text">${escapeHtml(t("universities.pagination.next", "Next"))}</span>${heroIcon("chevron-right", "page-btn__icon", { "stroke-width": 2 })}`, false, "page-btn--nav page-btn--next");
-            html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last");
-        }
+        html += createBtn(Math.min(totalPages, p + 1), `<span class="page-btn__text">${escapeHtml(t("universities.pagination.next", "Next"))}</span>${heroIcon("chevron-right", "page-btn__icon", { "stroke-width": 2 })}`, false, "page-btn--nav page-btn--next", p >= totalPages);
+        html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last", p >= totalPages);
         el.pagination.innerHTML = html;
         el.pagination.querySelectorAll("button").forEach(b => {
             b.onclick = () => {

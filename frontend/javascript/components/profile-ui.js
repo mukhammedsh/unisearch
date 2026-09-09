@@ -20,6 +20,7 @@ import {
   saveProfile,
   setupSlidingIndicator,
   showToast,
+  trapFocus,
 } from "../utils.js";
 import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { translateProgramName } from "../university-translations.js";
@@ -56,6 +57,8 @@ export function initProfileUI() {
         isProfilePath(window.location.pathname) ||
         document.getElementById("profilePage")
     );
+
+    let cleanupFocusTrap = null;
 
     if (!isDedicatedPage) {
         modal.setAttribute("aria-hidden", "true");
@@ -117,6 +120,40 @@ export function initProfileUI() {
     };
 
     const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
+
+    const setFieldInvalid = (el, isInvalid = true, message = "") => {
+        if (!el) return;
+        const errorId = el.id ? `${el.id}Error` : "";
+        const existingError = errorId ? document.getElementById(errorId) : null;
+        const describedBy = String(el.getAttribute("aria-describedby") || "")
+            .split(/\s+/)
+            .filter(Boolean);
+
+        if (isInvalid) {
+            el.classList.add("is-invalid");
+            el.setAttribute("aria-invalid", "true");
+            if (errorId && message) {
+                const error = existingError || document.createElement("p");
+                error.id = errorId;
+                error.className = "profile-field-error";
+                error.setAttribute("role", "alert");
+                error.textContent = message;
+                if (!existingError) el.insertAdjacentElement("afterend", error);
+                if (!describedBy.includes(errorId)) {
+                    el.setAttribute("aria-describedby", [...describedBy, errorId].join(" "));
+                }
+            }
+        } else {
+            el.classList.remove("is-invalid");
+            el.removeAttribute("aria-invalid");
+            existingError?.remove();
+            if (errorId && describedBy.includes(errorId)) {
+                const remaining = describedBy.filter((id) => id !== errorId);
+                if (remaining.length) el.setAttribute("aria-describedby", remaining.join(" "));
+                else el.removeAttribute("aria-describedby");
+            }
+        }
+    };
 
     const ensureProfileShape = (raw) => {
         return normalizeProfileData(raw);
@@ -710,6 +747,7 @@ export function initProfileUI() {
         const nextName = getNameDraft();
         const currentName = String(profile.name || "").trim();
         if (nextName === currentName) {
+            setFieldInvalid(nameInput, false);
             if (nameInput) nameInput.value = currentName;
             if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
             refreshSaveState();
@@ -717,14 +755,19 @@ export function initProfileUI() {
         }
         const validName = /^[A-Za-z0-9 ]+$/;
         if (nextName.length < 3 || nextName.length > 16) {
-            showToast(t("profile.name_invalid_length", "Name length must be 3вЂ‘16 chars"), "error");
+            const message = t("profile.name_invalid_length", "Name length must be 3–16 chars");
+            setFieldInvalid(nameInput, true, message);
+            nameInput?.focus();
             return false;
         }
         if (!validName.test(nextName)) {
-            showToast(t("profile.name_invalid_symbols", "Invalid symbols in name"), "error");
+            const message = t("profile.name_invalid_symbols", "Invalid symbols in name");
+            setFieldInvalid(nameInput, true, message);
+            nameInput?.focus();
             return false;
         }
 
+        setFieldInvalid(nameInput, false);
         const persisted = ensureProfileShape(loadProfile());
         persisted.name = nextName;
         saveProfile(persisted);
@@ -743,20 +786,30 @@ export function initProfileUI() {
 
     const validateBudgetInput = () => {
         const rawVal = String(budgetInput?.value || "").trim();
-        if (!rawVal) return { ok: true, value: "" };
+        if (!rawVal) {
+            setFieldInvalid(budgetInput, false);
+            return { ok: true, value: "" };
+        }
         if (rawVal.includes(".") || rawVal.includes(",")) {
-            showToast(t("profile.budget_integers_only", "Integers only (no dots/commas)"), "error");
+            const message = t("profile.budget_integers_only", "Integers only (no dots/commas)");
+            setFieldInvalid(budgetInput, true, message);
+            budgetInput?.focus();
             return { ok: false, value: "" };
         }
         const val = Number(rawVal);
         if (!Number.isFinite(val)) {
-            showToast(t("profile.budget_must_number", "Budget must be a number"), "error");
+            const message = t("profile.budget_must_number", "Budget must be a number");
+            setFieldInvalid(budgetInput, true, message);
+            budgetInput?.focus();
             return { ok: false, value: "" };
         }
         if (val < 0 || val > 1000000) {
-            showToast(t("profile.budget_limit", "Limit: 0вЂ‘1,000,000 USD"), "error");
+            const message = t("profile.budget_limit", "Limit: 0–1,000,000 USD");
+            setFieldInvalid(budgetInput, true, message);
+            budgetInput?.focus();
             return { ok: false, value: "" };
         }
+        setFieldInvalid(budgetInput, false);
         return { ok: true, value: val };
     };
 
@@ -787,11 +840,16 @@ export function initProfileUI() {
 
     const validateGpaInput = () => {
         const rawVal = String(gpaInput?.value || "").trim();
-        if (!rawVal) return { ok: true, value: "" };
+        if (!rawVal) {
+            setFieldInvalid(gpaInput, false);
+            return { ok: true, value: "" };
+        }
 
         const val = Number(rawVal);
         if (!Number.isFinite(val)) {
-            showToast(t("profile.gpa_must_number", "GPA must be a number"), "error");
+            const message = t("profile.gpa_must_number", "GPA must be a number");
+            setFieldInvalid(gpaInput, true, message);
+            gpaInput?.focus();
             return { ok: false, value: "" };
         }
 
@@ -800,9 +858,12 @@ export function initProfileUI() {
         const max = scale;
 
         if (val < min || val > max) {
-            showToast(tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}`), "error");
+            const message = tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}`);
+            setFieldInvalid(gpaInput, true, message);
+            gpaInput?.focus();
             return { ok: false, value: "" };
         }
+        setFieldInvalid(gpaInput, false);
         return { ok: true, value: Number(Math.round(val * 100) / 100) };
     };
 
@@ -824,6 +885,10 @@ export function initProfileUI() {
     };
 
     const applyDraftToInputs = () => {
+        setFieldInvalid(nameInput, false);
+        setFieldInvalid(budgetInput, false);
+        setFieldInvalid(gpaInput, false);
+        setFieldInvalid(examScoreInput, false);
         if (nameInput) nameInput.value = profile.name;
         if (nameDisplay) nameDisplay.textContent = profile.name;
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
@@ -950,6 +1015,10 @@ export function initProfileUI() {
 
         closeUnsavedDialog(false);
         closeResetDialog(false);
+        if (typeof cleanupFocusTrap === "function") {
+            cleanupFocusTrap();
+            cleanupFocusTrap = null;
+        }
 
         const finish = () => {
             window.dispatchEvent(new Event("profileModalClosed"));
@@ -1068,6 +1137,7 @@ export function initProfileUI() {
 
     if (budgetInput) {
         budgetInput.addEventListener("input", () => {
+            setFieldInvalid(budgetInput, false);
             profile.budget = String(budgetInput.value || "").trim();
             lowBudgetGrantHintDismissed = false;
             refreshSaveState();
@@ -1101,6 +1171,7 @@ export function initProfileUI() {
 
     if (gpaInput) {
         gpaInput.addEventListener("input", () => {
+            setFieldInvalid(gpaInput, false);
             profile.gpa = String(gpaInput.value || "").trim();
             refreshSaveState();
         });
@@ -1186,6 +1257,10 @@ export function initProfileUI() {
             modal.style.display = "flex";
         }
         modal.removeAttribute("aria-hidden");
+        if (!isDedicatedPage) {
+            if (typeof cleanupFocusTrap === "function") cleanupFocusTrap();
+            cleanupFocusTrap = trapFocus(modal);
+        }
         requestAnimationFrame(() => {
             updateProfileTabsIndicator?.();
         });
@@ -1267,8 +1342,15 @@ export function initProfileUI() {
             commitProfileName(true);
         });
         nameInput.addEventListener("input", () => {
+            setFieldInvalid(nameInput, false);
             if (!profileUsernameDiv.classList.contains("is-editing")) return;
             refreshSaveState();
+        });
+    }
+
+    if (examScoreInput) {
+        examScoreInput.addEventListener("input", () => {
+            setFieldInvalid(examScoreInput, false);
         });
     }
 
@@ -1291,6 +1373,8 @@ export function initProfileUI() {
                         && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score");
 
                 if (usesNumberInput && Number.isFinite(min) && score < min) {
+                    setFieldInvalid(examScoreInput, true);
+                    examScoreInput?.focus();
                     showToast(
                         tFormat(
                             "profile.exam_score_min",
@@ -1302,6 +1386,8 @@ export function initProfileUI() {
                     return;
                 }
                 if (usesNumberInput && Number.isFinite(max) && score > max) {
+                    setFieldInvalid(examScoreInput, true);
+                    examScoreInput?.focus();
                     showToast(
                         tFormat(
                             "profile.exam_score_max",
@@ -1318,6 +1404,8 @@ export function initProfileUI() {
                     const k = (score - base) / step;
                     const diff = Math.abs(k - Math.round(k));
                     if (diff > 1e-9) {
+                        setFieldInvalid(examScoreInput, true);
+                        examScoreInput?.focus();
                         showToast(
                             tFormat(
                                 "profile.exam_score_step",
@@ -1342,16 +1430,22 @@ export function initProfileUI() {
                 && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
 
             if ((mode === "number" || compositeUsesParentScore) && Number.isNaN(score)) {
+                setFieldInvalid(examScoreInput, true);
+                examScoreInput?.focus();
                 showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
                 return;
             }
 
             if ((mode === "number" || compositeUsesParentScore) && name !== "IELTS" && name !== "HKDSE_WEIGHTED_TOTAL" && !Number.isInteger(score)) {
+                setFieldInvalid(examScoreInput, true);
+                examScoreInput?.focus();
                 showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
                 return;
             }
 
             if ((mode === "number" || compositeUsesParentScore) && name === "IELTS" && (score % 0.5 !== 0)) {
+                setFieldInvalid(examScoreInput, true);
+                examScoreInput?.focus();
                 showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
                 return;
             }
@@ -1432,6 +1526,7 @@ export function initProfileUI() {
                 refreshSaveState();
                 renderProfileData();
 
+                setFieldInvalid(examScoreInput, false);
                 examScoreInput.value = "";
                 examNameSelect.value = "";
                 syncExamScoreInputState();
@@ -1439,6 +1534,8 @@ export function initProfileUI() {
                     initCustomSelect("examNameSelect");
                 }
             } catch (e) {
+                setFieldInvalid(examScoreInput, true);
+                examScoreInput?.focus();
                 showToast(formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || ""), "error");
             }
         };

@@ -105,8 +105,10 @@ body[data-page="home"] {
   color: var(--text-inverse);
 }
 
-.btn-primary:hover {
-  background: var(--accent-strong);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background: var(--accent-strong);
+  }
 }
 
 .btn-primary:active {
@@ -132,8 +134,10 @@ body[data-page="home"] {
   border-color: var(--line);
 }
 
-.home-secondary-btn:hover {
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .home-secondary-btn:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  }
 }
 
 .home-secondary-btn:active {
@@ -172,8 +176,10 @@ body[data-page="home"] {
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
-.hero-fact:hover {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .hero-fact:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  }
 }
 
 .hero-fact__value {
@@ -262,8 +268,10 @@ body[data-page="home"] {
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
-.feature-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  }
 }
 
 /* Icon wrap — accent-tinted rounded square */

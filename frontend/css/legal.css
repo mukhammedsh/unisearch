@@ -87,9 +87,11 @@
     border-color var(--motion-fast, 0.15s) ease;
 }
 
-.legal-nav a:hover {
-  color: var(--text);
-  background: var(--surface-soft);
+@media (hover: hover) and (pointer: fine) {
+  .legal-nav a:hover {
+    color: var(--text);
+    background: var(--surface-soft);
+  }
 }
 
 .legal-nav a.is-active {
@@ -227,8 +229,10 @@
   transition: color var(--motion-fast) ease;
 }
 
-.legal-doc a:hover {
-  color: var(--accent-strong, var(--accent));
+@media (hover: hover) and (pointer: fine) {
+  .legal-doc a:hover {
+    color: var(--accent-strong, var(--accent));
+  }
 }
 
 /* --------------------------------------------------------------------------

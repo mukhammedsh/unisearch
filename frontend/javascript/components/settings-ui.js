@@ -1,4 +1,4 @@
-import { closeMotionLayer, replayMotion, showToast } from "../utils.js";
+import { closeMotionLayer, replayMotion, showToast, trapFocus } from "../utils.js";
 import { t } from "../i18n.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
@@ -22,6 +22,8 @@ export function initSettingsUI() {
   const settingInputs = Array.from(modal?.querySelectorAll("[data-setting-input]") || []);
   if (!modal || !openBtn || !settingInputs.length) return;
 
+  let cleanupFocusTrap = null;
+
   const syncSettingsInputs = () => {
     settingInputs.forEach((input) => {
       const key = String(input.getAttribute("data-setting-input") || "").trim();
@@ -37,10 +39,16 @@ export function initSettingsUI() {
     modal.setAttribute("aria-hidden", "false");
     modal.classList.add("is-open");
     document.body.classList.add("modal-open");
+    if (typeof cleanupFocusTrap === "function") cleanupFocusTrap();
+    cleanupFocusTrap = trapFocus(modal);
     closeBtn?.focus({ preventScroll: true });
   };
 
   const closeSettings = () => {
+    if (typeof cleanupFocusTrap === "function") {
+      cleanupFocusTrap();
+      cleanupFocusTrap = null;
+    }
     const finish = () => {
       modal.classList.remove("is-open", "is-closing");
       modal.setAttribute("aria-hidden", "true");
