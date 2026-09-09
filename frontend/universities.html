@@ -248,27 +248,32 @@
       </aside>
 
       <section class="u-content">
-        <div class="u-top">
-          <div class="u-search">
-            <span class="u-search-icon" aria-hidden="true">
-              <span data-heroicon="magnifying-glass" data-icon-size="20"></span>
-            </span>
-            <input id="qInput" type="text" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" />
+        <div class="u-toolbar u-top">
+          <div class="u-top-meta">
+            <div class="u-found" aria-live="polite">
+              <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
+            </div>
           </div>
 
-          <div class="u-controls">
-             <div class="u-found">
-               <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount">0</span> <span data-i18n="universities.found_suffix">universities</span>
-             </div>
+          <div class="u-search-row">
+            <div class="u-search">
+              <span class="u-search-icon" aria-hidden="true">
+                <span data-heroicon="magnifying-glass" data-icon-size="20"></span>
+              </span>
+              <input id="qInput" type="text" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" autocomplete="off" spellcheck="false" />
+              <button id="searchClearBtn" class="u-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
+                <span data-heroicon="x-mark" data-icon-size="16"></span>
+              </button>
+            </div>
 
-             <div class="view-toggles">
-                <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list">
-                   <span data-heroicon="bars-3-bottom-left" data-icon-size="20"></span>
-                </button>
-                <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map">
-                   <span data-heroicon="map" data-icon-size="20"></span>
-                </button>
-             </div>
+            <div class="view-toggles" role="group" aria-label="View mode">
+              <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list" aria-pressed="true">
+                <span data-heroicon="bars-3-bottom-left" data-icon-size="18"></span>
+              </button>
+              <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map" aria-pressed="false">
+                <span data-heroicon="map" data-icon-size="18"></span>
+              </button>
+            </div>
           </div>
         </div>
 

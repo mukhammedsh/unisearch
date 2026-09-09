@@ -22,6 +22,12 @@ All notable project changes should be recorded here.
   - Resolved click interception between `.uni-card-actions` and `.uni-card-link-overlay`.
   - Fixed UniFit filter tooltips (`.u-tooltip`): restored initial hidden state (`opacity: 0; visibility: hidden;`) and hover/click disclosure behavior; added automated E2E test in `tests/e2e/universities-ai-sort-flow.spec.js`.
   - Fixed list/map view mode toggle (`.view-toggles` / `.view-btn`): restored `display: inline-flex` and `overflow: hidden`, eliminating button gap whitespace and preventing purple active/hover background bleed over rounded container bounds.
+- Redesigned University Catalog & Comparison Toolbar Architecture (`universities.html`, `universities.css`, `universities.js`, `Localization/ru`, `Localization/eng`, `icons.js`):
+  - Completely eliminated the nested-box ("окно в окошке") card anti-pattern around the search toolbar (`.u-top`), removing artificial borders, background surfaces, and box padding across desktop, tablet, and mobile viewports.
+  - Lifted the results counter (`.u-top-meta` / `.u-found`) to the top edge of the catalog content column, aligning with the sidebar filters header and eliminating wasted vertical whitespace.
+  - Consolidated the search bar (`.u-search`) and list/map view switcher (`.view-toggles`) into a single horizontal row (`.u-search-row`), saving 40-50px of vertical space and elevating university cards higher in the viewport.
+  - Added an interactive search clear action (`#searchClearBtn`) using Heroicons `x-mark`, dynamically displaying when query text is present and clearing the search state with refocus on click.
+  - Aligned all search row component heights, border-radii, and spacing to the strict 4/8px spatial scale and semantic tokens.
 
 ## 5.0.1 (2026-09-09) - University Detail Layout Refinements, Admission Track Polish, and Complete Zero-Hardcode CSS Tokens Refactor
 - Completed full CSS design system refactoring and zero-hardcoded-colors milestone (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):

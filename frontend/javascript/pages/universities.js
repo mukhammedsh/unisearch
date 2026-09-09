@@ -164,7 +164,7 @@ export function initUniversitiesPage() {
     };
 
     const el = {
-        qInput: $("qInput"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
+        qInput: $("qInput"), searchClearBtn: $("searchClearBtn"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
         stateSelect: $("stateSelect"), citySelect: $("citySelect"),
         minInput: $("minCostInput"), maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
@@ -1834,17 +1834,34 @@ export function initUniversitiesPage() {
     }, 250);
 
     // --- Listeners ---
+    function syncSearchClearButton() {
+        if (!el.searchClearBtn) return;
+        const hasText = Boolean(String(el.qInput?.value || "").trim().length);
+        el.searchClearBtn.hidden = !hasText;
+    }
+
     el.qInput?.addEventListener("input", () => {
         state.q = el.qInput.value.trim();
+        syncSearchClearButton();
         renderSearchSuggestions();
         refetch();
     });
     el.qInput?.addEventListener("blur", () => window.setTimeout(hideSearchSuggestions, 160));
+    el.searchClearBtn?.addEventListener("click", () => {
+        if (!el.qInput) return;
+        el.qInput.value = "";
+        state.q = "";
+        syncSearchClearButton();
+        hideSearchSuggestions();
+        el.qInput.focus();
+        refetch();
+    });
     ensureSearchSuggestionsNode()?.addEventListener("click", (event) => {
         const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
         if (!btn || !el.qInput) return;
         el.qInput.value = String(btn.getAttribute("data-value") || "");
         state.q = el.qInput.value.trim();
+        syncSearchClearButton();
         hideSearchSuggestions();
         refetch();
     });
@@ -2706,7 +2723,9 @@ export function initUniversitiesPage() {
     }
 
     function applyToForm() {
-        if(el.qInput) el.qInput.value = state.q; if(el.countrySelect) el.countrySelect.value = state.country;
+        if(el.qInput) el.qInput.value = state.q;
+        syncSearchClearButton();
+        if(el.countrySelect) el.countrySelect.value = state.country;
         if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
         if (el.sortSelect) {
             state.sort = normalizeSortMode(state.sort);

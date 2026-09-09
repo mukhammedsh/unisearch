@@ -382,6 +382,7 @@ universities.pagination.next: Next
 universities.pagination.prev: Prev
 universities.reset: Reset
 universities.search_placeholder: Search university...
+universities.search_clear: Clear search
 universities.select_country_first: Select country first
 universities.suggestions.university: University
 universities.suggestions.city: City

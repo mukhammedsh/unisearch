@@ -383,6 +383,7 @@ universities.pagination.next: Далее
 universities.pagination.prev: Назад
 universities.reset: Сброс
 universities.search_placeholder: Поиск университета...
+universities.search_clear: Очистить поиск
 universities.select_country_first: Сначала выберите страну
 universities.suggestions.university: Университет
 universities.suggestions.city: Город
