@@ -32,6 +32,13 @@
   --radius-circle: 50%;
   --grant-soft: rgba(16, 185, 129, 0.10);
   --grant-soft-strong: rgba(16, 185, 129, 0.18);
+  --color-danger: #dc2626;
+  --color-danger-muted: #b91c1c;
+  --color-success: #16a34a;
+  --color-success-muted: #065f46;
+  --color-warning: #b45309;
+  --color-warning-bg: #fff7ed;
+  --color-warning-bright: #facc15;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.12);
   --footer-icon-filter: none;
@@ -71,6 +78,13 @@
   --line-danger: rgba(239, 68, 68, 0.40);
   --grant-soft: rgba(16, 185, 129, 0.14);
   --grant-soft-strong: rgba(16, 185, 129, 0.24);
+  --color-danger: #fca5a5;
+  --color-danger-muted: #ef4444;
+  --color-success: #a7f3d0;
+  --color-success-muted: #34d399;
+  --color-warning: #fde68a;
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-warning-bright: #fbbf24;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
   --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.5);
   --footer-icon-filter: invert(1);
