@@ -70,7 +70,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-page-scope__eyebrow {
   margin: 0 0 6px;
   color: var(--text);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.35;
   font-weight: 700;
 }
@@ -1046,7 +1046,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-tour-title {
   margin: 0;
-  font-size: 26px;
+  font-size: var(--text-2xl);
   line-height: 1.2;
   color: var(--text);
   font-weight: 700;
@@ -1419,7 +1419,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .uni-title {
   margin: 0;
-  font-size: 15px;
+  font-size: var(--text-base);
   font-weight: 600;
   color: var(--text);
   min-height: 0;
@@ -1434,7 +1434,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .uni-loc {
   margin: 0;
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: var(--text-sm);
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -1468,7 +1468,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .uni-badge {
-  --uni-pill-font-size: 10.5px;
+  --uni-pill-font-size: var(--text-xs);
   --uni-pill-pad-y: 2px;
   --uni-pill-pad-x: 6px;
   --uni-badge-gap: 5px;
@@ -1478,7 +1478,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   background: var(--accent-faint);
   border: 1px solid var(--accent-soft);
   color: var(--text-muted);
-  font-size: 10.5px;
+  font-size: var(--text-xs);
   display: flex;
   flex-direction: column;
   gap: var(--uni-badge-gap);
@@ -1495,7 +1495,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   margin-top: 2px;
   padding-left: 9px;
   border-left: 2px solid var(--line-accent);
-  font-size: 10.5px;
+  font-size: var(--text-xs);
   line-height: 1.4;
   color: var(--text-muted);
   min-height: 0;
@@ -1512,7 +1512,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   gap: 5px;
   padding: var(--uni-pill-pad-y, 2px) var(--uni-pill-pad-x, 6px);
   border-radius: var(--radius-sm);
-  font-size: var(--uni-pill-font-size, 10.5px);
+  font-size: var(--uni-pill-font-size, var(--text-xs));
   font-weight: 700;
   border: 1px solid transparent;
   margin-bottom: 0;
@@ -1577,7 +1577,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   display: block;
   margin-bottom: 3px;
   color: var(--text-muted);
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1.05;
   font-weight: 500;
   text-transform: uppercase;
@@ -1597,7 +1597,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .uni-card-separator {
   width: 100%;
   border-top: 1px solid var(--line);
-  margin: -2px 0 -3px;
+  margin: 0;
 }
 
 .uni-metric--missing .uni-metric-value {
@@ -2202,7 +2202,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-uni-card h3 {
   margin: 0;
   color: var(--text);
-  font-size: 19px;
+  font-size: var(--text-lg);
   line-height: 1.22;
   font-weight: 600;
 }
@@ -2827,7 +2827,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-block-head h2 {
   margin: 0;
   color: var(--text);
-  font-size: 22px;
+  font-size: var(--text-xl);
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -2860,7 +2860,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-reason-group h3 {
   margin: 4px 0 12px;
   color: var(--text);
-  font-size: 17px;
+  font-size: var(--text-md);
   line-height: 1.25;
 }
 
@@ -2944,7 +2944,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-score-card h3 {
   margin: 0;
   color: var(--text);
-  font-size: 15px;
+  font-size: var(--text-base);
   font-weight: 600;
   line-height: 1.25;
 }
@@ -3503,7 +3503,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  font-size: 15px;
+  font-size: var(--text-base);
 }
 
 .page-btn:hover {
@@ -3788,7 +3788,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-tour-title {
-    font-size: 22px;
+    font-size: var(--text-xl);
   }
 
   .u-tour-slide {
@@ -3843,7 +3843,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-search input {
-    font-size: 15px;
+    font-size: var(--text-md);
     padding: 12px 12px 12px 40px;
   }
 
@@ -4001,7 +4001,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .u-search input {
   padding: 15px 16px 15px 46px;
-  font-size: 15px;
+  font-size: var(--text-md);
 }
 
 .u-found {
@@ -4154,7 +4154,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .uni-price b {
-  font-size: 15px;
+  font-size: var(--text-base);
 }
 
 .uni-logo {
@@ -4173,7 +4173,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .uni-title {
   min-height: 0;
-  font-size: 17px;
+  font-size: var(--text-md);
   line-height: 1.25;
   letter-spacing: 0;
 }
@@ -4695,7 +4695,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .u-map-results-head h3 {
   margin: 0;
-  font-size: 22px;
+  font-size: var(--text-xl);
   line-height: 1.05;
   letter-spacing: 0;
 }
@@ -4934,7 +4934,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-map-results-head h3 {
-    font-size: 19px;
+    font-size: var(--text-lg);
     line-height: 1.15;
   }
 
@@ -5158,7 +5158,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 
 .uni-badge {
-  --uni-pill-font-size: 10.25px;
+  --uni-pill-font-size: var(--text-xs);
   --uni-pill-pad-y: 5px;
   --uni-pill-pad-x: 8px;
   --uni-badge-gap: 6px;
@@ -5192,7 +5192,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   gap: 6px;
   padding: var(--uni-pill-pad-y, 5px) var(--uni-pill-pad-x, 8px);
   border-radius: 10px;
-  font-size: var(--uni-pill-font-size, 10.25px);
+  font-size: var(--uni-pill-font-size, var(--text-xs));
   line-height: 1.2;
   min-height: 34px;
 }
@@ -5221,7 +5221,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .uni-card-separator {
-  margin: -2px 0 -4px;
+  margin: 0;
 }
 
 .uni-price {
@@ -5231,7 +5231,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 @media (max-width: 780px) {
   .uni-badge {
-    --uni-pill-font-size: 9.25px;
+    --uni-pill-font-size: 10px;
     --uni-pill-pad-y: 4px;
     --uni-pill-pad-x: 7px;
     --uni-badge-gap: 5px;
@@ -5492,7 +5492,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     border-left: 0;
     border-top: 1px solid var(--line);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    padding: 16px 16px calc(18px + env(safe-area-inset-bottom));
+    padding: 0 16px calc(18px + env(safe-area-inset-bottom));
     transform: translateY(100%);
     box-shadow: var(--shadow-md);
   }
@@ -5503,10 +5503,10 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
   .u-filter-title {
     position: sticky;
-    top: -16px;
+    top: 0;
     z-index: 2;
-    margin: -16px -16px 14px;
-    padding: 14px 16px 12px;
+    margin: 0 0 12px;
+    padding: 14px 0 12px;
     background: var(--card);
     border-bottom: 1px solid var(--line);
   }

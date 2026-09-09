@@ -14,7 +14,7 @@
    Hero Section
    -------------------------------------------------------------------------- */
 .legal-hero {
-  padding: 0 0 18px;
+  padding: 0 0 var(--space-5);
   margin-bottom: 24px;
   border-bottom: 1px solid var(--line);
 }
@@ -76,7 +76,7 @@
   text-decoration: none;
   color: var(--text-muted);
   border-radius: 8px;
-  font-size: 13.5px;
+  font-size: var(--text-sm);
   line-height: 1.35;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -109,7 +109,7 @@
 .legal-section {
   position: relative;
   display: block;
-  margin: 0 0 18px;
+  margin: 0 0 var(--space-5);
   padding: 24px 28px;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -141,7 +141,7 @@
 }
 
 .legal-section h2 {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-4);
   padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
   font-size: clamp(20px, 2vw, 24px);
@@ -178,13 +178,13 @@
 
 /* Callout Notices */
 .legal-callout {
-  margin: 14px 0;
-  padding: 14px 18px;
+  margin: var(--space-4) 0;
+  padding: var(--space-4) var(--space-5);
   background: var(--surface-soft);
   border-left: 3.5px solid var(--accent);
   border-radius: var(--radius-base);
   color: var(--text);
-  font-size: 14.5px;
+  font-size: var(--text-base);
   line-height: 1.52;
 }
 
@@ -199,7 +199,7 @@
 }
 
 .legal-callout p {
-  margin: 0 0 6px;
+  margin: 0 0 var(--space-2);
 }
 
 .legal-callout p:last-child {
@@ -208,10 +208,10 @@
 
 /* Lists */
 .legal-list {
-  margin: 10px 0 14px;
+  margin: var(--space-3) 0 var(--space-4);
   padding-left: 24px;
   color: var(--text);
-  font-size: 15.5px;
+  font-size: var(--text-md);
   line-height: 1.58;
 }
 
@@ -285,7 +285,7 @@
   .legal-sidebar {
     top: var(--nav-height, 70px);
     margin: 0 0 16px;
-    padding: 6px 0;
+    padding: var(--space-2) 0;
     background: var(--bg);
     border-bottom: 1px solid var(--line);
     position: sticky;
@@ -296,10 +296,10 @@
 
   .legal-nav {
     display: flex;
-    gap: 6px;
+    gap: var(--space-2);
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 6px;
+    padding: var(--space-2);
     border-radius: 10px;
     border: 1px solid var(--line);
     background: var(--surface-soft);
@@ -316,7 +316,7 @@
   .legal-nav a {
     flex: 0 0 auto;
     white-space: nowrap;
-    padding: 7px 12px;
+    padding: var(--space-2) var(--space-3);
     font-size: 13px;
     min-height: 36px;
     border-left: none;
@@ -331,9 +331,9 @@
 
   .legal-section {
     scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
-    padding: 18px 20px;
+    padding: var(--space-5);
     border-radius: 14px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   .legal-hero h1 {
@@ -348,12 +348,12 @@
   }
 
   .legal-hero {
-    padding-bottom: 14px;
+    padding-bottom: 16px;
     margin-bottom: 16px;
   }
 
   .legal-section {
-    padding: 16px 14px;
+    padding: var(--space-4);
     border-radius: 12px;
   }
 
@@ -364,12 +364,12 @@
   }
 
   .legal-doc {
-    font-size: 15px;
+    font-size: var(--text-base);
     line-height: 1.52;
   }
 
   .legal-list {
-    font-size: 14.5px;
+    font-size: var(--text-base);
     padding-left: 18px;
   }
 }

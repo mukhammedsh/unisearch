@@ -17,6 +17,9 @@ Use this document as the source of truth for new UI work. The current baseline i
 Use existing CSS variables instead of new hard-coded palettes. All colors in components and pages must reference these tokens:
 
 - Fonts: `--font-sans` for body/UI and `--font-display` for headings and important labels.
+- Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
+- Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
+- Spacing (8pt / 4pt grid): `--space-1` (4px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-5` (20px), `--space-6` (24px), `--space-8` (32px), `--space-12` (48px), `--space-16` (64px).
 - Accent: `--accent` (`#5D17EB` both light and dark), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`).
 - Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`.
 - Text: `--text`, `--text-muted`.
@@ -111,19 +114,21 @@ UniSearch uses a strict 8-point spatial system (with 4px half-steps for compact 
 - **Single-layer padding responsibility:** Do not stack identical padding across nested wrapper divs (e.g. section padding + container padding + inner card padding). Allocate padding only to the visual surface boundary.
 - **No negative margin compensation:** Never use negative margins (`margin-top: -Npx`) to counteract unwanted gaps or line-height offsets. Eliminate the source margin or align the typography instead.
 
-### 3. Spacing Scale
-- `4px`: Micro-spacing (icon + label, pill internal spacing).
-- `8px`: Compact element spacing (tag lists, badge groups, button icon gap).
-- `12px`: Moderate spacing (subtitles, secondary metadata, compact form fields).
-- `16px`: Standard grid gap, input row spacing, mobile card padding.
-- `20px`: Default desktop card padding, standard vertical rhythm between distinct blocks.
-- `24px`: Section gap, toolbar-to-grid spacing, major card padding.
-- `32px`: Spacing between major independent page sections.
-- `48px / 64px`: Page header top/bottom hero spacing on desktop.
+### 3. Spacing Scale (Tokens)
+- `--space-1` (`4px`): Micro-spacing (icon + label, pill internal spacing).
+- `--space-2` (`8px`): Compact element spacing (tag lists, badge groups, button icon gap).
+- `--space-3` (`12px`): Moderate spacing (subtitles, secondary metadata, compact form fields).
+- `--space-4` (`16px`): Standard grid gap, input row spacing, mobile card padding.
+- `--space-5` (`20px`): Default desktop card padding, standard vertical rhythm between distinct blocks.
+- `--space-6` (`24px`): Section gap, toolbar-to-grid spacing, major card padding.
+- `--space-8` (`32px`): Spacing between major independent page sections.
+- `--space-12` (`48px`) / `--space-16` (`64px`): Page header top/bottom hero spacing on desktop.
+
+Arbitrary pixel spacing (`3px`, `6px`, `10px`, `14px`, `18px`, `22px`, `26px`, `30px`) is strictly prohibited and guarded by `npm run check:design-lint`.
 
 ### 4. Responsive Spacing
-- On desktop, page container padding is `24px` to `32px`.
-- On tablet/mobile (`<= 768px` and `<= 480px`), compress outer padding to `12px - 16px` and card padding to `12px - 16px`. Ensure layout paddings do not exceed 20% of total viewport width.
+- On desktop, page container padding is `24px` to `32px` (`var(--space-6)` to `var(--space-8)`).
+- On tablet/mobile (`<= 768px` and `<= 480px`), compress outer padding to `12px - 16px` (`var(--space-3)` - `var(--space-4)`) and card padding to `12px - 16px`. Ensure layout paddings do not exceed 20% of total viewport width.
 
 ## Components
 
@@ -163,11 +168,41 @@ UniSearch uses a strict 8-point spatial system (with 4px half-steps for compact 
 
 ## Type Scale
 
-- Page title: `clamp(34px, 5vw, 58px)` for information pages, smaller `clamp(22px, 5vw, 38px)` for detail headers.
-- Section heading: `24-34px`.
-- Card title: `15-21px`, depending on density.
-- Body: `14-18px`, with `1.55-1.75` line-height.
-- Metadata and labels: `11-13px`, bold, often uppercase only for compact labels.
+Use standardized typography tokens instead of arbitrary pixel values:
+
+| Semantic Token | Size | Line Height | Usage |
+| :--- | :--- | :--- | :--- |
+| `--text-xs` | `11px` | `--leading-tight` (1.25) | Badges, counters, compact metadata labels |
+| `--text-sm` | `13px` | `--leading-normal` (1.5) | Secondary descriptions, card hints, filter options |
+| `--text-base` | `14px` | `--leading-normal` (1.5) | Primary interface body text, buttons, inputs |
+| `--text-md` | `16px` | `--leading-normal` (1.5) | Lead paragraphs, group subheadings |
+| `--text-lg` | `18px` | `--leading-tight` (1.25) | Card titles, modal titles |
+| `--text-xl` | `20px` | `--leading-tight` (1.25) | Section titles, drawer headers |
+| `--text-2xl` | `24px` | `--leading-tight` (1.25) | Page section titles, hero subheadings |
+| `--text-3xl` | `28px` | `--leading-tight` (1.25) | Primary page headings |
+
+Fluid display headings may use `clamp(34px, 5vw, 58px)` for information pages or `clamp(22px, 5vw, 38px)` for detail headers. Fractional font sizes (`11.5px`, `12.5px`, `13.5px`) and non-scale sizes are strictly forbidden and guarded by `npm run check:design-lint`.
+
+### Migration Matrix (Legacy to Tokens)
+
+When cleaning up legacy or vibe-coded CSS, map values according to this standard dictionary:
+
+| Legacy / Arbitrary Value | Target Token / Replacement | Rationale |
+| :--- | :--- | :--- |
+| `11.5px` | `var(--text-xs)` (`11px`) | Eliminate fractional pixel blur, WCAG readable |
+| `12.5px`, `13px`, `13.5px` | `var(--text-sm)` (`13px`) | Standardize secondary/caption scale |
+| `15px` | `var(--text-base)` (`14px`) or `var(--text-md)` (`16px`) | Map to nearest even baseline |
+| `17px` | `var(--text-md)` (`16px`) or `var(--text-lg)` (`18px`) | Standardize subheading hierarchy |
+| `19px` | `var(--text-lg)` (`18px`) | Align card headings to 18px standard |
+| `22px` | `var(--text-xl)` (`20px`) | Standardize section title step |
+| `margin: -Npx` | `margin: 0` + container `gap` / `align-items` | Eliminate negative compensation hacks |
+| `margin: 6px` / `padding: 6px` | `var(--space-2)` (`8px`) | Snap to 8pt/4pt spatial grid |
+| `margin: 10px` / `gap: 10px` | `var(--space-3)` (`12px`) | Snap to 4px half-step scale |
+| `margin: 14px` / `padding: 14px`| `var(--space-4)` (`16px`) or `var(--space-3)` (`12px`) | Snap to nearest 4px grid step |
+| `margin: 18px` / `padding: 18px`| `var(--space-5)` (`20px`) or `var(--space-4)` (`16px`) | Snap to standard card rhythm |
+| `padding: 22px` / `padding: 26px`| `var(--space-6)` (`24px`) | Standardize major surface padding |
+| `padding: 30px` / `gap: 30px` | `var(--space-8)` (`32px`) | Snap macro spacing to 32px |
+| `margin: 0 !important` | Remove `!important`, fix cascade | Clean specificity conflicts |
 
 Use tight letter spacing only for large headings. Body text should keep normal readability.
 

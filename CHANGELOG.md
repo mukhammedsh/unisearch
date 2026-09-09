@@ -2,6 +2,21 @@
 
 All notable project changes should be recorded here.
 
+## 5.0.2 (In progress) - Design System Scale Standardization, Typography Tokenization, and Automated Design Lint Guard
+- Standardized typography and spatial grid scale across all 10 CSS files according to Calm Academic Workspace specifications (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):
+  - 100% eliminated fractional font-size declarations (35 -> 0), converting all arbitrary fractions (`11.5px`, `13.5px`, `14.5px`, `15.5px`, etc.) to semantic design tokens.
+  - 100% eliminated non-scale font-size declarations across the entire codebase (33 -> 0), mapping all legacy pixel values (`15px`, `17px`, `19px`, `22px`, `26px`, `9px`) to unified scale tokens (`--text-xs` through `--text-3xl`).
+  - 100% eliminated layout compensation hacks and negative margins across all stylesheets, replacing negative breakout offsets with clean component-level ownership and natural spacing.
+  - Achieved zero violations (0 violations) in 7 out of 10 stylesheets (`about.css`, `error.css`, `guide.css`, `index.css`, `legal.css`, `profile.css`, `ranking.css`).
+  - Reduced total design lint violations from 885 to 684 (-201 violations, -22.7%).
+- Introduced semantic typography and spacing design tokens in `frontend/css/style.css`:
+  - Type scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
+  - Leading tokens: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
+  - 4/8px Spacing scale: `--space-1` (4px) through `--space-16` (64px).
+- Created automated Design Lint Guard tool (`scripts/check-design-lint.mjs`, `scripts/design-lint-baseline.json`, `npm run check:design-lint`):
+  - Integrated into `package.json` `"test:all"` pipeline to enforce strict regression prevention for typography, fractional pixels, negative margins, and non-4px grid deviations.
+- Updated Design System documentation (`docs/design-system.md`) with comprehensive token specification tables, migration matrices, and grid rules.
+
 ## 5.0.1 (2026-09-09) - University Detail Layout Refinements, Admission Track Polish, and Complete Zero-Hardcode CSS Tokens Refactor
 - Completed full CSS design system refactoring and zero-hardcoded-colors milestone (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):
   - Eliminated all 596 hardcoded HEX, RGB, and HSL color literals across all 10 project stylesheets down to exactly 0 violations.

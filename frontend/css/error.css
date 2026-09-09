@@ -62,8 +62,8 @@ body[data-page="error-404"] main.error-page {
 }
 
 .error-kicker {
-  margin: 0 0 6px;
-  font-size: 11.5px;
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
@@ -92,7 +92,7 @@ body[data-page="error-404"] main.error-page {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .error-btn {
@@ -154,7 +154,7 @@ body[data-page="error-404"] main.error-page {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface);
-  padding: 18px 20px;
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -194,7 +194,7 @@ body[data-page="error-404"] main.error-page {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface-soft);
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-4);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -239,7 +239,7 @@ body[data-page="error-404"] main.error-page {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface-soft);
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-4);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -261,7 +261,7 @@ body[data-page="error-404"] main.error-page {
 .error-nav-content {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .error-nav-icon {
@@ -282,7 +282,7 @@ body[data-page="error-404"] main.error-page {
 
 .error-nav-arrow {
   color: var(--text-muted);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1;
   transition:
     transform var(--motion-fast, 0.15s) ease,
@@ -303,13 +303,13 @@ body[data-page="error-404"] main.error-page {
   }
 
   .error-shell {
-    padding: 20px 18px;
-    gap: 14px;
+    padding: var(--space-5) var(--space-4);
+    gap: var(--space-4);
   }
 
   .error-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: var(--space-3);
   }
 }
 
@@ -319,14 +319,14 @@ body[data-page="error-404"] main.error-page {
   }
 
   .error-shell {
-    padding: 16px 14px;
+    padding: var(--space-4);
     border-radius: 14px;
     gap: 12px;
   }
 
   .error-panel,
   .error-quick {
-    padding: 14px 12px;
+    padding: var(--space-3);
     border-radius: 12px;
   }
 

@@ -69,7 +69,7 @@ body[data-page="home"] {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-3);
   align-items: center;
   justify-content: center;
   margin-top: 4px;
@@ -78,7 +78,7 @@ body[data-page="home"] {
 .btn-primary,
 .home-secondary-btn {
   min-height: 48px;
-  padding: 12px 22px;
+  padding: var(--space-3) var(--space-6);
   border-radius: 12px;
   border: 1px solid transparent;
   appearance: none;
@@ -87,7 +87,7 @@ body[data-page="home"] {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -188,7 +188,7 @@ body[data-page="home"] {
 
 .hero-fact__text {
   margin: 0;
-  font-size: 11.5px;
+  font-size: var(--text-xs);
   line-height: 1.3;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -218,7 +218,7 @@ body[data-page="home"] {
 
 .home-features__eyebrow {
   margin: 0;
-  font-size: 11.5px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
@@ -238,7 +238,7 @@ body[data-page="home"] {
 .home-features__desc {
   margin: 0;
   max-width: 580px;
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.5;
   letter-spacing: -0.01em;
   color: var(--text-muted);
@@ -248,7 +248,7 @@ body[data-page="home"] {
 .home-features__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .feature-card {
@@ -292,7 +292,7 @@ body[data-page="home"] {
 
 .feature-card__title {
   margin: 0;
-  font-size: 17px;
+  font-size: var(--text-md);
   line-height: 1.25;
   font-weight: 700;
   letter-spacing: -0.015em;
@@ -301,7 +301,7 @@ body[data-page="home"] {
 
 .feature-card__desc {
   margin: 0;
-  font-size: 14.5px;
+  font-size: var(--text-base);
   line-height: 1.5;
   letter-spacing: -0.01em;
   color: var(--text-muted);
@@ -344,7 +344,7 @@ body[data-page="home"] {
   }
 
   .hero-fact {
-    padding: 14px 16px;
+    padding: var(--space-4);
   }
 
   .home-features {
@@ -380,7 +380,7 @@ body[data-page="home"] {
   }
 
   .hero-desc {
-    font-size: 15.5px;
+    font-size: var(--text-md);
     line-height: 1.5;
   }
 
@@ -398,12 +398,12 @@ body[data-page="home"] {
 
   .hero-facts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: var(--space-3);
     max-width: 360px;
   }
 
   .hero-fact {
-    padding: 14px 12px;
+    padding: var(--space-3);
     border-radius: 12px;
   }
 

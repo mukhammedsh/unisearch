@@ -51,7 +51,7 @@
   display: grid;
   gap: 2px;
   width: 100%;
-  padding: 6px;
+  padding: var(--space-2);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface-solid);
@@ -67,7 +67,7 @@
   text-decoration: none;
   color: var(--text-muted);
   border-radius: 8px;
-  font-size: 13.5px;
+  font-size: var(--text-sm);
   line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -100,8 +100,8 @@
 .guide-section {
   position: relative;
   display: block;
-  margin: 0 0 14px;
-  padding: 22px 26px;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-6);
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface-solid);
@@ -148,14 +148,14 @@
    -------------------------------------------------------------------------- */
 .guide-doc {
   width: 100%;
-  font-size: 17px;
+  font-size: var(--text-md);
   line-height: 1.54;
   letter-spacing: -0.016em;
   color: var(--text);
 }
 
 .guide-doc p {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-3);
   color: var(--text);
 }
 
@@ -171,21 +171,21 @@
 
 /* Informational notices / callouts (Apple-like compact callout card) */
 .guide-muted {
-  margin: 10px 0;
-  padding: 10px 14px;
+  margin: var(--space-3) 0;
+  padding: var(--space-3) var(--space-4);
   background: var(--surface-soft);
   border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
   color: var(--text-muted);
-  font-size: 14.5px;
+  font-size: var(--text-base);
   line-height: 1.48;
   letter-spacing: -0.01em;
 }
 
 .guide-muted--tiny {
-  font-size: 13px;
+  font-size: var(--text-sm);
   margin: 0;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-sm);
 }
 
@@ -194,7 +194,7 @@
   margin: 8px 0 0;
   padding-left: 22px;
   color: var(--text);
-  font-size: 16.5px;
+  font-size: var(--text-md);
   line-height: 1.54;
   letter-spacing: -0.014em;
 }
@@ -225,7 +225,7 @@
 .guide-subsection h4,
 .guide-tags-group h4 {
   margin: 0 0 8px;
-  font-size: 17.5px;
+  font-size: var(--text-lg);
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.015em;
@@ -258,13 +258,13 @@
 .guide-tag,
 .guide-doc code {
   display: inline-block;
-  padding: 2px 7px;
+  padding: 2px var(--space-2);
   border-radius: var(--radius-xs);
   background: var(--surface-soft);
   border: 1px solid var(--line);
   color: var(--text);
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 
@@ -272,21 +272,21 @@
    Comparison Step Flow (Apple Card Steps)
    -------------------------------------------------------------------------- */
 .guide-compare-flow {
-  margin-top: 14px;
+  margin-top: var(--space-4);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .guide-flow-step {
   min-width: 0;
-  padding: 12px 15px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--line);
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--space-1);
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
@@ -296,14 +296,14 @@
 
 .guide-flow-step strong {
   color: var(--text);
-  font-size: 14.5px;
+  font-size: var(--text-base);
   font-weight: 700;
   line-height: 1.25;
 }
 
 .guide-flow-step span {
   color: var(--text-muted);
-  font-size: 13.5px;
+  font-size: var(--text-sm);
   line-height: 1.45;
 }
 
@@ -345,11 +345,11 @@ body[data-page="guide"] {
   }
 
   .guide-section {
-    padding: 20px 22px;
+    padding: var(--space-5) var(--space-6);
   }
 
   .guide-doc {
-    font-size: 16.5px;
+    font-size: var(--text-md);
   }
 
   .guide-list {
@@ -369,8 +369,8 @@ body[data-page="guide"] {
 
   .guide-sidebar {
     top: var(--nav-height, 70px);
-    margin: 0 0 16px;
-    padding: 6px 0;
+    margin: 0 0 var(--space-4);
+    padding: var(--space-2) 0;
     background: var(--bg);
     border-bottom: 1px solid var(--line);
     position: sticky;
@@ -381,10 +381,10 @@ body[data-page="guide"] {
 
   .guide-nav {
     display: flex;
-    gap: 6px;
+    gap: var(--space-2);
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 5px;
+    padding: var(--space-1);
     border-radius: 10px;
     border: 1px solid var(--line);
     background: var(--surface-soft);
@@ -401,8 +401,8 @@ body[data-page="guide"] {
   .guide-nav a {
     flex: 0 0 auto;
     white-space: nowrap;
-    padding: 7px 12px;
-    font-size: 13px;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
     min-height: 36px;
     border-left: none;
     border-bottom: 2px solid transparent;
@@ -416,9 +416,9 @@ body[data-page="guide"] {
 
   .guide-section {
     scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
-    padding: 18px 18px;
+    padding: var(--space-4);
     border-radius: 14px;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
   }
 
   .guide-hero h1 {
@@ -438,31 +438,29 @@ body[data-page="guide"] {
   }
 
   .guide-hero {
-    padding-bottom: 14px;
-    margin-bottom: 14px;
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
   }
 
-
-
   .guide-section {
-    padding: 16px 14px;
+    padding: var(--space-4) var(--space-3);
     border-radius: 12px;
   }
 
   .guide-section h2 {
-    font-size: 19px;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
   }
 
   .guide-doc {
-    font-size: 15.5px;
+    font-size: var(--text-base);
     line-height: 1.5;
   }
 
   .guide-list {
-    font-size: 15px;
-    padding-left: 18px;
+    font-size: var(--text-base);
+    padding-left: var(--space-4);
   }
 }
 

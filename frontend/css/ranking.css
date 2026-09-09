@@ -14,7 +14,7 @@ body[data-page="ranking"] {
     --rank-control-height: 48px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 174px;
-    column-gap: 10px;
+    column-gap: var(--space-3);
     row-gap: 8px;
     align-items: end;
     margin: 0 0 16px;
@@ -33,7 +33,7 @@ body[data-page="ranking"] {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
+    gap: var(--space-3);
     margin: 0;
     font-size: clamp(20px, 2.2vw, 26px);
     line-height: 1.25;
@@ -55,14 +55,14 @@ body[data-page="ranking"] {
     min-width: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-3);
     border: 1px solid var(--line);
     border-radius: var(--radius-base);
     background: var(--surface-solid);
     color: var(--text-muted);
     min-height: var(--rank-control-height);
     height: var(--rank-control-height);
-    padding: 0 14px;
+    padding: 0 var(--space-4);
     position: relative;
     box-shadow: none;
     transition:
@@ -148,7 +148,7 @@ body[data-page="ranking"] {
 
 .rank-search-suggestion {
     min-height: 42px;
-    padding: 8px 10px;
+    padding: var(--space-2) var(--space-3);
     border: 0;
     border-radius: var(--radius-md);
     background: transparent;
@@ -158,7 +158,7 @@ body[data-page="ranking"] {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
+    gap: var(--space-3);
     transition:
         background-color var(--motion-fast) var(--motion-ease-standard),
         transform var(--motion-fast) var(--motion-ease-standard);
@@ -179,7 +179,7 @@ body[data-page="ranking"] {
 }
 
 .rank-source-note {
-    margin: 0 0 14px;
+    margin: 0 0 var(--space-4);
     color: var(--text-muted);
     font-size: 13px;
     line-height: 1.45;
@@ -187,13 +187,13 @@ body[data-page="ranking"] {
 }
 
 .rank-empty {
-    padding: 22px;
+    padding: var(--space-6);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     background: var(--surface-solid);
     color: var(--text-muted);
     display: grid;
-    gap: 6px;
+    gap: var(--space-2);
     text-align: center;
 }
 
@@ -206,8 +206,8 @@ body[data-page="ranking"] {
     display: grid;
     grid-template-columns: 64px 56px minmax(0, 1fr);
     gap: 12px;
-    margin-bottom: 10px;
-    padding: 14px 16px;
+    margin-bottom: var(--space-3);
+    padding: var(--space-4);
     border-radius: var(--radius-lg);
     border: 1px solid var(--line);
     background: var(--surface-solid);
@@ -361,8 +361,8 @@ body[data-page="ranking"] {
 }
 
 .rank-title {
-    margin-bottom: 3px;
-    font-size: 19px;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-lg);
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: 0;
@@ -373,7 +373,7 @@ body[data-page="ranking"] {
 .rank-loc {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2);
     font-size: 13px;
     line-height: 1.4;
     color: var(--text-muted);
@@ -387,7 +387,7 @@ body[data-page="ranking"] {
 .rank-loc-country {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2);
     white-space: nowrap;
     color: var(--text-muted);
 }
@@ -396,7 +396,7 @@ body[data-page="ranking"] {
     grid-column: 3;
     justify-self: start;
     align-self: start;
-    padding: 6px 10px;
+    padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-sm);
     border: 1px solid var(--line-accent);
     background: var(--accent-panel);
@@ -434,7 +434,7 @@ body[data-page="ranking"] {
 
     .rank-tools {
         grid-template-columns: minmax(0, 1fr);
-        row-gap: 10px;
+        row-gap: var(--space-3);
     }
 
     .rank-header {
@@ -473,7 +473,7 @@ body[data-page="ranking"] {
 
     .rank-card {
         grid-template-columns: 42px 42px minmax(0, 1fr);
-        gap: 10px;
+        gap: var(--space-3);
         padding: 12px;
     }
 
@@ -492,7 +492,7 @@ body[data-page="ranking"] {
     }
 
     .rank-title {
-        font-size: 15px;
+        font-size: var(--text-base);
         margin-bottom: 2px;
     }
 
@@ -504,21 +504,21 @@ body[data-page="ranking"] {
         grid-column: 1 / -1;
         width: 100%;
         text-align: center;
-        padding: 6px;
+        padding: var(--space-2);
         font-size: 11px;
     }
 }
 
 @media (max-width: 380px) {
     .rank-container {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: var(--space-3);
+        padding-right: var(--space-3);
     }
 
     .rank-card {
         grid-template-columns: 36px 36px minmax(0, 1fr);
         gap: 8px;
-        padding: 10px;
+        padding: var(--space-2);
     }
 
     .rank-logo {
