@@ -128,7 +128,7 @@ body[data-page="ranking"] {
     border: 1px solid var(--line);
     border-radius: var(--radius-base);
     background: var(--surface-solid);
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--shadow-md);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -251,7 +251,7 @@ body[data-page="ranking"] {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, var(--surface-solid) 0%, rgba(255, 255, 255, 0.88) 18%, rgba(255, 255, 255, 0.58) 55%, rgba(255, 255, 255, 0.28) 100%);
+    background: linear-gradient(90deg, var(--surface-solid) 0%, color-mix(in srgb, var(--surface-solid) 88%, transparent) 18%, color-mix(in srgb, var(--surface-solid) 58%, transparent) 55%, color-mix(in srgb, var(--surface-solid) 28%, transparent) 100%);
     z-index: 1;
     pointer-events: none;
     transition: background var(--motion-fast) var(--motion-ease-standard);
@@ -262,7 +262,7 @@ body[data-page="ranking"] {
 }
 
 .rank-card:hover::after {
-    background: linear-gradient(90deg, var(--surface-soft) 0%, rgba(248, 249, 251, 0.84) 18%, rgba(248, 249, 251, 0.50) 55%, rgba(248, 249, 251, 0.20) 100%);
+    background: linear-gradient(90deg, var(--surface-soft) 0%, color-mix(in srgb, var(--surface-soft) 84%, transparent) 18%, color-mix(in srgb, var(--surface-soft) 50%, transparent) 55%, color-mix(in srgb, var(--surface-soft) 20%, transparent) 100%);
 }
 
 :root[data-theme="dark"] .rank-bg-img {
@@ -270,16 +270,8 @@ body[data-page="ranking"] {
     filter: brightness(0.78) saturate(1.12);
 }
 
-:root[data-theme="dark"] .rank-card::after {
-    background: linear-gradient(90deg, var(--surface-solid) 0%, rgba(20, 22, 26, 0.88) 18%, rgba(20, 22, 26, 0.62) 55%, rgba(20, 22, 26, 0.32) 100%);
-}
-
 :root[data-theme="dark"] .rank-card:hover .rank-bg-img {
     opacity: 0.50;
-}
-
-:root[data-theme="dark"] .rank-card:hover::after {
-    background: linear-gradient(90deg, var(--surface-soft) 0%, rgba(26, 28, 34, 0.84) 18%, rgba(26, 28, 34, 0.55) 55%, rgba(26, 28, 34, 0.25) 100%);
 }
 
 
@@ -301,55 +293,39 @@ body[data-page="ranking"] {
 }
 
 .rank-1 {
-    color: #d97706;
+    color: var(--color-warning);
 }
 
 .rank-2 {
-    color: #475569;
+    color: var(--text-muted);
 }
 
 .rank-3 {
-    color: #c2410c;
-}
-
-:root[data-theme="dark"] .rank-2 {
-    color: #94a3b8;
+    color: var(--color-warning);
 }
 
 .rank-card:has(.rank-1) {
-    border-color: rgba(217, 119, 6, 0.45);
+    border-color: var(--line-warning);
 }
 
 .rank-card:has(.rank-1):hover {
-    border-color: rgba(217, 119, 6, 0.60);
+    border-color: var(--line-warning);
 }
 
 .rank-card:has(.rank-2) {
-    border-color: rgba(100, 116, 139, 0.42);
+    border-color: var(--line-strong);
 }
 
 .rank-card:has(.rank-2):hover {
-    border-color: rgba(100, 116, 139, 0.58);
+    border-color: var(--line-strong);
 }
 
 .rank-card:has(.rank-3) {
-    border-color: rgba(194, 65, 12, 0.40);
+    border-color: var(--line-warning);
 }
 
 .rank-card:has(.rank-3):hover {
-    border-color: rgba(194, 65, 12, 0.58);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-1) {
-    border-color: rgba(245, 158, 11, 0.40);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-2) {
-    border-color: rgba(148, 163, 184, 0.38);
-}
-
-:root[data-theme="dark"] .rank-card:has(.rank-3) {
-    border-color: rgba(234, 88, 12, 0.38);
+    border-color: var(--line-warning);
 }
 
 .rank-logo {
@@ -358,20 +334,15 @@ body[data-page="ranking"] {
     height: 56px;
     flex-basis: 56px;
     border-radius: var(--radius-base);
-    background: #ffffff;
+    background: var(--surface-badge);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     align-self: center;
-    color: #0f172a;
+    color: var(--surface-badge-text);
     font-weight: 700;
-}
-
-:root[data-theme="dark"] .rank-logo {
-    background: #ffffff !important;
-    color: #0f172a;
 }
 
 .rank-logo img {
@@ -563,13 +534,6 @@ body[data-page="ranking"] {
         transition: none !important;
         animation: none !important;
     }
-}
-
-/* Гарантированный белый фон для логотипов в рейтинге */
-.rank-logo,
-:root[data-theme="dark"] .rank-logo {
-    background: #ffffff !important;
-    color: #0f172a;
 }
 
 

@@ -31,6 +31,9 @@ jobs:
       - name: Check encoding
         run: npm run check:encoding
 
+      - name: Check design token guard
+        run: npm run check:tokens -- --strict
+
       - name: Check localization parity
         run: npm run check:i18n
 

@@ -102,7 +102,7 @@ body[data-page="home"] {
 
 .btn-primary {
   background: var(--accent);
-  color: #ffffff;
+  color: var(--text-inverse);
 }
 
 .btn-primary:hover {

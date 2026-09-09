@@ -19,12 +19,13 @@
 - **Иконки:** Строго Heroicons (`frontend/javascript/icons.js`). Синхронизация: `npm run sync:heroicons`.
 - **Данные:** JSON-хранилище (`backend/data/`). Медиа в `university_assets/`.
 - **Тесты:** Playwright E2E (`tests/e2e/`), Pytest (`backend/tests/`).
-- **Repo hygiene:** `npm run check:version`, `npm run check:encoding`, `npm run check:i18n`, `npm run audit:data` — быстрый базовый набор для инфраструктурных/документационных PR.
+- **Repo hygiene:** `npm run check:version`, `npm run check:encoding`, `npm run check:tokens`, `npm run check:i18n`, `npm run audit:data` — быстрый базовый набор для инфраструктурных/документационных PR.
 
 ## 3. UI/UX (Calm Academic Workspace)
 - **Спецификация:** Подробные детали по типографике, размерам и логике компонентов обязательно сверять с `docs/design-system.md`.
 - **Стиль (Native-like Productivity Tool):** Рабочий инструмент. Строгий интерфейс (как Notion/Linear). Запрещены SaaS/AI-landing стили, Tailwind-палитры, сильные/размытые `box-shadow` и огромные градиентные свечения.
 - **Анти-паттерны ИИ (ЗАПРЕЩЕНО):** Вложенные карточки (используйте разделительные линии), круглые Pill Tabs (только underline-tabs), хардкод цветов (использовать только CSS-переменные), плавающие элементы (только плоская структура). Скругления (border-radius) должны быть унифицированы (10-16px), избегайте круглых кнопок-пилюль (овалов). Стак отступов (удвоение расстояния из-за margin внутри padded-контейнера или поверх gap), отрицательные отступы-костыли (`margin-top: -Npx` для компенсации кривой верстки).
+- **Единая палитра и контраст (Single Source of Truth & WCAG AA):** Строго запрещено прописывать любые HEX, RGB, HSL цвета в файлах страниц и компонентов. Все цвета задаются исключительно через семантические CSS-переменные из `frontend/css/style.css` (`var(--bg)`, `var(--surface-solid)`, `var(--text)`, `var(--line)` и т.д.). Поддержка светлой и тёмной тем реализуется автоматическим переключением токенов на уровне `:root`, а не дублированием ручных селекторов `[data-theme="dark"]`. Все текстовые цвета обязаны соответствовать стандарту доступности WCAG AA (контраст ≥4.5:1 для основного текста и ≥3:1 для крупных заголовков и интерактивных элементов интерфейса).
 - **Сетка и отступы (Layout & Spacing):**
   - **Принцип владения (Layout Ownership):** Компоненты не задают себе внешние `margin`. Расстоянием между элементами управляет ТОЛЬКО родитель через `display: flex/grid` и `gap`. Исключение: `margin-left: auto` / `margin-top: auto` для явного выравнивания.
   - **Защита от стака отступов (No Double Spacing):** Запрещено комбинировать `gap` родителя с `margin` дочерних элементов. Внутри любого контейнера с `padding` первый потомок обязан иметь `margin-top: 0`, а последний — `margin-bottom: 0`.
@@ -59,7 +60,7 @@
      Правило SemVer: `+0.1.0` сбрасывает patch до `0` (пример: `3.5.6 -> 3.6.0`); `+1.0.0` сбрасывает minor и patch до `0` (пример: `3.5.6 -> 4.0.0`). Не считать компоненты версии как простое арифметическое сложение без сбросов.
   3. Описать в `CHANGELOG.md` (в блок новой версии) изменения из текущего diff.
   4. Обновить версию и список изменений в `README.md` (секция Recent releases). Если изменения функциональные — актуализировать соответствующие разделы `README.md`.
-  5. Запустить минимальные тесты (`npm run fix:encoding`, `npm run check:encoding`, `npm run check:i18n`, `npm run test:backend`).
+  5. Запустить минимальные тесты (`npm run fix:encoding`, `npm run check:encoding`, `npm run check:tokens`, `npm run check:i18n`, `npm run test:backend`).
   5. Commit + Push.
      После каждого `git push` (ветки или тега) проверить новые GitHub Actions runs, дождаться финального статуса (`success`/`failure`) и выдать итоговый отчет со ссылками. Локальный commit сам по себе Actions не запускает.
   6. Сделать тег на последнем коммите этой версии: `git tag -a vX.Y.Z -m "UniSearch X.Y.Z"` -> `git push origin vX.Y.Z`. Версионный commit без тега не считать завершенным.

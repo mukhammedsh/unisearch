@@ -2,7 +2,13 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.1 (2026-09-08) - University Detail Layout Refinements, Admission Track Polish, and CSS Design System Polish
+## 5.0.1 (2026-09-09) - University Detail Layout Refinements, Admission Track Polish, and Complete Zero-Hardcode CSS Tokens Refactor
+- Completed full CSS design system refactoring and zero-hardcoded-colors milestone (`style.css`, `universities.css`, `university.css`, `ranking.css`, `profile.css`, `guide.css`, `about.css`, `legal.css`, `error.css`, `index.css`):
+  - Eliminated all 596 hardcoded HEX, RGB, and HSL color literals across all 10 project stylesheets down to exactly 0 violations.
+  - Centralized palette inheritance: removed hundreds of brittle `:root[data-theme="dark"]` duplicate component selectors in favor of clean, automatic token switching at the root level.
+  - Standardized the brand accent token to the official logo purple `#5D17EB` across both light and dark themes, deriving all accent variants (`--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel`, `--line-accent`, `--selection-bg`) dynamically via native CSS `color-mix()`.
+  - Updated `<meta name="theme-color" content="#5D17EB" />` across all 9 HTML templates for consistent mobile and browser chrome presentation.
+  - Added automated Design Tokens Guard tool (`scripts/check-tokens.mjs`, `scripts/tokens-baseline.json`, `npm run check:tokens`) and strict enforcement check to GitHub Actions workflow (`.github/workflows/repository-hygiene.yml`) to permanently prevent color token regression.
 - Polished university detail page layout across General and Admission tabs (`university.html`, `university.css`, `page-controller.js`, `render-content.js`, `render-sections.js`):
   - Streamlined hero card by removing duplicate acceptance rate badge beneath location line.
   - Eliminated excessive whitespace in the General tab (`#tab-general`) between "About & Campus" and "Overview" sections, introducing a clean divider border (`1px solid var(--line)`) and harmonized 20px spacing rhythm.
@@ -19,10 +25,6 @@ All notable project changes should be recorded here.
   - Added focus-visible accessibility outlines (`outline: 2px solid var(--accent); outline-offset: 2px;`) and smooth accent transitions on interactive links.
   - Refined responsive layout for tablet (<=980px), mobile (<=640px), and narrow viewports (<=480px) with adaptive typography and padding scale.
   - Added subtle entry motion (`motion-fade-lift-soft`) with staggered section delays and `prefers-reduced-motion: reduce` fallback.
-- Standardized design system color tokens and removed redundant CSS rules (`style.css`, `universities.css`):
-  - Introduced central semantic status tokens (`--color-danger`, `--color-danger-muted`, `--color-success`, `--color-success-muted`, `--color-warning`, `--color-warning-bg`, `--color-warning-bright`) in `:root` and `:root[data-theme="dark"]` within `style.css`.
-  - Pruned over 500 lines of redundant and duplicated dark-theme CSS rules in `universities.css` that overrode base styles with hardcoded color literals, strictly adhering to Calm Academic Workspace token inheritance.
-  - Replaced non-standard color variables (e.g. `--muted`) with `--text-muted` and enforced uniform dark mode logo/marker text contrast (`color: #0f172a !important`).
 
 
 ## 5.0.0 (2026-09-08) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization

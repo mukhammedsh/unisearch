@@ -119,7 +119,7 @@ body[data-page="error-404"] main.error-page {
 }
 
 .error-btn--primary {
-  color: #ffffff;
+  color: var(--text-inverse);
   background: var(--accent);
 }
 
