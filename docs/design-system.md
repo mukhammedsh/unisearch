@@ -14,17 +14,53 @@ Use this document as the source of truth for new UI work. The current baseline i
 
 ## Tokens
 
-Use existing CSS variables instead of new hard-coded palettes:
+Use existing CSS variables instead of new hard-coded palettes. All colors in components and pages must reference these tokens:
 
 - Fonts: `--font-sans` for body/UI and `--font-display` for headings and important labels.
-- Accent: `--accent` (`#4f46e5`) and `--accent-strong`.
-- Backgrounds: `--bg`, `--bg-soft`, `--surface`, `--surface-solid`, `--surface-soft`.
+- Accent: `--accent` (`#5D17EB` both light and dark), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`).
+- Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`.
 - Text: `--text`, `--text-muted`.
-- Borders: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`.
+- Borders & Lines: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`, `--line-info`.
+- Statuses:
+  - Success: `--color-success`, `--color-success-muted`, `--color-success-bg`.
+  - Warning: `--color-warning`, `--color-warning-bright`, `--color-warning-bg`.
+  - Danger: `--color-danger`, `--color-danger-muted`, `--color-danger-bg`.
+  - Info: `--color-info`, `--color-info-muted`, `--color-info-bg`.
+- Skeletons: `--skeleton-base`, `--skeleton-highlight`.
+- Selection: `--selection-bg`, `--selection-text`.
 - Radius: `--radius-xs` (4px), `--radius-sm` (8px), `--radius-md` (10px), `--radius-base` (12px), `--radius-lg` (16px), `--radius-xl` (20px), `--radius-full` (999px for progress/switches), `--radius-circle` (50%).
 - Motion: `--motion-fast`, `--motion-medium`, `--motion-ease-standard`, `--motion-ease-enter`, `--motion-ease-exit`.
 
-When a page has older local tokens such as `--card`, `--muted`, or older purple accent values, map them back toward the shared tokens rather than expanding the local palette.
+### Palette Contract (Light vs Dark)
+
+| Semantic Token | Light (`:root`) | Dark (`:root[data-theme="dark"]`) | Purpose |
+| :--- | :--- | :--- | :--- |
+| `--bg` | `#f4f5f7` | `#0c0d0e` | Page body background |
+| `--bg-soft` | `#edf0f4` | `#141517` | Toolbar, filter bar, secondary background |
+| `--surface-solid` (`--card`) | `#ffffff` | `#18191b` | Main cards, modals, lists, dropdown panels |
+| `--surface` | `rgba(255, 255, 255, 0.88)` | `rgba(24, 25, 27, 0.88)` | Translucent header, floating docked bars |
+| `--surface-soft` | `#f1f3f7` | `#222427` | Form inputs, chip/tag pills, table row hover |
+| `--text` | `#111827` | `#f3f4f6` | Primary high-contrast typography |
+| `--text-muted` | `#64748b` | `#94a3b8` | Secondary labels, descriptions, captions |
+| `--line` | `rgba(15, 23, 42, 0.20)` | `rgba(255, 255, 255, 0.20)` | Standard component border |
+| `--line-strong` | `rgba(15, 23, 42, 0.30)` | `rgba(255, 255, 255, 0.30)` | Active, hover, or prominent divider border |
+| `--line-faint` | `rgba(15, 23, 42, 0.10)` | `rgba(255, 255, 255, 0.10)` | Subtle separator line |
+| `--accent` | `#5D17EB` | `#5D17EB` | Primary action button, active indicator, focus ring (exact logo brand purple) |
+| `--accent-soft` | `color-mix(var(--accent) 12%)` | `color-mix(var(--accent) 18%)` | Active row highlight, soft badge background |
+| `--color-success` | `#15803d` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA 5.02:1) |
+| `--color-success-bg` | `#f0fdf4` | `rgba(16, 185, 129, 0.14)` | Success badge/banner background |
+| `--color-warning` | `#b45309` | `#fde68a` | Alert note, partial match, impending deadline |
+| `--color-warning-bg` | `#fff7ed` | `rgba(245, 158, 11, 0.12)` | Warning badge/banner background |
+| `--color-danger` | `#dc2626` | `#fca5a5` | Critical error, missing requirement, closed |
+| `--color-danger-bg` | `#fef2f2` | `rgba(239, 68, 68, 0.14)` | Error badge/banner background |
+| `--color-info` | `#1d4ed8` | `#93c5fd` | Informational note, exam group badge |
+| `--color-info-bg` | `#eff6ff` | `rgba(59, 130, 246, 0.14)` | Info badge/banner background |
+| `--skeleton-base` | `#e5e7eb` | `#222427` | Base layer of loading placeholder |
+| `--skeleton-highlight` | `rgba(255, 255, 255, 0.65)` | `rgba(255, 255, 255, 0.08)` | Shimmer wave of loading placeholder |
+| `--selection-bg` | `color-mix(var(--accent) 16%)` | `color-mix(var(--accent) 35%)` | User mouse text selection background |
+| `--selection-text` | `#111827` | `#ffffff` | User mouse text selection color |
+
+When a page has older local tokens or arbitrary HEX/RGB values, map them back toward the shared tokens rather than expanding the local palette. Hardcoding colors in page-specific CSS files is strictly prohibited.
 
 ## Layout Patterns
 

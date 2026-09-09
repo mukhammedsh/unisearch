@@ -1,14 +1,13 @@
 :root {
-  --accent: #5715db;
   --accent2: var(--accent);
-  --accent-highlight: #7d3cff;
-  --muted: var(--text-muted, #64748b);
-  --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  --accent-highlight: var(--accent);
+  --muted: var(--text-muted);
+  --shadow: var(--shadow-sm);
 }
 
 :root[data-theme="dark"] {
-  --muted: var(--text-muted, #94a3b8);
-  --shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+  --muted: var(--text-muted);
+  --shadow: var(--shadow-sm);
 }
 
 .d-page {
@@ -102,7 +101,7 @@
 
 .d-state-error {
   margin: 8px 0 0;
-  color: #dc2626;
+  color: var(--color-danger);
   text-align: center;
   font-size: 22px;
   line-height: 1.3;
@@ -183,7 +182,7 @@
   min-height: 220px;
   max-height: 560px;
   position: relative;
-  background-color: #333;
+  background-color: var(--surface-soft);
   background-size: cover;
   background-position: center;
   border-radius: 0;
@@ -195,7 +194,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--backdrop) 40%, transparent));
   border-radius: 0;
 }
 
@@ -207,13 +206,13 @@
   width: 64px;
   height: 64px;
   border-radius: 14px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--surface-badge);
+  border: 1px solid var(--line);
   display: grid;
   place-items: center;
   font-weight: 700;
-  color: var(--accent);
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+  color: var(--surface-badge-text);
+  box-shadow: var(--shadow-sm);
 }
 
 .d-logo-img {
@@ -223,7 +222,7 @@
   object-position: center;
   display: block;
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--surface-badge);
 }
 
 .d-head {
@@ -428,7 +427,7 @@
 
 .uni-tag--placeholder,
 .uni-description--placeholder {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .d-kv {
@@ -437,7 +436,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+  border-bottom: 1px dashed var(--line);
 }
 
 .d-kv:last-child {
@@ -538,13 +537,13 @@
   top: calc(100% + 8px);
   width: min(320px, calc(100vw - 24px));
   max-width: calc(100vw - 24px);
-  background: #101010;
-  color: #f5f5f5;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
   border-radius: 10px;
   padding: 10px 12px;
   font-size: 12px;
   line-height: 1.35;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow-md);
   z-index: 30;
   opacity: 0;
   visibility: hidden;
@@ -569,17 +568,17 @@
 
 .d-tooltip span:last-child {
   margin-bottom: 0;
-  color: #d1d5db;
+  color: var(--tooltip-text);
 }
 
 .d-tooltip a {
-  color: #c7d2fe;
+  color: var(--accent);
   font-weight: 700;
   text-decoration: underline;
 }
 
 .d-tooltip a:hover {
-  color: #e0e7ff;
+  color: var(--text);
 }
 
 .d-info-wrap:hover .d-tooltip,
@@ -607,21 +606,20 @@
 
 .program-card {
   position: relative;
-  border: 1px solid #e5dbff;
+  border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
   padding: 14px 14px 12px;
   background: var(--surface-solid);
-  box-shadow: 0 10px 24px rgba(36, 14, 79, 0.07);
+  box-shadow: none;
   transition:
   transform var(--motion-snappy) var(--motion-ease-standard),
-  box-shadow var(--motion-fast) var(--motion-ease-standard),
   border-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .program-card:hover {
-  box-shadow: 0 14px 26px rgba(36, 14, 79, 0.1);
-  border-color: #d7c8ff;
+  box-shadow: none;
+  border-color: var(--line-accent);
 }
 
 .program-card-head {
@@ -667,7 +665,7 @@
 
 .program-card-title {
   font-weight: 800;
-  color: #22163b;
+  color: var(--text);
   font-size: 15px;
   line-height: 1.35;
   margin-bottom: 10px;
@@ -684,12 +682,12 @@
   grid-template-columns: 120px 1fr;
   align-items: center;
   gap: 10px;
-  border-bottom: 1px dashed #ebe7f5;
+  border-bottom: 1px dashed var(--line);
   padding-bottom: 6px;
 }
 
 .program-card-label {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -697,7 +695,7 @@
 }
 
 .program-card-value {
-  color: #1f2937;
+  color: var(--text);
   font-weight: 700;
   text-align: left;
   line-height: 1.35;
@@ -705,7 +703,7 @@
 }
 
 .program-card-value--empty {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -724,7 +722,7 @@
   width: 100%;
   height: 8px;
   border-radius: 999px;
-  background: #e9edf5;
+  background: var(--surface-soft);
   overflow: hidden;
 }
 
@@ -833,7 +831,7 @@
 .finance-option-total--grant {
   background: var(--grant-soft);
   border-color: var(--grant-soft-strong);
-  color: #065f46;
+  color: var(--text-grant);
 }
 
 .finance-track-group {
@@ -847,7 +845,7 @@
 }
 
 .finance-track-group--grant {
-  border-color: #86efac;
+  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
@@ -885,10 +883,10 @@
 }
 
 .cost-legend-single {
-  border: 1px dashed rgba(168, 85, 247, 0.24);
+  border: 1px dashed var(--line-accent);
   border-radius: 12px;
   padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.68);
+  background: var(--surface-soft);
 }
 
 .cost-legend-single strong {
@@ -908,13 +906,13 @@
 .admissions-section-title {
   font-size: 15px;
   font-weight: 700;
-  color: #241d3a;
+  color: var(--text);
   margin-bottom: 6px;
 }
 
 .admissions-section-note {
   margin: 0 0 14px;
-  color: #5f6b7d;
+  color: var(--text-muted);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -928,11 +926,11 @@
 
 .admissions-summary-card,
 .admissions-program-card {
-  border: 1px solid #e7def8;
+  border: 1px solid var(--line);
   border-radius: 14px;
-  background: #ffffff;
+  background: var(--surface-solid);
   padding: 14px;
-  box-shadow: 0 8px 18px rgba(36, 14, 79, 0.05);
+  box-shadow: none;
 }
 
 .admissions-summary-top,
@@ -950,7 +948,7 @@
   font-weight: 600;
   letter-spacing: 0.35px;
   text-transform: uppercase;
-  color: #667085;
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
@@ -980,7 +978,7 @@
 .admissions-summary-meta {
   margin-top: 12px;
   font-size: 12px;
-  color: #677487;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -1029,7 +1027,7 @@
   font-size: 15px;
   line-height: 1.4;
   font-weight: 600;
-  color: #241d3a;
+  color: var(--text);
 }
 
 .d-tabs {
@@ -1037,20 +1035,20 @@
   gap: 10px;
   margin-top: 20px;
   margin-bottom: 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--line);
   padding: 0 20px 15px;
   flex-wrap: wrap;
   scrollbar-width: thin;
 }
 
 .d-tab-btn {
-  background: #fff;
-  border: 1px solid #ddd;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
   border-radius: 20px;
   padding: 10px 18px;
   font-size: 14px;
   font-weight: 700;
-  color: #555;
+  color: var(--text-muted);
   cursor: pointer;
   transition:
   background-color var(--motion-fast) var(--motion-ease-standard),
@@ -1127,7 +1125,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: #faf5ff;
+  background: var(--surface-soft);
   color: var(--accent);
   border-radius: 14px;
   transition:
@@ -1135,7 +1133,7 @@
   color var(--motion-fast) var(--motion-ease-standard),
   border-color var(--motion-fast) var(--motion-ease-standard),
   transform var(--motion-fast) var(--motion-ease-standard);
-  border: 1px solid rgba(87, 21, 219, 0.18);
+  border: 1px solid var(--line);
   flex-shrink: 0;
   line-height: 0;
 }
@@ -1157,10 +1155,10 @@
 }
 
 .d-site-link.is-saved {
-  background: #facc15;
-  color: #713f12;
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.22);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--line-warning);
+  box-shadow: none;
 }
 
 .d-site-link.is-saved .uni-action-icon {
@@ -1172,9 +1170,9 @@
 }
 
 .d-site-link.is-saved:hover {
-  background: #facc15;
-  color: #713f12;
-  border-color: #f59e0b;
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--line-warning);
 }
 
 .d-site-link:hover {
@@ -1198,9 +1196,9 @@
 }
 
 .chance-warning {
-  border: 1px solid #fed7aa;
-  background: #fff7ed;
-  color: #9a3412;
+  border: 1px solid var(--line-warning);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
   border-radius: 10px;
   padding: 10px 12px;
   margin-bottom: 12px;
@@ -1252,11 +1250,11 @@
   padding: 3px 7px;
   border: 1px solid var(--line-warning);
   border-radius: var(--radius-sm);
-  background: rgba(245, 158, 11, 0.12);
+  background: var(--color-warning-bg);
   font-size: 11px;
   font-weight: 800;
   line-height: 1.2;
-  color: #92400e;
+  color: var(--color-warning);
   white-space: nowrap;
 }
 
@@ -1266,8 +1264,8 @@
   justify-content: center;
   padding: 5px 9px;
   border-radius: var(--radius-sm);
-  color: #92400e;
-  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
   border: 1px solid var(--line-warning);
 }
 
@@ -1275,7 +1273,7 @@
   margin-top: 10px;
   width: 100%;
   height: 10px;
-  background: #e2e8f0;
+  background: var(--surface-soft);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -1288,15 +1286,15 @@
 
 .chance-foot {
   font-size: 12px;
-  color: #334155;
+  color: var(--text-muted);
   margin-top: 8px;
 }
 
 .chance-inline-note {
   margin-top: 10px;
-  border: 1px solid var(--line-accent);
-  background: #eff6ff;
-  color: #1d4ed8;
+  border: 1px solid var(--line-info);
+  background: var(--color-info-bg);
+  color: var(--color-info);
   border-radius: var(--radius-md);
   padding: 10px 12px;
   font-size: 12px;
@@ -1316,27 +1314,27 @@
 }
 
 .chance-high {
-  color: #065f46;
-  background: rgba(16, 185, 129, 0.14);
-  border-color: rgba(16, 185, 129, 0.38);
+  color: var(--color-chance-high);
+  background: var(--color-chance-high-bg);
+  border-color: var(--line-chance-high);
 }
 
 .chance-good {
-  color: #166534;
-  background: rgba(34, 197, 94, 0.13);
-  border-color: rgba(34, 197, 94, 0.34);
+  color: var(--color-chance-good);
+  background: var(--color-chance-good-bg);
+  border-color: var(--line-chance-good);
 }
 
 .chance-medium {
-  color: #9a3412;
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.36);
+  color: var(--color-chance-medium);
+  background: var(--color-chance-medium-bg);
+  border-color: var(--line-chance-medium);
 }
 
 .chance-low {
-  color: #991b1b;
-  background: rgba(239, 68, 68, 0.14);
-  border-color: rgba(239, 68, 68, 0.34);
+  color: var(--color-chance-low);
+  background: var(--color-chance-low-bg);
+  border-color: var(--line-chance-low);
 }
 
 .chance-percent.chance-high,
@@ -1349,19 +1347,19 @@
 }
 
 .chance-fill.chance-high {
-  background: #10b981;
+  background: var(--color-chance-high);
 }
 
 .chance-fill.chance-good {
-  background: #22c55e;
+  background: var(--color-chance-good);
 }
 
 .chance-fill.chance-medium {
-  background: #f59e0b;
+  background: var(--color-chance-medium);
 }
 
 .chance-fill.chance-low {
-  background: #ef4444;
+  background: var(--color-chance-low);
 }
 
 .track-funding-badge {
@@ -1376,15 +1374,15 @@
 }
 
 .track-funding-badge--grant {
-  color: #065f46;
-  background: rgba(16, 185, 129, 0.2);
+  color: var(--text-grant);
+  background: var(--grant-soft);
   border-color: var(--line-grant);
 }
 
 .track-funding-badge--paid {
-  color: #374151;
-  background: rgba(107, 114, 128, 0.12);
-  border-color: var(--line);
+  color: var(--text-paid);
+  background: var(--surface-paid);
+  border-color: var(--line-paid);
 }
 
 .finance-track-group {
@@ -1806,7 +1804,7 @@
 }
 
 .track-stats-box--avg {
-  background: #ecfdf5;
+  background: var(--grant-soft);
   border-color: var(--line-grant);
 }
 
@@ -1816,27 +1814,27 @@
   letter-spacing: 0.35px;
   text-transform: uppercase;
   margin-bottom: 8px;
-  color: #334155;
+  color: var(--text);
 }
 
 .track-stats-title--avg {
-  color: #065f46;
+  color: var(--text-grant);
 }
 
 .track-stats-values {
-  color: #334155;
+  color: var(--text);
   font-size: 13px;
   line-height: 1.45;
 }
 
 .track-muted-italic {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-style: italic;
 }
 
 .finance-breakdown-note {
   margin-top: 8px;
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 12px;
   line-height: 1.45;
 }
@@ -1863,7 +1861,7 @@
 .track-exam-group-list {
   display: grid;
   gap: 4px;
-  color: #334155;
+  color: var(--text);
   font-size: 13px;
   line-height: 1.4;
 }
@@ -1874,32 +1872,32 @@
 }
 
 .track-exam-group--neutral .track-exam-group-title {
-  color: #475569;
+  color: var(--text-muted);
 }
 
 .track-exam-group--info {
-  background: #eff6ff;
+  background: var(--color-info-bg);
   border-color: var(--line-accent);
 }
 
 .track-exam-group--info .track-exam-group-title {
-  color: #1d4ed8;
+  color: var(--color-info);
 }
 
 .track-exam-group--success {
-  background: #ecfdf5;
+  background: var(--grant-soft);
   border-color: var(--line-grant);
 }
 
 .track-exam-group--success .track-exam-group-title {
-  color: #047857;
+  color: var(--text-grant);
 }
 
 .track-lang-rules {
   margin-top: 14px;
   border-radius: var(--radius-base);
-  border: 1px solid var(--line-accent);
-  background: #f8fbff;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
   padding: 12px;
 }
 
@@ -1908,12 +1906,12 @@
   font-weight: 600;
   letter-spacing: 0.38px;
   text-transform: uppercase;
-  color: #1e3a8a;
+  color: var(--text);
 }
 
 .track-lang-rules-mode {
   margin-top: 6px;
-  color: #1d4ed8;
+  color: var(--color-info);
   font-size: 12px;
   font-weight: 700;
 }
@@ -1925,9 +1923,9 @@
 }
 
 .track-lang-rule-card {
-  border: 1px solid #c7d2fe;
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: #ffffff;
+  background: var(--surface-solid);
   padding: 10px;
 }
 
@@ -1957,7 +1955,7 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--line-grant);
   background: var(--grant-soft);
-  color: #065f46;
+  color: var(--text-grant);
   padding: 3px 9px;
   font-size: 11px;
   font-weight: 700;
@@ -1965,7 +1963,7 @@
 
 .track-lang-rule-cefr {
   margin-top: 8px;
-  color: #1e3a8a;
+  color: var(--text);
   font-size: 12px;
 }
 
@@ -1973,14 +1971,14 @@
 .track-lang-rule-average {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed #dbeafe;
-  color: #334155;
+  border-top: 1px dashed var(--line);
+  color: var(--text);
   font-size: 13px;
   line-height: 1.45;
 }
 
 .track-lang-rule-average {
-  color: #166534;
+  color: var(--text-grant);
 }
 
 .track-extra-req {
@@ -2058,8 +2056,8 @@
 }
 
 .scholarship-card {
-  background: #ecfdf5; /* Светло-зеленый */
-  border: 1px solid #10b981;
+  background: var(--grant-soft);
+  border: 1px solid var(--line-grant);
   border-radius: 12px;
   padding: 16px 18px;
   height: auto; /* Высота по контенту */
@@ -2141,11 +2139,11 @@
 }
 
 .scholarship-line--positive {
-  color: #047857;
+  color: var(--text-grant);
 }
 
 .scholarship-line--muted {
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .finance-grid-new {
@@ -2168,7 +2166,7 @@
 
 .cost-progress-bar {
   margin-bottom: 8px;
-  background: #e2e8f0;
+  background: var(--surface-soft);
   height: 8px;
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -2184,27 +2182,27 @@
 
 .cost-color-1,
 .cost-legend-dot.cost-color-1 {
-  background: #3b82f6;
+  background: var(--color-info);
 }
 
 .cost-color-2,
 .cost-legend-dot.cost-color-2 {
-  background: #10b981;
+  background: var(--color-success);
 }
 
 .cost-color-3,
 .cost-legend-dot.cost-color-3 {
-  background: #f59e0b;
+  background: var(--color-warning);
 }
 
 .cost-color-4,
 .cost-legend-dot.cost-color-4 {
-  background: #ef4444;
+  background: var(--color-danger);
 }
 
 .cost-color-5,
 .cost-legend-dot.cost-color-5 {
-  background: #8b5cf6;
+  background: var(--accent);
 }
 
 .cost-legend-row {
@@ -2439,15 +2437,15 @@
 }
 
 .roi-context--matched {
-  background: #d1fae5;
-  color: #065f46;
-  border-color: #a7f3d0;
+  background: var(--grant-soft);
+  color: var(--text-grant);
+  border-color: var(--line-grant);
 }
 
 .roi-context--missing {
-  background: #fff3cd;
-  color: #856404;
-  border-color: #ffeeba;
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--line-warning);
 }
 
 .roi-context--neutral {
@@ -2502,11 +2500,11 @@
 }
 
 .roi-tone-positive {
-  color: #059669;
+  color: var(--color-success);
 }
 
 .roi-tone-warn {
-  color: #d97706;
+  color: var(--color-warning);
 }
 
 .roi-metrics-divider {
@@ -2590,421 +2588,6 @@
 
 }
 
-:root[data-theme="dark"] .tag {
-  background: #23262d;
-  border-color: #3b4250;
-  color: #dbe4f2;
-}
-
-:root[data-theme="dark"] #tab-admission .d-box,
-:root[data-theme="dark"] #tab-finance .finance-box {
-  border-color: var(--line);
-  background: var(--card);
-  background-image: none;
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .track-cost-preview,
-:root[data-theme="dark"] .finance-option-total,
-:root[data-theme="dark"] .finance-track-group {
-  background: var(--surface-solid);
-  border-color: var(--line);
-  color: #ededed;
-}
-
-:root[data-theme="dark"] .track-cost-preview--grant,
-:root[data-theme="dark"] .finance-option-total--grant,
-:root[data-theme="dark"] .finance-track-group--grant {
-  background: var(--grant-soft);
-  border-color: var(--grant-soft-strong);
-  color: #dcfce7;
-}
-
-:root[data-theme="dark"] .finance-track-group-head h3,
-:root[data-theme="dark"] .finance-option-label {
-  color: #f2f2f2;
-}
-
-:root[data-theme="dark"] .d-box {
-  background: var(--card);
-  background-image: none;
-}
-
-:root[data-theme="dark"] .finance-option-card {
-  background: var(--surface-solid);
-  border-color: var(--line);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .finance-option-card--grant {
-  background: var(--grant-soft);
-  border-color: rgba(52, 211, 153, 0.26);
-}
-
-:root[data-theme="dark"] .uni-tags-wrap {
-  background: var(--surface-soft);
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .uni-tags-title {
-  color: #ededed;
-}
-
-:root[data-theme="dark"] .uni-tag {
-  background: transparent;
-  color: #efe8ff;
-  border-color: #5b4b91;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.32);
-}
-
-:root[data-theme="dark"] .uni-tag:hover {
-  background: transparent;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.42);
-}
-
-:root[data-theme="dark"] .d-tooltip {
-  background: #f4f4f5;
-  color: #18181b;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
-}
-
-:root[data-theme="dark"] .d-tooltip span:last-child {
-  color: #3f3f46;
-}
-
-:root[data-theme="dark"] .d-tooltip a {
-  color: #4338ca;
-}
-
-:root[data-theme="dark"] .d-tooltip a:hover {
-  color: #312e81;
-}
-
-:root[data-theme="dark"] .d-tabs {
-  border-bottom-color: var(--line);
-}
-
-:root[data-theme="dark"] .d-tab-btn {
-  background: transparent;
-  border-color: transparent;
-  color: var(--muted);
-}
-
-:root[data-theme="dark"] .d-tab-btn:hover {
-  background-color: transparent;
-  border-color: transparent;
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .d-tab-btn.active,
-:root[data-theme="dark"] .d-tab-btn.active:hover {
-  background: transparent;
-  border-color: transparent;
-  color: var(--accent);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .d-site-link {
-  background: transparent;
-  border-color: var(--line);
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .total-price-card,
-:root[data-theme="dark"] .scholarship-card {
-  background: #171717;
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .chance-warning {
-  background: #2a1f12;
-  border-color: var(--line-warning);
-  color: #fcd9a5;
-}
-
-:root[data-theme="dark"] .chance-title {
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .price-header {
-  color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .chance-sub,
-:root[data-theme="dark"] .chance-foot,
-:root[data-theme="dark"] .price-sub {
-  color: var(--muted);
-}
-
-:root[data-theme="dark"] .chance-percent-note {
-  border-color: var(--line-warning);
-  background: rgba(251, 191, 36, 0.12);
-  color: #fbbf24;
-}
-
-:root[data-theme="dark"] .chance-percent.chance-low-confidence {
-  border-color: var(--line-warning);
-  background: rgba(251, 191, 36, 0.12);
-  color: #fbbf24;
-}
-
-:root[data-theme="dark"] .d-page-scope {
-  background: var(--card);
-  border-color: var(--line);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .d-page-scope__text {
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .chance-inline-note {
-  border-color: var(--line-accent);
-  background: #0f172a;
-  color: #93c5fd;
-}
-
-:root[data-theme="dark"] .cost-progress-bar {
-  background: #3f3f3f;
-}
-
-:root[data-theme="dark"] .roi-metric-label {
-  color: #c3c3c3;
-}
-
-:root[data-theme="dark"] .roi-metric-value {
-  color: #f2f2f2;
-}
-
-:root[data-theme="dark"] .roi-metric-note {
-  color: #c3c3c3;
-}
-
-:root[data-theme="dark"] .roi-title {
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .roi-description {
-  color: #c3c3c3;
-}
-
-:root[data-theme="dark"] .roi-context--matched {
-  background: #133126;
-  border-color: var(--line-grant);
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .roi-context--missing {
-  background: #3a2f16;
-  border-color: var(--line-warning);
-  color: #fde68a;
-}
-
-:root[data-theme="dark"] .roi-context--neutral {
-  background: #2b2b2b;
-  border-color: var(--line);
-  color: #c3c3c3;
-}
-
-:root[data-theme="dark"] .roi-tone-positive {
-  color: #6ee7b7;
-}
-
-:root[data-theme="dark"] .roi-tone-warn {
-  color: #fbbf24;
-}
-
-:root[data-theme="dark"] .roi-metrics-divider {
-  background: #3f3f3f;
-}
-
-:root[data-theme="dark"] .d-card {
-  background: var(--card);
-  border: none;
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .d-head {
-  border-bottom-color: #3f3f3f;
-}
-
-:root[data-theme="dark"] .d-title {
-  color: #f2f2f2;
-}
-
-:root[data-theme="dark"] .d-back {
-  background: transparent;
-  border-color: var(--line);
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .d-back:hover {
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-  color: var(--accent);
-}
-
-:root[data-theme="dark"] .d-cover-logo {
-  background: #ffffff !important;
-  border-color: #d2d2d2;
-  color: #0f172a;
-}
-
-:root[data-theme="dark"] .roi-box {
-  background: var(--card);
-  border-color: var(--line);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .roi-box:hover {
-  border-color: var(--line-accent);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .program-card {
-  background: var(--surface-solid);
-  border-color: var(--line);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .program-card:hover {
-  border-color: var(--line-accent);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .program-card-title {
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .admissions-overview,
-:root[data-theme="dark"] .admissions-programs-block {
-  border-color: var(--line);
-  background: var(--surface-soft);
-}
-
-:root[data-theme="dark"] .admissions-section-title,
-:root[data-theme="dark"] .admissions-summary-value,
-:root[data-theme="dark"] .admissions-program-title {
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .admissions-section-note,
-:root[data-theme="dark"] .admissions-summary-note,
-:root[data-theme="dark"] .admissions-program-note,
-:root[data-theme="dark"] .admissions-summary-meta,
-:root[data-theme="dark"] .admissions-summary-eyebrow {
-  color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .admissions-summary-card,
-:root[data-theme="dark"] .admissions-program-card {
-  border-color: var(--line);
-  background: var(--surface-solid);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .admissions-source-link {
-  background: rgba(24, 24, 32, 0.95);
-  border-color: rgba(188, 163, 255, 0.24);
-  color: #d9c7ff;
-}
-
-:root[data-theme="dark"] .admissions-source-link:hover {
-  background: rgba(36, 31, 54, 0.98);
-}
-
-:root[data-theme="dark"] .program-card-row {
-  border-bottom-color: #312b3f;
-}
-
-:root[data-theme="dark"] .program-card-label {
-  color: #9ea3b2;
-}
-
-:root[data-theme="dark"] .program-card-value {
-  color: #e5e7eb;
-}
-
-:root[data-theme="dark"] .program-card-value--empty {
-  color: #8d94a3;
-}
-
-:root[data-theme="dark"] .program-acceptance-track {
-  background: #2a2f3a;
-}
-
-:root[data-theme="dark"] .program-acceptance-fill {
-  background: var(--accent);
-}
-
-:root[data-theme="dark"] .program-card-index {
-  background: #2a2238;
-  border-color: #4b3d67;
-  color: #c8b4ff;
-}
-
-:root[data-theme="dark"] .program-pill {
-  background: #22242d;
-  border-color: var(--line);
-  color: #cbd5e1;
-}
-
-:root[data-theme="dark"] .program-pill--accent {
-  background: #302449;
-  border-color: var(--line-accent);
-  color: #ccb8ff;
-}
-
-:root[data-theme="dark"] .program-tag,
-:root[data-theme="dark"] .program-major-chip {
-  background: #24242a;
-  border-color: var(--line);
-  color: #e2e2e2;
-}
-
-:root[data-theme="dark"] .program-empty {
-  background: #17171a;
-  border-color: var(--line);
-  color: #a8adb8;
-}
-
-:root[data-theme="dark"] .track-funding-badge--grant {
-  color: #bbf7d0;
-  background: rgba(34, 197, 94, 0.3);
-  border-color: var(--line-grant);
-}
-
-:root[data-theme="dark"] .track-funding-badge--paid {
-  color: #d1d5db;
-  background: rgba(148, 163, 184, 0.17);
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .chance-track-chip.chance-high {
-  color: #86efac;
-  background: rgba(16, 185, 129, 0.2);
-  border-color: var(--line-grant);
-}
-
-:root[data-theme="dark"] .chance-track-chip.chance-good {
-  color: #bbf7d0;
-  background: rgba(34, 197, 94, 0.19);
-  border-color: var(--line-grant);
-}
-
-:root[data-theme="dark"] .chance-track-chip.chance-medium {
-  color: #fcd34d;
-  background: rgba(245, 158, 11, 0.2);
-  border-color: var(--line-warning);
-}
-
-:root[data-theme="dark"] .chance-track-chip.chance-low {
-  color: #fca5a5;
-  background: rgba(239, 68, 68, 0.2);
-  border-color: var(--line-danger);
-}
-
 @media (max-width: 760px) {
   .program-list {
     grid-template-columns: 1fr;
@@ -3018,196 +2601,9 @@
 
 }
 
-:root[data-theme="dark"] .d-state-error {
-  color: #f87171;
-}
-
-:root[data-theme="dark"] .track-selection-badge {
-  color: var(--accent);
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-}
-
-:root[data-theme="dark"] .finance-track-options-title {
-  color: var(--text);
-  background: transparent;
-  border: none;
-}
-
-:root[data-theme="dark"] .track-muted-italic,
-:root[data-theme="dark"] .finance-breakdown-note,
-:root[data-theme="dark"] .track-stats-values,
-:root[data-theme="dark"] .track-exam-group-list,
-:root[data-theme="dark"] .track-lang-rule-requirements {
-  color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .track-select-btn {
-  background: var(--surface-soft);
-  border-color: var(--line);
-  color: var(--text);
-}
-
-:root[data-theme="dark"] .track-select-btn:hover:not(:disabled) {
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-  color: var(--accent);
-}
-
-:root[data-theme="dark"] .track-select-btn:disabled,
-:root[data-theme="dark"] .track-select-btn.is-active {
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-  color: var(--accent);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .track-stats-box--min {
-  background: #222222;
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .track-stats-box--avg {
-  background: #16271f;
-  border-color: var(--line-grant);
-}
-
-:root[data-theme="dark"] .track-stats-title {
-  color: #d1d5db;
-}
-
-:root[data-theme="dark"] .track-stats-title--avg {
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .track-exam-group {
-  background: #222222;
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .track-exam-group--neutral .track-exam-group-title {
-  color: #d1d5db;
-}
-
-:root[data-theme="dark"] .track-exam-group--info {
-  background: #1f2431;
-  border-color: var(--line-accent);
-}
-
-:root[data-theme="dark"] .track-exam-group--info .track-exam-group-title {
-  color: #93c5fd;
-}
-
-:root[data-theme="dark"] .track-exam-group--success {
-  background: #16271f;
-  border-color: var(--line-grant);
-}
-
-:root[data-theme="dark"] .track-exam-group--success .track-exam-group-title {
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .track-lang-rules {
-  background: #1b2230;
-  border-color: var(--line-accent);
-}
-
-:root[data-theme="dark"] .track-lang-rules-title {
-  color: #bfdbfe;
-}
-
-:root[data-theme="dark"] .track-lang-rules-mode {
-  color: #93c5fd;
-}
-
-:root[data-theme="dark"] .track-lang-rule-card {
-  background: #1f2431;
-  border-color: #334155;
-}
-
-:root[data-theme="dark"] .track-lang-rule-code {
-  background: #1d2740;
-  border-color: #334155;
-  color: #bfdbfe;
-}
-
-:root[data-theme="dark"] .track-lang-rule-native {
-  background: #16271f;
-  border-color: #2f4f42;
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .track-lang-rule-cefr {
-  color: #bfdbfe;
-}
-
-:root[data-theme="dark"] .track-lang-rule-requirements,
-:root[data-theme="dark"] .track-lang-rule-average {
-  border-top-color: #334155;
-}
-
-:root[data-theme="dark"] .track-lang-rule-average {
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .track-extra-req {
-  background: #222222;
-  border-color: #3f3f3f;
-}
-
-:root[data-theme="dark"] .track-extra-req-title {
-  color: #d1d5db;
-}
-
-:root[data-theme="dark"] .track-extra-req-list {
-  color: #c3c7d0;
-}
-
-:root[data-theme="dark"] .admission-empty-state {
-  background: #1b1b1b;
-  border-color: #3f3f3f;
-  color: #9ca3af;
-}
-
-:root[data-theme="dark"] .scholarship-line--positive {
-  color: #86efac;
-}
-
-:root[data-theme="dark"] .scholarship-line--muted {
-  color: #c3c3c3;
-}
-
-:root[data-theme="dark"] .cost-legend-row {
-  background: #1b1b1b;
-  border-color: #3f3f3f;
-}
-
-:root[data-theme="dark"] .cost-legend-label {
-  color: #c3c7d0;
-}
-
-:root[data-theme="dark"] .cost-legend-value,
-:root[data-theme="dark"] .cost-legend-single {
-  color: #f2f2f2;
-}
-
-:root[data-theme="dark"] .cost-legend-single {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(168, 85, 247, 0.22);
-}
-
-:root[data-theme="dark"] .roi-box {
-  background: #161616 !important;
-  border-color: #3f3f3f !important;
-}
-
 .d-page {
   background: var(--bg);
   padding: 24px 0 72px;
-}
-
-:root[data-theme="dark"] .d-page {
-  background: var(--bg);
 }
 
 .d-container {
@@ -3239,8 +2635,8 @@
 .d-cover-overlay {
   background: linear-gradient(
   180deg,
-  rgba(15, 23, 42, 0.08),
-  rgba(15, 23, 42, 0.34)
+  color-mix(in srgb, var(--backdrop) 8%, transparent),
+  color-mix(in srgb, var(--backdrop) 34%, transparent)
   );
 }
 
@@ -3381,7 +2777,7 @@
 .d-site-link:hover {
   background: var(--surface-soft);
   color: var(--accent);
-  border-color: rgba(79, 70, 229, 0.18);
+  border-color: var(--line-accent);
 }
 
 .d-box {
@@ -3414,7 +2810,7 @@
 .uni-tag {
   padding: 7px 10px;
   border-radius: 10px;
-  border-color: rgba(79, 70, 229, 0.18);
+  border-color: var(--line-accent);
   background: transparent;
   color: var(--text);
   box-shadow: none;
@@ -3467,17 +2863,17 @@
 }
 
 .finance-option-card:hover {
-  border-color: rgba(79, 70, 229, 0.18);
-  box-shadow: var(--shadow);
+  border-color: var(--line-accent);
+  box-shadow: none;
 }
 
 .finance-option-card--grant {
-  border-color: rgba(16, 185, 129, 0.2);
+  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
 .finance-option-card--grant::before {
-  background: #10b981;
+  background: var(--color-success);
 }
 
 .track-cost-preview,
@@ -3501,10 +2897,6 @@
   background: var(--card);
   background-image: none;
   border-color: var(--line);
-}
-
-:root[data-theme="dark"] .d-cover-logo {
-  background: #ffffff;
 }
 
 @media (max-width: 980px) {
@@ -3847,7 +3239,7 @@
 .d-cover-logo {
   border-color: var(--line);
   border-radius: 18px;
-  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+  box-shadow: var(--shadow-sm);
 }
 
 .d-head {
@@ -3894,14 +3286,14 @@
 .d-site-link:hover {
   background: var(--surface-soft);
   color: var(--accent);
-  border-color: rgba(79, 70, 229, 0.18);
+  border-color: var(--line-accent);
 }
 
 .d-site-link.is-saved {
-  background: #facc15;
-  color: #713f12;
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.22);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--line-warning);
+  box-shadow: none;
 }
 
 .d-tabs {
@@ -4005,14 +3397,15 @@
 }
 
 .finance-option-card:hover,
+.finance-option-card:hover,
 .program-card:hover {
-  border-color: rgba(79, 70, 229, 0.18);
-  box-shadow: var(--shadow);
+  border-color: var(--line-accent);
+  box-shadow: none;
 }
 
 .finance-option-card--grant,
 .finance-track-group--grant {
-  border-color: rgba(16, 185, 129, 0.22);
+  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
@@ -4038,109 +3431,6 @@
 .program-major-chip,
 .tag {
   color: var(--text);
-}
-
-:root[data-theme="dark"] .d-page-scope {
-  background: var(--surface-solid);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .d-card,
-:root[data-theme="dark"] .d-head,
-:root[data-theme="dark"] .d-tabs,
-:root[data-theme="dark"] .d-tab-content,
-:root[data-theme="dark"] .d-box,
-:root[data-theme="dark"] #tab-admission .d-box,
-:root[data-theme="dark"] #tab-finance .finance-box,
-:root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .finance-option-card,
-:root[data-theme="dark"] .program-card,
-:root[data-theme="dark"] .finance-track-group,
-:root[data-theme="dark"] .track-cost-preview,
-:root[data-theme="dark"] .finance-option-total,
-:root[data-theme="dark"] .track-extra-req,
-:root[data-theme="dark"] .track-stats-box,
-:root[data-theme="dark"] .total-price-card,
-:root[data-theme="dark"] .roi-box,
-:root[data-theme="dark"] .admissions-overview,
-:root[data-theme="dark"] .admissions-programs-block,
-:root[data-theme="dark"] .admissions-summary-card,
-:root[data-theme="dark"] .admissions-program-card {
-  background: var(--card);
-  background-image: none;
-  border-color: var(--line);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .finance-track-group--grant,
-:root[data-theme="dark"] .finance-option-card--grant,
-:root[data-theme="dark"] .scholarship-card {
-  background: var(--grant-soft);
-  border-color: rgba(16, 185, 129, 0.32);
-}
-
-:root[data-theme="dark"] .chance-panel,
-:root[data-theme="dark"] .uni-tags-wrap,
-:root[data-theme="dark"] .track-cost-preview,
-:root[data-theme="dark"] .finance-option-total,
-:root[data-theme="dark"] .track-extra-req,
-:root[data-theme="dark"] .track-stats-box {
-  background: var(--surface-soft);
-}
-
-:root[data-theme="dark"] .d-cover-logo {
-  background: #ffffff;
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .d-back,
-:root[data-theme="dark"] .d-site-link {
-  background: transparent;
-  color: var(--text);
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .d-site-link.is-saved {
-  background: #facc15;
-  color: #713f12;
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.18);
-}
-
-:root[data-theme="dark"] .d-back:hover,
-:root[data-theme="dark"] .d-site-link:hover {
-  background: var(--surface-soft);
-  color: var(--accent);
-  border-color: rgba(87, 21, 219, 0.28);
-}
-
-:root[data-theme="dark"] .d-site-link.is-saved:hover {
-  background: #facc15;
-  color: #713f12;
-  border-color: #f59e0b;
-}
-
-:root[data-theme="dark"] .d-tab-btn,
-:root[data-theme="dark"] .d-tab-btn:hover {
-  background: transparent;
-  color: var(--muted);
-}
-
-:root[data-theme="dark"] .d-tab-btn.active,
-:root[data-theme="dark"] .d-tab-btn.active:hover {
-  background: transparent;
-  color: var(--accent);
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .finance-option-card--grant,
-:root[data-theme="dark"] .finance-track-group--grant,
-:root[data-theme="dark"] .track-cost-preview--grant,
-:root[data-theme="dark"] .finance-option-total--grant {
-  border-color: rgba(52, 211, 153, 0.28);
-  background: var(--grant-soft);
 }
 
 @media (max-width: 720px) {
@@ -4580,11 +3870,7 @@
 }
 
 .scholarship-line--positive {
-  color: #059669 !important;
-}
-
-:root[data-theme="dark"] .scholarship-line--positive {
-  color: #34d399 !important;
+  color: var(--text-grant) !important;
 }
 
 .scholarship-line--muted {
@@ -5238,11 +4524,7 @@ body[data-page="university"],
 .track-cost-preview--grant {
   border: none !important;
   background: transparent !important;
-  color: #059669;
-}
-
-:root[data-theme="dark"] .track-cost-preview--grant {
-  color: #34d399;
+  color: var(--text-grant);
 }
 
 .admission-chance-badge {
@@ -5262,13 +4544,11 @@ body[data-page="university"],
   overflow-wrap: anywhere;
 }
 
-/* Гарантированный белый фон для логотипа университета */
+/* Гарантированный контрастный фон для логотипа университета */
 .d-cover-logo,
-.d-logo-img,
-:root[data-theme="dark"] .d-cover-logo,
-:root[data-theme="dark"] .d-logo-img {
-  background: #ffffff !important;
-  color: #0f172a;
+.d-logo-img {
+  background: var(--surface-badge) !important;
+  color: var(--surface-badge-text);
 }
 
 /* ====================================================================

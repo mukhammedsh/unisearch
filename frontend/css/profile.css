@@ -160,14 +160,9 @@ body[data-page="profile"] {
 }
 
 .profile-save-state.is-dirty {
-  background: color-mix(in srgb, #f59e0b 12%, var(--surface-solid));
-  border-color: color-mix(in srgb, #f59e0b 45%, var(--line));
-  color: #d97706;
-}
-
-:root[data-theme="dark"] .profile-save-state.is-dirty {
-  background: color-mix(in srgb, #f59e0b 18%, var(--surface-solid));
-  color: #fbbf24;
+  background: var(--color-warning-bg);
+  border-color: var(--line-warning);
+  color: var(--color-warning);
 }
 
 .profile-action-btn {
@@ -198,7 +193,7 @@ body[data-page="profile"] {
 
 .profile-action-btn--primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
   border: 1px solid transparent;
 }
 
@@ -445,7 +440,7 @@ body[data-page="profile"] {
   background: var(--surface-solid);
   color: var(--text);
   border-color: var(--line-strong);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-xs);
 }
 
 .profile-scale-btn:focus-visible {
@@ -468,17 +463,12 @@ textarea.profile-input,
 
 .profile-interests-warning {
   font-size: 12px;
-  color: #b45309;
-  background: color-mix(in srgb, #f59e0b 14%, var(--surface-solid));
-  border: 1px solid color-mix(in srgb, #f59e0b 40%, var(--line));
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--line-warning);
   border-radius: 10px;
   padding: 8px 12px;
   line-height: 1.45;
-}
-
-:root[data-theme="dark"] .profile-interests-warning {
-  color: #fbbf24;
-  background: color-mix(in srgb, #f59e0b 18%, var(--surface-solid));
 }
 
 .profile-interest-chips {
@@ -537,7 +527,7 @@ textarea.profile-input,
   border-radius: 10px;
   border: 1px solid transparent;
   background: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -671,9 +661,9 @@ textarea.profile-input,
 }
 
 .profile-delete:hover {
-  background: color-mix(in srgb, #ef4444 8%, var(--surface-solid));
-  border-color: color-mix(in srgb, #ef4444 40%, var(--line));
-  color: #ef4444;
+  background: var(--color-danger-bg);
+  border-color: var(--line-danger);
+  color: var(--color-danger);
 }
 
 .profile-delete:focus-visible {
@@ -708,8 +698,8 @@ textarea.profile-input,
   gap: 16px;
   padding: 16px 20px;
   border-radius: 14px;
-  border: 1px solid color-mix(in srgb, #ef4444 22%, var(--line));
-  background: color-mix(in srgb, #ef4444 3%, var(--surface-solid));
+  border: 1px solid var(--line-danger);
+  background: var(--color-danger-bg);
 }
 
 .profile-reset-copy {
@@ -735,9 +725,9 @@ textarea.profile-input,
   border-radius: 10px;
   font-size: 12.5px;
   font-weight: 600;
-  border: 1px solid color-mix(in srgb, #ef4444 45%, var(--line));
+  border: 1px solid var(--line-danger);
   background: var(--surface-solid);
-  color: #ef4444;
+  color: var(--color-danger);
   cursor: pointer;
   white-space: nowrap;
   transition:
@@ -747,9 +737,9 @@ textarea.profile-input,
 }
 
 .profile-delete--danger:hover {
-  background: var(--line-danger);
-  color: #fff;
-  border-color: var(--line-danger);
+  background: var(--color-danger);
+  color: var(--text-inverse);
+  border-color: var(--color-danger);
 }
 
 .profile-delete--danger:focus-visible {

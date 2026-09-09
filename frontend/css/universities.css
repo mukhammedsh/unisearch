@@ -1,11 +1,6 @@
 body[data-page="universities"] {
-  --slider-track-inactive: #d4d8e0;
+  --slider-track-inactive: var(--line);
   --slider-track-active: var(--accent);
-}
-
-:root[data-theme="dark"] body[data-page="universities"],
-body[data-page="universities"]:where(:root[data-theme="dark"] *) {
-  --slider-track-inactive: #2b2e35;
 }
 
 .u-page {
@@ -381,8 +376,8 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   right: 0;
   top: calc(100% + 8px);
   width: min(300px, 74vw);
-  background: var(--surface-solid);
-  color: #f5f5f5;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
   border-radius: 10px;
   padding: 10px 12px;
   font-size: 12px;
@@ -587,18 +582,18 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 :root {
-  --color-chance-high: #047857;
-  --bg-chance-high: rgba(4, 120, 87, 0.10);
-  --border-chance-high: rgba(4, 120, 87, 0.24);
-  --color-chance-good: #2563eb;
-  --bg-chance-good: rgba(37, 99, 235, 0.10);
-  --border-chance-good: rgba(37, 99, 235, 0.22);
-  --color-chance-medium: #d97706;
-  --bg-chance-medium: rgba(245, 158, 11, 0.12);
-  --border-chance-medium: rgba(245, 158, 11, 0.24);
-  --color-chance-low: #dc2626;
-  --bg-chance-low: rgba(220, 38, 38, 0.10);
-  --border-chance-low: rgba(220, 38, 38, 0.22);
+  --color-chance-high: var(--color-success);
+  --bg-chance-high: var(--color-success-bg);
+  --border-chance-high: var(--line-grant);
+  --color-chance-good: var(--color-info);
+  --bg-chance-good: var(--color-info-bg);
+  --border-chance-good: var(--line-info);
+  --color-chance-medium: var(--color-warning);
+  --bg-chance-medium: var(--color-warning-bg);
+  --border-chance-medium: var(--line-warning);
+  --color-chance-low: var(--color-danger);
+  --bg-chance-low: var(--color-danger-bg);
+  --border-chance-low: var(--line-danger);
 }
 
 .budget-control-wrapper {
@@ -701,7 +696,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 18px;
   border-radius: 50%;
   background: var(--accent);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--surface-solid);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   margin-top: -6px;
@@ -714,7 +709,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 18px;
   border-radius: 50%;
   background: var(--accent);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--surface-solid);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
 }
@@ -796,7 +791,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 18px;
   border-radius: 50%;
   background: var(--accent);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--surface-solid);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   margin-top: -6px;
@@ -821,7 +816,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 18px;
   border-radius: 50%;
   background: var(--accent);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--surface-solid);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
 }
@@ -863,7 +858,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .view-btn:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--surface-soft);
   color: var(--accent);
 }
 
@@ -957,7 +952,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-tour-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--backdrop);
   backdrop-filter: blur(1px);
 }
 
@@ -1122,7 +1117,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-tour-btn--primary {
   border-color: var(--accent);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--text-inverse);
   min-width: 84px;
 }
 
@@ -1175,15 +1170,8 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .is-skeleton .skeleton-line {
   position: relative;
   overflow: hidden;
-  background-color: var(--skeleton-base, var(--surface-soft, rgba(0, 0, 0, 0.04)));
+  background-color: var(--skeleton-base);
   border: none;
-}
-
-:root[data-theme="dark"] .is-skeleton .uni-media,
-:root[data-theme="dark"] .is-skeleton .uni-logo,
-:root[data-theme="dark"] .is-skeleton .uni-price,
-:root[data-theme="dark"] .is-skeleton .skeleton-line {
-  background-color: var(--skeleton-base, var(--surface-soft, rgba(255, 255, 255, 0.04)));
 }
 
 .is-skeleton .uni-media::after,
@@ -1197,24 +1185,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--skeleton-highlight, rgba(255, 255, 255, 0.42)) 50%,
+    var(--skeleton-highlight) 50%,
     transparent 100%
   );
   animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
   pointer-events: none;
   will-change: transform;
-}
-
-:root[data-theme="dark"] .is-skeleton .uni-media::after,
-:root[data-theme="dark"] .is-skeleton .uni-logo::after,
-:root[data-theme="dark"] .is-skeleton .uni-price::after,
-:root[data-theme="dark"] .is-skeleton .skeleton-line::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--skeleton-highlight, rgba(255, 255, 255, 0.14)) 50%,
-    transparent 100%
-  );
 }
 
 .is-skeleton .uni-media::after {
@@ -1284,11 +1260,11 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-map-stage.is-loading .u-map-container::before {
   background:
-  radial-gradient(circle at 18% 28%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 9px, transparent 10px),
-  radial-gradient(circle at 42% 58%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 10px, transparent 11px),
-  radial-gradient(circle at 68% 34%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 8px, transparent 9px),
-  radial-gradient(circle at 78% 72%, var(--skeleton-highlight, rgba(255,255,255,0.5)) 0 11px, transparent 12px),
-  linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight, rgba(255,255,255,0.42)) 46%, transparent 58%, transparent 100%),
+  radial-gradient(circle at 18% 28%, var(--skeleton-highlight) 0 9px, transparent 10px),
+  radial-gradient(circle at 42% 58%, var(--skeleton-highlight) 0 10px, transparent 11px),
+  radial-gradient(circle at 68% 34%, var(--skeleton-highlight) 0 8px, transparent 9px),
+  radial-gradient(circle at 78% 72%, var(--skeleton-highlight) 0 11px, transparent 12px),
+  linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight) 46%, transparent 58%, transparent 100%),
   repeating-linear-gradient(0deg, transparent 0 70px, var(--line) 71px 72px),
   repeating-linear-gradient(90deg, transparent 0 92px, var(--line) 93px 94px),
   var(--surface-soft);
@@ -1302,7 +1278,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   height: 42px;
   border-radius: 14px;
   background:
-  linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight, rgba(255,255,255,0.42)) 46%, transparent 58%, transparent 100%),
+  linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight) 46%, transparent 58%, transparent 100%),
   var(--surface-solid);
   background-size: 220% 100%, auto;
   border: 1px solid var(--line);
@@ -1375,7 +1351,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, .22) 100%);
+  background: linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--backdrop) 50%, transparent) 100%);
 }
 
 .uni-price {
@@ -1416,12 +1392,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   width: 52px;
   height: 52px;
   border-radius: var(--radius-base);
-  background: #ffffff;
+  background: var(--surface-badge);
   border: 1px solid var(--line);
   display: grid;
   place-items: center;
   font-weight: 700;
-  color: var(--text);
+  color: var(--surface-badge-text);
   box-shadow: none;
 }
 
@@ -1501,7 +1477,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   border-radius: 12px;
   background: var(--accent-faint);
   border: 1px solid var(--accent-soft);
-  color: rgba(0, 0, 0, .70);
+  color: var(--text-muted);
   font-size: 10.5px;
   display: flex;
   flex-direction: column;
@@ -1641,9 +1617,9 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .uni-action-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface);
   color: var(--text);
   display: inline-flex;
   align-items: center;
@@ -1662,16 +1638,16 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .uni-action-btn.is-active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
 }
 
 .uni-action-btn--favorite.is-active {
   background: var(--color-warning-bright);
   border-color: var(--line-warning);
-  color: #713f12;
+  color: var(--color-warning);
   box-shadow:
-  0 8px 18px rgba(0, 0, 0, 0.14),
-  0 0 0 4px rgba(250, 204, 21, 0.28);
+  var(--shadow-sm),
+  0 0 0 4px var(--color-warning-bg);
 }
 
 body.universities-compare-mode .uni-action-btn--favorite {
@@ -1681,13 +1657,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .uni-action-btn--compare.is-active {
   background: var(--color-success);
   border-color: var(--line-grant);
-  color: #ffffff;
+  color: var(--text-inverse);
 }
 
 .uni-action-btn--compare.is-active:hover {
   background: var(--color-success);
   border-color: var(--line-grant);
-  color: #ffffff;
+  color: var(--text-inverse);
 }
 
 .uni-action-btn--compare.motion-state-pulse--compare {
@@ -1713,7 +1689,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .uni-action-btn--compare.is-active.motion-state-pulse--compare {
   background: var(--color-success) !important;
   border-color: var(--line-grant) !important;
-  color: #ffffff !important;
+  color: var(--text-inverse) !important;
 }
 
 .uni-action-btn--favorite.is-active .uni-action-icon {
@@ -1935,7 +1911,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   height: 28px;
   border: 0;
   border-radius: 10px;
-  background: rgba(15, 23, 42, 0.08);
+  background: var(--surface-soft);
   color: var(--text-muted);
   display: inline-flex;
   align-items: center;
@@ -2077,8 +2053,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
   height: 24px;
   border-radius: var(--radius-xs);
   object-fit: contain;
-  background: #ffffff;
+  background: var(--surface-badge);
   border: 1px solid var(--line);
+  color: var(--surface-badge-text);
   padding: 2px;
   flex-shrink: 0;
 }
@@ -2112,7 +2089,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .compare-tray__slot-remove:hover {
   color: var(--color-danger-muted);
-  background: rgba(239, 68, 68, 0.12);
+  background: var(--color-danger-bg);
 }
 
 .compare-tray__actions {
@@ -2152,13 +2129,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-tray__btn--primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
 }
 
 .compare-tray__btn--primary:hover:not(:disabled) {
-  background: var(--accent-strong, #4338ca);
-  border-color: var(--accent-strong, #4338ca);
-  color: #fff;
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--text-inverse);
 }
 
 .compare-tray__btn:disabled {
@@ -2203,10 +2180,10 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-uni-card__logo {
   width: 52px;
   height: 52px;
-  border: 1px solid rgba(0, 0, 0, .08);
+  border: 1px solid var(--line);
   border-radius: 14px;
-  background: #fff;
-  color: var(--accent);
+  background: var(--surface-badge);
+  color: var(--surface-badge-text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2319,9 +2296,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .compare-uni-card__chance .chance-track-chip.chance-low {
-  border-color: rgba(220, 38, 38, 0.22);
-  background: rgba(220, 38, 38, 0.10);
-  color: var(--color-danger);
+  border-color: var(--border-chance-low);
+  background: var(--bg-chance-low);
+  color: var(--color-chance-low);
 }
 
 .compare-uni-card__badges {
@@ -2338,8 +2315,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
   box-sizing: border-box;
   padding: 4px 8px;
   border-radius: 10px;
-  background: rgba(250, 204, 21, 0.18);
-  border: 1px solid rgba(250, 204, 21, 0.35);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--line-warning);
   color: var(--color-warning);
   font-size: 11px;
   font-weight: 700;
@@ -2551,7 +2528,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   box-sizing: border-box;
   min-width: 0;
   padding: 13px;
-  border: 1px solid rgba(79, 70, 229, 0.16);
+  border: 1px solid var(--line-accent);
   border-radius: 14px;
   background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
   display: grid;
@@ -2602,8 +2579,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
   box-sizing: border-box;
   padding: 6px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(245, 158, 11, 0.28);
-  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid var(--line-warning);
+  background: var(--color-warning-bg);
   gap: 4px;
 }
 
@@ -2707,7 +2684,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
   font: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -2818,7 +2795,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .compare-diff-toggle input:checked + .compare-diff-toggle__track .compare-diff-toggle__thumb {
   transform: translateX(16px);
-  background: #ffffff;
+  background: var(--text-inverse);
 }
 
 .compare-diff-toggle input:focus-visible + .compare-diff-toggle__track {
@@ -3070,12 +3047,12 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-radius: var(--radius-xs);
   overflow: hidden;
   flex-shrink: 0;
-  background: #ffffff;
+  background: var(--surface-badge);
   border: 1px solid var(--line);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--text);
+  color: var(--surface-badge-text);
 }
 
 .compare-score-participant__logo img {
@@ -3197,11 +3174,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
   height: 36px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: #ffffff;
+  background: var(--surface-badge);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text);
+  color: var(--surface-badge-text);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -3261,15 +3238,15 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .compare-config-column .track-funding-badge--grant {
-  color: var(--color-success-muted);
-  background: rgba(16, 185, 129, 0.16);
-  border-color: rgba(16, 185, 129, 0.36);
+  color: var(--color-success);
+  background: var(--color-success-bg);
+  border-color: var(--line-grant);
 }
 
 .compare-config-column .track-funding-badge--paid {
   color: var(--text-muted);
-  background: rgba(107, 114, 128, 0.12);
-  border-color: rgba(107, 114, 128, 0.28);
+  background: var(--surface-soft);
+  border-color: var(--line);
 }
 
 .compare-config-column .track-exam-entry-group-list {
@@ -3301,21 +3278,21 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .uni-pill--warn {
-  background: rgba(245, 158, 11, 0.16);
+  background: var(--color-warning-bg);
   color: var(--color-warning);
-  border-color: rgba(245, 158, 11, 0.34);
+  border-color: var(--line-warning);
 }
 
 .uni-pill--success {
-  background: rgba(16, 185, 129, 0.16);
-  color: var(--color-success-muted);
-  border-color: rgba(16, 185, 129, 0.34);
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-color: var(--line-grant);
 }
 
 .uni-pill--budget {
-  background: rgba(139, 92, 246, 0.16);
-  color: var(--accent-strong);
-  border-color: rgba(139, 92, 246, 0.34);
+  background: var(--accent-panel);
+  color: var(--accent);
+  border-color: var(--line-accent);
 }
 
 .uni-footer {
@@ -3373,7 +3350,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .unifit-warning-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.55);
+  background: var(--backdrop);
 }
 
 .unifit-warning-card {
@@ -3443,7 +3420,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .unifit-warning-confirm {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
 }
 
 .unifit-warning-btn:hover {
@@ -3599,8 +3576,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .custom-map-popup .leaflet-popup-close-button {
-  color: white !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  color: var(--text-inverse) !important;
+  text-shadow: 0 1px 2px var(--backdrop);
   font-size: 24px !important;
   top: 8px !important;
   right: 8px !important;
@@ -3608,7 +3585,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .custom-map-popup .leaflet-popup-close-button:hover {
-  color: #ddd !important;
+  color: var(--text-muted) !important;
 }
 
 .custom-div-icon {
@@ -3619,7 +3596,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .map-marker-container {
   width: 44px !important;
   height: 44px !important;
-  background: #ffffff;
+  background: var(--surface-badge);
   border: 2px solid var(--accent);
   border-radius: var(--radius-base) !important;
   box-shadow: var(--shadow-sm);
@@ -3653,14 +3630,14 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .map-marker-container:hover {
   transform: scale(1.2);
-  border-color: #111;
+  border-color: var(--text);
   z-index: 2;
   cursor: pointer;
 }
 
 .map-marker-container.no-logo {
   background: var(--accent);
-  border-color: white;
+  border-color: var(--surface-solid);
 }
 
 .cluster-node-fix {
@@ -3674,8 +3651,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
   top: -8px;
   right: -8px;
   background: var(--accent);
-  color: white;
-  border: 2px solid white;
+  color: var(--text-inverse);
+  border: 2px solid var(--surface-solid);
   border-radius: 10px;
   padding: 2px 6px;
   font-size: 11px;
@@ -3932,40 +3909,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 }
 
-
-:root[data-theme="dark"] .slider-track {
-  background: #3f3f3f;
-}
-
-:root[data-theme="dark"] .dual-slider-container input[type="range"]::-webkit-slider-thumb,
-:root[data-theme="dark"] .tradeoff-slider::-webkit-slider-thumb {
-  border-color: #121212;
-  box-shadow: var(--shadow-sm);
-}
-
-:root[data-theme="dark"] .dual-slider-container input[type="range"]::-moz-range-thumb,
-:root[data-theme="dark"] .tradeoff-slider::-moz-range-thumb {
-  border-color: #121212;
-  box-shadow: var(--shadow-sm);
-}
-
-:root[data-theme="dark"] .tradeoff-slider {
-  background: transparent;
-}
-
-:root[data-theme="dark"] .tradeoff-slider::-moz-range-track {
-  background: #303030;
-}
-
-:root[data-theme="dark"] .tradeoff-slider::-webkit-slider-runnable-track {
-  background: #303030;
-}
-
-:root[data-theme="dark"] .tradeoff-slider::-moz-range-progress {
-  background: var(--accent);
-}
-
-
 .u-page-scope__inner {
   padding: 18px 20px;
   border: 1px solid var(--line);
@@ -4175,7 +4118,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .uni-card:hover {
   transform: none;
-  border-color: rgba(79, 70, 229, 0.18);
+  border-color: var(--line-accent);
   box-shadow: var(--shadow-md);
 }
 
@@ -4187,7 +4130,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .uni-media::after {
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 35%, rgba(15, 23, 42, 0.34) 100%);
+  background: linear-gradient(180deg, transparent 35%, color-mix(in srgb, var(--backdrop) 50%, transparent) 100%);
 }
 
 .uni-price {
@@ -4200,11 +4143,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border: 1px solid var(--line);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow-sm);
-}
-
-:root[data-theme="dark"] .uni-price {
-  background: rgba(22, 23, 24, 0.92);
-  border-color: var(--line);
 }
 
 .uni-price small {
@@ -4333,7 +4271,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     bottom: 0;
     left: 0;
     z-index: var(--z-drawer);
-    background: rgba(15, 23, 42, 0.45);
+    background: var(--backdrop);
     backdrop-filter: blur(6px);
     display: flex;
     justify-content: flex-end;
@@ -4366,7 +4304,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     background: var(--card);
     transform: translateX(100%);
     transition: transform var(--motion-medium) var(--motion-ease-enter);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-md);
   }
 
   .u-filter-close {
@@ -4383,7 +4321,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     gap: 10px;
     padding: 12px 20px;
     background: var(--accent);
-    color: #ffffff;
+    color: var(--text-inverse);
     border: none;
     border-radius: 14px;
     font-weight: 800;
@@ -4645,7 +4583,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   }
 
   .u-tour-backdrop {
-    background: rgba(0, 0, 0, 0.32);
+    background: var(--backdrop);
   }
 
   .u-tour-card {
@@ -4655,7 +4593,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     margin: 0;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     overflow-y: auto;
-    box-shadow: 0 -18px 48px rgba(0, 0, 0, 0.28);
+    box-shadow: var(--shadow-md);
   }
 
   .u-tour-close {
@@ -4741,30 +4679,18 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-map-result-card--loading .u-map-result-logo {
-  background-color: var(--skeleton-base, var(--surface-soft, rgba(0, 0, 0, 0.04)));
+  background-color: var(--skeleton-base);
   background-image: linear-gradient(
   100deg,
   transparent 0%,
   transparent 34%,
-  var(--skeleton-highlight, rgba(255, 255, 255, 0.42)) 46%,
+  var(--skeleton-highlight) 46%,
   transparent 58%,
   transparent 100%
   );
   background-size: 220% 100%;
   animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
   border-color: transparent;
-}
-
-:root[data-theme="dark"] .u-map-result-card--loading .u-map-result-logo {
-  background-color: var(--skeleton-base, var(--surface-soft, rgba(255, 255, 255, 0.04)));
-  background-image: linear-gradient(
-  100deg,
-  transparent 0%,
-  transparent 34%,
-  var(--skeleton-highlight, rgba(255, 255, 255, 0.14)) 46%,
-  transparent 58%,
-  transparent 100%
-  );
 }
 
 .u-map-results-head h3 {
@@ -4841,8 +4767,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 .u-map-result-card.is-active {
-  border-color: rgba(79, 70, 229, 0.26);
-  background: rgba(79, 70, 229, 0.04);
+  border-color: var(--line-accent);
+  background: var(--accent-panel);
 }
 
 .u-map-result-card.is-selected {
@@ -4871,7 +4797,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
   justify-content: center;
   border-radius: 12px;
   border: 1px solid var(--line);
-  background: #ffffff;
+  background: var(--surface-badge);
+  color: var(--surface-badge-text);
   overflow: hidden;
   font-size: 13px;
   font-weight: 800;
@@ -4984,12 +4911,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   height: clamp(560px, 58vw, 720px);
 }
 
-
-
-:root[data-theme="dark"] .u-map-result-card.is-active {
-  background: rgba(255, 255, 255, 0.04);
-}
-
 @media (max-width: 1100px) {
   .u-map-results {
     min-height: auto;
@@ -5083,86 +5004,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 
 
-:root[data-theme="dark"] .compare-config-chance .chance-panel {
-  background: #1d1f22;
-  border-color: var(--line);
-  color: var(--text);
-}
 
-:root[data-theme="dark"] .compare-config-column .track-funding-badge--paid {
-  color: #d1d5db;
-  background: rgba(148, 163, 184, 0.12);
-  border-color: rgba(148, 163, 184, 0.24);
-}
-
-:root[data-theme="dark"] .compare-config-column .track-funding-badge--grant {
-  color: #a7f3d0;
-  background: rgba(16, 185, 129, 0.16);
-  border-color: rgba(52, 211, 153, 0.30);
-}
-
-:root[data-theme="dark"] .compare-config-column .track-muted-italic,
-:root[data-theme="dark"] .compare-config-chance .chance-sub,
-:root[data-theme="dark"] .compare-config-chance .chance-foot,
-:root[data-theme="dark"] .compare-config-chance .chance-inline-note,
-:root[data-theme="dark"] .compare-config-chance .chance-percent-note {
-  color: var(--text-muted);
-}
-
-:root[data-theme="dark"] .compare-config-chance .chance-meter {
-  background: rgba(255, 255, 255, 0.10);
-}
-
-:root[data-theme="dark"] .compare-uni-card__chance .chance-track-chip.chance-high,
-:root[data-theme="dark"] .compare-config-chance .chance-percent.chance-high {
-  background: rgba(16, 185, 129, 0.16);
-  border-color: rgba(52, 211, 153, 0.28);
-  color: #a7f3d0;
-}
-
-:root[data-theme="dark"] .compare-uni-card__chance .chance-track-chip.chance-good,
-:root[data-theme="dark"] .compare-config-chance .chance-percent.chance-good {
-  background: rgba(96, 165, 250, 0.16);
-  border-color: rgba(96, 165, 250, 0.30);
-  color: #bfdbfe;
-}
-
-:root[data-theme="dark"] .compare-uni-card__chance .chance-track-chip.chance-medium,
-:root[data-theme="dark"] .compare-config-chance .chance-percent.chance-medium {
-  background: rgba(245, 158, 11, 0.16);
-  border-color: rgba(251, 191, 36, 0.30);
-  color: #fde68a;
-}
-
-:root[data-theme="dark"] .compare-uni-card__chance .chance-track-chip.chance-low,
-:root[data-theme="dark"] .compare-config-chance .chance-percent.chance-low {
-  background: rgba(248, 113, 113, 0.16);
-  border-color: rgba(248, 113, 113, 0.30);
-  color: #fecaca;
-}
-
-:root[data-theme="dark"] .compare-config-chance .chance-percent.chance-low-confidence {
-  border-color: rgba(251, 191, 36, 0.26);
-  background: rgba(251, 191, 36, 0.12);
-  color: #fbbf24;
-}
-
-:root[data-theme="dark"] .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence {
-  border-color: rgba(251, 191, 36, 0.26);
-  background: rgba(251, 191, 36, 0.12);
-}
-
-:root[data-theme="dark"] .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent.chance-low-confidence,
-:root[data-theme="dark"] .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent-note {
-  color: #fef08a !important;
-}
-
-
-:root[data-theme="dark"] .compare-uni-card__badges span {
-  background: rgba(250, 204, 21, 0.18);
-  border-color: rgba(250, 204, 21, 0.45);
-  color: #fef08a;
-}
 
 .u-page {
   padding-top: 16px;
@@ -5313,11 +5155,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 }
 
-:root[data-theme="dark"] .uni-action-btn {
-  background: rgba(17, 24, 39, 0.9);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #f9fafb;
-}
+
 
 .uni-badge {
   --uni-pill-font-size: 10.25px;
@@ -5656,7 +5494,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     padding: 16px 16px calc(18px + env(safe-area-inset-bottom));
     transform: translateY(100%);
-    box-shadow: 0 -18px 44px rgba(15, 23, 42, 0.2);
+    box-shadow: var(--shadow-md);
   }
 
   .u-sidebar.is-open .u-filter-card {
@@ -5825,7 +5663,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .uni-card .uni-pill--success {
   background: var(--grant-soft);
-  border: 1px solid rgba(16, 185, 129, 0.42);
+  border: 1px solid var(--line-grant);
   color: var(--color-success-muted);
 }
 
@@ -5893,8 +5731,8 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 
 :root .u-map-result-card.is-active:hover {
-  background: rgba(79, 70, 229, 0.08);
-  border-color: rgba(79, 70, 229, 0.40);
+  background: var(--accent-panel);
+  border-color: var(--line-accent);
 }
 
 :root .u-map-result-card.is-selected:hover {
@@ -5902,7 +5740,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
 }
 
-/* Гарантированный белый фон и тёмный контрастный текст у всех логотипов и иконок университетов в любой теме */
+/* Гарантированный контрастный фон у всех логотипов и иконок университетов в любой теме */
 .uni-logo,
 .uni-card .uni-logo,
 .compare-tray__slot-logo,
@@ -5910,17 +5748,9 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .compare-score-participant__logo,
 .compare-config-column__logo,
 .u-map-result-logo,
-.map-marker-container,
-:root[data-theme="dark"] .uni-logo,
-:root[data-theme="dark"] .uni-card .uni-logo,
-:root[data-theme="dark"] .compare-tray__slot-logo,
-:root[data-theme="dark"] .compare-uni-card__logo,
-:root[data-theme="dark"] .compare-score-participant__logo,
-:root[data-theme="dark"] .compare-config-column__logo,
-:root[data-theme="dark"] .u-map-result-logo,
-:root[data-theme="dark"] .map-marker-container {
-  background: #ffffff !important;
-  color: #0f172a !important;
+.map-marker-container {
+  background: var(--surface-badge) !important;
+  color: var(--surface-badge-text) !important;
 }
 
 
