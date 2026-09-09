@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.1 (2026-09-08) - University Detail Layout Refinements and Admission Track Polish
+## 5.0.1 (2026-09-08) - University Detail Layout Refinements, Admission Track Polish, and CSS Design System Polish
 - Polished university detail page layout across General and Admission tabs (`university.html`, `university.css`, `page-controller.js`, `render-content.js`, `render-sections.js`):
   - Streamlined hero card by removing duplicate acceptance rate badge beneath location line.
   - Eliminated excessive whitespace in the General tab (`#tab-general`) between "About & Campus" and "Overview" sections, introducing a clean divider border (`1px solid var(--line)`) and harmonized 20px spacing rhythm.
@@ -12,6 +12,18 @@ All notable project changes should be recorded here.
   - Added visual divider between average and minimum score requirement categories in admission requirement profiles.
 - Expanded localization and translations for admission tracks and major tags (`universities_translations.json`, `Localization/eng`, `Localization/ru`, `university-translations.js`, `_shared.js`, `university-detail-helpers.js`, `universities.py`).
 - Added automated layout and spacing invariant tests for university detail cards in Playwright suite (`tests/e2e/university-track-majors.spec.js`).
+- Refactored About page layout architecture to Calm Academic Workspace specifications (`about.html`, `about.css`):
+  - Flattened nested container structure (`.about-shell` and `.about-shell-section`) into clean top-level semantic sections conforming to the `guide.css` and `legal.css` architectural pattern.
+  - Redesigned Hero section with semantic eyebrow (`.about-eyebrow`), title (`.about-title`), and lead description (`.about-lead`).
+  - Standardized cards (`.about-proof-card`, `.about-contact-card`, `.team-card`) with unified `var(--radius-lg)`, `var(--surface-solid)`, and `1px solid var(--line)` without artificial box shadows.
+  - Added focus-visible accessibility outlines (`outline: 2px solid var(--accent); outline-offset: 2px;`) and smooth accent transitions on interactive links.
+  - Refined responsive layout for tablet (<=980px), mobile (<=640px), and narrow viewports (<=480px) with adaptive typography and padding scale.
+  - Added subtle entry motion (`motion-fade-lift-soft`) with staggered section delays and `prefers-reduced-motion: reduce` fallback.
+- Standardized design system color tokens and removed redundant CSS rules (`style.css`, `universities.css`):
+  - Introduced central semantic status tokens (`--color-danger`, `--color-danger-muted`, `--color-success`, `--color-success-muted`, `--color-warning`, `--color-warning-bg`, `--color-warning-bright`) in `:root` and `:root[data-theme="dark"]` within `style.css`.
+  - Pruned over 500 lines of redundant and duplicated dark-theme CSS rules in `universities.css` that overrode base styles with hardcoded color literals, strictly adhering to Calm Academic Workspace token inheritance.
+  - Replaced non-standard color variables (e.g. `--muted`) with `--text-muted` and enforced uniform dark mode logo/marker text contrast (`color: #0f172a !important`).
+
 
 ## 5.0.0 (2026-09-08) - Calm Academic Workspace, Applicant Profile, and Architecture Modularization
 - Implemented global sticky-footer architecture and resolved top-docked footer regressions (`style.css`, `universities.css`, `university.css`, `index.css`, `error.css`, `footer-sticky.spec.js`):

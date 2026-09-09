@@ -1,94 +1,90 @@
 /* ==========================================================================
    UniSearch About Page Stylesheet
-   Direction: Calm Academic Workspace / Apple-Inspired Density & Typography
+   Direction: Calm Academic Workspace / Flat Information Page
+   Pattern: guide.css / legal.css — hero + flat sections, no shell wrapper
    ========================================================================== */
 
-.about-page {
-  max-width: 1440px;
-  margin: 20px auto 64px;
-  padding: 0 28px;
-}
-
+/* --------------------------------------------------------------------------
+   Page Canvas
+   -------------------------------------------------------------------------- */
 body[data-page="about"] {
   background: var(--bg);
 }
 
-/* --------------------------------------------------------------------------
-   Main Container Shell (Clean panel, unified borders, no stacked gaps)
-   -------------------------------------------------------------------------- */
-.about-shell {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--surface-solid);
-  box-shadow: none;
-  padding: 24px 28px;
+.about-page {
+  max-width: 1080px;
+  margin: 24px auto 80px;
+  padding: 0 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.about-shell-section {
-  margin-bottom: 0;
-}
-
-/* Separator line without stacked margin (spacing controlled by flex gap) */
-.about-shell-divider {
-  height: 1px;
-  margin: 0;
-  background: var(--line);
-  border: 0;
+  gap: 32px;
 }
 
 /* --------------------------------------------------------------------------
-   Hero Section (Apple-like title & tight line-height copy)
+   Hero Section — Eyebrow + Title + Lead, border-bottom separator
+   Follows guide/legal hero pattern with large type scale
    -------------------------------------------------------------------------- */
 .about-hero {
-  display: block;
-  padding-bottom: 0;
+  padding: 0 0 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.about-hero-copy {
-  background: none;
-  padding: 0;
-}
-
-.about-kicker {
+.about-eyebrow {
   margin: 0;
-  font-size: 11.5px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
   color: var(--accent);
+  line-height: 1.2;
+}
+
+.about-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 40px);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text);
 }
 
 .about-lead {
   margin: 0;
-  font-size: clamp(20px, 2.2vw, 26px);
-  line-height: 1.34;
-  letter-spacing: -0.02em;
-  font-weight: 700;
-  color: var(--text);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.55;
+  color: var(--text-muted);
+  max-width: 640px;
 }
 
 /* --------------------------------------------------------------------------
-   Proof Grid & Cards (Snug callout metrics)
+   Proof Grid — Three repeating cards, no shell wrapper
+   Cards are the only bordered elements (repeating items pattern)
    -------------------------------------------------------------------------- */
 .about-proof-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .about-proof-card {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface-soft);
-  padding: 12px 15px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  padding: 16px;
   transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
 .about-proof-card:hover {
   border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+}
+
+.about-proof-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .about-proof-label {
@@ -104,59 +100,62 @@ body[data-page="about"] {
 .about-proof-value {
   margin: 0;
   font-size: 14px;
-  line-height: 1.42;
-  font-weight: 600;
+  line-height: 1.5;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text);
 }
 
 /* --------------------------------------------------------------------------
-   Embedded Content Sections (Contacts & Team)
+   Content Sections — Flat containers, no border/radius/background
+   Spacing controlled by parent .about-page gap
    -------------------------------------------------------------------------- */
 .about-section {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: none;
-  padding: 20px;
-}
-
-.about-section--embedded {
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .about-section-head {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about-kicker {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
 }
 
 .about-section-head h2 {
-  margin: 4px 0 0;
-  font-size: clamp(20px, 2.2vw, 24px);
+  margin: 0;
+  font-size: clamp(22px, 2.4vw, 28px);
   line-height: 1.2;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
 }
 
-/* Contacts */
+/* --------------------------------------------------------------------------
+   Contact Cards — Repeating items with card treatment
+   -------------------------------------------------------------------------- */
 .about-contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .about-contact-card {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface-soft);
-  padding: 12px 16px;
-  transition:
-    border-color var(--motion-fast, 0.15s) ease,
-    background-color var(--motion-fast, 0.15s) ease;
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  padding: 16px;
+  transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
 .about-contact-card:hover {
@@ -165,45 +164,57 @@ body[data-page="about"] {
 
 .contact-label {
   margin: 0 0 4px;
-  font-size: 11.5px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .about-contact-card a {
   display: block;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--accent);
   text-decoration: none;
   overflow-wrap: anywhere;
+  transition: color var(--motion-fast, 0.15s) ease;
+}
+
+.about-contact-card a:hover {
+  color: var(--accent-strong);
+}
+
+.about-contact-card a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
 }
 
 .contact-note {
   margin: 4px 0 0;
   color: var(--text-muted);
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.45;
   letter-spacing: -0.005em;
 }
 
-/* Team */
+/* --------------------------------------------------------------------------
+   Team Cards — Repeating items with card treatment
+   -------------------------------------------------------------------------- */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .team-card {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface-soft);
-  padding: 14px 16px;
-  transition:
-    border-color var(--motion-fast, 0.15s) ease,
-    background-color var(--motion-fast, 0.15s) ease;
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  padding: 16px 20px;
+  transition: border-color var(--motion-fast, 0.15s) ease;
 }
 
 .team-card:hover {
@@ -220,10 +231,10 @@ body[data-page="about"] {
 }
 
 .team-role {
-  margin: 3px 0 6px;
+  margin: 4px 0 8px;
   font-weight: 600;
   color: var(--text-muted);
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.35;
   letter-spacing: -0.008em;
 }
@@ -231,68 +242,89 @@ body[data-page="about"] {
 .team-bio {
   margin: 0;
   color: var(--text);
-  line-height: 1.44;
+  line-height: 1.5;
   font-size: 14px;
   letter-spacing: -0.01em;
 }
 
 /* --------------------------------------------------------------------------
-   Animations & Responsive Breakpoints
+   Entry Animations
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
-  .about-shell,
-  .about-shell-section,
-  .team-card {
+  .about-hero,
+  .about-proof-grid,
+  .about-section {
     animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
   }
 
-  .about-shell-section:nth-of-type(3) {
+  .about-proof-grid {
     animation-delay: var(--motion-instant);
   }
 
-  .about-shell-section:nth-of-type(5) {
+  .about-section:nth-of-type(2) {
+    animation-delay: calc(var(--motion-instant) * 2);
+  }
+
+  .about-section:nth-of-type(3) {
     animation-delay: var(--motion-fast);
   }
 }
 
+/* --------------------------------------------------------------------------
+   Responsive: Tablet (≤ 980px)
+   -------------------------------------------------------------------------- */
 @media (max-width: 980px) {
   .about-page {
     margin-top: 16px;
     padding: 0 var(--mobile-safe-gutter, 16px);
+    gap: 28px;
   }
 
-  .about-shell {
-    padding: 20px 18px;
-    gap: 14px;
-  }
-
-  .about-proof-grid,
-  .team-grid {
+  .about-proof-grid {
     grid-template-columns: 1fr;
     gap: 8px;
-  }
-}
-
-@media (max-width: 640px) {
-  .about-page {
-    margin-top: 12px;
-    padding: 0 12px;
-  }
-
-  .about-shell {
-    padding: 16px 14px;
-    border-radius: 14px;
-    gap: 12px;
-  }
-
-  .about-lead {
-    font-size: clamp(16px, 4.5vw, 19px);
-    line-height: 1.38;
   }
 
   .about-contact-grid {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .about-title {
+    font-size: clamp(24px, 5vw, 32px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive: Mobile (≤ 640px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .about-page {
+    margin-top: 12px;
+    padding: 0 12px;
+    gap: 24px;
+  }
+
+  .about-hero {
+    padding-bottom: 16px;
+  }
+
+  .about-title {
+    font-size: clamp(22px, 5.5vw, 28px);
+  }
+
+  .about-lead {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .team-card {
+    padding: 14px 16px;
   }
 
   .team-card-body h3 {
@@ -301,6 +333,42 @@ body[data-page="about"] {
 
   .team-bio {
     font-size: 13.5px;
-    line-height: 1.42;
+    line-height: 1.45;
+  }
+
+  .about-section-head h2 {
+    font-size: 22px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive: Narrow Mobile (≤ 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .about-page {
+    padding: 0 12px;
+    gap: 20px;
+  }
+
+  .about-proof-card,
+  .about-contact-card,
+  .team-card {
+    padding: 12px;
+    border-radius: var(--radius-base);
+  }
+
+  .about-title {
+    font-size: 22px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion Fallback
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .about-hero,
+  .about-proof-grid,
+  .about-section {
+    animation: none;
   }
 }
