@@ -1,7 +1,9 @@
 const { test, expect } = require("@playwright/test");
+const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test("reset profile button clears profile inputs and removes profile from localStorage", async ({ page }) => {
+  await markTourAsSeen(page);
   await page.goto("/index.html");
 
   await expect(page.locator(selectors.profileBtn)).toBeVisible();

@@ -53,6 +53,7 @@ async function expectNoLingeringMotionClasses(page) {
 }
 
 test("profile category motion keeps tab state and reduced-motion final states stable", async ({ page }) => {
+  await markTourAsSeen(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/index.html");
 
@@ -162,6 +163,7 @@ test("floating motion layers close cleanly and stay above docked controls", asyn
 });
 
 test("mobile settings layer uses sheet motion without breaking reduced motion", async ({ page }) => {
+  await markTourAsSeen(page);
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/index.html");

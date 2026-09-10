@@ -10,7 +10,10 @@ test("profile keeps edits in-session when localStorage is unavailable", async ({
     try {
       Object.defineProperty(Storage.prototype, "getItem", {
         configurable: true,
-        value: blockedStorageError,
+        value: (key) => {
+          if (key === "unisearch_universities_tour_seen_v1") return "1";
+          return blockedStorageError();
+        },
       });
       Object.defineProperty(Storage.prototype, "setItem", {
         configurable: true,
