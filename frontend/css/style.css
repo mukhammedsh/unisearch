@@ -61,6 +61,10 @@
   --color-warning: #b45309;
   --color-warning-bg: #fff7ed;
   --color-warning-bright: #facc15;
+  --color-rank-gold: #ca8a04;
+  --line-rank-gold: rgba(202, 138, 4, 0.48);
+  --color-rank-bronze: #92400e;
+  --line-rank-bronze: rgba(180, 83, 9, 0.42);
   --color-info: #1d4ed8;
   --color-info-muted: #1e40af;
   --color-info-bg: #eff6ff;
@@ -124,6 +128,10 @@
   --color-warning: #fde68a;
   --color-warning-bg: rgba(245, 158, 11, 0.12);
   --color-warning-bright: #fbbf24;
+  --color-rank-gold: #fcd34d;
+  --line-rank-gold: rgba(250, 204, 21, 0.50);
+  --color-rank-bronze: #d6a06d;
+  --line-rank-bronze: rgba(214, 160, 109, 0.50);
   --color-info: #93c5fd;
   --color-info-muted: #60a5fa;
   --color-info-bg: rgba(59, 130, 246, 0.14);

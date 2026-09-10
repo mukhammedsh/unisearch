@@ -848,6 +848,10 @@ body.universities-ranking-mode #aiSliderContainer {
   height: 32px;
 }
 
+.view-toggles[hidden] {
+  display: none;
+}
+
 .view-btn {
   background: transparent;
   border: none;

@@ -269,12 +269,12 @@ export function addFooterProductLinks() {
         const legalNav = meta.querySelector(".footer-legal-links");
         if (!legalNav) return;
         legalNav.insertAdjacentHTML("beforebegin", `
-            <span class="footer-divider" aria-hidden="true">&bull;</span>
             <nav class="footer-product-links footer-legal-links" aria-label="Product navigation" data-i18n-aria-label="footer.product_nav_aria">
               <a href="guide.html" data-route="guide" data-i18n="nav.guide">Guide</a>
               <span class="footer-divider" aria-hidden="true">&bull;</span>
               <a href="about.html" data-route="about" data-i18n="nav.about">About Us</a>
             </nav>
+            <span class="footer-divider" aria-hidden="true">&bull;</span>
         `);
     });
 }

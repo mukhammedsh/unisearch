@@ -210,7 +210,7 @@ body[data-page="ranking"] {
 }
 
 .rank-1 {
-    color: var(--color-warning);
+    color: var(--color-rank-gold);
 }
 
 .rank-2 {
@@ -218,11 +218,11 @@ body[data-page="ranking"] {
 }
 
 .rank-3 {
-    color: var(--color-warning);
+    color: var(--color-rank-bronze);
 }
 
 .rank-card:has(.rank-1) {
-    border-color: var(--line-warning);
+    border-color: var(--line-rank-gold);
 }
 
 .rank-card:has(.rank-2) {
@@ -230,13 +230,16 @@ body[data-page="ranking"] {
 }
 
 .rank-card:has(.rank-3) {
-    border-color: var(--line-warning);
+    border-color: var(--line-rank-bronze);
 }
 
 @media (hover: hover) and (pointer: fine) {
-    .rank-card:has(.rank-1):hover,
+    .rank-card:has(.rank-1):hover {
+        border-color: var(--line-rank-gold);
+    }
+
     .rank-card:has(.rank-3):hover {
-        border-color: var(--line-warning);
+        border-color: var(--line-rank-bronze);
     }
 
     .rank-card:has(.rank-2):hover {

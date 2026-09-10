@@ -4,7 +4,7 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -231,8 +231,8 @@ function hydrateRouteShell(ctx = currentRouteContext()) {
   hydrateHeroIcons(document);
   bindImageFallbacks(document);
   applyAINameConfig();
-  applyTranslations(document);
   addFooterProductLinks();
+  applyTranslations(document);
   primeRouteLoadingUi(ctx);
 }
 

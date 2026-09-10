@@ -7,6 +7,9 @@ All notable project changes should be recorded here.
   - Reworked annual cost summaries and funding-option cards for clearer hierarchy, responsive layouts, and honest grant estimates.
   - Added distinct semantic surfaces for paid and grant options, with theme-aware fills and borders that remain visible in light and dark themes.
   - Localized the updated costs content consistently in English and Russian.
+- Polished shared navigation and ranking states (`main.js`, `components.js`, `ranking.css`, `style.css`, `01-shell-controls.css`):
+  - Added dedicated light/dark ranking tokens for gold and bronze positions.
+  - Fixed hidden view-toggle rendering and footer separator placement, and applied translations after dynamic footer links are inserted.
 - Refined the About page (`about.html`, `about.css`):
   - Removed redundant eyebrow labels and the introductory mission copy to focus the page on the team, project evidence, and contact details.
   - Promoted the team label to a section heading and standardized the page's card gutters and vertical spacing on the shared design-token scale.
