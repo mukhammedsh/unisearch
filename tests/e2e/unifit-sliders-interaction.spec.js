@@ -15,7 +15,7 @@ test.describe("UniFit Tradeoff Sliders Interaction", () => {
         res.url().includes("/universities/ai-sort") &&
         res.request().method() === "POST"
     );
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     await initialSort;
     await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 

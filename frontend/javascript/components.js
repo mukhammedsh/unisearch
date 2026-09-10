@@ -10,7 +10,7 @@ import {
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
 import { heroIcon, setHeroIcon } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { routeAbout, routeGuide, routeHome, routeProfile, routeUniversities } from "./routes.js";
+import { routeProfile, routeUniversities } from "./routes.js";
 import {
   bindThemeUiSync,
   NAV_LOGO_DARK,
@@ -29,7 +29,7 @@ const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 const LAYOUT_HTML = `
 <header class="navbar">
   <div class="navbar-left">
-    <a href="${routeHome()}" data-route="home" class="navbar-logo-link">
+    <a href="${routeUniversities()}" data-route="universities" class="navbar-logo-link">
       <img
         src="${NAV_LOGO_LIGHT}"
         data-logo-light="${NAV_LOGO_LIGHT}"
@@ -41,15 +41,15 @@ const LAYOUT_HTML = `
     </a>
   </div>
 
-  <nav class="navbar-center" id="primaryNav">
-    <a href="${routeHome()}" data-route="home" data-link="home" data-i18n="nav.home">Home</a>
-    <a href="${routeUniversities()}" data-route="universities" data-link="universities" data-i18n="nav.universities">Universities</a>
-    <a href="${routeGuide()}" data-route="guide" data-link="guide" data-i18n="nav.guide">Guide</a>
-    <a href="${routeAbout()}" data-route="about" data-link="about" data-i18n="nav.about">About Us</a>
-  </nav>
+  <div class="navbar-search" id="universitySearch" role="search" hidden>
+    <span class="navbar-search-icon" aria-hidden="true">${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</span>
+    <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" spellcheck="false" />
+    <button id="searchClearBtn" class="navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
+      ${heroIcon("x-mark", "ui-icon ui-icon--16")}
+    </button>
+  </div>
 
   <div class="navbar-right">
-    <button class="menu-btn" id="menuToggleBtn" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu" data-i18n-aria-label="nav.open_menu">${heroIcon("bars-3", "ui-icon ui-icon--18")}</button>
     <div class="lang-control">
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng">English (US)</option>
@@ -120,53 +120,6 @@ const LAYOUT_HTML = `
 <div id="toast-container" class="toast-container"></div>
 `;
 
-function initMobileMenu() {
-    const navbar = document.querySelector(".navbar");
-    const menuBtn = document.getElementById("menuToggleBtn");
-    const nav = document.getElementById("primaryNav");
-    if (!navbar || !menuBtn || !nav) return;
-    if (menuBtn.dataset.bound === "1") return;
-    menuBtn.dataset.bound = "1";
-
-    const closeMenu = () => {
-        navbar.classList.remove("is-menu-open");
-        menuBtn.setAttribute("aria-expanded", "false");
-        menuBtn.setAttribute("aria-label", t("nav.open_menu", "Open menu"));
-        setHeroIcon(menuBtn, "bars-3", "ui-icon ui-icon--18");
-    };
-
-    const openMenu = () => {
-        navbar.classList.add("is-menu-open");
-        menuBtn.setAttribute("aria-expanded", "true");
-        menuBtn.setAttribute("aria-label", t("nav.close_menu", "Close menu"));
-        setHeroIcon(menuBtn, "x-mark", "ui-icon ui-icon--18");
-    };
-
-    menuBtn.addEventListener("click", () => {
-        const isOpen = navbar.classList.contains("is-menu-open");
-        if (isOpen) closeMenu();
-        else openMenu();
-    });
-
-    nav.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", closeMenu);
-    });
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeMenu();
-    });
-
-    const media = window.matchMedia("(max-width: 980px)");
-    const onViewportChange = (e) => {
-        if (!e.matches) closeMenu();
-    };
-    if (typeof media.addEventListener === "function") {
-        media.addEventListener("change", onViewportChange);
-    } else if (typeof media.addListener === "function") {
-        media.addListener(onViewportChange);
-    }
-}
-
 function initThemeToggleUi() {
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     if (!themeToggleBtn) return;
@@ -222,9 +175,9 @@ function bindProfileNavAction() {
 function syncAdaptiveNavbarLayout() {
     const navbar = document.querySelector(".navbar");
     const left = document.querySelector(".navbar-left");
-    const center = document.querySelector(".navbar-center");
+    const center = document.querySelector(".navbar-search:not([hidden])");
     const right = document.querySelector(".navbar-right");
-    if (!navbar || !left || !center || !right) return;
+    if (!navbar || !left || !right) return;
 
     // Mobile/tablet layout is handled via CSS media rules.
     if (window.matchMedia("(max-width: 980px)").matches) {
@@ -241,8 +194,9 @@ function syncAdaptiveNavbarLayout() {
 
     const leftWidth = left.getBoundingClientRect().width || 0;
     const rightWidth = right.getBoundingClientRect().width || 0;
-    const centerWidth = Math.max(center.scrollWidth || 0, center.getBoundingClientRect().width || 0);
-    const requiredWidth = Math.ceil(leftWidth + centerWidth + rightWidth);
+    const centerWidth = center ? Math.max(center.scrollWidth || 0, center.getBoundingClientRect().width || 0) : 0;
+    const columnGap = Number.parseFloat(navStyle.columnGap || navStyle.gap || "0") || 0;
+    const requiredWidth = Math.ceil((Math.max(leftWidth, rightWidth) * 2) + centerWidth + (columnGap * 2));
 
     if (requiredWidth > availableWidth + 1) {
         navbar.classList.add("is-compact");
@@ -309,34 +263,40 @@ function initLanguageSwitcher() {
     });
 }
 
+export function addFooterProductLinks() {
+    document.querySelectorAll(".site-footer .footer-meta").forEach((meta) => {
+        if (meta.querySelector(".footer-product-links")) return;
+        const legalNav = meta.querySelector(".footer-legal-links");
+        if (!legalNav) return;
+        legalNav.insertAdjacentHTML("beforebegin", `
+            <span class="footer-divider" aria-hidden="true">&bull;</span>
+            <nav class="footer-product-links footer-legal-links" aria-label="Product navigation" data-i18n-aria-label="footer.product_nav_aria">
+              <a href="guide.html" data-route="guide" data-i18n="nav.guide">Guide</a>
+              <span class="footer-divider" aria-hidden="true">&bull;</span>
+              <a href="about.html" data-route="about" data-i18n="nav.about">About Us</a>
+            </nav>
+        `);
+    });
+}
+
 export async function loadGlobalLayout() {
     if (document.querySelector(".navbar")) return;
     try {
         document.body.insertAdjacentHTML("afterbegin", resolveLayoutMarkup(LAYOUT_HTML));
+        const navbar = document.querySelector(".navbar");
+        const search = document.getElementById("universitySearch");
+        const isUniversitiesWorkspace = document.body.dataset.page === "universities";
+        if (navbar) navbar.classList.toggle("has-university-search", isUniversitiesWorkspace);
+        if (search) search.hidden = !isUniversitiesWorkspace;
         syncNavbarLogo();
         bindThemeUiSync();
-
-        // Подсветка активной ссылки в меню
-        const currentPageRaw = String(document.body.getAttribute('data-page') || "").trim().toLowerCase();
-        const currentPage = (currentPageRaw === "university") ? "universities" : currentPageRaw;
-        if (currentPage) {
-            document.querySelectorAll(".navbar-center a").forEach((link) => link.classList.remove("is-active"));
-            const activeLink = document.querySelector(`.navbar-center a[data-link="${currentPage}"]`) || 
-                               document.querySelector(`.navbar-center a[href*="${currentPage}"]`);
-            if (activeLink) {
-                activeLink.classList.add("is-active");
-            }
-        }
-
-        initMobileMenu();
         initThemeToggleUi();
         initLanguageSwitcher();
+        addFooterProductLinks();
         applyTranslations(document);
         if (typeof initCustomSelect === "function") initCustomSelect("languageSelect");
         initAdaptiveNavbarLayout();
 
-        // Add sliding indicator for navbar
-        setupSlidingIndicator("#primaryNav", "a", "is-active");
         initSettingsUI();
 
         // Запускаем логику профиля

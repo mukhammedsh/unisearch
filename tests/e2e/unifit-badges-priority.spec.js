@@ -46,7 +46,7 @@ test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", 
     });
   });
 
-  await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
+  await page.goto("/index.html", { waitUntil: "domcontentloaded" });
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
@@ -90,7 +90,7 @@ test("UniFit card badges still work when backend hints are missing (frontend fal
     });
   });
 
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   const firstCard = page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
   await expect(firstCard.locator(".uni-badge .uni-pill").first()).toBeVisible();
@@ -134,7 +134,7 @@ test("UniFit card hides Requirements Met when conditional exam warning is presen
     });
   });
 
-  await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
+  await page.goto("/index.html", { waitUntil: "domcontentloaded" });
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
   await expect(firstCard.locator(".uni-badge .uni-pill").first()).toBeVisible();
@@ -181,7 +181,7 @@ test("UniFit card keeps all badges and switches to compact mode when badge count
     });
   });
 
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
@@ -237,7 +237,7 @@ test("UniFit card badge logic caps at 5 computed status badges", async ({ page }
     });
   });
 
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   const pills = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-badge .uni-pill");
   await expect(pills).toHaveCount(5);
 });
@@ -338,7 +338,7 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
     });
   });
 
-  await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
+  await page.goto("/index.html", { waitUntil: "domcontentloaded" });
   await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]')).toBeVisible();
 
   await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-badge")).toHaveCount(0);

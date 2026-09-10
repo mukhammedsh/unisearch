@@ -25,6 +25,11 @@ let rankingBadgeResizeBound = false;
 let rankingBadgeResizeRaf = 0;
 let rankingFetchController = null;
 let rankingLanguageChangedHandler = null;
+let rankingSearchInputHandler = null;
+let rankingSearchBlurHandler = null;
+let rankingCountryChangeHandler = null;
+let rankingLastSearchInput = null;
+let rankingLastCountrySelect = null;
 
 const universityLinkAttrs = () => (
   shouldOpenUniversitiesInNewTab()
@@ -287,13 +292,13 @@ export async function initRankingPage() {
     if (!res.ok) throw new Error("Error loading ranking");
     const data = await res.json();
     const items = buildNormalizedRankingItems(data.items || []);
-    const searchInput = document.getElementById("rankingSearchInput");
-    const countrySelect = document.getElementById("rankingCountrySelect");
-    const searchHost = searchInput?.closest(".rank-search") || null;
-    let suggestionsNode = searchHost?.querySelector(".rank-search-suggestions") || null;
+    const searchInput = document.getElementById("qInput");
+    const countrySelect = document.getElementById("countrySelect");
+    const searchHost = searchInput?.closest(".navbar-search") || null;
+    let suggestionsNode = searchHost?.querySelector(".navbar-search-suggestions") || null;
     if (searchHost && !suggestionsNode) {
       suggestionsNode = document.createElement("div");
-      suggestionsNode.className = "rank-search-suggestions";
+      suggestionsNode.className = "navbar-search-suggestions";
       suggestionsNode.setAttribute("role", "listbox");
       searchHost.appendChild(suggestionsNode);
     }
@@ -330,7 +335,7 @@ export async function initRankingPage() {
       rows.slice(0, 7).forEach((name) => {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "rank-search-suggestion";
+        btn.className = "navbar-search-suggestion";
         btn.setAttribute("data-value", name);
         btn.setAttribute("role", "option");
         const span = document.createElement("span");
@@ -339,7 +344,7 @@ export async function initRankingPage() {
         suggestionsNode.appendChild(btn);
       });
       suggestionsNode.classList.add("is-open");
-      markMotionEnter(suggestionsNode, ".rank-search-suggestion", { limit: 7, staggerMs: 14 });
+      markMotionEnter(suggestionsNode, ".navbar-search-suggestion", { limit: 7, staggerMs: 14 });
     };
 
     const renderRankingRows = (rows) => {
@@ -423,15 +428,6 @@ export async function initRankingPage() {
       requestAnimationFrame(() => fitRankingBadgeText(listEl));
     };
 
-    if (countrySelect) {
-      const prev = String(countrySelect.value || "");
-      const countries = Array.from(new Set(items.map((item) => String(item?.location?.country || "").trim()).filter(Boolean))).sort();
-      countrySelect.innerHTML = `<option value="">${escapeHtml(t("ranking.country_all", "Global"))}</option>`
-        + countries.map((country) => `<option value="${escapeHtmlAttr(country)}">${escapeHtml(trCountry(country))}</option>`).join("");
-      countrySelect.value = countries.includes(prev) ? prev : "";
-      initCustomSelect("rankingCountrySelect");
-    }
-
     const applyRankingFilters = () => {
       const q = String(searchInput?.value || "").trim().toLowerCase();
       const country = String(countrySelect?.value || "").trim();
@@ -445,15 +441,28 @@ export async function initRankingPage() {
       renderSuggestions();
     };
 
+    if (rankingLastSearchInput && rankingSearchInputHandler) {
+      rankingLastSearchInput.removeEventListener("input", rankingSearchInputHandler);
+    }
+    if (rankingLastSearchInput && rankingSearchBlurHandler) {
+      rankingLastSearchInput.removeEventListener("blur", rankingSearchBlurHandler);
+    }
+    if (rankingLastCountrySelect && rankingCountryChangeHandler) {
+      rankingLastCountrySelect.removeEventListener("change", rankingCountryChangeHandler);
+    }
+
     if (searchInput) {
-      searchInput.oninput = applyRankingFilters;
-      searchInput.onblur = hideSuggestions;
+      rankingLastSearchInput = searchInput;
+      rankingSearchInputHandler = applyRankingFilters;
+      rankingSearchBlurHandler = hideSuggestions;
+      searchInput.addEventListener("input", rankingSearchInputHandler);
+      searchInput.addEventListener("blur", rankingSearchBlurHandler);
     }
     const selectSuggestion = (event) => {
       const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
       if (!btn || !searchInput) return;
       searchInput.value = String(btn.getAttribute("data-value") || "");
-      applyRankingFilters();
+      searchInput.dispatchEvent(new Event("input", { bubbles: true }));
       hideSuggestions();
     };
     suggestionsNode?.addEventListener("pointerdown", (event) => {
@@ -463,17 +472,25 @@ export async function initRankingPage() {
       selectSuggestion(event);
     });
     suggestionsNode?.addEventListener("click", selectSuggestion);
-    if (countrySelect) countrySelect.onchange = applyRankingFilters;
+    if (countrySelect) {
+      rankingLastCountrySelect = countrySelect;
+      rankingCountryChangeHandler = applyRankingFilters;
+      countrySelect.addEventListener("change", rankingCountryChangeHandler);
+    }
     listEl.addEventListener("click", (event) => {
       const resetBtn = event.target instanceof Element ? event.target.closest('[data-action="reset-ranking-filters"]') : null;
       if (!resetBtn) return;
       motionPress(resetBtn);
-      if (searchInput) searchInput.value = "";
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.dispatchEvent(new Event("input", { bubbles: true }));
+      }
       if (countrySelect) {
         countrySelect.value = "";
-        initCustomSelect("rankingCountrySelect");
+        countrySelect.dispatchEvent(new Event("change", { bubbles: true }));
+        initCustomSelect("countrySelect");
       }
-      applyRankingFilters();
+      if (!searchInput) applyRankingFilters();
     });
     applyRankingFilters();
   } catch (err) {

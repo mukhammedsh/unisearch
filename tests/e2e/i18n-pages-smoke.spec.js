@@ -4,7 +4,7 @@ const { markTourAsSeen } = require("./helpers/personas");
 const LOCALES = [
   {
     code: "eng",
-    home: "Home",
+    guide: "Guide",
     filter: "Filter",
     searchPlaceholder: "Search university...",
     backToList: "Back to list",
@@ -12,7 +12,7 @@ const LOCALES = [
   },
   {
     code: "rus",
-    home: "Главная",
+    guide: "Гайд",
     filter: "Фильтр",
     searchPlaceholder: "Поиск университета...",
     backToList: "Назад к списку",
@@ -61,12 +61,12 @@ async function switchLanguage(page, langCode) {
 
 test("universities page updates key UI texts for eng/rus", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   await expect(page.locator("#profileBtn")).toBeVisible();
 
   for (const locale of LOCALES) {
     await switchLanguage(page, locale.code);
-    await expect(page.locator(".navbar-center a[data-link='home']")).toContainText(locale.home);
+    await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(locale.guide);
     await expect(page.locator("[data-i18n='universities.filter']")).toContainText(locale.filter);
     await expect(page.locator("#qInput")).toHaveAttribute("placeholder", locale.searchPlaceholder);
   }
@@ -82,7 +82,7 @@ test("university detail page updates key UI texts for eng/rus", async ({ page })
 
   for (const locale of LOCALES) {
     await switchLanguage(page, locale.code);
-    await expect(page.locator(".navbar-center a[data-link='home']")).toContainText(locale.home);
+    await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(locale.guide);
     await expect(page.locator("[data-i18n='university.back_to_list']")).toContainText(locale.backToList);
     await expect(page.locator(".d-tab-btn[data-tab='tab-programs'] [data-i18n='university.tab.programs']")).toContainText(locale.programsTab);
     await expect(page.locator("#detailLocation img.flag-icon-inline")).toHaveCount(1);

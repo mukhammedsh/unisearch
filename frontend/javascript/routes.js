@@ -41,11 +41,11 @@ export function usePrettyUrls() {
 }
 
 export function routeHome(queryOrParams = "") {
-  return withQuery(usePrettyUrls() ? "/" : "index.html", queryOrParams);
+  return routeUniversities(queryOrParams);
 }
 
 export function routeUniversities(queryOrParams = "") {
-  return withQuery(usePrettyUrls() ? "/universities" : "universities.html", queryOrParams);
+  return withQuery(usePrettyUrls() ? "/" : "index.html", queryOrParams);
 }
 
 export function routeRanking(queryOrParams = "") {
@@ -110,7 +110,7 @@ export function isHomePath(pathname = "") {
 
 export function isUniversitiesListPath(pathname = "") {
   const path = normalizePath(pathname).toLowerCase();
-  return /\/universities(?:\.html)?$/.test(path);
+  return path === "/" || /\/index(?:\.html)?$/.test(path);
 }
 
 export function isUniversityDetailPath(pathname = "") {

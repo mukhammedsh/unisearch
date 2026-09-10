@@ -198,9 +198,8 @@ npm run dev:frontend
 
 Open:
 - `http://127.0.0.1:5501/index.html`
-- `http://127.0.0.1:5501/universities.html`
 - `http://127.0.0.1:5501/university.html`
-- `http://127.0.0.1:5501/universities.html?tab=ranking`
+- `http://127.0.0.1:5501/index.html?tab=ranking`
 - `http://127.0.0.1:5501/guide.html`
 - `http://127.0.0.1:5501/about.html`
 
@@ -456,7 +455,7 @@ Workflow: `.github/workflows/repository-hygiene.yml`
 
 ## Hosting notes
 - Works with standard setups like VPS + reverse proxy, Docker hosts, or managed platforms.
-- For non-local deployments, the frontend can use clean routes like `/`, `/universities`, `/universities/:id`, `/ranking`, `/guide`, and `/about` if rewrite rules are configured.
+- For non-local deployments, the university catalog is the root page `/`; detail pages use `/universities/:id`, while `/guide` and `/about` remain separate routes when rewrites are configured.
 - Local `python -m http.server` does not provide rewrites, so `.html` routes are used in local development.
 
 ## Troubleshooting static asset 404 / MIME errors

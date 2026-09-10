@@ -179,6 +179,7 @@ export function initUniversitiesPage() {
         content: document.querySelector(".u-content"),
         sectionTabs: $("universitiesSectionTabs"),
         tabButtons: Array.from(document.querySelectorAll("[data-universities-tab]")),
+        workspaceLayout: $("universitiesWorkspaceLayout"),
         catalogPane: $("universitiesCatalogPane"),
         rankingPane: $("universitiesRankingPane"),
         compareResultsPane: $("compareResultsPane"),
@@ -554,15 +555,33 @@ export function initUniversitiesPage() {
         });
     };
 
+    const syncHeaderSearchContext = () => {
+        const search = document.getElementById("universitySearch");
+        if (!search || !el.qInput) return;
+        const isCompareResult = isCompareResultsMode() || isCompareConfigureMode();
+        search.hidden = isCompareResult;
+        const placeholderKey = "universities.search_placeholder";
+        const placeholderFallback = "Search university...";
+        el.qInput.placeholder = t(placeholderKey, placeholderFallback);
+        el.qInput.setAttribute("data-i18n-placeholder", placeholderKey);
+        el.qInput.setAttribute("aria-label", t(placeholderKey, placeholderFallback));
+        el.qInput.setAttribute("data-i18n-aria-label", placeholderKey);
+        if (isCompareResult) hideSearchSuggestions();
+    };
+
     const syncSectionVisibility = async ({ shouldFetch = false, updateUrl = true, replaceUrl = true } = {}) => {
         const showCatalog = state.activeTab === "catalog" || isCompareSelectionMode();
+        const showRanking = state.activeTab === "ranking";
+        const isCompareResult = isCompareResultsMode() || isCompareConfigureMode();
+        if (el.workspaceLayout) el.workspaceLayout.hidden = isCompareResult;
         if (el.catalogPane) el.catalogPane.hidden = !showCatalog;
-        if (el.rankingPane) el.rankingPane.hidden = state.activeTab !== "ranking";
-        if (el.compareResultsPane) el.compareResultsPane.hidden = !(isCompareResultsMode() || isCompareConfigureMode());
+        if (el.rankingPane) el.rankingPane.hidden = !showRanking;
+        if (el.compareResultsPane) el.compareResultsPane.hidden = !isCompareResult;
         document.body.classList.toggle("universities-compare-mode", isCompareSelectionMode());
         document.body.classList.toggle("universities-ranking-mode", state.activeTab === "ranking");
         document.body.classList.toggle("universities-compare-configure-mode", isCompareConfigureMode());
         document.body.classList.toggle("universities-compare-results-mode", isCompareResultsMode());
+        syncHeaderSearchContext();
         syncSectionTabs();
         updateCompareModeStatus();
         renderCompareTray();
@@ -1357,12 +1376,12 @@ export function initUniversitiesPage() {
 
     const ensureSearchSuggestionsNode = () => {
         if (!el.qInput) return null;
-        const host = el.qInput.closest(".u-search") || el.qInput.parentElement;
+        const host = el.qInput.closest(".navbar-search") || el.qInput.parentElement;
         if (!host) return null;
-        let node = host.querySelector(".u-search-suggestions");
+        let node = host.querySelector(".navbar-search-suggestions");
         if (!node) {
             node = document.createElement("div");
-            node.className = "u-search-suggestions";
+            node.className = "navbar-search-suggestions";
             node.setAttribute("role", "listbox");
             host.appendChild(node);
         }
@@ -1380,6 +1399,10 @@ export function initUniversitiesPage() {
     const renderSearchSuggestions = () => {
         const node = ensureSearchSuggestionsNode();
         if (!node || !el.qInput) return;
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) {
+            hideSearchSuggestions();
+            return;
+        }
         const q = String(el.qInput.value || "").trim();
         const query = normalizeUniversitySearchText(q);
         if (query.length < 2 || !lastRenderedItems.length) {
@@ -1404,7 +1427,7 @@ export function initUniversitiesPage() {
         suggestions.slice(0, 7).forEach((name) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "u-search-suggestion";
+            btn.className = "navbar-search-suggestion";
             btn.setAttribute("data-value", name);
             btn.setAttribute("role", "option");
             const span = document.createElement("span");
@@ -1413,7 +1436,7 @@ export function initUniversitiesPage() {
             node.appendChild(btn);
         });
         node.classList.add("is-open");
-        markMotionEnter(node, ".u-search-suggestion", { limit: 7, staggerMs: 14 });
+        markMotionEnter(node, ".navbar-search-suggestion", { limit: 7, staggerMs: 14 });
     };
 
     function renderUniversitiesState(options = {}) {
@@ -1851,6 +1874,8 @@ export function initUniversitiesPage() {
     el.qInput?.addEventListener("input", () => {
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
+        if (state.activeTab === "ranking") return;
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         renderSearchSuggestions();
         refetch();
     });
@@ -1862,11 +1887,17 @@ export function initUniversitiesPage() {
         syncSearchClearButton();
         hideSearchSuggestions();
         el.qInput.focus();
+        if (state.activeTab === "ranking") {
+            el.qInput.dispatchEvent(new Event("input", { bubbles: true }));
+            return;
+        }
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         refetch();
     });
     ensureSearchSuggestionsNode()?.addEventListener("click", (event) => {
         const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
         if (!btn || !el.qInput) return;
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         el.qInput.value = String(btn.getAttribute("data-value") || "");
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
@@ -1981,6 +2012,11 @@ export function initUniversitiesPage() {
         updateCityDropdown([]); 
         updateSliderVisibility(); 
         updateMobileFilterUi();
+        if (state.activeTab === "ranking") {
+            el.qInput?.dispatchEvent(new Event("input", { bubbles: true }));
+            el.countrySelect?.dispatchEvent(new Event("change", { bubbles: true }));
+            return;
+        }
         fetchAndRender();
     }
 

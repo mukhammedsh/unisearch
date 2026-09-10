@@ -34,7 +34,7 @@ test.describe("Profile page icons and navigation", () => {
     expect(await gpaInfoIcon.count()).toBe(1);
   });
 
-  test("back button navigates back to Home when opened from Home page", async ({ page }) => {
+  test("back button returns to the university catalog opened from the root entry", async ({ page }) => {
     await markTourAsSeen(page);
     await page.goto("/index.html");
 
@@ -49,14 +49,14 @@ test.describe("Profile page icons and navigation", () => {
     // Click back button
     await page.click(selectors.profileCloseBtn);
 
-    // Verify we are back on Home page
-    await expect(page).toHaveURL(/\/(?:index\.html)?$/);
-    await expect(page.locator("body")).toHaveAttribute("data-page", "home");
+    // The root entry now serves the university catalog.
+    await expect(page).toHaveURL(/\/(?:index\.html)?(?:\?.*)?$/);
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   });
 
-  test("back button navigates back to Universities catalog when opened from Universities", async ({ page }) => {
+  test("back button preserves catalog query parameters", async ({ page }) => {
     await markTourAsSeen(page);
-    await page.goto("/universities.html?view=list");
+    await page.goto("/index.html?view=list");
 
     const profileBtn = page.locator(selectors.profileBtn);
     await expect(profileBtn).toBeVisible();
@@ -68,20 +68,20 @@ test.describe("Profile page icons and navigation", () => {
     // Click back button
     await page.click(selectors.profileCloseBtn);
 
-    // Verify we are back on Universities with query parameters preserved
-    await expect(page).toHaveURL(/\/universities(?:\.html)?\?.*view=list/);
+    // Verify we are back on the catalog with query parameters preserved.
+    await expect(page).toHaveURL(/\/index\.html\?.*view=list/);
     await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   });
 
-  test("back button falls back to home when directly navigated without referrer", async ({ page }) => {
+  test("back button falls back to the catalog when directly navigated without referrer", async ({ page }) => {
     await markTourAsSeen(page);
     await page.goto("/profile.html");
 
     await expect(page.locator(selectors.profileModal)).toBeVisible();
     await page.click(selectors.profileCloseBtn);
 
-    // Fallback should be home route
+    // Fallback should be the root catalog route.
     await expect(page).toHaveURL(/\/(?:index\.html)?$/);
-    await expect(page.locator("body")).toHaveAttribute("data-page", "home");
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   });
 });

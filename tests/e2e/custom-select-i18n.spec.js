@@ -33,7 +33,7 @@ async function readCustomSelectSnapshot(page, selectId) {
 
 test("custom dropdown text updates immediately after language change", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   await expect(page.locator(selectors.profileBtn)).toBeVisible();
   await page.click(selectors.profileBtn);

@@ -77,7 +77,7 @@ async function snapshotFilterOptions(page) {
 
 test("universities filter dropdowns update translated option text after language change", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   await expect.poll(async () => {
     const snapshot = await snapshotFilterOptions(page);

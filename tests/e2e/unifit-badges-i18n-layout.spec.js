@@ -54,7 +54,7 @@ for (const locale of locales) {
       });
     });
 
-    await page.goto("/universities.html", { waitUntil: "domcontentloaded" });
+    await page.goto("/index.html", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#languageSelect")).toHaveValue(locale.value);
 
     const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');

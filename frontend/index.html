@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="./" />
   <link rel="icon" href="images/minilogo.png" type="image/png">
-  <title data-i18n="title.index">UniSearch | Compare Universities by Cost, Admissions, and Fit</title>
-  <meta name="description" content="Compare universities by tuition cost, admission requirements, financial aid, and estimated acceptance chance in one place." />
+  <title data-i18n="title.universities">Universities | UniSearch</title>
+  <meta name="description" content="Browse and filter bachelor's programs and global university admissions data across tuition, location, and test score criteria." />
   <meta name="theme-color" content="#5D17EB" />
 
   <!-- Open Graph / Facebook / Telegram -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="UniSearch" />
   <meta property="og:url" content="https://unisearch-frontend.onrender.com/" />
-  <meta property="og:title" content="UniSearch | Compare Universities by Cost, Admissions, and Fit" />
-  <meta property="og:description" content="Find your dream university. Compare tuition costs, admission requirements, and calculate your admission chance with UniFit and UniChance." />
+  <meta property="og:title" content="University Catalog | UniSearch" />
+  <meta property="og:description" content="Explore international universities, filter by tuition cost, acceptance rates, and entrance requirements for undergraduate studies." />
   <meta property="og:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta property="og:image:secure_url" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta property="og:image:type" content="image/png" />
@@ -25,115 +25,313 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://unisearch-frontend.onrender.com/" />
-  <meta name="twitter:title" content="UniSearch | Compare Universities by Cost, Admissions, and Fit" />
-  <meta name="twitter:description" content="Find your dream university. Compare tuition costs, admission requirements, and calculate your admission chance with UniFit and UniChance." />
+  <meta name="twitter:title" content="University Catalog | UniSearch" />
+  <meta name="twitter:description" content="Explore international universities, filter by tuition cost, acceptance rates, and entrance requirements." />
   <meta name="twitter:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta name="twitter:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
+  <script>
+    try {
+      if (localStorage.getItem("unisearch_universities_scope_notice_dismissed") === "1") {
+        document.documentElement.classList.add("scope-notice-dismissed");
+      }
+    } catch (e) {}
+  </script>
 
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/index.css" />
+  <link rel="stylesheet" href="css/universities.css" />
 
 </head>
-<body data-page="home">
+
+<body data-page="universities">
   <div id="siteInitialLoader" class="site-initial-loader">
     <div class="site-initial-loader__spinner"></div>
   </div>
-  <main class="home-page">
+  <main class="u-page">
+    <section id="universitiesScopeNotice" class="u-page-scope" aria-label="Current study scope">
+      <div class="u-page-scope__inner">
+        <div class="u-page-scope__content">
+          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only for now</p>
+          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.</p>
+        </div>
+        <button id="dismissUniversitiesScopeNotice" class="u-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
+          <span data-heroicon="x-mark" data-icon-size="18"></span>
+        </button>
+      </div>
+    </section>
 
-    <!-- Hero — Centered, spacious, clear hierarchy -->
-    <section class="home-hero hero-section">
-      <div class="home-hero__content">
-        <h1 class="hero-title" data-i18n="home.hero.title">
-          Find your dream university
-        </h1>
-        <p class="hero-desc" data-i18n="home.hero.desc">
-          Start with the catalog, then compare cost, admission choices, and your estimated chance in one place.
-        </p>
+    <nav id="universitiesSectionTabs" class="u-section-tabs" aria-label="University sections" data-i18n-aria-label="universities.tabs.aria">
+      <button class="u-section-tab is-active" type="button" data-universities-tab="catalog" aria-pressed="true">
+        <span data-i18n="universities.tabs.catalog">Catalog</span>
+      </button>
+      <button class="u-section-tab" type="button" data-universities-tab="ranking" aria-pressed="false">
+        <span data-i18n="universities.tabs.ranking">Ranking</span>
+      </button>
+      <button class="u-section-tab" type="button" data-universities-tab="compare" aria-pressed="false">
+        <span data-i18n="universities.tabs.comparing">Comparing</span>
+      </button>
+    </nav>
 
-        <div class="hero-actions">
-          <a href="universities.html" data-route="universities" class="btn-primary">
-            <span class="btn-icon" data-heroicon="academic-cap"></span>
-            <span data-i18n="home.hero.catalog">Open University Catalog</span>
-          </a>
-          <a id="homeOpenProfileBtn" href="#" role="button" class="home-secondary-btn" data-i18n="home.hero.profile">
-            Open Profile
-          </a>
+    <div id="universitiesWorkspaceLayout" class="u-layout">
+      <aside id="uSidebar" class="u-sidebar">
+        <div class="u-filter-card">
+          <div class="u-filter-title">
+            <span class="u-filter-icon" aria-hidden="true">
+              <span data-heroicon="funnel" data-icon-size="20"></span>
+            </span>
+            <span data-i18n="universities.filter">Filter</span>
+            <button id="resetFiltersBtn" class="u-reset" type="button">
+              <span data-i18n="universities.reset">Reset</span>
+            </button>
+            <button id="closeMobileFilters" class="u-filter-close" type="button" title="Close filters" data-i18n-title="universities.filter.close" aria-label="Close filters" data-i18n-aria-label="universities.filter.close">
+              <span data-heroicon="x-mark" data-icon-size="18"></span>
+            </button>
+          </div>
+
+          <div class="u-field u-field--saved-scope">
+            <div class="u-saved-filter" role="group" aria-label="Saved filter" data-i18n-aria-label="universities.filter.saved_scope">
+              <button class="u-saved-filter__btn is-active" type="button" data-saved-filter="all" aria-pressed="true">
+                <span class="u-saved-filter__icon" data-heroicon="building-office-2" data-icon-size="16"></span>
+                <span data-i18n="universities.filter.all">All</span>
+              </button>
+              <button class="u-saved-filter__btn" type="button" data-saved-filter="favorites" aria-pressed="false">
+                <span class="u-saved-filter__icon" data-heroicon="star" data-icon-size="16"></span>
+                <span data-i18n="universities.filter.favorites">Favorites</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="u-field">
+            <label class="u-label" for="countrySelect">
+              <span class="u-label-icon"><span data-heroicon="globe-alt" data-icon-size="16"></span><span data-i18n="universities.country">Country</span></span>
+            </label>
+            <select id="countrySelect" class="u-select">
+              <option value="" data-i18n="universities.global">Global</option>
+            </select>
+          </div>
+
+          <div class="u-field" id="stateDiv" style="display: none;">
+            <label class="u-label" for="stateSelect">
+              <span class="u-label-icon"><span data-heroicon="map" data-icon-size="16"></span><span data-i18n="universities.state_region">State / Region</span></span>
+            </label>
+            <select id="stateSelect" class="u-select">
+              <option value="" data-i18n="universities.any_state">Any State</option>
+            </select>
+          </div>
+
+          <div class="u-field">
+            <label class="u-label" for="citySelect">
+              <span class="u-label-icon"><span data-heroicon="building-office-2" data-icon-size="16"></span><span data-i18n="universities.city">City</span></span>
+            </label>
+            <select id="citySelect" class="u-select" disabled>
+              <option value="" data-i18n="universities.select_country_first">Select country first</option>
+            </select>
+          </div>
+
+          <div class="u-sep"></div>
+
+          <div class="u-field">
+            <label class="u-label">
+              <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.cost_per_year">Cost (USD / year)</span></span>
+            </label>
+
+            <div class="budget-control-wrapper">
+                <div class="budget-inputs">
+                    <input id="minCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="0" />
+                    <span style="color:#aaa; font-weight:bold;">-</span>
+                    <input id="maxCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="150000" />
+                </div>
+
+                <div class="dual-slider-container">
+                    <div class="slider-track" id="sliderTrack"></div>
+                    <input id="minCostSlider" type="range" min="0" max="150000" value="0" step="100" />
+                    <input id="maxCostSlider" type="range" min="0" max="150000" value="150000" step="100" />
+                </div>
+            </div>
+          </div>
+
+          <div class="u-sep u-sep--sort"></div>
+
+          <div class="u-field u-field--sort">
+            <label class="u-label u-label-with-help" for="sortSelect">
+              <span class="u-label-icon"><span data-heroicon="sparkles" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort Strategy</span></span>
+              <span class="u-info-wrap">
+                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
+                <span class="u-tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
+              </span>
+            </label>
+            <select id="sortSelect" class="u-select">
+              <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
+              <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: AI Smart Sort</option>
+              <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
+              <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
+            </select>
+            <p id="sortAiTagsHint" class="u-sort-ai-hint" data-i18n="universities.sort_hint_ai_tags">AI tags are fully available only in UniFit sort strategy.</p>
+          </div>
+
+          <div class="u-field" id="aiSliderContainer">
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span class="u-label-icon"><span data-heroicon="cpu-chip" data-icon-size="16"></span><span data-i18n="universities.tradeoff.focus">Focus</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.focus">Choose whether you want more practice-oriented study or more theory and research.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.focus.left">Career & Practice</span>
+                <span data-i18n="universities.tradeoff.focus.right">Science & Research</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="focusSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="focusLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span class="u-label-icon"><span data-heroicon="sparkles" data-icon-size="16"></span><span data-i18n="universities.tradeoff.atmosphere">Atmosphere</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.atmosphere">Choose between active student life and a calmer study-focused environment.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.atmosphere.left">Social & Events</span>
+                <span data-i18n="universities.tradeoff.atmosphere.right">Hardcore Study</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="atmosphereSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="atmosphereLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.tradeoff.finance">Finance</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.finance">Left side favors grant-focused options. Right side also favors paid options.</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.finance.left">Budget & Grants</span>
+                <span data-i18n="universities.tradeoff.finance.right">Prestige & Comfort</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="financeSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="financeLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+
+            <div class="tradeoff-field">
+              <div class="u-label u-label--between u-label-with-help">
+                <span class="u-label-icon"><span data-heroicon="map-pin" data-icon-size="16"></span><span data-i18n="universities.tradeoff.location">Location</span></span>
+                <span class="u-info-wrap">
+                  <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
+                  <span class="u-tooltip" data-i18n="universities.help.tradeoff.location">Left side favors life in big cities. Right side favors life outside big cities (suburban/rural campuses).</span>
+                </span>
+              </div>
+              <label class="u-label u-label--between u-label--subtle">
+                <span data-i18n="universities.tradeoff.location.left">Study in City</span>
+                <span data-i18n="universities.tradeoff.location.right">Study Outside City</span>
+              </label>
+              <input class="tradeoff-slider" type="range" id="locationSlider" min="0" max="100" value="50">
+              <div class="tradeoff-caption">
+                <span id="locationLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <div id="universitiesCatalogPane" class="u-content" data-universities-pane="catalog">
+        <div class="u-toolbar u-top">
+          <div class="u-top-meta">
+            <div class="u-found" aria-live="polite">
+              <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
+            </div>
+          </div>
+
+          <div class="view-toggles" role="group" aria-label="View mode">
+            <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list" aria-pressed="true">
+              <span data-heroicon="bars-3-bottom-left" data-icon-size="18"></span>
+            </button>
+            <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map" aria-pressed="false">
+              <span data-heroicon="map" data-icon-size="18"></span>
+            </button>
+          </div>
+        </div>
+
+        <div id="mobileFilterSummary" class="u-mobile-filter-summary" aria-live="polite"></div>
+        <div id="compareModeStatus" class="u-compare-mode-status" hidden></div>
+        <div id="recentlyViewedBar" class="u-recent" hidden></div>
+        <div id="listState" class="u-state"></div>
+        <div class="u-catalog-stage">
+          <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>
+          <div id="universitiesList" class="u-grid"></div>
+        </div>
+
+        <div id="mapStage" class="u-map-stage" style="display: none;">
+          <aside id="mapResultsPanel" class="u-map-results" aria-live="polite"></aside>
+          <div id="mapContainer" class="u-map-container"></div>
+        </div>
+
+        <div id="pagination" class="u-pagination"></div>
+      </div>
+
+      <section id="universitiesRankingPane" class="u-content u-tab-pane--ranking" data-universities-pane="ranking" hidden>
+        <div class="rank-container">
+          <div class="rank-tools" aria-label="Ranking filters" data-i18n-aria-label="ranking.tools_aria">
+            <div class="rank-header">
+              <h1><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="22"></span> <span data-i18n="ranking.title">Global University Ranking</span></h1>
+            </div>
+          </div>
+
+        <div id="rankingList" class="ranking-list">
+          <div class="inline-loading-note" role="status" aria-live="polite" data-i18n="ranking.loading">
+            Loading ranking
+          </div>
         </div>
       </div>
-
-      <div class="hero-facts" aria-label="UniSearch coverage" data-i18n-aria-label="home.hero.metrics_aria">
-        <p class="hero-fact">
-          <strong id="stat-uni" class="hero-fact__value" data-count="40">40</strong>
-          <span id="stat-uni-label" class="hero-fact__text" data-i18n="home.stats.universities_many">universities</span>
-        </p>
-        <p class="hero-fact">
-          <strong id="stat-countries" class="hero-fact__value" data-count="13">13</strong>
-          <span id="stat-country-label" class="hero-fact__text" data-i18n="home.stats.countries_many">countries</span>
-        </p>
-      </div>
     </section>
+    </div>
 
-    <!-- Features — Separate visual block with icon cards -->
-    <section class="home-features">
-      <div class="home-features__head">
-        <p class="home-features__eyebrow" data-i18n="home.preview.sample">What you can do inside the catalog</p>
-        <h2 class="home-features__title" data-i18n="home.preview.title">Go from broad search to a real shortlist.</h2>
-        <p class="home-features__desc" data-i18n="home.preview.desc">Use your profile to filter universities, review cost early, and open track details before applying.</p>
-      </div>
-
-      <div class="home-features__grid">
-        <article class="feature-card">
-          <div class="feature-card__icon-wrap" aria-hidden="true">
-            <span data-heroicon="funnel"></span>
-          </div>
-          <h3 class="feature-card__title" data-i18n="home.feature.data_title">Simple Comparison</h3>
-          <p class="feature-card__desc" data-i18n="home.feature.data_desc">We gather requirements, costs, and scholarships in one place so it is easier to compare universities.</p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-card__icon-wrap" aria-hidden="true">
-            <span data-heroicon="banknotes"></span>
-          </div>
-          <h3 class="feature-card__title" data-i18n="home.feature.finance_title">Financial Clarity</h3>
-          <p class="feature-card__desc" data-i18n="home.feature.finance_desc">See tuition and study costs, plus grant or discount options when they are available in the data.</p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-card__icon-wrap" aria-hidden="true">
-            <span data-heroicon="sparkles"></span>
-          </div>
-          <h3 class="feature-card__title" data-i18n="home.feature.ai_title">{fit} + {chance} AI</h3>
-          <p class="feature-card__desc" data-i18n="home.feature.ai_desc">{fit} helps sort options for you, and {chance} shows an estimated admission chance.</p>
-        </article>
-      </div>
-    </section>
-
+    <section id="compareResultsPane" class="compare-results" data-universities-pane="compare-results" hidden></section>
   </main>
+
+  <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button">
+    <span data-heroicon="funnel" data-icon-size="20"></span>
+    <span data-i18n="universities.filter_mobile">Filter</span>
+    <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
+  </button>
+
+  <div id="compareTray" class="compare-tray" aria-live="polite" hidden></div>
 
   <script src="env.js"></script>
   <script src="config.js"></script>
   <script type="module" src="javascript/main.js"></script>
 
   <footer class="site-footer">
-    <div class="container footer-content">
-      <div class="footer-meta">
-        <p class="footer-copy" data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
-        <span class="footer-divider" aria-hidden="true">&bull;</span>
-        <nav class="footer-legal-links" aria-label="Legal navigation" data-i18n-aria-label="footer.legal_nav_aria">
-          <a href="privacy.html" data-route="privacy" data-i18n="footer.privacy">Privacy Policy</a>
-          <span class="footer-divider" aria-hidden="true">&bull;</span>
-          <a href="terms.html" data-route="terms" data-i18n="footer.terms">Terms of Use</a>
-        </nav>
-      </div>
+      <div class="container footer-content">
+          <div class="footer-meta">
+              <p class="footer-copy" data-i18n="footer.copyright">&copy; 2026 UniSearch</p>
+              <span class="footer-divider" aria-hidden="true">&bull;</span>
+              <nav class="footer-legal-links" aria-label="Legal navigation" data-i18n-aria-label="footer.legal_nav_aria">
+                  <a href="privacy.html" data-route="privacy" data-i18n="footer.privacy">Privacy Policy</a>
+                  <span class="footer-divider" aria-hidden="true">&bull;</span>
+                  <a href="terms.html" data-route="terms" data-i18n="footer.terms">Terms of Use</a>
+              </nav>
+          </div>
 
-      <div class="social-links">
-        <a href="https://github.com/mukhammedsh/unisearch" target="_blank" rel="noopener noreferrer">
-          <span class="footer-social-label">GitHub</span>
-        </a>
+          <div class="social-links">
+              <a href="https://github.com/mukhammedsh/unisearch" target="_blank" rel="noopener noreferrer">
+                  <span class="footer-social-label">GitHub</span>
+              </a>
+          </div>
       </div>
-    </div>
   </footer>
 </body>
 </html>

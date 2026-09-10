@@ -160,11 +160,16 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   align-items: start;
 }
 
-.u-tab-pane--ranking,
 .compare-results {
   max-width: 1320px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+body.universities-ranking-mode .u-sep--sort,
+body.universities-ranking-mode .u-field--sort,
+body.universities-ranking-mode #aiSliderContainer {
+  display: none !important;
 }
 
 .u-sidebar {
@@ -478,8 +483,9 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-toolbar,
 .u-top {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 0 0 16px;
   padding: 0;
   border: none;
@@ -490,205 +496,9 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-top-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   min-height: 20px;
   margin: 0;
   padding: 0 2px;
-}
-
-.u-search-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-width: 0;
-}
-
-.u-search {
-  flex: 1 1 auto;
-  min-width: 0;
-  margin: 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.u-search-suggestions {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 8px);
-  z-index: var(--z-dropdown);
-  display: grid;
-  gap: 4px;
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-base);
-  background: var(--card);
-  box-shadow: var(--shadow-sm);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-6px);
-  transition:
-  opacity var(--motion-fast) var(--motion-ease-standard),
-  visibility var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-enter);
-}
-
-.u-search-suggestions.is-open {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-.u-search-suggestion {
-  min-width: 0;
-  min-height: 42px;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--text);
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  transition:
-  background-color var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard);
-}
-
-.u-search-suggestion:focus-visible {
-  background: var(--accent-panel);
-  outline: none;
-  transform: translateX(2px);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .u-search-suggestion:hover {
-    background: var(--accent-panel);
-    outline: none;
-    transform: translateX(2px);
-  }
-}
-
-.u-search-suggestion span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 800;
-}
-
-.u-search-suggestion small {
-  flex: 0 0 auto;
-  color: var(--text-muted);
-  font-weight: 800;
-}
-
-.u-search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-  pointer-events: none;
-}
-
-.u-search-icon .ui-icon,
-.u-search-icon [data-heroicon] {
-  width: 20px;
-  height: 20px;
-}
-
-.u-search input {
-  width: 100%;
-  height: 48px;
-  box-sizing: border-box;
-  padding: 0 40px 0 48px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-  outline: none;
-  font-size: var(--text-base);
-  font-weight: 500;
-  background: var(--surface-solid);
-  color: var(--text);
-  line-height: 48px;
-  transition:
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-}
-
-.u-search input::placeholder {
-  color: var(--text-muted);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .u-search input:hover {
-    border-color: color-mix(in srgb, var(--text-muted) 35%, var(--line));
-  }
-}
-
-.u-search input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-
-.u-search-clear {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 0;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.u-search-clear .ui-icon,
-.u-search-clear [data-heroicon] {
-  width: 16px;
-  height: 16px;
-}
-
-.u-search-clear:focus-visible {
-  background: var(--surface-soft);
-  color: var(--text);
-  outline: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .u-search-clear:hover {
-    background: var(--surface-soft);
-    color: var(--text);
-    outline: none;
-  }
-}
-
-.u-search-clear[hidden] {
-  display: none;
 }
 
 .u-results-bar,

@@ -2,6 +2,28 @@
 
 All notable project changes should be recorded here.
 
+## 5.0.3 (In progress) - Global Navbar Search, Unified Workspace Architecture, and Filter Parity
+- Integrated Global University Search into Navbar (`style.css`, `index.html`, `main.js`, `universities.js`, `ranking.js`, `icons.js`):
+  - Moved university search from catalog content area directly into the central header navbar (`#universitySearch`, `#qInput`), treating university discovery as the core global search context.
+  - Aligned search input centered independently of side controls using CSS Grid on desktop viewports (>980px); responsively wrapped below brand identity on viewports <=980px; compact alignment on narrow mobile <=340px.
+  - Disabled browser-native WebKit search cancellation pseudo-element (`::-webkit-search-cancel-button`) to eliminate duplicate 'x' clear buttons, preserving a single accessible SVG action (`#searchClearBtn`).
+  - Standardized search placeholder across Catalog, Ranking, and Compare modes to unified key `universities.search_placeholder` ("Search university..." / "Поиск университета...").
+  - Connected responsive autocomplete suggestions dropdown (`.navbar-search-suggestions`) with full keyboard navigation and blur handling.
+  - Automatically hidden search bar on configure and results comparison stages and informational pages (Guide, About, Profile, Legal).
+- Unified Single-Page Application (SPA) Workspace (`index.html`, `main.js`, `routes.js`, `404.html`, `sitemap.xml`):
+  - Merged legacy standalone `universities.html` into root `index.html`, establishing the university workspace as the primary application entrypoint (`data-page="universities"`).
+  - Deprecated and removed legacy landing stylesheet `frontend/css/index.css` and redundant HTML templates.
+  - Introduced section tab navigation (`.u-section-tabs`: Catalog, Ranking, Comparing) within unified layout grid `#universitiesWorkspaceLayout`.
+  - Relocated secondary informational links (Guide, About Us) to footer product navigation (`addFooterProductLinks`).
+- Unified Filter Sidebar across Catalog, Comparison, and Ranking:
+  - Extended `#uSidebar` into a shared filtering column across Catalog, Comparing, and Ranking views.
+  - Removed duplicate country dropdown from Ranking table toolbar, routing country filtering directly through sidebar `#countrySelect`.
+  - Automatically hid Sort Strategy dropdown and UniFit AI balance sliders in Ranking mode (`body.universities-ranking-mode`), preserving rank-ordered integrity.
+  - Synchronized filter reset button (`#resetFiltersBtn`) to clear active ranking filters in addition to catalog filters.
+- Test Suite and Tooling Upgrades:
+  - Updated E2E Playwright test suites (`smoke-home.spec.js`, `universities-tabs-compare.spec.js`, `custom-select-i18n.spec.js`, etc.) for SPA routing, navbar search centering, and unified tab switching.
+  - Updated dev server and audit tooling (`scripts/frontend_dev_server.py`, `scripts/performance-audit.mjs`).
+
 ## 5.0.2 (2026-09-10) - Design System Scale Standardization, Layering & Radius Tokenization, and Automated Design Lint Guard
 - Modularized university catalog stylesheet architecture (`universities.css`, `frontend/css/universities/`, `scripts/check-tokens.mjs`, `scripts/check-design-lint.mjs`):
   - Refactored monolithic `universities.css` into seven ordered modules (`01-shell-controls.css` through `07-responsive.css`) with architectural documentation (`README.md`).

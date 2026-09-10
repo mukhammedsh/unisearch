@@ -2,14 +2,14 @@ const { test, expect } = require("@playwright/test");
 
 const LOCALES = {
   eng: {
-    home: "Home",
+    guide: "Guide",
     filter: "Filter",
     reset: "Reset",
     searchPlaceholder: "Search university...",
     totalPrefix: "Found",
   },
   rus: {
-    home: "Главная",
+    guide: "Гайд",
     filter: "Фильтр",
     reset: "Сброс",
     searchPlaceholder: "Поиск университета...",
@@ -59,12 +59,12 @@ async function switchLanguage(page, langCode) {
 test.describe("Dynamic Multi-Language Translation Verification", () => {
   test("dynamically switches all key interface elements between English and Russian", async ({ page }) => {
     // 1. Открываем каталог
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     await page.waitForSelector(".uni-card");
 
     // 2. Тестируем английскую локализацию (сначала явно переключаем, чтобы гарантировать чистое состояние)
     await switchLanguage(page, "eng");
-    await expect(page.locator(".navbar-center a[data-link='home']")).toContainText(LOCALES.eng.home);
+    await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(LOCALES.eng.guide);
     await expect(page.locator("[data-i18n='universities.filter']")).toContainText(LOCALES.eng.filter);
     await expect(page.locator("#resetFiltersBtn")).toContainText(LOCALES.eng.reset);
     await expect(page.locator("#qInput")).toHaveAttribute("placeholder", LOCALES.eng.searchPlaceholder);
@@ -72,7 +72,7 @@ test.describe("Dynamic Multi-Language Translation Verification", () => {
 
     // 3. Переключаемся на русскую локализацию
     await switchLanguage(page, "rus");
-    await expect(page.locator(".navbar-center a[data-link='home']")).toContainText(LOCALES.rus.home);
+    await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(LOCALES.rus.guide);
     await expect(page.locator("[data-i18n='universities.filter']")).toContainText(LOCALES.rus.filter);
     await expect(page.locator("#resetFiltersBtn")).toContainText(LOCALES.rus.reset);
     await expect(page.locator("#qInput")).toHaveAttribute("placeholder", LOCALES.rus.searchPlaceholder);
@@ -80,6 +80,6 @@ test.describe("Dynamic Multi-Language Translation Verification", () => {
 
     // 4. Переключаемся обратно на английский
     await switchLanguage(page, "eng");
-    await expect(page.locator(".navbar-center a[data-link='home']")).toContainText(LOCALES.eng.home);
+    await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(LOCALES.eng.guide);
   });
 });

@@ -11,14 +11,6 @@ function formatBytes(value) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
-function sameOriginPath(baseUrl, path) {
-  const url = new URL(baseUrl);
-  url.pathname = path;
-  url.search = "";
-  url.hash = "";
-  return url.toString();
-}
-
 async function collectPage(page, url) {
   const requests = [];
 
@@ -74,10 +66,9 @@ async function collectPage(page, url) {
 const browser = await chromium.launch();
 try {
   const context = await browser.newContext({ serviceWorkers: "block" });
-  const home = await collectPage(await context.newPage(), targetUrl);
-  const catalog = await collectPage(await context.newPage(), sameOriginPath(targetUrl, "/universities.html"));
+  const catalog = await collectPage(await context.newPage(), targetUrl);
 
-  console.log(JSON.stringify({ targetUrl, home, catalog }, null, 2));
+  console.log(JSON.stringify({ targetUrl, catalog }, null, 2));
 } finally {
   await browser.close();
 }

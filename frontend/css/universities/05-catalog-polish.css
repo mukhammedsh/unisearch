@@ -55,8 +55,7 @@
 }
 
 .u-input,
-.u-select,
-.u-search input {
+.u-select {
   border-radius: var(--radius-base);
   border-color: var(--line);
   background: var(--surface-soft);
@@ -64,8 +63,7 @@
 }
 
 .u-input:focus,
-.u-select:focus,
-.u-search input:focus {
+.u-select:focus {
   border-color: var(--line-accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
@@ -86,10 +84,6 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-}
-
-.u-search {
-  flex: 1 1 100%;
 }
 
 .view-toggles {
@@ -459,7 +453,6 @@
     display: none;
   }
 
-  body.universities-ranking-mode .u-mobile-filter-btn,
   body.universities-compare-configure-mode .u-mobile-filter-btn,
   body.universities-compare-results-mode .u-mobile-filter-btn {
     display: none;
@@ -529,11 +522,6 @@
     align-items: stretch;
     gap: 16px;
     padding: 16px;
-  }
-
-  .u-search {
-    flex: auto;
-    width: 100%;
   }
 
   .u-controls {

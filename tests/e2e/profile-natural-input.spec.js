@@ -6,7 +6,7 @@ const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 test("profile accepts realistic user input and persists after reload", async ({ page }) => {
   await mockAllExpensiveEndpoints(page);
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   await expect(page.locator(selectors.profileBtn)).toBeVisible();
   await page.click(selectors.profileBtn);

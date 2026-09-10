@@ -5,7 +5,7 @@ test.describe("Sticky Footer Verification Across Pages", () => {
   const pagesToTest = [
     { url: "/about.html", name: "About" },
     { url: "/404.html", name: "404" },
-    { url: "/index.html", name: "Home" },
+    { url: "/index.html", name: "University catalog" },
     { url: "/terms.html", name: "Terms" },
     { url: "/privacy.html", name: "Privacy" },
   ];

@@ -73,7 +73,7 @@ test("profile category motion keeps tab state and reduced-motion final states st
 test("universities favorite and compare motion preserves pressed states", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   const firstCard = page.locator(".uni-card:not(.is-skeleton)").first();
   await expect(firstCard).toBeVisible();
@@ -130,7 +130,7 @@ test("floating motion layers close cleanly and stay above docked controls", asyn
   ).toBe(0);
   await expect(page.locator("#settingsModal")).toHaveAttribute("aria-hidden", "true");
 
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   await page.evaluate(() => localStorage.removeItem("unisearch_profile"));
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
@@ -185,7 +185,7 @@ test("mobile settings layer uses sheet motion without breaking reduced motion", 
 
 test("view mode toggle uses one stable active state", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
@@ -220,7 +220,7 @@ test("university detail category switching leaves one active pane", async ({ pag
 
 test("university detail tabs stay clickable after client-side route", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   const mitCard = page.locator(".uni-card[data-uni-id='mit-usa-cambridge']").first();
   await expect(mitCard).toBeVisible();

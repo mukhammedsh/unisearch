@@ -15,7 +15,7 @@ test("universities page uses AI sort with realistic search/filter interactions",
       response.url().includes("/universities/ai-sort") &&
       response.request().method() === "POST"
   );
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   expect((await firstAiSort).status()).toBe(200);
 
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
@@ -85,7 +85,7 @@ test("universities page uses AI sort with realistic search/filter interactions",
 
 test("unifit tradeoff tooltips are hidden by default and toggle on interaction", async ({ page }) => {
   await seedProfile(page, personas.ruStemGrant.profile);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   const tooltips = page.locator(".u-tooltip");
   const count = await tooltips.count();

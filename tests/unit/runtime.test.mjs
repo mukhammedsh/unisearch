@@ -35,14 +35,14 @@ describe("runtime.js", () => {
 
   describe("frontendStaticAsset", () => {
     it("returns clean path when served from root", () => {
-      window.location.pathname = "/universities.html";
+      window.location.pathname = "/index.html";
       assert.equal(frontendStaticAsset("images/logo.png"), "/images/logo.png");
       assert.equal(frontendStaticAsset("/images/logo.png"), "/images/logo.png");
       assert.equal(frontendStaticAsset("///images///logo.png"), "/images/logo.png");
     });
 
     it("prepends /frontend prefix when app is running under /frontend subpath", () => {
-      window.location.pathname = "/frontend/universities.html";
+      window.location.pathname = "/frontend/index.html";
       assert.equal(frontendStaticAsset("images/logo.png"), "/frontend/images/logo.png");
       assert.equal(frontendStaticAsset("/css/style.css"), "/frontend/css/style.css");
     });

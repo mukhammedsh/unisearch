@@ -444,19 +444,6 @@
     gap: 8px;
   }
 
-  .u-search-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-  }
-
-  .u-search {
-    flex: 1 1 auto;
-    min-width: 0;
-    width: auto;
-  }
-
   .u-results-bar,
   .u-controls {
     display: flex;
@@ -548,11 +535,6 @@
 
   .u-filter-card {
     padding: 12px 12px;
-  }
-
-  .u-search input {
-    font-size: var(--text-md);
-    padding: 12px 12px 12px 40px;
   }
 
   .custom-map-popup .leaflet-popup-content {

@@ -78,9 +78,9 @@ describe("routes.js", () => {
 
     it("generates correct html filenames for main views", () => {
       assert.equal(routeHome(), "index.html");
-      assert.equal(routeUniversities(), "universities.html");
-      assert.equal(routeRanking(), "universities.html?tab=ranking");
-      assert.equal(routeCompareSelection(), "universities.html?tab=compare&compare=select");
+      assert.equal(routeUniversities(), "index.html");
+      assert.equal(routeRanking(), "index.html?tab=ranking");
+      assert.equal(routeCompareSelection(), "index.html?tab=compare&compare=select");
       assert.equal(routeGuide(), "guide.html");
       assert.equal(routeAbout(), "about.html");
       assert.equal(routePrivacy(), "privacy.html");
@@ -106,8 +106,8 @@ describe("routes.js", () => {
     });
 
     it("falls back to routeUniversities when universityId is empty", () => {
-      assert.equal(routeUniversityDetail(""), "universities.html");
-      assert.equal(routeUniversityDetail(null), "universities.html");
+      assert.equal(routeUniversityDetail(""), "index.html");
+      assert.equal(routeUniversityDetail(null), "index.html");
     });
   });
 
@@ -118,9 +118,9 @@ describe("routes.js", () => {
 
     it("generates clean paths without .html extensions", () => {
       assert.equal(routeHome(), "/");
-      assert.equal(routeUniversities(), "/universities");
-      assert.equal(routeRanking(), "/universities?tab=ranking");
-      assert.equal(routeCompareSelection(), "/universities?tab=compare&compare=select");
+      assert.equal(routeUniversities(), "/");
+      assert.equal(routeRanking(), "/?tab=ranking");
+      assert.equal(routeCompareSelection(), "/?tab=compare&compare=select");
       assert.equal(routeGuide(), "/guide");
       assert.equal(routeAbout(), "/about");
       assert.equal(routeProfile(), "/profile");
@@ -129,7 +129,7 @@ describe("routes.js", () => {
 
     it("appends query parameters cleanly to pretty routes", () => {
       assert.equal(routeHome({ ref: "banner" }), "/?ref=banner");
-      assert.equal(routeUniversities("sort=uni_ai"), "/universities?sort=uni_ai");
+      assert.equal(routeUniversities("sort=uni_ai"), "/?sort=uni_ai");
       assert.equal(
         routeUniversityDetail("mit-usa-cambridge", { lang: "rus" }),
         "/universities/mit-usa-cambridge?lang=rus"
@@ -146,8 +146,9 @@ describe("routes.js", () => {
     });
 
     it("isUniversitiesListPath matches universities views", () => {
-      assert.equal(isUniversitiesListPath("/universities"), true);
-      assert.equal(isUniversitiesListPath("/universities.html"), true);
+      assert.equal(isUniversitiesListPath("/"), true);
+      assert.equal(isUniversitiesListPath("/index.html"), true);
+      assert.equal(isUniversitiesListPath("/universities"), false);
       assert.equal(isUniversitiesListPath("/university.html"), false);
     });
 

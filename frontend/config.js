@@ -4,7 +4,7 @@
  * @property {string}  API_BASE_URL       - Backend API base URL (e.g. "http://localhost:8000" or "/api").
  * @property {string}  APP_VERSION        - Semantic version from package.json (e.g. "3.4.8").
  * @property {boolean} APP_DEBUG          - Whether debug logging is enabled.
- * @property {boolean} APP_USE_PRETTY_URLS - Whether to use clean URLs (/universities) vs file-based (universities.html).
+ * @property {boolean} APP_USE_PRETTY_URLS - Whether to use clean URLs (/) vs file-based (index.html).
  * @property {boolean} IS_LOCAL_DEV       - Whether the app is running on a local development server.
  * @property {{fit: string, chance: string}} AI_FUNCTIONS - Display names for AI features.
  */
@@ -41,7 +41,7 @@
     if (["1", "true", "yes", "on"].includes(prettyText)) w.APP_USE_PRETTY_URLS = true;
     else if (["0", "false", "no", "off"].includes(prettyText)) w.APP_USE_PRETTY_URLS = false;
     // Plain local static servers (localhost or LAN IP on dev ports) do not
-    // rewrite pretty URLs like /universities -> /universities.html.
+    // rewrite pretty URLs like /guide -> /guide.html; the catalog stays at the root.
     else w.APP_USE_PRETTY_URLS = !w.IS_LOCAL_DEV;
   }
 })(window);

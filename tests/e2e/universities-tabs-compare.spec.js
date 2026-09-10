@@ -19,10 +19,14 @@ test("universities tabs host ranking and comparison results in one workspace", a
   await markTourAsSeen(page);
   await clearCompareState(page);
 
-  await page.goto("/universities.html?tab=ranking");
+  await page.goto("/index.html?tab=ranking");
   await expect(page.locator('[data-universities-tab="ranking"]')).toHaveClass(/is-active/);
   await expect(page.locator("#universitiesRankingPane")).toBeVisible();
   await expect(page.locator("#rankingList .rank-card").first()).toBeVisible();
+  await expect(page.locator("#universitySearch")).toBeVisible();
+  await page.locator("#qInput").fill("MIT");
+  await expect(page.locator("#rankingList")).toContainText("Massachusetts Institute of Technology");
+  await page.locator("#searchClearBtn").click();
 
   await page.locator('[data-universities-tab="catalog"]').click();
   await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
@@ -32,6 +36,7 @@ test("universities tabs host ranking and comparison results in one workspace", a
   await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator('[data-universities-tab="compare"]')).toHaveClass(/is-active/);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
+  await expect(page.locator("#qInput")).toHaveAttribute("placeholder", "Search university...");
 
   const mitCard = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
   const imperialCard = page.locator(`#universitiesList .uni-card[data-uni-id="${IMPERIAL_ID}"]`).first();
@@ -49,6 +54,7 @@ test("universities tabs host ranking and comparison results in one workspace", a
   await expect(page).toHaveURL(/tab=compare/);
   await expect(page).toHaveURL(/compare=configure/);
   await expect(page.locator("#compareResultsPane")).toBeVisible();
+  await expect(page.locator("#universitySearch")).toBeHidden();
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page.locator(".compare-config-column .track-select-btn.is-active")).toHaveCount(2);
   await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(2);
@@ -100,8 +106,8 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   }, { mitId: MIT_ID, imperialId: IMPERIAL_ID });
 
   await page.goto("/index.html");
-  await page.locator('[data-link="universities"]').click();
-  await expect(page).toHaveURL(/universities/);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
   await page.locator('[data-universities-tab="compare"]').click();
 
   await expect(page.locator(".compare-tray")).toBeVisible();
@@ -125,7 +131,7 @@ test("compare configure cards expose admission requirements before continuing", 
     localStorage.setItem("unisearch_ui_language_v1", "eng");
   });
 
-  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
+  await page.goto("/index.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
@@ -148,7 +154,7 @@ test("compare results split admission decision rows", async ({ page }) => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
   });
 
-  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat-grant-president-s-scholarship");
+  await page.goto("/index.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat-grant-president-s-scholarship");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
 
   await page.locator("[data-action='build-compare-results']").click();
@@ -178,7 +184,7 @@ test("compare deep link ids and choices override stale localStorage", async ({ p
     }));
   });
 
-  await page.goto("/universities.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
+  await page.goto("/index.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page.locator("#compareResultsPane")).toContainText("Massachusetts Institute of Technology");
   await expect(page.locator("#compareResultsPane")).toContainText("Imperial College London");
@@ -200,7 +206,7 @@ test("compare results count localized bachelor programs in Russian", async ({ pa
     localStorage.setItem("unisearch_ui_language_v1", "rus");
   });
 
-  await page.goto("/universities.html?lang=rus&tab=compare&compare=configure&ids=abai-kazakh-national-pedagogical-university-kaz-almaty,al-farabi-kazakh-national-university-kaz-almaty&choices=abai_kaznpu_unt::abai_kaznpu_unt::abai_kaznpu_unt_paid,kaznu_unt::kaznu_unt::kaznu_unt_paid");
+  await page.goto("/index.html?lang=rus&tab=compare&compare=configure&ids=abai-kazakh-national-pedagogical-university-kaz-almaty,al-farabi-kazakh-national-university-kaz-almaty&choices=abai_kaznpu_unt::abai_kaznpu_unt::abai_kaznpu_unt_paid,kaznu_unt::kaznu_unt::kaznu_unt_paid");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page.locator("#compareResultsPane")).toContainText("Лучший вариант");
   await expect(page.locator("#compareResultsPane")).not.toContainText("Best choice");
@@ -233,7 +239,7 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await expect(page.locator("#detailCompareBtn")).toHaveCount(0);
 
   // 2. Open comparison in catalog
-  await page.goto("/universities.html?tab=compare");
+  await page.goto("/index.html?tab=compare");
   const tray = page.locator(".compare-tray");
   await expect(tray).toBeVisible();
   const removeBtn = page.locator(".compare-tray__slot-remove").first();
@@ -244,7 +250,7 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   )).toBe(0);
 
   // 3. Open configure and results with 2 universities
-  await page.goto(`/universities.html?lang=eng&tab=compare&compare=configure&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat`);
+  await page.goto(`/index.html?lang=eng&tab=compare&compare=configure&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat`);
   await page.locator("[data-action='build-compare-results']").click();
   await expect(page).toHaveURL(/compare=results/);
 

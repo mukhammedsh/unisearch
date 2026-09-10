@@ -13,8 +13,6 @@ from urllib.parse import unquote, urlsplit
 PRETTY_ROUTE_MAP = {
     "/": "index.html",
     "/index.html": "index.html",
-    "/universities": "universities.html",
-    "/universities.html": "universities.html",
     "/guide": "guide.html",
     "/guide.html": "guide.html",
     "/about": "about.html",

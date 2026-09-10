@@ -1,10 +1,10 @@
-import { loadGlobalLayout, renderNoConnection } from "./components.js";
+import { addFooterProductLinks, loadGlobalLayout, renderNoConnection } from "./components.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset, prefersReducedMotion } from "./utils.js";
 import { initLanguagesPanel } from "./languages.js";
-import { applyTranslations, getCurrentLanguage, initI18n, t } from "./i18n.js";
+import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
-import { initUniversityTranslations, translateUnknownWord } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { initUniversityTranslations } from "./university-translations.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -124,7 +124,7 @@ function isFrontendRootPath(pathname) {
 }
 
 function routePageFromPath(pathname) {
-  if (isHomePath(pathname) || isFrontendRootPath(pathname)) return "home";
+  if (isHomePath(pathname) || isFrontendRootPath(pathname)) return "universities";
   if (isUniversitiesListPath(pathname)) return "universities";
   if (isUniversityDetailPath(pathname)) return "university";
   if (isRankingPath(pathname)) return "ranking";
@@ -151,7 +151,6 @@ function currentRouteContext() {
     path,
     page: normalizedPage,
     navPage: normalizedPage === "university" ? "universities" : normalizedPage,
-    isHomePage: Boolean(normalizedPage === "home" || isHomePath(path) || isFrontendRootPath(path)),
     isUniversitiesPage: Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList")),
     isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
     isRankingPage: Boolean(isRankingPath(path) || document.getElementById("rankingList")),
@@ -167,14 +166,8 @@ function syncBodyPageFromRoute() {
   if (page) document.body.dataset.page = page;
 }
 
-function syncNavbarActive(navPage = "") {
-  const currentPage = String(navPage || currentRouteContext().navPage || "").trim().toLowerCase();
-  document.querySelectorAll(".navbar-center a").forEach((link) => {
-    const isActive = currentPage && String(link.getAttribute("data-link") || "").toLowerCase() === currentPage;
-    link.classList.toggle("is-active", !!isActive);
-    if (isActive) link.setAttribute("aria-current", "page");
-    else link.removeAttribute("aria-current");
-  });
+function syncNavbarActive() {
+  // Navbar no longer has a center nav with links — search replaced it.
 }
 
 function primeRouteLoadingUi(ctx = currentRouteContext()) {
@@ -223,14 +216,23 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
   }
 }
 
+function syncNavbarSearchVisibility(ctx) {
+  const navbar = document.querySelector(".navbar");
+  const search = document.getElementById("universitySearch");
+  const isUniversities = ctx.isUniversitiesPage;
+  if (navbar) navbar.classList.toggle("has-university-search", isUniversities);
+  if (search) search.hidden = !isUniversities;
+}
+
 function hydrateRouteShell(ctx = currentRouteContext()) {
-  syncNavbarActive(ctx.navPage);
+  syncNavbarActive();
+  syncNavbarSearchVisibility(ctx);
   applyRouteLinks(document);
   hydrateHeroIcons(document);
   bindImageFallbacks(document);
   applyAINameConfig();
   applyTranslations(document);
-  initHomePageActions();
+  addFooterProductLinks();
   primeRouteLoadingUi(ctx);
 }
 
@@ -292,7 +294,7 @@ async function initRoutePage(ctx = currentRouteContext()) {
     ]);
     return module?.initProfilePage?.();
   }
-  return initHomePageStats();
+  return undefined;
 }
 
 async function initializeCurrentRoute() {
@@ -664,117 +666,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.addEventListener("languageChanged", () => {
     applyAINameConfig();
     applyTranslations(document);
-    const uniStat = document.getElementById("stat-uni");
-    const countryStat = document.getElementById("stat-countries");
-    if (uniStat && countryStat) {
-      renderHomeCoverage(uniStat.dataset.count || uniStat.textContent, countryStat.dataset.count || countryStat.textContent);
-    }
   });
 });
-
-function resolveUiLang() {
-  const htmlLang = String(document.documentElement.getAttribute("lang") || "").trim().toLowerCase();
-  if (htmlLang.startsWith("ru")) return "rus";
-  return "eng";
-}
-
-function normalizeCount(value, fallback = 0) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return fallback;
-  return Math.max(0, Math.round(n));
-}
-
-function parseCountOrNull(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return null;
-  return Math.max(0, Math.round(n));
-}
-
-function formatCountForUi(value, lang) {
-  const locale = lang === "rus" ? "ru-RU" : "en-US";
-  try {
-    return new Intl.NumberFormat(locale).format(normalizeCount(value, 0));
-  } catch (e) {
-    return String(normalizeCount(value, 0));
-  }
-}
-
-function getRuPluralCategory(count) {
-  const n = Math.abs(normalizeCount(count, 0));
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return "one";
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "few";
-  return "many";
-}
-
-function getCountNoun(kind, count, lang) {
-  const n = normalizeCount(count, 0);
-  const category = lang === "rus" ? getRuPluralCategory(n) : (n === 1 ? "one" : "many");
-  const fallback = kind === "countries"
-    ? (n === 1 ? "country" : "countries")
-    : (n === 1 ? "university" : "universities");
-  return t(`home.stats.${kind}_${category}`, fallback);
-}
-
-function renderHomeCoverage(universitiesTotal, countriesTotal) {
-  const uniStat = document.getElementById("stat-uni");
-  const countryStat = document.getElementById("stat-countries");
-  const uniLabel = document.getElementById("stat-uni-label");
-  const countryLabel = document.getElementById("stat-country-label");
-  if (!uniStat || !countryStat || !uniLabel || !countryLabel) return;
-
-  const uniCount = parseCountOrNull(universitiesTotal);
-  const countryCount = parseCountOrNull(countriesTotal);
-  const lang = resolveUiLang();
-
-  if (uniCount === null) {
-    uniStat.dataset.count = "";
-    uniStat.textContent = "?";
-    uniLabel.textContent = translateUnknownWord("placeholder.field.universities_count", "Universities count");
-  } else {
-    uniStat.dataset.count = String(uniCount);
-    uniStat.textContent = formatCountForUi(uniCount, lang);
-    uniLabel.textContent = getCountNoun("universities", uniCount, lang);
-  }
-
-  if (countryCount === null) {
-    countryStat.dataset.count = "";
-    countryStat.textContent = "?";
-    countryLabel.textContent = translateUnknownWord("placeholder.field.countries_count", "Countries count");
-  } else {
-    countryStat.dataset.count = String(countryCount);
-    countryStat.textContent = formatCountForUi(countryCount, lang);
-    countryLabel.textContent = getCountNoun("countries", countryCount, lang);
-  }
-}
-
-async function initHomePageStats() {
-  const uniStat = document.getElementById("stat-uni");
-  const countryStat = document.getElementById("stat-countries");
-  if (!uniStat || !countryStat) return;
-
-  renderHomeCoverage(
-    normalizeCount(uniStat.dataset.count || uniStat.textContent || 0, 0),
-    normalizeCount(countryStat.dataset.count || countryStat.textContent || 0, 0)
-  );
-
-  try {
-    const resStats = await fetch(`${API_BASE}/stats`);
-    if (resStats.ok) {
-      const dataStats = await resStats.json();
-      renderHomeCoverage(dataStats.universities_total, dataStats.countries_total);
-      return;
-    }
-    const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
-    const resUni = await fetch(`${API_BASE}/universities?limit=1&lang=${encodeURIComponent(uiLang)}`);
-    const dataUni = await resUni.json();
-
-    const resLoc = await fetch(`${API_BASE}/locations`);
-    const dataLoc = await resLoc.json();
-
-    renderHomeCoverage(dataUni.total, Object.keys(dataLoc || {}).length);
-  } catch (e) {
-    console.error("Failed to load stats:", e);
-  }
-}

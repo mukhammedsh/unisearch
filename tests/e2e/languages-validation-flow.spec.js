@@ -4,7 +4,7 @@ const { selectors, setNativeSelect } = require("./helpers/selectors");
 
 test("languages panel validates and saves realistic exam-based language proof", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);

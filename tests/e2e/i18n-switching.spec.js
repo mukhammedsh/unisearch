@@ -23,8 +23,8 @@ test("language switch updates UI labels for eng and ru locales", async ({ page }
   await page.waitForSelector("#languageSelect", { state: "attached" });
 
   await switchLanguage(page, "eng");
-  await expect(page.locator(".navbar-center a[data-link='home']")).toContainText("Home");
+  await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText("Guide");
 
   await switchLanguage(page, "rus");
-  await expect(page.locator(".navbar-center a[data-link='home']")).toContainText("Главная");
+  await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText("Гайд");
 });

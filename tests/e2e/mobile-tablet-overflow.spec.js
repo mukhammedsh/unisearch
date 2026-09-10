@@ -33,9 +33,10 @@ async function expectNoHorizontalOverflow(page, label) {
 async function expectNavbarControlsInsideViewport(page, label) {
   const metrics = await page.evaluate(() => {
     const selectors = [
-      "#menuToggleBtn",
+      "#universitySearch",
       ".navbar-right .custom-select-trigger",
       "#themeToggleBtn",
+      "#settingsBtn",
       "#profileBtn",
     ];
     return selectors
@@ -62,16 +63,6 @@ async function expectNavbarControlsInsideViewport(page, label) {
   }
 }
 
-async function expectResponsiveMenuUsable(page, label) {
-  const menuBtn = page.locator("#menuToggleBtn");
-  await expect(menuBtn).toBeVisible();
-  await menuBtn.click();
-  await expect(page.locator(".navbar")).toHaveClass(/is-menu-open/);
-  await expectNoHorizontalOverflow(page, `${label} menu`);
-  await menuBtn.click();
-  await expect(page.locator(".navbar")).not.toHaveClass(/is-menu-open/);
-}
-
 for (const viewport of viewports) {
   test(`no horizontal overflow on key pages (${viewport.name})`, async ({ page }) => {
     await mockAllExpensiveEndpoints(page);
@@ -82,23 +73,17 @@ for (const viewport of viewports) {
     });
 
     await page.goto("/index.html");
-    await expect(page.locator(".hero-section")).toBeVisible();
+    await expect(page.locator(".u-layout")).toBeVisible();
     await expectNoHorizontalOverflow(page, `index ${viewport.name}`);
     await expectNavbarControlsInsideViewport(page, `index ${viewport.name}`);
 
-    if (viewport.width <= 980) {
-      await expectResponsiveMenuUsable(page, `index ${viewport.name}`);
-    }
-
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     await expect(page.locator(".u-layout")).toBeVisible();
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `universities ${viewport.name}`);
     await expectNavbarControlsInsideViewport(page, `universities ${viewport.name}`);
 
     if (viewport.width <= 980) {
-      await expectResponsiveMenuUsable(page, `universities ${viewport.name}`);
-
       const filterBtn = page.locator("#mobileFilterToggle");
       await expect(filterBtn).toBeVisible();
       await filterBtn.click();
@@ -108,7 +93,7 @@ for (const viewport of viewports) {
       await expect(page.locator("#uSidebar")).not.toHaveClass(/is-open/);
     }
 
-    await page.goto("/universities.html?tab=compare&compare=results&ids=mit-usa-cambridge,imperial-college-london-uk");
+    await page.goto("/index.html?tab=compare&compare=results&ids=mit-usa-cambridge,imperial-college-london-uk");
     await expect(page.locator("#compareResultsPane")).toBeVisible();
     await expect(page.locator(".compare-config-column")).toHaveCount(2);
     await expect(page.locator(".track-select-btn.is-active")).toHaveCount(2);
@@ -121,25 +106,17 @@ for (const viewport of viewports) {
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `universities compare results ${viewport.name}`);
 
-    await page.goto("/universities.html?tab=ranking");
+    await page.goto("/index.html?tab=ranking");
     await expect(page.locator(".rank-container")).toBeVisible();
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `ranking ${viewport.name}`);
     await expectNavbarControlsInsideViewport(page, `ranking ${viewport.name}`);
-
-    if (viewport.width <= 980) {
-      await expectResponsiveMenuUsable(page, `ranking ${viewport.name}`);
-    }
 
     await page.goto("/guide.html");
     await expect(page.locator("#guidePage")).toBeVisible();
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `guide ${viewport.name}`);
     await expectNavbarControlsInsideViewport(page, `guide ${viewport.name}`);
-
-    if (viewport.width <= 980) {
-      await expectResponsiveMenuUsable(page, `guide ${viewport.name}`);
-    }
 
     await page.goto("/university.html?id=mit-usa-cambridge");
     await expect(page.locator("#detailCard")).toBeVisible();
@@ -152,10 +129,6 @@ for (const viewport of viewports) {
     await expect(page.locator("#tab-finance")).toHaveClass(/active/);
     await expect(page.locator("#tab-finance .finance-box")).toBeVisible();
     await expectNoHorizontalOverflow(page, `university finance tab ${viewport.name}`);
-
-    if (viewport.width <= 980) {
-      await expectResponsiveMenuUsable(page, `university ${viewport.name}`);
-    }
 
     await page.click("#profileBtn");
     await expect(page.locator("#profileModal")).toHaveClass(/is-open/);

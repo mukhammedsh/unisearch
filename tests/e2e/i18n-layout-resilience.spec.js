@@ -20,7 +20,7 @@ test("navbar stays available when a localization pack is slow", async ({ page })
     }
   });
 
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
   await expect(page.locator("#profileBtn")).toBeVisible({ timeout: 7_000 });
   await expect(page.locator("#languageSelect")).toHaveValue("rus");
 });

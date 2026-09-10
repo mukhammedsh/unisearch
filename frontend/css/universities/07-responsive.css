@@ -356,7 +356,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .u-search-suggestions,
   .view-btn,
   .uni-card,
   .uni-action-btn,
@@ -426,18 +425,6 @@
     margin-bottom: 14px;
     padding: 0;
     gap: 8px;
-  }
-
-  .u-search-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-  }
-
-  .u-search input {
-    height: 46px;
-    min-height: 46px;
   }
 
   .view-toggles {
@@ -570,10 +557,6 @@
   .u-top {
     padding: 0;
     gap: 8px;
-  }
-
-  .u-search input {
-    padding-right: 36px;
   }
 
   .u-results-bar,

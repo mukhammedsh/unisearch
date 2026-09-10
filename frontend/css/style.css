@@ -379,8 +379,6 @@ a {
   button,
   .btn,
   .btn-primary,
-  .home-primary-btn,
-  .home-secondary-btn,
   .page-btn,
   .view-btn,
   .u-view-btn,
@@ -409,8 +407,6 @@ a {
     button,
     .btn,
     .btn-primary,
-    .home-primary-btn,
-    .home-secondary-btn,
     .page-btn,
     .view-btn,
     .u-view-btn,
@@ -3100,7 +3096,6 @@ h6,
 .settings-trigger-btn,
 .menu-btn,
 .btn-primary,
-.home-secondary-btn,
 .page-btn,
 .error-btn,
 .u-filter-title,
@@ -4542,6 +4537,34 @@ body {
   border-top-color: var(--accent);
 }
 
+/* Keep the primary destinations visually independent from the brand and utilities. */
+@media (min-width: 981px) {
+  .navbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: var(--space-6);
+  }
+
+  .navbar-left {
+    justify-self: start;
+  }
+
+  .navbar-center {
+    justify-self: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .navbar-right {
+    justify-self: end;
+    margin-left: 0;
+  }
+
+  .navbar.is-compact {
+    display: flex;
+  }
+}
+
 /* ===== Shared Admission & Funding Option Cards ===== */
 .track-select-btn {
   border: 1px solid var(--line);
@@ -5248,6 +5271,261 @@ body {
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
+}
+
+/* ===== University workspace search ===== */
+.navbar-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.navbar-search[hidden] {
+  display: none !important;
+}
+
+.navbar-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.navbar-search input {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 44px 0 44px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-base);
+  outline: 0;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search input::placeholder {
+  color: var(--text-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search input:hover {
+    border-color: color-mix(in srgb, var(--text-muted) 35%, var(--line));
+  }
+}
+
+.navbar-search input:focus {
+  border-color: var(--accent);
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.navbar-search input::-webkit-search-cancel-button,
+.navbar-search input::-webkit-search-decoration,
+.navbar-search input::-webkit-search-results-button,
+.navbar-search input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.navbar-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search-clear[hidden] {
+  display: none;
+}
+
+.navbar-search-clear:focus-visible {
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-clear:hover {
+    background: var(--surface-solid);
+    color: var(--text);
+  }
+}
+
+.navbar-search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  z-index: var(--z-dropdown);
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    visibility var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-enter);
+}
+
+.navbar-search-suggestions.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.navbar-search-suggestion {
+  display: flex;
+  min-width: 0;
+  min-height: 42px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search-suggestion span {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar-search-suggestion:focus-visible {
+  background: var(--accent-panel);
+  outline: 0;
+  transform: translateX(2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-suggestion:hover {
+    background: var(--accent-panel);
+    transform: translateX(2px);
+  }
+}
+
+@media (min-width: 981px) {
+  .navbar {
+    display: flex;
+  }
+
+  .navbar.has-university-search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, min(44vw, 680px)) minmax(0, 1fr);
+    column-gap: var(--space-6);
+  }
+
+  .navbar.has-university-search .navbar-left {
+    justify-self: start;
+  }
+
+  .navbar.has-university-search .navbar-search {
+    grid-column: 2;
+  }
+
+  .navbar.has-university-search .navbar-right {
+    justify-self: end;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 980px) {
+  body[data-page="universities"] {
+    --nav-height: 120px;
+  }
+
+  .navbar.has-university-search {
+    height: var(--nav-height);
+    min-height: var(--nav-height);
+    flex-wrap: wrap;
+    align-content: center;
+    row-gap: 8px;
+    column-gap: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .navbar.has-university-search .navbar-left {
+    order: 1;
+    flex: 1 1 auto;
+    width: auto;
+  }
+
+  .navbar.has-university-search .navbar-right {
+    order: 2;
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .navbar.has-university-search .navbar-search {
+    order: 3;
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .navbar-search input {
+    height: 44px;
+  }
+}
+
+@media (max-width: 340px) {
+  body[data-page="universities"] {
+    --nav-height: 160px;
+  }
+
+  .navbar.has-university-search .navbar-left,
+  .navbar.has-university-search .navbar-right {
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 

@@ -117,41 +117,9 @@ guide.unifit.p2: Если в профиле не хватает экзамено
 guide.unifit.p3: У одного университета может быть несколько категорий поступления и профилей требований. Мы оцениваем каждую комбинацию отдельно, поэтому лучший для вас вариант может оказаться даже не в самом высоко ранжированном университете.
 guide.unifit.p4: Если вы измените профиль, список пересчитается. Это нормально: подбор всегда опирается на ваши текущие данные.
 guide.unifit.title: {fit} (умная сортировка)
-home.feature.ai_desc: {fit} помогает отсортировать варианты, а {chance} показывает примерный шанс поступления.
-home.feature.ai_title: {fit} + {chance} ИИ
-home.feature.data_desc: Мы собираем требования, стоимость и стипендии в одном месте, чтобы вам было проще сравнить университеты.
-home.feature.data_title: Понятный выбор
-home.feature.finance_desc: Смотрите стоимость обучения, а также варианты грантов и скидок, если такие опции доступны. Это помогает оценить бюджет.
-home.feature.finance_title: Финансовая прозрачность
-home.scope.bachelor_only: Сейчас рекомендации и аналитика покрывают только программы бакалавриата.
-home.hero.rankings: Смотреть рейтинг
-home.hero.start: Начать подбор
-home.journey.kicker: Подбор университетов
-home.journey.title: Выберите идеальный университет
-home.journey.desc: Сравнивайте требования, стоимость и шанс поступления в одном месте.
-home.journey.step1.title: Заполните профиль
-home.journey.step1.desc: Добавьте бюджет, GPA, экзамены и языки, чтобы подбор стал точнее.
-home.journey.step2.title: Настройте фильтры
-home.journey.step2.desc: Выберите страну, город и диапазон стоимости.
-home.journey.step3.title: Сравните варианты поступления
-home.journey.step3.desc: Открывайте карточки университетов и сравнивайте категории поступления, профили требований, стоимость и стипендии.
-home.stats.countries: Страны
-home.stats.universities_one: университет
-home.stats.universities_few: университета
-home.stats.universities_many: университетов
-home.stats.countries_one: страна
-home.stats.countries_few: страны
-home.stats.countries_many: стран
-home.stats.open_source_value: Полный
-home.stats.open_source: Открытый код
-home.stats.ranking_chance: Рейтинг + Шанс
-home.stats.ai_short_html: <span class="ai-gold">ИИ</span>
-home.stats.top_universities: Топ-университеты
-home.why: Почему UniSearch?
 nav.about: О нас
 nav.close_menu: Закрыть меню
 nav.guide: Гайд
-nav.home: Главная
 nav.lang.eng: Английский (США)
 nav.lang.rus: Русский
 nav.language: Язык
@@ -160,7 +128,6 @@ nav.profile: Профиль
 nav.rankings: Рейтинг
 nav.settings: Настройки
 nav.switch_theme: Сменить тему
-nav.universities: Университеты
 settings.title: Настройки
 settings.subtitle: Управляйте тем, как UniSearch хранит локальные данные интерфейса на этом устройстве.
 settings.saved: Настройки сохранены
@@ -386,6 +353,7 @@ universities.reset: Сброс
 universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
 universities.search_clear: Очистить поиск
+universities.compare.search_placeholder: Добавить университет к сравнению...
 universities.select_country_first: Сначала выберите страну
 universities.suggestions.university: Университет
 universities.suggestions.city: Город
@@ -781,8 +749,6 @@ guide.language.toefl: Измеряет академическое владени
 guide.language.topik: TOPIK оценивает владение корейским и используется для подтверждения готовности к обучению на корейском.
 guide.loading_exam_config: Загрузка конфигурации экзаменов
 guide.scale_text: В UniSearch этот балл вводится по шкале {min}‑{max}.
-home.mockup.grant_available: Грант доступен
-home.mockup.location: Кембридж, США
 languages.error.choose_cefr: Выберите уровень CEFR
 languages.error.choose_exam: Выберите экзамен
 languages.error.choose_language_type: Выберите язык и тип
@@ -919,120 +885,6 @@ error404.quick_title: Популярные разделы
 error404.link.rankings: Посмотреть топ университетов
 error404.link.guide: Узнать, как работает UniSearch
 error404.link.about: О проекте и контактах
-title.index: UniSearch | Сравнение университетов по стоимости, поступлению и соответствию
-home.hero.title: Найди университет мечты
-home.hero.title_html: Найди университет мечты
-home.hero.desc: Начните с каталога, а затем сравнивайте стоимость, варианты поступления и примерный шанс поступления в одном месте.
-home.hero.profile: Открыть профиль
-home.hero.catalog: Открыть каталог университетов
-home.hero.metrics_aria: Покрытие UniSearch
-home.hero.metric.catalog: Каталог
-home.hero.metric.coverage: Покрытие
-home.hero.metric.mode: Охват
-home.hero.metric.mode_value: Бакалавриат
-home.hero.metric.mode_note: программы на текущем этапе
-home.scope.callout_title: Текущий охват
-home.scope.callout_body: Сейчас UniSearch сфокусирован на планировании бакалавриата и сборе короткого списка.
-home.preview.aria: Предпросмотр продукта
-home.preview.sample: Что можно сделать внутри каталога
-home.preview.title: Перейдите от широкого поиска к реальному короткому списку.
-home.preview.desc: Используйте профиль для фильтрации университетов, заранее оценивайте стоимость и открывайте детали вариантов поступления до подачи.
-home.preview.point1: Фильтруйте по бюджету, стране, экзамену и {fit}.
-home.preview.point2: Сразу видите ориентировочную стоимость и контекст финансовой помощи.
-home.preview.point3: Сравнивайте требования и {chance} по каждому варианту поступления.
-home.preview.shortlist_aria: Пример короткого списка
-home.preview.shortlist_title: MIT Computer Science
-home.preview.shortlist_meta: Сохраненный список • 3 ключевых сигнала видны сразу
-home.links.ranking: Рейтинг
-home.links.guide: Гайд
-home.links.about: О проекте
-home.preview.profile.kicker: Профиль
-home.preview.profile.title: Ваши входные данные
-home.preview.profile.budget_label: Бюджет
-home.preview.profile.budget_value: $20k / год
-home.preview.profile.gpa_label: GPA
-home.preview.profile.gpa_value: 3.8 / 4.0
-home.preview.profile.exam_label: Экзамен
-home.preview.profile.exam_value: IELTS 7.5
-home.preview.profile.interests_label: Интересы
-home.preview.profile.interests_value: AI/ML, стипендии, городской кампус
-home.preview.results.kicker: Короткий список
-home.preview.results.title: Варианты, отсортированные через {fit}
-home.preview.results.card1.name: Делфтский технический университет
-home.preview.results.card1.meta: Делфт, Нидерланды
-home.preview.results.card1.badge: Сильное совпадение
-home.preview.results.card1.cost: $36k ориентировочная стоимость
-home.preview.results.card1.chance: {chance} 68/100
-home.preview.results.card2.name: Университет Торонто
-home.preview.results.card2.meta: Торонто, Канада
-home.preview.results.card2.badge: Есть финансовая помощь
-home.preview.results.card2.cost: $63k ориентировочная стоимость
-home.preview.results.card2.chance: {chance} 54/100
-home.preview.track.kicker: Лучший вариант
-home.preview.track.title: В одном месте видно категорию, профиль и финансирование
-home.preview.track.row1.label: Категория поступления
-home.preview.track.row1.value: Прямое поступление
-home.preview.track.row2.label: Языковое подтверждение
-home.preview.track.row2.value: IELTS минимум 6.5
-home.preview.track.row3.label: Финансирование
-home.preview.track.row3.value: Возможна академическая стипендия
-home.proof.kicker: Ключевые сигналы
-home.proof.title: Что можно оценить ещё до открытия заявки
-home.proof.card1.title: Официальные факты там, где это возможно
-home.proof.card1.desc: Мы делаем приоритетом официальные данные о поступлении и подтверждённые факты, когда университет публикует их явно.
-home.proof.card2.title: Сравнение по профилям требований, а не в общем
-home.proof.card2.desc: Пользователь сравнивает конкретную комбинацию категории, профиля требований и финансирования, а не одну абстрактную карточку университета.
-home.proof.card3.title: Сначала стоимость, потом престиж
-home.proof.card3.desc: Бюджет, финансовая помощь и годовая стоимость видны рано, поэтому короткий список остаётся реалистичным.
-home.proof.card4.title: Рейтинг и гайд связаны с каталогом
-home.proof.card4.desc: Каталог, рейтинг и гайд работают как единый поток исследования, а не как разрозненные страницы.
-home.outcomes.kicker: Поддержка решения
-home.outcomes.title: Нужный контекст появляется ещё до глубокого поиска
-home.outcomes.desc: Пользователь сразу понимает качество короткого списка, финансовую нагрузку и направление по поступлению.
-home.outcomes.card1.title: Соберите короткий список под свой профиль
-home.outcomes.card1.desc: Используйте бюджет, экзамены, языки и предпочтения, чтобы сузить каталог до реалистичных вариантов.
-home.outcomes.card2.title: Сразу понять финансовую картину
-home.outcomes.card2.desc: Ориентировочная стоимость, финансовая помощь и контекст финансирования видны до того, как пользователь тратит время на нереалистичные варианты.
-home.outcomes.card3.title: Посмотреть реальный путь поступления
-home.outcomes.card3.desc: Откройте категорию поступления, выберите профиль требований и сравните язык, финансирование и примерный шанс поступления.
-home.workflow.kicker: Сценарий
-home.workflow.title: От профиля к короткому списку за три шага
-home.workflow.desc: Сначала пользователь задаёт свои вводные, потом сужает каталог и уже после этого сравнивает категории поступления, профили требований и финансирование.
-home.workflow.step1.title: Сначала заполните профиль
-home.workflow.step1.desc: Добавьте бюджет, GPA, экзамены, языки и предпочтения, чтобы подбор стал персональным.
-home.workflow.step2.title: Фильтруйте и сортируйте стратегически
-home.workflow.step2.desc: Используйте страну, город, стоимость, тип финансирования и {fit}, чтобы перейти от широкого поиска к реальному короткому списку.
-home.workflow.step3.title: Откройте детали и сравните поступление
-home.workflow.step3.desc: Смотрите категории поступления, профили требований, финансы и ваш примерный шанс до того, как решите, куда подаваться.
-home.workflow.cta_profile: Начать с профиля
-home.workflow.cta_catalog: Перейти в каталог университетов
-home.workflow.side1.kicker: Рейтинг
-home.workflow.side1.title: Рейтинг нужен для широкого обзора
-home.workflow.side1.desc: Рейтинг полезен, когда нужно быстро посмотреть сильные глобальные университеты, а потом сузить выбор по соответствию и стоимости.
-home.workflow.side1.link: Открыть рейтинг
-home.workflow.side2.kicker: Гайд
-home.workflow.side2.title: Гайд нужен, когда термины непонятны
-home.workflow.side2.desc: Гайд объясняет баллы, теги и то, как правильно читать {fit} и {chance}.
-home.workflow.side2.link: Открыть гайд
-home.trust.kicker: Данные и границы продукта
-home.trust.title: Сразу понятно, на что здесь можно опираться
-home.trust.desc: UniSearch выглядит сильнее, когда охват, качество данных и границы оценок видны с самого начала.
-home.trust.card1.title: На что можно опираться
-home.trust.card1.item1: Сравнение по конкретным профилям требований, а не по одному общему баллу.
-home.trust.card1.item2: Стоимость и финансовая помощь показаны рядом с выбранным вариантом финансирования.
-home.trust.card1.item3: Рейтинг и гайд доступны, когда нужен дополнительный контекст.
-home.trust.card2.title: Что должно быть сказано прямо
-home.trust.card2.item1: Пока только программы бакалавриата.
-home.trust.card2.item2: Официальная детализация по поступлению различается по университетам и странам.
-home.trust.card2.item3: {chance} помогает планировать, но не гарантирует поступление.
-home.explore.kicker: Дополнительные маршруты
-home.explore.title: Рейтинг, гайд и страница о команде дополняют основной сценарий
-home.explore.card1.title: Глобальный рейтинг
-home.explore.card1.desc: Быстро просмотрите популярные университеты, а потом вернитесь к сравнению по соответствию, стоимости и поступлению.
-home.explore.card2.title: Гайд
-home.explore.card2.desc: Прочитайте глоссарий, основы экзаменов и смысл тегов до принятия решения.
-home.explore.card3.title: О команде
-home.explore.card3.desc: Посмотрите, кто делает продукт и почему проект сфокусирован на практичном планировании для абитуриентов.
 profile.exam_status_placeholder: Выберите статус
 profile.exam_status_pass: Сдано
 profile.exam_status_fail: Не сдано
@@ -1135,6 +987,7 @@ title.terms: Условия использования | UniSearch
 footer.privacy: Политика конфиденциальности
 footer.terms: Условия использования
 footer.legal_nav_aria: Юридическая информация
+footer.product_nav_aria: Навигация по продукту
 privacy.hero.badge: Конфиденциальность & Данные
 privacy.hero.title: Политика конфиденциальности
 privacy.hero.subtitle: Как UniSearch обрабатывает информацию, хранит данные локально на вашем устройстве и обеспечивает безопасность.

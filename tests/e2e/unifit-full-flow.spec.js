@@ -27,7 +27,7 @@ test.describe("UniFit end-to-end flow", () => {
         res.status() === 200
     );
 
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     const aiSortResponse = await aiSortPromise;
     const body = await aiSortResponse.json();
 
@@ -55,7 +55,7 @@ test.describe("UniFit end-to-end flow", () => {
         res.url().includes("/universities/ai-sort") &&
         res.request().method() === "POST"
     );
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     await initialSort;
     await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
@@ -96,7 +96,7 @@ test.describe("UniFit end-to-end flow", () => {
         res.request().method() === "POST" &&
         res.status() === 200
     );
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     const response = await aiSort;
     const body = await response.json();
 
@@ -134,7 +134,7 @@ test.describe("UniFit end-to-end flow", () => {
           res.status() === 200;
       }
     );
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     const response = await listResponse;
     const body = await response.json();
 

@@ -4,7 +4,7 @@ test.describe("Responsive Layout and Overflow Verification", () => {
   test("adjusts sidebar and mobile filter button based on desktop viewport", async ({ page }) => {
     // Устанавливаем десктопный вьюпорт ДО загрузки страницы
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     await page.waitForSelector(".uni-card");
 
     // На десктопе сайдбар фильтрации должен быть полностью виден
@@ -19,7 +19,7 @@ test.describe("Responsive Layout and Overflow Verification", () => {
   test("adjusts sidebar and mobile filter button based on mobile viewport", async ({ page }) => {
     // Устанавливаем мобильный вьюпорт ДО загрузки страницы
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto("/universities.html");
+    await page.goto("/index.html");
     await page.waitForSelector(".uni-card");
 
     const sidebar = page.locator("#uSidebar");

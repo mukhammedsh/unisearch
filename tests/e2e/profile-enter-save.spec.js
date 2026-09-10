@@ -4,7 +4,7 @@ const { selectors } = require("./helpers/selectors");
 
 test("pressing Enter in budget saves edited username as part of profile save", async ({ page }) => {
   await markTourAsSeen(page);
-  await page.goto("/universities.html");
+  await page.goto("/index.html");
 
   await expect(page.locator(selectors.profileBtn)).toBeVisible();
   await page.click(selectors.profileBtn);
