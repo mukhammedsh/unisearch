@@ -146,26 +146,30 @@
 
           <div id="tab-finance" class="d-tab-pane">
              <div class="d-box finance-box">
-              <div class="d-box-title" data-i18n="university.total_cost_calculator">Total Cost Calculator</div>
-              
+              <header class="finance-section-header">
+                <h2 class="d-box-title" data-i18n="university.finance.title">Costs &amp; funding</h2>
+                <p class="d-box-note" data-i18n="university.finance.intro">Compare the estimated annual budget for each available funding option.</p>
+              </header>
+
               <div class="finance-summary-container">
+                  <div class="finance-summary-right">
+                     <section class="total-price-card" aria-labelledby="financeEstimateTitle">
+                        <div id="financeEstimateTitle" class="price-header" data-i18n="university.finance.lowest_annual_estimate">Lowest annual estimate</div>
+                        <div class="price-inline-row">
+                          <div class="price-big" id="detailPrice" aria-live="polite"></div>
+                          <div class="price-sub" data-i18n="university.per_year">per year</div>
+                        </div>
+                        <p class="price-context" data-i18n="university.finance.estimate_context">Across published funding options</p>
+                     </section>
+                  </div>
+
                   <div class="finance-summary-left">
                      <div class="scholarship-card">
-                        <h3 class="scholarship-card__title" data-i18n="university.discounts_scholarships">Discounts &amp; Scholarships</h3>
+                        <h3 class="scholarship-card__title" data-i18n="university.finance.available_support">Available grants &amp; scholarships</h3>
                         <div id="detailScholarshipInfo" class="scholarship-card__body">
                         <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite" data-i18n="university.loading_scholarships">
                           Loading scholarships
                         </div>
-                        </div>
-                     </div>
-                  </div>
-                  
-                  <div class="finance-summary-right">
-                     <div class="total-price-card">
-                        <div class="price-header" data-i18n="university.total_estimated_cost">Total Estimated Cost</div>
-                        <div class="price-inline-row">
-                          <div class="price-big" id="detailPrice"></div>
-                          <div class="price-sub" data-i18n="university.per_year">per year</div>
                         </div>
                      </div>
                   </div>

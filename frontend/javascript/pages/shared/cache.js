@@ -18,8 +18,6 @@ export const MAX_RECENT_UNIVERSITIES = 12;
 
 export let __detailProfileUpdatedHandler = null;
 export let __detailLanguageChangedHandler = null;
-export let __detailFinanceResizeHandler = null;
-export let __detailFinanceResizeObserver = null;
 export let __universitiesProfileUpdatedHandler = null;
 export let __universitiesLanguageChangedHandler = null;
 export let __universitiesMapCardActionHandler = null;

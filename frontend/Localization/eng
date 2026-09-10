@@ -657,6 +657,14 @@ university.tab.general: General
 university.tab.programs: Programs
 university.total_cost_calculator: Total Cost Calculator
 university.total_estimated_cost: Total Estimated Cost
+university.finance.title: Costs & funding
+university.finance.intro: Compare the estimated annual budget for each available funding option.
+university.finance.lowest_annual_estimate: Lowest annual estimate
+university.finance.estimate_context: Across published funding options
+university.finance.available_support: Available grants & scholarships
+university.finance.cost_breakdown: Cost breakdown
+university.finance.cost_before_aid: Estimated cost before aid
+university.finance.aid_not_deducted: The grant amount is not subtracted because an official value is not published.
 university.finance.breakdown_note.mandatory_only: Showing only verified mandatory items.
 university.finance.breakdown_note.tuition_fees_only: Showing only directly official tuition and institutional fee items. The yearly total may still be higher because the source gives an overall living-cost estimate without publishing authoritative subcategory line items.
 university.finance.breakdown_note.partial: This breakdown is intentionally partial. The total may also include other source-side allowances or non-itemized costs.

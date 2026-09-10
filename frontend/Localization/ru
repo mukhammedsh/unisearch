@@ -658,6 +658,14 @@ university.tab.general: Общее
 university.tab.programs: Программы
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
+university.finance.title: Стоимость и финансирование
+university.finance.intro: Сравните ориентировочный годовой бюджет для каждого доступного варианта финансирования.
+university.finance.lowest_annual_estimate: Минимальная оценка за год
+university.finance.estimate_context: Среди опубликованных вариантов финансирования
+university.finance.available_support: Доступные гранты и стипендии
+university.finance.cost_breakdown: Состав расходов
+university.finance.cost_before_aid: Оценка до учета гранта
+university.finance.aid_not_deducted: Сумма гранта не вычтена, потому что официальный размер финансирования не опубликован.
 university.finance.breakdown_note.mandatory_only: Показаны только подтвержденные обязательные траты.
 university.finance.breakdown_note.tuition_fees_only: Показаны только напрямую официальные позиции по обучению и университетским сборам. Итоговая сумма за год может быть выше, потому что источник дает общую оценку расходов на проживание, но не публикует авторитетную разбивку по отдельным категориям.
 university.finance.breakdown_note.partial: Эта разбивка специально неполная. В итоговую сумму также могут входить другие учтенные источником надбавки или недетализированные расходы.

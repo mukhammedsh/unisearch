@@ -61,6 +61,21 @@ function renderFundingMetaTags(fundingMeta) {
   `;
 }
 
+function renderFinanceMetaList(fundingMeta) {
+  if (!Array.isArray(fundingMeta) || !fundingMeta.length) return "";
+
+  return `
+    <dl class="finance-option-meta">
+      ${fundingMeta.map(([label, value]) => `
+        <div class="finance-option-meta__row">
+          <dt>${escapeHtml(fundingMetaShortLabel(label))}</dt>
+          <dd>${escapeHtml(value)}</dd>
+        </div>
+      `).join("")}
+    </dl>
+  `;
+}
+
 function admissionChoiceSelectionAttrs({ category, choiceKey, funding = null, profile }) {
   return [
     `data-admission-choice="${escapeHtmlAttr(choiceKey)}"`,
@@ -645,7 +660,6 @@ export function renderAdmissionSection({
 export function renderFinanceSection({
   annualCostForTrack,
   container,
-  onSummaryChanged,
   priceEl,
   profileStudyMode,
   scholarshipContainer,
@@ -680,11 +694,9 @@ export function renderFinanceSection({
         if (prices.length > 0) minTotal = Math.min(...prices);
       }
       priceEl.innerHTML = Number.isFinite(Number(minTotal))
-        ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span>${moneyUSD(minTotal)}`
+        ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span> ${moneyUSD(minTotal)}`
         : escapeHtml(unknownFieldText("placeholder.field.cost", "Cost"));
     }
-    onSummaryChanged?.();
-
     if (container) {
       const choices = getAdmissionChoicesFromCategories(university.admission_categories);
       const financeChoices = choices.length
@@ -738,25 +750,31 @@ export function renderFinanceSection({
               : null,
           ].filter(Boolean);
 
+          const hasPublishedGrantEstimate = isGrantTrack && isPlainObject(option.finance_override);
           const totalTitle = isGrantTrack
-            ? translateWord("est_net_cost", "Est. Net Cost")
+            ? (hasPublishedGrantEstimate
+              ? translateWord("est_net_cost", "Est. Net Cost")
+              : t("university.finance.cost_before_aid", "Estimated cost before aid"))
             : translateWord("total_per_year", "Total / year");
+          const grantEstimateNoteHtml = isGrantTrack && !hasPublishedGrantEstimate
+            ? `<p class="finance-aid-note">${escapeHtml(t("university.finance.aid_not_deducted", "The grant amount is not subtracted because an official value is not published."))}</p>`
+            : "";
           const breakdownHtml = breakdownEntries.length > 1
             ? `
-              <div class="cost-progress-bar">
+              <div class="cost-progress-bar" aria-hidden="true">
                 ${breakdownEntries.map((entry) => `<span class="cost-progress-segment ${entry.colorClass}" style="--fill-width:${entry.percent}%; --fill-scale:${Math.max(0, Math.min(100, Number(entry.percent) || 0)) / 100}"></span>`).join("")}
               </div>
-              <div class="cost-legend">
+              <dl class="cost-legend">
                 ${breakdownEntries.map((entry) => `
                   <div class="cost-legend-row">
-                    <div class="cost-legend-label-wrap">
+                    <dt class="cost-legend-label-wrap">
                       <span class="cost-legend-dot ${entry.colorClass}"></span>
                       <span class="cost-legend-label">${escapeHtml(entry.label)}</span>
-                    </div>
-                    <span class="cost-legend-value">${escapeHtml(moneyUSD(entry.value))}</span>
+                    </dt>
+                    <dd class="cost-legend-value">${escapeHtml(moneyUSD(entry.value))}</dd>
                   </div>
                 `).join("")}
-              </div>
+              </dl>
             `
             : (breakdownEntries.length === 1
               ? `<div class="cost-legend-single">${escapeHtml(breakdownEntries[0].label)}: <strong>${escapeHtml(moneyUSD(breakdownEntries[0].value))}</strong></div>`
@@ -766,18 +784,23 @@ export function renderFinanceSection({
             : "";
 
           return `
-            <article class="finance-option-card${isGrantTrack ? " finance-option-card--grant" : ""}">
+            <article class="finance-option-card ${isGrantTrack ? "finance-option-card--grant" : "finance-option-card--paid"}">
               <div class="finance-option-head">
                 ${renderTrackFundingBadge(option)}
-                ${optionLabel ? `<div class="finance-option-label">${escapeHtml(optionLabel)}</div>` : ""}
+                ${optionLabel ? `<h4 class="finance-option-label">${escapeHtml(optionLabel)}</h4>` : ""}
               </div>
-              ${renderFundingMetaTags(fundingMeta)}
 
               <div class="finance-option-total${isGrantTrack ? " finance-option-total--grant" : ""}">
-                <strong>${escapeHtml(totalTitle)}:</strong> ${escapeHtml(totalText)}
+                <span class="finance-option-total__label">${escapeHtml(totalTitle)}</span>
+                <strong class="finance-option-total__value">${escapeHtml(totalText)}</strong>
               </div>
 
+              ${grantEstimateNoteHtml}
+
+              ${renderFinanceMetaList(fundingMeta)}
+
               <div class="cost-breakdown-list">
+                <div class="finance-breakdown-title">${escapeHtml(t("university.finance.cost_breakdown", "Cost breakdown"))}</div>
                 ${breakdownHtml}
                 ${breakdownNoteHtml}
               </div>
@@ -818,5 +841,4 @@ export function renderFinanceSection({
     container.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
     markMotionEnter(container, ".admission-empty-state", { limit: 1 });
   }
-  onSummaryChanged?.();
 }

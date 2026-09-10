@@ -39,8 +39,6 @@ import { getAdmissionChoicesFromCategories } from "../../university-detail-helpe
 
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
-let detailFinanceResizeHandler = null;
-let detailFinanceResizeObserver = null;
 
 function cssString(value) {
   return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -60,18 +58,6 @@ function cleanupDetailListeners() {
   if (detailLanguageChangedHandler) {
     window.removeEventListener("languageChanged", detailLanguageChangedHandler);
     detailLanguageChangedHandler = null;
-  }
-  if (detailFinanceResizeHandler) {
-    window.removeEventListener("resize", detailFinanceResizeHandler);
-    detailFinanceResizeHandler = null;
-  }
-  if (detailFinanceResizeObserver) {
-    try {
-      detailFinanceResizeObserver.disconnect();
-    } catch (error) {
-      // keep cleanup resilient across navigation swaps
-    }
-    detailFinanceResizeObserver = null;
   }
 }
 
@@ -364,56 +350,10 @@ export async function initUniversityPage() {
 
     const scholarshipEl = document.getElementById("detailScholarshipInfo");
     const priceEl = document.getElementById("detailPrice");
-    let financeSummarySyncRaf = 0;
-    const applyFinanceSummaryCardHeights = () => {
-      const scholarshipCard = scholarshipEl?.closest?.(".scholarship-card") || scholarshipEl;
-      const totalPriceCard = priceEl?.closest?.(".total-price-card") || null;
-      if (!scholarshipCard || !totalPriceCard) return;
-      scholarshipCard.style.minHeight = "";
-      totalPriceCard.style.minHeight = "";
-      if (window.innerWidth <= 768) return;
-      const targetHeight = Math.max(scholarshipCard.offsetHeight || 0, totalPriceCard.offsetHeight || 0);
-      if (targetHeight > 0) {
-        const value = `${targetHeight}px`;
-        scholarshipCard.style.minHeight = value;
-        totalPriceCard.style.minHeight = value;
-      }
-    };
-    const syncFinanceSummaryCardHeights = () => {
-      if (financeSummarySyncRaf) window.cancelAnimationFrame(financeSummarySyncRaf);
-      financeSummarySyncRaf = window.requestAnimationFrame(() => {
-        financeSummarySyncRaf = 0;
-        applyFinanceSummaryCardHeights();
-      });
-    };
-    const settleFinanceSummaryCardHeights = () => {
-      syncFinanceSummaryCardHeights();
-      window.setTimeout(syncFinanceSummaryCardHeights, 140);
-    };
-
-    detailFinanceResizeHandler = syncFinanceSummaryCardHeights;
-    window.addEventListener("resize", detailFinanceResizeHandler, { passive: true });
-    if (typeof ResizeObserver === "function") {
-      detailFinanceResizeObserver = new ResizeObserver(() => {
-        syncFinanceSummaryCardHeights();
-      });
-      if (scholarshipEl) detailFinanceResizeObserver.observe(scholarshipEl);
-      const scholarshipCard = scholarshipEl?.closest?.(".scholarship-card") || null;
-      if (scholarshipCard) detailFinanceResizeObserver.observe(scholarshipCard);
-      const totalPriceCard = priceEl?.closest?.(".total-price-card") || null;
-      if (totalPriceCard) detailFinanceResizeObserver.observe(totalPriceCard);
-      const financeSummaryContainer = scholarshipEl?.closest?.(".finance-summary-container") || null;
-      if (financeSummaryContainer) detailFinanceResizeObserver.observe(financeSummaryContainer);
-    }
-    if (document.fonts?.ready?.then) {
-      document.fonts.ready.then(syncFinanceSummaryCardHeights).catch(() => {});
-    }
-    window.addEventListener("load", syncFinanceSummaryCardHeights, { once: true });
 
     renderFinanceSection({
       annualCostForTrack,
       container: document.getElementById("detailFinance"),
-      onSummaryChanged: settleFinanceSummaryCardHeights,
       priceEl,
       profileStudyMode,
       scholarshipContainer: scholarshipEl,

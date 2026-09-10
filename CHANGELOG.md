@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
+- Improved the University Costs tab (`university.html`, `university.css`, `render-sections.js`, localization files):
+  - Reworked annual cost summaries and funding-option cards for clearer hierarchy, responsive layouts, and honest grant estimates.
+  - Added distinct semantic surfaces for paid and grant options, with theme-aware fills and borders that remain visible in light and dark themes.
+  - Localized the updated costs content consistently in English and Russian.
 - Refined the About page (`about.html`, `about.css`):
   - Removed redundant eyebrow labels and the introductory mission copy to focus the page on the team, project evidence, and contact details.
   - Promoted the team label to a section heading and standardized the page's card gutters and vertical spacing on the shared design-token scale.
