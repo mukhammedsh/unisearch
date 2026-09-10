@@ -4,7 +4,7 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isHomePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -87,22 +87,6 @@ function maybeWakeBackend() {
   }).catch(() => {});
 }
 
-function initHomePageActions() {
-  const profileTrigger = document.getElementById("profileBtn");
-  if (!(profileTrigger instanceof HTMLElement)) return;
-
-  ["homeOpenProfileBtn", "homeWorkflowProfileBtn"].forEach((id) => {
-    const btn = document.getElementById(id);
-    if (!(btn instanceof HTMLElement)) return;
-    if (btn.dataset.bound === "1") return;
-    btn.dataset.bound = "1";
-    btn.addEventListener("click", (event) => {
-      event.preventDefault();
-      profileTrigger.click();
-    });
-  });
-}
-
 function getUniversitiesSkeletonCount({ listEl, skeletonEl, limit = 24 } = {}) {
   const renderedColumns = listEl
     ? getComputedStyle(listEl).gridTemplateColumns.split(" ").filter(Boolean).length
@@ -124,8 +108,7 @@ function isFrontendRootPath(pathname) {
 }
 
 function routePageFromPath(pathname) {
-  if (isHomePath(pathname) || isFrontendRootPath(pathname)) return "universities";
-  if (isUniversitiesListPath(pathname)) return "universities";
+  if (isFrontendRootPath(pathname) || isUniversitiesListPath(pathname)) return "universities";
   if (isUniversityDetailPath(pathname)) return "university";
   if (isRankingPath(pathname)) return "ranking";
   if (isGuidePath(pathname)) return "guide";
@@ -164,10 +147,6 @@ function currentRouteContext() {
 function syncBodyPageFromRoute() {
   const page = routePageFromPath(window.location.pathname);
   if (page) document.body.dataset.page = page;
-}
-
-function syncNavbarActive() {
-  // Navbar no longer has a center nav with links — search replaced it.
 }
 
 function primeRouteLoadingUi(ctx = currentRouteContext()) {
@@ -225,7 +204,6 @@ function syncNavbarSearchVisibility(ctx) {
 }
 
 function hydrateRouteShell(ctx = currentRouteContext()) {
-  syncNavbarActive();
   syncNavbarSearchVisibility(ctx);
   applyRouteLinks(document);
   hydrateHeroIcons(document);
@@ -597,7 +575,7 @@ function installClientRouter() {
 }
 
 function shouldRedirectHomeGuideHash(path = window.location.pathname, hash = window.location.hash) {
-  return (isHomePath(path) || isFrontendRootPath(path)) && GUIDE_SECTION_HASH_RE.test(String(hash || "").trim());
+  return (isUniversitiesListPath(path) || isFrontendRootPath(path)) && GUIDE_SECTION_HASH_RE.test(String(hash || "").trim());
 }
 
 function createSiteLoaderController(isHomePage) {

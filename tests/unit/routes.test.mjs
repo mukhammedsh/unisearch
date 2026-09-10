@@ -4,7 +4,6 @@ import { describe, it, beforeEach } from "node:test";
 
 import {
   usePrettyUrls,
-  routeHome,
   routeUniversities,
   routeRanking,
   routeCompareSelection,
@@ -15,7 +14,6 @@ import {
   routeTerms,
   routeProfile,
   routeUniversityDetail,
-  isHomePath,
   isUniversitiesListPath,
   isUniversityDetailPath,
   isRankingPath,
@@ -77,7 +75,6 @@ describe("routes.js", () => {
     });
 
     it("generates correct html filenames for main views", () => {
-      assert.equal(routeHome(), "index.html");
       assert.equal(routeUniversities(), "index.html");
       assert.equal(routeRanking(), "index.html?tab=ranking");
       assert.equal(routeCompareSelection(), "index.html?tab=compare&compare=select");
@@ -117,7 +114,6 @@ describe("routes.js", () => {
     });
 
     it("generates clean paths without .html extensions", () => {
-      assert.equal(routeHome(), "/");
       assert.equal(routeUniversities(), "/");
       assert.equal(routeRanking(), "/?tab=ranking");
       assert.equal(routeCompareSelection(), "/?tab=compare&compare=select");
@@ -128,7 +124,7 @@ describe("routes.js", () => {
     });
 
     it("appends query parameters cleanly to pretty routes", () => {
-      assert.equal(routeHome({ ref: "banner" }), "/?ref=banner");
+      assert.equal(routeUniversities({ ref: "banner" }), "/?ref=banner");
       assert.equal(routeUniversities("sort=uni_ai"), "/?sort=uni_ai");
       assert.equal(
         routeUniversityDetail("mit-usa-cambridge", { lang: "rus" }),
@@ -138,13 +134,6 @@ describe("routes.js", () => {
   });
 
   describe("Path matching helpers", () => {
-    it("isHomePath matches root and index variants", () => {
-      assert.equal(isHomePath("/"), true);
-      assert.equal(isHomePath("/index.html"), true);
-      assert.equal(isHomePath("/index"), true);
-      assert.equal(isHomePath("/universities.html"), false);
-    });
-
     it("isUniversitiesListPath matches universities views", () => {
       assert.equal(isUniversitiesListPath("/"), true);
       assert.equal(isUniversitiesListPath("/index.html"), true);

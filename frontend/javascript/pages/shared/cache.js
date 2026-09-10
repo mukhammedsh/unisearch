@@ -16,12 +16,9 @@ export const RECENT_UNIVERSITIES_KEY = "unisearch_recent_university_ids_v1";
 export const MAX_COMPARE_UNIVERSITIES = 2;
 export const MAX_RECENT_UNIVERSITIES = 12;
 
-export let __detailProfileUpdatedHandler = null;
-export let __detailLanguageChangedHandler = null;
 export let __universitiesProfileUpdatedHandler = null;
 export let __universitiesLanguageChangedHandler = null;
 export let __universitiesMapCardActionHandler = null;
-export let __rankingLanguageChangedHandler = null;
 export let __guideExternalUpdateHandler = null;
 export let __guideHashChangeHandler = null;
 

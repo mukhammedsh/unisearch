@@ -25,14 +25,10 @@ import {
 import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
-import {
-  clearProfileDraftTransfer,
-  consumeProfileDraftAfterReload,
-  fetchTranslationRuntimeStatus,
-} from "./shell.js";
+import { fetchTranslationRuntimeStatus } from "./shell.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { isProfilePath, navigateToAppRoute, routeHome } from "../routes.js";
+import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
 import {
   breakdownSchemeFor,
   buildBreakdownState,
@@ -218,10 +214,6 @@ export function initProfileUI() {
     };
 
     let profile = ensureProfileShape(loadProfile());
-    const transferredDraftPayload = consumeProfileDraftAfterReload();
-    let transferredProfileDraft = transferredDraftPayload?.draft
-        ? ensureProfileShape(transferredDraftPayload.draft)
-        : null;
     let savedSignature = "";
     let lowBudgetGrantHintDismissed = false;
     const profileProgressText = document.getElementById("profileProgressText");
@@ -918,16 +910,7 @@ export function initProfileUI() {
         refreshSaveState();
     };
 
-    const resetFields = (options = {}) => {
-        const preferTransferred = options.preferTransferred !== false;
-        const consumeTransferred = options.consumeTransferred !== false;
-        if (preferTransferred && transferredProfileDraft) {
-            setProfileDraft(ensureProfileShape(transferredProfileDraft));
-            applyDraftToInputs();
-            if (consumeTransferred) transferredProfileDraft = null;
-            return;
-        }
-
+    const resetFields = () => {
         const savedProfile = ensureProfileShape(loadProfile());
         setProfileDraft(savedProfile, { markAsSaved: true });
         applyDraftToInputs();
@@ -1042,7 +1025,7 @@ export function initProfileUI() {
                 if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
                     window.history.back();
                 } else {
-                    navigateToAppRoute(routeHome());
+                    navigateToAppRoute(routeUniversities());
                 }
                 return;
             }
@@ -1214,8 +1197,6 @@ export function initProfileUI() {
 
     const resetProfileData = () => {
         lowBudgetGrantHintDismissed = false;
-        transferredProfileDraft = null;
-        clearProfileDraftTransfer();
         safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
         clearProfile();
         const emptyProfile = ensureProfileShape({});
@@ -1233,8 +1214,8 @@ export function initProfileUI() {
         openResetDialog();
     });
 
-    const openProfile = ({ preferTransferred = true, consumeTransferred = true } = {}) => {
-        resetFields({ preferTransferred, consumeTransferred });
+    const openProfile = () => {
+        resetFields();
         retranslateProfileUi();
         void fetchTranslationRuntimeStatus(API_BASE, false).then((status) => {
             renderInterestsTranslationWarning(status);
@@ -1266,7 +1247,7 @@ export function initProfileUI() {
         });
     };
 
-    if (openBtn) openBtn.onclick = () => openProfile({ preferTransferred: true, consumeTransferred: true });
+    if (openBtn) openBtn.onclick = openProfile;
 
     if (closeBtn) closeBtn.onclick = requestClose;
     if (backdrop) backdrop.onclick = requestClose;
@@ -1562,8 +1543,8 @@ export function initProfileUI() {
     }
 
     if (isDedicatedPage) {
-        openProfile({ preferTransferred: true, consumeTransferred: false });
+        openProfile();
     } else {
-        resetFields({ preferTransferred: true, consumeTransferred: false });
+        resetFields();
     }
 }

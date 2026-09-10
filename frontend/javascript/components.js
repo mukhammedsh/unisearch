@@ -16,7 +16,6 @@ import {
   NAV_LOGO_DARK,
   NAV_LOGO_FALLBACK,
   NAV_LOGO_LIGHT,
-  resolveLayoutMarkup,
   syncNavbarLogo,
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
@@ -282,7 +281,7 @@ export function addFooterProductLinks() {
 export async function loadGlobalLayout() {
     if (document.querySelector(".navbar")) return;
     try {
-        document.body.insertAdjacentHTML("afterbegin", resolveLayoutMarkup(LAYOUT_HTML));
+        document.body.insertAdjacentHTML("afterbegin", LAYOUT_HTML);
         const navbar = document.querySelector(".navbar");
         const search = document.getElementById("universitySearch");
         const isUniversitiesWorkspace = document.body.dataset.page === "universities";

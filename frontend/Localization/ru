@@ -374,7 +374,6 @@ universities.compare.row.aid: Финансовая помощь
 universities.compare.aid_both: Стипендии за достижения + помощь по финансовой нуждаемости
 universities.compare.aid_merit: Гранты и стипендии
 universities.compare.aid_need: Помощь по финансовой нуждаемости
-universities.compare.track_count: {count} категорий / {options} вариантов
 universities.compare.native_ok: родной язык принимается
 universities.compare.verified_count: {sources} источников / {facts} фактов
 universities.compare.remove: Убрать из сравнения
@@ -438,8 +437,6 @@ universities.compare.configure.no_language_proof: Отдельное подтв�
 universities.compare.configure.no_funding_delta: Отдельный порог для финансирования в данных не указан
 universities.compare.configure.language_any: Достаточно одного
 universities.compare.configure.language_all: Нужны все
-universities.compare.configure.score_profile_range: {exam}: медиана {median} (25-75%: {low}-{high})
-universities.compare.configure.score_profile_median: {exam}: медиана {median}
 universities.compare.configure.funding_delta_from: {value} (обычно {base})
 universities.compare.insight.budget_title: Бюджет
 universities.compare.insight.budget: Среди выбранных университетов {name} лучший по бюджету: {cost} в год.

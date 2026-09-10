@@ -64,43 +64,6 @@ export const compareSlotLabel = (index) => tFormat(
   `University ${index + 1}`
 );
 
-export const formatCompareScoreValue = (value) => {
-    const n = toFiniteNumber(value);
-    return n !== null ? formatUiNumber(n, { maximumFractionDigits: 2 }) : "";
-};
-
-export const compareOptionScoreProfilePreview = (option) => {
-    const profile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
-    if (!profile) return "";
-    const rawExamId = profile.exam_id || (Array.isArray(profile.compatible_exam_ids) ? profile.compatible_exam_ids[0] : "");
-    const exam = getExamDisplayName(rawExamId);
-    const isGpa = canonicalizeExamId(rawExamId) === "GPA";
-    const formatScore = (val) => {
-        if (isGpa) {
-            return formatExamValue("GPA", val, { scale: profile?.scale });
-        }
-        return formatCompareScoreValue(val);
-    };
-    const median = formatScore(profile.median_raw ?? profile.median_normalized);
-    const low = formatScore(profile.p25_raw ?? profile.p25_normalized);
-    const high = formatScore(profile.p75_raw ?? profile.p75_normalized);
-    if (median && low && high) {
-        return tFormat(
-            "universities.compare.configure.score_profile_range",
-            { exam, median, low, high },
-            `${exam} median ${median} (25-75%: ${low}-${high})`
-        );
-    }
-    if (median) {
-        return tFormat(
-            "universities.compare.configure.score_profile_median",
-            { exam, median },
-            `${exam} median ${median}`
-        );
-    }
-    return "";
-};
-
 export const compareOptionFundingDeltaPreview = (entry, entries) => {
     const option = entry?.option || {};
     if (getTrackFundingType(option) !== "grant") return "";

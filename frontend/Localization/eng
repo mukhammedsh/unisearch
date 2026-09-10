@@ -373,7 +373,6 @@ universities.compare.row.aid: Aid
 universities.compare.aid_both: Merit scholarships + need-based aid
 universities.compare.aid_merit: Grants & Scholarships
 universities.compare.aid_need: Need-based financial aid
-universities.compare.track_count: {count} categories / {options} choices
 universities.compare.native_ok: native accepted
 universities.compare.verified_count: {sources} sources / {facts} facts
 universities.compare.remove: Remove from comparison
@@ -437,8 +436,6 @@ universities.compare.configure.no_language_proof: No separate language proof lis
 universities.compare.configure.no_funding_delta: No separate funding-specific score cutoff in the data
 universities.compare.configure.language_any: Any of
 universities.compare.configure.language_all: All required
-universities.compare.configure.score_profile_range: {exam} median {median} (25-75%: {low}-{high})
-universities.compare.configure.score_profile_median: {exam} median {median}
 universities.compare.configure.funding_delta_from: {value} (standard {base})
 universities.compare.insight.budget_title: Budget
 universities.compare.insight.budget: Among selected universities, {name} is best on budget at {cost} per year.

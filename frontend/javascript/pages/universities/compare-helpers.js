@@ -196,7 +196,6 @@ import {
   trCity,
   trState,
   trCountry,
-  trProgramLanguage,
   trTrackLabel,
   textOrUnknown,
   unknownFieldText,
@@ -307,21 +306,6 @@ export function compareProgramSummary(u) {
 export function compareProgramTitle(u) {
   const names = compareBachelorProgramNames(u);
   return names.length > 2 ? names.join(", ") : "";
-}
-
-export function compareLanguageSummary(u) {
-  const programs = compareBachelorPrograms(u);
-  const langs = new Set();
-  programs.forEach((program) => {
-    const raw = program?.language;
-    const values = Array.isArray(raw) ? raw : (raw ? [raw] : []);
-    values.forEach((value) => {
-      const translated = trProgramLanguage(value);
-      if (translated) langs.add(translated);
-    });
-  });
-  if (!langs.size) return t("common.na", "N/A");
-  return Array.from(langs).slice(0, 3).join(", ");
 }
 
 export function compareStudyModeText(u) {
@@ -504,13 +488,6 @@ export function compareSelectedAnnualCost(u, compareAdmissionChoices = null) {
   return toFiniteNumber(total);
 }
 
-export function compareTrackCountText(u) {
-  const categories = Array.isArray(u?.admission_categories) ? u.admission_categories : [];
-  const options = compareAdmissionOptionEntries(u).length;
-  if (!categories.length) return t("common.na", "N/A");
-  return tFormat("universities.compare.track_count", { count: String(categories.length), options: String(options) }, `${categories.length} categories / ${options} choices`);
-}
-
 export function compareTrackLabel(u, compareAdmissionChoices) {
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   if (!option) return t("common.na", "N/A");
@@ -575,24 +552,6 @@ export function compareExtraRequirementsText(u, compareAdmissionChoices) {
   return `${visible}${more}`;
 }
 
-export function compareCostBreakdownText(u, mode, compareAdmissionChoices) {
-  const finance = compareSelectedFinance(u, compareAdmissionChoices);
-  const breakdown = (finance?.costs_breakdown_year_usd && typeof finance.costs_breakdown_year_usd === "object")
-    ? finance.costs_breakdown_year_usd
-    : {};
-  const entries = Object.entries(breakdown);
-  if (!entries.length) return t("common.na", "N/A");
-  const matcher = mode === "tuition"
-    ? (key) => /tuition|fee/i.test(key)
-    : (key) => /housing|dorm|food|meal|living|room|board|books|supplies|insurance|transport/i.test(key);
-  const selected = entries.filter(([key]) => matcher(String(key || "")));
-  const total = selected.reduce((sum, [, value]) => {
-    const n = toFiniteNumber(value);
-    return n !== null ? sum + n : sum;
-  }, 0);
-  return total > 0 ? moneyUSD(total) : t("common.na", "N/A");
-}
-
 export function compareSourceText(u, factKey) {
   const fact = nested(u, ["fact_provenance", "facts", factKey], null);
   const source = String(fact?.source || "").trim();
@@ -617,21 +576,6 @@ export function compareDataConfidenceText(u) {
     return `${sources} ${ruPlural(sources, "источник", "источника", "источников")} / ${facts} ${ruPlural(facts, "факт", "факта", "фактов")}`;
   }
   return tFormat("universities.compare.verified_count", { sources: String(sources), facts: String(facts) }, `${sources} sources / ${facts} facts`);
-}
-
-export function compareOutcomeText(u) {
-  const salary = toFiniteNumber(u?.outcomes?.average_early_career_salary_usd);
-  return salary !== null ? moneyUSD(salary) : t("common.na", "N/A");
-}
-
-export function compareStudentCountText(u) {
-  const count = toFiniteNumber(u?.student_count);
-  if (count === null) return t("common.na", "N/A");
-  try {
-    return new Intl.NumberFormat(getCurrentLanguage() === "rus" ? "ru-RU" : "en-US").format(count);
-  } catch (e) {
-    return String(count);
-  }
 }
 
 export function compareCountText(value) {
@@ -695,22 +639,6 @@ export function compareMajorTagCount(u) {
     });
   });
   return tags.size;
-}
-
-export function compareFundingOptionCount(u) {
-  return compareAdmissionOptionEntries(u).length;
-}
-
-export function compareExtraRequirementCount(u) {
-  const extras = new Set();
-  compareAdmissionOptionEntries(u).forEach((entry) => {
-    const rows = Array.isArray(entry?.option?.extra_requirements) ? entry.option.extra_requirements : [];
-    rows.forEach((item) => {
-      const clean = String(item || "").trim();
-      if (clean) extras.add(clean);
-    });
-  });
-  return extras.size;
 }
 
 export function compareAidScore(u) {

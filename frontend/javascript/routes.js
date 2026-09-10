@@ -40,10 +40,6 @@ export function usePrettyUrls() {
   return !(isLocal || isDevStaticHost);
 }
 
-export function routeHome(queryOrParams = "") {
-  return routeUniversities(queryOrParams);
-}
-
 export function routeUniversities(queryOrParams = "") {
   return withQuery(usePrettyUrls() ? "/" : "index.html", queryOrParams);
 }
@@ -101,11 +97,6 @@ export function routeUniversityDetail(universityId, queryOrParams = "") {
   const params = new URLSearchParams(toQueryString(queryOrParams));
   params.set("id", id);
   return withQuery("university.html", params);
-}
-
-export function isHomePath(pathname = "") {
-  const path = normalizePath(pathname).toLowerCase();
-  return path === "/" || /\/index(?:\.html)?$/.test(path);
 }
 
 export function isUniversitiesListPath(pathname = "") {
@@ -186,7 +177,7 @@ export function applyRouteLinks(root = document) {
     const params = new URLSearchParams(link.search || "");
 
     let href = "";
-    if (route === "home") href = routeHome(params);
+    if (route === "home") href = routeUniversities(params);
     if (route === "universities") href = routeUniversities(params);
     if (route === "ranking") href = routeRanking(params);
     if (route === "compare") href = routeCompareSelection(params);

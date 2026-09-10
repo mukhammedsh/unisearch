@@ -288,7 +288,3 @@ export function showUniFitWarning() {
         okBtn?.focus();
     });
 }
-
-export function isUniFitWarningShownInSession() {
-    return uniFitWarningShownInSession;
-}
