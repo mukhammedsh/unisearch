@@ -1,10 +1,10 @@
 # Default ownership for all project files.
-* @Muxlex
+* @mukhammedsh
 
 # Higher-risk areas that need deliberate review.
-/.github/ @Muxlex
-/backend/app/ @Muxlex
-/backend/data/ @Muxlex
-/frontend/Localization/ @Muxlex
-/frontend/javascript/icons.js @Muxlex
-/docs/design-system.md @Muxlex
+/.github/ @mukhammedsh
+/backend/app/ @mukhammedsh
+/backend/data/ @mukhammedsh
+/frontend/Localization/ @mukhammedsh
+/frontend/javascript/icons.js @mukhammedsh
+/docs/design-system.md @mukhammedsh

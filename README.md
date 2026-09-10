@@ -1,7 +1,7 @@
 # UniSearch / UniFit / UniChance
 
-[![Tests](https://github.com/Muxlex/unisearch/actions/workflows/tests.yml/badge.svg)](https://github.com/Muxlex/unisearch/actions/workflows/tests.yml)
-[![Version](https://img.shields.io/github/package-json/v/Muxlex/unisearch?filename=package.json)](package.json)
+[![Tests](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml/badge.svg)](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml)
+[![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB.svg)](backend/requirements.txt)
 [![Node 20+](https://img.shields.io/badge/Node-20%2B-339933.svg)](package.json)
