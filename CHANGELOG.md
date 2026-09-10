@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.2 (In progress) - Design System Scale Standardization, Layering & Radius Tokenization, and Automated Design Lint Guard
+## 5.0.2 (2026-09-10) - Design System Scale Standardization, Layering & Radius Tokenization, and Automated Design Lint Guard
 - Modularized university catalog stylesheet architecture (`universities.css`, `frontend/css/universities/`, `scripts/check-tokens.mjs`, `scripts/check-design-lint.mjs`):
   - Refactored monolithic `universities.css` into seven ordered modules (`01-shell-controls.css` through `07-responsive.css`) with architectural documentation (`README.md`).
   - Integrated trailing high-specificity rules directly into component declarations, eliminating the final override layer with `!important`.
