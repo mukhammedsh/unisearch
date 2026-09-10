@@ -3,6 +3,9 @@
 All notable project changes should be recorded here.
 
 ## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
+- Refined the About page (`about.html`, `about.css`):
+  - Removed redundant eyebrow labels and the introductory mission copy to focus the page on the team, project evidence, and contact details.
+  - Promoted the team label to a section heading and standardized the page's card gutters and vertical spacing on the shared design-token scale.
 - Integrated Global University Search into Navbar (`style.css`, `index.html`, `main.js`, `universities.js`, `ranking.js`, `icons.js`):
   - Moved university search from catalog content area directly into the central header navbar (`#universitySearch`, `#qInput`), treating university discovery as the core global search context.
   - Aligned search input centered independently of side controls using CSS Grid on desktop viewports (>980px); responsively wrapped below brand identity on viewports <=980px; compact alignment on narrow mobile <=340px.
