@@ -186,7 +186,7 @@ export function initUniversitiesPage() {
         compareModeStatus: $("compareModeStatus"),
         list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),
         skeleton: $("universitiesSkeleton"), state: $("listState"), pagination: $("pagination"),
-        btnList: $("viewListBtn"), btnMap: $("viewMapBtn"),
+        btnList: $("viewListBtn"), btnMap: $("viewMapBtn"), viewToggles: $("viewToggles"),
         mobileFilterSummary: $("mobileFilterSummary"),
         mobileFilterCount: $("mobileFilterCount"),
         mobileFilterToggle: $("mobileFilterToggle"),
@@ -581,6 +581,14 @@ export function initUniversitiesPage() {
         document.body.classList.toggle("universities-ranking-mode", state.activeTab === "ranking");
         document.body.classList.toggle("universities-compare-configure-mode", isCompareConfigureMode());
         document.body.classList.toggle("universities-compare-results-mode", isCompareResultsMode());
+        if (el.viewToggles) el.viewToggles.hidden = !showCatalog || isCompareResult;
+        if (el.total) {
+            if (showRanking) {
+                el.total.textContent = String(window.__rankingTotalCount ?? 0);
+            } else if (showCatalog) {
+                el.total.textContent = String(state.lastCatalogTotal ?? el.total.textContent ?? "0");
+            }
+        }
         syncHeaderSearchContext();
         syncSectionTabs();
         updateCompareModeStatus();
@@ -3036,7 +3044,8 @@ export function initUniversitiesPage() {
         const warningText = mlUnavailable ? t("universities.state.ml_unavailable", "Machine Learning unavailable. Using rule-based ranking only.") : "";
 
         if (state.viewMode === "list") {
-            if (el.total) el.total.textContent = String(total);
+            state.lastCatalogTotal = total;
+            if (el.total && !document.body.classList.contains("universities-ranking-mode")) el.total.textContent = String(total);
             hasInitialListPaint = true;
 
             if (!items.length) {
@@ -3067,7 +3076,8 @@ export function initUniversitiesPage() {
         }
 
         if (state.viewMode === "map") {
-            if (el.total) el.total.textContent = String(items.length);
+            state.lastCatalogTotal = items.length;
+            if (el.total && !document.body.classList.contains("universities-ranking-mode")) el.total.textContent = String(items.length);
             updateMapMarkers(items);
             markMotionEnter(el.mapResults, ".u-map-result-card", { limit: 12, staggerMs: 18 });
             renderUniversitiesState({
@@ -3092,7 +3102,8 @@ export function initUniversitiesPage() {
         });
         setUniversitiesLoading(true);
         if (!hasInitialListPaint) {
-            if (el.total) el.total.textContent = "0";
+            state.lastCatalogTotal = 0;
+            if (el.total && !document.body.classList.contains("universities-ranking-mode")) el.total.textContent = "0";
             renderUniversitiesState();
             if (state.viewMode === 'list') el.list.innerHTML = "";
             if (el.pagination) el.pagination.innerHTML = "";

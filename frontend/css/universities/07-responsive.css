@@ -3,7 +3,7 @@
 }
 
 .u-page-scope,
-.u-section-tabs,
+.u-section-bar,
 .u-layout,
 .u-tab-pane--ranking,
 .compare-results {
@@ -12,7 +12,7 @@
 }
 
 .u-page-scope,
-.u-section-tabs {
+.u-section-bar {
   margin-bottom: 14px;
 }
 
@@ -131,7 +131,7 @@
 
 @media (max-width: 760px) {
   .u-page-scope,
-  .u-section-tabs,
+  .u-section-bar,
   .u-layout,
   .u-tab-pane--ranking,
   .compare-results {
@@ -280,13 +280,13 @@
     justify-self: end;
     grid-template-columns: none;
     flex-shrink: 0;
-    height: 46px;
+    height: 32px;
   }
 
   .view-btn {
-    width: 42px;
-    min-width: 42px;
-    height: 46px;
+    width: 34px;
+    min-width: 34px;
+    height: 32px;
     padding: 0;
   }
 
@@ -428,14 +428,14 @@
   }
 
   .view-toggles {
-    height: 46px;
+    height: 32px;
   }
 
   .view-btn {
-    width: 44px;
-    min-width: 44px;
-    height: 46px;
-    min-height: 46px;
+    width: 34px;
+    min-width: 34px;
+    height: 32px;
+    min-height: 32px;
   }
 
   .u-results-bar,
@@ -571,10 +571,12 @@
     width: auto;
     display: inline-flex;
     grid-template-columns: none;
+    height: 32px;
   }
 
   .view-btn {
-    width: 40px;
+    width: 34px;
+    height: 32px;
   }
 
   .u-mobile-filter-btn {

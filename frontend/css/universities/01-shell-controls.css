@@ -91,22 +91,85 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font-weight: 600;
 }
 
-.u-section-tabs {
-  --sliding-indicator-extra-width: 0px;
+.u-section-bar {
   max-width: 1320px;
   margin: 0 auto 20px;
   padding: 0 20px;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.u-section-tabs {
+  --sliding-indicator-extra-width: 0px;
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
+  display: flex;
+  align-items: flex-end;
+  align-self: flex-end;
   gap: 20px;
   overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.u-section-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.u-section-tabs .sliding-indicator {
+  bottom: -1px;
+}
+
+.u-section-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+  padding-bottom: 6px;
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+
+.u-section-meta .u-found {
+  margin: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.u-section-meta .u-found-count {
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .u-section-bar {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+
+  .u-section-meta {
+    width: 100%;
+    justify-content: space-between;
+    padding-bottom: 0;
+  }
 }
 
 .u-section-tab {
   position: relative;
-  min-height: 44px;
-  padding: 0 2px 12px;
+  min-height: unset;
+  height: 40px;
+  padding: 0 4px 10px;
+  margin: 0;
   border: 0;
   background: transparent;
   color: var(--text-muted);
@@ -116,6 +179,9 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: flex-end;
+  align-self: flex-end;
   transition:
   color var(--motion-fast) var(--motion-ease-standard),
   transform var(--motion-fast) var(--motion-ease-standard);
@@ -776,17 +842,17 @@ body.universities-ranking-mode #aiSliderContainer {
   align-items: stretch;
   background: var(--surface-solid);
   border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   flex-shrink: 0;
-  height: 48px;
+  height: 32px;
 }
 
 .view-btn {
   background: transparent;
   border: none;
-  width: 48px;
-  height: 48px;
+  width: 34px;
+  height: 32px;
   padding: 0;
   cursor: pointer;
   color: var(--text-muted);
@@ -801,8 +867,8 @@ body.universities-ranking-mode #aiSliderContainer {
 
 .view-btn .ui-icon,
 .view-btn [data-heroicon] {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .view-btn + .view-btn {

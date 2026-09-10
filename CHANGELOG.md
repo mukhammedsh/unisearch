@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.3 (In progress) - Global Navbar Search, Unified Workspace Architecture, and Filter Parity
+## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
 - Integrated Global University Search into Navbar (`style.css`, `index.html`, `main.js`, `universities.js`, `ranking.js`, `icons.js`):
   - Moved university search from catalog content area directly into the central header navbar (`#universitySearch`, `#qInput`), treating university discovery as the core global search context.
   - Aligned search input centered independently of side controls using CSS Grid on desktop viewports (>980px); responsively wrapped below brand identity on viewports <=980px; compact alignment on narrow mobile <=340px.
@@ -20,6 +20,11 @@ All notable project changes should be recorded here.
   - Removed duplicate country dropdown from Ranking table toolbar, routing country filtering directly through sidebar `#countrySelect`.
   - Automatically hid Sort Strategy dropdown and UniFit AI balance sliders in Ranking mode (`body.universities-ranking-mode`), preserving rank-ordered integrity.
   - Synchronized filter reset button (`#resetFiltersBtn`) to clear active ranking filters in addition to catalog filters.
+- Compact Section Navigation and Integrated Meta Toolbar (`index.html`, `01-shell-controls.css`, `05-catalog-polish.css`, `07-responsive.css`, `universities.js`, `ranking.js`):
+  - Relocated university counter (`#totalCount`) and view mode toggles (`#viewToggles`: List / Map) into the section tab bar header (`.u-section-bar`), removing the empty toolbar row above catalog and comparison grids and recovering 64px of vertical viewport.
+  - Scaled down view switcher controls from bulky 48px square buttons to a compact 32px segmented control (`34x32px`, 16px icons, 8px radius) conforming to Calm Academic Workspace guidelines.
+  - Aligned section tabs, sliding indicator, and right-aligned meta controls flush to the common bottom border (`border-bottom: 1px solid var(--line)`), eliminating legacy margin-bottom offsets from responsive stylesheets.
+  - Automatically hidden map view toggles when viewing Ranking mode while preserving right-aligned dynamic results count synchronized with active ranking search and country filters.
 - Test Suite and Tooling Upgrades:
   - Updated E2E Playwright test suites (`smoke-home.spec.js`, `universities-tabs-compare.spec.js`, `custom-select-i18n.spec.js`, etc.) for SPA routing, navbar search centering, and unified tab switching.
   - Updated dev server and audit tooling (`scripts/frontend_dev_server.py`, `scripts/performance-audit.mjs`).

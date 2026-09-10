@@ -61,17 +61,34 @@
       </div>
     </section>
 
-    <nav id="universitiesSectionTabs" class="u-section-tabs" aria-label="University sections" data-i18n-aria-label="universities.tabs.aria">
-      <button class="u-section-tab is-active" type="button" data-universities-tab="catalog" aria-pressed="true">
-        <span data-i18n="universities.tabs.catalog">Catalog</span>
-      </button>
-      <button class="u-section-tab" type="button" data-universities-tab="ranking" aria-pressed="false">
-        <span data-i18n="universities.tabs.ranking">Ranking</span>
-      </button>
-      <button class="u-section-tab" type="button" data-universities-tab="compare" aria-pressed="false">
-        <span data-i18n="universities.tabs.comparing">Comparing</span>
-      </button>
-    </nav>
+    <div class="u-section-bar">
+      <nav id="universitiesSectionTabs" class="u-section-tabs" aria-label="University sections" data-i18n-aria-label="universities.tabs.aria">
+        <button class="u-section-tab is-active" type="button" data-universities-tab="catalog" aria-pressed="true">
+          <span data-i18n="universities.tabs.catalog">Catalog</span>
+        </button>
+        <button class="u-section-tab" type="button" data-universities-tab="ranking" aria-pressed="false">
+          <span data-i18n="universities.tabs.ranking">Ranking</span>
+        </button>
+        <button class="u-section-tab" type="button" data-universities-tab="compare" aria-pressed="false">
+          <span data-i18n="universities.tabs.comparing">Comparing</span>
+        </button>
+      </nav>
+
+      <div class="u-section-meta">
+        <div id="uFoundSummary" class="u-found" aria-live="polite">
+          <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
+        </div>
+
+        <div id="viewToggles" class="view-toggles" role="group" aria-label="View mode">
+          <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list" aria-pressed="true">
+            <span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span>
+          </button>
+          <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map" aria-pressed="false">
+            <span data-heroicon="map" data-icon-size="16"></span>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <div id="universitiesWorkspaceLayout" class="u-layout">
       <aside id="uSidebar" class="u-sidebar">
@@ -248,23 +265,6 @@
       </aside>
 
       <div id="universitiesCatalogPane" class="u-content" data-universities-pane="catalog">
-        <div class="u-toolbar u-top">
-          <div class="u-top-meta">
-            <div class="u-found" aria-live="polite">
-              <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
-            </div>
-          </div>
-
-          <div class="view-toggles" role="group" aria-label="View mode">
-            <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list" aria-pressed="true">
-              <span data-heroicon="bars-3-bottom-left" data-icon-size="18"></span>
-            </button>
-            <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map" aria-pressed="false">
-              <span data-heroicon="map" data-icon-size="18"></span>
-            </button>
-          </div>
-        </div>
-
         <div id="mobileFilterSummary" class="u-mobile-filter-summary" aria-live="polite"></div>
         <div id="compareModeStatus" class="u-compare-mode-status" hidden></div>
         <div id="recentlyViewedBar" class="u-recent" hidden></div>

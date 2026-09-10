@@ -437,6 +437,11 @@ export async function initRankingPage() {
         const matchesCountry = !country || itemCountry === country;
         return matchesQuery && matchesCountry;
       });
+      window.__rankingTotalCount = rows.length;
+      const rankingCountEl = document.getElementById("totalCount");
+      if (rankingCountEl && document.body.classList.contains("universities-ranking-mode")) {
+        rankingCountEl.textContent = String(rows.length);
+      }
       renderRankingRows(rows);
       renderSuggestions();
     };
