@@ -188,7 +188,6 @@ export function initUniversitiesPage() {
         list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),
         skeleton: $("universitiesSkeleton"), state: $("listState"), pagination: $("pagination"),
         btnList: $("viewListBtn"), btnMap: $("viewMapBtn"), viewToggles: $("viewToggles"),
-        mobileFilterSummary: $("mobileFilterSummary"),
         mobileFilterCount: $("mobileFilterCount"),
         mobileFilterToggle: $("mobileFilterToggle"),
         mobileFilterClose: $("closeMobileFilters"),
@@ -454,19 +453,6 @@ export function initUniversitiesPage() {
         return count;
     }
 
-    function mobileFilterChips() {
-        const chips = [];
-        if (state.q) chips.push(state.q);
-        if (state.country) chips.push(trCountry(state.country));
-        if (state.region) chips.push(trState(state.region));
-        if (state.city) chips.push(trCity(state.city));
-        if (Number(state.min_tuition) > 0 || Number(state.max_tuition) < MAX_TUITION) {
-            chips.push(`${moneyUSD(Number(state.min_tuition) || 0)}-${moneyUSD(Number(state.max_tuition) || MAX_TUITION)}`);
-        }
-        if (state.sort && state.sort !== "name_asc") chips.push(optionTextForValue(el.sortSelect, state.sort) || state.sort);
-        if (state.only_saved) chips.push(t("universities.filter.favorites", "Favorites"));
-        return chips;
-    }
 
     function syncSavedFilterButtons() {
         const mode = state.only_saved ? "favorites" : "all";
@@ -482,15 +468,6 @@ export function initUniversitiesPage() {
         if (el.mobileFilterCount) {
             el.mobileFilterCount.hidden = count <= 0;
             el.mobileFilterCount.textContent = String(count);
-        }
-        if (el.mobileFilterSummary) {
-            const chips = mobileFilterChips();
-            el.mobileFilterSummary.hidden = chips.length === 0;
-            el.mobileFilterSummary.innerHTML = chips.length ? `
-                <div class="u-mobile-filter-summary__chips">
-                    ${chips.map((chip) => `<span class="u-mobile-chip">${escapeHtml(chip)}</span>`).join("")}
-                </div>
-            ` : "";
         }
     }
 
@@ -1820,6 +1797,7 @@ export function initUniversitiesPage() {
         const setOpen = (isOpen) => {
             sidebar.classList.toggle("is-open", isOpen);
             toggleBtn.classList.toggle("is-active", isOpen);
+            toggleBtn.hidden = isOpen;
             if (window.innerWidth <= 980) {
                 document.body.style.overflow = isOpen ? "hidden" : "";
             }

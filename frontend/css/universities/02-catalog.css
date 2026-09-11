@@ -577,13 +577,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
 }
 }
 
-.u-mobile-filter-summary {
-  display: none;
-}
-
-.u-mobile-filter-summary[hidden] {
-  display: none;
-}
 
 .u-compare-mode-status {
   margin: 0 0 20px;

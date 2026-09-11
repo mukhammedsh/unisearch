@@ -568,17 +568,6 @@
     font-size: 12px;
   }
 
-  .view-toggles {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .view-btn {
-    width: 100%;
-    padding: 8px 0;
-  }
-
   .u-map-container {
     height: 300px;
   }

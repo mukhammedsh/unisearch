@@ -3,6 +3,14 @@
 All notable project changes should be recorded here.
 
 ## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
+- Refined mobile filter drawer mechanics, view mode toggles, and Profile header UX (`index.html`, `profile.html`, `universities.js`, `style.css`, `02-catalog.css`, `04-catalog-responsive.css`, `05-catalog-polish.css`, `07-responsive.css`, `profile.css`):
+  - Fixed layer ordering where the comparison tray overlapped the active mobile filter drawer by lowering `--z-tray` below `--z-drawer` (1400 vs 2000).
+  - Extended mobile filter drawer scroll clearance with safe-area padding so bottom sorting controls and dropdowns remain fully accessible.
+  - Automatically hidden the mobile floating filter toggle button while the filter drawer is open.
+  - Removed redundant `#mobileFilterSummary` component, unused chip markup, and associated CSS/JS helpers from mobile viewports.
+  - Resolved range slider thumbs bleeding through the sticky filter header by elevating header z-index to 10, extending it edge-to-edge with matching top-rounded corners, and clipping horizontal overflow.
+  - Corrected vertical centering of List / Map view mode icons (`.view-btn`) by removing obsolete `min-height: 42px` and `padding: 8px 0` overrides.
+  - Polished Profile mobile header layout with a dedicated action button group and responsive alignment down to 340px.
 - Completed a two-stage accessibility and responsive UX refinement of the Universities workspace (`index.html`, `components.js`, `main.js`, `universities.js`, `tour-modals.js`, related CSS, localization, and E2E tests):
   - Persisted first-visit tour dismissal and added keyboard-safe focus trapping and restoration for the tour and UniFit warning dialogs.
   - Added a localized skip-to-main-content link and keyboard section switching with Arrow, Home, and End keys, plus explicit active-section semantics.

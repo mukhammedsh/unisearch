@@ -262,7 +262,8 @@
   .view-btn {
     width: 34px;
     min-width: 34px;
-    height: 32px;
+    height: 100%;
+    min-height: 0;
     padding: 0;
   }
 
@@ -410,8 +411,9 @@
   .view-btn {
     width: 34px;
     min-width: 34px;
-    height: 32px;
-    min-height: 32px;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
   }
 
   .u-results-bar,
@@ -426,11 +428,6 @@
   .u-found {
     white-space: normal;
     overflow-wrap: anywhere;
-  }
-
-  .view-btn {
-    min-width: 44px;
-    min-height: 42px;
   }
 
   .u-mobile-filter-btn {
@@ -498,9 +495,11 @@
     border-left: 0;
     border-top: 1px solid var(--line);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    padding: 0 16px calc(18px + env(safe-area-inset-bottom));
+    padding: 0 16px calc(80px + env(safe-area-inset-bottom));
     transform: translateY(100%);
     box-shadow: var(--shadow-md);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .u-sidebar.is-open .u-filter-card {
@@ -510,18 +509,19 @@
   .u-filter-title {
     position: sticky;
     top: 0;
-    z-index: 2;
-    margin: 0 0 12px;
-    padding: 16px 0 12px;
+    z-index: 10;
+    margin: 0 -16px 12px;
+    padding: 16px 16px 12px;
     background: var(--card);
     border-bottom: 1px solid var(--line);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
   }
 
   .u-filter-close {
     margin-left: 0;
   }
 
-  .u-mobile-filter-summary,
   .u-recent {
     margin-left: 0;
     margin-right: 0;
@@ -570,7 +570,10 @@
 
   .view-btn {
     width: 34px;
-    height: 32px;
+    min-width: 34px;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
   }
 
   .u-mobile-filter-btn {
