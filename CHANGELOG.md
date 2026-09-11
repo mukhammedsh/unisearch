@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.4 (2026-09-11) - 404 Page Design Token Alignment, Unified Empty States, and Dev CSP Polishing
+- Refreshed project documentation and agent guidance:
+  - Replaced the oversized, outdated README with a concise English guide aligned with the current catalog, comparison, profile, UniFit, UniChance, ROI, local setup, and verification flows.
+  - Rewrote `AGENTS.md` in English with explicit repository-language rules and practical anti-vibe-coding requirements for scope control, root-cause analysis, contract safety, testing, and diff review.
+  - Updated the release checklist to keep release history in `CHANGELOG.md` instead of duplicating release dates in the README.
 - Redesigned the 404 error page according to Calm Academic Workspace standards (`frontend/404.html`, `frontend/css/error.css`):
   - Flattened layout structure by removing nested container boxes and double card layers on the canvas.
   - Standardized typography, spacing, and radiuses on design tokens (`var(--space-*)`, `var(--radius-*)`, `var(--text-*)`).

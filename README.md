@@ -1,538 +1,160 @@
-# UniSearch / UniFit / UniChance
+# UniSearch
 
 [![Tests](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml/badge.svg)](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml)
 [![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB.svg)](backend/requirements.txt)
-[![Node 20+](https://img.shields.io/badge/Node-20%2B-339933.svg)](package.json)
 
-UniSearch is a full-stack web app for university discovery and decision support.
-Current version source: `package.json` -> `version`.
+UniSearch helps applicants discover and compare universities for **bachelor's studies**, exploring admissions requirements, costs, and funding options based on their profile.
 
-Web demo: https://unisearch-frontend.onrender.com/
+[Open the website](https://unisearch-frontend.onrender.com/) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
-Core capabilities:
-- structured university catalog with filters/search
-- AI ranking (`UniFit`) with preference sliders
-- admission probability estimate (`UniChance`)
-- ROI estimate per university
-- multilingual UI (`eng`, `ru`) with backend-driven localization
+## Features
 
-## Release downloads
-GitHub Releases show both UniSearch release assets and GitHub's automatic source archives.
+- **Catalog on the homepage:** search, location and cost filters, sorting, list and map views, and favorites.
+- **Applicant profile:** GPA and grading scale, exams, languages, budget, intended major, interests, study mode, and funding preferences.
+- **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags. It is a sorting mode within the catalog.
+- **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
+- **University details:** programs, admission options, requirements, costs, funding, and student life information where data is available.
+- **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
+- **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 
-- Local development / full project: download `unisearch-full-vX.Y.Z.zip` from the release assets, or use GitHub's automatic `Source code (zip)`. This is the right package for the Quick start and Run locally steps below.
-- Static frontend deploy: download `unisearch-frontend-vX.Y.Z.zip` only when you are deploying the static UI and already have a backend URL or reverse proxy configured.
-- Backend deploy: download `unisearch-backend-vX.Y.Z.zip` only when you are deploying the FastAPI backend package separately.
-- GitHub's automatic `Source code (zip)` and `Source code (tar.gz)` links are expected on every release and cannot be removed.
+The interface supports English and Russian, with light and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
 
-## Quick start
-If you just want the project running locally from a fresh clone:
+### Understanding the estimates
 
-Prerequisites:
-- Python `3.12+`
-- Node.js `20+`
+UniFit measures preference fit, while UniChance estimates admission chances. UniChance uses admitted-student score statistics (`score_profile`) when available; otherwise, it may return a low-confidence estimate or a no-data state. These calculations do not guarantee admission.
 
-1. Install Node dependencies:
-   ```bash
-   npm install
-   ```
-2. Create your local backend config:
-   ```bash
-   cp backend/.env.example backend/.env
-   ```
-   PowerShell alternative:
-   ```powershell
-   Copy-Item backend/.env.example backend/.env
-   ```
-3. Start the backend:
-   ```bash
-   cd backend
-   python -m venv .venv
-   # Windows (PowerShell)
-   .\.venv\Scripts\Activate.ps1
-   # macOS/Linux
-   # source .venv/bin/activate
-   pip install -r requirements.txt
-   cd ..
-   npm run dev:backend
-   ```
-4. Start the frontend in a second terminal:
-   ```bash
-   npm run dev:frontend
-   ```
-5. Open `http://127.0.0.1:5501/index.html`
-6. If you changed curated official facts or admissions data, sync and audit before committing:
-   ```bash
-   python backend/scripts/apply_official_facts.py --verified-at 2026-04-04
-   python backend/scripts/apply_official_admissions.py
-   python backend/scripts/audit_universities_data.py
-   python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
-   ```
+ROI is a simplified ratio, not the payback period for an entire degree or a forecast of personal earnings. If salary data for the chosen major is missing, the calculation may use general university salary data.
 
-## Read me by task
-- First local launch: see [Run locally](#run-locally)
-- Release asset choices: see [Release downloads](#release-downloads)
-- Runtime and env vars: see [Environment configuration](#environment-configuration)
-- Curated data workflow: see [Data maintenance and provenance](#data-maintenance-and-provenance)
-- Tests and CI: see [Testing](#testing) and [CI policy](#ci-policy)
-- Forking and reuse: see [docs/forking-and-reuse.md](docs/forking-and-reuse.md)
-- Contribution notes: see [CONTRIBUTING.md](CONTRIBUTING.md)
-- Release history: see [CHANGELOG.md](CHANGELOG.md)
-
-## Project snapshot
-- Product scope is bachelor-level university discovery and decision support.
-- Current catalog coverage: 50 universities across 13 countries.
-- Business logic and data shaping live in the FastAPI backend; the frontend is static Vanilla JS/HTML/CSS.
-- UI languages are English (`eng`) and Russian (`ru`), with university translations served by `/universities/translations`.
-- University facts and admissions data are conservative: official sources only, with missing values preferred over guesses.
-- University media is stored under `backend/data/university_assets/` and served by `/universities/assets/{folder}/{filename}`.
-- List and ranking views use `small` media variants by default; detail pages use full-size variants.
-
-## Development guardrails
-- Keep user-facing text localized in both `frontend/Localization/eng` and `frontend/Localization/ru`.
-- Keep light and dark themes working for UI changes.
-- Use existing project patterns before adding new structure, dependencies, or abstractions.
-- Use Heroicons through `frontend/javascript/icons.js`; run `npm run sync:heroicons` only when icon sources need refreshing.
-- Do not hardcode backend URLs; use the existing runtime config path through `frontend/env.js` and `frontend/config.js`.
-- For visible feature, search, ranking, profile, data, or API changes, update `CHANGELOG.md`.
-
-## Contributing
-UniSearch is mainly a solo-maintained project, but focused external fixes are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for scope, data-source rules, and the expected checks before a PR.
-
-## Architecture
-- Frontend: Vanilla JS + HTML/CSS in `frontend/`
-- Backend: FastAPI in `backend/app/`
-- Data: JSON datasets in `backend/data/*.json`, with curated facts/admissions catalogs synced into `universities.json`
-- University media: `backend/data/university_assets/*`
-
-## University media assets
-Storage:
-- `backend/data/university_assets/logos/`
-- `backend/data/university_assets/logos-small/`
-- `backend/data/university_assets/thumbnails/`
-- `backend/data/university_assets/thumbnails-medium/`
-- `backend/data/university_assets/thumbnails-small/`
-
-Serving:
-- backend mounts static files at `GET /universities/assets/{folder}/{filename}`
-
-Example URLs:
-- `/universities/assets/logos-small/mit-usa-cambridge.png`
-- `/universities/assets/thumbnails/mit-usa-cambridge.jpg`
-- `/universities/assets/thumbnails/mit-usa-cambridge.webp`
-
-Thumbnail size contract:
-- `thumbnails/`: 1600x900 JPG + WebP for detail-page hero media
-- `thumbnails-medium/`: 960x540 JPG + WebP for responsive desktop/card media
-- `thumbnails-small/`: 640x360 JPG + WebP for compact catalog and ranking cards
-
-JPG files stay as source/fallback assets. WebP files are the preferred frontend delivery format.
-
-Before committing media changes, run:
-```bash
-npm run audit:images
-```
-The audit checks dimensions, byte-size contracts, WebP/JPG fallback pairs, and decoded WebP visual similarity against the JPG fallback.
-
-## API overview
-General:
-- `GET /`
-- `GET /health`
-- `GET /ready`
-- `GET /metrics` when enabled and authorized
-
-Operations:
-- `GET /ops/runtime` (requires `OPS_ADMIN_TOKEN`)
-- `POST /ops/warmup` (requires `OPS_ADMIN_TOKEN`)
-- `GET /ops/translation-status` (requires `OPS_ADMIN_TOKEN`)
-- `GET /translation-status` (public, sanitized)
-
-Universities:
-- `GET /universities`
-- `POST /universities/ai-sort`
-- `GET /universities/translations`
-- `GET /universities/{id}`
-- `POST /universities/{id}/uni-chance`
-- `POST /universities/{id}/roi`
-- `GET /universities/assets/{folder}/{filename}`
-
-Reference data:
-- `GET /locations`
-- `GET /stats`
-- `GET /exams/config`
-- `GET /exams/config/full`
-- `POST /exams/validate`
-- `GET /languages/config`
-- `POST /languages/validate`
+Verified facts and requirements come from official sources. Catalog coverage is incomplete: missing values are preferred over invented facts. Some UniFit factors use proxy estimates and should not be treated as verified university statistics.
 
 ## Run locally
-Run `npm install` once from the repository root before using npm scripts in a fresh clone.
 
-### 1) Backend
-Use Python `3.12.x` for the most predictable dependency behavior.
+The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from the repository root.
 
-```bash
-cd backend
-python -m venv .venv
-# Windows (PowerShell):
-.\.venv\Scripts\Activate.ps1
-# macOS/Linux:
-# source .venv/bin/activate
-pip install -r requirements.txt
-cd ..
-npm run dev:backend
+1. Install Node dependencies and create a Python environment:
+
+   ```sh
+   npm ci
+   python -m venv backend/.venv
+   ```
+
+2. Copy the configuration and activate the environment.
+
+   **Windows / PowerShell:**
+
+   ```powershell
+   Copy-Item backend/.env.example backend/.env
+   .\backend\.venv\Scripts\Activate.ps1
+   ```
+
+   **macOS / Linux:**
+
+   ```sh
+   cp backend/.env.example backend/.env
+   source backend/.venv/bin/activate
+   ```
+
+   If `backend/.env` already exists, keep your settings instead of copying over it.
+
+3. Install backend dependencies:
+
+   ```sh
+   python -m pip install -r backend/requirements.txt
+   ```
+
+4. In `backend/.env`, disable interest translation unless you run a separate LibreTranslate service:
+
+   ```env
+   ML_INTEREST_TRANSLATION_ENABLED=0
+   ```
+
+   Semantic ranking uses `intfloat/multilingual-e5-base` by default; the first startup may download the model. To run without downloading it, add `ML_SEMANTIC_EMBEDDINGS_ENABLED=0`: ranking will use TF-IDF instead. Redis is optional for a basic local setup.
+
+5. Start the backend:
+
+   ```sh
+   npm run dev:backend
+   ```
+
+6. In a second terminal, start the frontend from the repository root:
+
+   ```sh
+   npm run dev:frontend
+   ```
+
+Open the [catalog](http://127.0.0.1:5501/index.html). The backend defaults to `http://127.0.0.1:8000`; check its status at [health](http://127.0.0.1:8000/health).
+
+The development scripts automatically detect `backend/.venv`. The frontend script regenerates `frontend/env.js` and starts a server supporting routes such as `/profile`, `/guide`, `/about`, and `/universities/:id`. On Windows, the backend runs without automatic reload: restart it after changing Python code. Stop each server with `Ctrl+C` in its terminal.
+
+## Configuration and hosting
+
+Set local options in `backend/.env`. Start with [backend/.env.example](backend/.env.example); the full set of backend settings and defaults is in [settings.py](backend/app/core/settings.py).
+
+| Setting | Purpose |
+| --- | --- |
+| `BACKEND_HOST`, `BACKEND_PORT` | API bind address and port; defaults to `127.0.0.1:8000` |
+| `FRONTEND_HOST`, `FRONTEND_PORT` | Local frontend bind address and port; defaults to `127.0.0.1:5501` |
+| `FRONTEND_ORIGINS` | Allowed **frontend** origins for CORS, separated by commas |
+| `UNISEARCH_API_BASE_URL` | Frontend API address: a separate domain or `/api` behind a reverse proxy |
+| `UNISEARCH_API_PORT` | API port for same-host requests; falls back to `BACKEND_PORT` |
+| `UNISEARCH_USE_PRETTY_URLS` | Enables routes without `.html`; the server must support the corresponding rewrites |
+| `DOCS_ENABLED` | Set to `1` to enable `/docs`, `/redoc`, and `/openapi.json`; disabled in the example `.env` |
+
+When `UNISEARCH_API_BASE_URL` is empty, the frontend uses the same hostname as the page for API requests. After changing frontend settings, restart `dev:frontend` or run `npm run build:frontend-env`. The runtime version comes from `package.json`.
+
+Hosting requires a static frontend and a FastAPI backend. Docker Compose starts the backend and Redis; run the frontend separately:
+
+```sh
+docker compose --env-file backend/.env up --build
+# Stop the containers:
+docker compose --env-file backend/.env down
 ```
 
-Notes:
-- `.venv/` is local per developer and ignored by Git.
-- If the project path was moved or renamed and CLI launchers break, recreate the env from scratch.
-- `npm run dev:backend` auto-detects `backend/.venv` when present and respects `BACKEND_HOST` / `BACKEND_PORT` from `.env`.
-- `npm run dev:backend` probes `GET /health` to detect an already running local backend and prints a ready message once the new instance responds.
-- Direct launch still works if you prefer it: `python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`
+See [deployment and API security](docs/deployment_security.md) and [forking and reuse](docs/forking-and-reuse.md). Keep local `.env` files out of Git and secrets out of the public `frontend/env.js` file.
 
-### 2) Frontend
-```bash
-npm run dev:frontend
-```
+## Project structure
 
-Open:
-- `http://127.0.0.1:5501/index.html`
-- `http://127.0.0.1:5501/university.html`
-- `http://127.0.0.1:5501/index.html?tab=ranking`
-- `http://127.0.0.1:5501/guide.html`
-- `http://127.0.0.1:5501/about.html`
+| Path | Contents |
+| --- | --- |
+| `frontend/` | HTML, CSS, and Vanilla JS without a UI framework |
+| `frontend/Localization/` | English and Russian interface strings |
+| `backend/app/routers/`, `backend/app/schemas/` | FastAPI routes and Pydantic contracts |
+| `backend/app/services/` | Catalog, search, UniFit, UniChance, ROI, and ML ranking |
+| `backend/data/` | JSON catalogs and official data; media in `university_assets/` |
+| `scripts/`, `backend/scripts/` | Development, verification, and data maintenance scripts |
+| `tests/unit/`, `tests/e2e/`, `backend/tests/` | JS unit tests, Playwright E2E, and Python unittest |
 
-Notes:
-- `npm run dev:frontend` regenerates `frontend/env.js` before startup.
-- The frontend runtime config automatically follows your current host for local URLs, so `localhost`, `127.0.0.1`, and LAN IP launches stay aligned with the same machine.
-- Change `FRONTEND_HOST` / `FRONTEND_PORT` in `backend/.env` if you want another static-server bind.
+Main endpoints: `GET /universities`, `GET /universities/{id}`, `POST /universities/ai-sort`, `POST /universities/compare-profiles`, `POST /universities/{id}/uni-chance`, and `POST /universities/{id}/roi`. Full request schemas are available at `/docs` when `DOCS_ENABLED` is enabled.
 
-### 3) Backend with Redis (Docker)
-```bash
-docker compose up --build
-```
+Update verified facts in `backend/data/official_facts.json` and `backend/data/official_admissions.json`, then use the sync scripts to update `universities.json`. Follow the [data contribution workflow](CONTRIBUTING.md#university-data-changes). Run `npm run audit:data` after data changes and `npm run audit:images` after media changes.
 
-This starts the FastAPI backend and Redis. The static frontend still runs with `npm run dev:frontend` or your web server. The backend image runs as a non-root user and Compose checks both Redis and backend health. Redis is available only on the internal Docker network by default; do not publish Redis to the internet. Set `OPS_ADMIN_TOKEN` in your shell or `.env` before exposing ops endpoints or metrics on a hosted deployment.
+## Checks and tests
 
-For VPS or Docker hosting behind a reverse proxy, see [deployment security notes](docs/deployment_security.md) for Caddy and Nginx examples.
+Quick repository checks (activate the Python environment for `audit:data`):
 
-## Optional translation service (LibreTranslate)
-Docker example:
-```bash
-docker run -d --name unisearch-libretranslate -p 5000:5000 libretranslate/libretranslate
-```
-
-Health check:
-```bash
-curl http://127.0.0.1:5000/languages
-```
-
-Disable translation in local development:
-```env
-ML_INTEREST_TRANSLATION_ENABLED=0
-```
-
-## Environment configuration
-### Backend (`backend/.env`)
-Infra/runtime:
-```env
-BACKEND_HOST=127.0.0.1
-BACKEND_PORT=8000
-FRONTEND_HOST=127.0.0.1
-FRONTEND_PORT=5501
-FRONTEND_ORIGINS=http://127.0.0.1:5501
-# Optional multi-origin override:
-# FRONTEND_ORIGINS=http://127.0.0.1:5501,http://127.0.0.1:5510
-
-REDIS_URL=redis://127.0.0.1:6379/0
-REDIS_PREFIX=unisearch
-REDIS_CACHE_TTL_SEC=60
-AI_SORT_CACHE_TTL_SEC=300
-REDIS_CONNECT_TIMEOUT_SEC=0.35
-REDIS_OPERATION_TIMEOUT_SEC=0.35
-
-AUTO_WARMUP_ON_STARTUP=1
-METRICS_ENABLED=0
-METRICS_PATH=/metrics
-OPS_ADMIN_TOKEN=
-OPS_ADMIN_HEADER=X-UniSearch-Ops-Token
-REQUEST_BODY_MAX_BYTES=131072
-RATE_LIMIT_ENABLED=1
-GLOBAL_RATE_LIMIT_REQUESTS=600
-GLOBAL_RATE_LIMIT_WINDOW_SEC=60
-EXPENSIVE_RATE_LIMIT_REQUESTS=120
-EXPENSIVE_RATE_LIMIT_WINDOW_SEC=60
-TRUST_X_FORWARDED_FOR=0
-TRUSTED_PROXY_IPS=
-SENTRY_DSN=
-SENTRY_TRACES_SAMPLE_RATE=0.0
-```
-
-Local network example without committing your IPs:
-```env
-BACKEND_HOST=0.0.0.0
-BACKEND_PORT=8000
-FRONTEND_ORIGINS=http://127.0.0.1:5501,http://localhost:5501,http://<your-lan-ip>:5501
-```
-
-Notes:
-- `backend/.env` is ignored by Git, so your LAN IP stays local.
-- `FRONTEND_HOST` / `FRONTEND_PORT` are used by `npm run dev:frontend` only; backend CORS depends on `FRONTEND_ORIGINS`.
-- CORS must contain the frontend origin, not the backend URL. For a page opened as `http://<your-lan-ip>:5501`, add exactly that origin.
-- For another person in your LAN to open the site, start the backend with `--host 0.0.0.0` (or `BACKEND_HOST=0.0.0.0`) and start the frontend with `python -m http.server 5501 --bind 0.0.0.0`.
-- If Windows Defender Firewall prompts, allow Python on Private networks or the other device still will not connect.
-- Set a long random `OPS_ADMIN_TOKEN` before using `/ops/*`, `/metrics`, or `/health?warmup=1` outside local development.
-- Keep `TRUST_X_FORWARDED_FOR=0` unless the backend is behind a known reverse proxy listed in `TRUSTED_PROXY_IPS`.
-- Sentry is optional. When enabled, UniSearch filters profile, interests, exams, languages, auth headers, tokens, and secrets before sending events.
-
-Translation pipeline:
-```env
-ML_INTEREST_TRANSLATION_ENABLED=1
-ML_INTEREST_TRANSLATION_DEBUG=0
-ML_INTEREST_TRANSLATION_PROVIDER=libretranslate
-ML_INTEREST_TRANSLATION_TARGET=en
-ML_INTEREST_TRANSLATION_SOURCE=auto
-LIBRETRANSLATE_URL=http://127.0.0.1:5000/translate
-LIBRETRANSLATE_API_KEY=
-ML_INTEREST_TRANSLATION_TIMEOUT_SEC=2.5
-ML_INTEREST_TRANSLATION_CACHE_TTL_SEC=86400
-ML_INTEREST_TRANSLATION_CACHE_MAX_ITEMS=2000
-ML_INTEREST_TRANSLATION_RATE_LIMIT_REQUESTS=40
-ML_INTEREST_TRANSLATION_RATE_LIMIT_WINDOW_SEC=60
-ML_INTEREST_TRANSLATION_FAILURE_BACKOFF_SEC=20
-```
-
-Semantic ML ranking:
-```env
-ML_SEMANTIC_EMBEDDINGS_ENABLED=1
-ML_SEMANTIC_EMBEDDINGS_MODEL=intfloat/multilingual-e5-base
-ML_SEMANTIC_EMBEDDINGS_DEVICE=cpu
-ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE=32
-# auto | on | off
-ML_SEMANTIC_EMBEDDINGS_E5_PREFIX=auto
-```
-
-Semantic ranking behavior:
-- Primary backend: sentence embeddings over university metadata.
-- Fallback backend: TF-IDF cosine similarity if semantic mode is disabled or unavailable.
-- Exposed runtime modes: `semantic`, `tfidf`, `unavailable`.
-- In `/universities/ai-sort`, semantic signal participates in final UniFit score.
-- On fresh deploys, first startup may be slower while model artifacts load or download.
-
-### Frontend runtime env
-Frontend reads runtime config from `frontend/env.js` generated at deploy time. The generated file also includes `APP_VERSION` from `package.json`:
-
-```env
-UNISEARCH_API_BASE_URL=https://api.example.com
-# or same-domain reverse-proxy
-# UNISEARCH_API_BASE_URL=/api
-
-# optional for local same-host dev when backend is not on 8000
-UNISEARCH_API_PORT=8000
-
-UNISEARCH_USE_PRETTY_URLS=true
-```
-
-Generate `frontend/env.js`:
-```bash
-npm run build:frontend-env
-```
-
-### Version source
-The release version is stored in one canonical place: `package.json` -> `version`.
-
-- backend reads it from `package.json` at startup and exposes it through OpenAPI, `/`, `/health`, `/ready`, and `/ops/runtime`
-- Docker copies `package.json` into the backend image for the same runtime lookup
-- frontend receives it through generated `frontend/env.js`
-- `package-lock.json` keeps npm's mirrored root version
-
-After bumping `package.json`, run:
-```bash
-npm install --package-lock-only
-npm run build:frontend-env
+```sh
 npm run check:version
-```
-
-Or use the helper command:
-```bash
-npm run bump:version -- patch
-npm run bump:version -- minor
-npm run bump:version -- major
-npm run bump:version -- 3.4.10
-```
-
-Local dev behavior:
-- If `UNISEARCH_API_BASE_URL` is empty, the frontend uses the same host as the page and `UNISEARCH_API_PORT` (or `BACKEND_PORT`) for API calls.
-- Example: frontend on `http://192.168.1.20:5600` and backend on `http://192.168.1.20:9000` works after setting `FRONTEND_PORT=5600`, `BACKEND_PORT=9000`, and matching `FRONTEND_ORIGINS`.
-
-## Data maintenance and provenance
-The project is intentionally conservative about university facts.
-
-Rules:
-- Use official university pages, official admissions pages, or official university-hosted PDFs/reports only.
-- Do not fill missing facts from aggregators, marketing retellings, or inferred heuristics when an official institution-wide source is missing.
-- `backend/data/official_facts.json` is the curated source of truth for verified optional facts such as student counts and institution-level acceptance rates.
-- `backend/data/official_admissions.json` is the structured source of truth for university-wide and program-level admissions signals.
-- `backend/data/universities.json` should be updated from the curated catalogs through sync scripts, not hand-edited first for those facts.
-
-Current curated workflow:
-1. Add or update verified optional facts in `backend/data/official_facts.json`.
-2. Add or update structured admissions signals in `backend/data/official_admissions.json` when admission rates, counts, capacity, grade profiles, cutoffs, or verified-null states change.
-3. Sync curated catalogs into the dataset:
-   ```bash
-   python backend/scripts/apply_official_facts.py --verified-at 2026-04-04
-   python backend/scripts/apply_official_admissions.py
-   ```
-4. Run dataset audit:
-   ```bash
-   npm run audit:data
-   ```
-5. Run HTTP source audit for touched URLs:
-   ```bash
-   python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
-   ```
-
-Useful references:
-- current admissions cleanup note: `docs/official_admissions_cleanup_2026-03-25.md`
-- previous official-facts cleanup note: `docs/official_facts_update_2026-03-12.md`
-- canonical release history: [CHANGELOG.md](CHANGELOG.md)
-
-## Testing
-Prerequisites:
-- Python 3.12+
-- Node.js 20+
-
-Install dependencies:
-```bash
-pip install -r backend/requirements.txt
-pip install -r backend/requirements-dev.txt
-npm install
-npx playwright install chromium
-```
-
-Run i18n checks:
-```bash
+npm run check:encoding
+npm run check:tokens
 npm run check:i18n
+npm run audit:data
 ```
 
-Run backend tests:
-```bash
+For tests, install the additional dependencies in the active Python environment and the Playwright browser:
+
+```sh
+python -m pip install -r backend/requirements-dev.txt
+npx playwright install chromium
 npm run test:backend
-```
-
-Run E2E (PR profile, Chromium):
-```bash
+npm run test:unit
 npm run test:e2e:pr
 ```
 
-Run full nightly browser matrix:
-```bash
-npm run test:e2e:nightly
-```
+`test:e2e:pr` starts the API on port `8000` and a test frontend on `5510`. If an API is already running, it must allow CORS for `http://127.0.0.1:5510`. `npm run test:all` combines version, encoding, token, and design-lint checks with the three test suites; run i18n and data audits separately.
 
-Run full local test flow:
-```bash
-npm run test:all
-```
+For the full browser matrix, install Chromium, Firefox, and WebKit with `npx playwright install`, then run `npm run test:e2e:nightly`. Automated checks are configured in [.github/workflows/](.github/workflows/).
 
-## CI policy
-Workflow: `.github/workflows/tests.yml`
+Interface rules: [design system](docs/design-system.md). Version history: [CHANGELOG.md](CHANGELOG.md).
 
-- PR and push to `main`:
-  - backend unit tests
-  - E2E PR suite on Chromium
-  - i18n consistency checks
-- Nightly schedule:
-  - full Playwright matrix on Chromium, Firefox, and WebKit
-
-Workflow: `.github/workflows/repository-hygiene.yml`
-
-- PR and push to `main`:
-  - version sync check
-  - UTF-8 and mojibake encoding check
-  - English/Russian localization parity check
-
-## Hosting notes
-- Works with standard setups like VPS + reverse proxy, Docker hosts, or managed platforms.
-- For non-local deployments, the university catalog is the root page `/`; detail pages use `/universities/:id`, while `/guide` and `/about` remain separate routes when rewrites are configured.
-- Local `python -m http.server` does not provide rewrites, so `.html` routes are used in local development.
-
-## Troubleshooting static asset 404 / MIME errors
-If you see browser errors like:
-- `Refused to apply style ... MIME type ('text/html' | 'text/plain')`
-- `Refused to execute script ... MIME type ...`
-- repeated `404` for `/css/*`, `/javascript/*`, `/images/*`, `/Localization/*`
-
-Check the following:
-- Run the frontend server from `frontend/`
-- Use `python -m http.server 5501`
-- Ensure pretty-URL rewrites map detail routes to `university.html`
-- If needed, unregister the service worker, clear site data, and hard reload
-
-## Notes
-- Default fallback language remains English when an unsupported locale is detected.
-- Backend API uses cache headers and ETag for efficient detail-page refresh behavior.
-- The recent cleanup passes intentionally favored missing values over unverified admissions facts.
-
-## Changelog
-Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
-
-Recent releases:
-- `5.0.3` on `2026-09-11`
-- `5.0.2` on `2026-09-10`
-- `5.0.1` on `2026-09-09`
-- `5.0.0` on `2026-09-08`
-- `4.9.10` on `2026-09-02`
-- `4.9.9` on `2026-06-19`
-- `4.9.8` on `2026-06-18`
-- `4.9.7` on `2026-06-18`
-- `4.9.6` on `2026-06-18`
-- `4.9.5` on `2026-06-18`
-- `4.9.4` on `2026-06-18`
-- `4.9.3` on `2026-06-18`
-- `4.9.2` on `2026-06-18`
-- `4.9.1` on `2026-06-17`
-- `4.9.0` on `2026-06-17`
-- `4.8.0` on `2026-06-01`
-- `4.7.2` on `2026-05-31`
-- `4.7.1` on `2026-05-31`
-- `4.7.0` on `2026-05-31`
-- `4.6.1` on `2026-05-31`
-- `4.6.0` on `2026-05-30`
-- `4.5.2` on `2026-05-26`
-- `4.5.1` on `2026-05-25`
-- `4.5.0` on `2026-05-24`
-- `4.4.0` on `2026-05-24`
-- `4.3.0` on `2026-05-24`
-- `4.2.0` on `2026-05-24`
-- `4.0.0` on `2026-05-20`
-- `3.9.2` on `2026-05-14`
-- `3.9.1` on `2026-05-13`
-- `3.9.0` on `2026-05-13`
-- `3.8.2` on `2026-05-01`
-- `3.8.1` on `2026-05-01`
-- `3.8.0` on `2026-04-30`
-- `3.7.5` on `2026-04-28`
-- `3.7.4` on `2026-04-28`
-- `3.7.2` on `2026-04-24`
-- `3.7.1` on `2026-04-24`
-- `3.7.0` on `2026-04-24`
-- `3.6.1` on `2026-04-24`
-- `3.6.0` on `2026-04-24`
-- `3.5.6` on `2026-04-23`
-- `3.5.2` on `2026-04-23`
-- `3.5.0` on `2026-04-22`
-- `3.4.12` on `2026-04-21`
-- `3.4.11` on `2026-04-21`
-- `3.4.10` on `2026-04-21`
-- `3.4.9` on `2026-04-21`
-- `3.4.8` on `2026-04-20`
-- `3.4.7` on `2026-04-19`
-- `3.4.6` on `2026-04-18`
-- `3.4.5` on `2026-04-17`
-- `3.4.4` on `2026-04-13`
-- `3.4.3` on `2026-04-13`
-- `3.4.2` on `2026-04-13`
-- `3.4.1` on `2026-04-12`
-- `3.4.0` on `2026-04-12`
+Source code is distributed under the [MIT License](LICENSE). University logos, names, and photographs belong to their respective owners and are not covered by the code license; see `LICENSE` for details.

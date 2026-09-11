@@ -18,7 +18,7 @@ Use this checklist for release PRs or direct release commits.
    npm run bump:version -- patch
    ```
 4. Update `CHANGELOG.md` from the actual diff.
-5. Update `README.md` recent releases and any functional docs affected by the change.
+5. Update affected functional documentation, including the English `README.md`. Keep release history in `CHANGELOG.md`; do not add release lists or dates to the README.
 6. Run minimum release checks:
    ```bash
    npm run fix:encoding
