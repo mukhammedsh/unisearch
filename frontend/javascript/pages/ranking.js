@@ -218,7 +218,7 @@ function toFiniteNumber(value) {
   return Number.isFinite(n) ? n : null;
 }
 
-function buildNormalizedRankingItems(items) {
+export function buildNormalizedRankingItems(items) {
   const rows = Array.isArray(items) ? items : [];
   const compareNullableAsc = (a, b) => {
     const aMissing = a === null || a === undefined;
@@ -263,6 +263,135 @@ function buildNormalizedRankingItems(items) {
   }));
 }
 
+let rankingListClickBound = false;
+let currentResetCallback = null;
+
+function ensureRankingListClickHandler(listEl) {
+  if (rankingListClickBound || !listEl) return;
+  listEl.addEventListener("click", (event) => {
+    const resetBtn = event.target instanceof Element ? event.target.closest('[data-action="reset-ranking-filters"]') : null;
+    if (!resetBtn) return;
+    motionPress(resetBtn);
+    if (typeof currentResetCallback === "function") {
+      currentResetCallback();
+      return;
+    }
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+    if (resetFiltersBtn) {
+      resetFiltersBtn.click();
+    }
+  });
+  rankingListClickBound = true;
+}
+
+export function renderRankingList(items = [], totalCount = null, onReset = null) {
+  const listEl = document.getElementById("rankingList");
+  if (!listEl) return;
+  if (typeof onReset === "function") currentResetCallback = onReset;
+  ensureRankingBadgeResizeHandler();
+  ensureRankingListClickHandler(listEl);
+
+  const rows = Array.isArray(items) ? items : [];
+  listEl.innerHTML = rows.map((university, index) => {
+    const rank = Number(university.rank_display);
+    const hasOfficialRank = university?.rank_is_official === true && Number.isFinite(rank) && rank > 0;
+
+    let rankClass = "";
+    if (hasOfficialRank && rank === 1) rankClass = "rank-1";
+    else if (hasOfficialRank && rank === 2) rankClass = "rank-2";
+    else if (hasOfficialRank && rank === 3) rankClass = "rank-3";
+
+    const logoSrc = uniLogoSrc(university.id);
+    const logoSrcFull = uniLogoSrc(university.id, { forceFull: true });
+    const thumbSrc = uniThumbnailSrc(university.id);
+    const thumbSrcMedium = uniThumbnailSrc(university.id, { size: "medium" });
+    const thumbSrcFull = uniThumbnailSrc(university.id, { forceFull: true });
+    const thumbSrcFullFallback = uniThumbnailSrc(university.id, { forceFull: true, format: "jpg" });
+    const thumbSrcset = `${thumbSrc} 640w, ${thumbSrcMedium} 960w, ${thumbSrcFull} 1600w`;
+    const loadingAttr = index < 4 ? "eager" : "lazy";
+    const fetchPriorityAttr = index < 2 ? "high" : "auto";
+    const cityRaw = String(university?.location?.city || "");
+    const countryRaw = String(university?.location?.country || "");
+    const flag = getFlagImg(countryRaw);
+    const universityName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
+    const rankMeta = (university && typeof university.rank_meta === "object" && university.rank_meta) ? university.rank_meta : {};
+    const rankSource = String(rankMeta.source || "").trim();
+    const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
+    const statusLabel = rankStatusRaw
+      ? rankingStatusLabel(rankStatusRaw)
+      : unknownFieldText("placeholder.field.global_rank", "Global Rank");
+    const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
+      || unknownFieldText("placeholder.field.verification_date", "Verification date");
+    const sourceTooltip = rankSource
+      ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Checked: ${rankVerifiedAt}`)
+      : "";
+    const sourceTitleAttr = sourceTooltip ? ` title="${escapeHtmlAttr(sourceTooltip)}"` : "";
+    const rankDisplay = hasOfficialRank ? `#${rank}` : escapeHtml(statusLabel);
+    const rankBadge = escapeHtml(tFormat("ranking.source_status_label", { status: statusLabel }, `Type: ${statusLabel}`));
+    const locationHtml = renderLocationMarkup({
+      city: trCity(cityRaw),
+      country: trCountry(countryRaw),
+      flagHtml: flag,
+      wrapperClass: "rank-loc",
+      cityClass: "rank-loc-city",
+      countryClass: "rank-loc-country",
+      fallbackClass: "rank-loc-text",
+    });
+
+    return `
+      <a href="${routeUniversityDetail(university.id)}" class="rank-card"${universityLinkAttrs()}${sourceTitleAttr}>
+        <img class="rank-bg-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
+        <div class="rank-num ${rankClass}${hasOfficialRank ? "" : " rank-num--meta"}">${rankDisplay}</div>
+        <div class="rank-logo">
+          <img src="${logoSrc}" alt="${initials(universityName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(universityName))}">
+        </div>
+        <div class="rank-info">
+          <div class="rank-title">${escapeHtml(universityName)}</div>
+          ${locationHtml}
+        </div>
+        <div class="rank-badge">${rankBadge}</div>
+      </a>
+    `;
+  }).join("");
+
+  if (!rows.length) {
+    listEl.innerHTML = `
+      <div class="rank-empty" role="status">
+        <strong>${escapeHtml(t("ranking.empty.title", "No ranking matches"))}</strong>
+        <span>${escapeHtml(t("ranking.empty.body", "Try a different search or country filter."))}</span>
+        <div class="rank-empty__actions">
+          <button type="button" class="rank-empty__btn" data-action="reset-ranking-filters">
+            ${heroIcon("arrow-path", 16)}
+            <span>${escapeHtml(t("ranking.empty.reset_filters", "Reset filters"))}</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  markMotionEnter(listEl, ".rank-card, .rank-empty", { limit: 18, staggerMs: 20 });
+  replayMotion(listEl, "motion-panel-enter", { timeoutMs: 420 });
+  requestAnimationFrame(() => fitRankingBadgeText(listEl));
+}
+
+export function setRankingLoading(isLoading, count = 8) {
+  const listEl = document.getElementById("rankingList");
+  if (!listEl) return;
+  if (isLoading) {
+    listEl.innerHTML = rankingSkeletonMarkup(count);
+  }
+}
+
+export function renderRankingError({ onRetry } = {}) {
+  renderNoConnection({
+    containerId: "rankingList",
+    onRetry: () => {
+      if (typeof onRetry === "function") onRetry();
+      else initRankingPage();
+    },
+  });
+}
+
 export async function initRankingPage() {
   const listEl = document.getElementById("rankingList");
   if (!listEl) return;
@@ -279,233 +408,40 @@ export async function initRankingPage() {
   window.addEventListener("languageChanged", onRankingLanguageChanged, { once: true });
   ensureRankingBadgeResizeHandler();
 
+  if (typeof window.__unisearchFetchAndRenderRanking === "function") {
+    return window.__unisearchFetchAndRenderRanking();
+  }
+
   if (rankingFetchController) rankingFetchController.abort();
   const controller = new AbortController();
   rankingFetchController = controller;
-  listEl.innerHTML = rankingSkeletonMarkup();
+  setRankingLoading(true);
 
   try {
     const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
-    const res = await fetch(`${API_BASE}/universities?limit=200&sort=rank_asc&lang=${encodeURIComponent(uiLang)}`, {
+    const searchInput = document.getElementById("qInput");
+    const countrySelect = document.getElementById("countrySelect");
+    const params = new URLSearchParams();
+    params.set("limit", "200");
+    params.set("sort", "rank_asc");
+    params.set("lang", uiLang);
+    params.set("fields", "card");
+    if (searchInput?.value?.trim()) params.set("q", searchInput.value.trim());
+    if (countrySelect?.value?.trim()) params.set("country", countrySelect.value.trim());
+
+    const res = await fetch(`${API_BASE}/universities?${params.toString()}`, {
       signal: controller.signal,
     });
     if (!res.ok) throw new Error("Error loading ranking");
     const data = await res.json();
     const items = buildNormalizedRankingItems(data.items || []);
-    const searchInput = document.getElementById("qInput");
-    const countrySelect = document.getElementById("countrySelect");
-    const searchHost = searchInput?.closest(".navbar-search") || null;
-    let suggestionsNode = searchHost?.querySelector(".navbar-search-suggestions") || null;
-    if (searchHost && !suggestionsNode) {
-      suggestionsNode = document.createElement("div");
-      suggestionsNode.className = "navbar-search-suggestions";
-      suggestionsNode.setAttribute("role", "listbox");
-      searchHost.appendChild(suggestionsNode);
-    }
-
-    const hideSuggestions = () => {
-      if (!suggestionsNode) return;
-      suggestionsNode.innerHTML = "";
-      suggestionsNode.classList.remove("is-open");
-    };
-
-    const renderSuggestions = () => {
-      if (!suggestionsNode || !searchInput) return;
-      const q = String(searchInput.value || "").trim();
-      const query = normalizeSearchText(q);
-      if (query.length < 2) {
-        hideSuggestions();
-        return;
-      }
-      const seen = new Set();
-      const rows = [];
-      items.forEach((item) => {
-        if (!matchesRankingQuery(item, q)) return;
-        const value = String(trUniversityName(item) || item?.name || "").trim();
-        const key = normalizeSearchText(value || item?.id);
-        if (!value || seen.has(key)) return;
-        seen.add(key);
-        rows.push(value);
-      });
-      if (!rows.length) {
-        hideSuggestions();
-        return;
-      }
-      suggestionsNode.innerHTML = "";
-      rows.slice(0, 7).forEach((name) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "navbar-search-suggestion";
-        btn.setAttribute("data-value", name);
-        btn.setAttribute("role", "option");
-        const span = document.createElement("span");
-        span.textContent = name;
-        btn.appendChild(span);
-        suggestionsNode.appendChild(btn);
-      });
-      suggestionsNode.classList.add("is-open");
-      markMotionEnter(suggestionsNode, ".navbar-search-suggestion", { limit: 7, staggerMs: 14 });
-    };
-
-    const renderRankingRows = (rows) => {
-      listEl.innerHTML = rows.map((university, index) => {
-      const rank = Number(university.rank_display);
-      const hasOfficialRank = university?.rank_is_official === true && Number.isFinite(rank) && rank > 0;
-
-      let rankClass = "";
-      if (hasOfficialRank && rank === 1) rankClass = "rank-1";
-      else if (hasOfficialRank && rank === 2) rankClass = "rank-2";
-      else if (hasOfficialRank && rank === 3) rankClass = "rank-3";
-
-      const logoSrc = uniLogoSrc(university.id);
-      const logoSrcFull = uniLogoSrc(university.id, { forceFull: true });
-      const thumbSrc = uniThumbnailSrc(university.id);
-      const thumbSrcMedium = uniThumbnailSrc(university.id, { size: "medium" });
-      const thumbSrcFull = uniThumbnailSrc(university.id, { forceFull: true });
-      const thumbSrcFullFallback = uniThumbnailSrc(university.id, { forceFull: true, format: "jpg" });
-      const thumbSrcset = `${thumbSrc} 640w, ${thumbSrcMedium} 960w, ${thumbSrcFull} 1600w`;
-      const loadingAttr = index < 4 ? "eager" : "lazy";
-      const fetchPriorityAttr = index < 2 ? "high" : "auto";
-      const cityRaw = String(university?.location?.city || "");
-      const countryRaw = String(university?.location?.country || "");
-      const flag = getFlagImg(countryRaw);
-      const universityName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
-      const rankMeta = (university && typeof university.rank_meta === "object" && university.rank_meta) ? university.rank_meta : {};
-      const rankSource = String(rankMeta.source || "").trim();
-      const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
-      const statusLabel = rankStatusRaw
-        ? rankingStatusLabel(rankStatusRaw)
-        : unknownFieldText("placeholder.field.global_rank", "Global Rank");
-      const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
-        || unknownFieldText("placeholder.field.verification_date", "Verification date");
-      const sourceTooltip = rankSource
-        ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Checked: ${rankVerifiedAt}`)
-        : "";
-      const sourceTitleAttr = sourceTooltip ? ` title="${escapeHtmlAttr(sourceTooltip)}"` : "";
-      const rankDisplay = hasOfficialRank ? `#${rank}` : escapeHtml(statusLabel);
-      const rankBadge = escapeHtml(tFormat("ranking.source_status_label", { status: statusLabel }, `Type: ${statusLabel}`));
-      const locationHtml = renderLocationMarkup({
-        city: trCity(cityRaw),
-        country: trCountry(countryRaw),
-        flagHtml: flag,
-        wrapperClass: "rank-loc",
-        cityClass: "rank-loc-city",
-        countryClass: "rank-loc-country",
-        fallbackClass: "rank-loc-text",
-      });
-
-      return `
-        <a href="${routeUniversityDetail(university.id)}" class="rank-card"${universityLinkAttrs()}${sourceTitleAttr}>
-          <img class="rank-bg-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
-          <div class="rank-num ${rankClass}${hasOfficialRank ? "" : " rank-num--meta"}">${rankDisplay}</div>
-          <div class="rank-logo">
-            <img src="${logoSrc}" alt="${initials(universityName)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(universityName))}">
-          </div>
-          <div class="rank-info">
-            <div class="rank-title">${escapeHtml(universityName)}</div>
-            ${locationHtml}
-          </div>
-          <div class="rank-badge">${rankBadge}</div>
-        </a>
-      `;
-      }).join("");
-      if (!rows.length) {
-        listEl.innerHTML = `
-          <div class="rank-empty" role="status">
-            <strong>${escapeHtml(t("ranking.empty.title", "No ranking matches"))}</strong>
-            <span>${escapeHtml(t("ranking.empty.body", "Try a different search or country filter."))}</span>
-            <div class="rank-empty__actions">
-              <button type="button" class="rank-empty__btn" data-action="reset-ranking-filters">
-                ${heroIcon("arrow-path", 16)}
-                <span>${escapeHtml(t("ranking.empty.reset_filters", "Reset filters"))}</span>
-              </button>
-            </div>
-          </div>
-        `;
-      }
-      markMotionEnter(listEl, ".rank-card, .rank-empty", { limit: 18, staggerMs: 20 });
-      replayMotion(listEl, "motion-panel-enter", { timeoutMs: 420 });
-      requestAnimationFrame(() => fitRankingBadgeText(listEl));
-    };
-
-    const applyRankingFilters = () => {
-      const q = String(searchInput?.value || "").trim().toLowerCase();
-      const country = String(countrySelect?.value || "").trim();
-      const rows = items.filter((item) => {
-        const itemCountry = String(item?.location?.country || "").trim();
-        const matchesQuery = matchesRankingQuery(item, q);
-        const matchesCountry = !country || itemCountry === country;
-        return matchesQuery && matchesCountry;
-      });
-      window.__rankingTotalCount = rows.length;
-      const rankingCountEl = document.getElementById("totalCount");
-      if (rankingCountEl && document.body.classList.contains("universities-ranking-mode")) {
-        rankingCountEl.textContent = String(rows.length);
-      }
-      renderRankingRows(rows);
-      renderSuggestions();
-    };
-
-    if (rankingLastSearchInput && rankingSearchInputHandler) {
-      rankingLastSearchInput.removeEventListener("input", rankingSearchInputHandler);
-    }
-    if (rankingLastSearchInput && rankingSearchBlurHandler) {
-      rankingLastSearchInput.removeEventListener("blur", rankingSearchBlurHandler);
-    }
-    if (rankingLastCountrySelect && rankingCountryChangeHandler) {
-      rankingLastCountrySelect.removeEventListener("change", rankingCountryChangeHandler);
-    }
-
-    if (searchInput) {
-      rankingLastSearchInput = searchInput;
-      rankingSearchInputHandler = applyRankingFilters;
-      rankingSearchBlurHandler = hideSuggestions;
-      searchInput.addEventListener("input", rankingSearchInputHandler);
-      searchInput.addEventListener("blur", rankingSearchBlurHandler);
-    }
-    const selectSuggestion = (event) => {
-      const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
-      if (!btn || !searchInput) return;
-      searchInput.value = String(btn.getAttribute("data-value") || "");
-      searchInput.dispatchEvent(new Event("input", { bubbles: true }));
-      hideSuggestions();
-    };
-    suggestionsNode?.addEventListener("pointerdown", (event) => {
-      const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
-      if (!btn) return;
-      event.preventDefault();
-      selectSuggestion(event);
-    });
-    suggestionsNode?.addEventListener("click", selectSuggestion);
-    if (countrySelect) {
-      rankingLastCountrySelect = countrySelect;
-      rankingCountryChangeHandler = applyRankingFilters;
-      countrySelect.addEventListener("change", rankingCountryChangeHandler);
-    }
-    listEl.addEventListener("click", (event) => {
-      const resetBtn = event.target instanceof Element ? event.target.closest('[data-action="reset-ranking-filters"]') : null;
-      if (!resetBtn) return;
-      motionPress(resetBtn);
-      if (searchInput) {
-        searchInput.value = "";
-        searchInput.dispatchEvent(new Event("input", { bubbles: true }));
-      }
-      if (countrySelect) {
-        countrySelect.value = "";
-        countrySelect.dispatchEvent(new Event("change", { bubbles: true }));
-        initCustomSelect("countrySelect");
-      }
-      if (!searchInput) applyRankingFilters();
-    });
-    applyRankingFilters();
+    renderRankingList(items, items.length);
   } catch (err) {
     if (err?.name === "AbortError") return;
     console.error(err);
-    renderNoConnection({
-      containerId: "rankingList",
-      onRetry: () => initRankingPage(),
-    });
+    renderRankingError({ onRetry: () => initRankingPage() });
   } finally {
     if (rankingFetchController === controller) rankingFetchController = null;
   }
 }
+

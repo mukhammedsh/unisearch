@@ -231,6 +231,7 @@ firebase-key
 # Node / Playwright artifacts
 node_modules/
 playwright-report/
+.playwright-cli/
 test-results/
 blob-report/
 npm-debug.log*

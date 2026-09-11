@@ -404,9 +404,7 @@ export function initUniversitiesPage() {
     let skeletonShowTimer = 0;
     let skeletonFadeTimer = 0;
     let isSkeletonCurrentlyVisible = false;
-    let lastFetchKey = "";
-    let lastFetchPayload = null;
-    let lastFetchAt = 0;
+    const universitiesFetchCache = new Map();
     let lastAiFetchKey = "";
     let lastAiFetchPayload = null;
     let lastAiFetchAt = 0;
@@ -471,7 +469,6 @@ export function initUniversitiesPage() {
         }
     }
 
-    let rankingInitialized = false;
     let rankingModulePromise = null;
     const isCompareTab = () => state.activeTab === "compare";
     const isCompareResultsMode = () => isCompareTab() && state.compareStage === "results" && state.compareResultIds.length === COMPARE_PAIR_SIZE;
@@ -577,11 +574,9 @@ export function initUniversitiesPage() {
         if (updateUrl) setSectionUrl(replaceUrl);
 
         if (state.activeTab === "ranking") {
-            if (!rankingInitialized) {
-                rankingInitialized = true;
-                const rankingModule = await ensureIntegratedRankingAssets();
-                await rankingModule?.initRankingPage?.();
-                bindImageFallbacks(el.rankingPane || document);
+            await ensureIntegratedRankingAssets();
+            if (shouldFetch) {
+                await fetchAndRenderRanking();
             }
             replayMotion(el.rankingPane, "motion-panel-enter", { timeoutMs: 420 });
             return;
@@ -1388,7 +1383,7 @@ export function initUniversitiesPage() {
     const renderSearchSuggestions = () => {
         const node = ensureSearchSuggestionsNode();
         if (!node || !el.qInput) return;
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) {
+        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) {
             hideSearchSuggestions();
             return;
         }
@@ -1851,6 +1846,10 @@ export function initUniversitiesPage() {
         clearSavedScrollPosition();
         updateMobileFilterUi();
         saveFilters(state);
+        if (state.activeTab === "ranking") {
+            fetchAndRenderRanking();
+            return;
+        }
         fetchAndRender(); 
     }, 250);
 
@@ -1864,8 +1863,7 @@ export function initUniversitiesPage() {
     el.qInput?.addEventListener("input", () => {
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
-        if (state.activeTab === "ranking") return;
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) return;
         renderSearchSuggestions();
         refetch();
     });
@@ -1877,17 +1875,13 @@ export function initUniversitiesPage() {
         syncSearchClearButton();
         hideSearchSuggestions();
         el.qInput.focus();
-        if (state.activeTab === "ranking") {
-            el.qInput.dispatchEvent(new Event("input", { bubbles: true }));
-            return;
-        }
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) return;
         refetch();
     });
     ensureSearchSuggestionsNode()?.addEventListener("click", (event) => {
         const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
         if (!btn || !el.qInput) return;
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) return;
         el.qInput.value = String(btn.getAttribute("data-value") || "");
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
@@ -2003,8 +1997,7 @@ export function initUniversitiesPage() {
         updateSliderVisibility(); 
         updateMobileFilterUi();
         if (state.activeTab === "ranking") {
-            el.qInput?.dispatchEvent(new Event("input", { bubbles: true }));
-            el.countrySelect?.dispatchEvent(new Event("change", { bubbles: true }));
+            fetchAndRenderRanking();
             return;
         }
         fetchAndRender();
@@ -2121,7 +2114,7 @@ export function initUniversitiesPage() {
         clearSavedScrollPosition();
         saveFilters(state);
         syncSectionVisibility({
-            shouldFetch: nextTab !== "ranking" && !isCompareResultsMode(),
+            shouldFetch: !isCompareResultsMode(),
             updateUrl: true,
             replaceUrl: false,
         }).catch((err) => console.error(err));
@@ -2269,7 +2262,7 @@ export function initUniversitiesPage() {
     };
 
     syncSectionVisibility({
-        shouldFetch: state.activeTab !== "ranking" && !isCompareResultsMode(),
+        shouldFetch: !isCompareResultsMode(),
         updateUrl: true,
         replaceUrl: true,
     }).catch((err) => console.error(err));
@@ -2277,7 +2270,11 @@ export function initUniversitiesPage() {
         state.funding_type = getProfileFundingQueryValue();
         state.page = 1;
         saveFilters(state);
-        if (state.activeTab !== "ranking" && !isCompareResultsMode()) fetchAndRender();
+        if (state.activeTab === "ranking") {
+            fetchAndRenderRanking();
+        } else if (!isCompareResultsMode()) {
+            fetchAndRender();
+        }
     };
     window.addEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
     __universitiesLanguageChangedHandler = () => {
@@ -2285,9 +2282,8 @@ export function initUniversitiesPage() {
         refreshLocationFilterLabels();
         applyToForm();
         updateTradeoffLabels();
-        rankingInitialized = false;
         syncSectionVisibility({
-            shouldFetch: state.activeTab !== "ranking" && !isCompareResultsMode(),
+            shouldFetch: !isCompareResultsMode(),
             updateUrl: true,
             replaceUrl: true,
         }).catch((err) => console.error(err));
@@ -2907,11 +2903,12 @@ export function initUniversitiesPage() {
             query: key,
             reason: "sort is not uni_ai or AI fallback path",
         });
-        if (lastFetchKey === key && lastFetchPayload && (now - lastFetchAt) < CACHE_TTL_MS) {
+        const cached = universitiesFetchCache.get(key);
+        if (cached && (now - cached.timestamp) < CACHE_TTL_MS) {
             logTranslationDebug("non-ai request cache hit (frontend memory)", {
-                ageMs: now - lastFetchAt,
+                ageMs: now - cached.timestamp,
             });
-            return lastFetchPayload;
+            return cached.payload;
         }
 
         if (listFetchController) {
@@ -2945,9 +2942,11 @@ export function initUniversitiesPage() {
             apiItems: payload.items.length,
             total: payload.total,
         });
-        lastFetchKey = key;
-        lastFetchPayload = payload;
-        lastFetchAt = now;
+        if (universitiesFetchCache.size >= 50) {
+            const oldestKey = universitiesFetchCache.keys().next().value;
+            if (oldestKey !== undefined) universitiesFetchCache.delete(oldestKey);
+        }
+        universitiesFetchCache.set(key, { payload, timestamp: now });
         return payload;
     }
 
@@ -3173,6 +3172,80 @@ export function initUniversitiesPage() {
         }
         }
     }
+
+    async function fetchAndRenderRanking() {
+        const rankingModule = await ensureIntegratedRankingAssets();
+        if (!rankingModule?.renderRankingList) return;
+
+        const runSeq = ++fetchRunSeq;
+        rankingModule.setRankingLoading?.(true);
+
+        const rankingParams = new URLSearchParams();
+        const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
+        rankingParams.set("limit", "200");
+        rankingParams.set("sort", "rank_asc");
+        rankingParams.set("lang", uiLang);
+        rankingParams.set("fields", "card");
+
+        if (state.q) rankingParams.set("q", state.q);
+        if (state.country) rankingParams.set("country", state.country);
+        if (state.region) rankingParams.set("region", state.region);
+        if (state.city) rankingParams.set("city", state.city);
+        if (state.study_level) rankingParams.set("study_level", state.study_level);
+        if (state.funding_type && state.funding_type !== "any") {
+            rankingParams.set("funding_type", state.funding_type);
+        }
+        if (Number(state.min_tuition) > 0) {
+            rankingParams.set("min_tuition", String(state.min_tuition));
+        }
+        if (Number(state.max_tuition) < MAX_TUITION) {
+            rankingParams.set("max_tuition", String(state.max_tuition));
+        }
+
+        setSectionUrl(true);
+
+        try {
+            if (state.only_saved && savedUniversityIds.size === 0) {
+                if (runSeq !== fetchRunSeq) return;
+                window.__rankingTotalCount = 0;
+                if (el.total) el.total.textContent = "0";
+                updateMobileFilterUi();
+                rankingModule.renderRankingList([], 0, () => handleResetAllFilters());
+                return;
+            }
+
+            const data = await fetchUniversities(rankingParams);
+            if (data?.__aborted) return;
+            if (runSeq !== fetchRunSeq) return;
+
+            let items = Array.isArray(data.items) ? data.items : [];
+            if (state.only_saved) {
+                items = items.filter((u) => savedUniversityIds.has(u.id));
+            }
+
+            const normalizedItems = rankingModule.buildNormalizedRankingItems
+                ? rankingModule.buildNormalizedRankingItems(items)
+                : items;
+
+            const total = normalizedItems.length;
+            window.__rankingTotalCount = total;
+            if (el.total && document.body.classList.contains("universities-ranking-mode")) {
+                el.total.textContent = String(total);
+            }
+            updateMobileFilterUi();
+            rankingModule.renderRankingList(normalizedItems, total, () => handleResetAllFilters());
+            bindImageFallbacks(el.rankingPane || document);
+        } catch (err) {
+            if (runSeq !== fetchRunSeq) return;
+            if (err?.name === "AbortError") return;
+            console.error("Failed to fetch ranking", err);
+            rankingModule.renderRankingError?.({
+                onRetry: () => fetchAndRenderRanking(),
+            });
+        }
+    }
+
+    window.__unisearchFetchAndRenderRanking = () => fetchAndRenderRanking();
 
     // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget, idx = 99) {

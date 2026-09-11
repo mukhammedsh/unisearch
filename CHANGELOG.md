@@ -3,6 +3,12 @@
 All notable project changes should be recorded here.
 
 ## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
+- Integrated Ranking view with backend filtering and unified memory cache (`universities.js`, `ranking.js`, `tests/e2e/universities-tabs-compare.spec.js`):
+  - Routed Ranking view queries through the FastAPI backend (`/universities?sort=rank_asc&limit=200&...`), respecting all active sidebar and navbar filters (`q`, `country`, `region`, `city`, `study_level`, `funding_type`, `min_tuition`, `max_tuition`, `only_saved`).
+  - Replaced single-slot fetch cache with bounded `universitiesFetchCache` (Map with 50-entry LRU limit and 30s TTL) shared across Catalog, Ranking, and Compare modes.
+  - Refactored `ranking.js` into modular exportable functions (`buildNormalizedRankingItems`, `renderRankingList`, `setRankingLoading`, `renderRankingError`), removing standalone full-payload client-side fetches.
+  - Connected global search input, clear button, and empty state reset button to trigger debounced ranking refetches and reset all filters cleanly.
+  - Added Playwright E2E regression coverage for ranking sidebar filter changes, debounced search updates, and empty state reset flows.
 - Refined mobile filter drawer mechanics, view mode toggles, and Profile header UX (`index.html`, `profile.html`, `universities.js`, `style.css`, `02-catalog.css`, `04-catalog-responsive.css`, `05-catalog-polish.css`, `07-responsive.css`, `profile.css`):
   - Fixed layer ordering where the comparison tray overlapped the active mobile filter drawer by lowering `--z-tray` below `--z-drawer` (1400 vs 2000).
   - Extended mobile filter drawer scroll clearance with safe-area padding so bottom sorting controls and dropdowns remain fully accessible.

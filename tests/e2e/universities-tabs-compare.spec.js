@@ -289,3 +289,53 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await expect(page.locator(".compare-score-track")).toHaveCount(0);
 });
 
+test("ranking tab responds to sidebar filters and reset actions", async ({ page }) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+
+  await page.goto("/index.html?tab=ranking");
+  await expect(page.locator('[data-universities-tab="ranking"]')).toHaveClass(/is-active/);
+  await expect(page.locator("#universitiesRankingPane")).toBeVisible();
+  await expect(page.locator("#rankingList .rank-card:not(.is-skeleton)").first()).toBeVisible();
+
+  // 1. Initial count
+  const initialCardsCount = await page.locator("#rankingList .rank-card:not(.is-skeleton)").count();
+  expect(initialCardsCount).toBeGreaterThan(10);
+
+  // 2. Filter by country
+  await page.evaluate(() => {
+    const select = document.getElementById("countrySelect");
+    if (!select) return;
+    select.value = "USA";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  await expect.poll(async () => {
+    const count = await page.locator("#rankingList .rank-card:not(.is-skeleton)").count();
+    return count > 0 && count < initialCardsCount;
+  }).toBe(true);
+  const usCardsCount = await page.locator("#rankingList .rank-card:not(.is-skeleton)").count();
+  await expect(page.locator("#totalCount")).toHaveText(String(usCardsCount));
+
+  // 3. Filter by search query within ranking
+  await page.locator("#qInput").fill("Stanford");
+  await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(1);
+  await expect(page.locator("#rankingList")).toContainText("Stanford University");
+  await expect(page.locator("#totalCount")).toHaveText("1");
+
+  // 4. Reset filters button in toolbar
+  await page.locator("#resetFiltersBtn").click();
+  await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(initialCardsCount);
+  await expect(page.locator("#totalCount")).toHaveText(String(initialCardsCount));
+
+  // 5. Filter that produces empty state
+  await page.locator("#qInput").fill("NonExistentUniversityXYZ123");
+  await expect(page.locator("#rankingList .rank-empty")).toBeVisible();
+  await expect(page.locator("#totalCount")).toHaveText("0");
+
+  // 6. Reset via empty state button
+  await page.locator('[data-action="reset-ranking-filters"]').click();
+  await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(initialCardsCount);
+  await expect(page.locator("#totalCount")).toHaveText(String(initialCardsCount));
+});
+
+
