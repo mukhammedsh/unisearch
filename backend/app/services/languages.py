@@ -34,7 +34,8 @@ def _build_languages_index(cfg: Dict[str, Any]) -> Dict[str, Any]:
         if label and cid is not None:
             try:
                 cefr_map[label] = int(cid)
-            except Exception:
+            except (ValueError, TypeError):
+                # Ignore CEFR definitions with missing or non-numeric identifiers
                 pass
 
     # language_exams: { "en": [ {id,label,min,max,type,step,...}, ... ], ... }

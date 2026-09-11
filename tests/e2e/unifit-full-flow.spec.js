@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
-const { selectors, setRangeValue } = require("./helpers/selectors");
+const { setRangeValue } = require("./helpers/selectors");
 const { mockAiSort } = require("./helpers/mocks");
 
 /**

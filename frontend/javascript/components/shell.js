@@ -1,6 +1,4 @@
-import { createSafeStorage, frontendStaticAsset, getCurrentTheme } from "../utils.js";
-
-const safeSessionStorage = createSafeStorage("session");
+import { frontendStaticAsset, getCurrentTheme } from "../utils.js";
 
 const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.png");
 const NAV_LOGO_DARK = frontendStaticAsset("images/darklogo.png");

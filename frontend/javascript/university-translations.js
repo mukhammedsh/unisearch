@@ -141,8 +141,6 @@ export function translateUniversityDescription(university, fallback = "") {
   const source = String(fallback || "").trim();
   if (lang === "eng") return source;
 
-  const u = university && typeof university === "object" ? university : {};
-  if (source) return source;
   return source;
 }
 

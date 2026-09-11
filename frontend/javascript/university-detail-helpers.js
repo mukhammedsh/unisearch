@@ -275,17 +275,6 @@ export function renderExamGroup(title, pairs, color) {
   `;
 }
 
-function cefrLabel(id) {
-  const n = Number(id);
-  if (n === 1) return "A1";
-  if (n === 2) return "A2";
-  if (n === 3) return "B1";
-  if (n === 4) return "B2";
-  if (n === 5) return "C1";
-  if (n === 6) return "C2";
-  return String(id);
-}
-
 export function admissionChoiceKey(category, profile, funding = null) {
   const parts = [
     String(category?.id || "").trim(),

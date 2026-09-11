@@ -4,7 +4,6 @@ import assert from 'node:assert';
 import {
   applyTheme,
   getCurrentTheme,
-  initTheme,
   toggleTheme,
 } from '../../frontend/javascript/utils/theme.js';
 

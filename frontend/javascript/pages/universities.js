@@ -11,7 +11,6 @@ import {
   escapeHtml,
   escapeHtmlAttr,
   initials,
-  moneyUSD,
   loadProfile,
   loadProfileForApi,
   getFlagImg,
@@ -430,13 +429,6 @@ export function initUniversitiesPage() {
     let compareAdmissionChoices = new Map();
     let compareChancesByUniId = new Map();
     let lastLoadedCompareUniversities = [];
-
-
-    const optionTextForValue = (selectEl, value) => {
-        if (!selectEl) return "";
-        const opt = Array.from(selectEl.options || []).find((item) => String(item.value || "") === String(value || ""));
-        return String(opt?.text || "").trim();
-    };
 
     function activeFilterCount() {
         let count = 0;
@@ -2444,9 +2436,6 @@ export function initUniversitiesPage() {
                     const detailHref = routeUniversityDetail(uniId);
                     const isActive = uniId === preferredId;
                     const isCompared = isCompareSelectionMode() && compareUniversityIds.has(uniId);
-                    const compareLabel = isCompared
-                        ? t("universities.card.compare_selected", "Selected for comparison")
-                        : t("universities.card.compare", "Add to compare");
                     return `
                         <article class="u-map-result-card${isActive ? " is-active" : ""}${isCompared ? " is-selected" : ""}" data-uni-id="${escapeHtmlAttr(uniId)}" aria-selected="${isCompared ? "true" : "false"}">
                             <button type="button" class="u-map-result-focus" data-uni-focus="${escapeHtmlAttr(uniId)}">

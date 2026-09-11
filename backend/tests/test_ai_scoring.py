@@ -332,7 +332,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertFalse(result.get("missingEvidence", True))
         self.assertGreaterEqual(int(result.get("overallChance", 0)), 0)
         self.assertLessEqual(int(result.get("overallChance", 0)), 100)
-        self.assertTrue(len(result.get("choices", [])) >= 1)
+        self.assertGreaterEqual(len(result.get("choices", [])), 1)
 
     def test_estimate_uni_chance_returns_machine_readable_factors(self):
         university = {

@@ -107,6 +107,7 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
 
     def _lookup_indexed_file(self, relative_path: str) -> Path | None:
         clean_relative = str(relative_path or "").replace("\\", "/").lstrip("/")
+        clean_relative = posixpath.normpath(clean_relative).lstrip("/")
         file_index = getattr(self.server, "file_index", {})
         if clean_relative in file_index:
             return file_index[clean_relative]
@@ -114,13 +115,10 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
         base_dir = getattr(self, "directory", None)
         if base_dir:
             base_path = Path(base_dir).resolve()
-            candidate = (base_path / clean_relative).resolve()
-            try:
-                if candidate.is_file() and candidate.is_relative_to(base_path):
-                    file_index[clean_relative] = candidate
-                    return candidate
-            except (ValueError, OSError):
-                pass
+            refreshed_index = build_file_index(base_path)
+            if hasattr(self.server, "file_index") and isinstance(self.server.file_index, dict):
+                self.server.file_index.update(refreshed_index)
+            return refreshed_index.get(clean_relative)
         return None
 
     def _send_file(self, file_path: Path, *, include_body: bool, status: int = 200) -> None:

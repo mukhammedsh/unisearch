@@ -1,6 +1,5 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
 
 async function switchLanguage(page, value) {
   await page.evaluate((lang) => {

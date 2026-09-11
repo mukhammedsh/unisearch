@@ -1,5 +1,4 @@
 import {
-  EXAM_CONFIG,
   FALLBACK_LANG_LIMITS,
   canonicalizeExamId,
   clampNumberToLimits,

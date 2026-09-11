@@ -409,15 +409,6 @@ export function initProfileUI() {
         return profile.exams.find((row) => canonicalizeExamId(row?.exam ?? row?.id ?? "") === selected) || null;
     };
 
-    const getBreakdownState = (examId) => {
-        const selected = canonicalizeExamId(examId);
-        const isCurrent = examSpecialInputContainer?.dataset.breakdownExam === selected;
-        if (isCurrent) {
-            const liveState = readSubjectBreakdownDraft(selected, { silent: true });
-            if (liveState) return liveState;
-        }
-        return buildBreakdownState(selected, findExistingExamEntry(selected));
-    };
 
     const readSubjectBreakdownDraft = (examId, options = {}) =>
         readSubjectBreakdownDraftFromModule(examId, examSpecialInputContainer, { ...options, findExistingExamEntry });
@@ -1341,7 +1332,6 @@ export function initProfileUI() {
             const name = canonicalizeExamId(examNameSelect.value);
             const mode = examInputModeFor(name);
             const selectedPayload = readSelectedExamPayload(name);
-            const rawScore = selectedPayload?.raw_input_score || "";
             const score = Number(selectedPayload?.score);
 
             const cfg = examConfigFor(name);

@@ -4,7 +4,6 @@ import { describe, it, beforeEach } from "node:test";
 
 import {
   API_LANG_DEFAULT,
-  API_LANG_SUPPORTED,
   I18N_STORAGE_KEY,
   getUiLanguageForApi,
   normalizeUiLanguageForApi,

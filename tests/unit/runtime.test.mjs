@@ -6,7 +6,6 @@ import {
   aiName,
   frontendStaticAsset,
   prefersReducedMotion,
-  AI_DEFAULTS,
 } from "../../frontend/javascript/utils/runtime.js";
 
 describe("runtime.js", () => {

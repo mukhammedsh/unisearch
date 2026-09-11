@@ -32,6 +32,13 @@ All notable project changes should be recorded here.
 - Updated Playwright E2E and unit test suites (`tests/e2e/smoke-home.spec.js`, `tests/e2e/universities-tabs-compare.spec.js`, `tests/e2e/mobile-tablet-overflow.spec.js`, `tests/unit/routes.test.mjs`):
   - Updated tab navigation tests to reflect Catalog and Comparing tabs.
   - Added test coverage for sorting by global rank, card ranking reordering, and verification tooltips.
+- Resolved all 29 CodeQL security-extended and security-and-quality alerts across backend, frontend, dev server, and test suites:
+  - Eliminated Path Injection vulnerabilities in frontend development server (`scripts/frontend_dev_server.py`) by replacing untrusted path resolution with a safe whitelist lookup against pre-indexed files from `build_file_index`.
+  - Fixed redundant comparison in GPA score normalization (`backend/app/services/ai_scoring.py`).
+  - Replaced broad `except Exception:` with specific `(ValueError, TypeError)` in language CEFR indexing (`backend/app/services/languages.py`).
+  - Switched `assertTrue(a >= b)` to `assertGreaterEqual` for clearer test failure diagnostics (`backend/tests/test_ai_scoring.py`).
+  - Removed unused imports and dead private global aliases (`backend/app/core/settings.py`, `backend/app/services/exams.py`, `backend/app/main.py`, `backend/app/routers/root.py`).
+  - Cleaned up unused variables, dead functions, and imports across frontend components and test suites (`frontend/javascript/pages/universities.js`, `frontend/javascript/components/shell.js`, `frontend/javascript/components/profile-ui.js`, `frontend/javascript/university-detail-helpers.js`, `frontend/javascript/university-translations.js`, `frontend/javascript/utils/persistence.js`, `tests/unit/*.test.mjs`, `tests/e2e/*.spec.js`).
 
 ## 5.0.3 (2026-09-11) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
 - Integrated Ranking view with backend filtering and unified memory cache (`universities.js`, `ranking.js`, `tests/e2e/universities-tabs-compare.spec.js`):

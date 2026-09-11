@@ -20,8 +20,8 @@ from app.core.security import (
     request_client_ip,
     request_scope_path,
 )
+from app.core.version import APP_VERSION
 from app.core.settings import (
-    APP_VERSION,
     AUTO_WARMUP_ON_STARTUP,
     BACKEND_HOST,
     BACKEND_PORT,

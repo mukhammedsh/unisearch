@@ -8,9 +8,7 @@ EXAM_WHITELIST = exam_support.EXAM_WHITELIST
 ensure_exams_cache = exam_support.ensure_exams_cache
 resolve_exam_key = exam_support.resolve_exam_key
 exam_supports_percentile_normalization = exam_support.exam_supports_percentile_normalization
-_canonical_exam_key = exam_support.canonical_exam_key
 _strip_text = exam_support.strip_text
-_to_decimal = exam_support.to_decimal
 _to_float = exam_support.to_float
 _clamp = exam_support.clamp
 _config_entry = exam_support.config_entry
@@ -22,15 +20,11 @@ _grade_scheme = exam_support.grade_scheme
 _normalize_grade_token = exam_support.normalize_grade_token
 _parse_grade_combo_from_details = exam_support.parse_grade_combo_from_details
 _parse_grade_combo_from_text = exam_support.parse_grade_combo_from_text
-_level_scheme = exam_support.level_scheme
 _breakdown_scheme = exam_support.breakdown_scheme
 _breakdown_item_definitions = exam_support.breakdown_item_definitions
 _display_value_from_submission = exam_support.display_value_from_submission
-_level_bands = exam_support.level_bands
-_normalize_level_label = exam_support.normalize_level_label
 _band_label_for_value = exam_support.band_label_for_value
 _band_value_for_label = exam_support.band_value_for_label
-_to_num_int = exam_support.to_num_int
 
 
 def _coerce_grade_combo_submission(
@@ -280,7 +274,6 @@ def _coerce_band_select_submission(
     band_value = _band_value_for_label(cfg, band_raw)
     if band_value is None:
         score = _validate_numeric_score(exam_key, cfg, score_raw)
-        band_value = int(score)
     else:
         score = band_value
 
