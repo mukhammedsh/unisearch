@@ -19,7 +19,12 @@ import {
   syncNavbarLogo,
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
-import { SETTING_STORE_RECENT_UNIVERSITIES, SETTING_OPEN_UNIVERSITIES_NEW_TAB } from "./settings.js";
+import {
+  SETTING_STORE_RECENT_UNIVERSITIES,
+  SETTING_OPEN_UNIVERSITIES_NEW_TAB,
+  SETTING_PREFERRED_CURRENCY,
+  SETTING_CURRENCY_DISPLAY,
+} from "./settings.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -112,6 +117,101 @@ const LAYOUT_HTML = `
           <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Open universities in a new tab" data-i18n-aria-label="settings.option.open_universities_new_tab.title" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
           <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
         </label>
+      </article>
+
+      <h3 class="settings-section-title" data-i18n="settings.section.pricing">Pricing</h3>
+
+      <article class="settings-row" data-setting-key="${SETTING_PREFERRED_CURRENCY}">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.preferred_currency.title">Preferred Currency</h3>
+          <p data-i18n="settings.option.preferred_currency.desc">Choose your default currency for tuition fees and estimated costs.</p>
+        </div>
+        <select id="settingPreferredCurrency" class="settings-select" data-setting-input="${SETTING_PREFERRED_CURRENCY}" aria-label="Preferred Currency" data-i18n-aria-label="settings.option.preferred_currency.title">
+          <optgroup label="Central Asia & CIS" data-i18n-label="currency.region.cis">
+            <option value="KZT" data-i18n="currency.opt.kzt">Kazakhstani Tenge (KZT, ₸)</option>
+            <option value="RUB" data-i18n="currency.opt.rub">Russian Ruble (RUB, ₽)</option>
+            <option value="UZS" data-i18n="currency.opt.uzs">Uzbekistani Som (UZS, soʻm)</option>
+            <option value="KGS" data-i18n="currency.opt.kgs">Kyrgyzstani Som (KGS, сом)</option>
+            <option value="BYN" data-i18n="currency.opt.byn">Belarusian Ruble (BYN, Br)</option>
+            <option value="TJS" data-i18n="currency.opt.tjs">Tajikistani Somoni (TJS, смн)</option>
+            <option value="UAH" data-i18n="currency.opt.uah">Ukrainian Hryvnia (UAH, ₴)</option>
+            <option value="MDL" data-i18n="currency.opt.mdl">Moldovan Leu (MDL, L)</option>
+            <option value="AZN" data-i18n="currency.opt.azn">Azerbaijani Manat (AZN, ₼)</option>
+            <option value="GEL" data-i18n="currency.opt.gel">Georgian Lari (GEL, ₾)</option>
+            <option value="AMD" data-i18n="currency.opt.amd">Armenian Dram (AMD, ֏)</option>
+          </optgroup>
+          <optgroup label="Europe" data-i18n-label="currency.region.europe">
+            <option value="EUR" data-i18n="currency.opt.eur">Euro (EUR, €)</option>
+            <option value="GBP" data-i18n="currency.opt.gbp">British Pound (GBP, £)</option>
+            <option value="CHF" data-i18n="currency.opt.chf">Swiss Franc (CHF, Fr.)</option>
+            <option value="PLN" data-i18n="currency.opt.pln">Polish Zloty (PLN, zł)</option>
+            <option value="CZK" data-i18n="currency.opt.czk">Czech Koruna (CZK, Kč)</option>
+            <option value="HUF" data-i18n="currency.opt.huf">Hungarian Forint (HUF, Ft)</option>
+            <option value="RON" data-i18n="currency.opt.ron">Romanian Leu (RON, lei)</option>
+            <option value="BGN" data-i18n="currency.opt.bgn">Bulgarian Lev (BGN, лв.)</option>
+            <option value="RSD" data-i18n="currency.opt.rsd">Serbian Dinar (RSD, дин.)</option>
+            <option value="SEK" data-i18n="currency.opt.sek">Swedish Krona (SEK, kr)</option>
+            <option value="NOK" data-i18n="currency.opt.nok">Norwegian Krone (NOK, kr)</option>
+            <option value="DKK" data-i18n="currency.opt.dkk">Danish Krone (DKK, kr)</option>
+            <option value="ISK" data-i18n="currency.opt.isk">Icelandic Krona (ISK, kr)</option>
+          </optgroup>
+          <optgroup label="Americas" data-i18n-label="currency.region.americas">
+            <option value="USD" data-i18n="currency.opt.usd">US Dollar (USD, $)</option>
+            <option value="CAD" data-i18n="currency.opt.cad">Canadian Dollar (CAD, CA$)</option>
+            <option value="BRL" data-i18n="currency.opt.brl">Brazilian Real (BRL, R$)</option>
+            <option value="MXN" data-i18n="currency.opt.mxn">Mexican Peso (MXN, Mex$)</option>
+            <option value="ARS" data-i18n="currency.opt.ars">Argentine Peso (ARS, $)</option>
+            <option value="CLP" data-i18n="currency.opt.clp">Chilean Peso (CLP, $)</option>
+            <option value="COP" data-i18n="currency.opt.cop">Colombian Peso (COP, $)</option>
+            <option value="PEN" data-i18n="currency.opt.pen">Peruvian Sol (PEN, S/)</option>
+          </optgroup>
+          <optgroup label="Asia-Pacific" data-i18n-label="currency.region.asia_pacific">
+            <option value="AUD" data-i18n="currency.opt.aud">Australian Dollar (AUD, A$)</option>
+            <option value="CNY" data-i18n="currency.opt.cny">Chinese Yuan (CNY, ¥)</option>
+            <option value="HKD" data-i18n="currency.opt.hkd">Hong Kong Dollar (HKD, HK$)</option>
+            <option value="IDR" data-i18n="currency.opt.idr">Indonesian Rupiah (IDR, Rp)</option>
+            <option value="INR" data-i18n="currency.opt.inr">Indian Rupee (INR, ₹)</option>
+            <option value="JPY" data-i18n="currency.opt.jpy">Japanese Yen (JPY, ¥)</option>
+            <option value="KRW" data-i18n="currency.opt.krw">South Korean Won (KRW, ₩)</option>
+            <option value="MYR" data-i18n="currency.opt.myr">Malaysian Ringgit (MYR, RM)</option>
+            <option value="NZD" data-i18n="currency.opt.nzd">New Zealand Dollar (NZD, NZ$)</option>
+            <option value="PHP" data-i18n="currency.opt.php">Philippine Peso (PHP, ₱)</option>
+            <option value="PKR" data-i18n="currency.opt.pkr">Pakistani Rupee (PKR, ₨)</option>
+            <option value="BDT" data-i18n="currency.opt.bdt">Bangladeshi Taka (BDT, ৳)</option>
+            <option value="SGD" data-i18n="currency.opt.sgd">Singapore Dollar (SGD, S$)</option>
+            <option value="THB" data-i18n="currency.opt.thb">Thai Baht (THB, ฿)</option>
+            <option value="TWD" data-i18n="currency.opt.twd">New Taiwan Dollar (TWD, NT$)</option>
+            <option value="VND" data-i18n="currency.opt.vnd">Vietnamese Dong (VND, ₫)</option>
+            <option value="MNT" data-i18n="currency.opt.mnt">Mongolian Tugrik (MNT, ₮)</option>
+          </optgroup>
+          <optgroup label="Middle East & Africa" data-i18n-label="currency.region.middle_east_africa">
+            <option value="AED" data-i18n="currency.opt.aed">UAE Dirham (AED, د.إ)</option>
+            <option value="SAR" data-i18n="currency.opt.sar">Saudi Riyal (SAR, ﷼)</option>
+            <option value="QAR" data-i18n="currency.opt.qar">Qatari Riyal (QAR, ر.ق)</option>
+            <option value="TRY" data-i18n="currency.opt.try">Turkish Lira (TRY, ₺)</option>
+            <option value="ILS" data-i18n="currency.opt.ils">Israeli New Shekel (ILS, ₪)</option>
+            <option value="EGP" data-i18n="currency.opt.egp">Egyptian Pound (EGP, E£)</option>
+            <option value="ZAR" data-i18n="currency.opt.zar">South African Rand (ZAR, R)</option>
+            <option value="NGN" data-i18n="currency.opt.ngn">Nigerian Naira (NGN, ₦)</option>
+            <option value="KES" data-i18n="currency.opt.kes">Kenyan Shilling (KES, KSh)</option>
+            <option value="MAD" data-i18n="currency.opt.mad">Moroccan Dirham (MAD, DH)</option>
+            <option value="KWD" data-i18n="currency.opt.kwd">Kuwaiti Dinar (KWD, KD)</option>
+            <option value="BHD" data-i18n="currency.opt.bhd">Bahraini Dinar (BHD, BD)</option>
+            <option value="OMR" data-i18n="currency.opt.omr">Omani Rial (OMR, OMR)</option>
+          </optgroup>
+        </select>
+      </article>
+
+      <article class="settings-row" data-setting-key="${SETTING_CURRENCY_DISPLAY}">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.currency_display.title">Price Display</h3>
+          <p data-i18n="settings.option.currency_display.desc">Choose how university prices are displayed across the catalog and detail pages.</p>
+        </div>
+        <select id="settingCurrencyDisplay" class="settings-select" data-setting-input="${SETTING_CURRENCY_DISPLAY}" aria-label="Price Display" data-i18n-aria-label="settings.option.currency_display.title">
+          <option value="preferred" data-i18n="currency.display.preferred">In preferred currency</option>
+          <option value="both" data-i18n="currency.display.both">Both (preferred + original)</option>
+          <option value="original" data-i18n="currency.display.original">In original currency</option>
+        </select>
       </article>
     </div>
   </section>

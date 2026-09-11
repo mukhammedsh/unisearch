@@ -3,13 +3,13 @@ import {
   escapeHtml,
   escapeHtmlAttr,
   getSelectedAdmissionChoice,
-  moneyUSD,
   motionPress,
   replayMotion,
   saveSelectedAdmissionChoice,
   markMotionEnter,
 } from "../../utils.js";
 import { t } from "../../i18n.js";
+import { formatPrice } from "../../currency.js";
 import {
   admissionChoiceKey,
   applyPercentWidths,
@@ -420,7 +420,8 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
           const isRecommended = Boolean(recommendedChoiceKey && choiceKey === recommendedChoiceKey);
           const isGrant = getTrackFundingType(funding) === "grant";
           const optionPrice = annualCostForTrack(choice);
-          const priceValue = Number.isFinite(Number(optionPrice)) ? moneyUSD(optionPrice) : unknownFieldText("placeholder.field.cost", "Cost");
+          const uniCurrency = (funding?.finance_override || choice?.finance_override || university?.finance)?.currency || university?.finance?.currency || "USD";
+          const priceValue = Number.isFinite(Number(optionPrice)) ? formatPrice(optionPrice, uniCurrency) : unknownFieldText("placeholder.field.cost", "Cost");
           const fundingMeta = [
             funding.funding_program ? [t("admission.track.funding_program", "Funding program"), trTrackDescription(university.id, funding.id, funding.funding_program)] : null,
             funding.funding_source ? [t("admission.track.funding_source", "Funding source"), trTrackDescription(university.id, funding.id, funding.funding_source)] : null,
@@ -693,8 +694,9 @@ export function renderFinanceSection({
           .filter((price) => Number.isFinite(Number(price)) && Number(price) > 0);
         if (prices.length > 0) minTotal = Math.min(...prices);
       }
+      const uniCurrency = university?.finance?.currency || "USD";
       priceEl.innerHTML = Number.isFinite(Number(minTotal))
-        ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span> ${moneyUSD(minTotal)}`
+        ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span> ${formatPrice(minTotal, uniCurrency)}`
         : escapeHtml(unknownFieldText("placeholder.field.cost", "Cost"));
     }
     if (container) {
@@ -725,7 +727,8 @@ export function renderFinanceSection({
           const financeData = option.finance_override || university.finance;
           const total = modeAwareAnnualCost(financeData || {}, profileStudyMode);
           const breakdown = modeAwareBreakdown(financeData || {}, profileStudyMode);
-          const totalText = moneyOrUnknown(total, "placeholder.field.total_cost", "Total cost");
+          const uniCurrency = financeData?.currency || university?.finance?.currency || "USD";
+          const totalText = moneyOrUnknown(total, "placeholder.field.total_cost", "Total cost", uniCurrency);
           const colorClasses = ["cost-color-1", "cost-color-2", "cost-color-3", "cost-color-4", "cost-color-5"];
           const breakdownEntries = Object.entries(breakdown || {})
             .map(([key, value], idx) => {
@@ -771,13 +774,13 @@ export function renderFinanceSection({
                       <span class="cost-legend-dot ${entry.colorClass}"></span>
                       <span class="cost-legend-label">${escapeHtml(entry.label)}</span>
                     </dt>
-                    <dd class="cost-legend-value">${escapeHtml(moneyUSD(entry.value))}</dd>
+                    <dd class="cost-legend-value">${escapeHtml(formatPrice(entry.value, uniCurrency))}</dd>
                   </div>
                 `).join("")}
               </dl>
             `
             : (breakdownEntries.length === 1
-              ? `<div class="cost-legend-single">${escapeHtml(breakdownEntries[0].label)}: <strong>${escapeHtml(moneyUSD(breakdownEntries[0].value))}</strong></div>`
+              ? `<div class="cost-legend-single">${escapeHtml(breakdownEntries[0].label)}: <strong>${escapeHtml(formatPrice(breakdownEntries[0].value, uniCurrency))}</strong></div>`
               : `<div class="cost-legend-single">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`);
           const breakdownNoteHtml = breakdownNote
             ? `<div class="finance-breakdown-note">${escapeHtml(breakdownNote)}</div>`

@@ -38,6 +38,13 @@ import {
 import { renderNoConnection } from "../components.js";
 import { heroIcon } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
+import {
+  getPreferredCurrency,
+  loadRates,
+  convert,
+  getFilterLimits,
+  formatMoney,
+} from "../currency.js";
 import { navigateToAppRoute, routeUniversityDetail } from "../routes.js";
 import { 
   compareChoiceKey,
@@ -120,10 +127,12 @@ let __universitiesSettingsChangedHandler = null;
 let __universitiesScrollHandler = null;
 let __universitiesPagehideHandler = null;
 let __universitiesBeforeunloadHandler = null;
+let __universitiesCurrencyChangedHandler = null;
 
 export function initUniversitiesPage() {
-    const MAX_TUITION = 150000;
-    const MIN_RANGE_GAP = 100;
+    const prefCurrency = getPreferredCurrency();
+    let currentCurrency = prefCurrency;
+    let currentLimits = getFilterLimits(prefCurrency);
     const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
     const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
     const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
@@ -156,7 +165,7 @@ export function initUniversitiesPage() {
     const clampTuition = (value, fallback = 0) => {
         const n = Number(value);
         if (!Number.isFinite(n)) return fallback;
-        return Math.max(0, Math.min(MAX_TUITION, Math.round(n)));
+        return Math.max(currentLimits.min, Math.min(currentLimits.max, Math.round(n)));
     };
     const clampPercent = (value, fallback = 50) => {
         const n = Number(value);
@@ -169,6 +178,7 @@ export function initUniversitiesPage() {
         stateSelect: $("stateSelect"), citySelect: $("citySelect"),
         minInput: $("minCostInput"), maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
+        minCostLabel: $("minCostLabel"), maxCostLabel: $("maxCostLabel"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
         sortAiTagsHint: $("sortAiTagsHint"),
@@ -346,14 +356,47 @@ export function initUniversitiesPage() {
 
     const pageParamsSort = pageParams.get("sort");
     const defaultSortMode = hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc";
-    const initialMin = clampTuition(savedState.min_tuition, 0);
-    const initialMax = clampTuition(savedState.max_tuition, MAX_TUITION);
+    let initialMin = currentLimits.min;
+    let initialMax = currentLimits.max;
+
+    if (savedState.min_tuition !== undefined && savedState.min_tuition !== null && savedState.min_tuition !== "") {
+        let rawMin = Number(savedState.min_tuition);
+        if (Number.isFinite(rawMin)) {
+            if (savedState.currency && savedState.currency !== currentCurrency) {
+                const usd = convert(rawMin, savedState.currency, "USD");
+                rawMin = Math.round(convert(usd, "USD", currentCurrency) / currentLimits.step) * currentLimits.step;
+            }
+            initialMin = Math.max(currentLimits.min, Math.min(currentLimits.max, rawMin));
+        }
+    }
+
+    if (savedState.max_tuition !== undefined && savedState.max_tuition !== null && savedState.max_tuition !== "") {
+        let rawMax = Number(savedState.max_tuition);
+        if (Number.isFinite(rawMax)) {
+            if (savedState.currency && savedState.currency !== currentCurrency) {
+                const oldMaxLimit = getFilterLimits(savedState.currency).max;
+                if (rawMax >= oldMaxLimit) {
+                    rawMax = currentLimits.max;
+                } else {
+                    const usd = convert(rawMax, savedState.currency, "USD");
+                    rawMax = Math.round(convert(usd, "USD", currentCurrency) / currentLimits.step) * currentLimits.step;
+                }
+            }
+            initialMax = Math.max(currentLimits.min, Math.min(currentLimits.max, rawMax));
+        }
+    }
+
+    const minRangeGap = currentLimits.step;
+    if (initialMin > currentLimits.max - minRangeGap) initialMin = currentLimits.max - minRangeGap;
+    if (initialMax < initialMin + minRangeGap) initialMax = Math.min(currentLimits.max, initialMin + minRangeGap);
+
     const state = {
         q: savedState.q || "", country: savedState.country || "", region: savedState.region || "", 
         city: savedState.city || "", study_level: savedState.study_level || "",
         funding_type: getProfileFundingQueryValue(),
+        currency: currentCurrency,
         min_tuition: initialMin,
-        max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
+        max_tuition: initialMax, 
         sort: normalizeSortMode(pageParamsSort || savedState.sort || defaultSortMode),
         practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
         social_vs_hardcore: clampPercent(
@@ -372,11 +415,6 @@ export function initUniversitiesPage() {
         compareDiffOnly: false,
         viewMode: savedState.viewMode || "list", page: 1, limit: 24,
     };
-    if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
-    state.max_tuition = Math.min(MAX_TUITION, state.max_tuition);
-    if (state.max_tuition < state.min_tuition + MIN_RANGE_GAP) {
-        state.max_tuition = state.min_tuition + MIN_RANGE_GAP;
-    }
     const getUniversitiesSkeletonCount = () => {
         const renderedColumns = el.list
             ? getComputedStyle(el.list).gridTemplateColumns.split(" ").filter(Boolean).length
@@ -436,7 +474,7 @@ export function initUniversitiesPage() {
         if (state.country) count += 1;
         if (state.region) count += 1;
         if (state.city) count += 1;
-        if (Number(state.min_tuition) > 0 || Number(state.max_tuition) < MAX_TUITION) count += 1;
+        if (Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max) count += 1;
         if (state.sort && state.sort !== "name_asc") count += 1;
         if (state.study_level) count += 1;
         if (state.funding_type && state.funding_type !== "any") count += 1;
@@ -1591,12 +1629,37 @@ export function initUniversitiesPage() {
     }
 
     // --- Sliders ---
+    function applySliderBounds(limits, prefCurrency = (currentCurrency || getPreferredCurrency())) {
+        currentLimits = limits;
+        [el.minSlider, el.maxSlider, el.minInput, el.maxInput].forEach((input) => {
+            if (!input) return;
+            input.min = String(limits.min);
+            input.max = String(limits.max);
+            input.step = String(limits.step);
+        });
+        if (el.minInput) el.minInput.placeholder = String(limits.min);
+        if (el.maxInput) el.maxInput.placeholder = String(limits.max);
+        updateSliderLabels();
+    }
+
+    function updateSliderLabels() {
+        const pref = currentCurrency || getPreferredCurrency();
+        const minVal = Number(el.minSlider ? el.minSlider.value : state.min_tuition) || 0;
+        const maxVal = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition) || currentLimits.max;
+        const formattedMin = formatMoney(minVal, pref);
+        const formattedMax = formatMoney(maxVal, pref);
+        if (el.minCostLabel) el.minCostLabel.textContent = formattedMin;
+        if (el.maxCostLabel) el.maxCostLabel.textContent = formattedMax;
+        if (el.minSlider) el.minSlider.setAttribute("aria-valuetext", formattedMin);
+        if (el.maxSlider) el.maxSlider.setAttribute("aria-valuetext", formattedMax);
+    }
+
     function fillTrack() {
         if (!el.minSlider || !el.maxSlider || !el.track) return;
         const minVal = Number(el.minSlider.value) || 0;
         const maxVal = Number(el.maxSlider.value) || 0;
-        const minLimit = Number(el.minSlider.min) || 0;
-        const maxRange = Number(el.maxSlider.max) || 150000;
+        const minLimit = Number(el.minSlider.min) || currentLimits.min || 0;
+        const maxRange = Number(el.maxSlider.max) || currentLimits.max || 50000;
         const rangeSpan = Math.max(1, maxRange - minLimit);
 
         const r1 = Math.max(0, Math.min(1, (minVal - minLimit) / rangeSpan));
@@ -1620,22 +1683,30 @@ export function initUniversitiesPage() {
         el.track.style.background = `linear-gradient(to right, ${inactive} 0%, ${inactive} ${pos1}, ${active} ${pos1}, ${active} ${pos2}, ${inactive} ${pos2}, ${inactive} 100%)`;
     }
     function slideMin() {
-        let minVal = parseInt(el.minSlider.value);
-        const maxVal = parseInt(el.maxSlider.value);
-        if (maxVal - minVal <= MIN_RANGE_GAP) {
-            minVal = Math.max(0, maxVal - MIN_RANGE_GAP);
+        const gap = currentLimits.step;
+        let minVal = parseInt(el.minSlider.value, 10) || 0;
+        const maxVal = parseInt(el.maxSlider.value, 10) || currentLimits.max;
+        if (maxVal - minVal < gap) {
+            minVal = Math.max(currentLimits.min, maxVal - gap);
             el.minSlider.value = String(minVal);
         }
-        el.minInput.value = el.minSlider.value; state.min_tuition = el.minSlider.value; fillTrack();
+        el.minInput.value = el.minSlider.value;
+        state.min_tuition = Number(el.minSlider.value);
+        fillTrack();
+        updateSliderLabels();
     }
     function slideMax() {
-        const minVal = parseInt(el.minSlider.value);
-        let maxVal = parseInt(el.maxSlider.value);
-        if (maxVal - minVal <= MIN_RANGE_GAP) {
-            maxVal = Math.min(MAX_TUITION, minVal + MIN_RANGE_GAP);
+        const gap = currentLimits.step;
+        const minVal = parseInt(el.minSlider.value, 10) || 0;
+        let maxVal = parseInt(el.maxSlider.value, 10) || currentLimits.max;
+        if (maxVal - minVal < gap) {
+            maxVal = Math.min(currentLimits.max, minVal + gap);
             el.maxSlider.value = String(maxVal);
         }
-        el.maxInput.value = el.maxSlider.value; state.max_tuition = el.maxSlider.value; fillTrack();
+        el.maxInput.value = el.maxSlider.value;
+        state.max_tuition = Number(el.maxSlider.value);
+        fillTrack();
+        updateSliderLabels();
     }
 
     // --- Карта ---
@@ -1741,8 +1812,20 @@ export function initUniversitiesPage() {
     if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) initLocations();
     window.addEventListener("citiesLoaded", initLocations);
 
+    applySliderBounds(currentLimits, currentCurrency);
     applyToForm();
     updateSliderVisibility(); 
+    
+    loadRates().then(() => {
+        const pref = getPreferredCurrency();
+        if (pref === currentCurrency) {
+            const freshLimits = getFilterLimits(pref);
+            currentLimits = freshLimits;
+            applySliderBounds(freshLimits, pref);
+            fillTrack();
+            updateSliderLabels();
+        }
+    }).catch(() => {});
     
     switchView(state.viewMode, false).catch((err) => console.error(err));
     
@@ -1939,8 +2022,8 @@ export function initUniversitiesPage() {
             city: "",
             study_level: "",
             funding_type: getProfileFundingQueryValue(),
-            min_tuition: 0,
-            max_tuition: MAX_TUITION,
+            min_tuition: currentLimits.min,
+            max_tuition: currentLimits.max,
             sort: "name_asc",
             practice_vs_science: 50,
             social_vs_hardcore: 50,
@@ -2181,15 +2264,33 @@ export function initUniversitiesPage() {
     }
 
     el.minInput?.addEventListener("change", () => {
-        let val = clampTuition(el.minInput.value, 0);
-        if (val >= parseInt(el.maxSlider.value)) val = Math.max(0, parseInt(el.maxSlider.value) - MIN_RANGE_GAP);
-        el.minSlider.value = val; state.min_tuition = val; fillTrack(); refetch();
+        const gap = currentLimits.step;
+        let val = clampTuition(el.minInput.value, currentLimits.min);
+        const maxVal = parseInt(el.maxSlider?.value, 10) || currentLimits.max;
+        if (val > maxVal - gap) {
+            val = Math.max(currentLimits.min, maxVal - gap);
+        }
+        el.minInput.value = String(val);
+        if (el.minSlider) el.minSlider.value = String(val);
+        state.min_tuition = val;
+        fillTrack();
+        updateSliderLabels();
+        refetch();
     });
 
     el.maxInput?.addEventListener("change", () => {
-        let val = clampTuition(el.maxInput.value, MAX_TUITION);
-        if (val <= parseInt(el.minSlider.value)) val = Math.min(MAX_TUITION, parseInt(el.minSlider.value) + MIN_RANGE_GAP);
-        el.maxSlider.value = val; state.max_tuition = val; fillTrack(); refetch();
+        const gap = currentLimits.step;
+        let val = clampTuition(el.maxInput.value, currentLimits.max);
+        const minVal = parseInt(el.minSlider?.value, 10) || 0;
+        if (val < minVal + gap) {
+            val = Math.min(currentLimits.max, minVal + gap);
+        }
+        el.maxInput.value = String(val);
+        if (el.maxSlider) el.maxSlider.value = String(val);
+        state.max_tuition = val;
+        fillTrack();
+        updateSliderLabels();
+        refetch();
     });
 
     const refreshLocationFilterLabels = () => {
@@ -2247,6 +2348,76 @@ export function initUniversitiesPage() {
         renderRecentlyViewedBar();
     };
     window.addEventListener("settingsChanged", __universitiesSettingsChangedHandler);
+
+    if (__universitiesCurrencyChangedHandler) {
+        window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
+    }
+    __universitiesCurrencyChangedHandler = (e) => {
+        const newCurrency = String(e?.detail?.currency || e?.detail?.preferredCurrency || getPreferredCurrency() || "USD").trim().toUpperCase();
+        const oldCurrency = currentCurrency || "USD";
+        if (newCurrency === oldCurrency) {
+            if (typeof fetchAndRender === "function" && !isCompareResultsMode()) {
+                fetchAndRender();
+            }
+            return;
+        }
+
+        // 1. Read current slider positions
+        const oldMin = Number(el.minSlider ? el.minSlider.value : state.min_tuition);
+        const oldMax = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition);
+        const oldLimits = currentLimits || getFilterLimits(oldCurrency);
+
+        // 2. Convert: old currency -> USD -> new currency
+        const wasAtMin = !Number.isFinite(oldMin) || oldMin <= oldLimits.min;
+        const wasAtMax = !Number.isFinite(oldMax) || oldMax >= oldLimits.max;
+
+        const usdMin = convert(oldMin, oldCurrency, "USD");
+        const usdMax = convert(oldMax, oldCurrency, "USD");
+
+        const convertedMin = convert(usdMin, "USD", newCurrency);
+        const convertedMax = convert(usdMax, "USD", newCurrency);
+
+        // 3. Get new bounds from getFilterLimits(newCurrency)
+        const newLimits = getFilterLimits(newCurrency);
+        currentLimits = newLimits;
+        currentCurrency = newCurrency;
+
+        // 4. Clamp converted positions to new bounds
+        const step = newLimits.step || 1;
+        let clampedMin = wasAtMin ? newLimits.min : Math.max(newLimits.min, Math.min(newLimits.max, Math.round(convertedMin / step) * step));
+        let clampedMax = wasAtMax ? newLimits.max : Math.max(newLimits.min, Math.min(newLimits.max, Math.round(convertedMax / step) * step));
+
+        if (clampedMax - clampedMin < step) {
+            if (clampedMin + step <= newLimits.max) {
+                clampedMax = clampedMin + step;
+            } else {
+                clampedMin = Math.max(newLimits.min, clampedMax - step);
+            }
+        }
+
+        // 5. Update slider min/max/step attributes
+        applySliderBounds(newLimits, newCurrency);
+
+        // 6. Update slider positions and input values
+        if (el.minSlider) el.minSlider.value = String(clampedMin);
+        if (el.maxSlider) el.maxSlider.value = String(clampedMax);
+        if (el.minInput) el.minInput.value = String(clampedMin);
+        if (el.maxInput) el.maxInput.value = String(clampedMax);
+        state.min_tuition = clampedMin;
+        state.max_tuition = clampedMax;
+        state.currency = newCurrency;
+        saveFilters(state);
+        fillTrack();
+
+        // 7. Re-render slider labels
+        updateSliderLabels();
+
+        // Re-render visible cards and map markers
+        if (typeof fetchAndRender === "function" && !isCompareResultsMode()) {
+            fetchAndRender();
+        }
+    };
+    window.addEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
 
     let scrollSaveTimer = null;
     const onCatalogScroll = () => {
@@ -2436,6 +2607,7 @@ export function initUniversitiesPage() {
                     const detailHref = routeUniversityDetail(uniId);
                     const isActive = uniId === preferredId;
                     const isCompared = isCompareSelectionMode() && compareUniversityIds.has(uniId);
+                    const uniCurrency = u?.finance?.currency || "USD";
                     return `
                         <article class="u-map-result-card${isActive ? " is-active" : ""}${isCompared ? " is-selected" : ""}" data-uni-id="${escapeHtmlAttr(uniId)}" aria-selected="${isCompared ? "true" : "false"}">
                             <button type="button" class="u-map-result-focus" data-uni-focus="${escapeHtmlAttr(uniId)}">
@@ -2449,7 +2621,7 @@ export function initUniversitiesPage() {
                                 <span class="u-map-result-rank">${rank !== null && rank > 0 ? `#${escapeHtml(String(rank))}` : ""}</span>
                             </button>
                             <div class="u-map-result-bottom">
-                                <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost"))}</span>
+                                <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost", uniCurrency))}</span>
                                 <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details →"))}</a>
                             </div>
                         </article>
@@ -2643,6 +2815,25 @@ export function initUniversitiesPage() {
         );
     }
     
+    function getApiTuitionParams() {
+        const pref = currentCurrency || getPreferredCurrency();
+        const minSliderVal = Number(el.minSlider ? el.minSlider.value : state.min_tuition);
+        const maxSliderVal = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition);
+        const result = {};
+
+        if (Number.isFinite(minSliderVal) && minSliderVal > currentLimits.min) {
+            const usdMin = convert(minSliderVal, pref, "USD");
+            result.min_tuition = Math.max(0, Math.floor(usdMin) - 1);
+        }
+
+        if (Number.isFinite(maxSliderVal) && maxSliderVal < currentLimits.max) {
+            const usdMax = convert(maxSliderVal, pref, "USD");
+            result.max_tuition = Math.ceil(usdMax) + 1;
+        }
+
+        return result;
+    }
+
     function buildParams(forApi = false) {
         const p = new URLSearchParams();
         const uiLang = getCurrentLanguage();
@@ -2651,8 +2842,9 @@ export function initUniversitiesPage() {
         state.funding_type = getProfileFundingQueryValue();
         if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
         if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
-        if (state.min_tuition) p.set("min_tuition", state.min_tuition);
-        if (state.max_tuition) p.set("max_tuition", state.max_tuition);
+        const tuitionParams = getApiTuitionParams();
+        if (tuitionParams.min_tuition !== undefined) p.set("min_tuition", String(tuitionParams.min_tuition));
+        if (tuitionParams.max_tuition !== undefined) p.set("max_tuition", String(tuitionParams.max_tuition));
         if (state.study_level) p.set("study_level", state.study_level);
         if (state.funding_type) p.set("funding_type", state.funding_type);
 
@@ -2708,8 +2900,9 @@ export function initUniversitiesPage() {
         if (state.city) payload.city = state.city;
         if (state.study_level) payload.study_level = state.study_level;
         if (state.funding_type) payload.funding_type = state.funding_type;
-        if (state.min_tuition) payload.min_tuition = state.min_tuition;
-        if (state.max_tuition) payload.max_tuition = state.max_tuition;
+        const tuitionParams = getApiTuitionParams();
+        if (tuitionParams.min_tuition !== undefined) payload.min_tuition = tuitionParams.min_tuition;
+        if (tuitionParams.max_tuition !== undefined) payload.max_tuition = tuitionParams.max_tuition;
 
         const major = String(profile?.major || "").trim();
         const mode = String(profile?.studyMode || "").trim();
@@ -2758,6 +2951,7 @@ export function initUniversitiesPage() {
         syncSavedFilterButtons();
         
         fillTrack(); 
+        updateSliderLabels();
 
         ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect"].forEach(id => initCustomSelect(id));
         updateSliderVisibility();
@@ -2825,8 +3019,22 @@ export function initUniversitiesPage() {
         if(sp.has("region")) state.region = sp.get("region");
         if(sp.has("city")) state.city = sp.get("city");
         if(sp.has("study_level")) state.study_level = sp.get("study_level");
-        if(sp.has("min_tuition")) state.min_tuition = clampTuition(sp.get("min_tuition"), state.min_tuition);
-        if(sp.has("max_tuition")) state.max_tuition = clampTuition(sp.get("max_tuition"), state.max_tuition);
+        if(sp.has("min_tuition")) {
+            const raw = Number(sp.get("min_tuition"));
+            if (Number.isFinite(raw)) {
+                const inPref = currentCurrency === "USD" ? raw : convert(raw, "USD", currentCurrency);
+                const stepped = Math.round(inPref / currentLimits.step) * currentLimits.step;
+                state.min_tuition = clampTuition(stepped, state.min_tuition);
+            }
+        }
+        if(sp.has("max_tuition")) {
+            const raw = Number(sp.get("max_tuition"));
+            if (Number.isFinite(raw)) {
+                const inPref = currentCurrency === "USD" ? raw : convert(raw, "USD", currentCurrency);
+                const stepped = Math.round(inPref / currentLimits.step) * currentLimits.step;
+                state.max_tuition = clampTuition(stepped, state.max_tuition);
+            }
+        }
         if (sp.has("only_saved")) state.only_saved = ["1", "true", "yes", "on"].includes(String(sp.get("only_saved") || "").trim().toLowerCase());
         if(sp.has("page")) {
             const page = Number(sp.get("page"));
@@ -2841,10 +3049,11 @@ export function initUniversitiesPage() {
             if (id) focusUniId = id;
         }
 
-        if (state.min_tuition > (MAX_TUITION - MIN_RANGE_GAP)) state.min_tuition = MAX_TUITION - MIN_RANGE_GAP;
-        state.max_tuition = Math.min(MAX_TUITION, state.max_tuition);
-        if (state.max_tuition < state.min_tuition + MIN_RANGE_GAP) {
-            state.max_tuition = state.min_tuition + MIN_RANGE_GAP;
+        const minGap = currentLimits.step;
+        if (state.min_tuition > (currentLimits.max - minGap)) state.min_tuition = currentLimits.max - minGap;
+        state.max_tuition = Math.min(currentLimits.max, state.max_tuition);
+        if (state.max_tuition < state.min_tuition + minGap) {
+            state.max_tuition = state.min_tuition + minGap;
         }
     }
 
@@ -3258,7 +3467,8 @@ export function initUniversitiesPage() {
         const overlayTitle = whyText ? `${name}. ${whyText}` : String(name || "");
         const rankValue = toFiniteNumber(u?.rank);
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
-        const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost");
+        const uniCurrency = u?.finance?.currency || "USD";
+        const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency);
         const isSaved = savedUniversityIds.has(String(id));
         const showCompareAction = isCompareSelectionMode();
         const isCompared = showCompareAction && compareUniversityIds.has(String(id));

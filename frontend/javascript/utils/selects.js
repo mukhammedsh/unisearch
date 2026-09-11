@@ -116,6 +116,8 @@ export function initCustomSelect(selectId) {
 
   const closeSelect = (restoreFocus = false) => {
     if (!wrapper.classList.contains("open")) return;
+    typeaheadBuffer = "";
+    clearTimeout(typeaheadTimeout);
     wrapper.classList.remove("open");
     trigger.setAttribute("aria-expanded", "false");
     customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
@@ -132,7 +134,9 @@ export function initCustomSelect(selectId) {
     select.value = nextValue;
     if (changed) select.dispatchEvent(new Event("change"));
     else syncFromNativeSelect();
-    closeSelect(true);
+    if (wrapper.classList.contains("open")) {
+      closeSelect(true);
+    }
   };
 
   const syncSelectedOptionState = () => {
@@ -150,12 +154,15 @@ export function initCustomSelect(selectId) {
   const rebuildCustomOptions = () => {
     customOptions.innerHTML = "";
     const fragment = document.createDocumentFragment();
-    Array.from(select.options).forEach((option, idx) => {
+    let optIndex = 0;
+
+    const createOptionNode = (option) => {
       const node = document.createElement("div");
       node.classList.add("custom-option");
-      node.id = `${listboxId}-opt-${idx}`;
+      node.id = `${listboxId}-opt-${optIndex++}`;
       node.setAttribute("role", "option");
       node.setAttribute("data-value", String(option.value || ""));
+      node.setAttribute("data-label", option.text || "");
       node.setAttribute("aria-selected", option.selected ? "true" : "false");
       if (option.disabled) {
         node.classList.add("is-disabled");
@@ -164,8 +171,28 @@ export function initCustomSelect(selectId) {
       const flag = showFlags ? getFlagImg(option.value) : "";
       node.innerHTML = flag ? `${flag} <span>${escapeHtml(option.text)}</span>` : escapeHtml(option.text);
       if (option.selected) node.classList.add("selected");
-      fragment.appendChild(node);
+      return node;
+    };
+
+    Array.from(select.children).forEach((child) => {
+      if (child.tagName === "OPTGROUP") {
+        const groupLabel = child.getAttribute("label") || "";
+        const groupHeader = document.createElement("div");
+        groupHeader.classList.add("custom-optgroup-label");
+        groupHeader.setAttribute("role", "presentation");
+        groupHeader.textContent = groupLabel;
+        fragment.appendChild(groupHeader);
+
+        Array.from(child.children).forEach((subChild) => {
+          if (subChild.tagName === "OPTION") {
+            fragment.appendChild(createOptionNode(subChild));
+          }
+        });
+      } else if (child.tagName === "OPTION") {
+        fragment.appendChild(createOptionNode(child));
+      }
     });
+
     customOptions.appendChild(fragment);
   };
 
@@ -220,8 +247,80 @@ export function initCustomSelect(selectId) {
     select.addEventListener("change", syncFromNativeSelect);
   }
 
+  let typeaheadBuffer = "";
+  let typeaheadTimeout = null;
+
+  const handleTypeahead = (char, isOpen) => {
+    const enabled = getEnabledOptions();
+    if (!enabled.length) return;
+
+    clearTimeout(typeaheadTimeout);
+    typeaheadTimeout = setTimeout(() => {
+      typeaheadBuffer = "";
+    }, 800);
+
+    typeaheadBuffer += char.toLowerCase();
+
+    const currentIdx = isOpen
+      ? (highlightedIndex >= 0 ? highlightedIndex : 0)
+      : Math.max(0, enabled.findIndex((opt) => String(opt.getAttribute("data-value") || "") === String(select.value || "")));
+
+    const isSingleChar = typeaheadBuffer.length === 1;
+    const isRepeatedChar = typeaheadBuffer.length > 1 && typeaheadBuffer.split("").every((c) => c === typeaheadBuffer[0]);
+
+    let matchIdx = -1;
+
+    const matchesQuery = (node, query) => {
+      const text = (node.getAttribute("data-label") || node.textContent || "").trim().toLowerCase();
+      const val = String(node.getAttribute("data-value") || "").trim().toLowerCase();
+      return text.startsWith(query) || val.startsWith(query);
+    };
+
+    const currentOption = enabled[currentIdx];
+    const currentOptionText = (currentOption?.getAttribute("data-label") || currentOption?.textContent || "").trim().toLowerCase();
+    const currentOptionVal = String(currentOption?.getAttribute("data-value") || "").trim().toLowerCase();
+    const isSameLetterAsCurrent = currentOptionText.startsWith(typeaheadBuffer[0]) || currentOptionVal.startsWith(typeaheadBuffer[0]);
+
+    if (isRepeatedChar || (isSingleChar && isSameLetterAsCurrent)) {
+      const searchChar = typeaheadBuffer[0];
+      for (let i = currentIdx + 1; i < enabled.length; i++) {
+        if (matchesQuery(enabled[i], searchChar)) {
+          matchIdx = i;
+          break;
+        }
+      }
+      if (matchIdx === -1) {
+        for (let i = 0; i <= currentIdx; i++) {
+          if (matchesQuery(enabled[i], searchChar)) {
+            matchIdx = i;
+            break;
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < enabled.length; i++) {
+        if (matchesQuery(enabled[i], typeaheadBuffer)) {
+          matchIdx = i;
+          break;
+        }
+      }
+    }
+
+    if (matchIdx !== -1) {
+      if (isOpen) {
+        setHighlightedOption(matchIdx, true);
+      } else {
+        selectOptionByNode(enabled[matchIdx]);
+      }
+    }
+  };
+
   if (trigger.dataset.keyBound !== "1") {
     trigger.dataset.keyBound = "1";
+    trigger.addEventListener("blur", () => {
+      typeaheadBuffer = "";
+      clearTimeout(typeaheadTimeout);
+    });
     trigger.addEventListener("keydown", (event) => {
       if (select.disabled) return;
       const isOpen = wrapper.classList.contains("open");
@@ -282,6 +381,18 @@ export function initCustomSelect(selectId) {
         case "Tab":
           if (isOpen) {
             closeSelect(false);
+          }
+          break;
+        default:
+          if (
+            event.key &&
+            event.key.length === 1 &&
+            !event.ctrlKey &&
+            !event.altKey &&
+            !event.metaKey
+          ) {
+            event.preventDefault();
+            handleTypeahead(event.key, isOpen);
           }
           break;
       }

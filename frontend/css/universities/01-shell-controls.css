@@ -736,6 +736,17 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   outline: none;
 }
 
+.budget-range-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  padding: 0 var(--space-1);
+}
+
 .u-label--between {
   display: flex;
   justify-content: space-between;

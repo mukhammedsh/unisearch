@@ -6,6 +6,7 @@ import {
   escapeHtmlAttr,
   moneyUSD,
 } from "../utils.js";
+import { formatPrice } from "../currency.js";
 
 import {
   renderGroupedExamPairRows,
@@ -245,9 +246,9 @@ export function textOrUnknown(value, fieldKey, fallbackField) {
   return text || unknownFieldText(fieldKey, fallbackField);
 }
 
-export function moneyOrUnknown(value, fieldKey, fallbackField) {
+export function moneyOrUnknown(value, fieldKey, fallbackField, currency = "USD") {
   return Number.isFinite(Number(value))
-    ? moneyUSD(value)
+    ? formatPrice(value, currency)
     : unknownFieldText(fieldKey, fallbackField);
 }
 
@@ -446,7 +447,7 @@ export function renderRoiBox(roi) {
         <div class="roi-metrics-divider" aria-hidden="true"></div>
         <div class="roi-metric">
           <div class="roi-metric-label">${escapeHtml(translateWord("total_per_year", "Total / year"))}</div>
-          <div class="roi-metric-value">${escapeHtml(moneyUSD(annualCost))}</div>
+          <div class="roi-metric-value">${escapeHtml(formatPrice(annualCost, "USD"))}</div>
           <div class="roi-metric-note">${escapeHtml(t("roi.formula", "Simple idea: compare average graduate salary with the cost of one study year."))}</div>
         </div>
       </div>

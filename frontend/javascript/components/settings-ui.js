@@ -1,7 +1,9 @@
-import { closeMotionLayer, replayMotion, showToast, trapFocus } from "../utils.js";
+import { closeMotionLayer, initCustomSelect, replayMotion, showToast, trapFocus } from "../utils.js";
 import { t } from "../i18n.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
+  SETTING_PREFERRED_CURRENCY,
+  SETTING_CURRENCY_DISPLAY,
   getSettingValue,
   readSettingsArray,
   setSettingValue,
@@ -27,9 +29,19 @@ export function initSettingsUI() {
   const syncSettingsInputs = () => {
     settingInputs.forEach((input) => {
       const key = String(input.getAttribute("data-setting-input") || "").trim();
-      input.checked = key === SETTING_STORE_RECENT_UNIVERSITIES
-        ? shouldStoreRecentUniversities()
-        : getSettingValue(key) === true;
+      if (input.tagName === "SELECT") {
+        const val = getSettingValue(key);
+        if (val !== undefined && val !== null) {
+          input.value = String(val);
+        }
+        if (input.id) {
+          initCustomSelect(input.id);
+        }
+      } else {
+        input.checked = key === SETTING_STORE_RECENT_UNIVERSITIES
+          ? shouldStoreRecentUniversities()
+          : getSettingValue(key) === true;
+      }
     });
   };
 
@@ -67,10 +79,31 @@ export function initSettingsUI() {
   settingInputs.forEach((input) => {
     input.addEventListener("change", () => {
       const key = String(input.getAttribute("data-setting-input") || "").trim();
-      const nextValue = key === SETTING_STORE_RECENT_UNIVERSITIES ? !input.checked : input.checked;
+      let nextValue;
+      if (input.tagName === "SELECT") {
+        nextValue = input.value;
+      } else {
+        nextValue = key === SETTING_STORE_RECENT_UNIVERSITIES ? !input.checked : input.checked;
+      }
       setSettingValue(key, nextValue);
       syncSettingsInputs();
-      replayMotion(input.closest(".settings-switch")?.querySelector(".settings-switch-track"), "motion-switch-toggle", { timeoutMs: 260 });
+      if (input.type === "checkbox") {
+        replayMotion(input.closest(".settings-switch")?.querySelector(".settings-switch-track"), "motion-switch-toggle", { timeoutMs: 260 });
+      }
+      if (key === SETTING_PREFERRED_CURRENCY || key === SETTING_CURRENCY_DISPLAY) {
+        try {
+          window.dispatchEvent(new CustomEvent("currencyChanged", {
+            detail: {
+              key,
+              value: nextValue,
+              preferredCurrency: key === SETTING_PREFERRED_CURRENCY ? nextValue : getSettingValue(SETTING_PREFERRED_CURRENCY),
+              displayMode: key === SETTING_CURRENCY_DISPLAY ? nextValue : getSettingValue(SETTING_CURRENCY_DISPLAY),
+            },
+          }));
+        } catch (e) {
+          // ignore event error
+        }
+      }
       showToast(t("settings.saved", "Settings saved"), "success");
     });
   });

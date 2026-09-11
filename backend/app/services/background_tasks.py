@@ -2,6 +2,7 @@ import time
 from typing import Any, Dict
 
 from app.core.settings import WARMUP_ML_ON_STARTUP
+from app.services import currency as currency_service
 from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services import universities as universities_service
@@ -42,6 +43,14 @@ def warmup_runtime(trigger: str = "manual") -> Dict[str, Any]:
     except Exception:
         result["ok"] = False
         result["exams_total"] = 0
+
+    try:
+        rates_data = currency_service.get_rates()
+        result["currency_rates_loaded"] = bool(rates_data.get("rates"))
+        result["currency_rates_source"] = rates_data.get("source")
+    except Exception:
+        result["ok"] = False
+        result["currency_rates_loaded"] = False
 
     trigger_name = str(trigger or "manual")
     should_warm_ml = trigger_name != "startup_sync" or WARMUP_ML_ON_STARTUP

@@ -97,6 +97,25 @@ export function moneyUSD(value) {
   return `$${new Intl.NumberFormat("en-US").format(amount)}`;
 }
 
+export function formatCurrency(amount, code = "USD", options = {}) {
+  const num = Number(amount);
+  if (!Number.isFinite(num)) return "—";
+  const currencyCode = String(code || "USD").trim().toUpperCase();
+  try {
+    return new Intl.NumberFormat(options.locale || "en-US", {
+      style: "currency",
+      currency: currencyCode,
+      maximumFractionDigits: options.maximumFractionDigits ?? 0,
+      ...options,
+    }).format(num);
+  } catch (e) {
+    const formattedNum = new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: options.maximumFractionDigits ?? 0,
+    }).format(num);
+    return `${currencyCode} ${formattedNum}`;
+  }
+}
+
 function pluralRus(n, forms) {
   const value = Math.abs(n) % 100;
   const last = value % 10;

@@ -3468,13 +3468,15 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -3482,13 +3484,15 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -3496,13 +3500,15 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -3510,12 +3516,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -3523,12 +3531,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -3536,12 +3546,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -3549,12 +3561,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -3562,12 +3576,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -3575,12 +3591,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -3692,17 +3710,22 @@
     "finance": {
       "total_cost_year_usd": 28000,
       "costs_breakdown_year_usd": {
-        "Tuition": 1800
+        "Tuition": 1720,
+        "Student_Fees": 180,
+        "Housing_Rent": 12000,
+        "Food": 6800,
+        "Books_and_Supplies": 1400
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://ethz.ch/students/en/studies/financial/tuition-fees.html"
+        "https://ethz.ch/students/en/studies/financial/tuition-fees.html",
+        "https://ethz.ch/en/studies/financial/cost-of-living.html"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official ETH Zurich tuition fees (CHF 1,460/year) and living cost guidelines published by the ETH Financial Aid Office, covering Zurich student accommodation, food, compulsory semester fees, and study materials.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -3900,16 +3923,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application via eApply",
-          "Passport photo and copy of passport/ID",
-          "Curriculum vitae (resume)",
-          "Upper secondary school-leaving certificate",
-          "School reports from the last three school years",
-          "Certificate of university admission (if required)",
-          "German language certificate (if required)",
-          "Signed declaration of consent",
-          "Application fee (non-refundable)",
-          "Entrance examination (reduced or comprehensive) if required by certificate"
+          "Recognized upper secondary school-leaving certificate with academic focus",
+          "ETH Zurich Entrance Examination (reduced or comprehensive exam in Zurich)",
+          "German language proficiency certificate at level C1 (Goethe-Zertifikat C1, TestDaF min. 4 in all sections)",
+          "Proof of identity and certified translations of educational certificates",
+          "Application fee payment (CHF 150 for foreign certificates)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -3966,7 +3984,10 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Swiss maturite gymnasiale (cantonal or federal) certificate qualifies for admission to ETH bachelor programmes."
+          "Swiss federal or federally recognized cantonal gymnasial maturity certificate",
+          "Formal online application through eApply portal",
+          "Proof of German language proficiency at level C1",
+          "Curriculum vitae and academic transcripts"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -4013,7 +4034,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -4027,7 +4049,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -4041,7 +4064,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -4054,7 +4078,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -4067,7 +4092,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -4080,7 +4106,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -4093,7 +4120,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -4106,7 +4134,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -4119,7 +4148,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -4267,7 +4297,11 @@
     "finance": {
       "total_cost_year_usd": 32000,
       "costs_breakdown_year_usd": {
-        "Tuition": 20000
+        "Tuition": 20000,
+        "Housing_Dorm": 4500,
+        "Food": 4200,
+        "Student_Fees": 1300,
+        "Books_and_Supplies": 2000
       },
       "financial_aid": {
         "merit_based": true,
@@ -4277,8 +4311,8 @@
         "https://www.nus.edu.sg/registrar/administrative-policies-procedures/undergraduate/undergraduate-fees",
         "https://nus.edu.sg/oam/admissions/before-you-apply/living-costs"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official undergraduate fees and cost estimates from the National University of Singapore Registrar and Office of Admissions, including subsidized international tuition with MOE Tuition Grant, on-campus hall accommodation, meals, student fees, and academic supplies.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 52100
@@ -4502,14 +4536,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application with supporting documents uploaded",
-          "Passport (or birth certificate if no passport)",
-          "High school examination result slip (final or most recent)",
-          "Additional test score reports if submitted (e.g., IELTS/TOEFL/AP/ACT/SAT)",
-          "University academic transcripts if currently/previously enrolled",
-          "Medical report or doctor's memo if a medical condition/disability is declared",
-          "Statement of criminal records or offence if declared",
-          "Application fee"
+          "High school graduation diploma or final year exam results (IB Diploma, A-Levels, or equivalent)",
+          "ACT or SAT score submission where required for curriculum verification",
+          "Proof of English language proficiency (IELTS min 6.5 or TOEFL min 92/100) if language of instruction was not English",
+          "Passport identification and official certified academic transcripts",
+          "Co-curricular activities record and exceptional achievements documentation"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -4567,10 +4598,10 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Minimum admission requirements: three H2 content-based subjects.",
-          "General Paper (GP).",
-          "Pass in Project Work (PW).",
-          "Mother Tongue Language (MTL) requirement or exemption."
+          "Singapore-Cambridge GCE A-Level examination results (passes in at least 3 H2 and 1 H1 content subjects)",
+          "Project Work and General Paper (GP) or Knowledge and Inquiry (KI)",
+          "Mother Tongue Language requirement fulfilled",
+          "Online application with Singpass identity verification"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -4617,7 +4648,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Software Engineering",
@@ -4631,7 +4663,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -4645,7 +4678,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -4658,7 +4692,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -4671,7 +4706,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -4684,7 +4720,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -4697,7 +4734,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -4710,7 +4748,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -4723,7 +4762,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -4856,9 +4896,13 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 69800,
+      "total_cost_year_usd": 74000,
       "costs_breakdown_year_usd": {
-        "Tuition": 52000
+        "Tuition": 45000,
+        "College_Fee": 13500,
+        "Housing_Rent": 10200,
+        "Food": 2900,
+        "Books_and_Supplies": 2400
       },
       "financial_aid": {
         "need_based": false,
@@ -4868,8 +4912,8 @@
         "https://www.undergraduate.study.cam.ac.uk/fees-and-finance",
         "https://www.undergraduate.study.cam.ac.uk/fees-and-finance/living-costs"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Cambridge undergraduate fee schedule and minimum living cost estimate, including university tuition band, college fee, room rent, food, and books and study resources.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -5230,6 +5274,14 @@
         ],
         "program_names": [
           "Computer Science"
+        ],
+        "extra_requirements": [
+          "UCAS Application with Cambridge campus code by October 15 deadline",
+          "TMUA (Test of Mathematics for University Admission) registration and assessment",
+          "Cambridge College admissions interview (if shortlisted)",
+          "A Level grades A*A*A in Mathematics and Further Mathematics (or equivalent IB 40-42 points with 7,7,6 at HL)",
+          "My Cambridge Application (online supplementary questionnaire)",
+          "Academic reference from school or college teacher"
         ]
       },
       {
@@ -5402,6 +5454,14 @@
         ],
         "program_names": [
           "Engineering"
+        ],
+        "extra_requirements": [
+          "UCAS Application by October 15 deadline",
+          "ESAT (Engineering and Science Admissions Test) registration and assessment",
+          "Cambridge College academic interview (if shortlisted)",
+          "A Level grades A*A*A in Mathematics and Physics (or equivalent IB 40-42 points with 7,7,6 at HL)",
+          "My Cambridge Application (online supplementary questionnaire)",
+          "Academic reference from school or college teacher"
         ]
       }
     ]
@@ -7599,7 +7659,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -7613,7 +7674,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -7627,7 +7689,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -7640,7 +7703,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -7653,7 +7717,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -7666,7 +7731,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -7679,7 +7745,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -7692,7 +7759,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -7705,7 +7773,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -7846,17 +7915,21 @@
     "finance": {
       "total_cost_year_usd": 88509,
       "costs_breakdown_year_usd": {
-        "Tuition": 65898
+        "Tuition": 65898,
+        "Mandatory_Fees": 2610,
+        "Housing_Dorm": 11800,
+        "Food": 8201
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://finaid.caltech.edu/costs",
+        "https://www.admissions.caltech.edu/apply"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official direct billed costs from California Institute of Technology undergraduate cost of attendance schedule, including mandatory fees, standard on-campus housing, and meal plan.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 128566
@@ -8072,12 +8145,14 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Common Application or Coalition Application powered by Scoir with Caltech supplemental essays",
+          "Official secondary school academic transcript (grades 9-12)",
+          "Teacher evaluation from a STEM teacher (math, chemistry, physics, biology, or computer science)",
+          "Teacher evaluation from a humanities or social science teacher",
+          "Secondary school report and counselor recommendation",
+          "Academic coursework prerequisites: 1 year calculus, 1 year physics, 1 year chemistry",
+          "English language proficiency test for international students where required (IELTS, TOEFL, PTE, or DET)",
+          "Caltech is 100% test-free: SAT/ACT scores are not accepted or reviewed"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -10481,7 +10556,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -10495,7 +10571,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -10509,7 +10586,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -10522,7 +10600,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -10535,7 +10614,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -10548,7 +10628,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -10561,7 +10642,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -10574,7 +10656,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -10587,7 +10670,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -10728,17 +10812,22 @@
     "finance": {
       "total_cost_year_usd": 93243,
       "costs_breakdown_year_usd": {
-        "Tuition": 70662
+        "Tuition": 70662,
+        "Student_Services_Fee": 1677,
+        "Housing_Dorm": 13200,
+        "Food": 5800,
+        "Books_and_Supplies": 1904
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://financialaid.uchicago.edu/undergraduate/costs",
+        "https://collegeadmissions.uchicago.edu/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official undergraduate cost of attendance from University of Chicago Financial Aid, covering tuition, student services fee, first-year on-campus housing, dining plan, and estimated books and supplies.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 91885
@@ -10961,11 +11050,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
+          "Common Application or Coalition Application with UChicago extended essay and short answer questions",
+          "Official high school transcript and school report",
+          "Two teacher evaluations from academic core subject teachers",
+          "Counselor recommendation",
+          "Test-Optional policy: SAT or ACT scores may be submitted but are not required",
+          "English proficiency test scores for international students where language of instruction was not English",
           "Application fee or approved fee waiver"
         ],
         "scholarships": [],

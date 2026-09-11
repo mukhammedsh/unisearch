@@ -2,6 +2,25 @@
 
 All notable project changes should be recorded here.
 
+## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Implemented a complete multi-currency conversion and display engine (`backend/app/routers/currency.py`, `backend/app/services/currency.py`, `backend/data/currency_filter_limits.json`, `frontend/javascript/currency.js`):
+  - Added FastAPI endpoint `GET /currency/rates` providing real-time exchange rates relative to USD across 60+ global fiat currencies, cache metadata, source attribution, and currency-specific filter limits.
+  - Added runtime health endpoint `GET /currency/status` reporting circuit breaker status, error counters, and upstream provider latency.
+  - Configured robust multi-tier fallback architecture: in-memory cache, Redis store, upstream API synchronization with exponential backoff and timeout controls, and bundled static offline rates for 62 currencies.
+  - Added dynamic tuition slider limit configuration (`currency_filter_limits.json`) with adaptive step sizes, rounded bounds, and currency symbol prefixes.
+- Integrated currency switching and localization into the Calm Academic Workspace (`frontend/javascript/components/settings-ui.js`, `frontend/javascript/settings.js`, `frontend/javascript/utils/selects.js`, `frontend/javascript/utils/format.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/university/page-controller.js`, `frontend/javascript/pages/university/render-sections.js`):
+  - Added an accessible custom Currency selector to the Settings modal with real-time typeahead search, keyboard navigation, currency symbols, and localized country/currency titles in English and Russian.
+  - Propagated active currency conversion across all catalog university card tuition metrics, filter range sliders, comparison views, and detailed university cost breakdowns.
+  - Persisted user currency preference across sessions in browser storage with instant UI re-rendering without page reload.
+- Expanded and enriched the university fact base (Phase 1: 15/50 institutions updated, `backend/data/universities.json`, `backend/data/universities_translations.json`):
+  - Updated academic program structures, verified tuition fees, living costs, and admission requirement profiles for 15 institutions (ETH Zurich, National University of Singapore, University of Cambridge, Caltech, University of Chicago, etc.).
+  - Polished and standardized Russian institution descriptions and track-based admissions criteria.
+- Added comprehensive test coverage and internationalization strings (`tests/unit/currency.test.mjs`, `tests/unit/currency-sliders.test.mjs`, `tests/unit/custom-select-typeahead.test.mjs`, `tests/e2e/currency-settings.spec.js`, `backend/tests/test_currency.py`, `frontend/Localization/eng`, `frontend/Localization/ru`):
+  - Added 60+ localized currency keys, symbols, and formatting templates in English and Russian localization catalogs.
+  - Added unit test suites for currency exchange math, slider calibration, custom select typeahead filtering, and settings storage.
+  - Added backend test coverage for currency service rate fetching, fallback mechanisms, circuit breaker, and API route contracts.
+  - Added Playwright E2E scenario testing currency selection, persistence, and card price re-rendering.
+
 ## 5.0.4 (2026-09-11) - 404 Page Design Token Alignment, Unified Empty States, and Dev CSP Polishing
 - Refreshed project documentation and agent guidance:
   - Replaced the oversized, outdated README with a concise English guide aligned with the current catalog, comparison, profile, UniFit, UniChance, ROI, local setup, and verification flows.

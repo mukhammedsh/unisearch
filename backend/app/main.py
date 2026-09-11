@@ -35,7 +35,7 @@ from app.core.settings import (
     RATE_LIMIT_ENABLED,
     REQUEST_BODY_MAX_BYTES,
 )
-from app.routers import root, universities, exams, languages
+from app.routers import root, universities, exams, languages, currency
 from app.services.background_tasks import warmup_runtime
 
 
@@ -367,6 +367,7 @@ app.include_router(root.router)
 app.include_router(universities.router)
 app.include_router(exams.router)
 app.include_router(languages.router)
+app.include_router(currency.router)
 
 
 if __name__ == "__main__":

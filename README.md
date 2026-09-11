@@ -18,7 +18,7 @@ UniSearch helps applicants discover and compare universities for **bachelor's st
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 
-The interface supports English and Russian, with light and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
+The interface supports English and Russian, multi-currency conversion (60+ currencies), and light and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
 
 ### Understanding the estimates
 
@@ -125,7 +125,7 @@ See [deployment and API security](docs/deployment_security.md) and [forking and 
 | `scripts/`, `backend/scripts/` | Development, verification, and data maintenance scripts |
 | `tests/unit/`, `tests/e2e/`, `backend/tests/` | JS unit tests, Playwright E2E, and Python unittest |
 
-Main endpoints: `GET /universities`, `GET /universities/{id}`, `POST /universities/ai-sort`, `POST /universities/compare-profiles`, `POST /universities/{id}/uni-chance`, and `POST /universities/{id}/roi`. Full request schemas are available at `/docs` when `DOCS_ENABLED` is enabled.
+Main endpoints: `GET /universities`, `GET /universities/{id}`, `GET /currency/rates`, `POST /universities/ai-sort`, `POST /universities/compare-profiles`, `POST /universities/{id}/uni-chance`, and `POST /universities/{id}/roi`. Full request schemas are available at `/docs` when `DOCS_ENABLED` is enabled.
 
 Update verified facts in `backend/data/official_facts.json` and `backend/data/official_admissions.json`, then use the sync scripts to update `universities.json`. Follow the [data contribution workflow](CONTRIBUTING.md#university-data-changes). Run `npm run audit:data` after data changes and `npm run audit:images` after media changes.
 

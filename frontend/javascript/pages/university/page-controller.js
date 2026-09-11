@@ -5,11 +5,11 @@ import {
   getFlagImg,
   loadProfile,
   loadProfileForApi,
-  moneyUSD,
   motionPress,
   replayMotion,
 } from "../../utils.js";
 import { renderNoConnection, setupTabs } from "../../components.js";
+import { formatPrice } from "../../currency.js";
 import { t, tFormat } from "../../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities } from "../../routes.js";
 import { bindInfoTooltips } from "../../tooltip.js";
@@ -39,6 +39,7 @@ import { getAdmissionChoicesFromCategories } from "../../university-detail-helpe
 
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
+let detailCurrencyChangedHandler = null;
 
 function cssString(value) {
   return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -58,6 +59,10 @@ function cleanupDetailListeners() {
   if (detailLanguageChangedHandler) {
     window.removeEventListener("languageChanged", detailLanguageChangedHandler);
     detailLanguageChangedHandler = null;
+  }
+  if (detailCurrencyChangedHandler) {
+    window.removeEventListener("currencyChanged", detailCurrencyChangedHandler);
+    detailCurrencyChangedHandler = null;
   }
 }
 
@@ -126,10 +131,12 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
     element.textContent = String(value ?? "").trim();
   };
 
+  const uniCurrency = university?.finance?.currency || "USD";
+  const formattedPrice = formatPrice(minPrice, uniCurrency);
   setTxt(
     "detailPrice",
     Number.isFinite(Number(minPrice))
-      ? tFormat("university.price_from", { price: moneyUSD(minPrice) }, `from ${moneyUSD(minPrice)} / year`)
+      ? tFormat("university.price_from", { price: formattedPrice }, `from ${formattedPrice} / year`)
       : unknownFieldText("placeholder.field.cost", "Cost"),
   );
   setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
@@ -379,6 +386,13 @@ export async function initUniversityPage() {
     };
     detailLanguageChangedHandler = onDetailLanguageChanged;
     window.addEventListener("languageChanged", onDetailLanguageChanged, { once: true });
+
+    const onDetailCurrencyChanged = async () => {
+      detailCurrencyChangedHandler = null;
+      await initUniversityPage();
+    };
+    detailCurrencyChangedHandler = onDetailCurrencyChanged;
+    window.addEventListener("currencyChanged", onDetailCurrencyChanged, { once: true });
   } catch (error) {
     console.error(error);
     if (stateEl) {

@@ -56,6 +56,7 @@ import {
   compareMajorTagCount,
   compareAidScore,
   compareCostBreakdownNumber,
+  formatCompareCost,
 } from "./compare-helpers.js";
 
 export const compareSlotLabel = (index) => tFormat(
@@ -482,7 +483,7 @@ export const buildCompareSpecs = (universities) => {
             type: "number",
             direction: "lower",
             getter: compareSelectedAnnualCost,
-            formatter: (value) => moneyUSD(value),
+            formatter: (value, u) => formatCompareCost(value, "placeholder.field.cost", "Cost", u?.finance?.currency || "USD"),
             sourceKey: "tuition_total_cost_year_usd",
             weight: 1.25,
         },
@@ -494,7 +495,7 @@ export const buildCompareSpecs = (universities) => {
             type: "number",
             direction: "lower",
             getter: (u) => compareCostBreakdownNumber(u, "tuition"),
-            formatter: (value) => moneyUSD(value),
+            formatter: (value, u) => formatCompareCost(value, "placeholder.field.cost", "Cost", u?.finance?.currency || "USD"),
         },
         {
             key: "living_costs",
@@ -504,7 +505,7 @@ export const buildCompareSpecs = (universities) => {
             type: "number",
             direction: "lower",
             getter: (u) => compareCostBreakdownNumber(u, "living"),
-            formatter: (value) => moneyUSD(value),
+            formatter: (value, u) => formatCompareCost(value, "placeholder.field.cost", "Cost", u?.finance?.currency || "USD"),
         },
         {
             key: "aid",

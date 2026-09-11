@@ -137,6 +137,82 @@ settings.option.store_recent.title: Сохранять недавно откры
 settings.option.store_recent.desc: Если включено, UniSearch добавляет открытые университеты в локальный список недавно открытых на этом устройстве.
 settings.option.open_universities_new_tab.title: Открывать университеты в новой вкладке
 settings.option.open_universities_new_tab.desc: Если включено, карточки университетов и ссылки из недавно открытых будут открывать страницу университета в отдельной вкладке, сохраняя текущий список на месте.
+settings.section.pricing: Цены
+settings.option.preferred_currency.title: Предпочитаемая валюта
+settings.option.preferred_currency.desc: Выберите основную валюту для отображения стоимости обучения и расходов.
+settings.option.currency_display.title: Отображение цен
+settings.option.currency_display.desc: Выберите способ отображения стоимости в каталоге и на страницах университетов.
+currency.display.preferred: В предпочитаемой валюте
+currency.display.original: В оригинальной валюте
+currency.display.both: Оба (предпочитаемая + оригинальная)
+currency.approx_rate_note: Конвертировано по приблизительному дневному курсу
+currency.region.cis: Центральная Азия и СНГ
+currency.region.europe: Европа
+currency.region.americas: Северная и Южная Америка
+currency.region.asia_pacific: Азиатско-Тихоокеанский регион
+currency.region.middle_east_africa: Ближний Восток и Африка
+currency.opt.kzt: Казахстанский тенге (KZT, ₸)
+currency.opt.rub: Российский рубль (RUB, ₽)
+currency.opt.uzs: Узбекский сум (UZS, soʻm)
+currency.opt.kgs: Кыргызский сом (KGS, сом)
+currency.opt.byn: Белорусский рубль (BYN, Br)
+currency.opt.tjs: Таджикский сомони (TJS, смн)
+currency.opt.uah: Украинская гривна (UAH, ₴)
+currency.opt.mdl: Молдавский лей (MDL, L)
+currency.opt.azn: Азербайджанский манат (AZN, ₼)
+currency.opt.gel: Грузинский лари (GEL, ₾)
+currency.opt.amd: Армянский драм (AMD, ֏)
+currency.opt.eur: Евро (EUR, €)
+currency.opt.gbp: Британский фунт (GBP, £)
+currency.opt.chf: Швейцарский франк (CHF, Fr.)
+currency.opt.pln: Польский злотый (PLN, zł)
+currency.opt.czk: Чешская крона (CZK, Kč)
+currency.opt.huf: Венгерский форинт (HUF, Ft)
+currency.opt.ron: Румынский лей (RON, lei)
+currency.opt.bgn: Болгарский лев (BGN, лв.)
+currency.opt.rsd: Сербский динар (RSD, дин.)
+currency.opt.sek: Шведская крона (SEK, kr)
+currency.opt.nok: Норвежская крона (NOK, kr)
+currency.opt.dkk: Датская крона (DKK, kr)
+currency.opt.isk: Исландская крона (ISK, kr)
+currency.opt.usd: Доллар США (USD, $)
+currency.opt.cad: Канадский доллар (CAD, CA$)
+currency.opt.brl: Бразильский реал (BRL, R$)
+currency.opt.mxn: Мексиканское песо (MXN, Mex$)
+currency.opt.ars: Аргентинское песо (ARS, $)
+currency.opt.clp: Чилийское песо (CLP, $)
+currency.opt.cop: Колумбийское песо (COP, $)
+currency.opt.pen: Перуанский соль (PEN, S/)
+currency.opt.aud: Австралийский доллар (AUD, A$)
+currency.opt.cny: Китайский юань (CNY, ¥)
+currency.opt.hkd: Гонконгский доллар (HKD, HK$)
+currency.opt.idr: Индонезийская рупия (IDR, Rp)
+currency.opt.inr: Индийская рупия (INR, ₹)
+currency.opt.jpy: Японская иена (JPY, ¥)
+currency.opt.krw: Южнокорейская вона (KRW, ₩)
+currency.opt.myr: Малайзийский ринггит (MYR, RM)
+currency.opt.nzd: Новозеландский доллар (NZD, NZ$)
+currency.opt.php: Филиппинское песо (PHP, ₱)
+currency.opt.pkr: Пакистанская рупия (PKR, ₨)
+currency.opt.bdt: Бангладешская така (BDT, ৳)
+currency.opt.sgd: Сингапурский доллар (SGD, S$)
+currency.opt.thb: Тайский бат (THB, ฿)
+currency.opt.twd: Новый тайваньский доллар (TWD, NT$)
+currency.opt.vnd: Вьетнамский донг (VND, ₫)
+currency.opt.mnt: Монгольский тугрик (MNT, ₮)
+currency.opt.aed: Дирхам ОАЭ (AED, د.إ)
+currency.opt.bhd: Бахрейнский динар (BHD, BD)
+currency.opt.egp: Египетский фунт (EGP, E£)
+currency.opt.ils: Израильский шекель (ILS, ₪)
+currency.opt.kes: Кенийский шиллинг (KES, KSh)
+currency.opt.kwd: Кувейтский динар (KWD, KD)
+currency.opt.mad: Марокканский дирхам (MAD, DH)
+currency.opt.ngn: Нигерийская найра (NGN, ₦)
+currency.opt.omr: Оманский риал (OMR, OMR)
+currency.opt.qar: Катарский риал (QAR, QR)
+currency.opt.sar: Саудовский риял (SAR, ﷼)
+currency.opt.try: Турецкая лира (TRY, ₺)
+currency.opt.zar: Южноафриканский рэнд (ZAR, R)
 profile.add: Добавить
 profile.edit: Изменить
 profile.budget_cleared: Бюджет очищен
@@ -185,7 +261,7 @@ profile.hint.interests: Напишите, что для вас важно в у�
 profile.warning.interests_english_only: Автоперевод недоступен, пожалуйста, заполните это поле на английском.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
-profile.label.budget: Общий бюджет (USD / год)
+profile.label.budget: Общий бюджет / год
 profile.label.exams: Экзамены (список, необязательно)
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: Средний балл (GPA)
@@ -234,6 +310,7 @@ profile.score: Балл
 profile.type: Тип
 profile.unit.gpa: / 4.0
 profile.unit.usd_year: USD / год
+profile.unit.currency_year: {currency} / год
 profile.progress.empty: Заполните профиль, чтобы подбор стал точнее.
 profile.progress.count: Заполнено разделов профиля: {completed}/{total}
 profile.sections.aria: Разделы профиля
@@ -315,7 +392,7 @@ universities.card.save: Добавить в избранное
 universities.card.compare: Добавить к сравнению
 universities.card.compare_selected: Выбрано для сравнения
 universities.city: Город
-universities.cost_per_year: Стоимость (USD / год)
+universities.cost_per_year: Стоимость / год
 universities.country: Страна
 universities.filter: Фильтр
 universities.filter.all: Все
@@ -1080,3 +1157,4 @@ exam.component.writing: Письмо (Writing)
 exam.component.speaking: Говорение (Speaking)
 common.yes: Да
 common.no: Нет
+

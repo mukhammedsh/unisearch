@@ -182,10 +182,10 @@ export async function resolveAiSortResult(options = {}) {
 }
 
 import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
+import { formatPrice } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 
-  moneyUSD, 
   getExamDisplayName,
   formatExamValue,
 } from "../../utils.js";
@@ -223,9 +223,9 @@ import {
   renderTrackFundingBadge, 
 } from "../../university-detail-helpers.js";
 
-export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost") {
+export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
-  return n !== null ? moneyUSD(n) : unknownFieldText(fallbackKey, fallback);
+  return n !== null ? formatPrice(n, currency) : unknownFieldText(fallbackKey, fallback);
 }
 
 export function compareUniversityName(u) {

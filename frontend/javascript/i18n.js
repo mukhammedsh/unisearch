@@ -1,3 +1,5 @@
+import { getPreferredCurrency } from "./currency.js";
+
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 
 const LANG_ENG = "eng";
@@ -169,13 +171,15 @@ export function tFormat(key, params = {}, fallback = "") {
   return stabilizeNumericRanges(out);
 }
 
-function applyTokenSubstitutions(text) {
+export function applyTokenSubstitutions(text) {
   let out = String(text || "");
   const ai = window.AI_FUNCTIONS || {};
   const fit = String(ai.fit || "UniFit");
   const chance = String(ai.chance || "UniChance");
   out = out.replaceAll("{fit}", fit);
   out = out.replaceAll("{chance}", chance);
+  const currency = typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD";
+  out = out.replaceAll("{currency}", currency);
   return stabilizeNumericRanges(out);
 }
 
@@ -211,6 +215,12 @@ export function applyTranslations(root = document) {
     const translated = applyTokenSubstitutions(t(key, el.getAttribute("aria-label") || ""));
     el.setAttribute("aria-label", translated);
   });
+
+  scope.querySelectorAll("[data-i18n-label]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-label");
+    const translated = applyTokenSubstitutions(t(key, el.getAttribute("label") || ""));
+    el.setAttribute("label", translated);
+  });
 }
 
 export function setLanguage(lang, options = {}) {
@@ -235,5 +245,16 @@ export async function initI18n() {
   setLanguage(resolved, { persist: !stored, emit: false });
   return currentLang;
 }
+
+if (typeof window !== "undefined" && typeof window.addEventListener === "function") {
+  window.addEventListener("currencyChanged", () => {
+    try {
+      applyTranslations();
+    } catch (e) {
+      // ignore
+    }
+  });
+}
+
 
 

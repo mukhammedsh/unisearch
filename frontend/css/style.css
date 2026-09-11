@@ -1577,6 +1577,69 @@ html, body {
   white-space: nowrap;
 }
 
+.settings-section-title {
+  margin: 0;
+  padding-top: var(--space-2);
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.settings-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: auto;
+  min-width: 180px;
+  height: 38px;
+  padding: 0 36px 0 12px;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text);
+  background-color: var(--surface-soft);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.settings-select optgroup {
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: var(--surface-solid);
+}
+
+.settings-select option {
+  font-weight: 400;
+  background-color: var(--surface-solid);
+  color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .settings-select:hover {
+    border-color: var(--line-strong);
+  }
+}
+
+.settings-select:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.settings-row .custom-select-wrapper {
+  width: 260px;
+  max-width: 100%;
+}
+
 @media (max-width: 640px) {
   .settings-card {
     width: min(100%, 96vw);
@@ -1586,6 +1649,11 @@ html, body {
   .settings-row {
     grid-template-columns: 1fr;
     align-items: flex-start;
+  }
+
+  .settings-select,
+  .settings-row .custom-select-wrapper {
+    width: 100%;
   }
 }
 
@@ -2270,6 +2338,17 @@ html, body {
   visibility: visible;
   pointer-events: all;
   transform: translateY(0);
+}
+
+.custom-optgroup-label {
+  padding: 8px 16px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  pointer-events: none;
+  user-select: none;
 }
 
 .custom-option {

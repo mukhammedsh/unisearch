@@ -150,7 +150,7 @@
             <!-- Budget Card -->
             <article class="profile-card-block">
               <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.label.budget">Total Budget (USD / year)</h3>
+                <h3 class="profile-card-title" data-i18n="profile.label.budget">Total Budget / year</h3>
                 <p class="profile-card-desc" data-i18n="profile.field.budget.desc">
                   Your planned tuition and living expense budget per academic year in USD.
                 </p>
@@ -166,7 +166,7 @@
                     placeholder="e.g. 20000"
                     data-i18n-placeholder="profile.placeholder.budget"
                   />
-                  <span class="profile-unit" data-i18n="profile.unit.usd_year">USD / year</span>
+                  <span class="profile-unit" id="profileBudgetUnit" data-i18n="profile.unit.currency_year">{currency} / year</span>
                 </div>
                 <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0–1,000,000</div>
               </div>

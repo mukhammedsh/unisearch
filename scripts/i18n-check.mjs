@@ -52,8 +52,8 @@ function extractUsedI18nKeys() {
   );
 
   const patterns = [
-    /data-i18n(?:-html|-placeholder|-title|-aria-label)\s*=\s*"([^"]+)"/g,
-    /data-i18n(?:-html|-placeholder|-title|-aria-label)\s*=\s*'([^']+)'/g,
+    /data-i18n(?:-(?:html|placeholder|title|aria-label|label))?\s*=\s*"([^"]+)"/g,
+    /data-i18n(?:-(?:html|placeholder|title|aria-label|label))?\s*=\s*'([^']+)'/g,
     /\b(?:t|tFormat)\(\s*"([^"]+)"/g,
     /\b(?:t|tFormat)\(\s*'([^']+)'/g,
   ];

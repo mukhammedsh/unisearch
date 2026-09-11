@@ -148,20 +148,24 @@
 
           <div class="u-field">
             <label class="u-label">
-              <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.cost_per_year">Cost (USD / year)</span></span>
+              <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.cost_per_year">Cost / year</span></span>
             </label>
 
             <div class="budget-control-wrapper">
                 <div class="budget-inputs">
-                    <input id="minCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="0" />
+                    <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" />
                     <span class="budget-range-separator" aria-hidden="true">&ndash;</span>
-                    <input id="maxCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="150000" />
+                    <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="50000" />
                 </div>
 
                 <div class="dual-slider-container">
                     <div class="slider-track" id="sliderTrack"></div>
-                    <input id="minCostSlider" type="range" min="0" max="150000" value="0" step="100" />
-                    <input id="maxCostSlider" type="range" min="0" max="150000" value="150000" step="100" />
+                    <input id="minCostSlider" type="range" min="0" value="0" step="100" />
+                    <input id="maxCostSlider" type="range" min="0" value="50000" step="100" />
+                </div>
+                <div class="budget-range-labels" id="budgetRangeLabels">
+                    <span id="minCostLabel">$0</span>
+                    <span id="maxCostLabel">$50,000</span>
                 </div>
             </div>
           </div>

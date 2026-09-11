@@ -165,3 +165,21 @@ try:
 except Exception:
     ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE = 32
 ML_SEMANTIC_EMBEDDINGS_E5_PREFIX = os.getenv("ML_SEMANTIC_EMBEDDINGS_E5_PREFIX", "auto").strip().lower() or "auto"
+
+CURRENCY_RATES_ENABLED = _env_bool("CURRENCY_RATES_ENABLED", "1")
+CURRENCY_RATES_API_URL = (
+    os.getenv("CURRENCY_RATES_API_URL", "https://open.er-api.com/v6/latest/USD").strip()
+    or "https://open.er-api.com/v6/latest/USD"
+)
+try:
+    CURRENCY_RATES_CACHE_TTL_SEC = int(os.getenv("CURRENCY_RATES_CACHE_TTL_SEC", "43200") or 43200)
+except Exception:
+    CURRENCY_RATES_CACHE_TTL_SEC = 43200
+try:
+    CURRENCY_RATES_TIMEOUT_SEC = float(os.getenv("CURRENCY_RATES_TIMEOUT_SEC", "5.0") or 5.0)
+except Exception:
+    CURRENCY_RATES_TIMEOUT_SEC = 5.0
+try:
+    CURRENCY_RATES_BACKOFF_SEC = int(os.getenv("CURRENCY_RATES_BACKOFF_SEC", "300") or 300)
+except Exception:
+    CURRENCY_RATES_BACKOFF_SEC = 300

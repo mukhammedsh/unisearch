@@ -136,6 +136,82 @@ settings.option.store_recent.title: Save recently opened
 settings.option.store_recent.desc: When enabled, UniSearch adds universities you open to the local recently viewed list on this device.
 settings.option.open_universities_new_tab.title: Open universities in a new tab
 settings.option.open_universities_new_tab.desc: When enabled, university cards and recently viewed links open detail pages in a separate browser tab while keeping the current list in place.
+settings.section.pricing: Pricing
+settings.option.preferred_currency.title: Preferred Currency
+settings.option.preferred_currency.desc: Choose your default currency for tuition fees and estimated costs.
+settings.option.currency_display.title: Price Display
+settings.option.currency_display.desc: Choose how university prices are displayed across the catalog and detail pages.
+currency.display.preferred: In preferred currency
+currency.display.original: In original currency
+currency.display.both: Both (preferred + original)
+currency.approx_rate_note: Converted at approximate daily rate
+currency.region.cis: Central Asia & CIS
+currency.region.europe: Europe
+currency.region.americas: Americas
+currency.region.asia_pacific: Asia-Pacific
+currency.region.middle_east_africa: Middle East & Africa
+currency.opt.kzt: Kazakhstani Tenge (KZT, ₸)
+currency.opt.rub: Russian Ruble (RUB, ₽)
+currency.opt.uzs: Uzbekistani Som (UZS, soʻm)
+currency.opt.kgs: Kyrgyzstani Som (KGS, сом)
+currency.opt.byn: Belarusian Ruble (BYN, Br)
+currency.opt.tjs: Tajikistani Somoni (TJS, смн)
+currency.opt.uah: Ukrainian Hryvnia (UAH, ₴)
+currency.opt.mdl: Moldovan Leu (MDL, L)
+currency.opt.azn: Azerbaijani Manat (AZN, ₼)
+currency.opt.gel: Georgian Lari (GEL, ₾)
+currency.opt.amd: Armenian Dram (AMD, ֏)
+currency.opt.eur: Euro (EUR, €)
+currency.opt.gbp: British Pound (GBP, £)
+currency.opt.chf: Swiss Franc (CHF, Fr.)
+currency.opt.pln: Polish Zloty (PLN, zł)
+currency.opt.czk: Czech Koruna (CZK, Kč)
+currency.opt.huf: Hungarian Forint (HUF, Ft)
+currency.opt.ron: Romanian Leu (RON, lei)
+currency.opt.bgn: Bulgarian Lev (BGN, лв.)
+currency.opt.rsd: Serbian Dinar (RSD, дин.)
+currency.opt.sek: Swedish Krona (SEK, kr)
+currency.opt.nok: Norwegian Krone (NOK, kr)
+currency.opt.dkk: Danish Krone (DKK, kr)
+currency.opt.isk: Icelandic Krona (ISK, kr)
+currency.opt.usd: US Dollar (USD, $)
+currency.opt.cad: Canadian Dollar (CAD, CA$)
+currency.opt.brl: Brazilian Real (BRL, R$)
+currency.opt.mxn: Mexican Peso (MXN, Mex$)
+currency.opt.ars: Argentine Peso (ARS, $)
+currency.opt.clp: Chilean Peso (CLP, $)
+currency.opt.cop: Colombian Peso (COP, $)
+currency.opt.pen: Peruvian Sol (PEN, S/)
+currency.opt.aud: Australian Dollar (AUD, A$)
+currency.opt.cny: Chinese Yuan (CNY, ¥)
+currency.opt.hkd: Hong Kong Dollar (HKD, HK$)
+currency.opt.idr: Indonesian Rupiah (IDR, Rp)
+currency.opt.inr: Indian Rupee (INR, ₹)
+currency.opt.jpy: Japanese Yen (JPY, ¥)
+currency.opt.krw: South Korean Won (KRW, ₩)
+currency.opt.myr: Malaysian Ringgit (MYR, RM)
+currency.opt.nzd: New Zealand Dollar (NZD, NZ$)
+currency.opt.php: Philippine Peso (PHP, ₱)
+currency.opt.pkr: Pakistani Rupee (PKR, ₨)
+currency.opt.bdt: Bangladeshi Taka (BDT, ৳)
+currency.opt.sgd: Singapore Dollar (SGD, S$)
+currency.opt.thb: Thai Baht (THB, ฿)
+currency.opt.twd: New Taiwan Dollar (TWD, NT$)
+currency.opt.vnd: Vietnamese Dong (VND, ₫)
+currency.opt.mnt: Mongolian Tugrik (MNT, ₮)
+currency.opt.aed: UAE Dirham (AED, د.إ)
+currency.opt.bhd: Bahraini Dinar (BHD, BD)
+currency.opt.egp: Egyptian Pound (EGP, E£)
+currency.opt.ils: Israeli New Shekel (ILS, ₪)
+currency.opt.kes: Kenyan Shilling (KES, KSh)
+currency.opt.kwd: Kuwaiti Dinar (KWD, KD)
+currency.opt.mad: Moroccan Dirham (MAD, DH)
+currency.opt.ngn: Nigerian Naira (NGN, ₦)
+currency.opt.omr: Omani Rial (OMR, OMR)
+currency.opt.qar: Qatari Riyal (QAR, QR)
+currency.opt.sar: Saudi Riyal (SAR, ﷼)
+currency.opt.try: Turkish Lira (TRY, ₺)
+currency.opt.zar: South African Rand (ZAR, R)
 profile.add: Add
 profile.edit: Edit
 profile.budget_cleared: Budget cleared
@@ -184,7 +260,7 @@ profile.hint.interests: Write what matters to you in a university so UniSearch c
 profile.warning.interests_english_only: Automatic translation is unavailable, please write this field in English.
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
-profile.label.budget: Total Budget (USD / year)
+profile.label.budget: Total Budget / year
 profile.label.exams: Exams (list, optional)
 profile.label.funding_type: Preferred Funding Type
 profile.label.gpa: Grade Point Average (GPA)
@@ -233,6 +309,7 @@ profile.score: Score
 profile.type: Type
 profile.unit.gpa: / 4.0
 profile.unit.usd_year: USD / year
+profile.unit.currency_year: {currency} / year
 profile.progress.empty: Complete your profile for better matches.
 profile.progress.count: {completed}/{total} profile areas complete
 profile.sections.aria: Profile sections
@@ -314,7 +391,7 @@ universities.card.save: Add to favorites
 universities.card.compare: Add to compare
 universities.card.compare_selected: Selected for comparison
 universities.city: City
-universities.cost_per_year: Cost (USD / year)
+universities.cost_per_year: Cost / year
 universities.country: Country
 universities.filter: Filter
 universities.filter.all: All
@@ -1081,4 +1158,5 @@ exam.component.writing: Writing
 exam.component.speaking: Speaking
 common.yes: Yes
 common.no: No
+
 
