@@ -18,8 +18,8 @@
   <div id="siteInitialLoader" class="site-initial-loader">
     <div class="site-initial-loader__spinner"></div>
   </div>
-  <main class="error-page error-page--404">
-    <section class="error-shell">
+  <main class="error-page error-page--404" id="mainContent">
+    <div class="error-shell">
       <section class="error-hero">
         <p class="error-kicker" data-i18n="error404.kicker">Error 404</p>
         <h1 class="error-title" data-i18n="error404.title">Page not found</h1>
@@ -32,8 +32,6 @@
           <a href="index.html" data-route="universities" class="error-btn error-btn--secondary" data-i18n="error404.secondary">Open universities</a>
         </div>
       </section>
-
-      <div class="error-shell-divider" aria-hidden="true"></div>
 
       <section class="error-grid">
         <article class="error-panel">
@@ -85,7 +83,7 @@
           </nav>
         </article>
       </section>
-    </section>
+    </div>
   </main>
 
   <script src="env.js"></script>

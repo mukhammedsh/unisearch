@@ -269,7 +269,9 @@ let currentResetCallback = null;
 function ensureRankingListClickHandler(listEl) {
   if (rankingListClickBound || !listEl) return;
   listEl.addEventListener("click", (event) => {
-    const resetBtn = event.target instanceof Element ? event.target.closest('[data-action="reset-ranking-filters"]') : null;
+    const resetBtn = event.target instanceof Element
+      ? event.target.closest('[data-action="reset-ranking-filters"], [data-action="reset-filters"]')
+      : null;
     if (!resetBtn) return;
     motionPress(resetBtn);
     if (typeof currentResetCallback === "function") {
@@ -284,7 +286,7 @@ function ensureRankingListClickHandler(listEl) {
   rankingListClickBound = true;
 }
 
-export function renderRankingList(items = [], totalCount = null, onReset = null) {
+export function renderRankingList(items = [], totalCount = null, onReset = null, emptyText = null) {
   const listEl = document.getElementById("rankingList");
   if (!listEl) return;
   if (typeof onReset === "function") currentResetCallback = onReset;
@@ -355,16 +357,11 @@ export function renderRankingList(items = [], totalCount = null, onReset = null)
   }).join("");
 
   if (!rows.length) {
+    const text = emptyText || t("universities.state.empty", "No universities found.");
     listEl.innerHTML = `
-      <div class="rank-empty" role="status">
-        <strong>${escapeHtml(t("ranking.empty.title", "No ranking matches"))}</strong>
-        <span>${escapeHtml(t("ranking.empty.body", "Try a different search or country filter."))}</span>
-        <div class="rank-empty__actions">
-          <button type="button" class="rank-empty__btn" data-action="reset-ranking-filters">
-            ${heroIcon("arrow-path", 16)}
-            <span>${escapeHtml(t("ranking.empty.reset_filters", "Reset filters"))}</span>
-          </button>
-        </div>
+      <div class="u-state-card u-state-card--empty rank-empty" role="status">
+        <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.empty_title", "No results for current filters"))}</div>
+        <div class="u-state-card__text">${escapeHtml(text)}</div>
       </div>
     `;
   }

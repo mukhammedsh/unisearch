@@ -332,8 +332,8 @@ test("ranking tab responds to sidebar filters and reset actions", async ({ page 
   await expect(page.locator("#rankingList .rank-empty")).toBeVisible();
   await expect(page.locator("#totalCount")).toHaveText("0");
 
-  // 6. Reset via empty state button
-  await page.locator('[data-action="reset-ranking-filters"]').click();
+  // 6. Reset via toolbar button
+  await page.locator("#resetFiltersBtn").click();
   await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(initialCardsCount);
   await expect(page.locator("#totalCount")).toHaveText(String(initialCardsCount));
 });

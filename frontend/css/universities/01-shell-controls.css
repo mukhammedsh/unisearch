@@ -933,7 +933,7 @@ body.universities-ranking-mode #aiSliderContainer {
   color: var(--text);
   font-size: 14px;
   line-height: 1.35;
-  font-weight: 800;
+  font-weight: normal;
 }
 
 .u-state-card__text {

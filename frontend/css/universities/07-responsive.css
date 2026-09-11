@@ -495,11 +495,16 @@
     border-left: 0;
     border-top: 1px solid var(--line);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    padding: 0 16px calc(80px + env(safe-area-inset-bottom));
+    padding: 0 0 calc(80px + env(safe-area-inset-bottom));
     transform: translateY(100%);
     box-shadow: var(--shadow-md);
     overflow-y: auto;
     overflow-x: hidden;
+  }
+
+  .u-filter-card > *:not(.u-filter-title) {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .u-sidebar.is-open .u-filter-card {
@@ -509,8 +514,8 @@
   .u-filter-title {
     position: sticky;
     top: 0;
-    z-index: 10;
-    margin: 0 -16px 12px;
+    z-index: 2;
+    margin: 0 0 12px;
     padding: 16px 16px 12px;
     background: var(--card);
     border-bottom: 1px solid var(--line);

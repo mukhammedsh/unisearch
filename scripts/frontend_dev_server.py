@@ -164,7 +164,7 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
         self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
         self.send_header(
             "Content-Security-Policy-Report-Only",
-            "default-src 'self'; connect-src 'self' http://127.0.0.1:* http://localhost:*; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
+            "default-src 'self'; connect-src 'self' http://127.0.0.1:* http://localhost:*; img-src 'self' data: http://127.0.0.1:* http://localhost:* https://unpkg.com https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
         )
 
 

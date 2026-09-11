@@ -1439,18 +1439,10 @@ export function initUniversitiesPage() {
         }
 
         if (emptyText) {
-            const showResetBtn = !state.only_saved;
             blocks.push(`
                 <div class="u-state-card u-state-card--empty" role="status">
                     <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.empty_title", "No results for current filters"))}</div>
                     <div class="u-state-card__text">${escapeHtml(emptyText)}</div>
-                    ${showResetBtn ? `
-                    <div class="u-state-card__actions">
-                        <button type="button" class="u-state-card__btn" data-action="reset-filters">
-                            ${heroIcon("arrow-path", 16)}
-                            <span>${escapeHtml(t("universities.empty.reset_filters", "Reset filters"))}</span>
-                        </button>
-                    </div>` : ""}
                 </div>
             `.trim());
         }
@@ -3205,12 +3197,16 @@ export function initUniversitiesPage() {
         setSectionUrl(true);
 
         try {
+            const rankingEmptyText = state.only_saved
+                ? t("universities.state.empty_saved", "No favorite universities match these filters.")
+                : t("universities.state.empty", "No universities found.");
+
             if (state.only_saved && savedUniversityIds.size === 0) {
                 if (runSeq !== fetchRunSeq) return;
                 window.__rankingTotalCount = 0;
                 if (el.total) el.total.textContent = "0";
                 updateMobileFilterUi();
-                rankingModule.renderRankingList([], 0, () => handleResetAllFilters());
+                rankingModule.renderRankingList([], 0, () => handleResetAllFilters(), rankingEmptyText);
                 return;
             }
 
@@ -3233,7 +3229,7 @@ export function initUniversitiesPage() {
                 el.total.textContent = String(total);
             }
             updateMobileFilterUi();
-            rankingModule.renderRankingList(normalizedItems, total, () => handleResetAllFilters());
+            rankingModule.renderRankingList(normalizedItems, total, () => handleResetAllFilters(), rankingEmptyText);
             bindImageFallbacks(el.rankingPane || document);
         } catch (err) {
             if (runSeq !== fetchRunSeq) return;

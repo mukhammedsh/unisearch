@@ -2,6 +2,24 @@
 
 All notable project changes should be recorded here.
 
+## 5.0.4 (2026-09-11) - 404 Page Design Token Alignment, Unified Empty States, and Dev CSP Polishing
+- Redesigned the 404 error page according to Calm Academic Workspace standards (`frontend/404.html`, `frontend/css/error.css`):
+  - Flattened layout structure by removing nested container boxes and double card layers on the canvas.
+  - Standardized typography, spacing, and radiuses on design tokens (`var(--space-*)`, `var(--radius-*)`, `var(--text-*)`).
+  - Removed redundant manual `:root[data-theme="dark"]` overrides in favor of semantic root theme CSS variables.
+  - Added `#mainContent` anchor and `:focus-visible` focus outlines for keyboard navigation across cards and buttons.
+- Unified empty state styling and filter reset UX across Catalog and Ranking views (`frontend/css/ranking.css`, `frontend/css/universities/01-shell-controls.css`, `frontend/javascript/pages/ranking.js`, `frontend/javascript/pages/universities.js`):
+  - Replaced custom `.rank-empty` markup in Ranking with shared `.u-state-card.u-state-card--empty` component.
+  - Removed duplicate in-card filter reset buttons in favor of the primary sidebar and toolbar reset control (`#resetFiltersBtn`).
+  - Propagated contextual empty state text to `renderRankingList`, differentiating general zero results from empty favorites filter (`only_saved`).
+  - Refined `.u-state-card__title` font-weight to `normal`.
+- Updated frontend development server security headers (`scripts/frontend_dev_server.py`):
+  - Expanded `img-src` in `Content-Security-Policy-Report-Only` with local origins, `unpkg.com`, and OpenStreetMap tile domains for local map and media asset development.
+- Fixed mobile filter drawer styling and design lint compliance (`frontend/css/universities/07-responsive.css`):
+  - Replaced negative margin bleed hack with child horizontal padding and standardized sticky filter title z-index to the layering scale (`z-index: 2`).
+- Updated Playwright E2E regression tests (`tests/e2e/universities-tabs-compare.spec.js`):
+  - Updated ranking tab filter reset verification to trigger via `#resetFiltersBtn`.
+
 ## 5.0.3 (2026-09-11) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
 - Integrated Ranking view with backend filtering and unified memory cache (`universities.js`, `ranking.js`, `tests/e2e/universities-tabs-compare.spec.js`):
   - Routed Ranking view queries through the FastAPI backend (`/universities?sort=rank_asc&limit=200&...`), respecting all active sidebar and navbar filters (`q`, `country`, `region`, `city`, `study_level`, `funding_type`, `min_tuition`, `max_tuition`, `only_saved`).
