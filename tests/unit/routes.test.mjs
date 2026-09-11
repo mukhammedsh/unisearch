@@ -5,7 +5,6 @@ import { describe, it, beforeEach } from "node:test";
 import {
   usePrettyUrls,
   routeUniversities,
-  routeRanking,
   routeCompareSelection,
   routeCompareResults,
   routeGuide,
@@ -16,7 +15,6 @@ import {
   routeUniversityDetail,
   isUniversitiesListPath,
   isUniversityDetailPath,
-  isRankingPath,
   isGuidePath,
   isAboutPath,
   isPrivacyPath,
@@ -76,7 +74,6 @@ describe("routes.js", () => {
 
     it("generates correct html filenames for main views", () => {
       assert.equal(routeUniversities(), "index.html");
-      assert.equal(routeRanking(), "index.html?tab=ranking");
       assert.equal(routeCompareSelection(), "index.html?tab=compare&compare=select");
       assert.equal(routeGuide(), "guide.html");
       assert.equal(routeAbout(), "about.html");
@@ -115,7 +112,6 @@ describe("routes.js", () => {
 
     it("generates clean paths without .html extensions", () => {
       assert.equal(routeUniversities(), "/");
-      assert.equal(routeRanking(), "/?tab=ranking");
       assert.equal(routeCompareSelection(), "/?tab=compare&compare=select");
       assert.equal(routeGuide(), "/guide");
       assert.equal(routeAbout(), "/about");
@@ -148,7 +144,6 @@ describe("routes.js", () => {
     });
 
     it("matches other top-level section routes", () => {
-      assert.equal(isRankingPath("/ranking.html"), true);
       assert.equal(isGuidePath("/guide.html"), true);
       assert.equal(isAboutPath("/about.html"), true);
       assert.equal(isPrivacyPath("/privacy.html"), true);

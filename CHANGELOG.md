@@ -19,6 +19,19 @@ All notable project changes should be recorded here.
   - Replaced negative margin bleed hack with child horizontal padding and standardized sticky filter title z-index to the layering scale (`z-index: 2`).
 - Updated Playwright E2E regression tests (`tests/e2e/universities-tabs-compare.spec.js`):
   - Updated ranking tab filter reset verification to trigger via `#resetFiltersBtn`.
+- Moved university rankings from a standalone tab into a catalog sort strategy (`frontend/index.html`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/_shared.js`, `frontend/css/universities/02-catalog.css`):
+  - Added "Global Rank" (`rank_asc`) option to the catalog `#sortSelect` dropdown with bidirectional URL query synchronization (`?sort=rank_asc`).
+  - Added native browser verification tooltips to university card rank metrics (`.uni-metric--rank`) detailing source rank name, status, and verification date on hover.
+  - Linked the card rank metric directly to the university detail view with responsive hover styling and accessible cursor feedback.
+  - Removed the standalone Ranking tab button from `#universitiesSectionTabs`, leaving Catalog and Comparing as the two primary workspace modes.
+- Cleaned up obsolete standalone ranking infrastructure (`frontend/index.html`, `frontend/404.html`, `frontend/javascript/main.js`, `frontend/javascript/routes.js`, `frontend/Localization/eng`, `frontend/Localization/ru`, `scripts/*-baseline.json`):
+  - Deleted legacy page module `frontend/javascript/pages/ranking.js` and stylesheet `frontend/css/ranking.css`.
+  - Removed `#universitiesRankingPane` markup, `routeRanking`, and `isRankingPath` routing helpers.
+  - Purged unused `ranking.*` localization keys while preserving `ranking.source_tooltip` and `ranking.source_status.*` for card tooltips.
+  - Updated token and design-lint baselines.
+- Updated Playwright E2E and unit test suites (`tests/e2e/smoke-home.spec.js`, `tests/e2e/universities-tabs-compare.spec.js`, `tests/e2e/mobile-tablet-overflow.spec.js`, `tests/unit/routes.test.mjs`):
+  - Updated tab navigation tests to reflect Catalog and Comparing tabs.
+  - Added test coverage for sorting by global rank, card ranking reordering, and verification tooltips.
 
 ## 5.0.3 (2026-09-11) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
 - Integrated Ranking view with backend filtering and unified memory cache (`universities.js`, `ranking.js`, `tests/e2e/universities-tabs-compare.spec.js`):

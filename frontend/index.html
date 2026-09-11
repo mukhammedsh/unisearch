@@ -67,9 +67,6 @@
         <button class="u-section-tab is-active" type="button" data-universities-tab="catalog" aria-pressed="true">
           <span data-i18n="universities.tabs.catalog">Catalog</span>
         </button>
-        <button class="u-section-tab" type="button" data-universities-tab="ranking" aria-pressed="false">
-          <span data-i18n="universities.tabs.ranking">Ranking</span>
-        </button>
         <button class="u-section-tab" type="button" data-universities-tab="compare" aria-pressed="false">
           <span data-i18n="universities.tabs.comparing">Comparing</span>
         </button>
@@ -182,6 +179,7 @@
             <select id="sortSelect" class="u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
               <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: AI Smart Sort</option>
+              <option value="rank_asc" data-i18n="universities.sort_rank_asc">Global Rank</option>
               <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
               <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
             </select>
@@ -281,22 +279,6 @@
 
         <div id="pagination" class="u-pagination"></div>
       </div>
-
-      <section id="universitiesRankingPane" class="u-content u-tab-pane--ranking" data-universities-pane="ranking" hidden>
-        <div class="rank-container">
-          <div class="rank-tools" aria-label="Ranking filters" data-i18n-aria-label="ranking.tools_aria">
-            <div class="rank-header">
-              <h2><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="22"></span> <span data-i18n="ranking.title">Global University Ranking</span></h2>
-            </div>
-          </div>
-
-        <div id="rankingList" class="ranking-list">
-          <div class="inline-loading-note" role="status" aria-live="polite" data-i18n="ranking.loading">
-            Loading ranking
-          </div>
-        </div>
-      </div>
-    </section>
     </div>
 
     <section id="compareResultsPane" class="compare-results" data-universities-pane="compare-results" hidden></section>

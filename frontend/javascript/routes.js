@@ -44,11 +44,6 @@ export function routeUniversities(queryOrParams = "") {
   return withQuery(usePrettyUrls() ? "/" : "index.html", queryOrParams);
 }
 
-export function routeRanking(queryOrParams = "") {
-  const params = new URLSearchParams(toQueryString(queryOrParams));
-  params.set("tab", "ranking");
-  return routeUniversities(params);
-}
 
 export function routeCompareSelection(queryOrParams = "") {
   const params = new URLSearchParams(toQueryString(queryOrParams));
@@ -109,10 +104,6 @@ export function isUniversityDetailPath(pathname = "") {
   return /\/university(?:\.html)?$/.test(path) || /\/universities\/[^/]+$/.test(path);
 }
 
-export function isRankingPath(pathname = "") {
-  const path = normalizePath(pathname).toLowerCase();
-  return /\/ranking(?:\.html)?$/.test(path);
-}
 
 export function isGuidePath(pathname = "") {
   const path = normalizePath(pathname).toLowerCase();
@@ -179,7 +170,6 @@ export function applyRouteLinks(root = document) {
     let href = "";
     if (route === "home") href = routeUniversities(params);
     if (route === "universities") href = routeUniversities(params);
-    if (route === "ranking") href = routeRanking(params);
     if (route === "compare") href = routeCompareSelection(params);
     if (route === "guide") href = routeGuide(params);
     if (route === "about") href = routeAbout(params);

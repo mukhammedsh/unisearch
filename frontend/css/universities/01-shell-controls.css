@@ -234,11 +234,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   padding: 0 20px;
 }
 
-body.universities-ranking-mode .u-sep--sort,
-body.universities-ranking-mode .u-field--sort,
-body.universities-ranking-mode #aiSliderContainer {
-  display: none !important;
-}
 
 .u-sidebar {
   min-width: 0;

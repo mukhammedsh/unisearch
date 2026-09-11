@@ -937,7 +937,7 @@ export function normalizeFundingPreference(value) {
 
 export function normalizeSortMode(value) {
   const raw = String(value || "").trim().toLowerCase();
-  if (raw === "uni_ai" || raw === "name_asc" || raw === "tuition_asc" || raw === "tuition_desc") {
+  if (raw === "uni_ai" || raw === "name_asc" || raw === "tuition_asc" || raw === "tuition_desc" || raw === "rank_asc") {
     return raw;
   }
   return "name_asc";

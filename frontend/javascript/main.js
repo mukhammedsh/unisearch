@@ -4,7 +4,7 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isPrivacyPath, isProfilePath, isRankingPath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -15,8 +15,7 @@ const GUIDE_SECTION_HASH_RE = /^#guide-[a-z0-9-]+$/i;
 
 const routeModuleLoaders = {
   universities: () => import("./pages/universities.js"),
-  university: () => import("./pages/university.js"),
-  ranking: () => import("./pages/ranking.js"),
+  university: () => import("./pages/university.js"),
   guide: () => import("./pages/guide.js"),
   privacy: () => import("./pages/legal.js"),
   terms: () => import("./pages/legal.js"),
@@ -109,8 +108,7 @@ function isFrontendRootPath(pathname) {
 
 function routePageFromPath(pathname) {
   if (isFrontendRootPath(pathname) || isUniversitiesListPath(pathname)) return "universities";
-  if (isUniversityDetailPath(pathname)) return "university";
-  if (isRankingPath(pathname)) return "ranking";
+  if (isUniversityDetailPath(pathname)) return "university";
   if (isGuidePath(pathname)) return "guide";
   if (isAboutPath(pathname)) return "about";
   if (isPrivacyPath(pathname)) return "privacy";
@@ -135,8 +133,7 @@ function currentRouteContext() {
     page: normalizedPage,
     navPage: normalizedPage === "university" ? "universities" : normalizedPage,
     isUniversitiesPage: Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList")),
-    isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
-    isRankingPage: Boolean(isRankingPath(path) || document.getElementById("rankingList")),
+    isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
     isGuidePage: Boolean(isGuidePath(path) || document.getElementById("guidePage")),
     isPrivacyPage: Boolean(normalizedPage === "privacy" || isPrivacyPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "privacy"),
     isTermsPage: Boolean(normalizedPage === "terms" || isTermsPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "terms"),
@@ -236,7 +233,7 @@ function hydrateRouteShell(ctx = currentRouteContext()) {
 }
 
 async function initRoutePage(ctx = currentRouteContext()) {
-  if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isRankingPage) {
+  if (ctx.isUniversitiesPage || ctx.isUniversityPage) {
     try {
       await initUniversityTranslations();
     } catch (e) {
@@ -271,11 +268,7 @@ async function initRoutePage(ctx = currentRouteContext()) {
       ensureLanguageConfig(),
     ]);
     return module?.initGuidePage?.();
-  }
-  if (ctx.isRankingPage) {
-    const module = await loadRouteModule("ranking");
-    return module?.initRankingPage?.();
-  }
+  }
   if (ctx.isPrivacyPage || ctx.isTermsPage) {
     try {
       const module = await loadRouteModule(ctx.isPrivacyPage ? "privacy" : "terms");

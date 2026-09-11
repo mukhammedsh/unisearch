@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
+const { setNativeSelect } = require("./helpers/selectors");
 
 const MIT_ID = "mit-usa-cambridge";
 const IMPERIAL_ID = "imperial-college-london-uk";
@@ -15,20 +16,13 @@ async function clearCompareState(page) {
   });
 }
 
-test("universities tabs host ranking and comparison results in one workspace", async ({ page }) => {
+test("universities tabs host comparison results in one workspace", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
-  await page.goto("/index.html?tab=ranking");
-  await expect(page.locator('[data-universities-tab="ranking"]')).toHaveClass(/is-active/);
-  await expect(page.locator("#universitiesRankingPane")).toBeVisible();
-  await expect(page.locator("#rankingList .rank-card").first()).toBeVisible();
-  await expect(page.locator("#universitySearch")).toBeVisible();
-  await page.locator("#qInput").fill("MIT");
-  await expect(page.locator("#rankingList")).toContainText("Massachusetts Institute of Technology");
-  await page.locator("#searchClearBtn").click();
-
-  await page.locator('[data-universities-tab="catalog"]').click();
+  await page.goto("/index.html");
+  await expect(page.locator('[data-universities-tab="catalog"]')).toHaveClass(/is-active/);
+  await expect(page.locator('[data-universities-tab="ranking"]')).toHaveCount(0);
   await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
   await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
 
@@ -289,53 +283,34 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await expect(page.locator(".compare-score-track")).toHaveCount(0);
 });
 
-test("ranking tab responds to sidebar filters and reset actions", async ({ page }) => {
+test("global rank sort reorders catalog by rank and displays rank tooltip with verification details", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
-  await page.goto("/index.html?tab=ranking");
-  await expect(page.locator('[data-universities-tab="ranking"]')).toHaveClass(/is-active/);
-  await expect(page.locator("#universitiesRankingPane")).toBeVisible();
-  await expect(page.locator("#rankingList .rank-card:not(.is-skeleton)").first()).toBeVisible();
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
 
-  // 1. Initial count
-  const initialCardsCount = await page.locator("#rankingList .rank-card:not(.is-skeleton)").count();
-  expect(initialCardsCount).toBeGreaterThan(10);
+  // 1. Select Global Rank sort mode
+  await setNativeSelect(page, "sortSelect", "rank_asc");
+  await expect(page).toHaveURL(/sort=rank_asc/);
 
-  // 2. Filter by country
-  await page.evaluate(() => {
-    const select = document.getElementById("countrySelect");
-    if (!select) return;
-    select.value = "USA";
-    select.dispatchEvent(new Event("change", { bubbles: true }));
-  });
-  await expect.poll(async () => {
-    const count = await page.locator("#rankingList .rank-card:not(.is-skeleton)").count();
-    return count > 0 && count < initialCardsCount;
-  }).toBe(true);
-  const usCardsCount = await page.locator("#rankingList .rank-card:not(.is-skeleton)").count();
-  await expect(page.locator("#totalCount")).toHaveText(String(usCardsCount));
+  // 2. Wait for sorted list to render; MIT (#1) should be first
+  const firstCard = page.locator("#universitiesList .uni-card:not(.is-skeleton)").first();
+  await expect(firstCard).toBeVisible();
+  await expect(firstCard.locator(".uni-title")).toContainText("Massachusetts Institute of Technology");
 
-  // 3. Filter by search query within ranking
-  await page.locator("#qInput").fill("Stanford");
-  await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(1);
-  await expect(page.locator("#rankingList")).toContainText("Stanford University");
-  await expect(page.locator("#totalCount")).toHaveText("1");
+  // 3. Verify rank badge displays #1 and tooltip contains verification info
+  const rankMetric = firstCard.locator(".uni-metric--rank");
+  await expect(rankMetric).toBeVisible();
+  await expect(rankMetric).toContainText("#1");
+  const tooltipText = await rankMetric.getAttribute("title");
+  expect(tooltipText).toBeTruthy();
+  expect(tooltipText).toContain("QS World University Rankings 2026");
+  expect(tooltipText).toContain("Official ranking");
 
-  // 4. Reset filters button in toolbar
-  await page.locator("#resetFiltersBtn").click();
-  await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(initialCardsCount);
-  await expect(page.locator("#totalCount")).toHaveText(String(initialCardsCount));
-
-  // 5. Filter that produces empty state
-  await page.locator("#qInput").fill("NonExistentUniversityXYZ123");
-  await expect(page.locator("#rankingList .rank-empty")).toBeVisible();
-  await expect(page.locator("#totalCount")).toHaveText("0");
-
-  // 6. Reset via toolbar button
-  await page.locator("#resetFiltersBtn").click();
-  await expect.poll(async () => page.locator("#rankingList .rank-card:not(.is-skeleton)").count()).toBe(initialCardsCount);
-  await expect(page.locator("#totalCount")).toHaveText(String(initialCardsCount));
+  // 4. Click on the rank metric; should navigate to university detail page
+  await rankMetric.click();
+  await expect(page).toHaveURL(/university\.html\?.*id=mit-usa-cambridge/);
 });
 
 

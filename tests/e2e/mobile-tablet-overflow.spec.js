@@ -106,11 +106,11 @@ for (const viewport of viewports) {
     await page.waitForLoadState("networkidle");
     await expectNoHorizontalOverflow(page, `universities compare results ${viewport.name}`);
 
-    await page.goto("/index.html?tab=ranking");
-    await expect(page.locator(".rank-container")).toBeVisible();
+    await page.goto("/index.html?sort=rank_asc");
+    await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
     await page.waitForLoadState("networkidle");
-    await expectNoHorizontalOverflow(page, `ranking ${viewport.name}`);
-    await expectNavbarControlsInsideViewport(page, `ranking ${viewport.name}`);
+    await expectNoHorizontalOverflow(page, `universities sorted by rank ${viewport.name}`);
+    await expectNavbarControlsInsideViewport(page, `universities sorted by rank ${viewport.name}`);
 
     await page.goto("/guide.html");
     await expect(page.locator("#guidePage")).toBeVisible();

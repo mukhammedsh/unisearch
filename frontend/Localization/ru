@@ -262,8 +262,6 @@ profile.field.exams.desc: Выберите стандартизированны�
 profile.field.languages.desc: Укажите родной язык или международные сертификаты (IELTS, TOEFL, CEFR) для проверки языковых требований.
 profile.aria.applicant_profile: Профиль абитуриента
 ranking.acceptance: Процент зачисления
-ranking.failed: Не удалось загрузить рейтинг.
-ranking.loading: Загрузка рейтинга
 ranking.source_label: Источник: {source}
 ranking.source_status_label: Тип: {status}
 ranking.source_verified_label: Проверено: {date}
@@ -278,27 +276,14 @@ ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
 ranking.source_tooltip: Источник: {source} | Тип: {status} | Проверено: {verified_at}
-ranking.subtitle: Популярные университеты по качеству обучения и возможностям (2026)
-ranking.title: Глобальный рейтинг университетов
-ranking.tools_aria: Фильтры рейтинга
-ranking.search_placeholder: Поиск университета или города...
-ranking.country_filter: Фильтр по стране
-ranking.country_all: Глобально
-ranking.source_note: В рейтинге используются официальные источники, когда они доступны. Остальные позиции явно помечены как оценки или проверенные вручную данные.
-ranking.empty.title: В рейтинге нет совпадений
-ranking.empty.body: Попробуйте другой поиск или фильтр по стране.
-ranking.empty.reset_filters: Сбросить фильтры
-ranking.suggestion.alias: Аббревиатура
 title.about: О нас | UniSearch
 title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
-title.ranking: Глобальный рейтинг университетов | UniSearch
 title.universities: Университеты | UniSearch
 title.university: Университет | UniSearch
 universities.tabs.aria: Разделы университетов
 universities.page_heading: Университеты
 universities.tabs.catalog: Каталог
-universities.tabs.ranking: Рейтинг
 universities.tabs.comparing: Сравнение
 universities.all_cities: Все города
 universities.any_state: Любой штат
@@ -554,6 +539,7 @@ universities.sort_ai: {fit}: умная ИИ-сортировка
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
+universities.sort_rank_asc: По мировому рейтингу
 universities.sort_strategy: Сортировка
 universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
 universities.scope_note.title: Только программы бакалавриата

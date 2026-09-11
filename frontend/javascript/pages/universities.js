@@ -111,6 +111,7 @@ import {
   getDetailCacheEntry,
   fetchUniversityDetailCached,
   toFiniteNumber,
+  rankingStatusLabel,
 } from './_shared.js';
 
 let __universitiesProfileUpdatedHandler = null;
@@ -182,8 +183,7 @@ export function initUniversitiesPage() {
         tabButtons: Array.from(document.querySelectorAll("[data-universities-tab]")),
         workspaceLayout: $("universitiesWorkspaceLayout"),
         catalogPane: $("universitiesCatalogPane"),
-        rankingPane: $("universitiesRankingPane"),
-        compareResultsPane: $("compareResultsPane"),
+                compareResultsPane: $("compareResultsPane"),
         compareModeStatus: $("compareModeStatus"),
         list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),
         skeleton: $("universitiesSkeleton"), state: $("listState"), pagination: $("pagination"),
@@ -322,7 +322,7 @@ export function initUniversitiesPage() {
     };
     const normalizeUniversitiesTab = (value) => {
         const raw = String(value || "").trim().toLowerCase();
-        return ["catalog", "ranking", "compare"].includes(raw) ? raw : "catalog";
+        return ["catalog", "compare"].includes(raw) ? raw : "catalog";
     };
     const normalizeCompareIdList = (ids) => Array.from(new Set(
         (Array.isArray(ids) ? ids : [])
@@ -345,6 +345,7 @@ export function initUniversitiesPage() {
     const initialTab = normalizeUniversitiesTab(tabFromUrl || tabFromCompare || tabFromSaved || "catalog");
     const initialCompareChoices = String(pageParams.get("choices") || "").split(",");
 
+    const pageParamsSort = pageParams.get("sort");
     const defaultSortMode = hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc";
     const initialMin = clampTuition(savedState.min_tuition, 0);
     const initialMax = clampTuition(savedState.max_tuition, MAX_TUITION);
@@ -354,7 +355,7 @@ export function initUniversitiesPage() {
         funding_type: getProfileFundingQueryValue(),
         min_tuition: initialMin,
         max_tuition: Math.max(initialMax, initialMin + MIN_RANGE_GAP), 
-        sort: normalizeSortMode(savedState.sort || defaultSortMode),
+        sort: normalizeSortMode(pageParamsSort || savedState.sort || defaultSortMode),
         practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
         social_vs_hardcore: clampPercent(
             savedState.social_vs_hardcore !== undefined ? savedState.social_vs_hardcore : savedState.admission_bias,
@@ -469,8 +470,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    let rankingModulePromise = null;
-    const isCompareTab = () => state.activeTab === "compare";
+        const isCompareTab = () => state.activeTab === "compare";
     const isCompareResultsMode = () => isCompareTab() && state.compareStage === "results" && state.compareResultIds.length === COMPARE_PAIR_SIZE;
     const isCompareConfigureMode = () => isCompareTab() && state.compareStage === "configure" && state.compareResultIds.length === COMPARE_PAIR_SIZE;
     const isCompareSelectionMode = () => isCompareTab() && state.compareStage === "select";
@@ -549,23 +549,16 @@ export function initUniversitiesPage() {
 
     const syncSectionVisibility = async ({ shouldFetch = false, updateUrl = true, replaceUrl = true } = {}) => {
         const showCatalog = state.activeTab === "catalog" || isCompareSelectionMode();
-        const showRanking = state.activeTab === "ranking";
         const isCompareResult = isCompareResultsMode() || isCompareConfigureMode();
         if (el.workspaceLayout) el.workspaceLayout.hidden = isCompareResult;
         if (el.catalogPane) el.catalogPane.hidden = !showCatalog;
-        if (el.rankingPane) el.rankingPane.hidden = !showRanking;
         if (el.compareResultsPane) el.compareResultsPane.hidden = !isCompareResult;
         document.body.classList.toggle("universities-compare-mode", isCompareSelectionMode());
-        document.body.classList.toggle("universities-ranking-mode", state.activeTab === "ranking");
         document.body.classList.toggle("universities-compare-configure-mode", isCompareConfigureMode());
         document.body.classList.toggle("universities-compare-results-mode", isCompareResultsMode());
         if (el.viewToggles) el.viewToggles.hidden = !showCatalog || isCompareResult;
-        if (el.total) {
-            if (showRanking) {
-                el.total.textContent = String(window.__rankingTotalCount ?? 0);
-            } else if (showCatalog) {
-                el.total.textContent = String(state.lastCatalogTotal ?? el.total.textContent ?? "0");
-            }
+        if (el.total && showCatalog) {
+            el.total.textContent = String(state.lastCatalogTotal ?? el.total.textContent ?? "0");
         }
         syncHeaderSearchContext();
         syncSectionTabs();
@@ -573,16 +566,7 @@ export function initUniversitiesPage() {
         renderCompareTray();
         if (updateUrl) setSectionUrl(replaceUrl);
 
-        if (state.activeTab === "ranking") {
-            await ensureIntegratedRankingAssets();
-            if (shouldFetch) {
-                await fetchAndRenderRanking();
-            }
-            replayMotion(el.rankingPane, "motion-panel-enter", { timeoutMs: 420 });
-            return;
-        }
-
-        if (isCompareResultsMode()) {
+                if (isCompareResultsMode()) {
             await renderCompareResultsPage(state.compareResultIds);
             replayMotion(el.compareResultsPane, "motion-panel-enter", { timeoutMs: 420 });
             return;
@@ -1383,7 +1367,7 @@ export function initUniversitiesPage() {
     const renderSearchSuggestions = () => {
         const node = ensureSearchSuggestionsNode();
         if (!node || !el.qInput) return;
-        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) {
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) {
             hideSearchSuggestions();
             return;
         }
@@ -1709,13 +1693,7 @@ export function initUniversitiesPage() {
         });
     }
 
-    async function ensureIntegratedRankingAssets() {
-        await loadStylesheetOnce("rankingCss", "css/ranking.css");
-        if (!rankingModulePromise) rankingModulePromise = import("./ranking.js");
-        return rankingModulePromise;
-    }
-
-    function loadScriptOnce(id, asset) {
+        function loadScriptOnce(id, asset) {
         if (document.getElementById(id)) return Promise.resolve();
         return new Promise((resolve, reject) => {
             const src = String(typeof asset === "string" ? asset : asset?.src || "").trim();
@@ -1838,10 +1816,7 @@ export function initUniversitiesPage() {
         clearSavedScrollPosition();
         updateMobileFilterUi();
         saveFilters(state);
-        if (state.activeTab === "ranking") {
-            fetchAndRenderRanking();
-            return;
-        }
+        
         fetchAndRender(); 
     }, 250);
 
@@ -1855,7 +1830,7 @@ export function initUniversitiesPage() {
     el.qInput?.addEventListener("input", () => {
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
-        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         renderSearchSuggestions();
         refetch();
     });
@@ -1867,13 +1842,13 @@ export function initUniversitiesPage() {
         syncSearchClearButton();
         hideSearchSuggestions();
         el.qInput.focus();
-        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         refetch();
     });
     ensureSearchSuggestionsNode()?.addEventListener("click", (event) => {
         const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
         if (!btn || !el.qInput) return;
-        if (state.activeTab !== "catalog" && state.activeTab !== "ranking" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         el.qInput.value = String(btn.getAttribute("data-value") || "");
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
@@ -1988,10 +1963,7 @@ export function initUniversitiesPage() {
         updateCityDropdown([]); 
         updateSliderVisibility(); 
         updateMobileFilterUi();
-        if (state.activeTab === "ranking") {
-            fetchAndRenderRanking();
-            return;
-        }
+        
         fetchAndRender();
     }
 
@@ -2262,9 +2234,7 @@ export function initUniversitiesPage() {
         state.funding_type = getProfileFundingQueryValue();
         state.page = 1;
         saveFilters(state);
-        if (state.activeTab === "ranking") {
-            fetchAndRenderRanking();
-        } else if (!isCompareResultsMode()) {
+        if (!isCompareResultsMode()) {
             fetchAndRender();
         }
     };
@@ -2721,6 +2691,7 @@ export function initUniversitiesPage() {
         if (forApi && state.budget_vs_prestige !== undefined && state.budget_vs_prestige !== null) p.set("budget_vs_prestige", String(state.budget_vs_prestige));
         if (forApi && state.city_vs_campus !== undefined && state.city_vs_campus !== null) p.set("city_vs_campus", String(state.city_vs_campus));
         if (state.viewMode) p.set("view", state.viewMode);
+        if (!forApi && state.sort && state.sort !== "name_asc") p.set("sort", state.sort);
         if (!forApi && state.only_saved) p.set("only_saved", "1");
         if (!forApi && focusUniId) p.set("focus_uni", focusUniId);
         return p;
@@ -3034,7 +3005,7 @@ export function initUniversitiesPage() {
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
-            if (el.total && !document.body.classList.contains("universities-ranking-mode")) el.total.textContent = String(total);
+            if (el.total) el.total.textContent = String(total);
             hasInitialListPaint = true;
 
             if (!items.length) {
@@ -3066,7 +3037,7 @@ export function initUniversitiesPage() {
 
         if (state.viewMode === "map") {
             state.lastCatalogTotal = items.length;
-            if (el.total && !document.body.classList.contains("universities-ranking-mode")) el.total.textContent = String(items.length);
+            if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
             markMotionEnter(el.mapResults, ".u-map-result-card", { limit: 12, staggerMs: 18 });
             renderUniversitiesState({
@@ -3092,7 +3063,7 @@ export function initUniversitiesPage() {
         setUniversitiesLoading(true);
         if (!hasInitialListPaint) {
             state.lastCatalogTotal = 0;
-            if (el.total && !document.body.classList.contains("universities-ranking-mode")) el.total.textContent = "0";
+            if (el.total) el.total.textContent = "0";
             renderUniversitiesState();
             if (state.viewMode === 'list') el.list.innerHTML = "";
             if (el.pagination) el.pagination.innerHTML = "";
@@ -3164,84 +3135,6 @@ export function initUniversitiesPage() {
         }
         }
     }
-
-    async function fetchAndRenderRanking() {
-        const rankingModule = await ensureIntegratedRankingAssets();
-        if (!rankingModule?.renderRankingList) return;
-
-        const runSeq = ++fetchRunSeq;
-        rankingModule.setRankingLoading?.(true);
-
-        const rankingParams = new URLSearchParams();
-        const uiLang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
-        rankingParams.set("limit", "200");
-        rankingParams.set("sort", "rank_asc");
-        rankingParams.set("lang", uiLang);
-        rankingParams.set("fields", "card");
-
-        if (state.q) rankingParams.set("q", state.q);
-        if (state.country) rankingParams.set("country", state.country);
-        if (state.region) rankingParams.set("region", state.region);
-        if (state.city) rankingParams.set("city", state.city);
-        if (state.study_level) rankingParams.set("study_level", state.study_level);
-        if (state.funding_type && state.funding_type !== "any") {
-            rankingParams.set("funding_type", state.funding_type);
-        }
-        if (Number(state.min_tuition) > 0) {
-            rankingParams.set("min_tuition", String(state.min_tuition));
-        }
-        if (Number(state.max_tuition) < MAX_TUITION) {
-            rankingParams.set("max_tuition", String(state.max_tuition));
-        }
-
-        setSectionUrl(true);
-
-        try {
-            const rankingEmptyText = state.only_saved
-                ? t("universities.state.empty_saved", "No favorite universities match these filters.")
-                : t("universities.state.empty", "No universities found.");
-
-            if (state.only_saved && savedUniversityIds.size === 0) {
-                if (runSeq !== fetchRunSeq) return;
-                window.__rankingTotalCount = 0;
-                if (el.total) el.total.textContent = "0";
-                updateMobileFilterUi();
-                rankingModule.renderRankingList([], 0, () => handleResetAllFilters(), rankingEmptyText);
-                return;
-            }
-
-            const data = await fetchUniversities(rankingParams);
-            if (data?.__aborted) return;
-            if (runSeq !== fetchRunSeq) return;
-
-            let items = Array.isArray(data.items) ? data.items : [];
-            if (state.only_saved) {
-                items = items.filter((u) => savedUniversityIds.has(u.id));
-            }
-
-            const normalizedItems = rankingModule.buildNormalizedRankingItems
-                ? rankingModule.buildNormalizedRankingItems(items)
-                : items;
-
-            const total = normalizedItems.length;
-            window.__rankingTotalCount = total;
-            if (el.total && document.body.classList.contains("universities-ranking-mode")) {
-                el.total.textContent = String(total);
-            }
-            updateMobileFilterUi();
-            rankingModule.renderRankingList(normalizedItems, total, () => handleResetAllFilters(), rankingEmptyText);
-            bindImageFallbacks(el.rankingPane || document);
-        } catch (err) {
-            if (runSeq !== fetchRunSeq) return;
-            if (err?.name === "AbortError") return;
-            console.error("Failed to fetch ranking", err);
-            rankingModule.renderRankingError?.({
-                onRetry: () => fetchAndRenderRanking(),
-            });
-        }
-    }
-
-    window.__unisearchFetchAndRenderRanking = () => fetchAndRenderRanking();
 
     // --- RENDER CARD (БЕЗ ROI) ---
     function renderCard(u, myBudget, idx = 99) {
@@ -3383,12 +3276,24 @@ export function initUniversitiesPage() {
         const detailLabel = escapeHtml(isCompareSelectionMode()
             ? (isCompared ? t("universities.card.compare_selected", "Selected for comparison") : t("universities.card.compare", "Add to compare"))
             : t("universities.card.view_details", "View details"));
+        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
+        const rankSource = String(rankMeta.source || "").trim();
+        const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
+        const statusLabel = rankStatusRaw
+            ? rankingStatusLabel(rankStatusRaw)
+            : translateWord("global_rank", "Global Rank");
+        const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
+            || unknownFieldText("placeholder.field.verification_date", "Verification date");
+        const sourceTooltip = rankSource
+            ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Checked: ${rankVerifiedAt}`)
+            : "";
+        const rankTooltipAttr = sourceTooltip ? ` title="${escapeHtmlAttr(sourceTooltip)}"` : "";
         const metricsHtml = `
             <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
-                <div class="uni-metric${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}">
+                <a href="${detailHref}" class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}"${rankTooltipAttr}>
                     <span class="uni-metric-label">${rankLabel}</span>
                     <span class="uni-metric-value">${rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"))}</span>
-                </div>
+                </a>
                 <div class="uni-metric${acc !== null ? "" : " uni-metric--missing"}">
                     <span class="uni-metric-label">${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span>
                     <span class="uni-metric-value">${escapeHtml(acceptanceValueText)}</span>

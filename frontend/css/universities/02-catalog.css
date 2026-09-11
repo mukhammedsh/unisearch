@@ -446,6 +446,24 @@
   text-align: center;
 }
 
+.uni-metric--rank {
+  position: relative;
+  z-index: 2;
+  cursor: help;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .uni-metric--rank:hover {
+    border-color: var(--line-accent);
+    background: var(--surface);
+  }
+}
+
 .uni-metric-label {
   display: block;
   margin-bottom: 3px;

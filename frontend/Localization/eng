@@ -261,8 +261,6 @@ profile.field.exams.desc: Select standardized tests (IELTS, TOEFL, SAT, ACT, A-L
 profile.field.languages.desc: Add your native language or international certificates (IELTS, TOEFL, CEFR) for requirement evaluation.
 profile.aria.applicant_profile: Applicant Profile
 ranking.acceptance: Acceptance Rate
-ranking.failed: Failed to load ranking.
-ranking.loading: Loading ranking
 ranking.source_label: Source: {source}
 ranking.source_status_label: Type: {status}
 ranking.source_verified_label: Checked: {date}
@@ -277,27 +275,14 @@ ranking.source_status.curated: Manually reviewed
 ranking.source_status.derived: Model estimate
 ranking.source_status.derived_prestige_order: Model estimate
 ranking.source_tooltip: Source: {source} | Type: {status} | Checked: {verified_at}
-ranking.subtitle: Popular universities by study quality and opportunities (2026)
-ranking.title: Global University Ranking
-ranking.tools_aria: Ranking filters
-ranking.search_placeholder: Search university or city...
-ranking.country_filter: Country filter
-ranking.country_all: Global
-ranking.source_note: Ranking uses official sources when available. Other entries are clearly marked as estimates or reviewed data.
-ranking.empty.title: No ranking matches
-ranking.empty.body: Try a different search or country filter.
-ranking.empty.reset_filters: Reset filters
-ranking.suggestion.alias: Alias
 title.about: About Us | UniSearch
 title.profile: Applicant Profile | UniSearch
 title.guide: Guide | UniSearch
-title.ranking: Global Ranking | UniSearch
 title.universities: Universities | UniSearch
 title.university: University | UniSearch
 universities.tabs.aria: University sections
 universities.page_heading: Universities
 universities.tabs.catalog: Catalog
-universities.tabs.ranking: Ranking
 universities.tabs.comparing: Comparing
 universities.all_cities: All Cities
 universities.any_state: Any State
@@ -553,6 +538,7 @@ universities.sort_ai: {fit}: AI Smart Sort
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
+universities.sort_rank_asc: Global Rank
 universities.sort_strategy: Sort Strategy
 universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
 universities.scope_note.title: Bachelor's programs only

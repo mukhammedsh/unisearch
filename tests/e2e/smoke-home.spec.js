@@ -15,8 +15,9 @@ test("root page opens the university catalog as the main workspace", async ({ pa
   await expect(page.locator(selectors.profileBtn)).toBeVisible();
   await expect(page.locator("main h1")).toHaveCount(1);
 
-  await page.locator("[data-universities-tab='ranking']").click();
-  await expect(page.locator(".rank-header h2")).toBeVisible();
+  await page.locator("[data-universities-tab='compare']").click();
+  await expect(page.locator("[data-universities-tab='compare']")).toHaveClass(/is-active/);
+  await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator("main h1")).toHaveCount(1);
 });
 
@@ -52,13 +53,10 @@ test("keyboard users can skip the header and switch university sections", async 
   const catalogTab = page.locator("[data-universities-tab='catalog']");
   await catalogTab.focus();
   await page.keyboard.press("ArrowRight");
-  await expect(page.locator("[data-universities-tab='ranking']")).toBeFocused();
-  await expect(page.locator("[data-universities-tab='ranking']")).toHaveAttribute("aria-current", "page");
-  await expect(page.locator("#universitiesRankingPane")).toBeVisible();
-
-  await page.keyboard.press("End");
   await expect(page.locator("[data-universities-tab='compare']")).toBeFocused();
   await expect(page.locator("[data-universities-tab='compare']")).toHaveAttribute("aria-current", "page");
+  await expect(page.locator("[data-universities-tab='compare']")).toHaveClass(/is-active/);
+  await expect(page).toHaveURL(/tab=compare/);
 });
 
 test("mobile catalog omits an empty active-filter summary", async ({ page }) => {
