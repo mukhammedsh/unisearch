@@ -310,5 +310,59 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
         self.assertIn("source", data)
 
 
+class CurrencyNormalizationBackendTests(unittest.TestCase):
+
+    def test_filtering_normalizes_native_currency_costs_to_usd(self):
+        from app.services.universities import list_universities
+
+        # Tokyo is 2,484,960 JPY (~$16,110 USD)
+        # Should be found when filtering with max_tuition=50000 USD
+        tokyo_50k = list_universities(q="Tokyo", max_tuition=50000.0)
+        self.assertEqual(len(tokyo_50k.get("items", [])), 1)
+
+        # Should NOT be found when filtering with max_tuition=10000 USD
+        tokyo_10k = list_universities(q="Tokyo", max_tuition=10000.0)
+        self.assertEqual(len(tokyo_10k.get("items", [])), 0)
+
+        # Kyoto is 817,800 JPY (~$5,302 USD) and SNU is 6,034,163 KRW (~$4,486 USD)
+        # Both should be found under max_tuition=10000 USD
+        kyoto_10k = list_universities(q="Kyoto", max_tuition=10000.0)
+        self.assertEqual(len(kyoto_10k.get("items", [])), 1)
+
+        snu_10k = list_universities(q="Seoul", max_tuition=10000.0)
+        self.assertEqual(len(snu_10k.get("items", [])), 1)
+
+    def test_sorting_by_tuition_asc_normalizes_cross_currencies(self):
+        from app.services.universities import list_universities
+
+        res = list_universities(sort="tuition_asc", limit=20)
+        items = res.get("items", [])
+        self.assertGreater(len(items), 10)
+
+        # Ensure SNU (6M KRW ~ $4.5k) and Kyoto (817k JPY ~ $5.3k) appear BEFORE
+        # universities with $80k+ USD tuition (e.g., Columbia, Yale)
+        positions = {}
+        for idx, u in enumerate(items):
+            positions[u.get("id")] = idx
+
+        if "seoul-national-university-kr-seoul" in positions and "columbia-university-usa-new-york" in positions:
+            self.assertLess(
+                positions["seoul-national-university-kr-seoul"],
+                positions["columbia-university-usa-new-york"],
+            )
+
+    def test_roi_normalizes_annual_cost_usd_for_non_usd_universities(self):
+        from app.services.universities import get_university_by_id
+        from app.services.ai_scoring import estimate_university_roi
+
+        tokyo = get_university_by_id("university-of-tokyo-jp-tokyo")
+        self.assertIsNotNone(tokyo)
+        roi = estimate_university_roi(tokyo, {"major": "Computer Science"})
+
+        # annual_cost_usd must be converted to USD (~$16,110), NOT raw JPY (2,484,960)
+        self.assertLess(roi["annual_cost_usd"], 30000.0)
+        self.assertGreater(roi["annual_cost_usd"], 10000.0)
+
+
 if __name__ == "__main__":
     unittest.main()

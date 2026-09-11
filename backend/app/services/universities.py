@@ -810,6 +810,23 @@ def _effective_university_cost(
     return max(0.0, total)
 
 
+def _effective_university_cost_usd(
+    u: Dict[str, Any], format_preference: Any = "any"
+) -> float:
+    raw_cost = _effective_university_cost(u, format_preference=format_preference)
+    if raw_cost <= 0:
+        return 0.0
+    finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
+    currency_code = str(finance.get("currency") or "USD").strip().upper()
+    if not currency_code or currency_code == "USD":
+        return raw_cost
+    try:
+        from app.services.currency import convert
+        return max(0.0, float(convert(raw_cost, currency_code, "USD")))
+    except Exception:
+        return raw_cost
+
+
 from app.services.university_tracks import (
     _canonical_major,
     _derive_track_applicable_majors,
@@ -1250,14 +1267,14 @@ def _apply_sort(
     if sort == "tuition_asc":
         return sorted(
             items,
-            key=lambda u: _effective_university_cost(
+            key=lambda u: _effective_university_cost_usd(
                 u, format_preference=format_preference
             ),
         )
     if sort == "tuition_desc":
         return sorted(
             items,
-            key=lambda u: _effective_university_cost(
+            key=lambda u: _effective_university_cost_usd(
                 u, format_preference=format_preference
             ),
             reverse=True,
@@ -1572,7 +1589,7 @@ def list_universities(
         filtered = []
         for u, m in pairs:
             cost = (
-                _effective_university_cost(u, format_preference=mode_pref) or 999999.0
+                _effective_university_cost_usd(u, format_preference=mode_pref) or 999999.0
             )
             fa = _get_nested(u, ["finance", "financial_aid"], {})
             aid = fa.get("merit_based") or fa.get("need_based")
@@ -1583,7 +1600,7 @@ def list_universities(
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
-            cost = _effective_university_cost(u, format_preference=mode_pref)
+            cost = _effective_university_cost_usd(u, format_preference=mode_pref)
             if min_tuition is not None and not _safe_compare_gte(cost, min_tuition):
                 continue
             if max_tuition is not None and not _safe_compare_lte(cost, max_tuition):

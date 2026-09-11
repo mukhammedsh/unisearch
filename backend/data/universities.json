@@ -7232,13 +7232,15 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -7246,13 +7248,15 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -7260,13 +7264,15 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -7274,12 +7280,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -7287,12 +7295,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -7300,12 +7310,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -7313,12 +7325,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -7326,12 +7340,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -7339,12 +7355,14 @@
             "Bachelor"
           ],
           "language": [
+            "German",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -7458,10 +7476,10 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 19000,
+      "total_cost_year_usd": 6194,
       "costs_breakdown_year_usd": {
-        "Tuition": 6500,
-        "Semester_Fees": 170
+        "Tuition": 6000,
+        "Semester_Fees": 194
       },
       "financial_aid": {
         "merit_based": false,
@@ -7469,10 +7487,12 @@
       },
       "costs_breakdown_source_urls": [
         "https://www.tum.de/en/studies/fees/tuition",
-        "https://www.tum.de/fileadmin/user_upload_87/ge63xay/230906_Financing_your_TUM_first_steps_How_to_finance_your_studies_engl_SHH_LM.pdf"
+        "https://www.tum.de/en/studies/fees",
+        "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Technical University of Munich undergraduate fees for international students from third countries in EUR, including annual tuition (3,000 EUR per semester for programs such as Informatics B.Sc., totaling 6,000 EUR/year) and mandatory campus semester fees (97 EUR per semester, totaling 194 EUR/year). TUM does not operate university dormitories or publish authoritative institutional room-and-board line items.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "EUR"
     },
     "outcomes": {
       "average_salary_by_major": {
@@ -7605,13 +7625,14 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 19000,
+          "value": 6194,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
-          "status": "curated"
+          "source": "Technical University of Munich official tuition and semester fees",
+          "source_url": "https://www.tum.de/en/studies/fees/tuition",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct official TUM international tuition schedule and campus semester fee regulation in EUR."
         },
         "student_count": {
           "value": 53581,
@@ -7668,9 +7689,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Upload authentic documents to TUMonline",
-          "Proof of school education / academic career",
-          "Higher education entrance qualification for Bachelor's programs"
+          "Online application submitted through TUMonline portal by July 15 (Winter semester) or January 15 (Summer semester)",
+          "Preliminary evaluation documentation (VPD) issued by uni-assist for applicants with non-German educational credentials",
+          "Higher education entrance qualification (Abitur or recognized international school leaving certificate with certified German/English translation)",
+          "Proof of language proficiency in German (TestDaF 4x4, DSH-2, Goethe C1) and/or English (TOEFL iBT 88+, IELTS 6.5+) depending on program curriculum",
+          "Complete up-to-date curriculum vitae in tabular form",
+          "Program-specific aptitude assessment requirement (academic score evaluation plus subject test or interview where required)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -7695,7 +7719,9 @@
         "language_requirements": [],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "German-language bachelor programs require a university entrance qualification (e.g., Abitur)."
+          "German Abitur or recognized direct German higher education entrance qualification (HZB)",
+          "Online registration through TUMonline portal with authentic uploaded credentials",
+          "Proof of German language proficiency where required for German-taught undergraduate curricula"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -7736,13 +7762,15 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -7750,13 +7778,15 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -7764,13 +7794,15 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -7778,12 +7810,14 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -7791,12 +7825,14 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -7804,12 +7840,14 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -7817,12 +7855,14 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -7830,12 +7870,14 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -7843,12 +7885,14 @@
             "Bachelor"
           ],
           "language": [
+            "French",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -7971,9 +8015,13 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 25000,
+      "total_cost_year_usd": 33480,
       "costs_breakdown_year_usd": {
-        "Tuition": 1800
+        "Tuition": 4380,
+        "Student_Fees": 100,
+        "Housing_Rent": 10800,
+        "Food": 7200,
+        "Books_and_Supplies": 1200
       },
       "financial_aid": {
         "merit_based": false,
@@ -7983,8 +8031,9 @@
         "https://www.epfl.ch/education/studies/en/rules-and-procedures/study-taxes/tuition-fee-other-fees/",
         "https://www.epfl.ch/education/studies/en/financing-study/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official EPFL undergraduate fee schedule and student affairs budget in CHF, including international tuition starting fall 2025 (CHF 2,190/semester, CHF 4,380/year), mandatory semester contributions (CHF 100/year for AGEPoly, sports facilities, and social fund), student housing rent (CHF 10,800/year), meals (CHF 7,200/year), and study supplies (CHF 1,200/year).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "CHF"
     },
     "outcomes": {},
     "verified_sources": [
@@ -8116,13 +8165,14 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 25000,
+          "value": 33480,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
-          "status": "curated"
+          "source": "EPFL official tuition fee schedule and Student Affairs financing guide",
+          "source_url": "https://www.epfl.ch/education/studies/en/rules-and-procedures/study-taxes/tuition-fee-other-fees/",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct official EPFL international semester fees and published student living budget in CHF."
         },
         "student_count": {
           "value": 14011,
@@ -8182,13 +8232,13 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online registration form submitted and application fee paid",
-          "Identity photo",
-          "Passport or identity document",
-          "Grade sheets from the last two years of upper secondary school",
-          "Transcripts from prior higher-education institutions (if applicable)",
-          "Final upper-secondary school certificate and transcripts by the stated deadline",
-          "French language certificate (if required)"
+          "Online application submitted via EPFL portal by April 30 deadline",
+          "Certified copies of upper secondary school grade transcripts for the last three years",
+          "Final upper-secondary school graduation certificate or diploma",
+          "EPFL Entrance Examination (Examen d'admission) registration for applicants requiring testing",
+          "Proof of French language proficiency at minimum B2 level (C1 strongly recommended)",
+          "Valid passport or national identity document",
+          "Non-refundable application fee (CHF 50 for Swiss diplomas, CHF 150 for international diplomas)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -8223,7 +8273,9 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Holders of a Swiss maturite gymnasiale are accepted in the first year of EPFL bachelor programs with no other condition."
+          "Holders of a Swiss maturite gymnasiale or federally recognized Swiss maturity certificate are accepted in the first year of EPFL bachelor programs without additional examinations",
+          "Submission of Swiss maturity certificate and official final grades by the registration deadline",
+          "Valid Swiss identity card, Swiss passport, or residence permit"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -8852,7 +8904,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -8866,7 +8919,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -8880,7 +8934,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -8893,7 +8948,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -8906,7 +8962,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -8919,7 +8976,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -8932,7 +8990,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -8945,7 +9004,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -8958,7 +9018,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -9234,20 +9295,26 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 62000,
+      "currency": "CAD",
+      "total_cost_year_usd": 87500,
       "costs_breakdown_year_usd": {
-        "Tuition": 45000,
-        "Compulsory_Fees": 2200
+        "Tuition": 62950,
+        "Mandatory_Fees": 2050,
+        "Housing_Dorm": 15000,
+        "Food": 6000,
+        "Books_and_Supplies": 1500
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://www.utsc.utoronto.ca/admissions/tuition-and-fees"
+        "https://planningandbudget.utoronto.ca/tuition-fee-lookup-tool/",
+        "https://future.utoronto.ca/finances/fees/",
+        "https://future.utoronto.ca/other-costs-university"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Toronto undergraduate fee and cost of living estimate in CAD, reflecting Faculty of Arts and Science / Computer Science Year 1 international tuition ($62,950 CAD), mandatory campus incidental and ancillary fees ($2,050 CAD), on-campus residence accommodation ($15,000 CAD), campus meal plan ($6,000 CAD), and course books and supplies ($1,500 CAD).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_salary_by_major": {
@@ -9395,12 +9462,12 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 62000,
+          "value": 87500,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://web.cs.toronto.edu/",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
+          "source": "University of Toronto Planning and Budget Tuition Fee Lookup Tool and Future Students fees in CAD",
+          "source_url": "https://planningandbudget.utoronto.ca/tuition-fee-lookup-tool/",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
           "status": "curated"
         },
         "student_count": {
@@ -9465,15 +9532,38 @@
               "IELTS_WRITING": 6,
               "IELTS_SPEAKING": 6
             }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 100,
+              "TOEFL_iBT_0_120_WRITING": 22
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "PTE": 65
+            }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "DET": 120
+            }
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Transcripts or academic documentation for all secondary and postsecondary studies",
-          "Proof of English language proficiency (if required)",
-          "Standardized test results if requested (e.g., SAT/ACT/IB/AP)",
-          "Supplementary application/profile/personal statement for some programs",
-          "Submit documents electronically via applicant portals or testing authorities"
+          "Application via Ontario Universities' Application Centre (OUAC 105 for international/out-of-province, OUAC 101 for Ontario high school students)",
+          "Official secondary-school academic transcripts and interim senior-year grades",
+          "Prerequisite subjects: Grade 12 Calculus and Advanced Functions for Computer Science, Engineering, and Rotman Commerce",
+          "Supplemental application profile, short essays, and video responses for Computer Science, Rotman Commerce, and Engineering",
+          "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 100 overall, 22 on Writing), PTE Academic (minimum 65), or Duolingo English Test (minimum 120)",
+          "Test-optional policy for US high school applicants (SAT/ACT optional)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -9506,7 +9596,15 @@
                 "description": "Same undergraduate route, with automatic consideration for the Lester B. Pearson International Scholarship for eligible outstanding students."
               }
             ],
-            "applicable_majors": []
+            "applicable_majors": [],
+            "extra_requirements": [
+              "Application via Ontario Universities' Application Centre (OUAC 105 for international/out-of-province, OUAC 101 for Ontario high school students)",
+              "Official secondary-school academic transcripts and interim senior-year grades",
+              "Prerequisite subjects: Grade 12 Calculus and Advanced Functions for Computer Science, Engineering, and Rotman Commerce",
+              "Supplemental application profile, short essays, and video responses for Computer Science, Rotman Commerce, and Engineering",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 100 overall, 22 on Writing), PTE Academic (minimum 65), or Duolingo English Test (minimum 120)",
+              "Test-optional policy for US high school applicants (SAT/ACT optional)"
+            ]
           },
           {
             "id": "uoft_ib",
@@ -9537,7 +9635,15 @@
                 "description": "Same undergraduate route, with automatic consideration for the Lester B. Pearson International Scholarship for eligible outstanding students."
               }
             ],
-            "applicable_majors": []
+            "applicable_majors": [],
+            "extra_requirements": [
+              "Application via Ontario Universities' Application Centre (OUAC 105 for international/out-of-province, OUAC 101 for Ontario high school students)",
+              "Official secondary-school academic transcripts and interim senior-year grades",
+              "Prerequisite subjects: Grade 12 Calculus and Advanced Functions for Computer Science, Engineering, and Rotman Commerce",
+              "Supplemental application profile, short essays, and video responses for Computer Science, Rotman Commerce, and Engineering",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 100 overall, 22 on Writing), PTE Academic (minimum 65), or Duolingo English Test (minimum 120)",
+              "Test-optional policy for US high school applicants (SAT/ACT optional)"
+            ]
           },
           {
             "id": "uoft_general",
@@ -9586,6 +9692,14 @@
                 "funding_source": "merit",
                 "description": "Same undergraduate route, with automatic consideration for the Lester B. Pearson International Scholarship for eligible outstanding students."
               }
+            ],
+            "extra_requirements": [
+              "Application via Ontario Universities' Application Centre (OUAC 105 for international/out-of-province, OUAC 101 for Ontario high school students)",
+              "Official secondary-school academic transcripts and interim senior-year grades",
+              "Prerequisite subjects: Grade 12 Calculus and Advanced Functions for Computer Science, Engineering, and Rotman Commerce",
+              "Supplemental application profile, short essays, and video responses for Computer Science, Rotman Commerce, and Engineering",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 100 overall, 22 on Writing), PTE Academic (minimum 65), or Duolingo English Test (minimum 120)",
+              "Test-optional policy for US high school applicants (SAT/ACT optional)"
             ]
           }
         ],
@@ -9601,7 +9715,9 @@
         "language_requirements": [],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "OSSD with six 4U/M subjects including English is required for Ontario applicants."
+          "Ontario Secondary School Diploma (OSSD) with six Grade 12 U/M courses including ENG4U",
+          "Grade 12 Calculus and Vectors (MCV4U) and Advanced Functions (MHF4U) for Computer Science and Engineering",
+          "Supplementary application for Computer Science, Engineering, or Rotman Commerce"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -9612,7 +9728,12 @@
             "requirements": {
               "OSSD_CERT": 1
             },
-            "stats_avg": {}
+            "stats_avg": {},
+            "extra_requirements": [
+              "Ontario Secondary School Diploma (OSSD) with six Grade 12 U/M courses including ENG4U",
+              "Grade 12 Calculus and Vectors (MCV4U) and Advanced Functions (MHF4U) for Computer Science and Engineering",
+              "Supplementary application for Computer Science, Engineering, or Rotman Commerce"
+            ]
           }
         ],
         "program_ids": [],
@@ -9642,13 +9763,15 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -9656,13 +9779,15 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -9670,13 +9795,15 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -9684,12 +9811,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -9697,12 +9826,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -9710,12 +9841,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -9723,12 +9856,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -9736,12 +9871,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -9749,12 +9886,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Chinese"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -9915,20 +10054,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 33354,
+      "total_cost_year_usd": 276450,
       "costs_breakdown_year_usd": {
-        "Tuition": 23000,
-        "Student_Services_and_Health_Fees": 900
+        "Tuition": 214000,
+        "Mandatory_Fees": 450,
+        "Housing_Dorm": 17000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/"
+        "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/",
+        "https://www.res.cuhk.edu.hk/general-information/tuition-and-other-fees/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official CUHK undergraduate fees schedule for non-local students in HKD (academic year 2026-27), including annual tuition (HK$214,000), mandatory caution fee (HK$450), on-campus hostel accommodation (HK$17,000), and published estimated living expenses (HK$45,000).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "HKD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 34620.11
@@ -10066,11 +10208,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 33354,
+          "value": 276450,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.cse.cuhk.edu.hk/about/department/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://admission.cuhk.edu.hk/fees-financing-your-studies/fees/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -10136,12 +10278,14 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Passport or entry permit copy",
-          "Personal statement",
-          "Academic transcripts",
-          "Public examination results",
-          "At least one recommendation via the online system",
-          "Application fee"
+          "Online application via CUHK Online Application System for International Admissions",
+          "Official secondary school academic transcripts, graduation certificate, and school profile",
+          "Standardized test results: IB Diploma (competitive score 34-38+ points), GCE A-Levels (passes in 3 AL subjects, typical offers AAA-A*AA), or US High School Diploma with SAT (minimum 1190, EBRW 590+) / ACT (24+) and 2 AP examinations (grade 3+)",
+          "English language proficiency: IELTS Academic (minimum 6.0 overall), TOEFL iBT (minimum 80 / 4.5 revised scale), or SAT EBRW 590+",
+          "At least one academic recommendation letter submitted directly through the online system",
+          "Personal statement, curriculum vitae, and documentary evidence of extracurricular achievements",
+          "Nonrefundable application fee of HK$450",
+          "Application deadlines: Early Round (mid-November) and Regular Round (early January)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -10239,13 +10383,15 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -10253,13 +10399,15 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -10267,13 +10415,15 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -10281,12 +10431,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -10294,12 +10446,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -10307,12 +10461,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -10320,12 +10476,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -10333,12 +10491,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -10346,12 +10506,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -10822,9 +10984,12 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 16000,
+      "total_cost_year_usd": 2484960,
       "costs_breakdown_year_usd": {
-        "Tuition": 5000
+        "Tuition": 642960,
+        "Mandatory_Fees": 282000,
+        "Housing_Rent": 960000,
+        "Food": 600000
       },
       "financial_aid": {
         "merit_based": true,
@@ -10834,8 +10999,9 @@
         "https://www.u-tokyo.ac.jp/en/prospective-students/tuition_fees.html",
         "https://www.u-tokyo.ac.jp/adm/inbound/en/finance-living.html"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Tokyo undergraduate tuition (¥642,960/year) and mandatory admission fee (¥282,000) alongside official Tokyo living cost guidelines published for international students in JPY, including apartment housing (¥80,000/month or ¥960,000/year) and food expenses (¥50,000/month or ¥600,000/year).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "JPY"
     },
     "outcomes": {},
     "verified_sources": [
@@ -10962,11 +11128,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 16000,
+          "value": 2484960,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html",
-          "verified_at": "2026-05-24",
+          "source_url": "https://www.u-tokyo.ac.jp/en/prospective-students/tuition_fees.html",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -11027,18 +11193,25 @@
             "requirements": {
               "IELTS": 7
             }
+          },
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL_iBT_0_120": 100
+            }
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application with required document uploads",
-          "Official secondary school transcripts",
-          "Official standardized examination results",
-          "Official English proficiency test scores (if applicable)",
-          "Certificate of (expected) graduation",
-          "School profile (if applicable)",
-          "Other documentary evidence of achievements (if applicable)",
-          "Payment receipt (examination fee)"
+          "Online application via UTokyo PEAK / International Admissions Web Application System",
+          "Official secondary school transcripts, graduation certificate (or certificate of expected graduation), and school profile",
+          "Standardized examination results: International Baccalaureate (IB Diploma, competitive score 36-40+), GCE A-Levels (typical standard offers AAA), SAT Reasoning Test / ACT, or national university entrance examination",
+          "English language proficiency: IELTS Academic (minimum 7.0 overall) or TOEFL iBT (minimum 100)",
+          "Two evaluation letters / recommendations from academic teachers or school counselors",
+          "Personal essays and statement of purpose",
+          "Examination fee payment receipt (¥4,000 for primary screening stage; ¥13,000 for secondary interview stage)",
+          "Shortlisted applicants participate in interview and assessment screening"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -11756,13 +11929,15 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -11770,13 +11945,15 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -11784,13 +11961,15 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -11798,12 +11977,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -11811,12 +11992,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -11824,12 +12007,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -11837,12 +12022,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -11850,12 +12037,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -11863,12 +12052,14 @@
             "Bachelor"
           ],
           "language": [
-            "English"
+            "English",
+            "Korean"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -12008,9 +12199,9 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 15000,
+      "total_cost_year_usd": 6034163,
       "costs_breakdown_year_usd": {
-        "Tuition": 5000
+        "Tuition": 6034163
       },
       "financial_aid": {
         "merit_based": true,
@@ -12018,10 +12209,11 @@
       },
       "costs_breakdown_source_urls": [
         "https://en.snu.ac.kr/academics/resources/registration",
-        "https://eng.snu.ac.kr/sites/default/files/welcome_survivor.pdf"
+        "https://en.snu.ac.kr/admission/undergraduate/application"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Seoul National University undergraduate average tuition fee published by the Office of Academic Affairs in KRW (6,034,163 KRW per year). Shows only directly official tuition line items.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KRW"
     },
     "outcomes": {},
     "verified_sources": [
@@ -12151,11 +12343,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 15000,
+          "value": 6034163,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://en.snu.ac.kr/academics/programs/undergraduate",
-          "verified_at": "2026-05-24",
+          "source_url": "https://en.snu.ac.kr/academics/resources/registration",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -12223,14 +12415,14 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application form",
-          "Personal statement and study plan (online)",
-          "Recommendation letter submitted online",
-          "Language proficiency evidence (Korean/English test scores or proof of instruction language)",
-          "Enrollment certificate showing study periods",
-          "All-years transcripts (elementary through high school, as applicable)",
-          "High school graduation or expected graduation certificate",
-          "Applicant nationality proof (passport or nationality certificate/ID)"
+          "Online application via the SNU International Admissions portal (Spring and Fall cycles)",
+          "High school graduation diploma and official academic transcripts (apostilled or consular-verified)",
+          "Personal statement and study plan",
+          "Letter of recommendation submitted online through SNU recommendation system",
+          "Proof of language proficiency: Korean (TOPIK Level 3 or higher) or English (TOEFL iBT 80+ / IELTS Academic 6.0+)",
+          "Proof of applicant and parents' nationalities (passports or national identification documents)",
+          "Standardized test results (e.g., SAT, ACT, IB, AP, or national college entrance examinations) where available",
+          "Application fee (KRW 150,000)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -12299,7 +12491,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -12313,7 +12506,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -12327,7 +12521,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -12335,12 +12530,14 @@
             "Bachelor"
           ],
           "language": [
+            "Dutch",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -12348,12 +12545,14 @@
             "Bachelor"
           ],
           "language": [
+            "Dutch",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -12361,12 +12560,14 @@
             "Bachelor"
           ],
           "language": [
+            "Dutch",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -12374,12 +12575,14 @@
             "Bachelor"
           ],
           "language": [
+            "Dutch",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -12387,12 +12590,14 @@
             "Bachelor"
           ],
           "language": [
+            "Dutch",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -12400,12 +12605,14 @@
             "Bachelor"
           ],
           "language": [
+            "Dutch",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -12556,9 +12763,13 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 36000,
+      "total_cost_year_usd": 34106,
       "costs_breakdown_year_usd": {
-        "Tuition": 19000
+        "Tuition": 19906,
+        "Student_Fees": 285,
+        "Housing_Rent": 8500,
+        "Food": 4200,
+        "Books_and_Supplies": 1000
       },
       "financial_aid": {
         "merit_based": true,
@@ -12567,8 +12778,9 @@
       "costs_breakdown_source_urls": [
         "https://www.tudelft.nl/en/education/study-programme-orientation/practical-matters/tuition-fee-finances"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official TU Delft institutional tuition fee for non-EU/EFTA undergraduate students (€19,906/year for 2026-2027) and IND-mandated living costs standard (€14,200/year, covering housing rent, food, study supplies, and university housing fee), totaling €34,106/year in EUR.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "EUR"
     },
     "outcomes": {},
     "verified_sources": [
@@ -12689,11 +12901,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 36000,
+          "value": 34106,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://www.tudelft.nl/en/education/study-programme-orientation/practical-matters/tuition-fee-finances",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -12760,9 +12972,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Apply in Studielink for the numerus-fixus program by the deadline",
-          "Complete the matching & selection steps (matching questionnaire, online student experience, cognitive skills test, teamwork assignment)",
-          "Complete the TU Delft application in OSIRIS if you have a non-Dutch diploma"
+          "Application registration via Studielink (national higher education registration portal)",
+          "Application completion in TU Delft OSIRIS portal with verified secondary school diploma and transcripts",
+          "Strict deadlines: January 15 for Numerus Fixus programs (BSc Computer Science and Engineering, BSc Aerospace Engineering); April 1 for other bachelor programs",
+          "Program-specific selection process (online student experience ONa, mathematics/cognitive exam, teamwork assignment)",
+          "Proof of English proficiency: IELTS Academic 6.5 (min 6.0 in each sub-score) or TOEFL iBT 90 (min 21 in each sub-score)",
+          "Mathematics and physics high school qualifications equivalent to Dutch pre-university education (VWO)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -13389,13 +13604,15 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -13403,13 +13620,15 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -13417,13 +13636,15 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -13431,12 +13652,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -13444,12 +13667,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -13457,12 +13682,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -13470,12 +13697,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -13483,12 +13712,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -13496,12 +13727,14 @@
             "Bachelor"
           ],
           "language": [
+            "Japanese",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -13650,19 +13883,22 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 16500,
+      "total_cost_year_usd": 817800,
       "costs_breakdown_year_usd": {
-        "Tuition": 4800
+        "Tuition": 535800,
+        "Student_Fees": 282000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees"
+        "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees",
+        "https://www.iup.kyoto-u.ac.jp/apply/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Kyoto University undergraduate tuition fee (¥535,800 per year) and first-year admission fee (¥282,000) in JPY published by Kyoto University, totaling ¥817,800. Shows only directly official tuition and institutional fee line items.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "JPY"
     },
     "outcomes": {},
     "verified_sources": [
@@ -13781,11 +14017,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 16500,
+          "value": 817800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.iup.kyoto-u.ac.jp/about/overview.html",
-          "verified_at": "2026-05-24",
+          "source_url": "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -13845,13 +14081,14 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Apply through the Kyoto iUP Online Application System",
-          "Application fee",
-          "Certificate of graduation (Form A)",
-          "Evaluation form submitted by school (Form B)",
-          "English proficiency evaluation form (Form C)",
-          "Essay (Form D)",
-          "Documents prepared in English or with English translation"
+          "Online application via the Kyoto iUP Online Application System (November 1 – December 1 application window)",
+          "Application fee payment (¥9,800 JPY)",
+          "Official high school graduation certificate or anticipated graduation certificate (Form A)",
+          "School evaluation report and recommendation completed by high school principal or teacher (Form B)",
+          "English proficiency evaluation form (Form C) or official test report: IELTS Academic 6.5+ or TOEFL iBT 79+",
+          "Short admissions essay on intellectual interests and study plan (Form D)",
+          "Standardized examination results (e.g., SAT, ACT, EJU, IB, GCE A-Levels, or national college entrance tests)",
+          "Interview examination for shortlisted applicants conducted online"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -15040,7 +15277,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -15054,7 +15292,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -15068,7 +15307,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -15081,7 +15321,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -15094,7 +15335,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -15107,7 +15349,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -15120,7 +15363,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -15133,7 +15377,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -15146,7 +15391,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -15273,20 +15519,24 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 52800,
+      "total_cost_year_usd": 90192,
       "costs_breakdown_year_usd": {
-        "Tuition": 33900
+        "Tuition": 60960,
+        "Student_Services_and_Amenities_Fee": 372,
+        "Housing_Dorm": 28860
       },
       "financial_aid": {
         "need_based": false,
         "merit_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://www.unsw.edu.au/study/fees",
-        "https://www.unsw.edu.au/study/international-students/costs-scholarships"
+        "https://www.unsw.edu.au/student/managing-your-studies/fees/international",
+        "https://www.unsw.edu.au/student/managing-your-studies/fees/ssaf",
+        "https://www.unsw.edu.au/study/your-future/cost-of-living-sydney"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official UNSW Sydney undergraduate fee schedule in AUD, including annual international engineering/computing tuition (48 UOC at 1,270 AUD = 60,960 AUD), compulsory Student Services and Amenities Fee (SSAF, 372 AUD), and published modest on-campus living budget (28,860 AUD).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "AUD"
     },
     "outcomes": {},
     "verified_sources": [
@@ -15422,13 +15672,14 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 52800,
+          "value": 90192,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.unsw.edu.au/study/undergraduate/computer-science",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
-          "status": "curated"
+          "source": "UNSW Sydney official international tuition fee schedule and SSAF rates",
+          "source_url": "https://www.unsw.edu.au/student/managing-your-studies/fees/international",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct official undergraduate international tuition, compulsory SSAF, and published modest living budget in AUD."
         },
         "student_count": {
           "value": 65000,
@@ -15511,10 +15762,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "Course-specific supplementary form, portfolio, or interview where required",
-          "Application fee where applicable",
-          "English-language proof where applicable"
+          "Direct online application submitted via Apply Online UNSW portal or Universities Admissions Centre (UAC)",
+          "Official secondary school completion certificates and certified academic transcripts with English translation",
+          "Proof of English language proficiency (IELTS Academic 6.5 with 6.0 in all bands, TOEFL iBT 90 with 23 in Writing, or PTE Academic 64 with 54 in all subtests)",
+          "Valid passport identification and Australian student visa documentation",
+          "Program-specific prerequisite documentation or portfolio where required by faculty",
+          "Non-refundable international application fee ($150 AUD)"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -15643,7 +15896,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -15657,7 +15911,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -15671,7 +15926,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -15684,7 +15940,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -15697,7 +15954,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -15710,7 +15968,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -15723,7 +15982,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -15736,7 +15996,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -15749,7 +16010,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -15888,19 +16150,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 89214,
+      "total_cost_year_usd": 97985,
       "costs_breakdown_year_usd": {
-        "Tuition": 67250
+        "Tuition": 72500,
+        "Student_Fees": 185,
+        "Housing_Dorm": 12080,
+        "Food": 9520,
+        "Books_and_Supplies": 1000
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://finaid.yale.edu/coa",
+        "https://admissions.yale.edu/affordability"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Yale College undergraduate 2026-27 Cost of Attendance from Yale Undergraduate Financial Aid in USD, including tuition ($72,500), student activity fee ($185), on-campus residential college housing ($12,080), dining meal plan ($9,520), and books/supplies ($1,000).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 100533
@@ -16036,13 +16304,14 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 89214,
+          "value": 97985,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://cpsc.yale.edu/undergraduate-program",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
-          "status": "curated"
+          "source": "Yale Undergraduate Financial Aid official Cost of Attendance",
+          "source_url": "https://finaid.yale.edu/coa",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct official Yale College 2026-27 undergraduate cost of attendance schedule."
         },
         "student_count": {
           "value": 15490,
@@ -16120,12 +16389,13 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Application submitted via Coalition with Scoir, Common Application, or QuestBridge National College Match",
+          "Official high school transcripts and School Report completed by school counselor",
+          "Two academic teacher recommendations from core academic subjects",
+          "Standardized testing scores submitted under Yale test-flexible policy (ACT, SAT, AP, or IB)",
+          "Mid-year school report with updated senior grades",
+          "English language proficiency test results recommended for non-native English speakers (TOEFL 100+, IELTS 7.0+, or DET 120+)",
+          "$80 non-refundable application fee or fee waiver"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -16218,7 +16488,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -16232,7 +16503,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -16246,7 +16518,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -16259,7 +16532,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -16272,7 +16546,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -16285,7 +16560,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -16298,7 +16574,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -16311,7 +16588,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -16324,7 +16602,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -16463,19 +16742,24 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 85080,
+      "currency": "USD",
+      "total_cost_year_usd": 94624,
       "costs_breakdown_year_usd": {
-        "Tuition": 62688
+        "Tuition": 68140,
+        "Mandatory_Fees": 314,
+        "Housing_Dorm": 13010,
+        "Food": 9110,
+        "Books_and_Supplies": 1050
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://admission.princeton.edu/cost-aid/fees-payment-options"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Princeton University undergraduate Cost of Attendance schedule in USD, covering tuition ($68,140), mandatory fees ($314), university housing ($13,010), food and meal plan ($9,110), and estimated books and supplies ($1,050). Estimated personal expenses ($3,000) are part of the total cost of attendance ($94,624) but omitted from direct institutional billable line items.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 110066
@@ -16610,12 +16894,12 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 85080,
+          "value": 94624,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.cs.princeton.edu/academics/undergraduate",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
+          "source": "Princeton University Undergraduate Admission official Cost of Attendance schedule",
+          "source_url": "https://admission.princeton.edu/cost-aid/fees-payment-options",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
           "status": "curated"
         },
         "student_count": {
@@ -16694,12 +16978,13 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Common Application or Coalition Application (Scoir) including Princeton-specific supplemental questions",
+          "Official secondary-school transcript and School Report with counselor recommendation",
+          "Two teacher recommendations from academic subject teachers",
+          "Graded written paper from an English, literature, or history course",
+          "Mid-year school report with senior-year first semester grades",
+          "Test-optional policy: SAT or ACT scores accepted but not required",
+          "Proof of English proficiency (TOEFL iBT, IELTS Academic, PTE Academic, or Duolingo English Test) for non-native English speakers"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -16750,6 +17035,15 @@
                   "Electrical and Computer Engineering"
                 ]
               }
+            ],
+            "extra_requirements": [
+              "Common Application or Coalition Application (Scoir) including Princeton-specific supplemental questions",
+              "Official secondary-school transcript and School Report with counselor recommendation",
+              "Two teacher recommendations from academic subject teachers",
+              "Graded written paper from an English, literature, or history course",
+              "Mid-year school report with senior-year first semester grades",
+              "Test-optional policy: SAT or ACT scores accepted but not required",
+              "Proof of English proficiency (TOEFL iBT, IELTS Academic, PTE Academic, or Duolingo English Test) for non-native English speakers"
             ]
           }
         ],
@@ -16792,7 +17086,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Software Engineering",
@@ -16806,7 +17101,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -16820,7 +17116,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -16833,7 +17130,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -16846,7 +17144,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -16859,7 +17158,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -16872,7 +17172,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -16885,7 +17186,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -16898,7 +17200,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3–4 years"
         }
       ],
       "formats": [
@@ -17025,20 +17328,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 54400,
+      "currency": "AUD",
+      "total_cost_year_usd": 90986,
       "costs_breakdown_year_usd": {
-        "Tuition": 35600
+        "Tuition": 60600,
+        "Student_Services_Fee": 386,
+        "Housing_Dorm": 18000,
+        "Food": 12000
       },
       "financial_aid": {
-        "need_based": false,
-        "merit_based": true
+        "merit_based": true,
+        "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://www.sydney.edu.au/students/tuition-fees.html",
-        "https://www.sydney.edu.au/study/applying/international/student-life/living-costs.html"
+        "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html",
+        "https://www.sydney.edu.au/students/ssaf.html",
+        "https://www.sydney.edu.au/study/finances-fees-costs/living-costs.html"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Sydney undergraduate cost schedule for international students in AUD, including indicative annual tuition for Bachelor of Advanced Computing/Engineering ($60,600 AUD for 48 credit points), compulsory Student Services and Amenities Fee (SSAF, $386 AUD), university residence housing (~$18,000 AUD), and estimated student food and groceries (~$12,000 AUD).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -17175,12 +17483,12 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 54400,
+          "value": 90986,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source": "University of Sydney official international tuition and living cost schedule in AUD",
           "source_url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
           "status": "curated"
         },
         "student_count": {
@@ -17243,7 +17551,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 85
+              "TOEFL_iBT_0_120": 85,
+              "TOEFL_iBT_0_120_LISTENING": 17,
+              "TOEFL_iBT_0_120_READING": 17,
+              "TOEFL_iBT_0_120_WRITING": 19,
+              "TOEFL_iBT_0_120_SPEAKING": 17
             }
           },
           {
@@ -17263,10 +17575,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "Course-specific supplementary form, portfolio, or interview where required",
-          "Application fee where applicable",
-          "English-language proof where applicable"
+          "Official secondary-school academic transcript and graduation certificate",
+          "Direct online application via Sydney Student portal or UAC (Universities Admissions Centre)",
+          "Program-specific mathematics prerequisite for Advanced Computing, Engineering, and Commerce",
+          "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 85), PTE Academic (minimum 61), or Duolingo English Test (minimum 120)",
+          "Course-specific supplementary form, portfolio, or audition where required"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -17299,6 +17612,13 @@
                 "funding_description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants.",
                 "description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants."
               }
+            ],
+            "extra_requirements": [
+              "Official secondary-school academic transcript and graduation certificate",
+              "Direct online application via Sydney Student portal or UAC (Universities Admissions Centre)",
+              "Program-specific mathematics prerequisite for Advanced Computing, Engineering, and Commerce",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 85), PTE Academic (minimum 61), or Duolingo English Test (minimum 120)",
+              "Course-specific supplementary form, portfolio, or audition where required"
             ]
           },
           {
@@ -17326,6 +17646,13 @@
                 "funding_description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants.",
                 "description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants."
               }
+            ],
+            "extra_requirements": [
+              "Official secondary-school academic transcript and graduation certificate",
+              "Direct online application via Sydney Student portal or UAC (Universities Admissions Centre)",
+              "Program-specific mathematics prerequisite for Advanced Computing, Engineering, and Commerce",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 85), PTE Academic (minimum 61), or Duolingo English Test (minimum 120)",
+              "Course-specific supplementary form, portfolio, or audition where required"
             ]
           },
           {
@@ -17353,6 +17680,13 @@
                 "funding_description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants.",
                 "description": "Same undergraduate route, with consideration for the Vice-Chancellor's International Scholarship Scheme for high-achieving international applicants."
               }
+            ],
+            "extra_requirements": [
+              "Official secondary-school academic transcript and graduation certificate",
+              "Direct online application via Sydney Student portal or UAC (Universities Admissions Centre)",
+              "Program-specific mathematics prerequisite for Advanced Computing, Engineering, and Commerce",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 85), PTE Academic (minimum 61), or Duolingo English Test (minimum 120)",
+              "Course-specific supplementary form, portfolio, or audition where required"
             ]
           }
         ],
@@ -17395,7 +17729,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Software Engineering",
@@ -17409,7 +17744,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -17423,7 +17759,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -17436,7 +17773,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -17449,7 +17787,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Economics",
@@ -17462,7 +17801,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Finance",
@@ -17475,7 +17815,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Business Administration",
@@ -17488,7 +17829,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Psychology",
@@ -17501,7 +17843,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3–4 years"
         }
       ],
       "formats": [
@@ -17634,20 +17977,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 47200,
+      "currency": "CAD",
+      "total_cost_year_usd": 84535,
       "costs_breakdown_year_usd": {
-        "Tuition": 27400
+        "Tuition": 63890,
+        "Mandatory_Fees": 2645,
+        "Housing_Dorm": 11000,
+        "Food": 6000,
+        "Books_and_Supplies": 1000
       },
       "financial_aid": {
-        "need_based": false,
-        "merit_based": true
+        "merit_based": true,
+        "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://www.mcgill.ca/studentaid/tuition-fees",
-        "https://www.mcgill.ca/studentaid/finances/budgeting"
+        "https://www.mcgill.ca/student-accounts/tuition-charges/fallwinter-term-tuition-and-fees/undergraduate-fees",
+        "https://www.mcgill.ca/studentaid/finances/cost"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official McGill University undergraduate fee and cost of living schedule for international students in CAD, based on 30 credits in Bachelor of Engineering/Software Engineering ($63,890 CAD), mandatory administrative and student society fees ($2,645 CAD), first-year on-campus residence ($11,000 CAD), residential meal plan ($6,000 CAD), and books and supplies ($1,000 CAD).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -17783,12 +18131,12 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 47200,
+          "value": 84535,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.cs.mcgill.ca/academic/undergrad/",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
+          "source": "McGill University Student Accounts and Student Aid official undergraduate fee schedules in CAD",
+          "source_url": "https://www.mcgill.ca/student-accounts/tuition-charges/fallwinter-term-tuition-and-fees/undergraduate-fees",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
           "status": "curated"
         },
         "student_count": {
@@ -17857,7 +18205,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 90
+              "TOEFL_iBT_0_120": 90,
+              "TOEFL_iBT_0_120_LISTENING": 21,
+              "TOEFL_iBT_0_120_READING": 21,
+              "TOEFL_iBT_0_120_WRITING": 21,
+              "TOEFL_iBT_0_120_SPEAKING": 21
             }
           },
           {
@@ -17871,17 +18223,18 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "DET": 120
+              "DET": 125
             }
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School profile or counselor reference where required",
-          "Supplementary application, interview, or personal profile where required",
-          "Application fee where applicable",
-          "English-language proof where applicable"
+          "Online application via McGill Minerva portal",
+          "Official high school transcripts and academic records for grades 10, 11, and 12",
+          "Prerequisite subjects: senior-level Mathematics (Pre-calculus/Calculus) and Sciences (Physics, Chemistry) for Engineering and Science faculties",
+          "Test-optional policy for US high school applicants (SAT/ACT considered if submitted)",
+          "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 86-90 with component minimums), PTE Academic (minimum 65), or Duolingo English Test (minimum 125)",
+          "Supplementary application, interview, or portfolio where required by specific programs"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -17914,6 +18267,14 @@
                 "funding_description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates.",
                 "description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates."
               }
+            ],
+            "extra_requirements": [
+              "Online application via McGill Minerva portal",
+              "Official high school transcripts and academic records for grades 10, 11, and 12",
+              "Prerequisite subjects: senior-level Mathematics (Pre-calculus/Calculus) and Sciences (Physics, Chemistry) for Engineering and Science faculties",
+              "Test-optional policy for US high school applicants (SAT/ACT considered if submitted)",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 86-90 with component minimums), PTE Academic (minimum 65), or Duolingo English Test (minimum 125)",
+              "Supplementary application, interview, or portfolio where required by specific programs"
             ]
           },
           {
@@ -17941,6 +18302,14 @@
                 "funding_description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates.",
                 "description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates."
               }
+            ],
+            "extra_requirements": [
+              "Online application via McGill Minerva portal",
+              "Official high school transcripts and academic records for grades 10, 11, and 12",
+              "Prerequisite subjects: senior-level Mathematics (Pre-calculus/Calculus) and Sciences (Physics, Chemistry) for Engineering and Science faculties",
+              "Test-optional policy for US high school applicants (SAT/ACT considered if submitted)",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 86-90 with component minimums), PTE Academic (minimum 65), or Duolingo English Test (minimum 125)",
+              "Supplementary application, interview, or portfolio where required by specific programs"
             ]
           },
           {
@@ -17968,6 +18337,14 @@
                 "funding_description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates.",
                 "description": "Same McGill undergraduate route, with consideration for renewable Major Entrance Scholarships for outstanding academic candidates."
               }
+            ],
+            "extra_requirements": [
+              "Online application via McGill Minerva portal",
+              "Official high school transcripts and academic records for grades 10, 11, and 12",
+              "Prerequisite subjects: senior-level Mathematics (Pre-calculus/Calculus) and Sciences (Physics, Chemistry) for Engineering and Science faculties",
+              "Test-optional policy for US high school applicants (SAT/ACT considered if submitted)",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 86-90 with component minimums), PTE Academic (minimum 65), or Duolingo English Test (minimum 125)",
+              "Supplementary application, interview, or portfolio where required by specific programs"
             ]
           }
         ],
@@ -18010,7 +18387,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -18024,7 +18402,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -18038,7 +18417,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -18051,7 +18431,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -18064,7 +18445,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -18077,7 +18459,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -18090,7 +18473,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -18103,7 +18487,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -18116,7 +18501,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -18255,19 +18641,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 87363,
+      "total_cost_year_usd": 94858,
       "costs_breakdown_year_usd": {
-        "Tuition": 65230
+        "Tuition": 68670,
+        "Student_Fees": 500,
+        "Housing_Dorm": 13073,
+        "Food": 8894,
+        "Books_and_Supplies": 1377
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://sfs.jhu.edu/cost-tuition/",
+        "https://apply.jhu.edu/tuition-aid/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Johns Hopkins University undergraduate 2026-27 Cost of Attendance from JHU Student Financial Support in USD, including tuition ($68,670), first-year matriculation fee ($500), on-campus residence hall housing ($13,073), meal plan ($8,894), and books/supplies ($1,377).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 87555
@@ -18402,13 +18794,14 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 87363,
+          "value": 94858,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://engineering.jhu.edu/computer-science/academics/undergraduate-studies/",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
-          "status": "curated"
+          "source": "Johns Hopkins University Student Financial Support Cost of Attendance",
+          "source_url": "https://sfs.jhu.edu/cost-tuition/",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct official JHU 2026-27 undergraduate cost of attendance schedule."
         },
         "student_count": {
           "value": 39148,
@@ -18490,12 +18883,13 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Application submitted via Common Application or Coalition on Scoir by deadlines (EDI Nov 1, EDII Jan 2, Regular Decision Jan 2)",
+          "Official secondary school transcript and Secondary School Report submitted by guidance counselor",
+          "Two letters of evaluation from teachers in academic subjects",
+          "Standardized test results (SAT/ACT) submitted optionally under JHU test-optional policy",
+          "Mid-year academic report with updated senior grades",
+          "English language proficiency test scores recommended for international applicants (TOEFL iBT 100+, IELTS 7.0+, or DET 130+)",
+          "$70 non-refundable application fee or approved fee waiver"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -18587,7 +18981,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
           "name": "Software Engineering",
@@ -18601,7 +18996,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -18615,7 +19011,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -18628,7 +19025,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -18641,7 +19039,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -18654,7 +19053,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -18667,7 +19067,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -18680,7 +19081,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -18693,7 +19095,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3–4 years"
         }
       ],
       "formats": [
@@ -18820,20 +19223,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 51200,
+      "currency": "AUD",
+      "total_cost_year_usd": 80026,
       "costs_breakdown_year_usd": {
-        "Tuition": 33200
+        "Tuition": 57640,
+        "Student_Services_Fee": 386,
+        "Housing_Dorm": 16000,
+        "Food": 6000
       },
       "financial_aid": {
-        "need_based": false,
-        "merit_based": true
+        "merit_based": true,
+        "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://study.anu.edu.au/programs/fees",
+        "https://programsandcourses.anu.edu.au/program/bcomp",
+        "https://www.anu.edu.au/students/program-administration/fees-payments/services-amenities-fee",
         "https://study.anu.edu.au/student-life/living-canberra/cost-living"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Australian National University undergraduate cost schedule for international students in AUD, covering annual indicative international tuition for the Bachelor of Computing (57,640 AUD for 48 units), compulsory Student Services and Amenities Fee (SSAF, 386 AUD), on-campus university residential accommodation (~16,000 AUD), and student living meal budget (~6,000 AUD).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -18969,12 +19377,12 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 51200,
+          "value": 80026,
           "unit": "usd_per_year",
-          "source": "University official admissions/program pages (curated in UniSearch dataset)",
+          "source": "Australian National University Programs & Courses and Student Fees schedules in AUD",
           "source_url": "https://programsandcourses.anu.edu.au/program/bcomp",
-          "verified_at": "2026-05-24",
-          "confidence": "medium",
+          "verified_at": "2026-09-12",
+          "confidence": "high",
           "status": "curated"
         },
         "student_count": {
@@ -19037,7 +19445,11 @@
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "TOEFL_iBT_0_120": 80
+              "TOEFL_iBT_0_120": 80,
+              "TOEFL_iBT_0_120_READING": 18,
+              "TOEFL_iBT_0_120_WRITING": 20,
+              "TOEFL_iBT_0_120_LISTENING": 18,
+              "TOEFL_iBT_0_120_SPEAKING": 18
             }
           },
           {
@@ -19057,10 +19469,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "Course-specific supplementary form, portfolio, or interview where required",
-          "Application fee where applicable",
-          "English-language proof where applicable"
+          "Direct international online application via ANU Application Portal or UAC",
+          "Official secondary-school academic transcript and recognized completion certificate (ATAR, IB Diploma, A-Levels, or equivalent)",
+          "Prerequisite course: Senior secondary Mathematics (Mathematical Methods / Specialist Mathematics or equivalent) for Computing, Engineering, and Finance",
+          "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 80, 20 on Writing), PTE Academic (minimum 64), or Duolingo English Test (minimum 120)",
+          "Submission of color scans of passport identification page and academic credentials"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -19093,6 +19506,13 @@
                 "funding_description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction.",
                 "description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction."
               }
+            ],
+            "extra_requirements": [
+              "Direct international online application via ANU Application Portal or UAC",
+              "Official secondary-school academic transcript and recognized completion certificate (ATAR, IB Diploma, A-Levels, or equivalent)",
+              "Prerequisite course: Senior secondary Mathematics (Mathematical Methods / Specialist Mathematics or equivalent) for Computing, Engineering, and Finance",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 80, 20 on Writing), PTE Academic (minimum 64), or Duolingo English Test (minimum 120)",
+              "Submission of color scans of passport identification page and academic credentials"
             ]
           },
           {
@@ -19120,6 +19540,13 @@
                 "funding_description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction.",
                 "description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction."
               }
+            ],
+            "extra_requirements": [
+              "Direct international online application via ANU Application Portal or UAC",
+              "Official secondary-school academic transcript and recognized completion certificate (ATAR, IB Diploma, A-Levels, or equivalent)",
+              "Prerequisite course: Senior secondary Mathematics (Mathematical Methods / Specialist Mathematics or equivalent) for Computing, Engineering, and Finance",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 80, 20 on Writing), PTE Academic (minimum 64), or Duolingo English Test (minimum 120)",
+              "Submission of color scans of passport identification page and academic credentials"
             ]
           },
           {
@@ -19147,6 +19574,13 @@
                 "funding_description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction.",
                 "description": "Same ANU undergraduate route, with consideration for the ANU Chancellor's International Scholarship providing tuition fee reduction."
               }
+            ],
+            "extra_requirements": [
+              "Direct international online application via ANU Application Portal or UAC",
+              "Official secondary-school academic transcript and recognized completion certificate (ATAR, IB Diploma, A-Levels, or equivalent)",
+              "Prerequisite course: Senior secondary Mathematics (Mathematical Methods / Specialist Mathematics or equivalent) for Computing, Engineering, and Finance",
+              "Proof of English proficiency: IELTS Academic (minimum 6.5 overall, 6.0 in each band), TOEFL iBT (minimum 80, 20 on Writing), PTE Academic (minimum 64), or Duolingo English Test (minimum 120)",
+              "Submission of color scans of passport identification page and academic credentials"
             ]
           }
         ],
@@ -19189,7 +19623,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -19203,7 +19638,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -19217,7 +19653,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -19230,7 +19667,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -19243,7 +19681,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -19256,7 +19695,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -19269,7 +19709,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -19282,7 +19723,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -19295,7 +19737,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -19422,20 +19865,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 62600,
+      "total_cost_year_usd": 52814,
       "costs_breakdown_year_usd": {
-        "Tuition": 42200
+        "Tuition": 38900,
+        "Housing_Rent": 8820,
+        "Food": 2232
       },
       "financial_aid": {
         "need_based": false,
         "merit_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://www.ed.ac.uk/student-funding/tuition-fees/undergraduate/international",
-        "https://www.ed.ac.uk/student-funding/tuition-fees/tuition-fees-cost-of-living"
+        "https://registryservices.ed.ac.uk/tuition-fees/find/undergraduate/2026-2027/full-time-new-students",
+        "https://www.ed.ac.uk/studying/undergraduate/fees-finance/living-costs"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Edinburgh undergraduate tuition fees for international students in GBP (2026-2027 cohort) for Informatics/STEM programmes (£38,900/year), alongside published standard 39-week academic year living costs including university accommodation (£8,820), food (£2,232), and total estimated living expenditure (£13,914).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "GBP"
     },
     "outcomes": {},
     "verified_sources": [
@@ -19571,11 +20017,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 62600,
+          "value": 52814,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400",
-          "verified_at": "2026-05-24",
+          "source_url": "https://registryservices.ed.ac.uk/tuition-fees/find/undergraduate/2026-2027/full-time-new-students",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -19659,12 +20105,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "UCAS or university application form",
-          "Official transcript or school record with predicted/achieved grades",
-          "Academic reference where required",
-          "Personal statement or written work where required",
-          "Interview or admissions test where required by the course",
-          "English-language proof where applicable"
+          "Online application submitted via UCAS (institution code E56)",
+          "Official high school academic transcript and predicted/achieved qualifications",
+          "UCAS personal statement and academic reference from a teacher or tutor",
+          "Standard academic entry benchmarks: SQA Highers / Advanced Highers; GCE A-Levels (typical standard offers AAA-A*AA, e.g. A*A*A for Computer Science); IB Diploma (37-43 points overall with 6s and 7s at Higher Level); US qualifications (SAT 1350-1420+ or ACT 31-33+ with 3 AP exams at score 4 or 5 in relevant subjects)",
+          "English language proficiency: IELTS Academic 6.5-7.0 (minimum 6.0 in all bands), TOEFL iBT 92-100 (minimum 20 in each section), PTE Academic 62-70, or DET 125",
+          "UCAS equal consideration deadline (late January); fixed fee guarantee applies to overseas undergraduates for the normal duration of the degree"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -19794,7 +20240,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -19808,7 +20255,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -19822,7 +20270,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -19835,7 +20284,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -19848,7 +20298,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -19861,7 +20312,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -19874,7 +20326,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -19887,7 +20340,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -19900,7 +20354,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -20027,20 +20482,24 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 59800,
+      "total_cost_year_usd": 52640,
       "costs_breakdown_year_usd": {
-        "Tuition": 39500
+        "Tuition": 37800,
+        "Housing_Rent": 8100,
+        "Food": 2500,
+        "Books_and_Supplies": 210
       },
       "financial_aid": {
         "need_based": false,
         "merit_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://www.manchester.ac.uk/study/undergraduate/fees-and-funding/",
-        "https://www.manchester.ac.uk/study/international/finance-and-scholarships/cost-of-living/"
+        "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/",
+        "https://www.manchester.ac.uk/study/undergraduate/fees-and-funding/cost-of-living/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Manchester overseas undergraduate tuition fee (£37,800/year for 2026/27) alongside published 41-week undergraduate living costs schedule in GBP, including self-catered university accommodation (£8,100), groceries/food (£2,500), course materials (£210), and total living expenditure (£14,840).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "GBP"
     },
     "outcomes": {},
     "verified_sources": [
@@ -20184,11 +20643,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 59800,
+          "value": 52640,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -20398,6 +20857,14 @@
         ],
         "program_names": [
           "Computer Science"
+        ],
+        "extra_requirements": [
+          "Online application submitted via UCAS (institution code M20)",
+          "Official secondary school academic transcript and realistic predicted grades from referee",
+          "Academic reference and UCAS personal statement",
+          "Standard academic entry benchmarks: GCE A-Levels (typical standard offer A*AA with A* in Mathematics for computing); IB Diploma (37-38 points overall with 7, 6, 6 at Higher Level including Analysis and Approaches HL); US High School Diploma with SAT (1290-1450+) or ACT (28-33+) plus 3-4 AP exams at grades 4 or 5 in relevant STEM subjects",
+          "English language proficiency: IELTS Academic 7.0 (minimum 6.5 in each component), TOEFL iBT 100 (minimum 22 in each sub-score), PTE Academic 59-65, or DET 120-130",
+          "UCAS equal consideration deadline (late January)"
         ]
       },
       {
@@ -20570,6 +21037,15 @@
         ],
         "program_names": [
           "Mechanical Engineering"
+        ],
+        "extra_requirements": [
+          "Online application submitted via UCAS (institution code M20)",
+          "Official secondary school academic transcript and predicted grades",
+          "Academic reference and UCAS personal statement focusing on engineering aptitude",
+          "Subject prerequisites: Advanced Mathematics and Physics required",
+          "Standard entry requirements: GCE A-Levels A*AA including Mathematics and Physics; IB Diploma 38 points with 7, 6, 6 at Higher Level including Mathematics HL and Physics HL; US AP exams in Calculus BC and Physics C Mechanics (grade 5)",
+          "English language proficiency: IELTS Academic 6.5 (minimum 6.0 in all bands), TOEFL iBT 90 (minimum 22 in all sub-scores), PTE 59, or DET 120",
+          "UCAS equal consideration deadline (late January)"
         ]
       }
     ]
@@ -20602,7 +21078,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -20616,7 +21093,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -20630,7 +21108,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -20643,7 +21122,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -20656,7 +21136,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -20669,7 +21150,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -20682,7 +21164,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -20695,7 +21178,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -20708,7 +21192,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -20847,19 +21332,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 91287,
+      "total_cost_year_usd": 99774,
       "costs_breakdown_year_usd": {
-        "Tuition": 71845
+        "Tuition": 72800,
+        "Mandatory_Fees": 4160,
+        "Housing_Dorm": 12522,
+        "Food": 7128,
+        "Books_and_Supplies": 1320
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://undergrad.admissions.columbia.edu/affordability/cost",
+        "https://www.sfs.columbia.edu/coa"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Columbia University undergraduate Cost of Attendance schedule (2026-2027) for Columbia College and Columbia Engineering in USD, covering tuition ($72,800), mandatory student fees ($4,160), on-campus residence hall housing ($12,522), standard meal plan ($7,128), and books/supplies ($1,320).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 102491
@@ -20995,11 +21486,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 91287,
+          "value": 99774,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.cs.columbia.edu/education/undergraduate/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://undergrad.admissions.columbia.edu/affordability/cost",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -21079,12 +21570,15 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Common Application, Coalition Application powered by Scoir, or QuestBridge Application",
+          "Columbia-specific supplemental essays and short answer questions",
+          "Secondary School Report with official high school transcripts (grades 9-12), school profile, and counselor recommendation",
+          "Midyear school report with latest senior year academic progress",
+          "Two teacher recommendations from academic disciplines (for Columbia Engineering applicants, one must be from a mathematics or science teacher)",
+          "Standardized testing policy: Test-Optional for 2026-2027 applicants (SAT/ACT scores optional; holistic review)",
+          "English language proficiency tests for international applicants: IELTS Academic (7.5+), TOEFL iBT (105+), or Duolingo English Test (DET 135+)",
+          "Nonrefundable application fee of $85 or approved fee waiver",
+          "Application deadlines: Early Decision (November 1) and Regular Decision (January 1)"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -21177,7 +21671,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -21191,7 +21686,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -21205,7 +21701,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -21218,7 +21715,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -21231,7 +21729,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -21244,7 +21743,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -21257,7 +21757,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -21270,7 +21771,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -21283,7 +21785,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -21416,20 +21919,26 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 50100,
+      "total_cost_year_usd": 72640,
       "costs_breakdown_year_usd": {
-        "Tuition": 30000
+        "Tuition": 53082,
+        "Student_Fees": 1350,
+        "Housing_Dorm": 8996,
+        "Food": 7712,
+        "Books_and_Supplies": 1500
       },
       "financial_aid": {
         "need_based": false,
         "merit_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://students.ubc.ca/enrolment/finances/tuition-fees/undergraduate-tuition-fees",
-        "https://students.ubc.ca/ubclife/cost-living"
+        "https://vancouver.calendar.ubc.ca/fees/tuition-fees/undergraduate",
+        "https://vancouver.housing.ubc.ca/applications/fees-payments/",
+        "https://vancouver.calendar.ubc.ca/fees/student-fees"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official UBC Vancouver undergraduate tuition and mandatory residence/meal plan schedule in CAD from UBC Academic Calendar and Student Housing, covering 30 credits of Science/Applied Science tuition ($53,082 CAD), mandatory student fees ($1,350 CAD), first-year residence room ($8,996 CAD), All Access Dining Plan ($7,712 CAD), and books/supplies ($1,500 CAD).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "CAD"
     },
     "outcomes": {},
     "verified_sources": [
@@ -21565,11 +22074,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 50100,
+          "value": 72640,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.cs.ubc.ca/students/undergrad",
-          "verified_at": "2026-05-24",
+          "source_url": "https://vancouver.calendar.ubc.ca/fees/tuition-fees/undergraduate",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -21659,11 +22168,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School profile or counselor reference where required",
-          "Supplementary application, interview, or personal profile where required",
-          "Application fee where applicable",
-          "English-language proof where applicable"
+          "Online application via EducationPlannerBC or UBC Online Application portal",
+          "Official secondary-school transcripts and interim Grade 11/12 grades",
+          "UBC Personal Profile (short essays reflecting on leadership, extracurriculars, problem-solving, and personal achievements)",
+          "Proof of English Language Admission Standard (ELAS): IELTS Academic 6.5 (min 6.0 each band) or TOEFL iBT 90 (min 22 in Reading and Listening, 21 in Writing and Speaking)",
+          "Program-specific course prerequisites (e.g., Grade 11 and 12 Mathematics, Chemistry, and Physics for Engineering and Science)",
+          "Application fee ($162.75 CAD for international students)"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -21792,7 +22302,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -21806,7 +22317,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -21820,7 +22332,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -21833,7 +22346,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -21846,7 +22360,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -21859,7 +22374,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -21872,7 +22388,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -21885,7 +22402,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -21898,7 +22416,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -22037,19 +22556,24 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 76190,
+      "total_cost_year_usd": 84800,
       "costs_breakdown_year_usd": {
-        "Tuition": 49403
+        "Tuition": 57300,
+        "Student_Fees": 1900,
+        "Housing_Dorm": 21700,
+        "Books_and_Supplies": 1400
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://admission.universityofcalifornia.edu/tuition-financial-aid/tuition-cost-of-attendance/",
+        "https://sa.ucla.edu/ro/fees/public/public-fees"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of California undergraduate nonresident Cost of Attendance schedule in USD for on-campus undergraduates, covering UC Tuition and Nonresident Supplemental Tuition ($57,300), mandatory campus fees ($1,900), campus housing and meals ($21,700), and books and supplies ($1,400).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 82511
@@ -22184,11 +22708,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 76190,
+          "value": 84800,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.cs.ucla.edu/undergraduate-study/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://admission.universityofcalifornia.edu/tuition-financial-aid/tuition-cost-of-attendance/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -22268,12 +22792,13 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Online submission through the University of California (UC) Application portal by November 30",
+          "Test-Free policy: SAT and ACT scores are not considered in admission or scholarship selections",
+          "Completion of minimum 15 college-preparatory A-G subject requirements with grades of C or better",
+          "Minimum secondary school GPA of 3.4 for non-California residents (unweighted on a 4.0 scale)",
+          "Four Personal Insight Questions (PIQs) chosen from eight prompt choices (350 words max each)",
+          "English language proficiency: IELTS Academic 7.0+ or TOEFL iBT 100+ (subscores 22+) or Duolingo English Test 130+",
+          "Application fee ($95 USD per UC campus for international applicants)"
         ],
         "scholarships": [],
         "applicable_majors": [

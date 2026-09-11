@@ -70,22 +70,38 @@ def _track_study_mode(university: Dict[str, Any], track: Dict[str, Any]) -> str:
     return "any"
 
 
+def _cost_to_usd(amount: Optional[float], currency_code: str) -> float:
+    if amount is None or amount <= 0:
+        return 0.0
+    code = str(currency_code or "USD").strip().upper()
+    if not code or code == "USD":
+        return max(0.0, float(amount))
+    try:
+        from app.services.currency import convert
+        return max(0.0, float(convert(amount, code, "USD")))
+    except Exception:
+        return max(0.0, float(amount))
+
+
 def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict[str, Any]:
     track_fin = track.get("finance_override") if isinstance(track.get("finance_override"), dict) else {}
     uni_fin = university.get("finance") if isinstance(university.get("finance"), dict) else {}
+    currency = str(track_fin.get("currency") or uni_fin.get("currency") or "USD").strip().upper()
     total = _to_num(track_fin.get("total_cost_year_usd"))
     if total is None:
         total = _to_num(uni_fin.get("total_cost_year_usd"))
+    total_usd = _cost_to_usd(total, currency)
     breakdown = track_fin.get("costs_breakdown_year_usd")
     if not isinstance(breakdown, dict):
         breakdown = uni_fin.get("costs_breakdown_year_usd")
     if not isinstance(breakdown, dict):
         breakdown = {}
     return {
-        "total": max(0.0, float(total or 0.0)),
+        "total": total_usd,
         "breakdown": breakdown,
         "track_finance": track_fin,
         "university_finance": uni_fin,
+        "currency": currency,
     }
 
 
@@ -105,6 +121,7 @@ def _effective_track_cost_with_mode(university: Dict[str, Any], track: Dict[str,
     mode = _effective_cost_mode(preferred_mode, _track_study_mode(university, track))
     track_fin = finance.get("track_finance") if isinstance(finance.get("track_finance"), dict) else {}
     uni_fin = finance.get("university_finance") if isinstance(finance.get("university_finance"), dict) else {}
+    currency = str(finance.get("currency") or "USD").strip().upper()
 
     if mode == "on-campus":
         return max(0.0, total), "on-campus_exact"
@@ -114,13 +131,13 @@ def _effective_track_cost_with_mode(university: Dict[str, Any], track: Dict[str,
             mode_breakdown = _mode_breakdown_from_finance(source, "online")
             mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
             if mode_tuition is not None and mode_tuition >= 0:
-                return max(0.0, float(mode_tuition)), "online_tuition_only"
+                return _cost_to_usd(float(mode_tuition), currency), "online_tuition_only"
         if tuition is not None and tuition >= 0:
-            return max(0.0, float(tuition)), "online_tuition_only"
+            return _cost_to_usd(float(tuition), currency), "online_tuition_only"
         for source in (track_fin, uni_fin):
             mode_total = _mode_total_from_finance(source, "online")
             if mode_total is not None and mode_total >= 0:
-                return max(0.0, float(mode_total)), "online_mode_total"
+                return _cost_to_usd(float(mode_total), currency), "online_mode_total"
         return 0.0, "online_missing_tuition"
 
     return max(0.0, total), "on-campus_exact"
@@ -1064,8 +1081,10 @@ def _fallback_social_vs_hardcore(university: Dict[str, Any]) -> float:
 def _fallback_budget_vs_prestige(university: Dict[str, Any]) -> float:
     finance = university.get("finance")
     finance = finance if isinstance(finance, dict) else {}
-    cost = _to_num(finance.get("total_cost_year_usd"))
-    cost_norm = 0.45 if cost is None else _clamp01(float(cost) / 100000.0)
+    cost_raw = _to_num(finance.get("total_cost_year_usd"))
+    currency = str(finance.get("currency") or "USD").strip().upper()
+    cost_usd = _cost_to_usd(cost_raw, currency) if cost_raw is not None else None
+    cost_norm = 0.45 if cost_usd is None else _clamp01(float(cost_usd) / 100000.0)
     rank = _to_num(university.get("rank"))
     rank_prestige = 0.5
     if rank is not None and rank > 0:
