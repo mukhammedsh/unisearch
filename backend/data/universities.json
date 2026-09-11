@@ -3882,7 +3882,7 @@
         "id": "oxford_ppe_and_humanities",
         "label": "Philosophy, Politics and Economics (PPE) & Humanities",
         "description": "Direct Oxford undergraduate admissions route for PPE, Law, and humanities courses via UCAS.",
-        "scope": "general",
+        "scope": "program",
         "study_mode": "On-campus",
         "language_requirements": [
           {

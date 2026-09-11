@@ -515,7 +515,16 @@ export function renderAdmissionSection({
     const profiles = getCategoryProfiles(category);
     const profileRows = profiles.length ? profiles : [{ id: "general", label: t("admission.profile.general", "General") }];
     const categoryKey = `${universityId}:${category.id || categoryIdx}`;
-    const selectedProfileId = admissionProfileSelectionByCategory.get(categoryKey);
+    const choiceKeyStr = String(effectiveSelectedChoiceKey || "").trim();
+    let effectiveProfileId = "";
+    if (choiceKeyStr) {
+      const delimiter = choiceKeyStr.includes("::") ? "::" : ":";
+      const parts = choiceKeyStr.split(delimiter);
+      if (parts.length >= 2 && parts[0] === String(category.id || categoryIdx)) {
+        effectiveProfileId = parts[1];
+      }
+    }
+    const selectedProfileId = admissionProfileSelectionByCategory.get(categoryKey) || effectiveProfileId;
     const activeProfile = profileRows.find((profile) => String(profile.id || "") === selectedProfileId) || profileRows[0];
     const categoryLabel = trTrackLabel(category.label || category.name || "") || unknownFieldText("placeholder.field.admission_category", "Admission category");
     const categoryDescription = trTrackDescription(university.id, category.id, category.description || "");

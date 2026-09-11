@@ -67,8 +67,8 @@ test("oxford admission selector narrows program-specific categories without dupl
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  await expect(page.locator(".admission-category-card")).toHaveCount(2);
-  await expect(page.locator(".requirement-profile-tab")).toHaveCount(6);
+  await expect(page.locator(".admission-category-card")).toHaveCount(3);
+  await expect(page.locator(".requirement-profile-tab")).toHaveCount(9);
 
   await page.locator(".admission-program-option[data-admission-program='computer_science']").click();
   await expect(page.locator(".admission-category-card")).toHaveCount(1);

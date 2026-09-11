@@ -13,9 +13,11 @@ All notable project changes should be recorded here.
   - Raised default USD tuition slider maximum from $50,000 to $100,000 to support high-tuition institutions.
   - Expanded supported currencies to 160+ ISO fiat currencies with localized dropdown options in Settings and ExchangeRate-API source attribution.
   - Included institution base currency code in university card payloads.
-- Enhanced admissions transparency and verified-null presentation (`frontend/javascript/pages/_shared.js`, `frontend/css/university.css`, `frontend/Localization/eng`, `frontend/Localization/ru`, `tests/unit/shared-utils.test.mjs`):
+- Enhanced admissions transparency and verified-null presentation (`frontend/javascript/pages/_shared.js`, `frontend/javascript/pages/university/render-sections.js`, `frontend/css/university.css`, `frontend/Localization/eng`, `frontend/Localization/ru`, `tests/unit/shared-utils.test.mjs`, `tests/e2e/university-track-majors.spec.js`):
   - Clarified verified-null admissions states with contextual explanations when applicants are evaluated university-wide (`institution_wide_only`) rather than by program.
+  - Synchronized category requirement profile tabs with pre-selected admission choices in `renderAdmissionSection`, ensuring active options (e.g. ACT or grant routes) open their corresponding profile tab and active selection control on render.
   - Upgraded admissions source links into structured cards with document icons, verified domain/source titles, and contextual action labels ("View source" or "Why this data is unavailable").
+  - Fixed Oxford PPE & Humanities undergraduate admission category scope to program-specific (`scope: "program"`).
 - Polished catalog filters and mobile responsiveness (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/07-responsive.css`, `frontend/javascript/pages/universities.js`):
   - Replaced slider thumb vertical transforms with `margin-top` and added `touch-action: pan-y` to prevent subpixel jitter.
   - Added viewport scroll locking (`sidebar-filters-open`), overscroll containment, and safe area padding to the mobile filter drawer.

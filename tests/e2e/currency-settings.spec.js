@@ -47,9 +47,9 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     const displayTrigger = modal.locator('[data-setting-key="currency_display_mode"] .custom-select-trigger');
     await expect(displayTrigger).toBeVisible();
 
-    // Verify 5 regional optgroups exist in the select
+    // Verify 6 regional optgroups exist in the select
     const optgroups = await currencySelect.locator("optgroup").all();
-    expect(optgroups.length).toBe(5);
+    expect(optgroups.length).toBe(6);
     const optgroupLabels = await Promise.all(optgroups.map((g) => g.getAttribute("label")));
     expect(optgroupLabels).toEqual([
       "Central Asia & CIS",
@@ -57,12 +57,13 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
       "Americas",
       "Asia-Pacific",
       "Middle East & Africa",
+      "Other currencies",
     ]);
 
     // Verify currencies count and presence of key regional currencies
     const options = await currencySelect.locator("option").all();
     const values = await Promise.all(options.map((opt) => opt.getAttribute("value")));
-    expect(values.length).toBe(62);
+    expect(values.length).toBe(166);
     expect(values).toContain("USD");
     expect(values).toContain("EUR");
     expect(values).toContain("GBP");
@@ -118,6 +119,7 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
       "Северная и Южная Америка",
       "Азиатско-Тихоокеанский регион",
       "Ближний Восток и Африка",
+      "Другие валюты",
     ]);
 
     // Verify currency option labels in Russian
