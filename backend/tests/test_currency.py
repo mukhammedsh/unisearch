@@ -122,29 +122,76 @@ class CurrencyServiceTests(unittest.TestCase):
             "get_rates",
             return_value={"rates": mock_rates, "source": "test"},
         ):
-            # Known currency: KZT has explicit bounds in JSON
+            # Currency without explicit override: KZT converted from default (rate 500.0)
+            # Default is {min: 0, max: 100000, step: 100} in USD -> 50,000,000 / 50,000 in KZT
             kzt_limits = currency_service.get_filter_limits("KZT")
             self.assertEqual(kzt_limits["min"], 0)
-            self.assertEqual(kzt_limits["max"], 25000000)
+            self.assertEqual(kzt_limits["max"], 50000000)
             self.assertEqual(kzt_limits["step"], 50000)
 
-            # Known currency: USD
+            # USD: converted from default {min: 0, max: 100000, step: 100}
             usd_limits = currency_service.get_filter_limits("USD")
             self.assertEqual(usd_limits["min"], 0)
-            self.assertEqual(usd_limits["max"], 50000)
+            self.assertEqual(usd_limits["max"], 100000)
             self.assertEqual(usd_limits["step"], 100)
 
-            # Unknown currency: INR is in rates but not in config JSON
-            # Default is {min: 0, max: 50000, step: 100} in USD
-            # Converted to INR (rate 80.0): max = 4,000,000, step = 8,000
+            # Currency without explicit override: INR (rate 80.0)
+            # Default is {min: 0, max: 100000, step: 100} in USD -> 8,000,000 / 10,000 (1-2-5 scale) in INR
             inr_limits = currency_service.get_filter_limits("INR")
             self.assertEqual(inr_limits["min"], 0)
-            self.assertEqual(inr_limits["max"], 4000000)
-            self.assertEqual(inr_limits["step"], 8000)
+            self.assertEqual(inr_limits["max"], 8000000)
+            self.assertEqual(inr_limits["step"], 10000)
 
             # Completely invalid currency
             with self.assertRaises(ValueError):
                 currency_service.get_filter_limits("NON_EXISTENT")
+
+    def test_nice_step_and_nice_max_1_2_5_scale(self):
+        # 1-2-5 scale ticks: ..., 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, ...
+        self.assertEqual(currency_service._nice_step(0.5), 1)
+        self.assertEqual(currency_service._nice_step(1.0), 1)
+        self.assertEqual(currency_service._nice_step(1.4), 1)
+        self.assertEqual(currency_service._nice_step(1.5), 2)
+        self.assertEqual(currency_service._nice_step(3.1), 2)
+        self.assertEqual(currency_service._nice_step(3.5), 5)
+        self.assertEqual(currency_service._nice_step(7.0), 5)
+        self.assertEqual(currency_service._nice_step(7.5), 10)
+        self.assertEqual(currency_service._nice_step(31), 20)      # KWD (rate 0.31 -> raw 31 -> 20)
+        self.assertEqual(currency_service._nice_step(86), 100)     # EUR (rate 0.86 -> raw 86 -> 100)
+        self.assertEqual(currency_service._nice_step(139), 100)    # AUD (rate 1.39 -> raw 139 -> 100)
+        self.assertEqual(currency_service._nice_step(15425), 20000) # JPY (rate 154.25 -> raw 15425 -> 20,000)
+        self.assertEqual(currency_service._nice_step(45000), 50000) # KZT (rate 450 -> raw 45000 -> 50,000)
+        self.assertEqual(currency_service._nice_step(1179297), 1000000) # UZS (rate 11793 -> raw 1179297 -> 1,000,000)
+
+        # nice_max guarantees exact multiple of step
+        self.assertEqual(currency_service._nice_max(100000, 100), 100000)
+        self.assertEqual(currency_service._nice_max(86000, 100), 86000)
+        self.assertEqual(currency_service._nice_max(45000000, 50000), 45000000)
+        self.assertEqual(currency_service._nice_max(31000, 20), 31000)
+        self.assertEqual(currency_service._nice_max(1179297000, 1000000), 1200000000)
+        self.assertEqual(1200000000 % 1000000, 0)
+
+    def test_explicit_currency_filter_override(self):
+        mock_config = {
+            "default": {"min": 0, "max": 100000, "step": 100},
+            "KZT": {"step": 10000},  # partial override: step only
+            "EUR": {"min": 500, "max": 90000, "step": 50},  # full override
+        }
+        with patch.object(currency_service, "load_filter_limits_config", return_value=mock_config), patch.object(
+            currency_service, "get_rates", return_value={"rates": {"USD": 1.0, "EUR": 0.86, "KZT": 450.0}, "source": "test"}
+        ):
+            # KZT: explicit step=10000, max dynamically computed to match step
+            kzt_limits = currency_service.get_filter_limits("KZT")
+            self.assertEqual(kzt_limits["step"], 10000)
+            self.assertEqual(kzt_limits["min"], 0)
+            self.assertEqual(kzt_limits["max"], 45000000)
+
+            # EUR: full override
+            eur_limits = currency_service.get_filter_limits("EUR")
+            self.assertEqual(eur_limits["min"], 500)
+            self.assertEqual(eur_limits["max"], 90000)
+            self.assertEqual(eur_limits["step"], 50)
+
 
     def test_circuit_breaker_and_backoff(self):
         with patch("app.services.currency.urlopen", side_effect=RuntimeError("connection error")), patch.object(
@@ -252,8 +299,7 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
 
         self.assertIsInstance(data["filter_limits"], dict)
         self.assertIn("default", data["filter_limits"])
-        self.assertIn("USD", data["filter_limits"])
-        self.assertIn("KZT", data["filter_limits"])
+        self.assertEqual(data["filter_limits"]["default"]["max"], 100000)
 
     def test_get_currency_status_endpoint(self):
         resp = self.client.get("/currency/status")

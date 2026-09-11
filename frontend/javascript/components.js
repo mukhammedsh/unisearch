@@ -199,6 +199,112 @@ const LAYOUT_HTML = `
             <option value="BHD" data-i18n="currency.opt.bhd">Bahraini Dinar (BHD, BD)</option>
             <option value="OMR" data-i18n="currency.opt.omr">Omani Rial (OMR, OMR)</option>
           </optgroup>
+          <optgroup label="Other Currencies" data-i18n-label="currency.region.other">
+            <option value="AFN">Afghan Afghani (AFN)</option>
+            <option value="ALL">Albanian Lek (ALL)</option>
+            <option value="ANG">Netherlands Antillean Guilder (ANG)</option>
+            <option value="AOA">Angolan Kwanza (AOA)</option>
+            <option value="AWG">Aruban Florin (AWG)</option>
+            <option value="BAM">Bosnia-Herzegovina Convertible Mark (BAM)</option>
+            <option value="BBD">Barbadian Dollar (BBD)</option>
+            <option value="BIF">Burundian Franc (BIF)</option>
+            <option value="BMD">Bermudan Dollar (BMD)</option>
+            <option value="BND">Brunei Dollar (BND)</option>
+            <option value="BOB">Bolivian Boliviano (BOB)</option>
+            <option value="BSD">Bahamian Dollar (BSD)</option>
+            <option value="BTN">Bhutanese Ngultrum (BTN)</option>
+            <option value="BWP">Botswanan Pula (BWP)</option>
+            <option value="BZD">Belize Dollar (BZD)</option>
+            <option value="CDF">Congolese Franc (CDF)</option>
+            <option value="CLF">Chilean Unit of Account (UF) (CLF)</option>
+            <option value="CNH">Chinese Yuan (Offshore) (CNH)</option>
+            <option value="CRC">Costa Rican Colón (CRC)</option>
+            <option value="CUP">Cuban Peso (CUP)</option>
+            <option value="CVE">Cape Verdean Escudo (CVE)</option>
+            <option value="DJF">Djiboutian Franc (DJF)</option>
+            <option value="DOP">Dominican Peso (DOP)</option>
+            <option value="DZD">Algerian Dinar (DZD)</option>
+            <option value="ERN">Eritrean Nakfa (ERN)</option>
+            <option value="ETB">Ethiopian Birr (ETB)</option>
+            <option value="FJD">Fijian Dollar (FJD)</option>
+            <option value="FKP">Falkland Islands Pound (FKP)</option>
+            <option value="FOK">Faroese Króna (FOK)</option>
+            <option value="GGP">Guernsey Pound (GGP)</option>
+            <option value="GHS">Ghanaian Cedi (GHS)</option>
+            <option value="GIP">Gibraltar Pound (GIP)</option>
+            <option value="GMD">Gambian Dalasi (GMD)</option>
+            <option value="GNF">Guinean Franc (GNF)</option>
+            <option value="GTQ">Guatemalan Quetzal (GTQ)</option>
+            <option value="GYD">Guyanaese Dollar (GYD)</option>
+            <option value="HNL">Honduran Lempira (HNL)</option>
+            <option value="HRK">Croatian Kuna (HRK)</option>
+            <option value="HTG">Haitian Gourde (HTG)</option>
+            <option value="IMP">Isle of Man Pound (IMP)</option>
+            <option value="IQD">Iraqi Dinar (IQD)</option>
+            <option value="IRR">Iranian Rial (IRR)</option>
+            <option value="JEP">Jersey Pound (JEP)</option>
+            <option value="JMD">Jamaican Dollar (JMD)</option>
+            <option value="JOD">Jordanian Dinar (JOD)</option>
+            <option value="KHR">Cambodian Riel (KHR)</option>
+            <option value="KID">Kiribati Dollar (KID)</option>
+            <option value="KMF">Comorian Franc (KMF)</option>
+            <option value="KYD">Cayman Islands Dollar (KYD)</option>
+            <option value="LAK">Laotian Kip (LAK)</option>
+            <option value="LBP">Lebanese Pound (LBP)</option>
+            <option value="LKR">Sri Lankan Rupee (LKR)</option>
+            <option value="LRD">Liberian Dollar (LRD)</option>
+            <option value="LSL">Lesotho Loti (LSL)</option>
+            <option value="LYD">Libyan Dinar (LYD)</option>
+            <option value="MGA">Malagasy Ariary (MGA)</option>
+            <option value="MKD">Macedonian Denar (MKD)</option>
+            <option value="MMK">Myanmar Kyat (MMK)</option>
+            <option value="MOP">Macanese Pataca (MOP)</option>
+            <option value="MRU">Mauritanian Ouguiya (MRU)</option>
+            <option value="MUR">Mauritian Rupee (MUR)</option>
+            <option value="MVR">Maldivian Rufiyaa (MVR)</option>
+            <option value="MWK">Malawian Kwacha (MWK)</option>
+            <option value="MZN">Mozambican Metical (MZN)</option>
+            <option value="NAD">Namibian Dollar (NAD)</option>
+            <option value="NIO">Nicaraguan Córdoba (NIO)</option>
+            <option value="NPR">Nepalese Rupee (NPR)</option>
+            <option value="PAB">Panamanian Balboa (PAB)</option>
+            <option value="PGK">Papua New Guinean Kina (PGK)</option>
+            <option value="PYG">Paraguayan Guarani (PYG)</option>
+            <option value="RWF">Rwandan Franc (RWF)</option>
+            <option value="SBD">Solomon Islands Dollar (SBD)</option>
+            <option value="SCR">Seychellois Rupee (SCR)</option>
+            <option value="SDG">Sudanese Pound (SDG)</option>
+            <option value="SHP">St. Helena Pound (SHP)</option>
+            <option value="SLE">Sierra Leonean Leone (SLE)</option>
+            <option value="SLL">Sierra Leonean Leone (Old) (SLL)</option>
+            <option value="SOS">Somali Shilling (SOS)</option>
+            <option value="SRD">Surinamese Dollar (SRD)</option>
+            <option value="SSP">South Sudanese Pound (SSP)</option>
+            <option value="STN">São Tomé & Príncipe Dobra (STN)</option>
+            <option value="SYP">Syrian Pound (SYP)</option>
+            <option value="SZL">Swazi Lilangeni (SZL)</option>
+            <option value="TMT">Turkmenistani Manat (TMT)</option>
+            <option value="TND">Tunisian Dinar (TND)</option>
+            <option value="TOP">Tongan Paʻanga (TOP)</option>
+            <option value="TTD">Trinidad & Tobago Dollar (TTD)</option>
+            <option value="TVD">Tuvaluan Dollar (TVD)</option>
+            <option value="TZS">Tanzanian Shilling (TZS)</option>
+            <option value="UGX">Ugandan Shilling (UGX)</option>
+            <option value="UYU">Uruguayan Peso (UYU)</option>
+            <option value="VES">Venezuelan Bolívar (VES)</option>
+            <option value="VUV">Vanuatu Vatu (VUV)</option>
+            <option value="WST">Samoan Tala (WST)</option>
+            <option value="XAF">Central African CFA Franc (XAF)</option>
+            <option value="XCD">East Caribbean Dollar (XCD)</option>
+            <option value="XCG">Caribbean Guilder (XCG)</option>
+            <option value="XDR">Special Drawing Rights (XDR)</option>
+            <option value="XOF">West African CFA Franc (XOF)</option>
+            <option value="XPF">CFP Franc (XPF)</option>
+            <option value="YER">Yemeni Rial (YER)</option>
+            <option value="ZMW">Zambian Kwacha (ZMW)</option>
+            <option value="ZWG">Zimbabwean Gold (ZWG)</option>
+            <option value="ZWL">Zimbabwean Dollar (ZWL)</option>
+          </optgroup>
         </select>
       </article>
 
@@ -213,6 +319,10 @@ const LAYOUT_HTML = `
           <option value="original" data-i18n="currency.display.original">In original currency</option>
         </select>
       </article>
+      <div class="settings-attribution">
+        <span data-i18n="currency.attribution">Rates provided by</span>
+        <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
+      </div>
     </div>
   </section>
 </div>

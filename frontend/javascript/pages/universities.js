@@ -1659,7 +1659,7 @@ export function initUniversitiesPage() {
         const minVal = Number(el.minSlider.value) || 0;
         const maxVal = Number(el.maxSlider.value) || 0;
         const minLimit = Number(el.minSlider.min) || currentLimits.min || 0;
-        const maxRange = Number(el.maxSlider.max) || currentLimits.max || 50000;
+        const maxRange = Number(el.maxSlider.max) || currentLimits.max || 100000;
         const rangeSpan = Math.max(1, maxRange - minLimit);
 
         const r1 = Math.max(0, Math.min(1, (minVal - minLimit) / rangeSpan));
@@ -1840,6 +1840,7 @@ export function initUniversitiesPage() {
             toggleBtn.hidden = isOpen;
             if (window.innerWidth <= 980) {
                 document.body.style.overflow = isOpen ? "hidden" : "";
+                document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
             }
         };
 
@@ -3199,7 +3200,9 @@ export function initUniversitiesPage() {
         lastRenderedItems = state.only_saved ? rawItems : items;
         const warnings = Array.isArray(data.warnings) ? data.warnings : [];
         const mlUnavailable = warnings.some((w) => String(w || "").toLowerCase().includes("machine learning unavailable"));
-        const warningText = mlUnavailable ? t("universities.state.ml_unavailable", "Machine Learning unavailable. Using rule-based ranking only.") : "";
+        const warningText = (mlUnavailable && state.sort === "uni_ai")
+            ? t("universities.state.ml_unavailable", "Interests from your profile are temporarily not affecting sorting.")
+            : "";
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;

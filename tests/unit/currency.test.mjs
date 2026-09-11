@@ -11,6 +11,8 @@ import {
   loadRates,
   setCurrencyDisplayMode,
   setPreferredCurrency,
+  niceStep,
+  niceMax,
   CURRENCY_FORMAT_MAP,
   FALLBACK_RATES,
 } from '../../frontend/javascript/currency.js';
@@ -115,24 +117,49 @@ describe('currency.js', () => {
     // Known currencies
     const usdLimits = getFilterLimits('USD');
     assert.strictEqual(usdLimits.min, 0);
-    assert.strictEqual(usdLimits.max, 50000);
+    assert.strictEqual(usdLimits.max, 100000);
     assert.strictEqual(usdLimits.step, 100);
 
+    // KZT: 45000 raw step rounds up to nice 50,000
     const kztLimits = getFilterLimits('KZT');
     assert.strictEqual(kztLimits.min, 0);
-    assert.strictEqual(kztLimits.max, 25000000);
+    assert.strictEqual(kztLimits.max, 45000000);
     assert.strictEqual(kztLimits.step, 50000);
 
+    // UZS: 1179297 raw step rounds to nice 1,000,000; max rounds to 1,200,000,000
     const uzsLimits = getFilterLimits('UZS');
     assert.strictEqual(uzsLimits.min, 0);
-    assert.strictEqual(uzsLimits.max, 600000000);
+    assert.strictEqual(uzsLimits.max, 1200000000);
     assert.strictEqual(uzsLimits.step, 1000000);
 
-    // Unlisted currency (converted from default USD limits 50000 / step 100)
+    // Unlisted currency (converted from default USD limits 100000 / step 100)
     const unlistedLimits = getFilterLimits('XYZ');
     assert.strictEqual(unlistedLimits.min, 0);
-    assert.strictEqual(unlistedLimits.max, 50000);
+    assert.strictEqual(unlistedLimits.max, 100000);
     assert.strictEqual(unlistedLimits.step, 100);
+  });
+
+  test('niceStep and niceMax implement adaptive 1-2-5 scale rounding', () => {
+    assert.strictEqual(niceStep(0.5), 1);
+    assert.strictEqual(niceStep(1), 1);
+    assert.strictEqual(niceStep(1.4), 1);
+    assert.strictEqual(niceStep(1.5), 2);
+    assert.strictEqual(niceStep(3.1), 2);
+    assert.strictEqual(niceStep(3.5), 5);
+    assert.strictEqual(niceStep(7.0), 5);
+    assert.strictEqual(niceStep(7.5), 10);
+    assert.strictEqual(niceStep(31), 20);
+    assert.strictEqual(niceStep(86), 100);
+    assert.strictEqual(niceStep(45000), 50000);
+    assert.strictEqual(niceStep(1179297), 1000000);
+
+    assert.strictEqual(niceMax(100000, 100), 100000);
+    assert.strictEqual(niceMax(86000, 100), 86000);
+    assert.strictEqual(niceMax(45000000, 50000), 45000000);
+    assert.strictEqual(niceMax(31000, 20), 31000);
+    assert.strictEqual(niceMax(1179297000, 1000000), 1200000000);
+    assert.strictEqual(1200000000 % 1000000, 0);
+
   });
 
   test('formatMoney formats amounts with correct symbol placement and grouping', () => {

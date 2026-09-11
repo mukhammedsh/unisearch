@@ -12,381 +12,180 @@ const RATES_STORAGE_KEY = "unisearch_currency_rates_cache_v1";
 const RATES_CACHE_TTL_MS = 3600 * 1000; // 1 hour client cache TTL
 
 export const FALLBACK_RATES = {
-  KZT: 450.00,
-  RUB: 84.37,
-  UZS: 11792.97,
-  KGS: 87.49,
-  BYN: 3.04,
-  TJS: 9.23,
-  UAH: 44.62,
-  MDL: 17.25,
-  AZN: 1.70,
-  GEL: 2.61,
-  AMD: 363.83,
-  EUR: 0.86,
-  GBP: 0.74,
-  CHF: 0.81,
-  PLN: 3.72,
-  CZK: 20.87,
-  HUF: 313.96,
-  RON: 4.30,
-  BGN: 1.68,
-  RSD: 101.00,
-  SEK: 9.67,
-  NOK: 9.27,
-  DKK: 6.43,
-  ISK: 125.00,
-  USD: 1.00,
-  CAD: 1.38,
-  BRL: 5.11,
-  MXN: 16.97,
-  ARS: 950.00,
-  CLP: 910.00,
-  COP: 3950.00,
-  PEN: 3.70,
-  AUD: 1.39,
-  CNY: 6.73,
-  HKD: 7.84,
-  IDR: 17561.81,
-  INR: 95.51,
-  JPY: 154.25,
-  KRW: 1345.06,
-  MYR: 4.07,
-  NZD: 1.72,
-  PHP: 62.66,
-  PKR: 278.00,
-  BDT: 118.00,
-  SGD: 1.27,
-  THB: 33.00,
-  TWD: 31.60,
-  VND: 25879.19,
-  MNT: 3450.00,
+  USD: 1.0,
   AED: 3.67,
+  AFN: 64.8243,
+  ALL: 79.173,
+  AMD: 363.83,
+  ANG: 1.79,
+  AOA: 925.654,
+  ARS: 950.0,
+  AUD: 1.39,
+  AWG: 1.79,
+  AZN: 1.7,
+  BAM: 1.6835,
+  BBD: 2.0,
+  BDT: 118.0,
+  BGN: 1.68,
   BHD: 0.38,
-  EGP: 47.00,
+  BIF: 3002.2714,
+  BMD: 1.0,
+  BND: 1.2671,
+  BOB: 12.5706,
+  BRL: 5.11,
+  BSD: 1.0,
+  BTN: 95.5302,
+  BWP: 13.7503,
+  BYN: 3.04,
+  BZD: 2.0,
+  CAD: 1.38,
+  CDF: 2303.2866,
+  CHF: 0.81,
+  CLF: 0.0235,
+  CLP: 910.0,
+  CNH: 6.7101,
+  CNY: 6.73,
+  COP: 3950.0,
+  CRC: 454.4902,
+  CUP: 24.0,
+  CVE: 94.9137,
+  CZK: 20.87,
+  DJF: 177.721,
+  DKK: 6.43,
+  DOP: 58.8248,
+  DZD: 133.1346,
+  EGP: 47.0,
+  ERN: 15.0,
+  ETB: 161.2708,
+  EUR: 0.86,
+  FJD: 2.2159,
+  FKP: 0.7398,
+  FOK: 6.4314,
+  GBP: 0.74,
+  GEL: 2.61,
+  GGP: 0.7398,
+  GHS: 11.417,
+  GIP: 0.7398,
+  GMD: 74.6582,
+  GNF: 8785.4424,
+  GTQ: 7.6431,
+  GYD: 209.2915,
+  HKD: 7.84,
+  HNL: 26.8569,
+  HRK: 6.4855,
+  HTG: 130.7193,
+  HUF: 313.96,
+  IDR: 17561.81,
   ILS: 3.04,
-  KES: 130.00,
+  IMP: 0.7398,
+  INR: 95.51,
+  IQD: 1310.9894,
+  IRR: 1453530.6071,
+  ISK: 125.0,
+  JEP: 0.7398,
+  JMD: 157.9683,
+  JOD: 0.709,
+  JPY: 154.25,
+  KES: 130.0,
+  KGS: 87.49,
+  KHR: 4044.1834,
+  KID: 1.3953,
+  KMF: 423.475,
+  KRW: 1345.06,
   KWD: 0.31,
-  MAD: 9.80,
-  NGN: 1450.00,
+  KYD: 0.8333,
+  KZT: 450.0,
+  LAK: 22275.7659,
+  LBP: 89500.0,
+  LKR: 328.2571,
+  LRD: 174.7516,
+  LSL: 16.1895,
+  LYD: 6.3274,
+  MAD: 9.8,
+  MDL: 17.25,
+  MGA: 4310.5225,
+  MKD: 52.9848,
+  MMK: 2101.8401,
+  MNT: 3450.0,
+  MOP: 8.0764,
+  MRU: 40.1419,
+  MUR: 47.0001,
+  MVR: 15.4499,
+  MWK: 1744.4538,
+  MXN: 16.97,
+  MYR: 4.07,
+  MZN: 63.7013,
+  NAD: 16.1895,
+  NGN: 1450.0,
+  NIO: 36.8288,
+  NOK: 9.27,
+  NPR: 152.8483,
+  NZD: 1.72,
   OMR: 0.38,
+  PAB: 1.0,
+  PEN: 3.7,
+  PGK: 4.5047,
+  PHP: 62.66,
+  PKR: 278.0,
+  PLN: 3.72,
+  PYG: 5904.8669,
   QAR: 3.64,
+  RON: 4.3,
+  RSD: 101.0,
+  RUB: 84.37,
+  RWF: 1474.8231,
   SAR: 3.75,
+  SBD: 7.896,
+  SCR: 13.879,
+  SDG: 511.8921,
+  SEK: 9.67,
+  SGD: 1.27,
+  SHP: 0.7398,
+  SLE: 24.6816,
+  SLL: 24681.6189,
+  SOS: 571.5101,
+  SRD: 38.1123,
+  SSP: 5652.926,
+  STN: 21.0891,
+  SYP: 121.8891,
+  SZL: 16.1895,
+  THB: 33.0,
+  TJS: 9.23,
+  TMT: 3.5014,
+  TND: 2.9066,
+  TOP: 2.3652,
   TRY: 48.56,
+  TTD: 6.7778,
+  TVD: 1.3953,
+  TWD: 31.6,
+  TZS: 2643.5621,
+  UAH: 44.62,
+  UGX: 3763.4748,
+  UYU: 40.2769,
+  UZS: 11792.97,
+  VES: 832.4883,
+  VND: 25879.19,
+  VUV: 117.9454,
+  WST: 2.6887,
+  XAF: 564.6333,
+  XCD: 2.7,
+  XCG: 1.79,
+  XDR: 0.7284,
+  XOF: 564.6333,
+  XPF: 102.7184,
+  YER: 237.2217,
   ZAR: 16.19,
+  ZMW: 19.2177,
+  ZWG: 26.6758,
+  ZWL: 26.6758,
 };
 
 export const STATIC_FILTER_LIMITS = {
   _comment: "Filter slider bounds per currency. 'default' in USD, converted for unlisted currencies.",
   default: {
     min: 0,
-    max: 50000,
+    max: 100000,
     step: 100
-  },
-  KZT: {
-    min: 0,
-    max: 25000000,
-    step: 50000
-  },
-  RUB: {
-    min: 0,
-    max: 4500000,
-    step: 5000
-  },
-  UZS: {
-    min: 0,
-    max: 600000000,
-    step: 1000000
-  },
-  KGS: {
-    min: 0,
-    max: 4500000,
-    step: 10000
-  },
-  BYN: {
-    min: 0,
-    max: 160000,
-    step: 500
-  },
-  TJS: {
-    min: 0,
-    max: 500000,
-    step: 1000
-  },
-  UAH: {
-    min: 0,
-    max: 2300000,
-    step: 5000
-  },
-  MDL: {
-    min: 0,
-    max: 900000,
-    step: 2000
-  },
-  AZN: {
-    min: 0,
-    max: 90000,
-    step: 200
-  },
-  GEL: {
-    min: 0,
-    max: 140000,
-    step: 500
-  },
-  AMD: {
-    min: 0,
-    max: 20000000,
-    step: 50000
-  },
-  EUR: {
-    min: 0,
-    max: 45000,
-    step: 100
-  },
-  GBP: {
-    min: 0,
-    max: 40000,
-    step: 100
-  },
-  CHF: {
-    min: 0,
-    max: 45000,
-    step: 100
-  },
-  PLN: {
-    min: 0,
-    max: 200000,
-    step: 500
-  },
-  CZK: {
-    min: 0,
-    max: 1100000,
-    step: 2000
-  },
-  HUF: {
-    min: 0,
-    max: 16000000,
-    step: 50000
-  },
-  RON: {
-    min: 0,
-    max: 220000,
-    step: 500
-  },
-  BGN: {
-    min: 0,
-    max: 90000,
-    step: 200
-  },
-  RSD: {
-    min: 0,
-    max: 5500000,
-    step: 10000
-  },
-  SEK: {
-    min: 0,
-    max: 500000,
-    step: 1000
-  },
-  NOK: {
-    min: 0,
-    max: 500000,
-    step: 1000
-  },
-  DKK: {
-    min: 0,
-    max: 350000,
-    step: 500
-  },
-  ISK: {
-    min: 0,
-    max: 6500000,
-    step: 10000
-  },
-  USD: {
-    min: 0,
-    max: 50000,
-    step: 100
-  },
-  CAD: {
-    min: 0,
-    max: 70000,
-    step: 100
-  },
-  BRL: {
-    min: 0,
-    max: 260000,
-    step: 500
-  },
-  MXN: {
-    min: 0,
-    max: 850000,
-    step: 1000
-  },
-  ARS: {
-    min: 0,
-    max: 50000000,
-    step: 100000
-  },
-  CLP: {
-    min: 0,
-    max: 50000000,
-    step: 100000
-  },
-  COP: {
-    min: 0,
-    max: 200000000,
-    step: 500000
-  },
-  PEN: {
-    min: 0,
-    max: 190000,
-    step: 500
-  },
-  AUD: {
-    min: 0,
-    max: 70000,
-    step: 100
-  },
-  CNY: {
-    min: 0,
-    max: 350000,
-    step: 500
-  },
-  HKD: {
-    min: 0,
-    max: 400000,
-    step: 1000
-  },
-  IDR: {
-    min: 0,
-    max: 900000000,
-    step: 1000000
-  },
-  JPY: {
-    min: 0,
-    max: 8000000,
-    step: 10000
-  },
-  KRW: {
-    min: 0,
-    max: 70000000,
-    step: 100000
-  },
-  MYR: {
-    min: 0,
-    max: 210000,
-    step: 500
-  },
-  NZD: {
-    min: 0,
-    max: 90000,
-    step: 200
-  },
-  PHP: {
-    min: 0,
-    max: 3200000,
-    step: 5000
-  },
-  PKR: {
-    min: 0,
-    max: 15000000,
-    step: 50000
-  },
-  BDT: {
-    min: 0,
-    max: 6000000,
-    step: 10000
-  },
-  SGD: {
-    min: 0,
-    max: 65000,
-    step: 100
-  },
-  THB: {
-    min: 0,
-    max: 1700000,
-    step: 5000
-  },
-  TWD: {
-    min: 0,
-    max: 1600000,
-    step: 5000
-  },
-  VND: {
-    min: 0,
-    max: 1300000000,
-    step: 2000000
-  },
-  MNT: {
-    min: 0,
-    max: 180000000,
-    step: 500000
-  },
-  AED: {
-    min: 0,
-    max: 190000,
-    step: 500
-  },
-  BHD: {
-    min: 0,
-    max: 20000,
-    step: 50
-  },
-  EGP: {
-    min: 0,
-    max: 2400000,
-    step: 5000
-  },
-  ILS: {
-    min: 0,
-    max: 160000,
-    step: 500
-  },
-  KES: {
-    min: 0,
-    max: 7000000,
-    step: 10000
-  },
-  KWD: {
-    min: 0,
-    max: 16000,
-    step: 50
-  },
-  MAD: {
-    min: 0,
-    max: 500000,
-    step: 1000
-  },
-  NGN: {
-    min: 0,
-    max: 75000000,
-    step: 200000
-  },
-  OMR: {
-    min: 0,
-    max: 20000,
-    step: 50
-  },
-  QAR: {
-    min: 0,
-    max: 190000,
-    step: 500
-  },
-  SAR: {
-    min: 0,
-    max: 190000,
-    step: 500
-  },
-  TRY: {
-    min: 0,
-    max: 2500000,
-    step: 5000
-  },
-  ZAR: {
-    min: 0,
-    max: 850000,
-    step: 1000
   }
 };
 
@@ -641,27 +440,65 @@ export function convert(amount, from = "USD", to = "USD") {
   return usdAmount * toRate;
 }
 
+export function niceStep(rawStep) {
+  const stepNum = Number(rawStep);
+  if (!Number.isFinite(stepNum) || stepNum <= 1) {
+    return 1;
+  }
+  const p = Math.pow(10, Math.floor(Math.log10(stepNum)));
+  const m = stepNum / p;
+  let tick = 10;
+  if (m < 1.41421356) {
+    tick = 1;
+  } else if (m < 3.16227766) {
+    tick = 2;
+  } else if (m < 7.07106781) {
+    tick = 5;
+  }
+  return Math.max(1, Math.round(tick * p));
+}
+
+export function niceMax(rawMax, step) {
+  const maxNum = Number(rawMax);
+  const stepNum = Math.max(1, Number(step) || 1);
+  if (!Number.isFinite(maxNum) || maxNum <= stepNum) {
+    return Math.max(stepNum, 1);
+  }
+  const p = Math.pow(10, Math.max(0, Math.floor(Math.log10(maxNum)) - 1));
+  const roundedUnit = Math.max(stepNum, p);
+  let candidate = Math.ceil(maxNum / roundedUnit) * roundedUnit;
+  if (candidate % stepNum !== 0) {
+    candidate = Math.ceil(candidate / stepNum) * stepNum;
+  }
+  return Math.max(stepNum, Math.round(candidate));
+}
+
 export function getFilterLimits(code) {
   const currencyCode = String(code || getPreferredCurrency() || "USD").trim().toUpperCase();
   const limitsMap = memoryFilterLimits || STATIC_FILTER_LIMITS;
+  const override = limitsMap[currencyCode] || {};
 
-  if (limitsMap[currencyCode]) {
-    const lim = limitsMap[currencyCode];
-    return {
-      min: Number(lim.min ?? 0),
-      max: Number(lim.max ?? 50000),
-      step: Number(lim.step ?? 100),
-    };
+  const defaultLimits = limitsMap.default || limitsMap.USD || STATIC_FILTER_LIMITS.default || { min: 0, max: 100000, step: 100 };
+  const defaultMin = Number(defaultLimits.min ?? 0);
+  const defaultMax = Number(defaultLimits.max ?? 100000);
+  const defaultStep = Number(defaultLimits.step ?? 100);
+
+  const convMin = convert(defaultMin, "USD", currencyCode);
+  const convMax = convert(defaultMax, "USD", currencyCode);
+  const convStep = convert(defaultStep, "USD", currencyCode);
+
+  let stepVal = override.step !== undefined ? Math.max(1, Number(override.step)) : niceStep(convStep);
+  let minVal = override.min !== undefined ? Math.max(0, Number(override.min)) : Math.max(0, Math.round(convMin));
+  let maxVal;
+
+  if (override.max !== undefined) {
+    maxVal = Math.max(minVal + stepVal, Number(override.max));
+    if (maxVal % stepVal !== 0) {
+      maxVal = Math.ceil(maxVal / stepVal) * stepVal;
+    }
+  } else {
+    maxVal = Math.max(minVal + stepVal, niceMax(convMax, stepVal));
   }
-
-  const defaultLimits = limitsMap.default || limitsMap.USD || STATIC_FILTER_LIMITS.default;
-  const convMin = convert(defaultLimits.min, "USD", currencyCode);
-  const convMax = convert(defaultLimits.max, "USD", currencyCode);
-  const convStep = convert(defaultLimits.step, "USD", currencyCode);
-
-  const minVal = Math.max(0, Math.round(convMin));
-  const maxVal = Math.max(minVal + 1, Math.round(convMax));
-  const stepVal = Math.max(1, Math.round(convStep));
 
   return {
     min: minVal,

@@ -1174,6 +1174,7 @@ def to_university_card(
             "total_cost_year_usd": _effective_university_cost(
                 u, format_preference=format_preference
             ),
+            "currency": finance_obj.get("currency") or "USD",
             "financial_aid": {
                 "merit_based": _to_bool(aid_obj.get("merit_based")),
                 "need_based": _to_bool(aid_obj.get("need_based")),

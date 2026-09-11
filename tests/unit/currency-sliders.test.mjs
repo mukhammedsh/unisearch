@@ -35,27 +35,27 @@ describe('Currency-Aware Filter Sliders Logic', () => {
     };
   });
 
-  test('getFilterLimits returns static limits for known currencies', () => {
+  test('getFilterLimits returns default limits or converts for currencies', () => {
     const usdLimits = getFilterLimits('USD');
     assert.strictEqual(usdLimits.min, 0);
-    assert.strictEqual(usdLimits.max, 50000);
+    assert.strictEqual(usdLimits.max, 100000);
     assert.strictEqual(usdLimits.step, 100);
 
     const kztLimits = getFilterLimits('KZT');
     assert.strictEqual(kztLimits.min, 0);
-    assert.strictEqual(kztLimits.max, 25000000);
+    assert.strictEqual(kztLimits.max, 45000000);
     assert.strictEqual(kztLimits.step, 50000);
 
     const eurLimits = getFilterLimits('EUR');
     assert.strictEqual(eurLimits.min, 0);
-    assert.strictEqual(eurLimits.max, 45000);
+    assert.strictEqual(eurLimits.max, 86000);
     assert.strictEqual(eurLimits.step, 100);
   });
 
   test('getFilterLimits converts default limits for unknown currencies', () => {
     const inrLimits = getFilterLimits('INR');
     assert.strictEqual(inrLimits.min, 0);
-    assert.ok(inrLimits.max > 50000, 'INR max should be greater than 50000 USD default');
+    assert.ok(inrLimits.max > 100000, 'INR max should be greater than 100000 USD default');
     assert.ok(inrLimits.step >= 100, 'INR step should be at least 100');
   });
 
@@ -99,14 +99,14 @@ describe('Currency-Aware Filter Sliders Logic', () => {
     }
 
     const usdLimits = getFilterLimits('USD');
-    // At boundaries: 0 and 50000
-    const unboundedParams = computeApiTuitionParams(0, 50000, 'USD', usdLimits);
+    // At boundaries: 0 and 100000
+    const unboundedParams = computeApiTuitionParams(0, 100000, 'USD', usdLimits);
     assert.strictEqual(unboundedParams.min_tuition, undefined);
     assert.strictEqual(unboundedParams.max_tuition, undefined);
 
     const kztLimits = getFilterLimits('KZT');
-    // At boundaries in KZT: 0 and 25000000
-    const kztUnbounded = computeApiTuitionParams(0, 25000000, 'KZT', kztLimits);
+    // At boundaries in KZT: 0 and 45000000
+    const kztUnbounded = computeApiTuitionParams(0, 45000000, 'KZT', kztLimits);
     assert.strictEqual(kztUnbounded.min_tuition, undefined);
     assert.strictEqual(kztUnbounded.max_tuition, undefined);
   });
@@ -119,7 +119,7 @@ describe('Currency-Aware Filter Sliders Logic', () => {
     const oldMaxAtLimit = oldLimits.max;
     const wasAtMax = oldMaxAtLimit >= oldLimits.max;
     const newMaxFromLimit = wasAtMax ? newLimits.max : Math.round(convert(convert(oldMaxAtLimit, 'USD', 'USD'), 'USD', 'KZT') / newLimits.step) * newLimits.step;
-    assert.strictEqual(newMaxFromLimit, 25000000);
+    assert.strictEqual(newMaxFromLimit, 45000000);
 
     // Case 2: Intermediate value (e.g. 20,000 USD)
     const oldMidVal = 20000;

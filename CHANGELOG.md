@@ -8,16 +8,30 @@ All notable project changes should be recorded here.
   - Added runtime health endpoint `GET /currency/status` reporting circuit breaker status, error counters, and upstream provider latency.
   - Configured robust multi-tier fallback architecture: in-memory cache, Redis store, upstream API synchronization with exponential backoff and timeout controls, and bundled static offline rates for 62 currencies.
   - Added dynamic tuition slider limit configuration (`currency_filter_limits.json`) with adaptive step sizes, rounded bounds, and currency symbol prefixes.
+- Refined currency filter slider calibration and expanded fiat currency support (`backend/app/services/currency.py`, `backend/app/services/universities.py`, `backend/data/currency_filter_limits.json`, `frontend/javascript/currency.js`, `frontend/javascript/components.js`, `frontend/javascript/settings.js`, `frontend/index.html`):
+  - Implemented adaptive 1-2-5 scale nice-number rounding (`_nice_step`, `_nice_max`, `niceStep`, `niceMax`) ensuring range slider increments follow clean ticks and upper bounds cleanly match step multiples without fractional clipping.
+  - Raised default USD tuition slider maximum from $50,000 to $100,000 to support high-tuition institutions.
+  - Expanded supported currencies to 160+ ISO fiat currencies with localized dropdown options in Settings and ExchangeRate-API source attribution.
+  - Included institution base currency code in university card payloads.
+- Enhanced admissions transparency and verified-null presentation (`frontend/javascript/pages/_shared.js`, `frontend/css/university.css`, `frontend/Localization/eng`, `frontend/Localization/ru`, `tests/unit/shared-utils.test.mjs`):
+  - Clarified verified-null admissions states with contextual explanations when applicants are evaluated university-wide (`institution_wide_only`) rather than by program.
+  - Upgraded admissions source links into structured cards with document icons, verified domain/source titles, and contextual action labels ("View source" or "Why this data is unavailable").
+- Polished catalog filters and mobile responsiveness (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/07-responsive.css`, `frontend/javascript/pages/universities.js`):
+  - Replaced slider thumb vertical transforms with `margin-top` and added `touch-action: pan-y` to prevent subpixel jitter.
+  - Added viewport scroll locking (`sidebar-filters-open`), overscroll containment, and safe area padding to the mobile filter drawer.
+  - Centered mobile filter toggle button with fixed width constraints, avoiding layout translation shifts on active tap.
+  - Restricted the ML unavailable banner to display only when sorting by AI recommendation (`uni_ai`).
 - Integrated currency switching and localization into the Calm Academic Workspace (`frontend/javascript/components/settings-ui.js`, `frontend/javascript/settings.js`, `frontend/javascript/utils/selects.js`, `frontend/javascript/utils/format.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/university/page-controller.js`, `frontend/javascript/pages/university/render-sections.js`):
   - Added an accessible custom Currency selector to the Settings modal with real-time typeahead search, keyboard navigation, currency symbols, and localized country/currency titles in English and Russian.
   - Propagated active currency conversion across all catalog university card tuition metrics, filter range sliders, comparison views, and detailed university cost breakdowns.
   - Persisted user currency preference across sessions in browser storage with instant UI re-rendering without page reload.
-- Expanded and enriched the university fact base (Phase 1: 15/50 institutions updated, `backend/data/universities.json`, `backend/data/universities_translations.json`):
+- Expanded and enriched the university fact base (`backend/data/universities.json`, `backend/data/universities_translations.json`):
   - Updated academic program structures, verified tuition fees, living costs, and admission requirement profiles for 15 institutions (ETH Zurich, National University of Singapore, University of Cambridge, Caltech, University of Chicago, etc.).
-  - Polished and standardized Russian institution descriptions and track-based admissions criteria.
-- Added comprehensive test coverage and internationalization strings (`tests/unit/currency.test.mjs`, `tests/unit/currency-sliders.test.mjs`, `tests/unit/custom-select-typeahead.test.mjs`, `tests/e2e/currency-settings.spec.js`, `backend/tests/test_currency.py`, `frontend/Localization/eng`, `frontend/Localization/ru`):
+  - Added Phase 2 updates for 15 institutions (MIT, Imperial College London, Stanford, Harvard, Oxford, Tsinghua, Melbourne, Penn, Cornell, UC Berkeley, etc.) with official course names, ACT/SAT/test-free admissions tracks, and need-based grant aid policies.
+  - Polished and standardized Russian institution descriptions, program names, and track-based admissions criteria.
+- Added comprehensive test coverage and internationalization strings (`tests/unit/currency.test.mjs`, `tests/unit/currency-sliders.test.mjs`, `tests/unit/shared-utils.test.mjs`, `tests/unit/custom-select-typeahead.test.mjs`, `tests/e2e/currency-settings.spec.js`, `backend/tests/test_currency.py`, `frontend/Localization/eng`, `frontend/Localization/ru`):
   - Added 60+ localized currency keys, symbols, and formatting templates in English and Russian localization catalogs.
-  - Added unit test suites for currency exchange math, slider calibration, custom select typeahead filtering, and settings storage.
+  - Added unit test suites for currency exchange math, slider calibration, 1-2-5 scale step rounding, verified-null admissions rendering, custom select typeahead filtering, and settings storage.
   - Added backend test coverage for currency service rate fetching, fallback mechanisms, circuit breaker, and API route contracts.
   - Added Playwright E2E scenario testing currency selection, persistence, and card price re-rendering.
 

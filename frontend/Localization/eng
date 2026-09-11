@@ -150,6 +150,8 @@ currency.region.europe: Europe
 currency.region.americas: Americas
 currency.region.asia_pacific: Asia-Pacific
 currency.region.middle_east_africa: Middle East & Africa
+currency.region.other: Other currencies
+currency.attribution: Rates provided by
 currency.opt.kzt: Kazakhstani Tenge (KZT, ₸)
 currency.opt.rub: Russian Ruble (RUB, ₽)
 currency.opt.uzs: Uzbekistani Som (UZS, soʻm)
@@ -651,20 +653,23 @@ university.official_admissions_data: Official admissions data
 university.official_admissions_note: UniSearch shows only official published admissions metrics. If a university does not publish a rate, we keep it empty instead of guessing.
 university.admissions.university_wide: University-wide
 university.admissions.program_level: Program-level
-university.admissions.program_signals: Official program-level signals
-university.admissions.program_signals_note: These rows may be rate, applicants/offers, capacity, cutoff, grade profile, or verified-null when the university does not publish a separate program metric.
+university.admissions.program_signals: Admissions data by program
+university.admissions.program_signals_note: When available, these cards show acceptance rates, applicant and offer counts, capacity, cutoffs, or entry profiles. Otherwise, the official source explains why separate data is unavailable.
 university.admissions.checked: Checked
 university.admissions.cycle: Cycle
 university.admissions.rows_count: {count} official rows
 university.admissions.no_university_rate: No official university-wide acceptance rate published.
-university.admissions.no_program_metrics: No separate official program-level metric published.
+university.admissions.no_program_metrics: The university does not publish separate acceptance rates or admissions counts for individual programs.
+university.admissions.institution_wide_only: Applicants are considered at university level, so separate admission statistics by program are not published.
 university.admissions.open_source: Open source
 university.admissions.official_source: Official source
+university.admissions.view_source: View source
+university.admissions.source_explains_absence: Why this data is unavailable
 university.admissions.status.official_rate: Official rate
 university.admissions.status.official_counts: Official counts
 university.admissions.status.official_signals: Official signals
 university.admissions.status.competition_ratio_only: Official competition ratio
-university.admissions.status.verified_null_only: Not separately published
+university.admissions.status.verified_null_only: No separate admissions data
 university.admissions.status.no_official_source: No official source
 university.admissions.status.reviewed: Officially reviewed
 university.admissions.metric.acceptance_rate: Acceptance rate
@@ -674,7 +679,7 @@ university.admissions.metric.entry_standard: Entry standard
 university.admissions.metric.cutoff: Cutoff
 university.admissions.metric.counts: Applicants / offers
 university.admissions.metric.competition_ratio: Competition ratio
-university.admissions.metric.verified_null: Not separately published
+university.admissions.metric.verified_null: No program-specific admissions data
 university.admissions.metric.official_signal: Official signal
 university.admissions.signal.rate: Official rate from published counts.
 university.admissions.signal.capacity: Official published capacity or places.
@@ -682,7 +687,8 @@ university.admissions.signal.entry_standard: Official published grade profile or
 university.admissions.signal.cutoff: Official published cutoff or direct-admit threshold.
 university.admissions.signal.counts: Official published applicants, offers, or admitted counts.
 university.admissions.signal.competition_ratio: Official published competition-ratio style signal.
-university.admissions.signal.verified_null: No separate official program-level metric published.
+university.admissions.signal.verified_null: The university does not publish a separate acceptance rate or admissions counts for this program.
+university.admissions.signal.institution_wide_only: Applicants are considered at university level, so separate admission statistics by program are not published.
 university.admissions.signal.official: Official published admissions signal.
 university.admissions.counts.applicants: Applicants
 university.admissions.counts.admitted: Admitted

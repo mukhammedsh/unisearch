@@ -9,6 +9,8 @@ import {
   formatFundingOptionsCount,
   normalizeFundingPreference,
   normalizeUrl,
+  renderAdmissionsOverview,
+  renderProgramAdmissionsSignals,
   safeUrl,
   uniThumbnailSrc,
 } from '../../frontend/javascript/pages/_shared.js';
@@ -80,6 +82,41 @@ test('safeUrl', async (t) => {
     assert.strictEqual(safeUrl('data:text/html,<script>alert(1)</script>'), '');
     assert.strictEqual(safeUrl('ftp://example.com/file'), '');
   });
+});
+
+test('admissions verified-null UI names the missing data and exposes source context', () => {
+  setLanguage('eng', { persist: false, emit: false });
+  const admissions = {
+    status_date: '2026-04-04',
+    university_wide: {
+      status: 'no_official_source',
+      acceptance_rate_percent: null,
+      sources: [{ url: 'https://example.edu/admissions', label: 'Undergraduate admissions overview' }],
+    },
+    program_level: {
+      status: 'verified_null_only',
+      kind: 'institution_wide_only',
+      sources: [{ url: 'https://example.edu/apply', label: 'How undergraduate admission works' }],
+    },
+    programs: [{
+      program_name: 'Computer Science',
+      data_type: 'verified-null',
+      sources: [{ url: 'https://example.edu/apply', label: 'How undergraduate admission works' }],
+    }],
+  };
+
+  const overview = renderAdmissionsOverview(admissions);
+  assert.match(overview, /No separate admissions data/);
+  assert.match(overview, /Applicants are considered at university level/);
+  assert.match(overview, /How undergraduate admission works/);
+  assert.match(overview, /Why this data is unavailable/);
+  assert.doesNotMatch(overview, />—</);
+
+  const programs = renderProgramAdmissionsSignals(admissions);
+  assert.match(programs, /No program-specific admissions data/);
+  assert.match(programs, /Applicants are considered at university level/);
+  assert.match(programs, /How undergraduate admission works/);
+  assert.doesNotMatch(programs, /Not separately published/);
 });
 
 test('map CDN assets are pinned with SRI', () => {

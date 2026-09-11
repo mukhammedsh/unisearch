@@ -16,21 +16,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "computer science",
-            "computing"
-          ]
-        },
-        {
-          "name": "Software Engineering",
+          "name": "Computer Science and Engineering (Course 6-3)",
           "study_levels": [
             "Bachelor"
           ],
@@ -41,10 +27,11 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Data Science and Artificial Intelligence",
+          "name": "Electrical Engineering and Computer Science (Course 6-2)",
           "study_levels": [
             "Bachelor"
           ],
@@ -54,11 +41,70 @@
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
+            "engineering"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Artificial Intelligence and Decision Making (Course 6-4)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Mechanical Engineering (Course 2)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Aerospace Engineering (Course 16)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Chemical Engineering (Course 10)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Mechanical Engineering",
+          "name": "Biological Engineering (Course 20)",
           "study_levels": [
             "Bachelor"
           ],
@@ -67,11 +113,13 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "engineering"
-          ]
+            "engineering",
+            "life sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Electrical and Electronic Engineering",
+          "name": "Mathematics (Course 18)",
           "study_levels": [
             "Bachelor"
           ],
@@ -80,11 +128,12 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "engineering"
-          ]
+            "mathematics"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Economics",
+          "name": "Physics (Course 8)",
           "study_levels": [
             "Bachelor"
           ],
@@ -93,11 +142,43 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "economics"
-          ]
+            "physics",
+            "natural sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Finance",
+          "name": "Economics (Course 14)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "economics",
+            "social sciences"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Brain and Cognitive Sciences (Course 9)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "psychology",
+            "life sciences"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Management (Course 15)",
           "study_levels": [
             "Bachelor"
           ],
@@ -107,33 +188,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
-        },
-        {
-          "name": "Business Administration",
-          "study_levels": [
-            "Bachelor"
           ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "business"
-          ]
-        },
-        {
-          "name": "Psychology",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "psychology"
-          ]
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -313,8 +369,9 @@
       "costs_breakdown_source_urls": [
         "https://facts.mit.edu/undergraduate-admissions/undergraduate-tuition/"
       ],
-      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official undergraduate direct billed costs from MIT Student Financial Services, covering tuition, student life fee, standard housing, dining plan, and books.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 98741
@@ -603,6 +660,55 @@
               "SAT": 1500,
               "GPA": 3.92
             }
+          },
+          {
+            "id": "mit_act",
+            "label": "ACT",
+            "description": "MIT undergraduate Regular Action route for first-year applicants applying with ACT scores.",
+            "requirements": {
+              "ACT": 35,
+              "GPA": 3.92
+            },
+            "stats_avg": {
+              "ACT": 36
+            },
+            "stats_avg_source_url": "https://mitadmissions.org/apply/process/stats/",
+            "score_profile": {
+              "exam_id": "ACT",
+              "compatible_exam_ids": [
+                "ACT"
+              ],
+              "p25_raw": 35,
+              "median_raw": 36,
+              "p75_raw": 36,
+              "p25_normalized": 97.14,
+              "median_normalized": 100.0,
+              "p75_normalized": 100.0,
+              "acceptance_rate_percent": 4.56,
+              "confidence": "high",
+              "source_scope": "official_common_data_set",
+              "source_url": "https://ir.mit.edu/projects/2024-25-common-data-set/",
+              "source_note": "Official MIT Common Data Set 2024-25 publishes ACT Composite 25th, 50th, and 75th percentiles for admitted/enrolled first-year students.",
+              "normalization_method": "exam_anchor_percentile"
+            },
+            "funding_options": [
+              {
+                "id": "mit_act",
+                "label": "Regular Action - ACT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Self-funded MIT offer through the Regular Action route for applicants submitting ACT."
+              },
+              {
+                "id": "mit_act-grant-need-based-aid",
+                "label": "Regular Action - Need-based Aid (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Need-based Aid",
+                "funding_source": "need",
+                "description": "Same Regular Action route with ACT, with MIT need-based aid considered separately under MIT's need-blind, full-need undergraduate aid policy."
+              }
+            ]
           }
         ],
         "program_ids": [],
@@ -627,21 +733,7 @@
     "academics": {
       "programs": [
         {
-          "name": "Computer Science",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "computer science",
-            "computing"
-          ]
-        },
-        {
-          "name": "Software Engineering",
+          "name": "Computing (Computer Science)",
           "study_levels": [
             "Bachelor"
           ],
@@ -652,10 +744,11 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3–4 years"
         },
         {
-          "name": "Data Science and Artificial Intelligence",
+          "name": "Economics, Finance and Data Science",
           "study_levels": [
             "Bachelor"
           ],
@@ -664,9 +757,25 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "computer science",
-            "natural sciences"
-          ]
+            "economics",
+            "business",
+            "computer science"
+          ],
+          "duration": "3 years"
+        },
+        {
+          "name": "Aeronautical Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -679,7 +788,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -692,10 +802,11 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Economics",
+          "name": "Chemical Engineering",
           "study_levels": [
             "Bachelor"
           ],
@@ -704,11 +815,13 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "economics"
-          ]
+            "engineering",
+            "natural sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Finance",
+          "name": "Civil Engineering",
           "study_levels": [
             "Bachelor"
           ],
@@ -717,11 +830,12 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "engineering"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Business Administration",
+          "name": "Biomedical Engineering",
           "study_levels": [
             "Bachelor"
           ],
@@ -730,11 +844,13 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "engineering",
+            "life sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Psychology",
+          "name": "Mathematics",
           "study_levels": [
             "Bachelor"
           ],
@@ -743,8 +859,53 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "psychology"
-          ]
+            "mathematics"
+          ],
+          "duration": "3–4 years"
+        },
+        {
+          "name": "Physics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "physics",
+            "natural sciences"
+          ],
+          "duration": "3–4 years"
+        },
+        {
+          "name": "Chemistry",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "natural sciences"
+          ],
+          "duration": "3–4 years"
+        },
+        {
+          "name": "Biological Sciences",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "life sciences",
+            "natural sciences"
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -1203,22 +1364,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 74541,
+      "total_cost_year_usd": 53980,
       "costs_breakdown_year_usd": {
-        "Tuition": 52500,
-        "Housing_Rent": 13364,
-        "Food": 3686
+        "Tuition": 41650,
+        "Housing_Dorm": 9753,
+        "Food": 2577
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/",
-        "https://www.imperial.ac.uk/study/pg/fees-and-funding/living-costs/"
+        "https://www.imperial.ac.uk/study/courses/undergraduate/2025/computing-beng/",
+        "https://www.imperial.ac.uk/students/fees-and-funding/managing-your-money/living-costs/"
       ],
-      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official Imperial College London overseas undergraduate tuition fees in GBP alongside published living costs for accommodation and food.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "GBP"
     },
     "outcomes": {},
     "verified_sources": [
@@ -1554,25 +1716,12 @@
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
-            "computing"
-          ]
-        },
-        {
-          "name": "Software Engineering",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Data Science and Artificial Intelligence",
+          "name": "Symbolic Systems",
           "study_levels": [
             "Bachelor"
           ],
@@ -1582,8 +1731,26 @@
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
-            "natural sciences"
-          ]
+            "psychology",
+            "humanities"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Management Science and Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "business",
+            "economics"
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -1596,10 +1763,11 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Electrical and Electronic Engineering",
+          "name": "Electrical Engineering",
           "study_levels": [
             "Bachelor"
           ],
@@ -1608,8 +1776,25 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "engineering"
-          ]
+            "engineering",
+            "computer science"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Bioengineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "life sciences"
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -1621,11 +1806,13 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "economics"
-          ]
+            "economics",
+            "social sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Finance",
+          "name": "Human Biology",
           "study_levels": [
             "Bachelor"
           ],
@@ -1634,11 +1821,13 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "life sciences",
+            "social sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Business Administration",
+          "name": "Political Science",
           "study_levels": [
             "Bachelor"
           ],
@@ -1647,11 +1836,12 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "social sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Psychology",
+          "name": "International Relations",
           "study_levels": [
             "Bachelor"
           ],
@@ -1660,8 +1850,38 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "psychology"
-          ]
+            "social sciences"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Mathematics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "mathematics"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Physics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "physics",
+            "natural sciences"
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -1799,9 +2019,9 @@
       "total_cost_year_usd": 97545,
       "costs_breakdown_year_usd": {
         "Tuition": 67731,
+        "Student_Fees": 2610,
         "Housing_Dorm": 14424,
         "Food": 8520,
-        "Student_Fees": 2610,
         "Books_and_Supplies": 825
       },
       "financial_aid": {
@@ -1811,8 +2031,9 @@
       "costs_breakdown_source_urls": [
         "https://financialaid.stanford.edu/undergrad/budget/index.html"
       ],
-      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official undergraduate budget from Stanford Financial Aid, covering tuition, student fees, campus housing, food, and books.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 119600
@@ -2071,6 +2292,55 @@
               "SAT": 1500,
               "GPA": 3.84
             }
+          },
+          {
+            "id": "stanford_act",
+            "label": "ACT",
+            "description": "Stanford University first-year undergraduate route for applicants submitting ACT test scores.",
+            "requirements": {
+              "ACT": 34,
+              "GPA": 3.84
+            },
+            "stats_avg": {
+              "ACT": 34
+            },
+            "stats_avg_source_url": "https://admission.stanford.edu/apply/selection/profile.html",
+            "score_profile": {
+              "exam_id": "ACT",
+              "compatible_exam_ids": [
+                "ACT"
+              ],
+              "p25_raw": 33,
+              "median_raw": 34,
+              "p75_raw": 35,
+              "p25_normalized": 91.43,
+              "median_normalized": 94.29,
+              "p75_normalized": 97.14,
+              "acceptance_rate_percent": 3.61,
+              "confidence": "high",
+              "source_scope": "official_middle_50_with_published_average",
+              "source_url": "https://admission.stanford.edu/apply/selection/profile.html",
+              "source_note": "Official Stanford Common Data Set reports middle 50% ACT composite score range of 33-35 for enrolled first-year students.",
+              "normalization_method": "exam_anchor_percentile"
+            },
+            "funding_options": [
+              {
+                "id": "stanford_act",
+                "label": "Standard Admission - ACT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Self-funded Stanford offer under the standard first-year admissions process for applicants submitting ACT."
+              },
+              {
+                "id": "stanford_act-grant-need-based-aid",
+                "label": "Standard Admission - Need-based Aid (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Need-based Aid",
+                "funding_source": "need",
+                "description": "Same first-year Stanford route with ACT, with need-based financial aid awarded from family financial circumstances."
+              }
+            ]
           }
         ],
         "program_ids": [],
@@ -2105,11 +2375,12 @@
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
-            "computing"
-          ]
+            "mathematics"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Software Engineering",
+          "name": "Applied Mathematics",
           "study_levels": [
             "Bachelor"
           ],
@@ -2118,49 +2389,10 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "computer science",
-            "engineering"
-          ]
-        },
-        {
-          "name": "Data Science and Artificial Intelligence",
-          "study_levels": [
-            "Bachelor"
+            "mathematics",
+            "computer science"
           ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "computer science",
-            "natural sciences"
-          ]
-        },
-        {
-          "name": "Mechanical Engineering",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "engineering"
-          ]
-        },
-        {
-          "name": "Electrical and Electronic Engineering",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "engineering"
-          ]
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -2172,11 +2404,13 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "economics"
-          ]
+            "economics",
+            "social sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Finance",
+          "name": "Government (Political Science)",
           "study_levels": [
             "Bachelor"
           ],
@@ -2185,11 +2419,12 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "social sciences"
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Business Administration",
+          "name": "Social Studies",
           "study_levels": [
             "Bachelor"
           ],
@@ -2198,8 +2433,83 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "social sciences",
+            "humanities"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "History",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "humanities"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Molecular and Cellular Biology",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "life sciences",
+            "natural sciences"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Neuroscience",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "life sciences",
+            "psychology"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Engineering Sciences",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Electrical Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "computer science"
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -2211,8 +2521,24 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "psychology"
-          ]
+            "psychology",
+            "social sciences"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "English",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "humanities"
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -2360,8 +2686,9 @@
       "costs_breakdown_source_urls": [
         "https://college.harvard.edu/financial-aid/how-aid-works"
       ],
-      "costs_breakdown_note": "Shows only verified mandatory cost items from the official student budget. Personal expenses, transportation, insurance, and other discretionary allowances are excluded from the UniSearch breakdown display.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official undergraduate budget from Harvard College Financial Aid, covering tuition, mandatory fees, housing, food, and books.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {},
     "verified_sources": [
@@ -2619,6 +2946,55 @@
               "SAT": 1520,
               "GPA": 3.92
             }
+          },
+          {
+            "id": "harvard_college_act",
+            "label": "ACT",
+            "description": "Harvard College first-year undergraduate route for applicants submitting ACT test scores.",
+            "requirements": {
+              "ACT": 35,
+              "GPA": 3.92
+            },
+            "stats_avg": {
+              "ACT": 35
+            },
+            "stats_avg_source_url": "https://oira.harvard.edu/files/2024/05/CDS_2023-2024-Final-4755619e875b1241.pdf",
+            "score_profile": {
+              "exam_id": "ACT",
+              "compatible_exam_ids": [
+                "ACT"
+              ],
+              "p25_raw": 34,
+              "median_raw": 35,
+              "p75_raw": 36,
+              "p25_normalized": 94.29,
+              "median_normalized": 97.14,
+              "p75_normalized": 100.0,
+              "acceptance_rate_percent": 4.18,
+              "confidence": "high",
+              "source_scope": "official_component_percentiles_derived",
+              "source_url": "https://oira.harvard.edu/files/2024/05/CDS_2023-2024-Final-4755619e875b1241.pdf",
+              "source_note": "Derived from official Harvard Common Data Set reports ACT Composite 25th percentile of 34 and 75th percentile of 36 for enrolled first-year students.",
+              "normalization_method": "exam_anchor_percentile"
+            },
+            "funding_options": [
+              {
+                "id": "harvard_college_act",
+                "label": "Harvard College - ACT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Self-funded Harvard College offer through the standard first-year admissions process for applicants submitting ACT."
+              },
+              {
+                "id": "harvard_college_act-grant-financial-aid",
+                "label": "Harvard College - Financial Aid (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Financial Aid",
+                "funding_source": "need",
+                "description": "Same Harvard College route with ACT, with need-blind admission and 100% need-based aid for admitted students."
+              }
+            ]
           }
         ],
         "program_ids": [],
@@ -2653,11 +3029,12 @@
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
-            "computing"
-          ]
+            "mathematics"
+          ],
+          "duration": "3–4 years"
         },
         {
-          "name": "Software Engineering",
+          "name": "Mathematics and Computer Science",
           "study_levels": [
             "Bachelor"
           ],
@@ -2667,11 +3044,12 @@
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
-            "engineering"
-          ]
+            "mathematics"
+          ],
+          "duration": "3–4 years"
         },
         {
-          "name": "Data Science and Artificial Intelligence",
+          "name": "Philosophy, Politics and Economics (PPE)",
           "study_levels": [
             "Bachelor"
           ],
@@ -2680,51 +3058,14 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "computer science",
-            "natural sciences"
-          ]
-        },
-        {
-          "name": "Mechanical Engineering",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "engineering"
-          ]
-        },
-        {
-          "name": "Electrical and Electronic Engineering",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "engineering"
-          ]
-        },
-        {
-          "name": "Economics",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "English"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
+            "humanities",
+            "social sciences",
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
-          "name": "Finance",
+          "name": "Engineering Science",
           "study_levels": [
             "Bachelor"
           ],
@@ -2733,11 +3074,84 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
+            "engineering"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Law (Jurisprudence)",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "law"
+          ],
+          "duration": "3 years"
+        },
+        {
+          "name": "Mathematics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "mathematics"
+          ],
+          "duration": "3–4 years"
+        },
+        {
+          "name": "Physics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "physics",
+            "natural sciences"
+          ],
+          "duration": "3–4 years"
+        },
+        {
+          "name": "Chemistry",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "natural sciences"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Economics and Management",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "economics",
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
-          "name": "Business Administration",
+          "name": "History",
           "study_levels": [
             "Bachelor"
           ],
@@ -2746,11 +3160,12 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "business"
-          ]
+            "humanities"
+          ],
+          "duration": "3 years"
         },
         {
-          "name": "Psychology",
+          "name": "English Language and Literature",
           "study_levels": [
             "Bachelor"
           ],
@@ -2759,8 +3174,24 @@
           ],
           "study_mode": "On-campus",
           "major_tags": [
-            "psychology"
-          ]
+            "humanities"
+          ],
+          "duration": "3 years"
+        },
+        {
+          "name": "Biomedical Sciences",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "life sciences",
+            "medicine"
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -2893,9 +3324,11 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 70300,
+      "total_cost_year_usd": 43200,
       "costs_breakdown_year_usd": {
-        "Tuition": 52700
+        "Tuition": 33050,
+        "Housing_Dorm": 6200,
+        "Food": 3950
       },
       "financial_aid": {
         "need_based": false,
@@ -2905,8 +3338,9 @@
         "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/course-fees",
         "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Oxford overseas undergraduate tuition fees in GBP alongside published living cost guidelines.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "GBP"
     },
     "outcomes": {},
     "verified_sources": [
@@ -3443,6 +3877,126 @@
         "program_names": [
           "Mathematics and Computer Science"
         ]
+      },
+      {
+        "id": "oxford_ppe_and_humanities",
+        "label": "Philosophy, Politics and Economics (PPE) & Humanities",
+        "description": "Direct Oxford undergraduate admissions route for PPE, Law, and humanities courses via UCAS.",
+        "scope": "general",
+        "study_mode": "On-campus",
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "IELTS": 7.5,
+              "IELTS_LISTENING": 7,
+              "IELTS_READING": 7,
+              "IELTS_WRITING": 7,
+              "IELTS_SPEAKING": 7
+            }
+          }
+        ],
+        "language_requirements_mode": "any",
+        "extra_requirements": [
+          "UCAS application with personal statement and academic reference",
+          "Admissions test (Thinking Skills Assessment / TSA where required for PPE)",
+          "Admissions interview in December for shortlisted candidates",
+          "Written work submission where required by the course",
+          "English-language proficiency proof where applicable"
+        ],
+        "scholarships": [],
+        "requirement_profiles": [
+          {
+            "id": "oxford_ppe_a_level",
+            "label": "A-Level",
+            "description": "Oxford PPE, Law, and humanities route for applicants presenting A-Level examinations (standard offer A*AA).",
+            "requirements": {
+              "A_LEVEL_CERT": 17
+            },
+            "funding_options": [
+              {
+                "id": "oxford_ppe_a_level",
+                "label": "A-Level",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on Oxford's PPE and humanities route."
+              },
+              {
+                "id": "oxford_ppe_a_level-grant-reach-oxford",
+                "label": "A-Level - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "description": "Undergraduate admissions route with Reach Oxford Scholarship consideration for eligible students from developing countries."
+              }
+            ]
+          },
+          {
+            "id": "oxford_ppe_ib",
+            "label": "IB Diploma",
+            "description": "Oxford PPE, Law, and humanities route for applicants presenting the International Baccalaureate (standard offer 39 points with 7,6,6 at Higher Level).",
+            "requirements": {
+              "IB_Diploma": 39
+            },
+            "funding_options": [
+              {
+                "id": "oxford_ppe_ib",
+                "label": "IB Diploma",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on Oxford's PPE and humanities route."
+              },
+              {
+                "id": "oxford_ppe_ib-grant-reach-oxford",
+                "label": "IB Diploma - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "description": "Undergraduate admissions route with Reach Oxford Scholarship consideration for eligible students from developing countries."
+              }
+            ]
+          },
+          {
+            "id": "oxford_ppe_sat",
+            "label": "SAT",
+            "description": "Oxford PPE, Law, and humanities route for applicants presenting U.S. qualifications (SAT 1480+ combined with three AP exams at grade 5).",
+            "requirements": {
+              "SAT": 1480,
+              "AP_Total": 15
+            },
+            "funding_options": [
+              {
+                "id": "oxford_ppe_sat",
+                "label": "SAT",
+                "funding_type": "paid",
+                "track_badge": "Paid",
+                "description": "Standard self-funded place on Oxford's PPE and humanities route."
+              },
+              {
+                "id": "oxford_ppe_sat-grant-reach-oxford",
+                "label": "SAT - Reach Oxford Scholarship (Grant)",
+                "funding_type": "grant",
+                "track_badge": "Grant",
+                "funding_program": "Reach Oxford Scholarship",
+                "funding_source": "merit",
+                "description": "Undergraduate admissions route with Reach Oxford Scholarship consideration for eligible students from developing countries."
+              }
+            ]
+          }
+        ],
+        "program_ids": [
+          "philosophy_politics_and_economics_ppe",
+          "law_jurisprudence",
+          "history"
+        ],
+        "program_names": [
+          "Philosophy, Politics and Economics (PPE)",
+          "Law (Jurisprudence)",
+          "History"
+        ]
       }
     ]
   },
@@ -3708,13 +4262,13 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 28000,
+      "total_cost_year_usd": 25200,
       "costs_breakdown_year_usd": {
-        "Tuition": 1720,
-        "Student_Fees": 180,
-        "Housing_Rent": 12000,
-        "Food": 6800,
-        "Books_and_Supplies": 1400
+        "Tuition": 1460,
+        "Student_Fees": 148,
+        "Housing_Rent": 11300,
+        "Food": 7200,
+        "Books_and_Supplies": 1000
       },
       "financial_aid": {
         "merit_based": true,
@@ -3722,10 +4276,11 @@
       },
       "costs_breakdown_source_urls": [
         "https://ethz.ch/students/en/studies/financial/tuition-fees.html",
-        "https://ethz.ch/en/studies/financial/cost-of-living.html"
+        "https://ethz.ch/content/dam/ethz/main/education/finanzielles/files-en/cost-of-living.pdf"
       ],
-      "costs_breakdown_note": "Official ETH Zurich tuition fees (CHF 1,460/year) and living cost guidelines published by the ETH Financial Aid Office, covering Zurich student accommodation, food, compulsory semester fees, and study materials.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official ETH Zurich undergraduate tuition (CHF 1,460/year) and living costs schedule published by the ETH Student Services Financial Aid Office in CHF (totaling CHF 25,200/year), including student accommodation, meals, compulsory semester fees, and study materials.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "CHF"
     },
     "outcomes": {},
     "verified_sources": [
@@ -3856,11 +4411,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 28000,
+          "value": 25200,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://inf.ethz.ch/studies.html",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-11",
           "confidence": "medium",
           "status": "curated"
         },
@@ -4295,13 +4850,13 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 32000,
+      "total_cost_year_usd": 29650,
       "costs_breakdown_year_usd": {
-        "Tuition": 20000,
-        "Housing_Dorm": 4500,
+        "Tuition": 18050,
+        "Student_Fees": 1100,
+        "Housing_Dorm": 4800,
         "Food": 4200,
-        "Student_Fees": 1300,
-        "Books_and_Supplies": 2000
+        "Books_and_Supplies": 1500
       },
       "financial_aid": {
         "merit_based": true,
@@ -4311,8 +4866,9 @@
         "https://www.nus.edu.sg/registrar/administrative-policies-procedures/undergraduate/undergraduate-fees",
         "https://nus.edu.sg/oam/admissions/before-you-apply/living-costs"
       ],
-      "costs_breakdown_note": "Official undergraduate fees and cost estimates from the National University of Singapore Registrar and Office of Admissions, including subsidized international tuition with MOE Tuition Grant, on-campus hall accommodation, meals, student fees, and academic supplies.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official National University of Singapore undergraduate tuition and fees in SGD under MOE Tuition Grant, with on-campus accommodation and meal estimates.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "SGD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 52100
@@ -4466,11 +5022,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 32000,
+          "value": 29650,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.comp.nus.edu.sg/programmes/",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-11",
           "confidence": "medium",
           "status": "curated"
         },
@@ -4896,24 +5452,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 74000,
+      "total_cost_year_usd": 66684,
       "costs_breakdown_year_usd": {
-        "Tuition": 45000,
-        "College_Fee": 13500,
-        "Housing_Rent": 10200,
-        "Food": 2900,
-        "Books_and_Supplies": 2400
+        "Tuition": 44214,
+        "College_Fee": 10500,
+        "Housing_Rent": 7920,
+        "Food": 2250,
+        "Books_and_Supplies": 1800
       },
       "financial_aid": {
         "need_based": false,
         "merit_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://www.undergraduate.study.cam.ac.uk/fees-and-finance",
+        "https://www.undergraduate.study.cam.ac.uk/international-students/international-fees-and-costs",
         "https://www.undergraduate.study.cam.ac.uk/fees-and-finance/living-costs"
       ],
-      "costs_breakdown_note": "Official Cambridge undergraduate fee schedule and minimum living cost estimate, including university tuition band, college fee, room rent, food, and books and study resources.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official University of Cambridge undergraduate fees in GBP, including Group 4 course tuition (£44,214), college fee (£10,500), and published 9-month minimum maintenance budget.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "GBP"
     },
     "outcomes": {},
     "verified_sources": [
@@ -5054,11 +5611,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 69800,
+          "value": 66684,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-11",
           "confidence": "medium",
           "status": "curated"
         },
@@ -5494,7 +6051,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -5508,7 +6066,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -5522,7 +6081,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -5535,7 +6095,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -5548,7 +6109,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -5561,7 +6123,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -5574,7 +6137,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -5587,7 +6151,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -5600,7 +6165,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -5742,20 +6308,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 9500,
+      "currency": "CNY",
+      "total_cost_year_usd": 63000,
       "costs_breakdown_year_usd": {
-        "Tuition": 4500
+        "Tuition": 30000,
+        "Housing_Dorm": 15000,
+        "Food": 18000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://international.join-tsinghua.edu.cn/Admission1/Fees.htm",
-        "https://is.tsinghua.edu.cn/1004CampusLifeHandbookforInternationalScholars.pdf"
+        "https://international.join-tsinghua.edu.cn/",
+        "https://www.tsinghua.edu.cn/en/Admissions/Undergraduate.htm"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Tsinghua University international undergraduate fees in CNY (RMB), including annual Science and Engineering tuition (30,000 RMB), on-campus Zijing apartment accommodation (15,000 RMB), and estimated dining expenses (18,000 RMB).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -5934,68 +6503,91 @@
       "size": "large",
       "campus_area_m2": 4834300,
       "size_source_url": "https://www.tsinghua.edu.cn/en/About/Facts_and_Figures.htm",
-      "size_note": "Official Tsinghua facts list campus area at 483.43 hectares."
+      "size_note": "Official Tsinghua facts list campus area at 483.43 hectares (~4.83 km²)."
     },
     "admission_categories": [
       {
         "id": "tsinghua_intl",
         "label": "International Route",
-        "description": "Tsinghua's undergraduate route for international students applying online to listed English- or Chinese-medium divisions and majors.",
+        "description": "Tsinghua University's undergraduate admissions route for international students evaluated via high school academic records, international standardized tests, and interview.",
         "scope": "general",
         "study_mode": "On-campus",
         "language_requirements": [
           {
+            "code": "zh",
+            "accept_native": false,
+            "requirements": {
+              "HSK": 5
+            },
+            "stats_avg_source_note": "Chinese-taught programs require HSK Level 5 (minimum total score of 180, with at least 60 in each section)."
+          },
+          {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
-            }
+              "IELTS": 6.5,
+              "TOEFL_iBT_0_120": 96
+            },
+            "stats_avg_source_note": "English-taught programs or applicants whose native language is not English must provide official IELTS (6.5+) or TOEFL (96+) scores."
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Passport pages (applicant and parents; visa/entry stamps if applicable)",
-          "Final or expected graduation certificate",
-          "Curriculum vitae",
-          "High school/university transcripts",
-          "Standardized test results (national/regional exams or SAT/ACT/A-Level/AP/IB, etc.)",
-          "English language test report (if required)",
-          "Two recommendation letters (submitted via the system)",
-          "Personal statement",
-          "Financial sponsor form and sponsor income/employment certificate"
+          "Online application submitted via Tsinghua International Undergraduate Admissions System",
+          "High school diploma or expected graduation certificate",
+          "Official high school academic transcripts (grades 9 through 12)",
+          "Standardized test results (SAT, ACT, IB Diploma, GCE A-Levels, AP, or national matriculation examination)",
+          "English language proficiency certificate (IELTS or TOEFL) or HSK certificate according to program instruction language",
+          "Two academic recommendation letters from high school teachers",
+          "Personal statement and curriculum vitae",
+          "Certificate of citizenship and passport copy",
+          "Non-refundable application fee (800 RMB)"
         ],
         "scholarships": [],
         "requirement_profiles": [
           {
             "id": "tsinghua_intl",
             "label": "International Route",
-            "description": "Tsinghua's undergraduate route for international students applying online to listed English- or Chinese-medium divisions and majors.",
+            "description": "Standard international undergraduate route evaluated on secondary academic record and standardized qualifications.",
+            "requirements": {
+              "GPA": 3.52,
+              "SAT": 1300
+            },
+            "stats_avg": {
+              "GPA": 3.8,
+              "SAT": 1420
+            },
+            "stats_avg_source_url": "https://international.join-tsinghua.edu.cn/",
+            "stats_avg_source_note": "Tsinghua published competitive applicant expectations for international undergraduate candidates.",
             "funding_options": [
               {
                 "id": "tsinghua_intl",
                 "label": "International Route",
                 "requirements": {
-                  "SAT": 1300,
-                  "GPA": 3.52
+                  "GPA": 3.52,
+                  "SAT": 1300
                 },
                 "funding_type": "paid",
                 "track_badge": "Paid",
-                "description": "Standard self-funded Tsinghua undergraduate offer for international students."
+                "description": "Standard self-funded Tsinghua undergraduate offer for international students.",
+                "applicable_majors": []
               },
               {
                 "id": "tsinghua_intl-grant-chinese-govt-scholarship",
                 "label": "International Route - Chinese Govt Scholarship (Grant)",
                 "requirements": {
-                  "SAT": 1300,
-                  "GPA": 3.8
+                  "GPA": 3.8,
+                  "SAT": 1420
                 },
                 "funding_type": "grant",
                 "track_badge": "Grant",
-                "funding_program": "Chinese Govt Scholarship",
+                "funding_program": "Chinese Government Scholarship",
                 "funding_source": "merit",
-                "description": "Same international undergraduate route, with applicants able to pursue Chinese Government Scholarship or other freshman scholarship support."
+                "description": "Merit-based Chinese Government Scholarship and Beijing Government Scholarship for outstanding international undergraduate applicants.",
+                "applicable_majors": []
               }
-            ]
+            ],
+            "applicable_majors": []
           }
         ],
         "program_ids": [],
@@ -6031,7 +6623,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -6045,7 +6638,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -6059,7 +6653,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -6072,7 +6667,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -6085,7 +6681,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -6098,7 +6695,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -6111,7 +6709,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Business Administration",
@@ -6124,7 +6723,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Psychology",
@@ -6137,7 +6737,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -6281,20 +6882,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 52000,
+      "currency": "AUD",
+      "total_cost_year_usd": 70351,
       "costs_breakdown_year_usd": {
-        "Tuition": 32000,
-        "Student_Services_and_Amenities_Fee": 250
+        "Tuition": 48000,
+        "Student_Services_and_Amenities_Fee": 351,
+        "Housing_Dorm": 22000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/fees-and-payments/indicative-course-fees"
+        "https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/fees-and-payments/indicative-course-fees",
+        "https://study.unimelb.edu.au/student-life/living-in-melbourne/cost-of-living"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Melbourne undergraduate fee schedule in AUD, including indicative international tuition (48,000 AUD), compulsory Student Services and Amenities Fee (SSAF, 351 AUD), and estimated residential accommodation expenses (22,000 AUD).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {},
     "verified_sources": [
@@ -6473,7 +7077,7 @@
       {
         "id": "melb_intl",
         "label": "International UG",
-        "description": "University of Melbourne's international undergraduate route, submitted online with course-specific entry documents and scholarship screening where applicable.",
+        "description": "University of Melbourne's international undergraduate entry pathways via Victorian Tertiary Admissions Centre (VTAC) or direct international application.",
         "scope": "general",
         "study_mode": "On-campus",
         "language_requirements": [
@@ -6482,22 +7086,25 @@
             "accept_native": true,
             "requirements": {
               "IELTS": 6.5,
-              "IELTS_LISTENING": 6,
-              "IELTS_READING": 6,
-              "IELTS_WRITING": 6,
-              "IELTS_SPEAKING": 6
-            }
+              "IELTS_LISTENING": 6.0,
+              "IELTS_READING": 6.0,
+              "IELTS_WRITING": 6.0,
+              "IELTS_SPEAKING": 6.0,
+              "TOEFL_iBT_0_120": 79,
+              "PTE": 58
+            },
+            "stats_avg_source_note": "University of Melbourne undergraduate English language requirement: IELTS Academic 6.5 (no band below 6.0), TOEFL iBT 79 (Writing 21, Speaking 18, Reading 13, Listening 13), or PTE 58 (no score below 50)."
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application with supporting documentation upload",
-          "Secondary school transcripts (or most recent results if final not yet available)",
-          "Tertiary transcripts if previous university study",
-          "Proof of English language proficiency",
-          "Passport copy",
-          "Additional documents if required by program (personal statement/portfolio/aptitude test results)",
-          "Application fee (non-refundable for direct international applicants)"
+          "Online application submitted directly or via VTAC with supporting document upload",
+          "Official secondary school academic transcripts and certified English translations",
+          "Final graduation certificate or evidence of current secondary enrollment",
+          "Proof of English language proficiency meeting University of Melbourne undergraduate standards",
+          "Passport identification pages copy",
+          "Program-specific supplementary documentation if required by major (portfolio, auditions, or prerequisites)",
+          "Non-refundable direct international application fee"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -6564,7 +7171,11 @@
           {
             "id": "melb_sat",
             "label": "SAT",
-            "description": "University of Melbourne's international undergraduate route, submitted online with course-specific entry documents and standardized testing (SAT/ACT).",
+            "description": "University of Melbourne's international undergraduate route for applicants presenting US high school credentials and standardized testing (SAT/ACT).",
+            "requirements": {
+              "SAT": 1350,
+              "GPA": 3.4
+            },
             "funding_options": [
               {
                 "id": "melb_sat",
@@ -7928,8 +8539,9 @@
         "https://finaid.caltech.edu/costs",
         "https://www.admissions.caltech.edu/apply"
       ],
-      "costs_breakdown_note": "Official direct billed costs from California Institute of Technology undergraduate cost of attendance schedule, including mandatory fees, standard on-campus housing, and meal plan.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official direct billed costs from California Institute of Technology undergraduate cost of attendance schedule in USD, including mandatory fees, standard on-campus housing, and meal plan.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 128566
@@ -8065,7 +8677,7 @@
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://www.cms.caltech.edu/academics/computer-science",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-11",
           "confidence": "medium",
           "status": "curated"
         },
@@ -10826,8 +11438,9 @@
         "https://financialaid.uchicago.edu/undergraduate/costs",
         "https://collegeadmissions.uchicago.edu/"
       ],
-      "costs_breakdown_note": "Official undergraduate cost of attendance from University of Chicago Financial Aid, covering tuition, student services fee, first-year on-campus housing, dining plan, and estimated books and supplies.",
-      "costs_breakdown_status": "official_mandatory_breakdown"
+      "costs_breakdown_note": "Official undergraduate cost of attendance from University of Chicago Financial Aid in USD, covering tuition, student services fee, first-year on-campus housing, dining plan, and estimated books and supplies.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "USD"
     },
     "outcomes": {
       "average_early_career_salary_usd": 91885
@@ -10966,7 +11579,7 @@
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://cs.uchicago.edu/education/undergraduate-programs/",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-11",
           "confidence": "medium",
           "status": "curated"
         },
@@ -12216,7 +12829,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -12230,7 +12844,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -12244,7 +12859,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -12257,7 +12873,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -12270,7 +12887,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -12283,7 +12901,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -12296,7 +12915,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -12309,7 +12929,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -12322,7 +12943,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -12461,19 +13083,24 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 90078,
+      "currency": "USD",
+      "total_cost_year_usd": 92524,
       "costs_breakdown_year_usd": {
-        "Tuition": 68686
+        "Tuition": 63204,
+        "Mandatory_Fees": 8032,
+        "Housing_Dorm": 13132,
+        "Food": 6744,
+        "Books_and_Supplies": 1412
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://srfs.upenn.edu/costs-budgeting/undergraduate-cost-attendance"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Pennsylvania undergraduate student budget (2025-2026) in USD for on-campus living, including tuition, mandatory fees, housing, dining, and books.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 111371
@@ -12648,117 +13275,95 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
+      "size": "medium",
+      "campus_area_m2": 1209996,
       "size_source_url": "https://www.upenn.edu/about/facts",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size_note": "Official Penn facts list the West Philadelphia campus at 299 acres (~1.21 km²) across 225 buildings."
     },
     "student_count": 29384,
     "admission_categories": [
       {
         "id": "university-of-pennsylvania-usa-philadelphia_first_year",
         "label": "First-Year Admission",
-        "description": "Standard first-year undergraduate route for domestic and international applicants, with review of academics, school context, essays, activities, and recommendations where required by the institution.",
-        "scope": "program_group",
+        "description": "Penn's comprehensive undergraduate admissions review evaluating high school academic record, school report, essays, teacher recommendations, and activities.",
+        "scope": "general",
         "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "TOEFL_iBT_0_120": 100
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "PTE": 68
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
+              "TOEFL_iBT_0_120": 100,
+              "IELTS": 7.5,
               "DET": 130
-            }
+            },
+            "stats_avg_source_note": "Penn requires official English language testing (TOEFL, IELTS, or Duolingo English Test) for applicants whose primary language of instruction has not been English for at least three years."
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Common Application or Coalition Application (Scoir) with personal essay",
+          "Penn-specific short answer and essay responses",
+          "School Report with counselor recommendation and official high school transcript",
+          "One academic teacher evaluation in a core subject (English, social studies, math, science, or foreign language)",
+          "One additional recommendation (from an educator, mentor, or employer)",
+          "Midyear School Report with senior grades",
+          "Official standardized test scores (SAT or ACT) or hardship waiver",
+          "Non-refundable application fee or approved fee waiver"
         ],
         "scholarships": [],
-        "applicable_majors": [
-          "Computer Science",
-          "Economics"
-        ],
         "requirement_profiles": [
           {
             "id": "university-of-pennsylvania-usa-philadelphia_first_year",
-            "label": "SAT",
-            "description": "Standard first-year undergraduate route for domestic and international applicants, with review of academics, school context, essays, activities, and recommendations where required by the institution.",
+            "label": "General",
+            "description": "Standard first-year undergraduate route for domestic and international applicants.",
             "requirements": {
-              "GPA": 3.84
-            },
-            "stats_avg": {
-              "SAT": 1553,
+              "GPA": 3.9,
+              "SAT": 1510,
               "ACT": 34
             },
-            "stats_avg_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "stats_avg": {
+              "GPA": 3.95,
+              "SAT": 1540,
+              "ACT": 35
+            },
+            "stats_avg_source_url": "https://admissions.upenn.edu/admissions-and-financial-aid/incoming-class-profile",
+            "stats_avg_source_note": "Penn Admissions enrolled first-year class profile middle 50% score ranges (SAT 1510-1560, ACT 34-35).",
             "funding_options": [
               {
                 "id": "university-of-pennsylvania-usa-philadelphia_first_year",
                 "label": "First-Year Admission",
                 "requirements": {
-                  "GPA": 3.84
+                  "GPA": 3.9,
+                  "SAT": 1510,
+                  "ACT": 34
                 },
                 "funding_type": "paid",
                 "track_badge": "Paid",
-                "description": "Self-funded first-year route using the university's standard undergraduate admissions review.",
-                "applicable_majors": [
-                  "Computer Science",
-                  "Economics"
-                ]
+                "description": "Standard self-funded first-year undergraduate offer.",
+                "applicable_majors": []
               },
               {
                 "id": "university-of-pennsylvania-usa-philadelphia_first_year_need_based",
                 "label": "First-Year Admission - Need-based Aid (Grant)",
                 "requirements": {
-                  "GPA": 3.84
+                  "GPA": 3.9,
+                  "SAT": 1510,
+                  "ACT": 34
                 },
                 "funding_type": "grant",
                 "track_badge": "Grant",
-                "funding_program": "Need-based Aid",
+                "funding_program": "Need-based Grant Aid",
                 "funding_source": "need",
-                "description": "Same first-year route, with need-based undergraduate aid considered separately under the university's financial aid policy.",
-                "applicable_majors": [
-                  "Computer Science",
-                  "Economics"
-                ]
+                "description": "Penn meets 100% of demonstrated financial need with grant-based aid packages for eligible admitted undergraduates.",
+                "applicable_majors": []
               }
-            ]
+            ],
+            "applicable_majors": []
           }
         ],
-        "program_ids": [
-          "computer_science",
-          "economics"
-        ],
-        "program_names": [
-          "Computer Science",
-          "Economics"
-        ]
+        "program_ids": [],
+        "program_names": []
       }
     ]
   },
@@ -13315,7 +13920,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -13329,7 +13935,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -13343,7 +13950,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -13356,7 +13964,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -13369,7 +13978,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -13382,7 +13992,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -13395,7 +14006,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -13408,7 +14020,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -13421,7 +14034,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -13560,19 +14174,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 90579,
+      "currency": "USD",
+      "total_cost_year_usd": 96318,
       "costs_breakdown_year_usd": {
-        "Tuition": 69314
+        "Tuition": 73946,
+        "Mandatory_Fees": 1024,
+        "Housing_Dorm": 13744,
+        "Food": 7604
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://finaid.cornell.edu/cost-attend"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Cornell University estimated undergraduate cost of attendance (2025-2026) in USD for on-campus housing, tuition, mandatory student activity fees, and food.",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 104043
@@ -13747,117 +14365,95 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?id=190415&fields=school.name,latest.student.enrollment.undergrad_12_month,latest.student.enrollment.grad_12_month&api_key=DEMO_KEY",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "large",
+      "campus_area_m2": 3014909,
+      "size_source_url": "https://www.cornell.edu/about/",
+      "size_note": "Official Cornell facts describe the central Ithaca campus at 745 acres (~3.01 km²), with total university estate and natural lands totaling 2,300 acres."
     },
     "student_count": 26727,
     "admission_categories": [
       {
         "id": "cornell-university-usa-ithaca_first_year",
         "label": "First-Year Admission",
-        "description": "Standard first-year undergraduate route for domestic and international applicants, with review of academics, school context, essays, activities, and recommendations where required by the institution.",
-        "scope": "program_group",
+        "description": "Cornell's undergraduate admissions process conducted by each individual college and undergraduate school within the university.",
+        "scope": "general",
         "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 7
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "TOEFL_iBT_0_120": 100
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "PTE": 70
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
+              "TOEFL_iBT_0_120": 100,
+              "IELTS": 7.5,
               "DET": 130
-            }
+            },
+            "stats_avg_source_note": "Cornell requires English proficiency testing (TOEFL iBT minimum 100, IELTS Academic 7.5, or Duolingo 130) for non-native English speakers."
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "Common Application with personal essay",
+          "Cornell Writing Supplement (college-specific supplemental essays)",
+          "School Report with counselor recommendation",
+          "Official high school academic transcript",
+          "Two teacher evaluations from academic core courses",
+          "Midyear Report with senior fall grades",
+          "Standardized testing in accordance with college policy (SAT/ACT recommended or required by college)",
+          "Non-refundable application fee or approved fee waiver"
         ],
         "scholarships": [],
-        "applicable_majors": [
-          "Computer Science",
-          "Mechanical Engineering"
-        ],
         "requirement_profiles": [
           {
             "id": "cornell-university-usa-ithaca_first_year",
-            "label": "SAT",
-            "description": "Standard first-year undergraduate route for domestic and international applicants, with review of academics, school context, essays, activities, and recommendations where required by the institution.",
+            "label": "General",
+            "description": "Standard first-year undergraduate route across Cornell undergraduate colleges and schools.",
             "requirements": {
-              "GPA": 3.84
+              "GPA": 3.8,
+              "SAT": 1470,
+              "ACT": 33
             },
             "stats_avg": {
-              "SAT": 1535,
+              "GPA": 3.9,
+              "SAT": 1510,
               "ACT": 34
             },
-            "stats_avg_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median",
+            "stats_avg_source_url": "https://irp.dpb.cornell.edu/university-factbook/undergraduate-admissions",
+            "stats_avg_source_note": "Cornell University undergraduate factbook middle 50% standardized test ranges (SAT 1470-1550, ACT 33-35).",
             "funding_options": [
               {
                 "id": "cornell-university-usa-ithaca_first_year",
                 "label": "First-Year Admission",
                 "requirements": {
-                  "GPA": 3.84
+                  "GPA": 3.8,
+                  "SAT": 1470,
+                  "ACT": 33
                 },
                 "funding_type": "paid",
                 "track_badge": "Paid",
-                "description": "Self-funded first-year route using the university's standard undergraduate admissions review.",
-                "applicable_majors": [
-                  "Computer Science",
-                  "Mechanical Engineering"
-                ]
+                "description": "Standard self-funded undergraduate admission offer.",
+                "applicable_majors": []
               },
               {
                 "id": "cornell-university-usa-ithaca_first_year_need_based",
                 "label": "First-Year Admission - Need-based Aid (Grant)",
                 "requirements": {
-                  "GPA": 3.84
+                  "GPA": 3.8,
+                  "SAT": 1470,
+                  "ACT": 33
                 },
                 "funding_type": "grant",
                 "track_badge": "Grant",
-                "funding_program": "Need-based Aid",
+                "funding_program": "Cornell Need-based Aid",
                 "funding_source": "need",
-                "description": "Same first-year route, with need-based undergraduate aid considered separately under the university's financial aid policy.",
-                "applicable_majors": [
-                  "Computer Science",
-                  "Mechanical Engineering"
-                ]
+                "description": "Cornell awards need-based grant aid to meet 100% of demonstrated financial need for eligible admitted undergraduates.",
+                "applicable_majors": []
               }
-            ]
+            ],
+            "applicable_majors": []
           }
         ],
-        "program_ids": [
-          "computer_science",
-          "mechanical_engineering"
-        ],
-        "program_names": [
-          "Computer Science",
-          "Mechanical Engineering"
-        ]
+        "program_ids": [],
+        "program_names": []
       }
     ]
   },
@@ -13889,7 +14485,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -13903,7 +14500,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -13917,7 +14515,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -13930,7 +14529,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -13943,7 +14543,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -13956,7 +14557,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -13969,7 +14571,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -13982,7 +14585,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -13995,7 +14599,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -14134,19 +14739,22 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 82459,
+      "currency": "USD",
+      "total_cost_year_usd": 79722,
       "costs_breakdown_year_usd": {
-        "Tuition": 50547
+        "Tuition": 55172,
+        "Housing_Dorm": 23200,
+        "Books_and_Supplies": 1350
       },
       "financial_aid": {
         "merit_based": false,
         "need_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        "https://financialaid.berkeley.edu/how-aid-works/student-budgets-cost-of-attendance/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official UC Berkeley undergraduate student budget (2025-2026) in USD for nonresident undergraduates living in on-campus residence halls, including base tuition and nonresident supplemental tuition ($55,172), housing and food ($23,200), and books and supplies ($1,350).",
+      "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
       "average_early_career_salary_usd": 92446
@@ -14322,111 +14930,85 @@
     },
     "student_life": {
       "size": "medium",
-      "size_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?id=110635&fields=school.name,latest.student.enrollment.undergrad_12_month,latest.student.enrollment.grad_12_month&api_key=DEMO_KEY",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "campus_area_m2": 720341,
+      "size_source_url": "https://www.berkeley.edu/about/",
+      "size_note": "Official UC Berkeley facts report the central campus park at 178 acres (~0.72 km²), with total campus properties extending across 1,232 acres in the Berkeley Hills."
     },
     "student_count": 48556,
     "admission_categories": [
       {
         "id": "uc-berkeley-usa-berkeley_first_year",
         "label": "First-Year Admission",
-        "description": "Standard first-year undergraduate route for domestic and international applicants, with review of academics, school context, essays, activities, and recommendations where required by the institution.",
-        "scope": "program_group",
+        "description": "UC Berkeley undergraduate first-year admissions application reviewed comprehensively through the University of California Application platform.",
+        "scope": "general",
         "study_mode": "On-campus",
         "language_requirements": [
           {
             "code": "en",
             "accept_native": true,
             "requirements": {
-              "IELTS": 6.5
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "TOEFL_iBT_0_120": 80
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "PTE": 59
-            }
-          },
-          {
-            "code": "en",
-            "accept_native": true,
-            "requirements": {
-              "DET": 120
-            }
+              "TOEFL_iBT_0_120": 80,
+              "IELTS": 6.5,
+              "DET": 115
+            },
+            "stats_avg_source_note": "International applicants whose primary language of instruction has not been English must demonstrate English proficiency with minimum scores of TOEFL 80 (competitive 100+), IELTS 6.5, or Duolingo 115."
           }
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School report and counselor recommendation",
-          "Teacher recommendation(s) where required",
-          "Personal essay and short responses where required",
-          "Activities, honors, and additional context section",
-          "Application fee or approved fee waiver"
+          "University of California Application (UC App) submitted by the November 30 deadline",
+          "Four Personal Insight Questions (PIQs) selected from eight prompt options (max 350 words each)",
+          "Self-reported academic history and high school grades (official transcripts submitted only upon admission)",
+          "Test-free admissions policy: SAT and ACT scores are not considered in admission decisions",
+          "Letters of recommendation are not accepted or reviewed unless specifically invited by the campus",
+          "Minimum unweighted high school GPA of 3.40 for out-of-state and international applicants",
+          "Non-refundable UC application fee or approved UC fee waiver"
         ],
         "scholarships": [],
-        "applicable_majors": [
-          "Electrical Engineering and Computer Sciences",
-          "Mechanical Engineering"
-        ],
         "requirement_profiles": [
           {
             "id": "uc-berkeley-usa-berkeley_first_year",
             "label": "General",
-            "description": "Standard first-year undergraduate route for domestic and international applicants, with review of academics, school context, essays, activities, and recommendations where required by the institution.",
+            "description": "Standard first-year undergraduate route for domestic and international applicants.",
             "requirements": {
-              "GPA": 3.76
+              "GPA": 3.4
             },
+            "stats_avg": {
+              "GPA": 3.93
+            },
+            "stats_avg_source_url": "https://admissions.berkeley.edu/our-students/student-profile/",
+            "stats_avg_source_note": "UC Berkeley admitted first-year student profile: middle 50% unweighted GPA range is 3.89 - 4.00.",
             "funding_options": [
               {
                 "id": "uc-berkeley-usa-berkeley_first_year",
                 "label": "First-Year Admission",
                 "requirements": {
-                  "GPA": 3.76
+                  "GPA": 3.4
                 },
                 "funding_type": "paid",
                 "track_badge": "Paid",
-                "description": "Self-funded first-year route using the university's standard undergraduate admissions review.",
-                "applicable_majors": [
-                  "Electrical Engineering and Computer Sciences",
-                  "Mechanical Engineering"
-                ]
+                "description": "Standard self-funded undergraduate admission offer for nonresidents.",
+                "applicable_majors": []
               },
               {
                 "id": "uc-berkeley-usa-berkeley_first_year_need_based",
                 "label": "First-Year Admission - Need-based Aid (Grant)",
                 "requirements": {
-                  "GPA": 3.76
+                  "GPA": 3.4
                 },
                 "funding_type": "grant",
                 "track_badge": "Grant",
                 "funding_program": "Need-based Aid",
                 "funding_source": "need",
-                "description": "Same first-year route, with need-based undergraduate aid considered separately under the university's financial aid policy.",
-                "applicable_majors": [
-                  "Electrical Engineering and Computer Sciences",
-                  "Mechanical Engineering"
-                ]
+                "description": "Financial aid and grant consideration administered in accordance with UC financial aid policies.",
+                "applicable_majors": []
               }
-            ]
+            ],
+            "applicable_majors": []
           }
         ],
-        "program_ids": [
-          "electrical_engineering_and_computer_sciences",
-          "mechanical_engineering"
-        ],
-        "program_names": [
-          "Electrical Engineering and Computer Sciences",
-          "Mechanical Engineering"
-        ]
+        "program_ids": [],
+        "program_names": []
       }
     ]
   },

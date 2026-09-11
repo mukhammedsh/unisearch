@@ -1640,6 +1640,26 @@ html, body {
   max-width: 100%;
 }
 
+.settings-attribution {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.settings-attribution a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.settings-attribution a:hover {
+  color: var(--accent);
+}
+
+
 @media (max-width: 640px) {
   .settings-card {
     width: min(100%, 96vw);

@@ -250,6 +250,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   top: 90px;
 }
 
+
 .u-filter-title {
   display: flex;
   align-items: center;
@@ -683,6 +684,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   z-index: 2;
   margin: 0;
   padding: 0;
+  touch-action: pan-y;
 }
 
 .dual-slider-container input[type="range"]::-webkit-slider-runnable-track {
@@ -717,7 +719,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   border: 2px solid var(--surface-solid);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transform: translateY(-6px);
+  margin-top: -6px;
 }
 
 .dual-slider-container input[type="range"]::-moz-range-thumb {
@@ -804,6 +806,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   padding: 0;
   margin: 0;
   outline: none;
+  touch-action: pan-y;
 }
 
 .tradeoff-slider::-webkit-slider-runnable-track {
@@ -823,7 +826,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   border: 2px solid var(--surface-solid);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transform: translateY(-6px);
+  margin-top: -6px;
 }
 
 .tradeoff-slider::-moz-range-track {

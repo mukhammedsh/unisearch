@@ -420,8 +420,11 @@
     box-shadow: var(--shadow-sm);
     position: fixed;
     bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: min(320px, calc(100vw - 32px));
+    transform: none;
     z-index: var(--z-docked-control);
     transition:
     transform var(--motion-snappy) var(--motion-ease-standard),
@@ -445,8 +448,8 @@
     bottom: 92px;
   }
 
-  .u-mobile-filter-btn:active {
-    transform: translateX(-50%) scale(0.96);
+  button.u-mobile-filter-btn:active:not(:disabled) {
+    transform: translateY(1.5px) scale(0.98);
   }
 
   .u-mobile-filter-btn.is-active {

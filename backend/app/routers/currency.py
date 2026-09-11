@@ -23,7 +23,10 @@ def get_currency_rates(response: Response = None):
         "date": rates_info.get("date", ""),
         "source": rates_info.get("source", "unknown"),
         "filter_limits": filter_limits,
+        "provider": "ExchangeRate-API",
+        "attribution": "Rates provided by ExchangeRate-API (https://www.exchangerate-api.com)",
     }
+
 
 
 @router.get(

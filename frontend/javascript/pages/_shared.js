@@ -531,7 +531,7 @@ export function admissionsStatusLabel(status) {
   if (key === "official_counts") return t("university.admissions.status.official_counts", "Official counts");
   if (key === "official_signals") return t("university.admissions.status.official_signals", "Official signals");
   if (key === "competition_ratio_only") return t("university.admissions.status.competition_ratio_only", "Official competition ratio");
-  if (key === "verified_null_only") return t("university.admissions.status.verified_null_only", "Not separately published");
+  if (key === "verified_null_only") return t("university.admissions.status.verified_null_only", "No separate admissions data");
   if (key === "no_official_source") return t("university.admissions.status.no_official_source", "No official source");
   return t("university.admissions.status.reviewed", "Officially reviewed");
 }
@@ -566,7 +566,7 @@ export function admissionsDataTypeLabel(typeKey) {
   if (key === "cutoff") return t("university.admissions.metric.cutoff", "Cutoff");
   if (key === "counts") return t("university.admissions.metric.counts", "Applicants / offers");
   if (key === "competition_ratio") return t("university.admissions.metric.competition_ratio", "Competition ratio");
-  if (key === "verified-null") return t("university.admissions.metric.verified_null", "Not separately published");
+  if (key === "verified-null") return t("university.admissions.metric.verified_null", "No program-specific admissions data");
   return t("university.admissions.metric.official_signal", "Official signal");
 }
 
@@ -581,7 +581,7 @@ export function admissionsRateLabel(row) {
   return t("university.admissions.metric.acceptance_rate", "Acceptance rate");
 }
 
-export function admissionsSignalSummary(row) {
+export function admissionsSignalSummary(row, { institutionWideOnly = false } = {}) {
   const typeKey = admissionsDataTypeKey(row);
   if (typeKey === "acceptance_rate") return t("university.admissions.signal.rate", "Official rate from published counts.");
   if (typeKey === "capacity") return t("university.admissions.signal.capacity", "Official published capacity or places.");
@@ -589,7 +589,18 @@ export function admissionsSignalSummary(row) {
   if (typeKey === "cutoff") return t("university.admissions.signal.cutoff", "Official published cutoff or direct-admit threshold.");
   if (typeKey === "counts") return t("university.admissions.signal.counts", "Official published applicants, offers, or admitted counts.");
   if (typeKey === "competition_ratio") return t("university.admissions.signal.competition_ratio", "Official published competition-ratio style signal.");
-  if (typeKey === "verified-null") return t("university.admissions.signal.verified_null", "No separate official program-level metric published.");
+  if (typeKey === "verified-null" && institutionWideOnly) {
+    return t(
+      "university.admissions.signal.institution_wide_only",
+      "Applicants are considered at university level, so separate admission statistics by program are not published.",
+    );
+  }
+  if (typeKey === "verified-null") {
+    return t(
+      "university.admissions.signal.verified_null",
+      "The university does not publish a separate acceptance rate or admissions counts for this program.",
+    );
+  }
   return t("university.admissions.signal.official", "Official published admissions signal.");
 }
 
@@ -696,10 +707,6 @@ export function admissionsFactChips(row) {
     chips.push({ tone: "warn", text: t("university.admissions.supplementary_required", "Supplementary required") });
   }
 
-  if (!chips.length && admissionsDataTypeKey(row) === "verified-null") {
-    chips.push({ tone: "muted", text: t("university.admissions.metric.verified_null", "Not separately published") });
-  }
-
   return chips;
 }
 
@@ -715,18 +722,36 @@ export function renderAdmissionsChipRow(chips) {
   `;
 }
 
-export function renderAdmissionsSourceLink(entry) {
+export function renderAdmissionsSourceLink(entry, { explainsAbsence = false } = {}) {
   const source = admissionsPrimarySource(entry);
   if (!source?.url) return "";
-  const title = String(source.label || "").trim();
+  const genericLabel = t("university.admissions.official_source", "Official source");
+  const sourceLabel = String(source.label || "").trim();
+  let sourceTitle = sourceLabel;
+  if (!sourceTitle || sourceTitle === genericLabel) {
+    try {
+      sourceTitle = new URL(source.url).hostname.replace(/^www\./, "");
+    } catch {
+      sourceTitle = genericLabel;
+    }
+  }
+  const actionLabel = explainsAbsence
+    ? t("university.admissions.source_explains_absence", "Why this data is unavailable")
+    : t("university.admissions.view_source", "View source");
   return `
     <a
       class="admissions-source-link"
       href="${escapeHtmlAttr(source.url)}"
       target="_blank"
       rel="noopener noreferrer"
-      ${title ? `title="${escapeHtmlAttr(title)}"` : ""}
-    >${escapeHtml(t("university.admissions.open_source", "Open source"))}</a>
+    >
+      ${heroIcon("document-text", "ui-icon ui-icon--18 admissions-source-link__icon")}
+      <span class="admissions-source-link__copy">
+        <span class="admissions-source-link__eyebrow">${escapeHtml(genericLabel)}</span>
+        <span class="admissions-source-link__title">${escapeHtml(sourceTitle)}</span>
+      </span>
+      <span class="admissions-source-link__action">${escapeHtml(actionLabel)}</span>
+    </a>
   `;
 }
 
@@ -741,7 +766,7 @@ export function renderAdmissionsOverview(admissions) {
   const universityRate = toFiniteNumber(universityWide?.acceptance_rate_percent);
   const universityValue = universityRate !== null
     ? formatAdmissionsPercent(universityRate)
-    : "—";
+    : "";
   const universitySub = universityRate !== null
     ? admissionsRateLabel(universityWide)
     : t("university.admissions.no_university_rate", "No official university-wide acceptance rate published.");
@@ -750,13 +775,21 @@ export function renderAdmissionsOverview(admissions) {
   let programValue = "";
   let programSub = "";
   const programStatus = String(programLevel?.status || "").trim().toLowerCase();
+  const programReportedUniversityWide = String(programLevel?.kind || "").trim().toLowerCase() === "institution_wide_only";
   const hasProgramMetrics = programStatus === "official_counts" || programStatus === "official_signals" || programStatus === "competition_ratio_only";
   if (hasProgramMetrics) {
     programValue = formatUiNumber(publishedProgramRows.length);
     programSub = tFormat("university.admissions.rows_count", { count: formatUiNumber(publishedProgramRows.length) }, `${publishedProgramRows.length} official rows`);
   } else {
-    programValue = "—";
-    programSub = t("university.admissions.no_program_metrics", "No separate official program-level metric published.");
+    programSub = programReportedUniversityWide
+      ? t(
+        "university.admissions.institution_wide_only",
+        "Applicants are considered at university level, so separate admission statistics by program are not published.",
+      )
+      : t(
+        "university.admissions.no_program_metrics",
+        "The university does not publish separate acceptance rates or admissions counts for individual programs.",
+      );
   }
   const programChecked = String(data?.status_date || "").trim();
 
@@ -775,25 +808,25 @@ export function renderAdmissionsOverview(admissions) {
       <div class="admissions-summary-grid">
         <article class="admissions-summary-card">
           <div class="admissions-summary-top">
+            <div class="admissions-summary-eyebrow">${escapeHtml(t("university.admissions.university_wide", "University-wide"))}</div>
             <span class="admissions-chip admissions-chip--${escapeHtml(admissionsStatusTone(universityWide?.status))}">${escapeHtml(admissionsStatusLabel(universityWide?.status))}</span>
-            ${renderAdmissionsSourceLink(universityWide)}
           </div>
-          <div class="admissions-summary-eyebrow">${escapeHtml(t("university.admissions.university_wide", "University-wide"))}</div>
-          <div class="admissions-summary-value">${escapeHtml(universityValue)}</div>
+          ${universityRate !== null ? `<div class="admissions-summary-value">${escapeHtml(universityValue)}</div>` : ""}
           <div class="admissions-summary-sub">${escapeHtml(universitySub)}</div>
           ${renderAdmissionsChipRow(admissionsFactChips(universityWide).filter((chip) => !(universityRate !== null && String(chip.text || "").includes("%"))))}
           ${universityChecked ? `<div class="admissions-summary-meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(universityChecked)}</div>` : ""}
+          ${renderAdmissionsSourceLink(universityWide, { explainsAbsence: universityRate === null })}
         </article>
         <article class="admissions-summary-card">
           <div class="admissions-summary-top">
+            <div class="admissions-summary-eyebrow">${escapeHtml(t("university.admissions.program_level", "Program-level"))}</div>
             <span class="admissions-chip admissions-chip--${escapeHtml(admissionsStatusTone(programLevel?.status))}">${escapeHtml(admissionsStatusLabel(programLevel?.status))}</span>
-            ${renderAdmissionsSourceLink(programLevel)}
           </div>
-          <div class="admissions-summary-eyebrow">${escapeHtml(t("university.admissions.program_level", "Program-level"))}</div>
-          <div class="admissions-summary-value">${escapeHtml(programValue)}</div>
+          ${hasProgramMetrics ? `<div class="admissions-summary-value">${escapeHtml(programValue)}</div>` : ""}
           <div class="admissions-summary-sub">${escapeHtml(programSub)}</div>
           ${programNote ? `<p class="admissions-summary-note">${escapeHtml(programNote)}</p>` : ""}
           ${programChecked ? `<div class="admissions-summary-meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(programChecked)}</div>` : ""}
+          ${renderAdmissionsSourceLink(programLevel, { explainsAbsence: !hasProgramMetrics })}
         </article>
       </div>
     </section>
@@ -803,6 +836,8 @@ export function renderAdmissionsOverview(admissions) {
 export function renderProgramAdmissionsSignals(admissions) {
   const rows = Array.isArray(admissions?.programs) ? admissions.programs.filter((row) => row && typeof row === "object") : [];
   if (!rows.length) return "";
+  const programLevel = admissions?.program_level && typeof admissions.program_level === "object" ? admissions.program_level : {};
+  const institutionWideOnly = String(programLevel?.kind || "").trim().toLowerCase() === "institution_wide_only";
 
   return `
     <section class="admissions-programs-block">
@@ -816,12 +851,12 @@ export function renderProgramAdmissionsSignals(admissions) {
             <article class="admissions-program-card">
               <div class="admissions-program-head">
                 <span class="admissions-chip admissions-chip--${escapeHtml(typeKey === "verified-null" ? "muted" : "accent")}">${escapeHtml(admissionsDataTypeLabel(typeKey))}</span>
-                ${renderAdmissionsSourceLink(row)}
               </div>
               <div class="admissions-program-title">${escapeHtml(trProgramName(row?.program_name || "") || t("placeholder.field.program_name", "Program name"))}</div>
               ${renderAdmissionsChipRow(admissionsFactChips(row))}
-              <p class="admissions-program-note">${escapeHtml(admissionsSignalSummary(row))}</p>
+              <p class="admissions-program-note">${escapeHtml(admissionsSignalSummary(row, { institutionWideOnly }))}</p>
               ${checked ? `<div class="admissions-summary-meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(checked)}</div>` : ""}
+              ${renderAdmissionsSourceLink(row, { explainsAbsence: typeKey === "verified-null" })}
             </article>
           `;
         }).join("")}
