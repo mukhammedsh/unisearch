@@ -120,7 +120,7 @@ _HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
     "astana-it-university-kaz-astana": ["AITU", "АИТУ"],
     "astana-medical-university-kaz-astana": ["MUA", "AMU", "МУА"],
     "international-information-technology-university-kaz-almaty": ["IITU", "MUIT", "МУИТ"],
-    "satbayev-university-kaz-almaty": ["Satbayev", "KazNRTU", "KazNTU", "КазНИТУ"],
+    "satbayev-university-kaz-almaty": ["Satbayev", "KazNRTU", "KazNTU", "КазНИТУ", "Политех"],
     "kazakhstan-british-technical-university-kaz-almaty": ["KBTU", "КБТУ"],
     "al-farabi-kazakh-national-university-kaz-almaty": ["KazNU", "КазНУ"],
     "l-n-gumilyov-eurasian-national-university-kaz-astana": ["ENU", "ЕНУ"],
@@ -146,7 +146,7 @@ _HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
     "ucla-usa-los-angeles": ["UCLA", "ЮКЛА"],
     "mcgill-university-ca-montreal": ["McGill", "Макгилл"],
     "university-of-british-columbia-ca-vancouver": ["UBC", "British Columbia", "ЮБиСи"],
-    "university-of-waterloo-ca-waterloo": ["Waterloo", "Ватерлоо"],
+    "university-of-waterloo-ca-waterloo": ["Waterloo", "UWaterloo", "Ватерлоо"],
     "unsw-sydney-au-sydney": [
         "UNSW",
         "University of New South Wales",

@@ -27,10 +27,11 @@ All notable project changes should be recorded here.
   - Added an accessible custom Currency selector to the Settings modal with real-time typeahead search, keyboard navigation, currency symbols, and localized country/currency titles in English and Russian.
   - Propagated active currency conversion across all catalog university card tuition metrics, filter range sliders, comparison views, and detailed university cost breakdowns.
   - Persisted user currency preference across sessions in browser storage with instant UI re-rendering without page reload.
-- Expanded and enriched the university fact base (`backend/data/universities.json`, `backend/data/universities_translations.json`):
+- Expanded and enriched the university fact base (`backend/data/universities.json`, `backend/data/universities_translations.json`, `backend/app/services/universities.py`):
   - Updated academic program structures, verified tuition fees, living costs, and admission requirement profiles for 15 institutions (ETH Zurich, National University of Singapore, University of Cambridge, Caltech, University of Chicago, etc.).
   - Added Phase 2 updates for 15 institutions (MIT, Imperial College London, Stanford, Harvard, Oxford, Tsinghua, Melbourne, Penn, Cornell, UC Berkeley, etc.) with official course names, ACT/SAT/test-free admissions tracks, and need-based grant aid policies.
-  - Polished and standardized Russian institution descriptions, program names, and track-based admissions criteria.
+  - Added Phase 3 updates and official tuition fee schedules for University of Waterloo and leading Kazakhstan universities (Satbayev University, Al-Farabi KazNU, L.N. Gumilyov ENU, Abai KazNPU) with native KZT tuition, program durations, UNT threshold requirements, and localized Russian program profiles.
+  - Added hidden search aliases for University of Waterloo ("UWaterloo") and Satbayev University ("Политех"), and standardized grammar in Russian institution profiles.
 - Added comprehensive test coverage and internationalization strings (`tests/unit/currency.test.mjs`, `tests/unit/currency-sliders.test.mjs`, `tests/unit/shared-utils.test.mjs`, `tests/unit/custom-select-typeahead.test.mjs`, `tests/e2e/currency-settings.spec.js`, `backend/tests/test_currency.py`, `frontend/Localization/eng`, `frontend/Localization/ru`):
   - Added 60+ localized currency keys, symbols, and formatting templates in English and Russian localization catalogs.
   - Added unit test suites for currency exchange math, slider calibration, 1-2-5 scale step rounding, verified-null admissions rendering, custom select typeahead filtering, and settings storage.

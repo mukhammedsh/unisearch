@@ -22886,7 +22886,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4–5 years"
         },
         {
           "name": "Software Engineering",
@@ -22900,7 +22901,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -22914,7 +22916,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4–5 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -22927,7 +22930,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -22940,7 +22944,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Economics",
@@ -22953,7 +22958,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -22966,7 +22972,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4–5 years"
         },
         {
           "name": "Business Administration",
@@ -22979,7 +22986,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -22992,7 +23000,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -23129,20 +23138,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 51700,
+      "total_cost_year_usd": 74500,
       "costs_breakdown_year_usd": {
-        "Tuition": 32800
+        "Tuition": 73000,
+        "Books_and_Supplies": 1500
       },
       "financial_aid": {
         "need_based": false,
         "merit_based": true
       },
       "costs_breakdown_source_urls": [
-        "https://uwaterloo.ca/future-students/financing/tuition",
-        "https://uwaterloo.ca/future-students/life-residence/costs"
+        "https://uwaterloo.ca/future-students/financing/tuition"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official University of Waterloo undergraduate tuition schedule in CAD for international students (two terms / eight months of full-time study, 2026/2027 entry), covering Computer Science estimated tuition and incidental fees ($73,000 CAD) and books and supplies ($1,500 CAD).",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "CAD"
     },
     "outcomes": {},
     "verified_sources": [
@@ -23278,11 +23288,11 @@
           "method": "Official QS WUR 2026 rank value."
         },
         "tuition_total_cost_year_usd": {
-          "value": 51700,
+          "value": 74500,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://uwaterloo.ca/future-students/programs/computer-science",
-          "verified_at": "2026-05-24",
+          "source_url": "https://uwaterloo.ca/future-students/financing/tuition",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -23377,11 +23387,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Official secondary-school transcript",
-          "School profile or counselor reference where required",
-          "Supplementary application, interview, or personal profile where required",
-          "Application fee where applicable",
-          "English-language proof where applicable"
+          "Application submitted via the Ontario Universities' Application Centre (OUAC) by February 1",
+          "Mandatory Admission Information Form (AIF) submitted by February 14 for Mathematics, Computer Science, and Engineering applicants",
+          "Official secondary-school transcripts with senior-year Mathematics (Calculus and Advanced Functions) and English",
+          "Euclid Mathematics Contest and Canadian Computing Competition (CCC) strongly encouraged for Computer Science applicants",
+          "English language proficiency requirement: IELTS 6.5 (writing 6.5, speaking 6.5, reading 6.0, listening 6.0), TOEFL iBT 90 (25 writing, 25 speaking), PTE 63, or Duolingo English Test 120"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -26913,7 +26923,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -26929,7 +26940,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -26945,7 +26957,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -26960,7 +26973,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -26975,7 +26989,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -26990,7 +27005,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -27006,7 +27022,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -27145,19 +27162,20 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 3200,
+      "total_cost_year_usd": 1300000,
       "costs_breakdown_year_usd": {
-        "Tuition": 3200
+        "Tuition": 1300000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://official.satbayev.university/en/dlya-studentov/stoimost-obucheniya"
+        "https://official.satbayev.university/ru/dlya-studentov/stoimost-obucheniya"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Satbayev University undergraduate tuition approved by the Board of Directors (Protocol No. 4, May 14, 2026) for 2026/2027 entrants in KZT, covering full-time bachelor tuition for Information Technology / Automation and Engineering programs (1,300,000 KZT/year).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -27267,11 +27285,11 @@
           "method": "Satbayev University is listed at #331 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 3200,
+          "value": 1300000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://satbayev.university/en/undergraduate",
-          "verified_at": "2026-05-24",
+          "source_url": "https://official.satbayev.university/ru/dlya-studentov/stoimost-obucheniya",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -27311,13 +27329,12 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available"
+          "Application submitted online via the Satbayev University portal or eGov.kz",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) certificate with at least 65 points (profile subjects: Mathematics and Computer Science or Mathematics and Physics)",
+          "State educational grant competition participation or contract agreement for fee-paying studies",
+          "International applicants: secondary education certificate, notarized translation, and admissions interview",
+          "Medical certificate 075/y, copy of national ID or passport",
+          "Application deadlines: grant applications July 13–20, fee-paying admission through August 25"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -27979,7 +27996,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -27995,7 +28013,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -28011,7 +28030,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -28026,7 +28046,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -28041,7 +28062,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -28056,7 +28078,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -28072,7 +28095,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -28211,19 +28235,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 3100,
+      "total_cost_year_usd": 1500000,
       "costs_breakdown_year_usd": {
-        "Tuition": 3100
+        "Tuition": 1500000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://welcome.kaznu.kz/ru/19388/"
+        "https://welcome.kaznu.kz/ru/admissions/bachelor/stoimost/",
+        "https://welcome.kaznu.kz/media/admissions/bachelor/editor/stoimost-bak-2026-2027-_14072026094138.pdf"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Al-Farabi Kazakh National University undergraduate tuition approved by the Board of Directors (Decision No. 4, July 10, 2026) for the 2026/2027 academic year in KZT, covering full-time bachelor tuition for Software Engineering / IT programs (1,500,000 KZT/year).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -28333,11 +28359,11 @@
           "method": "Al-Farabi Kazakh National University is listed at #166 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 3100,
+          "value": 1500000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.kaznu.kz/en/3360",
-          "verified_at": "2026-05-24",
+          "source_url": "https://welcome.kaznu.kz/ru/admissions/bachelor/stoimost/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -28377,13 +28403,11 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available"
+          "Application submitted via the official KazNU admissions portal (welcome.kaznu.kz) or eGov.kz",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score certificate (minimum 65–75 points for national universities; profile subjects: Mathematics and Computer Science for IT, Mathematics and Geography for Economics)",
+          "International applicants: secondary education certificate with notarized translation and admissions interview",
+          "Medical certificate form 075/y, fluorography, and vaccination card",
+          "Application period: June 20 to August 25 for the fall intake"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -28500,7 +28524,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -28516,7 +28541,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -28532,7 +28558,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -28547,7 +28574,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -28562,7 +28590,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -28577,7 +28606,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -28593,7 +28623,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -28724,19 +28755,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 2800,
+      "total_cost_year_usd": 1900000,
       "costs_breakdown_year_usd": {
-        "Tuition": 2800
+        "Tuition": 1900000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://enu.kz/en/page/applicants/bachelor"
+        "https://enu.kz/ru/page/applicants/bachelor",
+        "https://smart.enu.kz/api/serve?path=/general/files/fdf23f2f-5f36-49aa-9942-00cae34f1c4e.pdf"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official L.N. Gumilyov Eurasian National University undergraduate tuition fee schedule approved by the Board of Directors (Protocol No. 03/26, March 27, 2026) for 2026 entrants in KZT, covering full-time bachelor tuition for Information and Communication Technologies (6B06: Computer Science, Software Engineering, Information Security) and Business/Economics (6B04) at 1,900,000 KZT per year.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -28846,11 +28879,11 @@
           "method": "L.N. Gumilyov Eurasian National University is listed at #317 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 2800,
+          "value": 1900000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://enu.kz/en/page/applicants/bachelor",
-          "verified_at": "2026-05-24",
+          "source_url": "https://enu.kz/ru/page/applicants/bachelor",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -28890,13 +28923,11 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available"
+          "Application submitted via the official ENU admissions portal or eGov.kz",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) certificate with at least 65–75 points for national university admission (profile subjects: Mathematics and Computer Science for ICT, Mathematics and Geography for Economics)",
+          "International applicants: official secondary school certificate with apostille/notarized Russian or Kazakh translation and interview",
+          "Medical certificate 075/y with chest X-ray and photo ID",
+          "Application period: June 20 to August 25 for bachelor degree programs"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -30556,25 +30587,11 @@
           "major_tags": [
             "education",
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
-          "name": "Informatics teacher training",
-          "study_levels": [
-            "Bachelor"
-          ],
-          "language": [
-            "Kazakh",
-            "Russian"
-          ],
-          "study_mode": "On-campus",
-          "major_tags": [
-            "education",
-            "computer science"
-          ]
-        },
-        {
-          "name": "Foreign Language: Two Foreign Languages",
+          "name": "Informatics Teacher Training",
           "study_levels": [
             "Bachelor"
           ],
@@ -30586,8 +30603,26 @@
           "study_mode": "On-campus",
           "major_tags": [
             "education",
+            "computer science"
+          ],
+          "duration": "4 years"
+        },
+        {
+          "name": "Foreign Language: Two Foreign Languages",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "language": [
+            "English",
+            "Kazakh",
+            "Russian"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "education",
             "humanities"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "History",
@@ -30602,7 +30637,8 @@
           "major_tags": [
             "education",
             "humanities"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mathematics",
@@ -30617,7 +30653,8 @@
           "major_tags": [
             "education",
             "mathematics"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -30625,7 +30662,7 @@
       ],
       "majors": [
         "Pedagogy and Psychology",
-        "Informatics teacher training",
+        "Informatics Teacher Training",
         "Foreign Language: Two Foreign Languages",
         "History",
         "Mathematics"
@@ -30746,19 +30783,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 2400,
+      "total_cost_year_usd": 900000,
       "costs_breakdown_year_usd": {
-        "Tuition": 2400
+        "Tuition": 900000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://abaiuniversity.edu.kz/en/3000/notice/"
+        "https://abaiuniversity.edu.kz/ru/3116/page/",
+        "https://abaiuniversity.edu.kz/ru/3000/notice/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Abai Kazakh National Pedagogical University undergraduate tuition schedule for the 2025/2026 and 2026/2027 academic year in KZT, covering full-time bachelor tuition for key teacher training programs (Pedagogy & Psychology, Mathematics Teacher, Informatics Teacher at 900,000 KZT/year).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -30868,11 +30907,11 @@
           "method": "Abai Kazakh National Pedagogical University is listed at #628 in the QS World University Rankings 2026."
         },
         "tuition_total_cost_year_usd": {
-          "value": 2400,
+          "value": 900000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://abaiuniversity.edu.kz/en/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://abaiuniversity.edu.kz/ru/3116/page/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -30912,13 +30951,12 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available"
+          "Application submitted via the Abai University admissions commission or eGov.kz",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score of at least 70 points for Pedagogical Sciences (minimum 5 points in each subject: History of Kazakhstan, Mathematical Literacy, Reading Literacy, and two profile subjects)",
+          "Special pedagogical examination (psychological testing / pedagogical suitability test) required with 'Passed' result",
+          "International applicants: secondary school diploma with notarized translation into Kazakh or Russian and interview",
+          "Medical certificate 075/y with chest X-ray",
+          "Deadlines: July 13–20 for state grant contest, August 10–25 for fee-paying enrollment"
         ],
         "scholarships": [],
         "requirement_profiles": [
