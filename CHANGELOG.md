@@ -3,6 +3,12 @@
 All notable project changes should be recorded here.
 
 ## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
+- Completed a two-stage accessibility and responsive UX refinement of the Universities workspace (`index.html`, `components.js`, `main.js`, `universities.js`, `tour-modals.js`, related CSS, localization, and E2E tests):
+  - Persisted first-visit tour dismissal and added keyboard-safe focus trapping and restoration for the tour and UniFit warning dialogs.
+  - Added a localized skip-to-main-content link and keyboard section switching with Arrow, Home, and End keys, plus explicit active-section semantics.
+  - Clarified bachelor-only scope copy, corrected the page heading hierarchy, hid empty mobile filter summaries, and compacted the scope banner on viewports up to 760px while preserving a 44px dismiss target and aligned 12px gutters.
+  - Consolidated scope styling into its owning stylesheet, removed conflicting responsive overrides, and replaced hardcoded color and negative slider offsets with semantic tokens and transform-based positioning.
+  - Added regression coverage for heading hierarchy, persisted tour dismissal, modal focus behavior, keyboard navigation, mobile filter-summary visibility, centered search, and horizontal overflow.
 - Reduced repository overhead without changing product behavior by removing unused preview assets, dead frontend helpers, redundant route and layout-cache layers, and duplicate transitive dependency declarations.
 - Improved the University Costs tab (`university.html`, `university.css`, `render-sections.js`, localization files):
   - Reworked annual cost summaries and funding-option cards for clearer hierarchy, responsive layouts, and honest grant estimates.

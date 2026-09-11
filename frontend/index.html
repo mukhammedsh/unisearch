@@ -49,11 +49,12 @@
     <div class="site-initial-loader__spinner"></div>
   </div>
   <main class="u-page">
-    <section id="universitiesScopeNotice" class="u-page-scope" aria-label="Current study scope">
+    <h1 class="sr-only" data-i18n="universities.page_heading">Universities</h1>
+    <section id="universitiesScopeNotice" class="u-page-scope" aria-label="Current study scope" data-i18n-aria-label="universities.scope_note.aria">
       <div class="u-page-scope__inner">
         <div class="u-page-scope__content">
-          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only for now</p>
-          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.</p>
+          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only</p>
+          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">The catalog shows bachelor's programs and related admissions information.</p>
         </div>
         <button id="dismissUniversitiesScopeNotice" class="u-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
           <span data-heroicon="x-mark" data-icon-size="18"></span>
@@ -156,7 +157,7 @@
             <div class="budget-control-wrapper">
                 <div class="budget-inputs">
                     <input id="minCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="0" />
-                    <span style="color:#aaa; font-weight:bold;">-</span>
+                    <span class="budget-range-separator" aria-hidden="true">&ndash;</span>
                     <input id="maxCostInput" class="u-input" type="number" min="0" max="150000" step="100" placeholder="150000" />
                 </div>
 
@@ -286,7 +287,7 @@
         <div class="rank-container">
           <div class="rank-tools" aria-label="Ranking filters" data-i18n-aria-label="ranking.tools_aria">
             <div class="rank-header">
-              <h1><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="22"></span> <span data-i18n="ranking.title">Global University Ranking</span></h1>
+              <h2><span class="rank-title-icon" data-heroicon="trophy" data-icon-size="22"></span> <span data-i18n="ranking.title">Global University Ranking</span></h2>
             </div>
           </div>
 

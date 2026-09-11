@@ -23,7 +23,7 @@ body[data-page="ranking"] {
     text-align: left;
 }
 
-.rank-header h1 {
+.rank-header h2 {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -361,7 +361,7 @@ body[data-page="ranking"] {
         grid-row: auto;
     }
 
-    .rank-header h1 {
+    .rank-header h2 {
         font-size: clamp(18px, 5vw, 22px);
         line-height: 1.2;
     }

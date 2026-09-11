@@ -103,6 +103,7 @@ import {
   RECENT_UNIVERSITIES_KEY,
   MAX_COMPARE_UNIVERSITIES,
   hasSeenUniversitiesTour,
+  markUniversitiesTourSeen,
   readIdListStorage,
   writeIdListStorage,
   shouldOpenUniversitiesInNewTab,
@@ -464,7 +465,7 @@ export function initUniversitiesPage() {
         }
         if (state.sort && state.sort !== "name_asc") chips.push(optionTextForValue(el.sortSelect, state.sort) || state.sort);
         if (state.only_saved) chips.push(t("universities.filter.favorites", "Favorites"));
-        return chips.length ? chips : [t("universities.filter.none_active", "No active filters")];
+        return chips;
     }
 
     function syncSavedFilterButtons() {
@@ -484,11 +485,12 @@ export function initUniversitiesPage() {
         }
         if (el.mobileFilterSummary) {
             const chips = mobileFilterChips();
-            el.mobileFilterSummary.innerHTML = `
+            el.mobileFilterSummary.hidden = chips.length === 0;
+            el.mobileFilterSummary.innerHTML = chips.length ? `
                 <div class="u-mobile-filter-summary__chips">
                     ${chips.map((chip) => `<span class="u-mobile-chip">${escapeHtml(chip)}</span>`).join("")}
                 </div>
-            `;
+            ` : "";
         }
     }
 
@@ -552,6 +554,8 @@ export function initUniversitiesPage() {
             const active = tab === state.activeTab;
             btn.classList.toggle("is-active", active);
             btn.setAttribute("aria-pressed", active ? "true" : "false");
+            if (active) btn.setAttribute("aria-current", "page");
+            else btn.removeAttribute("aria-current");
         });
     };
 
@@ -1008,7 +1012,7 @@ export function initUniversitiesPage() {
             <div class="compare-results-head compare-results-head--pair">
                 <div>
                     <p class="compare-results-kicker">${escapeHtml(t("universities.compare.configure.kicker", "Before comparison"))}</p>
-                    <h1>${escapeHtml(t("universities.compare.configure.title", "Choose admission choices"))}</h1>
+                    <h2>${escapeHtml(t("universities.compare.configure.title", "Choose admission choices"))}</h2>
                     <p class="compare-config-subtitle">${escapeHtml(t("universities.compare.configure.subtitle", "Pick one admission category, requirement profile, and funding option for each university. The comparison will use that choice for requirements, language proof, cost, and funding."))}</p>
                 </div>
                 <div class="compare-results-actions">
@@ -1151,7 +1155,7 @@ export function initUniversitiesPage() {
             <div class="compare-results-head compare-results-head--pair">
                 <div>
                     <p class="compare-results-kicker">${escapeHtml(t("universities.compare.results.kicker", "Comparison results"))}</p>
-                    <h1>${escapeHtml(t("universities.compare.results.title", "University comparison"))}</h1>
+                    <h2>${escapeHtml(t("universities.compare.results.title", "University comparison"))}</h2>
                 </div>
                 <div class="compare-results-actions">
                     <button class="compare-results-action" type="button" data-action="back-to-compare-select">${escapeHtml(t("universities.compare.results.back_to_selection", "Back to selection"))}</button>
@@ -2124,26 +2128,42 @@ export function initUniversitiesPage() {
         }
     });
 
-    el.tabButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const nextTab = normalizeUniversitiesTab(btn.getAttribute("data-universities-tab"));
-            if (nextTab === state.activeTab && !(nextTab === "compare" && isCompareResultsMode())) return;
-            motionPress(btn);
-            state.activeTab = nextTab;
-            if (nextTab !== "compare") {
-                state.compareStage = "select";
-                state.compareResultIds = [];
-            } else if (state.compareStage !== "results") {
-                state.compareStage = "select";
-            }
-            state.page = 1;
-            clearSavedScrollPosition();
-            saveFilters(state);
-            syncSectionVisibility({
-                shouldFetch: nextTab !== "ranking" && !isCompareResultsMode(),
-                updateUrl: true,
-                replaceUrl: false,
-            }).catch((err) => console.error(err));
+    const activateSectionTab = (btn) => {
+        const nextTab = normalizeUniversitiesTab(btn.getAttribute("data-universities-tab"));
+        if (nextTab === state.activeTab && !(nextTab === "compare" && isCompareResultsMode())) return;
+        motionPress(btn);
+        state.activeTab = nextTab;
+        if (nextTab !== "compare") {
+            state.compareStage = "select";
+            state.compareResultIds = [];
+        } else if (state.compareStage !== "results") {
+            state.compareStage = "select";
+        }
+        state.page = 1;
+        clearSavedScrollPosition();
+        saveFilters(state);
+        syncSectionVisibility({
+            shouldFetch: nextTab !== "ranking" && !isCompareResultsMode(),
+            updateUrl: true,
+            replaceUrl: false,
+        }).catch((err) => console.error(err));
+    };
+
+    el.tabButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () => activateSectionTab(btn));
+        btn.addEventListener("keydown", (event) => {
+            const lastIndex = el.tabButtons.length - 1;
+            let nextIndex = null;
+            if (event.key === "ArrowRight") nextIndex = index === lastIndex ? 0 : index + 1;
+            if (event.key === "ArrowLeft") nextIndex = index === 0 ? lastIndex : index - 1;
+            if (event.key === "Home") nextIndex = 0;
+            if (event.key === "End") nextIndex = lastIndex;
+            if (nextIndex === null) return;
+
+            event.preventDefault();
+            const nextButton = el.tabButtons[nextIndex];
+            nextButton?.focus();
+            if (nextButton) activateSectionTab(nextButton);
         });
     });
 
@@ -3166,6 +3186,7 @@ export function initUniversitiesPage() {
                 firstVisitTourPending = false;
                 window.setTimeout(async () => {
                     await showUniversitiesTour();
+                    markUniversitiesTourSeen();
                     if (shouldShowUniFitWarning()) {
                         await showUniFitWarning();
                     }

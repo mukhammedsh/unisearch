@@ -605,7 +605,7 @@
   letter-spacing: 0.04em;
 }
 
-.compare-results-head h1 {
+.compare-results-head h2 {
   margin: 0;
   color: var(--text);
   font-size: 24px;

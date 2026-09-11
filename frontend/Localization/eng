@@ -295,6 +295,7 @@ title.ranking: Global Ranking | UniSearch
 title.universities: Universities | UniSearch
 title.university: University | UniSearch
 universities.tabs.aria: University sections
+universities.page_heading: Universities
 universities.tabs.catalog: Catalog
 universities.tabs.ranking: Ranking
 universities.tabs.comparing: Comparing
@@ -554,9 +555,11 @@ universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
 universities.sort_strategy: Sort Strategy
 universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
-universities.scope_note.title: Bachelor's programs only for now
-universities.scope_note.body: UniSearch currently shows bachelor's degree options and related admissions context. Master's and other study levels may appear later.
+universities.scope_note.title: Bachelor's programs only
+universities.scope_note.body: The catalog shows bachelor's programs and related admissions information.
+universities.scope_note.aria: Current study scope
 universities.scope_note.dismiss: Dismiss notice
+accessibility.skip_to_main: Skip to main content
 universities.scope_note.warning_title: Interests unavailable
 universities.scope_note.empty_title: No results for current filters
 universities.state.empty: No universities found.

@@ -26,6 +26,7 @@ const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
 // Базовый HTML-каркас шапки навигации и модального окна настроек
 const LAYOUT_HTML = `
+<a class="skip-link" href="#mainContent" data-i18n="accessibility.skip_to_main">Skip to main content</a>
 <header class="navbar">
   <div class="navbar-left">
     <a href="${routeUniversities()}" data-route="universities" class="navbar-logo-link">

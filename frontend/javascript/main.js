@@ -203,8 +203,29 @@ function syncNavbarSearchVisibility(ctx) {
   if (search) search.hidden = !isUniversities;
 }
 
+function syncSkipLinkTarget() {
+  const skipLink = document.querySelector(".skip-link");
+  const main = document.querySelector("main");
+  if (!skipLink || !main) return;
+
+  if (!main.id) main.id = "mainContent";
+  main.setAttribute("tabindex", "-1");
+  skipLink.setAttribute("href", `#${main.id}`);
+  if (skipLink.dataset.bound !== "1") {
+    skipLink.dataset.bound = "1";
+    skipLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      const targetId = String(skipLink.getAttribute("href") || "").replace(/^#/, "");
+      const target = document.getElementById(targetId) || document.querySelector("main");
+      target?.focus({ preventScroll: true });
+      target?.scrollIntoView({ block: "start" });
+    });
+  }
+}
+
 function hydrateRouteShell(ctx = currentRouteContext()) {
   syncNavbarSearchVisibility(ctx);
+  syncSkipLinkTarget();
   applyRouteLinks(document);
   hydrateHeroIcons(document);
   bindImageFallbacks(document);

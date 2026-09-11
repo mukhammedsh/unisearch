@@ -1,25 +1,3 @@
-.u-page-scope__inner {
-  padding: 16px 20px;
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--accent);
-  border-radius: var(--radius-xl);
-  background: var(--card);
-  box-shadow: none;
-}
-
-.u-page-scope__eyebrow {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0;
-}
-
-.u-page-scope__text {
-  max-width: 760px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
 .u-layout {
   gap: 24px;
   grid-template-columns: minmax(272px, 300px) minmax(0, 1fr);

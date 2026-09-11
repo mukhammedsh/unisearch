@@ -1,6 +1,6 @@
 /* frontend/javascript/pages/universities/tour-modals.js */
 
-import { escapeHtml, closeMotionLayer, aiName } from "../../utils.js";
+import { escapeHtml, closeMotionLayer, aiName, trapFocus } from "../../utils.js";
 import { renderInlineIcon } from "../_shared.js";
 import { t, tFormat } from "../../i18n.js";
 
@@ -55,6 +55,8 @@ export function showUniversitiesTour(options = {}) {
         const skipBtn = modal.querySelector("[data-action='skip']");
         const actionsEl = modal.querySelector(".u-tour-actions");
         const closeEls = modal.querySelectorAll("[data-action='close']");
+        const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        let cleanupFocusTrap = () => {};
 
         const steps = [
             {
@@ -142,6 +144,8 @@ export function showUniversitiesTour(options = {}) {
             if (inlineProfileBtn) {
                 inlineProfileBtn.addEventListener("click", () => {
                     isPausedForProfile = true;
+                    cleanupFocusTrap();
+                    cleanupFocusTrap = () => {};
                     modal.style.display = "none";
                     modal.setAttribute("aria-hidden", "true");
                     window.dispatchEvent(new CustomEvent("openProfileModal"));
@@ -150,6 +154,7 @@ export function showUniversitiesTour(options = {}) {
         };
 
         const cleanup = () => {
+            cleanupFocusTrap();
             window.removeEventListener("profileModalClosed", onProfileClosed);
             prevBtn?.removeEventListener("click", onPrev);
             nextBtn?.removeEventListener("click", onNext);
@@ -160,6 +165,9 @@ export function showUniversitiesTour(options = {}) {
                 modal.classList.remove("is-open", "is-closing");
                 modal.setAttribute("aria-hidden", "true");
                 modal.style.display = "none";
+                if (previouslyFocused && previouslyFocused !== document.body && previouslyFocused.isConnected) {
+                    previouslyFocused.focus();
+                }
                 resolve();
             });
         };
@@ -183,6 +191,7 @@ export function showUniversitiesTour(options = {}) {
         const onSkip = () => cleanup();
 
         const onKey = (e) => {
+            if (isPausedForProfile) return;
             if (e.key === "Escape") {
                 e.preventDefault();
                 cleanup();
@@ -201,6 +210,8 @@ export function showUniversitiesTour(options = {}) {
             modal.classList.remove("is-closing");
             modal.classList.add("is-open");
             renderStep("forward");
+            cleanupFocusTrap = trapFocus(modal);
+            slideEl?.querySelector("[data-action='open-profile']")?.focus();
         };
 
         prevBtn?.addEventListener("click", onPrev);
@@ -215,6 +226,8 @@ export function showUniversitiesTour(options = {}) {
         modal.classList.add("is-open");
         modal.removeAttribute("aria-hidden");
         renderStep("forward");
+        cleanupFocusTrap = trapFocus(modal);
+        nextBtn?.focus();
     });
 }
 
@@ -255,8 +268,11 @@ export function showUniFitWarning() {
         const modal = ensureUniFitWarningModal();
         const okBtn = modal.querySelector("[data-action='confirm']");
         const cancelEls = modal.querySelectorAll("[data-action='cancel']");
+        const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        const cleanupFocusTrap = trapFocus(modal);
 
         const cleanup = (result) => {
+            cleanupFocusTrap();
             okBtn?.removeEventListener("click", onOk);
             cancelEls.forEach((el) => el.removeEventListener("click", onCancel));
             document.removeEventListener("keydown", onKey);
@@ -264,6 +280,9 @@ export function showUniFitWarning() {
                 modal.classList.remove("is-open", "is-closing");
                 modal.setAttribute("aria-hidden", "true");
                 modal.style.display = "none";
+                if (previouslyFocused && previouslyFocused !== document.body && previouslyFocused.isConnected) {
+                    previouslyFocused.focus();
+                }
                 resolve(result);
             });
         };

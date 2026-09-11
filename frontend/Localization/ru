@@ -296,6 +296,7 @@ title.ranking: Глобальный рейтинг университетов | 
 title.universities: Университеты | UniSearch
 title.university: Университет | UniSearch
 universities.tabs.aria: Разделы университетов
+universities.page_heading: Университеты
 universities.tabs.catalog: Каталог
 universities.tabs.ranking: Рейтинг
 universities.tabs.comparing: Сравнение
@@ -555,9 +556,11 @@ universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
 universities.sort_strategy: Сортировка
 universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
-universities.scope_note.title: Пока только программы бакалавриата
-universities.scope_note.body: Сейчас UniSearch показывает только варианты бакалавриата и связанную с ними информацию о поступлении. Магистратура и другие уровни могут появиться позже.
+universities.scope_note.title: Только программы бакалавриата
+universities.scope_note.body: Каталог показывает программы бакалавриата и связанную с поступлением информацию.
+universities.scope_note.aria: Текущий уровень обучения
 universities.scope_note.dismiss: Скрыть уведомление
+accessibility.skip_to_main: Перейти к основному содержимому
 universities.scope_note.warning_title: Interests недоступны
 universities.scope_note.empty_title: Нет результатов для текущих фильтров
 universities.state.empty: Университеты не найдены.
