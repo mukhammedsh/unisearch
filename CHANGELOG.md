@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## 5.0.3 (2026-09-10) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
+## 5.0.3 (2026-09-11) - Global Navbar Search, Unified Workspace Architecture, and Integrated Section Toolbar
 - Integrated Ranking view with backend filtering and unified memory cache (`universities.js`, `ranking.js`, `tests/e2e/universities-tabs-compare.spec.js`):
   - Routed Ranking view queries through the FastAPI backend (`/universities?sort=rank_asc&limit=200&...`), respecting all active sidebar and navbar filters (`q`, `country`, `region`, `city`, `study_level`, `funding_type`, `min_tuition`, `max_tuition`, `only_saved`).
   - Replaced single-slot fetch cache with bounded `universitiesFetchCache` (Map with 50-entry LRU limit and 30s TTL) shared across Catalog, Ranking, and Compare modes.

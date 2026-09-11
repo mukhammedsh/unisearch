@@ -479,7 +479,7 @@ Check the following:
 Canonical release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 Recent releases:
-- `5.0.3` on `2026-09-10`
+- `5.0.3` on `2026-09-11`
 - `5.0.2` on `2026-09-10`
 - `5.0.1` on `2026-09-09`
 - `5.0.0` on `2026-09-08`
