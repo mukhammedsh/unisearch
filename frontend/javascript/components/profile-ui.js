@@ -31,7 +31,6 @@ import { safeSessionStorage } from "../utils/safe-storage.js";
 import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
 import {
   breakdownSchemeFor,
-  buildBreakdownState,
   readSubjectBreakdownDraft as readSubjectBreakdownDraftFromModule,
   renderSpecialExamInput as renderSpecialExamInputFromModule,
 } from "./profile/exam-breakdowns.js";
