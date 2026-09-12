@@ -483,7 +483,9 @@ universities.compare.status_empty: Пара для сравнения
 universities.compare.status_selected: Выбрано: {count}/{total}
 universities.compare.results.kicker: Итоги сравнения
 universities.compare.results.title: Сравнение университетов
-universities.compare.results.back_to_selection: Вернуться к выбору
+universities.compare.results.back_to_selection: К выбору треков
+universities.compare.back_to_catalog: В каталог
+universities.compare.back_to_tracks: К выбору треков
 universities.compare.results.empty_title: Сравнение ещё не собрано
 universities.compare.results.empty_body: Выберите ровно два университета, чтобы собрать пару для сравнения.
 universities.compare.configure.kicker: Перед сравнением

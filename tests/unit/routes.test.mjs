@@ -5,6 +5,7 @@ import { describe, it, beforeEach } from "node:test";
 import {
   usePrettyUrls,
   routeUniversities,
+  routeCompare,
   routeCompareSelection,
   routeCompareResults,
   routeGuide,
@@ -15,6 +16,7 @@ import {
   routeUniversityDetail,
   isUniversitiesListPath,
   isUniversityDetailPath,
+  isComparePath,
   isGuidePath,
   isAboutPath,
   isPrivacyPath,
@@ -74,7 +76,8 @@ describe("routes.js", () => {
 
     it("generates correct html filenames for main views", () => {
       assert.equal(routeUniversities(), "index.html");
-      assert.equal(routeCompareSelection(), "index.html?tab=compare&compare=select");
+      assert.equal(routeCompareSelection(), "index.html?tab=compare");
+      assert.equal(routeCompare(["mit", "harvard"]), "compare.html?ids=mit%2Charvard");
       assert.equal(routeGuide(), "guide.html");
       assert.equal(routeAbout(), "about.html");
       assert.equal(routePrivacy(), "privacy.html");
@@ -92,8 +95,7 @@ describe("routes.js", () => {
 
     it("generates compare results route with ids and choices", () => {
       const url = routeCompareResults(["mit", "harvard"], ["mit::sat::paid"], { lang: "eng" });
-      assert.match(url, /tab=compare/);
-      assert.match(url, /compare=results/);
+      assert.match(url, /^compare\.html\?/);
       assert.match(url, /ids=mit%2Charvard/);
       assert.match(url, /choices=mit%3A%3Asat%3A%3Apaid/);
       assert.match(url, /lang=eng/);
@@ -112,7 +114,8 @@ describe("routes.js", () => {
 
     it("generates clean paths without .html extensions", () => {
       assert.equal(routeUniversities(), "/");
-      assert.equal(routeCompareSelection(), "/?tab=compare&compare=select");
+      assert.equal(routeCompareSelection(), "/?tab=compare");
+      assert.equal(routeCompare(["mit", "harvard"]), "/compare?ids=mit%2Charvard");
       assert.equal(routeGuide(), "/guide");
       assert.equal(routeAbout(), "/about");
       assert.equal(routeProfile(), "/profile");
@@ -144,6 +147,9 @@ describe("routes.js", () => {
     });
 
     it("matches other top-level section routes", () => {
+      assert.equal(isComparePath("/compare.html"), true);
+      assert.equal(isComparePath("/compare"), true);
+      assert.equal(isComparePath("/"), false);
       assert.equal(isGuidePath("/guide.html"), true);
       assert.equal(isAboutPath("/about.html"), true);
       assert.equal(isPrivacyPath("/privacy.html"), true);

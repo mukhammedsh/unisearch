@@ -510,15 +510,17 @@
   }
 
   .compare-results-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     justify-content: stretch;
   }
 
   .compare-results-action {
-    width: 100%;
+    flex: 1 1 auto;
     justify-content: center;
     text-align: center;
+    white-space: nowrap;
   }
 
   .compare-tray {
@@ -599,7 +601,7 @@
 
   .compare-uni-grid {
     grid-template-columns: 1fr;
-    padding: 12px;
+    padding: 0;
   }
 
   .compare-table {

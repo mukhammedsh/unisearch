@@ -45,20 +45,27 @@ export function routeUniversities(queryOrParams = "") {
 }
 
 
+export function routeCompare(ids = [], choices = [], queryOrParams = "") {
+  const params = new URLSearchParams(toQueryString(queryOrParams));
+  if (Array.isArray(ids) && ids.length) params.set("ids", ids.join(","));
+  if (Array.isArray(choices) && choices.length) params.set("choices", choices.join(","));
+  return withQuery(usePrettyUrls() ? "/compare" : "compare.html", params);
+}
+
 export function routeCompareSelection(queryOrParams = "") {
   const params = new URLSearchParams(toQueryString(queryOrParams));
   params.set("tab", "compare");
-  params.set("compare", "select");
   return routeUniversities(params);
 }
 
 export function routeCompareResults(ids = [], choices = [], queryOrParams = "") {
+  return routeCompare(ids, choices, queryOrParams);
+}
+
+export function routeCompareConfigure(ids = [], choices = [], queryOrParams = "") {
   const params = new URLSearchParams(toQueryString(queryOrParams));
-  params.set("tab", "compare");
-  params.set("compare", "results");
-  if (Array.isArray(ids) && ids.length) params.set("ids", ids.join(","));
-  if (Array.isArray(choices) && choices.length) params.set("choices", choices.join(","));
-  return routeUniversities(params);
+  params.set("stage", "configure");
+  return routeCompare(ids, choices, params);
 }
 
 export function routeGuide(queryOrParams = "") {
@@ -102,6 +109,11 @@ export function isUniversitiesListPath(pathname = "") {
 export function isUniversityDetailPath(pathname = "") {
   const path = normalizePath(pathname).toLowerCase();
   return /\/university(?:\.html)?$/.test(path) || /\/universities\/[^/]+$/.test(path);
+}
+
+export function isComparePath(pathname = "") {
+  const path = normalizePath(pathname).toLowerCase();
+  return /\/compare(?:\.html)?$/.test(path);
 }
 
 
@@ -170,7 +182,7 @@ export function applyRouteLinks(root = document) {
     let href = "";
     if (route === "home") href = routeUniversities(params);
     if (route === "universities") href = routeUniversities(params);
-    if (route === "compare") href = routeCompareSelection(params);
+    if (route === "compare") href = routeCompare([], [], params);
     if (route === "guide") href = routeGuide(params);
     if (route === "about") href = routeAbout(params);
     if (route === "privacy") href = routePrivacy(params);

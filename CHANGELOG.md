@@ -39,6 +39,14 @@ All notable project changes should be recorded here.
   - Added unit test suites for currency exchange math, slider calibration, 1-2-5 scale step rounding, verified-null admissions rendering, custom select typeahead filtering, and settings storage.
   - Added backend test coverage for currency service rate fetching, fallback mechanisms, circuit breaker, and API route contracts.
   - Added Playwright E2E scenario testing currency selection, persistence, and card price re-rendering.
+- Extracted and modularized university comparison into a dedicated route (`frontend/compare.html`, `frontend/javascript/pages/compare.js`, `frontend/javascript/routes.js`, `frontend/javascript/main.js`, `frontend/javascript/pages/universities.js`, `frontend/index.html`, `scripts/frontend_dev_server.py`, `frontend/css/style.css`, `frontend/css/universities/03-comparison.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/07-responsive.css`, `frontend/Localization/eng`, `frontend/Localization/ru`, `tests/unit/routes.test.mjs`, `tests/e2e/universities-tabs-compare.spec.js`):
+  - Created dedicated standalone comparison page (`frontend/compare.html`) with deep linking support for pair IDs, admission choices, and configuration stages (`/compare?ids=...&choices=...&stage=...`).
+  - Extracted comparison logic and DOM handling from catalog page (`frontend/javascript/pages/universities.js`) into dedicated `frontend/javascript/pages/compare.js`, streamlining the catalog bundle and removing ~500 lines of duplicated code.
+  - Added seamless legacy route redirects from `/?tab=compare&compare=results` / `/?compare=configure` to the dedicated `/compare` route.
+  - Aligned comparison view actions and typography with Calm Academic Workspace standards (`var(--radius-md)`, `display: inline-flex`, `white-space: nowrap`, and zero redundant container padding).
+  - Fixed navbar alignment in search-enabled mode by explicitly assigning `.navbar-right` to `grid-column: 3`.
+  - Added new localized strings for navigation (`universities.compare.back_to_catalog`, `universities.compare.back_to_tracks`) in English and Russian.
+  - Added unit test suite for compare routes and Playwright E2E scenario testing isolated comparison view, navbar positioning, and navigation flows.
 
 ## 5.0.4 (2026-09-11) - 404 Page Design Token Alignment, Unified Empty States, and Dev CSP Polishing
 - Refreshed project documentation and agent guidance:

@@ -4,7 +4,7 @@ import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -15,7 +15,8 @@ const GUIDE_SECTION_HASH_RE = /^#guide-[a-z0-9-]+$/i;
 
 const routeModuleLoaders = {
   universities: () => import("./pages/universities.js"),
-  university: () => import("./pages/university.js"),
+  compare: () => import("./pages/compare.js"),
+  university: () => import("./pages/university.js"),
   guide: () => import("./pages/guide.js"),
   privacy: () => import("./pages/legal.js"),
   terms: () => import("./pages/legal.js"),
@@ -108,7 +109,8 @@ function isFrontendRootPath(pathname) {
 
 function routePageFromPath(pathname) {
   if (isFrontendRootPath(pathname) || isUniversitiesListPath(pathname)) return "universities";
-  if (isUniversityDetailPath(pathname)) return "university";
+  if (isComparePath(pathname)) return "compare";
+  if (isUniversityDetailPath(pathname)) return "university";
   if (isGuidePath(pathname)) return "guide";
   if (isAboutPath(pathname)) return "about";
   if (isPrivacyPath(pathname)) return "privacy";
@@ -128,12 +130,14 @@ function currentRouteContext() {
   const pageFromPath = routePageFromPath(path);
   const page = String(document.body.dataset.page || pageFromPath || "home").trim().toLowerCase();
   const normalizedPage = page === "university" ? "university" : (pageFromPath || page || "home");
+  const isCompare = Boolean(isComparePath(path) || (document.getElementById("compareResultsPane") && (normalizedPage === "compare" || document.body.dataset.page === "compare")));
   return {
     path,
     page: normalizedPage,
-    navPage: normalizedPage === "university" ? "universities" : normalizedPage,
-    isUniversitiesPage: Boolean(isUniversitiesListPath(path) || document.getElementById("universitiesList")),
-    isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
+    navPage: normalizedPage === "university" ? "universities" : (normalizedPage === "compare" ? "universities" : normalizedPage),
+    isUniversitiesPage: Boolean(!isCompare && (isUniversitiesListPath(path) || document.getElementById("universitiesList"))),
+    isComparePage: isCompare,
+    isUniversityPage: Boolean(isUniversityDetailPath(path) || document.getElementById("detailCard")),
     isGuidePage: Boolean(isGuidePath(path) || document.getElementById("guidePage")),
     isPrivacyPage: Boolean(normalizedPage === "privacy" || isPrivacyPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "privacy"),
     isTermsPage: Boolean(normalizedPage === "terms" || isTermsPath(path) || document.getElementById("legalPage") && document.body.dataset.page === "terms"),
@@ -189,6 +193,20 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
       detailLoading.classList.add("is-visible");
       detailLoading.setAttribute("aria-hidden", "false");
     }
+    return;
+  }
+
+  if (ctx.isComparePage) {
+    const comparePane = document.getElementById("compareResultsPane");
+    if (comparePane && !comparePane.innerHTML.trim()) {
+      comparePane.innerHTML = `
+        <div class="compare-results-loading" role="status">
+          <div class="skeleton-line" style="width: 38%; height: 22px;"></div>
+          <div class="skeleton-line" style="width: 100%; height: 118px;"></div>
+          <div class="skeleton-line" style="width: 92%; height: 180px;"></div>
+        </div>
+      `;
+    }
   }
 }
 
@@ -233,7 +251,7 @@ function hydrateRouteShell(ctx = currentRouteContext()) {
 }
 
 async function initRoutePage(ctx = currentRouteContext()) {
-  if (ctx.isUniversitiesPage || ctx.isUniversityPage) {
+  if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isComparePage) {
     try {
       await initUniversityTranslations();
     } catch (e) {
@@ -242,6 +260,16 @@ async function initRoutePage(ctx = currentRouteContext()) {
   }
 
   if (document.body.dataset.page === "error-404") return;
+
+  if (ctx.isComparePage) {
+    maybeWakeBackend();
+    const [module] = await Promise.all([
+      loadRouteModule("compare"),
+      ensureExamConfig(),
+      ensureLanguageConfig(),
+    ]);
+    return module?.initComparePage?.();
+  }
 
   if (ctx.isUniversitiesPage) {
     maybeWakeBackend();

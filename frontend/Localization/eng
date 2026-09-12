@@ -482,7 +482,9 @@ universities.compare.status_empty: Comparison pair
 universities.compare.status_selected: {count}/{total} selected
 universities.compare.results.kicker: Comparison results
 universities.compare.results.title: University comparison
-universities.compare.results.back_to_selection: Back to selection
+universities.compare.results.back_to_selection: Back to tracks
+universities.compare.back_to_catalog: Back to catalog
+universities.compare.back_to_tracks: Back to tracks
 universities.compare.results.empty_title: No comparison yet
 universities.compare.results.empty_body: Select exactly two universities to build a comparison pair.
 universities.compare.configure.kicker: Before comparison

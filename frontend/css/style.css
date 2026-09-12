@@ -5620,6 +5620,7 @@ body {
   }
 
   .navbar.has-university-search .navbar-right {
+    grid-column: 3;
     justify-self: end;
     margin-left: 0;
   }

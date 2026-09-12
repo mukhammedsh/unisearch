@@ -16,7 +16,7 @@ async function clearCompareState(page) {
   });
 }
 
-test("universities tabs host comparison results in one workspace", async ({ page }) => {
+test("universities tabs host comparison flow navigating to dedicated compare page", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
@@ -45,10 +45,12 @@ test("universities tabs host comparison results in one workspace", async ({ page
   await expect(page.locator("[data-action='open-compare']")).toBeEnabled();
   await page.locator("[data-action='open-compare']").click();
 
-  await expect(page).toHaveURL(/tab=compare/);
-  await expect(page).toHaveURL(/compare=configure/);
+  // Navigates to dedicated compare page in configure stage
+  await expect(page).toHaveURL(/compare(?:\.html)?\?.*ids=/);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
   await expect(page.locator("#compareResultsPane")).toBeVisible();
-  await expect(page.locator("#universitySearch")).toBeHidden();
+
+  // Verify configure stage is opened first
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page.locator(".compare-config-column .track-select-btn.is-active")).toHaveCount(2);
   await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(2);
@@ -57,33 +59,29 @@ test("universities tabs host comparison results in one workspace", async ({ page
   await expect(page.locator("#compareResultsPane")).toContainText("UniChance");
   const configureText = await page.locator("#compareResultsPane").textContent();
   expect(configureText).not.toMatch(/(?:Ð|Рќ|вЂ)/);
-  await expect(page).toHaveURL(/choices=/);
+
+  // Click continue to go to results
   const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
   await expect(continueCompareButton).toBeEnabled();
-  const configureCanScroll = await page.evaluate(() => document.documentElement.scrollHeight > window.innerHeight + 4);
-  let configureScrolled = false;
-  if (configureCanScroll) {
-    await page.evaluate(() => { window.scrollTo(0, document.documentElement.scrollHeight); });
-    const scrollY = await page.evaluate(() => window.scrollY);
-    configureScrolled = scrollY > 0;
-  }
   await continueCompareButton.click();
-  await expect(page).toHaveURL(/compare=results/);
-  if (configureScrolled) {
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(2);
-  }
+
+  // Verify results view rendered on compare page
   await expect(page.locator(".compare-key-differences")).toBeVisible();
   await expect(page.locator(".compare-reason-group")).toHaveCount(2);
   await expect(page.locator(".compare-uni-card")).toHaveCount(2);
-  await expect(page.locator(".compare-uni-card [data-action='remove-compare-result']")).toHaveCount(0);
   await expect(page.locator(".compare-table thead th")).toHaveCount(3);
   await expect(page.locator(".compare-overview")).toBeVisible();
   await expect(page.locator(".compare-tests")).toBeVisible();
   await expect(page.locator("#compareResultsPane")).toContainText("Key differences");
   await expect(page.locator("#compareResultsPane")).toContainText("Tests and characteristics");
 
-  await page.locator("[data-action='back-to-compare-select']").click();
-  await expect(page).toHaveURL(/compare=select/);
+  // Navigate back to tracks from results
+  await page.locator("[data-action='back-to-tracks']").click();
+  await expect(page.locator(".compare-config-panel")).toBeVisible();
+
+  // Navigate back to catalog compare selection
+  await page.locator("[data-action='back-to-catalog']").click();
+  await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
   await expect(page.locator(".compare-tray")).toBeVisible();
   await expect(page.locator("#universitiesList [data-card-action='compare'][aria-pressed='true']")).toHaveCount(2);
@@ -125,7 +123,7 @@ test("compare configure cards expose admission requirements before continuing", 
     localStorage.setItem("unisearch_ui_language_v1", "eng");
   });
 
-  await page.goto("/index.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
+  await page.goto("/compare.html?lang=eng&stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
@@ -148,11 +146,7 @@ test("compare results split admission decision rows", async ({ page }) => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
   });
 
-  await page.goto("/index.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat-grant-president-s-scholarship");
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
-
-  await page.locator("[data-action='build-compare-results']").click();
-  await expect(page).toHaveURL(/compare=results/);
+  await page.goto("/compare.html?lang=eng&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat-grant-president-s-scholarship");
   const table = page.locator(".compare-table");
   await expect(table).toContainText("Selected route");
   await expect(table).toContainText("Academic minimums");
@@ -178,19 +172,13 @@ test("compare deep link ids and choices override stale localStorage", async ({ p
     }));
   });
 
-  await page.goto("/index.html?lang=eng&tab=compare&compare=configure&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
-  await expect(page.locator("#compareResultsPane")).toContainText("Massachusetts Institute of Technology");
-  await expect(page.locator("#compareResultsPane")).toContainText("Imperial College London");
-  await expect(page.locator("#compareResultsPane")).not.toContainText("Abai");
-
-  await page.locator("[data-action='build-compare-results']").click();
-  await expect(page).toHaveURL(/compare=results/);
+  await page.goto("/compare.html?lang=eng&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
   await expect(page.locator(".compare-table")).toBeVisible();
   await expect(page.locator(".compare-uni-card")).toContainText([
     "Massachusetts Institute of Technology",
     "Imperial College London",
   ]);
+  await expect(page.locator(".compare-uni-card")).not.toContainText(["Abai"]);
 });
 
 test("compare results count localized bachelor programs in Russian", async ({ page }) => {
@@ -200,13 +188,7 @@ test("compare results count localized bachelor programs in Russian", async ({ pa
     localStorage.setItem("unisearch_ui_language_v1", "rus");
   });
 
-  await page.goto("/index.html?lang=rus&tab=compare&compare=configure&ids=abai-kazakh-national-pedagogical-university-kaz-almaty,al-farabi-kazakh-national-university-kaz-almaty&choices=abai_kaznpu_unt::abai_kaznpu_unt::abai_kaznpu_unt_paid,kaznu_unt::kaznu_unt::kaznu_unt_paid");
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
-  await expect(page.locator("#compareResultsPane")).toContainText("Лучший вариант");
-  await expect(page.locator("#compareResultsPane")).not.toContainText("Best choice");
-
-  await page.locator("[data-action='build-compare-results']").click();
-  await expect(page).toHaveURL(/compare=results/);
+  await page.goto("/compare.html?lang=rus&ids=abai-kazakh-national-pedagogical-university-kaz-almaty,al-farabi-kazakh-national-university-kaz-almaty&choices=abai_kaznpu_unt::abai_kaznpu_unt::abai_kaznpu_unt_paid,kaznu_unt::kaznu_unt::kaznu_unt_paid");
   const programRow = page.locator(".compare-table tbody tr", { hasText: "Бакалаврские программы" });
   await expect(programRow).toBeVisible();
   const rowText = await programRow.textContent();
@@ -243,10 +225,8 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
     JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").length
   )).toBe(0);
 
-  // 3. Open configure and results with 2 universities
-  await page.goto(`/index.html?lang=eng&tab=compare&compare=configure&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat`);
-  await page.locator("[data-action='build-compare-results']").click();
-  await expect(page).toHaveURL(/compare=results/);
+  // 3. Open compare page with 2 universities
+  await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat`);
 
   // 4. Verify best cell highlight
   const bestCells = page.locator(".compare-cell--best");
@@ -283,6 +263,42 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await expect(page.locator(".compare-score-track")).toHaveCount(0);
 });
 
+test("dedicated compare page keeps navbar controls on the right, hides catalog controls, and renders action in single line", async ({ page }) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+
+  await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
+
+  // Navbar right actions stay on the right side
+  const navRight = page.locator(".navbar-right");
+  await expect(navRight).toBeVisible();
+  const navRightBox = await navRight.boundingBox();
+  const viewportSize = page.viewportSize();
+  expect(navRightBox.x + navRightBox.width).toBeGreaterThan(viewportSize.width * 0.75);
+
+  // Catalog controls are not present
+  await expect(page.locator(".u-section-bar")).toHaveCount(0);
+  await expect(page.locator("#totalCount")).toHaveCount(0);
+  await expect(page.locator("#universitySearch")).toBeHidden();
+
+  // Back to tracks button is rendered in a single line (nowrap, inline-flex)
+  const backBtn = page.locator("[data-action='back-to-tracks']");
+  await expect(backBtn).toBeVisible();
+  const isNowrap = await backBtn.evaluate((el) => window.getComputedStyle(el).whiteSpace === "nowrap");
+  expect(isNowrap).toBe(true);
+
+  // Share and change-tracks buttons in header are removed
+  await expect(page.locator("[data-action='share-compare']")).toHaveCount(0);
+  await expect(page.locator("[data-action='change-tracks']")).toHaveCount(0);
+
+  // Navigate back to tracks, then back to catalog
+  await backBtn.click();
+  await expect(page.locator(".compare-config-panel")).toBeVisible();
+  await page.locator("[data-action='back-to-catalog']").click();
+  await expect(page).toHaveURL(/tab=compare/);
+});
+
 test("global rank sort reorders catalog by rank and displays rank tooltip with verification details", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
@@ -312,5 +328,3 @@ test("global rank sort reorders catalog by rank and displays rank tooltip with v
   await rankMetric.click();
   await expect(page).toHaveURL(/university\.html\?.*id=mit-usa-cambridge/);
 });
-
-

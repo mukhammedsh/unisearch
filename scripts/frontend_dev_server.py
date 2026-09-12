@@ -23,6 +23,8 @@ PRETTY_ROUTE_MAP = {
     "/terms.html": "terms.html",
     "/profile": "profile.html",
     "/profile.html": "profile.html",
+    "/compare": "compare.html",
+    "/compare.html": "compare.html",
     "/404": "404.html",
     "/404.html": "404.html",
 }
