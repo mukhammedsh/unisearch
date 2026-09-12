@@ -5833,7 +5833,7 @@
           "Computer Science"
         ],
         "extra_requirements": [
-          "UCAS Application with Cambridge campus code by October 15 deadline",
+          "UCAS Application with Cambridge campus code",
           "TMUA (Test of Mathematics for University Admission) registration and assessment",
           "Cambridge College admissions interview (if shortlisted)",
           "A Level grades A*A*A in Mathematics and Further Mathematics (or equivalent IB 40-42 points with 7,7,6 at HL)",
@@ -6013,7 +6013,7 @@
           "Engineering"
         ],
         "extra_requirements": [
-          "UCAS Application by October 15 deadline",
+          "UCAS Application",
           "ESAT (Engineering and Science Admissions Test) registration and assessment",
           "Cambridge College academic interview (if shortlisted)",
           "A Level grades A*A*A in Mathematics and Physics (or equivalent IB 40-42 points with 7,7,6 at HL)",
@@ -7689,7 +7689,7 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application submitted through TUMonline portal by July 15 (Winter semester) or January 15 (Summer semester)",
+          "Online application submitted through TUMonline portal",
           "Preliminary evaluation documentation (VPD) issued by uni-assist for applicants with non-German educational credentials",
           "Higher education entrance qualification (Abitur or recognized international school leaving certificate with certified German/English translation)",
           "Proof of language proficiency in German (TestDaF 4x4, DSH-2, Goethe C1) and/or English (TOEFL iBT 88+, IELTS 6.5+) depending on program curriculum",
@@ -8232,7 +8232,7 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application submitted via EPFL portal by April 30 deadline",
+          "Online application submitted via EPFL portal",
           "Certified copies of upper secondary school grade transcripts for the last three years",
           "Final upper-secondary school graduation certificate or diploma",
           "EPFL Entrance Examination (Examen d'admission) registration for applicants requiring testing",
@@ -8274,7 +8274,7 @@
         "language_requirements_mode": "any",
         "extra_requirements": [
           "Holders of a Swiss maturite gymnasiale or federally recognized Swiss maturity certificate are accepted in the first year of EPFL bachelor programs without additional examinations",
-          "Submission of Swiss maturity certificate and official final grades by the registration deadline",
+          "Submission of Swiss maturity certificate and official final grades",
           "Valid Swiss identity card, Swiss passport, or residence permit"
         ],
         "scholarships": [],
@@ -10284,8 +10284,7 @@
           "English language proficiency: IELTS Academic (minimum 6.0 overall), TOEFL iBT (minimum 80 / 4.5 revised scale), or SAT EBRW 590+",
           "At least one academic recommendation letter submitted directly through the online system",
           "Personal statement, curriculum vitae, and documentary evidence of extracurricular achievements",
-          "Nonrefundable application fee of HK$450",
-          "Application deadlines: Early Round (mid-November) and Regular Round (early January)"
+          "Nonrefundable application fee of HK$450"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -12974,7 +12973,6 @@
         "extra_requirements": [
           "Application registration via Studielink (national higher education registration portal)",
           "Application completion in TU Delft OSIRIS portal with verified secondary school diploma and transcripts",
-          "Strict deadlines: January 15 for Numerus Fixus programs (BSc Computer Science and Engineering, BSc Aerospace Engineering); April 1 for other bachelor programs",
           "Program-specific selection process (online student experience ONa, mathematics/cognitive exam, teamwork assignment)",
           "Proof of English proficiency: IELTS Academic 6.5 (min 6.0 in each sub-score) or TOEFL iBT 90 (min 21 in each sub-score)",
           "Mathematics and physics high school qualifications equivalent to Dutch pre-university education (VWO)"
@@ -14081,7 +14079,7 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application via the Kyoto iUP Online Application System (November 1 – December 1 application window)",
+          "Online application via the Kyoto iUP Online Application System",
           "Application fee payment (¥9,800 JPY)",
           "Official high school graduation certificate or anticipated graduation certificate (Form A)",
           "School evaluation report and recommendation completed by high school principal or teacher (Form B)",
@@ -15193,7 +15191,7 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "University of California Application (UC App) submitted by the November 30 deadline",
+          "Online submission through the University of California Application (UC App) portal",
           "Four Personal Insight Questions (PIQs) selected from eight prompt options (max 350 words each)",
           "Self-reported academic history and high school grades (official transcripts submitted only upon admission)",
           "Test-free admissions policy: SAT and ACT scores are not considered in admission decisions",
@@ -18883,7 +18881,7 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Application submitted via Common Application or Coalition on Scoir by deadlines (EDI Nov 1, EDII Jan 2, Regular Decision Jan 2)",
+          "Application submitted via Common Application or Coalition on Scoir",
           "Official secondary school transcript and Secondary School Report submitted by guidance counselor",
           "Two letters of evaluation from teachers in academic subjects",
           "Standardized test results (SAT/ACT) submitted optionally under JHU test-optional policy",
@@ -20110,7 +20108,7 @@
           "UCAS personal statement and academic reference from a teacher or tutor",
           "Standard academic entry benchmarks: SQA Highers / Advanced Highers; GCE A-Levels (typical standard offers AAA-A*AA, e.g. A*A*A for Computer Science); IB Diploma (37-43 points overall with 6s and 7s at Higher Level); US qualifications (SAT 1350-1420+ or ACT 31-33+ with 3 AP exams at score 4 or 5 in relevant subjects)",
           "English language proficiency: IELTS Academic 6.5-7.0 (minimum 6.0 in all bands), TOEFL iBT 92-100 (minimum 20 in each section), PTE Academic 62-70, or DET 125",
-          "UCAS equal consideration deadline (late January); fixed fee guarantee applies to overseas undergraduates for the normal duration of the degree"
+          "Fixed fee guarantee applies to overseas undergraduates for the normal duration of the degree"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -20863,8 +20861,7 @@
           "Official secondary school academic transcript and realistic predicted grades from referee",
           "Academic reference and UCAS personal statement",
           "Standard academic entry benchmarks: GCE A-Levels (typical standard offer A*AA with A* in Mathematics for computing); IB Diploma (37-38 points overall with 7, 6, 6 at Higher Level including Analysis and Approaches HL); US High School Diploma with SAT (1290-1450+) or ACT (28-33+) plus 3-4 AP exams at grades 4 or 5 in relevant STEM subjects",
-          "English language proficiency: IELTS Academic 7.0 (minimum 6.5 in each component), TOEFL iBT 100 (minimum 22 in each sub-score), PTE Academic 59-65, or DET 120-130",
-          "UCAS equal consideration deadline (late January)"
+          "English language proficiency: IELTS Academic 7.0 (minimum 6.5 in each component), TOEFL iBT 100 (minimum 22 in each sub-score), PTE Academic 59-65, or DET 120-130"
         ]
       },
       {
@@ -21044,8 +21041,7 @@
           "Academic reference and UCAS personal statement focusing on engineering aptitude",
           "Subject prerequisites: Advanced Mathematics and Physics required",
           "Standard entry requirements: GCE A-Levels A*AA including Mathematics and Physics; IB Diploma 38 points with 7, 6, 6 at Higher Level including Mathematics HL and Physics HL; US AP exams in Calculus BC and Physics C Mechanics (grade 5)",
-          "English language proficiency: IELTS Academic 6.5 (minimum 6.0 in all bands), TOEFL iBT 90 (minimum 22 in all sub-scores), PTE 59, or DET 120",
-          "UCAS equal consideration deadline (late January)"
+          "English language proficiency: IELTS Academic 6.5 (minimum 6.0 in all bands), TOEFL iBT 90 (minimum 22 in all sub-scores), PTE 59, or DET 120"
         ]
       }
     ]
@@ -21577,8 +21573,7 @@
           "Two teacher recommendations from academic disciplines (for Columbia Engineering applicants, one must be from a mathematics or science teacher)",
           "Standardized testing policy: Test-Optional for 2026-2027 applicants (SAT/ACT scores optional; holistic review)",
           "English language proficiency tests for international applicants: IELTS Academic (7.5+), TOEFL iBT (105+), or Duolingo English Test (DET 135+)",
-          "Nonrefundable application fee of $85 or approved fee waiver",
-          "Application deadlines: Early Decision (November 1) and Regular Decision (January 1)"
+          "Nonrefundable application fee of $85 or approved fee waiver"
         ],
         "scholarships": [],
         "applicable_majors": [
@@ -22792,7 +22787,7 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online submission through the University of California (UC) Application portal by November 30",
+          "Online submission through the University of California (UC) Application portal",
           "Test-Free policy: SAT and ACT scores are not considered in admission or scholarship selections",
           "Completion of minimum 15 college-preparatory A-G subject requirements with grades of C or better",
           "Minimum secondary school GPA of 3.4 for non-California residents (unweighted on a 4.0 scale)",
@@ -23387,8 +23382,8 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Application submitted via the Ontario Universities' Application Centre (OUAC) by February 1",
-          "Mandatory Admission Information Form (AIF) submitted by February 14 for Mathematics, Computer Science, and Engineering applicants",
+          "Application submitted via the Ontario Universities' Application Centre (OUAC)",
+          "Mandatory Admission Information Form (AIF) for Mathematics, Computer Science, and Engineering applicants",
           "Official secondary-school transcripts with senior-year Mathematics (Calculus and Advanced Functions) and English",
           "Euclid Mathematics Contest and Canadian Computing Competition (CCC) strongly encouraged for Computer Science applicants",
           "English language proficiency requirement: IELTS 6.5 (writing 6.5, speaking 6.5, reading 6.0, listening 6.0), TOEFL iBT 90 (25 writing, 25 speaking), PTE 63, or Duolingo English Test 120"
@@ -23520,7 +23515,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -23534,7 +23530,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Data Science and Artificial Intelligence",
@@ -23548,7 +23545,8 @@
           "major_tags": [
             "computer science",
             "natural sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Mechanical Engineering",
@@ -23561,7 +23559,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Electrical and Electronic Engineering",
@@ -23574,7 +23573,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -23587,7 +23587,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -23600,7 +23601,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Business Administration",
@@ -23613,7 +23615,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Psychology",
@@ -23626,7 +23629,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "psychology"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -23758,20 +23762,25 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 14000,
+      "total_cost_year_usd": 14885680,
       "costs_breakdown_year_usd": {
-        "Tuition": 7000
+        "Tuition": 6866000,
+        "Housing_Dorm": 1328000,
+        "Food": 5475000,
+        "Books_and_Supplies": 300000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://www.kaist.ac.kr/en/html/footer/0809.html?GotoPage=1&mode=V&no=340afb6eaccd0628090d843b806e1cc6",
-        "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guide%20for%20international%20applicants%202024.pdf"
+        "https://admission.kaist.ac.kr/intl-undergraduate/support/coa",
+        "https://admission.kaist.ac.kr/intl-undergraduate/support/scholarships/kaist",
+        "https://admission.kaist.ac.kr/wz/api/common/files/download/intl-undergraduate/pdf/Admissions_Guide_for_2027_admission.pdf"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official KAIST Undergraduate Cost of Attendance for the main campus in KRW: full-year tuition of 6,866,000 KRW (3,433,000 KRW/semester), on-campus double-occupancy dormitory housing in Hee Mang Hall of 1,328,000 KRW (166,000 KRW/month, 8 months), campus cafeteria board of 5,475,000 KRW (5,000 KRW/meal, 3 meals/day, 365 days), and books & supplies of 300,000 KRW (50,000 KRW/course, 3 courses/semester). Mandatory National Health Insurance (NHI: 916,680 KRW/year) is excluded from the breakdown per UniSearch contract rules.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "currency": "KRW"
     },
     "outcomes": {},
     "verified_sources": [
@@ -23895,11 +23904,11 @@
           "method": "No official QS World University Rankings 2026 position is published because KAIST was excluded from the 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 14000,
+          "value": 14885680,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://engineering.kaist.ac.kr/education/department",
-          "verified_at": "2026-05-24",
+          "source_url": "https://admission.kaist.ac.kr/intl-undergraduate/support/coa",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -23958,10 +23967,15 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application form",
-          "One recommendation letter (submitted electronically)",
-          "Official high school (and university, if applicable) transcripts",
-          "Copy of passport or national ID (proof of nationality)"
+          "Online application submitted through the KAIST International Admissions Portal (univapply.kaist.ac.kr/interapply)",
+          "Application fee: USD 80 paid via credit card or international wire transfer (application fee waiver available for eligible applicants from UN LDC countries)",
+          "Standardized test score report: at least one official score report required (SAT, ACT, AP, IB Diploma, GCE A-Level, or national high school leaving / college entrance examination; KAIST institution codes: SAT/AP 4433, ACT 7778, IB 000559)",
+          "English language proficiency: recommended minimum score of TOEFL iBT 83, IELTS Academic 6.5, TOEIC 720, or TEPS 326 (exemption for native English speakers or completion of high school taught entirely in English)",
+          "Official high school transcripts covering coursework and grades from the final 2 to 3 years of secondary education",
+          "Up to two letters of recommendation submitted directly online by academic advisors, homeroom teachers, or math/science educators",
+          "Personal statement addressing 5 KAIST essay prompts covering STEM curiosity, extracurricular activities, creative thinking, and collaborative character",
+          "Copy of applicant passport or national ID verifying foreign citizenship (both parents must also hold foreign citizenship)",
+          "Optional supporting documents: high school profile (up to 5 pages), school report, and list of up to 5 honors and awards"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -24020,15 +24034,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -24036,15 +24049,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -24052,15 +24064,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -24068,14 +24079,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -24083,14 +24093,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -24098,14 +24107,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -24113,15 +24121,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -24300,7 +24307,7 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 19500,
+      "total_cost_year_usd": 15000,
       "costs_breakdown_year_usd": {
         "Tuition": 15000
       },
@@ -24309,10 +24316,12 @@
         "need_based": false
       },
       "costs_breakdown_source_urls": [
+        "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
         "https://nu.edu.kz/admissions/fees-and-funding/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Nazarbayev University undergraduate tuition for the 2026/2027 academic year published in USD ($15,000 per year for both domestic and international self-funded students across undergraduate schools). Optional campus living costs are estimated by the university at approximately USD 400 per month but omitted from the breakdown per UniSearch contract rules.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "USD"
     },
     "outcomes": {},
     "verified_sources": [
@@ -24457,11 +24466,11 @@
           "method": "No official QS World University Rankings 2026 position is published for Nazarbayev University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 19500,
+          "value": 15000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -24512,13 +24521,14 @@
         "study_mode": "On-campus",
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Online application form",
-          "Scanned copy of passport or national ID",
-          "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
-          "Motivation letter in English",
-          "Valid test certificates as required by category",
-          "IELTS/TOEFL certificate uploaded in personal account",
-          "Application fee (paid online)"
+          "Online application submitted via the Nazarbayev University Admissions Portal (admissions.nu.edu.kz)",
+          "Application fee: 10,000 KZT for citizens of Kazakhstan / USD 30–50 for international applicants (paid online)",
+          "Standardized test results: SAT minimum score 1240 (Math 600+ recommended for SEDS; code 7915) or ACT minimum composite score 26 (Math 24+; code 5480); or NUET (Nazarbayev University Entrance Test) minimum 120 (Math 60+)",
+          "English language proficiency: IELTS Academic overall 6.5 (minimum 6.0 in Writing, 5.5 in Listening/Reading/Speaking) or TOEFL iBT 79 (Writing 22+). For NUET route: IELTS 6.0 (Writing 6.0, other bands 5.5) or TOEFL iBT 60",
+          "Secondary school graduation certificate (attestat) or IB/A-Level diploma with academic transcript (minimum GPA 3.0 out of 4.0 or equivalent)",
+          "Motivation letter in English explaining academic background, extracurricular leadership, and intellectual goals",
+          "Two confidential letters of recommendation from high school subject teachers submitted directly online",
+          "Scanned copy of applicant passport or national identity document"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -24574,13 +24584,14 @@
             ],
             "language_requirements_mode": "any",
             "extra_requirements": [
-              "Online application form",
-              "Scanned copy of passport or national ID",
-              "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
-              "Motivation letter in English",
-              "Valid test certificates as required by category",
-              "IELTS/TOEFL certificate uploaded in personal account",
-              "Application fee (paid online)"
+              "Online application submitted via the Nazarbayev University Admissions Portal (admissions.nu.edu.kz)",
+              "Application fee: 10,000 KZT for citizens of Kazakhstan / USD 30–50 for international applicants (paid online)",
+              "Standardized test results: SAT minimum score 1240 (Math 600+ recommended for SEDS; code 7915) or ACT minimum composite score 26 (Math 24+; code 5480); or NUET (Nazarbayev University Entrance Test) minimum 120 (Math 60+)",
+              "English language proficiency: IELTS Academic overall 6.5 (minimum 6.0 in Writing, 5.5 in Listening/Reading/Speaking) or TOEFL iBT 79 (Writing 22+). For NUET route: IELTS 6.0 (Writing 6.0, other bands 5.5) or TOEFL iBT 60",
+              "Secondary school graduation certificate (attestat) or IB/A-Level diploma with academic transcript (minimum GPA 3.0 out of 4.0 or equivalent)",
+              "Motivation letter in English explaining academic background, extracurricular leadership, and intellectual goals",
+              "Two confidential letters of recommendation from high school subject teachers submitted directly online",
+              "Scanned copy of applicant passport or national identity document"
             ],
             "scholarships": [],
             "funding_options": [
@@ -24632,13 +24643,14 @@
             ],
             "language_requirements_mode": "any",
             "extra_requirements": [
-              "Online application form",
-              "Scanned copy of passport or national ID",
-              "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
-              "Motivation letter in English",
-              "Valid test certificates as required by category",
-              "IELTS/TOEFL certificate uploaded in personal account",
-              "Application fee (paid online)"
+              "Online application submitted via the Nazarbayev University Admissions Portal (admissions.nu.edu.kz)",
+              "Application fee: 10,000 KZT for citizens of Kazakhstan / USD 30–50 for international applicants (paid online)",
+              "Standardized test results: SAT minimum score 1240 (Math 600+ recommended for SEDS; code 7915) or ACT minimum composite score 26 (Math 24+; code 5480); or NUET (Nazarbayev University Entrance Test) minimum 120 (Math 60+)",
+              "English language proficiency: IELTS Academic overall 6.5 (minimum 6.0 in Writing, 5.5 in Listening/Reading/Speaking) or TOEFL iBT 79 (Writing 22+). For NUET route: IELTS 6.0 (Writing 6.0, other bands 5.5) or TOEFL iBT 60",
+              "Secondary school graduation certificate (attestat) or IB/A-Level diploma with academic transcript (minimum GPA 3.0 out of 4.0 or equivalent)",
+              "Motivation letter in English explaining academic background, extracurricular leadership, and intellectual goals",
+              "Two confidential letters of recommendation from high school subject teachers submitted directly online",
+              "Scanned copy of applicant passport or national identity document"
             ],
             "scholarships": [],
             "funding_options": [
@@ -24685,13 +24697,14 @@
             ],
             "language_requirements_mode": "any",
             "extra_requirements": [
-              "Online application form",
-              "Scanned copy of passport or national ID",
-              "Secondary school certificate/diploma with academic performance (or school certificate per NU template)",
-              "Motivation letter in English",
-              "Valid test certificates as required by category",
-              "IELTS/TOEFL certificate uploaded in personal account",
-              "Application fee (paid online)"
+              "Online application submitted via the Nazarbayev University Admissions Portal (admissions.nu.edu.kz)",
+              "Application fee: 10,000 KZT for citizens of Kazakhstan / USD 30–50 for international applicants (paid online)",
+              "Standardized test results: SAT minimum score 1240 (Math 600+ recommended for SEDS; code 7915) or ACT minimum composite score 26 (Math 24+; code 5480); or NUET (Nazarbayev University Entrance Test) minimum 120 (Math 60+)",
+              "English language proficiency: IELTS Academic overall 6.5 (minimum 6.0 in Writing, 5.5 in Listening/Reading/Speaking) or TOEFL iBT 79 (Writing 22+). For NUET route: IELTS 6.0 (Writing 6.0, other bands 5.5) or TOEFL iBT 60",
+              "Secondary school graduation certificate (attestat) or IB/A-Level diploma with academic transcript (minimum GPA 3.0 out of 4.0 or equivalent)",
+              "Motivation letter in English explaining academic background, extracurricular leadership, and intellectual goals",
+              "Two confidential letters of recommendation from high school subject teachers submitted directly online",
+              "Scanned copy of applicant passport or national identity document"
             ],
             "scholarships": [],
             "funding_options": [
@@ -24752,7 +24765,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -24768,7 +24782,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -24784,7 +24799,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -24799,7 +24815,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -24814,7 +24831,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -24829,7 +24847,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -24845,7 +24864,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -24976,20 +24996,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 8500,
+      "total_cost_year_usd": 1995000,
       "costs_breakdown_year_usd": {
-        "Tuition": 5500
+        "Tuition": 1980000,
+        "Student_Fees": 15000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
+        "https://sdu.edu.kz/ru/tuition-fee/",
         "https://sdu.edu.kz/en/admission-3-2/",
         "https://sdu.edu.kz/en/pay-for-accomodation/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official SDU University undergraduate tuition and fees schedule approved by Order No. 01.1-05/51 (April 17, 2026) for the 2026/2027 academic year in KZT, based on 60 ECTS credits per year. Tuition is 33,000 KZT per credit for Computer Science, Software Engineering, and Mathematical Modeling (1,980,000 KZT/year); 40,000 KZT per credit for Information Systems (2,400,000 KZT/year); 37,500 to 41,500 KZT per credit for Economics, Management, and Finance (2,250,000 to 2,490,000 KZT/year). Mandatory Student Fee is 60,000 KZT (15,000 KZT annualized across the 4-year degree). Optional on-campus student housing is 864,000 KZT per academic year.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -25123,11 +25146,11 @@
           "method": "No official QS World University Rankings 2026 position is published for SDU University, Kazakhstan on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 8500,
+          "value": 1995000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://sdu.edu.kz/en/information-system-example/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://sdu.edu.kz/ru/tuition-fee/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -25185,15 +25208,13 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Admissions fee payment and pre-registration form",
-          "Passport",
-          "Diploma/certificate and transcript",
-          "Letter of recommendation",
-          "Motivational letter",
-          "Admissions fee receipt",
-          "Additional supporting documents (e.g., ISPT certificate, achievements)",
-          "Placement test in English or IELTS 5.5+ waiver",
-          "Online interview with faculty"
+          "Online application and pre-registration submitted through the SDU Admissions portal (sdu.edu.kz)",
+          "Unified National Testing (UNT / ЕНТ): minimum 50 points for paid admission (at least 5 points per subject); 75 points for Law; state educational grant competition generally requires 105–125 points",
+          "Proof of English proficiency: SDU English proficiency / placement test or certified waiver (IELTS Academic 5.5+, TOEFL iBT 46+)",
+          "Certificate of General Secondary Education (attestat) or vocational college diploma with academic transcripts",
+          "Internal SDU SPT Olympiad (SDU Proficiency Test) grants up to 100% tuition coverage for top-performing finalists",
+          "Identity document / passport copy, medical health certificate form 075/y with fluorography, vaccination card form 063/y, and 6 photos (3x4 cm)",
+          "Mandatory student fee payment receipt (60,000 KZT for 4-year study period) and signed educational contract"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -25235,7 +25256,7 @@
                 "funding_program": "SDU Internal Grant",
                 "funding_source": "University",
                 "funding_description": "Гранты олимпиады SPT и внутренние образовательные гранты (до 100%)",
-                "description": "Гранты олимпиады SPT и внутренние образовательные гранты (до 100%)",
+                "description": "SDU SPT Olympiad awards and internal educational grants (up to 100% tuition coverage)",
                 "requirements": {
                   "UNT": 105,
                   "GPA": 3.2
@@ -25249,7 +25270,7 @@
                 "funding_program": "KAZENERGY Grant",
                 "funding_source": "Corporate",
                 "funding_description": "Образовательные гранты Ассоциации «KAZENERGY»",
-                "description": "Образовательные гранты Ассоциации «KAZENERGY»",
+                "description": "Educational grants provided by KAZENERGY Association",
                 "requirements": {
                   "UNT": 105,
                   "GPA": 3.2
@@ -25315,15 +25336,16 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Software Engineering",
@@ -25331,15 +25353,16 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Information Security",
@@ -25347,15 +25370,16 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Economics",
@@ -25363,14 +25387,15 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Finance",
@@ -25378,14 +25403,15 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Management",
@@ -25393,14 +25419,15 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "3 years"
         },
         {
           "name": "Information Systems",
@@ -25408,15 +25435,16 @@
             "Bachelor"
           ],
           "language": [
+            "English",
             "Kazakh",
-            "Russian",
-            "English"
+            "Russian"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "3 years"
         }
       ],
       "formats": [
@@ -25551,20 +25579,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 7000,
+      "total_cost_year_usd": 2500000,
       "costs_breakdown_year_usd": {
-        "Tuition": 5200
+        "Tuition": 2500000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://astanait.edu.kz/en/bachelor",
+        "https://astanait.edu.kz/en/bachelor/",
         "https://astanait.edu.kz/en/students-dormitory/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition and institutional fee line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories were removed because the current source basis does not publish them as authoritative line items for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Astana IT University undergraduate tuition price list for the 2026/2027 academic year in KZT (2,500,000 KZT/year for full-time 3-year bachelor programs). Programs are intensive English-taught IT and management curricula.",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -25689,11 +25718,11 @@
           "method": "No official QS World University Rankings 2026 position is published for Astana IT University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 7000,
+          "value": 2500000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
           "source_url": "https://astanait.edu.kz/en/bachelor/",
-          "verified_at": "2026-05-24",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -25763,12 +25792,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "Register on the admission platform",
-          "Interview with the Dean",
-          "Diploma (original)",
-          "Passport copy",
-          "3x4 photos (6 pcs.)",
-          "English proficiency certificate if available (IELTS/TOEFL/APTIS/Duolingo/Interpress)"
+          "Application submitted online via the official AITU admissions portal (astanait.edu.kz) or eGov.kz",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score of at least 65 points (profile subjects: Mathematics and Computer Science for IT programs; Mathematics and Geography for IT Management)",
+          "English proficiency requirement: AITU English Test (AET) or valid international certificate (IELTS 5.0+, TOEFL iBT 35+, Duolingo 80+) for English-medium 3-year bachelor curricula",
+          "Interview with the admissions committee / dean, secondary education diploma (original) and transcript",
+          "Medical certificate form 075/y with chest fluorography and 3x4 photos (6 pcs)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -25800,7 +25828,7 @@
                 "description": "Same AITU undergraduate route, with competition for state or rector grant funding for stronger applicants.",
                 "funding_program": "State Educational Grant",
                 "funding_source": "State",
-                "funding_description": "Государственный образовательный грант РК"
+                "funding_description": "State Educational Grant of the Republic of Kazakhstan"
               },
               {
                 "id": "aitu_paid-grant-aitu-excellence-discount",
@@ -25809,8 +25837,8 @@
                 "track_badge": "Grant",
                 "funding_program": "AITU Excellence Discount",
                 "funding_source": "University",
-                "funding_description": "Внутренние скидки AITU (до 30%) за Алтын Белгі, отличную успеваемость и олимпиады",
-                "description": "Внутренние скидки AITU (до 30%) за Алтын Белгі, отличную успеваемость и олимпиады",
+                "funding_description": "Internal AITU tuition discounts (up to 30%) for Altyn Belgi holders, academic honors, and olympiad winners",
+                "description": "Merit-based tuition discounts provided by Astana IT University",
                 "requirements": {
                   "UNT": 125,
                   "GPA": 2.8
@@ -25823,8 +25851,8 @@
                 "track_badge": "Grant",
                 "funding_program": "Kazakhstan Khalkyna Fund",
                 "funding_source": "Foundation",
-                "funding_description": "Гранты ОФ «Қазақстан халқына»",
-                "description": "Гранты ОФ «Қазақстан халқына»",
+                "funding_description": "Social and educational grants provided by the public foundation Qazaqstan Halqyna",
+                "description": "Educational grants for socially vulnerable applicants provided by Qazaqstan Halqyna foundation",
                 "requirements": {
                   "UNT": 125,
                   "GPA": 2.8
@@ -25898,7 +25926,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "6 years"
         },
         {
           "name": "Dentistry",
@@ -25913,7 +25942,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "6 years"
         },
         {
           "name": "Pharmacy",
@@ -25928,7 +25958,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Nursing",
@@ -25943,7 +25974,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Public Health",
@@ -25959,7 +25991,8 @@
             "medicine",
             "health_sciences",
             "social_sciences"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -26094,19 +26127,20 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 4200,
+      "total_cost_year_usd": 2280000,
       "costs_breakdown_year_usd": {
-        "Tuition": 4200
+        "Tuition": 2280000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://amu.edu.kz/en/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/"
+        "https://amu.edu.kz/ru/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Astana Medical University undergraduate tuition price list for the 2026/2027 academic year in KZT (2,280,000 KZT/year for General Medicine and Dentistry; 1,518,000 KZT for Pharmacy; 925,000 KZT for Nursing).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -26211,11 +26245,11 @@
           "method": "No official QS World University Rankings 2026 position is published for Astana Medical University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 4200,
+          "value": 2280000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://amu.edu.kz/ru/postupayushchim/preyskurant-tsen-na-obrazovatelnye-uslugi/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -26255,13 +26289,11 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "Psychometric or special medical-field admission step when required by the official medical-university rules"
+          "Application submitted via the official AMU admissions commission or eGov.kz",
+          "Unified National Testing (UNT / ЕНТ) score of at least 70 points for Healthcare disciplines (profile subjects: Biology and Chemistry; minimum 5 points in each exam subject)",
+          "Mandatory Psychometric Examination with 'Passed' mark for clinical medical specialties (General Medicine, Dentistry, Pediatrics, Nursing)",
+          "Secondary education certificate or college diploma (original), identity document",
+          "Medical certificate form 075/y with chest fluorography, preventive vaccination card (form 063/y), and 3x4 photos"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -26288,7 +26320,7 @@
                 ],
                 "funding_program": "State Educational Grant",
                 "funding_source": "State",
-                "funding_description": "Государственный образовательный грант МЗ РК / МНВО РК"
+                "funding_description": "State Educational Grant of the Republic of Kazakhstan (Ministry of Healthcare and Ministry of Science and Higher Education)"
               },
               {
                 "id": "amu_healthcare_unt-grant-akimat-regional-grant",
@@ -26297,8 +26329,8 @@
                 "track_badge": "Grant",
                 "funding_program": "Akimat Regional Grant",
                 "funding_source": "State",
-                "funding_description": "Целевые гранты местных исполнительных органов (Акиматов)",
-                "description": "Целевые гранты местных исполнительных органов (Акиматов)"
+                "funding_description": "Targeted educational grants funded by local executive bodies (Akimats)",
+                "description": "Targeted regional educational grants for healthcare specialists"
               },
               {
                 "id": "amu_healthcare_unt-grant-amu-internal-discount",
@@ -26307,8 +26339,8 @@
                 "track_badge": "Grant",
                 "funding_program": "AMU Internal Discount",
                 "funding_source": "University",
-                "funding_description": "Внутренние скидки НАО «МУА» за отличную успеваемость и социальные льготы",
-                "description": "Внутренние скидки НАО «МУА» за отличную успеваемость и социальные льготы"
+                "funding_description": "Internal tuition discounts for academic honors and social support categories",
+                "description": "Internal tuition discounts provided by Astana Medical University"
               }
             ],
             "requirements": {
@@ -26378,7 +26410,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -26394,7 +26427,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -26410,7 +26444,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -26425,7 +26460,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -26440,7 +26476,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -26455,7 +26492,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -26471,7 +26509,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -26610,19 +26649,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 2800,
+      "total_cost_year_usd": 1338000,
       "costs_breakdown_year_usd": {
-        "Tuition": 2800
+        "Tuition": 1338000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://iitu.edu.kz/ru/articles/ac/bachelors-prices/"
+        "https://iitu.edu.kz/ru/for-students/po-voprosam-oplaty-obucenia-studentov/cost-of-payment-2024-year-of-study/",
+        "https://iitu.edu.kz/en/applicants/bakalavriat-new/how-to-proceed/platnoye-otdeleniye/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official IITU undergraduate tuition fee schedule in KZT (1,338,000 KZT/year for Information Technologies, Information Security, Economics, Finance, and Management 4-year bachelor programs; 1,029,000 KZT for Communications; 1,200,000 KZT for Journalism).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -26732,11 +26773,11 @@
           "method": "No official QS World University Rankings 2026 position is published for International Information Technology University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 2800,
+          "value": 1338000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://admission.iitu.edu.kz/bachelor_degree_eng",
-          "verified_at": "2026-05-24",
+          "source_url": "https://iitu.edu.kz/ru/for-students/po-voprosam-oplaty-obucenia-studentov/cost-of-payment-2024-year-of-study/",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -26787,14 +26828,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available",
-          "IELTS certificate if available or IITU English language test"
+          "Application submitted via the IITU admission portal (admission.iitu.edu.kz) or eGov.kz",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score of at least 50 points (minimum 5 points in each subject: History of Kazakhstan, Mathematical Literacy, Reading Literacy, and profile subjects: Mathematics and Computer Science for IT; Mathematics and Geography for Economics and Management)",
+          "English proficiency evaluation: internal IITU English test or international certificate (IELTS 5.0+, TOEFL iBT 35+)",
+          "Creative examination for Digital Journalism / Journalism program applicants",
+          "Secondary school certificate or diploma with transcript (original), medical certificate form 075/y with fluorography, vaccination card 063/y, military registration certificate (for males), and 3x4 photos (8 pcs)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -26827,7 +26865,7 @@
                 ],
                 "funding_program": "State Educational Grant",
                 "funding_source": "State",
-                "funding_description": "Государственный образовательный грант РК"
+                "funding_description": "State Educational Grant of the Republic of Kazakhstan"
               },
               {
                 "id": "iitu_unt-grant-iitu-merit-grant",
@@ -26836,8 +26874,8 @@
                 "track_badge": "Grant",
                 "funding_program": "IITU Merit Grant",
                 "funding_source": "University",
-                "funding_description": "Внутренний грант МУИТ — скидка 100% за особые достижения",
-                "description": "Внутренний грант МУИТ — скидка 100% за особые достижения",
+                "funding_description": "Internal IITU merit grant offering 100% tuition coverage for outstanding academic achievements",
+                "description": "Internal IITU 100% merit-based scholarship for top performers",
                 "requirements": {
                   "UNT": 80
                 }
@@ -26849,8 +26887,8 @@
                 "track_badge": "Grant",
                 "funding_program": "IITU Competition Grant",
                 "funding_source": "University",
-                "funding_description": "Гранты и скидки победителям олимпиад АО «МУИТ»",
-                "description": "Гранты и скидки победителям олимпиад АО «МУИТ»",
+                "funding_description": "Tuition discounts and full grants for winners of IITU intellectual competitions and olympiads",
+                "description": "Tuition scholarships for winners of IITU competitions",
                 "requirements": {
                   "UNT": 80
                 }
@@ -27333,8 +27371,7 @@
           "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) certificate with at least 65 points (profile subjects: Mathematics and Computer Science or Mathematics and Physics)",
           "State educational grant competition participation or contract agreement for fee-paying studies",
           "International applicants: secondary education certificate, notarized translation, and admissions interview",
-          "Medical certificate 075/y, copy of national ID or passport",
-          "Application deadlines: grant applications July 13–20, fee-paying admission through August 25"
+          "Medical certificate 075/y, copy of national ID or passport"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -27443,15 +27480,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -27459,15 +27495,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -27475,15 +27510,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -27491,14 +27525,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -27506,14 +27539,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -27521,14 +27553,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -27536,15 +27567,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -27683,19 +27713,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 5000,
+      "total_cost_year_usd": 3040000,
       "costs_breakdown_year_usd": {
-        "Tuition": 5000
+        "Tuition": 3000000,
+        "Student_Fees": 40000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
+        "https://kbtu.edu.kz/images/price_2026_2027_kbtu.pdf",
+        "https://kbtu.edu.kz/ru/priemnaya-komissiya-bakalavriat",
         "https://kbtu.edu.kz/en/kbtu-admissions"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official KBTU undergraduate tuition and fees schedule for the 2026/2027 academic year approved by the Management Board in KZT, based on 60 academic credits per year (50,000 KZT per credit for Information Technology, Computer Systems, Data Science/AI, Business, and Engineering programs, totaling 3,000,000 KZT/year; other technical tracks are 35,000 KZT/credit or 2,100,000 KZT/year) plus mandatory Student Fee (40,000 KZT/year).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -27805,11 +27839,11 @@
           "method": "Kazakhstan-British Technical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
         },
         "tuition_total_cost_year_usd": {
-          "value": 5000,
+          "value": 3040000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
-          "verified_at": "2026-05-24",
+          "source_url": "https://kbtu.edu.kz/images/price_2026_2027_kbtu.pdf",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -27860,14 +27894,12 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available",
-          "English proficiency certificate: IELTS 5.5 / TOEFL iBT 46 / STEP KBTU B1 / Duolingo intermediate where applicable"
+          "Online application submitted via the KBTU Admissions portal (kbtu.edu.kz)",
+          "Unified National Testing (UNT / ЕНТ): minimum 50 points for paid admission (at least 5 points in each subject); minimum 110 points for state grant competition eligibility",
+          "Proof of English proficiency: IELTS 5.5+, TOEFL iBT 46+, Duolingo English Test (85+), or STEP KBTU internal diagnostic exam (Level B1)",
+          "Certificate of General Secondary Education (attestat) or technical/vocational college diploma with academic transcript",
+          "Medical health certificate form 075/y with chest fluorography, vaccination certificate (form 063/y), and 6 passport-size photos (3x4 cm)",
+          "Official receipt of mandatory Student Fee payment (40,000 KZT) and signed educational services contract"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -27910,7 +27942,7 @@
                 "funding_program": "KBTU Internal Grant",
                 "funding_source": "University",
                 "funding_description": "Внутренний образовательный грант КБТУ за призовые места в олимпиадах",
-                "description": "Внутренний образовательный грант КБТУ за призовые места в олимпиадах",
+                "description": "Internal KBTU merit grant for olympiad prize winners",
                 "requirements": {
                   "UNT": 110
                 }
@@ -27923,7 +27955,7 @@
                 "funding_program": "KBTU Alumni Scholarship",
                 "funding_source": "University",
                 "funding_description": "Именная стипендия Ассоциации выпускников «KBTU Alumni»",
-                "description": "Именная стипендия Ассоциации выпускников «KBTU Alumni»",
+                "description": "Named scholarship from KBTU Alumni Association",
                 "requirements": {
                   "UNT": 110
                 }
@@ -28406,8 +28438,7 @@
           "Application submitted via the official KazNU admissions portal (welcome.kaznu.kz) or eGov.kz",
           "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score certificate (minimum 65–75 points for national universities; profile subjects: Mathematics and Computer Science for IT, Mathematics and Geography for Economics)",
           "International applicants: secondary education certificate with notarized translation and admissions interview",
-          "Medical certificate form 075/y, fluorography, and vaccination card",
-          "Application period: June 20 to August 25 for the fall intake"
+          "Medical certificate form 075/y, fluorography, and vaccination card"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -28926,8 +28957,7 @@
           "Application submitted via the official ENU admissions portal or eGov.kz",
           "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) certificate with at least 65–75 points for national university admission (profile subjects: Mathematics and Computer Science for ICT, Mathematics and Geography for Economics)",
           "International applicants: official secondary school certificate with apostille/notarized Russian or Kazakh translation and interview",
-          "Medical certificate 075/y with chest X-ray and photo ID",
-          "Application period: June 20 to August 25 for bachelor degree programs"
+          "Medical certificate 075/y with chest X-ray and photo ID"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -29044,7 +29074,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -29060,7 +29091,8 @@
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -29076,7 +29108,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -29091,7 +29124,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -29106,7 +29140,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -29121,7 +29156,8 @@
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -29137,7 +29173,8 @@
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -29276,19 +29313,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 3100,
+      "total_cost_year_usd": 2742000,
       "costs_breakdown_year_usd": {
-        "Tuition": 3100
+        "Tuition": 2742000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://en.narxoz.kz/admission/checklist"
+        "https://narxoz.edu.kz/education/bachelor",
+        "https://narxoz.edu.kz/dormitory-cost"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official Narxoz University undergraduate tuition schedule for the 2026/2027 academic year in KZT, based on 60 academic credits per year. For BBA programs in Economics, Finance, and Management, tuition is 45,700 KZT per credit (2,742,000 KZT/year for UNT 75+; 52,555 KZT/credit or 3,153,300 KZT/year for UNT 70–74). Digital Technologies and Engineering programs range from 30,700 to 46,020 KZT per credit (1,842,000 to 2,761,200 KZT/year). Optional student dormitory housing is available from 56,000 KZT/month (ДС-2А, ДС-2Б, DS-3).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -29398,11 +29437,11 @@
           "method": "Narxoz University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
         },
         "tuition_total_cost_year_usd": {
-          "value": 3100,
+          "value": 2742000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://en.narxoz.kz/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://narxoz.edu.kz/education/bachelor",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -29442,13 +29481,13 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available"
+          "Online application submitted via Q App platform (qapps.kz/ru/universities/narxoz) for paid admission or eGov for state grant",
+          "Unified National Testing (UNT / ЕНТ): minimum 50 points for paid admission (at least 5 points in each subject; 75+ points for tuition tier discount and legal programs); state grant competition typically requires 100+ points",
+          "Certificate of secondary education (attestat) or technical and vocational college diploma with academic transcript",
+          "National identity document / passport copy (3 copies)",
+          "Medical health certificate form 075/y with chest fluorography scan and preventive vaccination card (form 063/y)",
+          "Military service registration certificate for male applicants and 6 photos (3x4 cm)",
+          "Signed educational services contract and tuition payment receipt"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -29485,7 +29524,7 @@
                 "funding_program": "Narxoz Challenge Grant",
                 "funding_source": "University",
                 "funding_description": "Образовательные гранты конкурса «Narxoz Challenge» (до 100%)",
-                "description": "Образовательные гранты конкурса «Narxoz Challenge» (до 100%)"
+                "description": "Narxoz Challenge competition educational grants (up to 100% tuition coverage)"
               },
               {
                 "id": "narxoz_unt-grant-verny-capital-grant",
@@ -29495,7 +29534,7 @@
                 "funding_program": "Verny Capital Grant",
                 "funding_source": "Corporate",
                 "funding_description": "Гранты ГК «Верный Капитал» для программ двойного диплома",
-                "description": "Гранты ГК «Верный Капитал» для программ двойного диплома"
+                "description": "Verny Capital Group educational grants for dual-degree programs"
               }
             ],
             "requirements": {
@@ -29560,15 +29599,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Software Engineering",
@@ -29576,15 +29614,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "engineering"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Security",
@@ -29592,15 +29629,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Economics",
@@ -29608,14 +29644,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "economics"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Finance",
@@ -29623,14 +29658,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Management",
@@ -29638,14 +29672,13 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "business"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Information Systems",
@@ -29653,15 +29686,14 @@
             "Bachelor"
           ],
           "language": [
-            "Kazakh",
-            "Russian",
             "English"
           ],
           "study_mode": "On-campus",
           "major_tags": [
             "computer science",
             "computing"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -29800,19 +29832,22 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 8700,
+      "total_cost_year_usd": 4915160,
       "costs_breakdown_year_usd": {
-        "Tuition": 8700
+        "Tuition": 4896900,
+        "Student_Fees": 18260
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
-        "https://www.kimep.kz/prospective-students/files/2025/06/tuition_fees_ugrad_eng-3.pdf"
+        "https://www.kimep.kz/prospective-students/files/2026/05/Tuition-and-fees-eng-2026-27.pdf",
+        "https://www.kimep.kz/prospective-students/en/tuition-and-fees/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official KIMEP University undergraduate tuition and fees schedule for the 2026/2027 academic year in KZT, based on 30 credits per academic year (163,230 KZT per credit, totaling 4,896,900 KZT tuition) plus mandatory Student Activity Fee (18,260 KZT/year; 9,130 KZT/semester).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -29922,11 +29957,11 @@
           "method": "No official QS World University Rankings 2026 position is published for KIMEP University on the official QS WUR 2026 table."
         },
         "tuition_total_cost_year_usd": {
-          "value": 8700,
+          "value": 4915160,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://www.kimep.kz/bang-college-of-business/en/bachelor-of-management/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://www.kimep.kz/prospective-students/files/2026/05/Tuition-and-fees-eng-2026-27.pdf",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -29977,16 +30012,11 @@
         ],
         "language_requirements_mode": "any",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "State grant certificate if available",
-          "KIMEP online application",
-          "English proficiency evidence or KIMEP English placement/testing route",
-          "Motivational essay where required"
+          "Online application submitted via the KIMEP Admissions Portal (kimep.kz/prospective-students)",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) certificate with at least 50 points (minimum 5 points per subject)",
+          "English language proficiency: KIMEP English Placement Test (KEPT) score or certified exemption via IELTS (5.5+ overall for direct academic study), TOEFL iBT (46+), or Duolingo English Test (85+)",
+          "High school diploma or college completion certificate with official transcripts",
+          "Medical certificate form 075/y with chest fluorography, vaccination card, and 4 passport-size photos (3x4 cm)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -30103,7 +30133,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Dentistry",
@@ -30118,7 +30149,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Pharmacy",
@@ -30133,7 +30165,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "5 years"
         },
         {
           "name": "Nursing",
@@ -30148,7 +30181,8 @@
           "major_tags": [
             "medicine",
             "health_sciences"
-          ]
+          ],
+          "duration": "4 years"
         },
         {
           "name": "Public Health",
@@ -30164,7 +30198,8 @@
             "medicine",
             "health_sciences",
             "social_sciences"
-          ]
+          ],
+          "duration": "4 years"
         }
       ],
       "formats": [
@@ -30299,19 +30334,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 4500,
+      "total_cost_year_usd": 1900000,
       "costs_breakdown_year_usd": {
-        "Tuition": 4500
+        "Tuition": 1900000
       },
       "financial_aid": {
         "merit_based": true,
         "need_based": false
       },
       "costs_breakdown_source_urls": [
+        "https://kaznmu.edu.kz/wp-content/uploads/%D0%9F%D1%80%D0%B5%D0%B9%D1%81%D0%BA%D1%83%D1%80%D0%B0%D0%BD%D1%82.pdf",
         "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
       ],
-      "costs_breakdown_note": "Shows only directly official tuition or published tuition-basis line items. Housing, food, insurance, books, transport, personal, and other living-cost subcategories are not estimated for this entry.",
-      "costs_breakdown_status": "official_tuition_and_fees_only"
+      "costs_breakdown_note": "Official KazNMU undergraduate tuition approved by the Board of Directors (Protocol No. 5, June 15, 2026) for the 2026/2027 and 2027/2028 academic years in KZT, covering full-time bachelor education for General Medicine (1,900,000 KZT/year; tuition ranges from 600,000 KZT for Nursing to 2,100,000 KZT for Dentistry).",
+      "costs_breakdown_status": "official_tuition_and_fees_only",
+      "currency": "KZT"
     },
     "outcomes": {},
     "verified_sources": [
@@ -30421,11 +30458,11 @@
           "method": "Asfendiyarov Kazakh National Medical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
         },
         "tuition_total_cost_year_usd": {
-          "value": 4500,
+          "value": 1900000,
           "unit": "usd_per_year",
           "source": "University official admissions/program pages (curated in UniSearch dataset)",
-          "source_url": "https://kaznmu.edu.kz/en/educational-programs-2/bachelors-degree/",
-          "verified_at": "2026-05-24",
+          "source_url": "https://kaznmu.edu.kz/wp-content/uploads/%D0%9F%D1%80%D0%B5%D0%B9%D1%81%D0%BA%D1%83%D1%80%D0%B0%D0%BD%D1%82.pdf",
+          "verified_at": "2026-09-12",
           "confidence": "medium",
           "status": "curated"
         },
@@ -30465,13 +30502,11 @@
         "language_requirements": [],
         "language_requirements_mode": "none",
         "extra_requirements": [
-          "UNT certificate",
-          "Secondary education certificate or diploma",
-          "Identity document",
-          "Medical certificate with fluorography",
-          "Vaccination card",
-          "3x4 photos",
-          "Psychometric or special medical-field admission step when required by the official medical-university rules"
+          "Application submitted via the official KazNMU admissions office or eGov.kz portal",
+          "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score of at least 70 points for Healthcare programs (minimum 5 points in History of Kazakhstan and specialized subjects: Biology and Chemistry; minimum 3 points in Mathematical Literacy and Reading Literacy)",
+          "Mandatory Psychometric Examination with 'Pass' (Admission) result (conducted in online or offline testing format)",
+          "Secondary education certificate or college diploma with transcript (original)",
+          "Medical certificate form 075/y with chest fluorography, vaccination record (form 063/y), and 3x4 photos (6 pcs)"
         ],
         "scholarships": [],
         "requirement_profiles": [
@@ -30498,7 +30533,7 @@
                 ],
                 "funding_program": "State Educational Grant",
                 "funding_source": "State",
-                "funding_description": "Государственный образовательный грант РК (МЗ РК и МНВО РК)"
+                "funding_description": "State Educational Grant of the Republic of Kazakhstan (Ministry of Healthcare and Ministry of Science and Higher Education)"
               },
               {
                 "id": "kaznmu_healthcare_unt-grant-akimat-regional-grant",
@@ -30507,8 +30542,8 @@
                 "track_badge": "Grant",
                 "funding_program": "Akimat Regional Grant",
                 "funding_source": "State",
-                "funding_description": "Гранты акимата г. Алматы и областных акиматов",
-                "description": "Гранты акимата г. Алматы и областных акиматов"
+                "funding_description": "Regional educational grants funded by the Akimat of Almaty and regional akimats",
+                "description": "Targeted educational grants allocated by regional local executive bodies (Akimats)"
               },
               {
                 "id": "kaznmu_healthcare_unt-grant-kazakhstan-khalkyna-fund",
@@ -30517,8 +30552,8 @@
                 "track_badge": "Grant",
                 "funding_program": "Kazakhstan Khalkyna Fund",
                 "funding_source": "Foundation",
-                "funding_description": "Грант Общественного фонда «Қазақстан халқына»",
-                "description": "Грант Общественного фонда «Қазақстан халқына»"
+                "funding_description": "Social and educational grants provided by the public foundation Qazaqstan Halqyna",
+                "description": "Educational grants for socially vulnerable categories provided by Qazaqstan Halqyna foundation"
               }
             ],
             "requirements": {
@@ -30955,8 +30990,7 @@
           "Kazakhstan applicants: Unified National Testing (UNT / ЕНТ) score of at least 70 points for Pedagogical Sciences (minimum 5 points in each subject: History of Kazakhstan, Mathematical Literacy, Reading Literacy, and two profile subjects)",
           "Special pedagogical examination (psychological testing / pedagogical suitability test) required with 'Passed' result",
           "International applicants: secondary school diploma with notarized translation into Kazakh or Russian and interview",
-          "Medical certificate 075/y with chest X-ray",
-          "Deadlines: July 13–20 for state grant contest, August 10–25 for fee-paying enrollment"
+          "Medical certificate 075/y with chest X-ray"
         ],
         "scholarships": [],
         "requirement_profiles": [
