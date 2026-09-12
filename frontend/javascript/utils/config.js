@@ -226,7 +226,7 @@ let langConfigPromise = null;
 let cityDbPromise = null;
 
 const configCacheStorage = createSafeStorage("local");
-const CONFIG_CACHE_PREFIX = "unisearch_config_cache_v1";
+const CONFIG_CACHE_PREFIX = "unisearch_config_cache_v2";
 const CONFIG_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 
 function configCacheKey(key) {

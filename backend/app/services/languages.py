@@ -172,7 +172,33 @@ def _coerce_language_exam_submission(
     if total_strategy != "use_parent_score":
         raise ValueError(f"{exam_key} uses unsupported language score strategy")
 
-    total_score = validate_language_exam_from_cfg(exam_cfg, score_raw if score_raw not in (None, "") else raw_value)
+    submitted_total = score_raw if score_raw not in (None, "") else raw_value
+    auto_strategy = _strip_text(scheme.get("auto_total_strategy")).lower()
+    if not auto_strategy and exam_key.startswith("IELTS"):
+        auto_strategy = "average"
+
+    if auto_strategy in {"sum", "average"} and len(parsed_components) == len(component_defs):
+        component_scores = [float(row["score"]) for row in parsed_components if row.get("score") is not None]
+        if len(component_scores) == len(component_defs):
+            calc_value = sum(component_scores)
+            if auto_strategy == "average":
+                calc_value = int((calc_value / len(component_scores)) * 2 + 0.5) / 2
+            submitted_total = calc_value
+    elif submitted_total in (None, ""):
+        if auto_strategy not in {"sum", "average"}:
+            raise ValueError(f"{exam_key} requires an overall score")
+        if len(parsed_components) != len(component_defs):
+            raise ValueError(f"{exam_key} requires all section scores when overall score is omitted")
+        component_scores = [float(row["score"]) for row in parsed_components if row.get("score") is not None]
+        if len(component_scores) != len(component_defs):
+            raise ValueError(f"{exam_key} requires numeric section scores")
+        total_value = sum(component_scores)
+        if auto_strategy == "average":
+            total_value /= len(component_scores)
+            total_value = int(total_value * 2 + 0.5) / 2
+        submitted_total = total_value
+
+    total_score = validate_language_exam_from_cfg(exam_cfg, submitted_total)
     total_label = _strip_text(scheme.get("parent_score_label")) or "Total"
     parts = [f"{total_label} {_strip_text(total_score)}"]
     for row in parsed_components:

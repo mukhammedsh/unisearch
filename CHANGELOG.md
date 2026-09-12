@@ -3,6 +3,23 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Added automatic composite language exam scoring and section validation (`backend/app/services/languages.py`, `backend/data/languages.json`, `backend/tests/test_languages_api.py`, `frontend/javascript/languages.js`, `frontend/javascript/main.js`, `frontend/javascript/utils/config.js`, `frontend/Localization/eng`, `frontend/Localization/ru`, `tests/e2e/languages-validation-flow.spec.js`):
+  - Supported `auto_total_strategy` configuration (`average` for IELTS, `sum` for TOEFL iBT) to derive composite overall scores directly from section inputs on both backend and frontend.
+  - Automatically calculate IELTS overall band scores rounded to the standard half-band (0.5) and validate that all section scores are supplied when an overall score is omitted.
+  - Updated language exam UI to hide the manual overall score field for composite breakdown exams and autofocus invalid section inputs on error.
+  - Guarded against duplicate submission and multiple event listener bindings with `dataset.bound` and `isSubmitting` submit lock, and removed redundant global `initLanguagesPanel()` call from `main.js`.
+  - Incremented configuration cache storage version to `unisearch_config_cache_v2` to invalidate obsolete cached language schemas.
+  - Added backend unit tests and Playwright E2E coverage for realistic IELTS component validation and boundary scores (e.g. perfect 9.0s).
+- Improved profile unsaved changes protection and responsive name editing (`frontend/javascript/components/profile-ui.js`, `frontend/css/profile.css`, `tests/e2e/profile-composite-exams.spec.js`, `tests/e2e/profile-unsaved-warning.spec.js`):
+  - Added `beforeunload` browser prompt to guard against accidental navigation when draft profile inputs or display names contain unsaved changes.
+  - Added discard state tracking to bypass beforeunload warnings when closing via the unsaved changes modal.
+  - Refactored `.profile-username` layout using flexbox without wrapping, ensuring the edit button remains aligned beside the input on narrow viewports down to 320px.
+  - Explicitly synchronized `style.display` for the composite exam breakdown container (`#examSpecialInputContainer`).
+  - Added dedicated Playwright E2E tests for beforeunload warning states (clean, dirty, saved, discarded) and component score submissions (SAT and UNT).
+- Enhanced toast notification management and deduplication (`frontend/javascript/utils/format.js`, `tests/unit/format.test.mjs`):
+  - Added active toast deduplication in `showToast`, refreshing dismiss timers instead of stacking identical alerts.
+  - Automatically dismiss active error toasts when a new error message is triggered to keep notifications clean.
+  - Added unit test suite covering toast deduplication and error replacement behavior.
 - Reworked university comparison into a decision aid rather than a universal ranking (`frontend/javascript/pages/compare.js`, `frontend/javascript/pages/universities/compare-helpers.js`, `frontend/javascript/pages/universities/compare-specs.js`, `frontend/css/universities/03-comparison.css`, `backend/app/services/ai_scoring.py`):
   - Replaced the single winner score and one-sided conclusion with paired admissions, cost and aid, academic-model, and outcomes signals that can state an advantage, trade-off, parity, incomparable data, or missing data.
   - Kept published admission statistics separate from personal UniChance. Missing evidence now renders an unavailable personal estimate instead of a misleading `0%`; an actually missed required minimum is explained separately.

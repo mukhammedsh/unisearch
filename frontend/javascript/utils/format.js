@@ -228,12 +228,49 @@ export function showToast(message, type = "error") {
   const container = document.getElementById("toast-container");
   if (!container) return;
 
+  const text = String(message || "").trim();
+  if (!text) return;
+
+  const activeToasts = typeof container.querySelectorAll === "function"
+    ? Array.from(container.querySelectorAll(".toast:not(.is-leaving)"))
+    : [];
+
+  const exactDuplicate = activeToasts.find((el) => {
+    const textEl = (typeof el.querySelector === "function" && (el.querySelector(".toast-message span:last-child") || el.querySelector(".toast-message"))) || null;
+    const currentText = String(el._toastMessage || textEl?.textContent || el.textContent || "").trim();
+    const sameType = el.classList && typeof el.classList.contains === "function"
+      ? el.classList.contains(type)
+      : String(el.className || "").includes(type);
+    return currentText === text && sameType;
+  });
+
+  if (exactDuplicate) {
+    if (exactDuplicate._dismissTimer) {
+      window.clearTimeout(exactDuplicate._dismissTimer);
+    }
+    exactDuplicate._dismissTimer = window.setTimeout(() => removeToast(exactDuplicate), 3000);
+    return;
+  }
+
+  if (type === "error") {
+    activeToasts
+      .filter((el) => {
+        if (el.classList && typeof el.classList.contains === "function") {
+          return el.classList.contains("error");
+        }
+        return String(el.className || "").includes("error");
+      })
+      .forEach((el) => removeToast(el));
+  }
+
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
+  toast._toastMessage = text;
+  toast._toastType = type;
   const icon = type === "success"
     ? heroIcon("check-circle", "ui-icon ui-icon--18 toast-icon")
     : heroIcon("exclamation-triangle", "ui-icon ui-icon--18 toast-icon");
-  toast.innerHTML = `<span class="toast-message">${icon}<span>${escapeHtml(message)}</span></span><button class="toast-close" type="button" aria-label="Close">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
+  toast.innerHTML = `<span class="toast-message">${icon}<span>${escapeHtml(text)}</span></span><button class="toast-close" type="button" aria-label="Close">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
 
   const dismiss = () => {
     removeToast(toast);
@@ -274,6 +311,8 @@ export function removeToast(toast) {
 
   if (toast.classList && typeof toast.classList.add === "function") {
     toast.classList.add("is-leaving");
+  } else {
+    toast.className = `${toast.className || ""} is-leaving`.trim();
   }
   if (toast.style) {
     toast.style.animation = "motion-toast-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards";

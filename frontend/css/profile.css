@@ -57,10 +57,12 @@ body[data-page="profile"] {
 }
 
 .profile-username {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--space-3);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
 }
 
 .profile-username-label {
@@ -98,7 +100,10 @@ body[data-page="profile"] {
 }
 
 .profile-username.is-editing .profile-name-input {
-  display: inline-block;
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
 }
 
 .profile-edit-name-btn {
@@ -112,6 +117,7 @@ body[data-page="profile"] {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex: 0 0 auto;
   transition:
     background-color 0.15s ease,
     color 0.15s ease,

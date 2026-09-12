@@ -89,6 +89,71 @@ class LanguagesApiTests(unittest.TestCase):
         self.assertIn("Listening", str(language.get("raw_value", "")))
         self.assertIsInstance((language.get("details") or {}).get("components"), list)
 
+    def test_validate_language_exam_derives_composite_ielts_score(self):
+        response = self.client.post(
+            "/languages/validate",
+            json={
+                "code": "en",
+                "kind": "exam",
+                "exam": "IELTS",
+                "details": {
+                    "components": [
+                        {"exam": "IELTS_LISTENING", "score": 8.0},
+                        {"exam": "IELTS_READING", "score": 7.5},
+                        {"exam": "IELTS_WRITING", "score": 7.0},
+                        {"exam": "IELTS_SPEAKING", "score": 7.0},
+                    ]
+                },
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        language = response.json().get("language") or {}
+        self.assertAlmostEqual(7.5, float(language.get("score")), places=6)
+
+    def test_validate_language_exam_ielts_all_nines_and_zero(self):
+        # All 9s even if client passed raw sum 36
+        response_all_9 = self.client.post(
+            "/languages/validate",
+            json={
+                "code": "en",
+                "kind": "exam",
+                "exam": "IELTS",
+                "score": 36,
+                "details": {
+                    "components": [
+                        {"exam": "IELTS_LISTENING", "score": 9.0},
+                        {"exam": "IELTS_READING", "score": 9.0},
+                        {"exam": "IELTS_WRITING", "score": 9.0},
+                        {"exam": "IELTS_SPEAKING", "score": 9.0},
+                    ]
+                },
+            },
+        )
+        self.assertEqual(response_all_9.status_code, 200)
+        language_9 = response_all_9.json().get("language") or {}
+        self.assertAlmostEqual(9.0, float(language_9.get("score")), places=6)
+
+        # 8, 8, 8, 0 -> 6.0
+        response_zero = self.client.post(
+            "/languages/validate",
+            json={
+                "code": "en",
+                "kind": "exam",
+                "exam": "IELTS",
+                "details": {
+                    "components": [
+                        {"exam": "IELTS_LISTENING", "score": 8.0},
+                        {"exam": "IELTS_READING", "score": 8.0},
+                        {"exam": "IELTS_WRITING", "score": 8.0},
+                        {"exam": "IELTS_SPEAKING", "score": 0.0},
+                    ]
+                },
+            },
+        )
+        self.assertEqual(response_zero.status_code, 200)
+        language_zero = response_zero.json().get("language") or {}
+        self.assertAlmostEqual(6.0, float(language_zero.get("score")), places=6)
+
 
 if __name__ == "__main__":
     unittest.main()

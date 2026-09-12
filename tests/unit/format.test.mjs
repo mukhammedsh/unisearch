@@ -143,4 +143,82 @@ test('showToast and removeToast', async (t) => {
     if (listener) listener();
     assert.strictEqual(callCount, 1);
   });
+
+  await t.test('showToast deduplicates identical active toasts', () => {
+    const toasts = [];
+    const container = {
+      appendChild: (node) => {
+        node.parentNode = container;
+        toasts.push(node);
+      },
+      querySelectorAll: (sel) => {
+        if (sel.includes(':not(.is-leaving)')) {
+          return toasts.filter((item) => {
+            if (item.classList && typeof item.classList.contains === 'function') {
+              return !item.classList.contains('is-leaving');
+            }
+            return !String(item.className || '').includes('is-leaving');
+          });
+        }
+        return toasts;
+      },
+    };
+    const origGetElementById = global.document.getElementById;
+    global.document.getElementById = (id) => (id === 'toast-container' ? container : null);
+
+    try {
+      showToast('Step error 0.5', 'error');
+      assert.strictEqual(toasts.length, 1);
+
+      showToast('Step error 0.5', 'error');
+      assert.strictEqual(toasts.length, 1, 'Duplicate toast should not be added');
+    } finally {
+      global.document.getElementById = origGetElementById;
+    }
+  });
+
+  await t.test('showToast dismisses previous error toast when new error arrives', () => {
+    const toasts = [];
+    const container = {
+      appendChild: (node) => {
+        node.parentNode = container;
+        toasts.push(node);
+      },
+      querySelectorAll: (sel) => {
+        if (sel.includes(':not(.is-leaving)')) {
+          return toasts.filter((item) => {
+            if (item.classList && typeof item.classList.contains === 'function') {
+              return !item.classList.contains('is-leaving');
+            }
+            return !String(item.className || '').includes('is-leaving');
+          });
+        }
+        return toasts;
+      },
+    };
+    const origGetElementById = global.document.getElementById;
+    global.document.getElementById = (id) => (id === 'toast-container' ? container : null);
+
+    try {
+      showToast('First error', 'error');
+      assert.strictEqual(toasts.length, 1);
+      const firstToast = toasts[0];
+      const isLeaving = (el) => {
+        if (el.classList && typeof el.classList.contains === 'function') {
+          return el.classList.contains('is-leaving');
+        }
+        return String(el.className || '').includes('is-leaving');
+      };
+      assert.strictEqual(isLeaving(firstToast), false);
+
+      showToast('Second error', 'error');
+      assert.strictEqual(toasts.length, 2);
+      assert.strictEqual(isLeaving(firstToast), true, 'Previous error toast should be dismissed');
+      const secondToast = toasts[1];
+      assert.strictEqual(isLeaving(secondToast), false);
+    } finally {
+      global.document.getElementById = origGetElementById;
+    }
+  });
 });
+

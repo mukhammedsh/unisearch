@@ -215,6 +215,7 @@ export function initProfileUI() {
     let profile = ensureProfileShape(loadProfile());
     let savedSignature = "";
     let lowBudgetGrantHintDismissed = false;
+    let isDiscarding = false;
     const profileProgressText = document.getElementById("profileProgressText");
     const profileProgressFill = document.getElementById("profileProgressFill");
     const profileSectionTabs = Array.from(modal.querySelectorAll(".profile-section-tab"));
@@ -435,6 +436,7 @@ export function initProfileUI() {
 
         if (examSpecialInputContainer) {
             examSpecialInputContainer.hidden = !usesSpecialInput;
+            examSpecialInputContainer.style.display = usesSpecialInput ? "" : "none";
             examSpecialInputContainer.setAttribute("aria-hidden", usesSpecialInput ? "false" : "true");
             if (usesSpecialInput) renderSpecialExamInput(selectedExam);
             else examSpecialInputContainer.innerHTML = "";
@@ -985,6 +987,7 @@ export function initProfileUI() {
 
     const closeImmediately = () => {
         if (!modal.classList.contains("is-open") && !isDedicatedPage) return;
+        isDiscarding = true;
 
         closeUnsavedDialog(false);
         closeResetDialog(false);
@@ -1205,6 +1208,7 @@ export function initProfileUI() {
     });
 
     const openProfile = () => {
+        isDiscarding = false;
         resetFields();
         retranslateProfileUi();
         void fetchTranslationRuntimeStatus(API_BASE, false).then((status) => {
@@ -1530,6 +1534,26 @@ export function initProfileUI() {
             });
         };
     }
+
+    const hasUnsavedChanges = () => {
+        if (isDiscarding) return false;
+        if (!isDedicatedPage && !modal.classList.contains("is-open")) {
+            return false;
+        }
+        syncInputsToDraft();
+        const profileDirty = isProfileDirty();
+        const usernameDirty = isUsernameDraftDirty();
+        return profileDirty || usernameDirty;
+    };
+
+    const handleBeforeUnload = (event) => {
+        if (!hasUnsavedChanges()) return;
+        event.preventDefault();
+        event.returnValue = "";
+        return "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     if (isDedicatedPage) {
         openProfile();

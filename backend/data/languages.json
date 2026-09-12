@@ -141,6 +141,7 @@
             { "exam": "IELTS_SPEAKING", "label": "Speaking", "required": false }
           ],
           "total_strategy": "use_parent_score",
+          "auto_total_strategy": "average",
           "parent_score_label": "Overall"
         }
       },
@@ -205,6 +206,7 @@
             { "exam": "TOEFL_iBT_0_120_WRITING", "label": "Writing", "required": false }
           ],
           "total_strategy": "use_parent_score",
+          "auto_total_strategy": "sum",
           "parent_score_label": "Total"
         }
       },

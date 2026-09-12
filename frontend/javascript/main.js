@@ -1,6 +1,5 @@
 import { addFooterProductLinks, loadGlobalLayout, renderNoConnection } from "./components.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset, prefersReducedMotion } from "./utils.js";
-import { initLanguagesPanel } from "./languages.js";
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
@@ -662,7 +661,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const ctx = currentRouteContext();
     hydrateRouteShell(ctx);
-    initLanguagesPanel();
     window.dispatchEvent(new CustomEvent("languageChanged"));
     dismissSiteLoader();
 

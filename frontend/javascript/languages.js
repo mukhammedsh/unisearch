@@ -585,8 +585,7 @@ export function initLanguagesPanel() {
       const kind = normalizeKind(langKind.value);
       const examObj = selectedExamObject();
       const examMode = getExamInputMode(examObj);
-      const usesParentScore = examMode === "number"
-        || (examMode === "subject_breakdown" && String(getBreakdownScheme(examObj).total_strategy || "").trim().toLowerCase() === "use_parent_score");
+      const usesParentScore = examMode === "number";
 
       if (cefrContainer) cefrContainer.style.display = kind === KIND_CEFR ? "block" : "none";
       if (examContainer) examContainer.style.display = kind === KIND_EXAM ? "block" : "none";
@@ -596,14 +595,7 @@ export function initLanguagesPanel() {
 
       if (kind === KIND_EXAM && examObj && usesParentScore) {
         setNumericInputLimits(langExamScore, examObj);
-        const placeholder = examMode === "subject_breakdown"
-          ? tFormat(
-            "languages.exam_total_placeholder",
-            { label: getCompositeParentLabel(examObj) },
-            `${getCompositeParentLabel(examObj)} score`
-          )
-          : t("profile.placeholder.lang_score", "Score (e.g. 7.5)");
-        langExamScore.placeholder = placeholder;
+        langExamScore.placeholder = t("profile.placeholder.lang_score", "Score (e.g. 7.5)");
       } else {
         clearNumericInputLimits(langExamScore);
         langExamScore.placeholder = t("profile.placeholder.lang_score", "Score (e.g. 7.5)");
@@ -623,6 +615,7 @@ export function initLanguagesPanel() {
         const childExam = getExam(cfg, String(langCode.value || "").trim().toLowerCase(), def.exam);
         const parsed = validateExamScore(childExam || { id: def.exam }, String(langCode.value || "").trim().toLowerCase(), raw, { required: false });
         if (parsed.error) {
+          input?.focus();
           showToast(parsed.error, "error");
           return null;
         }
@@ -658,16 +651,11 @@ export function initLanguagesPanel() {
       refreshLangActionButton();
     }
 
-    populateLangCode();
-    populateLangKind();
-    populateLangExam();
-    initCustomSelect("langCode");
-    initCustomSelect("langKind");
-    initCustomSelect("langCefr");
-    initCustomSelect("langExam");
-    syncExamUi();
-    renderList();
-    refreshLangActionButton();
+    renderForm();
+    if (languagesBlock.dataset.bound === "1") {
+      return;
+    }
+    languagesBlock.dataset.bound = "1";
 
     langCode.addEventListener("change", () => {
       populateLangExam();
@@ -702,8 +690,11 @@ export function initLanguagesPanel() {
       }
     });
 
+    let isSubmitting = false;
+
     langAddBtn.addEventListener("click", (ev) => {
       ev.preventDefault();
+      if (isSubmitting) return;
       motionPress(langAddBtn);
       addLanguage();
     });
@@ -714,6 +705,7 @@ export function initLanguagesPanel() {
       if (ev.shiftKey || ev.ctrlKey || ev.altKey || ev.metaKey) return;
       if (ev.target instanceof Element && ev.target.closest(".custom-select-wrapper.open")) return;
       ev.preventDefault();
+      if (isSubmitting) return;
       addLanguage();
     };
 
@@ -723,6 +715,11 @@ export function initLanguagesPanel() {
     languagesBlock.addEventListener("keydown", submitLanguageOnEnter);
 
     async function addLanguage() {
+      if (isSubmitting) return;
+      isSubmitting = true;
+      if (langAddBtn) langAddBtn.disabled = true;
+
+      try {
       const prof = loadEditableProfile();
       prof.languages = (Array.isArray(prof.languages) ? prof.languages : [])
         .map(normalizeLangEntry)
@@ -757,8 +754,7 @@ export function initLanguagesPanel() {
 
         payload = { ...payload, exam: examId };
         const examMode = getExamInputMode(examObj);
-        const usesParentScore = examMode === "number"
-          || (examMode === "subject_breakdown" && String(getBreakdownScheme(examObj).total_strategy || "").trim().toLowerCase() === "use_parent_score");
+        const usesParentScore = examMode === "number";
 
         if (usesParentScore) {
           const parsedTotal = validateExamScore(examObj, code, langExamScore.value, { required: true });
@@ -772,7 +768,25 @@ export function initLanguagesPanel() {
         if (examMode === "subject_breakdown") {
           const details = readCompositeDetails(examObj);
           if (details === null) return;
-          if (details) payload.details = details;
+          const scheme = getBreakdownScheme(examObj);
+          const definitions = normalizeBreakdownDefs(scheme.fixed_components);
+          const components = details?.components || [];
+          if (components.length !== definitions.length) {
+            showToast(
+              t("languages.exam_breakdown_required", "Enter a score for every section"),
+              "error"
+            );
+            return;
+          }
+          const values = components.map((item) => Number(item.score));
+          const autoStrategy = String(
+            scheme.auto_total_strategy
+            || (String(examObj?.id || examId).toUpperCase().startsWith("IELTS") ? "average" : "sum")
+          ).trim().toLowerCase();
+          let total = values.reduce((sum, value) => sum + value, 0);
+          if (autoStrategy === "average") total = Math.round((total / values.length) * 2) / 2;
+          payload.score = total;
+          payload.details = details;
         }
       }
 
@@ -835,11 +849,15 @@ export function initLanguagesPanel() {
             "success"
           );
         }
-      } catch (e) {
-        showToast(
-          formatLanguageValidationToast(code, payload.exam || "", e?.detail || e?.message || ""),
-          "error"
-        );
+        } catch (e) {
+          showToast(
+            formatLanguageValidationToast(code, payload.exam || "", e?.detail || e?.message || ""),
+            "error"
+          );
+        }
+      } finally {
+        isSubmitting = false;
+        if (langAddBtn) langAddBtn.disabled = false;
       }
     }
 

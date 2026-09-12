@@ -1049,7 +1049,8 @@ profile.exam_updated_value: Updated {exam}: {value}
 languages.exam_total_overall: Overall
 languages.exam_total_total: Total
 languages.exam_total_placeholder: {label} score
-languages.exam_breakdown_hint: Add section scores if you have them. Overall score remains the main requirement unless a university publishes section minimums.
+languages.exam_breakdown_hint: Enter a score for each section. The overall score is calculated automatically.
+languages.exam_breakdown_required: Enter a score for every section.
 languages.error.range: {exam} must be between {min} and {max}
 languages.error.step: {exam} must use step {step}
 languages.error.detail: Could not save {exam}: {reason}

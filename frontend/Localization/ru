@@ -1048,7 +1048,8 @@ profile.exam_updated_value: Обновлён {exam}: {value}
 languages.exam_total_overall: Общий балл
 languages.exam_total_total: Общий балл
 languages.exam_total_placeholder: Балл за {label}
-languages.exam_breakdown_hint: Добавьте баллы по секциям, если они у вас есть. Общий балл остаётся основным требованием, если университет отдельно не публикует минимумы по секциям.
+languages.exam_breakdown_hint: Введите балл по каждой секции. Общий балл будет рассчитан автоматически.
+languages.exam_breakdown_required: Введите балл по каждой секции.
 languages.error.range: {exam} должен быть в диапазоне от {min} до {max}
 languages.error.step: Для {exam} нужно использовать шаг {step}
 languages.error.detail: Не удалось сохранить {exam}: {reason}
