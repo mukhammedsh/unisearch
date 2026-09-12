@@ -2,7 +2,7 @@ const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
 
 test.describe("UniChance Calculator Validation", () => {
-  test("anonymous user sees a zero low-confidence chance", async ({ page }) => {
+  test("anonymous user sees an unavailable personal chance", async ({ page }) => {
     // 1. Открываем страницу Nazarbayev University без заполненного профиля
     await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
     await expect(page.locator("#detailCard")).toBeVisible();
@@ -10,9 +10,9 @@ test.describe("UniChance Calculator Validation", () => {
     // 2. Кликаем по табу "Admission"
     await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-    // 3. Плашка процентов должна показывать 0% и низкий тон для анонимного
+    // 3. Missing profile evidence is not represented as a fabricated 0%.
     const chancePercent = page.locator(".chance-percent");
-    await expect(chancePercent).toContainText("0%");
+    await expect(chancePercent).toContainText("?");
     await expect(chancePercent).toHaveClass(/chance-low/);
   });
 

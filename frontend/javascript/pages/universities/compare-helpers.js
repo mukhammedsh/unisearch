@@ -182,7 +182,7 @@ export async function resolveAiSortResult(options = {}) {
 }
 
 import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
-import { formatPrice } from "../../currency.js";
+import { formatMoney } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 
@@ -225,7 +225,7 @@ import {
 
 export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
-  return n !== null ? formatPrice(n, currency) : unknownFieldText(fallbackKey, fallback);
+  return n !== null ? formatMoney(n, String(currency || "USD").trim().toUpperCase()) : unknownFieldText(fallbackKey, fallback);
 }
 
 export function compareUniversityName(u) {
@@ -245,8 +245,38 @@ export function compareRankText(u) {
   return rank !== null && rank > 0 ? `#${rank}` : t("common.na", "N/A");
 }
 
-export function compareAcceptanceText(u) {
-  const acc = toFiniteNumber(u?.academics?.acceptance_rate_percent);
+function firstObject(...values) {
+  return values.find((value) => value && typeof value === "object" && !Array.isArray(value)) || {};
+}
+
+export function comparePublishedAdmission(u, compareAdmissionChoices = null) {
+  const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
+  const universityWide = firstObject(u?.academics?.admissions?.university_wide);
+  const fallbackMeta = firstObject(u?.academics?.acceptance_rate_percent_meta);
+  const published = firstObject(option?.published_admission, universityWide);
+  const provenance = firstObject(published?.provenance, fallbackMeta);
+  const value = toFiniteNumber(
+    published?.rate_percent
+    ?? published?.acceptance_rate_percent
+    ?? u?.academics?.acceptance_rate_percent
+  );
+  const scopeRaw = String(published?.scope || published?.kind || "institution").trim().toLowerCase();
+  const scope = scopeRaw.includes("program") || scopeRaw.includes("course") ? "program" : "institution";
+  const basis = firstObject(published?.basis, published?.counts, provenance?.basis);
+  return {
+    value,
+    scope,
+    audience: String(published?.audience || "all").trim().toLowerCase(),
+    cycle: String(published?.cycle || basis?.cycle || "").trim(),
+    source: String(published?.source || provenance?.source || fallbackMeta?.source || "").trim(),
+    sourceUrl: String(published?.source_url || provenance?.source_url || fallbackMeta?.source_url || "").trim(),
+    verifiedAt: String(published?.verified_at || provenance?.verified_at || fallbackMeta?.verified_at || "").trim(),
+    confidence: String(published?.confidence || provenance?.confidence || fallbackMeta?.confidence || "").trim().toLowerCase(),
+  };
+}
+
+export function compareAcceptanceText(u, compareAdmissionChoices = null) {
+  const acc = comparePublishedAdmission(u, compareAdmissionChoices).value;
   return acc !== null ? `${Math.round(acc * 100) / 100}%` : t("common.na", "N/A");
 }
 
@@ -488,6 +518,98 @@ export function compareSelectedAnnualCost(u, compareAdmissionChoices = null) {
   return toFiniteNumber(total);
 }
 
+export function compareSelectedCostContext(u, compareAdmissionChoices = null) {
+  const finance = compareSelectedFinance(u, compareAdmissionChoices);
+  const fallbackFact = firstObject(u?.fact_provenance?.facts?.tuition_total_cost_year_usd);
+  const total = compareSelectedAnnualCost(u, compareAdmissionChoices);
+  const min = toFiniteNumber(finance?.total_cost_year_min ?? total);
+  const max = toFiniteNumber(finance?.total_cost_year_max ?? min);
+  const urls = Array.isArray(finance?.costs_breakdown_source_urls) ? finance.costs_breakdown_source_urls : [];
+  return {
+    min,
+    max: max !== null && min !== null && max >= min ? max : min,
+    currency: String(finance?.currency || u?.finance?.currency || "USD").trim().toUpperCase(),
+    academicYear: String(finance?.academic_year || "").trim(),
+    feeStatus: String(finance?.fee_status || "").trim().toLowerCase(),
+    scope: String(finance?.scope || (finance === u?.finance ? "institution" : "program")).trim().toLowerCase(),
+    source: String(finance?.source || fallbackFact?.source || "").trim(),
+    sourceUrl: String(finance?.source_url || urls[0] || fallbackFact?.source_url || "").trim(),
+    verifiedAt: String(finance?.verified_at || fallbackFact?.verified_at || "").trim(),
+  };
+}
+
+export function formatCompareCostRange(context) {
+  const min = toFiniteNumber(context?.min);
+  const max = toFiniteNumber(context?.max);
+  const currency = String(context?.currency || "USD");
+  if (min === null) return t("common.na", "N/A");
+  if (max === null || Math.abs(max - min) <= 0.000001) return formatCompareCost(min, "placeholder.field.cost", "Cost", currency);
+  return `${formatCompareCost(min, "placeholder.field.cost", "Cost", currency)}–${formatCompareCost(max, "placeholder.field.cost", "Cost", currency)}`;
+}
+
+export function compareCostContextText(context) {
+  const feeStatus = String(context?.feeStatus || "").trim().toLowerCase();
+  const scope = String(context?.scope || "").trim().toLowerCase();
+  const feeLabels = {
+    international: t("universities.compare.fee_status.international", "international fee status"),
+    overseas: t("universities.compare.fee_status.overseas", "overseas fee status"),
+    home: t("universities.compare.fee_status.home", "home fee status"),
+  };
+  const scopeLabels = {
+    program: t("universities.compare.scope.program", "course-specific"),
+    institution: t("universities.compare.scope.institution", "institution-wide"),
+    undergraduate: t("universities.compare.scope.undergraduate", "undergraduate"),
+  };
+  return [
+    String(context?.academicYear || "").trim(),
+    feeLabels[feeStatus] || feeStatus,
+    scopeLabels[scope] || scope,
+  ].filter(Boolean).join(" · ") || t("common.na", "N/A");
+}
+
+export function compareAidPolicyText(u) {
+  const aid = firstObject(u?.finance?.financial_aid);
+  if (!Object.keys(aid).length) return t("common.na", "N/A");
+  const parts = [];
+  if (aid.basis === "need" || aid.need_based) parts.push(t("universities.compare.aid.need_based", "Need-based"));
+  if (aid.basis === "merit" || aid.merit_based) parts.push(t("universities.compare.aid.merit_based", "Merit-based"));
+  if (aid.need_blind) parts.push(t("universities.compare.aid.need_blind", "Need-blind admission"));
+  if (aid.meets_full_demonstrated_need) parts.push(t("universities.compare.aid.full_need", "Meets full demonstrated need"));
+  if (aid.international_eligible) parts.push(t("universities.compare.aid.international", "Available to international students"));
+  if (aid.annual_awards_min || aid.annual_awards_max) {
+    const min = aid.annual_awards_min || aid.annual_awards_max;
+    const max = aid.annual_awards_max || aid.annual_awards_min;
+    parts.push(tFormat("universities.compare.aid.awards_year", { min: String(min), max: String(max) }, `${min}–${max} awards per year`));
+  }
+  return parts.length ? Array.from(new Set(parts)).join(" · ") : t("common.na", "N/A");
+}
+
+export function compareUndergraduateStructureText(u) {
+  const structure = firstObject(u?.academics?.undergraduate_structure);
+  const model = String(structure?.model || "").trim().toLowerCase();
+  const modelLabel = model === "liberal_arts_then_concentration"
+    ? t("universities.compare.structure.liberal_arts", "Four-year liberal arts; concentration chosen after admission")
+    : (model === "course_entry"
+      ? t("universities.compare.structure.course_entry", "Direct entry to a specific course")
+      : "");
+  const durationRaw = String(structure?.duration || "").trim().toLowerCase();
+  const duration = durationRaw === "4 years"
+    ? t("universities.compare.duration.four_years", "4 years")
+    : (durationRaw === "3 or 4 years"
+      ? t("universities.compare.duration.three_or_four_years", "3 or 4 years")
+      : String(structure?.duration || "").trim());
+  const teachingLabels = {
+    lectures: t("universities.compare.teaching.lectures", "lectures"),
+    seminars: t("universities.compare.teaching.seminars", "seminars"),
+    tutorials: t("universities.compare.teaching.tutorials", "tutorials"),
+    practicals: t("universities.compare.teaching.practicals", "practicals"),
+  };
+  const teaching = Array.isArray(structure?.teaching_formats)
+    ? structure.teaching_formats.map((item) => teachingLabels[String(item || "").trim().toLowerCase()] || humanizeMachineLabel(item, item)).filter(Boolean).join(", ")
+    : "";
+  return [modelLabel, duration, teaching].filter(Boolean).join(" · ") || t("common.na", "N/A");
+}
+
 export function compareTrackLabel(u, compareAdmissionChoices) {
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   if (!option) return t("common.na", "N/A");
@@ -564,6 +686,15 @@ export function compareSourceText(u, factKey) {
     : "";
   const parts = [translatedSource, translatedStatus].filter(Boolean);
   return parts.length ? parts.join(" - ") : (typeof t === "function" ? t("common.na", "N/A") : "N/A");
+}
+
+export function compareSourceMeta(u, factKey) {
+  const fact = nested(u, ["fact_provenance", "facts", factKey], null);
+  return {
+    text: compareSourceText(u, factKey),
+    url: String(fact?.source_url || "").trim(),
+    verifiedAt: String(fact?.verified_at || "").trim(),
+  };
 }
 
 export function compareDataConfidenceText(u) {
@@ -646,20 +777,28 @@ export function compareAidScore(u) {
   return Array.isArray(grants) ? grants.length : 0;
 }
 
-export function compareCostBreakdownNumber(u, mode, compareAdmissionChoices) {
+export function compareCostBreakdownText(u, mode, compareAdmissionChoices) {
   const finance = compareSelectedFinance(u, compareAdmissionChoices);
   const breakdown = (finance?.costs_breakdown_year_usd && typeof finance.costs_breakdown_year_usd === "object")
     ? finance.costs_breakdown_year_usd
     : {};
-  const entries = Object.entries(breakdown);
-  if (!entries.length) return null;
   const matcher = mode === "tuition"
     ? (key) => /tuition|fee/i.test(key)
     : (key) => /housing|dorm|food|meal|living|room|board|books|supplies|insurance|transport/i.test(key);
-  const total = entries.reduce((sum, [key, value]) => {
-    if (!matcher(String(key || ""))) return sum;
-    const n = toFiniteNumber(value);
-    return n !== null ? sum + n : sum;
-  }, 0);
-  return total > 0 ? total : null;
+  const entries = Object.entries(breakdown).filter(([key]) => matcher(String(key || "")));
+  const values = entries
+    .map(([, value]) => toFiniteNumber(value))
+    .filter((value) => value !== null);
+  if (!values.length) return t("common.na", "N/A");
+  const currency = String(finance?.currency || u?.finance?.currency || "USD").trim().toUpperCase();
+  const hasExplicitRange = entries.some(([key]) => /(?:_|\b)(?:min|max)(?:_|\b)/i.test(String(key || "")));
+  if (hasExplicitRange && values.length > 1) {
+    const minimum = Math.min(...values);
+    const maximum = Math.max(...values);
+    return minimum === maximum
+      ? formatCompareCost(minimum, "placeholder.field.cost", "Cost", currency)
+      : `${formatCompareCost(minimum, "placeholder.field.cost", "Cost", currency)}–${formatCompareCost(maximum, "placeholder.field.cost", "Cost", currency)}`;
+  }
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return formatCompareCost(total, "placeholder.field.cost", "Cost", currency);
 }

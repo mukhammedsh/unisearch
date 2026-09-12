@@ -111,6 +111,12 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
       id: "regular",
       label: "Regular",
       requirements: { GPA: 3.2 },
+      published_admission: {
+        rate_percent: 20,
+        scope: "institution",
+        audience: "all",
+        cycle: "2025",
+      },
       language_requirements: [
         { code: "en", requirements: { IELTS: 6.5 }, accept_native: true },
       ],
@@ -125,6 +131,12 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
             p25_raw: 1260,
             median_raw: 1320,
             p75_raw: 1400,
+          },
+          published_admission: {
+            rate_percent: 7,
+            scope: "program",
+            audience: "all",
+            cycle: "2023-25",
           },
           finance_override: { total_cost_year_usd: 30000 },
           funding_options: [
@@ -156,6 +168,8 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
   assert.equal(paid.score_profile.exam_id, "SAT");
   assert.equal(paid.stats_avg.SAT, 1320);
   assert.equal(paid.finance_override.total_cost_year_usd, 30000);
+  assert.equal(paid.published_admission.rate_percent, 7);
+  assert.equal(paid.published_admission.scope, "program");
   assert.equal(paid.language_requirements[0].requirements.IELTS, 6.5);
 
   assert.deepEqual(grant.requirements, { GPA: 3.6, SAT: 1400 });
@@ -163,4 +177,5 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
   assert.deepEqual(grant.funding_requirements, { SAT: 1400, GPA: 3.6 });
   assert.equal(grant.score_profile.median_raw, 1320);
   assert.equal(grant.finance_override.total_cost_year_usd, 10000);
+  assert.equal(grant.published_admission.rate_percent, 7);
 });

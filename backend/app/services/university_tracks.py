@@ -330,6 +330,9 @@ def _admission_choice_from_parts(
         _merge_track_variant_dict(category.get("finance_override"), profile.get("finance_override")),
         funding.get("finance_override"),
     )
+    merged_published_admission = _merge_track_variant_dict(
+        category.get("published_admission"), profile.get("published_admission")
+    )
 
     choice: Dict[str, Any] = {
         "id": choice_key or profile_id or category_id or f"choice:{funding_idx}",
@@ -357,6 +360,8 @@ def _admission_choice_from_parts(
         choice["stats_avg"] = merged_stats_avg
     if isinstance(merged_finance_override, dict) and merged_finance_override:
         choice["finance_override"] = merged_finance_override
+    if isinstance(merged_published_admission, dict) and merged_published_admission:
+        choice["published_admission"] = merged_published_admission
     score_profile = funding.get("score_profile") or profile.get("score_profile")
     if isinstance(score_profile, dict) and score_profile:
         choice["score_profile"] = copy.deepcopy(score_profile)

@@ -115,11 +115,13 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         chance_tum = res_tum.get("overallChance")
         self.assertTrue(chance_tum is None or chance_tum == 0, f"Dias in TUM should have 0% or None chance, got {chance_tum}%")
 
-        # 3. NU
+        # 3. NU: the published IELTS minimum is not met, so UniChance must
+        # remain unavailable rather than presenting a fabricated 0% estimate.
         res_nu = estimate_uni_chance(self.nu, profile)
         chance_nu = res_nu.get("overallChance")
-        self.assertIsNotNone(chance_nu)
-        self.assertTrue(chance_nu <= 5, f"Dias in NU should have <=5% chance, got {chance_nu}%")
+        self.assertIsNone(chance_nu)
+        self.assertFalse(bool(res_nu.get("chanceAvailable")))
+        self.assertEqual("requirements_not_met", str(res_nu.get("reason") or ""))
 
     def test_adil_zero_budget_genius(self):
         """

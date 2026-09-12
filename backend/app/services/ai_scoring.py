@@ -594,12 +594,14 @@ def _track_fit(track: Dict[str, Any], user_scores: Dict[str, Any], user_language
     return {
         "fit": _clamp01(fit),
         "langScore": float(lang.get("score", 0.0)),
+        "languagePass": bool(lang.get("pass")),
         "hardPassAll": fail_count == 0,
         "worstGap": worst_gap,
         "missingEvidence": missing_evidence,
         "failRatio": fail_ratio,
         "conditional": conditional_count > 0,
         "conditionalRequirements": conditional_count,
+        "languageConditionalRequirements": int(lang.get("conditionalCount", 0) or 0),
     }
 
 
@@ -755,12 +757,14 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
     labels = {
         "eng": {
             "missing_evidence": "Add exam scores or language evidence",
+            "requirements_not_met": "A required minimum is not met",
             "missing_exam_score": "Need exam data to see the chance for this track",
             "unsupported_exam_normalization": "Track score data is not yet comparable",
             "no_score_profile": "No admitted-score data",
         },
         "rus": {
             "missing_evidence": "Добавьте результаты экзаменов или языковые данные",
+            "requirements_not_met": "Не выполнен обязательный минимум",
             "missing_exam_score": "Нужны данные по экзамену, чтобы оценить шанс по этому варианту поступления",
             "unsupported_exam_normalization": "Пока нельзя корректно сопоставить ваш экзамен с этим вариантом поступления",
             "no_score_profile": "Нет данных о баллах зачисленных",
@@ -804,6 +808,42 @@ def _track_has_required_evidence(track: Dict[str, Any]) -> bool:
     if isinstance(req, dict) and req:
         return True
     return len(_collect_language_requirements(track).get("items", [])) > 0
+
+
+def _unmet_track_requirement_keys(
+    track: Dict[str, Any],
+    user_scores: Dict[str, Any],
+    user_languages: Dict[str, Any],
+) -> List[str]:
+    """Return explicitly supplied academic requirements that the user misses.
+
+    Historic ``requirements`` fields also contain typical/advisory scores in
+    older records. A verified score profile is more specific evidence for its
+    own exam, so callers can distinguish those advisory fields from a failed
+    tracked exam minimum.
+    """
+    requirements = track.get("requirements")
+    if not isinstance(requirements, dict):
+        return []
+    has_structured_language_requirements = len(_collect_language_requirements(track).get("items", [])) > 0
+
+    failed: List[str] = []
+    for exam_id, minimum in requirements.items():
+        if has_structured_language_requirements and _is_language_exam_key(exam_id):
+            continue
+        user_value = _get_user_score(user_scores, exam_id, user_languages)
+        if user_value is None:
+            continue
+        result = _score_requirement(
+            user_value,
+            minimum,
+            None,
+            higher_is_better=_is_higher_better(exam_id),
+            mode="chance",
+        )
+        if not bool(result.get("pass")):
+            failed.append(_canonical_exam_key(exam_id))
+    return failed
 
 
 def _resolve_user_normalized_track_score(
@@ -964,15 +1004,14 @@ def _compute_estimated_fallback_chance(
     hard_pass_all: bool,
     conditional_requirements: int,
 ) -> Dict[str, Any]:
-    # Fallback must stay conservative: if mandatory exam or language evidence is
-    # missing, or any minimum is not met, the track is not realistically
-    # attainable and should show 0%.
+    # Missing evidence and unmet mandatory minimums are states, not measured
+    # probabilities. Keep them unavailable instead of turning them into 0%.
     if conditional_requirements > 0 or not hard_pass_all:
         return {
-            "chance01": 0.0,
-            "rangeLowPercent": 0.0,
-            "rangeHighPercent": 0.0,
-            "confidence": "low",
+            "chance01": None,
+            "rangeLowPercent": None,
+            "rangeHighPercent": None,
+            "confidence": "no_data",
         }
 
     academic_curve = _clamp01(float(academic)) ** 1.75
@@ -1845,6 +1884,35 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
         feasibility_gate = _clamp(1.0 - 0.78 * float(fit.get("failRatio", 0.0)), 0.18, 1.0)
         score_profile = _track_score_profile(choice)
         score_meta = {"normalized": None, "exam_id": "", "reason": "no_score_profile"}
+        if isinstance(score_profile, dict):
+            score_meta = _resolve_user_normalized_track_score(choice, ctx["userScores"], ctx["userLanguages"])
+        profile_exam_ids = {
+            _canonical_exam_key(score_profile.get("exam_id"))
+            for score_profile in [score_profile]
+            if isinstance(score_profile, dict) and str(score_profile.get("exam_id") or "").strip()
+        }
+        if isinstance(score_profile, dict):
+            profile_exam_ids.update(
+                _canonical_exam_key(exam_id)
+                for exam_id in score_profile.get("compatible_exam_ids", [])
+                if str(exam_id or "").strip()
+            )
+        unmet_requirement_keys = _unmet_track_requirement_keys(choice, ctx["userScores"], ctx["userLanguages"])
+        requirement_keys = {
+            _canonical_exam_key(exam_id)
+            for exam_id in (choice.get("requirements") or {})
+            if str(exam_id or "").strip()
+        }
+        score_profile_requirement_keys = profile_exam_ids.intersection(requirement_keys)
+        blocking_requirement_failure = (
+            bool(unmet_requirement_keys)
+            if not isinstance(score_profile, dict)
+            else (
+                any(key in score_profile_requirement_keys for key in unmet_requirement_keys)
+                if score_profile_requirement_keys
+                else bool(unmet_requirement_keys)
+            )
+        )
         no_data_reason = ""
         chance_pct = None
         range_low = None
@@ -1854,13 +1922,21 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
 
         track_badges = _track_verified_badges(choice)
 
-        can_use_zero_fallback = (not has_evidence) and (not isinstance(score_profile, dict)) and choice_has_required_evidence
         scholarship_boost = 0.0
-        if not has_evidence and not can_use_zero_fallback:
+        if not has_evidence:
             no_data_reason = "missing_evidence"
+        elif int(fit.get("languageConditionalRequirements", 0) or 0) > 0:
+            no_data_reason = "missing_evidence"
+        elif not bool(fit.get("languagePass", True)):
+            no_data_reason = "requirements_not_met"
+        elif blocking_requirement_failure or (
+            not isinstance(score_profile, dict)
+            and choice_has_required_evidence
+            and not bool(fit.get("hardPassAll"))
+        ):
+            no_data_reason = "requirements_not_met"
         else:
             if isinstance(score_profile, dict):
-                score_meta = _resolve_user_normalized_track_score(choice, ctx["userScores"], ctx["userLanguages"])
                 normalized_user_score = _to_num(score_meta.get("normalized"))
                 if normalized_user_score is None:
                     no_data_reason = str(score_meta.get("reason") or "no_score_profile")
@@ -1872,7 +1948,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                     )
                     chance01_raw = _to_num(chance_meta.get("chance01"))
                     if chance01_raw is None:
-                        no_data_reason = "no_score_profile"
+                        no_data_reason = no_data_reason or "no_score_profile"
                     else:
                         context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
                         effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
@@ -1883,7 +1959,10 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                         confidence = str(chance_meta.get("confidence") or "estimated")
                         chance_model = "official_score_profile"
             else:
-                if bool(fit.get("hardPassAll")) and int(fit.get("conditionalRequirements", 0) or 0) == 0:
+                if bool(fit.get("missingEvidence")) or int(fit.get("conditionalRequirements", 0) or 0) > 0:
+                    no_data_reason = "missing_evidence"
+                    chance_meta = {"chance01": None, "confidence": "no_data"}
+                elif bool(fit.get("hardPassAll")):
                     chance_meta = _compute_requirement_profile_proxy_chance(
                         university=university,
                         track=choice,
@@ -1917,7 +1996,7 @@ def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, 
                     )
                     chance01_raw = _to_num(chance_meta.get("chance01"))
                     if chance01_raw is None:
-                        no_data_reason = "no_score_profile"
+                        no_data_reason = no_data_reason or "no_score_profile"
                     else:
                         chance01 = _clamp01(float(chance01_raw))
                         chance_pct = int(round(chance01 * 100.0))

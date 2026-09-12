@@ -157,6 +157,47 @@ class AdmissionCategoryTests(unittest.TestCase):
         self.assertEqual(1475, sat_profile.get("median_raw"))
         self.assertFalse(bool(profiles["nu_act_applicants"].get("score_profile")))
 
+    def test_choice_expansion_prefers_profile_admission_and_finance_metadata(self):
+        categories = [
+            _category(
+                "course",
+                "Course",
+                [
+                    {
+                        "id": "sat",
+                        "label": "SAT",
+                        "published_admission": {
+                            "rate_percent": 7,
+                            "scope": "program",
+                            "audience": "all",
+                            "cycle": "2023-25",
+                        },
+                        "finance_override": {
+                            "total_cost_year_usd": 20000,
+                            "academic_year": "2027-28",
+                        },
+                    }
+                ],
+                published_admission={
+                    "rate_percent": 20,
+                    "scope": "institution",
+                    "audience": "all",
+                    "cycle": "2025",
+                },
+                finance_override={
+                    "total_cost_year_usd": 30000,
+                    "academic_year": "2026-27",
+                },
+            )
+        ]
+
+        choice = uni_service.expand_admission_choices(categories)[0]
+
+        self.assertEqual(7, choice.get("published_admission", {}).get("rate_percent"))
+        self.assertEqual("program", choice.get("published_admission", {}).get("scope"))
+        self.assertEqual(20000, choice.get("finance_override", {}).get("total_cost_year_usd"))
+        self.assertEqual("2027-28", choice.get("finance_override", {}).get("academic_year"))
+
 
 if __name__ == "__main__":
     unittest.main()

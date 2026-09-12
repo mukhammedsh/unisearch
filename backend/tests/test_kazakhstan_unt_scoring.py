@@ -42,7 +42,11 @@ class KazakhstanUntScoringTests(unittest.TestCase):
                 u = uni_service.get_university_by_id(uid)
                 profile = {
                     "exams": [{"id": exam_key, "score": 125}],
-                    "languages": [{"code": "ru", "kind": "native"}],
+                    "languages": [
+                        {"code": "ru", "kind": "native"},
+                        {"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5},
+                        {"code": "en", "kind": "cefr", "level": 5},
+                    ],
                 }
                 result = ai_scoring.estimate_uni_chance(u, profile)
                 self.assertEqual(

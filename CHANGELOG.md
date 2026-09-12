@@ -3,6 +3,13 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Reworked university comparison into a decision aid rather than a universal ranking (`frontend/javascript/pages/compare.js`, `frontend/javascript/pages/universities/compare-helpers.js`, `frontend/javascript/pages/universities/compare-specs.js`, `frontend/css/universities/03-comparison.css`, `backend/app/services/ai_scoring.py`):
+  - Replaced the single winner score and one-sided conclusion with paired admissions, cost and aid, academic-model, and outcomes signals that can state an advantage, trade-off, parity, incomparable data, or missing data.
+  - Kept published admission statistics separate from personal UniChance. Missing evidence now renders an unavailable personal estimate instead of a misleading `0%`; an actually missed required minimum is explained separately.
+  - Compare costs only when their academic year, fee status, and scope align, and show fee/living breakdowns as explanations rather than repeated financial wins.
+  - Added visible source links, verification dates, and reasons when metrics cannot be compared; restored the comparison-section Heroicon in its header.
+  - Updated the in-product guide to explain the four themes, separate published statistics from UniChance, and describe trade-offs and unavailable data in plain language.
+- Added official Oxford Computer Science and Harvard College comparison metadata (`backend/data/universities.json`): course-level Oxford selectivity and overseas costs, Harvard cost of attendance and need-based aid policy, undergraduate structures, and official provenance.
 - Implemented a complete multi-currency conversion and display engine (`backend/app/routers/currency.py`, `backend/app/services/currency.py`, `backend/data/currency_filter_limits.json`, `frontend/javascript/currency.js`):
   - Added FastAPI endpoint `GET /currency/rates` providing real-time exchange rates relative to USD across 60+ global fiat currencies, cache metadata, source attribution, and currency-specific filter limits.
   - Added runtime health endpoint `GET /currency/status` reporting circuit breaker status, error counters, and upstream provider latency.

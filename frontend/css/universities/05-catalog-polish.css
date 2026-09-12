@@ -569,36 +569,6 @@
     justify-content: flex-start;
   }
 
-  .compare-reasons {
-    grid-template-columns: 1fr;
-  }
-
-  .compare-reason-group {
-    padding: 16px;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .compare-reason-group:last-child {
-    border-bottom: 0;
-  }
-
-  .compare-score-grid {
-    grid-template-columns: 1fr;
-    padding: 16px;
-  }
-
-  .compare-score-row__top {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-  }
-
-  .compare-score-row__top span {
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
   .compare-uni-grid {
     grid-template-columns: 1fr;
     padding: 0;

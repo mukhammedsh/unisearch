@@ -96,16 +96,16 @@ guide.roi.p5: Use ROI together with tuition, aid, admission chance, and program 
 guide.comparison.title: University comparison
 guide.comparison.p1: Comparison is inside Universities, in the Comparing tab. The catalog keeps normal navigation, so selecting universities for comparison happens only in that dedicated tab.
 guide.comparison.p2: Open Comparing, choose universities from cards or the map, then press Compare. Clicking a selected card again removes it from the shortlist.
-guide.comparison.p3: The results page scans comparable published parameters: ranking, cost, aid, acceptance, admission categories, requirement profiles, funding, common exams, language minimums, bachelor programs, study formats, salary, and data confidence.
-guide.comparison.p4: Key differences explain practical reasons to choose each university. Overview scores are relative only to the selected universities, and the detailed table highlights the strongest value in each row.
-guide.comparison.note: Missing official data is shown as unavailable instead of being invented. Use comparison as a decision aid together with official university sources.
+guide.comparison.p3: The results page groups evidence into four decision themes: admission and requirements, cost and financial aid, program and learning model, and graduate outcomes. Each published value includes its scope, period, and source when available.
+guide.comparison.p4: Published selectivity is not your personal chance: UniChance is shown separately. The comparison can identify a comparable advantage, a trade-off, parity, incomparable data, or missing data; it never declares one university universally better.
+guide.comparison.note: Costs are compared only when the academic year, fee status, and scope match. Missing official data stays unavailable instead of becoming a zero or a winner. Use comparison with official university sources.
 guide.comparison.flow_aria: How comparison works
 guide.comparison.step1.title: 1. Select
 guide.comparison.step1.body: Use cards or map pins in Comparing.
 guide.comparison.step2.title: 2. Compare
 guide.comparison.step2.body: Build a results page from the shortlist.
 guide.comparison.step3.title: 3. Read
-guide.comparison.step3.body: Check key differences, scores, table highlights, and conclusion.
+guide.comparison.step3.body: Read both sides, the context, sources, and any trade-offs or limits.
 guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
 guide.unichance.p2: The estimate is based on your data: scores, language, budget, and the selected requirement profile.
 guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
@@ -551,6 +551,64 @@ universities.compare.quality.medium: Medium
 universities.compare.slot_label: University {index}
 universities.compare.source_note: Source: {source}
 universities.compare.standard_requirements: Standard
+universities.compare.row.undergraduate_structure: Undergraduate structure
+universities.compare.row.published_selectivity: Published admission rate
+universities.compare.decision.title: What matters for your choice
+universities.compare.decision.subtitle: Independent signals explain fit and trade-offs without declaring one university universally better.
+universities.compare.status.advantage: Comparable advantage
+universities.compare.status.tradeoff: Trade-off
+universities.compare.status.parity: No clear leader
+universities.compare.status.incomparable: Not directly comparable
+universities.compare.status.missing: Data missing
+universities.compare.confidence.high: high confidence
+universities.compare.confidence.medium: medium confidence
+universities.compare.confidence.low: low confidence
+universities.compare.confidence.estimated: estimated
+universities.compare.profile_missing: Add the required profile evidence
+universities.compare.scope.program: course-specific
+universities.compare.scope.institution: institution-wide
+universities.compare.scope.undergraduate: undergraduate
+universities.compare.fee_status.international: international fee status
+universities.compare.fee_status.overseas: overseas fee status
+universities.compare.fee_status.home: home fee status
+universities.compare.duration.four_years: 4 years
+universities.compare.duration.three_or_four_years: 3 or 4 years
+universities.compare.teaching.lectures: lectures
+universities.compare.teaching.seminars: seminars
+universities.compare.teaching.tutorials: tutorials
+universities.compare.teaching.practicals: practicals
+universities.compare.admissions.title: Admission and requirements fit
+universities.compare.admissions.missing: Published admission data is incomplete, so no selectivity comparison is made.
+universities.compare.admissions.comparable: Published rates describe selectivity, not your personal probability of admission.
+universities.compare.admissions.incomparable: The published rates use different course or institution scopes, audiences, or cycles.
+universities.compare.personal_estimate: Personal estimate
+universities.compare.published_rate: Published selectivity
+universities.compare.requirements_fit: Requirements
+universities.compare.finance.title: Cost and financial aid
+universities.compare.finance.missing: Comparable cost data is missing; unknown values are not treated as zero.
+universities.compare.finance.incomparable: Sticker costs use different academic years or fee statuses, so they are shown without a winner.
+universities.compare.finance.tradeoff: Compare the published sticker cost with each university's aid policy; neither alone is the final net price.
+universities.compare.sticker_cost: Sticker cost
+universities.compare.cost_context: Cost context
+universities.compare.aid_policy: Aid policy
+universities.compare.aid.need_based: Need-based
+universities.compare.aid.merit_based: Merit-based
+universities.compare.aid.need_blind: Need-blind admission
+universities.compare.aid.full_need: Meets full demonstrated need
+universities.compare.aid.international: Available to international students
+universities.compare.aid.awards_year: {min}-{max} awards per year
+universities.compare.academics.title: Program and learning model
+universities.compare.academics.tradeoff: These are different undergraduate models and preference trade-offs, not proof that one offers higher academic quality.
+universities.compare.academics.parity: A small rank difference is informational and does not establish a prestige or quality winner.
+universities.compare.published_rank: Published rank
+universities.compare.learning_model: Learning model
+universities.compare.structure.liberal_arts: Liberal arts; concentration chosen after admission
+universities.compare.structure.course_entry: Direct entry to a specific course
+universities.compare.outcomes.title: Graduate outcomes
+universities.compare.outcomes.available: Published salary is shown as context; ROI requires comparable verified cost and outcome data.
+universities.compare.outcomes.missing: Verified comparable salary or ROI data is incomplete, so no outcome winner is selected.
+universities.compare.verified_salary: Verified early-career salary
+universities.compare.table_scroll_hint: Swipe horizontally to see both universities.
 universities.compare.differences.title: Key differences
 universities.compare.differences.subtitle: Shows the clearest published advantages for each selected university.
 universities.compare.differences.reasons_for: {name}
@@ -566,7 +624,7 @@ universities.compare.overview.baseline_status: Baseline
 universities.compare.overview.parity_status: Equal
 universities.compare.score_value: {score}/100
 universities.compare.tests.title: Tests and characteristics
-universities.compare.tests.subtitle: Detailed table of published values. Green cells appear only when one university is uniquely stronger in that row.
+universities.compare.tests.subtitle: Detailed published values. Color is used only for a comparable and meaningful difference.
 universities.compare.conclusion.title: Conclusion
 universities.compare.conclusion.body: Best relative fits by category: {summary}. Use the highlighted table rows and official sources before making the final decision.
 universities.compare.conclusion.empty: The selected universities are close on the comparable published metrics. Use the highlighted table rows and official sources before making the final decision.
@@ -943,6 +1001,8 @@ admission.track.funding_source: Funding source
 admission.track.funding_source_short: Source
 admission.track.select_tooltip: Select this admission choice to use it for admission chance display and for UniFit ranking.
 admission.chance.need_exam_data_track: Need exam data to see the chance for this requirement profile.
+admission.chance.requirements_not_met: Your current results do not meet a required minimum for this admission choice.
+admission.chance.missing_evidence: Add the required exam scores or language evidence to calculate a personal estimate.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
 admission.chance_method.profile_short: Profile-based

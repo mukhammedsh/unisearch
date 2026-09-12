@@ -38,6 +38,8 @@ base_cost_before_grant: Базовая стоимость (до гранта)
 admission.track.funding_options: Варианты финансирования
 admission.track.options_count: {count} вариантов финансирования
 admission.chance.need_exam_data_track: Нужны данные по экзаменам, чтобы оценить шанс по этому профилю требований.
+admission.chance.requirements_not_met: Текущие результаты не соответствуют обязательному минимуму этого варианта поступления.
+admission.chance.missing_evidence: Добавьте обязательные экзамены или подтверждение языка, чтобы рассчитать персональную оценку.
 extra_requirements: Дополнительные требования
 guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Категория поступления — это реальный маршрут подачи, а профиль требований — набор баллов внутри этой категории.
@@ -97,16 +99,16 @@ guide.roi.p5: Используйте ROI вместе со стоимостью,
 guide.comparison.title: Сравнение университетов
 guide.comparison.p1: Сравнение находится внутри страницы университетов, во вкладке «Сравнение». Каталог сохраняет обычное открытие карточек, поэтому выбирать университеты для сравнения можно только в этой отдельной вкладке.
 guide.comparison.p2: Откройте «Сравнение», выберите университеты из карточек или на карте, затем нажмите «Сравнить». Повторный клик по выбранной карточке убирает университет из короткого списка.
-guide.comparison.p3: Страница итогов проходит по сопоставимым опубликованным параметрам: рейтингу, стоимости, помощи, проценту зачисления, категориям поступления, профилям требований, финансированию, общим экзаменам, языковым минимумам, бакалаврским программам, форматам обучения, зарплате и надёжности данных.
-guide.comparison.p4: Ключевые отличия объясняют практические причины выбрать каждый университет. Баллы в обзоре относительны только к выбранным университетам, а подробная таблица подсвечивает самый сильный показатель в каждой строке.
-guide.comparison.note: Если официальных данных не хватает, UniSearch показывает недоступность вместо выдуманного значения. Используйте сравнение как помощник для решения вместе с официальными источниками университетов.
+guide.comparison.p3: Страница итогов собирает данные в четыре темы выбора: поступление и требования, стоимость и финансовая помощь, программа и модель обучения, результаты выпускников. У опубликованных значений показываются охват, период и источник, если они известны.
+guide.comparison.p4: Опубликованная селективность — не ваш личный шанс: UniChance показывается отдельно. Сравнение может показать сопоставимое преимущество, компромисс, паритет, несопоставимые или отсутствующие данные, но никогда не объявляет один университет лучшим во всём.
+guide.comparison.note: Стоимость сравнивается только при совпадении учебного года, статуса оплаты и охвата данных. Недостающие официальные данные остаются неизвестными, а не превращаются в ноль или победу. Используйте сравнение вместе с официальными источниками университетов.
 guide.comparison.flow_aria: Как работает сравнение
 guide.comparison.step1.title: 1. Выберите
 guide.comparison.step1.body: Используйте карточки или точки на карте во вкладке «Сравнение».
 guide.comparison.step2.title: 2. Сравните
 guide.comparison.step2.body: Соберите страницу итогов из короткого списка.
 guide.comparison.step3.title: 3. Проверьте
-guide.comparison.step3.body: Смотрите ключевые отличия, баллы, подсветку таблицы и итоговый вывод.
+guide.comparison.step3.body: Смотрите обе стороны, контекст, источники, компромиссы и ограничения данных.
 guide.unichance.p1: {chance} показывает примерный шанс поступления. Это ориентир, а не гарантия.
 guide.unichance.p2: Оценка строится на ваших данных: баллах, языке, бюджете и требованиях выбранного профиля.
 guide.unichance.p3: Читать просто: 80‑100 высокий шанс, 60‑79 хороший, 40‑59 средний, ниже 40 низкий.
@@ -552,6 +554,64 @@ universities.compare.quality.medium: Среднее
 universities.compare.slot_label: Университет {index}
 universities.compare.source_note: Источник: {source}
 universities.compare.standard_requirements: Стандартные
+universities.compare.row.undergraduate_structure: Модель бакалавриата
+universities.compare.row.published_selectivity: Опубликованный процент зачисления
+universities.compare.decision.title: Что важно для вашего выбора
+universities.compare.decision.subtitle: Независимые сигналы объясняют соответствие и компромиссы, не объявляя один университет лучшим во всём.
+universities.compare.status.advantage: Сопоставимое преимущество
+universities.compare.status.tradeoff: Компромисс
+universities.compare.status.parity: Явного лидера нет
+universities.compare.status.incomparable: Нельзя сравнить напрямую
+universities.compare.status.missing: Не хватает данных
+universities.compare.confidence.high: высокая уверенность
+universities.compare.confidence.medium: средняя уверенность
+universities.compare.confidence.low: низкая уверенность
+universities.compare.confidence.estimated: ориентировочная оценка
+universities.compare.profile_missing: Добавьте необходимые данные профиля
+universities.compare.scope.program: по выбранной программе
+universities.compare.scope.institution: по университету в целом
+universities.compare.scope.undergraduate: бакалавриат
+universities.compare.fee_status.international: тариф для иностранных студентов
+universities.compare.fee_status.overseas: зарубежный тариф
+universities.compare.fee_status.home: домашний тариф
+universities.compare.duration.four_years: 4 года
+universities.compare.duration.three_or_four_years: 3 или 4 года
+universities.compare.teaching.lectures: лекции
+universities.compare.teaching.seminars: семинары
+universities.compare.teaching.tutorials: тьюториалы
+universities.compare.teaching.practicals: практические занятия
+universities.compare.admissions.title: Поступление и соответствие требованиям
+universities.compare.admissions.missing: Опубликованные данные о поступлении неполны, поэтому селективность не сравнивается.
+universities.compare.admissions.comparable: Опубликованные проценты описывают селективность, а не вашу личную вероятность поступления.
+universities.compare.admissions.incomparable: Проценты опубликованы для разных программ или университетов, аудиторий либо циклов поступления.
+universities.compare.personal_estimate: Персональная оценка
+universities.compare.published_rate: Опубликованная селективность
+universities.compare.requirements_fit: Требования
+universities.compare.finance.title: Стоимость и финансовая помощь
+universities.compare.finance.missing: Сопоставимых данных о стоимости не хватает; неизвестные значения не считаются нулём.
+universities.compare.finance.incomparable: Полная опубликованная стоимость относится к разным учебным годам или категориям оплаты, поэтому победитель не определяется.
+universities.compare.finance.tradeoff: Сравнивайте полную опубликованную стоимость с политикой финансовой помощи; ни одна из них отдельно не является итоговой ценой.
+universities.compare.sticker_cost: Полная опубликованная стоимость
+universities.compare.cost_context: Контекст стоимости
+universities.compare.aid_policy: Политика финансовой помощи
+universities.compare.aid.need_based: По финансовой потребности
+universities.compare.aid.merit_based: За достижения
+universities.compare.aid.need_blind: Финансовая потребность не влияет на решение
+universities.compare.aid.full_need: Покрывает подтверждённую финансовую потребность
+universities.compare.aid.international: Доступна иностранным студентам
+universities.compare.aid.awards_year: {min}-{max} стипендии в год
+universities.compare.academics.title: Программа и модель обучения
+universities.compare.academics.tradeoff: Это разные модели бакалавриата и предпочтения, а не доказательство более высокого качества одного университета.
+universities.compare.academics.parity: Небольшая разница рейтингов — справочная информация, а не основание выбрать лидера по престижности или качеству.
+universities.compare.published_rank: Опубликованный рейтинг
+universities.compare.learning_model: Модель обучения
+universities.compare.structure.liberal_arts: Liberal arts образование; специализация выбирается после поступления
+universities.compare.structure.course_entry: Поступление сразу на конкретную программу
+universities.compare.outcomes.title: Результаты выпускников
+universities.compare.outcomes.available: Опубликованная зарплата показана как контекст; для ROI нужны сопоставимые проверенные данные о стоимости и результатах.
+universities.compare.outcomes.missing: Сопоставимых проверенных данных о зарплате или ROI не хватает, поэтому лидер не определяется.
+universities.compare.verified_salary: Проверенная зарплата в начале карьеры
+universities.compare.table_scroll_hint: Проведите по таблице в сторону, чтобы увидеть оба университета.
 universities.compare.differences.title: Ключевые отличия
 universities.compare.differences.subtitle: Показываем самые заметные опубликованные плюсы каждого выбранного университета.
 universities.compare.differences.reasons_for: {name}
@@ -567,7 +627,7 @@ universities.compare.overview.baseline_status: Базовый уровень
 universities.compare.overview.parity_status: Равные условия
 universities.compare.score_value: {score}/100
 universities.compare.tests.title: Тесты и характеристики
-universities.compare.tests.subtitle: Детальная таблица опубликованных значений. Зелёные ячейки появляются только там, где один университет уникально сильнее в этой строке.
+universities.compare.tests.subtitle: Детальные опубликованные значения. Цвет используется только для сопоставимой и существенной разницы.
 universities.compare.conclusion.title: Итоги
 universities.compare.conclusion.body: Лучшие относительные совпадения по категориям: {summary}. Финальное решение лучше принимать по подсвеченным строкам таблицы и официальным источникам.
 universities.compare.conclusion.empty: Выбранные университеты близки по опубликованным сопоставимым метрикам. Проверьте подсвеченные строки таблицы и официальные источники перед финальным решением.

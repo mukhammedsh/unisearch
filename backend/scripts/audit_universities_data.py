@@ -162,6 +162,9 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
 
     academics = university.get("academics")
     if isinstance(academics, dict):
+        structure = academics.get("undergraduate_structure")
+        if isinstance(structure, dict) and _is_non_empty_text(structure.get("source_url")):
+            yield "academics.undergraduate_structure.source_url", str(structure.get("source_url")).strip()
         admissions = academics.get("admissions")
         if isinstance(admissions, dict):
             for section_key in ("university_wide", "program_level"):
@@ -202,6 +205,14 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
                         if _is_non_empty_text(url):
                             yield f"academics.admissions.programs[{p_idx}]/{name}/sources[{s_idx}]", str(url).strip()
 
+    finance = university.get("finance")
+    if isinstance(finance, dict):
+        if _is_non_empty_text(finance.get("source_url")):
+            yield "finance.source_url", str(finance.get("source_url")).strip()
+        financial_aid = finance.get("financial_aid")
+        if isinstance(financial_aid, dict) and _is_non_empty_text(financial_aid.get("source_url")):
+            yield "finance.financial_aid.source_url", str(financial_aid.get("source_url")).strip()
+
     categories = university.get("admission_categories")
     if not isinstance(categories, list):
         return
@@ -209,6 +220,13 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
         if not isinstance(category, dict):
             continue
         category_id = str(category.get("id") or f"category_{c_idx}").strip()
+        for field_name in ("published_admission", "finance_override"):
+            structured = category.get(field_name)
+            if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
+                yield (
+                    f"admission_categories[{c_idx}]/{category_id}/{field_name}.source_url",
+                    str(structured.get("source_url")).strip(),
+                )
         profiles = category.get("requirement_profiles")
         if not isinstance(profiles, list):
             continue
@@ -216,6 +234,13 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
             if not isinstance(profile, dict):
                 continue
             profile_id = str(profile.get("id") or f"profile_{p_idx}").strip()
+            for field_name in ("published_admission", "finance_override"):
+                structured = profile.get(field_name)
+                if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
+                    yield (
+                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/{field_name}.source_url",
+                        str(structured.get("source_url")).strip(),
+                    )
             profile_source_url = profile.get("stats_avg_source_url")
             if _is_non_empty_text(profile_source_url):
                 yield (
@@ -273,6 +298,50 @@ def _bool_or_default(value: Any, default: bool = False) -> bool:
     if value is None:
         return bool(default)
     return bool(value)
+
+
+def _audit_comparable_finance(
+    errors: List[str],
+    uid: str,
+    label: str,
+    finance: Any,
+) -> None:
+    if not isinstance(finance, dict):
+        return
+    has_structured_range = any(
+        finance.get(key) is not None
+        for key in ("total_cost_year_min", "total_cost_year_max")
+    )
+    if not has_structured_range:
+        return
+    minimum = finance.get("total_cost_year_min")
+    maximum = finance.get("total_cost_year_max")
+    if not isinstance(minimum, (int, float)) or not isinstance(maximum, (int, float)):
+        errors.append(f"{uid}: {label} cost range must contain numeric min and max")
+    elif float(minimum) < 0 or float(maximum) < float(minimum):
+        errors.append(f"{uid}: {label} cost range must satisfy 0 <= min <= max")
+    for key in ("currency", "academic_year", "fee_status", "scope", "source_url", "verified_at"):
+        if not _is_non_empty_text(finance.get(key)):
+            errors.append(f"{uid}: {label}.{key} is required for comparable cost data")
+
+
+def _audit_published_admission(
+    errors: List[str],
+    uid: str,
+    label: str,
+    published: Any,
+) -> None:
+    if published is None:
+        return
+    if not isinstance(published, dict):
+        errors.append(f"{uid}: {label} must be object when present")
+        return
+    rate = published.get("rate_percent")
+    if not isinstance(rate, (int, float)) or not (0.0 <= float(rate) <= 100.0):
+        errors.append(f"{uid}: {label}.rate_percent must be within [0, 100]")
+    for key in ("scope", "audience", "cycle", "source_url", "verified_at"):
+        if not _is_non_empty_text(published.get(key)):
+            errors.append(f"{uid}: {label}.{key} is required for comparable admission data")
 
 
 def audit_dataset(
@@ -469,6 +538,7 @@ def audit_dataset(
             total_cost = finance.get("total_cost_year_usd")
             if not isinstance(total_cost, (int, float)) or float(total_cost) < 0:
                 errors.append(f"{uid}: finance.total_cost_year_usd must be non-negative number")
+            _audit_comparable_finance(errors, uid, "finance", finance)
 
 
         categories = row.get("admission_categories")
@@ -486,6 +556,19 @@ def audit_dataset(
                 scope = str(category.get("scope") or "").strip().lower()
                 if scope not in ("general", "program", "program_group"):
                     warnings.append(f"{uid}: admission_categories[{c_idx}].scope is '{scope or 'empty'}'")
+                category_label = f"admission_categories[{c_idx}]"
+                _audit_published_admission(
+                    errors,
+                    uid,
+                    f"{category_label}.published_admission",
+                    category.get("published_admission"),
+                )
+                _audit_comparable_finance(
+                    errors,
+                    uid,
+                    f"{category_label}.finance_override",
+                    category.get("finance_override"),
+                )
 
                 profiles = category.get("requirement_profiles")
                 if not isinstance(profiles, list) or not profiles:
@@ -499,6 +582,19 @@ def audit_dataset(
                         errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].id is empty")
                     if not _is_non_empty_text(profile.get("label")):
                         errors.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].label is empty")
+                    profile_label = f"admission_categories[{c_idx}].requirement_profiles[{p_idx}]"
+                    _audit_published_admission(
+                        errors,
+                        uid,
+                        f"{profile_label}.published_admission",
+                        profile.get("published_admission"),
+                    )
+                    _audit_comparable_finance(
+                        errors,
+                        uid,
+                        f"{profile_label}.finance_override",
+                        profile.get("finance_override"),
+                    )
                     profile_avg = profile.get("stats_avg")
                     if isinstance(profile_avg, dict) and profile_avg and not _is_non_empty_text(profile.get("stats_avg_source_url")):
                         warnings.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].stats_avg has no stats_avg_source_url")

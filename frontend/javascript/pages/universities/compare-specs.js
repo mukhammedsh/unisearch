@@ -3,9 +3,7 @@
 import {
   escapeHtml,
   escapeHtmlAttr,
-  initials,
   moneyUSD,
-  formatPlural,
   getExamDisplayName,
   canonicalizeExamId,
   formatExamValue,
@@ -14,7 +12,6 @@ import {
 import {
   formatUiNumber,
   toFiniteNumber,
-  uniLogoSrc,
   renderInlineIcon,
   trTrackDescription,
 } from "../_shared.js";
@@ -25,26 +22,32 @@ import {
 } from "../../university-translations.js";
 
 import { getTrackFundingType } from "../../university-detail-helpers.js";
-import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { t, tFormat } from "../../i18n.js";
 
 import {
   compareUniversityName,
   compareLocationText,
+  compareRankText,
   compareAidText,
+  compareAidPolicyText,
+  comparePublishedAdmission,
   compareProgramSummary,
   compareProgramTitle,
   compareStudyModeText,
+  compareUndergraduateStructureText,
   compareAdmissionOptionEntries,
   compareSelectedAdmissionEntry,
   compareSelectedAdmissionOption,
   compareSelectedAnnualCost,
+  compareSelectedCostContext,
+  compareCostContextText,
   compareTrackLabel,
   compareFundingChoiceText,
   compareRequirementsText,
   compareAverageScoreText,
   compareLanguageProofText,
   compareExtraRequirementsText,
-  compareSourceText,
+  compareSourceMeta,
   compareDataConfidenceText,
   compareCountText,
   comparePercentText,
@@ -55,8 +58,8 @@ import {
   compareStudyFormatCount,
   compareMajorTagCount,
   compareAidScore,
-  compareCostBreakdownNumber,
-  formatCompareCost,
+  compareCostBreakdownText,
+  formatCompareCostRange,
 } from "./compare-helpers.js";
 
 export const compareSlotLabel = (index) => tFormat(
@@ -218,56 +221,6 @@ export const collectCompareExamKeys = (universities, getter) => {
         .slice(0, 8);
 };
 
-export const compareBestBadges = (u, metrics) => {
-    const badges = [];
-    const id = String(u?.id || "");
-    if (id && metrics.bestRankId === id) badges.push(t("universities.compare.badge.best_rank", "Higher rank"));
-    if (id && metrics.lowestCostId === id) badges.push(t("universities.compare.badge.lowest_cost", "Lower cost"));
-    if (id && metrics.highestAcceptanceId === id) badges.push(t("universities.compare.badge.more_accessible", "Higher acceptance"));
-    if ((metrics.bestBySpec?.get("aid") || new Set()).has(id)) {
-        badges.push(compareAidText(u));
-    }
-    return badges.slice(0, 3);
-};
-
-export const compareCategoryMeta = () => ({
-    prestige: {
-        title: t("universities.compare.category.prestige.title", "Prestige"),
-        subtitle: t("universities.compare.category.prestige.subtitle", "Rank and selectivity signals"),
-        icon: "trophy",
-    },
-    admissions: {
-        title: t("universities.compare.category.admissions.title", "Admissions"),
-        subtitle: t("universities.compare.category.admissions.subtitle", "Access, requirement profiles, and funding"),
-        icon: "academic-cap",
-    },
-    finance: {
-        title: t("universities.compare.category.finance.title", "Finance"),
-        subtitle: t("universities.compare.category.finance.subtitle", "Cost and aid flexibility"),
-        icon: "banknotes",
-    },
-    academics: {
-        title: t("universities.compare.category.academics.title", "Academics"),
-        subtitle: t("universities.compare.category.academics.subtitle", "Program breadth and study options"),
-        icon: "book-open",
-    },
-    outcomes: {
-        title: t("universities.compare.category.outcomes.title", "Outcomes"),
-        subtitle: t("universities.compare.category.outcomes.subtitle", "Published career outcome signals"),
-        icon: "chart-bar",
-    },
-    data: {
-        title: t("universities.compare.category.data.title", "Data confidence"),
-        subtitle: t("universities.compare.category.data.subtitle", "Verified facts and sources"),
-        icon: "check-badge",
-    },
-    context: {
-        title: t("universities.compare.category.context.title", "Context"),
-        subtitle: t("universities.compare.category.context.subtitle", "Scale and campus context"),
-        icon: "building-office-2",
-    },
-});
-
 export const compareSpecSections = () => ({
     overview: t("universities.compare.section.overview", "Overview"),
     programs: t("universities.compare.section.programs", "Programs"),
@@ -295,16 +248,15 @@ export const buildCompareSpecs = (universities) => {
             category: "prestige",
             label: translateWord("global_rank", "Global Rank"),
             type: "number",
-            direction: "lower",
+            direction: "neutral",
             getter: (u) => {
                 const rank = toFiniteNumber(u?.rank);
                 return rank !== null && rank > 0 ? rank : null;
             },
             formatter: (value) => `#${formatUiNumber(value, { maximumFractionDigits: 0 })}`,
             sourceKey: "rank",
-            reasonMode: "rank",
-            allowSinglePublishedAdvantage: true,
-            weight: 1.25,
+            score: false,
+            reason: false,
         },
         {
             key: "student_count",
@@ -325,7 +277,7 @@ export const buildCompareSpecs = (universities) => {
             category: "academics",
             label: t("universities.compare.row.program_count", "Bachelor programs"),
             type: "number",
-            direction: "higher",
+            direction: "neutral",
             getter: compareBachelorProgramCount,
             formatter: compareCountText,
             reason: false,
@@ -336,7 +288,7 @@ export const buildCompareSpecs = (universities) => {
             category: "academics",
             label: t("universities.compare.row.major_tags", "Academic fields"),
             type: "number",
-            direction: "higher",
+            direction: "neutral",
             getter: compareMajorTagCount,
             formatter: compareCountText,
             reason: false,
@@ -347,7 +299,7 @@ export const buildCompareSpecs = (universities) => {
             category: "academics",
             label: t("universities.compare.row.study_formats", "Study formats"),
             type: "number",
-            direction: "higher",
+            direction: "neutral",
             getter: compareStudyFormatCount,
             formatter: compareCountText,
             reason: false,
@@ -358,7 +310,7 @@ export const buildCompareSpecs = (universities) => {
             category: "academics",
             label: t("universities.compare.row.language", "Program language"),
             type: "number",
-            direction: "higher",
+            direction: "neutral",
             getter: compareLanguageCount,
             formatter: compareCountText,
             reason: false,
@@ -387,16 +339,28 @@ export const buildCompareSpecs = (universities) => {
             reason: false,
         },
         {
+            key: "undergraduate_structure",
+            section: "programs",
+            category: "academics",
+            label: t("universities.compare.row.undergraduate_structure", "Undergraduate structure"),
+            type: "text",
+            direction: "neutral",
+            getter: compareUndergraduateStructureText,
+            score: false,
+            reason: false,
+        },
+        {
             key: "acceptance",
             section: "admissions",
             category: "admissions",
-            label: t("ranking.acceptance", "Acceptance Rate"),
+            label: t("universities.compare.row.published_selectivity", "Published admission rate"),
             type: "number",
-            direction: "higher",
-            getter: (u) => toFiniteNumber(u?.academics?.acceptance_rate_percent),
+            direction: "neutral",
+            getter: (u) => comparePublishedAdmission(u).value,
             formatter: comparePercentText,
-            sourceKey: "acceptance_rate_percent",
-            weight: 1.2,
+            sourceGetter: comparePublishedAdmission,
+            score: false,
+            reason: false,
         },
         {
             key: "selected_route",
@@ -483,29 +447,30 @@ export const buildCompareSpecs = (universities) => {
             type: "number",
             direction: "lower",
             getter: compareSelectedAnnualCost,
-            formatter: (value, u) => formatCompareCost(value, "placeholder.field.cost", "Cost", u?.finance?.currency || "USD"),
-            sourceKey: "tuition_total_cost_year_usd",
-            weight: 1.25,
+            formatter: (_value, u) => formatCompareCostRange(compareSelectedCostContext(u)),
+            sourceGetter: compareSelectedCostContext,
+            materiality: 0.1,
+            comparable: (rows) => compareCostContextsComparable(
+                rows.map((row) => compareSelectedCostContext(row.university))
+            ),
         },
         {
             key: "tuition_fees",
             section: "finance",
             category: "finance",
             label: t("universities.compare.row.tuition_fees", "Tuition + fees"),
-            type: "number",
-            direction: "lower",
-            getter: (u) => compareCostBreakdownNumber(u, "tuition"),
-            formatter: (value, u) => formatCompareCost(value, "placeholder.field.cost", "Cost", u?.finance?.currency || "USD"),
+            type: "text",
+            direction: "neutral",
+            getter: (u) => compareCostBreakdownText(u, "tuition"),
         },
         {
             key: "living_costs",
             section: "finance",
             category: "finance",
             label: t("universities.compare.row.living_costs", "Living cost items"),
-            type: "number",
-            direction: "lower",
-            getter: (u) => compareCostBreakdownNumber(u, "living"),
-            formatter: (value, u) => formatCompareCost(value, "placeholder.field.cost", "Cost", u?.finance?.currency || "USD"),
+            type: "text",
+            direction: "neutral",
+            getter: (u) => compareCostBreakdownText(u, "living"),
         },
         {
             key: "aid",
@@ -513,10 +478,11 @@ export const buildCompareSpecs = (universities) => {
             category: "finance",
             label: t("universities.compare.row.aid", "Aid"),
             type: "number",
-            direction: "higher",
+            direction: "neutral",
             getter: compareAidScore,
             formatter: (value, u) => compareAidText(u),
-            reasonMode: "aid",
+            score: false,
+            reason: false,
         },
         {
             key: "salary",
@@ -529,6 +495,11 @@ export const buildCompareSpecs = (universities) => {
             formatter: (value) => moneyUSD(value),
             sourceKey: "average_early_career_salary_usd",
             weight: 1.1,
+            materiality: 0.1,
+            comparable: (rows) => rows.every((row) => {
+                const source = compareSourceMeta(row.university, "average_early_career_salary_usd");
+                return Boolean(String(source?.url || "").trim() && String(source?.verifiedAt || "").trim());
+            }),
         },
         {
             key: "data_quality",
@@ -563,7 +534,7 @@ export const buildCompareSpecs = (universities) => {
             category: "admissions",
             label: tFormat("universities.compare.row.exam_requirement", { exam: getExamDisplayName(examId) }, `${getExamDisplayName(examId)} requirement`),
             type: "number",
-            direction: "lower",
+            direction: "neutral",
             getter: (u) => compareRequirementValue(u, examId),
             formatter: (value) => (canonicalizeExamId(examId) === "GPA" ? formatExamValue("GPA", value) : compareScoreText(value)),
         });
@@ -577,7 +548,7 @@ export const buildCompareSpecs = (universities) => {
             category: "prestige",
             label: tFormat("universities.compare.row.exam_average", { exam: getExamDisplayName(examId) }, `${getExamDisplayName(examId)} admitted score`),
             type: "number",
-            direction: "higher",
+            direction: "neutral",
             getter: (u) => compareAverageScoreValue(u, examId),
             formatter: (value) => (canonicalizeExamId(examId) === "GPA" ? formatExamValue("GPA", value) : compareScoreText(value)),
         });
@@ -591,7 +562,7 @@ export const buildCompareSpecs = (universities) => {
             category: "admissions",
             label: tFormat("universities.compare.row.language_exam_requirement", { exam: getExamDisplayName(examId) }, `${getExamDisplayName(examId)} language minimum`),
             type: "number",
-            direction: "lower",
+            direction: "neutral",
             getter: (u) => compareLanguageRequirementValue(u, examId),
             formatter: compareScoreText,
         });
@@ -629,13 +600,21 @@ export const compareBestIdsForSpec = (universities, spec) => {
     if (spec.reason === false || spec.score === false) return new Set();
     if (!["higher", "lower"].includes(spec.direction)) return new Set();
     const rows = compareSpecRows(universities, spec);
-    if (rows.length === 1 && spec.allowSinglePublishedAdvantage) return new Set([rows[0].id]);
     if (rows.length < 2) return new Set();
+    if (typeof spec.comparable === "function" && !spec.comparable(rows)) return new Set();
     const sorted = rows.slice().sort((a, b) => spec.direction === "higher" ? b.value - a.value : a.value - b.value);
     const best = sorted[0]?.value;
     if (!Number.isFinite(best)) return new Set();
     const bestRows = sorted.filter((row) => Math.abs(row.value - best) <= 0.000001);
-    return bestRows.length === 1 ? new Set([bestRows[0].id]) : new Set();
+    if (bestRows.length !== 1) return new Set();
+    const baseline = sorted.find((row) => row.id !== bestRows[0].id);
+    const materiality = Number(spec.materiality || 0);
+    if (baseline && materiality > 0) {
+        const denominator = Math.max(Math.abs(Number(baseline.value)), 0.000001);
+        const relativeDifference = Math.abs(Number(best) - Number(baseline.value)) / denominator;
+        if (relativeDifference < materiality) return new Set();
+    }
+    return new Set([bestRows[0].id]);
 };
 
 export const compareMetrics = (universities) => {
@@ -653,7 +632,7 @@ export const compareMetrics = (universities) => {
 
 export const compareCell = (text, opts = {}) => {
     const tone = opts.tone ? ` compare-cell--${opts.tone}` : "";
-    const sub = opts.sub ? `<small>${escapeHtml(opts.sub)}</small>` : "";
+    const sub = opts.subHtml || (opts.sub ? `<small>${escapeHtml(opts.sub)}</small>` : "");
     const titleAttr = opts.title ? ` title="${escapeHtmlAttr(opts.title)}"` : "";
     return `<td class="compare-cell${tone}"${titleAttr}><span>${escapeHtml(text || t("common.na", "N/A"))}</span>${sub}</td>`;
 };
@@ -689,10 +668,24 @@ export const compareSpecValue = (spec, u, metrics) => {
         ? t("common.na", "N/A")
         : (spec.formatter ? spec.formatter(raw, u) : String(raw));
     const bestIds = metrics.bestBySpec?.get(spec.key) || new Set();
+    const sourceMeta = spec.sourceGetter
+        ? spec.sourceGetter(u)
+        : (spec.sourceKey ? compareSourceMeta(u, spec.sourceKey) : null);
+    const sourceLabel = String(sourceMeta?.source || sourceMeta?.text || "").trim();
+    const sourceUrl = String(sourceMeta?.sourceUrl || sourceMeta?.url || "").trim();
+    const verifiedAt = String(sourceMeta?.verifiedAt || "").trim();
+    const sourceParts = [sourceLabel, verifiedAt].filter(Boolean);
+    const sourceText = sourceParts.join(" · ");
+    const sourceHtml = sourceText
+        ? `<small>${sourceUrl
+            ? `<a class="compare-source-link" href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceText)}</a>`
+            : escapeHtml(sourceText)}</small>`
+        : "";
     return {
         text,
         tone: bestIds.has(String(u?.id || "")) ? "best" : "",
-        sub: spec.sourceKey ? compareSourceText(u, spec.sourceKey) : "",
+        sub: "",
+        subHtml: sourceHtml,
         title: spec.titleGetter ? spec.titleGetter(u) : "",
     };
 };
@@ -716,348 +709,293 @@ export const compareRowsHtml = (universities, metrics) => {
     }).join("");
 };
 
-export const percentDeltaText = (value, average, inverse = false) => {
-    if (!Number.isFinite(value) || !Number.isFinite(average) || average <= 0) return "";
-    const delta = inverse ? ((average - value) / average) : ((value - average) / average);
-    if (!Number.isFinite(delta) || delta <= 0.005) return "";
-    return `${Math.round(delta * 100)}%`;
+export const compareCostContextsComparable = (contexts) => {
+    if (!Array.isArray(contexts) || contexts.length < 2) return false;
+    const valid = contexts.every((context) => (
+        Number.isFinite(Number(context?.min))
+        && String(context?.academicYear || "").trim()
+        && String(context?.feeStatus || "").trim()
+    ));
+    if (!valid) return false;
+    const first = contexts[0];
+    return contexts.every((context) => (
+        String(context.academicYear).trim().toLowerCase() === String(first.academicYear).trim().toLowerCase()
+        && String(context.feeStatus).trim().toLowerCase() === String(first.feeStatus).trim().toLowerCase()
+    ));
 };
 
-export const compareAdvantageText = (spec, row, baseline) => {
-    const name = compareUniversityName(row.university);
-    const metric = spec.label;
-    const valueText = spec.formatter ? spec.formatter(row.value, row.university) : String(row.value);
-    const baselineText = baseline ? (spec.formatter ? spec.formatter(baseline.value, baseline.university) : String(baseline.value)) : "";
-    if (spec.reasonMode === "rank") {
-        const baselineRank = baseline && Number.isFinite(baseline.value) ? baseline.value : null;
-        if (baselineRank !== null) {
-            const diff = Math.abs(baselineRank - row.value);
-            const baselineName = compareUniversityName(baseline.university);
-            if (diff > 0) {
-                const positionsWord = formatPlural(
-                    diff,
-                    [
-                        t("universities.compare.reason.position_one", "position"),
-                        t("universities.compare.reason.position_few", "positions"),
-                        t("universities.compare.reason.position_many", "positions"),
-                    ],
-                    getCurrentLanguage()
-                );
-                return tFormat(
-                    "universities.compare.reason.rank_vs",
-                    {
-                        name,
-                        metric,
-                        value: valueText,
-                        baseline: baselineName,
-                        baseline_value: baselineText,
-                        diff: String(diff),
-                        positions: positionsWord,
-                    },
-                    `Best published rank: ${valueText} (${diff} ${positionsWord} better than ${baselineName} — ${baselineText}).`
-                );
-            }
-        }
-        return tFormat(
-            "universities.compare.reason.rank",
-            { name, metric, value: valueText },
-            `Best published rank: ${valueText}.`
-        );
-    }
-    if (spec.reasonMode === "aid") {
-        return tFormat(
-            "universities.compare.reason.best",
-            { name, metric, value: valueText },
-            `${metric}: ${valueText}.`
-        );
-    }
-    const delta = baseline ? percentDeltaText(row.value, baseline.value, spec.direction === "lower") : "";
-    if (delta) {
-        const key = spec.direction === "lower"
-            ? "universities.compare.reason.lower_percent"
-            : "universities.compare.reason.higher_percent";
-        const fallback = spec.direction === "lower"
-            ? `${metric}: ${valueText} instead of ${baselineText}.`
-            : `${metric}: ${valueText} instead of ${baselineText}.`;
-        return tFormat(key, { name, metric, percent: delta, value: valueText, baseline: baselineText }, fallback);
-    }
-    const key = spec.direction === "lower"
-        ? "universities.compare.reason.lowest"
-        : "universities.compare.reason.highest";
-    const fallback = spec.direction === "lower"
-        ? `Lowest ${metric}: ${valueText}.`
-        : `Highest ${metric}: ${valueText}.`;
-    return tFormat(key, { name, metric, value: valueText }, fallback);
+export const comparePublishedAdmissionsComparable = (rows) => {
+    if (!Array.isArray(rows) || rows.length < 2) return false;
+    const valid = rows.every((row) => (
+        Number.isFinite(Number(row?.value))
+        && String(row?.scope || "").trim()
+        && String(row?.audience || "").trim()
+        && String(row?.cycle || "").trim()
+    ));
+    if (!valid) return false;
+    const first = rows[0];
+    return rows.every((row) => (
+        String(row.scope).trim().toLowerCase() === String(first.scope).trim().toLowerCase()
+        && String(row.audience).trim().toLowerCase() === String(first.audience).trim().toLowerCase()
+        && String(row.cycle).trim().toLowerCase() === String(first.cycle).trim().toLowerCase()
+    ));
 };
 
-export const buildCompareAdvantages = (universities, metrics) => {
-    const byUniversity = new Map(universities.map((u) => [String(u?.id || ""), []]));
-    (metrics.specs || []).forEach((spec) => {
-        if (spec.reason === false || !["higher", "lower"].includes(spec.direction)) return;
-        const rows = compareSpecRows(universities, spec);
-        if (rows.length === 1 && spec.allowSinglePublishedAdvantage) {
-            const target = byUniversity.get(rows[0].id);
-            if (!target) return;
-            target.push({
-                key: spec.key,
-                category: spec.category,
-                strength: (spec.weight || 1) * 0.12,
-                text: compareAdvantageText(spec, rows[0], null),
-            });
-            return;
-        }
-        if (rows.length < 2) return;
-        const sorted = rows.slice().sort((a, b) => spec.direction === "higher" ? b.value - a.value : a.value - b.value);
-        const bestValue = sorted[0]?.value;
-        if (!Number.isFinite(bestValue)) return;
-        const bestRows = sorted.filter((row) => Math.abs(row.value - bestValue) <= 0.000001);
-        if (bestRows.length !== 1) return;
-        const best = bestRows[0];
-        const baseline = sorted.find((row) => row.id !== best.id) || null;
-        const strengthDelta = baseline && Number.isFinite(baseline.value) && baseline.value > 0
-            ? Math.abs(best.value - baseline.value) / Math.abs(baseline.value)
-            : 0.08;
-        const categoryBoost = spec.weight || 1;
-        const strength = Math.max(0.02, strengthDelta) * categoryBoost;
-        const target = byUniversity.get(best.id);
-        if (!target) return;
-        target.push({
-            key: spec.key,
-            category: spec.category,
-            strength,
-            text: compareAdvantageText(spec, best, baseline),
-        });
-    });
-    byUniversity.forEach((items, id) => {
-        byUniversity.set(id, items.sort((a, b) => b.strength - a.strength).slice(0, 6));
-    });
-    return byUniversity;
+const compareDecisionStatusLabel = (status) => {
+    const labels = {
+        advantage: t("universities.compare.status.advantage", "Comparable advantage"),
+        tradeoff: t("universities.compare.status.tradeoff", "Trade-off"),
+        parity: t("universities.compare.status.parity", "No clear leader"),
+        incomparable: t("universities.compare.status.incomparable", "Not directly comparable"),
+        missing: t("universities.compare.status.missing", "Data missing"),
+    };
+    return labels[status] || labels.missing;
 };
 
-export const buildCompareKeyDifferencesHtml = (universities, metrics) => {
-    const advantages = buildCompareAdvantages(universities, metrics);
+const compareDecisionSource = (meta) => {
+    const source = String(meta?.source || meta?.text || "").trim();
+    const sourceUrl = String(meta?.sourceUrl || meta?.source_url || "").trim();
+    const verifiedAt = String(meta?.verifiedAt || meta?.verified_at || "").trim();
+    if (!source && !verifiedAt) return null;
+    return { source, sourceUrl, verifiedAt };
+};
+
+const compareDecisionFact = (label, value, source = null) => ({ label, value, source });
+
+const selectedChanceForUniversity = (university, context = {}) => {
+    const id = String(university?.id || "");
+    const universityChance = context?.chances?.get?.(id) || null;
+    const selection = context?.choices?.get?.(id) || null;
+    const selectedKey = String(selection?.choiceKey || selection?.choice_key || selection || "").trim();
+    const choices = Array.isArray(universityChance?.choices) ? universityChance.choices : [];
+    return choices.find((choice) => String(choice?.choiceKey || "") === selectedKey)
+        || choices[0]
+        || universityChance;
+};
+
+const compareChanceFactText = (chance) => {
+    const value = toFiniteNumber(chance?.chancePercent ?? chance?.overallChance);
+    if (value !== null && chance?.chanceAvailable !== false) {
+        const confidence = String(chance?.confidence || chance?.confidenceLevel || "").trim().toLowerCase();
+        const confidenceLabels = {
+            high: t("universities.compare.confidence.high", "high confidence"),
+            medium: t("universities.compare.confidence.medium", "medium confidence"),
+            low: t("universities.compare.confidence.low", "low confidence"),
+        };
+        const confidenceText = confidenceLabels[confidence] || t("universities.compare.confidence.estimated", "estimated");
+        return `${comparePercentText(value)} · ${confidenceText}`;
+    }
+    const reason = String(chance?.reason || "").trim().toLowerCase();
+    if (reason === "requirements_not_met") {
+        return t("admission.chance.requirements_not_met", "A required minimum is not met");
+    }
+    return t("universities.compare.profile_missing", "Add the required profile evidence");
+};
+
+const compareAdmissionTheme = (universities, context) => {
+    const published = universities.map((university) => comparePublishedAdmission(university, context?.choices));
+    const publishedAvailable = published.every((row) => Number.isFinite(Number(row?.value)));
+    const comparable = comparePublishedAdmissionsComparable(published);
+    const status = !publishedAvailable ? "missing" : (comparable ? "parity" : "incomparable");
+    const summary = !publishedAvailable
+        ? t("universities.compare.admissions.missing", "Published admission data is incomplete, so no selectivity comparison is made.")
+        : (comparable
+            ? t("universities.compare.admissions.comparable", "Published rates describe selectivity, not your personal probability of admission.")
+            : t("universities.compare.admissions.incomparable", "The published rates use different course or institution scopes, audiences, or cycles."));
+
+    return {
+        key: "admissions",
+        icon: "academic-cap",
+        title: t("universities.compare.admissions.title", "Admission and requirements fit"),
+        status,
+        summary,
+        universities: universities.map((university, index) => {
+            const chance = selectedChanceForUniversity(university, context);
+            const admission = published[index];
+            const scopeKey = admission.scope === "program"
+                ? "universities.compare.scope.program"
+                : "universities.compare.scope.institution";
+            const scopeFallback = admission.scope === "program" ? "course-specific" : "institution-wide";
+            const publishedValue = Number.isFinite(Number(admission.value))
+                ? `${comparePercentText(admission.value)} · ${t(scopeKey, scopeFallback)}${admission.cycle ? ` · ${admission.cycle}` : ""}`
+                : t("common.na", "N/A");
+            return {
+                id: String(university?.id || ""),
+                name: compareUniversityName(university),
+                facts: [
+                    compareDecisionFact(t("universities.compare.personal_estimate", "Personal estimate"), compareChanceFactText(chance)),
+                    compareDecisionFact(
+                        t("universities.compare.published_rate", "Published selectivity"),
+                        publishedValue,
+                        compareDecisionSource(admission)
+                    ),
+                    compareDecisionFact(t("universities.compare.requirements_fit", "Requirements"), compareRequirementsText(university, context?.choices)),
+                ],
+            };
+        }),
+    };
+};
+
+const compareFinanceTheme = (universities, context) => {
+    const costs = universities.map((university) => compareSelectedCostContext(university, context?.choices));
+    const available = costs.every((cost) => Number.isFinite(Number(cost?.min)));
+    const comparable = available && compareCostContextsComparable(costs);
+    let status = "missing";
+    let summary = t("universities.compare.finance.missing", "Comparable cost data is missing; unknown values are not treated as zero.");
+    if (available && !comparable) {
+        status = "incomparable";
+        summary = t("universities.compare.finance.incomparable", "Sticker costs use different academic years or fee statuses, so they are shown without a winner.");
+    } else if (comparable) {
+        status = "tradeoff";
+        summary = t("universities.compare.finance.tradeoff", "Compare the published sticker cost with each university's aid policy; neither alone is the final net price.");
+    }
+    return {
+        key: "finance",
+        icon: "banknotes",
+        title: t("universities.compare.finance.title", "Cost and financial aid"),
+        status,
+        summary,
+        universities: universities.map((university, index) => {
+            const cost = costs[index];
+            const contextText = compareCostContextText(cost);
+            const aid = university?.finance?.financial_aid || {};
+            return {
+                id: String(university?.id || ""),
+                name: compareUniversityName(university),
+                facts: [
+                    compareDecisionFact(t("universities.compare.sticker_cost", "Sticker cost"), formatCompareCostRange(cost), compareDecisionSource(cost)),
+                    compareDecisionFact(t("universities.compare.cost_context", "Cost context"), contextText),
+                    compareDecisionFact(
+                        t("universities.compare.aid_policy", "Aid policy"),
+                        compareAidPolicyText(university),
+                        compareDecisionSource(aid)
+                    ),
+                ],
+            };
+        }),
+    };
+};
+
+const compareAcademicsTheme = (universities) => {
+    const structures = universities.map((university) => university?.academics?.undergraduate_structure || {});
+    const hasStructures = structures.some((structure) => Object.keys(structure).length > 0);
+    const ranks = universities.map((university) => toFiniteNumber(university?.rank)).filter((value) => value !== null);
+    const closeRanks = ranks.length === universities.length && Math.max(...ranks) - Math.min(...ranks) <= 3;
+    return {
+        key: "academics",
+        icon: "book-open",
+        title: t("universities.compare.academics.title", "Program and learning model"),
+        status: hasStructures ? "tradeoff" : (closeRanks ? "parity" : "missing"),
+        summary: hasStructures
+            ? t("universities.compare.academics.tradeoff", "These are different undergraduate models and preference trade-offs, not proof that one offers higher academic quality.")
+            : t("universities.compare.academics.parity", "A small rank difference is informational and does not establish a prestige or quality winner."),
+        universities: universities.map((university, index) => ({
+            id: String(university?.id || ""),
+            name: compareUniversityName(university),
+            facts: [
+                compareDecisionFact(
+                    t("universities.compare.published_rank", "Published rank"),
+                    compareRankText(university),
+                    compareDecisionSource(compareSourceMeta(university, "rank"))
+                ),
+                compareDecisionFact(
+                    t("universities.compare.learning_model", "Learning model"),
+                    compareUndergraduateStructureText(university),
+                    compareDecisionSource(structures[index])
+                ),
+            ],
+        })),
+    };
+};
+
+const compareOutcomesTheme = (universities) => {
+    const rows = universities.map((university) => ({
+        university,
+        salary: (() => {
+            const source = compareSourceMeta(university, "average_early_career_salary_usd");
+            return String(source?.url || "").trim() && String(source?.verifiedAt || "").trim()
+                ? toFiniteNumber(university?.outcomes?.average_early_career_salary_usd)
+                : null;
+        })(),
+    }));
+    const complete = rows.every((row) => row.salary !== null);
+    return {
+        key: "outcomes",
+        icon: "chart-bar",
+        title: t("universities.compare.outcomes.title", "Graduate outcomes"),
+        status: complete ? "tradeoff" : "missing",
+        summary: complete
+            ? t("universities.compare.outcomes.available", "Published salary is shown as context; ROI requires comparable verified cost and outcome data.")
+            : t("universities.compare.outcomes.missing", "Verified comparable salary or ROI data is incomplete, so no outcome winner is selected."),
+        universities: rows.map((row) => ({
+            id: String(row.university?.id || ""),
+            name: compareUniversityName(row.university),
+            facts: [compareDecisionFact(
+                t("universities.compare.verified_salary", "Verified early-career salary"),
+                row.salary === null ? t("common.na", "N/A") : moneyUSD(row.salary),
+                compareDecisionSource(compareSourceMeta(row.university, "average_early_career_salary_usd"))
+            )],
+        })),
+    };
+};
+
+export const buildCompareDecisionSignals = (universities, context = {}) => [
+    compareAdmissionTheme(universities, context),
+    compareFinanceTheme(universities, context),
+    compareAcademicsTheme(universities),
+    compareOutcomesTheme(universities),
+];
+
+const compareDecisionSourceHtml = (source) => {
+    if (!source) return "";
+    const text = [source.source, source.verifiedAt].filter(Boolean).join(" · ");
+    if (!text) return "";
+    const body = source.sourceUrl
+        ? `<a href="${escapeHtmlAttr(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`
+        : escapeHtml(text);
+    return `<span class="compare-decision-source">${body}</span>`;
+};
+
+export const buildCompareDecisionSupportHtml = (universities, context = {}) => {
+    const themes = buildCompareDecisionSignals(universities, context);
     return `
-        <section class="compare-analysis-block compare-key-differences" aria-labelledby="compareKeyDifferencesTitle">
+        <section class="compare-analysis-block compare-decision-support" aria-labelledby="compareDecisionTitle">
             <div class="compare-block-head">
                 <div class="compare-block-icon">${renderInlineIcon("sparkles", 20, "compare-block-icon-svg")}</div>
                 <div>
-                    <h2 id="compareKeyDifferencesTitle">${escapeHtml(t("universities.compare.differences.title", "Key differences"))}</h2>
-                    <p>${escapeHtml(t("universities.compare.differences.subtitle", "Shows the clearest published advantages for each selected university."))}</p>
+                    <h2 id="compareDecisionTitle">${escapeHtml(t("universities.compare.decision.title", "What matters for your choice"))}</h2>
+                    <p>${escapeHtml(t("universities.compare.decision.subtitle", "Independent signals explain fit and trade-offs without declaring one university universally better."))}</p>
                 </div>
             </div>
-            <div class="compare-reasons compare-reasons--pair">
-                ${universities.map((u, index) => {
-                    const id = String(u?.id || "");
-                    const items = advantages.get(id) || [];
-                    return `
-                        <article class="compare-reason-group" data-compare-slot="${index + 1}">
-                            <span class="compare-reason-slot">${escapeHtml(compareSlotLabel(index))}</span>
-                            <h3>${escapeHtml(tFormat("universities.compare.differences.reasons_for", { name: compareUniversityName(u) }, compareUniversityName(u)))}</h3>
-                            ${items.length ? `
-                                <ul class="compare-reason-list">
-                                    ${items.map((item) => `
-                                        <li>
-                                            <span class="compare-reason-icon">${renderInlineIcon("check-circle", 18, "compare-reason-icon-svg")}</span>
-                                            <span>${escapeHtml(item.text)}</span>
-                                        </li>
-                                    `).join("")}
-                                </ul>
-                            ` : `<p class="compare-reason-empty">${escapeHtml(t("universities.compare.differences.no_clear_advantage", "No clear published advantage found across comparable metrics."))}</p>`}
-                        </article>
-                    `;
-                }).join("")}
-            </div>
-        </section>
-    `;
-};
-
-export const compareNormalizedScore = (value, min, max, direction) => {
-    if (!Number.isFinite(value) || !Number.isFinite(min) || !Number.isFinite(max)) return null;
-    if (Math.abs(max - min) <= 0.000001) return 80;
-    const normalized = (value - min) / (max - min);
-    const relative = direction === "lower" ? (1 - normalized) : normalized;
-    return Math.max(0, Math.min(100, Math.round(60 + relative * 40)));
-};
-
-export const buildCompareCategoryScores = (universities, metrics) => {
-    const scores = new Map(universities.map((u) => [String(u?.id || ""), new Map()]));
-    (metrics.specs || []).forEach((spec) => {
-        if (spec.score === false || !["higher", "lower"].includes(spec.direction) || !spec.category) return;
-        const rows = compareSpecRows(universities, spec);
-        if (rows.length < 2) return;
-        const values = rows.map((row) => row.value);
-        const min = Math.min(...values);
-        const max = Math.max(...values);
-        rows.forEach((row) => {
-            const score = compareNormalizedScore(row.value, min, max, spec.direction);
-            if (score === null) return;
-            const byCategory = scores.get(row.id);
-            if (!byCategory) return;
-            const list = byCategory.get(spec.category) || [];
-            list.push({ score, weight: spec.weight || 1 });
-            byCategory.set(spec.category, list);
-        });
-    });
-    const averaged = new Map();
-    scores.forEach((byCategory, id) => {
-        const result = new Map();
-        byCategory.forEach((items, category) => {
-            const weightSum = items.reduce((sum, item) => sum + item.weight, 0);
-            const scoreSum = items.reduce((sum, item) => sum + (item.score * item.weight), 0);
-            if (weightSum > 0) result.set(category, Math.round(scoreSum / weightSum));
-        });
-        averaged.set(id, result);
-    });
-    return averaged;
-};
-
-export const buildCompareOverviewHtml = (universities, metrics) => {
-    const categoryMeta = compareCategoryMeta();
-    const scores = buildCompareCategoryScores(universities, metrics);
-    const advantages = buildCompareAdvantages(universities, metrics);
-    const categories = Object.keys(categoryMeta).filter((category) => (
-        universities.some((u) => scores.get(String(u?.id || ""))?.has(category))
-    ));
-    if (!categories.length) return "";
-    return `
-        <section class="compare-analysis-block compare-overview" aria-labelledby="compareOverviewTitle">
-            <div class="compare-block-head">
-                <div class="compare-block-icon">${renderInlineIcon("clipboard-document-list", 20, "compare-block-icon-svg")}</div>
-                <div>
-                    <h2 id="compareOverviewTitle">${escapeHtml(t("universities.compare.overview.title", "Overview"))}</h2>
-                    <p>${escapeHtml(t("universities.compare.overview.subtitle", "Category breakdown: highlights which university holds the relative advantage based on published data."))}</p>
-                </div>
-            </div>
-            <div class="compare-score-grid">
-                ${categories.map((category) => {
-                    const meta = categoryMeta[category];
-                    const ranked = universities
-                        .map((u) => ({
-                            university: u,
-                            id: String(u?.id || ""),
-                            score: scores.get(String(u?.id || ""))?.get(category),
-                        }))
-                        .filter((row) => Number.isFinite(row.score))
-                        .sort((a, b) => b.score - a.score);
-
-                    const hasMultiple = ranked.length >= 2;
-                    const isTie = hasMultiple && Math.abs(ranked[0].score - ranked[1].score) <= 3;
-                    const winner = !isTie && ranked.length > 0 ? ranked[0].university : null;
-                    const winnerId = winner ? String(winner.id || "") : "";
-                    const winnerName = winner ? compareUniversityName(winner) : "";
-
-                    let reasonText = "";
-                    if (winner) {
-                        const reasonItem = (advantages.get(winnerId) || []).find((item) => item.category === category);
-                        if (reasonItem && reasonItem.text) {
-                            reasonText = reasonItem.text;
-                        } else {
-                            reasonText = tFormat(
-                                "universities.compare.overview.advantage_desc",
-                                { name: winnerName, category: meta.title },
-                                `${winnerName} holds stronger published indicators in ${meta.title}.`
-                            );
-                        }
-                    } else {
-                        reasonText = t("universities.compare.overview.parity_desc", "Equal published indicators in this category.");
-                    }
-
-                    const leadBadgeText = winner ? tFormat("universities.compare.overview.advantage_label", { name: winnerName }, `Advantage: ${winnerName}`) : "";
-
-                    return `
-                        <article class="compare-score-card">
-                            <div class="compare-score-card__head">
-                                <div class="compare-score-card__meta">
-                                    <span class="compare-score-card-icon-wrap">${renderInlineIcon(meta.icon, 16, "compare-score-card-icon")}</span>
-                                    <div>
-                                        <h3>${escapeHtml(meta.title)}</h3>
-                                        <p>${escapeHtml(meta.subtitle)}</p>
-                                    </div>
-                                </div>
-                                ${winner ? `
-                                    <span class="compare-verdict-badge compare-verdict-badge--lead" title="${escapeHtmlAttr(leadBadgeText)}">
-                                        <span>${escapeHtml(leadBadgeText)}</span>
-                                    </span>
-                                ` : `
-                                    <span class="compare-verdict-badge compare-verdict-badge--parity">
-                                        <span class="compare-verdict-badge-dot" aria-hidden="true"></span>
-                                        <span>${escapeHtml(t("universities.compare.overview.parity", "Parity"))}</span>
-                                    </span>
-                                `}
+            <div class="compare-decision-list">
+                ${themes.map((theme) => `
+                    <article class="compare-decision-theme" data-theme-key="${escapeHtmlAttr(theme.key)}" data-status="${escapeHtmlAttr(theme.status)}">
+                        <header class="compare-decision-theme__head">
+                            <span class="compare-decision-theme__icon">${renderInlineIcon(theme.icon, 18, "compare-decision-theme__icon-svg")}</span>
+                            <div>
+                                <h3>${escapeHtml(theme.title)}</h3>
+                                <p>${escapeHtml(theme.summary)}</p>
                             </div>
-                            <div class="compare-score-card__body">
-                                <p class="compare-score-card__reason">${escapeHtml(reasonText)}</p>
-                                <div class="compare-score-participants">
-                                    ${universities.map((u) => {
-                                        const id = String(u?.id || "");
-                                        const isLead = Boolean(winner && id === winnerId);
-                                        const logoSrc = uniLogoSrc(id);
-                                        const logoSrcFull = uniLogoSrc(id, { forceFull: true });
-                                        const uniName = compareUniversityName(u);
-                                        let statusLabel = "";
-                                        if (winner) {
-                                            statusLabel = isLead
-                                                ? t("universities.compare.overview.lead_status", "Advantage")
-                                                : t("universities.compare.overview.baseline_status", "Baseline");
-                                        } else {
-                                            statusLabel = t("universities.compare.overview.parity_status", "Equal");
-                                        }
-                                        return `
-                                            <div class="compare-score-participant${isLead ? " is-lead" : ""}">
-                                                <div class="compare-score-participant__info">
-                                                    <span class="compare-score-participant__logo">
-                                                        <img src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(uniName))}">
-                                                    </span>
-                                                    <span class="compare-score-participant__name">${escapeHtml(uniName)}</span>
-                                                </div>
-                                                <span class="compare-score-participant__status">${escapeHtml(statusLabel)}</span>
+                            <span class="compare-decision-status compare-decision-status--${escapeHtmlAttr(theme.status)}">${escapeHtml(compareDecisionStatusLabel(theme.status))}</span>
+                        </header>
+                        <div class="compare-decision-pair">
+                            ${theme.universities.map((row, index) => `
+                                <section class="compare-decision-side" data-compare-slot="${index + 1}">
+                                    <span class="compare-decision-side__slot">${escapeHtml(compareSlotLabel(index))}</span>
+                                    <h4>${escapeHtml(row.name)}</h4>
+                                    <dl>
+                                        ${row.facts.map((fact) => `
+                                            <div class="compare-decision-fact">
+                                                <dt>${escapeHtml(fact.label)}</dt>
+                                                <dd>${escapeHtml(fact.value || t("common.na", "N/A"))}${compareDecisionSourceHtml(fact.source)}</dd>
                                             </div>
-                                        `;
-                                    }).join("")}
-                                </div>
-                            </div>
-                        </article>
-                    `;
-                }).join("")}
-            </div>
-        </section>
-    `;
-};
-
-export const buildCompareConclusionHtml = (universities, metrics) => {
-    const categoryMeta = compareCategoryMeta();
-    const scores = buildCompareCategoryScores(universities, metrics);
-    const winners = Object.keys(categoryMeta).map((category) => {
-        const rows = universities
-            .map((u) => ({ university: u, id: String(u?.id || ""), score: scores.get(String(u?.id || ""))?.get(category) }))
-            .filter((row) => Number.isFinite(row.score))
-            .sort((a, b) => b.score - a.score);
-        if (!rows.length) return null;
-        return { category, title: categoryMeta[category].title, university: rows[0].university, score: rows[0].score };
-    }).filter(Boolean);
-    const unique = [];
-    winners.forEach((winner) => {
-        if (unique.some((row) => row.category === winner.category && String(row.university?.id || "") === String(winner.university?.id || ""))) return;
-        unique.push(winner);
-    });
-    const selected = unique.slice(0, 3);
-    const body = selected.length
-        ? tFormat(
-            "universities.compare.conclusion.body",
-            {
-                summary: selected.map((row) => `${row.title}: ${compareUniversityName(row.university)}`).join("; "),
-            },
-            `Best relative fits by category: ${selected.map((row) => `${row.title}: ${compareUniversityName(row.university)}`).join("; ")}.`
-        )
-        : t("universities.compare.conclusion.empty", "The selected universities are close on the comparable published metrics. Use the highlighted table rows and official sources before making the final decision.");
-    return `
-        <section class="compare-analysis-block compare-conclusion" aria-labelledby="compareConclusionTitle">
-            <div class="compare-block-head">
-                <div class="compare-block-icon">${renderInlineIcon("information-circle", 20, "compare-block-icon-svg")}</div>
-                <div>
-                    <h2 id="compareConclusionTitle">${escapeHtml(t("universities.compare.conclusion.title", "Conclusion"))}</h2>
-                    <p>${escapeHtml(body)}</p>
-                </div>
+                                        `).join("")}
+                                    </dl>
+                                </section>
+                            `).join("")}
+                        </div>
+                    </article>
+                `).join("")}
             </div>
         </section>
     `;

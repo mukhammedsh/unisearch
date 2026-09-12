@@ -4,6 +4,8 @@ const { setNativeSelect } = require("./helpers/selectors");
 
 const MIT_ID = "mit-usa-cambridge";
 const IMPERIAL_ID = "imperial-college-london-uk";
+const OXFORD_ID = "university-of-oxford-uk-oxford";
+const HARVARD_ID = "harvard-usa-cambridge";
 
 async function clearCompareState(page) {
   await page.addInitScript(() => {
@@ -66,13 +68,13 @@ test("universities tabs host comparison flow navigating to dedicated compare pag
   await continueCompareButton.click();
 
   // Verify results view rendered on compare page
-  await expect(page.locator(".compare-key-differences")).toBeVisible();
-  await expect(page.locator(".compare-reason-group")).toHaveCount(2);
+  await expect(page.locator(".compare-decision-support")).toBeVisible();
+  await expect(page.locator(".compare-decision-theme")).toHaveCount(4);
+  await expect(page.locator(".compare-decision-side")).toHaveCount(8);
   await expect(page.locator(".compare-uni-card")).toHaveCount(2);
   await expect(page.locator(".compare-table thead th")).toHaveCount(3);
-  await expect(page.locator(".compare-overview")).toBeVisible();
   await expect(page.locator(".compare-tests")).toBeVisible();
-  await expect(page.locator("#compareResultsPane")).toContainText("Key differences");
+  await expect(page.locator("#compareResultsPane")).toContainText("What matters for your choice");
   await expect(page.locator("#compareResultsPane")).toContainText("Tests and characteristics");
 
   // Navigate back to tracks from results
@@ -114,6 +116,45 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   await expect.poll(async () => page.evaluate(() =>
     JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").length
   )).toBe(2);
+});
+
+test("Oxford and Harvard comparison explains scope, aid, and missing personal evidence without a universal winner", async ({ page }) => {
+  await markTourAsSeen(page);
+
+  for (const [language, title, incomparable, harvardRate] of [
+    ["eng", "What matters for your choice", "Not directly comparable", "4.18%"],
+    ["rus", "Что важно для вашего выбора", "Нельзя сравнить напрямую", "4,18%"],
+  ]) {
+    await page.addInitScript((nextLanguage) => {
+      localStorage.setItem("unisearch_ui_language_v1", nextLanguage);
+      localStorage.setItem("unisearch_compare_university_ids_v1", JSON.stringify([
+        "university-of-oxford-uk-oxford",
+        "harvard-usa-cambridge",
+      ]));
+      localStorage.removeItem("unisearch_profile");
+    }, language);
+    await page.goto(`/compare.html?ids=${OXFORD_ID},${HARVARD_ID}&choices=university_of_oxford_uk_oxford_computer_science_undergraduate::university-of-oxford-uk-oxford_a_level::university-of-oxford-uk-oxford_a_level,harvard_college::harvard_college::harvard_college`);
+
+    const support = page.locator(".compare-decision-support");
+    await expect(support).toBeVisible();
+    await expect(support).toContainText(title);
+    const admissions = support.locator(".compare-decision-theme[data-theme-key='admissions']");
+    await expect(admissions).toContainText("7%");
+    await expect(admissions).toContainText(harvardRate);
+    await expect(admissions).toContainText(incomparable);
+    await expect(admissions.locator(".compare-decision-source a")).toHaveCount(2);
+    await expect(support).not.toContainText(/Higher rank|Oxford is better|Оксфорд лучше/);
+    await expect(support).not.toContainText("0%");
+
+    const finance = support.locator(".compare-decision-theme[data-theme-key='finance']");
+    await expect(finance.locator(".compare-decision-source a")).toHaveCount(4);
+    await expect(finance).toContainText(/Need-based|По финансовой потребности/);
+
+    const academic = support.locator(".compare-decision-theme[data-theme-key='academics']");
+    await expect(academic).toContainText("#4");
+    await expect(academic).toContainText("#5");
+    await expect(academic).not.toContainText(/Comparable advantage|Сопоставимое преимущество/);
+  }
 });
 
 test("compare configure cards expose admission requirements before continuing", async ({ page }) => {
@@ -228,9 +269,9 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   // 3. Open compare page with 2 universities
   await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat`);
 
-  // 4. Verify best cell highlight
-  const bestCells = page.locator(".compare-cell--best");
-  await expect(bestCells.first()).toBeVisible();
+  // 4. Informational ranks and program volume do not declare a winner
+  await expect(page.locator("tr[data-row-section='overview'] .compare-cell--best")).toHaveCount(0);
+  await expect(page.locator("tr[data-row-section='programs'] .compare-cell--best")).toHaveCount(0);
 
   // 5. Verify programs row does not contain raw university IDs and has human-readable content
   const programRow = page.locator("tr[data-row-key='programs']");
@@ -255,12 +296,11 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await diffToggle.click();
   await expect(page.locator(".compare-table-wrap")).not.toHaveClass(/is-diff-only/);
 
-  // 8. Verify overview cards with verdict badges and participants
-  const overviewCards = page.locator(".compare-overview .compare-score-card");
-  await expect(overviewCards.first()).toBeVisible();
-  await expect(page.locator(".compare-verdict-badge").first()).toBeVisible();
-  await expect(page.locator(".compare-score-participant").first()).toBeVisible();
-  await expect(page.locator(".compare-score-track")).toHaveCount(0);
+  // 8. Verify neutral decision-support themes and paired evidence
+  await expect(page.locator(".compare-decision-theme")).toHaveCount(4);
+  await expect(page.locator(".compare-decision-theme[data-theme-key='admissions'] .compare-decision-side")).toHaveCount(2);
+  await expect(page.locator(".compare-decision-status").first()).toBeVisible();
+  await expect(page.locator(".compare-overview, .compare-conclusion, .compare-key-differences")).toHaveCount(0);
 });
 
 test("dedicated compare page keeps navbar controls on the right, hides catalog controls, and renders action in single line", async ({ page }) => {

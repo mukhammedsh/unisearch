@@ -514,7 +514,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("low", str(result.get("confidence") or ""))
         self.assertEqual("", str(result.get("reason") or ""))
 
-    def test_estimate_uni_chance_fallback_returns_zero_without_any_required_evidence(self):
+    def test_estimate_uni_chance_returns_unavailable_without_any_required_evidence(self):
         university = {
             "id": "missing-evidence-u",
             "name": "Missing Evidence University",
@@ -537,11 +537,11 @@ class AiScoringTests(unittest.TestCase):
 
         result = estimate_uni_chance(university, profile)
 
-        self.assertEqual(0, int(result.get("overallChance", -1)))
-        self.assertTrue(bool(result.get("chanceAvailable")))
-        self.assertEqual("estimated_fallback", str(result.get("chanceModel") or ""))
-        self.assertEqual("low", str(result.get("confidence") or ""))
-        self.assertEqual("", str(result.get("reason") or ""))
+        self.assertIsNone(result.get("overallChance"))
+        self.assertFalse(bool(result.get("chanceAvailable")))
+        self.assertEqual("none", str(result.get("chanceModel") or ""))
+        self.assertEqual("no_data", str(result.get("confidence") or ""))
+        self.assertEqual("missing_evidence", str(result.get("reason") or ""))
 
     def test_estimate_uni_chance_returns_no_data_without_any_evidence_or_requirements(self):
         university = {
@@ -570,7 +570,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertFalse(bool(result.get("chanceAvailable")))
         self.assertEqual("missing_evidence", str(result.get("reason") or ""))
 
-    def test_estimated_fallback_returns_zero_when_required_exam_is_below_minimum(self):
+    def test_estimated_fallback_marks_required_exam_minimum_as_unmet(self):
         university = {
             "id": "below-min-fallback-u",
             "name": "Below Min Fallback University",
@@ -598,11 +598,12 @@ class AiScoringTests(unittest.TestCase):
 
         result = estimate_uni_chance(university, profile)
 
-        self.assertEqual(0, int(result.get("overallChance", -1)))
-        self.assertTrue(bool(result.get("chanceAvailable")))
-        self.assertEqual("estimated_fallback", str(result.get("chanceModel") or ""))
+        self.assertIsNone(result.get("overallChance"))
+        self.assertFalse(bool(result.get("chanceAvailable")))
+        self.assertEqual("none", str(result.get("chanceModel") or ""))
+        self.assertEqual("requirements_not_met", str(result.get("reason") or ""))
 
-    def test_estimated_fallback_returns_zero_when_required_language_evidence_is_missing(self):
+    def test_estimated_fallback_is_unavailable_when_required_language_evidence_is_missing(self):
         university = {
             "id": "missing-lang-fallback-u",
             "name": "Missing Lang Fallback University",
@@ -634,9 +635,10 @@ class AiScoringTests(unittest.TestCase):
 
         result = estimate_uni_chance(university, profile)
 
-        self.assertEqual(0, int(result.get("overallChance", -1)))
-        self.assertTrue(bool(result.get("chanceAvailable")))
-        self.assertEqual("estimated_fallback", str(result.get("chanceModel") or ""))
+        self.assertIsNone(result.get("overallChance"))
+        self.assertFalse(bool(result.get("chanceAvailable")))
+        self.assertEqual("none", str(result.get("chanceModel") or ""))
+        self.assertEqual("missing_evidence", str(result.get("reason") or ""))
 
     def test_estimate_uni_chance_uses_real_dataset_score_profiles_for_nu(self):
         university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
@@ -915,7 +917,9 @@ class AiScoringTests(unittest.TestCase):
         chance_b2 = estimate_uni_chance(university, profile_de_b2)
         chance_c1 = estimate_uni_chance(university, profile_de_c1)
 
-        self.assertLess(int(chance_b2.get("overallChance", 0)), int(chance_c1.get("overallChance", 0)))
+        self.assertIsNone(chance_b2.get("overallChance"))
+        self.assertEqual("requirements_not_met", str(chance_b2.get("reason") or ""))
+        self.assertIsNotNone(chance_c1.get("overallChance"))
 
     def test_ai_sort_uses_user_selected_track_override(self):
         items = [
@@ -969,7 +973,8 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("safe::safe", str(manual_match.get("recommendedChoiceKey", "")))
         self.assertTrue(bool(manual_match.get("selectedByUser")))
         self.assertEqual("user", str(manual_match.get("choiceSelectionSource", "")))
-        self.assertLess(int(manual_match.get("selectedChance", 0)), int(auto_match.get("selectedChance", 0)))
+        self.assertIsNone(manual_match.get("selectedChance"))
+        self.assertIsNotNone(auto_match.get("selectedChance"))
 
     def test_jlpt_uses_best_lower_score_when_duplicate_exam_entries_exist(self):
         university = {
@@ -1005,9 +1010,11 @@ class AiScoringTests(unittest.TestCase):
         chance_worse = estimate_uni_chance(university, profile_worse_only)
         chance_better = estimate_uni_chance(university, profile_with_better_duplicate)
 
-        self.assertGreater(int(chance_better.get("overallChance", 0)), int(chance_worse.get("overallChance", 0)))
+        self.assertIsNone(chance_worse.get("overallChance"))
+        self.assertEqual("requirements_not_met", str(chance_worse.get("reason") or ""))
+        self.assertIsNotNone(chance_better.get("overallChance"))
 
-    def test_unichance_treats_missing_exam_as_conditional_not_fail(self):
+    def test_unichance_keeps_missing_required_language_evidence_unavailable(self):
         university = {
             "id": "conditional-demo",
             "name": "Conditional Demo University",
@@ -1035,7 +1042,9 @@ class AiScoringTests(unittest.TestCase):
         }
 
         chance = estimate_uni_chance(university, profile)
-        self.assertGreater(int(chance.get("overallChance", 0)), 0)
+        self.assertIsNone(chance.get("overallChance"))
+        self.assertFalse(bool(chance.get("chanceAvailable")))
+        self.assertEqual("missing_evidence", str(chance.get("reason") or ""))
         track = (chance.get("choices") or [{}])[0]
         self.assertTrue(bool(track.get("conditional")))
         self.assertGreaterEqual(int((track.get("details") or {}).get("conditionalRequirements", 0)), 1)

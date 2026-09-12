@@ -2566,6 +2566,17 @@
         "psychology"
       ],
       "acceptance_rate_percent": 4.18,
+      "undergraduate_structure": {
+        "model": "liberal_arts_then_concentration",
+        "duration": "4 years",
+        "teaching_formats": [
+          "lectures",
+          "seminars"
+        ],
+        "source": "Harvard College undergraduate structure",
+        "source_url": "https://college.harvard.edu/resources/faq/what-difference-between-harvard-college-and-harvard-university",
+        "verified_at": "2026-09-12"
+      },
       "acceptance_rate_percent_meta": {
         "source": "Harvard College Admissions Statistics",
         "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
@@ -2672,6 +2683,8 @@
     },
     "finance": {
       "total_cost_year_usd": 95134,
+      "total_cost_year_min": 95134,
+      "total_cost_year_max": 100134,
       "costs_breakdown_year_usd": {
         "Tuition": 62226,
         "Mandatory_Fees": 6216,
@@ -2680,15 +2693,28 @@
         "Books_and_Supplies": 1000
       },
       "financial_aid": {
-        "merit_based": true,
-        "need_based": true
+        "basis": "need",
+        "merit_based": false,
+        "need_based": true,
+        "need_blind": true,
+        "meets_full_demonstrated_need": true,
+        "international_eligible": true,
+        "source": "Harvard College Financial Aid",
+        "source_url": "https://college.harvard.edu/financial-aid/how-aid-works",
+        "verified_at": "2026-09-12"
       },
       "costs_breakdown_source_urls": [
         "https://college.harvard.edu/financial-aid/how-aid-works"
       ],
       "costs_breakdown_note": "Official undergraduate budget from Harvard College Financial Aid, covering tuition, mandatory fees, housing, food, and books.",
       "costs_breakdown_status": "official_mandatory_breakdown",
-      "currency": "USD"
+      "currency": "USD",
+      "academic_year": "2026-27",
+      "fee_status": "international",
+      "scope": "institution",
+      "source": "Harvard College Financial Aid",
+      "source_url": "https://college.harvard.edu/financial-aid/how-aid-works",
+      "verified_at": "2026-09-12"
     },
     "outcomes": {},
     "verified_sources": [
@@ -2877,6 +2903,16 @@
         "description": "Harvard College first-year undergraduate route, allowing applicants to apply in either Restrictive Early Action or Regular Decision with the same core application materials.",
         "scope": "general",
         "study_mode": "On-campus",
+        "published_admission": {
+          "rate_percent": 4.18,
+          "scope": "institution",
+          "audience": "all",
+          "cycle": "Class of 2028",
+          "source": "Harvard College Admissions Statistics",
+          "source_url": "https://college.harvard.edu/admissions/admissions-statistics",
+          "verified_at": "2026-09-12",
+          "confidence": "high"
+        },
         "language_requirements": [
           {
             "code": "en",
@@ -3218,6 +3254,18 @@
         "psychology"
       ],
       "acceptance_rate_percent": 16.45,
+      "undergraduate_structure": {
+        "model": "course_entry",
+        "duration": "3 or 4 years",
+        "teaching_formats": [
+          "lectures",
+          "tutorials",
+          "practicals"
+        ],
+        "source": "Oxford Computer Science course page",
+        "source_url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science",
+        "verified_at": "2026-09-12"
+      },
       "admissions": {
         "schema_version": 1,
         "status_date": "2026-04-04",
@@ -3331,8 +3379,17 @@
         "Food": 3950
       },
       "financial_aid": {
-        "need_based": false,
-        "merit_based": true
+        "basis": "limited_need_and_eligibility",
+        "need_based": true,
+        "merit_based": false,
+        "need_blind": false,
+        "meets_full_demonstrated_need": false,
+        "international_eligible": true,
+        "annual_awards_min": 2,
+        "annual_awards_max": 3,
+        "source": "Reach Oxford Scholarship",
+        "source_url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/oxford-bursaries-and-scholarships/reach-oxford",
+        "verified_at": "2026-09-12"
       },
       "costs_breakdown_source_urls": [
         "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/course-fees",
@@ -3539,6 +3596,34 @@
         "description": "Bachelor admission requirements for Computer Science.",
         "scope": "program",
         "study_mode": "On-campus",
+        "published_admission": {
+          "rate_percent": 7,
+          "scope": "program",
+          "audience": "all",
+          "cycle": "2023-25 average",
+          "source": "Oxford Computer Science course page",
+          "source_url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science",
+          "verified_at": "2026-09-12",
+          "confidence": "high"
+        },
+        "finance_override": {
+          "total_cost_year_usd": 79855,
+          "total_cost_year_min": 79855,
+          "total_cost_year_max": 86155,
+          "costs_breakdown_year_usd": {
+            "Tuition": 66580,
+            "Living_Min": 13275,
+            "Living_Max": 19575
+          },
+          "currency": "GBP",
+          "academic_year": "2027-28",
+          "fee_status": "overseas",
+          "scope": "program",
+          "source": "Oxford Computer Science course page",
+          "source_url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science",
+          "verified_at": "2026-09-12",
+          "note": "Overseas course fee plus Oxford's published nine-month living-cost range for 2027-28."
+        },
         "language_requirements": [
           {
             "code": "en",
@@ -3615,9 +3700,9 @@
                 "funding_type": "grant",
                 "track_badge": "Grant",
                 "funding_program": "Reach Oxford Scholarship",
-                "funding_source": "merit",
-                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
-                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+                "funding_source": "need",
+                "funding_description": "Separate highly competitive scholarship for eligible students from low-income countries; Oxford expects only about 2-3 awards per year.",
+                "description": "Separate highly competitive Reach Oxford Scholarship consideration; it is not a general tuition discount and Oxford expects only about 2-3 awards per year."
               }
             ]
           },
@@ -3652,9 +3737,9 @@
                 "funding_type": "grant",
                 "track_badge": "Grant",
                 "funding_program": "Reach Oxford Scholarship",
-                "funding_source": "merit",
-                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
-                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+                "funding_source": "need",
+                "funding_description": "Separate highly competitive scholarship for eligible students from low-income countries; Oxford expects only about 2-3 awards per year.",
+                "description": "Separate highly competitive Reach Oxford Scholarship consideration; it is not a general tuition discount and Oxford expects only about 2-3 awards per year."
               }
             ]
           },
@@ -3691,9 +3776,9 @@
                 "funding_type": "grant",
                 "track_badge": "Grant",
                 "funding_program": "Reach Oxford Scholarship",
-                "funding_source": "merit",
-                "funding_description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds.",
-                "description": "Same undergraduate admissions route, with Reach Oxford Scholarship consideration for eligible students from low-income or disadvantaged backgrounds."
+                "funding_source": "need",
+                "funding_description": "Separate highly competitive scholarship for eligible students from low-income countries; Oxford expects only about 2-3 awards per year.",
+                "description": "Separate highly competitive Reach Oxford Scholarship consideration; it is not a general tuition discount and Oxford expects only about 2-3 awards per year."
               }
             ]
           }

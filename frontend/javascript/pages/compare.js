@@ -10,7 +10,6 @@ import {
   replayMotion,
 } from "../utils.js";
 import { t, tFormat } from "../i18n.js";
-import { translateWord } from "../university-translations.js";
 import { heroIcon } from "../icons.js";
 import {
   navigateToAppRoute,
@@ -35,21 +34,20 @@ import {
   compareChoiceKey,
   compareLocationText,
   compareRankText,
-  compareAcceptanceText,
+  comparePublishedAdmission,
+  comparePercentText,
   compareSelectedAdmissionEntry,
-  compareSelectedAnnualCost,
+  compareSelectedCostContext,
+  compareCostContextText,
   compareUniversityName,
   fetchCompareProfiles,
-  formatCompareCost,
+  formatCompareCostRange,
   loadCompareUniversities,
   readCompareAdmissionChoices,
   writeCompareAdmissionChoices,
 } from "./universities/compare-helpers.js";
 import {
-  buildCompareConclusionHtml,
-  buildCompareKeyDifferencesHtml,
-  buildCompareOverviewHtml,
-  compareBestBadges,
+  buildCompareDecisionSupportHtml,
   compareMetrics,
   compareRowsHtml,
   compareSlotLabel,
@@ -114,12 +112,20 @@ function syncUrlWithState(stage = currentStage, { push = false } = {}) {
   }
 }
 
-function compareCardsHtml(universities, metrics) {
+function compareCardsHtml(universities) {
   return universities.map((u, index) => {
     const id = String(u?.id || "");
     const logoSrc = uniLogoSrc(id);
     const logoSrcFull = uniLogoSrc(id, { forceFull: true });
-    const badges = compareBestBadges(u, metrics);
+    const publishedAdmission = comparePublishedAdmission(u, compareAdmissionChoices);
+    const cost = compareSelectedCostContext(u, compareAdmissionChoices);
+    const admissionContext = [
+      publishedAdmission.scope === "program"
+        ? t("universities.compare.scope.program", "course-specific")
+        : t("universities.compare.scope.institution", "institution-wide"),
+      publishedAdmission.cycle,
+    ].filter(Boolean).join(" · ");
+    const costContext = compareCostContextText({ ...cost, scope: "" });
     const linkAttrs = shouldOpenUniversitiesInNewTab() ? ' target="_blank" rel="noopener noreferrer"' : "";
 
     return `
@@ -135,15 +141,15 @@ function compareCardsHtml(universities, metrics) {
         <h3>${escapeHtml(compareUniversityName(u))}</h3>
         <p>${escapeHtml(compareLocationText(u))}</p>
         <div class="compare-uni-card__metrics">
-          <span><small>${escapeHtml(translateWord("global_rank", "Rank"))}</small><strong>${escapeHtml(compareRankText(u))}</strong></span>
-          <span><small>${escapeHtml(t("universities.card.cost_short", "Cost"))}</small><strong>${escapeHtml(formatCompareCost(compareSelectedAnnualCost(u, compareAdmissionChoices)))}</strong></span>
-          <span><small>${escapeHtml(t("ranking.acceptance", "Acceptance"))}</small><strong>${escapeHtml(compareAcceptanceText(u))}</strong></span>
+          <span><small>${escapeHtml(t("universities.compare.published_rank", "Published rank"))}</small><strong>${escapeHtml(compareRankText(u))}</strong></span>
+          <span><small>${escapeHtml([t("universities.compare.sticker_cost", "Sticker cost"), costContext].filter(Boolean).join(" · "))}</small><strong>${escapeHtml(formatCompareCostRange(cost))}</strong></span>
+          <span><small>${escapeHtml([t("universities.compare.published_rate", "Published selectivity"), admissionContext].filter(Boolean).join(" · "))}</small><strong>${escapeHtml(publishedAdmission.value === null ? t("common.na", "N/A") : comparePercentText(publishedAdmission.value))}</strong></span>
         </div>
         ${(() => {
           const uniChance = compareChancesByUniId.get(id);
           const selectedKey = compareChoiceKey(compareAdmissionChoices.get(id));
           const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === selectedKey);
-          return trackChance ? `<div class="compare-uni-card__chance">${renderTrackChanceChip(trackChance)}</div>` : "";
+          return trackChance ? `<div class="compare-uni-card__chance"><small>${escapeHtml(t("universities.compare.personal_estimate", "Personal estimate"))}</small>${renderTrackChanceChip(trackChance)}</div>` : "";
         })()}
         ${(() => {
           const entries = compareAdmissionOptionEntries(u);
@@ -162,7 +168,6 @@ function compareCardsHtml(universities, metrics) {
             </div>
           `;
         })()}
-        ${badges.length ? `<div class="compare-uni-card__badges">${badges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join("")}</div>` : ""}
         <a class="compare-uni-card__link" href="${routeUniversityDetail(id)}"${linkAttrs}>${escapeHtml(t("universities.card.view_details", "View details"))}</a>
       </article>
     `;
@@ -297,9 +302,10 @@ async function renderCompareResults(container, { pushState = false } = {}) {
 
   const metrics = compareMetrics(activeUniversities);
   const rowsHtml = compareRowsHtml(activeUniversities, metrics);
-  const keyDifferencesHtml = buildCompareKeyDifferencesHtml(activeUniversities, metrics);
-  const overviewHtml = buildCompareOverviewHtml(activeUniversities, metrics);
-  const conclusionHtml = buildCompareConclusionHtml(activeUniversities, metrics);
+  const decisionSupportHtml = buildCompareDecisionSupportHtml(activeUniversities, {
+    choices: compareAdmissionChoices,
+    chances: compareChancesByUniId,
+  });
 
   container.innerHTML = `
     <div class="compare-results-head compare-results-head--pair">
@@ -314,15 +320,14 @@ async function renderCompareResults(container, { pushState = false } = {}) {
         </button>
       </div>
     </div>
-    <div class="compare-uni-grid compare-uni-grid--pair">${compareCardsHtml(activeUniversities, metrics)}</div>
-    ${keyDifferencesHtml}
-    ${overviewHtml}
+    <div class="compare-uni-grid compare-uni-grid--pair">${compareCardsHtml(activeUniversities)}</div>
+    ${decisionSupportHtml}
     <section class="compare-analysis-block compare-tests" aria-labelledby="compareTestsTitle">
       <div class="compare-block-head">
         <div class="compare-block-icon">${renderInlineIcon("document-check", 20, "compare-block-icon-svg")}</div>
         <div class="compare-block-title-wrap">
           <h2 id="compareTestsTitle">${escapeHtml(t("universities.compare.tests.title", "Tests and characteristics"))}</h2>
-          <p>${escapeHtml(t("universities.compare.tests.subtitle", "Detailed table of published values. Green cells mark the strongest comparable value in each row."))}</p>
+          <p>${escapeHtml(t("universities.compare.tests.subtitle", "Detailed published values. Color is used only for a comparable and meaningful difference."))}</p>
         </div>
         <div class="compare-block-tools">
           <label class="compare-diff-toggle" title="${escapeHtmlAttr(t("universities.compare.diff_only", "Differences only"))}">
@@ -332,6 +337,7 @@ async function renderCompareResults(container, { pushState = false } = {}) {
           </label>
         </div>
       </div>
+      <p class="compare-table-scroll-hint">${escapeHtml(t("universities.compare.table_scroll_hint", "Swipe horizontally to see both universities."))}</p>
       <div class="compare-table-wrap compare-table-wrap--pair${isDiffOnly ? " is-diff-only" : ""}">
         <table class="compare-table">
           <thead>
@@ -344,7 +350,6 @@ async function renderCompareResults(container, { pushState = false } = {}) {
         </table>
       </div>
     </section>
-    ${conclusionHtml}
   `;
 
   const tableWrap = container.querySelector(".compare-table-wrap");

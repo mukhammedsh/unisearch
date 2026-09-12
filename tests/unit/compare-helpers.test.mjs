@@ -30,7 +30,16 @@ const {
   compareAdmissionChoiceOptionLabel,
   compareRequirementsText,
   compareAverageScoreText,
+  comparePublishedAdmission,
+  compareSelectedCostContext,
 } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
+
+const {
+  buildCompareSpecs,
+  compareBestIdsForSpec,
+  compareCostContextsComparable,
+  comparePublishedAdmissionsComparable,
+} = await import("../../frontend/javascript/pages/universities/compare-specs.js");
 
 function response(body, ok = true, status = ok ? 200 : 500) {
   return {
@@ -249,6 +258,103 @@ test("compareRequirementsText and compareAverageScoreText format GPA with scale"
   const avgText = compareAverageScoreText(uni);
   assert.match(avgText, /GPA 3\.85 \(\/4\.0\)/);
   assert.match(avgText, /SAT 1480/);
+});
+
+test("published admission prefers the selected course-specific choice", () => {
+  const university = {
+    id: "u-1",
+    academics: {
+      acceptance_rate_percent: 20,
+      admissions: {
+        university_wide: {
+          acceptance_rate_percent: 20,
+          counts: { cycle: "2025" },
+          provenance: { source: "Institution source", source_url: "https://example.edu/all" },
+        },
+      },
+    },
+    admission_categories: [{
+      id: "course",
+      label: "Course",
+      published_admission: {
+        rate_percent: 7,
+        scope: "program",
+        audience: "all",
+        cycle: "2023-25",
+        source: "Course source",
+        source_url: "https://example.edu/course",
+      },
+      requirement_profiles: [{ id: "sat", label: "SAT", requirements: { SAT: 1400 } }],
+    }],
+  };
+
+  const admission = comparePublishedAdmission(university);
+  assert.equal(admission.value, 7);
+  assert.equal(admission.scope, "program");
+  assert.equal(admission.cycle, "2023-25");
+});
+
+test("cost comparison requires the same year and fee status", () => {
+  assert.equal(compareCostContextsComparable([
+    { min: 50000, academicYear: "2026-27", feeStatus: "international" },
+    { min: 70000, academicYear: "2026-27", feeStatus: "international" },
+  ]), true);
+  assert.equal(compareCostContextsComparable([
+    { min: 50000, academicYear: "2026-27", feeStatus: "international" },
+    { min: 70000, academicYear: "2027-28", feeStatus: "international" },
+  ]), false);
+});
+
+test("published admission with different scope or cycle is incomparable", () => {
+  const course = { value: 7, scope: "program", audience: "all", cycle: "2023-25" };
+  const institution = { value: 4.18, scope: "institution", audience: "all", cycle: "Class of 2028" };
+  assert.equal(comparePublishedAdmissionsComparable([course, institution]), false);
+  assert.equal(comparePublishedAdmissionsComparable([institution, course]), false);
+});
+
+test("neutral rank and program counts never create winners", () => {
+  const universities = [
+    { id: "oxford", rank: 4, academics: { programs: [{ name: "Computer Science" }] } },
+    { id: "harvard", rank: 5, academics: { programs: [{ name: "Computer Science" }, { name: "Economics" }] } },
+  ];
+  const specs = buildCompareSpecs(universities);
+  for (const key of ["rank", "program_count", "major_tags", "study_formats"]) {
+    const spec = specs.find((row) => row.key === key);
+    if (spec) assert.deepEqual([...compareBestIdsForSpec(universities, spec)], []);
+  }
+});
+
+test("missing values, ties, and university order do not create a winner", () => {
+  const spec = { key: "verified", type: "number", direction: "higher", getter: (u) => u.value };
+  assert.deepEqual([...compareBestIdsForSpec([{ id: "a", value: 10 }, { id: "b" }], spec)], []);
+  assert.deepEqual([...compareBestIdsForSpec([{ id: "a", value: 10 }, { id: "b", value: 10 }], spec)], []);
+  assert.deepEqual([...compareBestIdsForSpec([{ id: "b", value: 10 }, { id: "a", value: 10 }], spec)], []);
+});
+
+test("selected finance context keeps structured range and provenance", () => {
+  const university = {
+    id: "u-cost",
+    finance: { total_cost_year_usd: 10000, currency: "USD" },
+    admission_categories: [{
+      id: "course",
+      label: "Course",
+      finance_override: {
+        total_cost_year_usd: 20000,
+        total_cost_year_min: 20000,
+        total_cost_year_max: 24000,
+        currency: "GBP",
+        academic_year: "2027-28",
+        fee_status: "overseas",
+        source_url: "https://example.edu/cost",
+      },
+      requirement_profiles: [{ id: "sat", label: "SAT" }],
+    }],
+  };
+  const context = compareSelectedCostContext(university);
+  assert.equal(context.min, 20000);
+  assert.equal(context.max, 24000);
+  assert.equal(context.currency, "GBP");
+  assert.equal(context.academicYear, "2027-28");
 });
 
 

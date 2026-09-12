@@ -362,6 +362,10 @@ export function getAdmissionChoicesFromCategories(categories) {
             mergeTrackVariantDict(category.finance_override, profile.finance_override),
             funding?.finance_override,
           ) || null,
+          published_admission: mergeTrackVariantDict(
+            category.published_admission,
+            profile.published_admission,
+          ) || null,
           language_requirements: funding?.language_requirements || profile.language_requirements || category.language_requirements || [],
           language_requirements_mode: funding?.language_requirements_mode || profile.language_requirements_mode || category.language_requirements_mode,
           extra_requirements: funding?.extra_requirements || profile.extra_requirements || category.extra_requirements || [],
@@ -436,11 +440,25 @@ function chanceAccuracyNote(model) {
 
 function chanceNoDataHelpNote(uniChance) {
   const reason = String(uniChance?.reason || "").trim().toLowerCase();
-  if (reason !== "missing_exam_score") return "";
-  return t(
-    "admission.chance.need_exam_data_track",
-    "Need exam data to see the chance for this requirement profile."
-  );
+  if (reason === "requirements_not_met") {
+    return t(
+      "admission.chance.requirements_not_met",
+      "Your current results do not meet a required minimum for this admission choice."
+    );
+  }
+  if (reason === "missing_evidence") {
+    return t(
+      "admission.chance.missing_evidence",
+      "Add the required exam scores or language evidence to calculate a personal estimate."
+    );
+  }
+  if (reason === "missing_exam_score") {
+    return t(
+      "admission.chance.need_exam_data_track",
+      "Need exam data to see the chance for this requirement profile."
+    );
+  }
+  return "";
 }
 
 export function renderUniChanceSummary(uniChance) {
@@ -547,7 +565,9 @@ export function renderTrackChanceChip(trackChance) {
     const chance = parseChanceValue(trackChance?.chancePercent);
     if (chance === null) {
       const noDataLabel = String(
-        trackChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
+        chanceNoDataHelpNote(trackChance)
+        || trackChance?.label
+        || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
       ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
       chipHtml = `<div class="chance-track-chip">${escapeHtml(noDataLabel)}</div>`;
     } else {
