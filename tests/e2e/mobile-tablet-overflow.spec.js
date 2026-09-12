@@ -93,7 +93,7 @@ for (const viewport of viewports) {
       await expect(page.locator("#uSidebar")).not.toHaveClass(/is-open/);
     }
 
-    await page.goto("/index.html?tab=compare&compare=results&ids=mit-usa-cambridge,imperial-college-london-uk");
+    await page.goto("/compare.html?stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
     await expect(page.locator("#compareResultsPane")).toBeVisible();
     await expect(page.locator(".compare-config-column")).toHaveCount(2);
     await expect(page.locator(".track-select-btn.is-active")).toHaveCount(2);

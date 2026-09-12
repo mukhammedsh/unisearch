@@ -323,7 +323,8 @@ export function initUniversitiesPage() {
     const initialCompareParam = String(pageParams.get("compare") || "").trim().toLowerCase();
     if (initialCompareIds.length === COMPARE_PAIR_SIZE && ["configure", "results"].includes(initialCompareParam)) {
         const choices = String(pageParams.get("choices") || "").split(",").filter(Boolean);
-        const redirectUrl = routeCompare(initialCompareIds, choices, initialCompareParam === "configure" ? { stage: "configure" } : "");
+        const stage = (initialCompareParam === "configure" || choices.length === 0) ? "configure" : "results";
+        const redirectUrl = routeCompare(initialCompareIds, choices, stage === "configure" ? { stage: "configure" } : "");
         navigateToAppRoute(redirectUrl, { replace: true });
         return;
     }
