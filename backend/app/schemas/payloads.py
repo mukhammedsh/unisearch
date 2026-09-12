@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 MAX_LIST_ITEMS = 50
 MAX_DETAILS_KEYS = 32
-MAX_DETAILS_DEPTH = 4
+MAX_DETAILS_DEPTH = 5
 MAX_SELECTED_ADMISSION_CHOICES = 100
 MAX_SELECTED_CHOICE_KEYS = 16
 

@@ -151,8 +151,6 @@ def _coerce_subject_breakdown_submission(
             item["display_value"] = parsed.get("display_value")
         elif child_mode == "flag":
             item["display_value"] = "Pass" if int(_to_float(parsed.get("score")) or 0) == 1 else "Not passed"
-        if isinstance(parsed.get("details"), dict) and parsed.get("details"):
-            item["details"] = parsed.get("details")
         parsed_components.append(item)
 
     for row in fixed_defs:
@@ -200,8 +198,6 @@ def _coerce_subject_breakdown_submission(
             item["display_value"] = parsed.get("display_value")
         elif child_mode == "flag":
             item["display_value"] = "Pass" if int(_to_float(parsed.get("score")) or 0) == 1 else "Not passed"
-        if isinstance(parsed.get("details"), dict) and parsed.get("details"):
-            item["details"] = parsed.get("details")
         parsed_extra_scores.append(item)
 
     total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()

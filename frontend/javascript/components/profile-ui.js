@@ -573,7 +573,16 @@ export function initProfileUI() {
 
     const formatExamValidationToast = (examId, detailRaw) => {
         const examLabel = getExamDisplayName(examId, { locale: getCurrentLanguage() });
-        const detail = String(detailRaw || "").trim();
+        let detail = "";
+        if (typeof detailRaw === "string") {
+            detail = detailRaw.trim();
+        } else if (Array.isArray(detailRaw) && detailRaw.length > 0) {
+            const first = detailRaw[0];
+            detail = String((typeof first === "object" && first !== null) ? (first.msg || first.message || first.detail || "") : first).trim();
+        } else if (typeof detailRaw === "object" && detailRaw !== null) {
+            detail = String(detailRaw.msg || detailRaw.message || detailRaw.detail || "").trim();
+        }
+        detail = detail.replace(/^Value error,\s*/i, "").trim();
         if (!detail) {
             return tFormat("profile.exam_error_generic", { exam: examLabel }, `Could not save ${examLabel}`);
         }

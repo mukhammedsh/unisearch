@@ -175,13 +175,13 @@ export const readBreakdownFieldPayload = (container, examId) => {
     if (mode === "band_select") {
         const raw = String(container.querySelector("[data-breakdown-value='band']")?.value || "").trim();
         if (!raw) return null;
-        return { raw_value: raw, details: { band: raw } };
+        return { raw_value: raw };
     }
 
     if (mode === "grade_combo") {
         const raw = String(container.querySelector("[data-breakdown-value='grade']")?.value || "").trim();
         if (!raw) return null;
-        return { raw_value: raw, details: { grades: [raw] } };
+        return { raw_value: raw };
     }
 
     if (mode === "flag") {

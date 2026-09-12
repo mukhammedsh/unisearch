@@ -3,6 +3,12 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Fixed composite exam validation for A-Level subjects and resolved toast error string formatting (`backend/app/schemas/payloads.py`, `backend/app/services/exams.py`, `backend/tests/test_exams_api.py`, `backend/tests/test_profile_payload_validation_extended.py`, `frontend/javascript/components/profile-ui.js`, `frontend/javascript/components/profile/exam-breakdowns.js`, `frontend/javascript/languages.js`):
+  - Streamlined `readBreakdownFieldPayload` to pass clean `raw_value` strings for individual subject grades without nesting redundant `details` objects inside breakdown components.
+  - Adjusted `_coerce_subject_breakdown_submission` to avoid attaching redundant nested `details` to child component entries.
+  - Raised `MAX_DETAILS_DEPTH` from 4 to 5 in Pydantic schema validation to safely accommodate legitimate breakdown exam structures while continuing to block excessively nested payloads.
+  - Improved `formatExamValidationToast` and `formatLanguageValidationToast` to parse structured error arrays and objects from FastAPI validation responses, removing `[object Object]` from toasts and stripping raw `Value error, ` prefixes.
+  - Added test coverage in `test_exams_api.py` and `test_profile_payload_validation_extended.py` for validating and saving A-Level component grades.
 - Added automatic composite language exam scoring and section validation (`backend/app/services/languages.py`, `backend/data/languages.json`, `backend/tests/test_languages_api.py`, `frontend/javascript/languages.js`, `frontend/javascript/main.js`, `frontend/javascript/utils/config.js`, `frontend/Localization/eng`, `frontend/Localization/ru`, `tests/e2e/languages-validation-flow.spec.js`):
   - Supported `auto_total_strategy` configuration (`average` for IELTS, `sum` for TOEFL iBT) to derive composite overall scores directly from section inputs on both backend and frontend.
   - Automatically calculate IELTS overall band scores rounded to the standard half-band (0.5) and validate that all section scores are supplied when an overall score is omitted.

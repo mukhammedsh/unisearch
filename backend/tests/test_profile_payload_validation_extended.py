@@ -120,6 +120,28 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_accepts_a_level_exam_payload_with_nested_component_details(self):
+        response = self._post_ai_sort(
+            {
+                "exams": [
+                    {
+                        "exam": "A_LEVEL_CERT",
+                        "score": 18,
+                        "raw_value": "Mathematics A*, Computer Science A*, Further Mathematics A*, Physics A*",
+                        "details": {
+                            "components": [
+                                {"exam": "A_LEVEL_MATHEMATICS", "raw_value": "A*"},
+                                {"exam": "A_LEVEL_COMPUTER_SCIENCE", "raw_value": "A*"},
+                                {"exam": "A_LEVEL_FURTHER_MATHEMATICS", "raw_value": "A*"},
+                                {"exam": "A_LEVEL_PHYSICS", "raw_value": "A*"},
+                            ]
+                        },
+                    }
+                ],
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -91,6 +91,28 @@ class ExamsApiTests(unittest.TestCase):
         self.assertEqual("A_LEVEL_CERT", data.get("exam"))
         self.assertEqual(18, int(data.get("score")))  # Three A*s = 6+6+6 = 18
 
+    def test_validate_a_level_with_component_grades(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={
+                "exam": "A_LEVEL_CERT",
+                "details": {
+                    "components": [
+                        {"exam": "A_LEVEL_MATHEMATICS", "raw_value": "A*"},
+                        {"exam": "A_LEVEL_COMPUTER_SCIENCE", "raw_value": "A*"},
+                        {"exam": "A_LEVEL_FURTHER_MATHEMATICS", "raw_value": "A*"},
+                        {"exam": "A_LEVEL_PHYSICS", "raw_value": "A*"},
+                    ]
+                },
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual("A_LEVEL_CERT", data.get("exam"))
+        self.assertEqual(18, int(data.get("score")))
+        self.assertIn("details", data)
+        self.assertEqual(4, len(data["details"]["components"]))
+
     def test_validate_single_subject_a_level_grade_returns_grade_points(self):
         response = self.client.post(
             "/exams/validate",
