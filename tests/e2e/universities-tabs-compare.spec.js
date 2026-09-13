@@ -317,10 +317,10 @@ test("dedicated compare page keeps navbar controls on the right, hides catalog c
   const viewportSize = page.viewportSize();
   expect(navRightBox.x + navRightBox.width).toBeGreaterThan(viewportSize.width * 0.75);
 
-  // Catalog controls are not present
+  // Catalog controls are not present; the redesigned navbar keeps search visible.
   await expect(page.locator(".u-section-bar")).toHaveCount(0);
   await expect(page.locator("#totalCount")).toHaveCount(0);
-  await expect(page.locator("#universitySearch")).toBeHidden();
+  await expect(page.locator("#universitySearch")).toBeVisible();
 
   // Back to tracks button is rendered in a single line (nowrap, inline-flex)
   const backBtn = page.locator("[data-action='back-to-tracks']");

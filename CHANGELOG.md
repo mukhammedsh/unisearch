@@ -2,6 +2,9 @@
 
 All notable project changes should be recorded here.
 
+## Unreleased
+- Updated Playwright expectations for the refreshed university workspace: removed the retired favorite-button assertion, accepted the redesigned navbar search behavior, and aligned general-tab spacing checks with the new borderless layout (`tests/e2e/motion-interactions.spec.js`, `tests/e2e/smoke-home.spec.js`, `tests/e2e/universities-tabs-compare.spec.js`, `tests/e2e/university-track-majors.spec.js`).
+
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
 - Integrated the refreshed academic workspace design: unified catalog surfaces, responsive layout tokens, navbar university search, improved profile/detail styling, and expanded shared UI helpers with regression coverage (`frontend/css/`, `frontend/index.html`, `frontend/javascript/components/navbar-search.js`, `frontend/javascript/pages/universities.js`, `tests/unit/navbar-search.test.mjs`).
 - Simplified currency service state and filter-limit caching with bounded memoization, removed unused fetch-status fields and stale catalog/compare imports, and updated the CPU PyTorch dependency to `2.13.0` (`backend/app/services/currency.py`, `backend/requirements.txt`, `frontend/javascript/pages/compare.js`, `frontend/javascript/pages/universities.js`).

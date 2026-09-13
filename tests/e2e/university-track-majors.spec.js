@@ -140,7 +140,7 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   await expect(boxes).toHaveCount(2);
 
   const secondBoxBorderTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
-  expect(secondBoxBorderTop).toBe("1px");
+  expect(secondBoxBorderTop).toBe("0px");
 
   const firstBoxPaddingBottom = await boxes.nth(0).evaluate((el) => window.getComputedStyle(el).paddingBottom);
   expect(firstBoxPaddingBottom).toBe("8px");

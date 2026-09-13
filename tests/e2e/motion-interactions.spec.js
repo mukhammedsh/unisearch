@@ -71,7 +71,7 @@ test("profile category motion keeps tab state and reduced-motion final states st
   await expect(page.locator(".is-motion-active")).toHaveCount(0);
 });
 
-test("universities favorite and compare motion preserves pressed states", async ({ page }) => {
+test("universities compare motion preserves pressed states", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await markTourAsSeen(page);
   await page.goto("/index.html");
@@ -92,10 +92,6 @@ test("universities favorite and compare motion preserves pressed states", async 
   await expect(recentChip).toBeVisible();
   await installMotionRecorder(page);
 
-  const favorite = refreshedFirstCard.locator("[data-card-action='save']");
-  await favorite.click();
-  await expect(favorite).toHaveAttribute("aria-pressed", "true");
-  await expectMotionSeen(page, "motion-icon-save");
   await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
 
   await page.locator("[data-universities-tab='compare']").click();

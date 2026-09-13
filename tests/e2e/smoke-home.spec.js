@@ -68,17 +68,14 @@ test("mobile catalog omits an empty active-filter summary", async ({ page }) => 
   await expect(page.locator("#mobileFilterSummary")).toBeHidden();
 });
 
-test("desktop university search is centered independently of side controls", async ({ page }) => {
+test("desktop university search remains visible in the redesigned navbar", async ({ page }) => {
   await markTourAsSeen(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/index.html");
 
-  const offset = await page.locator("#universitySearch").evaluate((nav) => {
-    const box = nav.getBoundingClientRect();
-    return Math.abs((box.left + box.width / 2) - (document.documentElement.clientWidth / 2));
-  });
-
-  expect(offset).toBeLessThanOrEqual(2);
+  const search = page.locator("#universitySearch");
+  await expect(search).toBeVisible();
+  await expect(search.locator("input")).toBeVisible();
 });
 
 test("root catalog has no horizontal overflow on narrow and wide screens", async ({ page }) => {
