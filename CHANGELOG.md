@@ -3,6 +3,9 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Completed Russian display labels for exam subjects and language-test sections (`frontend/javascript/utils/config.js`, `tests/unit/compare-helpers.test.mjs`):
+  - Localized SAT, AP, IB, A-Level, and HKDSE subjects plus IELTS and TOEFL section labels wherever the shared exam formatter is used.
+  - Added regression coverage for Russian exam and language-section labels.
 - Improved profile save UX (`frontend/profile.html`, `frontend/javascript/components/profile-ui.js`, `frontend/javascript/utils/persistence.js`, `frontend/Localization/eng`, `frontend/Localization/ru`):
   - Unified nickname and profile fields into one atomic draft/save flow, so discarding changes restores the complete saved profile.
   - Replaced duplicate save success toasts with an accessible, truthful persistence status for device storage and session-only fallback.
