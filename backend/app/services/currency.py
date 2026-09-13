@@ -5,6 +5,7 @@ import re
 import threading
 import time
 from datetime import datetime, timezone
+from functools import lru_cache
 from typing import Any, Dict, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request as UrlRequest, urlopen
@@ -202,11 +203,7 @@ _CIRCUIT_LOCK = threading.Lock()
 _MEMORY_CACHE: Dict[str, Any] = {}
 _CACHE_LOCK = threading.Lock()
 
-_FILTER_LIMITS_CACHE: Optional[Dict[str, Dict[str, int]]] = None
-_FILTER_LIMITS_LOCK = threading.Lock()
-
 _LAST_FETCH_TIME: Optional[float] = None
-_LAST_FETCH_SOURCE: Optional[str] = None
 _LAST_ERROR: Optional[str] = None
 
 
@@ -249,7 +246,7 @@ def _in_backoff() -> bool:
 
 def _clear_cache_for_testing() -> None:
     global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL, _LAST_ERROR
-    global _LAST_FETCH_TIME, _LAST_FETCH_SOURCE, _FILTER_LIMITS_CACHE
+    global _LAST_FETCH_TIME
     with _CIRCUIT_LOCK:
         _CONSECUTIVE_FAILURES = 0
         _CIRCUIT_STATE = "CLOSED"
@@ -257,10 +254,8 @@ def _clear_cache_for_testing() -> None:
         _LAST_ERROR = None
     with _CACHE_LOCK:
         _MEMORY_CACHE.clear()
-    with _FILTER_LIMITS_LOCK:
-        _FILTER_LIMITS_CACHE = None
+    _load_filter_limits_config_cached.cache_clear()
     _LAST_FETCH_TIME = None
-    _LAST_FETCH_SOURCE = None
 
 
 def fetch_rates(base: str = "USD") -> Dict[str, Any]:
@@ -338,7 +333,7 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
     Returns currency exchange rates using two-tier cache (memory + Redis),
     with fallback to API and static FALLBACK_RATES.
     """
-    global _LAST_FETCH_TIME, _LAST_FETCH_SOURCE
+    global _LAST_FETCH_TIME
     base_code = (base or "USD").strip().upper()
     now = time.time()
     redis_key = f"currency:rates:{base_code}"
@@ -350,7 +345,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
             if mem:
                 age = now - float(mem.get("ts", 0.0))
                 if age <= CURRENCY_RATES_CACHE_TTL_SEC and mem.get("rates"):
-                    _LAST_FETCH_SOURCE = "cache"
                     return {
                         "rates": dict(mem["rates"]),
                         "date": mem.get("date", ""),
@@ -375,7 +369,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
                         "ts": now,
                     }
                 _LAST_FETCH_TIME = now
-                _LAST_FETCH_SOURCE = "cache"
                 return {
                     "rates": dict(parsed_rates),
                     "date": date_str,
@@ -390,8 +383,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
             date_str = fetched.get("date", "")
             _record_success()
             _LAST_FETCH_TIME = now
-            _LAST_FETCH_SOURCE = "api"
-
             # Populate in-memory & Redis caches
             with _CACHE_LOCK:
                 _MEMORY_CACHE[base_code] = {
@@ -417,7 +408,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
     with _CACHE_LOCK:
         mem = _MEMORY_CACHE.get(base_code)
         if mem and mem.get("rates"):
-            _LAST_FETCH_SOURCE = "cache"
             return {
                 "rates": dict(mem["rates"]),
                 "date": mem.get("date", ""),
@@ -425,7 +415,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
             }
 
     # Static fallback
-    _LAST_FETCH_SOURCE = "fallback"
     return {
         "rates": dict(FALLBACK_RATES),
         "date": "fallback",
@@ -513,43 +502,40 @@ def _nice_max(raw_max: float, step: int) -> int:
     return max(step, int(candidate))
 
 
+@lru_cache(maxsize=1)
+def _load_filter_limits_config_cached() -> Dict[str, Dict[str, int]]:
+    try:
+        with open(CURRENCY_FILTER_LIMITS_PATH, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+        if isinstance(raw, dict):
+            cleaned: Dict[str, Dict[str, int]] = {}
+            for k, v in raw.items():
+                if k.startswith("_") or not isinstance(v, dict):
+                    continue
+                key = "default" if k.lower() == "default" else k.upper()
+                entry: Dict[str, int] = {}
+                if "min" in v:
+                    entry["min"] = max(0, int(v["min"]))
+                if "max" in v:
+                    entry["max"] = max(1, int(v["max"]))
+                if "step" in v:
+                    entry["step"] = max(1, int(v["step"]))
+                cleaned[key] = entry
+            if "default" not in cleaned:
+                cleaned["default"] = {"min": 0, "max": 100000, "step": 100}
+            return cleaned
+    except Exception as e:
+        _LOGGER.warning("Failed to load currency filter limits from %s: %s", CURRENCY_FILTER_LIMITS_PATH, e)
+
+    return {
+        "default": {"min": 0, "max": 100000, "step": 100},
+        "USD": {"min": 0, "max": 100000, "step": 100},
+    }
+
+
 def load_filter_limits_config() -> Dict[str, Dict[str, int]]:
     """Loads and caches currency slider bounds from currency_filter_limits.json."""
-    global _FILTER_LIMITS_CACHE
-    with _FILTER_LIMITS_LOCK:
-        if _FILTER_LIMITS_CACHE is not None:
-            return dict(_FILTER_LIMITS_CACHE)
-
-        try:
-            with open(CURRENCY_FILTER_LIMITS_PATH, "r", encoding="utf-8") as f:
-                raw = json.load(f)
-            if isinstance(raw, dict):
-                cleaned: Dict[str, Dict[str, int]] = {}
-                for k, v in raw.items():
-                    if k.startswith("_") or not isinstance(v, dict):
-                        continue
-                    key = "default" if k.lower() == "default" else k.upper()
-                    entry: Dict[str, int] = {}
-                    if "min" in v:
-                        entry["min"] = max(0, int(v["min"]))
-                    if "max" in v:
-                        entry["max"] = max(1, int(v["max"]))
-                    if "step" in v:
-                        entry["step"] = max(1, int(v["step"]))
-                    cleaned[key] = entry
-                if "default" not in cleaned:
-                    cleaned["default"] = {"min": 0, "max": 100000, "step": 100}
-                _FILTER_LIMITS_CACHE = cleaned
-                return dict(cleaned)
-        except Exception as e:
-            _LOGGER.warning("Failed to load currency filter limits from %s: %s", CURRENCY_FILTER_LIMITS_PATH, e)
-
-        default_cfg = {
-            "default": {"min": 0, "max": 100000, "step": 100},
-            "USD": {"min": 0, "max": 100000, "step": 100},
-        }
-        _FILTER_LIMITS_CACHE = default_cfg
-        return dict(default_cfg)
+    return dict(_load_filter_limits_config_cached())
 
 
 def get_filter_limits(currency_code: str) -> Dict[str, int]:
@@ -612,9 +598,6 @@ def get_rates_status() -> Dict[str, Any]:
     with _CIRCUIT_LOCK:
         state = _CIRCUIT_STATE
         failures = _CONSECUTIVE_FAILURES
-        last_err = _LAST_ERROR
-
-    safe_last_err = str(last_err)[:200] if last_err else None
 
     return {
         "enabled": bool(CURRENCY_RATES_ENABLED),
@@ -625,6 +608,4 @@ def get_rates_status() -> Dict[str, Any]:
         "rates_count": len(rates_info.get("rates") or {}),
         "last_fetch": _LAST_FETCH_TIME,
         "staleness_sec": staleness,
-        "last_error": safe_last_err,
     }
-

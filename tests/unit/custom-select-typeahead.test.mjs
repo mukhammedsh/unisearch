@@ -289,7 +289,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('renders optgroup presentation labels that cannot be selected', () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);
@@ -315,7 +315,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('navigates with single character typeahead when closed and updates select.value', async () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);
@@ -347,7 +347,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('cycles through matches when pressing the same key repeatedly', () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);
@@ -385,7 +385,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('matches multi-character buffer within typing interval', () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);
@@ -410,7 +410,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('highlights matching option when open without immediately committing value', () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);

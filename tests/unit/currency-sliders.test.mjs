@@ -4,10 +4,8 @@ import assert from 'node:assert';
 import {
   convert,
   getFilterLimits,
-  getPreferredCurrency,
   setPreferredCurrency,
   formatMoney,
-  FALLBACK_RATES,
 } from '../../frontend/javascript/currency.js';
 import { applyTokenSubstitutions } from '../../frontend/javascript/i18n.js';
 

@@ -9,13 +9,11 @@ import {
   markMotionEnter,
   replayMotion,
 } from "../utils.js";
-import { t, tFormat } from "../i18n.js";
+import { t } from "../i18n.js";
 import { heroIcon } from "../icons.js";
 import {
   navigateToAppRoute,
-  routeCompare,
   routeCompareSelection,
-  routeUniversities,
   routeUniversityDetail,
 } from "../routes.js";
 import {

@@ -13,10 +13,7 @@ import {
   setPreferredCurrency,
   niceStep,
   niceMax,
-  CURRENCY_FORMAT_MAP,
-  FALLBACK_RATES,
 } from '../../frontend/javascript/currency.js';
-import { SETTINGS_CACHE_KEY } from '../../frontend/javascript/settings.js';
 
 describe('currency.js', () => {
   let mockLocalStorage;

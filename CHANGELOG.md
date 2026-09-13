@@ -3,6 +3,8 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Simplified currency service state and filter-limit caching with bounded memoization, removed unused fetch-status fields and stale catalog/compare imports, and updated the CPU PyTorch dependency to `2.13.0` (`backend/app/services/currency.py`, `backend/requirements.txt`, `frontend/javascript/pages/compare.js`, `frontend/javascript/pages/universities.js`).
+- Updated currency and custom-select unit coverage to match the streamlined service and catalog behavior (`backend/tests/test_currency.py`, `tests/unit/currency-sliders.test.mjs`, `tests/unit/currency.test.mjs`, `tests/unit/custom-select-typeahead.test.mjs`).
 - Refined comparison admission configuration styling (`frontend/css/universities/03-comparison.css`, `tests/e2e/mobile-tablet-overflow.spec.js`):
   - Flattened university comparison columns and admission requirement details so related content reads as one academic workspace instead of nested card layers.
   - Reworked funding choices into selectable list rows with purposeful divider lines, transparent metadata, and content-sized flex layouts that remove phantom vertical gaps.

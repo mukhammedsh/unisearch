@@ -22,17 +22,13 @@ import {
   motionPress,
   replayMotion,
   setupSlidingIndicator,
-  bindImageFallbacks,
   safeSessionStorage,
 } from "../utils.js";
 
 import {
-  applyPercentWidths,
   clusterMarkerLogoHtml,
   getGrantsFromCategories,
   mapMarkerLogoHtml,
-  renderTrackChanceChip,
-  renderUniChanceSummary,
 } from "../university-detail-helpers.js";
 
 import { renderNoConnection } from "../components.js";
@@ -46,8 +42,7 @@ import {
   formatMoney,
 } from "../currency.js";
 import { navigateToAppRoute, routeCompare, routeCompareConfigure, routeUniversityDetail } from "../routes.js";
-import { 
-  compareChoiceKey,
+import {
   readCompareAdmissionChoices,
   writeCompareAdmissionChoices as persistCompareAdmissionChoices,
   resolveAiSortResult,
@@ -76,8 +71,6 @@ import {
   unknownFieldText,
   textOrUnknown,
   moneyOrUnknown,
-  normalizeStudyModeForCost,
-  modeAwareAnnualCost,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
@@ -93,7 +86,6 @@ import {
   shouldOpenUniversitiesInNewTab,
   rememberRecentUniversity,
   getDetailCacheEntry,
-  fetchUniversityDetailCached,
   toFiniteNumber,
   rankingStatusLabel,
 } from './_shared.js';
@@ -444,8 +436,6 @@ export function initUniversitiesPage() {
     }
     compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
     let compareAdmissionChoices = new Map();
-    let compareChancesByUniId = new Map();
-    let lastLoadedCompareUniversities = [];
 
     function activeFilterCount() {
         let count = 0;
@@ -481,7 +471,6 @@ export function initUniversitiesPage() {
 
         const isCompareTab = () => state.activeTab === "compare";
     const isCompareResultsMode = () => false;
-    const isCompareConfigureMode = () => false;
     const isCompareSelectionMode = () => isCompareTab();
 
     const sectionUrlParams = () => {
@@ -565,21 +554,6 @@ export function initUniversitiesPage() {
 
         await switchView(state.viewMode || "list", false);
         if (shouldFetch) fetchAndRender();
-    };
-
-    const scrollUniversitiesPageTop = (behavior = "smooth") => {
-        const run = () => {
-            window.scrollTo({ top: 0, left: 0, behavior });
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        };
-        run();
-        window.requestAnimationFrame(() => {
-            run();
-            window.setTimeout(run, 80);
-            window.setTimeout(run, 240);
-            window.setTimeout(run, 500);
-        });
     };
 
     const getRenderedUniversityById = (id) => {
