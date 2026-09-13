@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Refined comparison admission configuration styling (`frontend/css/universities/03-comparison.css`, `tests/e2e/mobile-tablet-overflow.spec.js`):
+  - Flattened university comparison columns and admission requirement details so related content reads as one academic workspace instead of nested card layers.
+  - Reworked funding choices into selectable list rows with purposeful divider lines, transparent metadata, and content-sized flex layouts that remove phantom vertical gaps.
+  - Added responsive alignment and regression coverage for desktop/mobile spacing, funding row structure, and horizontal overflow.
 - Completed Russian display labels for exam subjects and language-test sections (`frontend/javascript/utils/config.js`, `tests/unit/compare-helpers.test.mjs`):
   - Localized SAT, AP, IB, A-Level, and HKDSE subjects plus IELTS and TOEFL section labels wherever the shared exam formatter is used.
   - Added regression coverage for Russian exam and language-section labels.
