@@ -46,6 +46,20 @@ for (const locale of locales) {
             aidAny: true, // over budget + aid tag
           },
         },
+        {
+          id: "compact-layout-university",
+          name: "Compact Layout University",
+          rank: 25,
+          location: { country: "USA", city: "Boston" },
+          finance: {
+            total_cost_year_usd: 50000,
+          },
+          academics: { acceptance_rate_percent: 25 },
+          matchData: {
+            finalPrice: 50000,
+            preferenceMismatch: 0.2,
+          },
+        },
       ];
       await route.fulfill({
         status: 200,
@@ -58,7 +72,9 @@ for (const locale of locales) {
     await expect(page.locator("#languageSelect")).toHaveValue(locale.value);
 
     const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
+    const compactCard = page.locator('.uni-card[data-uni-id="compact-layout-university"]');
     await expect(firstCard).toBeVisible();
+    await expect(compactCard).toBeVisible();
     const badgeBox = firstCard.locator(".uni-badge");
     await expect(badgeBox).toBeVisible();
     await expect(badgeBox).toHaveClass(/uni-badge--count-4/);
@@ -84,5 +100,22 @@ for (const locale of locales) {
     expect(overflow.hasBox).toBeTruthy();
     expect(overflow.horizontal).toBeFalsy();
     expect(overflow.vertical).toBeFalsy();
+
+    const whyToPriceGap = await firstCard.evaluate((card) => {
+      const why = card.querySelector(".uni-why");
+      const price = card.querySelector(".uni-price");
+      if (!why || !price) return null;
+      return price.getBoundingClientRect().top - why.getBoundingClientRect().bottom;
+    });
+    expect(whyToPriceGap).not.toBeNull();
+    expect(whyToPriceGap).toBeLessThanOrEqual(20);
+
+    const [firstCardBox, compactCardBox] = await Promise.all([
+      firstCard.boundingBox(),
+      compactCard.boundingBox(),
+    ]);
+    expect(firstCardBox).not.toBeNull();
+    expect(compactCardBox).not.toBeNull();
+    expect(firstCardBox.height).toBeCloseTo(compactCardBox.height, 3);
   });
 }

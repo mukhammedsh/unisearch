@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
+const { setNativeSelect } = require("./helpers/selectors");
 
 function makeAiSortResponse(items) {
   return {
@@ -10,6 +11,59 @@ function makeAiSortResponse(items) {
     warnings: [],
   };
 }
+
+test("UniFit warning returns after a reload or a new UniFit selection", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse([
+        {
+          id: "conditional-warning-university",
+          name: "Conditional Warning University",
+          location: { country: "USA", city: "Boston" },
+          finance: { total_cost_year_usd: 25000 },
+          academics: { acceptance_rate_percent: 30 },
+          matchData: {
+            conditional: true,
+            conditionalRequirements: 1,
+            uiBadgeHints: { showConditionalExamNeeded: true },
+          },
+        },
+      ])),
+    });
+  });
+
+  await page.goto("/index.html", { waitUntil: "domcontentloaded" });
+  const warning = page.locator("#unifitWarningBanner");
+  const dismiss = page.locator("#dismissUnifitWarningBanner");
+  await expect(warning).toBeVisible();
+  await expect(dismiss).toHaveCSS("border-radius", "10px");
+  const isDismissIconCentered = await dismiss.evaluate((button) => {
+    const icon = button.querySelector("svg");
+    if (!icon) return false;
+    const buttonBox = button.getBoundingClientRect();
+    const iconBox = icon.getBoundingClientRect();
+    return Math.abs((buttonBox.left + buttonBox.width / 2) - (iconBox.left + iconBox.width / 2)) < 0.1
+      && Math.abs((buttonBox.top + buttonBox.height / 2) - (iconBox.top + iconBox.height / 2)) < 0.1;
+  });
+  expect(isDismissIconCentered).toBe(true);
+
+  await dismiss.click();
+  await expect(warning).toBeHidden();
+
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(warning).toBeVisible();
+
+  await dismiss.click();
+  await setNativeSelect(page, "sortSelect", "name_asc");
+  await expect(warning).toBeHidden();
+
+  await setNativeSelect(page, "sortSelect", "uni_ai");
+  await expect(warning).toBeVisible();
+});
 
 test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);

@@ -130,10 +130,26 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
                         "raw_value": "Mathematics A*, Computer Science A*, Further Mathematics A*, Physics A*",
                         "details": {
                             "components": [
-                                {"exam": "A_LEVEL_MATHEMATICS", "raw_value": "A*"},
-                                {"exam": "A_LEVEL_COMPUTER_SCIENCE", "raw_value": "A*"},
-                                {"exam": "A_LEVEL_FURTHER_MATHEMATICS", "raw_value": "A*"},
-                                {"exam": "A_LEVEL_PHYSICS", "raw_value": "A*"},
+                                {
+                                    "exam": "A_LEVEL_MATHEMATICS",
+                                    "raw_value": "A*",
+                                    "details": {"grades": ["A*"]},
+                                },
+                                {
+                                    "exam": "A_LEVEL_COMPUTER_SCIENCE",
+                                    "raw_value": "A*",
+                                    "details": {"grades": ["A*"]},
+                                },
+                                {
+                                    "exam": "A_LEVEL_FURTHER_MATHEMATICS",
+                                    "raw_value": "A*",
+                                    "details": {"grades": ["A*"]},
+                                },
+                                {
+                                    "exam": "A_LEVEL_PHYSICS",
+                                    "raw_value": "A*",
+                                    "details": {"grades": ["A*"]},
+                                },
                             ]
                         },
                     }

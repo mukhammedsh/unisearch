@@ -5584,6 +5584,12 @@ body {
   display: none;
 }
 
+.navbar-search-clear:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.98);
+  filter: brightness(0.88);
+  transition: transform 0.04s ease, filter 0.04s ease;
+}
+
 .navbar-search-clear:focus-visible {
   background: var(--surface-solid);
   color: var(--text);

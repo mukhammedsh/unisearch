@@ -336,7 +336,8 @@
 }
 
 .uni-why + .uni-footer {
-  margin-top: 10px;
+  margin-top: 0;
+  padding-top: 8px;
 }
 
 .uni-card.uni-card--compare-selected {
@@ -794,12 +795,18 @@
   height: 28px;
   padding: 0;
   border: 1px solid var(--line-warning);
-  border-radius: var(--radius-circle);
+  border-radius: var(--radius-md);
   background: var(--surface-solid);
   color: var(--color-warning);
+  line-height: 0;
   cursor: pointer;
   transition: background var(--motion-fast) var(--motion-ease-standard),
               color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.u-unifit-warning__dismiss .ui-icon {
+  width: 16px;
+  height: 16px;
 }
 
 @media (hover: hover) and (pointer: fine) {

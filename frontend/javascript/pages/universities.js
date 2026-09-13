@@ -285,15 +285,9 @@ export function initUniversitiesPage() {
     setupScopeNotice();
 
     let unifitWarningBannerDismissed = false;
-    try {
-        unifitWarningBannerDismissed = sessionStorage.getItem("unifit_warning_dismissed") === "1";
-    } catch (_) {}
 
     el.unifitWarningDismiss?.addEventListener("click", () => {
         unifitWarningBannerDismissed = true;
-        try {
-            sessionStorage.setItem("unifit_warning_dismissed", "1");
-        } catch (_) {}
         if (el.unifitWarningBanner) {
             el.unifitWarningBanner.hidden = true;
         }
@@ -305,11 +299,7 @@ export function initUniversitiesPage() {
             el.unifitWarningBanner.hidden = true;
             return;
         }
-        let isDismissed = unifitWarningBannerDismissed;
-        try {
-            isDismissed = isDismissed || sessionStorage.getItem("unifit_warning_dismissed") === "1";
-        } catch (_) {}
-        if (isDismissed) {
+        if (unifitWarningBannerDismissed) {
             el.unifitWarningBanner.hidden = true;
             return;
         }
@@ -1460,6 +1450,7 @@ export function initUniversitiesPage() {
 
         state.sort = el.sortSelect ? el.sortSelect.value : normalizeSortMode(nextSort);
         if (state.sort !== "uni_ai" && el.unifitWarningBanner) {
+            unifitWarningBannerDismissed = false;
             el.unifitWarningBanner.hidden = true;
         }
         updateSliderVisibility();

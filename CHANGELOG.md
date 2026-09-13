@@ -3,6 +3,8 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Improved university catalog card geometry and UniFit warning behavior, including compact footer spacing, a centered dismiss control, and warning reappearance after reload or a new UniFit selection (`frontend/css/style.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/javascript/pages/universities.js`).
+- Added regression coverage for catalog card layout, localized UniFit badges, warning state restoration, and valid nested profile payloads while preserving protection against excessively deep details (`backend/app/schemas/payloads.py`, `backend/tests/`, `tests/e2e/`).
 - Refined the university catalog workspace with content-sized cards, two-line converted tuition display, improved footer alignment, and horizontal wheel scrolling for map results (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/06-map.css`, `frontend/javascript/pages/_shared.js`, `frontend/javascript/pages/universities.js`).
 - Enabled the navbar university search on the root catalog while keeping it disabled only in the dedicated compare workspace, and aligned compare selection with card-level pressed state semantics (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/main.js`, `frontend/javascript/pages/universities.js`).
 - Updated unit and Playwright coverage for the catalog search, tuition formatting, compare selection, and refreshed root-catalog behavior (`tests/unit/navbar-search.test.mjs`, `tests/unit/shared-utils.test.mjs`, `tests/e2e/motion-interactions.spec.js`, `tests/e2e/smoke-home.spec.js`, `tests/e2e/universities-tabs-compare.spec.js`).

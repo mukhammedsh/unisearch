@@ -43,7 +43,7 @@ class SecurityRegressionTests(unittest.TestCase):
                 "exams": [
                     {
                         "id": "SAT",
-                        "details": {"a": {"b": {"c": {"d": {"e": "too deep"}}}}},
+                        "details": {"a": {"b": {"c": {"d": {"e": {"f": "too deep"}}}}}},
                     }
                 ]
             },
