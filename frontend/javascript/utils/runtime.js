@@ -47,8 +47,8 @@ export function replayMotion(node, className, options = {}) {
   window.setTimeout(cleanup, timeoutMs);
 }
 
-export function motionPress(node) {
-  replayMotion(node, "motion-press-pop", { timeoutMs: 260 });
+export function motionPress() {
+  // Button activation uses color feedback only; it must not move or scale the control.
 }
 
 export function markMotionEnter(root, selector = "", options = {}) {

@@ -73,14 +73,20 @@
   z-index: 2;
 }
 
+.is-skeleton .uni-logo {
+  position: absolute;
+}
+
 .is-skeleton .skeleton-line {
   height: 14px;
   border-radius: var(--radius-xs);
-  margin-bottom: 6px;
+  margin: 0;
 }
 
-.u-skeleton-card {
+.uni-card.u-skeleton-card {
   pointer-events: none;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .u-skeleton-card .uni-price {
@@ -89,7 +95,76 @@
 }
 
 .u-skeleton-card .uni-body {
-  gap: 8px;
+  gap: var(--space-3);
+}
+
+.is-skeleton .u-skeleton-title {
+  width: 84%;
+  height: var(--text-md);
+}
+
+.is-skeleton .u-skeleton-title--short {
+  width: 58%;
+}
+
+.is-skeleton .u-skeleton-location {
+  width: 62%;
+  height: var(--text-sm);
+}
+
+.u-skeleton-metric {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-4);
+}
+
+.is-skeleton .u-skeleton-metric-icon {
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: var(--radius-circle);
+  flex: 0 0 var(--space-3);
+}
+
+.is-skeleton .u-skeleton-metric-label {
+  width: 38%;
+  height: var(--text-xs);
+}
+
+.is-skeleton .u-skeleton-metric-value {
+  width: 16%;
+  height: var(--text-xs);
+}
+
+.u-skeleton-footer {
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+.u-skeleton-price {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.is-skeleton .u-skeleton-price-value {
+  width: 56%;
+  height: var(--text-md);
+}
+
+.is-skeleton .u-skeleton-price-period {
+  width: 36%;
+  height: var(--text-xs);
+}
+
+.is-skeleton .u-skeleton-details {
+  width: var(--space-16);
+  height: var(--text-sm);
+  flex: 0 0 auto;
 }
 
 .u-grid {
@@ -195,10 +270,8 @@
 }
 
 .uni-card--compare-selected {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
   background: var(--surface-soft);
-  box-shadow: 0 0 0 2px var(--accent), var(--shadow-card);
+  box-shadow: var(--shadow-card);
 }
 
 .uni-media {
@@ -586,32 +659,6 @@ body.universities-compare-mode .uni-action-btn--favorite {
   border-color: var(--line-grant);
   color: var(--text-inverse);
 }
-}
-
-.uni-action-btn--compare.motion-state-pulse--compare {
-  position: relative;
-  isolation: isolate;
-  transition:
-  transform var(--motion-fast) var(--motion-ease-standard);
-}
-
-.uni-action-btn--compare.motion-state-pulse--compare::after {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  z-index: 1;
-  border-radius: inherit;
-  border: 1px solid var(--line-grant);
-  opacity: 0;
-  transform: scale(0.96);
-  animation: motion-state-ring var(--motion-slow) var(--motion-ease-emphasized) both;
-  pointer-events: none;
-}
-
-.uni-action-btn--compare.is-active.motion-state-pulse--compare {
-  background: var(--color-success) !important;
-  border-color: var(--line-grant) !important;
-  color: var(--text-inverse) !important;
 }
 
 .uni-action-btn--favorite.is-active .uni-action-icon {

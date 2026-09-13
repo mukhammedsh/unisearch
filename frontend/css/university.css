@@ -80,10 +80,6 @@
   color: var(--text);
 }
 
-.d-page-scope__dismiss:active {
-  transform: translateY(0) scale(0.98);
-}
-
 .d-page-scope__eyebrow {
   margin: 0 0 8px;
   color: var(--text);
@@ -2854,10 +2850,6 @@
     background: transparent;
     color: var(--text);
   }
-}
-
-.d-tab-btn:active {
-  transform: none;
 }
 
 .d-tab-btn.active {

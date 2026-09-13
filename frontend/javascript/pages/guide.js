@@ -314,10 +314,8 @@ export function initGuidePage() {
     });
     navLinks.forEach((link) => {
       const active = String(link.dataset.guideHash || link.getAttribute("href") || "").trim() === `#${nextId}`;
-      const wasActive = link.classList.contains("is-active");
       link.classList.toggle("is-active", active);
       link.setAttribute("aria-current", active ? "page" : "false");
-      if (active && !wasActive) replayMotion(link, "motion-press-pop", { timeoutMs: 280 });
       if (active) {
         scrollGuideNavIntoView(link);
       }

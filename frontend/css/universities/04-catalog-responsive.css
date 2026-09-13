@@ -204,10 +204,6 @@
 }
 }
 
-.page-btn:active {
-  transform: translateY(0);
-}
-
 .page-btn--active {
   background: var(--accent-soft);
   border-color: var(--line-accent);

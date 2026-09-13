@@ -426,37 +426,8 @@ a {
   .lang-switch,
   [role="button"]
 ):active:not(:disabled) {
-  transform: translateY(1.5px) scale(0.98);
   filter: brightness(0.88);
-  transition: transform 0.04s ease, filter 0.04s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :is(
-    button,
-    .btn,
-    .btn-primary,
-    .page-btn,
-    .view-btn,
-    .u-view-btn,
-    .u-reset,
-    .profile-action-btn,
-    .theme-btn,
-    .settings-trigger-btn,
-    .profile-trigger-btn,
-    .u-section-tab,
-    .u-saved-filter__btn,
-    .u-state-card__btn,
-    .rank-empty__btn,
-    .profile-scale-btn,
-    .profile-delete,
-    .menu-btn,
-    .lang-switch,
-    [role="button"]
-  ):active:not(:disabled) {
-    transform: none;
-    filter: brightness(0.88);
-  }
+  transition: filter 0.04s ease;
 }
 
 html, body {
@@ -1585,18 +1556,9 @@ html, body {
 }
 
 .settings-switch:active .settings-switch-track {
-  transform: translateY(1.5px) scale(0.93);
   filter: brightness(0.86);
   border-color: var(--line-strong);
-  transition: transform 0.04s ease, filter 0.04s ease, border-color 0.04s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .settings-switch:active .settings-switch-track {
-    transform: none;
-    filter: brightness(0.86);
-    border-color: var(--line-strong);
-  }
+  transition: filter 0.04s ease, border-color 0.04s ease;
 }
 
 .settings-switch-text {
@@ -1836,10 +1798,6 @@ html, body {
   .profile-section-tab:hover {
     color: var(--text);
   }
-}
-
-.profile-section-tab:active {
-  transform: none;
 }
 
 .profile-section-tab.is-active {
@@ -2912,11 +2870,6 @@ html, body {
   --motion-ring-color: color-mix(in srgb, var(--accent) 34%, transparent);
 }
 
-.motion-press-pop {
-  animation: motion-press-pop var(--motion-snappy) var(--motion-ease-standard) both;
-  transform-origin: center;
-}
-
 .motion-pop {
   animation: motion-pop var(--motion-fast) var(--motion-ease-emphasized) both;
   transform-origin: center;
@@ -2942,8 +2895,6 @@ html, body {
 
 .motion-icon-save,
 .motion-icon-unsave,
-.motion-icon-compare-add,
-.motion-icon-compare-remove,
 .motion-icon-remove,
 .motion-icon-clear {
   transform-box: fill-box;
@@ -2958,18 +2909,12 @@ html, body {
   animation: motion-icon-unsave var(--motion-fast) var(--motion-ease-standard) both;
 }
 
-.motion-icon-compare-add {
-  animation: motion-icon-compare-add var(--motion-medium) var(--motion-ease-emphasized) both;
-}
-
-.motion-icon-compare-remove,
 .motion-icon-clear,
 .motion-icon-remove {
   animation: motion-icon-remove var(--motion-fast) var(--motion-ease-standard) both;
 }
 
-.motion-icon-save :is(path, circle, rect, line, polyline),
-.motion-icon-compare-add :is(path, circle, rect, line, polyline) {
+.motion-icon-save :is(path, circle, rect, line, polyline) {
   stroke-dasharray: 36;
   stroke-dashoffset: 0;
   animation: motion-svg-stroke-draw var(--motion-slow) var(--motion-ease-standard) both;
@@ -3005,12 +2950,6 @@ html, body {
   pointer-events: none !important;
 }
 
-@keyframes motion-press-pop {
-  0% { transform: translateY(0) scale(1); }
-  55% { transform: translateY(1px) scale(0.992); }
-  100% { transform: translateY(0) scale(1); }
-}
-
 @keyframes motion-pop {
   0% { transform: scale(0.96); opacity: 0.78; }
   100% { transform: scale(1); opacity: 1; }
@@ -3030,11 +2969,6 @@ html, body {
 @keyframes motion-icon-unsave {
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(0.92); opacity: 0.82; }
-}
-
-@keyframes motion-icon-compare-add {
-  0% { transform: scale(0.94); opacity: 0.84; }
-  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes motion-icon-remove {
@@ -3141,14 +3075,11 @@ html, body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .motion-press-pop,
   .motion-pop,
   .motion-state-pulse,
   .motion-state-pulse::after,
   .motion-icon-save,
   .motion-icon-unsave,
-  .motion-icon-compare-add,
-  .motion-icon-compare-remove,
   .motion-icon-remove,
   .motion-icon-clear,
   .motion-switch-toggle,
@@ -3667,10 +3598,6 @@ body.route-loading main {
     background: var(--accent-strong);
     box-shadow: none;
   }
-}
-
-.error-btn:active {
-  transform: translateY(0) scale(0.97);
 }
 
 .error-btn .ui-icon {
@@ -5597,9 +5524,8 @@ body {
 }
 
 .navbar-search-clear:active:not(:disabled) {
-  transform: translateY(-50%) scale(0.98);
   filter: brightness(0.88);
-  transition: transform 0.04s ease, filter 0.04s ease;
+  transition: filter 0.04s ease;
 }
 
 .navbar-search-clear:focus-visible {

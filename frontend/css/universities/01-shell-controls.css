@@ -72,10 +72,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   }
 }
 
-.u-page-scope__dismiss:active {
-  transform: translateY(0) scale(0.98);
-}
-
 .u-page-scope__eyebrow {
   margin: 0 0 8px;
   color: var(--text);
@@ -201,10 +197,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   outline-offset: 2px;
 }
 
-.u-compare-mode-btn:active {
-  transform: scale(0.98);
-}
-
 .u-section-meta .u-found {
   margin: 0;
   white-space: nowrap;
@@ -306,10 +298,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 .u-section-tab:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-}
-
-.u-section-tab:active {
-  transform: none;
 }
 
 .u-layout[hidden],
@@ -464,10 +452,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
     color: var(--text);
     outline: none;
   }
-}
-
-.u-saved-filter__btn:active {
-  transform: none;
 }
 
 .u-saved-filter__btn.is-active {
