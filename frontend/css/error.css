@@ -56,7 +56,7 @@ body[data-page="error-404"] main.error-page {
   align-items: flex-start;
   text-align: left;
   padding-bottom: var(--space-8);
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .error-kicker {
@@ -178,7 +178,7 @@ body[data-page="error-404"] main.error-page {
   display: flex;
   align-items: center;
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   min-height: 36px;
   box-sizing: border-box;
 }

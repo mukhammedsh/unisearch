@@ -365,9 +365,8 @@
 
 @media (max-width: 1250px) {
   .u-grid {
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
-
 }
 
 @media (max-width: 1180px) {
@@ -419,7 +418,7 @@
   }
 
   .u-grid {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
   .u-toolbar,

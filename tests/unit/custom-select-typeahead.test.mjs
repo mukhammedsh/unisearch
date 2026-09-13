@@ -450,4 +450,70 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.equal(select.value, 'KZT');
     assert.ok(!wrapper.classList.has('open'));
   });
+
+  it('adds open-up class when space below is limited and removes on close', () => {
+    const { container, select } = createSelectWithOptgroups();
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+
+    trigger.getBoundingClientRect = () => ({
+      top: 400,
+      bottom: 440,
+      left: 10,
+      right: 200,
+      width: 190,
+      height: 40,
+    });
+
+    global.window.innerHeight = 540;
+
+    trigger.dispatchEvent({
+      type: 'click',
+      stopPropagation: () => {},
+    });
+
+    assert.ok(wrapper.classList.has('open'));
+    assert.ok(wrapper.classList.has('open-up'));
+
+    trigger.dispatchEvent({
+      type: 'click',
+      stopPropagation: () => {},
+    });
+
+    assert.ok(!wrapper.classList.has('open'));
+    assert.ok(!wrapper.classList.has('open-up'));
+  });
+
+  it('does not add open-up class when space below is ample', () => {
+    const { container, select } = createSelectWithOptgroups();
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+
+    trigger.getBoundingClientRect = () => ({
+      top: 100,
+      bottom: 140,
+      left: 10,
+      right: 200,
+      width: 190,
+      height: 40,
+    });
+
+    global.window.innerHeight = 640;
+
+    trigger.dispatchEvent({
+      type: 'click',
+      stopPropagation: () => {},
+    });
+
+    assert.ok(wrapper.classList.has('open'));
+    assert.ok(!wrapper.classList.has('open-up'));
+  });
 });

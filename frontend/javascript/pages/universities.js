@@ -95,6 +95,7 @@ import {
   getDetailCacheEntry,
   fetchUniversityDetailCached,
   toFiniteNumber,
+  resolveUniversityCardPrice,
   rankingStatusLabel,
 } from './_shared.js';
 
@@ -179,6 +180,8 @@ export function initUniversitiesPage() {
         mobileFilterClose: $("closeMobileFilters"),
         savedFilterButtons: Array.from(document.querySelectorAll("[data-saved-filter]")),
         recentlyViewedBar: $("recentlyViewedBar"),
+        unifitWarningBanner: $("unifitWarningBanner"),
+        unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
         scopeNotice: $("universitiesScopeNotice"),
         scopeNoticeDismiss: $("dismissUniversitiesScopeNotice")
@@ -287,6 +290,49 @@ export function initUniversitiesPage() {
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     setupScopeNotice();
+
+    let unifitWarningBannerDismissed = false;
+    try {
+        unifitWarningBannerDismissed = sessionStorage.getItem("unifit_warning_dismissed") === "1";
+    } catch (_) {}
+
+    el.unifitWarningDismiss?.addEventListener("click", () => {
+        unifitWarningBannerDismissed = true;
+        try {
+            sessionStorage.setItem("unifit_warning_dismissed", "1");
+        } catch (_) {}
+        if (el.unifitWarningBanner) {
+            el.unifitWarningBanner.hidden = true;
+        }
+    });
+
+    const updateUnifitWarningBanner = (items = []) => {
+        if (!el.unifitWarningBanner) return;
+        if (state.sort !== "uni_ai" || state.activeTab !== "catalog" || isCompareSelectionMode()) {
+            el.unifitWarningBanner.hidden = true;
+            return;
+        }
+        let isDismissed = unifitWarningBannerDismissed;
+        try {
+            isDismissed = isDismissed || sessionStorage.getItem("unifit_warning_dismissed") === "1";
+        } catch (_) {}
+        if (isDismissed) {
+            el.unifitWarningBanner.hidden = true;
+            return;
+        }
+        const profile = loadProfile();
+        const hasEvidence = hasProfileEvidence(profile);
+        const candidateItems = Array.isArray(items) && items.length > 0 ? items : (lastRenderedItems || []);
+        const hasConditionalInItems = candidateItems.some((u) => {
+            const match = u?.matchData || {};
+            const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
+            const conditionalCount = Number(match.conditionalRequirements || 0);
+            return (badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0);
+        });
+        const shouldShow = !hasEvidence || hasConditionalInItems;
+        el.unifitWarningBanner.hidden = !shouldShow;
+    };
+
     setupSlidingIndicator("#universitiesSectionTabs", ".u-section-tab", "is-active");
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
 
@@ -403,8 +449,8 @@ export function initUniversitiesPage() {
             Number(el.skeleton?.parentElement?.clientWidth || 0),
             Number(el.content?.clientWidth || 0)
         );
-        const cardMinWidth = 252;
-        const gridGap = 18;
+        const cardMinWidth = 280;
+        const gridGap = 20;
         const columns = renderedColumns || (width > 0
             ? Math.max(1, Math.floor((width + gridGap) / (cardMinWidth + gridGap)))
             : Math.max(1, Math.floor((window.innerWidth + gridGap) / (cardMinWidth + gridGap))));
@@ -561,6 +607,7 @@ export function initUniversitiesPage() {
         syncSectionTabs();
         updateCompareModeStatus();
         renderCompareTray();
+        updateUnifitWarningBanner(lastRenderedItems);
         if (updateUrl) setSectionUrl(replaceUrl);
 
         await switchView(state.viewMode || "list", false);
@@ -847,10 +894,6 @@ export function initUniversitiesPage() {
         if (!root) return;
         root.querySelectorAll(".u-recent__chip").forEach((chip) => {
             chip.style.removeProperty("--recent-chip-width");
-            const width = Math.ceil(chip.getBoundingClientRect().width);
-            if (width > 0) {
-                chip.style.setProperty("--recent-chip-width", `${width}px`);
-            }
         });
     };
 
@@ -988,69 +1031,13 @@ export function initUniversitiesPage() {
         return universitySearchTokens(item).some((token) => token.includes(query) || query.includes(token));
     };
 
-    const ensureSearchSuggestionsNode = () => {
-        if (!el.qInput) return null;
-        const host = el.qInput.closest(".navbar-search") || el.qInput.parentElement;
-        if (!host) return null;
-        let node = host.querySelector(".navbar-search-suggestions");
-        if (!node) {
-            node = document.createElement("div");
-            node.className = "navbar-search-suggestions";
-            node.setAttribute("role", "listbox");
-            host.appendChild(node);
-        }
-        return node;
-    };
-
     const hideSearchSuggestions = () => {
-        const node = ensureSearchSuggestionsNode();
+        const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
+        const node = host?.querySelector(".navbar-search-suggestions");
         if (node) {
             node.innerHTML = "";
             node.classList.remove("is-open");
         }
-    };
-
-    const renderSearchSuggestions = () => {
-        const node = ensureSearchSuggestionsNode();
-        if (!node || !el.qInput) return;
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) {
-            hideSearchSuggestions();
-            return;
-        }
-        const q = String(el.qInput.value || "").trim();
-        const query = normalizeUniversitySearchText(q);
-        if (query.length < 2 || !lastRenderedItems.length) {
-            hideSearchSuggestions();
-            return;
-        }
-        const seen = new Set();
-        const suggestions = [];
-        lastRenderedItems.forEach((item) => {
-            if (!matchesUniversityQuery(item, q)) return;
-            const value = String(trUniversityName(item) || item?.name || "").trim();
-            const key = normalizeUniversitySearchText(value || item?.id);
-            if (!value || seen.has(key)) return;
-            seen.add(key);
-            suggestions.push(value);
-        });
-        if (!suggestions.length) {
-            hideSearchSuggestions();
-            return;
-        }
-        node.innerHTML = "";
-        suggestions.slice(0, 7).forEach((name) => {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "navbar-search-suggestion";
-            btn.setAttribute("data-value", name);
-            btn.setAttribute("role", "option");
-            const span = document.createElement("span");
-            span.textContent = name;
-            btn.appendChild(span);
-            node.appendChild(btn);
-        });
-        node.classList.add("is-open");
-        markMotionEnter(node, ".navbar-search-suggestion", { limit: 7, staggerMs: 14 });
     };
 
     function renderUniversitiesState(options = {}) {
@@ -1163,10 +1150,6 @@ export function initUniversitiesPage() {
                     el.skeleton.innerHTML = Array.from({ length: skeletonCount }, () => `
                         <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
                             <div class="uni-media">
-                                <div class="uni-price" aria-hidden="true">
-                                    <div class="skeleton-line" style="width: 64px; height: 11px; margin-left: auto;"></div>
-                                    <div class="skeleton-line" style="width: 56px; height: 18px; margin: 6px 0 0 auto;"></div>
-                                </div>
                                 <div class="uni-logo" aria-hidden="true"></div>
                             </div>
                             <div class="uni-body">
@@ -1174,8 +1157,11 @@ export function initUniversitiesPage() {
                                 <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
                                 <div class="skeleton-line" style="width: 58%;"></div>
                                 <div class="skeleton-line" style="width: 72%;"></div>
-                                <div class="skeleton-line" style="width: 100%; height: 38px; border-radius: 10px; margin-top: 4px;"></div>
-                                <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
+                                <div class="skeleton-line" style="width: 100%; height: 24px; border-radius: 6px; margin-top: 4px;"></div>
+                                <div class="uni-footer" style="margin-top: auto; padding-top: 14px; display: flex; justify-content: space-between; align-items: baseline;">
+                                    <div class="skeleton-line" style="width: 44%; height: 16px;"></div>
+                                    <div class="skeleton-line" style="width: 32%; height: 14px;"></div>
+                                </div>
                             </div>
                         </article>
                     `).join("");
@@ -1498,6 +1484,9 @@ export function initUniversitiesPage() {
         }
 
         state.sort = el.sortSelect ? el.sortSelect.value : normalizeSortMode(nextSort);
+        if (state.sort !== "uni_ai" && el.unifitWarningBanner) {
+            el.unifitWarningBanner.hidden = true;
+        }
         updateSliderVisibility();
         updateMobileFilterUi();
         refetch();
@@ -1522,8 +1511,8 @@ export function initUniversitiesPage() {
     el.qInput?.addEventListener("input", () => {
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
+        hideSearchSuggestions();
         if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
-        renderSearchSuggestions();
         refetch();
     });
     el.qInput?.addEventListener("blur", () => window.setTimeout(hideSearchSuggestions, 160));
@@ -1535,16 +1524,6 @@ export function initUniversitiesPage() {
         hideSearchSuggestions();
         el.qInput.focus();
         if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
-        refetch();
-    });
-    ensureSearchSuggestionsNode()?.addEventListener("click", (event) => {
-        const btn = event.target instanceof Element ? event.target.closest("[data-value]") : null;
-        if (!btn || !el.qInput) return;
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
-        el.qInput.value = String(btn.getAttribute("data-value") || "");
-        state.q = el.qInput.value.trim();
-        syncSearchClearButton();
-        hideSearchSuggestions();
         refetch();
     });
     
@@ -1563,7 +1542,6 @@ export function initUniversitiesPage() {
         btn.addEventListener("click", () => {
             const nextOnlySaved = String(btn.getAttribute("data-saved-filter") || "") === "favorites";
             if (state.only_saved === nextOnlySaved) return;
-            motionPress(btn);
             state.only_saved = nextOnlySaved;
             syncSavedFilterButtons();
             refetch();
@@ -1756,9 +1734,9 @@ export function initUniversitiesPage() {
     });
 
     const activateSectionTab = (btn) => {
+        hideSearchSuggestions();
         const nextTab = normalizeUniversitiesTab(btn.getAttribute("data-universities-tab"));
         if (nextTab === state.activeTab && !(nextTab === "compare" && isCompareResultsMode())) return;
-        motionPress(btn);
         state.activeTab = nextTab;
         if (nextTab !== "compare") {
             state.compareStage = "select";
@@ -1864,6 +1842,7 @@ export function initUniversitiesPage() {
         ["countrySelect", "stateSelect", "citySelect"].forEach((id) => initCustomSelect(id));
     };
 
+    hideSearchSuggestions();
     syncSectionVisibility({
         shouldFetch: !isCompareResultsMode(),
         updateUrl: true,
@@ -2137,15 +2116,9 @@ export function initUniversitiesPage() {
             <div class="u-map-results-list">
                 ${visibleItems.map((u) => {
                     const uniId = String(u.id || "");
-                    const match = u.matchData || {};
-                    const baseCost =
-                        (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
-                        (match.cost !== undefined ? match.cost : null) ??
-                        nested(u, ["finance", "total_cost_year_usd"], 0);
-                    const finalCost =
-                        (match.finalPrice !== undefined ? match.finalPrice : null) ??
-                        (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
-                        baseCost;
+                    const priceInfo = resolveUniversityCardPrice(u);
+                    const finalCost = priceInfo.amount;
+                    const uniCurrency = priceInfo.currency;
                     const city = String(trCity(u?.location?.city || "") || "").trim();
                     const country = String(trCountry(u?.location?.country || "") || "").trim();
                     const locationText = [city, country].filter(Boolean).join(", ");
@@ -2153,7 +2126,6 @@ export function initUniversitiesPage() {
                     const detailHref = routeUniversityDetail(uniId);
                     const isActive = uniId === preferredId;
                     const isCompared = isCompareSelectionMode() && compareUniversityIds.has(uniId);
-                    const uniCurrency = u?.finance?.currency || "USD";
                     return `
                         <article class="u-map-result-card${isActive ? " is-active" : ""}${isCompared ? " is-selected" : ""}" data-uni-id="${escapeHtmlAttr(uniId)}" aria-selected="${isCompared ? "true" : "false"}">
                             <button type="button" class="u-map-result-focus" data-uni-focus="${escapeHtmlAttr(uniId)}">
@@ -2749,6 +2721,8 @@ export function initUniversitiesPage() {
             ? t("universities.state.ml_unavailable", "Interests from your profile are temporarily not affecting sorting.")
             : "";
 
+        updateUnifitWarningBanner(items);
+
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
             if (el.total) el.total.textContent = String(total);
@@ -2900,18 +2874,9 @@ export function initUniversitiesPage() {
             fallbackClass: "uni-loc-line",
         });
         const match = u.matchData || {};
-
-        // Базовая цена по выбранному варианту, если алгоритм её дал.
-        const baseCost =
-        (match.costYearUSD !== undefined ? match.costYearUSD : null) ??
-        (match.cost !== undefined ? match.cost : null) ??
-        nested(u, ["finance", "total_cost_year_usd"], 0);
-
-        // Итоговая цена с учётом scholarship amount (если есть)
-        const cost =
-        (match.finalPrice !== undefined ? match.finalPrice : null) ??
-        (match.costWithAmountUSD !== undefined ? match.costWithAmountUSD : null) ??
-        baseCost;
+        const priceInfo = resolveUniversityCardPrice(u);
+        const cost = priceInfo.amount;
+        const uniCurrency = priceInfo.currency;
 
         let badgesHTML = "";
         let whyText = "";
@@ -2936,7 +2901,8 @@ export function initUniversitiesPage() {
         const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
         const aidAny = !!(match.aidAny || match.aidEligible || hasGrant);
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
-        const overBudget = hasUserBudget && Number.isFinite(Number(cost)) && Number(cost) > Number(myBudget);
+        const compareCostUSD = priceInfo.amountUSD ?? (cost !== null && uniCurrency ? (uniCurrency === "USD" ? cost : convert(cost, uniCurrency, "USD")) : cost);
+        const overBudget = hasUserBudget && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
 
         const badges = [];
         const acc = toFiniteNumber(u?.academics?.acceptance_rate_percent);
@@ -2949,7 +2915,6 @@ export function initUniversitiesPage() {
             badges.push(
                 renderUniPill("clipboard-document-list", "uni-pill--warn", t("universities.badge.conditional_exam_needed", "Conditional / Exam Needed"))
             );
-            whyText = t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional.");
         }
 
         // Priority 2: preference-match group. Only one vibe tag may be shown.
@@ -3015,7 +2980,6 @@ export function initUniversitiesPage() {
         const overlayTitle = whyText ? `${name}. ${whyText}` : String(name || "");
         const rankValue = toFiniteNumber(u?.rank);
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
-        const uniCurrency = u?.finance?.currency || "USD";
         const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency);
         const isSaved = savedUniversityIds.has(String(id));
         const showCompareAction = isCompareSelectionMode();
@@ -3035,40 +2999,37 @@ export function initUniversitiesPage() {
             ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Checked: ${rankVerifiedAt}`)
             : "";
         const rankTooltipAttr = sourceTooltip ? ` title="${escapeHtmlAttr(sourceTooltip)}"` : "";
+        const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
         const metricsHtml = `
             <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
                 <a href="${detailHref}" class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}"${rankTooltipAttr}>
+                    <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
                     <span class="uni-metric-label">${rankLabel}</span>
-                    <span class="uni-metric-value">${rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"))}</span>
+                    <span class="uni-metric-value">${rankValueText}</span>
                 </a>
-                <div class="uni-metric${acc !== null ? "" : " uni-metric--missing"}">
-                    <span class="uni-metric-label">${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}</span>
-                    <span class="uni-metric-value">${escapeHtml(acceptanceValueText)}</span>
-                </div>
             </div>
         `;
-        const saveLabel = t("universities.card.save", "Add to favorites");
         const compareDefaultLabel = t("universities.card.compare", "Add to compare");
         const compareSelectedLabel = t("universities.card.compare_selected", "Selected for comparison");
         const compareLabel = isCompared ? compareSelectedLabel : compareDefaultLabel;
-        const saveActionHtml = showCompareAction
-            ? ""
-            : `<button class="uni-action-btn uni-action-btn--favorite${isSaved ? " is-active" : ""}" type="button" data-card-action="save" aria-pressed="${isSaved ? "true" : "false"}" title="${escapeHtmlAttr(saveLabel)}" aria-label="${escapeHtmlAttr(saveLabel)}">${renderInlineIcon("star", 16, "uni-action-icon")}</button>`;
         const compareActionHtml = showCompareAction
             ? `<button class="uni-action-btn uni-action-btn--compare${isCompared ? " is-active" : ""}" type="button" data-card-action="compare" aria-pressed="${isCompared ? "true" : "false"}" title="${escapeHtmlAttr(compareLabel)}" aria-label="${escapeHtmlAttr(compareLabel)}">${renderInlineIcon(isCompared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon")}</button>`
+            : "";
+        const cardActionsHtml = compareActionHtml
+            ? `<div class="uni-card-actions">${compareActionHtml}</div>`
             : "";
         const hasFitContent = Boolean(badgesHTML || whyText);
         const fitClass = hasFitContent ? " uni-card--has-fit" : " uni-card--compact";
         const separatorHtml = hasFitContent ? `<div class="uni-card-separator" aria-hidden="true"></div>` : "";
+        const hasCost = Number.isFinite(Number(cost));
+        const priceHtml = hasCost
+            ? `<div class="uni-price"><span class="uni-price-val">${escapeHtml(costText)}</span> <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span></div>`
+            : `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(costText)}</span></div>`;
         return `
         <article class="uni-card${fitClass}${isCompared ? " uni-card--compare-selected" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
-            <div class="uni-card-actions">
-                ${saveActionHtml}
-                ${compareActionHtml}
-            </div>
-            <div class="uni-price"><small>${escapeHtml(t("universities.card.est_cost_year", "Est. Cost/Year"))}</small><b>${escapeHtml(costText)}</b></div>
+            ${cardActionsHtml}
             <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}"></div>
             </div>
             <div class="uni-body">
@@ -3079,6 +3040,7 @@ export function initUniversitiesPage() {
             ${badgesHTML ? `<div class="${badgeContainerClass}">${badgesHTML}</div>` : ""}
             ${whyText ? `<div class="uni-why" title="${safeWhyText}">${safeWhyText}</div>` : ""}
             <div class="uni-footer">
+                ${priceHtml}
                 <span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>
             </div>
             </div>

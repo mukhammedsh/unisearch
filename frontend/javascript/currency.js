@@ -557,7 +557,10 @@ export function formatPrice(amount, originalCurrency = "USD") {
   }
 
   const convertedAmount = convert(num, origCode, prefCode);
-  const prefFormatted = formatMoney(convertedAmount, prefCode);
+  const roundedConverted = Math.abs(convertedAmount) >= 100
+    ? Math.round(convertedAmount / 100) * 100
+    : Math.round(convertedAmount);
+  const prefFormatted = formatMoney(roundedConverted, prefCode);
   const origFormatted = formatMoney(num, origCode);
 
   if (mode === "original") {

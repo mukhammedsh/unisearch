@@ -182,7 +182,7 @@ export async function resolveAiSortResult(options = {}) {
 }
 
 import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
-import { formatMoney } from "../../currency.js";
+import { formatMoney, formatPrice } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 
@@ -225,7 +225,7 @@ import {
 
 export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
-  return n !== null ? formatMoney(n, String(currency || "USD").trim().toUpperCase()) : unknownFieldText(fallbackKey, fallback);
+  return n !== null ? formatPrice(n, String(currency || "USD").trim().toUpperCase()) : unknownFieldText(fallbackKey, fallback);
 }
 
 export function compareUniversityName(u) {

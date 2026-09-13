@@ -57,7 +57,9 @@ test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", 
   await expect(pills.nth(0)).toContainText("Conditional");
   await expect(pills.nth(1)).toContainText("Your Vibe");
   await expect(pills.nth(2)).toContainText("Likely Grant");
-  await expect(firstCard.locator(".uni-why")).toContainText("conditional");
+  await expect(page.locator("#unifitWarningBanner")).toBeVisible();
+  await expect(firstCard.locator(".uni-why")).not.toContainText("conditional");
+  await expect(firstCard.locator(".uni-why")).toContainText("sliders");
 });
 
 test("UniFit card badges still work when backend hints are missing (frontend fallback)", async ({ page }) => {

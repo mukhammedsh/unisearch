@@ -11,6 +11,7 @@ function bindCustomSelectGlobalClick() {
     document.querySelectorAll(".custom-select-wrapper.open").forEach((wrapper) => {
       if (!wrapper.contains(target)) {
         wrapper.classList.remove("open");
+        wrapper.classList.remove("open-up");
         const trigger = wrapper.querySelector(".custom-select-trigger");
         if (trigger) trigger.setAttribute("aria-expanded", "false");
         wrapper.querySelectorAll(".custom-option.is-highlighted").forEach((node) => node.classList.remove("is-highlighted"));
@@ -101,10 +102,46 @@ export function initCustomSelect(selectId) {
     document.querySelectorAll(".custom-select-wrapper.open").forEach((node) => {
       if (node !== wrapper) {
         node.classList.remove("open");
+        node.classList.remove("open-up");
         const otherTrig = node.querySelector(".custom-select-trigger");
         if (otherTrig) otherTrig.setAttribute("aria-expanded", "false");
       }
     });
+
+    if (typeof trigger.getBoundingClientRect === "function") {
+      const triggerRect = trigger.getBoundingClientRect();
+      let scrollParent = null;
+      if (typeof wrapper.closest === "function") {
+        const filterCard = wrapper.closest(".u-filter-card");
+        const sidebar = wrapper.closest(".u-sidebar");
+        if (filterCard && typeof window !== "undefined" && typeof window.getComputedStyle === "function") {
+          const fcOverflow = window.getComputedStyle(filterCard).overflowY;
+          if (fcOverflow === "auto" || fcOverflow === "scroll") {
+            scrollParent = filterCard;
+          }
+        }
+        if (!scrollParent && sidebar) {
+          scrollParent = sidebar;
+        }
+      }
+
+      let parentBottom = typeof window !== "undefined" && window.innerHeight ? window.innerHeight : 800;
+      let parentTop = 0;
+      if (scrollParent && typeof scrollParent.getBoundingClientRect === "function") {
+        const parentRect = scrollParent.getBoundingClientRect();
+        parentBottom = Math.min(parentBottom, parentRect.bottom);
+        parentTop = Math.max(parentTop, parentRect.top);
+      }
+
+      const spaceBelow = parentBottom - triggerRect.bottom;
+      const spaceAbove = triggerRect.top - parentTop;
+      if (spaceBelow < 210 && spaceAbove > spaceBelow) {
+        wrapper.classList.add("open-up");
+      } else {
+        wrapper.classList.remove("open-up");
+      }
+    }
+
     wrapper.classList.add("open");
     trigger.setAttribute("aria-expanded", "true");
 
@@ -119,6 +156,7 @@ export function initCustomSelect(selectId) {
     typeaheadBuffer = "";
     clearTimeout(typeaheadTimeout);
     wrapper.classList.remove("open");
+    wrapper.classList.remove("open-up");
     trigger.setAttribute("aria-expanded", "false");
     customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
     highlightedIndex = -1;

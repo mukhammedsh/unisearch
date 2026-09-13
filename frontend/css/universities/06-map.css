@@ -220,7 +220,7 @@
 .u-map-result-bottom {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid var(--line);
+  border-top: none;
   display: flex;
   align-items: center;
   justify-content: space-between;

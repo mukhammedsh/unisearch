@@ -5,6 +5,7 @@ import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
 import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
+import { initGlobalNavbarSearch, hideGlobalSearchSuggestions } from "./components/navbar-search.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
@@ -95,8 +96,8 @@ function getUniversitiesSkeletonCount({ listEl, skeletonEl, limit = 24 } = {}) {
     Number(skeletonEl?.parentElement?.clientWidth || 0),
     Number(window.innerWidth || 0)
   );
-  const cardMinWidth = 252;
-  const gridGap = 18;
+  const cardMinWidth = 280;
+  const gridGap = 20;
   const columns = renderedColumns || Math.max(1, Math.floor((width + gridGap) / (cardMinWidth + gridGap)));
   const rows = 3;
   return Math.min(limit, Math.max(columns, columns * rows));
@@ -160,10 +161,6 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
       skeletonEl.innerHTML = Array.from({ length: skeletonCount }, () => `
         <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
           <div class="uni-media">
-            <div class="uni-price" aria-hidden="true">
-              <div class="skeleton-line" style="width: 64px; height: 11px; margin-left: auto;"></div>
-              <div class="skeleton-line" style="width: 56px; height: 18px; margin: 6px 0 0 auto;"></div>
-            </div>
             <div class="uni-logo" aria-hidden="true"></div>
           </div>
           <div class="uni-body">
@@ -171,8 +168,11 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
             <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
             <div class="skeleton-line" style="width: 58%;"></div>
             <div class="skeleton-line" style="width: 72%;"></div>
-            <div class="skeleton-line" style="width: 100%; height: 38px; border-radius: 10px; margin-top: 4px;"></div>
-            <div class="skeleton-line" style="width: 42%; height: 14px; margin-top: auto;"></div>
+            <div class="skeleton-line" style="width: 100%; height: 24px; border-radius: 6px; margin-top: 4px;"></div>
+            <div class="uni-footer" style="margin-top: auto; padding-top: 14px; display: flex; justify-content: space-between; align-items: baseline;">
+              <div class="skeleton-line" style="width: 44%; height: 16px;"></div>
+              <div class="skeleton-line" style="width: 32%; height: 14px;"></div>
+            </div>
           </div>
         </article>
       `).join("");
@@ -212,9 +212,13 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
 function syncNavbarSearchVisibility(ctx) {
   const navbar = document.querySelector(".navbar");
   const search = document.getElementById("universitySearch");
-  const isUniversities = ctx.isUniversitiesPage;
-  if (navbar) navbar.classList.toggle("has-university-search", isUniversities);
-  if (search) search.hidden = !isUniversities;
+  if (navbar) navbar.classList.add("has-university-search");
+  if (search) search.hidden = false;
+  if (!ctx.isUniversitiesPage && !ctx.isComparePage) {
+    initGlobalNavbarSearch();
+  } else {
+    hideGlobalSearchSuggestions();
+  }
 }
 
 function syncSkipLinkTarget() {
