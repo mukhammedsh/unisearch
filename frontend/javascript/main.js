@@ -164,14 +164,20 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
             <div class="uni-logo" aria-hidden="true"></div>
           </div>
           <div class="uni-body">
-            <div class="skeleton-line" style="width: 86%; height: 17px;"></div>
-            <div class="skeleton-line" style="width: 62%; height: 17px;"></div>
-            <div class="skeleton-line" style="width: 58%;"></div>
-            <div class="skeleton-line" style="width: 72%;"></div>
-            <div class="skeleton-line" style="width: 100%; height: 24px; border-radius: 6px; margin-top: 4px;"></div>
-            <div class="uni-footer" style="margin-top: auto; padding-top: 14px; display: flex; justify-content: space-between; align-items: baseline;">
-              <div class="skeleton-line" style="width: 44%; height: 16px;"></div>
-              <div class="skeleton-line" style="width: 32%; height: 14px;"></div>
+            <div class="skeleton-line u-skeleton-title"></div>
+            <div class="skeleton-line u-skeleton-title u-skeleton-title--short"></div>
+            <div class="skeleton-line u-skeleton-location"></div>
+            <div class="u-skeleton-metric">
+              <span class="skeleton-line u-skeleton-metric-icon"></span>
+              <span class="skeleton-line u-skeleton-metric-label"></span>
+              <span class="skeleton-line u-skeleton-metric-value"></span>
+            </div>
+            <div class="uni-footer u-skeleton-footer">
+              <div class="u-skeleton-price">
+                <div class="skeleton-line u-skeleton-price-value"></div>
+                <div class="skeleton-line u-skeleton-price-period"></div>
+              </div>
+              <div class="skeleton-line u-skeleton-details"></div>
             </div>
           </div>
         </article>
