@@ -17,7 +17,7 @@ const locales = [
 ];
 
 for (const locale of locales) {
-  test(`UniFit badge layout fits within card on ${locale.label}`, async ({ page }) => {
+  test(`UniFit status icons fit within the image on ${locale.label}`, async ({ page }) => {
     await markTourAsSeen(page);
     await seedProfile(page, personas.enResearch.profile);
     await page.addInitScript((lang) => {
@@ -75,23 +75,22 @@ for (const locale of locales) {
     const compactCard = page.locator('.uni-card[data-uni-id="compact-layout-university"]');
     await expect(firstCard).toBeVisible();
     await expect(compactCard).toBeVisible();
-    const badgeBox = firstCard.locator(".uni-badge");
-    await expect(badgeBox).toBeVisible();
-    await expect(badgeBox).toHaveClass(/uni-badge--count-4/);
-    await expect(firstCard.locator(".uni-badge .uni-pill")).toHaveCount(4);
+    const statuses = firstCard.locator(".uni-card-statuses");
+    await expect(statuses).toBeVisible();
+    await expect(firstCard.locator(".uni-status-trigger")).toHaveCount(4);
 
     const overflow = await firstCard.evaluate((card) => {
-      const box = card.querySelector(".uni-badge");
+      const box = card.querySelector(".uni-media");
       if (!box) return { hasBox: false, horizontal: true, vertical: true };
       const b = box.getBoundingClientRect();
-      const pills = Array.from(box.querySelectorAll(".uni-pill"));
+      const statuses = Array.from(card.querySelectorAll(".uni-status-trigger"));
       const eps = 1;
-      const horizontal = pills.some((pill) => {
-        const r = pill.getBoundingClientRect();
+      const horizontal = statuses.some((status) => {
+        const r = status.getBoundingClientRect();
         return r.left < b.left - eps || r.right > b.right + eps;
       });
-      const vertical = pills.some((pill) => {
-        const r = pill.getBoundingClientRect();
+      const vertical = statuses.some((status) => {
+        const r = status.getBoundingClientRect();
         return r.top < b.top - eps || r.bottom > b.bottom + eps;
       });
       return { hasBox: true, horizontal, vertical };
@@ -101,14 +100,29 @@ for (const locale of locales) {
     expect(overflow.horizontal).toBeFalsy();
     expect(overflow.vertical).toBeFalsy();
 
-    const whyToPriceGap = await firstCard.evaluate((card) => {
-      const why = card.querySelector(".uni-why");
-      const price = card.querySelector(".uni-price");
-      if (!why || !price) return null;
-      return price.getBoundingClientRect().top - why.getBoundingClientRect().bottom;
+    const firstStatus = firstCard.locator(".uni-status-trigger").first();
+    await firstStatus.hover();
+    await expect(firstCard.locator(".uni-status-tooltip__content").first()).toBeVisible();
+    const catalogUrl = page.url();
+    await firstStatus.click();
+    await expect(page).toHaveURL(catalogUrl);
+    const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
+    await expect(firstTooltip).toBeVisible();
+    await expect(firstTooltip).toHaveCSS("z-index", "1200");
+    expect(await firstCard.evaluate((card) => getComputedStyle(card).overflow)).toBe("visible");
+    expect(await firstCard.locator(".uni-media").evaluate((media) => media.contains(media.parentElement?.querySelector(".uni-card-statuses")))).toBeFalsy();
+
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "light"));
+    const lightStatusColor = await firstStatus.evaluate((status) => {
+      const styles = getComputedStyle(status);
+      return [styles.backgroundColor, styles.borderColor, styles.color];
     });
-    expect(whyToPriceGap).not.toBeNull();
-    expect(whyToPriceGap).toBeLessThanOrEqual(20);
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+    const darkStatusColor = await firstStatus.evaluate((status) => {
+      const styles = getComputedStyle(status);
+      return [styles.backgroundColor, styles.borderColor, styles.color];
+    });
+    expect(darkStatusColor).toEqual(lightStatusColor);
 
     const [firstCardBox, compactCardBox] = await Promise.all([
       firstCard.boundingBox(),
@@ -117,5 +131,29 @@ for (const locale of locales) {
     expect(firstCardBox).not.toBeNull();
     expect(compactCardBox).not.toBeNull();
     expect(firstCardBox.height).toBeCloseTo(compactCardBox.height, 3);
+
+    await page.setViewportSize({ width: 375, height: 800 });
+    await expect(firstCard).toBeVisible();
+    const mobileOverflow = await firstCard.evaluate((card) => {
+      const box = card.querySelector(".uni-media");
+      if (!box) return { hasBox: false, horizontal: true, vertical: true };
+      const b = box.getBoundingClientRect();
+      const statuses = Array.from(card.querySelectorAll(".uni-status-trigger"));
+      const eps = 1;
+      return {
+        hasBox: true,
+        horizontal: statuses.some((status) => {
+          const r = status.getBoundingClientRect();
+          return r.left < b.left - eps || r.right > b.right + eps;
+        }),
+        vertical: statuses.some((status) => {
+          const r = status.getBoundingClientRect();
+          return r.top < b.top - eps || r.bottom > b.bottom + eps;
+        }),
+      };
+    });
+    expect(mobileOverflow.hasBox).toBeTruthy();
+    expect(mobileOverflow.horizontal).toBeFalsy();
+    expect(mobileOverflow.vertical).toBeFalsy();
   });
 }

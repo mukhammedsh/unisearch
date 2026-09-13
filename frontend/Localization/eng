@@ -392,11 +392,14 @@ universities.card.est_cost_year: Est. Cost/Year
 universities.card.in_ranking: in ranking
 universities.card.view_details: View details
 universities.card.metrics: Key metrics
+universities.card.statuses: University status
 universities.card.cost_short: Cost
 universities.card.per_year: / year
 universities.card.save: Add to favorites
 universities.card.compare: Add to compare
+universities.card.compare_short: Compare
 universities.card.compare_selected: Selected for comparison
+universities.card.compare_selected_short: Selected
 universities.city: City
 universities.cost_per_year: Cost / year
 universities.country: Country
@@ -429,11 +432,13 @@ universities.suggestions.university: University
 universities.suggestions.city: City
 universities.suggestions.country: Country
 universities.compare.selected: {count}/{total} selected
+universities.compare.enter: Compare
+universities.compare.selection: Selected universities
 universities.compare.need_more: Choose the second university
 universities.compare.pair_label: Comparison pair
 universities.compare.pair_slot: University {number}
 universities.compare.pair_empty: Empty slot
-universities.compare.pair_ready: Comparison pair is ready
+universities.compare.pair_ready: Ready to compare
 universities.compare.clear: Clear
 universities.compare.open: Compare
 universities.compare.continue: Continue

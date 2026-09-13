@@ -64,15 +64,19 @@
 .compare-tray__pair {
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
   gap: 8px;
+}
+
+.compare-tray__pair--single {
+  grid-template-columns: minmax(180px, 320px);
 }
 
 .compare-tray__slot {
   box-sizing: border-box;
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
   padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -80,12 +84,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
-}
-
-.compare-tray__slot--empty {
-  border-style: dashed;
-  color: var(--text-muted);
 }
 
 .compare-tray__slot-label,
@@ -162,7 +160,7 @@
 
 .compare-tray__btn {
   box-sizing: border-box;
-  min-height: 52px;
+  min-height: 48px;
   padding: 8px 16px;
   border: 1px solid var(--line);
   border-radius: 12px;

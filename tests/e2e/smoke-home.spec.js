@@ -15,8 +15,8 @@ test("root page opens the university catalog as the main workspace", async ({ pa
   await expect(page.locator(selectors.profileBtn)).toBeVisible();
   await expect(page.locator("main h1")).toHaveCount(1);
 
-  await page.locator("[data-universities-tab='compare']").click();
-  await expect(page.locator("[data-universities-tab='compare']")).toHaveClass(/is-active/);
+  await page.locator("#compareModeBtn").click();
+  await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "true");
   await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator("main h1")).toHaveCount(1);
 });
@@ -40,7 +40,7 @@ test("first-visit tour stays dismissed after the user skips it", async ({ page }
   await expect(page.locator("#uTourModal")).toHaveCount(0);
 });
 
-test("keyboard users can skip the header and switch university sections", async ({ page }) => {
+test("keyboard users can skip the header and enter comparison mode", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
@@ -50,12 +50,10 @@ test("keyboard users can skip the header and switch university sections", async 
   await page.keyboard.press("Enter");
   await expect(page.locator("main")).toBeFocused();
 
-  const catalogTab = page.locator("[data-universities-tab='catalog']");
-  await catalogTab.focus();
-  await page.keyboard.press("ArrowRight");
-  await expect(page.locator("[data-universities-tab='compare']")).toBeFocused();
-  await expect(page.locator("[data-universities-tab='compare']")).toHaveAttribute("aria-current", "page");
-  await expect(page.locator("[data-universities-tab='compare']")).toHaveClass(/is-active/);
+  const compareModeButton = page.locator("#compareModeBtn");
+  await compareModeButton.focus();
+  await page.keyboard.press("Enter");
+  await expect(compareModeButton).toHaveAttribute("aria-pressed", "true");
   await expect(page).toHaveURL(/tab=compare/);
 });
 

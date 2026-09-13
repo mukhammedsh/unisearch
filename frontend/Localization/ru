@@ -395,11 +395,14 @@ universities.card.est_cost_year: Примерная цена/год
 universities.card.in_ranking: в рейтинге
 universities.card.view_details: Открыть детали
 universities.card.metrics: Ключевые метрики
+universities.card.statuses: Статусы университета
 universities.card.cost_short: Цена
 universities.card.per_year: в год
 universities.card.save: Добавить в избранное
 universities.card.compare: Добавить к сравнению
+universities.card.compare_short: Сравнить
 universities.card.compare_selected: Выбрано для сравнения
+universities.card.compare_selected_short: Выбрано
 universities.city: Город
 universities.cost_per_year: Стоимость / год
 universities.country: Страна
@@ -432,11 +435,13 @@ universities.suggestions.university: Университет
 universities.suggestions.city: Город
 universities.suggestions.country: Страна
 universities.compare.selected: Выбрано: {count}/{total}
+universities.compare.enter: Сравнить
+universities.compare.selection: Выбранные университеты
 universities.compare.need_more: Выберите второй университет
 universities.compare.pair_label: Пара для сравнения
 universities.compare.pair_slot: Университет {number}
 universities.compare.pair_empty: Пустой слот
-universities.compare.pair_ready: Пара для сравнения готова
+universities.compare.pair_ready: Можно сравнивать
 universities.compare.clear: Очистить
 universities.compare.open: Сравнить
 universities.compare.continue: Продолжить

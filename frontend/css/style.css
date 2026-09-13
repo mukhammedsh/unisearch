@@ -69,6 +69,18 @@
   --color-info-muted: #1e40af;
   --color-info-bg: #eff6ff;
   --line-info: rgba(29, 78, 216, 0.28);
+  --uni-status-match-bg: var(--accent);
+  --uni-status-match-border: color-mix(in srgb, var(--accent) 35%, transparent);
+  --uni-status-match-text: var(--text-inverse);
+  --uni-status-success-bg: #f0fdf4;
+  --uni-status-success-border: rgba(16, 185, 129, 0.18);
+  --uni-status-success-text: #15803d;
+  --uni-status-warning-bg: #fff7ed;
+  --uni-status-warning-border: rgba(245, 158, 11, 0.32);
+  --uni-status-warning-text: #b45309;
+  --uni-status-info-bg: #eff6ff;
+  --uni-status-info-border: rgba(29, 78, 216, 0.28);
+  --uni-status-info-text: #1d4ed8;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
   --selection-bg: color-mix(in srgb, var(--accent) 16%, transparent);

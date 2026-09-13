@@ -7,33 +7,40 @@ const IMPERIAL_ID = "imperial-college-london-uk";
 const OXFORD_ID = "university-of-oxford-uk-oxford";
 const HARVARD_ID = "harvard-usa-cambridge";
 
-async function clearCompareState(page) {
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_ui_language_v1", "eng");
+async function clearCompareState(page, language = "eng") {
+  await page.addInitScript((nextLanguage) => {
+    localStorage.setItem("unisearch_ui_language_v1", nextLanguage);
     localStorage.removeItem("unisearch_compare_university_ids_v1");
     localStorage.removeItem("unisearch_compare_admission_choices_v1");
     localStorage.removeItem("unisearch_filters");
     localStorage.removeItem("unisearch_profile");
     localStorage.removeItem("unisearch_detail_cache_v3");
-  });
+  }, language);
 }
 
-test("universities tabs host comparison flow navigating to dedicated compare page", async ({ page }) => {
+test("catalog comparison mode navigates to the dedicated compare page", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
   await page.goto("/index.html");
-  await expect(page.locator('[data-universities-tab="catalog"]')).toHaveClass(/is-active/);
-  await expect(page.locator('[data-universities-tab="ranking"]')).toHaveCount(0);
+  await expect(page.locator("[data-universities-tab]")).toHaveCount(0);
+  await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
   await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
   await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
 
-  await page.locator('[data-universities-tab="compare"]').click();
+  await page.locator("#compareModeBtn").click();
   await expect(page).toHaveURL(/tab=compare/);
-  await expect(page.locator('[data-universities-tab="compare"]')).toHaveClass(/is-active/);
+  await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#compareModeLabel")).toHaveText("Compare");
+  await expect(page.locator("#compareModeCancel")).toHaveCount(0);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
   await expect(page.locator("#qInput")).toHaveAttribute("placeholder", "Search university...");
   await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
+
+  await page.locator("#compareModeBtn").click();
+  await expect(page).not.toHaveURL(/tab=compare/);
+  await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
+  await page.locator("#compareModeBtn").click();
 
   const mitCard = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
   const imperialCard = page.locator(`#universitiesList .uni-card[data-uni-id="${IMPERIAL_ID}"]`).first();
@@ -44,7 +51,8 @@ test("universities tabs host comparison flow navigating to dedicated compare pag
 
   await expect(page.locator(".compare-tray")).toBeVisible();
   await expect(page.locator(".compare-tray__slot")).toHaveCount(2);
-  await expect(page.locator(".compare-tray")).toContainText("Comparison pair is ready");
+  await expect(page.locator(".compare-tray")).toContainText("Ready to compare");
+  await expect(page.locator(".compare-tray")).not.toContainText("Comparison pair");
   await expect(page.locator("[data-action='open-compare']")).toBeEnabled();
   await page.locator("[data-action='open-compare']").click();
 
@@ -103,7 +111,7 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   await page.goto("/index.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await page.locator('[data-universities-tab="compare"]').click();
+  await page.locator("#compareModeBtn").click();
 
   await expect(page.locator(".compare-tray")).toBeVisible();
   await expect(page.locator(".compare-tray__slot")).toHaveCount(2);
@@ -117,6 +125,47 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   await expect.poll(async () => page.evaluate(() =>
     JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").length
   )).toBe(2);
+});
+
+test("selected comparison cards keep a compact localized status at desktop and mobile widths", async ({ page }) => {
+  await markTourAsSeen(page);
+
+  for (const { language, compareLabel, selectedLabel } of [
+    { language: "eng", compareLabel: "Compare", selectedLabel: "Selected" },
+    { language: "rus", compareLabel: "Сравнить", selectedLabel: "Выбрано" },
+  ]) {
+    for (const viewport of [
+      { width: 1280, height: 800 },
+      { width: 320, height: 568 },
+    ]) {
+      await clearCompareState(page, language);
+      await page.setViewportSize(viewport);
+      await page.goto("/index.html");
+      await page.locator("#compareModeBtn").click();
+
+      const card = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
+      await expect(card).toBeVisible();
+      await expect(card.locator(".uni-details")).toHaveText(`${compareLabel}→`);
+      await card.click();
+      await expect(card).toHaveClass(/uni-card--compare-selected/);
+      await expect(card.locator(".uni-details")).toHaveText(`${selectedLabel}→`);
+      await expect(card.locator(".uni-details")).not.toContainText("for comparison");
+      await expect(card.locator(".uni-details")).not.toContainText("для сравнения");
+
+      const layout = await card.evaluate((element) => {
+        const footer = element.querySelector(".uni-footer");
+        const details = element.querySelector(".uni-details");
+        const footerBox = footer.getBoundingClientRect();
+        const detailsBox = details.getBoundingClientRect();
+        return {
+          footerFitsCard: footerBox.right <= element.getBoundingClientRect().right + 1,
+          detailsFitsFooter: detailsBox.right <= footerBox.right + 1,
+        };
+      });
+      expect(layout.footerFitsCard).toBe(true);
+      expect(layout.detailsFitsFooter).toBe(true);
+    }
+  }
 });
 
 test("Oxford and Harvard comparison explains scope, aid, and missing personal evidence without a universal winner", async ({ page }) => {

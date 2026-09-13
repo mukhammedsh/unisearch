@@ -94,7 +94,7 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
 
   await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
 
-  await page.locator("[data-universities-tab='compare']").click();
+  await page.locator("#compareModeBtn").click();
   await expect(page.locator("body")).toHaveClass(/universities-compare-mode/);
   const compareModeCard = page.locator(`.uni-card[data-uni-id="${firstUniversityId}"]`).first();
   await expect(compareModeCard).toBeVisible();

@@ -40,6 +40,9 @@ test("UniFit warning returns after a reload or a new UniFit selection", async ({
   const warning = page.locator("#unifitWarningBanner");
   const dismiss = page.locator("#dismissUnifitWarningBanner");
   await expect(warning).toBeVisible();
+  await page.locator("#compareModeBtn").click();
+  await expect(warning).toBeVisible();
+  await page.locator("#compareModeBtn").click();
   await expect(dismiss).toHaveCSS("border-radius", "10px");
   const isDismissIconCentered = await dismiss.evaluate((button) => {
     const icon = button.querySelector("svg");
@@ -65,7 +68,7 @@ test("UniFit warning returns after a reload or a new UniFit selection", async ({
   await expect(warning).toBeVisible();
 });
 
-test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", async ({ page }) => {
+test("UniFit cards prioritize status icons in order: conditional -> vibe -> finance", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -104,19 +107,16 @@ test("UniFit cards prioritize badges in order: conditional -> vibe -> finance", 
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
-  const pills = firstCard.locator(".uni-badge .uni-pill");
-  await expect(pills.first()).toBeVisible();
-  const pillCount = await pills.count();
-  expect(pillCount).toBeGreaterThanOrEqual(3);
-  await expect(pills.nth(0)).toContainText("Conditional");
-  await expect(pills.nth(1)).toContainText("Your Vibe");
-  await expect(pills.nth(2)).toContainText("Likely Grant");
+  const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
+  await expect(statuses).toHaveCount(3);
+  await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
+  await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
+  await expect(statuses.nth(2)).toHaveAttribute("aria-label", /Likely Grant/);
   await expect(page.locator("#unifitWarningBanner")).toBeVisible();
-  await expect(firstCard.locator(".uni-why")).not.toContainText("conditional");
-  await expect(firstCard.locator(".uni-why")).toContainText("sliders");
+  await expect(firstCard.locator(".uni-why")).toHaveCount(0);
 });
 
-test("UniFit card badges still work when backend hints are missing (frontend fallback)", async ({ page }) => {
+test("UniFit card status icons still work when backend hints are missing (frontend fallback)", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -149,9 +149,10 @@ test("UniFit card badges still work when backend hints are missing (frontend fal
   await page.goto("/index.html");
   const firstCard = page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
-  await expect(firstCard.locator(".uni-badge .uni-pill").first()).toBeVisible();
-  await expect(firstCard.locator(".uni-pill")).toContainText(["Good Match", "Paid Admission"]);
-  await expect(firstCard.locator(".uni-why")).toContainText("good preference match");
+  const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
+  await expect(statuses).toHaveCount(2);
+  await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Good Match/);
+  await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Paid Admission/);
 });
 
 test("UniFit card hides Requirements Met when conditional exam warning is present", async ({ page }) => {
@@ -193,12 +194,11 @@ test("UniFit card hides Requirements Met when conditional exam warning is presen
   await page.goto("/index.html", { waitUntil: "domcontentloaded" });
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
-  await expect(firstCard.locator(".uni-badge .uni-pill").first()).toBeVisible();
-  await expect(firstCard.locator(".uni-pill")).toContainText(["Conditional", "Your Vibe", "Likely Grant"]);
-  await expect(firstCard.locator(".uni-badge")).not.toContainText("Requirements Met");
+  const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
+  await expect(statuses).toHaveCount(3);
 });
 
-test("UniFit card keeps all badges and switches to compact mode when badge count is above 4", async ({ page }) => {
+test("UniFit card caps overlay status icons at four by priority", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -241,20 +241,15 @@ test("UniFit card keeps all badges and switches to compact mode when badge count
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
-  const badgeBox = firstCard.locator(".uni-badge");
-  await expect(badgeBox).toBeVisible();
-  await expect(badgeBox).toHaveClass(/uni-badge--count-5/);
-
-  const pills = firstCard.locator(".uni-badge .uni-pill");
-  await expect(pills).toHaveCount(5);
-  await expect(pills.nth(0)).toContainText("Conditional");
-  await expect(pills.nth(1)).toContainText("Your Vibe");
-  await expect(pills.nth(2)).toContainText("Likely Grant");
-  await expect(pills.nth(3)).toContainText("Below Requirements");
-  await expect(pills.nth(4)).toContainText("Over Budget");
+  const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
+  await expect(statuses).toHaveCount(4);
+  await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
+  await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
+  await expect(statuses.nth(2)).toHaveAttribute("aria-label", /Likely Grant/);
+  await expect(statuses.nth(3)).toHaveAttribute("aria-label", /Below Requirements/);
 });
 
-test("UniFit card badge logic caps at 5 computed status badges", async ({ page }) => {
+test("UniFit card status icon logic caps at four", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -294,11 +289,11 @@ test("UniFit card badge logic caps at 5 computed status badges", async ({ page }
   });
 
   await page.goto("/index.html");
-  const pills = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-badge .uni-pill");
-  await expect(pills).toHaveCount(5);
+  const statuses = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses .uni-status-trigger");
+  await expect(statuses).toHaveCount(4);
 });
 
-test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", async ({ page }) => {
+test("UniFit cards render zero to four compact status icons", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -397,10 +392,10 @@ test("UniFit cards apply count-based badge size classes for 0-5 tag scenarios", 
   await page.goto("/index.html", { waitUntil: "domcontentloaded" });
   await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]')).toBeVisible();
 
-  await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-badge")).toHaveCount(0);
-  await expect(page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-1/);
-  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-2/);
-  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-3/);
-  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-4/);
-  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-badge")).toHaveClass(/uni-badge--count-5/);
+  await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses")).toHaveCount(0);
+  await expect(page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]').locator(".uni-status-trigger")).toHaveCount(1);
+  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-status-trigger")).toHaveCount(2);
+  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-status-trigger")).toHaveCount(3);
+  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-status-trigger")).toHaveCount(4);
+  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-status-trigger")).toHaveCount(4);
 });

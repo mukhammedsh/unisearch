@@ -3,6 +3,7 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Refined the university catalog comparison entry point and card status presentation with localized compact actions, responsive compare-tray states, and updated interaction regressions (`frontend/index.html`, `frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/`, `frontend/javascript/pages/universities.js`, `tests/e2e/`).
 - Improved university catalog card geometry and UniFit warning behavior, including compact footer spacing, a centered dismiss control, and warning reappearance after reload or a new UniFit selection (`frontend/css/style.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/javascript/pages/universities.js`).
 - Added regression coverage for catalog card layout, localized UniFit badges, warning state restoration, and valid nested profile payloads while preserving protection against excessively deep details (`backend/app/schemas/payloads.py`, `backend/tests/`, `tests/e2e/`).
 - Refined the university catalog workspace with content-sized cards, two-line converted tuition display, improved footer alignment, and horizontal wheel scrolling for map results (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/06-map.css`, `frontend/javascript/pages/_shared.js`, `frontend/javascript/pages/universities.js`).
