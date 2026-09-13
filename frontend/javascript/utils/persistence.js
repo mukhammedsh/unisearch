@@ -289,16 +289,19 @@ export function loadProfileForApi() {
 export function saveProfile(profile) {
   const normalized = normalizeProfileData(profile);
   profileMemoryFallback = normalized;
-  if (!safeLocalStorage.setJson(PROFILE_STORAGE_KEY, normalized)) {
+  const persisted = safeLocalStorage.setJson(PROFILE_STORAGE_KEY, normalized);
+  if (!persisted) {
     console.warn("Failed to persist profile in localStorage; using in-memory fallback.");
   }
   window.dispatchEvent(new Event("profileUpdated"));
+  return persisted;
 }
 
 export function clearProfile() {
   profileMemoryFallback = null;
-  safeLocalStorage.remove(PROFILE_STORAGE_KEY);
+  const cleared = safeLocalStorage.remove(PROFILE_STORAGE_KEY);
   window.dispatchEvent(new Event("profileUpdated"));
+  return cleared;
 }
 
 export function getSelectedAdmissionChoice(universityId) {

@@ -38,6 +38,7 @@ test("profile keeps edits in-session when localStorage is unavailable", async ({
   await openProfileTab(page, "scores");
   await page.fill(selectors.gpaInput, "3.5");
   await page.click(selectors.saveProfileBtn);
+  await expect(page.locator("#profileSaveState")).toHaveText("Saved until this tab is closed");
 
   await page.click(selectors.profileCloseBtn);
   await page.click(selectors.profileBtn);

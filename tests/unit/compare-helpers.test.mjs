@@ -232,6 +232,15 @@ test("formatExamValue formats GPA on 4.0 and 5.0 scales explicitly without perce
   assert.equal(formatExamValue("GPA", 3.8, { includeScale: false }), "3.8");
 });
 
+test("getExamDisplayName localizes exam subjects and language exam sections in Russian", async () => {
+  const { getExamDisplayName } = await import("../../frontend/javascript/utils/config.js");
+
+  assert.equal(getExamDisplayName("SAT_MATH", { locale: "rus" }), "SAT: математика");
+  assert.equal(getExamDisplayName("AP_CALCULUS_AB", { locale: "rus" }), "AP: математический анализ AB");
+  assert.equal(getExamDisplayName("IELTS_LISTENING", { locale: "rus" }), "IELTS: аудирование");
+  assert.equal(getExamDisplayName("TOEFL_iBT_0_120_WRITING", { locale: "rus" }), "TOEFL iBT: письмо");
+});
+
 test("compareRequirementsText and compareAverageScoreText format GPA with scale", () => {
   const uni = {
     id: "test-uni",

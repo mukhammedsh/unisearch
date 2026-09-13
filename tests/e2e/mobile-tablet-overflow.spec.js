@@ -63,6 +63,57 @@ async function expectNavbarControlsInsideViewport(page, label) {
   }
 }
 
+test("comparison setup keeps admission controls aligned without page overflow", async ({ page }) => {
+  await mockAllExpensiveEndpoints(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/compare.html?stage=configure&ids=university-of-oxford-uk-oxford,harvard-usa-cambridge");
+
+  const options = page.locator(".compare-config-options").first();
+  const programSelector = options.locator(".admission-program-selector");
+  const categoryList = options.locator(".admission-category-list");
+  await expect(programSelector).toBeVisible();
+  await expect(categoryList).toBeVisible();
+  await programSelector.getByRole("button", { name: "Computer Science", exact: true }).click();
+  await expect(categoryList).toBeVisible();
+
+  const desktopLayout = await page.evaluate(() => {
+    const selector = document.querySelector(".compare-config-options .admission-program-selector");
+    const categoryList = document.querySelector(".compare-config-options .admission-category-list");
+    if (!selector || !categoryList) return null;
+    return {
+      categoryListMarginTop: window.getComputedStyle(categoryList).marginTop,
+      columnBorderWidth: window.getComputedStyle(document.querySelector(".compare-config-column")).borderTopWidth,
+      selectorMarginTop: window.getComputedStyle(selector).marginTop,
+      selectorScrollWidth: selector.scrollWidth,
+      selectorClientWidth: selector.clientWidth,
+      statsBoxBorderWidth: window.getComputedStyle(document.querySelector(".compare-config-options .track-stats-box")).borderTopWidth,
+      fundingOptionBorderLeftWidth: window.getComputedStyle(document.querySelector(".compare-config-options .admission-funding-option")).borderLeftWidth,
+      fundingOptionBorderTopWidth: window.getComputedStyle(document.querySelector(".compare-config-options .admission-funding-option")).borderTopWidth,
+      fundingOptionRadius: window.getComputedStyle(document.querySelector(".compare-config-options .admission-funding-option")).borderTopLeftRadius,
+      fundingOptionFlexWrap: window.getComputedStyle(document.querySelector(".compare-config-options .admission-funding-option")).flexWrap,
+      fundingOptionMainFlex: window.getComputedStyle(document.querySelector(".compare-config-options .admission-funding-option-main")).flex,
+    };
+  });
+  expect(desktopLayout).not.toBeNull();
+  expect(desktopLayout.categoryListMarginTop).toBe("0px");
+  expect(desktopLayout.columnBorderWidth).toBe("0px");
+  expect(desktopLayout.selectorMarginTop).toBe("0px");
+  expect(desktopLayout.selectorScrollWidth).toBeLessThanOrEqual(desktopLayout.selectorClientWidth + 1);
+  expect(desktopLayout.statsBoxBorderWidth).toBe("0px");
+  expect(desktopLayout.fundingOptionBorderLeftWidth).toBe("0px");
+  expect(desktopLayout.fundingOptionBorderTopWidth).toBe("1px");
+  expect(desktopLayout.fundingOptionRadius).toBe("0px");
+  expect(desktopLayout.fundingOptionFlexWrap).toBe("nowrap");
+  expect(desktopLayout.fundingOptionMainFlex).toBe("0 0 auto");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator(".compare-config-panel")).toBeVisible();
+  await expect(page.locator(".compare-config-column")).toHaveCount(2);
+  const columns = await page.locator(".compare-config-panel").evaluate((element) => window.getComputedStyle(element).gridTemplateColumns);
+  expect(columns).not.toMatch(/\s/);
+  await expectNoHorizontalOverflow(page, "comparison setup mobile");
+});
+
 for (const viewport of viewports) {
   test(`no horizontal overflow on key pages (${viewport.name})`, async ({ page }) => {
     await mockAllExpensiveEndpoints(page);

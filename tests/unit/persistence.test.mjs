@@ -140,18 +140,30 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
 
   describe('loadProfile and saveProfile', () => {
     test('saves profile to localStorage and loads it back accurately', () => {
-      saveProfile({
+      const persisted = saveProfile({
         name: 'John Doe',
         budget: 45000,
         fundingType: 'grant',
         major: 'Economics',
       });
 
+      assert.strictEqual(persisted, true);
       const loaded = loadProfile();
       assert.strictEqual(loaded.name, 'John Doe');
       assert.strictEqual(loaded.budget, 45000);
       assert.strictEqual(loaded.fundingType, 'grant');
       assert.strictEqual(loaded.major, 'Economics');
+    });
+
+    test('reports in-memory fallback when localStorage cannot persist the profile', () => {
+      global.window.localStorage.setItem = () => {
+        throw new Error('storage unavailable');
+      };
+
+      const persisted = saveProfile({ name: 'Temporary User', budget: 12000 });
+
+      assert.strictEqual(persisted, false);
+      assert.strictEqual(loadProfile().name, 'Temporary User');
     });
 
     test('clearProfile removes profile from storage', () => {

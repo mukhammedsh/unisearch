@@ -42,6 +42,8 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
     await page.click(selectors.saveProfileBtn);
     await expect(page.locator(selectors.saveProfileBtn)).toBeDisabled();
+    await expect(page.locator("#profileSaveState")).toHaveText("Saved on this device");
+    await expect(page.locator("#toast-container .toast")).toHaveCount(0);
 
     const check = await page.evaluate(() => {
       const event = new Event("beforeunload", { cancelable: true });
@@ -65,9 +67,28 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     // Click close button to trigger the unsaved changes dialog
     await page.click(selectors.profileCloseBtn);
     await expect(page.locator("#profileUnsavedModal")).toHaveClass(/is-open/);
+    await expect(page.locator("#profileCancelCloseBtn")).toBeFocused();
 
     // Click "Close without saving" - should navigate back without beforeunload blocking
     await page.click("#profileDiscardBtn");
     await expect(page).toHaveURL(/\/(?:index\.html)?(?:\?.*)?$/);
+  });
+
+  test("discarding a committed name edit restores the saved name", async ({ page }) => {
+    await markTourAsSeen(page);
+    await page.goto("/index.html");
+
+    await page.click(selectors.profileBtn);
+    await page.click(selectors.editNameBtn);
+    await page.fill(selectors.nameInput, "Aruzhan");
+    await page.click(selectors.editNameBtn);
+    await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
+
+    await page.click(selectors.profileCloseBtn);
+    await page.click("#profileDiscardBtn");
+    await expect(page).toHaveURL(/\/(?:index\.html)?(?:\?.*)?$/);
+
+    await page.click(selectors.profileBtn);
+    await expect(page.locator(selectors.nameInput)).toHaveValue("User");
   });
 });

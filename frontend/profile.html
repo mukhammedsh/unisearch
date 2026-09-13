@@ -79,7 +79,7 @@
 
         <div class="profile-hero-actions">
           <div class="profile-status-wrap">
-            <span id="profileSaveState" class="profile-save-state" data-i18n="profile.state.saved">Saved</span>
+            <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>
           </div>
           <div class="profile-action-buttons">
             <button
@@ -490,12 +490,12 @@
     <!-- Confirmations: Unsaved Changes -->
     <div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
       <div class="profile-confirm-backdrop" data-close="unsaved"></div>
-      <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle">
+      <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle" aria-describedby="profileUnsavedMessage">
         <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
-        <p data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
+        <p id="profileUnsavedMessage" data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
         <div class="profile-confirm-actions">
-          <button id="profileDiscardBtn" class="profile-delete" type="button" data-i18n="profile.unsaved.discard">Close without saving</button>
-          <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Cancel</button>
+          <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Keep editing</button>
+          <button id="profileDiscardBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.unsaved.discard">Discard changes</button>
           <button id="profileSaveAndCloseBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
         </div>
       </div>

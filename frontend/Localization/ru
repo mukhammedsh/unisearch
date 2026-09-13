@@ -296,11 +296,13 @@ profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено
 profile.state.saved: Сохранено
+profile.state.saved_local: Сохранено на этом устройстве
+profile.state.saved_session: Сохранено до закрытия вкладки
 profile.state.unsaved: Есть несохраненные изменения
 profile.unsaved.title: Несохраненные изменения
 profile.unsaved.message: В профиле есть несохраненные изменения. Что сделать?
-profile.unsaved.discard: Закрыть без сохранения
-profile.unsaved.cancel: Отмена
+profile.unsaved.discard: Не сохранять изменения
+profile.unsaved.cancel: Продолжить редактирование
 profile.unsaved.save_close: Сохранить и закрыть
 profile.reset.title: Сбросить данные профиля
 profile.reset.note: Очищает бюджет, GPA, экзамены, языки, интересы и другие сохраненные поля профиля на этом устройстве.
