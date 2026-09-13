@@ -378,6 +378,8 @@ universities.badge.your_vibe: Ваш формат
 universities.badge.likely_grant: Высокий шанс на грант
 universities.badge.paid_admission: Платный вариант
 universities.why.conditional_exam_needed: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
+universities.unifit_banner.text: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
+universities.unifit_banner.dismiss: Закрыть предупреждение
 universities.why.top_match: Этот университет хорошо совпадает с вашими текущими настройками и предпочтениями.
 universities.why.your_vibe: Этот университет особенно хорошо совпадает с вашими предпочтениями по атмосфере, фокусу и расположению.
 universities.why.likely_grant: Если для вас важен грант, у этого университета сильный прогноз именно по грантовому варианту.
@@ -394,6 +396,7 @@ universities.card.in_ranking: в рейтинге
 universities.card.view_details: Открыть детали
 universities.card.metrics: Ключевые метрики
 universities.card.cost_short: Цена
+universities.card.per_year: в год
 universities.card.save: Добавить в избранное
 universities.card.compare: Добавить к сравнению
 universities.card.compare_selected: Выбрано для сравнения
@@ -422,6 +425,7 @@ universities.reset: Сброс
 universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
 universities.search_clear: Очистить поиск
+universities.no_matches: Университеты не найдены
 universities.compare.search_placeholder: Добавить университет к сравнению...
 universities.select_country_first: Сначала выберите страну
 universities.suggestions.university: Университет

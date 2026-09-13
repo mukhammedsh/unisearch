@@ -375,6 +375,8 @@ universities.badge.your_vibe: Your Vibe
 universities.badge.likely_grant: Likely Grant
 universities.badge.paid_admission: Paid Admission
 universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
+universities.unifit_banner.text: Some required exam evidence is missing, so this result is marked as conditional.
+universities.unifit_banner.dismiss: Dismiss warning
 universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
 universities.why.likely_grant: In grant-priority mode, this university has a strong grant admission chance.
@@ -391,6 +393,7 @@ universities.card.in_ranking: in ranking
 universities.card.view_details: View details
 universities.card.metrics: Key metrics
 universities.card.cost_short: Cost
+universities.card.per_year: / year
 universities.card.save: Add to favorites
 universities.card.compare: Add to compare
 universities.card.compare_selected: Selected for comparison
@@ -419,6 +422,7 @@ universities.reset: Reset
 universities.empty.reset_filters: Reset filters
 universities.search_placeholder: Search university...
 universities.search_clear: Clear search
+universities.no_matches: No universities found
 universities.compare.search_placeholder: Add university to comparison...
 universities.select_country_first: Select country first
 universities.suggestions.university: University

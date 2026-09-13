@@ -190,10 +190,6 @@
   margin: 0;
 }
 
-.uni-price {
-  min-width: 110px;
-}
-
 
 @media (max-width: 780px) {
   .uni-badge {
@@ -297,14 +293,8 @@
   }
 
   .uni-media {
-    height: 104px;
-    flex-basis: 104px;
-  }
-
-  .uni-price {
-    min-width: 96px;
-    max-width: calc(100% - 76px);
-    padding: 8px 8px;
+    height: 128px;
+    flex-basis: 128px;
   }
 
   .uni-badge {
@@ -501,7 +491,7 @@
     height: min(88dvh, calc(100dvh - var(--nav-height, 72px)));
     max-height: min(88dvh, calc(100dvh - var(--nav-height, 72px)));
     border-left: 0;
-    border-top: 1px solid var(--line);
+    border-top: none;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     padding: 0 0 calc(40px + env(safe-area-inset-bottom, 20px));
     transform: translateY(100%);
@@ -536,7 +526,7 @@
     margin: 0 0 12px;
     padding: 16px 16px 12px;
     background: var(--card);
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
     border-top-left-radius: var(--radius-xl);
     border-top-right-radius: var(--radius-xl);
   }

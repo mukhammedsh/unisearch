@@ -11,6 +11,7 @@ import {
   normalizeUrl,
   renderAdmissionsOverview,
   renderProgramAdmissionsSignals,
+  resolveUniversityCardPrice,
   safeUrl,
   uniThumbnailSrc,
 } from '../../frontend/javascript/pages/_shared.js';
@@ -191,3 +192,111 @@ test('uniThumbnailSrc', async (t) => {
     );
   });
 });
+
+test('resolveUniversityCardPrice', async (t) => {
+  await t.test('resolves non-AI card in native currency (KZT)', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 1995000);
+    assert.strictEqual(res.currency, 'KZT');
+    assert.ok(res.amountUSD > 4000 && res.amountUSD < 5000, `amountUSD should be ~$4,433, got ${res.amountUSD}`);
+  });
+
+  await t.test('resolves non-AI card in native currency (CAD)', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 60000,
+        currency: 'CAD',
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 60000);
+    assert.strictEqual(res.currency, 'CAD');
+    assert.ok(res.amountUSD > 40000 && res.amountUSD < 50000, `amountUSD should be ~$44,400, got ${res.amountUSD}`);
+  });
+
+  await t.test('resolves legacy backend response where finalPrice is in USD without match.currency', () => {
+    // When legacy backend returned finalPrice in USD, it never sent match.currency.
+    // In this case, it must NOT fall back to finance.currency ("KZT"), which would divide 4424 / 450 into $9.83!
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        finalPrice: 4424,
+        costYearUSD: 4424,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 4424);
+    assert.strictEqual(res.currency, 'USD');
+    assert.strictEqual(res.amountUSD, 4424);
+  });
+
+  await t.test('resolves new backend response with explicit native finalPrice and currency', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        finalPrice: 1335000,
+        currency: 'KZT',
+        finalPriceUSD: 2967,
+        costYearNative: 1995000,
+        costYearUSD: 4433,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 1335000);
+    assert.strictEqual(res.currency, 'KZT');
+    assert.strictEqual(res.amountUSD, 2967);
+  });
+
+  await t.test('handles full grant / zero tuition correctly without falling back to base cost', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        finalPrice: 0,
+        currency: 'KZT',
+        finalPriceUSD: 0,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 0);
+    assert.strictEqual(res.currency, 'KZT');
+    assert.strictEqual(res.amountUSD, 0);
+  });
+
+  await t.test('handles legacy costWithAmountUSD field', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        costWithAmountUSD: 3500,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 3500);
+    assert.strictEqual(res.currency, 'USD');
+    assert.strictEqual(res.amountUSD, 3500);
+  });
+
+  await t.test('handles missing or invalid university data gracefully', () => {
+    assert.deepStrictEqual(resolveUniversityCardPrice(null), { amount: null, currency: 'USD', amountUSD: null });
+    assert.deepStrictEqual(resolveUniversityCardPrice({}), { amount: null, currency: 'USD', amountUSD: null });
+    assert.deepStrictEqual(resolveUniversityCardPrice({ finance: {} }), { amount: null, currency: 'USD', amountUSD: null });
+  });
+});
+

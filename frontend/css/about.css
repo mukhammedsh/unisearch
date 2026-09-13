@@ -26,7 +26,7 @@ body[data-page="about"] {
    -------------------------------------------------------------------------- */
 .about-hero {
   padding: 0 0 var(--space-6);
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .about-title {

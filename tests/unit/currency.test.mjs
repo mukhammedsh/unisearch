@@ -188,8 +188,13 @@ describe('currency.js', () => {
     setPreferredCurrency('USD');
     setCurrencyDisplayMode('preferred');
 
-    // Same currency: no ≈
+    // Same currency: no ≈ and exact unrounded number
     assert.strictEqual(formatPrice(50000, 'USD'), '$50,000');
+    assert.strictEqual(formatPrice(8760, 'USD'), '$8,760');
+
+    // Converted currency: rounds to nearest hundred and prepends ≈
+    // 3,942,000 KZT / 450 = 8,760 USD -> rounded to hundreds = 8,800 USD
+    assert.strictEqual(formatPrice(3942000, 'KZT'), '≈ $8,800');
 
     // Switch to KZT
     setPreferredCurrency('KZT');

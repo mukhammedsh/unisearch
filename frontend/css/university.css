@@ -32,9 +32,9 @@
 .d-page-scope__inner {
   padding: 20px 20px;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--card);
-  box-shadow: none;
+  box-shadow: var(--shadow-micro);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -53,9 +53,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 12px;
   background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
   color: var(--muted);
   cursor: pointer;
   transition:
@@ -242,7 +243,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .d-head-main {
@@ -456,7 +457,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px dashed var(--line);
+  border-bottom: none;
 }
 
 .d-kv:last-child {
@@ -720,7 +721,7 @@
   grid-template-columns: 120px 1fr;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px dashed var(--line);
+  border-bottom: none;
   padding-bottom: 6px;
 }
 
@@ -1047,7 +1048,7 @@
   gap: 12px;
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--line);
+  border-top: none;
   color: var(--text);
   text-decoration: none;
   transition:
@@ -1117,7 +1118,7 @@
   gap: 12px;
   margin-top: 20px;
   margin-bottom: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   padding: 0 20px 16px;
   flex-wrap: wrap;
   scrollbar-width: thin;
@@ -1136,8 +1137,7 @@
   background-color var(--motion-fast) var(--motion-ease-standard),
   border-color var(--motion-fast) var(--motion-ease-standard),
   color var(--motion-fast) var(--motion-ease-standard),
-  box-shadow var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard);
+  box-shadow var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1609,7 +1609,7 @@
   display: flex;
   gap: 20px;
   margin: 20px 0 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   overflow-x: auto;
   scrollbar-width: thin;
 }
@@ -1750,7 +1750,7 @@
   display: flex;
   gap: 20px;
   margin-top: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   overflow-x: auto;
 }
 
@@ -1775,7 +1775,7 @@
 
 .admission-funding-block {
   margin-top: 16px;
-  border-top: 1px solid var(--line);
+  border-top: none;
   padding-top: 16px;
 }
 
@@ -1830,7 +1830,7 @@
   gap: 12px;
   margin-top: 4px;
   padding-top: 12px;
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .admission-funding-diff-kicker {
@@ -1870,7 +1870,7 @@
 .admission-funding-diff-note {
   margin-top: 4px;
   padding-top: 10px;
-  border-top: 1px solid var(--line);
+  border-top: none;
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.45;
@@ -2078,7 +2078,7 @@
 .track-lang-rule-average {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed var(--line);
+  border-top: none;
   color: var(--text);
   font-size: 13px;
   line-height: 1.45;
@@ -2121,7 +2121,7 @@
   color: var(--text);
   font-size: 13px;
   line-height: 1.45;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .track-extra-req-list li:first-child {
@@ -2617,10 +2617,7 @@
 }
 
 .roi-metrics-divider {
-  width: 1px;
-  height: 50px;
-  background: var(--line);
-  flex: 0 0 1px;
+  display: none;
 }
 
 @media (max-width: 640px) {
@@ -2859,6 +2856,10 @@
   }
 }
 
+.d-tab-btn:active {
+  transform: none;
+}
+
 .d-tab-btn.active {
   color: var(--accent);
   background: transparent;
@@ -2877,7 +2878,7 @@
 }
 
 .d-tab-content {
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .d-site-link {
@@ -2947,7 +2948,7 @@
 
 .d-kv {
   padding: 12px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .d-info {
@@ -3347,7 +3348,7 @@
 
 .d-cover {
   border-radius: 20px 20px 0 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   overflow: hidden;
 }
 
@@ -3364,7 +3365,7 @@
 .d-head {
   padding: 20px 24px 20px;
   background: var(--card);
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .d-title {
@@ -3422,7 +3423,7 @@
   padding: 0 20px;
   gap: 20px;
   border-top: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   background: var(--card);
 }
 
@@ -4063,16 +4064,16 @@ body[data-page="university"],
 
 .d-card {
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 20px;
-  box-shadow: none;
+  box-shadow: var(--shadow-card);
   overflow: visible;
   isolation: isolate;
 }
 
 :root[data-theme="dark"] .d-card {
   background: var(--surface-solid);
-  border-color: var(--line);
+  border: none;
 }
 
 .d-box,
@@ -4112,7 +4113,7 @@ body[data-page="university"],
   }
 
   #tab-general .d-box + .d-box {
-    border-top: 1px solid var(--line);
+    border-top: none;
     padding-top: 16px;
   }
 }
@@ -4122,13 +4123,13 @@ body[data-page="university"],
 }
 
 #tab-general .d-box + .d-box {
-  border-top: 1px solid var(--line);
+  border-top: none;
   padding-top: 20px;
   margin-top: 0;
 }
 
 :root[data-theme="dark"] #tab-general .d-box + .d-box {
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .d-page-scope {
@@ -4198,7 +4199,7 @@ body[data-page="university"],
 .finance-track-group + .finance-track-group {
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .finance-track-group--grant {
@@ -4293,7 +4294,7 @@ body[data-page="university"],
   padding: 12px 0 0;
   margin-top: 0;
   border: none;
-  border-top: 1px solid var(--line);
+  border-top: none;
   border-radius: 0;
   background: transparent;
   color: var(--text);
@@ -4417,7 +4418,7 @@ body[data-page="university"],
   color: var(--text-muted);
   margin-bottom: 4px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .track-exam-group {
@@ -4431,7 +4432,7 @@ body[data-page="university"],
 .track-exam-group + .track-exam-group {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .track-exam-group-title {
@@ -4492,7 +4493,7 @@ body[data-page="university"],
 .admission-funding-block {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .admission-funding-title {
@@ -4564,7 +4565,7 @@ body[data-page="university"],
   gap: 8px;
   margin-top: 6px;
   padding-top: 12px;
-  border-top: 1px dashed var(--line);
+  border-top: none;
 }
 
 .admission-funding-diff-kicker {
@@ -4585,7 +4586,7 @@ body[data-page="university"],
   flex: 1 0 100%;
   margin-top: 6px;
   padding-top: 8px;
-  border-top: 1px dashed var(--line);
+  border-top: none;
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.45;
@@ -4789,7 +4790,7 @@ body[data-page="university"],
   gap: 0;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .program-card-row {
@@ -4798,7 +4799,7 @@ body[data-page="university"],
   align-items: baseline;
   gap: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   border-top: none;
   box-sizing: border-box;
 }
@@ -4930,7 +4931,7 @@ body[data-page="university"],
 
 .admissions-programs-block {
   border: none;
-  border-top: 1px solid var(--line);
+  border-top: none;
   margin-top: 24px;
   padding-top: 20px;
   background: transparent;
@@ -5045,7 +5046,7 @@ body[data-page="university"],
   flex-wrap: wrap;
   align-items: baseline;
   gap: 8px;
-  border-top: 1px solid var(--line);
+  border-top: none;
   padding-top: 6px;
   padding-bottom: 0;
   margin: 0;
@@ -5081,7 +5082,7 @@ body[data-page="university"],
 .requirement-profile-tabs {
   display: flex;
   gap: 8px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   margin-top: 4px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -5145,12 +5146,12 @@ body[data-page="university"],
   color: var(--text);
 }
 
-/* Сетка требований: разделительная линия между мин и средними баллами */
+/* Admission requirements grid */
 .admission-requirement-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  border-top: 1px solid var(--line);
+  border-top: none;
   padding-top: 6px;
   margin-top: 0;
 }
@@ -5171,7 +5172,7 @@ body[data-page="university"],
 }
 
 .track-stats-box--avg {
-  border-left: 1px solid var(--line);
+  border-left: none;
   padding-left: 20px;
 }
 
@@ -5181,7 +5182,7 @@ body[data-page="university"],
 }
 
 :root[data-theme="dark"] .track-stats-box--avg {
-  border-left: 1px solid var(--line);
+  border-left: none;
 }
 
 @media (max-width: 720px) {
@@ -5194,13 +5195,13 @@ body[data-page="university"],
   }
   .track-stats-box--avg {
     border-left: none;
-    border-top: 1px solid var(--line);
+    border-top: none;
     padding-left: 0;
     padding-top: 10px;
   }
   :root[data-theme="dark"] .track-stats-box--avg {
     border-left: none;
-    border-top: 1px solid var(--line);
+    border-top: none;
   }
 }
 
@@ -5212,12 +5213,12 @@ body[data-page="university"],
   color: var(--text-muted);
   margin-bottom: 0;
   padding-bottom: 4px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 .track-extra-req {
   border: none;
-  border-top: 1px solid var(--line);
+  border-top: none;
   border-radius: 0;
   background: transparent;
   padding: 12px 0 0;
@@ -5251,7 +5252,7 @@ body[data-page="university"],
 .admission-funding-block {
   margin-top: 8px;
   padding-top: 16px;
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .admission-funding-title {
@@ -5377,7 +5378,7 @@ body[data-page="university"],
   }
   .admission-funding-option-side {
     justify-content: space-between;
-    border-top: 1px dashed var(--line);
+    border-top: none;
     padding-top: 8px;
     margin-top: 2px;
   }
@@ -5451,7 +5452,7 @@ body[data-page="university"],
 }
 
 .scholarship-card {
-  border-left: 1px solid var(--line);
+  border-left: none;
 }
 
 .scholarship-card__title,
@@ -5559,7 +5560,7 @@ body[data-page="university"],
 .finance-track-group + .finance-track-group {
   margin-top: 0;
   padding-top: var(--space-8);
-  border-top: 1px solid var(--line);
+  border-top: none;
 }
 
 .finance-track-group-head {
@@ -5662,8 +5663,8 @@ body[data-page="university"],
   margin: 0;
   padding: var(--space-3) 0;
   border: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: none;
+  border-bottom: none;
   border-radius: 0;
   background: transparent;
   color: var(--text);
@@ -5714,7 +5715,7 @@ body[data-page="university"],
   grid-template-columns: minmax(88px, 0.32fr) minmax(0, 1fr);
   gap: var(--space-3);
   padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--line-faint);
+  border-bottom: none;
 }
 
 .finance-option-meta__row:first-child {
@@ -5776,7 +5777,7 @@ body[data-page="university"],
 .cost-legend {
   display: grid;
   gap: 0;
-  border-top: 1px solid var(--line);
+  border-top: none;
   margin: 0;
 }
 
@@ -5788,7 +5789,7 @@ body[data-page="university"],
   min-height: 0;
   padding: var(--space-3) 0;
   border: 0;
-  border-bottom: 1px solid var(--line-faint);
+  border-bottom: none;
   border-radius: 0;
   background: transparent;
 }
@@ -5837,7 +5838,7 @@ body[data-page="university"],
   border: 0;
   border-radius: 0;
   padding: var(--space-3) 0 0;
-  border-top: 1px solid var(--line);
+  border-top: none;
   background: transparent;
   color: var(--text-muted);
   font-size: var(--text-base);
@@ -5847,7 +5848,7 @@ body[data-page="university"],
 .finance-breakdown-note {
   margin: 0;
   padding-top: var(--space-3);
-  border-top: 1px solid var(--line-faint);
+  border-top: none;
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
@@ -5867,7 +5868,7 @@ body[data-page="university"],
 
   .scholarship-card {
     border-left: 0;
-    border-top: 1px solid var(--line);
+    border-top: none;
   }
 }
 

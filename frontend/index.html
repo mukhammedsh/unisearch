@@ -265,11 +265,23 @@
           </div>
 
         </div>
+
+        <div id="recentlyViewedBar" class="u-recent" hidden></div>
       </aside>
 
       <div id="universitiesCatalogPane" class="u-content" data-universities-pane="catalog">
         <div id="compareModeStatus" class="u-compare-mode-status" hidden></div>
-        <div id="recentlyViewedBar" class="u-recent" hidden></div>
+        <div id="unifitWarningBanner" class="u-unifit-warning" hidden>
+          <div class="u-unifit-warning__content">
+            <span class="u-unifit-warning__icon" aria-hidden="true">
+              <span data-heroicon="exclamation-triangle" data-icon-size="18"></span>
+            </span>
+            <span class="u-unifit-warning__text" data-i18n="universities.unifit_banner.text">Не хватает части экзаменационных данных, поэтому результат помечен как условный.</span>
+          </div>
+          <button id="dismissUnifitWarningBanner" class="u-unifit-warning__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.unifit_banner.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.unifit_banner.dismiss">
+            <span data-heroicon="x-mark" data-icon-size="16"></span>
+          </button>
+        </div>
         <div id="listState" class="u-state"></div>
         <div class="u-catalog-stage">
           <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>

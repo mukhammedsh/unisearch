@@ -16,7 +16,7 @@
 .legal-hero {
   padding: 0 0 var(--space-5);
   margin-bottom: 24px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
 
@@ -145,7 +145,7 @@
 .legal-section h2 {
   margin: 0 0 var(--space-4);
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.25;
@@ -291,7 +291,7 @@
     margin: 0 0 16px;
     padding: var(--space-2) 0;
     background: var(--bg);
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
     position: sticky;
     z-index: 2;
     box-sizing: border-box;

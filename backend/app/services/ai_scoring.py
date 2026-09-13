@@ -98,6 +98,7 @@ def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict
         breakdown = {}
     return {
         "total": total_usd,
+        "raw_total": total,
         "breakdown": breakdown,
         "track_finance": track_fin,
         "university_finance": uni_fin,
@@ -113,9 +114,17 @@ def _effective_cost_mode(preferred_mode: Any, track_mode: Any) -> str:
     return mode if mode != "any" else "on-campus"
 
 
-def _effective_track_cost_with_mode(university: Dict[str, Any], track: Dict[str, Any], preferred_mode: Any = "any") -> Tuple[float, str]:
+def _effective_track_cost_details(
+    university: Dict[str, Any],
+    track: Dict[str, Any],
+    preferred_mode: Any = "any",
+) -> Tuple[float, float, str, str]:
+    """
+    Returns (cost_usd, cost_native, currency, cost_mode)
+    """
     finance = _finance_for_cost(university, track)
-    total = float(finance.get("total") or 0.0)
+    total_usd = float(finance.get("total") or 0.0)
+    raw_total = float(_to_num(finance.get("raw_total")) or 0.0)
     breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
     tuition = _extract_tuition_cost(breakdown)
     mode = _effective_cost_mode(preferred_mode, _track_study_mode(university, track))
@@ -124,23 +133,37 @@ def _effective_track_cost_with_mode(university: Dict[str, Any], track: Dict[str,
     currency = str(finance.get("currency") or "USD").strip().upper()
 
     if mode == "on-campus":
-        return max(0.0, total), "on-campus_exact"
+        return max(0.0, total_usd), max(0.0, raw_total), currency, "on-campus_exact"
 
     if mode == "online":
         for source in (track_fin, uni_fin):
             mode_breakdown = _mode_breakdown_from_finance(source, "online")
             mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
             if mode_tuition is not None and mode_tuition >= 0:
-                return _cost_to_usd(float(mode_tuition), currency), "online_tuition_only"
+                cost_native = float(mode_tuition)
+                return _cost_to_usd(cost_native, currency), cost_native, currency, "online_tuition_only"
         if tuition is not None and tuition >= 0:
-            return _cost_to_usd(float(tuition), currency), "online_tuition_only"
+            cost_native = float(tuition)
+            return _cost_to_usd(cost_native, currency), cost_native, currency, "online_tuition_only"
         for source in (track_fin, uni_fin):
             mode_total = _mode_total_from_finance(source, "online")
             if mode_total is not None and mode_total >= 0:
-                return _cost_to_usd(float(mode_total), currency), "online_mode_total"
-        return 0.0, "online_missing_tuition"
+                cost_native = float(mode_total)
+                return _cost_to_usd(cost_native, currency), cost_native, currency, "online_mode_total"
+        return 0.0, 0.0, currency, "online_missing_tuition"
 
-    return max(0.0, total), "on-campus_exact"
+    return max(0.0, total_usd), max(0.0, raw_total), currency, "on-campus_exact"
+
+
+def _effective_track_cost_with_mode(
+    university: Dict[str, Any],
+    track: Dict[str, Any],
+    preferred_mode: Any = "any",
+) -> Tuple[float, str]:
+    cost_usd, _cost_native, _currency, cost_mode = _effective_track_cost_details(
+        university, track, preferred_mode=preferred_mode
+    )
+    return cost_usd, cost_mode
 
 
 def _effective_track_cost(university: Dict[str, Any], track: Dict[str, Any], preferred_mode: Any = "any") -> float:
@@ -1407,8 +1430,15 @@ def sort_universities_ai(
 
         if not choices:
             item = dict(row)
+            cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
+                row, {}, preferred_mode=preferred_mode
+            )
             item["matchData"] = {
-                "finalPrice": 0.0,
+                "finalPrice": cost_native,
+                "finalPriceUSD": cost_usd,
+                "currency": cost_currency,
+                "costYearUSD": cost_usd,
+                "costYearNative": cost_native,
                 "aidAny": False,
                 "aidEligible": False,
                 "grantName": "",
@@ -1487,7 +1517,10 @@ def sort_universities_ai(
                 admit *= (0.12 + 0.88 * gap_penalty)
                 admit = _clamp01(admit)
 
-            cost, cost_mode = _effective_track_cost_with_mode(row, choice, preferred_mode=preferred_mode)
+            cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
+                row, choice, preferred_mode=preferred_mode
+            )
+            cost = cost_usd
             aff = _affordability_score(
                 row,
                 choice,
@@ -1510,11 +1543,13 @@ def sort_universities_ai(
                 breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
                 tuition = _extract_tuition_cost(breakdown)
                 if tuition is not None and tuition > 0:
-                    final_price = max(0.0, cost - float(tuition))
+                    final_price_native = max(0.0, cost_native - float(tuition))
                 else:
-                    final_price = 0.0
+                    final_price_native = 0.0
             else:
-                final_price = cost
+                final_price_native = cost_native
+
+            final_price_usd = _cost_to_usd(final_price_native, cost_currency)
 
             match_data = {
                 "choiceKey": choice_key,
@@ -1523,7 +1558,9 @@ def sort_universities_ai(
                 "categoryId": str(choice.get("category_id") or ""),
                 "requirementProfileId": str(choice.get("requirement_profile_id") or ""),
                 "fundingOptionId": str(choice.get("funding_option_id") or ""),
-                "finalPrice": final_price,
+                "finalPrice": final_price_native,
+                "finalPriceUSD": final_price_usd,
+                "currency": cost_currency,
                 "aidAny": aid_any,
                 "aidEligible": aid_eligible,
                 "grantName": str(choice.get("funding_program") or "") if aid_any else "",
@@ -1533,6 +1570,7 @@ def sort_universities_ai(
                 "conditional": bool(fit.get("conditional")),
                 "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
                 "costYearUSD": cost,
+                "costYearNative": cost_native,
                 "grantPotential": grant_potential,
                 "grantEligible": aid_eligible,
                 "hardScore": hard_score,
@@ -1616,7 +1654,7 @@ def sort_universities_ai(
             -float(_to_num(((u.get("matchData") or {}).get("selectedChance"))) or 0.0),
             float(_to_num(u.get("rank")) or 999999.0),
             -float(_to_num(((u.get("matchData") or {}).get("admitChance"))) or 0.0),
-            float(_to_num(((u.get("matchData") or {}).get("finalPrice"))) or 1e18),
+            float(_to_num(((u.get("matchData") or {}).get("finalPriceUSD") or ((u.get("matchData") or {}).get("finalPrice")))) or 1e18),
         )
     )
 

@@ -1169,6 +1169,69 @@ class AiScoringTests(unittest.TestCase):
         self.assertAlmostEqual(0.0, float(match.get("costYearUSD", 0.0)), places=6)
         self.assertEqual("online_missing_tuition", str(match.get("costMode")))
 
+    def test_ai_sort_preserves_native_currency_and_calculates_grant_in_native_currency(self):
+        items = [
+            {
+                "id": "u-kzt-test",
+                "name": "Kazakhstan Test University",
+                "rank": 200,
+                "finance": {
+                    "currency": "KZT",
+                    "total_cost_year_usd": 2000000,
+                    "costs_breakdown_year_usd": {
+                        "Tuition": 1950000,
+                        "Student_Fees": 50000,
+                    },
+                    "financial_aid": {"merit_based": True, "need_based": False},
+                },
+                "academics": {"acceptance_rate_percent": 50},
+                "admission_categories": _categories_from_requirement_profiles([
+                    {
+                        "id": "t-kzt-grant",
+                        "label": "Grant Track",
+                        "funding_type": "grant",
+                        "requirements": {},
+                        "stats_avg": {},
+                    }
+                ]),
+            }
+        ]
+        profile = {"budget": 10000, "studyMode": "On-campus"}
+        result = sort_universities_ai(items, profile=profile, budget_vs_prestige=50, funding_type="grant")
+        match = result[0].get("matchData", {})
+
+        self.assertEqual("KZT", match.get("currency"))
+        self.assertAlmostEqual(50000.0, float(match.get("finalPrice", 0.0)), places=2)
+        self.assertAlmostEqual(2000000.0, float(match.get("costYearNative", 0.0)), places=2)
+        self.assertGreater(float(match.get("costYearUSD", 0.0)), 4000.0)
+        self.assertGreater(float(match.get("finalPriceUSD", 0.0)), 100.0)
+        self.assertLess(float(match.get("finalPriceUSD", 0.0)), 150.0)
+
+    def test_ai_sort_empty_choices_preserves_native_cost_and_currency(self):
+        items = [
+            {
+                "id": "u-kzt-no-choices",
+                "name": "Kazakhstan No Choices University",
+                "rank": 200,
+                "finance": {
+                    "currency": "KZT",
+                    "total_cost_year_usd": 2000000,
+                    "financial_aid": {"merit_based": False, "need_based": False},
+                },
+                "academics": {"acceptance_rate_percent": 50},
+                "admission_categories": [],
+            }
+        ]
+        profile = {"budget": 10000, "studyMode": "On-campus"}
+        result = sort_universities_ai(items, profile=profile, budget_vs_prestige=50, funding_type="any")
+        match = result[0].get("matchData", {})
+
+        self.assertEqual("KZT", match.get("currency"))
+        self.assertAlmostEqual(2000000.0, float(match.get("finalPrice", 0.0)), places=2)
+        self.assertAlmostEqual(2000000.0, float(match.get("costYearNative", 0.0)), places=2)
+        self.assertGreater(float(match.get("costYearUSD", 0.0)), 4000.0)
+        self.assertGreater(float(match.get("finalPriceUSD", 0.0)), 4000.0)
+
     def test_finance_slider_switches_grant_or_general_chance_mode(self):
         items = [
             {

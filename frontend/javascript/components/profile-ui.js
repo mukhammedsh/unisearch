@@ -230,13 +230,13 @@ export function initProfileUI() {
             const isActive = String(tab.dataset.profileTab || "") === active;
             tab.classList.toggle("is-active", isActive);
             tab.setAttribute("aria-selected", isActive ? "true" : "false");
-            if (isActive) replayMotion(tab, "motion-press-pop", { timeoutMs: 280 });
         });
         profileSectionNodes.forEach((node) => {
             const isActive = String(node.getAttribute("data-profile-section") || "") === active;
             node.classList.toggle("is-section-hidden", !isActive);
             if (isActive) replayMotion(node, "is-motion-active", { timeoutMs: 420 });
         });
+        requestAnimationFrame(() => updateProfileTabsIndicator?.());
     };
 
     const updateProfileProgress = () => {
@@ -262,7 +262,6 @@ export function initProfileUI() {
         tab.addEventListener("click", () => setProfileSection(tab.dataset.profileTab || "basics"));
     });
     setProfileSection("basics");
-    setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
     const getNameDraft = () => String(nameInput?.value || "").trim();

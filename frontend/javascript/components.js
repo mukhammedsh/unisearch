@@ -19,6 +19,7 @@ import {
   syncNavbarLogo,
 } from "./components/shell.js";
 import { initSettingsUI } from "./components/settings-ui.js";
+import { initGlobalNavbarSearch } from "./components/navbar-search.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_OPEN_UNIVERSITIES_NEW_TAB,
@@ -495,9 +496,8 @@ export async function loadGlobalLayout() {
         document.body.insertAdjacentHTML("afterbegin", LAYOUT_HTML);
         const navbar = document.querySelector(".navbar");
         const search = document.getElementById("universitySearch");
-        const isUniversitiesWorkspace = document.body.dataset.page === "universities";
-        if (navbar) navbar.classList.toggle("has-university-search", isUniversitiesWorkspace);
-        if (search) search.hidden = !isUniversitiesWorkspace;
+        if (navbar) navbar.classList.add("has-university-search");
+        if (search) search.hidden = false;
         syncNavbarLogo();
         bindThemeUiSync();
         initThemeToggleUi();
@@ -511,6 +511,9 @@ export async function loadGlobalLayout() {
 
         // Запускаем логику профиля
         bindProfileNavAction();
+
+        // Запускаем быстрый глобальный поиск для страниц вне каталога
+        initGlobalNavbarSearch();
 
     } catch (error) {
         console.error("Error loading layout:", error);
@@ -531,7 +534,6 @@ export function setupTabs() {
     buttons.forEach((b) => b.classList.remove("active"));
     panes.forEach((p) => p.classList.remove("active"));
     btn.classList.add("active");
-    motionPress(btn);
     const tabId = btn.getAttribute("data-tab");
     const targetPane = tabId ? document.getElementById(tabId) : null;
     if (targetPane) {

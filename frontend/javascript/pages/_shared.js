@@ -6,7 +6,7 @@ import {
   escapeHtmlAttr,
   moneyUSD,
 } from "../utils.js";
-import { formatPrice } from "../currency.js";
+import { convert, formatPrice } from "../currency.js";
 
 import {
   renderGroupedExamPairRows,
@@ -1011,4 +1011,103 @@ export function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
     const n = Number(value);
     return Number.isFinite(n) ? n : null;
+}
+
+export function resolveUniversityCardPrice(u) {
+  if (!u || typeof u !== "object") {
+    return { amount: null, currency: "USD", amountUSD: null };
+  }
+
+  const match = u.matchData && typeof u.matchData === "object" ? u.matchData : null;
+  const finance = u.finance && typeof u.finance === "object" ? u.finance : {};
+  const uniNativeCurrency = String(finance.currency || "").trim().toUpperCase() || "USD";
+
+  if (match) {
+    const hasFinalPrice = match.finalPrice !== null && match.finalPrice !== undefined && match.finalPrice !== "";
+    const hasFinalPriceUSD = match.finalPriceUSD !== null && match.finalPriceUSD !== undefined && match.finalPriceUSD !== "";
+    const matchCurrency = String(match.currency || "").trim().toUpperCase();
+
+    // Canonical new contract: both native amount and currency are provided
+    if (hasFinalPrice && matchCurrency) {
+      const amount = Number(match.finalPrice);
+      const amountUSD = hasFinalPriceUSD
+        ? Number(match.finalPriceUSD)
+        : (matchCurrency === "USD" ? amount : convert(amount, matchCurrency, "USD"));
+      return {
+        amount: Number.isFinite(amount) ? amount : null,
+        currency: matchCurrency,
+        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
+      };
+    }
+
+    // Explicit finalPriceUSD provided
+    if (hasFinalPriceUSD) {
+      const amountUSD = Number(match.finalPriceUSD);
+      return {
+        amount: hasFinalPrice ? Number(match.finalPrice) : amountUSD,
+        currency: matchCurrency || "USD",
+        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
+      };
+    }
+
+    // Explicit costWithAmountUSD (legacy USD field)
+    if (!hasFinalPrice && match.costWithAmountUSD !== null && match.costWithAmountUSD !== undefined && match.costWithAmountUSD !== "") {
+      const amountUSD = Number(match.costWithAmountUSD);
+      return {
+        amount: amountUSD,
+        currency: "USD",
+        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
+      };
+    }
+
+    // Legacy contract: finalPrice is present WITHOUT match.currency.
+    // In legacy UniSearch AI scoring, finalPrice was always calculated in USD.
+    // We MUST treat its currency as "USD", NOT uniNativeCurrency (e.g. KZT/CAD/EUR).
+    if (hasFinalPrice) {
+      const amount = Number(match.finalPrice);
+      return {
+        amount: Number.isFinite(amount) ? amount : null,
+        currency: "USD",
+        amountUSD: Number.isFinite(amount) ? amount : null,
+      };
+    }
+
+    // Fallback to match costYearNative or costYearUSD
+    if (match.costYearNative !== null && match.costYearNative !== undefined && matchCurrency) {
+      const amount = Number(match.costYearNative);
+      const amountUSD = match.costYearUSD !== null && match.costYearUSD !== undefined
+        ? Number(match.costYearUSD)
+        : convert(amount, matchCurrency, "USD");
+      return {
+        amount: Number.isFinite(amount) ? amount : null,
+        currency: matchCurrency,
+        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
+      };
+    }
+
+    if (match.costYearUSD !== null && match.costYearUSD !== undefined) {
+      const amountUSD = Number(match.costYearUSD);
+      return {
+        amount: amountUSD,
+        currency: "USD",
+        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
+      };
+    }
+  }
+
+  // Non-AI card or no matchData pricing: use finance.total_cost_year_usd in uniNativeCurrency
+  const rawBaseCost = finance.total_cost_year_usd;
+  if (rawBaseCost !== null && rawBaseCost !== undefined && rawBaseCost !== "") {
+    const amount = Number(rawBaseCost);
+    if (Number.isFinite(amount)) {
+      const amountUSD = uniNativeCurrency === "USD" ? amount : convert(amount, uniNativeCurrency, "USD");
+      return {
+        amount,
+        currency: uniNativeCurrency,
+        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
+      };
+    }
+  }
+
+  return { amount: null, currency: uniNativeCurrency, amountUSD: null };
 }
