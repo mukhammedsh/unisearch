@@ -293,11 +293,13 @@ profile.placeholder.lang_score: Score (e.g. 7.5)
 profile.placeholder.score: Score
 profile.preference_saved: Preference saved
 profile.state.saved: Saved
+profile.state.saved_local: Saved on this device
+profile.state.saved_session: Saved until this tab is closed
 profile.state.unsaved: Unsaved changes
 profile.unsaved.title: Unsaved Changes
 profile.unsaved.message: You have unsaved profile changes. What do you want to do?
-profile.unsaved.discard: Close without saving
-profile.unsaved.cancel: Cancel
+profile.unsaved.discard: Discard changes
+profile.unsaved.cancel: Keep editing
 profile.unsaved.save_close: Save and close
 profile.reset.title: Reset profile data
 profile.reset.note: Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.

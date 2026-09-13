@@ -54,6 +54,8 @@ export function initProfileUI() {
     );
 
     let cleanupFocusTrap = null;
+    let cleanupUnsavedFocusTrap = null;
+    let cleanupResetFocusTrap = null;
 
     if (!isDedicatedPage) {
         modal.setAttribute("aria-hidden", "true");
@@ -214,6 +216,7 @@ export function initProfileUI() {
 
     let profile = ensureProfileShape(loadProfile());
     let savedSignature = "";
+    let profileStoragePersistent = true;
     let lowBudgetGrantHintDismissed = false;
     let isDiscarding = false;
     const profileProgressText = document.getElementById("profileProgressText");
@@ -337,9 +340,13 @@ export function initProfileUI() {
         const usernameDirty = isUsernameDraftDirty();
         const isDirty = profileDirty || usernameDirty;
         if (profileSaveState) {
-            profileSaveState.textContent = isDirty
-                ? t("profile.state.unsaved", "Unsaved changes")
-                : t("profile.state.saved", "Saved");
+            if (isDirty) {
+                profileSaveState.textContent = t("profile.state.unsaved", "Unsaved changes");
+            } else {
+                profileSaveState.textContent = profileStoragePersistent
+                    ? t("profile.state.saved_local", "Saved on this device")
+                    : t("profile.state.saved_session", "Saved until this tab is closed");
+            }
             profileSaveState.classList.toggle("is-dirty", isDirty);
         }
         if (saveProfileBtn) saveProfileBtn.disabled = !isDirty;
@@ -736,7 +743,7 @@ export function initProfileUI() {
         profile = ensureProfileShape(profile);
     };
 
-    const commitProfileName = (notify = true) => {
+    const commitProfileName = () => {
         const nextName = getNameDraft();
         const currentName = String(profile.name || "").trim();
         if (nextName === currentName) {
@@ -761,19 +768,12 @@ export function initProfileUI() {
         }
 
         setFieldInvalid(nameInput, false);
-        const persisted = ensureProfileShape(loadProfile());
-        persisted.name = nextName;
-        saveProfile(persisted);
-
         profile.name = nextName;
         if (nameDisplay) nameDisplay.textContent = nextName;
         if (nameInput) nameInput.value = nextName;
         if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
 
-        savedSignature = stableProfileSignature(ensureProfileShape(loadProfile()));
         refreshSaveState();
-
-        if (notify) showToast(t("profile.nickname_updated", "Nickname updated!"), "success");
         return true;
     };
 
@@ -932,7 +932,7 @@ export function initProfileUI() {
         });
     }
 
-    const saveAllProfileChanges = (notify = true) => {
+    const saveAllProfileChanges = () => {
         syncInputsToDraft();
 
         const budgetCheck = validateBudgetInput();
@@ -952,19 +952,20 @@ export function initProfileUI() {
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
 
-        saveProfile(profile);
+        profileStoragePersistent = saveProfile(profile);
         savedSignature = stableProfileSignature(profile);
         refreshSaveState();
         replayMotion(profileSaveState, "motion-state-pulse", { timeoutMs: 520 });
         replayMotion(saveProfileBtn, "motion-state-pulse", { timeoutMs: 520 });
 
-        if (notify) showToast(t("profile.saved_all", "Profile saved"), "success");
         return true;
     };
 
     const closeUnsavedDialog = (focusCloseButton = false) => {
         if (!unsavedModal) return;
         const finish = () => {
+            cleanupUnsavedFocusTrap?.();
+            cleanupUnsavedFocusTrap = null;
             unsavedModal.classList.remove("is-open", "is-closing");
             unsavedModal.setAttribute("aria-hidden", "true");
             unsavedModal.style.display = "none";
@@ -981,6 +982,8 @@ export function initProfileUI() {
     const closeResetDialog = (focusResetButton = false) => {
         if (!resetModal) return;
         const finish = () => {
+            cleanupResetFocusTrap?.();
+            cleanupResetFocusTrap = null;
             resetModal.classList.remove("is-open", "is-closing");
             resetModal.setAttribute("aria-hidden", "true");
             resetModal.style.display = "none";
@@ -1055,6 +1058,9 @@ export function initProfileUI() {
         unsavedModal.classList.remove("is-closing");
         unsavedModal.classList.add("is-open");
         unsavedModal.setAttribute("aria-hidden", "false");
+        cleanupUnsavedFocusTrap?.();
+        cleanupUnsavedFocusTrap = trapFocus(unsavedModal);
+        cancelCloseBtn?.focus();
     };
 
     const openResetDialog = () => {
@@ -1068,6 +1074,9 @@ export function initProfileUI() {
         resetModal.classList.remove("is-closing");
         resetModal.classList.add("is-open");
         resetModal.setAttribute("aria-hidden", "false");
+        cleanupResetFocusTrap?.();
+        cleanupResetFocusTrap = trapFocus(resetModal);
+        resetCancelBtn?.focus();
     };
 
     const requestClose = () => {
@@ -1130,10 +1139,10 @@ export function initProfileUI() {
         budgetInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
-            if (isUsernameDraftDirty() && !commitProfileName(false)) {
+            if (isUsernameDraftDirty() && !commitProfileName()) {
                 return;
             }
-            saveAllProfileChanges(true);
+            saveAllProfileChanges();
         });
     }
 
@@ -1163,10 +1172,10 @@ export function initProfileUI() {
         gpaInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
-            if (isUsernameDraftDirty() && !commitProfileName(false)) {
+            if (isUsernameDraftDirty() && !commitProfileName()) {
                 return;
             }
-            saveAllProfileChanges(true);
+            saveAllProfileChanges();
         });
     }
 
@@ -1190,17 +1199,17 @@ export function initProfileUI() {
     if (saveProfileBtn) {
         saveProfileBtn.addEventListener("click", () => {
             motionPress(saveProfileBtn);
-            if (isUsernameDraftDirty() && !commitProfileName(false)) {
+            if (isUsernameDraftDirty() && !commitProfileName()) {
                 return;
             }
-            saveAllProfileChanges(true);
+            saveAllProfileChanges();
         });
     }
 
     const resetProfileData = () => {
         lowBudgetGrantHintDismissed = false;
         safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
-        clearProfile();
+        profileStoragePersistent = clearProfile();
         const emptyProfile = ensureProfileShape({});
         setProfileDraft(emptyProfile, { markAsSaved: true });
         applyDraftToInputs();
@@ -1266,11 +1275,11 @@ export function initProfileUI() {
     saveAndCloseBtn?.addEventListener("click", () => {
         motionPress(saveAndCloseBtn);
         syncInputsToDraft();
-        if (isUsernameDraftDirty() && !commitProfileName(false)) {
+        if (isUsernameDraftDirty() && !commitProfileName()) {
             closeUnsavedDialog(true);
             return;
         }
-        if (isProfileDirty() && !saveAllProfileChanges(false)) {
+        if (isProfileDirty() && !saveAllProfileChanges()) {
             closeUnsavedDialog(true);
             return;
         }
@@ -1316,14 +1325,14 @@ export function initProfileUI() {
                 nameInput.focus();
                 return;
             }
-            commitProfileName(true);
+            commitProfileName();
         };
 
         nameInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             if (!profileUsernameDiv.classList.contains("is-editing")) return;
             e.preventDefault();
-            commitProfileName(true);
+            commitProfileName();
         });
         nameInput.addEventListener("input", () => {
             setFieldInvalid(nameInput, false);

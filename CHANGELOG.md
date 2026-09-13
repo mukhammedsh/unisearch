@@ -3,6 +3,10 @@
 All notable project changes should be recorded here.
 
 ## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Improved profile save UX (`frontend/profile.html`, `frontend/javascript/components/profile-ui.js`, `frontend/javascript/utils/persistence.js`, `frontend/Localization/eng`, `frontend/Localization/ru`):
+  - Unified nickname and profile fields into one atomic draft/save flow, so discarding changes restores the complete saved profile.
+  - Replaced duplicate save success toasts with an accessible, truthful persistence status for device storage and session-only fallback.
+  - Added focus management and keyboard focus trapping for unsaved-change and reset dialogs, with clearer action hierarchy and localized labels.
 - Fixed composite exam validation for A-Level subjects and resolved toast error string formatting (`backend/app/schemas/payloads.py`, `backend/app/services/exams.py`, `backend/tests/test_exams_api.py`, `backend/tests/test_profile_payload_validation_extended.py`, `frontend/javascript/components/profile-ui.js`, `frontend/javascript/components/profile/exam-breakdowns.js`, `frontend/javascript/languages.js`):
   - Streamlined `readBreakdownFieldPayload` to pass clean `raw_value` strings for individual subject grades without nesting redundant `details` objects inside breakdown components.
   - Adjusted `_coerce_subject_breakdown_submission` to avoid attaching redundant nested `details` to child component entries.
