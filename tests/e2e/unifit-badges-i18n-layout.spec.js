@@ -109,6 +109,13 @@ for (const locale of locales) {
     const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await expect(firstTooltip).toBeVisible();
     await expect(firstTooltip).toHaveCSS("z-index", "1200");
+
+    await firstStatus.click();
+    await expect(firstTooltip).not.toBeVisible();
+    await firstStatus.click();
+    await expect(firstTooltip).toBeVisible();
+    await firstStatus.click();
+    await expect(firstTooltip).not.toBeVisible();
     expect(await firstCard.evaluate((card) => getComputedStyle(card).overflow)).toBe("visible");
     expect(await firstCard.locator(".uni-media").evaluate((media) => media.contains(media.parentElement?.querySelector(".uni-card-statuses")))).toBeFalsy();
 
@@ -123,6 +130,15 @@ for (const locale of locales) {
       return [styles.backgroundColor, styles.borderColor, styles.color];
     });
     expect(darkStatusColor).toEqual(lightStatusColor);
+
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "light"));
+    await firstStatus.hover();
+    const lightHoverBorder = await firstStatus.evaluate((status) => getComputedStyle(status).borderColor);
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+    await firstStatus.hover();
+    const darkHoverBorder = await firstStatus.evaluate((status) => getComputedStyle(status).borderColor);
+    expect(darkHoverBorder).toEqual(lightHoverBorder);
+    expect(darkHoverBorder).toBe("rgb(17, 24, 39)");
 
     const [firstCardBox, compactCardBox] = await Promise.all([
       firstCard.boundingBox(),
@@ -155,5 +171,12 @@ for (const locale of locales) {
     expect(mobileOverflow.hasBox).toBeTruthy();
     expect(mobileOverflow.horizontal).toBeFalsy();
     expect(mobileOverflow.vertical).toBeFalsy();
+
+    const mobileStatus = firstCard.locator(".uni-status-trigger").first();
+    const mobileTooltip = firstCard.locator(".uni-status-tooltip__content").first();
+    await mobileStatus.click();
+    await expect(mobileTooltip).toBeVisible();
+    await mobileStatus.click();
+    await expect(mobileTooltip).not.toBeVisible();
   });
 }

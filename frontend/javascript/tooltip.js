@@ -9,15 +9,17 @@ export function bindInfoTooltips(options = {}) {
   const wrapSelector = String(options.wrapSelector || ".u-info-wrap").trim() || ".u-info-wrap";
   const buttonSelector = String(options.buttonSelector || ".u-info").trim() || ".u-info";
   const openClass = String(options.openClass || "is-open").trim() || "is-open";
+  const closedClass = String(options.closedClass || "is-closed").trim() || "is-closed";
   const holdDelayMs = Number.isFinite(Number(options.holdDelayMs)) ? Number(options.holdDelayMs) : 420;
-  const key = `${wrapSelector}::${buttonSelector}::${openClass}`;
+  const key = `${wrapSelector}::${buttonSelector}::${openClass}::${closedClass}`;
   if (__boundTooltipKeys.has(key)) return;
   __boundTooltipKeys.add(key);
 
   const holdTimers = new WeakMap();
   const closeAll = () => {
-    root.querySelectorAll(`${wrapSelector}.${openClass}`).forEach((wrap) => {
+    root.querySelectorAll(`${wrapSelector}.${openClass}, ${wrapSelector}.${closedClass}`).forEach((wrap) => {
       wrap.classList.remove(openClass);
+      wrap.classList.remove(closedClass);
       const btn = wrap.querySelector(buttonSelector);
       if (btn) btn.setAttribute("aria-expanded", "false");
     });
@@ -36,8 +38,14 @@ export function bindInfoTooltips(options = {}) {
       const willOpen = !wrap.classList.contains(openClass);
       closeAll();
       if (willOpen) {
+        wrap.classList.remove(closedClass);
         wrap.classList.add(openClass);
         btn.setAttribute("aria-expanded", "true");
+      } else {
+        wrap.classList.remove(openClass);
+        wrap.classList.add(closedClass);
+        btn.setAttribute("aria-expanded", "false");
+        try { btn.blur(); } catch (e) {}
       }
       return;
     }
@@ -46,6 +54,19 @@ export function bindInfoTooltips(options = {}) {
       closeAll();
     }
   });
+
+  const clearClosed = (evt) => {
+    const target = evt.target;
+    if (!(target instanceof Element)) return;
+    const wrap = target.closest(wrapSelector);
+    if (!wrap) return;
+    const related = evt.relatedTarget;
+    if (!related || !(related instanceof Node) || !wrap.contains(related)) {
+      wrap.classList.remove(closedClass);
+    }
+  };
+
+  root.addEventListener("pointerout", clearClosed);
 
   root.addEventListener("keydown", (evt) => {
     if (evt.key === "Escape") {
@@ -69,6 +90,7 @@ export function bindInfoTooltips(options = {}) {
     if (!wrap) return;
     const timer = window.setTimeout(() => {
       closeAll();
+      wrap.classList.remove(closedClass);
       wrap.classList.add(openClass);
       btn.setAttribute("aria-expanded", "true");
       holdTimers.delete(btn);

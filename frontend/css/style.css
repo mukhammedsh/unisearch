@@ -81,6 +81,7 @@
   --uni-status-info-bg: #eff6ff;
   --uni-status-info-border: rgba(29, 78, 216, 0.28);
   --uni-status-info-text: #1d4ed8;
+  --uni-status-hover-border: #111827;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
   --selection-bg: color-mix(in srgb, var(--accent) 16%, transparent);
@@ -152,6 +153,7 @@
   --color-info-muted: #60a5fa;
   --color-info-bg: rgba(59, 130, 246, 0.14);
   --line-info: rgba(147, 197, 253, 0.32);
+  --uni-status-hover-border: #111827;
   --skeleton-base: #222427;
   --skeleton-highlight: rgba(255, 255, 255, 0.08);
   --selection-bg: color-mix(in srgb, var(--accent) 35%, transparent);

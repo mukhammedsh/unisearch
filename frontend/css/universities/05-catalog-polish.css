@@ -265,12 +265,12 @@
 }
 
 .uni-card:focus-within,
-.uni-card:has(.uni-status-tooltip:hover),
+.uni-card:has(.uni-status-tooltip:not(.is-closed):hover),
 .uni-card:has(.uni-status-tooltip.is-open) {
   z-index: 2;
 }
 
-.uni-status-tooltip:focus-within .uni-status-tooltip__content,
+.uni-status-tooltip:not(.is-closed):focus-within .uni-status-tooltip__content,
 .uni-status-tooltip.is-open .uni-status-tooltip__content {
   opacity: 1;
   visibility: visible;
@@ -279,14 +279,21 @@
 
 @media (hover: hover) and (pointer: fine) {
   .uni-status-trigger:hover {
-    border-color: var(--text);
+    border-color: var(--uni-status-hover-border);
   }
 
-  .uni-status-tooltip:hover .uni-status-tooltip__content {
+  .uni-status-tooltip:not(.is-closed):hover .uni-status-tooltip__content {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
   }
+}
+
+.uni-status-tooltip.is-closed .uni-status-tooltip__content {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
 }
 
 .uni-status-trigger:focus-visible {
