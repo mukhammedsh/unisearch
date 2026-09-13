@@ -98,9 +98,9 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
   await expect(page.locator("body")).toHaveClass(/universities-compare-mode/);
   const compareModeCard = page.locator(`.uni-card[data-uni-id="${firstUniversityId}"]`).first();
   await expect(compareModeCard).toBeVisible();
-  const compare = compareModeCard.locator("[data-card-action='compare']");
-  await compare.click();
-  await expect(compare).toHaveAttribute("aria-pressed", "true");
+  await compareModeCard.click();
+  await expect(compareModeCard).toHaveClass(/uni-card--compare-selected/);
+  await expect(compareModeCard).toHaveAttribute("aria-selected", "true");
   await expectMotionSeen(page, "motion-icon-compare-add");
   await expect(page.locator("#compareTray")).toBeVisible();
   await expect(recentChip).toBeVisible();

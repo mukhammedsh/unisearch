@@ -78,6 +78,16 @@ test("desktop university search remains visible in the redesigned navbar", async
   await expect(search.locator("input")).toBeVisible();
 });
 
+test("root catalog shows university suggestions below the navbar search", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await page.locator("#qInput").fill("Harvard");
+
+  await expect(page.locator(".navbar-search-suggestions.is-open .navbar-search-suggestion").first()).toBeVisible();
+});
+
 test("root catalog has no horizontal overflow on narrow and wide screens", async ({ page }) => {
   await markTourAsSeen(page);
   for (const viewport of [

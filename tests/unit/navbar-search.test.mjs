@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {
   fetchUniversitySearchResults,
   generateSuggestionsHtml,
-  isCatalogWorkspace,
+  isGlobalSearchDisabledWorkspace,
 } from '../../frontend/javascript/components/navbar-search.js';
 
 describe('Global Navbar Search Component', () => {
@@ -78,20 +78,20 @@ describe('Global Navbar Search Component', () => {
     assert.ok(html.includes('navbar-search-empty'));
   });
 
-  it('isCatalogWorkspace detects catalog and compare presence', () => {
+  it('disables global suggestions only in compare workspace', () => {
     const originalDataset = document.body.dataset;
     try {
       document.body.dataset = { page: 'universities' };
-      assert.equal(isCatalogWorkspace(), true);
+      assert.equal(isGlobalSearchDisabledWorkspace(), false);
 
       document.body.dataset = { page: 'compare' };
-      assert.equal(isCatalogWorkspace(), true);
+      assert.equal(isGlobalSearchDisabledWorkspace(), true);
 
       document.body.dataset = { page: 'guide' };
-      assert.equal(isCatalogWorkspace(), false);
+      assert.equal(isGlobalSearchDisabledWorkspace(), false);
 
       document.body.dataset = { page: 'profile' };
-      assert.equal(isCatalogWorkspace(), false);
+      assert.equal(isGlobalSearchDisabledWorkspace(), false);
     } finally {
       document.body.dataset = originalDataset;
     }

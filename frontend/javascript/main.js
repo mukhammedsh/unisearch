@@ -214,7 +214,7 @@ function syncNavbarSearchVisibility(ctx) {
   const search = document.getElementById("universitySearch");
   if (navbar) navbar.classList.add("has-university-search");
   if (search) search.hidden = false;
-  if (!ctx.isUniversitiesPage && !ctx.isComparePage) {
+  if (!ctx.isComparePage) {
     initGlobalNavbarSearch();
   } else {
     hideGlobalSearchSuggestions();

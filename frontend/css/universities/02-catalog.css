@@ -179,7 +179,7 @@
   border-color var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   min-height: 350px;
 }
 @media (hover: hover) and (pointer: fine) {

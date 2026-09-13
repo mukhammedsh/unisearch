@@ -33,6 +33,7 @@ test("universities tabs host comparison flow navigating to dedicated compare pag
   await expect(page.locator('[data-universities-tab="compare"]')).toHaveClass(/is-active/);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
   await expect(page.locator("#qInput")).toHaveAttribute("placeholder", "Search university...");
+  await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
 
   const mitCard = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
   const imperialCard = page.locator(`#universitiesList .uni-card[data-uni-id="${IMPERIAL_ID}"]`).first();
@@ -86,7 +87,7 @@ test("universities tabs host comparison flow navigating to dedicated compare pag
   await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
   await expect(page.locator(".compare-tray")).toBeVisible();
-  await expect(page.locator("#universitiesList [data-card-action='compare'][aria-pressed='true']")).toHaveCount(2);
+  await expect(page.locator("#universitiesList .uni-card--compare-selected[aria-selected='true']")).toHaveCount(2);
 });
 
 test("compare mode keeps exactly two universities and shows tray after client route", async ({ page }) => {
@@ -112,7 +113,7 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   await expect(cards.nth(2)).toBeVisible();
   await cards.nth(2).click();
 
-  await expect(page.locator("#universitiesList [data-card-action='compare'][aria-pressed='true']")).toHaveCount(2);
+  await expect(page.locator("#universitiesList .uni-card--compare-selected[aria-selected='true']")).toHaveCount(2);
   await expect.poll(async () => page.evaluate(() =>
     JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").length
   )).toBe(2);

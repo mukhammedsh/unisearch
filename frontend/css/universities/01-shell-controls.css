@@ -5,7 +5,7 @@ body[data-page="universities"] {
 
 .u-page {
   background: var(--bg);
-  padding: 20px 0 60px;
+  padding: 12px 0 60px;
 }
 
 .u-page-scope {
@@ -132,7 +132,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   justify-content: space-between;
   width: 100%;
   margin-left: 0;
-  padding-bottom: 6px;
+  padding-bottom: 0;
   align-self: flex-end;
 }
 

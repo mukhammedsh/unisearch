@@ -141,9 +141,13 @@
   gap: 20px;
 }
 
+.u-grid {
+  align-items: stretch;
+}
+
 .uni-card {
-  height: 100%;
-  min-height: 350px;
+  height: auto;
+  min-height: 0;
   border: none;
   border-radius: 20px;
   box-shadow: var(--shadow-card);
@@ -153,7 +157,7 @@
 }
 
 .uni-card--has-fit {
-  min-height: 420px;
+  min-height: 0;
 }
 @media (hover: hover) and (pointer: fine) {
 
@@ -292,9 +296,43 @@
   padding-top: 14px;
   border-top: none;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: end;
   gap: 12px;
+}
+
+.uni-price {
+  min-width: 0;
+  width: auto;
+  flex: 1 1 0;
+  white-space: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.uni-price-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+}
+
+.uni-price-val {
+  overflow-wrap: anywhere;
+}
+
+.uni-price-period {
+  white-space: nowrap;
+}
+
+.uni-details {
+  min-width: max-content;
+  margin-left: auto;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .uni-why + .uni-footer {
@@ -318,6 +356,7 @@
   display: inline-block;
   transition: transform var(--motion-fast) var(--motion-ease-standard);
 }
+
 @media (hover: hover) and (pointer: fine) {
 
 .uni-details:hover {

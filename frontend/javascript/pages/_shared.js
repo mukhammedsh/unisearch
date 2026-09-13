@@ -252,6 +252,14 @@ export function moneyOrUnknown(value, fieldKey, fallbackField, currency = "USD")
     : unknownFieldText(fieldKey, fallbackField);
 }
 
+export function splitPriceDisplay(value) {
+  const text = String(value ?? "").trim();
+  const match = text.match(/^(.+?)\s+(\([^()]+\))$/);
+  return match
+    ? { primary: match[1], secondary: match[2] }
+    : { primary: text, secondary: "" };
+}
+
 export function normalizeTranslationKey(value) {
   return String(value || "")
     .trim()

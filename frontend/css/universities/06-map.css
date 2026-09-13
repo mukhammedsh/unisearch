@@ -82,8 +82,8 @@
   gap: 12px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0 2px 8px;
-  scroll-snap-type: x proximity;
+  padding: 0 2px 8px var(--space-3);
+  scroll-padding-inline-start: var(--space-3);
   border-radius: var(--radius-lg);
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--text-muted) 58%, transparent) transparent;
@@ -330,6 +330,7 @@
     margin-top: 12px;
     padding: 0 16px 8px;
     scroll-padding-inline: 14px;
+    scroll-snap-type: x proximity;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }

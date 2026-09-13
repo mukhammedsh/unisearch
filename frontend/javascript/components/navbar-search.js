@@ -10,7 +10,6 @@ import {
 import { getCurrentLanguage, t } from "../i18n.js";
 import {
   isComparePath,
-  isUniversitiesListPath,
   routeUniversityDetail,
   routeUniversities,
 } from "../routes.js";
@@ -27,16 +26,15 @@ function buildLogoUrl(universityId, forceFull = false) {
   return `${API_BASE}/universities/assets/${folder}/${safeId}.png`;
 }
 
-export function isCatalogWorkspace() {
+export function isGlobalSearchDisabledWorkspace() {
   if (typeof document === "undefined") return false;
   const page = String(document.body?.dataset?.page || "").trim().toLowerCase();
-  if (page === "universities" || page === "compare") return true;
+  if (page === "compare") return true;
   if (page && page !== "home") return false;
 
   const path = typeof window !== "undefined" ? String(window.location?.pathname || "") : "";
   return Boolean(
-    (typeof document.getElementById === "function" && (document.getElementById("universitiesList") || document.getElementById("compareResultsPane"))) ||
-    (typeof isUniversitiesListPath === "function" && isUniversitiesListPath(path)) ||
+    (typeof document.getElementById === "function" && document.getElementById("compareResultsPane")) ||
     (typeof isComparePath === "function" && isComparePath(path))
   );
 }
@@ -158,7 +156,7 @@ function bindGlobalClick() {
 
 export function initGlobalNavbarSearch() {
   if (typeof document === "undefined") return;
-  if (isCatalogWorkspace()) {
+  if (isGlobalSearchDisabledWorkspace()) {
     hideGlobalSearchSuggestions();
     return;
   }
@@ -184,7 +182,7 @@ export function initGlobalNavbarSearch() {
   };
 
   const doSearch = debounce(async () => {
-    if (isCatalogWorkspace()) {
+    if (isGlobalSearchDisabledWorkspace()) {
       hideGlobalSearchSuggestions();
       return;
     }
@@ -201,7 +199,7 @@ export function initGlobalNavbarSearch() {
 
     try {
       const items = await fetchUniversitySearchResults(q, activeAbortController.signal);
-      if (isCatalogWorkspace()) {
+      if (isGlobalSearchDisabledWorkspace()) {
         hideGlobalSearchSuggestions();
         return;
       }
@@ -217,7 +215,7 @@ export function initGlobalNavbarSearch() {
   }, 180);
 
   qInput.addEventListener("input", () => {
-    if (isCatalogWorkspace()) {
+    if (isGlobalSearchDisabledWorkspace()) {
       hideGlobalSearchSuggestions();
       return;
     }
@@ -226,7 +224,7 @@ export function initGlobalNavbarSearch() {
   });
 
   qInput.addEventListener("focus", () => {
-    if (isCatalogWorkspace()) {
+    if (isGlobalSearchDisabledWorkspace()) {
       hideGlobalSearchSuggestions();
       return;
     }
@@ -235,7 +233,7 @@ export function initGlobalNavbarSearch() {
   });
 
   qInput.addEventListener("keydown", (event) => {
-    if (isCatalogWorkspace()) {
+    if (isGlobalSearchDisabledWorkspace()) {
       return;
     }
     const container = host.querySelector(".navbar-search-suggestions");

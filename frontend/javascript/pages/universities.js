@@ -71,6 +71,7 @@ import {
   unknownFieldText,
   textOrUnknown,
   moneyOrUnknown,
+  splitPriceDisplay,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
@@ -2122,6 +2123,30 @@ export function initUniversitiesPage() {
             </div>
         `;
 
+        const resultsList = el.mapResults.querySelector(".u-map-results-list");
+        resultsList?.addEventListener("wheel", (event) => {
+            if (event.ctrlKey) return;
+
+            const deltaScale = event.deltaMode === WheelEvent.DOM_DELTA_LINE
+                ? 16
+                : (event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? resultsList.clientWidth : 1);
+            const deltaX = event.deltaX * deltaScale;
+            const deltaY = event.deltaY * deltaScale;
+            const scrollDelta = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
+            if (scrollDelta === 0) return;
+
+            const maxScrollLeft = resultsList.scrollWidth - resultsList.clientWidth;
+            if (maxScrollLeft <= 0) return;
+
+            const nextScrollLeft = resultsList.scrollLeft + scrollDelta;
+            const canScrollRight = scrollDelta > 0 && resultsList.scrollLeft < maxScrollLeft;
+            const canScrollLeft = scrollDelta < 0 && resultsList.scrollLeft > 0;
+            if (!canScrollRight && !canScrollLeft) return;
+
+            event.preventDefault();
+            resultsList.scrollLeft = Math.max(0, Math.min(maxScrollLeft, nextScrollLeft));
+        }, { passive: false });
+
         el.mapResults.querySelectorAll("[data-uni-focus]").forEach((button) => {
             button.addEventListener("click", () => {
                 if (isCompareSelectionMode()) {
@@ -2956,8 +2981,7 @@ export function initUniversitiesPage() {
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
         const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency);
         const isSaved = savedUniversityIds.has(String(id));
-        const showCompareAction = isCompareSelectionMode();
-        const isCompared = showCompareAction && compareUniversityIds.has(String(id));
+        const isCompared = isCompareSelectionMode() && compareUniversityIds.has(String(id));
         const detailLabel = escapeHtml(isCompareSelectionMode()
             ? (isCompared ? t("universities.card.compare_selected", "Selected for comparison") : t("universities.card.compare", "Add to compare"))
             : t("universities.card.view_details", "View details"));
@@ -2983,27 +3007,21 @@ export function initUniversitiesPage() {
                 </a>
             </div>
         `;
-        const compareDefaultLabel = t("universities.card.compare", "Add to compare");
-        const compareSelectedLabel = t("universities.card.compare_selected", "Selected for comparison");
-        const compareLabel = isCompared ? compareSelectedLabel : compareDefaultLabel;
-        const compareActionHtml = showCompareAction
-            ? `<button class="uni-action-btn uni-action-btn--compare${isCompared ? " is-active" : ""}" type="button" data-card-action="compare" aria-pressed="${isCompared ? "true" : "false"}" title="${escapeHtmlAttr(compareLabel)}" aria-label="${escapeHtmlAttr(compareLabel)}">${renderInlineIcon(isCompared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon")}</button>`
-            : "";
-        const cardActionsHtml = compareActionHtml
-            ? `<div class="uni-card-actions">${compareActionHtml}</div>`
-            : "";
         const hasFitContent = Boolean(badgesHTML || whyText);
         const fitClass = hasFitContent ? " uni-card--has-fit" : " uni-card--compact";
         const separatorHtml = hasFitContent ? `<div class="uni-card-separator" aria-hidden="true"></div>` : "";
         const hasCost = Number.isFinite(Number(cost));
+        const priceParts = splitPriceDisplay(costText);
         const priceHtml = hasCost
-            ? `<div class="uni-price"><span class="uni-price-val">${escapeHtml(costText)}</span> <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span></div>`
+            ? `<div class="uni-price${priceParts.secondary ? " uni-price--with-conversion" : ""}">
+                <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(priceParts.primary)}</span>${priceParts.secondary ? "" : ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span>`}</span>
+                ${priceParts.secondary ? `<span class="uni-price-line"><span class="uni-price-val">${escapeHtml(priceParts.secondary)}</span> <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span></span>` : ""}
+              </div>`
             : `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(costText)}</span></div>`;
         return `
         <article class="uni-card${fitClass}${isCompared ? " uni-card--compare-selected" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
-            ${cardActionsHtml}
             <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}"></div>
             </div>
             <div class="uni-body">

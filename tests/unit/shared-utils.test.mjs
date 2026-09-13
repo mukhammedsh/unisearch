@@ -12,6 +12,7 @@ import {
   renderAdmissionsOverview,
   renderProgramAdmissionsSignals,
   resolveUniversityCardPrice,
+  splitPriceDisplay,
   safeUrl,
   uniThumbnailSrc,
 } from '../../frontend/javascript/pages/_shared.js';
@@ -297,6 +298,22 @@ test('resolveUniversityCardPrice', async (t) => {
     assert.deepStrictEqual(resolveUniversityCardPrice(null), { amount: null, currency: 'USD', amountUSD: null });
     assert.deepStrictEqual(resolveUniversityCardPrice({}), { amount: null, currency: 'USD', amountUSD: null });
     assert.deepStrictEqual(resolveUniversityCardPrice({ finance: {} }), { amount: null, currency: 'USD', amountUSD: null });
+  });
+});
+
+test('splitPriceDisplay', async (t) => {
+  await t.test('separates converted and original currency values', () => {
+    assert.deepStrictEqual(
+      splitPriceDisplay('≈ $58,400 (£43,200)'),
+      { primary: '≈ $58,400', secondary: '(£43,200)' },
+    );
+  });
+
+  await t.test('keeps one-currency values on a single line', () => {
+    assert.deepStrictEqual(
+      splitPriceDisplay('$95,134'),
+      { primary: '$95,134', secondary: '' },
+    );
   });
 });
 
