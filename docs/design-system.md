@@ -8,6 +8,7 @@ Use this document as the source of truth for new UI work. The current baseline i
 
 - Build working screens first. Catalog, ranking, guide, profile, and university detail pages should solve the task immediately, not behave like decorative landing pages.
 - Favor restrained academic/product UI over generic SaaS styling. Avoid plastic gradients, loud AI-style visuals, and one-off decorative effects.
+- Surface minimization and borderless purity: Actively eliminate redundant borders, auxiliary wrapper frames, and unnecessary container plates ("плашек"). Let subtle semantic surface contrast (`var(--surface-soft)`, `var(--surface-solid)`), micro-elevation (`var(--shadow-xs)`, `var(--shadow-micro)`), and disciplined whitespace separate controls cleanly. The main catalog search and filter bar serves as the visual reference for this modern, minimal clarity.
 - Keep visual hierarchy clear: page background -> solid surfaces -> repeated cards -> floating overlays.
 - Use real university media where it helps identify a university. Do not use atmospheric imagery when the user needs to inspect a concrete university.
 - Keep bachelor-only product scope visible where relevant. Do not imply other study levels unless the product scope changes.
@@ -136,9 +137,10 @@ Arbitrary pixel spacing (`3px`, `6px`, `10px`, `14px`, `18px`, `22px`, `26px`, `
 
 - Primary: filled accent, white text, 48-50px minimum height, `10-14px` radius, bold label.
 - Secondary: transparent or `var(--surface-soft)`, `1px solid var(--line)`, text color `var(--text)`.
+- Subtle / utility: borderless, `background: var(--surface-soft)`, `box-shadow: var(--shadow-xs)` or `var(--shadow-micro)`, text color `var(--text)`. Avoid heavy outlines where soft surface contrast and micro-shadow already define the element cleanly.
 - Icon-only: square `34-40px`, Heroicons only, always with `aria-label`.
 - Hover should be subtle: border/accent change, surface change, or `translateY(-1px/-2px)`.
-- Active press may use the shared motion helpers from `frontend/javascript/utils.js`.
+- Active press: subtle background/shadow shift (e.g. `var(--surface-solid)` and `var(--shadow-micro)`). Never use bouncy cartoonish depression (`scale(0.95)`) or spring recoil.
 
 ### Inputs and Selects
 
@@ -258,6 +260,7 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 - Use the shared tokens in `frontend/css/style.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
 - Use global motion classes before adding component-specific keyframes: `.motion-panel-enter`, `.motion-list-item-enter`, `.motion-row-exit`, `.motion-chip-remove`, `.motion-card-remove`, `.motion-icon-*`, and `.motion-state-pulse`.
 - Page and panel motion should be short fade/lift transitions. Lists may use limited stagger for the first visible items only. Save, compare, remove, and switch feedback should target the icon, thumb, or removed node.
+- Calm academic motion over "video game" playfulness: Strictly avoid gratuitous, exaggerated, or gamified animations (no bouncy springs, cartoon squashes like `scale(0.95)`, wobbly button presses, or playful bobbing). Transitions must remain smooth, understated, and functional—focusing on opacity, subtle background color changes, and precise translate enters/exits.
 - Do not use `transition-all`, hardcoded duration/easing values, decorative hover lifts on scanning surfaces, or animated `box-shadow` pulses. Use opacity/transform ring motion for state confirmation.
 - Always include or preserve `prefers-reduced-motion` fallbacks; reduced motion must leave final UI state visible and usable.
 

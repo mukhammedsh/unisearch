@@ -26,8 +26,8 @@
 ## 3. UI/UX — Calm Academic Workspace
 
 - **Specification:** Check `docs/design-system.md` for typography, sizing, spacing, and component behavior.
-- **Style:** Build a focused productivity interface in the spirit of Notion or Linear. Avoid SaaS landing-page styling, Tailwind-like palettes, strong or blurred shadows, and large gradient glows.
-- **AI design anti-patterns:** Do not nest cards where divider lines are sufficient. Use underlined section tabs rather than pill tabs. Never hardcode colors in page or component styles. Avoid floating layouts. Choose `--radius-*` tokens by component type according to `docs/design-system.md`; avoid pill-shaped buttons. Do not combine parent `gap` with child spacing margins or use negative margins to compensate for incorrect layout.
+- **Style:** Build a focused productivity interface in the spirit of Notion or Linear. Avoid SaaS landing-page styling, Tailwind-like palettes, strong or blurred shadows, and large gradient glows. Minimize redundant borders, superfluous frames, and nested container plates ("плашек"). Favor clean whitespace, subtle surface contrast (`var(--surface-soft)` / `var(--surface-solid)`), and borderless utility controls (matching the main catalog's minimalist direction).
+- **AI design anti-patterns:** Do not nest cards where divider lines are sufficient. Avoid wrapping controls in unnecessary boxed frames or auxiliary plates when whitespace or a single surface already groups them. Use underlined section tabs rather than pill tabs. Never hardcode colors in page or component styles. Avoid floating layouts. Choose `--radius-*` tokens by component type according to `docs/design-system.md`; avoid pill-shaped buttons. Do not combine parent `gap` with child spacing margins or use negative margins to compensate for incorrect layout.
 - **Color and contrast:** Define all colors through semantic variables in `frontend/css/style.css`, such as `var(--bg)`, `var(--surface-solid)`, `var(--text)`, and `var(--line)`. Implement light and dark themes through root tokens rather than duplicate `[data-theme="dark"]` component selectors. Meet WCAG AA: at least 4.5:1 for normal text and 3:1 for large text and interactive elements.
 - **Layout ownership:** Components do not assign their own external margins. Their parent controls spacing with flex/grid and `gap`. `margin-left: auto` and `margin-top: auto` are allowed for explicit alignment.
 - **No double spacing:** Do not combine a parent `gap` with child `margin`. The first and last children of padded containers must not add redundant outer vertical margins.
@@ -38,9 +38,9 @@
 - **Screen structure:** Scope/status → toolbar/filter → data.
 - **Cards:** Use `border: 1px solid var(--line)`, `background: var(--surface-solid)` or `var(--surface)`, no shadow, and a 16–20 px radius token.
 - **Interaction:** Support light/dark themes and hover, active, focus, and disabled states. Focus uses `outline: 2px solid var(--accent); outline-offset: 2px;`. Indicate interaction with background or border-color changes without resizing elements.
-- **Animation:** Animate only `opacity` and `transform`, using spring-style motion. Never use `transition: all`. Section tabs require a sliding indicator.
+- **Animation:** Animate only `opacity` and `transform`, using restrained, smooth motion. Strictly avoid playful, exaggerated, or gamified animations that feel like a "video game" (e.g., bouncy springs, cartoon button-press squashes `scale(0.95)`, wobbly physics). Never use `transition: all`. Section tabs require a sliding indicator.
 - **Async states:** For asynchronous data, cover Loading with `.center-loading-spinner`, Empty, and Error with a retry when retrying is safe. Disable repeated submission while a request is pending. Prevent stale responses from overwriting current filters or navigation state. Do not invent loading states for static elements. Localize all user-facing state text.
-- **Buttons and icons:** Primary buttons use `var(--accent)` with no border. Secondary buttons use `var(--surface-soft)` and `1px solid var(--line)`. Align Heroicons and labels with flexbox.
+- **Buttons and icons:** Primary buttons use `var(--accent)` with no border. Secondary buttons use `var(--surface-soft)` and `1px solid var(--line)`. Subtle/utility controls may be borderless with `var(--surface-soft)` and micro-elevation (`var(--shadow-xs)` / `var(--shadow-micro)`). Align Heroicons and labels with flexbox.
 
 ## 4. Core product logic
 

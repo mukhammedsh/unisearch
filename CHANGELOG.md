@@ -6,9 +6,11 @@ All notable project changes should be recorded here.
 
 ## 5.2.1 (2026-09-15) - Mobile Catalog Layout and Filter Fixes
 - Fixed mobile catalog filter scrolling on devices like Samsung Galaxy A56 by removing `transform: translateY` from the `page-enter` animation on `<main>`, preventing it from creating an unintended containing block for `position: fixed` modal sheets (`frontend/css/style.css`).
-- Redesigned the mobile recently viewed section from oversized cards into compact horizontal chips with ellipsis truncation, accessible close tap targets, and design token spacing (`frontend/css/universities/07-responsive.css`).
+- Redesigned the mobile recently viewed section from oversized cards into a horizontally scrollable row of compact chips with ellipsis truncation, accessible close tap targets, and design token spacing (`frontend/css/universities/07-responsive.css`).
 - Resolved mobile results counter alignment and text truncation across smartphones by switching the compare mode button to a compact accessible icon button below 480px, removing text ellipsis so found-results counts display in full, and updating title/aria-label tooltips (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/07-responsive.css`, `frontend/index.html`, `frontend/javascript/pages/universities.js`).
 - Added spacing breathing room above sticky filter action footers for slider containers and tradeoff selectors (`frontend/css/universities/07-responsive.css`).
+- Streamlined mobile filter actions by hiding the duplicate header reset button on drawer sheets, aligning the close button to the top-right, and adopting a borderless surface-soft style with subtle elevation for the bottom reset control (`frontend/css/universities/07-responsive.css`).
+- Formalized design guidelines for surface minimization, borderless controls, and calm academic motion free of bouncy or gamified video-game animations (`docs/design-system.md`, `AGENTS.md`).
 
 ## 5.2.0 (2026-09-14) - Academic Workspace and Legal Page Refinement
 - Corrected the Privacy Policy and Terms of Use to describe the current guest-only product, actual API processing, technical caches, browser storage, third-party services, the MIT license, and the email-based notice-and-takedown path (`frontend/privacy.html`, `frontend/terms.html`, `frontend/Localization/eng`, `frontend/Localization/ru`).
