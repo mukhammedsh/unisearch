@@ -1166,6 +1166,7 @@ footer.legal_nav_aria: Legal navigation
 footer.product_nav_aria: Product navigation
 privacy.hero.badge: Privacy & Data
 privacy.hero.title: Privacy Policy
+privacy.hero.revision: Last updated: September 14, 2026
 privacy.hero.subtitle: How UniSearch handles information, stores data locally on your device, and maintains security.
 privacy.nav.intro: 1. Principles
 privacy.nav.local_storage: 2. Local Storage
@@ -1212,6 +1213,7 @@ privacy.contacts.p1: We may update this Privacy Policy periodically as platform 
 privacy.contacts.p2: If you have questions or inquiries concerning data handling, contact us via email: unisearch@inbox.ru
 terms.hero.badge: Legal Information
 terms.hero.title: Terms of Use
+terms.hero.revision: Last updated: September 14, 2026
 terms.hero.subtitle: Rules for using the UniSearch platform, informational status of admissions data, and terms of interaction.
 terms.nav.acceptance: 1. Acceptance of Terms
 terms.nav.purpose: 2. Service Purpose

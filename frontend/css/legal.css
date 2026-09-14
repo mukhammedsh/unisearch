@@ -39,6 +39,13 @@ body[data-page="terms"] {
   color: var(--text);
 }
 
+.legal-revision {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
 /* --------------------------------------------------------------------------
    Document Window / Card
    Borderless container with subtle microfade shadow

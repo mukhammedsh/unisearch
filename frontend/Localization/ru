@@ -1165,6 +1165,7 @@ footer.legal_nav_aria: Юридическая информация
 footer.product_nav_aria: Навигация по продукту
 privacy.hero.badge: Конфиденциальность & Данные
 privacy.hero.title: Политика конфиденциальности
+privacy.hero.revision: Последнее обновление: 14 сентября 2026 года
 privacy.hero.subtitle: Как UniSearch обрабатывает информацию, хранит данные локально на вашем устройстве и обеспечивает безопасность.
 privacy.nav.intro: 1. Общие принципы
 privacy.nav.local_storage: 2. Локальное хранилище
@@ -1211,6 +1212,7 @@ privacy.contacts.p1: Мы можем периодически обновлять
 privacy.contacts.p2: Если у вас возникли вопросы или предложения относительно обработки данных, свяжитесь с нами по электронной почте: unisearch@inbox.ru
 terms.hero.badge: Правовая информация
 terms.hero.title: Условия использования
+terms.hero.revision: Последнее обновление: 14 сентября 2026 года
 terms.hero.subtitle: Правила использования платформы UniSearch, справочный статус информации и условия взаимодействия.
 terms.nav.acceptance: 1. Принятие условий
 terms.nav.purpose: 2. Назначение сервиса

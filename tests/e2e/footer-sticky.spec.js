@@ -52,4 +52,12 @@ test.describe("Sticky Footer Verification Across Pages", () => {
 
     expect(Math.abs(footerBottom - viewportHeight)).toBeLessThanOrEqual(2);
   });
+
+  test("legal pages show their current revision date in the hero", async ({ page }) => {
+    await markTourAsSeen(page);
+    for (const pageItem of ["/terms.html", "/privacy.html"]) {
+      await page.goto(pageItem);
+      await expect(page.locator(".legal-revision")).toHaveText("Last updated: September 14, 2026");
+    }
+  });
 });
