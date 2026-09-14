@@ -2066,7 +2066,7 @@ export function initUniversitiesPage() {
                                 <span class="u-map-result-rank">${rank !== null && rank > 0 ? `#${escapeHtml(String(rank))}` : ""}</span>
                             </button>
                             <div class="u-map-result-bottom">
-                                <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost", uniCurrency))}</span>
+                                <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost", uniCurrency, { presentation: "summary" }))}</span>
                                 <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details →"))}</a>
                             </div>
                         </article>
@@ -2925,7 +2925,7 @@ export function initUniversitiesPage() {
         const overlayTitle = String(name || "");
         const rankValue = toFiniteNumber(u?.rank);
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
-        const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency);
+        const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency, { presentation: "summary" });
         const isSaved = savedUniversityIds.has(String(id));
         const isCompared = isCompareSelectionMode() && compareUniversityIds.has(String(id));
         const detailLabel = escapeHtml(isCompareSelectionMode()

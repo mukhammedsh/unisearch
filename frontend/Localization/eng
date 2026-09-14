@@ -140,7 +140,7 @@ settings.section.pricing: Pricing
 settings.option.preferred_currency.title: Preferred Currency
 settings.option.preferred_currency.desc: Choose your default currency for tuition fees and estimated costs.
 settings.option.currency_display.title: Price Display
-settings.option.currency_display.desc: Choose how university prices are displayed across the catalog and detail pages.
+settings.option.currency_display.desc: Choose how university prices are displayed. Values marked ≈ use the available exchange rate; catalog prices are rounded for quick scanning.
 currency.display.preferred: In preferred currency
 currency.display.original: In original currency
 currency.display.both: Both (preferred + original)

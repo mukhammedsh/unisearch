@@ -3,6 +3,7 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+- Split approximate catalog price presentation from exact detail and comparison values, added significant-figure rounding for overview cards, preserved supported currency decimals, and added unit/Playwright regression coverage (`frontend/javascript/currency.js`, `frontend/javascript/pages/_shared.js`, `frontend/javascript/pages/universities.js`, `tests/unit/currency.test.mjs`, `tests/e2e/currency-price-presentation.spec.js`).
 - Refined university card status badges: aligned dark-theme hover border color (`#111827`) with light theme for consistent contrast over cover images, and enabled closing tooltips on repeated click/tap across mobile and desktop (`frontend/css/style.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/javascript/tooltip.js`, `tests/e2e/unifit-badges-i18n-layout.spec.js`).
 - Refined university catalog loading skeletons to mirror the current card layout, keep title/location/metric/tuition placeholders visible, and anchor the logo placeholder correctly on responsive cards (`frontend/css/universities/02-catalog.css`, `frontend/javascript/main.js`, `frontend/javascript/pages/universities.js`).
 - Removed button press, compare-card pulse, and selection rotation effects across the frontend, and aligned selected university card photo clipping with the card's rounded geometry (`frontend/css/`, `frontend/javascript/pages/guide.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/utils/runtime.js`).

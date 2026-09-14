@@ -143,7 +143,7 @@ settings.section.pricing: Цены
 settings.option.preferred_currency.title: Предпочитаемая валюта
 settings.option.preferred_currency.desc: Выберите основную валюту для отображения стоимости обучения и расходов.
 settings.option.currency_display.title: Отображение цен
-settings.option.currency_display.desc: Выберите способ отображения стоимости в каталоге и на страницах университетов.
+settings.option.currency_display.desc: Выберите способ отображения стоимости. Значок ≈ означает конвертацию по доступному курсу; цены в каталоге округляются для быстрого просмотра.
 currency.display.preferred: В предпочитаемой валюте
 currency.display.original: В оригинальной валюте
 currency.display.both: Оба (предпочитаемая + оригинальная)

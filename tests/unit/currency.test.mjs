@@ -177,6 +177,7 @@ describe('currency.js', () => {
     assert.strictEqual(formatMoney(1500, 'PLN'), '1,500 zł');
     assert.strictEqual(formatMoney(2500, 'AZN'), '2,500 ₼');
     assert.strictEqual(formatMoney(10000, 'AED'), '10,000 د.إ');
+    assert.strictEqual(formatMoney(123.45, 'BHD'), '123.45 BD');
 
     // Non-finite
     assert.strictEqual(formatMoney(NaN, 'USD'), '—');
@@ -188,13 +189,17 @@ describe('currency.js', () => {
     setPreferredCurrency('USD');
     setCurrencyDisplayMode('preferred');
 
-    // Same currency: no ≈ and exact unrounded number
+    // Same currency: no ≈ and no summary rounding
     assert.strictEqual(formatPrice(50000, 'USD'), '$50,000');
     assert.strictEqual(formatPrice(8760, 'USD'), '$8,760');
 
-    // Converted currency: rounds to nearest hundred and prepends ≈
-    // 3,942,000 KZT / 450 = 8,760 USD -> rounded to hundreds = 8,800 USD
-    assert.strictEqual(formatPrice(3942000, 'KZT'), '≈ $8,800');
+    // Exact is the default for decision-making surfaces.
+    // 3,942,000 KZT / 450 = 8,760 USD.
+    assert.strictEqual(formatPrice(3942000, 'KZT'), '≈ $8,760');
+
+    // Catalog summaries retain a clearly approximate, two-significant-figure value.
+    assert.strictEqual(formatPrice(3942000, 'KZT', { presentation: 'summary' }), '≈ $8,800');
+    assert.strictEqual(formatPrice(67950, 'KZT', { presentation: 'summary' }), '≈ $150');
 
     // Switch to KZT
     setPreferredCurrency('KZT');
@@ -214,6 +219,20 @@ describe('currency.js', () => {
     setCurrencyDisplayMode('both');
     const bothResult = formatPrice(50000, 'USD');
     assert.strictEqual(bothResult, '≈ 22,500,000 ₸ ($50,000)');
+
+    setPreferredCurrency('USD');
+    setCurrencyDisplayMode('both');
+    assert.strictEqual(
+      formatPrice(3942000, 'KZT', { presentation: 'summary' }),
+      '≈ $8,800 (3,942,000 ₸)',
+    );
+    assert.strictEqual(formatPrice(3942000, 'KZT'), '≈ $8,760 (3,942,000 ₸)');
+
+    setCurrencyDisplayMode('original');
+    assert.strictEqual(
+      formatPrice(3942000, 'KZT', { presentation: 'summary' }),
+      '3,942,000 ₸',
+    );
 
     // Non-finite
     assert.strictEqual(formatPrice(NaN, 'USD'), '—');

@@ -528,7 +528,7 @@ export function formatMoney(amount, code = "USD") {
   const config = CURRENCY_FORMAT_MAP[upperCode];
 
   const maxDigits = config?.maximumFractionDigits !== undefined ? config.maximumFractionDigits : 0;
-  const numFormatted = getNumberFormatter(maxDigits).format(Math.round(num));
+  const numFormatted = getNumberFormatter(maxDigits).format(num);
 
   if (!config) {
     return formatCurrency(num, upperCode);
@@ -543,7 +543,16 @@ export function formatMoney(amount, code = "USD") {
   return isWordSymbol ? `${symbol} ${numFormatted}` : `${symbol}${numFormatted}`;
 }
 
-export function formatPrice(amount, originalCurrency = "USD") {
+function roundToSignificantFigures(amount, significantDigits = 2) {
+  const num = Number(amount);
+  if (!Number.isFinite(num) || num === 0) return num;
+
+  const exponent = Math.floor(Math.log10(Math.abs(num)));
+  const unit = Math.pow(10, exponent - significantDigits + 1);
+  return Math.round(num / unit) * unit;
+}
+
+export function formatPrice(amount, originalCurrency = "USD", options = {}) {
   if (amount === null || amount === undefined || amount === "") return "—";
   const num = Number(amount);
   if (!Number.isFinite(num)) return "—";
@@ -551,16 +560,17 @@ export function formatPrice(amount, originalCurrency = "USD") {
   const origCode = String(originalCurrency || "USD").trim().toUpperCase();
   const prefCode = getPreferredCurrency();
   const mode = getCurrencyDisplayMode();
+  const presentation = options?.presentation === "summary" ? "summary" : "exact";
 
   if (origCode === prefCode) {
     return formatMoney(num, origCode);
   }
 
   const convertedAmount = convert(num, origCode, prefCode);
-  const roundedConverted = Math.abs(convertedAmount) >= 100
-    ? Math.round(convertedAmount / 100) * 100
-    : Math.round(convertedAmount);
-  const prefFormatted = formatMoney(roundedConverted, prefCode);
+  const displayAmount = presentation === "summary"
+    ? roundToSignificantFigures(convertedAmount)
+    : convertedAmount;
+  const prefFormatted = formatMoney(displayAmount, prefCode);
   const origFormatted = formatMoney(num, origCode);
 
   if (mode === "original") {

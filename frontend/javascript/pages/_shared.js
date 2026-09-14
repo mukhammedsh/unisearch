@@ -246,9 +246,9 @@ export function textOrUnknown(value, fieldKey, fallbackField) {
   return text || unknownFieldText(fieldKey, fallbackField);
 }
 
-export function moneyOrUnknown(value, fieldKey, fallbackField, currency = "USD") {
+export function moneyOrUnknown(value, fieldKey, fallbackField, currency = "USD", options = {}) {
   return Number.isFinite(Number(value))
-    ? formatPrice(value, currency)
+    ? formatPrice(value, currency, options)
     : unknownFieldText(fieldKey, fallbackField);
 }
 
