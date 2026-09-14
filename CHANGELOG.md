@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.2.1 (2026-09-15) - Mobile Catalog Layout and Filter Fixes
+- Fixed mobile catalog filter scrolling on devices like Samsung Galaxy A56 by removing `transform: translateY` from the `page-enter` animation on `<main>`, preventing it from creating an unintended containing block for `position: fixed` modal sheets (`frontend/css/style.css`).
+- Redesigned the mobile recently viewed section from oversized cards into compact horizontal chips with ellipsis truncation, accessible close tap targets, and design token spacing (`frontend/css/universities/07-responsive.css`).
+- Resolved mobile results counter alignment and overlap by enforcing single-row flex layout between `.u-found` and `.u-section-actions`, with text truncation and compact responsive compare toggle states down to 320px (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/07-responsive.css`).
+- Added spacing breathing room above sticky filter action footers for slider containers and tradeoff selectors (`frontend/css/universities/07-responsive.css`).
+
 ## 5.2.0 (2026-09-14) - Academic Workspace and Legal Page Refinement
 - Corrected the Privacy Policy and Terms of Use to describe the current guest-only product, actual API processing, technical caches, browser storage, third-party services, the MIT license, and the email-based notice-and-takedown path (`frontend/privacy.html`, `frontend/terms.html`, `frontend/Localization/eng`, `frontend/Localization/ru`).
 - Stopped sending profile names to the API and removed that unused field from the backend profile request schema, with regression coverage confirming that personalized calculations receive no name (`frontend/javascript/utils/persistence.js`, `backend/app/schemas/payloads.py`, `tests/unit/persistence.test.mjs`).
