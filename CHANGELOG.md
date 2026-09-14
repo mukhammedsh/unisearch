@@ -3,6 +3,8 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+
+## 5.1.0 (2026-09-14) - Comparison Workspace, Profile Improvements, and Catalog Refinement
 - Reworked mobile catalog filters with transactional apply/reset actions, contained range-slider layers, and a compact horizontally scrollable recently viewed section (`frontend/index.html`, `frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/07-responsive.css`, `frontend/javascript/pages/universities.js`).
 - Reworked the first-visit university catalog tutorial into a guided six-step workspace with localized explanations for profile setup, search, filters, university details, and comparison. The tutorial now requires completion or an explicit skip, opens the dedicated profile page from its profile step, and resumes at that step after a successful profile save (`frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/universities.css`, `frontend/css/universities/08-onboarding.css`, `frontend/javascript/pages/universities/tour-modals.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/shared/cache.js`, `frontend/javascript/components/profile-ui.js`, `tests/e2e/smoke-home.spec.js`).
 - Split approximate catalog price presentation from exact detail and comparison values, added significant-figure rounding for overview cards, preserved supported currency decimals, and added unit/Playwright regression coverage (`frontend/javascript/currency.js`, `frontend/javascript/pages/_shared.js`, `frontend/javascript/pages/universities.js`, `tests/unit/currency.test.mjs`, `tests/e2e/currency-price-presentation.spec.js`).
@@ -16,7 +18,6 @@ All notable project changes should be recorded here.
 - Updated unit and Playwright coverage for the catalog search, tuition formatting, compare selection, and refreshed root-catalog behavior (`tests/unit/navbar-search.test.mjs`, `tests/unit/shared-utils.test.mjs`, `tests/e2e/motion-interactions.spec.js`, `tests/e2e/smoke-home.spec.js`, `tests/e2e/universities-tabs-compare.spec.js`).
 - Updated Playwright expectations for the refreshed university workspace: removed the retired favorite-button assertion, accepted the redesigned navbar search behavior, and aligned general-tab spacing checks with the new borderless layout (`tests/e2e/motion-interactions.spec.js`, `tests/e2e/smoke-home.spec.js`, `tests/e2e/universities-tabs-compare.spec.js`, `tests/e2e/university-track-majors.spec.js`).
 
-## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
 - Refined the university catalog comparison entry point and card status presentation with localized compact actions, responsive compare-tray states, and updated interaction regressions (`frontend/index.html`, `frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/`, `frontend/javascript/pages/universities.js`, `tests/e2e/`).
 - Integrated the refreshed academic workspace design: unified catalog surfaces, responsive layout tokens, navbar university search, improved profile/detail styling, and expanded shared UI helpers with regression coverage (`frontend/css/`, `frontend/index.html`, `frontend/javascript/components/navbar-search.js`, `frontend/javascript/pages/universities.js`, `tests/unit/navbar-search.test.mjs`).
 - Simplified currency service state and filter-limit caching with bounded memoization, removed unused fetch-status fields and stale catalog/compare imports, and updated the CPU PyTorch dependency to `2.13.0` (`backend/app/services/currency.py`, `backend/requirements.txt`, `frontend/javascript/pages/compare.js`, `frontend/javascript/pages/universities.js`).
@@ -106,6 +107,11 @@ All notable project changes should be recorded here.
   - Fixed navbar alignment in search-enabled mode by explicitly assigning `.navbar-right` to `grid-column: 3`.
   - Added new localized strings for navigation (`universities.compare.back_to_catalog`, `universities.compare.back_to_tracks`) in English and Russian.
   - Added unit test suite for compare routes and Playwright E2E scenario testing isolated comparison view, navbar positioning, and navigation flows.
+
+## 5.0.5 (2026-09-11) - Global Multi-Currency Support and Expanded University Fact Base
+- Implemented multi-currency conversion and display across catalog, filters, comparison, and university details, with cached live and offline exchange-rate data, currency-specific tuition-slider limits, and a localized accessible Settings selector (`backend/app/routers/currency.py`, `backend/app/services/currency.py`, `backend/data/currency_filter_limits.json`, `frontend/javascript/currency.js`, `frontend/javascript/settings.js`).
+- Expanded verified tuition, living-cost, academic-program, and admission data for 15 institutions, including standardized Russian descriptions and track-based admissions criteria (`backend/data/universities.json`, `backend/data/universities_translations.json`).
+- Added English and Russian currency localization plus backend, unit, and Playwright coverage for rate handling, settings persistence, currency conversion, slider behavior, and catalog price re-rendering (`frontend/Localization/eng`, `frontend/Localization/ru`, `backend/tests/test_currency.py`, `tests/unit/`, `tests/e2e/currency-settings.spec.js`).
 
 ## 5.0.4 (2026-09-11) - 404 Page Design Token Alignment, Unified Empty States, and Dev CSP Polishing
 - Refreshed project documentation and agent guidance:
