@@ -5,6 +5,8 @@ All notable project changes should be recorded here.
 ## Unreleased
 
 ## 5.2.0 (2026-09-14) - Academic Workspace and Legal Page Refinement
+- Corrected the Privacy Policy and Terms of Use to describe the current guest-only product, actual API processing, technical caches, browser storage, third-party services, the MIT license, and the email-based notice-and-takedown path (`frontend/privacy.html`, `frontend/terms.html`, `frontend/Localization/eng`, `frontend/Localization/ru`).
+- Stopped sending profile names to the API and removed that unused field from the backend profile request schema, with regression coverage confirming that personalized calculations receive no name (`frontend/javascript/utils/persistence.js`, `backend/app/schemas/payloads.py`, `tests/unit/persistence.test.mjs`).
 - Added localized last-updated dates to the top of the Privacy Policy and Terms of Use pages so their revision-date statements match the visible interface, with browser regression coverage (`frontend/privacy.html`, `frontend/terms.html`, `frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/legal.css`, `tests/e2e/footer-sticky.spec.js`).
 - Refined the shared academic workspace system across the university catalog, comparison view, university detail page, profile, and global shell with aligned content depth, responsive spacing, and updated surface, overlay, tooltip, and control tokens (`frontend/css/`, `docs/design-system.md`, `frontend/javascript/pages/universities.js`).
 - Rebuilt the 404, Privacy, and Terms pages into cleaner, responsive legal and error layouts with simplified page structure and consistent navigation (`frontend/404.html`, `frontend/privacy.html`, `frontend/terms.html`, `frontend/css/error.css`, `frontend/css/legal.css`).

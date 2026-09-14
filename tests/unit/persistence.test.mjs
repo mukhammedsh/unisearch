@@ -189,7 +189,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       });
 
       const apiPayload = loadProfileForApi();
-      assert.strictEqual(apiPayload.name, 'Alice');
+      assert.strictEqual(apiPayload.name, undefined);
       assert.strictEqual(apiPayload.budget, 50000);
       assert.strictEqual(apiPayload.gpa, 3.8);
       assert.strictEqual(apiPayload.gpa_scale, 4);
@@ -224,7 +224,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       });
 
       const apiPayload = loadProfileForApi();
-      assert.strictEqual(apiPayload.name, 'User');
+      assert.strictEqual(apiPayload.name, undefined);
       assert.strictEqual(apiPayload.budget, undefined);
       assert.strictEqual(apiPayload.major, undefined);
       assert.strictEqual(apiPayload.interests, undefined);

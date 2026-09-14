@@ -119,7 +119,6 @@ class ProfileLanguageInput(BaseModel):
 class ProfilePayload(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    name: str = Field(default="", max_length=64)
     budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
     gpa: Optional[float] = Field(default=None, ge=0, le=5.0)
     gpa_scale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
@@ -145,7 +144,7 @@ class ProfilePayload(BaseModel):
             data["gpa_scale"] = data.get("gpaScale")
         return data
 
-    @field_validator("name", "major", "studyMode", "fundingType", mode="before")
+    @field_validator("major", "studyMode", "fundingType", mode="before")
     @classmethod
     def _normalize_text_fields(cls, value: Any) -> str:
         return _strip_or_empty(value)

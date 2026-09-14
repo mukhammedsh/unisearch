@@ -51,55 +51,55 @@
         <!-- Principles & Modes -->
         <p>
           <span data-i18n="privacy.intro.p1">UniSearch is built with a privacy-first mindset. Browsing our catalog does not require account registration, nor do we request national IDs, phone numbers, or payment credentials.</span>
-          <span data-i18n="privacy.intro.p2">The platform supports two modes of operation: an anonymous guest mode (default) and an authenticated mode for cross-device profile synchronization.</span>
+          <span data-i18n="privacy.intro.p2">The current release operates in guest mode only. Account sign-in and cross-device profile synchronization are not available.</span>
         </p>
 
         <!-- Guest Mode & Local Storage -->
-        <p data-i18n="privacy.local_storage.p1">When using UniSearch as a guest, your academic metrics and preferences remain strictly on your device inside browser storage (localStorage and sessionStorage). This includes:</p>
+        <p data-i18n="privacy.local_storage.p1">In guest mode, UniSearch stores your profile and interface state in browser storage (localStorage and sessionStorage) on your device. Selected profile data is also sent to the UniSearch API when you request a personalized calculation, as described below. Local storage includes:</p>
         <ul class="legal-list">
           <li data-i18n="privacy.local_storage.li1">Academic metrics (GPA, test scores such as SAT, ACT, IELTS, TOEFL, and others).</li>
           <li data-i18n="privacy.local_storage.li2">Declared academic fields of interest for personalized recommendations.</li>
           <li data-i18n="privacy.local_storage.li3">Shortlisted universities and recently viewed history.</li>
           <li data-i18n="privacy.local_storage.li4">Display preferences (light or dark mode, UI language).</li>
         </ul>
-        <p data-i18n="privacy.local_storage.p2">You maintain full custody of these records. You can purge them at any time by clearing your browser cache or using the reset controls in settings.</p>
+        <p data-i18n="privacy.local_storage.p2">You can remove profile data with the profile reset control. To remove all UniSearch data stored in your browser, clear this site's storage or site data in your browser settings.</p>
 
         <!-- Authentication via Google -->
         <p>
-          <span data-i18n="privacy.google_auth.status_notice">This feature is currently under active development and is inactive in the current release. The guidelines below describe how user data will be handled once authentication is enabled.</span>
-          <span data-i18n="privacy.google_auth.p1">To synchronize saved universities and academic inputs across multiple devices, UniSearch provides optional sign-in through Google (Google Sign-In / OAuth 2.0).</span>
-          <span data-i18n="privacy.google_auth.p2">When authenticating via Google, our application receives only essential public profile details:</span>
+          <span data-i18n="privacy.google_auth.status_notice">UniSearch does not currently provide account registration, sign-in, or cross-device synchronization.</span>
+          <span data-i18n="privacy.google_auth.p1">Google Sign-In / OAuth 2.0 is not active in the current release.</span>
+          <span data-i18n="privacy.google_auth.p2">Accordingly, UniSearch does not currently receive Google account data.</span>
         </p>
         <ul class="legal-list">
-          <li data-i18n="privacy.google_auth.li1">Email address &mdash; to uniquely identify your user profile.</li>
-          <li data-i18n="privacy.google_auth.li2">Display name and profile picture &mdash; for display in the application navbar.</li>
-          <li data-i18n="privacy.google_auth.li3">Unique Google account identifier.</li>
+          <li data-i18n="privacy.google_auth.li1">No Google email address is collected.</li>
+          <li data-i18n="privacy.google_auth.li2">No Google display name or profile picture is collected.</li>
+          <li data-i18n="privacy.google_auth.li3">No Google account identifier is collected.</li>
         </ul>
-        <p data-i18n="privacy.google_auth.callout">UniSearch adheres to the Google API Services User Data Policy, including the Limited Use requirements. We never request or store your Google account password, and we do not sell or transfer Google user data to third parties or advertising brokers.</p>
+        <p data-i18n="privacy.google_auth.callout">UniSearch does not request or store Google account passwords. If sign-in is introduced in a future release, this policy will be updated before that feature is made available.</p>
 
         <!-- Algorithmic Recommendations & Server Processing -->
         <p>
-          <span data-i18n="privacy.processing.p1">When utilizing smart ranking features like UniFit or exam validations, anonymous numerical metrics are transmitted over secure HTTPS to the UniSearch backend.</span>
-          <span data-i18n="privacy.processing.p2">Calculations occur ephemerally in volatile memory (RAM) to return computed results. Your scores are not retained in persistent databases without your consent and are never tied to personal identifying records.</span>
+          <span data-i18n="privacy.processing.p1">When you use UniFit, UniChance, ROI, profile comparison, or exam and language validation, your browser sends the data needed for that request to the UniSearch API over HTTPS. Depending on the feature, this can include GPA, test and language scores, budget, intended major, interests, study and funding preferences, and selected admission options.</span>
+          <span data-i18n="privacy.processing.p2">UniSearch does not maintain user accounts or a permanent database of guest profiles. The API may keep short-lived in-memory or Redis technical caches to serve repeated calculations, and may retain data in logs or error-monitoring systems as described below.</span>
         </p>
 
         <!-- Technical Server Logs & Infrastructure Security -->
         <p>
-          <span data-i18n="privacy.logs.p1">Standard HTTP network requests automatically log basic connection metadata: client IP address, User-Agent header, and request timestamp.</span>
-          <span data-i18n="privacy.logs.p2">This information is processed solely to safeguard platform infrastructure, mitigate denial-of-service attempts, and enforce API rate limits. Server logs are routinely rotated and purged.</span>
+          <span data-i18n="privacy.logs.p1">The API records request metadata, including request method, path, status, timestamp, duration, and a generated request identifier. Our hosting or proxy providers may also process IP address and User-Agent information. IP addresses may be used in short-lived rate-limit records.</span>
+          <span data-i18n="privacy.logs.p2">This technical information is used for operation, security, troubleshooting, and abuse prevention. Retention is governed by the configuration and policies of the hosting and monitoring providers in use; we do not promise a fixed log-retention period here.</span>
         </p>
-        <p data-i18n="privacy.logs.osm_notice">Interactive Map &amp; External Assets: when browsing the catalog map, your browser fetches map tiles from OpenStreetMap servers and the Leaflet library via unpkg CDN. During these requests, these external services receive standard technical IP metadata to transmit visual map tiles. UniSearch never shares user profile inputs or academic metrics with external map providers.</p>
+        <p data-i18n="privacy.logs.osm_notice">External services: the map loads tiles from OpenStreetMap and Leaflet assets from unpkg, so those services receive your technical request data, such as IP address, to deliver the resource. If interest-text translation is enabled, the text you enter in the interests field is sent to the configured LibreTranslate service; its location depends on deployment. Error monitoring may use Sentry when configured. The backend also obtains public currency rates from ExchangeRate-API; that provider does not receive your profile data.</p>
 
         <!-- Cookies & Tracking Technology -->
         <p>
           <span data-i18n="privacy.trackers.p1">UniSearch does not deploy commercial marketing trackers, cross-site profiling pixels, or intrusive tracking scripts.</span>
-          <span data-i18n="privacy.trackers.p2">Functional storage tokens are utilized strictly to preserve your interface preferences (such as language and color theme).</span>
+          <span data-i18n="privacy.trackers.p2">Browser storage is used for functional state, including your profile, saved and recently viewed universities, filters, comparison choices, settings, language, theme, currency preference, and tutorial state. This storage is not used for advertising profiles.</span>
         </p>
 
         <!-- User Rights & Data Erasure -->
         <p>
-          <span data-i18n="privacy.rights.p1">In accordance with global privacy principles (including GDPR and CCPA guidelines), you retain full rights to your data and privacy.</span>
-          <span data-i18n="privacy.rights.p2">For guest storage, clearing browser history completely removes all cached information. For synchronized accounts, you may revoke UniSearch permissions in your Google Security settings or request account deletion via support.</span>
+          <span data-i18n="privacy.rights.p1">You control the guest profile stored in your browser and can delete it at any time. This policy does not create an account-based synchronization or deletion service because the current release has no user accounts.</span>
+          <span data-i18n="privacy.rights.p2">Use the profile reset control to delete your profile, or clear UniSearch site data in your browser to remove all local storage. This does not retroactively delete short-lived technical caches, logs, or third-party records created before deletion; contact us if you have a data-handling question.</span>
         </p>
 
         <!-- Project Operators, Contact & Policy Updates -->

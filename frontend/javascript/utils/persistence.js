@@ -279,7 +279,7 @@ export function loadProfileForApi() {
   if (!payload.selectedAdmissionChoices || !Object.keys(payload.selectedAdmissionChoices).length) delete payload.selectedAdmissionChoices;
   if (!String(payload.interests || "").trim()) delete payload.interests;
   if (!String(payload.major || "").trim()) delete payload.major;
-  if (!String(payload.name || "").trim()) delete payload.name;
+  delete payload.name;
   if (!String(payload.studyMode || "").trim()) payload.studyMode = "Any";
   if (!String(payload.fundingType || "").trim()) payload.fundingType = "any";
 
