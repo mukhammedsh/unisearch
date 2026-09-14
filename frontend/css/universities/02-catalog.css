@@ -189,7 +189,7 @@
   width: 100%;
   height: 600px;
   border-radius: 16px;
-  border: 1px solid var(--line);
+  border: none;
   box-shadow: var(--shadow-sm);
   z-index: 1;
   overflow: hidden;
@@ -227,7 +227,7 @@
   linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight) 46%, transparent 58%, transparent 100%),
   var(--surface-solid);
   background-size: 220% 100%, auto;
-  border: 1px solid var(--line);
+  border: none;
   animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
 }
 
@@ -367,11 +367,9 @@
   color: var(--text);
   min-height: 0;
   line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
-  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
 }
 
 .uni-loc {
@@ -610,7 +608,7 @@
 .uni-action-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-soft);
   color: var(--text);
@@ -728,12 +726,13 @@ body.universities-compare-mode .uni-action-btn--favorite {
 .u-recent__label {
   flex: 1 1 auto;
   min-width: 0;
-  color: var(--text-muted);
-  font-size: 12px;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 16px;
   line-height: 1.2;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .u-recent__clear {

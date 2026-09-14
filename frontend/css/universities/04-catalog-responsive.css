@@ -49,7 +49,7 @@
   align-items: flex-start;
   width: min(92vw, 520px);
   background: var(--card);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   padding: 20px;
   box-shadow: var(--shadow-md);
@@ -95,7 +95,7 @@
 }
 
 .unifit-warning-btn {
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-solid);
   color: var(--text);
   padding: 8px 12px;
@@ -135,7 +135,8 @@
   height: 40px;
   padding: 0 12px;
   background: var(--surface-solid, var(--card));
-  border: 1px solid var(--line);
+  border: none;
+  outline: none;
   border-radius: 12px;
   font-family: inherit;
   font-weight: 600;
@@ -145,7 +146,6 @@
   color: var(--text);
   cursor: pointer;
   transition:
-    border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     background-color var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
@@ -198,7 +198,7 @@
 @media (hover: hover) and (pointer: fine) {
 
 .page-btn:hover {
-  border-color: var(--line-accent);
+  border: none;
   color: var(--accent);
   background: var(--accent-faint);
 }
@@ -206,10 +206,15 @@
 
 .page-btn--active {
   background: var(--accent-soft);
-  border-color: var(--line-accent);
+  border: none;
   color: var(--text);
   cursor: default;
   pointer-events: none;
+}
+
+.page-btn--disabled,
+.page-btn:disabled {
+  border: none;
 }
 
 .page-dots {
@@ -258,7 +263,12 @@
   height: 140px;
 }
 
-.map-card-wrapper .uni-title,
+.map-card-wrapper .uni-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .map-card-wrapper .uni-why {
   overflow-wrap: anywhere;
 }
@@ -519,7 +529,6 @@
     min-height: 0;
   }
 
-  .uni-title,
   .uni-why {
     min-height: 0;
     display: block;

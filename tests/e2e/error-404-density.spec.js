@@ -27,25 +27,26 @@ test.describe("Error 404 Page Density and Layout", () => {
     });
   }
 
-  test("displays hero content, quick help, and popular section links", async ({ page }) => {
+  test("displays kicker, 404 code, and primary action button", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/404.html");
 
-    await expect(page.locator(".error-kicker")).toBeVisible();
-    await expect(page.locator(".error-title")).toBeVisible();
-    await expect(page.locator(".error-lead")).toBeVisible();
+    const kicker = page.locator(".error-kicker");
+    await expect(kicker).toBeVisible();
 
-    // Check actions
-    await expect(page.locator(".error-btn--primary")).toBeVisible();
-    await expect(page.locator(".error-btn--secondary")).toBeVisible();
+    const code = page.locator(".error-code");
+    await expect(code).toBeVisible();
+    await expect(code).toHaveText("404");
 
-    // Check quick help tips
-    const tips = page.locator(".error-tip-card");
-    await expect(tips).toHaveCount(3);
+    const title = page.locator(".error-title");
+    await expect(title).toBeVisible();
 
-    // Check popular sections navigation cards
-    const navCards = page.locator(".error-nav-card");
-    await expect(navCards).toHaveCount(3);
+    const desc = page.locator(".error-desc");
+    await expect(desc).toBeVisible();
+
+    const button = page.locator(".error-btn--primary");
+    await expect(button).toBeVisible();
+    await expect(button).toHaveAttribute("href", "index.html");
   });
 
   test("supports dark theme seamlessly", async ({ page }) => {
@@ -65,23 +66,17 @@ test.describe("Error 404 Page Density and Layout", () => {
     expect(isDark).toBe(true);
   });
 
-  test("left and right panels have equal dimensions and headers on desktop", async ({ page }) => {
+  test("centers error content horizontally within main area on desktop", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/404.html");
 
-    const leftPanel = page.locator(".error-panel");
-    const rightPanel = page.locator(".error-quick");
-    await expect(leftPanel).toBeVisible();
-    await expect(rightPanel).toBeVisible();
+    const shell = page.locator(".error-shell");
+    await expect(shell).toBeVisible();
 
-    const leftBox = await leftPanel.boundingBox();
-    const rightBox = await rightPanel.boundingBox();
+    const shellBox = await shell.boundingBox();
+    expect(shellBox).not.toBeNull();
 
-    expect(leftBox).not.toBeNull();
-    expect(rightBox).not.toBeNull();
-    expect(Math.abs(leftBox.height - rightBox.height)).toBeLessThanOrEqual(1);
-
-    // Verify subkicker is removed
-    await expect(page.locator(".error-subkicker")).toHaveCount(0);
+    const shellCenterX = shellBox.x + shellBox.width / 2;
+    expect(Math.abs(shellCenterX - 720)).toBeLessThanOrEqual(20);
   });
 });

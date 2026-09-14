@@ -26,11 +26,6 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     const modal = page.locator("#settingsModal");
     await expect(modal).toHaveClass(/is-open/);
 
-    // Section title
-    const pricingTitle = modal.locator(".settings-section-title");
-    await expect(pricingTitle).toBeVisible();
-    await expect(pricingTitle).toHaveText("Pricing");
-
     // Preferred currency custom trigger and select
     const currencySelect = modal.locator('[data-setting-input="preferred_currency"]');
     await expect(currencySelect).toBeAttached();
@@ -52,7 +47,7 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     expect(optgroups.length).toBe(6);
     const optgroupLabels = await Promise.all(optgroups.map((g) => g.getAttribute("label")));
     expect(optgroupLabels).toEqual([
-      "Central Asia & CIS",
+      "Post-Soviet",
       "Europe",
       "Americas",
       "Asia-Pacific",
@@ -102,7 +97,6 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     // Switch to Russian
     await switchLanguage(page, "rus");
 
-    await expect(pricingTitle).toHaveText("Цены");
     const currencyTitleRu = modal.locator('[data-setting-key="preferred_currency"] .settings-copy h3');
     await expect(currencyTitleRu).toHaveText("Предпочитаемая валюта");
 
@@ -114,7 +108,7 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
       (await currencySelect.locator("optgroup").all()).map((g) => g.getAttribute("label"))
     );
     expect(optgroupLabelsRu).toEqual([
-      "Центральная Азия и СНГ",
+      "Постсоветские страны",
       "Европа",
       "Северная и Южная Америка",
       "Азиатско-Тихоокеанский регион",
@@ -135,7 +129,6 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
 
     // Switch back to English
     await switchLanguage(page, "eng");
-    await expect(pricingTitle).toHaveText("Pricing");
 
     // --- INTERACTION AND PERSISTENCE ---
     // Select UZS via custom dropdown
@@ -150,9 +143,8 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     await expect(bothOption).toBeVisible();
     await bothOption.click();
 
-    // Toast should show
-    const toast = page.locator("#toast-container .toast").first();
-    await expect(toast).toBeVisible();
+    // No toast should show
+    await expect(page.locator("#toast-container .toast")).toHaveCount(0);
 
     // Close settings modal
     const closeBtn = page.locator("#settingsCloseBtn");

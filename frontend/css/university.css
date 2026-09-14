@@ -68,14 +68,12 @@
 
 @media (hover: hover) and (pointer: fine) {
   .d-page-scope__dismiss:hover {
-    border-color: var(--line-strong);
     background: var(--surface-soft);
     color: var(--text);
   }
 }
 
 .d-page-scope__dismiss:focus-visible {
-  border-color: var(--line-strong);
   background: var(--surface-soft);
   color: var(--text);
 }
@@ -215,7 +213,7 @@
   height: 64px;
   border-radius: var(--radius-lg);
   background: var(--surface-badge);
-  border: 1px solid var(--line);
+  border: none;
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -268,7 +266,7 @@
 .d-title {
   margin: 0;
   font-size: 24px;
-  font-weight: 1000;
+  font-weight: 400;
   color: var(--text);
   line-height: 1.2;
   min-width: 0;
@@ -309,7 +307,7 @@
   padding: 12px 12px;
   border-radius: 12px;
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   white-space: nowrap;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
@@ -387,7 +385,7 @@
 .uni-tags-wrap {
   margin: 0 0 16px;
   padding: 12px;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
 }
@@ -418,7 +416,7 @@
   font-weight: 700;
   background: var(--surface-solid);
   color: var(--text);
-  border: 1px solid var(--line);
+  border: none;
   box-shadow: none;
   transition:
   transform var(--motion-snappy) var(--motion-ease-standard),
@@ -497,6 +495,23 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  z-index: 1;
+}
+
+.d-info-wrap:hover,
+.d-info-wrap:focus-within,
+.d-info-wrap.is-open {
+  z-index: calc(var(--z-dropdown) + 1);
+}
+
+.d-kv-label:has(.d-info-wrap:hover),
+.d-kv-label:has(.d-info-wrap:focus-within),
+.d-kv-label:has(.d-info-wrap.is-open),
+.d-kv:has(.d-info-wrap:hover),
+.d-kv:has(.d-info-wrap:focus-within),
+.d-kv:has(.d-info-wrap.is-open) {
+  position: relative;
+  z-index: var(--z-dropdown);
 }
 
 .d-info {
@@ -506,7 +521,7 @@
   min-height: 22px;
   box-sizing: border-box;
   border-radius: var(--radius-circle);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   display: inline-flex;
@@ -559,8 +574,8 @@
   position: absolute;
   left: 0;
   top: calc(100% + 8px);
-  width: min(320px, calc(100vw - 24px));
-  max-width: calc(100vw - 24px);
+  width: min(320px, calc(100vw - 48px));
+  max-width: calc(100vw - 48px);
   background: var(--tooltip-bg);
   color: var(--tooltip-text);
   border-radius: var(--radius-md);
@@ -639,7 +654,7 @@
 
 .program-card {
   position: relative;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   overflow: hidden;
   padding: 16px 16px 12px;
@@ -683,7 +698,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   font-size: 11px;
@@ -781,7 +796,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   font-size: 11px;
@@ -794,7 +809,7 @@
   align-items: center;
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   color: var(--text);
   font-size: 13px;
   font-weight: 700;
@@ -804,7 +819,7 @@
 
 .program-empty {
   padding: 16px 12px;
-  border: 1px dashed var(--line);
+  border: none;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -817,7 +832,7 @@
   padding: 4px 12px;
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 700;
@@ -847,7 +862,7 @@
   padding: 8px 12px;
   border-radius: 12px;
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   color: var(--text);
   font-size: 14px;
 }
@@ -870,7 +885,7 @@
 }
 
 .finance-track-group {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 20px;
   padding: 16px;
   background: var(--surface-solid);
@@ -932,7 +947,7 @@
 .admissions-programs-block {
   margin-top: 18px;
   padding: 16px;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   background: var(--surface-soft);
   box-shadow: none;
@@ -961,7 +976,7 @@
 
 .admissions-summary-card,
 .admissions-program-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: 16px;
@@ -1122,7 +1137,7 @@
 
 .d-tab-btn {
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 20px;
   padding: 12px 20px;
   font-size: 14px;
@@ -1213,7 +1228,7 @@
   color var(--motion-fast) var(--motion-ease-standard),
   border-color var(--motion-fast) var(--motion-ease-standard),
   transform var(--motion-fast) var(--motion-ease-standard);
-  border: 1px solid var(--line);
+  border: none;
   flex-shrink: 0;
   line-height: 0;
 }
@@ -1272,7 +1287,7 @@
 }
 
 .chance-panel {
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   border-radius: 12px;
   padding: 16px;
@@ -1477,7 +1492,7 @@
 .track-funding-badge--paid {
   color: var(--text);
   background: var(--surface-soft);
-  border-color: var(--line-strong);
+  border-color: transparent;
 }
 
 .finance-track-group {
@@ -1493,7 +1508,7 @@
 .finance-option-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   padding: 16px;
   background: var(--surface-solid);
@@ -1558,7 +1573,7 @@
 }
 
 .track-select-btn {
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text);
   border-radius: 10px;
@@ -1593,7 +1608,7 @@
 .admission-empty-state {
   margin-top: 10px;
   padding: 16px 16px;
-  border: 1px dashed var(--line);
+  border: none;
   border-radius: 12px;
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -1664,7 +1679,7 @@
 }
 
 .admission-category-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   background: var(--surface-solid);
   padding: 20px;
@@ -1712,7 +1727,7 @@
 .admission-category-count,
 .track-selection-badge {
   flex: 0 0 auto;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -1733,7 +1748,7 @@
 
 .admission-applicable-programs .tag,
 .admission-option-meta .tag {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-soft);
   color: var(--text);
@@ -1782,7 +1797,7 @@
 }
 
 .admission-funding-option {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface);
   padding: 16px;
@@ -1790,7 +1805,7 @@
 }
 
 .admission-funding-option.is-active {
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-color: transparent;
   background: var(--surface-soft);
 }
 
@@ -1896,14 +1911,14 @@
 }
 
 .track-stats-box {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-base);
   padding: 12px;
 }
 
 .track-stats-box--min {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .track-stats-box--avg {
@@ -1944,7 +1959,7 @@
 
 .track-exam-group {
   border-radius: var(--radius-md);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-solid);
   padding: 12px;
 }
@@ -1971,7 +1986,7 @@
 
 .track-exam-group--neutral {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .track-exam-group--neutral .track-exam-group-title {
@@ -1999,7 +2014,7 @@
 .track-lang-rules {
   margin-top: 14px;
   border-radius: var(--radius-base);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   padding: 12px;
 }
@@ -2026,7 +2041,7 @@
 }
 
 .track-lang-rule-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-solid);
   padding: 12px;
@@ -2087,7 +2102,7 @@
 .track-extra-req {
   margin-top: 12px;
   border-radius: 12px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   padding: 12px 16px;
 }
@@ -2173,7 +2188,7 @@
 
 .total-price-card {
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -2313,7 +2328,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-solid);
   border-radius: var(--radius-base);
   padding: 8px 12px;
@@ -2357,7 +2372,7 @@
 .cost-legend-single {
   color: var(--text-muted);
   font-size: 13px;
-  border: 1px dashed var(--line);
+  border: none;
   border-radius: var(--radius-base);
   padding: 8px 12px;
   background: var(--surface-soft);
@@ -2507,7 +2522,7 @@
 
 .roi-box {
   background: var(--card);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   padding: 24px;
   overflow-wrap: anywhere;
@@ -2554,7 +2569,7 @@
 .roi-context--neutral {
   background: var(--surface-soft);
   color: var(--text-muted);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2714,7 +2729,7 @@
 
 .d-page-scope {
   margin-bottom: 16px;
-  border: 1px solid var(--line);
+  border: none;
   border-left: 4px solid var(--accent);
   border-radius: var(--radius-xl);
   background: var(--card);
@@ -2760,7 +2775,7 @@
 .d-title {
   font-size: clamp(22px, 5vw, 38px);
   letter-spacing: 0;
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .d-location {
@@ -2779,7 +2794,7 @@
 .d-quick-stat {
   min-width: 0;
   padding: 12px 12px;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
 }
@@ -2808,7 +2823,7 @@
   border-radius: var(--radius-lg);
   background: transparent;
   color: var(--text);
-  border: 1px solid var(--line);
+  border: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2877,7 +2892,7 @@
   border-radius: var(--radius-lg);
   background: transparent;
   color: var(--text);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2910,7 +2925,7 @@
 
 .uni-tags-wrap {
   padding: 12px;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   background: var(--surface-soft);
 }
@@ -2950,7 +2965,7 @@
 }
 
 .chance-panel {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   background: var(--surface-soft);
 }
@@ -2961,7 +2976,7 @@
 }
 
 .finance-option-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-xl);
   background: var(--card);
   box-shadow: none;
@@ -3008,7 +3023,7 @@
 :root[data-theme="dark"] #tab-finance .finance-box {
   background: var(--card);
   background-image: none;
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 @media (max-width: 980px) {
@@ -3323,14 +3338,14 @@
 }
 
 .d-page-scope {
-  border-color: var(--line);
+  border-color: transparent;
   border-left: 4px solid var(--accent);
   background: var(--card);
   box-shadow: none;
 }
 
 .d-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 20px;
   background: var(--card);
   box-shadow: none;
@@ -3349,7 +3364,7 @@
 }
 
 .d-cover-logo {
-  border-color: var(--line);
+  border-color: transparent;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
 }
@@ -3362,6 +3377,7 @@
 
 .d-title {
   letter-spacing: 0;
+  font-weight: 400;
 }
 
 .d-back,
@@ -3371,7 +3387,7 @@
   border-radius: var(--radius-lg);
   background: transparent;
   color: var(--text);
-  border: 1px solid var(--line);
+  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3489,7 +3505,7 @@
 .admissions-programs-block,
 .admissions-summary-card,
 .admissions-program-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   background-image: none;
@@ -3944,7 +3960,7 @@
 
 .scholarship-card {
   width: 100%;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-soft);
   padding: 16px 20px;
@@ -3958,7 +3974,7 @@
 
 :root[data-theme="dark"] .scholarship-card {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .scholarship-card__title {
@@ -3996,7 +4012,7 @@
 
 .total-price-card {
   width: 100%;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-soft);
   padding: 16px 20px;
@@ -4012,7 +4028,7 @@
 
 :root[data-theme="dark"] .total-price-card {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .price-header {
@@ -4139,7 +4155,7 @@ body[data-page="university"],
 
 .d-info {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
   color: var(--text-muted);
 }
 
@@ -4167,7 +4183,7 @@ body[data-page="university"],
 .track-lang-rule-card,
 .cost-legend-row {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .uni-tags-wrap {
@@ -4202,7 +4218,7 @@ body[data-page="university"],
 :root[data-theme="dark"] .finance-track-group,
 :root[data-theme="dark"] .finance-track-group--grant {
   background: transparent;
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .finance-track-group-head {
@@ -4249,7 +4265,7 @@ body[data-page="university"],
 }
 
 .finance-option-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-solid);
   padding: 20px;
@@ -4311,7 +4327,7 @@ body[data-page="university"],
 :root[data-theme="dark"] .finance-option-total--grant {
   background: transparent;
   color: var(--text);
-  border-top-color: var(--line);
+  border-top-color: transparent;
 }
 
 :root[data-theme="dark"] .finance-option-total--grant {
@@ -4358,7 +4374,7 @@ body[data-page="university"],
 
 .admissions-summary-card,
 .admissions-program-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: 20px;
@@ -4368,11 +4384,11 @@ body[data-page="university"],
 :root[data-theme="dark"] .admissions-summary-card,
 :root[data-theme="dark"] .admissions-program-card {
   background: var(--surface-solid);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .admission-category-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-solid);
   padding: 24px;
@@ -4384,11 +4400,11 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .admission-category-card {
   background: var(--surface-solid);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .track-stats-box {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
   padding: 20px;
@@ -4399,7 +4415,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .track-stats-box {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .track-stats-title {
@@ -4461,7 +4477,7 @@ body[data-page="university"],
 }
 
 .track-extra-req {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
   padding: 16px 20px;
@@ -4470,7 +4486,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .track-extra-req {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .track-extra-req-title {
@@ -4503,7 +4519,7 @@ body[data-page="university"],
 }
 
 .admission-funding-option {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
   padding: 20px 20px;
@@ -4538,7 +4554,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .admission-funding-option {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 :root[data-theme="dark"] .admission-funding-option.is-active {
@@ -4607,7 +4623,7 @@ body[data-page="university"],
   font-size: 11px;
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   line-height: 1.3;
 }
 
@@ -4658,7 +4674,7 @@ body[data-page="university"],
   font-weight: 750;
   line-height: 1.2;
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   color: var(--text-muted);
   white-space: normal;
   overflow-wrap: anywhere;
@@ -4722,7 +4738,7 @@ body[data-page="university"],
 
 .program-card {
   position: relative;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-solid);
   padding: 20px 20px;
@@ -4736,7 +4752,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .program-card {
   background: var(--surface-solid);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -4836,7 +4852,7 @@ body[data-page="university"],
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm, 8px);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   font-size: 11px;
@@ -4847,7 +4863,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .program-tag {
   background: var(--surface-soft);
-  border-color: var(--line);
+  border-color: transparent;
   color: var(--text-muted);
 }
 
@@ -4881,7 +4897,7 @@ body[data-page="university"],
 
 .program-pill {
   border-radius: var(--radius-sm, 8px);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   font-size: 11px;
@@ -4959,7 +4975,7 @@ body[data-page="university"],
 }
 
 .admissions-program-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-solid);
   padding: 20px;
@@ -4968,12 +4984,12 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .admissions-program-card {
   background: var(--surface-solid);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 /* 3. Вкладка «Поступление» (Admission) — Ликвидация вложенных окон */
 .admission-category-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-solid);
   padding: 24px;
@@ -5027,7 +5043,7 @@ body[data-page="university"],
   font-weight: 700;
   color: var(--text-muted);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-sm, 8px);
   padding: 4px 8px;
 }
@@ -5220,7 +5236,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .track-extra-req {
   background: transparent;
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .track-extra-req-title {
@@ -5263,7 +5279,7 @@ body[data-page="university"],
 }
 
 .admission-funding-option {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-base, 12px);
   background: var(--surface-soft);
   padding: 16px 16px;
@@ -5377,7 +5393,7 @@ body[data-page="university"],
 }
 
 .chance-panel {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-soft);
   padding: 20px 20px;
@@ -5415,7 +5431,7 @@ body[data-page="university"],
   margin-bottom: var(--space-8);
   align-items: stretch;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
 }
@@ -5594,7 +5610,7 @@ body[data-page="university"],
 }
 
 .finance-option-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: var(--space-5);
@@ -5607,7 +5623,7 @@ body[data-page="university"],
 }
 
 .finance-option-card--paid {
-  border-color: var(--line-strong);
+  border-color: transparent;
   background: var(--surface-soft);
 }
 
@@ -5894,7 +5910,7 @@ body[data-page="university"],
 /* Блок окупаемости (ROI) на токенах Calm Academic */
 .roi-box {
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg, 16px);
   padding: 20px;
   box-shadow: none;
@@ -5903,7 +5919,7 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .roi-box {
   background: var(--surface-solid);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .roi-title {
@@ -5925,7 +5941,7 @@ body[data-page="university"],
   border-radius: var(--radius-sm, 8px);
   font-size: 13px;
   line-height: 1.45;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text);
   margin-bottom: 14px;
@@ -5938,13 +5954,13 @@ body[data-page="university"],
 }
 
 .roi-context--missing {
-  border-color: var(--line);
+  border-color: transparent;
   background: var(--surface-soft);
   color: var(--text);
 }
 
 .roi-context--neutral {
-  border-color: var(--line);
+  border-color: transparent;
   background: var(--surface-soft);
   color: var(--text-muted);
 }

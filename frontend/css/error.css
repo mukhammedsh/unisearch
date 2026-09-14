@@ -1,7 +1,6 @@
 /* ==========================================================================
    UniSearch Error 404 Page Stylesheet
-   Direction: Calm Academic Workspace / Flat Information Page
-   Pattern: guide.css / about.css / legal.css — hero + flat sections, no shell wrapper
+   Direction: Calm Academic Workspace / Centered Minimalist Error Page
    ========================================================================== */
 
 body[data-page="error-404"] {
@@ -15,92 +14,83 @@ body[data-page="error-404"] main.error-page {
 }
 
 /* --------------------------------------------------------------------------
-   Page Container — Full-width canvas matching guide/about/legal (no centering box)
+   Page Container — Centered vertically between navbar and sticky footer
    -------------------------------------------------------------------------- */
 .error-page {
   flex: 1 0 auto;
   width: 100%;
   max-width: 1440px;
-  margin: var(--space-6) auto var(--space-16);
-  padding: 0 var(--space-8);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
 /* --------------------------------------------------------------------------
-   Main Content Layout — Semantic container, flat, no window/card box
+   Error Shell & Typographic Lockup
    -------------------------------------------------------------------------- */
 .error-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   width: 100%;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.error-shell-divider {
-  display: none;
-}
-
-/* --------------------------------------------------------------------------
-   Hero Section — Title with border-bottom separator (guide/about pattern)
-   -------------------------------------------------------------------------- */
-.error-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  padding-bottom: var(--space-8);
-  border-bottom: none;
-}
-
-.error-kicker {
-  margin: 0 0 var(--space-2);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 700;
-  color: var(--accent);
+  max-width: 520px;
+  margin: 0 auto;
 }
 
 .error-title {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-display);
-  font-size: clamp(32px, 3.8vw, 40px);
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-  font-weight: 800;
-  color: var(--text);
-}
-
-.error-lead {
-  margin: 0 0 var(--space-6);
-  font-size: var(--text-md);
-  line-height: 1.55;
-  letter-spacing: -0.01em;
-  color: var(--text-muted);
-  max-width: 720px;
-  width: 100%;
-}
-
-.error-actions {
+  margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
+  justify-content: center;
   gap: var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5.5vw, 56px);
+  line-height: var(--leading-tight);
+  color: var(--text);
+  letter-spacing: -0.03em;
+}
+
+.error-kicker,
+.error-code {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: inherit;
+}
+
+.error-desc {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+  max-width: 420px;
+}
+
+/* --------------------------------------------------------------------------
+   Actions & Primary Button
+   -------------------------------------------------------------------------- */
+.error-actions {
+  margin-top: var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .error-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 0 var(--space-5);
+  min-height: 42px;
+  padding: 0 var(--space-6);
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   font-size: var(--text-base);
@@ -108,10 +98,11 @@ body[data-page="error-404"] main.error-page {
   letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
+  color: var(--text-inverse);
+  background: var(--accent);
   transition:
     background-color var(--motion-fast, 0.15s) ease,
-    color var(--motion-fast, 0.15s) ease,
-    border-color var(--motion-fast, 0.15s) ease;
+    transform var(--motion-fast, 0.15s) ease;
 }
 
 .error-btn:focus-visible {
@@ -119,268 +110,42 @@ body[data-page="error-404"] main.error-page {
   outline-offset: 2px;
 }
 
+.error-btn:active {
+  transform: scale(0.98);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .error-btn:hover {
-    border-color: var(--accent);
-  }
-}
-
-.error-btn--primary {
-  color: var(--text-inverse);
-  background: var(--accent);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .error-btn--primary:hover {
     background: var(--accent-strong);
     border-color: var(--accent-strong);
   }
 }
 
-.error-btn--secondary {
-  color: var(--text);
-  border-color: var(--line);
-  background: var(--surface-soft);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .error-btn--secondary:hover {
-    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
-    background: var(--surface-solid);
-  }
-}
-
 /* --------------------------------------------------------------------------
-   Two-Column Grid — Flat sections, no enclosed container box
+   Responsive & Accessibility
    -------------------------------------------------------------------------- */
-.error-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-8);
-  align-items: stretch;
-}
-
-/* Flat sections — no border, no radius, no background */
-.error-panel,
-.error-quick {
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.error-section-head {
-  display: flex;
-  align-items: center;
-  padding-bottom: var(--space-3);
-  border-bottom: none;
-  min-height: 36px;
-  box-sizing: border-box;
-}
-
-.error-section-title {
-  margin: 0;
-  font-size: clamp(18px, 1.8vw, 20px);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* --------------------------------------------------------------------------
-   Quick Help Tips List & Cards (Single-level cards on canvas)
-   -------------------------------------------------------------------------- */
-.error-tips-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  flex: 1;
-}
-
-.error-tip-card {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
-  padding: var(--space-4) var(--space-5);
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  flex: 1;
-  box-sizing: border-box;
-  transition: border-color var(--motion-fast, 0.15s) ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .error-tip-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
-  }
-}
-
-.error-tip-number {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-xs);
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.error-tip-text {
-  margin: 0;
-  font-size: var(--text-base);
-  line-height: 1.5;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-/* --------------------------------------------------------------------------
-   Popular Sections Nav List & Cards (Single-level cards on canvas)
-   -------------------------------------------------------------------------- */
-.error-nav-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  flex: 1;
-}
-
-.error-nav-card {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
-  padding: var(--space-4) var(--space-5);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  text-decoration: none;
-  color: var(--text);
-  flex: 1;
-  box-sizing: border-box;
-  transition:
-    border-color var(--motion-fast, 0.15s) ease,
-    background-color var(--motion-fast, 0.15s) ease;
-}
-
-.error-nav-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .error-nav-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
-    background: var(--surface-soft);
-  }
-}
-
-.error-nav-content {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-width: 0;
-}
-
-.error-nav-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  flex-shrink: 0;
-}
-
-.error-nav-title {
-  font-size: var(--text-base);
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.error-nav-arrow {
-  color: var(--text-muted);
-  font-size: var(--text-md);
-  line-height: 1;
-  flex-shrink: 0;
-  transition:
-    transform var(--motion-fast, 0.15s) ease,
-    color var(--motion-fast, 0.15s) ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .error-nav-card:hover .error-nav-arrow {
-    transform: translateX(3px);
-    color: var(--accent);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Responsive Layout & Motion
-   -------------------------------------------------------------------------- */
-@media (max-width: 980px) {
+@media (max-width: 480px) {
   .error-page {
-    margin: var(--space-4) auto var(--space-10);
-    padding: 0 var(--space-4);
+    padding: var(--space-6) var(--space-4);
   }
 
-  .error-shell {
-    gap: var(--space-6);
-  }
-
-  .error-hero {
-    padding-bottom: var(--space-6);
-  }
-
-  .error-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-}
-
-@media (max-width: 640px) {
-  .error-page {
-    margin: var(--space-3) auto var(--space-8);
-    padding: 0 var(--space-4);
-  }
-
-  .error-hero {
-    padding-bottom: var(--space-5);
-  }
-
-  .error-lead {
-    margin-bottom: var(--space-5);
+  .error-title {
+    gap: var(--space-2);
   }
 
   .error-actions {
-    flex-direction: column;
+    margin-top: var(--space-6);
     width: 100%;
   }
 
   .error-btn {
     width: 100%;
-  }
-
-  .error-tip-card,
-  .error-nav-card {
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-base);
+    max-width: 280px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .error-btn,
-  .error-nav-card,
-  .error-nav-arrow {
+  .error-btn {
     transition: none;
   }
 }

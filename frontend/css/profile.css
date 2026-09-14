@@ -17,7 +17,7 @@ body[data-page="profile"] {
    Profile Shell (Main Workspace Container)
    -------------------------------------------------------------------------- */
 .profile-shell {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   background: var(--surface-solid);
   padding: 28px 32px;
@@ -110,7 +110,7 @@ body[data-page="profile"] {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   display: inline-flex;
@@ -128,7 +128,6 @@ body[data-page="profile"] {
   .profile-edit-name-btn:hover {
     background: var(--surface);
     color: var(--text);
-    border-color: var(--accent);
   }
 }
 
@@ -170,12 +169,11 @@ body[data-page="profile"] {
   font-weight: 600;
   padding: var(--space-1) var(--space-2);
   border-radius: 8px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   transition:
     background-color 0.15s ease,
-    border-color 0.15s ease,
     color 0.15s ease;
 }
 
@@ -227,13 +225,12 @@ body[data-page="profile"] {
 .profile-action-btn--secondary {
   background: var(--surface-soft);
   color: var(--text);
-  border: 1px solid var(--line);
+  border: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-action-btn--secondary:hover {
     background: var(--surface);
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
   }
 }
 
@@ -242,7 +239,7 @@ body[data-page="profile"] {
    -------------------------------------------------------------------------- */
 .profile-progress-card {
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-5);
   display: flex;
@@ -400,19 +397,12 @@ body .has-sliding-indicator .profile-section-tab.is-active::after {
    -------------------------------------------------------------------------- */
 .profile-card-block {
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  transition: border-color 0.15s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .profile-card-block:hover {
-    border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
-  }
 }
 
 .profile-card-head {
@@ -458,7 +448,7 @@ body .has-sliding-indicator .profile-section-tab.is-active::after {
   align-items: center;
   gap: 4px;
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   padding: var(--space-1);
   width: fit-content;
@@ -486,7 +476,7 @@ body .has-sliding-indicator .profile-section-tab.is-active::after {
 .profile-scale-btn.is-active {
   background: var(--surface-solid);
   color: var(--text);
-  border-color: var(--line-strong);
+  border-color: transparent;
   box-shadow: var(--shadow-xs);
 }
 
@@ -527,7 +517,7 @@ textarea.profile-input,
 
 .profile-interest-chips button {
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 8px;
   padding: var(--space-1) var(--space-2);
   font-size: 12px;
@@ -535,14 +525,12 @@ textarea.profile-input,
   color: var(--text);
   cursor: pointer;
   transition:
-    border-color 0.15s ease,
     color 0.15s ease,
     background-color 0.15s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-interest-chips button:hover {
-    border-color: var(--accent);
     color: var(--accent);
     background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
   }
@@ -648,7 +636,7 @@ textarea.profile-input,
    -------------------------------------------------------------------------- */
 .profile-exam-item,
 .lang-item {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 12px;
   padding: var(--space-3) var(--space-4);
   display: flex;
@@ -658,15 +646,7 @@ textarea.profile-input,
   background: var(--surface-solid);
   box-shadow: none;
   transition:
-    border-color 0.15s ease,
     background-color 0.15s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .profile-exam-item:hover,
-  .lang-item:hover {
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
-  }
 }
 
 .profile-exam-meta,
@@ -697,7 +677,7 @@ textarea.profile-input,
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text-muted);
   cursor: pointer;
@@ -705,14 +685,12 @@ textarea.profile-input,
   flex-shrink: 0;
   transition:
     background-color 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
+    color 0.15s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-delete:hover {
     background: var(--color-danger-bg);
-    border-color: var(--line-danger);
     color: var(--color-danger);
   }
 }
@@ -725,13 +703,12 @@ textarea.profile-input,
 .profile-add--secondary {
   background: var(--surface-soft);
   color: var(--text);
-  border: 1px solid var(--line);
+  border: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-add--secondary:hover {
     background: var(--surface);
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
   }
 }
 

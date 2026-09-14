@@ -7,7 +7,7 @@
 
 .u-map-results,
 .u-map-container {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
 }
@@ -115,7 +115,7 @@
 
 .u-map-result-card {
   flex: 0 0 min(330px, calc(100vw - 64px));
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   padding: 12px;
@@ -173,7 +173,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-badge);
   color: var(--surface-badge-text);
   overflow: hidden;

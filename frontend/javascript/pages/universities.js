@@ -101,6 +101,8 @@ let __universitiesBeforeunloadHandler = null;
 let __universitiesCurrencyChangedHandler = null;
 let __universitiesMobileFilterKeydownHandler = null;
 let __universitiesRecentRelocationHandler = null;
+let __universitiesResizeHandler = null;
+let __universitiesResizeObserver = null;
 
 export function initUniversitiesPage() {
     const prefCurrency = getPreferredCurrency();
@@ -163,6 +165,8 @@ export function initUniversitiesPage() {
         content: document.querySelector(".u-content"),
         workspaceLayout: $("universitiesWorkspaceLayout"),
         catalogPane: $("universitiesCatalogPane"),
+        sidebar: $("uSidebar") || document.querySelector(".u-sidebar"),
+        filterCard: document.querySelector(".u-filter-card"),
         list: $("universitiesList"), mapStage: $("mapStage"), mapResults: $("mapResultsPanel"), mapContainer: $("mapContainer"), total: $("totalCount"),
         skeleton: $("universitiesSkeleton"), state: $("listState"), pagination: $("pagination"),
         btnList: $("viewListBtn"), btnMap: $("viewMapBtn"), viewToggles: $("viewToggles"),
@@ -289,6 +293,14 @@ export function initUniversitiesPage() {
     if (__universitiesRecentRelocationHandler) {
         window.removeEventListener("resize", __universitiesRecentRelocationHandler);
         __universitiesRecentRelocationHandler = null;
+    }
+    if (__universitiesResizeHandler) {
+        window.removeEventListener("resize", __universitiesResizeHandler);
+        __universitiesResizeHandler = null;
+    }
+    if (__universitiesResizeObserver) {
+        __universitiesResizeObserver.disconnect();
+        __universitiesResizeObserver = null;
     }
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
@@ -544,7 +556,7 @@ export function initUniversitiesPage() {
         const active = isCompareSelectionMode();
         el.compareModeBtn.classList.toggle("is-active", active);
         el.compareModeBtn.setAttribute("aria-pressed", active ? "true" : "false");
-        el.compareModeLabel.textContent = t("universities.compare.enter", "Compare");
+        el.compareModeLabel.textContent = t("universities.compare.enter", "Compare mode");
     };
 
     const syncHeaderSearchContext = () => {
@@ -850,6 +862,7 @@ export function initUniversitiesPage() {
         if (!recentIds.length) {
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.innerHTML = "";
+            scheduleSyncWorkspaceDepth();
             return;
         }
         const rows = recentIds
@@ -858,6 +871,7 @@ export function initUniversitiesPage() {
         if (!rows.length) {
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.innerHTML = "";
+            scheduleSyncWorkspaceDepth();
             return;
         }
         el.recentlyViewedBar.hidden = false;
@@ -893,6 +907,7 @@ export function initUniversitiesPage() {
             </div>
         `;
         lockRecentChipWidths(el.recentlyViewedBar);
+        scheduleSyncWorkspaceDepth();
         el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
             const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
             motionPress(clearBtn);
@@ -917,6 +932,66 @@ export function initUniversitiesPage() {
                     renderRecentlyViewedBar();
                 }, { className: "motion-chip-remove", timeoutMs: 260 });
             });
+        });
+    };
+
+    let lastAppliedLayoutDepth = "";
+    let depthSyncRafId = 0;
+
+    const syncWorkspaceDepth = () => {
+        if (depthSyncRafId) {
+            window.cancelAnimationFrame(depthSyncRafId);
+            depthSyncRafId = 0;
+        }
+        if (!el.workspaceLayout || typeof window === "undefined") return;
+
+        // Mobile / tablet screen layouts stack vertically, do not force desktop depth
+        if (window.innerWidth <= 980) {
+            if (lastAppliedLayoutDepth !== "") {
+                lastAppliedLayoutDepth = "";
+                el.workspaceLayout.style.removeProperty("min-height");
+            }
+            return;
+        }
+
+        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
+        const content = el.catalogPane || el.content || document.querySelector(".u-content");
+        if (!sidebar || !content) return;
+
+        const filterCard = el.filterCard || sidebar.querySelector(".u-filter-card");
+        const recentBar = el.recentlyViewedBar;
+
+        let leftColHeight = 0;
+        if (filterCard) {
+            leftColHeight += filterCard.offsetHeight;
+        }
+        if (recentBar && !recentBar.hidden && recentBar.offsetHeight > 0) {
+            const cs = window.getComputedStyle(sidebar);
+            const gap = parseFloat(cs.rowGap || cs.gap) || 24;
+            leftColHeight += gap + recentBar.offsetHeight;
+        }
+        leftColHeight = Math.max(leftColHeight, sidebar.scrollHeight || 0);
+
+        const rightColHeight = content.offsetHeight || 0;
+        const targetDepth = Math.max(leftColHeight, rightColHeight);
+        const targetStr = targetDepth > 0 ? `${targetDepth}px` : "";
+
+        if (lastAppliedLayoutDepth !== targetStr) {
+            lastAppliedLayoutDepth = targetStr;
+            if (targetStr) {
+                el.workspaceLayout.style.minHeight = targetStr;
+            } else {
+                el.workspaceLayout.style.removeProperty("min-height");
+            }
+        }
+    };
+
+    const scheduleSyncWorkspaceDepth = () => {
+        if (typeof window === "undefined") return;
+        if (depthSyncRafId) return;
+        depthSyncRafId = window.requestAnimationFrame(() => {
+            depthSyncRafId = 0;
+            syncWorkspaceDepth();
         });
     };
 
@@ -1978,6 +2053,24 @@ export function initUniversitiesPage() {
     window.addEventListener("pagehide", __universitiesPagehideHandler);
     window.addEventListener("beforeunload", __universitiesBeforeunloadHandler);
 
+    __universitiesResizeHandler = () => {
+        scheduleSyncWorkspaceDepth();
+    };
+    window.addEventListener("resize", __universitiesResizeHandler, { passive: true });
+
+    if (typeof ResizeObserver !== "undefined") {
+        __universitiesResizeObserver = new ResizeObserver(() => {
+            scheduleSyncWorkspaceDepth();
+        });
+        const sidebarNode = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
+        const contentNode = el.catalogPane || el.content || document.querySelector(".u-content");
+        if (sidebarNode) __universitiesResizeObserver.observe(sidebarNode);
+        if (contentNode) __universitiesResizeObserver.observe(contentNode);
+        if (el.recentlyViewedBar) __universitiesResizeObserver.observe(el.recentlyViewedBar);
+        const filterCardNode = el.filterCard || sidebarNode?.querySelector(".u-filter-card");
+        if (filterCardNode) __universitiesResizeObserver.observe(filterCardNode);
+    }
+
     async function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
         saveFilters(state);
@@ -1988,6 +2081,7 @@ export function initUniversitiesPage() {
             el.btnList.classList.remove("active");
             el.btnMap.classList.add("active");
             replayMotion(el.mapStage, "motion-panel-enter", { timeoutMs: 420 });
+            scheduleSyncWorkspaceDepth();
             await initMap();
             setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
             if (shouldFetch) fetchAndRender(); 
@@ -1998,6 +2092,7 @@ export function initUniversitiesPage() {
             el.btnList.classList.add("active");
             el.btnMap.classList.remove("active");
             replayMotion(el.list, "motion-panel-enter", { timeoutMs: 420 });
+            scheduleSyncWorkspaceDepth();
             if (shouldFetch) fetchAndRender();
         }
     }
@@ -2781,6 +2876,7 @@ export function initUniversitiesPage() {
                 renderCompareTray();
                 renderRecentlyViewedBar();
                 updateMobileFilterUi();
+                scheduleSyncWorkspaceDepth();
                 return;
             }
             renderUniversitiesState({ warningText });
@@ -2793,6 +2889,7 @@ export function initUniversitiesPage() {
             renderCompareTray();
             renderRecentlyViewedBar();
             updateMobileFilterUi();
+            scheduleSyncWorkspaceDepth();
             return;
         }
 
@@ -2811,6 +2908,7 @@ export function initUniversitiesPage() {
             syncCardActionState();
             renderRecentlyViewedBar();
             updateMobileFilterUi();
+            scheduleSyncWorkspaceDepth();
         }
     }
 
@@ -3125,6 +3223,8 @@ export function initUniversitiesPage() {
             };
         });
     }
+
+    syncWorkspaceDepth();
 }
 
 // =====================================

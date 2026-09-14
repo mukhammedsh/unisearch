@@ -145,7 +145,7 @@ currency.display.preferred: In preferred currency
 currency.display.original: In original currency
 currency.display.both: Both (preferred + original)
 currency.approx_rate_note: Converted at approximate daily rate
-currency.region.cis: Central Asia & CIS
+currency.region.cis: Post-Soviet
 currency.region.europe: Europe
 currency.region.americas: Americas
 currency.region.asia_pacific: Asia-Pacific
@@ -434,7 +434,7 @@ universities.suggestions.university: University
 universities.suggestions.city: City
 universities.suggestions.country: Country
 universities.compare.selected: {count}/{total} selected
-universities.compare.enter: Compare
+universities.compare.enter: Compare mode
 universities.compare.selection: Selected universities
 universities.compare.need_more: Choose the second university
 universities.compare.pair_label: Comparison pair
@@ -1046,10 +1046,10 @@ admission.chance_method.estimated_short: Estimated
 admission.chance_method.estimated_detail: Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles.
 admission.chance_accuracy.low: Low confidence
 title.404: Page Not Found | UniSearch
-error404.kicker: Error 404
-error404.title: Page not found
+error404.kicker: Error
+error404.title: This page does not exist
 error404.lead: The page may have moved, the link may be outdated, or the address may contain a typo.
-error404.primary: Go home
+error404.primary: Back to home
 error404.secondary: Open universities
 error404.panel.kicker: Quick help
 error404.panel.title: What to do next

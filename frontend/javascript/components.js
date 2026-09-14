@@ -90,10 +90,7 @@ const LAYOUT_HTML = `
   <div class="settings-backdrop" data-close="settings"></div>
   <section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
     <div class="settings-header">
-      <div>
-        <h2 id="settingsTitle" data-i18n="settings.title">Settings</h2>
-        <p data-i18n="settings.subtitle">Control how UniSearch stores local interface data on this device.</p>
-      </div>
+      <h2 id="settingsTitle" data-i18n="settings.title">Settings</h2>
       <button class="icon-btn settings-close" id="settingsCloseBtn" type="button" title="Close" aria-label="Close" data-i18n-title="profile.action.close" data-i18n-aria-label="profile.action.close">
         ${heroIcon("x-mark", "ui-icon ui-icon--18")}
       </button>
@@ -102,7 +99,6 @@ const LAYOUT_HTML = `
       <article class="settings-row" data-setting-key="${SETTING_STORE_RECENT_UNIVERSITIES}">
         <div class="settings-copy">
           <h3 data-i18n="settings.option.store_recent.title">Save recently opened</h3>
-          <p data-i18n="settings.option.store_recent.desc">When enabled, UniSearch adds universities you open to the local recently viewed list on this device.</p>
         </div>
         <label class="settings-switch">
           <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Save recently opened" data-i18n-aria-label="settings.option.store_recent.title" data-setting-input="${SETTING_STORE_RECENT_UNIVERSITIES}" />
@@ -112,7 +108,6 @@ const LAYOUT_HTML = `
       <article class="settings-row" data-setting-key="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}">
         <div class="settings-copy">
           <h3 data-i18n="settings.option.open_universities_new_tab.title">Open universities in a new tab</h3>
-          <p data-i18n="settings.option.open_universities_new_tab.desc">When enabled, university cards and recently viewed links open detail pages in a separate browser tab while keeping the current list in place.</p>
         </div>
         <label class="settings-switch">
           <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Open universities in a new tab" data-i18n-aria-label="settings.option.open_universities_new_tab.title" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
@@ -120,15 +115,12 @@ const LAYOUT_HTML = `
         </label>
       </article>
 
-      <h3 class="settings-section-title" data-i18n="settings.section.pricing">Pricing</h3>
-
       <article class="settings-row" data-setting-key="${SETTING_PREFERRED_CURRENCY}">
         <div class="settings-copy">
           <h3 data-i18n="settings.option.preferred_currency.title">Preferred Currency</h3>
-          <p data-i18n="settings.option.preferred_currency.desc">Choose your default currency for tuition fees and estimated costs.</p>
         </div>
         <select id="settingPreferredCurrency" class="settings-select" data-setting-input="${SETTING_PREFERRED_CURRENCY}" aria-label="Preferred Currency" data-i18n-aria-label="settings.option.preferred_currency.title">
-          <optgroup label="Central Asia & CIS" data-i18n-label="currency.region.cis">
+          <optgroup label="Post-Soviet" data-i18n-label="currency.region.cis">
             <option value="KZT" data-i18n="currency.opt.kzt">Kazakhstani Tenge (KZT, ₸)</option>
             <option value="RUB" data-i18n="currency.opt.rub">Russian Ruble (RUB, ₽)</option>
             <option value="UZS" data-i18n="currency.opt.uzs">Uzbekistani Som (UZS, soʻm)</option>
@@ -312,7 +304,6 @@ const LAYOUT_HTML = `
       <article class="settings-row" data-setting-key="${SETTING_CURRENCY_DISPLAY}">
         <div class="settings-copy">
           <h3 data-i18n="settings.option.currency_display.title">Price Display</h3>
-          <p data-i18n="settings.option.currency_display.desc">Choose how university prices are displayed across the catalog and detail pages.</p>
         </div>
         <select id="settingCurrencyDisplay" class="settings-select" data-setting-input="${SETTING_CURRENCY_DISPLAY}" aria-label="Price Display" data-i18n-aria-label="settings.option.currency_display.title">
           <option value="preferred" data-i18n="currency.display.preferred">In preferred currency</option>

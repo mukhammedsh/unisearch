@@ -59,14 +59,12 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .u-page-scope__dismiss:focus-visible {
-  border-color: var(--line-strong);
   background: var(--surface-soft);
   color: var(--text);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .u-page-scope__dismiss:hover {
-    border-color: var(--line-strong);
     background: var(--surface-soft);
     color: var(--text);
   }
@@ -486,6 +484,26 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
+  z-index: 1;
+}
+
+.u-info-wrap:hover,
+.u-info-wrap:focus-within,
+.u-info-wrap.is-open {
+  z-index: calc(var(--z-dropdown) + 1);
+}
+
+.u-label-with-help:has(.u-info-wrap:hover),
+.u-label-with-help:has(.u-info-wrap:focus-within),
+.u-label-with-help:has(.u-info-wrap.is-open),
+.tradeoff-field:has(.u-info-wrap:hover),
+.tradeoff-field:has(.u-info-wrap:focus-within),
+.tradeoff-field:has(.u-info-wrap.is-open),
+.u-field:has(.u-info-wrap:hover),
+.u-field:has(.u-info-wrap:focus-within),
+.u-field:has(.u-info-wrap.is-open) {
+  position: relative;
+  z-index: var(--z-dropdown);
 }
 
 .u-info {
@@ -562,7 +580,8 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
-  width: min(300px, 74vw);
+  width: min(240px, calc(100vw - 48px));
+  max-width: min(240px, calc(100vw - 48px));
   background: var(--tooltip-bg);
   color: var(--tooltip-text);
   border-radius: var(--radius-md);
@@ -599,7 +618,8 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .u-input,
-.u-select {
+.u-select,
+.u-filter-card .custom-select-trigger {
   width: 100%;
   box-sizing: border-box;
   padding: 12px 12px;
@@ -612,7 +632,8 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .u-input:focus,
-.u-select:focus {
+.u-select:focus,
+.u-filter-card .custom-select-trigger:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--accent);
 }
@@ -750,6 +771,8 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   display: flex;
   align-items: center;
   margin-top: 4px;
+  z-index: 1;
+  isolation: isolate;
 }
 
 .slider-track {
@@ -1021,7 +1044,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-state-card {
   border-radius: var(--radius-base);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--card);
   padding: 16px 16px;
   box-shadow: var(--shadow-sm);
@@ -1034,7 +1057,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-state-card--empty {
   background: var(--card);
-  border-color: var(--line);
   box-shadow: none;
 }
 
@@ -1065,7 +1087,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   color: var(--text);
   font-size: var(--text-sm);
@@ -1137,7 +1159,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   z-index: 1;
   width: min(94vw, 620px);
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   padding: 24px 24px 16px;
@@ -1149,7 +1171,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   top: 10px;
   width: 40px;
   height: 40px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-solid);
   color: var(--text);
   border-radius: var(--radius-md);
@@ -1282,7 +1304,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .u-tour-btn {
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-solid);
   color: var(--text);
   border-radius: var(--radius-md);

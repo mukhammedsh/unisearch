@@ -1,4 +1,4 @@
-import { closeMotionLayer, initCustomSelect, replayMotion, showToast, trapFocus } from "../utils.js";
+import { closeMotionLayer, initCustomSelect, replayMotion, trapFocus } from "../utils.js";
 import { t } from "../i18n.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
@@ -104,7 +104,6 @@ export function initSettingsUI() {
           // ignore event error
         }
       }
-      showToast(t("settings.saved", "Settings saved"), "success");
     });
   });
 

@@ -27,9 +27,13 @@
   padding: 16px;
 }
 
+.u-filter-title,
+.u-recent__label {
+  font-size: 16px;
+}
+
 .u-filter-title {
   margin-bottom: 10px;
-  font-size: 16px;
 }
 
 .u-field {

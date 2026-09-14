@@ -233,7 +233,7 @@ To eliminate the "Z-Index escalation race" (`z-index: 15`, `60`, `80`, `100`, `4
 2. **Local Layers:** Within an isolated context, only micro-layers (`-1`, `0`, `1`, `2`) are permitted for pseudo-elements and sticky columns/headers.
 3. **Global Semantic Layers:** Cross-component layering must use the standard tokens declared in `frontend/css/style.css`:
    - `--z-nav` (`1000`): Sticky page header and primary navigation bar.
-   - `--z-dropdown` (`1200`): Search suggestions, autocomplete popups, custom select menus.
+   - `--z-dropdown` (`1200`): Search suggestions, autocomplete popups, custom select menus, and tooltips (`calc(var(--z-dropdown) + 1)` for active tooltip wrappers).
    - `--z-docked-control` (`1300`): Floating action buttons, docked bottom comparison bar.
    - `--z-drawer` (`2000`): Slide-over filter drawers on tablet/mobile.
    - `--z-tray` (`2200`): Sticky bottom sheet notifications.

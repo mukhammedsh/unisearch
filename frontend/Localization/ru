@@ -148,7 +148,7 @@ currency.display.preferred: В предпочитаемой валюте
 currency.display.original: В оригинальной валюте
 currency.display.both: Оба (предпочитаемая + оригинальная)
 currency.approx_rate_note: Конвертировано по приблизительному дневному курсу
-currency.region.cis: Центральная Азия и СНГ
+currency.region.cis: Постсоветские страны
 currency.region.europe: Европа
 currency.region.americas: Северная и Южная Америка
 currency.region.asia_pacific: Азиатско-Тихоокеанский регион
@@ -437,7 +437,7 @@ universities.suggestions.university: Университет
 universities.suggestions.city: Город
 universities.suggestions.country: Страна
 universities.compare.selected: Выбрано: {count}/{total}
-universities.compare.enter: Сравнить
+universities.compare.enter: Режим сравнения
 universities.compare.selection: Выбранные университеты
 universities.compare.need_more: Выберите второй университет
 universities.compare.pair_label: Пара для сравнения
@@ -1045,10 +1045,10 @@ admission.chance_method.estimated_short: Оценочно
 admission.chance_method.estimated_detail: Оценка по опубликованным минимумам, средним значениям там, где они есть, языковым требованиям, селективности и бюджету. Такая оценка менее точна, чем расчет по профилю зачисленных.
 admission.chance_accuracy.low: Низкая точность
 title.404: Страница не найдена | UniSearch
-error404.kicker: Ошибка 404
-error404.title: Страница не найдена
+error404.kicker: Ошибка
+error404.title: Такой страницы не существует
 error404.lead: Возможно, страница была перемещена, ссылка устарела или в адресе есть ошибка.
-error404.primary: На главную
+error404.primary: Вернуться на главную
 error404.secondary: Открыть университеты
 error404.panel.kicker: Быстрая помощь
 error404.panel.title: Что можно сделать дальше
