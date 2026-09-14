@@ -99,6 +99,8 @@ let __universitiesScrollHandler = null;
 let __universitiesPagehideHandler = null;
 let __universitiesBeforeunloadHandler = null;
 let __universitiesCurrencyChangedHandler = null;
+let __universitiesMobileFilterKeydownHandler = null;
+let __universitiesRecentRelocationHandler = null;
 
 export function initUniversitiesPage() {
     const prefCurrency = getPreferredCurrency();
@@ -168,8 +170,11 @@ export function initUniversitiesPage() {
         mobileFilterCount: $("mobileFilterCount"),
         mobileFilterToggle: $("mobileFilterToggle"),
         mobileFilterClose: $("closeMobileFilters"),
+        mobileApplyFilters: $("mobileApplyFilters"),
+        mobileResetFilters: $("mobileResetFilters"),
         savedFilterButtons: Array.from(document.querySelectorAll("[data-saved-filter]")),
         recentlyViewedBar: $("recentlyViewedBar"),
+        mobileRecentSlot: $("mobileRecentSlot"),
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
@@ -276,6 +281,14 @@ export function initUniversitiesPage() {
     if (__universitiesBeforeunloadHandler) {
         window.removeEventListener("beforeunload", __universitiesBeforeunloadHandler);
         __universitiesBeforeunloadHandler = null;
+    }
+    if (__universitiesMobileFilterKeydownHandler) {
+        document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
+        __universitiesMobileFilterKeydownHandler = null;
+    }
+    if (__universitiesRecentRelocationHandler) {
+        window.removeEventListener("resize", __universitiesRecentRelocationHandler);
+        __universitiesRecentRelocationHandler = null;
     }
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
@@ -1376,13 +1389,54 @@ export function initUniversitiesPage() {
         const sidebar = $("uSidebar");
         if (!toggleBtn || !sidebar) return;
 
-        const setOpen = (isOpen) => {
+        let draftSnapshot = null;
+        let isEditing = false;
+        const isMobileViewport = () => window.innerWidth <= 980;
+
+        const resetDraft = () => {
+            clearSavedScrollPosition();
+            Object.assign(state, {
+                q: "",
+                country: "",
+                region: "",
+                city: "",
+                study_level: "",
+                funding_type: getProfileFundingQueryValue(),
+                min_tuition: currentLimits.min,
+                max_tuition: currentLimits.max,
+                sort: "name_asc",
+                practice_vs_science: 50,
+                social_vs_hardcore: 50,
+                budget_vs_prestige: 50,
+                city_vs_campus: 50,
+                only_saved: false,
+                page: 1,
+            });
+            applyToForm();
+            if (el.stateDiv) el.stateDiv.style.display = "none";
+            updateCityDropdown([]);
+            updateSliderVisibility();
+            updateMobileFilterUi();
+        };
+
+        const setOpen = (isOpen, { apply = false } = {}) => {
+            if (!isMobileViewport()) return;
+            if (isOpen) {
+                draftSnapshot = { ...state };
+                isEditing = true;
+            } else if (isEditing && !apply && draftSnapshot) {
+                Object.assign(state, draftSnapshot);
+                applyToForm();
+            }
             sidebar.classList.toggle("is-open", isOpen);
             toggleBtn.classList.toggle("is-active", isOpen);
             toggleBtn.hidden = isOpen;
-            if (window.innerWidth <= 980) {
-                document.body.style.overflow = isOpen ? "hidden" : "";
-                document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
+            document.body.style.overflow = isOpen ? "hidden" : "";
+            document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
+            if (!isOpen) {
+                isEditing = false;
+                draftSnapshot = null;
+                updateMobileFilterUi();
             }
         };
 
@@ -1390,6 +1444,15 @@ export function initUniversitiesPage() {
             setOpen(!sidebar.classList.contains("is-open"));
         });
         el.mobileFilterClose?.addEventListener("click", () => setOpen(false));
+        el.mobileResetFilters?.addEventListener("click", () => resetDraft());
+        el.mobileApplyFilters?.addEventListener("click", () => {
+            if (!isEditing) return;
+            state.page = 1;
+            clearSavedScrollPosition();
+            setOpen(false, { apply: true });
+            saveFilters(state);
+            fetchAndRender();
+        });
 
         // Close sidebar when clicking outside on mobile backdrop
         sidebar.addEventListener("click", (e) => {
@@ -1397,8 +1460,29 @@ export function initUniversitiesPage() {
                 setOpen(false);
             }
         });
+
+        __universitiesMobileFilterKeydownHandler = (event) => {
+            if (event.key === "Escape" && sidebar.classList.contains("is-open")) setOpen(false);
+        };
+        document.addEventListener("keydown", __universitiesMobileFilterKeydownHandler);
+
+        return { isEditing: () => isEditing };
     };
-    setupMobileFilters();
+    const mobileFilters = setupMobileFilters();
+
+    const recentDesktopAnchor = document.createComment("recently viewed desktop position");
+    el.recentlyViewedBar?.parentNode?.insertBefore(recentDesktopAnchor, el.recentlyViewedBar);
+    const relocateRecentlyViewedBar = () => {
+        if (!el.recentlyViewedBar || !recentDesktopAnchor.parentNode) return;
+        if (window.innerWidth <= 980 && el.mobileRecentSlot) {
+            el.mobileRecentSlot.append(el.recentlyViewedBar);
+            return;
+        }
+        recentDesktopAnchor.parentNode.insertBefore(el.recentlyViewedBar, recentDesktopAnchor.nextSibling);
+    };
+    relocateRecentlyViewedBar();
+    __universitiesRecentRelocationHandler = relocateRecentlyViewedBar;
+    window.addEventListener("resize", __universitiesRecentRelocationHandler);
 
     async function handleSortChange(nextSort) {
         const prevSort = state.sort;
@@ -1433,7 +1517,7 @@ export function initUniversitiesPage() {
         refetch();
     }
 
-    const refetch = debounce(() => { 
+    const scheduleRefetch = debounce(() => {
         state.page = 1; 
         clearSavedScrollPosition();
         updateMobileFilterUi();
@@ -1441,6 +1525,10 @@ export function initUniversitiesPage() {
         
         fetchAndRender(); 
     }, 250);
+    const refetch = (...args) => {
+        if (mobileFilters?.isEditing()) return;
+        scheduleRefetch(...args);
+    };
 
     // --- Listeners ---
     function syncSearchClearButton() {

@@ -686,6 +686,10 @@ body.universities-compare-mode .uni-action-btn--favorite {
   font-weight: 700;
 }
 
+.u-mobile-filter-count[hidden] {
+  display: none;
+}
+
 .u-recent {
   width: 100%;
   box-sizing: border-box;
@@ -704,6 +708,11 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 .u-recent[hidden],
 .compare-tray[hidden] {
+  display: none;
+}
+
+.u-filter-footer,
+.u-mobile-recent-slot {
   display: none;
 }
 

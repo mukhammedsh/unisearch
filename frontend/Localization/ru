@@ -410,6 +410,8 @@ universities.filter: Фильтр
 universities.filter.all: Все
 universities.filter_mobile: Фильтр
 universities.filter.close: Закрыть фильтры
+universities.filter.actions: Действия с фильтрами
+universities.filter.apply: Применить фильтры
 universities.filter.favorites: Избранные
 universities.filter.none_active: Нет активных фильтров
 universities.filter.saved_scope: Область списка университетов

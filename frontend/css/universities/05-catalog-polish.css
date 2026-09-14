@@ -630,10 +630,6 @@
     display: none;
   }
 
-  .u-sidebar > .u-recent {
-    display: none !important;
-  }
-
   .compare-tray {
     bottom: 92px;
   }

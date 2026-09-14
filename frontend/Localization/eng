@@ -407,6 +407,8 @@ universities.filter: Filter
 universities.filter.all: All
 universities.filter_mobile: Filter
 universities.filter.close: Close filters
+universities.filter.actions: Filter actions
+universities.filter.apply: Apply filters
 universities.filter.favorites: Favorites
 universities.filter.none_active: No active filters
 universities.filter.saved_scope: University list scope
