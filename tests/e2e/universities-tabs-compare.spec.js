@@ -31,7 +31,7 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
   await page.locator("#compareModeBtn").click();
   await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("#compareModeLabel")).toHaveText("Compare");
+  await expect(page.locator("#compareModeLabel")).toHaveText("Compare mode");
   await expect(page.locator("#compareModeCancel")).toHaveCount(0);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
   await expect(page.locator("#qInput")).toHaveAttribute("placeholder", "Search university...");
