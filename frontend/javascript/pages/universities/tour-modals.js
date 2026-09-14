@@ -1,8 +1,8 @@
 /* frontend/javascript/pages/universities/tour-modals.js */
 
 import { escapeHtml, closeMotionLayer, aiName, trapFocus } from "../../utils.js";
-import { renderInlineIcon } from "../_shared.js";
 import { t, tFormat } from "../../i18n.js";
+import { saveUniversitiesTourResumeStep } from "../shared/cache.js";
 
 let universitiesTourModal = null;
 let uniFitWarningModal = null;
@@ -22,19 +22,26 @@ export function ensureUniversitiesTourModal() {
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
     modal.innerHTML = `
-        <div class="u-tour-backdrop" data-action="close"></div>
+        <div class="u-tour-backdrop" aria-hidden="true"></div>
         <div class="u-tour-card" role="dialog" aria-modal="true" aria-labelledby="uTourTitle">
-            <button class="u-tour-close" type="button" data-action="close" aria-label="${escapeHtml(t("tour.close", "Close tour"))}" title="${escapeHtml(t("tour.close", "Close tour"))}">${renderInlineIcon("x-mark", 18, "u-tour-close-icon")}</button>
-            <div class="u-tour-progress">
-                <span id="uTourProgressLabel"></span>
-                <div id="uTourDots" class="u-tour-dots"></div>
+            <div class="u-tour-header">
+                <div>
+                    <p class="u-tour-overline">${escapeHtml(t("tour.overline", "Getting started"))}</p>
+                    <h2 id="uTourTitle" class="u-tour-heading">${escapeHtml(t("tour.heading", "Your university search, step by step"))}</h2>
+                </div>
+                <p id="uTourProgressLabel" class="u-tour-progress" aria-live="polite"></p>
             </div>
-            <div id="uTourSlide" class="u-tour-slide" aria-live="polite"></div>
-            <div class="u-tour-actions">
-                <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">${escapeHtml(t("tour.skip", "Skip"))}</button>
-                <div class="u-tour-actions-right">
-                    <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">${escapeHtml(t("tour.back", "Back"))}</button>
-                    <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next">${escapeHtml(t("tour.next", "Next"))}</button>
+            <div class="u-tour-layout">
+                <ol id="uTourSteps" class="u-tour-steps" aria-label="${escapeHtml(t("tour.steps_label", "Tutorial steps"))}"></ol>
+                <div class="u-tour-main">
+                    <div id="uTourSlide" class="u-tour-slide" aria-live="polite"></div>
+                    <div class="u-tour-actions">
+                        <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">${escapeHtml(t("tour.skip_all", "Skip tutorial"))}</button>
+                        <div class="u-tour-actions-right">
+                            <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">${escapeHtml(t("tour.back", "Back"))}</button>
+                            <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next">${escapeHtml(t("tour.next", "Next"))}</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,74 +55,99 @@ export function showUniversitiesTour(options = {}) {
     return new Promise((resolve) => {
         const modal = ensureUniversitiesTourModal();
         const slideEl = modal.querySelector("#uTourSlide");
-        const dotsEl = modal.querySelector("#uTourDots");
+        const stepsEl = modal.querySelector("#uTourSteps");
         const progressLabelEl = modal.querySelector("#uTourProgressLabel");
         const prevBtn = modal.querySelector("[data-action='prev']");
         const nextBtn = modal.querySelector("[data-action='next']");
         const skipBtn = modal.querySelector("[data-action='skip']");
-        const actionsEl = modal.querySelector(".u-tour-actions");
-        const closeEls = modal.querySelectorAll("[data-action='close']");
         const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         let cleanupFocusTrap = () => {};
 
         const steps = [
             {
+                label: t("tour.step1.label", "How UniSearch helps"),
                 kicker: t("tour.step1.kicker", "Welcome"),
-                title: t("tour.step1.title", "Find universities faster"),
-                desc: t("tour.step1.desc", "This page helps you quickly pick universities by country, cost, and your profile."),
+                title: t("tour.step1.title", "Start with a clear plan"),
+                desc: t("tour.step1.desc", "UniSearch helps you choose bachelor's universities that fit your goals. You do not need to know where to begin: work through the same simple route every time."),
                 points: [
-                    t("tour.step1.point1", "Use search + filters in the left panel."),
-                    t("tour.step1.point2", "Switch between List and Map view on the top right."),
-                    tFormat("tour.step1.point3", { fit: aiName("fit") }, `Use ${aiName("fit")} to sort by personalized fit.`),
+                    t("tour.step1.point1", "Tell us what matters to you in your profile."),
+                    t("tour.step1.point2", "Browse widely, then use filters to narrow the list."),
+                    t("tour.step1.point3", "Open promising universities, compare them, and check the details before you apply."),
                 ],
                 action: "",
             },
             {
-                kicker: t("tour.step2.kicker", "Step 1"),
-                title: t("tour.step2.title", "Fill your profile first"),
-                desc: t("tour.step2.desc", "Profile data makes recommendations and admission estimates more accurate."),
+                label: t("tour.step2.label", "Build your profile"),
+                kicker: t("tour.step2.kicker", "First, tell us about you"),
+                title: t("tour.step2.title", "Fill in your profile"),
+                desc: t("tour.step2.desc", "Your profile gives the catalog useful context. Add only the information you already know; you can return and improve it later."),
                 points: [
-                    t("tour.step2.point1", "Add budget, major, and GPA."),
-                    t("tour.step2.point2", "Add exam and language scores."),
-                    tFormat("tour.step2.point3", { fit: aiName("fit"), chance: aiName("chance") }, `This improves ${aiName("fit")} and ${aiName("chance")} quality.`),
+                    t("tour.step2.point1", "Start with the subject you want to study, your budget, and GPA if you have it."),
+                    t("tour.step2.point2", "Add language and entrance-exam results when available."),
+                    tFormat("tour.step2.point3", { fit: aiName("fit"), chance: aiName("chance") }, `More complete data makes ${aiName("fit")} and ${aiName("chance")} more useful; missing data is never treated as a zero.`),
                 ],
                 action: "open_profile",
             },
             {
-                kicker: t("tour.step3.kicker", "Step 2"),
-                title: t("tour.step3.title", "Use filtering strategically"),
-                desc: t("tour.step3.desc", "Start broad, then narrow by country, city, cost range, study level, and funding type."),
+                label: t("tour.step3.label", "Explore choices"),
+                kicker: t("tour.step3.kicker", "Then, browse broadly"),
+                title: t("tour.step3.title", "Search for an idea, not a perfect answer"),
+                desc: t("tour.step3.desc", "Use the search field when you already have a university or city in mind. Otherwise, start with the list: it is normal to explore first and decide later."),
                 points: [
-                    t("tour.step3.point1", "Adjust tuition min/max with the slider."),
-                    t("tour.step3.point2", "Use the grant/paid funding filter for finance planning."),
-                    t("tour.step3.point3", "Use map view to spot location clusters."),
+                    t("tour.step3.point1", "Each result is a university you can open for fuller information."),
+                    t("tour.step3.point2", "Use List to scan names and facts; switch to Map when location is important."),
+                    tFormat("tour.step3.point3", { fit: aiName("fit") }, `When your profile is ready, sort by ${aiName("fit")} to see the most relevant options first.`),
                 ],
                 action: "",
             },
             {
-                kicker: t("tour.step4.kicker", "Step 3"),
-                title: t("tour.step4.title", "Open details and compare admission choices"),
-                desc: t("tour.step4.desc", "Click any card to inspect admission categories, requirement profiles, finance, and requirements."),
+                label: t("tour.step4.label", "Narrow the list"),
+                kicker: t("tour.step4.kicker", "Make the list manageable"),
+                title: t("tour.step4.title", "Use filters one decision at a time"),
+                desc: t("tour.step4.desc", "Filters update the results so you can focus on realistic choices. Begin with the few constraints that matter most, then add more only when you need them."),
                 points: [
-                    tFormat("tour.step4.point1", { chance: aiName("chance") }, `Review ${aiName("chance")} by selected requirement profile in the detail page.`),
-                    t("tour.step4.point2", "Check Admission and Costs tabs for requirement and funding details."),
-                    t("tour.step4.point3", "Compare yearly cost and scholarships before applying."),
+                    t("tour.step4.point1", "Choose countries or cities you would genuinely consider."),
+                    t("tour.step4.point2", "Set a tuition range and funding preference to keep costs realistic."),
+                    t("tour.step4.point3", "Use subject and other filters after the basics; clear or adjust any filter whenever the list becomes too small."),
+                ],
+                action: "",
+            },
+            {
+                label: t("tour.step5.label", "Check the details"),
+                kicker: t("tour.step5.kicker", "Before you shortlist"),
+                title: t("tour.step5.title", "Open a university and read the evidence"),
+                desc: t("tour.step5.desc", "A card is a starting point, not a final decision. Open it to understand what that university expects and what studying there may cost."),
+                points: [
+                    t("tour.step5.point1", "Review admission requirements and choose the relevant admission option."),
+                    tFormat("tour.step5.point2", { chance: aiName("chance") }, `Use ${aiName("chance")} as an estimate, not a guarantee of admission.`),
+                    t("tour.step5.point3", "Compare tuition, scholarships, and other costs with the information shown for that university."),
+                ],
+                action: "",
+            },
+            {
+                label: t("tour.step6.label", "Choose confidently"),
+                kicker: t("tour.step6.kicker", "Your final short list"),
+                title: t("tour.step6.title", "Compare a few realistic options"),
+                desc: t("tour.step6.desc", "Keep several universities in view rather than chasing one perfect choice. Comparison makes the trade-offs between fit, admission requirements, and costs easier to see."),
+                points: [
+                    t("tour.step6.point1", "Use Compare to place promising universities side by side."),
+                    t("tour.step6.point2", "Keep a balanced list: ambitious, realistic, and safer choices."),
+                    t("tour.step6.point3", "Return to your profile or filters whenever your priorities change."),
                 ],
                 action: "",
             },
         ];
 
-        let idx = 0;
+        let idx = Math.min(Math.max(Number(options.startStep) || 0, 0), steps.length - 1);
         let isPausedForProfile = false;
 
         const renderStep = (direction = "forward") => {
             const step = steps[idx];
-            if (!step || !slideEl || !dotsEl || !progressLabelEl || !prevBtn || !nextBtn || !skipBtn || !actionsEl) return;
+            if (!step || !slideEl || !stepsEl || !progressLabelEl || !prevBtn || !nextBtn || !skipBtn) return;
 
-            progressLabelEl.textContent = "";
-            progressLabelEl.style.display = "none";
-            dotsEl.innerHTML = steps
-                .map((_, i) => `<span class="u-tour-dot ${i === idx ? "is-active" : ""}" aria-hidden="true"></span>`)
+            progressLabelEl.textContent = tFormat("tour.progress", { current: idx + 1, total: steps.length }, `Step ${idx + 1} of ${steps.length}`);
+            stepsEl.innerHTML = steps
+                .map((item, i) => `<li class="u-tour-steps__item ${i === idx ? "is-current" : ""} ${i < idx ? "is-complete" : ""}"${i === idx ? ' aria-current="step"' : ""}><span class="u-tour-steps__number">${i + 1}</span><span>${escapeHtml(item.label)}</span></li>`)
                 .join("");
 
             const actionHtml = step.action === "open_profile"
@@ -126,29 +158,32 @@ export function showUniversitiesTour(options = {}) {
             void slideEl.offsetWidth;
             slideEl.classList.add(direction === "back" ? "is-enter-back" : "is-enter-forward");
             slideEl.innerHTML = `
-                <p class="u-tour-kicker">${escapeHtml(step.kicker)}</p>
-                <h3 id="uTourTitle" class="u-tour-title">${escapeHtml(step.title)}</h3>
-                <p class="u-tour-desc">${escapeHtml(step.desc)}</p>
-                <ul class="u-tour-points">
-                    ${step.points.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
-                </ul>
-                ${actionHtml}
+                <div class="u-tour-step">
+                    <p class="u-tour-kicker">${escapeHtml(step.kicker)}</p>
+                    <h3 class="u-tour-title">${escapeHtml(step.title)}</h3>
+                    <p class="u-tour-desc">${escapeHtml(step.desc)}</p>
+                    <ul class="u-tour-list">${step.points.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}</ul>
+                    ${actionHtml}
+                </div>
             `;
 
             prevBtn.style.visibility = idx === 0 ? "hidden" : "visible";
             const isLast = idx === steps.length - 1;
-            nextBtn.textContent = isLast ? t("tour.finish", "Finish") : t("tour.next", "Next");
-            skipBtn.textContent = isLast ? t("tour.finish", "Finish") : t("tour.skip", "Skip");
+            nextBtn.textContent = isLast ? t("tour.finish", "Finish tutorial") : t("tour.next", "Next");
+            skipBtn.textContent = t("tour.skip_all", "Skip tutorial");
 
             const inlineProfileBtn = slideEl.querySelector("[data-action='open-profile']");
             if (inlineProfileBtn) {
                 inlineProfileBtn.addEventListener("click", () => {
+                    const profileBtn = document.getElementById("profileBtn");
+                    if (!profileBtn) return;
                     isPausedForProfile = true;
+                    saveUniversitiesTourResumeStep(idx);
                     cleanupFocusTrap();
                     cleanupFocusTrap = () => {};
                     modal.style.display = "none";
                     modal.setAttribute("aria-hidden", "true");
-                    window.dispatchEvent(new CustomEvent("openProfileModal"));
+                    profileBtn.click();
                 }, { once: true });
             }
         };
@@ -159,8 +194,6 @@ export function showUniversitiesTour(options = {}) {
             prevBtn?.removeEventListener("click", onPrev);
             nextBtn?.removeEventListener("click", onNext);
             skipBtn?.removeEventListener("click", onSkip);
-            closeEls.forEach((el) => el.removeEventListener("click", onSkip));
-            document.removeEventListener("keydown", onKey);
             closeMotionLayer(modal, () => {
                 modal.classList.remove("is-open", "is-closing");
                 modal.setAttribute("aria-hidden", "true");
@@ -190,18 +223,6 @@ export function showUniversitiesTour(options = {}) {
 
         const onSkip = () => cleanup();
 
-        const onKey = (e) => {
-            if (isPausedForProfile) return;
-            if (e.key === "Escape") {
-                e.preventDefault();
-                cleanup();
-            } else if (e.key === "ArrowRight") {
-                onNext();
-            } else if (e.key === "ArrowLeft") {
-                onPrev();
-            }
-        };
-
         const onProfileClosed = () => {
             if (!isPausedForProfile) return;
             isPausedForProfile = false;
@@ -217,8 +238,6 @@ export function showUniversitiesTour(options = {}) {
         prevBtn?.addEventListener("click", onPrev);
         nextBtn?.addEventListener("click", onNext);
         skipBtn?.addEventListener("click", onSkip);
-        closeEls.forEach((el) => el.addEventListener("click", onSkip));
-        document.addEventListener("keydown", onKey);
         window.addEventListener("profileModalClosed", onProfileClosed);
 
         modal.style.display = "flex";

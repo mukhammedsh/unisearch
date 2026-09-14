@@ -3,12 +3,14 @@ import { getCurrentLanguage } from "../../i18n.js";
 import { shouldOpenUniversitiesInNewTab, shouldStoreRecentUniversities } from "../../settings.js";
 
 const safeLocalStorage = createSafeStorage("local");
+const safeSessionStorage = createSafeStorage("session");
 
 export const DETAIL_CACHE_KEY = "unisearch_detail_cache_v3";
 export const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 export const DETAIL_CACHE_MAX_ITEMS = 24;
 const DETAIL_FETCH_RETRY_DELAY_MS = 120;
 export const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
+export const UNIVERSITIES_TOUR_RESUME_STEP_KEY = "unisearch_universities_tour_resume_step_v1";
 export const SAVED_UNIVERSITIES_KEY = "unisearch_saved_university_ids_v1";
 export const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
 export const COMPARE_ADMISSION_CHOICES_KEY = "unisearch_compare_admission_choices_v1";
@@ -50,6 +52,25 @@ export function hasSeenUniversitiesTour() {
 
 export function markUniversitiesTourSeen() {
   safeLocalStorage.set(UNIVERSITIES_TOUR_SEEN_KEY, "1");
+}
+
+export function readUniversitiesTourResumeStep() {
+  const step = Number.parseInt(safeSessionStorage.get(UNIVERSITIES_TOUR_RESUME_STEP_KEY), 10);
+  return Number.isInteger(step) && step >= 0 ? step : 0;
+}
+
+export function saveUniversitiesTourResumeStep(step) {
+  const normalized = Number.parseInt(step, 10);
+  if (!Number.isInteger(normalized) || normalized < 0) return;
+  safeSessionStorage.set(UNIVERSITIES_TOUR_RESUME_STEP_KEY, String(normalized));
+}
+
+export function hasUniversitiesTourResumeStep() {
+  return safeSessionStorage.get(UNIVERSITIES_TOUR_RESUME_STEP_KEY, null) !== null;
+}
+
+export function clearUniversitiesTourResumeStep() {
+  safeSessionStorage.remove(UNIVERSITIES_TOUR_RESUME_STEP_KEY);
 }
 
 export function readIdListStorage(key) {

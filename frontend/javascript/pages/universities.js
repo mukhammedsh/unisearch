@@ -78,7 +78,9 @@ import {
   RECENT_UNIVERSITIES_KEY,
   MAX_COMPARE_UNIVERSITIES,
   hasSeenUniversitiesTour,
+  clearUniversitiesTourResumeStep,
   markUniversitiesTourSeen,
+  readUniversitiesTourResumeStep,
   readIdListStorage,
   writeIdListStorage,
   shouldOpenUniversitiesInNewTab,
@@ -2796,7 +2798,8 @@ export function initUniversitiesPage() {
             if (firstVisitTourPending) {
                 firstVisitTourPending = false;
                 window.setTimeout(async () => {
-                    await showUniversitiesTour();
+                    await showUniversitiesTour({ startStep: readUniversitiesTourResumeStep() });
+                    clearUniversitiesTourResumeStep();
                     markUniversitiesTourSeen();
                     if (shouldShowUniFitWarning()) {
                         await showUniFitWarning();

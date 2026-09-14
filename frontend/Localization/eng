@@ -974,31 +974,53 @@ tour.finish: Finish
 tour.next: Next
 tour.open_profile: Open Profile
 tour.skip: Skip
-tour.step1.desc: This page helps you quickly pick universities by country, cost, and your profile.
-tour.close: Close tour
+tour.heading: Your university search, step by step
+tour.overline: Getting started
+tour.progress: Step {current} of {total}
+tour.skip_all: Skip tutorial
+tour.steps_label: Tutorial steps
+tour.step1.label: How UniSearch helps
 tour.step1.kicker: Welcome
-tour.step1.point1: Use search + filters in the left panel.
-tour.step1.point2: Switch between List and Map view on the top right.
-tour.step1.point3: Use {fit} to sort by personalized fit.
-tour.step1.title: Find universities faster
-tour.step2.desc: Profile data makes recommendations and admission estimates more accurate.
-tour.step2.kicker: Step 1
-tour.step2.point1: Add budget, major, and GPA.
-tour.step2.point2: Add exam and language scores.
-tour.step2.point3: This improves {fit} and {chance} quality.
-tour.step2.title: Fill your profile first
-tour.step3.desc: Start broad, then narrow by country, city, cost range, study level, and funding type.
-tour.step3.kicker: Step 2
-tour.step3.point1: Adjust tuition min/max with the slider.
-tour.step3.point2: Use the grant/paid funding filter for finance planning.
-tour.step3.point3: Use map view to spot location clusters.
-tour.step3.title: Use filtering strategically
-tour.step4.desc: Click any card to inspect admission categories, requirement profiles, finance, and requirements.
-tour.step4.kicker: Step 3
-tour.step4.point1: Review {chance} by selected requirement profile in the detail page.
-tour.step4.point2: Check Admission and Costs tabs for requirement and funding details.
-tour.step4.point3: Compare yearly cost and scholarships before applying.
-tour.step4.title: Open details and compare admission choices
+tour.step1.title: Start with a clear plan
+tour.step1.desc: UniSearch helps you choose bachelor's universities that fit your goals. You do not need to know where to begin: work through the same simple route every time.
+tour.step1.point1: Tell us what matters to you in your profile.
+tour.step1.point2: Browse widely, then use filters to narrow the list.
+tour.step1.point3: Open promising universities, compare them, and check the details before you apply.
+tour.step2.label: Build your profile
+tour.step2.kicker: First, tell us about you
+tour.step2.title: Fill in your profile
+tour.step2.desc: Your profile gives the catalog useful context. Add only the information you already know; you can return and improve it later.
+tour.step2.point1: Start with the subject you want to study, your budget, and GPA if you have it.
+tour.step2.point2: Add language and entrance-exam results when available.
+tour.step2.point3: More complete data makes {fit} and {chance} more useful; missing data is never treated as a zero.
+tour.step3.label: Explore choices
+tour.step3.kicker: Then, browse broadly
+tour.step3.title: Search for an idea, not a perfect answer
+tour.step3.desc: Use the search field when you already have a university or city in mind. Otherwise, start with the list: it is normal to explore first and decide later.
+tour.step3.point1: Each result is a university you can open for fuller information.
+tour.step3.point2: Use List to scan names and facts; switch to Map when location is important.
+tour.step3.point3: When your profile is ready, sort by {fit} to see the most relevant options first.
+tour.step4.label: Narrow the list
+tour.step4.kicker: Make the list manageable
+tour.step4.title: Use filters one decision at a time
+tour.step4.desc: Filters update the results so you can focus on realistic choices. Begin with the few constraints that matter most, then add more only when you need them.
+tour.step4.point1: Choose countries or cities you would genuinely consider.
+tour.step4.point2: Set a tuition range and funding preference to keep costs realistic.
+tour.step4.point3: Use subject and other filters after the basics; clear or adjust any filter whenever the list becomes too small.
+tour.step5.label: Check the details
+tour.step5.kicker: Before you shortlist
+tour.step5.title: Open a university and read the evidence
+tour.step5.desc: A card shows the essentials. Open the university to view admission requirements, tuition fees, and available funding options.
+tour.step5.point1: Review admission requirements and choose the relevant admission option.
+tour.step5.point2: Use {chance} as an estimate, not a guarantee of admission.
+tour.step5.point3: Compare tuition, scholarships, and other costs with the information shown for that university.
+tour.step6.label: Choose confidently
+tour.step6.kicker: Your final short list
+tour.step6.title: Compare a few realistic options
+tour.step6.desc: Keep several universities in view rather than chasing one perfect choice. Comparison makes the trade-offs between fit, admission requirements, and costs easier to see.
+tour.step6.point1: Use Compare to place promising universities side by side.
+tour.step6.point2: Keep a balanced list: ambitious, realistic, and safer choices.
+tour.step6.point3: Return to your profile or filters whenever your priorities change.
 unifit.warning.cancel: Cancel
 unifit.warning.confirm: Okay I understand
 unifit.warning.desc: UniFit is more accurate when your profile includes exam or language scores.

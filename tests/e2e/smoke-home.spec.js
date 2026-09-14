@@ -21,23 +21,62 @@ test("root page opens the university catalog as the main workspace", async ({ pa
   await expect(page.locator("main h1")).toHaveCount(1);
 });
 
-test("first-visit tour stays dismissed after the user skips it", async ({ page }) => {
+test("first-visit tutorial requires completion or an explicit skip", async ({ page }) => {
   await page.goto("/index.html");
 
   const tour = page.locator("#uTourModal");
   await expect(tour).toHaveClass(/is-open/);
+  await expect(tour.locator(".u-tour-steps__item")).toHaveCount(6);
   await expect(tour.locator("[data-action='next']")).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(tour.locator("[data-action='skip']")).toBeFocused();
-  await page.keyboard.press("Shift+Tab");
-  await expect(tour.locator("[data-action='next']")).toBeFocused();
   await page.keyboard.press("Escape");
+  await expect(tour).toBeVisible();
+  await expect(tour.locator("[data-action='close']")).toHaveCount(0);
+  await tour.locator("[data-action='skip']").click();
   await expect(tour).toBeHidden();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
 
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
   await expect(page.locator("#uTourModal")).toHaveCount(0);
+});
+
+test("tutorial opens the profile and resumes after saving it", async ({ page }) => {
+  await page.goto("/index.html");
+
+  const tour = page.locator("#uTourModal");
+  await expect(tour).toBeVisible();
+  await tour.locator("[data-action='next']").click();
+  await tour.locator("[data-action='open-profile']").click();
+
+  await expect(page).toHaveURL(/profile\.html/);
+  await expect(page.locator("#profileMajorSelect option").nth(1)).toBeAttached();
+  await page.locator("#budgetInput").fill("10000");
+  await expect(page.locator("#saveProfileBtn")).toBeEnabled();
+  await page.locator("#saveProfileBtn").click();
+
+  await expect(page).toHaveURL(/index\.html/);
+  await expect(page.locator("#uTourModal")).toBeVisible();
+  await expect(page.locator("#uTourProgressLabel")).toHaveText("Step 2 of 6");
+});
+
+test("first-visit tutorial completes on mobile without horizontal overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 });
+  await page.goto("/index.html");
+
+  const tour = page.locator("#uTourModal");
+  await expect(tour).toBeVisible();
+  await expect(tour.locator(".u-tour-steps__item")).toHaveCount(6);
+  for (let step = 1; step <= 6; step += 1) {
+    await tour.locator("[data-action='next']").click();
+  }
+  await expect(tour).toBeHidden();
+  const dimensions = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
 });
 
 test("keyboard users can skip the header and enter comparison mode", async ({ page }) => {

@@ -28,6 +28,7 @@ import { bindInfoTooltips } from "../tooltip.js";
 import { fetchTranslationRuntimeStatus } from "./shell.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
+import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
 import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
 import {
   breakdownSchemeFor,
@@ -1201,7 +1202,7 @@ export function initProfileUI() {
             if (isUsernameDraftDirty() && !commitProfileName()) {
                 return;
             }
-            saveAllProfileChanges();
+            if (saveAllProfileChanges() && hasUniversitiesTourResumeStep()) closeImmediately();
         });
     }
 
