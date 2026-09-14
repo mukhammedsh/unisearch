@@ -261,8 +261,6 @@ html.scope-notice-dismissed #universitiesScopeNotice {
     margin: 0;
     min-width: 0;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 

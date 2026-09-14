@@ -432,8 +432,6 @@
   .u-found {
     white-space: nowrap;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .u-mobile-filter-btn {
@@ -689,6 +687,18 @@
 
 }
 
+@media (max-width: 480px) {
+  .u-compare-mode-btn #compareModeLabel {
+    display: none;
+  }
+
+  .u-compare-mode-btn {
+    width: 32px;
+    min-width: 32px;
+    padding: 0;
+  }
+}
+
 @media (max-width: 420px) {
   .u-toolbar,
   .u-top {
@@ -702,11 +712,6 @@
     align-items: center;
     gap: var(--space-2);
     width: 100%;
-  }
-
-  .u-compare-mode-btn {
-    padding: 0 var(--space-2);
-    font-size: var(--text-xs);
   }
 
   .view-toggles {
@@ -731,13 +736,7 @@
 }
 
 @media (max-width: 360px) {
-  .u-compare-mode-btn #compareModeLabel {
-    display: none;
-  }
-
-  .u-compare-mode-btn {
-    width: 32px;
-    min-width: 32px;
-    padding: 0;
+  .u-section-meta .u-found {
+    font-size: var(--text-xs);
   }
 }

@@ -7,7 +7,7 @@ All notable project changes should be recorded here.
 ## 5.2.1 (2026-09-15) - Mobile Catalog Layout and Filter Fixes
 - Fixed mobile catalog filter scrolling on devices like Samsung Galaxy A56 by removing `transform: translateY` from the `page-enter` animation on `<main>`, preventing it from creating an unintended containing block for `position: fixed` modal sheets (`frontend/css/style.css`).
 - Redesigned the mobile recently viewed section from oversized cards into compact horizontal chips with ellipsis truncation, accessible close tap targets, and design token spacing (`frontend/css/universities/07-responsive.css`).
-- Resolved mobile results counter alignment and overlap by enforcing single-row flex layout between `.u-found` and `.u-section-actions`, with text truncation and compact responsive compare toggle states down to 320px (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/07-responsive.css`).
+- Resolved mobile results counter alignment and text truncation across smartphones by switching the compare mode button to a compact accessible icon button below 480px, removing text ellipsis so found-results counts display in full, and updating title/aria-label tooltips (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/07-responsive.css`, `frontend/index.html`, `frontend/javascript/pages/universities.js`).
 - Added spacing breathing room above sticky filter action footers for slider containers and tradeoff selectors (`frontend/css/universities/07-responsive.css`).
 
 ## 5.2.0 (2026-09-14) - Academic Workspace and Legal Page Refinement

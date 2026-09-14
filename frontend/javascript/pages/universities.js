@@ -556,7 +556,10 @@ export function initUniversitiesPage() {
         const active = isCompareSelectionMode();
         el.compareModeBtn.classList.toggle("is-active", active);
         el.compareModeBtn.setAttribute("aria-pressed", active ? "true" : "false");
-        el.compareModeLabel.textContent = t("universities.compare.enter", "Compare mode");
+        const label = t("universities.compare.enter", "Compare mode");
+        el.compareModeBtn.setAttribute("aria-label", label);
+        el.compareModeBtn.setAttribute("title", label);
+        el.compareModeLabel.textContent = label;
     };
 
     const syncHeaderSearchContext = () => {
