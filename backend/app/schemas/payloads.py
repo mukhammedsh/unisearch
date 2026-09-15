@@ -1,3 +1,4 @@
+import re
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -6,6 +7,8 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 MAX_LIST_ITEMS = 50
 MAX_DETAILS_KEYS = 32
 MAX_DETAILS_DEPTH = 6
+MAX_DETAILS_STRING_LEN = 2048
+MAX_KEY_LEN = 128
 MAX_SELECTED_ADMISSION_CHOICES = 100
 MAX_SELECTED_CHOICE_KEYS = 16
 
@@ -33,13 +36,20 @@ def _bounded_dict(value: Any, *, max_keys: int, max_depth: int, field_name: str)
         if isinstance(node, dict):
             if len(node) > max_keys:
                 raise ValueError(f"{field_name} has too many keys")
-            for item in node.values():
+            for key, item in node.items():
+                if not isinstance(key, str) or len(key) > MAX_KEY_LEN:
+                    raise ValueError(f"{field_name} contains an invalid or overly long key")
                 visit(item, depth + 1)
         elif isinstance(node, list):
             if len(node) > MAX_LIST_ITEMS:
                 raise ValueError(f"{field_name} has too many list items")
             for item in node:
                 visit(item, depth + 1)
+        elif isinstance(node, str):
+            if len(node) > MAX_DETAILS_STRING_LEN:
+                raise ValueError(f"{field_name} contains string exceeding maximum allowed length")
+        elif not isinstance(node, (int, float, bool, type(None))):
+            raise ValueError(f"{field_name} contains an unsupported value type")
 
     visit(value, 1)
     return value
@@ -166,16 +176,20 @@ class ProfilePayload(BaseModel):
             uni = _strip_or_none(uni_id)
             if not uni or not isinstance(selection, dict):
                 continue
+            if len(uni) > 64 or not re.match(r"^[a-zA-Z0-9_-]+$", uni):
+                raise ValueError(f"Invalid university ID in selectedAdmissionChoices: {uni[:32]}")
             if len(selection) > MAX_SELECTED_CHOICE_KEYS:
                 raise ValueError("selectedAdmissionChoices entry has too many keys")
             choice = _strip_or_none(selection.get("choiceKey") or selection.get("choice_key"))
             if choice:
+                if len(choice) > 128:
+                    raise ValueError("choiceKey exceeds maximum allowed length (128 chars)")
                 out[uni] = {
-                    "programId": _strip_or_empty(selection.get("programId") or selection.get("program_id")),
-                    "programName": _strip_or_empty(selection.get("programName") or selection.get("program_name")),
-                    "categoryId": _strip_or_empty(selection.get("categoryId") or selection.get("category_id")),
-                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId") or selection.get("requirement_profile_id")),
-                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId") or selection.get("funding_option_id")),
+                    "programId": _strip_or_empty(selection.get("programId") or selection.get("program_id"))[:128],
+                    "programName": _strip_or_empty(selection.get("programName") or selection.get("program_name"))[:200],
+                    "categoryId": _strip_or_empty(selection.get("categoryId") or selection.get("category_id"))[:128],
+                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId") or selection.get("requirement_profile_id"))[:128],
+                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId") or selection.get("funding_option_id"))[:128],
                     "choiceKey": choice,
                 }
         return out
@@ -205,7 +219,7 @@ class UniversitiesAiSortRequest(BaseModel):
     city_vs_campus: int = Field(default=50, ge=0, le=100)
     ai_balance: int = Field(default=50, ge=0, le=100)
     admission_bias: int = Field(default=50, ge=0, le=100)
-    page: int = Field(default=1, ge=1)
+    page: int = Field(default=1, ge=1, le=10_000)
     limit: int = Field(default=200, ge=1, le=2000)
 
     @field_validator(
@@ -247,7 +261,11 @@ class CompareProfilesRequest(BaseModel):
         seen = set()
         for item in value:
             uni_id = _strip_or_none(item)
-            if not uni_id or uni_id in seen:
+            if not uni_id:
+                continue
+            if len(uni_id) > 64 or not re.match(r"^[a-zA-Z0-9_-]+$", uni_id):
+                raise ValueError(f"Invalid university ID format: {uni_id[:32]}")
+            if uni_id in seen:
                 continue
             seen.add(uni_id)
             out.append(uni_id)
@@ -262,6 +280,22 @@ class ExamValidateRequest(BaseModel):
     raw_value: Optional[str] = Field(default=None, max_length=128)
     rawValue: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
+
+    @field_validator("score", mode="before")
+    @classmethod
+    def _validate_score(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            val = _strip_or_none(value)
+            if val is not None and len(val) > 128:
+                raise ValueError("score text exceeds maximum allowed length (128 chars)")
+            return val
+        if isinstance(value, (int, float)):
+            if value < -10000 or value > 100000:
+                raise ValueError("numeric score is out of range")
+            return value
+        raise ValueError("score must be a number or string")
 
     @field_validator("exam", "raw_value", "rawValue", mode="before")
     @classmethod
@@ -299,6 +333,22 @@ class LanguageValidateRequest(BaseModel):
     raw_value: Optional[str] = Field(default=None, max_length=128)
     rawValue: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
+
+    @field_validator("score", mode="before")
+    @classmethod
+    def _validate_score(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            val = _strip_or_none(value)
+            if val is not None and len(val) > 128:
+                raise ValueError("score text exceeds maximum allowed length (128 chars)")
+            return val
+        if isinstance(value, (int, float)):
+            if value < 0 or value > 10000:
+                raise ValueError("numeric score is out of range")
+            return value
+        raise ValueError("score must be a number or string")
 
     @field_validator("code", "exam", "label", "raw_value", "rawValue", mode="before")
     @classmethod

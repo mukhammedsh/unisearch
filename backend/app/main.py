@@ -212,13 +212,20 @@ def _content_length(request: Request) -> int:
 def _request_guard_response(request: Request) -> Response | None:
     if is_protected_ops_request(request) and not ops_request_is_authorized(request):
         return protected_ops_response()
-    if len(str(getattr(request, "url", None) and request.url.query or "")) > 4096:
+    url = getattr(request, "url", None)
+    path = request_scope_path(request)
+    query = str(url.query or "") if url else ""
+    if len(path) > 2048:
+        return _apply_security_headers(JSONResponse({"detail": "URI path too long"}, status_code=414))
+    if len(query) > 4096:
         return _apply_security_headers(JSONResponse({"detail": "Query string too long"}, status_code=414))
+    if "\x00" in path or "%00" in path.lower() or "\x00" in query or "%00" in query.lower():
+        return _apply_security_headers(JSONResponse({"detail": "Null bytes in URI are not permitted"}, status_code=400))
     if REQUEST_BODY_MAX_BYTES <= 0:
         return None
     if _content_length(request) <= REQUEST_BODY_MAX_BYTES:
         return None
-    return JSONResponse({"detail": "Request body too large"}, status_code=413)
+    return _apply_security_headers(JSONResponse({"detail": "Request body too large"}, status_code=413))
 
 
 def _rate_limit_headers(limit: int, remaining: int, window_sec: int) -> dict[str, str]:

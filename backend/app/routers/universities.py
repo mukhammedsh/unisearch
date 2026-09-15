@@ -5,7 +5,7 @@ import time
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query, Request, Response
+from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
 
 from app.core.redis_store import cache_get_json, cache_set_json
 from app.core.security import request_client_ip
@@ -159,22 +159,22 @@ def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
 
 @router.get("/universities", summary="List universities", description="Returns a paginated, filterable list of universities. Supports search, country/city/region filters, budget range, acceptance rate range, study level, funding type, format, and size filters.")
 def list_universities(
-    q: Optional[str] = None,
-    country: Optional[str] = None,
-    city: Optional[str] = None,
-    region: Optional[str] = None,
-    major: Optional[str] = None,
-    study_level: Optional[str] = None,
-    funding_type: Optional[str] = None,
-    format: Optional[str] = None,
-    user_budget: Optional[float] = Query(None, ge=0),
-    min_tuition: Optional[float] = Query(None, ge=0),
-    max_tuition: Optional[float] = Query(None, ge=0),
-    min_acceptance: Optional[float] = Query(None, ge=0),
-    max_acceptance: Optional[float] = Query(None, ge=0),
-    size: Optional[str] = None,
-    sort: str = "name_asc",
-    page: int = Query(1, ge=1),
+    q: Optional[str] = Query(None, max_length=200),
+    country: Optional[str] = Query(None, max_length=80),
+    city: Optional[str] = Query(None, max_length=80),
+    region: Optional[str] = Query(None, max_length=80),
+    major: Optional[str] = Query(None, max_length=120),
+    study_level: Optional[str] = Query(None, max_length=40),
+    funding_type: Optional[str] = Query(None, max_length=20),
+    format: Optional[str] = Query(None, max_length=32),
+    user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
+    min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    min_acceptance: Optional[float] = Query(None, ge=0, le=100),
+    max_acceptance: Optional[float] = Query(None, ge=0, le=100),
+    size: Optional[str] = Query(None, max_length=40),
+    sort: str = Query("name_asc", pattern="^(name_asc|tuition_asc|tuition_desc|acceptance_asc|acceptance_desc|rank_asc|rank_desc|gpa_desc)$"),
+    page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(200, ge=1, le=2000),
     fields: str = Query("card", pattern="^(card|full)$"),
     lang: Optional[str] = Query(None, max_length=16),
@@ -362,7 +362,7 @@ def get_universities_translations(
 
 @router.get("/universities/{university_id}", summary="University detail", description="Returns full details for a single university, including admission categories, finance, programs, and student life. Supports ETag caching and language localization.")
 def get_university(
-    university_id: str,
+    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
     lang: Optional[str] = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
@@ -393,8 +393,8 @@ def get_university(
 
 @router.post("/universities/{university_id}/uni-chance", summary="Admission chance estimate (UniChance)", description="Estimates the user's admission probability for a specific university based on their profile, exams, and languages.")
 def get_university_uni_chance(
-    university_id: str,
-    payload: ProfileOnlyRequest,
+    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
+    payload: ProfileOnlyRequest = ...,
     response: Response = None,
 ):
     university = uni_service.get_university_by_id(university_id)
@@ -409,8 +409,8 @@ def get_university_uni_chance(
 
 @router.post("/universities/{university_id}/roi", summary="ROI estimate", description="Estimates return on investment for a university based on cost, salary outcomes, and the user's profile.")
 def get_university_roi(
-    university_id: str,
-    payload: ProfileOnlyRequest,
+    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
+    payload: ProfileOnlyRequest = ...,
     response: Response = None,
 ):
     university = uni_service.get_university_by_id(university_id)

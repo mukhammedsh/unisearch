@@ -4,7 +4,16 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
-## 5.2.1 (2026-09-15) - Mobile Catalog Layout and Filter Fixes
+## 5.2.2 (2026-09-15) - Backend Input Validation and Security Hardening
+- Hardened HTTP middleware against URI attacks by rejecting null-byte injections (`\x00` and `%00`) in request paths and query strings with 400 Bad Request, capping URI path length to 2048 characters with 414 URI Too Long, and ensuring security headers on 413 responses (`backend/app/main.py`).
+- Strengthened Pydantic schemas in `backend/app/schemas/payloads.py`:
+  - Enforced key length limits (128 chars), string value limits (2048 chars), and allowed scalar types on `details` dictionaries to prevent memory exhaustion.
+  - Added university ID slug regex and length checks to `selectedAdmissionChoices` and `CompareProfilesRequest` (`university_ids`), preventing injection attempts.
+  - Added type, string length (max 128 chars), and range boundaries on `score` fields in `ExamValidateRequest` and `LanguageValidateRequest`.
+  - Bounded `page` parameter to `1 <= page <= 10_000` on `UniversitiesAiSortRequest`.
+- Added strict query parameter validation to `GET /universities` in `backend/app/routers/universities.py`: bounded text query parameters (`q`, `country`, `city`, `region`, `major`, `study_level`, `funding_type`, `format`, `size`), bounded numeric filters (`user_budget`, `min_tuition`, `max_tuition` <= 1,000,000; `min_acceptance`, `max_acceptance` <= 100; `page` <= 10,000), and restricted `sort` to valid sort keys via regex pattern.
+- Constrained `university_id` path parameter with `Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$")` on university detail, UniChance, and ROI endpoints, rejecting malformed path segments and traversal sequences.
+- Added comprehensive regression and penetration tests covering the new validation constraints, query limits, path checks, null byte detection, and schema boundaries (`backend/tests/test_api_validation.py`).
 - Fixed mobile catalog filter scrolling on devices like Samsung Galaxy A56 by removing `transform: translateY` from the `page-enter` animation on `<main>`, preventing it from creating an unintended containing block for `position: fixed` modal sheets (`frontend/css/style.css`).
 - Redesigned the mobile recently viewed section from oversized cards into a horizontally scrollable row of compact chips with ellipsis truncation, accessible close tap targets, and design token spacing (`frontend/css/universities/07-responsive.css`).
 - Resolved mobile results counter alignment and text truncation across smartphones by switching the compare mode button to a compact accessible icon button below 480px, removing text ellipsis so found-results counts display in full, and updating title/aria-label tooltips (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/07-responsive.css`, `frontend/index.html`, `frontend/javascript/pages/universities.js`).
