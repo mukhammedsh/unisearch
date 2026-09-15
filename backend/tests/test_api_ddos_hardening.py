@@ -4,11 +4,6 @@ from fastapi.testclient import TestClient
 
 from app.main import app, _is_expensive_request
 from app.core.security import SlidingWindowRateLimiter, request_client_ip
-from app.services.text_translation import (
-    _provider_record_failure,
-    _provider_record_success,
-    _provider_in_backoff,
-)
 
 
 class ApiDdosHardeningTests(unittest.TestCase):
@@ -79,17 +74,6 @@ class ApiDdosHardeningTests(unittest.TestCase):
         huge_query = "q=" + ("x" * 5000)
         res = self.client.get(f"/universities?{huge_query}")
         self.assertEqual(res.status_code, 414)
-
-    def test_circuit_breaker_trips_on_failures(self):
-        _provider_record_success()
-        self.assertFalse(_provider_in_backoff())
-
-        _provider_record_failure()
-        _provider_record_failure()
-        self.assertTrue(_provider_in_backoff())
-
-        _provider_record_success()
-        self.assertFalse(_provider_in_backoff())
 
     def test_ai_sort_cache_hit_on_normalized_input(self):
         body1 = {

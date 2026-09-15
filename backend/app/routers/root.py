@@ -4,7 +4,6 @@ from app.core.redis_store import redis_runtime_status
 from app.core.version import APP_VERSION
 from app.services import exams as exams_service
 from app.services import languages as languages_service
-from app.services import text_translation as text_translation_service
 from app.services import universities as universities_service
 from app.services.background_tasks import warmup_runtime
 
@@ -66,20 +65,4 @@ def runtime_warmup():
     return {
         "status": "sync",
         "result": sync_result,
-    }
-
-
-@router.get("/ops/translation-status", summary="Translation status (ops)", description="Returns full translation service runtime status including provider details.")
-def translation_status():
-    return text_translation_service.get_translation_runtime_status(force_check=False)
-
-
-@router.get("/translation-status", summary="Public translation status", description="Returns a sanitized subset of the translation service status safe for frontend consumption.")
-def public_translation_status():
-    status = text_translation_service.get_translation_runtime_status(force_check=False)
-    return {
-        "enabled": bool(status.get("enabled")),
-        "provider": str(status.get("provider") or "none"),
-        "available": bool(status.get("available")),
-        "reason": str(status.get("reason") or ""),
     }

@@ -47,15 +47,10 @@ class MlScoringRegressionMultilingualTests(unittest.TestCase):
         """Проверяет релевантность выдачи при смешанных и русско-английских запросах."""
         self.recommender._university_ids = ["aitu", "nu"]
         
-        # Симулируем работу TF-IDF
         # Для запроса "software engineering" AITU должен быть более релевантен
         with patch.object(self.recommender, "_ensure_fresh", return_value=None), patch.object(
             self.recommender,
             "_predict_semantic",
-            return_value=None,  # Тестируем фолбек на лексический поиск
-        ), patch.object(
-            self.recommender,
-            "_predict_tfidf",
             return_value={"aitu": 0.85, "nu": 0.05},
         ):
             out = self.recommender.predict_relevance("software engineering")

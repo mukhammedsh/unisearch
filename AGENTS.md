@@ -20,7 +20,7 @@
 - **Localization:** English and Russian strings live in `frontend/Localization/`. Hardcoded user-facing text in HTML or JavaScript is prohibited.
 - **Icons:** Use Heroicons through `frontend/javascript/icons.js`. Run `npm run sync:heroicons` only when icon sources need refreshing.
 - **Data:** JSON storage in `backend/data/`; university media in `backend/data/university_assets/`.
-- **Tests:** Playwright E2E in `tests/e2e/`, Node.js tests in `tests/unit/`, and Python unittest in `backend/tests/`. Use commands from `package.json`; do not introduce another test runner without a demonstrated need.
+- **Tests:** Playwright E2E in `tests/e2e/`, Node.js tests in `tests/unit/`, and Python unittest in `backend/tests/`. Use commands from `package.json`; do not introduce another test runner without a demonstrated need. In Playwright E2E tests, always synchronize on page readiness (e.g. `data-page` attributes, non-skeleton content, or confirmed active state) before simulating user clicks and interactions to prevent dropped events and race conditions under CI load.
 - **Repository checks:** `npm run check:version`, `npm run check:encoding`, `npm run check:tokens`, `npm run check:i18n`, and `npm run audit:data` are the quick baseline for infrastructure and documentation work.
 
 ## 3. UI/UX — Calm Academic Workspace
@@ -46,7 +46,7 @@
 
 - **UniFit:** Implemented in `backend/app/services/ai_scoring.py` as composite personalized ranking.
 - **UniChance:** A `score_profile` enables admitted-score-based estimates. Without one, the API may return a low-confidence `estimated_fallback` or no estimate. Never present a proxy as a verified probability or convert missing data into numeric zero.
-- **ML scoring:** Implemented in `backend/app/services/ml_scoring.py`, with multilingual-e5 embeddings and TF-IDF fallback. Preserve the distinction between `semantic`, `tfidf`, and `unavailable` modes.
+- **ML scoring:** Implemented in `backend/app/services/ml_scoring.py`, with multilingual-e5 embeddings. If the neural model is unavailable, the system reports `unavailable` mode without silent lexical fallback.
 - **Runtime URLs:** Never hardcode API addresses. Use the existing frontend runtime configuration.
 
 ## 5. University data
@@ -60,10 +60,11 @@
 
 - **Language:** Write every commit message, Git tag message, `CHANGELOG.md` entry, README update, and GitHub release note in English, even when the user communicates in Russian.
 - **Documentation updates:** Update `CHANGELOG.md` and `AGENTS.md` only for meaningful behavior, API, workflow, or architectural changes. Keep entries factual and concise.
+- **Changelog integrity:** Every version release requires inserting a new, distinct version block directly above the previous version in `CHANGELOG.md`. Never overwrite, rename, or combine existing version blocks. The entry must strictly and exclusively document the diff introduced in the current task/version; never absorb, summarize, or duplicate changes from prior releases.
 - **Release steps:**
   1. Inspect `git diff` and `git status`; check for unrelated changes, hardcoded values, generated leftovers, and secrets.
   2. Bump the version with `npm run bump:version -- [patch|minor|major|X.Y.Z]`. `package.json` is the canonical version source. Standard SemVer increments reset lower components: `3.5.6 -> 3.6.0` for minor and `3.5.6 -> 4.0.0` for major.
-  3. Add an English entry for the actual diff to the new version block in `CHANGELOG.md`.
+  3. Add an English entry for the actual diff to a new, dedicated version block in `CHANGELOG.md` directly above the previous version. Ensure all earlier version headers and their notes remain untouched.
   4. Update affected functional sections of the English `README.md`. Keep version history in `CHANGELOG.md`; do not add release lists or release dates to the README.
   5. Run at least `npm run fix:encoding`, `npm run check:encoding`, `npm run check:tokens`, `npm run check:i18n`, and `npm run test:backend`.
   6. Commit and push only after explicit user permission. After every branch or tag push, inspect the new GitHub Actions runs, wait for a final success/failure state, and report links. A local commit does not trigger Actions.

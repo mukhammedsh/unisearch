@@ -56,10 +56,10 @@ guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Глоссарий
 guide.language_exams.title: Языковые экзамены
 guide.loading_language_config: Загрузка конфигурации языковых экзаменов
-guide.ml.p1: В поле «Интересы» напишите, что для вас важно: направление, город, бюджет, гранты, формат обучения и т.д.
+guide.ml.p1: Поле «Интересы» работает как умные теги. Перечислите ключевые темы через запятую: специальности, технологии или карьерные цели.
 guide.ml.p2: Система сравнивает ваш текст с описаниями университетов и программ.
 guide.ml.p3: Чем конкретнее вы пишете интересы, тем точнее рекомендации.
-guide.ml.p4: Можно писать коротко. Пример на английском: computer science, scholarships, USA.
+guide.ml.p4: Пишите терминами через запятую, а не целыми предложениями, и избегайте отрицаний. Пример: computer science, искусственный интеллект, робототехника, геймдев.
 guide.ml.p5: Интересы помогают отсортировать варианты, но не заменяют официальные требования университета.
 guide.ml.title: Как учитываются ваши интересы
 guide.nav.interests: Интересы
@@ -261,8 +261,7 @@ profile.hint.dismiss: Скрыть подсказку
 profile.hint.gpa: Выберите шкалу 4.0 (США / Международная) или 5.0 (Казахстан / СНГ).
 profile.gpa_info_title: Как GPA работает здесь
 profile.gpa_info_tooltip: Выберите шкалу оценивания: 4.0 (международный стандарт, США, НИШ) или 5.0 (школьный аттестат Казахстана и стран СНГ). Система автоматически сопоставит ваш балл с требованиями любого университета.
-profile.hint.interests: Напишите, что для вас важно в университете, чтобы UniSearch точнее отсортировал результаты.
-profile.warning.interests_english_only: Автоперевод недоступен, пожалуйста, заполните это поле на английском.
+profile.hint.interests: Пишите темы и ключевые слова через запятую. Избегайте длинных предложений и отрицаний («не люблю X»). Нейросеть сама свяжет синонимы с программами вузов.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет / год
@@ -291,7 +290,7 @@ profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, 20000
 profile.placeholder.gpa: например, 3.80
-profile.placeholder.interests: Например, на английском: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies
+profile.placeholder.interests: Например: computer science, искусственный интеллект, робототехника, геймдев, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено
@@ -325,8 +324,8 @@ profile.section.scores: Баллы
 profile.section.languages: Языки
 profile.section.preferences: Предпочтения
 profile.interest_examples: Примеры интересов
-profile.interest_chip.tech: IT + стипендии
-profile.interest_chip.city: Большой город
+profile.interest_chip.tech: IT + стажировки
+profile.interest_chip.ai: ИИ + Data Science
 profile.interest_chip.research: Исследовательские лаборатории
 profile.kicker: Кабинет абитуриента
 profile.page_subtitle: Настройте параметры бюджета, оценок и экзаменов для персонализированного подбора UniFit и расчета шансов поступления.
@@ -340,7 +339,7 @@ profile.field.study_mode.desc: Фильтрация программ по пре
 profile.field.funding.desc: Выберите, интересуют ли вас только гранты или также платное обучение.
 profile.field.gpa.desc: Выберите систему оценивания (4.0 или 5.0) и укажите средний балл аттестата.
 profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
-profile.field.interests.desc: Опишите особые пожелания: направление исследований, тип кампуса, города и компании.
+profile.field.interests.desc: Работает как умные теги: перечислите темы и направления через запятую (технологии, специальности, карьерные цели).
 profile.field.exams.desc: Выберите стандартизированные тесты (IELTS, TOEFL, SAT, ACT, A-Levels) для точной оценки шансов поступления.
 profile.field.languages.desc: Укажите родной язык или международные сертификаты (IELTS, TOEFL, CEFR) для проверки языковых требований.
 profile.aria.applicant_profile: Профиль абитуриента

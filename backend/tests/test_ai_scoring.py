@@ -280,9 +280,6 @@ class AiScoringTests(unittest.TestCase):
         fake_ml.predict_relevance.return_value = {"u1": 0.5}
 
         with patch(
-            "app.services.ai_scoring.translate_interest_text_for_ml",
-            return_value={"text": "i want artificial intelligence", "translated": True, "source": "ru", "reason": "translated"},
-        ), patch(
             "app.services.ai_scoring.get_ml_runtime_status",
             return_value={"available": True, "message": ""},
         ), patch(
@@ -291,7 +288,7 @@ class AiScoringTests(unittest.TestCase):
         ):
             sort_universities_ai(items, profile=profile, budget_vs_prestige=50, funding_type="any")
 
-        fake_ml.predict_relevance.assert_called_once_with("i want artificial intelligence")
+        fake_ml.predict_relevance.assert_called_once_with("хочу ai")
 
     def test_estimate_uni_chance_returns_valid_shape(self):
         university = {

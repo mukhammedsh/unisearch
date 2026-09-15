@@ -10,7 +10,6 @@ from httpx import ASGITransport, AsyncClient
 from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter
 from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
-from app.services import text_translation
 from scripts import audit_universities_data
 
 
@@ -53,21 +52,6 @@ class SecurityRegressionTests(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             UniversitiesAiSortRequest.model_validate(payload)
-
-    def test_translation_debug_logs_do_not_include_raw_interest_text(self):
-        old_debug = text_translation.ML_INTEREST_TRANSLATION_DEBUG
-        try:
-            text_translation.ML_INTEREST_TRANSLATION_DEBUG = True
-            logger = logging.getLogger("unisearch.translation")
-            with self.assertLogs(logger, level="INFO") as captured:
-                text_translation.translate_interest_text_for_ml("private robotics essay", source_hint="en")
-        finally:
-            text_translation.ML_INTEREST_TRANSLATION_DEBUG = old_debug
-
-        joined = "\n".join(captured.output)
-        self.assertNotIn("private robotics essay", joined)
-        self.assertIn("text_hash", joined)
-        self.assertIn("text_len", joined)
 
     def test_data_http_audit_blocks_internal_urls_before_fetch(self):
         self.assertIn(

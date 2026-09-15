@@ -4,6 +4,14 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.3.0 (2026-09-15) - Neural ML Interests Scoring and Smart Tag Guidance
+- Eliminated lexical TF-IDF fallback in the ML recommender service, ensuring recommendations strictly rely on multilingual neural embeddings (`multilingual-e5-base`) and report `unavailable` mode without silent lexical degradation (`backend/app/services/ml_scoring.py`, `backend/app/services/ai_scoring.py`, `AGENTS.md`).
+- Removed unused `scikit-learn` dependency from backend requirements (`backend/requirements.txt`).
+- Updated AI scoring pipeline to explicitly report ML unavailability flags (`mlUnavailable: True`, `mlWarning`), allowing the frontend catalog to clearly notify users when interests scoring is temporarily unavailable (`backend/app/services/ai_scoring.py`).
+- Simplified profile interests field into a clear "smart tags" concept in English and Russian interfaces, advising applicants to provide comma-separated key topics and disciplines rather than long essay sentences or negations (`frontend/profile.html`, `frontend/guide.html`, `frontend/Localization/eng`, `frontend/Localization/ru`).
+- Cleaned up interests placeholders and quick-select chips by removing confusing budget amounts and city references that belong in dedicated filters, adding focused AI & Data Science examples (`frontend/profile.html`, `frontend/Localization/eng`, `frontend/Localization/ru`).
+- Updated regression and integration test suites for neural-only scoring behavior, status reporting, and persona ranking (`backend/tests/test_ml_scoring.py`, `backend/tests/test_ml_scoring_regression_multilingual.py`, `backend/tests/test_persona_ai_sort_regression.py`).
+
 ## 5.2.2 (2026-09-15) - Backend Input Validation and Security Hardening
 - Hardened HTTP middleware against URI attacks by rejecting null-byte injections (`\x00` and `%00`) in request paths and query strings with 400 Bad Request, capping URI path length to 2048 characters with 414 URI Too Long, and ensuring security headers on 413 responses (`backend/app/main.py`).
 - Strengthened Pydantic schemas in `backend/app/schemas/payloads.py`:

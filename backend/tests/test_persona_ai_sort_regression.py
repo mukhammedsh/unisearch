@@ -24,7 +24,7 @@ class PersonaAiSortRegressionTests(unittest.TestCase):
         self.assertIn("mlUnavailable", match_data)
 
         mode = str(match_data.get("mlMode") or "")
-        self.assertIn(mode, {"semantic", "tfidf", "unavailable", "disabled"})
+        self.assertIn(mode, {"semantic", "unavailable", "disabled"})
 
         ml_score = float(match_data.get("mlScore", 0.0) or 0.0)
         ml_semantic = float(match_data.get("mlSemanticScore", 0.0) or 0.0)
@@ -40,7 +40,7 @@ class PersonaAiSortRegressionTests(unittest.TestCase):
         if ml_applied:
             self.assertTrue(ml_enabled)
             self.assertFalse(ml_unavailable)
-            self.assertIn(mode, {"semantic", "tfidf"})
+            self.assertEqual(mode, "semantic")
             self.assertAlmostEqual(0.15, float(match_data.get("semanticSignalWeight", 0.0) or 0.0), places=6)
         else:
             self.assertEqual(0.0, float(match_data.get("semanticSignalWeight", 0.0) or 0.0))
@@ -50,9 +50,6 @@ class PersonaAiSortRegressionTests(unittest.TestCase):
         if mode == "semantic":
             self.assertAlmostEqual(ml_score, ml_semantic, places=6)
             self.assertAlmostEqual(0.0, ml_lexical, places=6)
-        if mode == "tfidf":
-            self.assertAlmostEqual(ml_score, ml_lexical, places=6)
-            self.assertAlmostEqual(0.0, ml_semantic, places=6)
 
     def test_persona_ai_sort_invariants(self):
         self.assertTrue(self.personas)

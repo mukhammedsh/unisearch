@@ -3,7 +3,6 @@ import logging
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
-from app.core.settings import ML_INTEREST_TRANSLATION_DEBUG
 from app.core.utils import to_float as _to_num, to_float_default as _to_num_default, clamp as _clamp, clamp01 as _clamp01
 from app.services import exams as exams_service
 from app.services.finance_modes import (
@@ -15,7 +14,6 @@ from app.services.finance_modes import (
 from app.services import languages as languages_service
 from app.services import universities as universities_service
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
-from app.services.text_translation import translate_interest_text_for_ml
 
 _UI_BADGE_THRESHOLDS = {
     "your_vibe_max_mismatch": 0.14,
@@ -1293,35 +1291,16 @@ def sort_universities_ai(
     profile_grant["fundingType"] = "grant"
     profile_grant["funding_type"] = "grant"
     interest_text_raw = str(profile.get("interests") or "").strip()
-    locale_hint = (
-        profile.get("locale")
-        or profile.get("language")
-        or profile.get("lang")
-        or ""
-    )
-    translation_meta = (
-        translate_interest_text_for_ml(
-            interest_text_raw,
-            source_hint=locale_hint,
-            client_key=translation_client_key,
-        )
-        if interest_text_raw
-        else {"text": "", "translated": False, "source": "auto", "reason": "empty", "provider": "none"}
-    )
-    interest_text = str(translation_meta.get("text") or "").strip()
-    if ML_INTEREST_TRANSLATION_DEBUG:
-        _LOGGER.info(
-            "translation_flow interests_raw_len=%s raw_preview=%r locale_hint=%r translated=%s source=%s provider=%s reason=%s cache_hit=%s translated_preview=%r",
-            len(interest_text_raw),
-            _preview_text(interest_text_raw),
-            str(locale_hint or ""),
-            bool(translation_meta.get("translated")),
-            str(translation_meta.get("source") or ""),
-            str(translation_meta.get("provider") or ""),
-            str(translation_meta.get("reason") or ""),
-            bool(translation_meta.get("cacheHit")),
-            _preview_text(interest_text),
-        )
+    interest_text = interest_text_raw
+    translation_meta = {
+        "text": interest_text,
+        "translated": False,
+        "source": "direct",
+        "provider": "none",
+        "reason": "native_multilingual",
+        "cacheHit": False,
+        "error": "",
+    }
 
     ml_scores_by_id: Dict[str, float] = {}
     ml_status = (
@@ -1451,7 +1430,7 @@ def sort_universities_ai(
                 "mlScore": row_ml_score,
                 "mlMode": ml_runtime_mode if use_ml else "disabled",
                 "mlSemanticScore": row_ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
-                "mlLexicalScore": row_ml_score if (use_ml and ml_runtime_mode == "tfidf") else 0.0,
+                "mlLexicalScore": 0.0,
                 "semanticSignalWeight": 0.15 if use_ml else 0.0,
                 "distanceScore": _clamp01(1.0 - preference_mismatch),
                 "totalDistance": total_distance,
@@ -1596,7 +1575,7 @@ def sort_universities_ai(
                 "mlScore": ml_score,
                 "mlMode": ml_runtime_mode if use_ml else "disabled",
                 "mlSemanticScore": ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
-                "mlLexicalScore": ml_score if (use_ml and ml_runtime_mode == "tfidf") else 0.0,
+                "mlLexicalScore": 0.0,
                 "semanticSignalWeight": 0.15 if use_ml else 0.0,
                 "finalScore": final_score,
                 "legacySignals": {

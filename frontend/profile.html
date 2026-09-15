@@ -426,7 +426,7 @@
             <div class="profile-card-head">
               <h3 class="profile-card-title" data-i18n="profile.label.interests">What You Want in a University</h3>
               <p class="profile-card-desc" data-i18n="profile.field.interests.desc">
-                Describe special interests, campus preferences, research focus, or target cities.
+                Works like smart tags: list topics and disciplines separated by commas (technologies, majors, career goals).
               </p>
             </div>
 
@@ -436,29 +436,20 @@
                 class="profile-input profile-input--textarea"
                 rows="4"
                 maxlength="1200"
-                placeholder="Example: computer science with AI/ML focus, strong research labs, tuition under $20k, scholarships for international students, big city, internships at tech companies"
+                placeholder="Example: computer science, artificial intelligence, robotics, game development, internships"
                 data-i18n-placeholder="profile.placeholder.interests"
               ></textarea>
-              
-              <div
-                id="profileInterestsLangWarning"
-                class="profile-interests-warning"
-                hidden
-                data-i18n="profile.warning.interests_english_only"
-              >
-                If automatic translation is unavailable, write this field in English.
-              </div>
 
               <div class="profile-hint" data-i18n="profile.hint.interests">
-                Write what matters to you in a university so UniSearch can sort results more personally.
+                Write key topics separated by commas. Avoid long sentences and negations (&quot;no X&quot;). The AI automatically connects synonyms to university programs.
               </div>
 
               <div class="profile-interest-chips" aria-label="Interest examples" data-i18n-aria-label="profile.interest_examples">
-                <button type="button" data-interest-chip="computer science, scholarships, internships" data-i18n="profile.interest_chip.tech">
-                  Tech + scholarships
+                <button type="button" data-interest-chip="computer science, software engineering, internships" data-i18n="profile.interest_chip.tech">
+                  Tech + internships
                 </button>
-                <button type="button" data-interest-chip="big city, strong student life, internships" data-i18n="profile.interest_chip.city">
-                  Big city
+                <button type="button" data-interest-chip="artificial intelligence, machine learning, data science" data-i18n="profile.interest_chip.ai">
+                  AI + Data Science
                 </button>
                 <button type="button" data-interest-chip="research labs, science, academic environment" data-i18n="profile.interest_chip.research">
                   Research labs

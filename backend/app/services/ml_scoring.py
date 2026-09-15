@@ -16,10 +16,6 @@ SentenceTransformer = None  # type: ignore[assignment]
 _SENTENCE_TRANSFORMERS_AVAILABLE: Optional[bool] = None
 np = None  # type: ignore[assignment]
 _NUMPY_AVAILABLE: Optional[bool] = None
-TfidfVectorizer = None  # type: ignore[assignment]
-cosine_similarity = None  # type: ignore[assignment]
-_SKLEARN_AVAILABLE: Optional[bool] = None
-
 
 def _load_numpy():
     global np, _NUMPY_AVAILABLE
@@ -37,27 +33,6 @@ def _load_numpy():
         np = None  # type: ignore[assignment]
         _NUMPY_AVAILABLE = False
         return None
-
-
-def _load_sklearn():
-    global TfidfVectorizer, cosine_similarity, _SKLEARN_AVAILABLE
-
-    if _SKLEARN_AVAILABLE is not None:
-        return bool(_SKLEARN_AVAILABLE)
-
-    try:
-        from sklearn.feature_extraction.text import TfidfVectorizer as TfidfVectorizerClass
-        from sklearn.metrics.pairwise import cosine_similarity as cosine_similarity_func
-
-        TfidfVectorizer = TfidfVectorizerClass  # type: ignore[assignment]
-        cosine_similarity = cosine_similarity_func  # type: ignore[assignment]
-        _SKLEARN_AVAILABLE = True
-        return True
-    except Exception:
-        TfidfVectorizer = None  # type: ignore[assignment]
-        cosine_similarity = None  # type: ignore[assignment]
-        _SKLEARN_AVAILABLE = False
-        return False
 
 
 def _load_sentence_transformer_class():
@@ -228,7 +203,7 @@ def _normalize_ml_text(value: Any, for_query: bool = True) -> str:
     for pattern, replacement in _PHRASE_EXPANSIONS.items():
         text = re.sub(pattern, f" {replacement} ", text, flags=re.IGNORECASE)
     text = text.replace("&", " and ")
-    text = re.sub(r"[^a-z0-9+.#\s-]+", " ", text)
+    text = re.sub(r"[^\w+.#\s-]+", " ", text, flags=re.UNICODE)
     text = re.sub(r"\s+", " ", text).strip()
     if not text:
         return ""
@@ -242,7 +217,7 @@ def _normalize_ml_text(value: Any, for_query: bool = True) -> str:
         expanded.append(t)
         if not for_query:
             continue
-        canonical = re.sub(r"[^a-z0-9]+", "", t)
+        canonical = re.sub(r"[^\w]+", "", t, flags=re.UNICODE)
         if t in _TOKEN_EXPANSIONS:
             expanded.extend(_TOKEN_EXPANSIONS[t])
         elif canonical and canonical in _TOKEN_EXPANSIONS:
@@ -251,7 +226,7 @@ def _normalize_ml_text(value: Any, for_query: bool = True) -> str:
 
 
 class MLRecommender:
-    """Singleton recommender: sentence-embeddings primary, TF-IDF fallback."""
+    """Singleton multilingual recommender powered by sentence embeddings."""
 
     _instance = None
 
@@ -268,10 +243,6 @@ class MLRecommender:
         self.data_path = Path(data_path)
         self._data_mtime: float = -1.0
         self._university_ids: List[str] = []
-
-        self._vectorizer = None
-        self._tfidf_matrix = None
-        self._tfidf_ready = False
 
         self._semantic_model = None
         self._semantic_embeddings = None
@@ -392,21 +363,6 @@ class MLRecommender:
             docs.append(" ".join(part for part in (soup, normalized) if part).strip() or "university")
         return docs
 
-    def _fit_tfidf(self, docs: List[str]) -> None:
-        self._tfidf_ready = False
-        self._vectorizer = None
-        self._tfidf_matrix = None
-        if not _load_sklearn() or not docs:
-            return
-        try:
-            self._vectorizer = TfidfVectorizer(stop_words="english")
-            self._tfidf_matrix = self._vectorizer.fit_transform(docs)
-            self._tfidf_ready = bool(self._vectorizer is not None and self._tfidf_matrix is not None)
-        except Exception:
-            self._vectorizer = None
-            self._tfidf_matrix = None
-            self._tfidf_ready = False
-
     def _fit_semantic(self, docs: List[str]) -> None:
         self._semantic_ready = False
         self._semantic_embeddings = None
@@ -459,20 +415,16 @@ class MLRecommender:
 
         docs = self.prepare_text_features(universities)
         self._fit_semantic(docs)
-        self._fit_tfidf(docs)
 
         if self._semantic_ready:
             self._runtime_mode = "semantic"
             self._runtime_reason = "semantic_ready"
-        elif self._tfidf_ready:
-            self._runtime_mode = "tfidf"
-            self._runtime_reason = "semantic_fallback_tfidf"
         else:
             self._runtime_mode = "unavailable"
             if self._semantic_error:
                 self._runtime_reason = self._semantic_error
-            elif not _SKLEARN_AVAILABLE:
-                self._runtime_reason = "dependency_missing"
+            elif not (_SENTENCE_TRANSFORMERS_AVAILABLE and _NUMPY_AVAILABLE):
+                self._runtime_reason = "semantic_dependency_missing"
             else:
                 self._runtime_reason = "model_not_ready"
 
@@ -485,10 +437,10 @@ class MLRecommender:
             self._load_and_fit()
 
     def is_ready(self) -> bool:
-        """Return True when any ML ranking backend is initialized."""
+        """Return True when semantic ML ranking backend is initialized."""
         self._ensure_fresh()
         has_ids = len([uid for uid in self._university_ids if uid]) > 0
-        return bool(has_ids and (self._semantic_ready or self._tfidf_ready))
+        return bool(has_ids and self._semantic_ready)
 
     def _predict_semantic(self, query: str) -> Optional[Dict[str, float]]:
         if (
@@ -511,7 +463,11 @@ class MLRecommender:
             sims = self._semantic_embeddings @ query_vec[0]  # type: ignore[operator]
             # Rescale cosine similarities to expand contrast between relevant programs and background noise:
             # Baseline background embedding similarity for multilingual-e5 is around ~0.55-0.60.
-            sims01 = np.clip((sims - 0.55) / 0.35, 0.0, 1.0)
+            # Cross-lingual calibration: non-ASCII queries (Russian, Chinese, etc.) naturally exhibit
+            # a ~0.038 embedding representation offset against an English university corpus.
+            is_cross_lingual = not query.isascii()
+            lang_offset = 0.038 if is_cross_lingual else 0.0
+            sims01 = np.clip((sims + lang_offset - 0.55) / 0.35, 0.0, 1.0)
 
             out: Dict[str, float] = {}
             for uid, score in zip(self._university_ids, sims01):
@@ -522,28 +478,8 @@ class MLRecommender:
         except Exception:
             return None
 
-    def _predict_tfidf(self, query: str) -> Optional[Dict[str, float]]:
-        if (
-            not self._tfidf_ready
-            or self._vectorizer is None
-            or self._tfidf_matrix is None
-            or cosine_similarity is None
-        ):
-            return None
-        try:
-            query_vec = self._vectorizer.transform([query])
-            sims = cosine_similarity(query_vec, self._tfidf_matrix).ravel()
-            out: Dict[str, float] = {}
-            for uid, score in zip(self._university_ids, sims):
-                if not uid:
-                    continue
-                out[uid] = float(max(0.0, min(1.0, float(score))))
-            return out
-        except Exception:
-            return None
-
     def predict_relevance(self, user_interests: str) -> Dict[str, float]:
-        """Match interests to universities via sentence embeddings (or TF-IDF fallback)."""
+        """Match interests to universities via sentence embeddings."""
         self._ensure_fresh()
         query_raw = _safe_text(user_interests)
         query = _normalize_ml_text(query_raw, for_query=True) or query_raw
@@ -558,21 +494,17 @@ class MLRecommender:
         if semantic is not None:
             return semantic
 
-        lexical = self._predict_tfidf(query)
-        if lexical is not None:
-            return lexical
-
         return {uid: 0.0 for uid in ids}
 
     def runtime_status(self) -> Dict[str, Any]:
         self._ensure_fresh()
         available = self.is_ready()
-        mode = "semantic" if self._semantic_ready else ("tfidf" if self._tfidf_ready else "unavailable")
+        mode = "semantic" if self._semantic_ready else "unavailable"
         reason = self._runtime_reason
 
         if not available and reason in ("not_ready", ""):
-            if not _SKLEARN_AVAILABLE and not _SENTENCE_TRANSFORMERS_AVAILABLE:
-                reason = "dependency_missing"
+            if not (_SENTENCE_TRANSFORMERS_AVAILABLE and _NUMPY_AVAILABLE):
+                reason = "semantic_dependency_missing"
             else:
                 reason = "model_not_ready"
 
@@ -588,8 +520,6 @@ class MLRecommender:
             "semanticModel": semantic_model,
             "semanticModelConfigured": model_name,
             "semanticDependencyAvailable": bool(_SENTENCE_TRANSFORMERS_AVAILABLE and _NUMPY_AVAILABLE),
-            "tfidfReady": bool(self._tfidf_ready),
-            "sklearnAvailable": bool(_SKLEARN_AVAILABLE),
             "semanticError": str(self._semantic_error or ""),
         }
 

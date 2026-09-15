@@ -63,15 +63,6 @@ class RootAndOpsApiTests(unittest.TestCase):
         self.assertIn("ok", warmup)
         self.assertIn("duration_ms", warmup)
 
-    def test_public_translation_status_is_sanitized(self):
-        response = self.client.get("/translation-status")
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertIn("enabled", data)
-        self.assertIn("available", data)
-        self.assertNotIn("error", data)
-        self.assertNotIn("urlConfigured", data)
-
     def test_security_headers_are_present(self):
         response = self.client.get("/health")
         self.assertEqual(response.status_code, 200)

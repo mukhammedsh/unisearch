@@ -25,7 +25,6 @@ import {
 import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
-import { fetchTranslationRuntimeStatus } from "./shell.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
 import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
@@ -104,7 +103,6 @@ export function initProfileUI() {
     const examList = document.getElementById("examList");
     const profileMajorSelect = document.getElementById("profileMajorSelect");
     const profileInterestsInput = document.getElementById("profileInterestsInput");
-    const profileInterestsLangWarning = document.getElementById("profileInterestsLangWarning");
     const saveProfileBtn = document.getElementById("saveProfileBtn");
     const resetProfileBtn = document.getElementById("resetProfileBtn");
     const profileSaveState = document.getElementById("profileSaveState");
@@ -271,18 +269,6 @@ export function initProfileUI() {
         && getNameDraft() !== String(profile.name || "").trim(),
     );
     const isProfileDirty = () => stableProfileSignature(profile) !== savedSignature;
-
-    const renderInterestsTranslationWarning = (status) => {
-        if (!profileInterestsLangWarning) return;
-        const enabled = Boolean(status && status.enabled);
-        const available = Boolean(status && status.available);
-        const shouldShow = !enabled || !available;
-        profileInterestsLangWarning.hidden = !shouldShow;
-        profileInterestsLangWarning.textContent = t(
-            "profile.warning.interests_english_only",
-            "Translation is unavailable. Please write interests in English.",
-        );
-    };
 
     const parseBudgetDraftValue = () => {
         const raw = String(budgetInput?.value || profile?.budget || "").trim();
@@ -905,8 +891,6 @@ export function initProfileUI() {
             initCustomSelect("profileMajorSelect");
             initCustomSelect("examNameSelect");
         }
-        renderInterestsTranslationWarning(null);
-        fetchTranslationRuntimeStatus(API_BASE).then((status) => renderInterestsTranslationWarning(status)).catch(() => {});
         renderProfileData();
         refreshSaveState();
     };
@@ -1229,9 +1213,6 @@ export function initProfileUI() {
         isDiscarding = false;
         resetFields();
         retranslateProfileUi();
-        void fetchTranslationRuntimeStatus(API_BASE, false).then((status) => {
-            renderInterestsTranslationWarning(status);
-        });
 
         if (typeof initCustomSelect === "function") {
             initCustomSelect("examNameSelect");
