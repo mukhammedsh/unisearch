@@ -8,7 +8,8 @@ import {
   motionPress,
   replayMotion,
 } from "../../utils.js";
-import { renderNoConnection, setupTabs } from "../../components.js";
+import { renderErrorScreen, renderNoConnection, renderServerError, renderGenericError, setupTabs } from "../../components.js";
+import { classifyError } from "../../components/network-status.js";
 import { formatPrice } from "../../currency.js";
 import { t, tFormat } from "../../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities } from "../../routes.js";
@@ -40,6 +41,7 @@ import { getAdmissionChoicesFromCategories } from "../../university-detail-helpe
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
 let detailCurrencyChangedHandler = null;
+let detailOnlineReconnectHandler = null;
 
 function cssString(value) {
   return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -63,6 +65,10 @@ function cleanupDetailListeners() {
   if (detailCurrencyChangedHandler) {
     window.removeEventListener("currencyChanged", detailCurrencyChangedHandler);
     detailCurrencyChangedHandler = null;
+  }
+  if (detailOnlineReconnectHandler) {
+    window.removeEventListener("app:online-reconnect", detailOnlineReconnectHandler);
+    detailOnlineReconnectHandler = null;
   }
 }
 
@@ -393,10 +399,19 @@ export async function initUniversityPage() {
     };
     detailCurrencyChangedHandler = onDetailCurrencyChanged;
     window.addEventListener("currencyChanged", onDetailCurrencyChanged, { once: true });
+
+    const onDetailOnlineReconnect = async () => {
+      detailOnlineReconnectHandler = null;
+      await initUniversityPage();
+    };
+    detailOnlineReconnectHandler = onDetailOnlineReconnect;
+    window.addEventListener("app:online-reconnect", onDetailOnlineReconnect, { once: true });
   } catch (error) {
     console.error(error);
     if (stateEl) {
-      renderNoConnection({
+      const classified = classifyError(error);
+      renderErrorScreen({
+        type: classified.type,
         containerId: stateEl.id,
         onRetry: () => initUniversityPage(),
       });

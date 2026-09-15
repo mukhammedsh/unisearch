@@ -11,6 +11,8 @@ import {
 } from "../utils.js";
 import { t } from "../i18n.js";
 import { heroIcon } from "../icons.js";
+import { renderErrorScreen } from "../components.js";
+import { classifyError } from "../components/network-status.js";
 import {
   navigateToAppRoute,
   routeCompareSelection,
@@ -493,6 +495,14 @@ export async function initComparePage() {
     }
   } catch (err) {
     console.error("Failed to load universities for comparison:", err);
-    renderEmptyState(container);
+    const classified = classifyError(err);
+    renderErrorScreen({
+      type: classified.type,
+      targetEl: container,
+      onRetry: () => initComparePage(),
+    });
+    window.addEventListener("app:online-reconnect", () => {
+      initComparePage().catch(() => {});
+    }, { once: true });
   }
 }

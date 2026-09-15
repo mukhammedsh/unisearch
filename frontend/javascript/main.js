@@ -1,4 +1,5 @@
-import { addFooterProductLinks, loadGlobalLayout, renderNoConnection } from "./components.js";
+import { addFooterProductLinks, loadGlobalLayout, renderErrorScreen, renderNoConnection, renderServerError, renderGenericError } from "./components.js";
+import { classifyError, initNetworkStatusMonitor } from "./components/network-status.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset, prefersReducedMotion } from "./utils.js";
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
@@ -662,6 +663,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.warn("i18n init failed, using built-in fallback pack:", e);
     });
     initGlobalApiLoadingIndicator();
+    initNetworkStatusMonitor();
     registerServiceWorker();
 
     await i18nInitPromise;
@@ -682,7 +684,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const page = String(document.body.dataset.page || "").trim().toLowerCase();
     const isStaticInformationalPage = ["error-404", "privacy", "terms", "about"].includes(page);
     if (mainEl && !isStaticInformationalPage) {
-      renderNoConnection({
+      const classified = classifyError(error);
+      renderErrorScreen({
+        type: classified.type,
         targetEl: mainEl,
         onRetry: () => window.location.reload()
       });

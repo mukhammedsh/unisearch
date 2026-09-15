@@ -21,7 +21,7 @@ const SOURCE_ICON_PATTERNS = [
 
 const EXISTING_ICON_PATTERN = /^\s{2}"([^"]+)":/gm;
 
-const MANUAL_ICON_NAMES = ["sun"];
+const MANUAL_ICON_NAMES = ["sun", "server-stack", "signal-slash", "exclamation-circle"];
 
 function kebabToPascalCase(value) {
   return String(value || "")

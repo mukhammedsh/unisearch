@@ -4,6 +4,15 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.4.0 (2026-09-15) - Network Status Monitoring and Error Classification Architecture
+- Introduced dedicated error classification system (`classifyError`) separating network disconnection (`offline`), server faults (`5xx`), missing resources (`404`), and unexpected runtime crashes (`generic`), eliminating false "No Internet Connection" attribution on backend/client exceptions (`frontend/javascript/components/network-status.js`).
+- Implemented global network status monitor (`initNetworkStatusMonitor`) tracking browser `online` and `offline` events with a floating, accessible status banner (`.network-status-banner`) styled with Calm Academic Workspace tokens (`frontend/javascript/components/network-status.js`, `frontend/css/style.css`).
+- Added automatic silent reconnection (`app:online-reconnect`) across the university catalog, comparison workspace, and detail views, restoring fresh data upon connection recovery without requiring full page reload (`frontend/javascript/main.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/university/page-controller.js`, `frontend/javascript/pages/compare.js`).
+- Preserved existing catalog card state during offline transitions, avoiding destructive screen wiping when cached items are available and surfacing a non-intrusive status toast (`frontend/javascript/pages/universities.js`).
+- Expanded error screen renderers with semantic variants (`renderErrorScreen`, `renderServerError`, `renderGenericError`, `renderNoConnection`) and synced outline Heroicons (`signal-slash`, `server-stack`, `exclamation-circle`) (`frontend/javascript/components.js`, `scripts/sync-heroicons.mjs`, `frontend/javascript/icons.js`).
+- Added localized English and Russian keys for network status banners and classified error screens (`frontend/Localization/eng`, `frontend/Localization/ru`).
+- Added comprehensive unit test coverage for error classification, online detection, and error component rendering (`tests/unit/network-status.test.mjs`).
+
 ## 5.3.0 (2026-09-15) - Neural ML Interests Scoring and Smart Tag Guidance
 - Eliminated lexical TF-IDF fallback in the ML recommender service, ensuring recommendations strictly rely on multilingual neural embeddings (`multilingual-e5-base`) and report `unavailable` mode without silent lexical degradation (`backend/app/services/ml_scoring.py`, `backend/app/services/ai_scoring.py`, `AGENTS.md`).
 - Removed unused `scikit-learn` dependency from backend requirements (`backend/requirements.txt`).

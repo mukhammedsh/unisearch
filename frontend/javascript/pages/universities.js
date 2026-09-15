@@ -23,6 +23,7 @@ import {
   replayMotion,
   setupSlidingIndicator,
   safeSessionStorage,
+  showToast,
 } from "../utils.js";
 
 import {
@@ -31,7 +32,8 @@ import {
   mapMarkerLogoHtml,
 } from "../university-detail-helpers.js";
 
-import { renderNoConnection } from "../components.js";
+import { renderErrorScreen, renderNoConnection, renderServerError, renderGenericError } from "../components.js";
+import { classifyError } from "../components/network-status.js";
 import { heroIcon } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import {
@@ -103,6 +105,7 @@ let __universitiesMobileFilterKeydownHandler = null;
 let __universitiesRecentRelocationHandler = null;
 let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
+let __universitiesOnlineReconnectHandler = null;
 
 export function initUniversitiesPage() {
     const prefCurrency = getPreferredCurrency();
@@ -1969,6 +1972,16 @@ export function initUniversitiesPage() {
     };
     window.addEventListener("settingsChanged", __universitiesSettingsChangedHandler);
 
+    if (__universitiesOnlineReconnectHandler) {
+        window.removeEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
+    }
+    __universitiesOnlineReconnectHandler = () => {
+        if (!isCompareResultsMode() && typeof fetchAndRender === "function") {
+            fetchAndRender();
+        }
+    };
+    window.addEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
+
     if (__universitiesCurrencyChangedHandler) {
         window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
     }
@@ -2969,11 +2982,18 @@ export function initUniversitiesPage() {
         if (runSeq !== fetchRunSeq) return;
         if (err?.name === "AbortError") return;
         console.error(err);
+        const classified = classifyError(err);
         if (el.list) {
-            renderNoConnection({
-                containerId: "universitiesList",
-                onRetry: () => fetchAndRender()
-            });
+            const hasExistingCards = Array.isArray(state.allUniversities) && state.allUniversities.length > 0;
+            if (hasExistingCards && classified.isOffline) {
+                showToast(t("network.offline.banner", "You are offline. Showing cached workspace data."), "error");
+            } else {
+                renderErrorScreen({
+                    type: classified.type,
+                    containerId: "universitiesList",
+                    onRetry: () => fetchAndRender()
+                });
+            }
         } else if (el.state) {
             el.state.textContent = t("universities.state.failed", "Failed to load data.");
         }

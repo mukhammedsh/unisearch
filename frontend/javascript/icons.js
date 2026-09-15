@@ -290,6 +290,18 @@ const ICONS = {
     },
     "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z\" />"
   },
+  "exclamation-circle": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z\" />"
+  },
   "exclamation-triangle": {
     "attrs": {
       "xmlns": "http://www.w3.org/2000/svg",
@@ -422,6 +434,18 @@ const ICONS = {
     },
     "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z\" />"
   },
+  "server-stack": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z\" />"
+  },
   "share": {
     "attrs": {
       "xmlns": "http://www.w3.org/2000/svg",
@@ -433,6 +457,18 @@ const ICONS = {
       "data-slot": "icon"
     },
     "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z\" />"
+  },
+  "signal-slash": {
+    "attrs": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "fill": "none",
+      "viewBox": "0 0 24 24",
+      "stroke-width": 1.5,
+      "stroke": "currentColor",
+      "aria-hidden": "true",
+      "data-slot": "icon"
+    },
+    "body": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m3 3 8.735 8.735m0 0a.374.374 0 1 1 .53.53m-.53-.53.53.53m0 0L21 21M14.652 9.348a3.75 3.75 0 0 1 0 5.304m2.121-7.425a6.75 6.75 0 0 1 0 9.546m2.121-11.667c3.808 3.807 3.808 9.98 0 13.788m-9.546-4.242a3.733 3.733 0 0 1-1.06-2.122m-1.061 4.243a6.75 6.75 0 0 1-1.625-6.929m-.496 9.05c-3.068-3.067-3.664-7.67-1.79-11.334M12 12h.008v.008H12V12Z\" />"
   },
   "sparkles": {
     "attrs": {

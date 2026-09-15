@@ -536,25 +536,86 @@ export function setupTabs() {
   setupSlidingIndicator(".d-tabs", ".d-tab-btn", "active");
 }
 /**
- * Отрисовывает экран "Нет подключения к интернету"
+ * Renders an error screen based on classified error type (offline, server, generic, not_found).
  * @param {Object} options 
- * @param {Function} options.onRetry Коллбек для кнопки повтора
- * @param {string} options.containerId ID контейнера, куда вставить (опционально)
- * @returns {string} HTML-строка
+ * @param {'offline' | 'server' | 'not_found' | 'generic'} [options.type='generic']
+ * @param {Function} [options.onRetry] Retry callback
+ * @param {string} [options.containerId] Container ID
+ * @param {HTMLElement} [options.targetEl] Container element
+ * @param {string} [options.title] Optional title override
+ * @param {string} [options.desc] Optional description override
+ * @param {string} [options.titleI18nKey] Optional title i18n key override
+ * @param {string} [options.descI18nKey] Optional desc i18n key override
+ * @param {boolean} [options.fullHeight=true] Whether to use full viewport height
+ * @returns {string} HTML string
  */
-export function renderNoConnection(options = {}) {
-  const { onRetry, containerId, targetEl } = options;
+export function renderErrorScreen(options = {}) {
+  const {
+    type = "generic",
+    onRetry,
+    containerId,
+    targetEl,
+    title,
+    desc,
+    titleI18nKey,
+    descI18nKey,
+    fullHeight = true,
+  } = options;
+
+  let iconName = "exclamation-circle";
+  let titleAttr = 'data-i18n="error.generic.title"';
+  let descAttr = 'data-i18n="error.generic.desc"';
+  let resolvedTitle = t("error.generic.title", "Something Went Wrong");
+  let resolvedDesc = t("error.generic.desc", "An unexpected error occurred while loading this view. Please try reloading.");
+
+  if (type === "offline") {
+    iconName = "signal-slash";
+    titleAttr = 'data-i18n="error.no_connection.title"';
+    descAttr = 'data-i18n="error.no_connection.desc"';
+    resolvedTitle = t("error.no_connection.title", "No Internet Connection");
+    resolvedDesc = t("error.no_connection.desc", "We couldn't reach the server. Please check your internet connection and try again.");
+  } else if (type === "server") {
+    iconName = "server-stack";
+    titleAttr = 'data-i18n="error.server_error.title"';
+    descAttr = 'data-i18n="error.server_error.desc"';
+    resolvedTitle = t("error.server_error.title", "Server Unavailable");
+    resolvedDesc = t("error.server_error.desc", "The server encountered an issue or is temporarily unreachable. Please try again in a moment.");
+  } else if (type === "not_found") {
+    iconName = "magnifying-glass";
+    titleAttr = 'data-i18n="error.not_found.title"';
+    descAttr = 'data-i18n="error.not_found.desc"';
+    resolvedTitle = t("error.not_found.title", "Resource Not Found");
+    resolvedDesc = t("error.not_found.desc", "The requested page or resource could not be found.");
+  }
+
+  if (title) {
+    resolvedTitle = title;
+    titleAttr = "";
+  }
+  if (desc) {
+    resolvedDesc = desc;
+    descAttr = "";
+  }
+
+  const heightClass = fullHeight ? "error-screen--full" : "";
+  const typeClass = `error-screen--${type}`;
+
   const html = `
-    <div class="error-screen error-screen--full fadeIn">
-      <div class="error-icon-wrap">
-        ${heroIcon("exclamation-triangle", "ui-icon ui-icon--32")}
+    <div class="error-screen ${heightClass} ${typeClass} fadeIn" role="alert" aria-live="polite">
+      <div class="error-icon-wrap" aria-hidden="true">
+        ${heroIcon(iconName, "ui-icon ui-icon--32") || heroIcon("exclamation-triangle", "ui-icon ui-icon--32")}
       </div>
-      <h2 class="error-title" data-i18n="error.no_connection.title">No Internet Connection</h2>
-      <p class="error-desc" data-i18n="error.no_connection.desc">We couldn't reach the server. Please check your internet connection and try again.</p>
-      <button class="error-btn" id="errorRetryBtn">
+      <h2 class="error-title" ${titleAttr}>${resolvedTitle}</h2>
+      <p class="error-desc" ${descAttr}>${resolvedDesc}</p>
+      ${
+        onRetry
+          ? `
+      <button class="error-btn" id="errorRetryBtn" type="button">
         ${heroIcon("arrow-path", "ui-icon ui-icon--18")}
         <span data-i18n="error.retry">Retry</span>
-      </button>
+      </button>`
+          : ""
+      }
     </div>
   `;
 
@@ -584,16 +645,35 @@ export function renderNoConnection(options = {}) {
     }
   }
 
-  // Специфичное требование: если показывается ошибка подключения, загрузчик скелета больше не нужен
   const siteLoader = document.getElementById("siteInitialLoader");
   if (siteLoader) {
     siteLoader.classList.add("is-hidden");
     document.body.classList.remove("initial-loading");
-    // Удаляем его через некоторое время, чтобы анимация завершилась
     setTimeout(() => {
-        if (siteLoader.parentNode) siteLoader.remove();
+      if (siteLoader.parentNode) siteLoader.remove();
     }, 600);
   }
 
   return html;
+}
+
+/**
+ * Convenience helper for rendering offline / no internet screen.
+ */
+export function renderNoConnection(options = {}) {
+  return renderErrorScreen({ ...options, type: "offline" });
+}
+
+/**
+ * Convenience helper for rendering server error (5xx) screen.
+ */
+export function renderServerError(options = {}) {
+  return renderErrorScreen({ ...options, type: "server" });
+}
+
+/**
+ * Convenience helper for rendering generic unexpected error screen.
+ */
+export function renderGenericError(options = {}) {
+  return renderErrorScreen({ ...options, type: "generic" });
 }

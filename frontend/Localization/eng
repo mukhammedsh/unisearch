@@ -1091,8 +1091,16 @@ languages.error.detail: Could not save {exam}: {reason}
 languages.error.generic: Could not save {exam}
 languages.added_value: Added {language} {exam}: {value}
 languages.updated_value: Updated {language} {exam}: {value}
+network.offline.banner: You are offline. Showing cached workspace data.
+network.online.banner: Connection restored.
 error.no_connection.title: No Internet Connection
 error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.
+error.server_error.title: Server Unavailable
+error.server_error.desc: The server encountered an issue or is temporarily unreachable. Please try again in a moment.
+error.generic.title: Something Went Wrong
+error.generic.desc: An unexpected error occurred while loading this view. Please try reloading.
+error.not_found.title: Resource Not Found
+error.not_found.desc: The requested page or resource could not be found.
 error.retry: Retry
 placeholder.field.admission_categories: Admission categories
 placeholder.field.admission_category: Admission category

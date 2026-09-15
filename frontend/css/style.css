@@ -3775,6 +3775,84 @@ body.route-loading main {
   transform-origin: center;
 }
 
+/* Floating Network Status Banner (Calm Academic Workspace) */
+.network-status-banner {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-16px);
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--motion-standard) var(--motion-ease-standard),
+    transform var(--motion-standard) var(--motion-ease-standard);
+}
+
+.network-status-banner.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.network-status-banner__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.network-status-banner--offline {
+  border-color: var(--line);
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+.network-status-banner--offline .network-status-banner__icon {
+  color: var(--text-muted);
+}
+
+.network-status-banner--online {
+  border-color: var(--line);
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+.network-status-banner--online .network-status-banner__icon {
+  color: var(--accent);
+}
+
+.network-status-banner__text {
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .network-status-banner {
+    top: 12px;
+    max-width: calc(100vw - 24px);
+    padding: 8px 12px;
+    font-size: var(--text-xs);
+  }
+
+  .network-status-banner__text {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+
 /* ===== Narrow viewport hardening ===== */
 @media (max-width: 380px) {
   .navbar {

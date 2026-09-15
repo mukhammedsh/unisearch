@@ -1090,8 +1090,16 @@ languages.error.detail: Не удалось сохранить {exam}: {reason}
 languages.error.generic: Не удалось сохранить {exam}
 languages.added_value: Добавлен {language} {exam}: {value}
 languages.updated_value: Обновлён {language} {exam}: {value}
+network.offline.banner: Нет подключения к интернету. Работаем в офлайн-режиме.
+network.online.banner: Подключение восстановлено.
 error.no_connection.title: Нет подключения к интернету
 error.no_connection.desc: Мы не смогли связаться с сервером. Пожалуйста, проверьте подключение и повторите попытку.
+error.server_error.title: Сервер временно недоступен
+error.server_error.desc: Произошел сбой на сервере или сервис временно не отвечает. Пожалуйста, попробуйте еще раз чуть позже.
+error.generic.title: Произошла ошибка
+error.generic.desc: Произошла непредвиденная ошибка при загрузке. Попробуйте обновить страницу.
+error.not_found.title: Страница не найдена
+error.not_found.desc: Запрашиваемая страница или ресурс не найдены.
 error.retry: Повторить
 placeholder.field.admission_categories: Категории поступления
 placeholder.field.admission_category: Категория поступления
