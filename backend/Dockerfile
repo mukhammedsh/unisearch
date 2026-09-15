@@ -1,6 +1,5 @@
 FROM python:3.12-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV HF_HOME=/home/appuser/.cache/huggingface
 
@@ -13,9 +12,16 @@ RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
     && mkdir -p /home/appuser/.cache/huggingface \
     && chown -R appuser:appuser /home/appuser /app
 
+# Pre-download SentenceTransformer model weights into HF_HOME cache during build
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('intfloat/multilingual-e5-base')" \
+    && chown -R appuser:appuser /home/appuser/.cache
+
 COPY --chown=appuser:appuser backend/app /app/app
 COPY --chown=appuser:appuser backend/data /app/data
 COPY --chown=appuser:appuser package.json /app/package.json
+
+# Pre-compile Python bytecode (.pyc) for faster startup
+RUN python -m compileall -q /app/app
 
 USER appuser
 
