@@ -141,7 +141,10 @@ test("selected comparison cards keep a compact localized status at desktop and m
       await clearCompareState(page, language);
       await page.setViewportSize(viewport);
       await page.goto("/index.html");
+      await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+      await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
       await page.locator("#compareModeBtn").click();
+      await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "true");
 
       const card = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
       await expect(card).toBeVisible();
