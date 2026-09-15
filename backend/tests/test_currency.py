@@ -278,6 +278,25 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
 
     def setUp(self):
         currency_service._clear_cache_for_testing()
+        self._rates_patcher = patch(
+            "app.services.currency.fetch_rates",
+            return_value={
+                "rates": {
+                    "USD": 1.0,
+                    "EUR": 0.95,
+                    "KZT": 480.0,
+                    "GBP": 0.82,
+                    "CHF": 0.91,
+                },
+                "source": "api",
+                "date": "2026-09-11",
+            },
+        )
+        self._rates_patcher.start()
+
+    def tearDown(self):
+        self._rates_patcher.stop()
+        currency_service._clear_cache_for_testing()
 
     def test_get_currency_rates_endpoint(self):
         resp = self.client.get("/currency/rates")

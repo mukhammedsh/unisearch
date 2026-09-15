@@ -146,9 +146,11 @@ For tests, install the additional dependencies in the active Python environment 
 ```sh
 python -m pip install -r backend/requirements-dev.txt
 npx playwright install chromium
-npm run test:backend
-npm run test:unit
-npm run test:e2e:pr
+npm run test:fast               # fast combined unit + backend tests
+npm run test:backend            # all backend tests (or: npm run test:backend -- <test_name>)
+npm run test:unit               # all unit tests (or: npm run test:unit -- <filter>)
+npm run test:smoke              # unit tests + home smoke E2E
+npm run test:e2e:pr             # Playwright E2E suite
 ```
 
 `test:e2e:pr` starts the API on port `8000` and a test frontend on `5510`. If an API is already running, it must allow CORS for `http://127.0.0.1:5510`. `npm run test:all` combines version, encoding, token, and design-lint checks with the three test suites; run i18n and data audits separately.

@@ -38,11 +38,11 @@ module.exports = defineConfig({
       },
     },
     {
-      command: `${backendPython} -m http.server 5510 --bind 127.0.0.1`,
-      cwd: 'frontend',
+      command: `${backendPython} scripts/frontend_dev_server.py --host 127.0.0.1 --port 5510 --directory frontend`,
+      cwd: '.',
       url: 'http://127.0.0.1:5510/index.html',
       timeout: 60000,
-      reuseExistingServer: false,
+      reuseExistingServer: true,
     },
   ],
 });

@@ -4,6 +4,14 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.7.1 (2026-09-15) - Test Suite Optimization, Granular Test Runners, and Agent Anti-Redundancy Protocol
+- Added CLI argument filtering and target normalization to `test:backend` (`scripts/test-backend.mjs`), enabling direct execution of specific test files, test classes, or methods (e.g. `npm run test:backend -- test_currency` or `npm run test:backend -- tests/test_ai_scoring.py::AiScoringTests::test_foo`) in ~0.5–1.0s.
+- Created `scripts/test-unit.mjs` wrapper for `test:unit` supporting targeted file pattern filters (e.g. `npm run test:unit -- currency`) running in ~120ms, and added fast aggregated developer scripts `test:fast` and `test:smoke` in `package.json`.
+- Mocked external network requests to `open.er-api.com` in `CurrencyApiEndpointsTests` (`backend/tests/test_currency.py`) and established deterministic test environment defaults (`backend/tests/__init__.py`), eliminating latency and third-party network dependencies.
+- Upgraded Playwright frontend webServer configuration (`playwright.local.config.js`) to use the multi-threaded in-memory `frontend_dev_server.py` with server reuse (`reuseExistingServer: true`), and optimized artificial timeout delay in `tests/e2e/i18n-layout-resilience.spec.js`.
+- Added cross-platform `scripts/audit-data.mjs` wrapper for reliable execution of `npm run audit:data` across operating systems.
+- Updated `AGENTS.md` with strict progressive testing rules, prohibiting intermediate `test:all` runs, forbidding re-running already passed static checks for unchanged domains, and adding a targeted test execution cheat sheet.
+
 ## 5.7.0 (2026-09-15) - UniChance Mathematical Overhaul, Multi-Exam Best Score Resolution, and Calibration Optimization
 - Updated `_resolve_user_normalized_track_score` to evaluate all compatible standardized exams and select the applicant's highest normalized score rather than stopping on the first match (`backend/app/services/ai_scoring.py`).
 - Introduced `_calculate_chance_range(chance01, confidence)` applied after final context modulation and feasibility clamping, guaranteeing the mathematical containment invariant $rangeLowPercent \le chancePercent \le rangeHighPercent$ across all confidence levels (`backend/app/services/ai_scoring.py`).

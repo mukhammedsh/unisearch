@@ -8,7 +8,7 @@ test("navbar stays available when a localization pack is slow", async ({ page })
   });
 
   await page.route("**/Localization/ru*", async (route) => {
-    await new Promise((resolve) => setTimeout(resolve, 10_000));
+    await new Promise((resolve) => setTimeout(resolve, 4_200));
     try {
       await route.fulfill({
         status: 200,

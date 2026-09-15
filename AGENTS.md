@@ -91,20 +91,37 @@
 8. **Test behavior rather than implementation text.** When practical, add a regression test that fails for the original bug and passes after the fix. Cover meaningful boundaries and failure cases for new contracts. Do not test for source-code strings instead of outcomes or mock the logic under test. Documentation translations and small styling changes need relevant checks, not artificial unit tests.
 9. **Never tune checks to the patch.** Do not remove assertions, add skips, expand a lint baseline, or change expected output solely to get a green result. Update an expectation only when product behavior intentionally changes. Distinguish environment failures and pre-existing failures from regressions introduced by the change; claim a failure is pre-existing only with comparison evidence.
 10. **Review the final diff.** Inspect all changes, including staged and untracked files. Remove introduced duplication, dead branches, temporary logs, and generated artifacts. Do not revert user changes or use `git reset --hard`/`git clean` as task cleanup. Self-review findings must describe a concrete failure scenario rather than demand complexity for a hypothetical case.
+11. **Never repeat redundant tests or run blind full-suite checks.** 
+    - **Progressive testing only:** While implementing or fixing code, run *only* the specific test file or method that covers the touched code (e.g. `npm run test:backend -- test_currency` or `npm run test:unit -- currency`).
+    - **Prohibit iterative `test:all`:** Never run `npm run test:all` or the full E2E suite (`npm run test:e2e:pr`) in intermediate development loops. Reserve `test:all` exclusively for final pre-release validation.
+    - **Never re-run passed static checks:** If `check:tokens`, `check:i18n`, `check:encoding`, or `audit:data` already passed in the current task, do not re-run them unless files belonging to that specific domain were modified after the check.
+    - **Fast subsystem checks:** Use `npm run test:fast` (unit + backend in ~8s) or `npm run test:smoke` when verifying multiple components without launching full browser suites.
 
 ## 9. Verification and completion
 
 Run checks from the repository root. Activate `backend/.venv` for Python commands. On Windows, use `.\backend\.venv\Scripts\python.exe` when system `python` is unavailable. Inspect the existing interpreter before reinstalling an environment.
 
+### Targeted test execution (Fast Path)
+
+| Scope | Focused Command | Duration |
+| --- | --- | --- |
+| Single backend test module / method | `npm run test:backend -- <test_name_or_path>` (e.g. `npm run test:backend -- test_currency` or `npm run test:backend -- tests/test_ai_scoring.py::AiScoringTests::test_foo`) | ~0.5–1.5s |
+| Single frontend unit test | `npm run test:unit -- <name_filter>` (e.g. `npm run test:unit -- currency` or `npm run test:unit -- theme`) | ~0.1–0.3s |
+| Single Playwright E2E spec | `npx playwright test tests/e2e/<spec>.spec.js --config=playwright.local.config.js` | ~2–5s |
+| Fast combined unit + backend | `npm run test:fast` | ~7–9s |
+| Fast smoke check (unit + E2E smoke) | `npm run test:smoke` | ~12–15s |
+
+### Required verification by change type
+
 | Change | Required verification |
 | --- | --- |
 | Documentation or infrastructure | `npm run check:version`, `npm run check:encoding`, `npm run check:tokens`, `npm run check:i18n`, and `npm run audit:data`; validate links and commands in changed docs |
-| Backend, API, or scoring | Focused unittest plus `npm run test:backend`; inspect the frontend consumer for contract changes |
-| Frontend JavaScript | `npm run test:unit` and relevant Playwright scenarios; `npm run check:i18n` when strings change |
-| UI or CSS | `npm run check:tokens`, `npm run check:design-lint`, and the affected browser flow on desktop/mobile, light/dark, and keyboard navigation |
+| Backend, API, or scoring | Focused backend test (`npm run test:backend -- <test_file>`), followed by `npm run test:backend` before completion; inspect frontend consumer for contract changes |
+| Frontend JavaScript | Focused unit test (`npm run test:unit -- <filter>`), followed by `npm run test:unit` and relevant single Playwright spec; `npm run check:i18n` only when strings change |
+| UI or CSS | `npm run check:tokens`, `npm run check:design-lint`, and affected single Playwright scenario or browser flow on desktop/mobile, light/dark |
 | Data or media | `npm run audit:data` or `npm run audit:images`; HTTP checks according to section 5 |
 
-Start with focused checks. Run the full `npm run test:all` for broad behavior changes. It does not include `check:i18n` or `audit:data`. `test:e2e:pr` uses API port `8000` and frontend port `5510`; if it reuses an API process, confirm that its CORS configuration allows the test origin.
+Start with focused checks. Run `npm run test:fast` during multi-component development. Run the full `npm run test:all` only once before final release preparation for broad behavior changes. `test:e2e:pr` uses API port `8000` and frontend port `5510`; with the multi-threaded frontend dev server, existing servers on those ports are reused automatically.
 
 Work is complete when the expected behavior is verified, the diff is reviewed, temporary artifacts are removed, and agent-owned services are stopped. Report the outcome, checks performed, and any remaining limitations. Never describe an unavailable or failed check as passed, and never claim browser verification based only on reading source code. Do not repeat already successful checks unless subsequent changes or new evidence justify it. Commit, push, and release actions remain subject to section 6.
 

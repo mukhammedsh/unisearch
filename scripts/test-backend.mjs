@@ -22,16 +22,38 @@ const python = detectPython(rootDir, testEnv);
 
 console.log(`[test:backend] using python: ${python}`);
 
-const child = spawn(
-  python,
-  ["-m", "unittest", "discover", "tests", "-v"],
-  {
-    cwd: backendDir,
-    env: testEnv,
-    stdio: "inherit",
-    shell: false,
-  },
-);
+function normalizeTestTarget(arg) {
+  if (!arg || arg.startsWith("-")) return arg;
+  let clean = arg.replaceAll("\\", "/").replace(/^\.\//, "");
+  if (clean.startsWith("backend/")) clean = clean.slice("backend/".length);
+  if (clean.startsWith("tests/")) clean = clean.slice("tests/".length);
+  clean = clean.replace(/\.py(?=::|:|$)/, "");
+  clean = clean.replaceAll("::", ".").replaceAll(":", ".");
+  if (!clean.startsWith("tests.")) clean = `tests.${clean}`;
+  return clean;
+}
+
+const rawArgs = process.argv.slice(2);
+const positional = rawArgs.filter((a) => !a.startsWith("-"));
+const flags = rawArgs.filter((a) => a.startsWith("-"));
+
+let testArgs = [];
+if (positional.length > 0) {
+  const normalizedTargets = positional.map(normalizeTestTarget);
+  testArgs = ["-m", "unittest", ...flags, ...normalizedTargets];
+  console.log(`[test:backend] running target(s): ${normalizedTargets.join(", ")}`);
+} else {
+  const hasVerbosity = flags.some((f) => f === "-v" || f === "-q");
+  testArgs = ["-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", ...(hasVerbosity ? flags : flags)];
+  console.log("[test:backend] running discovery across all backend tests");
+}
+
+const child = spawn(python, testArgs, {
+  cwd: backendDir,
+  env: testEnv,
+  stdio: "inherit",
+  shell: false,
+});
 
 child.on("error", (error) => {
   console.error(`[test:backend] failed to start: ${error.message}`);
