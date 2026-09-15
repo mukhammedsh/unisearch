@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.6.1 (2026-09-15) - CodeQL Static Analysis Hardening and Error Handling Regression Fix
+- Resolved latent `ReferenceError` during catalog fetch failure handling by properly initializing classified error states before offline checks, eliminating unhandled exceptions during network disruptions (`frontend/javascript/pages/universities.js`).
+- Aligned `toggleCompareUniversity` function calls across catalog cards, card link overlays, map cards, and map results to adhere strictly to single-parameter signatures (`frontend/javascript/pages/universities.js`).
+- Cleaned up obsolete dead code and unused variables, removing leftover search tokenization chains (`universitySearchTokens`, `acronymForUniversityName`, `normalizeUniversitySearchText`), legacy `_LAST_ERROR` state in currency service, and unused router parameters (`backend/app/routers/universities.py`, `backend/app/services/currency.py`, `backend/app/services/ai_scoring.py`, `frontend/javascript/pages/universities.js`).
+- Purged unused module imports across frontend layout, settings, error screens, and comparison helpers (`frontend/javascript/main.js`, `frontend/javascript/components.js`, `frontend/javascript/components/settings-ui.js`, `frontend/javascript/pages/universities/compare-helpers.js`, `frontend/javascript/pages/university/page-controller.js`, `backend/tests/test_security_regressions.py`).
+- Updated unit test suites to remove redundant bindings and verified zero regressions across 251 backend tests, 193 unit tests, and 110 E2E scenarios (`tests/unit/custom-select-typeahead.test.mjs`, `backend/tests/test_currency.py`).
+
 ## 5.6.0 (2026-09-15) - UniFit Scoring Pipeline Optimization, Admission Track Synchronization, and Complete Badge Hints
 - Optimized UniFit ranking performance by constructing user preference contexts and language configs once per request, eliminating N+1 context rebuilds and redundant multi-pass scoring loops (`backend/app/services/ai_scoring.py`).
 - Synchronized admission track selection between UniChance and UniFit so both modules evaluate against the exact same recommended or applicant-selected track (`backend/app/services/ai_scoring.py`).

@@ -1007,47 +1007,6 @@ export function initUniversitiesPage() {
         syncCardActionState();
     };
 
-    const normalizeUniversitySearchText = (value) => String(value || "")
-        .toLowerCase()
-        .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^\p{L}\p{N}]+/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-
-    const acronymForUniversityName = (name) => {
-        const skip = new Set(["of", "the", "and", "for", "de", "la", "le"]);
-        return String(name || "")
-            .split(/[^\p{L}\p{N}]+/u)
-            .filter((word) => word && !skip.has(word.toLowerCase()))
-            .map((word) => word[0])
-            .join("")
-            .toLowerCase();
-    };
-
-    const universitySearchTokens = (item) => {
-        const name = String(item?.name || "");
-        const translatedName = trUniversityName(item);
-        const id = String(item?.id || "");
-        const city = String(item?.location?.city || "");
-        const country = String(item?.location?.country || "");
-        const aliases = Array.isArray(item?.search_aliases) ? item.search_aliases : [];
-        const tokens = [
-            name,
-            translatedName,
-            id,
-            id.replace(/-/g, " "),
-            city,
-            trCity(city),
-            country,
-            trCountry(country),
-            acronymForUniversityName(name),
-            acronymForUniversityName(translatedName),
-            ...aliases,
-        ];
-        return Array.from(new Set(tokens.map(normalizeUniversitySearchText).filter(Boolean)));
-    };
-
     const hideSearchSuggestions = () => {
         const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
         const node = host?.querySelector(".navbar-search-suggestions");

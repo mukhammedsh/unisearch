@@ -452,7 +452,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('adds open-up class when space below is limited and removes on close', () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);
@@ -489,7 +489,7 @@ describe('custom-select-typeahead and optgroups', () => {
   });
 
   it('does not add open-up class when space below is ample', () => {
-    const { container, select } = createSelectWithOptgroups();
+    const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
     initCustomSelect(select.id);

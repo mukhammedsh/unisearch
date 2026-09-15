@@ -204,23 +204,20 @@ _MEMORY_CACHE: Dict[str, Any] = {}
 _CACHE_LOCK = threading.Lock()
 
 _LAST_FETCH_TIME: Optional[float] = None
-_LAST_ERROR: Optional[str] = None
 
 
 def _record_success() -> None:
-    global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL, _LAST_ERROR
+    global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
     with _CIRCUIT_LOCK:
         _CONSECUTIVE_FAILURES = 0
         _CIRCUIT_STATE = "CLOSED"
         _BACKOFF_UNTIL = 0.0
-        _LAST_ERROR = None
 
 
-def _record_failure(error_msg: str) -> None:
-    global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL, _LAST_ERROR
+def _record_failure(error_msg: str = "") -> None:
+    global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
     with _CIRCUIT_LOCK:
         _CONSECUTIVE_FAILURES += 1
-        _LAST_ERROR = error_msg
         if CURRENCY_RATES_BACKOFF_SEC <= 0:
             return
         backoff_duration = float(CURRENCY_RATES_BACKOFF_SEC)
@@ -245,13 +242,12 @@ def _in_backoff() -> bool:
 
 
 def _clear_cache_for_testing() -> None:
-    global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL, _LAST_ERROR
+    global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
     global _LAST_FETCH_TIME
     with _CIRCUIT_LOCK:
         _CONSECUTIVE_FAILURES = 0
         _CIRCUIT_STATE = "CLOSED"
         _BACKOFF_UNTIL = 0.0
-        _LAST_ERROR = None
     with _CACHE_LOCK:
         _MEMORY_CACHE.clear()
     _load_filter_limits_config_cached.cache_clear()

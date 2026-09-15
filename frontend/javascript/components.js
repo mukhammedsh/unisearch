@@ -2,7 +2,6 @@
 import {
   getCurrentTheme,
   initCustomSelect,
-  motionPress,
   replayMotion,
   setupSlidingIndicator,
   toggleTheme,
@@ -544,8 +543,6 @@ export function setupTabs() {
  * @param {HTMLElement} [options.targetEl] Container element
  * @param {string} [options.title] Optional title override
  * @param {string} [options.desc] Optional description override
- * @param {string} [options.titleI18nKey] Optional title i18n key override
- * @param {string} [options.descI18nKey] Optional desc i18n key override
  * @param {boolean} [options.fullHeight=true] Whether to use full viewport height
  * @returns {string} HTML string
  */
@@ -557,8 +554,6 @@ export function renderErrorScreen(options = {}) {
     targetEl,
     title,
     desc,
-    titleI18nKey,
-    descI18nKey,
     fullHeight = true,
   } = options;
 

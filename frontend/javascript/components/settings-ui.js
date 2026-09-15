@@ -1,5 +1,4 @@
 import { closeMotionLayer, initCustomSelect, replayMotion, trapFocus } from "../utils.js";
-import { t } from "../i18n.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_PREFERRED_CURRENCY,

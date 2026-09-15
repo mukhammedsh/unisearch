@@ -272,7 +272,6 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
 
     cache_key = _ai_sort_cache_key(payload)
     search_lang = _resolve_search_lang(payload.lang, request)
-    client_key = _request_client_key(request)
     sorted_items = _ai_sort_cache_get(cache_key)
     cache_hit = sorted_items is not None
 

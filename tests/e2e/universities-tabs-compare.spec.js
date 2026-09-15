@@ -421,3 +421,31 @@ test("global rank sort reorders catalog by rank and displays rank tooltip with v
   await rankMetric.click();
   await expect(page).toHaveURL(/university\.html\?.*id=mit-usa-cambridge/);
 });
+
+test("toggling compare selection mode does not trigger additional network fetches when catalog is already loaded", async ({ page }) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  let universityFetchCount = 0;
+  page.on("request", (request) => {
+    if (request.url().includes("/api/universities") || request.url().includes("/universities/ai-sort")) {
+      universityFetchCount++;
+    }
+  });
+
+  // Toggle compare mode ON
+  await page.locator("#compareModeBtn").click();
+  await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("body")).toHaveClass(/universities-compare-mode/);
+
+  // Toggle compare mode OFF
+  await page.locator("#compareModeBtn").click();
+  await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
+  await expect(page.locator("body")).not.toHaveClass(/universities-compare-mode/);
+
+  expect(universityFetchCount).toBe(0);
+});
+

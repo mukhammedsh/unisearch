@@ -1,6 +1,5 @@
 import asyncio
 import concurrent.futures
-import logging
 import threading
 import unittest
 

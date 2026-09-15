@@ -309,13 +309,10 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
         self.assertIn("source", data)
 
     def test_get_currency_status_does_not_expose_last_error(self):
-        secret_error = "secret stack trace and provider URL"
-        with patch.object(currency_service, "_LAST_ERROR", secret_error):
-            resp = self.client.get("/currency/status")
-
+        resp = self.client.get("/currency/status")
         self.assertEqual(resp.status_code, 200)
         self.assertNotIn("last_error", resp.json())
-        self.assertNotIn(secret_error, resp.text)
+        self.assertNotIn("error", resp.json())
 
 
 class CurrencyNormalizationBackendTests(unittest.TestCase):

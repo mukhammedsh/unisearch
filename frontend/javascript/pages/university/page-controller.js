@@ -8,7 +8,7 @@ import {
   motionPress,
   replayMotion,
 } from "../../utils.js";
-import { renderErrorScreen, renderNoConnection, renderServerError, renderGenericError, setupTabs } from "../../components.js";
+import { renderErrorScreen, setupTabs } from "../../components.js";
 import { classifyError } from "../../components/network-status.js";
 import { formatPrice } from "../../currency.js";
 import { t, tFormat } from "../../i18n.js";

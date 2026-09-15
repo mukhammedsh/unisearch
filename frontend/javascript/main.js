@@ -1,4 +1,4 @@
-import { addFooterProductLinks, loadGlobalLayout, renderErrorScreen, renderNoConnection, renderServerError, renderGenericError } from "./components.js";
+import { addFooterProductLinks, loadGlobalLayout, renderErrorScreen } from "./components.js";
 import { classifyError, initNetworkStatusMonitor } from "./components/network-status.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset, prefersReducedMotion } from "./utils.js";
 import { applyTranslations, initI18n } from "./i18n.js";

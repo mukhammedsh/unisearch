@@ -182,7 +182,7 @@ export async function resolveAiSortResult(options = {}) {
 }
 
 import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
-import { formatMoney, formatPrice } from "../../currency.js";
+import { formatPrice } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 

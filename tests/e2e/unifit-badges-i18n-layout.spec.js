@@ -109,6 +109,10 @@ for (const locale of locales) {
     const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await expect(firstTooltip).toBeVisible();
     await expect(firstTooltip).toHaveCSS("z-index", "1200");
+    await expect(firstTooltip.locator(".uni-status-tooltip__title")).toBeVisible();
+    await expect(firstTooltip.locator(".uni-status-tooltip__text")).toBeVisible();
+    const firstAriaLabel = await firstStatus.getAttribute("aria-label");
+    expect(firstAriaLabel).toMatch(/: /);
 
     await firstStatus.click();
     await expect(firstTooltip).not.toBeVisible();
