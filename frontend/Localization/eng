@@ -1093,6 +1093,8 @@ languages.added_value: Added {language} {exam}: {value}
 languages.updated_value: Updated {language} {exam}: {value}
 network.offline.banner: You are offline. Showing cached workspace data.
 network.online.banner: Connection restored.
+navbar.search.offline_notice: Search is unavailable while offline.
+universities.offline_action_warning: Cannot refresh catalog while offline. Showing cached results.
 error.no_connection.title: No Internet Connection
 error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.
 error.server_error.title: Server Unavailable

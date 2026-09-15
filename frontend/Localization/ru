@@ -1092,6 +1092,8 @@ languages.added_value: Добавлен {language} {exam}: {value}
 languages.updated_value: Обновлён {language} {exam}: {value}
 network.offline.banner: Нет подключения к интернету. Работаем в офлайн-режиме.
 network.online.banner: Подключение восстановлено.
+navbar.search.offline_notice: Поиск недоступен в офлайн-режиме.
+universities.offline_action_warning: Не удалось обновить каталог без подключения к интернету. Показаны сохраненные результаты.
 error.no_connection.title: Нет подключения к интернету
 error.no_connection.desc: Мы не смогли связаться с сервером. Пожалуйста, проверьте подключение и повторите попытку.
 error.server_error.title: Сервер временно недоступен

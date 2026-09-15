@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
 import {
+  checkConnectivity,
   classifyError,
   isOnline,
 } from "../../frontend/javascript/components/network-status.js";
@@ -87,6 +88,62 @@ describe("network-status.js", () => {
     it("returns false when navigator reports offline", () => {
       navigator.onLine = false;
       assert.equal(isOnline(), false);
+    });
+  });
+
+  describe("checkConnectivity", () => {
+    it("returns false immediately when navigator.onLine is false", async () => {
+      navigator.onLine = false;
+      const result = await checkConnectivity({ force: true });
+      assert.equal(result, false);
+    });
+
+    it("probes /health endpoint and returns true on successful 200 response", async () => {
+      navigator.onLine = true;
+      const originalFetch = global.fetch;
+      let queriedUrl = "";
+      global.fetch = async (url) => {
+        queriedUrl = String(url);
+        return { ok: true, status: 200 };
+      };
+
+      try {
+        const result = await checkConnectivity({ force: true });
+        assert.equal(result, true);
+        assert.ok(queriedUrl.endsWith("/health"));
+      } finally {
+        global.fetch = originalFetch;
+      }
+    });
+
+    it("returns false when probe fails with a network exception", async () => {
+      navigator.onLine = true;
+      const originalFetch = global.fetch;
+      global.fetch = async () => {
+        throw new TypeError("Failed to fetch");
+      };
+
+      try {
+        const result = await checkConnectivity({ force: true });
+        assert.equal(result, false);
+      } finally {
+        global.fetch = originalFetch;
+      }
+    });
+
+    it("returns false when probe returns 500 status", async () => {
+      navigator.onLine = true;
+      const originalFetch = global.fetch;
+      global.fetch = async () => {
+        return { ok: false, status: 500 };
+      };
+
+      try {
+        const result = await checkConnectivity({ force: true });
+        assert.equal(result, false);
+      } finally {
+        global.fetch = originalFetch;
+      }
     });
   });
 

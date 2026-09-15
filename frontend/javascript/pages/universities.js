@@ -2982,11 +2982,11 @@ export function initUniversitiesPage() {
         if (runSeq !== fetchRunSeq) return;
         if (err?.name === "AbortError") return;
         console.error(err);
-        const classified = classifyError(err);
         if (el.list) {
-            const hasExistingCards = Array.isArray(state.allUniversities) && state.allUniversities.length > 0;
+            const hasExistingCards = (Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) ||
+                                     Boolean(el.list.querySelector(".uni-card"));
             if (hasExistingCards && classified.isOffline) {
-                showToast(t("network.offline.banner", "You are offline. Showing cached workspace data."), "error");
+                showToast(t("universities.offline_action_warning", "Cannot refresh catalog while offline. Showing cached results."), "warning");
             } else {
                 renderErrorScreen({
                     type: classified.type,

@@ -3,6 +3,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   fetchUniversitySearchResults,
+  generateOfflineNoticeHtml,
   generateSuggestionsHtml,
   isGlobalSearchDisabledWorkspace,
 } from '../../frontend/javascript/components/navbar-search.js';
@@ -76,6 +77,12 @@ describe('Global Navbar Search Component', () => {
   it('generateSuggestionsHtml renders empty state when items list is empty', () => {
     const html = generateSuggestionsHtml([]);
     assert.ok(html.includes('navbar-search-empty'));
+  });
+
+  it('generateOfflineNoticeHtml generates offline notice banner', () => {
+    const html = generateOfflineNoticeHtml();
+    assert.ok(html.includes('navbar-search-empty--offline'));
+    assert.ok(html.includes('navbar.search.offline_notice'));
   });
 
   it('disables global suggestions only in compare workspace', () => {

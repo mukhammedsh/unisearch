@@ -5865,6 +5865,13 @@ body {
   text-align: center;
 }
 
+.navbar-search-empty--offline {
+  color: var(--text-secondary);
+  background: var(--surface-soft);
+  border-radius: var(--radius-sm);
+  margin: var(--space-1);
+}
+
 @media (min-width: 981px) {
   .navbar {
     display: flex;

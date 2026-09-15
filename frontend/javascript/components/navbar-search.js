@@ -14,6 +14,7 @@ import {
   routeUniversities,
 } from "../routes.js";
 import { shouldOpenUniversitiesInNewTab } from "../settings.js";
+import { classifyError, isOnline } from "./network-status.js";
 
 const searchCache = new Map();
 let activeAbortController = null;
@@ -134,6 +135,21 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1) {
   }).join("");
 }
 
+export function generateOfflineNoticeHtml() {
+  return `
+    <div class="navbar-search-empty navbar-search-empty--offline" role="status">
+      <span class="navbar-search-empty__text" data-i18n="navbar.search.offline_notice">${escapeHtml(t("navbar.search.offline_notice", "Search is unavailable while offline."))}</span>
+    </div>
+  `;
+}
+
+export function renderGlobalSearchOfflineNotice(host) {
+  const container = ensureSuggestionsContainer(host);
+  if (!container) return;
+  container.innerHTML = generateOfflineNoticeHtml();
+  container.classList.add("is-open");
+}
+
 export function renderGlobalSearchSuggestions(host, items, query) {
   const container = ensureSuggestionsContainer(host);
   if (!container) return;
@@ -192,6 +208,11 @@ export function initGlobalNavbarSearch() {
       return;
     }
 
+    if (!isOnline()) {
+      renderGlobalSearchOfflineNotice(host);
+      return;
+    }
+
     if (activeAbortController) {
       activeAbortController.abort();
     }
@@ -209,7 +230,12 @@ export function initGlobalNavbarSearch() {
       }
     } catch (err) {
       if (err.name !== "AbortError") {
-        hideGlobalSearchSuggestions();
+        const errorInfo = classifyError(err);
+        if (errorInfo.isOffline) {
+          renderGlobalSearchOfflineNotice(host);
+        } else {
+          hideGlobalSearchSuggestions();
+        }
       }
     }
   }, 180);

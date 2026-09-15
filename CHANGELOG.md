@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.5.0 (2026-09-15) - Active Connectivity Probing and Resilient Offline Workspace
+- Added active connectivity probe (`checkConnectivity`) checking backend `/health` endpoint to detect captive portals and dead Wi-Fi ("Lie-Fi") with short-term cache and timeout handling (`frontend/javascript/components/network-status.js`).
+- Enhanced global navbar search with dedicated offline dropdown notice (`renderGlobalSearchOfflineNotice`, `generateOfflineNoticeHtml`) instead of abruptly closing suggestions when offline (`frontend/javascript/components/navbar-search.js`, `frontend/css/style.css`).
+- Hardened university catalog error handling to preserve rendered cards during offline refresh attempts and display a localized warning toast (`universities.offline_action_warning`) instead of destroying existing card views (`frontend/javascript/pages/universities.js`).
+- Added localized English and Russian keys for navbar offline search notices and catalog offline warnings (`frontend/Localization/eng`, `frontend/Localization/ru`).
+- Added unit test coverage for active connectivity probe verification, error response simulation, and offline search notice rendering (`tests/unit/network-status.test.mjs`, `tests/unit/navbar-search.test.mjs`).
+
 ## 5.4.0 (2026-09-15) - Network Status Monitoring and Error Classification Architecture
 - Introduced dedicated error classification system (`classifyError`) separating network disconnection (`offline`), server faults (`5xx`), missing resources (`404`), and unexpected runtime crashes (`generic`), eliminating false "No Internet Connection" attribution on backend/client exceptions (`frontend/javascript/components/network-status.js`).
 - Implemented global network status monitor (`initNetworkStatusMonitor`) tracking browser `online` and `offline` events with a floating, accessible status banner (`.network-status-banner`) styled with Calm Academic Workspace tokens (`frontend/javascript/components/network-status.js`, `frontend/css/style.css`).

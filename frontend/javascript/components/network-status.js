@@ -1,12 +1,16 @@
 /* frontend/javascript/components/network-status.js */
 import { heroIcon } from "../icons.js";
 import { t } from "../i18n.js";
+import { API_BASE } from "../utils.js";
 
 const BANNER_ID = "networkStatusBanner";
 const ONLINE_DISMISS_DELAY_MS = 2600;
+const CONNECTIVITY_CACHE_TTL_MS = 5000;
 
 let monitorInstalled = false;
 let dismissTimer = 0;
+let lastConnectivityResult = null;
+let lastConnectivityAt = 0;
 
 /**
  * Returns true if the browser currently reports an online state.
@@ -15,6 +19,53 @@ let dismissTimer = 0;
 export function isOnline() {
   if (typeof navigator === "undefined") return true;
   return navigator.onLine !== false;
+}
+
+/**
+ * Probes the backend endpoint to confirm real Internet / API connectivity ("Lie-Fi" detection).
+ * @param {Object} [options]
+ * @param {boolean} [options.force=false]
+ * @param {number} [options.timeoutMs=3500]
+ * @returns {Promise<boolean>}
+ */
+export async function checkConnectivity(options = {}) {
+  const force = Boolean(options.force);
+  const timeoutMs = Math.max(500, Number(options.timeoutMs || 3500));
+  const now = Date.now();
+
+  if (!force && lastConnectivityResult !== null && (now - lastConnectivityAt < CONNECTIVITY_CACHE_TTL_MS)) {
+    return lastConnectivityResult;
+  }
+
+  if (typeof navigator !== "undefined" && navigator.onLine === false) {
+    lastConnectivityResult = false;
+    lastConnectivityAt = now;
+    return false;
+  }
+
+  if (typeof window === "undefined" || typeof fetch !== "function") return true;
+
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timer = controller ? window.setTimeout(() => controller.abort(), timeoutMs) : 0;
+
+  try {
+    const healthUrl = `${API_BASE}/health`;
+    const res = await fetch(healthUrl, {
+      method: "GET",
+      cache: "no-store",
+      signal: controller ? controller.signal : undefined,
+    });
+    const reachable = Boolean(res && (res.ok || res.status < 500));
+    lastConnectivityResult = reachable;
+    lastConnectivityAt = Date.now();
+    return reachable;
+  } catch (err) {
+    lastConnectivityResult = false;
+    lastConnectivityAt = Date.now();
+    return false;
+  } finally {
+    if (timer) window.clearTimeout(timer);
+  }
 }
 
 /**
