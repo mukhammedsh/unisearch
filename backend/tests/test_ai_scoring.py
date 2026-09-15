@@ -1611,6 +1611,129 @@ class AiScoringTests(unittest.TestCase):
         self.assertIn("priorityOrder", hints)
         self.assertEqual(10, len(hints["priorityOrder"]))
 
+    def test_multi_exam_selects_highest_normalized_score(self):
+        from app.services.ai_scoring import _resolve_user_normalized_track_score
+        track = {
+            "score_profile": {
+                "exam_id": "SAT",
+                "compatible_exam_ids": ["SAT", "ACT"],
+                "p25_normalized": 60,
+                "median_normalized": 75,
+                "p75_normalized": 90,
+                "confidence": "high",
+            }
+        }
+        # SAT 1100 is below average (~57%), but ACT 35 is top 1% (~99%)
+        user_scores = {"SAT": 1100, "ACT": 35}
+        user_languages = {}
+        res = _resolve_user_normalized_track_score(track, user_scores, user_languages)
+        self.assertEqual(res["exam_id"], "ACT")
+        self.assertGreater(res["normalized"], 95.0)
+
+    def test_confidence_range_containment_invariant(self):
+        from app.services.ai_scoring import _calculate_chance_range
+        for conf in ("high", "medium", "low", "estimated"):
+            for chance01 in (0.0, 0.05, 0.25, 0.50, 0.75, 0.95, 1.0):
+                low, high = _calculate_chance_range(chance01, conf)
+                chance_pct = round(chance01 * 100.0, 1)
+                self.assertLessEqual(low, chance_pct, f"Failed for {conf} at {chance01}")
+                self.assertGreaterEqual(high, chance_pct, f"Failed for {conf} at {chance01}")
+                self.assertGreaterEqual(low, 0.0)
+                self.assertLessEqual(high, 100.0)
+
+    def test_gpa_normalization_percentile_support(self):
+        from app.services.ai_scoring import _normalize_gpa_to_percentile, _normalize_exam_score
+        self.assertAlmostEqual(_normalize_gpa_to_percentile(4.0), 100.0)
+        self.assertAlmostEqual(_normalize_gpa_to_percentile(3.8), 90.0)
+        self.assertAlmostEqual(_normalize_gpa_to_percentile(3.5), 75.0)
+        self.assertAlmostEqual(_normalize_gpa_to_percentile(3.0), 50.0)
+        self.assertAlmostEqual(_normalize_exam_score("GPA", 4.0), 100.0)
+        self.assertAlmostEqual(_normalize_exam_score("GPA", 3.8), 90.0)
+        self.assertAlmostEqual(_normalize_exam_score("GPA", 3.0), 50.0)
+
+    def test_scholarship_boost_applied_for_high_academic_grant_tracks(self):
+        uni = {
+            "id": "u-scholarship-test",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 20000},
+            "academics": {"acceptance_rate_percent": 50},
+            "admission_categories": [
+                {
+                    "id": "cat",
+                    "label": "Cat",
+                    "requirement_profiles": [
+                        {
+                            "id": "prof_paid",
+                            "label": "Paid Track",
+                            "requirements": {"SAT": 1200},
+                            "funding_type": "paid",
+                            "score_profile": _demo_score_profile("SAT", p25=60, median=75, p75=90),
+                        },
+                        {
+                            "id": "prof_grant",
+                            "label": "Grant Track",
+                            "requirements": {"SAT": 1200},
+                            "funding_type": "grant",
+                            "funding_program": "Merit Scholarship",
+                            "score_profile": _demo_score_profile("SAT", p25=60, median=75, p75=90),
+                        },
+                    ],
+                }
+            ],
+        }
+        # Strong academic student
+        profile = {
+            "locale": "eng",
+            "budget": 30000,
+            "gpa": 3.9,
+            "exams": [{"id": "SAT", "score": 1450}],
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 8.0}],
+            "selectedAdmissionChoices": {},
+        }
+        res = _estimate_uni_chance(uni, profile)
+        choices_by_id = {c["requirementProfileId"]: c for c in res.get("choices", [])}
+        paid_chance = choices_by_id["prof_paid"]["chancePercent"]
+        grant_chance = choices_by_id["prof_grant"]["chancePercent"]
+        self.assertIsNotNone(paid_chance)
+        self.assertIsNotNone(grant_chance)
+        self.assertGreaterEqual(grant_chance, paid_chance)
+
+    def test_missing_required_evidence_does_not_convert_to_zero_chance(self):
+        uni = {
+            "id": "u-missing-evidence-test",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 20000},
+            "academics": {"acceptance_rate_percent": 50},
+            "admission_categories": [
+                {
+                    "id": "cat",
+                    "label": "Cat",
+                    "requirement_profiles": [
+                        {
+                            "id": "prof_req",
+                            "label": "Required Track",
+                            "requirements": {"SAT": 1400},
+                            "language_requirements": [{"code": "en", "requirements": {"IELTS": 7.0}}],
+                        }
+                    ],
+                }
+            ],
+        }
+        # Profile has NO exam or language scores
+        profile = {
+            "locale": "eng",
+            "budget": 30000,
+            "exams": [],
+            "languages": [],
+            "selectedAdmissionChoices": {},
+        }
+        res = _estimate_uni_chance(uni, profile)
+        self.assertFalse(res.get("chanceAvailable"))
+        self.assertIsNone(res.get("overallChance"))
+        self.assertEqual(res.get("reason"), "missing_evidence")
+        self.assertEqual(res.get("confidence"), "no_data")
+
 
 if __name__ == "__main__":
     unittest.main()
+

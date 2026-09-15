@@ -802,7 +802,29 @@ def _no_data_chance_level(profile: Dict[str, Any]) -> Dict[str, str]:
     }
 
 
+def _normalize_gpa_to_percentile(gpa_4: float) -> float:
+    """Normalize a 4.0-scale GPA to a 0-100 percentile score."""
+    gpa = _clamp(float(gpa_4), 0.0, 4.0)
+    if gpa >= 3.8:
+        return 90.0 + ((gpa - 3.8) / 0.2) * 10.0
+    if gpa >= 3.5:
+        return 75.0 + ((gpa - 3.5) / 0.3) * 15.0
+    if gpa >= 3.0:
+        return 50.0 + ((gpa - 3.0) / 0.5) * 25.0
+    if gpa >= 2.5:
+        return 30.0 + ((gpa - 2.5) / 0.5) * 20.0
+    if gpa >= 2.0:
+        return 15.0 + ((gpa - 2.0) / 0.5) * 15.0
+    return (gpa / 2.0) * 15.0
+
+
 def _normalize_exam_score(exam_type: Any, raw_score: Any) -> Optional[float]:
+    key = str(exam_type or "").strip().upper()
+    if key == "GPA":
+        gpa_4 = _normalize_gpa_score(raw_score)
+        if gpa_4 is None:
+            return None
+        return _normalize_gpa_to_percentile(gpa_4)
     return exams_service.normalize_exam_score(exam_type, raw_score)
 
 
@@ -865,6 +887,20 @@ def _unmet_track_requirement_keys(
     return failed
 
 
+def _calculate_chance_range(chance01: float, confidence: str) -> Tuple[float, float]:
+    """Calculate the uncertainty interval around the final calibrated probability."""
+    conf = str(confidence or "").lower()
+    if conf in ("official_score_profile", "high"):
+        spread = 0.08
+    elif conf in ("medium", "estimated"):
+        spread = 0.10
+    else:
+        spread = 0.14
+    low = round(max(0.0, float(chance01) - spread) * 100.0, 1)
+    high = round(min(1.0, float(chance01) + spread) * 100.0, 1)
+    return low, high
+
+
 def _resolve_user_normalized_track_score(
     track: Dict[str, Any],
     user_scores: Dict[str, Any],
@@ -878,7 +914,10 @@ def _resolve_user_normalized_track_score(
     if not isinstance(compatible_ids, list):
         compatible_ids = [score_profile.get("exam_id")]
 
+    best_normalized: Optional[float] = None
+    best_exam_id: str = ""
     saw_user_score = False
+
     for raw_exam_id in compatible_ids:
         exam_id = str(raw_exam_id or "").strip().upper()
         if not exam_id:
@@ -889,7 +928,13 @@ def _resolve_user_normalized_track_score(
         saw_user_score = True
         normalized = _normalize_exam_score(exam_id, user_score)
         if normalized is not None:
-            return {"normalized": float(normalized), "exam_id": exam_id, "reason": ""}
+            norm_val = float(normalized)
+            if best_normalized is None or norm_val > best_normalized:
+                best_normalized = norm_val
+                best_exam_id = exam_id
+
+    if best_normalized is not None:
+        return {"normalized": best_normalized, "exam_id": best_exam_id, "reason": ""}
 
     if saw_user_score:
         return {"normalized": None, "exam_id": "", "reason": "unsupported_exam_normalization"}
@@ -933,8 +978,6 @@ def _compute_score_profile_chance(
 
     return {
         "chance01": float(chance01),
-        "rangeLowPercent": round(max(0.0, chance01 - 0.08) * 100.0, 1),
-        "rangeHighPercent": round(min(1.0, chance01 + 0.08) * 100.0, 1),
         "confidence": str(score_profile.get("confidence") or "estimated"),
         "acceptanceRatePercent": round(float(acceptance_pct), 2) if acceptance_pct is not None else None,
     }
@@ -947,30 +990,53 @@ def _compute_requirement_profile_proxy_chance(
     user_scores: Dict[str, Any],
     user_languages: Dict[str, Any],
 ) -> Dict[str, Any]:
-    req = track.get("requirements")
-    avg = track.get("stats_avg")
-    if not isinstance(req, dict) or not isinstance(avg, dict):
+    req = track.get("requirements") if isinstance(track.get("requirements"), dict) else {}
+    avg = track.get("stats_avg") if isinstance(track.get("stats_avg"), dict) else {}
+    if not isinstance(avg, dict) or not avg:
         return {"chance01": None, "confidence": "no_data"}
 
+    acceptance_pct = _to_num(track.get("acceptance_rate_percent")) or _acceptance_percent(university)
+    if acceptance_pct is not None:
+        acceptance_ratio = _clamp01(float(acceptance_pct) / 100.0)
+        default_avg_delta = 4.0 + (10.0 * acceptance_ratio)
+        inferred_baseline_median = _clamp(98.0 - (35.0 * acceptance_ratio), 50.0, 98.0)
+    else:
+        default_avg_delta = 8.0
+        inferred_baseline_median = 75.0
+
+    exam_keys = set(req.keys()) | set(avg.keys())
+    user_academic_keys = {
+        k for k in user_scores.keys()
+        if not _is_language_exam_key(k) and _is_higher_better(k) and str(k).upper() != "GPA"
+    }
+    all_keys = exam_keys | user_academic_keys
+
     rows = []
-    for exam_id, min_val in req.items():
-        if str(exam_id or "").strip().upper() == "GPA":
-            continue
+    for exam_id in all_keys:
         if _is_language_exam_key(exam_id):
             continue
         if not _is_higher_better(exam_id):
             continue
         user = _get_user_score(user_scores, exam_id, user_languages)
         user_norm = _normalize_exam_score(exam_id, user)
-        min_norm = _normalize_exam_score(exam_id, min_val)
-        avg_norm = _normalize_exam_score(exam_id, avg.get(exam_id))
-        if user_norm is None or min_norm is None:
+        if user_norm is None:
             continue
-        if avg_norm is None:
-            avg_norm = max(float(min_norm) + 12.0, float(user_norm))
+        min_norm = _normalize_exam_score(exam_id, req.get(exam_id))
+        avg_norm = _normalize_exam_score(exam_id, avg.get(exam_id))
+        if min_norm is None and avg_norm is None:
+            if exam_id not in exam_keys:
+                avg_norm = inferred_baseline_median
+                min_norm = _clamp(float(avg_norm) - default_avg_delta, 0.0, 100.0)
+            else:
+                continue
+        elif min_norm is None:
+            min_norm = _clamp(float(avg_norm) - default_avg_delta, 0.0, 100.0)
+        elif avg_norm is None:
+            avg_norm = _clamp(float(min_norm) + default_avg_delta, 0.0, 100.0)
+
         p25 = _clamp(float(min_norm), 0.0, 100.0)
         median = _clamp(max(float(avg_norm), p25 + 1.0), 0.0, 100.0)
-        spread = max(median - p25, 5.0)
+        spread = max(median - p25, 4.0)
         p75 = _clamp(max(median + spread, median + 1.0), 0.0, 100.0)
         proxy_track = dict(track)
         proxy_track["score_profile"] = {
@@ -999,13 +1065,13 @@ def _compute_requirement_profile_proxy_chance(
     if not rows:
         return {"chance01": None, "confidence": "no_data"}
 
+    best_chance = max(float(row["chance01"]) for row in rows)
     weighted = sum(float(row["chance01"]) * float(row["weight"]) for row in rows)
     weights = sum(float(row["weight"]) for row in rows)
-    chance01 = _clamp01(weighted / weights if weights > 0 else min(float(row["chance01"]) for row in rows))
+    weighted_chance = weighted / weights if weights > 0 else best_chance
+    chance01 = _clamp01(0.70 * best_chance + 0.30 * weighted_chance)
     return {
         "chance01": float(chance01),
-        "rangeLowPercent": round(max(0.0, chance01 - 0.12) * 100.0, 1),
-        "rangeHighPercent": round(min(1.0, chance01 + 0.12) * 100.0, 1),
         "confidence": "low",
     }
 
@@ -1028,8 +1094,6 @@ def _compute_estimated_fallback_chance(
     if conditional_requirements > 0 or not hard_pass_all:
         return {
             "chance01": None,
-            "rangeLowPercent": None,
-            "rangeHighPercent": None,
             "confidence": "no_data",
         }
 
@@ -1058,11 +1122,8 @@ def _compute_estimated_fallback_chance(
 
     scholarship_bonus = 0.25 * max(0.0, float(scholarship_boost))
     chance01 = _clamp01((base * feasibility_curve * evidence_factor) + scholarship_bonus)
-    spread = 0.12 if not missing_evidence else 0.10
     return {
         "chance01": float(chance01),
-        "rangeLowPercent": round(max(0.0, chance01 - spread) * 100.0, 1),
-        "rangeHighPercent": round(min(1.0, chance01 + spread) * 100.0, 1),
         "confidence": "low",
     }
 
@@ -1650,7 +1711,8 @@ def _build_chance_factors(
     language: float,
     affordability: float,
     selectivity: float,
-    scholarship_boost: float,
+    acceptance_rate_percent: Optional[float] = None,
+    scholarship_boost: float = 0.0,
     missing_evidence: bool,
     conditional_requirements: int,
     hard_pass_all: bool,
@@ -1743,30 +1805,56 @@ def _build_chance_factors(
             "low",
         ))
 
-    if selectivity <= 0.25:
-        factors.append(_chance_factor(
-            "holistic_review_selectivity",
-            "neutral",
-            "Holistic review",
-            "At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.",
-            "medium",
-        ))
-    elif selectivity <= 0.35:
-        factors.append(_chance_factor(
-            "high_selectivity",
-            "negative",
-            "Selectivity",
-            "Published acceptance context indicates a more competitive route.",
-            "medium",
-        ))
-    elif selectivity >= 0.75:
-        factors.append(_chance_factor(
-            "accessibility_signal",
-            "positive",
-            "Selectivity",
-            "Published acceptance context indicates a more accessible route.",
-            "low",
-        ))
+    if acceptance_rate_percent is not None:
+        if acceptance_rate_percent <= 10.0:
+            factors.append(_chance_factor(
+                "holistic_review_selectivity",
+                "neutral",
+                "Holistic review",
+                "At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.",
+                "medium",
+            ))
+        elif acceptance_rate_percent <= 35.0:
+            factors.append(_chance_factor(
+                "high_selectivity",
+                "negative",
+                "Selectivity",
+                "Published acceptance context indicates a more competitive route.",
+                "medium",
+            ))
+        elif acceptance_rate_percent >= 70.0:
+            factors.append(_chance_factor(
+                "accessibility_signal",
+                "positive",
+                "Selectivity",
+                "Published acceptance context indicates a more accessible route.",
+                "low",
+            ))
+    else:
+        if selectivity <= 0.316:
+            factors.append(_chance_factor(
+                "holistic_review_selectivity",
+                "neutral",
+                "Holistic review",
+                "At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.",
+                "medium",
+            ))
+        elif selectivity <= 0.592:
+            factors.append(_chance_factor(
+                "high_selectivity",
+                "negative",
+                "Selectivity",
+                "Published acceptance context indicates a more competitive route.",
+                "medium",
+            ))
+        elif selectivity >= 0.837:
+            factors.append(_chance_factor(
+                "accessibility_signal",
+                "positive",
+                "Selectivity",
+                "Published acceptance context indicates a more accessible route.",
+                "low",
+            ))
 
     if not chance_available and not factors:
         factors.append(_chance_factor(
@@ -1858,7 +1946,6 @@ def estimate_uni_chance(
             preferred_mode=preferred_mode,
         )
 
-
         feasibility_gate = _clamp(1.0 - 0.78 * float(fit.get("failRatio", 0.0)), 0.18, 1.0)
         score_profile = _track_score_profile(choice)
         score_meta = {"normalized": None, "exam_id": "", "reason": "no_score_profile"}
@@ -1899,8 +1986,9 @@ def estimate_uni_chance(
         chance_model = "none"
 
         track_badges = _track_verified_badges(choice)
+        is_grant_track = _get_track_funding_type(choice) == "grant" or bool(choice.get("scholarships"))
+        scholarship_boost = 0.05 if (is_grant_track and academic >= 0.85 and language >= 0.80) else 0.0
 
-        scholarship_boost = 0.0
         if not has_evidence:
             no_data_reason = "missing_evidence"
         elif int(fit.get("languageConditionalRequirements", 0) or 0) > 0:
@@ -1932,9 +2020,8 @@ def estimate_uni_chance(
                         effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
                         chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + effective_boost)
                         chance_pct = int(round(chance01 * 100.0))
-                        range_low = chance_meta.get("rangeLowPercent")
-                        range_high = chance_meta.get("rangeHighPercent")
                         confidence = str(chance_meta.get("confidence") or "estimated")
+                        range_low, range_high = _calculate_chance_range(chance01, confidence)
                         chance_model = "official_score_profile"
             else:
                 if bool(fit.get("missingEvidence")) or int(fit.get("conditionalRequirements", 0) or 0) > 0:
@@ -1955,9 +2042,8 @@ def estimate_uni_chance(
                     effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
                     chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + effective_boost)
                     chance_pct = int(round(chance01 * 100.0))
-                    range_low = chance_meta.get("rangeLowPercent")
-                    range_high = chance_meta.get("rangeHighPercent")
                     confidence = str(chance_meta.get("confidence") or "low")
+                    range_low, range_high = _calculate_chance_range(chance01, confidence)
                     chance_model = "estimated_fallback"
                 else:
                     chance_meta = _compute_estimated_fallback_chance(
@@ -1978,19 +2064,20 @@ def estimate_uni_chance(
                     else:
                         chance01 = _clamp01(float(chance01_raw))
                         chance_pct = int(round(chance01 * 100.0))
-                        range_low = chance_meta.get("rangeLowPercent")
-                        range_high = chance_meta.get("rangeHighPercent")
                         confidence = str(chance_meta.get("confidence") or "low")
+                        range_low, range_high = _calculate_chance_range(chance01, confidence)
                         chance_model = "estimated_fallback"
-        
+
         if chance_pct is None:
             chance_model = "none"
 
+        acceptance_rate_percent = _to_num(choice.get("acceptance_rate_percent")) or _acceptance_percent(university)
         factors = _build_chance_factors(
             academic=academic,
             language=language,
             affordability=affordability,
             selectivity=selectivity,
+            acceptance_rate_percent=acceptance_rate_percent,
             scholarship_boost=scholarship_boost,
             missing_evidence=bool(fit.get("missingEvidence")) or no_data_reason == "missing_evidence",
             conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),

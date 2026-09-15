@@ -4,6 +4,14 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.7.0 (2026-09-15) - UniChance Mathematical Overhaul, Multi-Exam Best Score Resolution, and Calibration Optimization
+- Updated `_resolve_user_normalized_track_score` to evaluate all compatible standardized exams and select the applicant's highest normalized score rather than stopping on the first match (`backend/app/services/ai_scoring.py`).
+- Introduced `_calculate_chance_range(chance01, confidence)` applied after final context modulation and feasibility clamping, guaranteeing the mathematical containment invariant $rangeLowPercent \le chancePercent \le rangeHighPercent$ across all confidence levels (`backend/app/services/ai_scoring.py`).
+- Added `_normalize_gpa_to_percentile` and integrated GPA normalization into `_normalize_exam_score`, enabling full percentile support for GPA-based requirements and tracks (`backend/app/services/ai_scoring.py`).
+- Activated dynamic merit scholarship boost for grant tracks and competitive scholarship programs when applicants present top-tier academic and language scores (`backend/app/services/ai_scoring.py`).
+- Refined statistical requirement proxy (`_compute_requirement_profile_proxy_chance`) to activate when empirical average statistics (`stats_avg`) are present, routing tracks with minimum-only criteria to holistic estimation (`_compute_estimated_fallback_chance`) (`backend/app/services/ai_scoring.py`).
+- Added new unit test suite covering multi-exam resolution, confidence interval containment, GPA percentile conversion, and missing evidence preservation without converting to 0% chance (`backend/tests/test_ai_scoring.py`).
+
 ## 5.6.1 (2026-09-15) - CodeQL Static Analysis Hardening and Error Handling Regression Fix
 - Resolved latent `ReferenceError` during catalog fetch failure handling by properly initializing classified error states before offline checks, eliminating unhandled exceptions during network disruptions (`frontend/javascript/pages/universities.js`).
 - Aligned `toggleCompareUniversity` function calls across catalog cards, card link overlays, map cards, and map results to adhere strictly to single-parameter signatures (`frontend/javascript/pages/universities.js`).
