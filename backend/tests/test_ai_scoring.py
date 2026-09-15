@@ -1478,5 +1478,139 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("grant", str(result.get("fundingType") or ""))
         self.assertEqual(["direct-grant"], [str(row.get("fundingOptionId") or "") for row in (result.get("choices") or [])])
 
+    def test_estimate_uni_chance_reuses_user_context_and_lang_config(self):
+        university = {
+            "id": "u-ctx-test",
+            "name": "Context University",
+            "rank": 100,
+            "finance": {"total_cost_year_usd": 25000},
+            "academics": {"acceptance_rate_percent": 50},
+            "admission_categories": _categories_from_requirement_profiles([
+                {
+                    "id": "std",
+                    "label": "Standard",
+                    "funding_type": "paid",
+                    "requirements": {"GPA": 3.0},
+                    "stats_avg": {"GPA": 3.4},
+                }
+            ]),
+        }
+        profile = {"gpa": 3.5, "budget": 30000}
+        ctx = _build_user_context(profile, {})
+
+        result_direct = estimate_uni_chance(university, profile)
+        result_with_ctx = _estimate_uni_chance(university, profile, user_context=ctx, lang_cfg={})
+
+        self.assertEqual(result_direct.get("bestChoiceKey"), result_with_ctx.get("bestChoiceKey"))
+        self.assertEqual(result_direct.get("overallChance"), result_with_ctx.get("overallChance"))
+
+    def test_sort_universities_ai_synchronizes_recommended_track_with_unichance(self):
+        items = [
+            {
+                "id": "u-sync-track",
+                "name": "Sync Track University",
+                "rank": 40,
+                "finance": {"total_cost_year_usd": 20000},
+                "academics": {"acceptance_rate_percent": 45},
+                "factors": {
+                    "practice_vs_science": 0.5,
+                    "social_vs_hardcore": 0.5,
+                    "budget_vs_prestige": 0.5,
+                    "city_vs_campus": 0.5,
+                },
+                "admission_categories": _categories_from_requirement_profiles([
+                    {
+                        "id": "track-hard",
+                        "label": "Hard Track",
+                        "funding_type": "paid",
+                        "requirements": {"GPA": 3.8},
+                        "stats_avg": {"GPA": 3.95},
+                        "score_profile": _demo_score_profile("GPA", p25=80, median=90, p75=95, acceptance_rate_percent=20),
+                    },
+                    {
+                        "id": "track-realistic",
+                        "label": "Realistic Track",
+                        "funding_type": "paid",
+                        "requirements": {"GPA": 3.2},
+                        "stats_avg": {"GPA": 3.5},
+                        "score_profile": _demo_score_profile("GPA", p25=50, median=68, p75=82, acceptance_rate_percent=60),
+                    },
+                ]),
+            }
+        ]
+        profile = {"gpa": 3.5, "budget": 30000}
+        chance_res = estimate_uni_chance(items[0], profile)
+        sort_res = sort_universities_ai(items, profile=profile, budget_vs_prestige=100)
+
+        match_data = sort_res[0].get("matchData", {})
+        self.assertEqual(chance_res.get("bestChoiceKey"), match_data.get("recommendedChoiceKey"))
+        self.assertEqual(chance_res.get("bestChoiceKey"), match_data.get("selectedChoiceKey"))
+
+    def test_sort_universities_ai_match_data_clean_payload(self):
+        items = [
+            {
+                "id": "u-clean",
+                "name": "Clean Payload University",
+                "rank": 10,
+                "finance": {"total_cost_year_usd": 15000},
+                "academics": {"acceptance_rate_percent": 60},
+                "factors": {
+                    "practice_vs_science": 0.5,
+                    "social_vs_hardcore": 0.5,
+                    "budget_vs_prestige": 0.5,
+                    "city_vs_campus": 0.5,
+                },
+                "admission_categories": [],
+            }
+        ]
+        profile = {"gpa": 3.8, "budget": 20000, "interests": "Computer science"}
+        result = sort_universities_ai(items, profile=profile)
+        match_data = result[0].get("matchData", {})
+
+        # Assert dead/phantom fields are cleanly absent
+        self.assertNotIn("legacySignals", match_data)
+        self.assertNotIn("mlQueryTranslated", match_data)
+        self.assertNotIn("mlQuerySource", match_data)
+        self.assertNotIn("mlQueryTranslationReason", match_data)
+        self.assertNotIn("mlQueryProvider", match_data)
+        self.assertNotIn("mlQueryCacheHit", match_data)
+        self.assertNotIn("mlQueryProviderError", match_data)
+        self.assertNotIn("mlQueryInputPreview", match_data)
+        self.assertNotIn("mlQueryOutputPreview", match_data)
+        self.assertNotIn("mlQueryOutputLength", match_data)
+        self.assertNotIn("mlLexicalScore", match_data)
+        self.assertNotIn("semanticSignalWeight", match_data)
+
+        # Assert valid modern fields
+        self.assertIn("uiBadgeHints", match_data)
+        self.assertIn("vibe", match_data["uiBadgeHints"])
+        self.assertIn("requirements", match_data["uiBadgeHints"])
+        self.assertIn("budgetAid", match_data["uiBadgeHints"])
+
+    def test_ui_badge_hints_conforms_to_all_five_tag_groups(self):
+        from app.services.ai_scoring import _build_ui_badge_hints
+        hints = _build_ui_badge_hints(
+            preference_mismatch=0.10,
+            conditional=False,
+            conditional_requirements=0,
+            selected_chance_type="grant",
+            grant_chance=80,
+            general_chance=90,
+            meets_min_requirements=True,
+            below_requirements=False,
+            cost_usd=25000,
+            user_budget=20000,
+            aid_any=True,
+        )
+
+        self.assertEqual("your_vibe", hints.get("vibe"))
+        self.assertEqual("likely_grant", hints.get("finance"))
+        self.assertEqual("requirements_met", hints.get("requirements"))
+        self.assertEqual("over_budget_aid", hints.get("budgetAid"))
+        self.assertFalse(hints.get("showConditionalExamNeeded"))
+        self.assertIn("priorityOrder", hints)
+        self.assertEqual(10, len(hints["priorityOrder"]))
+
+
 if __name__ == "__main__":
     unittest.main()

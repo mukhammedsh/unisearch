@@ -1,5 +1,4 @@
 import math
-import logging
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -21,7 +20,6 @@ _UI_BADGE_THRESHOLDS = {
     "likely_grant_min_chance_pct": 65,
     "paid_admission_min_chance_pct": 45,
 }
-_LOGGER = logging.getLogger("unisearch.ai_scoring")
 
 
 def _preview_text(value: Any, max_len: int = 180) -> str:
@@ -1112,15 +1110,27 @@ def _acceptance_percent(university: Dict[str, Any]) -> Optional[float]:
 
 
 def _fallback_practice_vs_science(university: Dict[str, Any]) -> float:
+    tags = university.get("tags") or []
+    tags_str = " ".join(str(t) for t in tags) if isinstance(tags, list) else str(tags or "")
+    major_focus = university.get("major_focus") or []
+    major_focus_str = " ".join(str(m) for m in major_focus) if isinstance(major_focus, list) else str(major_focus or "")
     text = " ".join(
         [
             str(university.get("name") or ""),
             str(university.get("description") or ""),
             str((((university.get("academics") or {}).get("focus_areas")) or "")),
+            tags_str,
+            major_focus_str,
         ]
     ).lower()
-    research_tokens = ("research", "science", "laboratory", "fundamental", "theory", "phd")
-    practice_tokens = ("practice", "industry", "internship", "applied", "career", "startup")
+    research_tokens = (
+        "research", "science", "laboratory", "fundamental", "theory", "phd",
+        "исследован", "научн", "фундаментальн", "лаборатор", "теория", "академическ",
+    )
+    practice_tokens = (
+        "practice", "industry", "internship", "applied", "career", "startup", "business",
+        "практик", "индустр", "стажировк", "прикладн", "карьер", "стартап", "бизнес",
+    )
     score = 0.5 + (0.06 * sum(1 for token in research_tokens if token in text)) - (0.06 * sum(1 for token in practice_tokens if token in text))
     rank = _to_num(university.get("rank"))
     if rank is not None and rank <= 10:
@@ -1148,7 +1158,8 @@ def _fallback_budget_vs_prestige(university: Dict[str, Any]) -> float:
     rank = _to_num(university.get("rank"))
     rank_prestige = 0.5
     if rank is not None and rank > 0:
-        rank_prestige = _clamp01(1.0 - ((rank - 1.0) / 120.0))
+        # Smooth logarithmic prestige scaling across top 1000 universities
+        rank_prestige = _clamp01(1.0 - (math.log1p(max(0.0, float(rank) - 1.0)) / math.log1p(1000.0)))
     return _clamp01(0.50 * cost_norm + 0.50 * rank_prestige)
 
 
@@ -1207,6 +1218,11 @@ def _build_ui_badge_hints(
     selected_chance_type: Any,
     grant_chance: Any,
     general_chance: Any,
+    meets_min_requirements: bool = False,
+    below_requirements: bool = False,
+    cost_usd: Optional[float] = None,
+    user_budget: Optional[float] = None,
+    aid_any: bool = False,
 ) -> Dict[str, Any]:
     mismatch01 = _clamp01(_to_num_default(preference_mismatch, 1.0))
     conditional_count = max(0, int(_to_num_default(conditional_requirements, 0.0)))
@@ -1215,28 +1231,53 @@ def _build_ui_badge_hints(
     grant_pct = _clamp(_to_num_default(grant_chance, 0.0), 0.0, 100.0)
     general_pct = _clamp(_to_num_default(general_chance, 0.0), 0.0, 100.0)
 
+    # 1. Preference match group (mutually exclusive)
     vibe = ""
     if mismatch01 <= float(_UI_BADGE_THRESHOLDS["your_vibe_max_mismatch"]):
         vibe = "your_vibe"
     elif mismatch01 <= float(_UI_BADGE_THRESHOLDS["top_match_max_mismatch"]):
         vibe = "top_match"
 
+    # 2. Finance route group (mutually exclusive)
     finance = ""
     if selected_type == "grant" and grant_pct >= float(_UI_BADGE_THRESHOLDS["likely_grant_min_chance_pct"]):
         finance = "likely_grant"
     elif selected_type == "general" and general_pct >= float(_UI_BADGE_THRESHOLDS["paid_admission_min_chance_pct"]):
         finance = "paid_admission"
 
+    # 3. Requirements state group (mutually exclusive; conditional suppresses requirements_met)
+    requirements = ""
+    if below_requirements:
+        requirements = "below_requirements"
+    elif meets_min_requirements and not show_conditional:
+        requirements = "requirements_met"
+
+    # 4. Budget & aid state group (mutually exclusive)
+    budget_aid = ""
+    has_budget = user_budget is not None and user_budget > 0
+    over_budget = has_budget and cost_usd is not None and cost_usd > user_budget
+    if over_budget:
+        budget_aid = "over_budget_aid" if aid_any else "over_budget"
+    elif aid_any:
+        budget_aid = "aid_available"
+
     return {
         "showConditionalExamNeeded": show_conditional,
         "vibe": vibe,
         "finance": finance,
+        "requirements": requirements,
+        "budgetAid": budget_aid,
         "priorityOrder": [
             "conditional_exam_needed",
             "your_vibe",
             "top_match",
             "likely_grant",
             "paid_admission",
+            "below_requirements",
+            "requirements_met",
+            "over_budget_aid",
+            "over_budget",
+            "aid_available",
         ],
         "metrics": {
             "preferenceMismatch": round(mismatch01, 4),
@@ -1244,6 +1285,10 @@ def _build_ui_badge_hints(
             "selectedChanceType": selected_type,
             "grantChance": int(round(grant_pct)),
             "generalChance": int(round(general_pct)),
+            "meetsMinRequirements": meets_min_requirements,
+            "belowRequirements": below_requirements,
+            "overBudget": over_budget,
+            "aidAny": aid_any,
         },
         "thresholds": dict(_UI_BADGE_THRESHOLDS),
     }
@@ -1259,7 +1304,6 @@ def sort_universities_ai(
     ai_balance: Any = 50,
     admission_bias: Any = 50,
     funding_type: Any = "any",
-    translation_client_key: str = "",
 ) -> List[Dict[str, Any]]:
     profile = profile if isinstance(profile, dict) else {}
     lang_cfg = _language_config()
@@ -1283,24 +1327,13 @@ def sort_universities_ai(
         "city_vs_campus": _preference01(city_vs_campus, 50.0),
     }
     finance_pref = float(user_pref["budget_vs_prestige"])
-    rank_score = _rank_score_factory(items)
     profile_any = dict(profile)
     profile_any["fundingType"] = "any"
     profile_any["funding_type"] = "any"
     profile_grant = dict(profile)
     profile_grant["fundingType"] = "grant"
     profile_grant["funding_type"] = "grant"
-    interest_text_raw = str(profile.get("interests") or "").strip()
-    interest_text = interest_text_raw
-    translation_meta = {
-        "text": interest_text,
-        "translated": False,
-        "source": "direct",
-        "provider": "none",
-        "reason": "native_multilingual",
-        "cacheHit": False,
-        "error": "",
-    }
+    interest_text = str(profile.get("interests") or "").strip()
 
     ml_scores_by_id: Dict[str, float] = {}
     ml_status = (
@@ -1330,15 +1363,9 @@ def sort_universities_ai(
             continue
         row_id = str(row.get("id") or "").strip()
         choices = universities_service.expand_admission_choices(row.get("admission_categories"))
-        if not choices:
-            choices = [{"id": "default", "choice_key": "default", "label": "Standard", "requirements": {}, "stats_avg": {}, "scholarships": []}]
         choices = [t for t in choices if isinstance(t, dict)]
         selected_choice_key = _selected_choice_key_for_university(profile, row)
-        selected_choice = None
-        for idx, choice in enumerate(choices):
-            if _admission_choice_key(choice, idx) == selected_choice_key:
-                selected_choice = choice
-                break
+
         uni_factors = _extract_university_factors(row)
         total_distance, distance_deltas = _distance_breakdown(user_pref, uni_factors)
         preference_mismatch = _clamp01(
@@ -1350,35 +1377,50 @@ def sort_universities_ai(
             )
             / 4.0
         )
-        chance_general = estimate_uni_chance(row, profile_any)
-        chance_grant = estimate_uni_chance(row, profile_grant)
+
+        chance_general = estimate_uni_chance(row, profile_any, user_context=ctx, lang_cfg=lang_cfg)
+        chance_grant = estimate_uni_chance(row, profile_grant, user_context=ctx, lang_cfg=lang_cfg)
+
         general_choice_results = chance_general.get("choices") if isinstance(chance_general.get("choices"), list) else []
         grant_choice_results = chance_grant.get("choices") if isinstance(chance_grant.get("choices"), list) else []
         selected_general_choice = _choice_result_by_key(general_choice_results, selected_choice_key)
         selected_grant_choice = _choice_result_by_key(grant_choice_results, selected_choice_key)
+
         actual_general_chance = _chance_percent_value(chance_general.get("overallChance"))
         actual_grant_chance = _chance_percent_value(chance_grant.get("overallChance"))
         general_chance01 = _clamp01(((actual_general_chance if actual_general_chance is not None else 50.0) / 100.0))
         grant_chance01 = _clamp01(((actual_grant_chance if actual_grant_chance is not None else 50.0) / 100.0))
-        selected_actual_chance = None
+
         if finance_pref < 0.5:
             selected_chance01 = grant_chance01
             selected_chance_type = "grant"
             selected_actual_chance = actual_grant_chance
+            active_chance_bundle = chance_grant
         elif finance_pref > 0.5:
             selected_chance01 = general_chance01
             selected_chance_type = "general"
             selected_actual_chance = actual_general_chance
+            active_chance_bundle = chance_general
         else:
             selected_chance01 = _clamp01((grant_chance01 + general_chance01) / 2.0)
             selected_chance_type = "balanced"
+            active_chance_bundle = chance_general
             if actual_general_chance is not None and actual_grant_chance is not None:
                 selected_actual_chance = (actual_general_chance + actual_grant_chance) / 2.0
             else:
                 selected_actual_chance = actual_general_chance if actual_general_chance is not None else actual_grant_chance
-        selected_by_user = bool(chance_general.get("selectedByUser")) and selected_choice is not None and selected_general_choice is not None
-        if selected_by_user:
-            selected_choice_funding_type = _get_track_funding_type(selected_choice)
+
+        # Check if user explicitly chose a track for this university
+        selected_by_user = bool(chance_general.get("selectedByUser")) and selected_general_choice is not None
+        selected_raw_choice = None
+        if selected_choice_key and choices:
+            for idx, c in enumerate(choices):
+                if _admission_choice_key(c, idx) == selected_choice_key:
+                    selected_raw_choice = c
+                    break
+
+        if selected_by_user and selected_raw_choice is not None:
+            selected_choice_funding_type = _get_track_funding_type(selected_raw_choice)
             selected_chance_type = "grant" if selected_choice_funding_type == "grant" else "general"
             if selected_choice_funding_type == "grant":
                 actual_grant_chance = _chance_percent_value((selected_grant_choice or {}).get("chancePercent"))
@@ -1390,13 +1432,14 @@ def sort_universities_ai(
                 general_chance01 = _clamp01(((actual_general_chance if actual_general_chance is not None else 50.0) / 100.0))
                 selected_actual_chance = actual_general_chance
                 selected_chance01 = general_chance01
+
         admission_risk = _clamp01(1.0 - selected_chance01)
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
         if use_ml:
             semantic_penalty = _clamp01(1.0 - row_ml_score)
             major_penalty = 0.0
             if interest_text and row_ml_score < 0.05:
-                major_penalty = 0.35 * _clamp01((0.05 - row_ml_score) / 0.05)
+                major_penalty = 0.20 * _clamp01((0.05 - row_ml_score) / 0.05)
             final_score = _clamp01(
                 (0.35 * preference_mismatch)
                 + (0.30 * admission_risk)
@@ -1407,221 +1450,133 @@ def sort_universities_ai(
             final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
         hard_score = _clamp01(1.0 - preference_mismatch)
 
-        if not choices:
-            item = dict(row)
-            cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
-                row, {}, preferred_mode=preferred_mode
-            )
-            item["matchData"] = {
-                "finalPrice": cost_native,
-                "finalPriceUSD": cost_usd,
-                "currency": cost_currency,
-                "costYearUSD": cost_usd,
-                "costYearNative": cost_native,
-                "aidAny": False,
-                "aidEligible": False,
-                "grantName": "",
-                "choiceKey": str(chance_general.get("bestChoiceKey") or "default"),
-                "choiceId": str(chance_general.get("bestChoiceId") or "default"),
-                "choiceLabel": "No matching admission choice",
-                "missingRequiredEvidence": True,
-                "hardScore": hard_score,
-                "finalScore": final_score,
-                "mlScore": row_ml_score,
-                "mlMode": ml_runtime_mode if use_ml else "disabled",
-                "mlSemanticScore": row_ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
-                "mlLexicalScore": 0.0,
-                "semanticSignalWeight": 0.15 if use_ml else 0.0,
-                "distanceScore": _clamp01(1.0 - preference_mismatch),
-                "totalDistance": total_distance,
-                "distanceDeltas": distance_deltas,
-                "preferenceMismatch": preference_mismatch,
-                "admissionRisk": admission_risk,
-                "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
-                "selectedChanceType": selected_chance_type,
-                "grantChance": int(round(actual_grant_chance)) if actual_grant_chance is not None else None,
-                "generalChance": int(round(actual_general_chance)) if actual_general_chance is not None else None,
-                "uiBadgeHints": _build_ui_badge_hints(
-                    preference_mismatch=preference_mismatch,
-                    conditional=False,
-                    conditional_requirements=0,
-                    selected_chance_type=selected_chance_type,
-                    grant_chance=actual_grant_chance,
-                    general_chance=actual_general_chance,
-                ),
-                "factors": uni_factors,
-                "userPreferences": user_pref,
-                "mlEnabled": bool(interest_text),
-                "mlApplied": use_ml,
-                "mlAvailable": ml_available,
-                "mlUnavailable": ml_unavailable_warning,
-                "mlWarning": ml_warning_message,
-                "mlReason": str(ml_status.get("reason") or ""),
-                "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
-                "mlQueryTranslated": bool(translation_meta.get("translated")),
-                "mlQuerySource": str(translation_meta.get("source") or ""),
-                "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
-                "mlQueryProvider": str(translation_meta.get("provider") or ""),
-                "mlQueryCacheHit": bool(translation_meta.get("cacheHit")),
-                "mlQueryProviderError": str(translation_meta.get("error") or ""),
-                "mlQueryInputPreview": _preview_text(interest_text_raw),
-                "mlQueryOutputPreview": _preview_text(interest_text),
-                "mlQueryOutputLength": len(interest_text),
-                "recommendedChoiceKey": str(chance_general.get("recommendedChoiceKey") or chance_general.get("bestChoiceKey") or ""),
-                "recommendedChoiceId": str(chance_general.get("recommendedChoiceId") or chance_general.get("bestChoiceId") or ""),
-                "recommendedChoiceLabel": str(chance_general.get("recommendedChoiceLabel") or chance_general.get("bestChoiceLabel") or ""),
-                "selectedChoiceKey": str(chance_general.get("bestChoiceKey") or ""),
-                "selectedChoiceId": str(chance_general.get("bestChoiceId") or ""),
-                "selectedChoiceLabel": str(chance_general.get("bestChoiceLabel") or ""),
-                "selectedByUser": selected_by_user,
-                "choiceSelectionSource": "user" if selected_by_user else "recommended",
-            }
-            item["__ai_score"] = final_score
-            item["__distance"] = preference_mismatch
-            enriched.append(item)
-            continue
+        # Resolve the active admission choice
+        recommended_choice_key = str(chance_general.get("recommendedChoiceKey") or chance_general.get("bestChoiceKey") or "")
+        recommended_choice_id = str(chance_general.get("recommendedChoiceId") or chance_general.get("bestChoiceId") or "")
+        recommended_choice_label = str(chance_general.get("recommendedChoiceLabel") or chance_general.get("bestChoiceLabel") or "")
 
-        best = None
-        selected_candidate = None
-        for idx, choice in enumerate(choices):
-            choice_key = _admission_choice_key(choice, idx)
-            fit = _track_fit(choice, ctx["userScores"], ctx["userLanguages"], lang_cfg, mode="sort")
-            aid_any = choice.get("funding_type") == "grant"
-            aid_eligible = aid_any  # If the choice is a grant track, it's eligible (requirements are already merged into choice["requirements"])
+        active_choice_key = selected_choice_key if (selected_by_user and selected_choice_key) else (
+            str(active_chance_bundle.get("bestChoiceKey") or recommended_choice_key)
+        )
 
-            acceptance = _acceptance_score(row, mode="sort")
-            admit = _clamp01(float(fit.get("fit", 0.0)) * (0.55 + 0.45 * acceptance))
-            if not bool(fit.get("hardPassAll")):
-                gap_penalty = _clamp01(1.0 - 1.35 * float(fit.get("worstGap", 0.0)))
-                admit *= (0.12 + 0.88 * gap_penalty)
-                admit = _clamp01(admit)
+        active_raw_choice: Dict[str, Any] = {}
+        if choices:
+            for idx, c in enumerate(choices):
+                if _admission_choice_key(c, idx) == active_choice_key:
+                    active_raw_choice = c
+                    break
+            if not active_raw_choice:
+                active_raw_choice = choices[0]
+                active_choice_key = _admission_choice_key(active_raw_choice, 0)
 
-            cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
-                row, choice, preferred_mode=preferred_mode
-            )
-            cost = cost_usd
-            aff = _affordability_score(
-                row,
-                choice,
-                ctx["budget"],
-                aid_eligible=aid_eligible,
-                aid_any=aid_any,
-                mode="sort",
-                preferred_mode=preferred_mode,
-            )
-            ml_score = row_ml_score
+        # Active choice chance metadata
+        choice_meta_list = active_chance_bundle.get("choices") if isinstance(active_chance_bundle.get("choices"), list) else []
+        active_choice_meta = _choice_result_by_key(choice_meta_list, active_choice_key) or {}
 
-            track_fit_score = float(fit.get("fit", 0.0))
-            grant_potential = track_fit_score if aid_eligible else 0.0
-            sc = track_fit_score
-            if aid_eligible:
-                sc = _clamp01((sc * 0.8) + (grant_potential * 0.2))
+        cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
+            row, active_raw_choice, preferred_mode=preferred_mode
+        )
+        aid_any = _get_track_funding_type(active_raw_choice) == "grant"
+        aid_eligible = aid_any
 
-            if aid_eligible:
-                finance = _finance_for_cost(row, choice)
-                breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
-                tuition = _extract_tuition_cost(breakdown)
-                if tuition is not None and tuition > 0:
-                    final_price_native = max(0.0, cost_native - float(tuition))
-                else:
-                    final_price_native = 0.0
+        if aid_eligible:
+            finance = _finance_for_cost(row, active_raw_choice)
+            breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
+            tuition = _extract_tuition_cost(breakdown)
+            if tuition is not None and tuition > 0:
+                final_price_native = max(0.0, cost_native - float(tuition))
             else:
-                final_price_native = cost_native
+                final_price_native = 0.0
+        else:
+            final_price_native = cost_native
 
-            final_price_usd = _cost_to_usd(final_price_native, cost_currency)
+        final_price_usd = _cost_to_usd(final_price_native, cost_currency)
 
-            match_data = {
-                "choiceKey": choice_key,
-                "choiceId": str(choice.get("id") or "choice"),
-                "choiceLabel": str(choice.get("label") or "Standard"),
-                "categoryId": str(choice.get("category_id") or ""),
-                "requirementProfileId": str(choice.get("requirement_profile_id") or ""),
-                "fundingOptionId": str(choice.get("funding_option_id") or ""),
-                "finalPrice": final_price_native,
-                "finalPriceUSD": final_price_usd,
-                "currency": cost_currency,
-                "aidAny": aid_any,
-                "aidEligible": aid_eligible,
-                "grantName": str(choice.get("funding_program") or "") if aid_any else "",
-                "admitChance": admit,
-                "meetMinRequirements": bool(fit.get("hardPassAll")) and not bool(fit.get("conditional")),
-                "missingRequiredEvidence": bool(fit.get("missingEvidence")),
-                "conditional": bool(fit.get("conditional")),
-                "conditionalRequirements": int(fit.get("conditionalRequirements", 0) or 0),
-                "costYearUSD": cost,
-                "costYearNative": cost_native,
-                "grantPotential": grant_potential,
-                "grantEligible": aid_eligible,
-                "hardScore": hard_score,
-                "distanceScore": _clamp01(1.0 - preference_mismatch),
-                "totalDistance": total_distance,
-                "distanceDeltas": distance_deltas,
-                "preferenceMismatch": preference_mismatch,
-                "admissionRisk": admission_risk,
-                "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
-                "selectedChanceType": selected_chance_type,
-                "grantChance": int(round(actual_grant_chance)) if actual_grant_chance is not None else None,
-                "generalChance": int(round(actual_general_chance)) if actual_general_chance is not None else None,
-                "uiBadgeHints": _build_ui_badge_hints(
-                    preference_mismatch=preference_mismatch,
-                    conditional=bool(fit.get("conditional")),
-                    conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
-                    selected_chance_type=selected_chance_type,
-                    grant_chance=actual_grant_chance,
-                    general_chance=actual_general_chance,
-                ),
-                "factors": uni_factors,
-                "userPreferences": user_pref,
-                "mlScore": ml_score,
-                "mlMode": ml_runtime_mode if use_ml else "disabled",
-                "mlSemanticScore": ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
-                "mlLexicalScore": 0.0,
-                "semanticSignalWeight": 0.15 if use_ml else 0.0,
-                "finalScore": final_score,
-                "legacySignals": {
-                    "admitChance": admit,
-                    "affordability": aff,
-                    "rankScore": rank_score(row.get("rank")),
-                },
-                "mlEnabled": bool(interest_text),
-                "mlApplied": use_ml,
-                "mlAvailable": ml_available,
-                "mlUnavailable": ml_unavailable_warning,
-                "mlWarning": ml_warning_message,
-                "mlReason": str(ml_status.get("reason") or ""),
-                "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
-                "mlQueryTranslated": bool(translation_meta.get("translated")),
-                "mlQuerySource": str(translation_meta.get("source") or ""),
-                "mlQueryTranslationReason": str(translation_meta.get("reason") or ""),
-                "mlQueryProvider": str(translation_meta.get("provider") or ""),
-                "mlQueryCacheHit": bool(translation_meta.get("cacheHit")),
-                "mlQueryProviderError": str(translation_meta.get("error") or ""),
-                "mlQueryInputPreview": _preview_text(interest_text_raw),
-                "mlQueryOutputPreview": _preview_text(interest_text),
-                "mlQueryOutputLength": len(interest_text),
-                "costMode": cost_mode,
-            }
-            candidate = {"score": admit, "matchData": match_data}
-            if best is None or float(candidate["score"]) > float(best["score"]):
-                best = candidate
-            if selected_by_user and choice_key == selected_choice_key:
-                selected_candidate = candidate
+        choice_factors = active_choice_meta.get("factors") if isinstance(active_choice_meta.get("factors"), list) else []
+        below_req = any(f.get("key") == "requirements_gap" for f in choice_factors) or active_choice_meta.get("reason") == "requirements_not_met"
+        meet_min_req = bool(active_choice_meta.get("chanceAvailable")) and not below_req and not bool(active_choice_meta.get("conditional"))
+        is_conditional = bool(active_choice_meta.get("conditional")) if active_choice_meta else bool(chance_general.get("conditional"))
+        conditional_count = int((active_choice_meta.get("details") or {}).get("conditionalRequirements", 0) or 0)
+
+        effective_selected_by_user = selected_by_user and active_choice_key != recommended_choice_key
+        has_uni_aid = bool(row.get("aid_any")) or aid_any
+
+        ui_badge_hints = _build_ui_badge_hints(
+            preference_mismatch=preference_mismatch,
+            conditional=is_conditional,
+            conditional_requirements=conditional_count,
+            selected_chance_type=selected_chance_type,
+            grant_chance=actual_grant_chance,
+            general_chance=actual_general_chance,
+            meets_min_requirements=meet_min_req,
+            below_requirements=below_req,
+            cost_usd=final_price_usd,
+            user_budget=ctx["budget"],
+            aid_any=has_uni_aid,
+        )
+
+        choice_id = str(active_raw_choice.get("id") or active_choice_meta.get("choiceId") or "default")
+        choice_label = str(active_raw_choice.get("label") or active_choice_meta.get("choiceLabel") or "General admission")
+
+        match_data = {
+            "choiceKey": active_choice_key,
+            "choiceId": choice_id,
+            "choiceLabel": choice_label,
+            "categoryId": str(active_raw_choice.get("category_id") or ""),
+            "requirementProfileId": str(active_raw_choice.get("requirement_profile_id") or ""),
+            "fundingOptionId": str(active_raw_choice.get("funding_option_id") or ""),
+            "finalPrice": final_price_native,
+            "finalPriceUSD": final_price_usd,
+            "currency": cost_currency,
+            "aidAny": aid_any,
+            "aidEligible": aid_eligible,
+            "grantName": str(active_raw_choice.get("funding_program") or "") if aid_any else "",
+            "admitChance": selected_chance01,
+            "meetMinRequirements": meet_min_req,
+            "missingRequiredEvidence": active_choice_meta.get("reason") == "missing_evidence" or bool(chance_general.get("missingEvidence")),
+            "conditional": is_conditional,
+            "conditionalRequirements": conditional_count,
+            "costYearUSD": cost_usd,
+            "costYearNative": cost_native,
+            "grantPotential": selected_chance01 if aid_eligible else 0.0,
+            "grantEligible": aid_eligible,
+            "hardScore": hard_score,
+            "distanceScore": _clamp01(1.0 - preference_mismatch),
+            "totalDistance": total_distance,
+            "distanceDeltas": distance_deltas,
+            "preferenceMismatch": preference_mismatch,
+            "admissionRisk": admission_risk,
+            "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
+            "selectedChanceType": selected_chance_type,
+            "grantChance": int(round(actual_grant_chance)) if actual_grant_chance is not None else None,
+            "generalChance": int(round(actual_general_chance)) if actual_general_chance is not None else None,
+            "uiBadgeHints": ui_badge_hints,
+            "factors": uni_factors,
+            "userPreferences": user_pref,
+            "mlScore": row_ml_score,
+            "mlMode": ml_runtime_mode if use_ml else "disabled",
+            "mlSemanticScore": row_ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
+            "finalScore": final_score,
+            "mlEnabled": bool(interest_text),
+            "mlApplied": use_ml,
+            "mlAvailable": ml_available,
+            "mlUnavailable": ml_unavailable_warning,
+            "mlWarning": ml_warning_message,
+            "mlReason": str(ml_status.get("reason") or ""),
+            "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
+            "costMode": cost_mode,
+            "recommendedChoiceKey": recommended_choice_key,
+            "recommendedChoiceId": recommended_choice_id,
+            "recommendedChoiceLabel": recommended_choice_label,
+            "selectedChoiceKey": active_choice_key,
+            "selectedChoiceId": choice_id,
+            "selectedChoiceLabel": choice_label,
+            "selectedByUser": effective_selected_by_user,
+            "choiceSelectionSource": "user" if effective_selected_by_user else "recommended",
+        }
 
         item = dict(row)
-        recommended_match = dict((best or {}).get("matchData", {}))
-        active_candidate = selected_candidate if selected_candidate is not None else best
-        active_match = dict((active_candidate or {}).get("matchData", {}))
-        recommended_choice_key = str(recommended_match.get("choiceKey") or "")
-        effective_selected_by_user = selected_candidate is not None and str(active_match.get("choiceKey") or "") != recommended_choice_key
-        active_match["recommendedChoiceKey"] = recommended_choice_key
-        active_match["recommendedChoiceId"] = str(recommended_match.get("choiceId") or "")
-        active_match["recommendedChoiceLabel"] = str(recommended_match.get("choiceLabel") or "")
-        active_match["selectedChoiceKey"] = str(active_match.get("choiceKey") or "")
-        active_match["selectedChoiceId"] = str(active_match.get("choiceId") or "")
-        active_match["selectedChoiceLabel"] = str(active_match.get("choiceLabel") or "")
-        active_match["selectedByUser"] = effective_selected_by_user
-        active_match["choiceSelectionSource"] = "user" if effective_selected_by_user else "recommended"
-        item["matchData"] = active_match
+        item["matchData"] = match_data
         item["__ai_score"] = final_score
         item["__distance"] = preference_mismatch
         enriched.append(item)
@@ -1825,10 +1780,16 @@ def _build_chance_factors(
     return factors
 
 
-def estimate_uni_chance(university: Dict[str, Any], profile: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def estimate_uni_chance(
+    university: Dict[str, Any],
+    profile: Optional[Dict[str, Any]] = None,
+    *,
+    user_context: Optional[Dict[str, Any]] = None,
+    lang_cfg: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
-    lang_cfg = _language_config()
-    ctx = _build_user_context(profile, lang_cfg)
+    lang_cfg = lang_cfg if isinstance(lang_cfg, dict) else _language_config()
+    ctx = user_context if isinstance(user_context, dict) else _build_user_context(profile, lang_cfg)
     funding_type = _normalize_funding_preference(profile.get("fundingType") or profile.get("funding_type") or "any")
     preferred_mode = _normalize_study_mode(
         profile.get("studyMode")

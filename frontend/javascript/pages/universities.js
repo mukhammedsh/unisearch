@@ -32,7 +32,7 @@ import {
   mapMarkerLogoHtml,
 } from "../university-detail-helpers.js";
 
-import { renderErrorScreen, renderNoConnection, renderServerError, renderGenericError } from "../components.js";
+import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
 import { heroIcon } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
@@ -630,11 +630,6 @@ export function initUniversitiesPage() {
             if (!nextSet.has(id)) compareAdmissionChoices.delete(id);
         });
     };
-    const comparePairSlots = () => {
-        const ids = comparePairIds();
-        const slotCount = Math.max(2, Math.min(MAX_COMPARE_UNIVERSITIES, ids.length));
-        return Array.from({ length: slotCount }, (_, index) => ids[index] || "");
-    };
     const writeCompareAdmissionChoices = () => persistCompareAdmissionChoices(compareAdmissionChoices, comparePairIds());
     compareAdmissionChoices = readCompareAdmissionChoices();
     const isComparePairReady = () => comparePairIds().length >= 2;
@@ -826,7 +821,7 @@ export function initUniversitiesPage() {
         }
 
         if (action === "compare") {
-            return isCompareSelectionMode() ? toggleCompareUniversity(uniId, actionBtn) : false;
+            return isCompareSelectionMode() ? toggleCompareUniversity(uniId) : false;
         }
 
         return false;
@@ -1051,12 +1046,6 @@ export function initUniversitiesPage() {
             ...aliases,
         ];
         return Array.from(new Set(tokens.map(normalizeUniversitySearchText).filter(Boolean)));
-    };
-
-    const matchesUniversityQuery = (item, rawQuery) => {
-        const query = normalizeUniversitySearchText(rawQuery);
-        if (!query) return true;
-        return universitySearchTokens(item).some((token) => token.includes(query) || query.includes(token));
     };
 
     const hideSearchSuggestions = () => {
@@ -1770,7 +1759,7 @@ export function initUniversitiesPage() {
             if (isCompareSelectionMode()) {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleCompareUniversity(uniId, card);
+                toggleCompareUniversity(uniId);
                 return;
             }
             rememberRecentUniversity(uniId);
@@ -1792,7 +1781,7 @@ export function initUniversitiesPage() {
         if (isCompareSelectionMode()) {
             e.preventDefault();
             e.stopPropagation();
-            toggleCompareUniversity(card.getAttribute("data-uni-id"), card);
+            toggleCompareUniversity(card.getAttribute("data-uni-id"));
             return;
         }
         rememberRecentUniversity(card.getAttribute("data-uni-id"));
@@ -1813,7 +1802,7 @@ export function initUniversitiesPage() {
         if (!popupCard) return;
         e.preventDefault();
         e.stopPropagation();
-        toggleCompareUniversity(popupCard.getAttribute("data-uni-id"), popupCard);
+        toggleCompareUniversity(popupCard.getAttribute("data-uni-id"));
     };
     document.addEventListener("click", __universitiesMapCardActionHandler, true);
 
@@ -1855,14 +1844,13 @@ export function initUniversitiesPage() {
         } else if (state.compareStage !== "results") {
             state.compareStage = "select";
         }
-        state.page = 1;
-        clearSavedScrollPosition();
         saveFilters(state);
         syncSectionVisibility({
-            shouldFetch: !isCompareResultsMode(),
+            shouldFetch: !lastRenderedItems.length,
             updateUrl: true,
             replaceUrl,
         }).catch((err) => console.error(err));
+        syncCardActionState();
     };
 
     el.compareModeBtn?.addEventListener("click", () => {
@@ -2304,7 +2292,7 @@ export function initUniversitiesPage() {
             button.addEventListener("click", () => {
                 if (isCompareSelectionMode()) {
                     const card = button.closest("[data-uni-id]");
-                    toggleCompareUniversity(card?.getAttribute("data-uni-id"), card);
+                    toggleCompareUniversity(card?.getAttribute("data-uni-id"));
                 }
                 focusMapUniversity(button.getAttribute("data-uni-focus"), {
                     openPopup: true,
@@ -2318,7 +2306,7 @@ export function initUniversitiesPage() {
                 if (!isCompareSelectionMode()) return;
                 const target = event.target instanceof Element ? event.target : null;
                 if (target?.closest("button, a")) return;
-                toggleCompareUniversity(card.getAttribute("data-uni-id"), card);
+                toggleCompareUniversity(card.getAttribute("data-uni-id"));
             });
         });
         el.mapResults.querySelectorAll(".u-map-result-link").forEach((link) => {
@@ -2332,7 +2320,7 @@ export function initUniversitiesPage() {
                 if (isCompareSelectionMode()) {
                     const card = link.closest("[data-uni-id]");
                     event.preventDefault();
-                    toggleCompareUniversity(card?.getAttribute("data-uni-id"), card);
+                    toggleCompareUniversity(card?.getAttribute("data-uni-id"));
                     return;
                 }
                 if (!shouldOpenUniversitiesInNewTab()) return;
@@ -2834,15 +2822,6 @@ export function initUniversitiesPage() {
             httpStatus: res.status,
             apiItems: parsed.items.length,
             apiWarnings: parsed.warnings,
-            mlQueryTranslated: Boolean(match.mlQueryTranslated),
-            mlQuerySource: String(match.mlQuerySource || ""),
-            mlQueryTranslationReason: String(match.mlQueryTranslationReason || ""),
-            mlQueryProvider: String(match.mlQueryProvider || ""),
-            mlQueryCacheHit: Boolean(match.mlQueryCacheHit),
-            mlQueryProviderError: String(match.mlQueryProviderError || ""),
-            mlQueryInputPreview: String(match.mlQueryInputPreview || ""),
-            mlQueryOutputPreview: String(match.mlQueryOutputPreview || ""),
-            mlQueryOutputLength: Number(match.mlQueryOutputLength || 0),
             mlApplied: Boolean(match.mlApplied),
             mlAvailable: Boolean(match.mlAvailable),
             mlUnavailable: Boolean(match.mlUnavailable),
@@ -2982,6 +2961,7 @@ export function initUniversitiesPage() {
         if (runSeq !== fetchRunSeq) return;
         if (err?.name === "AbortError") return;
         console.error(err);
+        const classified = classifyError(err);
         if (el.list) {
             const hasExistingCards = (Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) ||
                                      Boolean(el.list.querySelector(".uni-card"));
@@ -3043,14 +3023,18 @@ export function initUniversitiesPage() {
 
         const statusIndicators = [];
         const addStatusIndicator = (iconName, tone, label, detail = "") => {
-            const tooltip = [label, detail].filter(Boolean).join(" ");
-            const safeTooltip = escapeHtml(tooltip);
+            const cleanLabel = String(label || "").trim();
+            const cleanDetail = String(detail || "").trim();
+            const ariaText = cleanDetail ? `${cleanLabel}: ${cleanDetail}` : cleanLabel;
+            const tooltipHtml = cleanDetail
+                ? `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong><span class="uni-status-tooltip__text">${escapeHtml(cleanDetail)}</span>`
+                : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
             statusIndicators.push(`
                 <span class="uni-status-tooltip">
-                    <button class="uni-status-trigger uni-status-trigger--${tone}" type="button" aria-label="${escapeHtmlAttr(tooltip)}" aria-expanded="false">
+                    <button class="uni-status-trigger uni-status-trigger--${tone}" type="button" aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
                         <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>
                     </button>
-                    <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${safeTooltip}</span>
+                    <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
                 </span>
             `);
         };
@@ -3061,6 +3045,8 @@ export function initUniversitiesPage() {
         const selectedChanceType = String(match.selectedChanceType || "").toLowerCase();
         const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
         const hintedFinance = String(badgeHints.finance || "").toLowerCase();
+        const hintedRequirements = String(badgeHints.requirements || "").toLowerCase();
+        const hintedBudgetAid = String(badgeHints.budgetAid || "").toLowerCase();
         const financePref = Number(state.budget_vs_prestige);
         const inGrantMode = selectedChanceType ? selectedChanceType === "grant" : financePref < 50;
         const inPaidMode = selectedChanceType ? selectedChanceType === "general" : financePref > 50;
@@ -3070,19 +3056,16 @@ export function initUniversitiesPage() {
         const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
         const likelyGrant = hintedFinance === "likely_grant" || (!hintedFinance && inGrantMode && Number.isFinite(grantChance) && grantChance >= 65);
         const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
-        const meetsMinRequirements = match.meetMinRequirements === true && !hasConditionalExamWarning;
-        const belowRequirements = match.meetMinRequirements === false;
+        const meetsMinRequirements = hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning);
+        const belowRequirements = hintedRequirements === "below_requirements" || (!hintedRequirements && match.meetMinRequirements === false);
         const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
         const aidAny = !!(match.aidAny || match.aidEligible || hasGrant);
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
         const compareCostUSD = priceInfo.amountUSD ?? (cost !== null && uniCurrency ? (uniCurrency === "USD" ? cost : convert(cost, uniCurrency, "USD")) : cost);
         const overBudget = hasUserBudget && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
-
-        const badges = [];
-        const acc = toFiniteNumber(u?.academics?.acceptance_rate_percent);
-        const acceptanceValueText = acc !== null
-            ? `${Math.round(acc * 100) / 100}%`
-            : t("common.na", "N/A");
+        const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
+        const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
+        const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
@@ -3110,11 +3093,11 @@ export function initUniversitiesPage() {
             addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"));
         }
 
-        if (overBudget) {
-            addStatusIndicator("banknotes", "budget", aidAny
-                ? t("universities.badge.over_budget_aid", "Over Budget • Aid Available")
-                : t("universities.badge.over_budget", "Over Budget"));
-        } else if (aidAny) {
+        if (showOverBudgetAid) {
+            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"));
+        } else if (showOverBudgetStrict) {
+            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"));
+        } else if (showAidAvailable) {
             addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"));
         }
 
@@ -3138,7 +3121,6 @@ export function initUniversitiesPage() {
         const rankValue = toFiniteNumber(u?.rank);
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
         const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency, { presentation: "summary" });
-        const isSaved = savedUniversityIds.has(String(id));
         const isCompared = isCompareSelectionMode() && compareUniversityIds.has(String(id));
         const detailLabel = escapeHtml(isCompareSelectionMode()
             ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))

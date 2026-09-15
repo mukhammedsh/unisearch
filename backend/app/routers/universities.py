@@ -310,7 +310,6 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             ai_balance=ai_balance,
             admission_bias=admission_bias,
             funding_type=funding_type,
-            translation_client_key=client_key,
         )
         _ai_sort_cache_set(cache_key, sorted_items)
 

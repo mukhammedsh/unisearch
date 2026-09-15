@@ -4,6 +4,19 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.6.0 (2026-09-15) - UniFit Scoring Pipeline Optimization, Admission Track Synchronization, and Complete Badge Hints
+- Optimized UniFit ranking performance by constructing user preference contexts and language configs once per request, eliminating N+1 context rebuilds and redundant multi-pass scoring loops (`backend/app/services/ai_scoring.py`).
+- Synchronized admission track selection between UniChance and UniFit so both modules evaluate against the exact same recommended or applicant-selected track (`backend/app/services/ai_scoring.py`).
+- Cleaned up obsolete data structures and unused parameters, removing phantom `translation_meta` fields, `legacySignals` artifacts, and deprecated `translation_client_key` arguments (`backend/app/services/ai_scoring.py`, `backend/app/routers/universities.py`, `frontend/javascript/pages/universities.js`).
+- Improved scoring calibrations with smooth logarithmic decay for prestige weighting (`_fallback_budget_vs_prestige`) and enhanced multilingual keyword and tag heuristics for practice vs. science orientation (`backend/app/services/ai_scoring.py`).
+- Completed backend generation for all 5 `uiBadgeHints` categories (`vibe`, `admission_state`, `finance`, `requirements`, `budgetAid`) in alignment with specification, updating frontend status badges to consume backend hints (`backend/app/services/ai_scoring.py`, `frontend/javascript/pages/universities.js`).
+- Added comprehensive unit and regression tests verifying context reuse, track synchronization, clean payloads, and full badge hints coverage (`backend/tests/test_ai_scoring.py`, `backend/tests/test_persona_ai_sort_regression.py`).
+
+## 5.5.1 (2026-09-15) - Catalog Compare Mode Performance and Card Status Tooltip Typography
+- Fixed university catalog compare mode toggling to perform instantaneous in-DOM UI state synchronization (`syncCardActionState`) without re-fetching university data from the network, resetting pagination (`page = 1`), or clearing scroll position (`frontend/javascript/pages/universities.js`).
+- Structured university card status badge tooltips into distinct title (`.uni-status-tooltip__title`) and explanatory text (`.uni-status-tooltip__text`) elements, resolving run-on sentence concatenations in Russian and English and adding colon punctuation in `aria-label` attributes (`frontend/javascript/pages/universities.js`, `frontend/css/universities/05-catalog-polish.css`).
+- Added automated E2E test coverage verifying that toggling compare selection mode triggers zero additional network fetches when the catalog is already loaded and asserting structured badge tooltip elements (`tests/e2e/universities-tabs-compare.spec.js`, `tests/e2e/unifit-badges-i18n-layout.spec.js`).
+
 ## 5.5.0 (2026-09-15) - Active Connectivity Probing and Resilient Offline Workspace
 - Added active connectivity probe (`checkConnectivity`) checking backend `/health` endpoint to detect captive portals and dead Wi-Fi ("Lie-Fi") with short-term cache and timeout handling (`frontend/javascript/components/network-status.js`).
 - Enhanced global navbar search with dedicated offline dropdown notice (`renderGlobalSearchOfflineNotice`, `generateOfflineNoticeHtml`) instead of abruptly closing suggestions when offline (`frontend/javascript/components/navbar-search.js`, `frontend/css/style.css`).
