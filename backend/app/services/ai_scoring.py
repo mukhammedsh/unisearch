@@ -1246,18 +1246,29 @@ def _fallback_city_vs_outside_city(university: Dict[str, Any]) -> float:
     return _clamp01(1.0 - city_intensity)
 
 
+_FACTORS_CACHE: Dict[str, Dict[str, float]] = {}
+_CHOICES_CACHE: Dict[str, List[Dict[str, Any]]] = {}
+
+
 def _extract_university_factors(university: Dict[str, Any]) -> Dict[str, float]:
+    uid = str(university.get("id") or "").strip()
+    if uid and uid in _FACTORS_CACHE:
+        return _FACTORS_CACHE[uid]
+
     raw = university.get("factors")
     raw = raw if isinstance(raw, dict) else {}
     location_factor_raw = raw.get("city_vs_outside_city")
     if location_factor_raw is None:
         location_factor_raw = raw.get("city_vs_campus")
-    return {
+    res = {
         "practice_vs_science": _factor01(raw.get("practice_vs_science"), _fallback_practice_vs_science(university)),
         "social_vs_hardcore": _factor01(raw.get("social_vs_hardcore"), _fallback_social_vs_hardcore(university)),
         "budget_vs_prestige": _factor01(raw.get("budget_vs_prestige"), _fallback_budget_vs_prestige(university)),
         "city_vs_campus": _factor01(location_factor_raw, _fallback_city_vs_outside_city(university)),
     }
+    if uid:
+        _FACTORS_CACHE[uid] = res
+    return res
 
 
 def _distance_breakdown(user_pref: Dict[str, float], uni_factors: Dict[str, float]) -> Tuple[float, Dict[str, float]]:
@@ -1886,10 +1897,15 @@ def estimate_uni_chance(
         or "any"
     )
 
-    choices = universities_service.expand_admission_choices(university.get("admission_categories"))
-    if not choices:
-        choices = [{"id": "default", "choice_key": "default", "label": "General admission", "requirements": {}, "stats_avg": {}}]
-    choices = [choice for choice in choices if isinstance(choice, dict)]
+    uid = str(university.get("id") or "").strip()
+    choices = _CHOICES_CACHE.get(uid) if uid else None
+    if choices is None:
+        choices = universities_service.expand_admission_choices(university.get("admission_categories"))
+        if not choices:
+            choices = [{"id": "default", "choice_key": "default", "label": "General admission", "requirements": {}, "stats_avg": {}}]
+        choices = [choice for choice in choices if isinstance(choice, dict)]
+        if uid:
+            _CHOICES_CACHE[uid] = choices
     entries = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
     if funding_type != "any":
         entries = [row for row in entries if _get_track_funding_type(row["choice"]) == funding_type]

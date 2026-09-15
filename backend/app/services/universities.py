@@ -813,7 +813,8 @@ def _effective_university_cost(
 def _effective_university_cost_usd(
     u: Dict[str, Any], format_preference: Any = "any"
 ) -> float:
-    raw_cost = _effective_university_cost(u, format_preference=format_preference)
+    mode = _normalize_study_mode(format_preference)
+    raw_cost = _effective_university_cost(u, format_preference=mode)
     if raw_cost <= 0:
         return 0.0
     finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
@@ -1016,6 +1017,16 @@ def _build_university_meta(u: Dict[str, Any], rus_names: Optional[Dict[str, str]
         f"{name_rus or name_raw} {city_rus or city_raw} {country_rus or country_raw} {' '.join(tags_rus)}"
     )
 
+    choices = expand_admission_choices(u.get("admission_categories"))
+    has_grant = any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
+    has_paid = any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
+    acceptance_rate = _get_university_acceptance_rate(u)
+    cost_usd_any = _effective_university_cost_usd(u, "any")
+    cost_usd_online = _effective_university_cost_usd(u, "online")
+    cost_usd_oncampus = _effective_university_cost_usd(u, "on-campus")
+    rank_num = _to_float(u.get("rank")) or 999999.0
+    has_aid = _has_any_aid(u)
+
     return {
         "name": name_raw,
         "name_rus": name_rus,
@@ -1041,6 +1052,14 @@ def _build_university_meta(u: Dict[str, Any], rus_names: Optional[Dict[str, str]
         + [_safe_lower(x) for x in program_levels if x],
         "formats": [_safe_lower(x) for x in formats if x]
         + [_safe_lower(x) for x in program_formats if x],
+        "cost_usd_any": cost_usd_any,
+        "cost_usd_online": cost_usd_online,
+        "cost_usd_oncampus": cost_usd_oncampus,
+        "acceptance_rate": acceptance_rate,
+        "rank_num": rank_num,
+        "has_grant": has_grant,
+        "has_paid": has_paid,
+        "has_aid": has_aid,
     }
 
 
@@ -1157,6 +1176,7 @@ def to_university_card(
         return {}
 
     lang = _normalize_search_lang(search_lang)
+    mode = _normalize_study_mode(format_preference)
     uid = str(u.get("id") or "").strip()
     location = u.get("location")
     location_obj = location if isinstance(location, dict) else {}
@@ -1189,7 +1209,7 @@ def to_university_card(
         },
         "finance": {
             "total_cost_year_usd": _effective_university_cost(
-                u, format_preference=format_preference
+                u, format_preference=mode
             ),
             "currency": finance_obj.get("currency") or "USD",
             "financial_aid": {
@@ -1304,7 +1324,7 @@ def _apply_sort(
     return sorted(items, key=lambda u: _safe_lower(u.get("name")))
 
 
-_UNI_CACHE = {"mtime": None, "data": [], "by_id": {}, "meta": []}
+_UNI_CACHE: Dict[str, Any] = {"mtime": None, "data": [], "by_id": {}, "meta": []}
 
 
 def _load_universities_cached() -> List[Dict[str, Any]]:
@@ -1335,10 +1355,17 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
                 continue
             norm = _normalize_university_schema(row)
             out.append(norm)
-            meta_list.append(_build_university_meta(norm, rus_names=rus_names))
+            meta_row = _build_university_meta(norm, rus_names=rus_names)
             uid = str(norm.get("id", "")).strip()
             if uid:
                 by_id[uid] = norm
+                # Pre-build search meta for both languages
+                pm_eng = search_service.prepare_search_meta(meta_row)
+                meta_rus = _meta_for_search_lang(meta_row, SEARCH_LANG_RUS)
+                pm_rus = search_service.prepare_search_meta(meta_rus)
+                meta_row["prepared_search_meta_eng"] = pm_eng
+                meta_row["prepared_search_meta_rus"] = pm_rus
+            meta_list.append(meta_row)
 
         _UNI_CACHE["mtime"] = mtime
         _UNI_CACHE["data"] = out
@@ -1470,11 +1497,14 @@ def list_universities(
                 prepared_queries.append(pq)
 
         scored_pairs = []
+        prepared_key = "prepared_search_meta_rus" if lang == SEARCH_LANG_RUS else "prepared_search_meta_eng"
         for u, m in pairs:
-            meta_search = _meta_for_search_lang(m, lang)
-            pm = search_service.prepare_search_meta(meta_search)
+            pm = m.get(prepared_key)
             if not pm:
-                continue
+                meta_search = _meta_for_search_lang(m, lang)
+                pm = search_service.prepare_search_meta(meta_search)
+                if not pm:
+                    continue
 
             best_score: Optional[float] = None
             for pq in prepared_queries:
@@ -1574,33 +1604,32 @@ def list_universities(
 
     if funding_type:
         ft = _safe_lower(funding_type)
-        if ft in {"grant", "paid"}:
-            pairs = [
-                (u, m)
-                for (u, m) in pairs
-                if any(
-                    _safe_lower(choice.get("funding_type")) == ft
-                    for choice in expand_admission_choices(u.get("admission_categories"))
-                    if isinstance(choice, dict)
-                )
-            ]
+        if ft == "grant":
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant")]
+        elif ft == "paid":
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid")]
 
     if user_budget is not None:
+        cost_key = f"cost_usd_{mode_pref}"
         filtered = []
         for u, m in pairs:
-            cost = (
-                _effective_university_cost_usd(u, format_preference=mode_pref) or 999999.0
-            )
-            fa = _get_nested(u, ["finance", "financial_aid"], {})
-            aid = fa.get("merit_based") or fa.get("need_based")
+            cost = m.get(cost_key)
+            if cost is None:
+                cost = _effective_university_cost_usd(u, format_preference=mode_pref) or 999999.0
+            aid = m.get("has_aid")
+            if aid is None:
+                aid = _has_any_aid(u)
             if cost <= user_budget or aid:
                 filtered.append((u, m))
         pairs = filtered
 
     if min_tuition is not None or max_tuition is not None:
+        cost_key = f"cost_usd_{mode_pref}"
         filtered = []
         for u, m in pairs:
-            cost = _effective_university_cost_usd(u, format_preference=mode_pref)
+            cost = m.get(cost_key)
+            if cost is None:
+                cost = _effective_university_cost_usd(u, format_preference=mode_pref)
             if min_tuition is not None and not _safe_compare_gte(cost, min_tuition):
                 continue
             if max_tuition is not None and not _safe_compare_lte(cost, max_tuition):
@@ -1612,13 +1641,13 @@ def list_universities(
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_gte(_get_university_acceptance_rate(u), min_acceptance)
+            if _safe_compare_gte(m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u), min_acceptance)
         ]
     if max_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_lte(_get_university_acceptance_rate(u), max_acceptance)
+            if _safe_compare_lte(m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u), max_acceptance)
         ]
 
     if size:

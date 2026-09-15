@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.7.2 (2026-09-15) - In-Memory Search Indexing, Precomputed Numeric Metadata, and Scoring Cache Isolation
+- Added exact token weight dictionary index (`token_weights_exact`) to `prepare_search_meta`, providing $\mathcal{O}(1)$ exact token matching fast path before falling back to fuzzy Levenshtein checks (`backend/app/services/search.py`).
+- Precomputed numeric metadata (`cost_usd_any`, `cost_usd_online`, `cost_usd_oncampus`, `acceptance_rate`, `rank_num`, `has_grant`, `has_paid`, `has_aid`) and language-specific search metadata inside internal `meta_row` at dataset load, eliminating repetitive dynamic currency conversion, nested tree scans, and Levenshtein evaluations during catalog filtering loops (`backend/app/services/universities.py`).
+- Optimized `to_university_card` card projection to generate clean payloads on-demand strictly for the requested pagination slice ($K \approx 20$) without redundant RAM allocations (`backend/app/services/universities.py`).
+- Isolated 4D preference factor extraction and admission choices expansion into dedicated module caches (`_FACTORS_CACHE`, `_CHOICES_CACHE`) keyed by university ID, eliminating in-place dictionary mutations and preventing private cache keys from leaking into public API responses (`backend/app/services/ai_scoring.py`, `backend/app/services/universities.py`).
+
 ## 5.7.1 (2026-09-15) - Test Suite Optimization, Granular Test Runners, and Agent Anti-Redundancy Protocol
 - Added CLI argument filtering and target normalization to `test:backend` (`scripts/test-backend.mjs`), enabling direct execution of specific test files, test classes, or methods (e.g. `npm run test:backend -- test_currency` or `npm run test:backend -- tests/test_ai_scoring.py::AiScoringTests::test_foo`) in ~0.5–1.0s.
 - Created `scripts/test-unit.mjs` wrapper for `test:unit` supporting targeted file pattern filters (e.g. `npm run test:unit -- currency`) running in ~120ms, and added fast aggregated developer scripts `test:fast` and `test:smoke` in `package.json`.

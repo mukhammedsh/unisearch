@@ -129,8 +129,16 @@ def prepare_search_meta(meta_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     if not full_chunks:
         return None
 
+    # Pre-build exact token -> highest weight map for O(1) matching
+    token_weights_exact: Dict[str, float] = {}
+    for weight, tokens in weighted_token_sets:
+        for t in tokens:
+            if t not in token_weights_exact or weight > token_weights_exact[t]:
+                token_weights_exact[t] = weight
+
     return {
         "weighted_token_sets": weighted_token_sets,
+        "token_weights_exact": token_weights_exact,
         "full_text": " ".join(full_chunks),
         "name_text": _normalize(meta_row.get("name", "")),
     }
@@ -138,8 +146,13 @@ def prepare_search_meta(meta_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
 def _best_token_weight(
     query_token: str,
-    weighted_token_sets: Sequence[Tuple[float, Sequence[str]]],
+    prepared_meta: Dict[str, Any],
 ) -> float:
+    exact_map: Dict[str, float] = prepared_meta.get("token_weights_exact") or {}
+    if query_token in exact_map:
+        return exact_map[query_token]
+
+    weighted_token_sets = prepared_meta["weighted_token_sets"]
     return max(
         (weight for weight, bucket in weighted_token_sets if _token_matches(query_token, bucket)),
         default=0.0,
@@ -150,7 +163,6 @@ def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any]
     q_norm = prepared_query["q_norm"]
     q_tokens = prepared_query["q_tokens"]
 
-    weighted_token_sets = prepared_meta["weighted_token_sets"]
     full_text = prepared_meta["full_text"]
     name_text = prepared_meta["name_text"]
 
@@ -160,7 +172,7 @@ def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any]
     if name_text and q_norm in name_text:
         score += NAME_MATCH_BONUS
 
-    token_weights = [_best_token_weight(token, weighted_token_sets) for token in q_tokens]
+    token_weights = [_best_token_weight(token, prepared_meta) for token in q_tokens]
     if any(weight <= 0 for weight in token_weights):
         return None
 
