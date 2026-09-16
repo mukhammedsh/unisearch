@@ -90,6 +90,7 @@ async function main() {
       host,
       "--port",
       portArg,
+      "--no-proxy-headers",
       ...(useReload ? ["--reload"] : []),
     ],
     {

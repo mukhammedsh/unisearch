@@ -5,10 +5,14 @@ This document covers the deployment guardrails that matter most when UniSearch i
 ## Baseline rules
 
 - Keep Redis private. In Docker, Redis should stay on the internal compose network and should not publish a host port.
+- Never expose the backend port directly to the public internet when running behind a reverse proxy. Bind the backend port to localhost (e.g. `127.0.0.1:8000:8000` in Docker) or keep it on an internal network to prevent direct bypass of proxy protections.
 - Set a long random `OPS_ADMIN_TOKEN` before exposing the backend to the internet.
 - Keep `/ops/*`, `/metrics`, and `/health?warmup=1` private. The backend also requires `OPS_ADMIN_TOKEN`, but the proxy should hide these paths unless you intentionally operate them through a private network or SSH tunnel.
 - Prefer same-domain API routing with `UNISEARCH_API_BASE_URL=/api`. This avoids broad CORS rules and keeps browser deployment simpler.
-- Keep `TRUST_X_FORWARDED_FOR=0` unless the backend only accepts traffic from a trusted reverse proxy. If you enable it, set `TRUSTED_PROXY_IPS` to the proxy IPs only.
+- Keep `TRUST_X_FORWARDED_FOR=0` unless the backend only accepts traffic from a trusted reverse proxy. If you enable it, set `TRUSTED_PROXY_IPS` to the minimal explicit proxy IPs (e.g. `127.0.0.1,::1` or specific container/subnet IP).
+- Do not trust broad private networks (such as `10.0.0.0/8` or `172.16.0.0/12`) via `TRUST_PRIVATE_NETWORK_PROXIES` unless the entire subnet is provably isolated and contains only trusted proxies.
+- Enable `TRUST_CF_CONNECTING_IP=1` only when Cloudflare is actively used and upstream proxies are configured to sanitize incoming headers from non-Cloudflare traffic.
+- UniSearch traverses `X-Forwarded-For` right-to-left against `TRUSTED_PROXY_IPS` (and `_PRIVATE_NETWORKS` if `TRUST_PRIVATE_NETWORK_PROXIES=1`), selecting the first non-trusted hop as the verified client IP. Spoofed headers prepended by untrusted clients are automatically discarded.
 - Keep request body limits aligned between the proxy and backend. The backend default is `REQUEST_BODY_MAX_BYTES=131072` (128 KiB).
 
 Generate an ops token with a cross-platform command:
@@ -150,7 +154,13 @@ server {
 }
 ```
 
-When Nginx and the backend run in separate Docker containers, `TRUSTED_PROXY_IPS=127.0.0.1,::1` is usually wrong because the backend sees the proxy container IP. Either keep `TRUST_X_FORWARDED_FOR=0`, or pin the proxy to a known Docker network/subnet and list only that trusted proxy address.
+When Nginx and the backend run in separate Docker containers, `TRUSTED_PROXY_IPS=127.0.0.1,::1` is incorrect because the backend sees the internal proxy container IP on the Docker network (e.g. `172.18.0.2` or within `172.18.0.0/16`). Set `TRUSTED_PROXY_IPS` to the specific proxy container IP or pinned container subnet.
+
+When Cloudflare sits in front of Nginx (which in turn proxies to UniSearch):
+- The immediate peer connecting to UniSearch is Nginx.
+- The peer connecting to Nginx is Cloudflare.
+- For `X-Forwarded-For` chain traversal, list both Nginx and Cloudflare proxy IP ranges in `TRUSTED_PROXY_IPS`, and set `TRUST_X_FORWARDED_FOR=1`.
+- If using `TRUST_CF_CONNECTING_IP=1`, ensure Nginx is trusted and forwards `CF-Connecting-IP` without allowing untrusted direct clients to inject it.
 
 ## Deployment checklist
 
@@ -159,6 +169,8 @@ Before publishing a hosted instance:
 1. `OPS_ADMIN_TOKEN` is set and not committed.
 2. `FRONTEND_ORIGINS` contains the real public frontend origin.
 3. Redis has no public port.
-4. `/ops/*`, `/metrics`, and `/health?warmup=1` are not reachable from the public internet unless intentionally protected by an internal admin network.
-5. `UNISEARCH_API_BASE_URL=/api` is generated into `frontend/env.js` for same-domain hosting.
-6. `docker compose config` succeeds.
+4. If running behind a reverse proxy, the backend port is bound to `127.0.0.1` (or kept internal) to prevent public bypass of the proxy.
+5. `TRUST_X_FORWARDED_FOR=1` and `TRUSTED_PROXY_IPS` are configured to match the actual upstream proxy IP/subnet.
+6. `/ops/*`, `/metrics`, and `/health?warmup=1` are not reachable from the public internet unless intentionally protected by an internal admin network.
+7. `UNISEARCH_API_BASE_URL=/api` is generated into `frontend/env.js` for same-domain hosting.
+8. `docker compose config` succeeds.
