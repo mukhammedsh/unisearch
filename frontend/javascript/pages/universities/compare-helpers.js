@@ -675,7 +675,12 @@ export function compareExtraRequirementsText(u, compareAdmissionChoices) {
 }
 
 export function compareSourceText(u, factKey) {
-  const fact = nested(u, ["fact_provenance", "facts", factKey], null);
+  let fact = nested(u, ["fact_provenance", "facts", factKey], null);
+  if (!fact && factKey === "early_career_salary") {
+    fact = nested(u, ["fact_provenance", "facts", "early_career_salary"], null);
+  } else if (!fact && (factKey === "median_earnings_10yr_usd" || factKey === "median_earnings_10yr")) {
+    fact = nested(u, ["fact_provenance", "facts", "median_earnings_10yr"], null);
+  }
   const source = String(fact?.source || "").trim();
   const status = String(fact?.status || u?.rank_meta?.status || "").trim();
   const translatedSource = source
@@ -689,7 +694,12 @@ export function compareSourceText(u, factKey) {
 }
 
 export function compareSourceMeta(u, factKey) {
-  const fact = nested(u, ["fact_provenance", "facts", factKey], null);
+  let fact = nested(u, ["fact_provenance", "facts", factKey], null);
+  if (!fact && factKey === "early_career_salary") {
+    fact = nested(u, ["fact_provenance", "facts", "early_career_salary"], null);
+  } else if (!fact && (factKey === "median_earnings_10yr_usd" || factKey === "median_earnings_10yr")) {
+    fact = nested(u, ["fact_provenance", "facts", "median_earnings_10yr"], null);
+  }
   return {
     text: compareSourceText(u, factKey),
     url: String(fact?.source_url || "").trim(),

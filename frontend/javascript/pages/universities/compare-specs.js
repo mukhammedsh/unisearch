@@ -491,13 +491,13 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.salary", "Early career salary"),
             type: "number",
             direction: "higher",
-            getter: (u) => toFiniteNumber(u?.outcomes?.average_early_career_salary_usd),
+            getter: (u) => toFiniteNumber(u?.outcomes?.early_career_salary_usd),
             formatter: (value) => moneyUSD(value),
-            sourceKey: "average_early_career_salary_usd",
+            sourceKey: "early_career_salary",
             weight: 1.1,
             materiality: 0.1,
             comparable: (rows) => rows.every((row) => {
-                const source = compareSourceMeta(row.university, "average_early_career_salary_usd");
+                const source = compareSourceMeta(row.university, "early_career_salary");
                 return Boolean(String(source?.url || "").trim() && String(source?.verifiedAt || "").trim());
             }),
         },
@@ -909,16 +909,24 @@ const compareAcademicsTheme = (universities) => {
 };
 
 const compareOutcomesTheme = (universities) => {
-    const rows = universities.map((university) => ({
-        university,
-        salary: (() => {
-            const source = compareSourceMeta(university, "average_early_career_salary_usd");
-            return String(source?.url || "").trim() && String(source?.verifiedAt || "").trim()
-                ? toFiniteNumber(university?.outcomes?.average_early_career_salary_usd)
-                : null;
-        })(),
-    }));
-    const complete = rows.every((row) => row.salary !== null);
+    const rows = universities.map((university) => {
+        const earlySource = compareSourceMeta(university, "early_career_salary");
+        const earlySalary = (String(earlySource?.url || "").trim() && String(earlySource?.verifiedAt || "").trim())
+            ? toFiniteNumber(university?.outcomes?.early_career_salary_usd)
+            : null;
+        const medianSource = compareSourceMeta(university, "median_earnings_10yr");
+        const medianEarnings = (String(medianSource?.url || "").trim() && String(medianSource?.verifiedAt || "").trim())
+            ? toFiniteNumber(university?.outcomes?.median_earnings_10yr_usd)
+            : null;
+        return {
+            university,
+            earlySalary,
+            medianEarnings,
+            earlySource,
+            medianSource,
+        };
+    });
+    const complete = rows.every((row) => row.earlySalary !== null);
     return {
         key: "outcomes",
         icon: "chart-bar",
@@ -927,15 +935,33 @@ const compareOutcomesTheme = (universities) => {
         summary: complete
             ? t("universities.compare.outcomes.available", "Published salary is shown as context; ROI requires comparable verified cost and outcome data.")
             : t("universities.compare.outcomes.missing", "Verified comparable salary or ROI data is incomplete, so no outcome winner is selected."),
-        universities: rows.map((row) => ({
-            id: String(row.university?.id || ""),
-            name: compareUniversityName(row.university),
-            facts: [compareDecisionFact(
-                t("universities.compare.verified_salary", "Verified early-career salary"),
-                row.salary === null ? t("common.na", "N/A") : moneyUSD(row.salary),
-                compareDecisionSource(compareSourceMeta(row.university, "average_early_career_salary_usd"))
-            )],
-        })),
+        universities: rows.map((row) => {
+            const facts = [];
+            if (row.earlySalary !== null) {
+                facts.push(compareDecisionFact(
+                    t("universities.compare.verified_salary", "Verified early-career salary"),
+                    moneyUSD(row.earlySalary),
+                    compareDecisionSource(row.earlySource)
+                ));
+            } else if (row.medianEarnings !== null) {
+                facts.push(compareDecisionFact(
+                    t("universities.compare.median_earnings_10yr", "10-year post-entry median earnings (Scorecard)"),
+                    moneyUSD(row.medianEarnings),
+                    compareDecisionSource(row.medianSource)
+                ));
+            } else {
+                facts.push(compareDecisionFact(
+                    t("universities.compare.verified_salary", "Verified early-career salary"),
+                    t("common.na", "N/A"),
+                    null
+                ));
+            }
+            return {
+                id: String(row.university?.id || ""),
+                name: compareUniversityName(row.university),
+                facts,
+            };
+        }),
     };
 };
 

@@ -1739,7 +1739,7 @@ class AiScoringTests(unittest.TestCase):
         uni_general = {
             "id": "test-uni-salary",
             "finance": {"total_cost_year_usd": 50000},
-            "outcomes": {"average_early_career_salary_usd": 100000},
+            "outcomes": {"early_career_salary_usd": 100000},
             "admission_categories": [],
         }
         res = estimate_university_roi(uni_general, {"major": "Physics", "studyMode": "On-campus"})
@@ -1754,11 +1754,11 @@ class AiScoringTests(unittest.TestCase):
             "id": "test-uni-major-salary",
             "finance": {"total_cost_year_usd": 40000},
             "outcomes": {
-                "average_salary_by_major": {
+                "salary_by_major": {
                     "Computer Science": 120000,
                     "Biology": 60000,
                 },
-                "average_early_career_salary_usd": 80000,
+                "early_career_salary_usd": 80000,
             },
             "admission_categories": [],
         }
@@ -1787,6 +1787,24 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual(res["roi_tone"], "neutral")
         self.assertEqual(res["annual_cost_usd"], 30000.0)
         self.assertEqual(res["matched_major"], "")
+        self.assertEqual(res["salary_data_points"], 0)
+
+    def test_estimate_university_roi_with_median_10yr_earnings_returns_neutral_no_data(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        uni_10yr_earnings = {
+            "id": "caltech-usa-pasadena",
+            "finance": {"total_cost_year_usd": 85000},
+            "outcomes": {"median_earnings_10yr_usd": 128566},
+            "admission_categories": [],
+        }
+        res = estimate_university_roi(uni_10yr_earnings, {"major": "Computer Science"})
+        self.assertEqual(res["context_type"], "no_salary_data")
+        self.assertIsNone(res["salary_used_usd"])
+        self.assertIsNone(res["roi_value"])
+        self.assertEqual(res["roi_label"], "No Data")
+        self.assertEqual(res["roi_tone"], "neutral")
+        self.assertEqual(res["annual_cost_usd"], 85000.0)
         self.assertEqual(res["salary_data_points"], 0)
 
 

@@ -623,6 +623,7 @@ universities.compare.outcomes.title: Результаты выпускников
 universities.compare.outcomes.available: Опубликованная зарплата показана как контекст; для ROI нужны сопоставимые проверенные данные о стоимости и результатах.
 universities.compare.outcomes.missing: Сопоставимых проверенных данных о зарплате или ROI не хватает, поэтому лидер не определяется.
 universities.compare.verified_salary: Проверенная зарплата в начале карьеры
+universities.compare.median_earnings_10yr: Медианный доход через 10 лет после поступления (Scorecard)
 universities.compare.table_scroll_hint: Проведите по таблице в сторону, чтобы увидеть оба университета.
 universities.compare.differences.title: Ключевые отличия
 universities.compare.differences.subtitle: Показываем самые заметные опубликованные плюсы каждого выбранного университета.

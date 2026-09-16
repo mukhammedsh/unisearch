@@ -620,6 +620,7 @@ universities.compare.outcomes.title: Graduate outcomes
 universities.compare.outcomes.available: Published salary is shown as context; ROI requires comparable verified cost and outcome data.
 universities.compare.outcomes.missing: Verified comparable salary or ROI data is incomplete, so no outcome winner is selected.
 universities.compare.verified_salary: Verified early-career salary
+universities.compare.median_earnings_10yr: 10-year post-entry median earnings (Scorecard)
 universities.compare.table_scroll_hint: Swipe horizontally to see both universities.
 universities.compare.differences.title: Key differences
 universities.compare.differences.subtitle: Shows the clearest published advantages for each selected university.

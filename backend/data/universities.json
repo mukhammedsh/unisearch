@@ -374,7 +374,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 98741
+      "early_career_salary_usd": 98741.0
     },
     "verified_sources": [
       {
@@ -430,14 +430,6 @@
         "url": "https://mitadmissions.org/apply/process/stats/"
       },
       {
-        "topic": "outcomes",
-        "url": "https://ir.mit.edu/outcomes/"
-      },
-      {
-        "topic": "outcomes",
-        "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
-      },
-      {
         "topic": "campus_size",
         "url": "https://facts.mit.edu/mit-campus/"
       },
@@ -452,6 +444,14 @@
       {
         "topic": "acceptance_rate",
         "url": "https://mitadmissions.org/apply/process/stats/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://ir.mit.edu/outcomes/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
       }
     ],
     "description": "Massachusetts Institute of Technology is a leading private research university in Cambridge, Massachusetts, recognized for its rigorous programs in engineering, physical sciences, and economics.",
@@ -565,6 +565,24 @@
             "cycle": "Class of 2029",
             "applicants": 29281,
             "admitted": 1334
+          }
+        },
+        "early_career_salary": {
+          "value": 98741.0,
+          "unit": "usd_per_year",
+          "source": "MIT Graduating Student Survey 2019",
+          "source_url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct bachelor's mean yearly salary reported for MIT graduating students with accepted positions in the 2019 survey.",
+          "basis": {
+            "degree_level": "bachelor",
+            "cohort": "Class of 2019",
+            "scope": "university_wide",
+            "metric": "mean_yearly_salary_usd",
+            "respondents_with_salary_data": 293,
+            "median_yearly_salary_usd": 90000
           }
         }
       }
@@ -4954,7 +4972,7 @@
       "currency": "SGD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 52100
+      "early_career_salary_usd": 48314.67
     },
     "verified_sources": [
       {
@@ -4998,14 +5016,6 @@
         "url": "https://www.nus.edu.sg/oam/docs/default-source/application-guide/cat-a-application-guide.pdf"
       },
       {
-        "topic": "outcomes",
-        "url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/"
-      },
-      {
-        "topic": "outcomes",
-        "url": "https://nus.edu.sg/ges-2024"
-      },
-      {
         "topic": "campus_size",
         "url": "https://sustainability.nus.edu.sg/wp-content/uploads/2021/11/NUS_Sustainability_Strategic_Plan_2017_2020.pdf"
       },
@@ -5024,6 +5034,14 @@
       {
         "topic": "acceptance_rate",
         "url": "https://www.topuniversities.com/world-university-rankings"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://nus.edu.sg/ges-2024"
       }
     ],
     "description": "The National University of Singapore is a comprehensive research university offering diverse undergraduate and postgraduate programs with an emphasis on Asian perspectives.",
@@ -5136,6 +5154,31 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "early_career_salary": {
+          "value": 48314.67,
+          "unit": "usd_per_year",
+          "source": "NUS fresh graduate outcomes 2025",
+          "source_url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official_derived",
+          "method": "Annualized the official mean gross monthly salary for NUS fresh graduates in full-time permanent employment from the official news release published on 6 March 2026, converted SGD to USD using ECB euro reference rates for 2026-03-30.",
+          "basis": {
+            "degree_level": "bachelor",
+            "cohort": "Class of 2025",
+            "scope": "university_wide",
+            "metric": "mean_gross_monthly_salary_sgd",
+            "source_salary_sgd_per_month": 5193,
+            "source_median_salary_sgd_per_month": 4746,
+            "annualized_salary_sgd": 62316,
+            "fx_source": "ECB euro foreign exchange reference rates",
+            "fx_date": "2026-03-30",
+            "eur_usd": 1.1484,
+            "eur_sgd": 1.4812,
+            "usd_per_sgd": 0.77531731,
+            "publication_date": "2026-03-06"
+          }
         }
       }
     },
@@ -8675,7 +8718,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 128566
+      "median_earnings_10yr_usd": 128566.0
     },
     "verified_sources": [
       {
@@ -8831,6 +8874,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 128566.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 110404,
+            "institution_name": "California Institute of Technology",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -9395,11 +9457,7 @@
       "costs_breakdown_note": "Official University of Toronto undergraduate fee and cost of living estimate in CAD, reflecting Faculty of Arts and Science / Computer Science Year 1 international tuition ($62,950 CAD), mandatory campus incidental and ancillary fees ($2,050 CAD), on-campus residence accommodation ($15,000 CAD), campus meal plan ($6,000 CAD), and course books and supplies ($1,500 CAD).",
       "costs_breakdown_status": "official_mandatory_breakdown"
     },
-    "outcomes": {
-      "average_salary_by_major": {
-        "Computer Science": 64650.03
-      }
-    },
+    "outcomes": {},
     "verified_sources": [
       {
         "topic": "extra_requirements",
@@ -9436,10 +9494,6 @@
       {
         "topic": "local_exam_requirements",
         "url": "https://future.utoronto.ca/requirements-canadian-high-schools"
-      },
-      {
-        "topic": "outcomes",
-        "url": "https://careernavigator.studentlife.utoronto.ca/page/salary-data"
       },
       {
         "topic": "stats_avg",
@@ -10152,7 +10206,7 @@
       "currency": "HKD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 34620.11
+      "early_career_salary_usd": 34620.11
     },
     "verified_sources": [
       {
@@ -10184,10 +10238,6 @@
         "url": "https://admission.cuhk.edu.hk/application/jupas/minimum-university-requirements/"
       },
       {
-        "topic": "outcomes",
-        "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
-      },
-      {
         "topic": "campus_size",
         "url": "https://www.cuhk.edu.hk/english/campus/campus.html"
       },
@@ -10202,6 +10252,10 @@
       {
         "topic": "acceptance_rate",
         "url": "https://www.topuniversities.com/world-university-rankings"
+      },
+      {
+        "topic": "outcomes",
+        "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
       }
     ],
     "description": "The Chinese University of Hong Kong is a public research university offering a bilingual education and a collegiate system, with diverse programs across multiple disciplines.",
@@ -10318,6 +10372,30 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "early_career_salary": {
+          "value": 34620.11,
+          "unit": "usd_per_year",
+          "source": "CUHK Graduate Employment Survey Profile 2019",
+          "source_url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf",
+          "verified_at": "2026-03-31",
+          "confidence": "high",
+          "status": "official_derived",
+          "method": "Annualized the official average monthly salary for CUHK full-time first-degree graduates and converted HKD to USD using ECB euro reference rates for 2026-03-30.",
+          "basis": {
+            "degree_level": "bachelor",
+            "cohort": "2019 full-time first-degree graduates",
+            "scope": "university_wide",
+            "metric": "average_monthly_salary_hkd",
+            "source_salary_hkd_per_month": 22602,
+            "source_median_salary_hkd_per_month": 19875,
+            "annualized_salary_hkd": 271224,
+            "fx_source": "ECB euro foreign exchange reference rates",
+            "fx_date": "2026-03-30",
+            "eur_usd": 1.1484,
+            "eur_hkd": 8.9969,
+            "usd_per_hkd": 0.12764397
+          }
         }
       }
     },
@@ -11694,7 +11772,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 91885
+      "median_earnings_10yr_usd": 91885.0
     },
     "verified_sources": [
       {
@@ -11853,6 +11931,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 91885.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 144050,
+            "institution_name": "University of Chicago",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -13395,7 +13492,7 @@
       "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 111371
+      "median_earnings_10yr_usd": 111371.0
     },
     "verified_sources": [
       {
@@ -13554,6 +13651,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 111371.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 215062,
+            "institution_name": "University of Pennsylvania",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -14507,7 +14623,7 @@
       "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 104043
+      "median_earnings_10yr_usd": 104043.0
     },
     "verified_sources": [
       {
@@ -14666,6 +14782,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 104043.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 190415,
+            "institution_name": "Cornell University",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -15071,7 +15206,7 @@
       "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 92446
+      "median_earnings_10yr_usd": 92446.0
     },
     "verified_sources": [
       {
@@ -15230,6 +15365,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 92446.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 110635,
+            "institution_name": "University of California-Berkeley",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -16248,7 +16402,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 100533
+      "median_earnings_10yr_usd": 100533.0
     },
     "verified_sources": [
       {
@@ -16409,6 +16563,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 100533.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 130794,
+            "institution_name": "Yale University",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -16839,7 +17012,7 @@
       "costs_breakdown_status": "official_mandatory_breakdown"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 110066
+      "median_earnings_10yr_usd": 110066.0
     },
     "verified_sources": [
       {
@@ -16998,6 +17171,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 110066.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 186131,
+            "institution_name": "Princeton University",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -18739,7 +18931,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 87555
+      "median_earnings_10yr_usd": 87555.0
     },
     "verified_sources": [
       {
@@ -18899,6 +19091,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 87555.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 162928,
+            "institution_name": "Johns Hopkins University",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -21428,7 +21639,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 102491
+      "median_earnings_10yr_usd": 102491.0
     },
     "verified_sources": [
       {
@@ -21588,6 +21799,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 102491.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 190150,
+            "institution_name": "Columbia University in the City of New York",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },
@@ -22650,7 +22880,7 @@
       "currency": "USD"
     },
     "outcomes": {
-      "average_early_career_salary_usd": 82511
+      "median_earnings_10yr_usd": 82511.0
     },
     "verified_sources": [
       {
@@ -22809,6 +23039,25 @@
           "confidence": "high",
           "status": "official_external",
           "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+        },
+        "median_earnings_10yr": {
+          "value": 82511.0,
+          "unit": "usd_per_year",
+          "source": "U.S. Department of Education College Scorecard",
+          "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+          "verified_at": "2026-09-17",
+          "confidence": "high",
+          "status": "official_external",
+          "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+          "basis": {
+            "metric": "median_earnings_10_years_after_entry",
+            "scope": "institution_wide_title_iv_aid_recipients",
+            "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+            "field": "latest.earnings.10_yrs_after_entry.median",
+            "ipeds_unitid": 110662,
+            "institution_name": "University of California-Los Angeles",
+            "data_source": "U.S. Department of Education College Scorecard API"
+          }
         }
       }
     },

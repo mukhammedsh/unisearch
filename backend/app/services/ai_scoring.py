@@ -2200,15 +2200,11 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
     if not isinstance(outcomes, dict):
         outcomes = {}
     salaries_by_major_raw = (
-        outcomes.get("average_salary_by_major")
-        or outcomes.get("salary_by_major")
-        or outcomes.get("average_salary_by_program")
-        or outcomes.get("average_early_career_salary_by_major_usd")
-        or {}
+        outcomes.get("salary_by_major")
+        if isinstance(outcomes.get("salary_by_major"), dict)
+        else {}
     )
-    if not isinstance(salaries_by_major_raw, dict):
-        salaries_by_major_raw = {}
-    avg_salary_generic = _to_num(outcomes.get("average_early_career_salary_usd")) or 0.0
+    avg_salary_generic = _to_num(outcomes.get("early_career_salary_usd")) or 0.0
 
     def normalize_major_key(value: Any) -> str:
         return re.sub(r"[^a-z0-9]+", " ", str(value or "").strip().lower()).strip()

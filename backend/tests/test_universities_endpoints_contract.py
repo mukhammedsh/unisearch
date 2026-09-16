@@ -509,7 +509,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         supported_ids = [
             "mit-usa-cambridge",
             "national-university-of-singapore-sg-singapore",
-            "university-of-toronto-ca-toronto",
             "cuhk-hk-shatin",
         ]
 
@@ -531,6 +530,12 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             "al-farabi-kazakh-national-university-kaz-almaty",
             "stanford-university-usa-ca",
             "technical-university-of-munich-de-munich",
+            "university-of-toronto-ca-toronto",
+            "caltech-usa-pasadena",
+            "uc-berkeley-usa-berkeley",
+            "columbia-university-usa-new-york",
+            "ucla-usa-los-angeles",
+            "princeton-university-usa-princeton",
         ]
 
         for university_id in no_salary_ids:

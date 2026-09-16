@@ -25,7 +25,35 @@
           "applicants": 29281,
           "admitted": 1334
         }
-      }
+      },
+      "early_career_salary": {
+        "value": 98741.0,
+        "unit": "usd_per_year",
+        "source": "MIT Graduating Student Survey 2019",
+        "source_url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf",
+        "verified_at": "2026-03-31",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct bachelor's mean yearly salary reported for MIT graduating students with accepted positions in the 2019 survey.",
+        "basis": {
+          "degree_level": "bachelor",
+          "cohort": "Class of 2019",
+          "scope": "university_wide",
+          "metric": "mean_yearly_salary_usd",
+          "respondents_with_salary_data": 293,
+          "median_yearly_salary_usd": 90000
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "outcomes",
+          "url": "https://ir.mit.edu/outcomes/"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
+        }
+      ]
     },
     "imperial-college-london-uk": {
       "student_count": {
@@ -175,7 +203,42 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "early_career_salary": {
+        "value": 48314.67,
+        "unit": "usd_per_year",
+        "source": "NUS fresh graduate outcomes 2025",
+        "source_url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/",
+        "verified_at": "2026-03-31",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Annualized the official mean gross monthly salary for NUS fresh graduates in full-time permanent employment from the official news release published on 6 March 2026, converted SGD to USD using ECB euro reference rates for 2026-03-30.",
+        "basis": {
+          "degree_level": "bachelor",
+          "cohort": "Class of 2025",
+          "scope": "university_wide",
+          "metric": "mean_gross_monthly_salary_sgd",
+          "source_salary_sgd_per_month": 5193,
+          "source_median_salary_sgd_per_month": 4746,
+          "annualized_salary_sgd": 62316,
+          "fx_source": "ECB euro foreign exchange reference rates",
+          "fx_date": "2026-03-30",
+          "eur_usd": 1.1484,
+          "eur_sgd": 1.4812,
+          "usd_per_sgd": 0.77531731,
+          "publication_date": "2026-03-06"
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "outcomes",
+          "url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://nus.edu.sg/ges-2024"
+        }
+      ]
     },
     "epfl-ch-lausanne": {
       "student_count": {
@@ -265,7 +328,37 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "early_career_salary": {
+        "value": 34620.11,
+        "unit": "usd_per_year",
+        "source": "CUHK Graduate Employment Survey Profile 2019",
+        "source_url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf",
+        "verified_at": "2026-03-31",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Annualized the official average monthly salary for CUHK full-time first-degree graduates and converted HKD to USD using ECB euro reference rates for 2026-03-30.",
+        "basis": {
+          "degree_level": "bachelor",
+          "cohort": "2019 full-time first-degree graduates",
+          "scope": "university_wide",
+          "metric": "average_monthly_salary_hkd",
+          "source_salary_hkd_per_month": 22602,
+          "source_median_salary_hkd_per_month": 19875,
+          "annualized_salary_hkd": 271224,
+          "fx_source": "ECB euro foreign exchange reference rates",
+          "fx_date": "2026-03-30",
+          "eur_usd": 1.1484,
+          "eur_hkd": 8.9969,
+          "usd_per_hkd": 0.12764397
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "outcomes",
+          "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
+        }
+      ]
     },
     "university-of-tokyo-jp-tokyo": {
       "student_count": {
@@ -1277,6 +1370,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 128566.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 110404,
+          "institution_name": "California Institute of Technology",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "uc-berkeley-usa-berkeley": {
@@ -1366,6 +1478,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 92446.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 110635,
+          "institution_name": "University of California-Berkeley",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "princeton-university-usa-princeton": {
@@ -1455,6 +1586,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 110066.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 186131,
+          "institution_name": "Princeton University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "yale-university-usa-new-haven": {
@@ -1544,6 +1694,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 100533.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 130794,
+          "institution_name": "Yale University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "university-of-chicago-usa-chicago": {
@@ -1632,6 +1801,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 91885.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 144050,
+          "institution_name": "University of Chicago",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "university-of-pennsylvania-usa-philadelphia": {
@@ -1720,6 +1908,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 111371.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 215062,
+          "institution_name": "University of Pennsylvania",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "cornell-university-usa-ithaca": {
@@ -1809,6 +2016,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 104043.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 190415,
+          "institution_name": "Cornell University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "columbia-university-usa-new-york": {
@@ -1898,6 +2124,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 102491.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 190150,
+          "institution_name": "Columbia University in the City of New York",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "johns-hopkins-university-usa-baltimore": {
@@ -1986,6 +2231,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 87555.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 162928,
+          "institution_name": "Johns Hopkins University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "ucla-usa-los-angeles": {
@@ -2075,6 +2339,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 82511.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 110662,
+          "institution_name": "University of California-Los Angeles",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "mcgill-university-ca-montreal": {
