@@ -265,10 +265,10 @@ profile.hint.interests: Пишите темы и ключевые слова ч�
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет / год
-profile.label.exams: Экзамены (список, необязательно)
+profile.label.exams: Экзамены
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: Средний балл (GPA)
-profile.scale.gpa_4: 4.0 (США / Intl)
+profile.scale.gpa_4: 4.0 (США / Международный)
 profile.scale.gpa_5: 5.0 (KZ / СНГ)
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
@@ -320,7 +320,7 @@ profile.progress.empty: Заполните профиль, чтобы подбо
 profile.progress.count: Заполнено разделов профиля: {completed}/{total}
 profile.sections.aria: Разделы профиля
 profile.section.basics: Основное
-profile.section.scores: Баллы
+profile.section.scores: Академ. данные
 profile.section.languages: Языки
 profile.section.preferences: Предпочтения
 profile.interest_examples: Примеры интересов
@@ -337,7 +337,7 @@ profile.empty_languages: Языки еще не добавлены. Укажит
 profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в USD.
 profile.field.study_mode.desc: Фильтрация программ по предпочтительному формату обучения.
 profile.field.funding.desc: Выберите, интересуют ли вас только гранты или также платное обучение.
-profile.field.gpa.desc: Выберите систему оценивания (4.0 или 5.0) и укажите средний балл аттестата.
+profile.field.gpa.desc: Выберите систему оценивания и укажите среднюю оценку с аттестата.
 profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
 profile.field.interests.desc: Работает как умные теги: перечислите темы и направления через запятую (технологии, специальности, карьерные цели).
 profile.field.exams.desc: Выберите стандартизированные тесты (IELTS, TOEFL, SAT, ACT, A-Levels) для точной оценки шансов поступления.

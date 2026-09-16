@@ -134,7 +134,10 @@ export function initProfileUI() {
                 error.className = "profile-field-error";
                 error.setAttribute("role", "alert");
                 error.textContent = message;
-                if (!existingError) el.insertAdjacentElement("afterend", error);
+                if (!existingError) {
+                    const targetWrapper = el.closest(".profile-username, .profile-budget, .profile-exam-score-wrap, .lang-control-item") || el;
+                    targetWrapper.insertAdjacentElement("afterend", error);
+                }
                 if (!describedBy.includes(errorId)) {
                     el.setAttribute("aria-describedby", [...describedBy, errorId].join(" "));
                 }
@@ -813,7 +816,7 @@ export function initProfileUI() {
         if (gpaHint) {
             gpaHint.textContent = s === 5
                 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)")
-                : t("profile.scale.gpa_4", "4.0 (US / Intl)");
+                : t("profile.scale.gpa_4", "4.0 (US / International)");
         }
     };
 
