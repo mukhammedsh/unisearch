@@ -23,7 +23,7 @@ from app.core.settings import (
 _LOGGER = logging.getLogger("unisearch.currency")
 _CURRENCY_CODE_RE = re.compile(r"^[A-Z]{3,5}$")
 
-# Static fallback rates (62 currencies) relative to base USD (1 USD = X currency)
+# Static fallback rates for supported world currencies relative to base USD (1 USD = X currency)
 # Used when both API and caches (Redis, in-memory) are unavailable
 FALLBACK_RATES: Dict[str, float] = {
     "USD": 1.0,

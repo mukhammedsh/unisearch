@@ -220,11 +220,11 @@ def _coerce_language_exam_submission(
 
 def validate_language_exam_from_cfg(lang_cfg: Dict[str, Any], score_raw: Any) -> Union[int, float]:
     """
-    Валидирует score по описанию экзамена в languages.json:
-    - min/max
-    - step
+    Validate score against the exam configuration in languages.json:
+    - min/max bounds
+    - step increments
     - type: int/float
-    - decimals_allowed (если задано)
+    - decimals_allowed (if configured)
     """
     t = str(lang_cfg.get("type", "float")).lower()
 

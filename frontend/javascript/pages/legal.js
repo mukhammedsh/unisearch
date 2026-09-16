@@ -1,4 +1,4 @@
-/* legal.js - Скрипт оглавления, плавной прокрутки и scroll-spy для страниц Privacy Policy и Terms of Use */
+/* legal.js - Table of contents, smooth scrolling, and scroll-spy for legal pages */
 
 let legalHashChangeHandler = null;
 let legalExternalUpdateHandler = null;
@@ -134,8 +134,8 @@ export function initLegalPage() {
 
       if (scroll && targetSection) {
         const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
-        // Первая секция находится прямо под шапкой (hero-блоком).
-        // Чтобы не срезать заголовок, прокручиваем в самый верх страницы (0, 0).
+        // The first section is directly below the hero header.
+        // Scroll to the very top (0, 0) to avoid clipping the header.
         if (nextId === sections[0]?.id) {
           window.scrollTo({
             top: 0,
@@ -198,7 +198,7 @@ export function initLegalPage() {
           document.documentElement.scrollHeight
         );
 
-        // 1. Самый низ страницы: принудительно выбирается последний пункт
+        // 1. Bottom of page: force activate the last section
         if (Math.ceil(windowHeight + scrollY) >= docHeight - 30) {
           activateSection(sections[sections.length - 1].id, { updateHash: true, scroll: false });
           return;
@@ -206,7 +206,7 @@ export function initLegalPage() {
 
         const anchorTop = getAnchorTop();
 
-        // 2. Самый верх страницы: если первая секция еще не дошла до зоны чтения
+        // 2. Top of page: activate first section if before reading zone
         const firstRect = sections[0].getBoundingClientRect();
         if (scrollY < 40 || firstRect.top > anchorTop) {
           const shouldUpdateHash = Boolean(window.location.hash);
@@ -214,7 +214,7 @@ export function initLegalPage() {
           return;
         }
 
-        // 3. Последовательный зонд: находим последнюю секцию, верх которой прошел линию чтения
+        // 3. Sequential probe: find the last section that scrolled past the reading line
         let currentId = sections[0].id;
         for (let i = 0; i < sections.length; i++) {
           const rect = sections[i].getBoundingClientRect();
@@ -239,7 +239,7 @@ export function initLegalPage() {
       syncActiveSectionFromScroll();
     });
 
-    // Начальная позиция при открытии страницы
+    // Initial position upon page load
     const initialHash = String(window.location.hash || "").replace("#", "");
     if (initialHash && sectionById.has(initialHash)) {
       startProgrammaticScroll();

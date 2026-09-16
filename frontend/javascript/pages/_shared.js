@@ -1,4 +1,4 @@
-/* frontend/javascript/pages.js */
+/* frontend/javascript/pages/_shared.js */
 
 import {
   API_BASE,
@@ -1020,9 +1020,7 @@ export function uniLogoSrc(universityId, opts = {}) {
   return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
 }
 
-// =====================================
-// PAGE: UNIVERSITIES LIST
-// =====================================
+// Formatting & Price Resolution Helpers
 export function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
     const n = Number(value);

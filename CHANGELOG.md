@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.8.1 (2026-09-16) - Codebase Comments Audit, Accuracy Verification, and Protocol Compliance
+- Audited all source code comments and docstrings across the entire repository to ensure technical and mathematical truthfulness and eliminate legacy references.
+- Corrected outdated file header annotations and removed phantom section banners in `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/_shared.js`, `frontend/javascript/components.js`, and `frontend/config.js`.
+- Standardized all codebase comments and docstrings to English per repository protocol (`AGENTS.md`), translating Russian comments and test steps across backend services (`backend/app/services/languages.py`), test suites (`backend/tests/test_bachelor_contract_enforcement.py`, `backend/tests/test_infrastructure_hygiene.py`, `backend/tests/test_persona_scoring_calibration.py`, `backend/tests/test_api_concurrency_stress.py`, `backend/tests/test_ml_scoring_regression_multilingual.py`), frontend stylesheets (`frontend/css/universities.css`, `frontend/css/university.css`, `frontend/css/universities/04-catalog-responsive.css`), frontend scripts (`frontend/javascript/pages/guide.js`, `frontend/javascript/pages/legal.js`), and Playwright E2E specifications (`tests/e2e/`).
+- Clarified static fallback exchange rates documentation for supported world currencies in `backend/app/services/currency.py`.
+
 ## 5.8.0 (2026-09-16) - Multi-Currency User Profile Budget, Dynamic Range Limits, and API Normalization
 - Added multi-currency support to applicant profile budget input (`/profile`), dynamically adapting the unit (`#profileBudgetUnit`), description, range hint (`0‑{max}`), placeholder (`e.g. {example}`), and validation limits to the user's preferred currency (`frontend/javascript/components/profile-ui.js`, `frontend/profile.html`).
 - Added dynamic currency conversion for low-budget grant recommendations (`shouldShowLowBudgetGrantHint`, `renderLowBudgetGrantHint`), formatting the threshold into the active currency (e.g. `\$1,000` or `500 000 ₸`) (`frontend/javascript/components/profile-ui.js`).

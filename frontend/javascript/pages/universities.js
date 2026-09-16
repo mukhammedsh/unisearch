@@ -1,4 +1,4 @@
-/* frontend/javascript/pages.js */
+/* frontend/javascript/pages/universities.js */
 
 import {
   API_BASE,
@@ -1293,7 +1293,7 @@ export function initUniversitiesPage() {
         updateSliderLabels();
     }
 
-    // --- Карта ---
+    // --- Map ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
@@ -2958,7 +2958,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (БЕЗ ROI) ---
+    // --- Render University Catalog Card ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -3190,7 +3190,3 @@ export function initUniversitiesPage() {
 
     syncWorkspaceDepth();
 }
-
-// =====================================
-// PAGE: UNIVERSITY DETAILS
-// =====================================

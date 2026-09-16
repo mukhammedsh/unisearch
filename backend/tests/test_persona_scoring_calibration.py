@@ -11,16 +11,16 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         cls.tum = uni_service.get_university_by_id("technical-university-of-munich-de-munich")
         cls.nu = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
 
-        # Проверим, что все эталонные вузы загрузились
+        # Verify that all benchmark university fixtures loaded
         assert cls.mit is not None, "MIT university fixture not found!"
         assert cls.tum is not None, "TUM university fixture not found!"
         assert cls.nu is not None, "Nazarbayev University fixture not found!"
 
     def test_alexey_german_budget_persona(self):
         """
-        Алексей: GPA 3.40, без SAT, IELTS 6.5, бюджет $10,000.
-        Должен проходить в TUM (Германия) с средним шансом,
-        но отсекаться в MIT и NU из-за отсутствия SAT.
+        Alexey: GPA 3.40, no SAT, IELTS 6.5, budget $10,000.
+        Should qualify for TUM (Germany) with medium chance,
+        but be filtered out at MIT and NU due to missing SAT.
         """
         profile = {
             "locale": "eng",
@@ -33,27 +33,27 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {}
         }
 
-        # 1. MIT (требует SAT)
+        # 1. MIT (requires SAT)
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
         self.assertTrue(chance_mit is None or chance_mit == 0, f"Alexey in MIT should have 0% or None chance, got {chance_mit}%")
 
-        # 2. TUM (проходит по порогам)
+        # 2. TUM (meets requirements)
         res_tum = estimate_uni_chance(self.tum, profile)
         chance_tum = res_tum.get("overallChance")
         self.assertIsNotNone(chance_tum)
         self.assertTrue(50 <= chance_tum <= 75, f"Alexey in TUM should be in 50-75% range, got {chance_tum}%")
 
-        # 3. NU (требует SAT)
+        # 3. NU (requires SAT)
         res_nu = estimate_uni_chance(self.nu, profile)
         chance_nu = res_nu.get("overallChance")
         self.assertTrue(chance_nu is None or chance_nu == 0, f"Alexey in NU should have 0% or None chance, got {chance_nu}%")
 
     def test_maria_top_ivy_persona(self):
         """
-        Мария: GPA 3.92, SAT 1560, IELTS 8.0, бюджет $100,000.
-        Должна иметь высокие шансы везде, но в MIT шанс должен быть реалистичным (не 100%)
-        из-за жесткого общего конкурса (low acceptance rate).
+        Maria: GPA 3.92, SAT 1560, IELTS 8.0, budget $100,000.
+        Should have strong chances across all universities, but MIT chance
+        must remain realistic (not 100%) due to low acceptance rate.
         """
         profile = {
             "locale": "eng",
@@ -88,9 +88,9 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_dias_average_kazakh_persona(self):
         """
-        Диас: GPA 3.28, SAT 1350, IELTS 6.0, бюджет $15,000.
-        Не проходит жесткие языковые и балльные пороги в MIT и TUM.
-        В NU имеет крайне низкий (околонулевой) шанс.
+        Dias: GPA 3.28, SAT 1350, IELTS 6.0, budget $15,000.
+        Does not meet strict language or score thresholds for MIT and TUM.
+        At NU, fails published minimum requirements.
         """
         profile = {
             "locale": "eng",
@@ -125,10 +125,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_adil_zero_budget_genius(self):
         """
-        Адиль: GPA 3.80, SAT 1550, IELTS 7.5, бюджет $0.
-        Имеет высокие баллы, но нулевой бюджет.
-        В MIT из-за Need-based Aid шанс сохраняется, но пенализируется (от 20% до 40%).
-        В TUM и NU шанс также сохраняется за счет бесплатного обучения / грантов (от 45% до 90%).
+        Adil: GPA 3.80, SAT 1550, IELTS 7.5, budget $0.
+        Has high scores but zero budget.
+        At MIT, need-based aid preserves chance with budget penalty (20% to 40%).
+        At TUM and NU, chance is preserved via tuition-free education / grants (45% to 90%).
         """
         profile = {
             "locale": "eng",
@@ -143,7 +143,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {}
         }
 
-        # 1. MIT (бюджет $0 пенализирует шанс с ~53% до ~27%)
+        # 1. MIT ($0 budget penalizes chance from ~53% to ~27%)
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
         self.assertIsNotNone(chance_mit)
@@ -155,7 +155,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         self.assertIsNotNone(chance_tum)
         self.assertTrue(75 <= chance_tum <= 90, f"Adil in TUM should be in 75-90% range, got {chance_tum}%")
 
-        # 3. NU (грант Абая Кунанбаева позволяет учиться с бюджетом $0)
+        # 3. NU (Abay Kunanbayev grant enables studying with $0 budget)
         res_nu = estimate_uni_chance(self.nu, profile)
         chance_nu = res_nu.get("overallChance")
         self.assertIsNotNone(chance_nu)
@@ -163,9 +163,9 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_lisa_borderline_ielts(self):
         """
-        Лиза: GPA 3.60, SAT 1480, IELTS 6.5, бюджет $50,000.
-        Срезается в MIT (минимальный IELTS 7.5).
-        Проходит в TUM (IELTS 6.5 >= 6.5) и в NU (IELTS 6.5 >= 6.5).
+        Lisa: GPA 3.60, SAT 1480, IELTS 6.5, budget $50,000.
+        Filtered out at MIT (minimum IELTS 7.5).
+        Passes at TUM (IELTS 6.5 >= 6.5) and NU (IELTS 6.5 >= 6.5).
         """
         profile = {
             "locale": "eng",
@@ -180,7 +180,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {}
         }
 
-        # 1. MIT (срезается по IELTS)
+        # 1. MIT (filtered out by IELTS)
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
         self.assertTrue(chance_mit is None or chance_mit == 0, f"Lisa in MIT should have 0% or None chance, got {chance_mit}%")
@@ -199,8 +199,8 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
     def test_anonymous_empty_profile(self):
         """
-        Пустой профиль: GPA 0, нет экзаменов, нет языков, бюджет $0.
-        Не должен приводить к падению бэкенда. Должен выдавать 0% или None.
+        Anonymous empty profile: GPA 0, no exams, no languages, $0 budget.
+        Must not cause backend errors. Should yield 0% or None.
         """
         profile = {
             "locale": "eng",

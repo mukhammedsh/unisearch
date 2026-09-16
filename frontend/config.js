@@ -2,7 +2,7 @@
 /**
  * @typedef {object} UniSearchRuntimeConfig
  * @property {string}  API_BASE_URL       - Backend API base URL (e.g. "http://localhost:8000" or "/api").
- * @property {string}  APP_VERSION        - Semantic version from package.json (e.g. "3.4.8").
+ * @property {string}  APP_VERSION        - Semantic version from package.json (e.g. "5.8.0").
  * @property {boolean} APP_DEBUG          - Whether debug logging is enabled.
  * @property {boolean} APP_USE_PRETTY_URLS - Whether to use clean URLs (/) vs file-based (index.html).
  * @property {boolean} IS_LOCAL_DEV       - Whether the app is running on a local development server.

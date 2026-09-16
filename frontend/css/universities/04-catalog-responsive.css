@@ -315,10 +315,10 @@
   height: calc(100% - 8px) !important;
   max-width: calc(100% - 8px) !important;
   max-height: calc(100% - 8px) !important;
-  object-fit: contain; /* Логотип виден целиком */
+  object-fit: contain; /* Ensure full logo visibility */
   object-position: center;
   display: block;
-  /* Внутренний отступ (чтобы лого не касалось границ) */
+  /* Inner inset to prevent logo from touching container borders */
   flex: 0 0 auto;
 }
 
@@ -343,8 +343,7 @@
 }
 
 .cluster-node-fix {
-  /* Бадж +N находится СНАРУЖИ круга, поэтому здесь overflow должен быть visible,
-  но сам вложенный .map-marker-container внутри JS мы настроим правильно */
+  /* The +N cluster badge sits OUTSIDE the circular marker, so overflow must be visible */
   overflow: visible !important;
 }
 

@@ -13,7 +13,7 @@ class MlScoringRegressionMultilingualTests(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.data_path = Path(self._tmp.name) / "universities.json"
         
-        # Задаем тестовые данные вузов
+        # Seed mock university test data
         self.universities = [
             {
                 "id": "aitu",
@@ -35,7 +35,7 @@ class MlScoringRegressionMultilingualTests(unittest.TestCase):
         ]
         self.data_path.write_text(json.dumps(self.universities, ensure_ascii=False), encoding="utf-8")
         
-        # Создаем экземпляр рекоммендера
+        # Instantiate recommender
         with patch.object(MLRecommender, "_load_and_fit", return_value=None):
             self.recommender = MLRecommender(data_path=str(self.data_path))
 
@@ -44,10 +44,10 @@ class MlScoringRegressionMultilingualTests(unittest.TestCase):
         self._tmp.cleanup()
 
     def test_predict_relevance_with_multilingual_queries(self):
-        """Проверяет релевантность выдачи при смешанных и русско-английских запросах."""
+        """Verify relevance scoring on mixed and cross-lingual queries."""
         self.recommender._university_ids = ["aitu", "nu"]
         
-        # Для запроса "software engineering" AITU должен быть более релевантен
+        # For "software engineering" query, AITU must rank higher
         with patch.object(self.recommender, "_ensure_fresh", return_value=None), patch.object(
             self.recommender,
             "_predict_semantic",
@@ -58,10 +58,10 @@ class MlScoringRegressionMultilingualTests(unittest.TestCase):
         self.assertGreater(out["aitu"], out["nu"])
 
     def test_predict_relevance_semantic_translation_integration(self):
-        """Проверяет интеграцию семантического поиска с переводом при русскоязычных запросах."""
+        """Verify semantic matching integration on Russian language queries."""
         self.recommender._university_ids = ["aitu", "nu"]
         
-        # Симулируем семантический поиск, когда E5-модель выдает соответствие для русского запроса "исследования и наука"
+        # Simulate semantic prediction where E5 model matches localized query input
         with patch.object(self.recommender, "_ensure_fresh", return_value=None), patch.object(
             self.recommender,
             "_predict_semantic",

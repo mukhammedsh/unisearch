@@ -326,11 +326,10 @@ export function initGuidePage() {
     }
     if (scroll && targetSection) {
       const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
-      // ИСКЛЮЧЕНИЕ для #guide-unifit:
-      // Первая секция находится сразу под шапкой (hero-блоком).
-      // Если использовать обычный scrollIntoView для #guide-unifit, страница прокручивается вниз,
-      // срезая заголовок и вступительный текст гайда.
-      // Поэтому для #guide-unifit всегда прокручиваем в самый верх страницы (0, 0).
+      // Exception for #guide-unifit:
+      // The first section is directly below the hero header.
+      // Standard scrollIntoView for #guide-unifit scrolls down, clipping the hero title.
+      // Always scroll to the top of the page (0, 0) instead.
       if (nextId === "guide-unifit") {
         window.scrollTo({
           top: 0,
@@ -393,7 +392,7 @@ export function initGuidePage() {
         document.documentElement.scrollHeight
       );
 
-      // 1. Самый низ страницы: принудительно выбирается последний пункт
+      // 1. Bottom of page: force activate the last section
       if (Math.ceil(windowHeight + scrollY) >= docHeight - 30) {
         activateSection(sections[sections.length - 1].id, { updateHash: true, scroll: false });
         return;
@@ -401,7 +400,7 @@ export function initGuidePage() {
 
       const anchorTop = getAnchorTop();
 
-      // 2. Самый верх страницы: если первая секция еще не дошла до зоны чтения
+      // 2. Top of page: activate first section if before reading zone
       const firstRect = sections[0].getBoundingClientRect();
       if (scrollY < 40 || firstRect.top > anchorTop) {
         const shouldUpdateHash = Boolean(window.location.hash);
@@ -409,7 +408,7 @@ export function initGuidePage() {
         return;
       }
 
-      // 3. Последовательный зонд: находим последнюю секцию, верх которой прошел линию чтения
+      // 3. Sequential probe: find the last section that scrolled past the reading line
       let currentId = sections[0].id;
       for (let i = 0; i < sections.length; i++) {
         const rect = sections[i].getBoundingClientRect();
@@ -429,10 +428,9 @@ export function initGuidePage() {
   renderAll();
 
   const initialHash = String(window.location.hash || "").replace("#", "");
-  // ИСКЛЮЧЕНИЕ для #guide-unifit при начальной загрузке страницы:
-  // Если страница открывается без хеша или с хешем первой секции (#guide-unifit),
-  // отключаем прокрутку к секции и принудительно открываем страницу с самого верха (top: 0),
-  // чтобы заголовок страницы (hero-блок) оставался видимым и не срезался.
+  // Exception for #guide-unifit on initial page load:
+  // If opened without a hash or with #guide-unifit, disable auto-scroll
+  // to keep the hero header fully visible at top: 0.
   if (initialHash && initialHash !== "guide-unifit") {
     startProgrammaticScroll();
     activateSection(initialHash, { updateHash: false, scroll: true, scrollBehavior: "auto" });
