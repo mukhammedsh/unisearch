@@ -22,7 +22,8 @@ import {
   showToast,
   trapFocus,
 } from "../utils.js";
-import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
+import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
+import { convert, formatMoney, getPreferredCurrency, niceStep } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { hydrateHeroIcons } from "../icons.js";
@@ -84,12 +85,33 @@ export function initProfileUI() {
 
     const nameInput = document.getElementById("profileNameInput");
     const budgetInput = document.getElementById("budgetInput");
+    const profileBudgetUnit = document.getElementById("profileBudgetUnit");
+    const budgetHint = budgetInput?.closest(".profile-field")?.querySelector(".profile-hint");
     const gpaInput = document.getElementById("gpaInput");
     const gpaScale4Btn = document.getElementById("gpaScale4Btn");
     const gpaScale5Btn = document.getElementById("gpaScale5Btn");
     const gpaUnit = document.getElementById("gpaUnit");
     const gpaHint = document.getElementById("gpaHint");
     const nameDisplay = document.getElementById("profileNameDisplay");
+
+    const getBudgetCurrency = () => (typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD") || "USD";
+    const getMaxBudgetForCurrency = (currencyCode) => {
+        const code = currencyCode || getBudgetCurrency();
+        const converted = convert(1000000, "USD", code);
+        return Math.max(1, Math.round(converted));
+    };
+    const getLowBudgetGrantThreshold = (currencyCode) => {
+        const code = currencyCode || getBudgetCurrency();
+        const converted = convert(1000, "USD", code);
+        return Math.max(1, Math.round(converted));
+    };
+    const getBudgetPlaceholderValue = (currencyCode) => {
+        const code = currencyCode || getBudgetCurrency();
+        const converted = convert(20000, "USD", code);
+        const step = niceStep(converted / 10);
+        const rounded = Math.round(converted / step) * step;
+        return Math.max(1, rounded);
+    };
 
     const examNameSelect = document.getElementById("examNameSelect");
     const studyModeSelect = document.getElementById("studyModeSelect");
@@ -202,6 +224,7 @@ export function initProfileUI() {
         return JSON.stringify({
             name: String(p.name || "").trim(),
             budget: String(p.budget ?? "").trim(),
+            budgetCurrency: String(p.budgetCurrency || "USD").toUpperCase(),
             gpa: String(p.gpa ?? "").trim(),
             gpaScale: Number(p.gpaScale) === 5 ? 5 : 4,
             major: String(p.major || "").trim(),
@@ -282,7 +305,9 @@ export function initProfileUI() {
     const shouldShowLowBudgetGrantHint = () => {
         const budgetValue = parseBudgetDraftValue();
         if (budgetValue === null) return false;
-        if (budgetValue >= 1000) return false;
+        const currency = getBudgetCurrency();
+        const threshold = getLowBudgetGrantThreshold(currency);
+        if (budgetValue >= threshold) return false;
         const fundingType = normalizeFundingType(profileFundingTypeSelect?.value || profile?.fundingType || "any");
         return fundingType !== "grant";
     };
@@ -302,11 +327,16 @@ export function initProfileUI() {
             return;
         }
 
+        const currency = getBudgetCurrency();
+        const threshold = getLowBudgetGrantThreshold(currency);
+        const formattedAmount = formatMoney(threshold, currency);
+
         const textEl = lowBudgetGrantHint.querySelector(".profile-budget-grant-hint__text");
         if (textEl) {
-            textEl.textContent = t(
+            textEl.textContent = tFormat(
                 "profile.hint.low_budget_grant",
-                "Budget is under $1000. Maybe you need Grant only.",
+                { amount: formattedAmount },
+                `Budget is under ${formattedAmount}. Maybe you need Grant only.`
             );
         }
         if (lowBudgetGrantApplyBtn) {
@@ -319,6 +349,23 @@ export function initProfileUI() {
         }
 
         lowBudgetGrantHint.hidden = false;
+    };
+
+    const updateBudgetUI = () => {
+        const currency = getBudgetCurrency();
+        const maxBudget = getMaxBudgetForCurrency(currency);
+        const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
+        if (profileBudgetUnit) {
+            profileBudgetUnit.textContent = applyTokenSubstitutions(t("profile.unit.currency_year", "{currency} / year"));
+        }
+        if (budgetHint) {
+            budgetHint.textContent = tFormat("profile.hint.budget_range", { max: formattedMax }, `Range: 0–${formattedMax}`);
+        }
+        if (budgetInput) {
+            const exampleVal = getBudgetPlaceholderValue(currency);
+            budgetInput.placeholder = tFormat("profile.placeholder.budget", { example: String(exampleVal) }, `e.g. ${exampleVal}`);
+        }
+        renderLowBudgetGrantHint();
     };
 
     const refreshSaveState = () => {
@@ -698,6 +745,7 @@ export function initProfileUI() {
         applyTranslations(modal);
         if (unsavedModal) applyTranslations(unsavedModal);
         if (resetModal) applyTranslations(resetModal);
+        updateBudgetUI();
         applyDraftToInputs();
         refreshExamActionButton();
 
@@ -720,6 +768,7 @@ export function initProfileUI() {
 
     const syncInputsToDraft = () => {
         if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
+        profile.budgetCurrency = getBudgetCurrency();
         if (gpaInput) profile.gpa = String(gpaInput.value || "").trim();
         profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         if (studyModeSelect) profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
@@ -782,8 +831,11 @@ export function initProfileUI() {
             budgetInput?.focus();
             return { ok: false, value: "" };
         }
-        if (val < 0 || val > 1000000) {
-            const message = t("profile.budget_limit", "Limit: 0–1,000,000 USD");
+        const currency = getBudgetCurrency();
+        const maxBudget = getMaxBudgetForCurrency(currency);
+        if (val < 0 || val > maxBudget) {
+            const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
+            const message = tFormat("profile.budget_limit", { max: `${formattedMax} ${currency}` }, `Limit: 0–${formattedMax} ${currency}`);
             setFieldInvalid(budgetInput, true, message);
             budgetInput?.focus();
             return { ok: false, value: "" };
@@ -868,6 +920,18 @@ export function initProfileUI() {
         setFieldInvalid(budgetInput, false);
         setFieldInvalid(gpaInput, false);
         setFieldInvalid(examScoreInput, false);
+
+        const activeCurrency = getBudgetCurrency();
+        if (profile.budget !== "" && Number.isFinite(Number(profile.budget)) && profile.budgetCurrency && profile.budgetCurrency !== activeCurrency) {
+            const converted = Math.round(convert(Number(profile.budget), profile.budgetCurrency, activeCurrency));
+            profile.budget = converted;
+            profile.budgetCurrency = activeCurrency;
+            saveProfile(profile);
+            savedSignature = stableProfileSignature(profile);
+        } else if (!profile.budgetCurrency) {
+            profile.budgetCurrency = activeCurrency;
+        }
+
         if (nameInput) nameInput.value = profile.name;
         if (nameDisplay) nameDisplay.textContent = profile.name;
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
@@ -892,6 +956,7 @@ export function initProfileUI() {
             initCustomSelect("examNameSelect");
         }
         renderProfileData();
+        updateBudgetUI();
         refreshSaveState();
     };
 
@@ -925,6 +990,7 @@ export function initProfileUI() {
         if (!gpaCheck.ok) return false;
 
         profile.budget = budgetCheck.value;
+        profile.budgetCurrency = getBudgetCurrency();
         profile.gpa = gpaCheck.value;
         profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         profile.interests = getInterestsDraft();
@@ -1296,6 +1362,29 @@ export function initProfileUI() {
 
     window.addEventListener("languageChanged", () => {
         retranslateProfileUi();
+    });
+
+    window.addEventListener("currencyChanged", () => {
+        const activeCurrency = getBudgetCurrency();
+        const prevCurrency = profile.budgetCurrency || "USD";
+        if (prevCurrency !== activeCurrency) {
+            const rawBudget = budgetInput ? budgetInput.value.trim() : String(profile.budget ?? "").trim();
+            if (rawBudget && !rawBudget.includes(".") && !rawBudget.includes(",")) {
+                const val = Number(rawBudget);
+                if (Number.isFinite(val) && val >= 0) {
+                    const converted = Math.round(convert(val, prevCurrency, activeCurrency));
+                    profile.budget = converted;
+                    if (budgetInput) budgetInput.value = String(converted);
+                }
+            }
+            profile.budgetCurrency = activeCurrency;
+            if (savedSignature) {
+                saveProfile(profile);
+                savedSignature = stableProfileSignature(profile);
+            }
+        }
+        updateBudgetUI();
+        refreshSaveState();
     });
 
     if (editNameBtn && profileUsernameDiv && nameInput) {

@@ -218,7 +218,7 @@ profile.add: Add
 profile.edit: Edit
 profile.budget_cleared: Budget cleared
 profile.budget_integers_only: Integers only (no dots/commas)
-profile.budget_limit: Limit: 0‑1,000,000 USD
+profile.budget_limit: Limit: 0‑{max}
 profile.budget_must_number: Budget must be a number
 profile.budget_saved: Budget saved!
 profile.cefr: CEFR
@@ -251,8 +251,8 @@ profile.gpa_must_number: GPA must be a number
 profile.gpa_range: GPA must be between {min} and {max}
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
-profile.hint.budget_range: Range: 0‑1,000,000
-profile.hint.low_budget_grant: Budget is under $1000. Maybe you need Grant only.
+profile.hint.budget_range: Range: 0‑{max}
+profile.hint.low_budget_grant: Budget is under {amount}. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
 profile.hint.gpa: Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
@@ -285,7 +285,7 @@ profile.option.select_exam: Select Exam
 profile.option.study_mode_any: Any (All formats)
 profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
-profile.placeholder.budget: e.g. 20000
+profile.placeholder.budget: e.g. {example}
 profile.placeholder.gpa: e.g. 3.80
 profile.placeholder.interests: Example: computer science, artificial intelligence, robotics, game development, internships
 profile.placeholder.lang_score: Score (e.g. 7.5)
@@ -331,7 +331,7 @@ profile.action.back_desc: Return to previous page
 profile.progress.title: Profile Completion
 profile.empty_exams: No exams added yet. Select an exam above to add your scores.
 profile.empty_languages: No languages added yet. Add your native language or test certification.
-profile.field.budget.desc: Your planned tuition and living expense budget per academic year in USD.
+profile.field.budget.desc: Your planned tuition and living expense budget per academic year in {currency}.
 profile.field.study_mode.desc: Filter programs by preferred attendance format.
 profile.field.funding.desc: Choose whether you seek full scholarships/grants or self-funded seats.
 profile.field.gpa.desc: Select your grading scale (4.0 or 5.0) and enter your cumulative GPA.

@@ -7,6 +7,7 @@ import {
 } from "./config.js";
 import { API_LANG_DEFAULT, API_LANG_SUPPORTED, getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { safeLocalStorage } from "./safe-storage.js";
+import { convert, getPreferredCurrency } from "../currency.js";
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const FILTERS_KEY = "unisearch_filters";
@@ -17,6 +18,7 @@ let filtersMemoryFallback = {};
 const PROFILE_DEFAULTS = {
   name: "User",
   budget: "",
+  budgetCurrency: "USD",
   gpa: "",
   gpaScale: 4,
   exams: [],
@@ -74,6 +76,8 @@ export function normalizeProfileData(profile) {
   const out = { ...PROFILE_DEFAULTS, ...(profile || {}) };
   out.name = String(out.name || PROFILE_DEFAULTS.name).trim() || PROFILE_DEFAULTS.name;
   out.budget = out.budget === null || out.budget === undefined ? PROFILE_DEFAULTS.budget : out.budget;
+  const budgetCurrencyRaw = String(out.budgetCurrency || out.budget_currency || "").trim().toUpperCase();
+  out.budgetCurrency = budgetCurrencyRaw || PROFILE_DEFAULTS.budgetCurrency;
   out.major = String(out.major ?? "").trim();
   out.studyMode = String(out.studyMode || PROFILE_DEFAULTS.studyMode).trim() || PROFILE_DEFAULTS.studyMode;
   const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
@@ -210,8 +214,13 @@ export function loadProfileForApi() {
   const profile = loadProfile();
   const payload = { ...profile, locale: getUiLanguageForApi() };
   const budget = Number(profile?.budget);
-  if (Number.isFinite(budget) && budget >= 0) payload.budget = budget;
-  else delete payload.budget;
+  const budgetCurrency = String(profile?.budgetCurrency || profile?.budget_currency || "USD").trim().toUpperCase();
+  if (Number.isFinite(budget) && budget >= 0) {
+    const usdBudget = convert(budget, budgetCurrency, "USD");
+    payload.budget = Math.min(1000000, Math.max(0, Math.round(usdBudget)));
+  } else {
+    delete payload.budget;
+  }
 
   const gpa = Number(profile?.gpa);
   const gpaScale = Number(profile?.gpaScale) === 5 ? 5 : 4;

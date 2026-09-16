@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.8.0 (2026-09-16) - Multi-Currency User Profile Budget, Dynamic Range Limits, and API Normalization
+- Added multi-currency support to applicant profile budget input (`/profile`), dynamically adapting the unit (`#profileBudgetUnit`), description, range hint (`0‑{max}`), placeholder (`e.g. {example}`), and validation limits to the user's preferred currency (`frontend/javascript/components/profile-ui.js`, `frontend/profile.html`).
+- Added dynamic currency conversion for low-budget grant recommendations (`shouldShowLowBudgetGrantHint`, `renderLowBudgetGrantHint`), formatting the threshold into the active currency (e.g. `\$1,000` or `500 000 ₸`) (`frontend/javascript/components/profile-ui.js`).
+- Implemented automatic budget currency conversion upon preferred currency changes via `currencyChanged` event and profile draft hydration (`frontend/javascript/components/profile-ui.js`).
+- Updated `loadProfileForApi` to normalize profile budget from `budgetCurrency` to USD (clamped to $[0, 1000000]$) before dispatching to backend endpoints, ensuring consistent USD evaluation for UniFit, UniChance, and card budget comparison (`frontend/javascript/utils/persistence.js`, `frontend/javascript/pages/universities.js`).
+- Added unit test coverage for multi-currency profile persistence and API payload normalization, and added Playwright E2E scenario for currency switching and dynamic validation limits (`tests/unit/persistence.test.mjs`, `tests/e2e/profile-currency.spec.js`).
+
 ## 5.7.2 (2026-09-15) - In-Memory Search Indexing, Precomputed Numeric Metadata, and Scoring Cache Isolation
 - Added exact token weight dictionary index (`token_weights_exact`) to `prepare_search_meta`, providing $\mathcal{O}(1)$ exact token matching fast path before falling back to fuzzy Levenshtein checks (`backend/app/services/search.py`).
 - Precomputed numeric metadata (`cost_usd_any`, `cost_usd_online`, `cost_usd_oncampus`, `acceptance_rate`, `rank_num`, `has_grant`, `has_paid`, `has_aid`) and language-specific search metadata inside internal `meta_row` at dataset load, eliminating repetitive dynamic currency conversion, nested tree scans, and Levenshtein evaluations during catalog filtering loops (`backend/app/services/universities.py`).

@@ -221,7 +221,7 @@ profile.add: Добавить
 profile.edit: Изменить
 profile.budget_cleared: Бюджет очищен
 profile.budget_integers_only: Только целые числа (без точек и запятых)
-profile.budget_limit: Лимит: 0‑1,000,000 USD
+profile.budget_limit: Лимит: 0‑{max}
 profile.budget_must_number: Бюджет должен быть числом
 profile.budget_saved: Бюджет сохранен!
 profile.cefr: CEFR
@@ -254,8 +254,8 @@ profile.gpa_must_number: GPA должен быть числом
 profile.gpa_range: GPA должен быть от {min} до {max}
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
-profile.hint.budget_range: Диапазон: 0‑1,000,000
-profile.hint.low_budget_grant: Бюджет меньше $1000. Возможно, вам лучше выбрать «Только грант».
+profile.hint.budget_range: Диапазон: 0‑{max}
+profile.hint.low_budget_grant: Бюджет меньше {amount}. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
 profile.hint.gpa: Выберите шкалу 4.0 (США / Международная) или 5.0 (Казахстан / СНГ).
@@ -288,7 +288,7 @@ profile.option.select_exam: Выберите экзамен
 profile.option.study_mode_any: Любой (все форматы)
 profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
-profile.placeholder.budget: например, 20000
+profile.placeholder.budget: например, {example}
 profile.placeholder.gpa: например, 3.80
 profile.placeholder.interests: Например: computer science, искусственный интеллект, робототехника, геймдев, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
@@ -334,7 +334,7 @@ profile.action.back_desc: Вернуться на предыдущую стра�
 profile.progress.title: Заполненность профиля
 profile.empty_exams: Экзамены еще не добавлены. Выберите экзамен выше, чтобы добавить баллы.
 profile.empty_languages: Языки еще не добавлены. Укажите родной язык или сертификат тестирования.
-profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в USD.
+profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в {currency}.
 profile.field.study_mode.desc: Фильтрация программ по предпочтительному формату обучения.
 profile.field.funding.desc: Выберите, интересуют ли вас только гранты или также платное обучение.
 profile.field.gpa.desc: Выберите систему оценивания (4.0 или 5.0) и укажите средний балл аттестата.
