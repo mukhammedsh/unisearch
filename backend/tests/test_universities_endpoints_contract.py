@@ -542,6 +542,40 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIn("grant", funding_types)
         self.assertIn("paid", funding_types)
 
+    def test_list_universities_sort_gpa_desc(self):
+        response = self.client.get("/universities?sort=gpa_desc&limit=50&fields=card")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data.get("sort"), "gpa_desc")
+        items = data.get("items") or []
+        self.assertEqual(len(items), 50)
+
+        # Retrieve raw universities to verify GPA values
+        from app.services.universities import load_universities, _get_university_gpa
+        raw_by_id = {u["id"]: u for u in load_universities()}
+
+        item_ids = [item.get("id") for item in items]
+        item_gpas = [_get_university_gpa(raw_by_id.get(uid, {})) for uid in item_ids]
+
+        # Top 25 universities have valid GPAs in non-increasing order
+        present_gpas = item_gpas[:25]
+        self.assertTrue(all(g is not None for g in present_gpas))
+        for i in range(len(present_gpas) - 1):
+            self.assertGreaterEqual(present_gpas[i], present_gpas[i + 1])
+
+        # Remaining 25 universities have no GPA requirement (None)
+        none_gpas = item_gpas[25:]
+        self.assertTrue(all(g is None for g in none_gpas))
+
+        # First items must strictly match top GPA universities
+        self.assertEqual(item_ids[0], "harvard-usa-cambridge")
+        self.assertEqual(item_ids[1], "mit-usa-cambridge")
+        self.assertEqual(item_ids[2], "university-of-pennsylvania-usa-philadelphia")
+
+        # Universities without GPA must be sorted alphabetically by name
+        none_names = [str(item.get("name") or "").lower() for item in items[25:]]
+        self.assertEqual(none_names, sorted(none_names))
+
 
 if __name__ == "__main__":
     unittest.main()

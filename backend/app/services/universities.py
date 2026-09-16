@@ -1116,6 +1116,45 @@ def _get_university_acceptance_rate(u: Dict[str, Any]) -> Optional[float]:
     return None
 
 
+def _get_university_gpa(u: Dict[str, Any]) -> Optional[float]:
+    """
+    Extracts the representative minimum GPA requirement for a university.
+    When multiple admission tracks define GPA requirements, returns the maximum
+    required GPA threshold across those tracks.
+    """
+    if not isinstance(u, dict):
+        return None
+    direct_req = _to_float(_get_nested(u, ["requirements", "GPA"]))
+    if direct_req is not None:
+        return direct_req
+
+    vals: List[float] = []
+    categories = u.get("admission_categories")
+    if isinstance(categories, list):
+        for cat in categories:
+            if not isinstance(cat, dict):
+                continue
+            profiles = cat.get("requirement_profiles")
+            if isinstance(profiles, list):
+                for prof in profiles:
+                    if not isinstance(prof, dict):
+                        continue
+                    req = prof.get("requirements")
+                    if isinstance(req, dict):
+                        gpa_val = _to_float(req.get("GPA"))
+                        if gpa_val is not None:
+                            vals.append(gpa_val)
+            cat_req = cat.get("requirements")
+            if isinstance(cat_req, dict):
+                gpa_val = _to_float(cat_req.get("GPA"))
+                if gpa_val is not None:
+                    vals.append(gpa_val)
+
+    if vals:
+        return max(vals)
+    return None
+
+
 def _has_any_aid(u: Dict[str, Any]) -> bool:
     finance = u.get("finance")
     if isinstance(finance, dict):
@@ -1318,7 +1357,12 @@ def _apply_sort(
 
     if sort == "gpa_desc":
         return sorted(
-            items, key=lambda u: get_val(u, ["exams_avg", "GPA"]), reverse=True
+            items,
+            key=lambda u: (
+                0 if _get_university_gpa(u) is not None else 1,
+                -(_get_university_gpa(u) or 0.0),
+                _safe_lower(u.get("name")),
+            ),
         )
 
     return sorted(items, key=lambda u: _safe_lower(u.get("name")))
