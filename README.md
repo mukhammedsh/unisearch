@@ -69,7 +69,7 @@ The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from t
    ML_INTEREST_TRANSLATION_ENABLED=0
    ```
 
-   Semantic ranking uses `intfloat/multilingual-e5-base` by default; the first startup may download the model. To run without downloading it, add `ML_SEMANTIC_EMBEDDINGS_ENABLED=0`: ranking will use TF-IDF instead. Redis is optional for a basic local setup.
+   Semantic ranking uses `intfloat/multilingual-e5-base` by default; the first startup may download the model. To run without downloading it, add `ML_SEMANTIC_EMBEDDINGS_ENABLED=0` (ML scoring will report `unavailable` mode). Redis is optional for a basic local setup.
 
 5. Start the backend:
 
