@@ -2254,10 +2254,6 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
         context_type = "fallback_major"
         salary_used = fallback_salary
 
-    if salary_used <= 0:
-        context_type = "no_salary_data"
-        salary_used = 0.0
-
     annual_cost = _effective_track_cost(university, {}, preferred_mode=preferred_mode)
     choices = universities_service.expand_admission_choices(university.get("admission_categories"))
     if choices:
@@ -2272,6 +2268,20 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
             annual_cost = min(prices)
     if annual_cost <= 0:
         annual_cost = 1.0
+
+    if salary_used <= 0:
+        return {
+            "title": "Estimated ROI (Return on Investment)",
+            "salary_used_usd": None,
+            "annual_cost_usd": float(round(annual_cost, 2)),
+            "roi_value": None,
+            "roi_label": "No Data",
+            "roi_tone": "neutral",
+            "context_type": "no_salary_data",
+            "user_major": user_major,
+            "matched_major": "",
+            "salary_data_points": len(salary_entries),
+        }
 
     roi_value = salary_used / annual_cost if annual_cost > 0 else 0.0
     roi_value_rounded = round(roi_value, 1)

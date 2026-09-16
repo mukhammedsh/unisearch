@@ -2627,6 +2627,10 @@
   color: var(--color-warning);
 }
 
+.roi-tone-neutral {
+  color: var(--text-muted);
+}
+
 .roi-metrics-divider {
   display: none;
 }

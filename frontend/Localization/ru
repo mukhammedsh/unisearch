@@ -946,6 +946,8 @@ roi.formula: Простая логика: сравниваем среднюю з
 roi.label.excellent_return: Отличная отдача
 roi.label.positive_return: Положительная отдача
 roi.label.high_investment: Большие вложения
+roi.label.no_data: Недостаточно данных
+roi.no_salary_data: Недостаточно данных о зарплатах выпускников для расчёта.
 roi.per_year_early: в год (ранний этап карьеры)
 roi.score: Оценка ROI
 roi.tip: Совет:

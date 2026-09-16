@@ -435,7 +435,12 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         roi_data = roi.json()
         for key in ("roi_value", "roi_label", "roi_tone", "context_type"):
             self.assertIn(key, roi_data)
-        self.assertGreaterEqual(float(roi_data.get("roi_value", 0.0)), 0.0)
+        if roi_data.get("roi_value") is not None:
+            self.assertGreaterEqual(float(roi_data["roi_value"]), 0.0)
+        else:
+            self.assertEqual("no_salary_data", roi_data.get("context_type"))
+            self.assertEqual("neutral", roi_data.get("roi_tone"))
+            self.assertEqual("No Data", roi_data.get("roi_label"))
 
     def test_compare_profiles_batch_contract_matches_single_endpoints(self):
         university_ids = self._first_university_ids(2)
@@ -518,6 +523,28 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                 data = response.json()
                 self.assertNotEqual("no_salary_data", str(data.get("context_type", "")))
                 self.assertGreater(float(data.get("salary_used_usd", 0.0)), 0.0)
+
+    def test_roi_endpoint_returns_neutral_no_data_state_when_salary_missing(self):
+        no_salary_ids = [
+            "eth-zurich-ch-zurich",
+            "delft-university-of-technology-nl-delft",
+            "al-farabi-kazakh-national-university-kaz-almaty",
+        ]
+
+        for university_id in no_salary_ids:
+            with self.subTest(university_id=university_id):
+                response = self.client.post(
+                    f"/universities/{university_id}/roi",
+                    json={"profile": {"locale": "eng", "major": "Computer Science"}},
+                )
+                self.assertEqual(response.status_code, 200)
+                data = response.json()
+                self.assertEqual("no_salary_data", data.get("context_type"))
+                self.assertIsNone(data.get("salary_used_usd"))
+                self.assertIsNone(data.get("roi_value"))
+                self.assertEqual("No Data", data.get("roi_label"))
+                self.assertEqual("neutral", data.get("roi_tone"))
+                self.assertGreater(float(data.get("annual_cost_usd", 0.0)), 0.0)
 
     def test_compare_profiles_batch_empty_list(self):
         response = self.client.post(

@@ -944,6 +944,8 @@ roi.formula: Simple idea: compare average graduate salary with the cost of one s
 roi.label.excellent_return: Excellent Return
 roi.label.positive_return: Positive Return
 roi.label.high_investment: High Investment
+roi.label.no_data: Insufficient Data
+roi.no_salary_data: Insufficient graduate salary data for calculation.
 roi.per_year_early: per year (early career)
 roi.score: ROI Score
 roi.tip: Tip:
