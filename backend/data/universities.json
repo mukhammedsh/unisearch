@@ -2035,9 +2035,7 @@
       "costs_breakdown_status": "official_mandatory_breakdown",
       "currency": "USD"
     },
-    "outcomes": {
-      "average_early_career_salary_usd": 119600
-    },
+    "outcomes": {},
     "verified_sources": [
       {
         "topic": "extra_requirements",
@@ -7579,11 +7577,7 @@
       "costs_breakdown_status": "official_tuition_and_fees_only",
       "currency": "EUR"
     },
-    "outcomes": {
-      "average_salary_by_major": {
-        "Computer Science": 64650.03
-      }
-    },
+    "outcomes": {},
     "verified_sources": [
       {
         "topic": "extra_requirements",

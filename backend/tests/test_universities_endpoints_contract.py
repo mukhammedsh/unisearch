@@ -529,6 +529,8 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             "eth-zurich-ch-zurich",
             "delft-university-of-technology-nl-delft",
             "al-farabi-kazakh-national-university-kaz-almaty",
+            "stanford-university-usa-ca",
+            "technical-university-of-munich-de-munich",
         ]
 
         for university_id in no_salary_ids:
