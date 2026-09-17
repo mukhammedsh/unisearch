@@ -674,9 +674,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const ctx = currentRouteContext();
     hydrateRouteShell(ctx);
     window.dispatchEvent(new CustomEvent("languageChanged"));
-    dismissSiteLoader();
 
     await initRoutePage(ctx);
+    dismissSiteLoader();
 
   } catch (error) {
     console.error("Initialization failed:", error);

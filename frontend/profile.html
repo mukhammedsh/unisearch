@@ -200,7 +200,7 @@
         </div>
 
         <!-- ==================== SECTION: SCORES ==================== -->
-        <div class="profile-section-panel" data-profile-section="scores">
+        <div class="profile-section-panel is-section-hidden" data-profile-section="scores">
           
           <!-- GPA Card -->
           <article class="profile-card-block">
@@ -312,7 +312,7 @@
         </div>
 
         <!-- ==================== SECTION: LANGUAGES ==================== -->
-        <div class="profile-section-panel" data-profile-section="languages">
+        <div class="profile-section-panel is-section-hidden" data-profile-section="languages">
           
           <section class="profile-card-block" id="languagesBlock">
             <div class="profile-card-head">
@@ -333,7 +333,7 @@
                 <select id="langKind" class="profile-input"></select>
               </div>
 
-              <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
+              <div id="cefrContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
                 <span class="mini-label" data-i18n="profile.cefr">CEFR</span>
                 <select id="langCefr" class="profile-input">
                   <option value="1">A1</option>
@@ -345,12 +345,12 @@
                 </select>
               </div>
 
-              <div id="examContainer" class="profile-lang-conditional lang-control-item">
+              <div id="examContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
                 <span class="mini-label" data-i18n="profile.exam">Exam</span>
                 <select id="langExam" class="profile-input" data-flags="off"></select>
               </div>
 
-              <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
+              <div id="scoreContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
                 <span class="mini-label" data-i18n="profile.score">Score</span>
                 <input
                   id="langExamScore"
@@ -377,7 +377,7 @@
         </div>
 
         <!-- ==================== SECTION: PREFERENCES ==================== -->
-        <div class="profile-section-panel" data-profile-section="preferences">
+        <div class="profile-section-panel is-section-hidden" data-profile-section="preferences">
           
           <article class="profile-card-block">
             <div class="profile-card-head">

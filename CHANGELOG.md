@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.0.2 (2026-09-17) - Applicant Profile Initial Render & Section Visibility Polish
+- Prevented flash of unhidden profile sections during initial page load by adding `is-section-hidden` directly to non-active tab panels (`scores`, `languages`, and `preferences`) in static HTML markup (`frontend/profile.html`).
+- Set initial `display: none` inline style on conditional language exam containers (`#cefrContainer`, `#examContainer`, `#scoreContainer`) in `frontend/profile.html` to eliminate layout flicker before language config initialization.
+- Synchronized initial page loader dismissal in `frontend/javascript/main.js` to trigger strictly after `await initRoutePage(ctx)` completes, ensuring the DOM is fully hydrated, styled, and configured before revealing the workspace.
+
 ## 6.0.1 (2026-09-17) - Universities Catalog Full-Width Layout and UI Scale Polish
 - Expanded desktop universities workspace layout to 100% full-width with 28px outer gutters matching the primary navigation bar, eliminating unused lateral voids (`frontend/css/universities/01-shell-controls.css`).
 - Proportionally scaled desktop sidebar and control dimensions (~10% upscale) adhering to the 4/8px grid scale and design system typography:
