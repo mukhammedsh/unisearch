@@ -3,14 +3,15 @@
 All notable project changes should be recorded here.
 
 ## Unreleased
+
+## 5.9.0 (2026-09-17) - Reliability & Data Integrity
 - Restored GPA descending catalog sort (`sort=gpa_desc`) by evaluating representative minimum GPA thresholds across direct requirements and admission category profiles (`backend/app/services/universities.py`).
 - Hardened client IP resolution (`request_client_ip`) against header spoofing in reverse proxy setups with strict IP validation, CIDR subnet support for `TRUSTED_PROXY_IPS`, right-to-left traversal of `X-Forwarded-For` across trusted proxy boundaries, and Cloudflare `CF-Connecting-IP` validation (`backend/app/core/security.py`, `docs/deployment_security.md`).
 - Handled missing university salary data in ROI calculations gracefully without arbitrary fallbacks, returning structured neutral ROI status (`roi_value: null`, `roi_label: "No Data"`, `context_type: "no_salary_data"`) and localized fallback notices in detail and comparison cards (`backend/app/services/ai_scoring.py`, `frontend/javascript/pages/_shared.js`, `frontend/Localization/eng`, `frontend/Localization/ru`).
 - Purged unverified salary statistics for Stanford University and Technical University of Munich per official fact provenance policy, and corrected CUHK program-specific HKDSE median reporting, removing its incorrect representation as an average (`backend/data/universities.json`, `backend/data/official_facts.json`).
 - Synchronized university tags and graduate salary provenance with `official_facts.json`, updating automated data audit checks to enforce outcomes and tags provenance (`backend/scripts/apply_official_facts.py`, `backend/scripts/audit_universities_data.py`).
 - Updated comparison table specifications to handle missing salary values gracefully and display verified salary provenance notes (`frontend/javascript/pages/universities/compare-specs.js`, `frontend/javascript/pages/universities/compare-helpers.js`).
-- Removed redundant `/exams/config/full` endpoint in favor of canonical `/exams/config`, and added security regression tests for request body size capping (`REQUEST_BODY_MAX_BYTES`) (`backend/app/routers/exams.py`, `backend/tests/test_security_regressions.py`).
-
+- Preserved API backwards compatibility by retaining `/exams/config/full` as a deprecated alias to canonical `/exams/config` with identical responses and caching headers, and added security regression tests for request body size capping (`REQUEST_BODY_MAX_BYTES`) (`backend/app/routers/exams.py`, `backend/tests/test_exams_api.py`, `backend/tests/test_security_regressions.py`).
 
 ## 5.8.1 (2026-09-16) - Codebase Comments Audit, Accuracy Verification, and Protocol Compliance
 - Audited all source code comments and docstrings across the entire repository to ensure technical and mathematical truthfulness and eliminate legacy references.
