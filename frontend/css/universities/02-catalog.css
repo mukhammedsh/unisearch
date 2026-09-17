@@ -275,8 +275,8 @@
 }
 
 .uni-media {
-  height: 148px;
-  flex: 0 0 148px;
+  height: 160px;
+  flex: 0 0 160px;
   position: relative;
   background-color: var(--surface-soft);
   border-bottom: none;

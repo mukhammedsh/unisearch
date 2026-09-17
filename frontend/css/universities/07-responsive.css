@@ -2,74 +2,46 @@
   padding-top: 16px;
 }
 
-.u-page-scope,
-.u-section-bar,
-.u-layout,
-.compare-results {
-  padding-left: 16px;
-  padding-right: 16px;
-}
+@media (max-width: 1180px) {
+  .u-page-scope,
+  .u-section-bar,
+  .u-layout,
+  .compare-results {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 
-.u-page-scope,
-.u-section-bar {
-  margin-bottom: 14px;
-}
+  .u-page-scope,
+  .u-section-bar {
+    margin-bottom: 14px;
+  }
 
-.u-filter-card {
-  border-radius: 16px;
-}
+  .u-layout {
+    gap: 16px;
+  }
 
-.u-layout {
-  gap: 16px;
-}
+  .u-filter-card {
+    border-radius: 16px;
+    padding: 16px;
+  }
 
-.u-filter-card {
-  padding: 16px;
-}
+  .u-filter-title,
+  .u-recent__label {
+    font-size: 16px;
+  }
 
-.u-filter-title,
-.u-recent__label {
-  font-size: 16px;
-}
+  .u-filter-title {
+    margin-bottom: 10px;
+  }
 
-.u-filter-title {
-  margin-bottom: 10px;
-}
+  .u-field {
+    margin-top: 10px;
+  }
 
-.u-field {
-  margin-top: 10px;
-}
-
-.u-label,
-.u-label--subtle,
-.tradeoff-caption {
-  line-height: 1.25;
-}
-
-.u-label--subtle {
-  margin-bottom: 8px;
-}
-
-.tradeoff-field + .tradeoff-field {
-  margin-top: 12px;
-}
-
-.tradeoff-field .u-label--subtle.u-label--between {
-  margin-top: 6px;
-  padding-top: 6px;
-}
-
-.budget-control-wrapper {
-  gap: 12px;
-}
-
-.budget-inputs {
-  gap: 8px;
-}
-
-.budget-inputs input {
-  height: 40px;
-  line-height: 40px;
+  .budget-inputs input {
+    height: 40px;
+    line-height: 40px;
+  }
 }
 
 .u-toolbar,

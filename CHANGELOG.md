@@ -4,6 +4,19 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.0.1 (2026-09-17) - Universities Catalog Full-Width Layout and UI Scale Polish
+- Expanded desktop universities workspace layout to 100% full-width with 28px outer gutters matching the primary navigation bar, eliminating unused lateral voids (`frontend/css/universities/01-shell-controls.css`).
+- Proportionally scaled desktop sidebar and control dimensions (~10% upscale) adhering to the 4/8px grid scale and design system typography:
+  - Scaled sidebar columns to `minmax(296px, 328px)` and increased layout grid gap to `28px` (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/05-catalog-polish.css`).
+  - Increased filter card padding to `20px` and filter title to `20px` with a `22px` funnel icon.
+  - Upscaled filter saved scope buttons (`.u-saved-filter__btn`) to `min-height: 48px`, font size `14px`, and icon size `18px`.
+  - Upscaled field labels and subtle labels to `13px` with `18px` icons and `8px` bottom margin.
+  - Increased select and text inputs padding to `12px 16px` with a minimum height of `44px`.
+  - Upscaled comparison mode toggle button (`.u-compare-mode-btn`) and map/list view buttons (`.view-toggles`, `.view-btn`) to `36px` height with `14px` text and `18px` icons.
+  - Upscaled university counter to `14px` with a `16px` numeric count.
+  - Increased card media thumbnail height to `160px` (`frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`).
+- Scoped compact responsive overrides in `frontend/css/universities/07-responsive.css` strictly within `@media (max-width: 1180px)`, preventing premature downsizing on desktop displays.
+
 ## 6.0.0 (2026-09-17) - Backward Compatibility Cleanup & Profile Persistence Architecture
 - **Breaking changes**:
   - Decommissioned deprecated `/exams/config/full` API endpoint in favor of canonical `/exams/config` (`backend/app/routers/exams.py`, `backend/tests/test_exams_api.py`).
