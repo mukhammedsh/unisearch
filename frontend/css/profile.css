@@ -15,7 +15,7 @@ body[data-page="profile"] {
   flex: 1 0 auto;
   width: 100%;
   max-width: 980px;
-  margin: 0 auto;
+  margin: auto;
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
@@ -103,10 +103,11 @@ body[data-page="profile"] {
    -------------------------------------------------------------------------- */
 .profile-workspace-layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: var(--space-8);
+  grid-template-columns: 140px 1fr;
+  grid-template-rows: minmax(640px, auto);
+  gap: var(--space-6);
   align-items: stretch;
-  height: 440px;
+  min-height: 640px;
 }
 
 /* --------------------------------------------------------------------------
@@ -138,7 +139,7 @@ body[data-page="profile"] {
   flex-wrap: nowrap;
   width: 100%;
   min-width: 0;
-  padding-left: var(--space-2);
+  padding-left: 0;
 }
 
 .profile-username-label {
@@ -244,7 +245,7 @@ body[data-page="profile"] {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: calc(-1 * (var(--space-8) / 2));
+  right: calc(-1 * (var(--space-6) / 2));
   width: 1px;
   background: var(--line-faint);
 }
@@ -254,6 +255,7 @@ body[data-page="profile"] {
   flex-direction: column;
   gap: var(--space-2);
   width: 100%;
+  margin: 0;
 }
 
 .profile-section-tabs .sliding-indicator {
@@ -353,12 +355,19 @@ body[data-page="profile"] {
 .profile-body {
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding-right: var(--space-2);
+  padding-right: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.profile-body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .profile-section-panel {
@@ -833,8 +842,16 @@ textarea.profile-input,
   grid-template-columns: 1fr;
   gap: var(--space-2);
   margin-top: var(--space-1);
-  max-height: 220px;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.profile-exam-list::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -880,8 +897,16 @@ textarea.profile-input,
   grid-template-columns: 1fr;
   gap: var(--space-2);
   margin-top: var(--space-3);
-  max-height: 220px;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.lang-list::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -1174,7 +1199,7 @@ textarea.profile-input,
    -------------------------------------------------------------------------- */
 @media (max-width: 980px) {
   .profile-workspace-layout {
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 140px 1fr;
     gap: var(--space-6);
   }
 
@@ -1206,8 +1231,10 @@ textarea.profile-input,
 
   .profile-workspace-layout {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
     gap: var(--space-5);
     height: auto;
+    min-height: auto;
   }
 
   .profile-body {
@@ -1307,49 +1334,29 @@ textarea.profile-input,
 }
 
 /* --------------------------------------------------------------------------
-   Scrollbars (clean academic scrollbars for overflowing containers)
+   Scrollbar Suppression (full-height workspace layout)
    -------------------------------------------------------------------------- */
+.profile-shell,
+.profile-shell *,
 .profile-body,
 .profile-exam-list,
 .lang-list,
 .profile-input--textarea,
 .custom-options {
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
+.profile-shell::-webkit-scrollbar,
+.profile-shell *::-webkit-scrollbar,
 .profile-body::-webkit-scrollbar,
 .profile-exam-list::-webkit-scrollbar,
 .lang-list::-webkit-scrollbar,
 .profile-input--textarea::-webkit-scrollbar,
 .custom-options::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.profile-body::-webkit-scrollbar-track,
-.profile-exam-list::-webkit-scrollbar-track,
-.lang-list::-webkit-scrollbar-track,
-.profile-input--textarea::-webkit-scrollbar-track,
-.custom-options::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.profile-body::-webkit-scrollbar-thumb,
-.profile-exam-list::-webkit-scrollbar-thumb,
-.lang-list::-webkit-scrollbar-thumb,
-.profile-input--textarea::-webkit-scrollbar-thumb,
-.custom-options::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: var(--radius-full);
-}
-
-.profile-body::-webkit-scrollbar-thumb:hover,
-.profile-exam-list::-webkit-scrollbar-thumb:hover,
-.lang-list::-webkit-scrollbar-thumb:hover,
-.profile-input--textarea::-webkit-scrollbar-thumb:hover,
-.custom-options::-webkit-scrollbar-thumb:hover {
-  background: var(--line-strong);
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* --------------------------------------------------------------------------

@@ -11,6 +11,7 @@ import {
   saveSelectedAdmissionChoice,
   saveFilters,
   loadFilters,
+  calculateProfileCompletion,
 } from '../../frontend/javascript/utils/persistence.js';
 
 describe('persistence.js - Profile & Filters Storage Contracts', () => {
@@ -294,6 +295,170 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(loaded.max_tuition, 60000);
       assert.strictEqual(loaded.sort, 'uni_ai');
       assert.strictEqual(loaded.only_saved, true);
+    });
+  });
+
+  describe('calculateProfileCompletion', () => {
+    test('returns 0 completed when profile is empty or null', () => {
+      const res = calculateProfileCompletion(null);
+      assert.strictEqual(res.completed, 0);
+      assert.strictEqual(res.total, 7);
+      assert.strictEqual(res.percentage, 0);
+      assert.deepStrictEqual(res.details, {
+        budget: false,
+        studyMode: false,
+        fundingType: false,
+        gpa: false,
+        exams: false,
+        languages: false,
+        major: false,
+      });
+    });
+
+    test('counts studyMode and fundingType for default normalized profile (2/7)', () => {
+      const defaultProfile = normalizeProfileData(null);
+      const res = calculateProfileCompletion(defaultProfile);
+      assert.strictEqual(res.completed, 2);
+      assert.strictEqual(res.total, 7);
+      assert.strictEqual(res.percentage, 29);
+      assert.strictEqual(res.details.studyMode, true);
+      assert.strictEqual(res.details.fundingType, true);
+      assert.strictEqual(res.details.budget, false);
+      assert.strictEqual(res.details.gpa, false);
+      assert.strictEqual(res.details.exams, false);
+      assert.strictEqual(res.details.languages, false);
+      assert.strictEqual(res.details.major, false);
+    });
+
+    test('budget completion recognizes strings, numbers, and zero, but not empty/whitespace', () => {
+      assert.strictEqual(calculateProfileCompletion({ budget: '25000' }).details.budget, true);
+      assert.strictEqual(calculateProfileCompletion({ budget: 25000 }).details.budget, true);
+      assert.strictEqual(calculateProfileCompletion({ budget: '0' }).details.budget, true);
+      assert.strictEqual(calculateProfileCompletion({ budget: 0 }).details.budget, true);
+      assert.strictEqual(calculateProfileCompletion({ budget: '' }).details.budget, false);
+      assert.strictEqual(calculateProfileCompletion({ budget: '   ' }).details.budget, false);
+      assert.strictEqual(calculateProfileCompletion({ budget: null }).details.budget, false);
+    });
+
+    test('studyMode completion recognizes any selected mode', () => {
+      assert.strictEqual(calculateProfileCompletion({ studyMode: 'Any' }).details.studyMode, true);
+      assert.strictEqual(calculateProfileCompletion({ studyMode: 'On-campus' }).details.studyMode, true);
+      assert.strictEqual(calculateProfileCompletion({ studyMode: 'Online' }).details.studyMode, true);
+      assert.strictEqual(calculateProfileCompletion({ study_mode: 'On-campus' }).details.studyMode, true);
+      assert.strictEqual(calculateProfileCompletion({ studyMode: '' }).details.studyMode, false);
+      assert.strictEqual(calculateProfileCompletion({ studyMode: '   ' }).details.studyMode, false);
+    });
+
+    test('fundingType completion recognizes any selected funding type', () => {
+      assert.strictEqual(calculateProfileCompletion({ fundingType: 'any' }).details.fundingType, true);
+      assert.strictEqual(calculateProfileCompletion({ fundingType: 'grant' }).details.fundingType, true);
+      assert.strictEqual(calculateProfileCompletion({ fundingType: 'paid' }).details.fundingType, true);
+      assert.strictEqual(calculateProfileCompletion({ funding_type: 'grant' }).details.fundingType, true);
+      assert.strictEqual(calculateProfileCompletion({ fundingType: '' }).details.fundingType, false);
+    });
+
+    test('GPA completion recognizes non-empty values independently from exams', () => {
+      assert.strictEqual(calculateProfileCompletion({ gpa: '3.8' }).details.gpa, true);
+      assert.strictEqual(calculateProfileCompletion({ gpa: 3.8 }).details.gpa, true);
+      assert.strictEqual(calculateProfileCompletion({ gpa: '' }).details.gpa, false);
+      assert.strictEqual(calculateProfileCompletion({ gpa: '  ' }).details.gpa, false);
+    });
+
+    test('exams completion requires at least one valid exam', () => {
+      assert.strictEqual(calculateProfileCompletion({ exams: [] }).details.exams, false);
+      assert.strictEqual(calculateProfileCompletion({ exams: [{ exam: 'IELTS', score: 7.5 }] }).details.exams, true);
+      assert.strictEqual(calculateProfileCompletion({ exams: [{ id: 'SAT', score: 1450 }] }).details.exams, true);
+      assert.strictEqual(calculateProfileCompletion({ exams: [{}] }).details.exams, false);
+    });
+
+    test('languages completion requires at least one valid language', () => {
+      assert.strictEqual(calculateProfileCompletion({ languages: [] }).details.languages, false);
+      assert.strictEqual(calculateProfileCompletion({ languages: [{ code: 'en', kind: 'native' }] }).details.languages, true);
+      assert.strictEqual(calculateProfileCompletion({ languages: [{ lang: 'kz', kind: 'native' }] }).details.languages, true);
+      assert.strictEqual(calculateProfileCompletion({ languages: [{}] }).details.languages, false);
+    });
+
+    test('major completion recognizes non-empty selected major', () => {
+      assert.strictEqual(calculateProfileCompletion({ major: 'Computer Science' }).details.major, true);
+      assert.strictEqual(calculateProfileCompletion({ major: '' }).details.major, false);
+      assert.strictEqual(calculateProfileCompletion({ major: '   ' }).details.major, false);
+    });
+
+    test('interests do not contribute to profile completion calculation', () => {
+      const withoutInterests = calculateProfileCompletion({
+        budget: '20000',
+        studyMode: 'Any',
+        fundingType: 'any',
+        gpa: '3.8',
+        exams: [{ exam: 'SAT', score: 1400 }],
+        languages: [{ code: 'en', kind: 'native' }],
+        major: '',
+      });
+      const withInterests = calculateProfileCompletion({
+        budget: '20000',
+        studyMode: 'Any',
+        fundingType: 'any',
+        gpa: '3.8',
+        exams: [{ exam: 'SAT', score: 1400 }],
+        languages: [{ code: 'en', kind: 'native' }],
+        major: '',
+        interests: 'artificial intelligence, robotics, gamedev',
+      });
+      assert.strictEqual(withoutInterests.completed, 6);
+      assert.strictEqual(withInterests.completed, 6);
+      assert.strictEqual(withInterests.percentage, 86);
+      assert.strictEqual(withInterests.percentage, withoutInterests.percentage);
+    });
+
+    test('profile reaches 100% (7/7) strictly when all 7 criteria are fulfilled', () => {
+      const fullProfile = {
+        budget: '20000',
+        studyMode: 'On-campus',
+        fundingType: 'grant',
+        gpa: '3.9',
+        exams: [{ exam: 'SAT', score: 1520 }],
+        languages: [{ code: 'en', kind: 'native' }],
+        major: 'Computer Science',
+      };
+      const res = calculateProfileCompletion(fullProfile);
+      assert.strictEqual(res.completed, 7);
+      assert.strictEqual(res.total, 7);
+      assert.strictEqual(res.percentage, 100);
+      assert.strictEqual(Object.values(res.details).every(Boolean), true);
+    });
+
+    test('does not give 100% if exams are missing even if GPA is present', () => {
+      const withoutExams = {
+        budget: '20000',
+        studyMode: 'On-campus',
+        fundingType: 'grant',
+        gpa: '3.9',
+        exams: [],
+        languages: [{ code: 'en', kind: 'native' }],
+        major: 'Computer Science',
+      };
+      const res = calculateProfileCompletion(withoutExams);
+      assert.strictEqual(res.completed, 6);
+      assert.strictEqual(res.percentage, 86);
+      assert.strictEqual(res.details.exams, false);
+      assert.strictEqual(res.details.gpa, true);
+    });
+
+    test('does not give 100% if GPA is missing even if exams are present', () => {
+      const withoutGpa = {
+        budget: '20000',
+        studyMode: 'On-campus',
+        fundingType: 'grant',
+        gpa: '',
+        exams: [{ exam: 'SAT', score: 1500 }],
+        languages: [{ code: 'en', kind: 'native' }],
+        major: 'Computer Science',
+      };
+      const res = calculateProfileCompletion(withoutGpa);
+      assert.strictEqual(res.completed, 6);
+      assert.strictEqual(res.percentage, 86);
+      assert.strictEqual(res.details.gpa, false);
+      assert.strictEqual(res.details.exams, true);
     });
   });
 });

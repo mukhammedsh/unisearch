@@ -319,14 +319,10 @@ profile.unit.currency_year: {currency} / год
 profile.progress.empty: Заполните профиль, чтобы подбор стал точнее.
 profile.progress.count: Заполнено разделов профиля: {completed}/{total}
 profile.sections.aria: Разделы профиля
-profile.section.basics: Основное
+profile.section.basics: Общее
 profile.section.scores: Академ. данные
 profile.section.languages: Языки
 profile.section.preferences: Предпочтения
-profile.interest_examples: Примеры интересов
-profile.interest_chip.tech: IT + стажировки
-profile.interest_chip.ai: ИИ + Data Science
-profile.interest_chip.research: Исследовательские лаборатории
 profile.kicker: Кабинет абитуриента
 profile.page_subtitle: Настройте параметры бюджета, оценок и экзаменов для персонализированного подбора UniFit и расчета шансов поступления.
 profile.action.back: Назад
@@ -340,7 +336,7 @@ profile.field.funding.desc: Выберите, интересуют ли вас �
 profile.field.gpa.desc: Выберите систему оценивания и укажите среднюю оценку с аттестата.
 profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
 profile.field.interests.desc: Работает как умные теги: перечислите темы и направления через запятую (технологии, специальности, карьерные цели).
-profile.field.exams.desc: Выберите стандартизированные тесты (IELTS, TOEFL, SAT, ACT, A-Levels) для точной оценки шансов поступления.
+profile.field.exams.desc: Выберите сданный вами академический экзамен для оценки шансов поступления.
 profile.field.languages.desc: Укажите родной язык или международные сертификаты (IELTS, TOEFL, CEFR) для проверки языковых требований.
 profile.aria.applicant_profile: Профиль абитуриента
 ranking.acceptance: Процент зачисления

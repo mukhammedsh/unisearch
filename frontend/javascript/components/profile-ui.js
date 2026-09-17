@@ -3,6 +3,7 @@ import {
   EXAM_CONFIG,
   MAJOR_OPTIONS,
   animateElementOut,
+  calculateProfileCompletion,
   canonicalizeExamId,
   clearProfile,
   escapeHtml,
@@ -265,21 +266,22 @@ export function initProfileUI() {
     };
 
     const updateProfileProgress = () => {
-        let completed = 0;
-        const total = 5;
-        if (String(profile.budget || "").trim()) completed += 1;
-        if (String(profile.major || "").trim()) completed += 1;
-        if (String(profile.interests || "").trim()) completed += 1;
-        if (String(profile.gpa || "").trim() || (Array.isArray(profile.exams) && profile.exams.length)) completed += 1;
-        if (Array.isArray(profile.languages) && profile.languages.length) completed += 1;
+        const { completed, total, percentage } = calculateProfileCompletion(profile);
         if (profileProgressText) {
             profileProgressText.textContent = completed
                 ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
                 : t("profile.progress.empty", "Complete your profile for better matches.");
         }
         if (profileProgressFill) {
-            const pct = Math.round((completed / total) * 100);
-            profileProgressFill.style.width = `${pct}%`;
+            profileProgressFill.style.width = `${percentage}%`;
+        }
+        const meter = modal.querySelector(".profile-progress-meter");
+        if (meter) {
+            meter.setAttribute("role", "progressbar");
+            meter.setAttribute("aria-valuenow", String(percentage));
+            meter.setAttribute("aria-valuemin", "0");
+            meter.setAttribute("aria-valuemax", "100");
+            meter.setAttribute("title", `${percentage}% (${completed}/${total})`);
         }
     };
 

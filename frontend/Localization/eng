@@ -316,14 +316,10 @@ profile.unit.currency_year: {currency} / year
 profile.progress.empty: Complete your profile for better matches.
 profile.progress.count: {completed}/{total} profile areas complete
 profile.sections.aria: Profile sections
-profile.section.basics: Basics
+profile.section.basics: General
 profile.section.scores: Academic Data
 profile.section.languages: Languages
 profile.section.preferences: Preferences
-profile.interest_examples: Interest examples
-profile.interest_chip.tech: Tech + internships
-profile.interest_chip.ai: AI + Data Science
-profile.interest_chip.research: Research labs
 profile.kicker: Applicant Workspace
 profile.page_subtitle: Configure your academic profile, budget, and test scores for personalized UniFit matching and admission chance estimates.
 profile.action.back: Back

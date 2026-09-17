@@ -173,6 +173,18 @@
 
 .u-tour-actions {
   margin-top: var(--space-6);
+  gap: var(--space-2);
+}
+
+.u-tour-btn[data-action="skip"] {
+  background: var(--tour-skip-bg, var(--surface-soft));
+  color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-tour-btn[data-action="skip"]:hover {
+    background: color-mix(in srgb, var(--tour-skip-bg, var(--surface-soft)) 85%, var(--text));
+  }
 }
 
 @media (max-width: 768px) {
