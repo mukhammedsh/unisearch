@@ -43,77 +43,16 @@
   <main class="profile-page" id="profilePage">
     <section class="profile-shell" id="profileModal" role="region" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
       
-      <!-- Top Header & Primary Action Bar -->
-      <header class="profile-hero">
-        <div class="profile-hero-meta">
-          <span class="profile-kicker" data-i18n="profile.kicker">Applicant Workspace</span>
-          
-          <div class="profile-username" id="profileUsernameDiv">
-            <span id="profileNameDisplay" class="profile-username-label">User</span>
-            <input
-              id="profileNameInput"
-              class="profile-name-input"
-              type="text"
-              value="User"
-              minlength="3"
-              maxlength="16"
-              aria-label="Edit username"
-              data-i18n-aria-label="profile.action.edit_name"
-            />
-            <button
-              class="icon-btn profile-edit-name-btn"
-              id="editNameBtn"
-              type="button"
-              title="Edit Name"
-              aria-label="Edit Name"
-              data-i18n-title="profile.action.edit_name"
-              data-i18n-aria-label="profile.action.edit_name"
-            >
-              <span data-heroicon="pencil-square" data-icon-size="18"></span>
-            </button>
-          </div>
-          <div id="usernameError" class="profile-error profile-error--username"></div>
-
-
-        </div>
-
-        <div class="profile-hero-actions">
-          <div class="profile-status-wrap">
-            <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>
-          </div>
-          <div class="profile-action-buttons">
-            <button
-              class="profile-action-btn profile-action-btn--secondary"
-              id="profileCloseBtn"
-              type="button"
-              title="Return to previous page"
-              data-i18n-title="profile.action.back_desc"
-            >
-              <span data-heroicon="arrow-left" data-icon-size="16"></span>
-              <span data-i18n="profile.action.back">Back</span>
-            </button>
-            <button
-              class="profile-action-btn profile-action-btn--primary"
-              id="saveProfileBtn"
-              type="button"
-            >
-              <span data-heroicon="check" data-icon-size="16"></span>
-              <span data-i18n="profile.action.save_all">Save Profile</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <!-- Completion Banner & Progress -->
+      <!-- Top Center Completion Banner & Progress -->
       <section class="profile-progress-card" aria-label="Profile progress" data-i18n-aria-label="profile.progress.title">
         <div class="profile-progress-info">
           <div class="profile-progress-badge">
             <span data-heroicon="chart-bar" data-icon-size="16"></span>
             <span class="profile-progress-label" data-i18n="profile.progress.title">Profile Completion</span>
           </div>
-          <p class="profile-progress-text" id="profileProgressText" data-i18n="profile.progress.empty">
+          <span class="profile-progress-text sr-only" id="profileProgressText" data-i18n="profile.progress.empty">
             Complete your profile for better matches.
-          </p>
+          </span>
         </div>
         <div class="profile-progress-meter" aria-hidden="true">
           <div class="profile-progress-track">
@@ -122,38 +61,76 @@
         </div>
       </section>
 
-      <!-- Section Navigation Underline Tabs -->
-      <nav class="profile-section-tabs-bar" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
-        <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
-          <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">
-            Basics
-          </button>
-          <button class="profile-section-tab" type="button" data-profile-tab="scores" role="tab" aria-selected="false" data-i18n="profile.section.scores">
-            Scores
-          </button>
-          <button class="profile-section-tab" type="button" data-profile-tab="languages" role="tab" aria-selected="false" data-i18n="profile.section.languages">
-            Languages
-          </button>
-          <button class="profile-section-tab" type="button" data-profile-tab="preferences" role="tab" aria-selected="false" data-i18n="profile.section.preferences">
-            Preferences
-          </button>
-        </div>
-      </nav>
+      <!-- 2-Column Workspace Layout -->
+      <div class="profile-workspace-layout">
+        <!-- Left Sidebar: Identity + Navigation + Reset -->
+        <aside class="profile-sidebar">
+          <div class="profile-sidebar-top">
+            <div class="profile-username" id="profileUsernameDiv">
+              <span id="profileNameDisplay" class="profile-username-label">User</span>
+              <input
+                id="profileNameInput"
+                class="profile-name-input"
+                type="text"
+                value="User"
+                minlength="3"
+                maxlength="16"
+                aria-label="Edit username"
+                data-i18n-aria-label="profile.action.edit_name"
+              />
+              <button
+                class="icon-btn profile-edit-name-btn"
+                id="editNameBtn"
+                type="button"
+                title="Edit Name"
+                aria-label="Edit Name"
+                data-i18n-title="profile.action.edit_name"
+                data-i18n-aria-label="profile.action.edit_name"
+              >
+                <span data-heroicon="pencil-square" data-icon-size="18"></span>
+              </button>
+            </div>
 
-      <!-- Profile Body Sections -->
-      <div class="profile-body">
+            <!-- Section Navigation Tabs -->
+            <nav class="profile-section-tabs-bar" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
+              <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
+                <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">
+                  General
+                </button>
+                <button class="profile-section-tab" type="button" data-profile-tab="scores" role="tab" aria-selected="false" data-i18n="profile.section.scores">
+                  Academic Data
+                </button>
+                <button class="profile-section-tab" type="button" data-profile-tab="languages" role="tab" aria-selected="false" data-i18n="profile.section.languages">
+                  Languages
+                </button>
+                <button class="profile-section-tab" type="button" data-profile-tab="preferences" role="tab" aria-selected="false" data-i18n="profile.section.preferences">
+                  Preferences
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          <!-- Bottom Reset Action in Sidebar -->
+          <div class="profile-sidebar-bottom">
+            <button id="resetProfileBtn" class="profile-delete profile-delete--danger-soft" type="button" data-i18n="profile.reset.cta">
+              Reset data
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right Main Content Area -->
+        <div class="profile-main-content">
+          <!-- Profile Body Sections -->
+          <div class="profile-body">
 
         <!-- ==================== SECTION: BASICS ==================== -->
         <div class="profile-section-panel" data-profile-section="basics">
-          <div class="profile-grid profile-grid--2col">
+          <div class="profile-grid">
             
             <!-- Budget Card -->
             <article class="profile-card-block">
               <div class="profile-card-head">
                 <h3 class="profile-card-title" data-i18n="profile.label.budget">Total Budget / year</h3>
-                <p class="profile-card-desc" data-i18n="profile.field.budget.desc">
-                  Your planned tuition and living expense budget per academic year in USD.
-                </p>
               </div>
 
               <div class="profile-field">
@@ -189,13 +166,10 @@
               </div>
             </article>
 
-            <!-- Study Format & Funding Type Card -->
+            <!-- Study Format Card -->
             <article class="profile-card-block">
               <div class="profile-card-head">
                 <h3 class="profile-card-title" data-i18n="profile.label.study_mode">Preferred Study Mode</h3>
-                <p class="profile-card-desc" data-i18n="profile.field.study_mode.desc">
-                  Filter programs by preferred attendance format.
-                </p>
               </div>
 
               <div class="profile-field">
@@ -205,14 +179,12 @@
                   <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
                 </select>
               </div>
+            </article>
 
-              <div class="profile-divider" aria-hidden="true"></div>
-
+            <!-- Funding Type Card -->
+            <article class="profile-card-block">
               <div class="profile-card-head">
                 <h3 class="profile-card-title" data-i18n="profile.label.funding_type">Preferred Funding Type</h3>
-                <p class="profile-card-desc" data-i18n="profile.field.funding.desc">
-                  Choose whether you seek full scholarships/grants or self-funded seats.
-                </p>
               </div>
 
               <div class="profile-field">
@@ -253,7 +225,7 @@
                 </span>
               </div>
               <p class="profile-card-desc" data-i18n="profile.field.gpa.desc">
-                Select your grading scale (4.0 or 5.0) and enter your cumulative GPA.
+                Select your grading scale and enter your certificate GPA.
               </p>
             </div>
 
@@ -265,7 +237,7 @@
                   class="profile-scale-btn is-active"
                   data-gpa-scale="4"
                   data-i18n="profile.scale.gpa_4"
-                >4.0 (US / Intl)</button>
+                >4.0 (US / International)</button>
                 <button
                   type="button"
                   id="gpaScale5Btn"
@@ -296,9 +268,9 @@
           <!-- Standardized Exams Card -->
           <article class="profile-card-block">
             <div class="profile-card-head">
-              <h3 class="profile-card-title" data-i18n="profile.label.exams">Exams (list, optional)</h3>
+              <h3 class="profile-card-title" data-i18n="profile.label.exams">Exams</h3>
               <p class="profile-card-desc" data-i18n="profile.field.exams.desc">
-                Select standardized tests (IELTS, TOEFL, SAT, ACT, A-Levels) to unlock accurate admission chances.
+                Select standardized academic tests you have taken to calculate your admission chances.
               </p>
             </div>
 
@@ -410,9 +382,6 @@
           <article class="profile-card-block">
             <div class="profile-card-head">
               <h3 class="profile-card-title" data-i18n="profile.label.major">Intended Major</h3>
-              <p class="profile-card-desc" data-i18n="profile.field.major.desc">
-                Select your target academic field to rank relevant programs.
-              </p>
             </div>
 
             <div class="profile-field profile-field--compact">
@@ -443,18 +412,6 @@
               <div class="profile-hint" data-i18n="profile.hint.interests">
                 Write key topics separated by commas. Avoid long sentences and negations (&quot;no X&quot;). The AI automatically connects synonyms to university programs.
               </div>
-
-              <div class="profile-interest-chips" aria-label="Interest examples" data-i18n-aria-label="profile.interest_examples">
-                <button type="button" data-interest-chip="computer science, software engineering, internships" data-i18n="profile.interest_chip.tech">
-                  Tech + internships
-                </button>
-                <button type="button" data-interest-chip="artificial intelligence, machine learning, data science" data-i18n="profile.interest_chip.ai">
-                  AI + Data Science
-                </button>
-                <button type="button" data-interest-chip="research labs, science, academic environment" data-i18n="profile.interest_chip.research">
-                  Research labs
-                </button>
-              </div>
             </div>
           </article>
 
@@ -462,22 +419,37 @@
 
       </div>
 
-      <!-- Footer Reset Zone -->
-      <footer class="profile-footer-zone">
-        <div class="profile-reset-zone">
-          <div class="profile-reset-copy">
-            <strong data-i18n="profile.reset.title">Reset profile data</strong>
-            <span data-i18n="profile.reset.note">
-              Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.
-            </span>
-          </div>
-          <button id="resetProfileBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.cta">
-            Reset data
-          </button>
+          <!-- Main Area Footer Actions -->
+          <footer class="profile-main-footer">
+            <div class="profile-status-wrap">
+              <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>
+            </div>
+            <div class="profile-action-buttons">
+              <button
+                class="profile-action-btn profile-action-btn--secondary"
+                id="profileCloseBtn"
+                type="button"
+                title="Return to previous page"
+                data-i18n-title="profile.action.back_desc"
+              >
+                <span data-heroicon="arrow-left" data-icon-size="16"></span>
+                <span data-i18n="profile.action.back">Back</span>
+              </button>
+              <button
+                class="profile-action-btn profile-action-btn--primary"
+                id="saveProfileBtn"
+                type="button"
+              >
+                <span data-heroicon="check" data-icon-size="16"></span>
+                <span data-i18n="profile.action.save_all">Save Profile</span>
+              </button>
+            </div>
+          </footer>
         </div>
-      </footer>
+      </div>
 
     </section>
+
     <!-- Confirmations: Unsaved Changes -->
     <div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
       <div class="profile-confirm-backdrop" data-close="unsaved"></div>

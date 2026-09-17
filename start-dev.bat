@@ -4,5 +4,5 @@ cd /d "%~dp0"
 
 echo Starting UniSearch Backend and Frontend in separate PowerShell windows...
 
-start "UniSearch Backend" powershell -NoExit -Command "npm run dev:backend"
-start "UniSearch Frontend" powershell -NoExit -Command "npm run dev:frontend"
+start "UniSearch Backend" powershell -ExecutionPolicy Bypass -NoExit -Command "npm.cmd run dev:backend"
+start "UniSearch Frontend" powershell -ExecutionPolicy Bypass -NoExit -Command "npm.cmd run dev:frontend"

@@ -73,8 +73,8 @@ async function mockLanguageValidation(page) {
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({
-          ...payload,
-          ok: true
+          ok: true,
+          language: payload,
         })
       });
     } else {

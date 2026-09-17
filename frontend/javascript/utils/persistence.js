@@ -333,6 +333,54 @@ export function saveSelectedAdmissionChoice(universityId, selection) {
   saveProfile(profile);
 }
 
+export function calculateProfileCompletion(rawProfile) {
+  const profile = rawProfile && typeof rawProfile === "object" ? rawProfile : {};
+
+  const budgetRaw = String(profile.budget ?? "").trim();
+  const hasBudget = budgetRaw !== "";
+
+  const studyModeRaw = String((profile.studyMode ?? profile.study_mode) ?? "").trim();
+  const hasStudyMode = studyModeRaw !== "";
+
+  const fundingTypeRaw = String((profile.fundingType ?? profile.funding_type) ?? "").trim();
+  const hasFundingType = fundingTypeRaw !== "";
+
+  const gpaRaw = String(profile.gpa ?? "").trim();
+  const hasGpa = gpaRaw !== "";
+
+  const hasExams = Array.isArray(profile.exams) && profile.exams.length > 0 && profile.exams.some(
+    (e) => Boolean(e && (e.exam || e.id || e.name || Number.isFinite(Number(e.score)) || e.rawValue || e.raw_value))
+  );
+
+  const hasLanguages = Array.isArray(profile.languages) && profile.languages.length > 0 && profile.languages.some(
+    (l) => Boolean(l && (l.code || l.lang || l.name || l.exam))
+  );
+
+  const majorRaw = String(profile.major ?? "").trim();
+  const hasMajor = majorRaw !== "";
+
+  const details = {
+    budget: hasBudget,
+    studyMode: hasStudyMode,
+    fundingType: hasFundingType,
+    gpa: hasGpa,
+    exams: hasExams,
+    languages: hasLanguages,
+    major: hasMajor,
+  };
+
+  const total = 7;
+  const completed = Object.values(details).filter(Boolean).length;
+  const percentage = Math.round((completed / total) * 100);
+
+  return {
+    completed,
+    total,
+    percentage,
+    details,
+  };
+}
+
 export function saveFilters(state) {
   if (!state) return;
   const payload = {

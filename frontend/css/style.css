@@ -22,7 +22,8 @@
   --bg-soft: #edf0f4;
   --surface-solid: #ffffff;
   --surface: rgba(255, 255, 255, 0.88);
-  --surface-soft: #f1f3f7;
+  --surface-soft: #f2f3f7;
+  --tour-skip-bg: #F2F3F7;
   --card: var(--surface-solid);
   --text: #111827;
   --text-muted: #64748b;
@@ -124,6 +125,7 @@
   --surface-solid: #18191b;
   --surface: rgba(24, 25, 27, 0.88);
   --surface-soft: #222427;
+  --tour-skip-bg: var(--surface-soft);
   --card: var(--surface-solid);
   --text: #f3f4f6;
   --text-muted: #94a3b8;

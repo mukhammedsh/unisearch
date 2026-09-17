@@ -262,10 +262,10 @@ profile.hint.interests: Write key topics separated by commas. Avoid long sentenc
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget / year
-profile.label.exams: Exams (list, optional)
+profile.label.exams: Exams
 profile.label.funding_type: Preferred Funding Type
 profile.label.gpa: Grade Point Average (GPA)
-profile.scale.gpa_4: 4.0 (US / Intl)
+profile.scale.gpa_4: 4.0 (US / International)
 profile.scale.gpa_5: 5.0 (KZ / CIS)
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
@@ -316,14 +316,10 @@ profile.unit.currency_year: {currency} / year
 profile.progress.empty: Complete your profile for better matches.
 profile.progress.count: {completed}/{total} profile areas complete
 profile.sections.aria: Profile sections
-profile.section.basics: Basics
-profile.section.scores: Scores
+profile.section.basics: General
+profile.section.scores: Academic Data
 profile.section.languages: Languages
 profile.section.preferences: Preferences
-profile.interest_examples: Interest examples
-profile.interest_chip.tech: Tech + internships
-profile.interest_chip.ai: AI + Data Science
-profile.interest_chip.research: Research labs
 profile.kicker: Applicant Workspace
 profile.page_subtitle: Configure your academic profile, budget, and test scores for personalized UniFit matching and admission chance estimates.
 profile.action.back: Back
@@ -334,7 +330,7 @@ profile.empty_languages: No languages added yet. Add your native language or tes
 profile.field.budget.desc: Your planned tuition and living expense budget per academic year in {currency}.
 profile.field.study_mode.desc: Filter programs by preferred attendance format.
 profile.field.funding.desc: Choose whether you seek full scholarships/grants or self-funded seats.
-profile.field.gpa.desc: Select your grading scale (4.0 or 5.0) and enter your cumulative GPA.
+profile.field.gpa.desc: Select your grading scale and enter your certificate GPA.
 profile.field.major.desc: Select your target academic field to rank relevant programs.
 profile.field.interests.desc: Works like smart tags: list topics and disciplines separated by commas (technologies, majors, career goals).
 profile.field.exams.desc: Select standardized tests (IELTS, TOEFL, SAT, ACT, A-Levels) to unlock accurate admission chances.

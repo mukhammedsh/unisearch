@@ -167,7 +167,7 @@ export function showUniversitiesTour(options = {}) {
                 </div>
             `;
 
-            prevBtn.style.visibility = idx === 0 ? "hidden" : "visible";
+            prevBtn.style.display = idx === 0 ? "none" : "";
             const isLast = idx === steps.length - 1;
             nextBtn.textContent = isLast ? t("tour.finish", "Finish tutorial") : t("tour.next", "Next");
             skipBtn.textContent = t("tour.skip_all", "Skip tutorial");

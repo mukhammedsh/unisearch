@@ -4,6 +4,16 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 5.10.0 (2026-09-17) - Applicant Profile Completion Tracking, Workspace Layout Polish, and Onboarding Controls
+- Implemented deterministic applicant profile completion tracking (`calculateProfileCompletion`), evaluating 7 core dimensions: budget, study mode, funding preference, GPA, standardized exams, languages, and target major (`frontend/javascript/utils/persistence.js`, `frontend/javascript/utils.js`).
+- Integrated dynamic profile completion meter into applicant workspace UI with progress bar animation, live percentage/count indicators, and accessible ARIA attributes (`role="progressbar"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax`) (`frontend/javascript/components/profile-ui.js`, `frontend/profile.html`).
+- Refined applicant workspace layout geometry with full-height display, streamlined section navigation, and clean scrollbar suppression across panel bodies and lists (`frontend/css/profile.css`).
+- Streamlined profile section categorization and guidance in English and Russian, updating tab headers ("General" / "Общее") and clarifying standardized exams guidance (`frontend/Localization/eng`, `frontend/Localization/ru`).
+- Polished onboarding tour controls with dedicated skip styling (`.u-tour-btn[data-action="skip"]`) and non-obtrusive step navigation (`frontend/css/universities/08-onboarding.css`, `frontend/javascript/pages/universities/tour-modals.js`, `frontend/css/style.css`).
+- Added comprehensive unit test coverage for profile completion calculations across partial, default, full, and boundary profile configurations (`tests/unit/persistence.test.mjs`).
+- Added end-to-end Playwright test verifying real-time progress bar incrementing from fresh profile (29%) to complete (100%) as fields are populated (`tests/e2e/profile-completion.spec.js`, `tests/e2e/helpers/mocks.js`).
+- Improved local developer environment batch launcher with PowerShell execution policy bypass support (`start-dev.bat`).
+
 ## 5.9.0 (2026-09-17) - Reliability & Data Integrity
 - Restored GPA descending catalog sort (`sort=gpa_desc`) by evaluating representative minimum GPA thresholds across direct requirements and admission category profiles (`backend/app/services/universities.py`).
 - Hardened client IP resolution (`request_client_ip`) against header spoofing in reverse proxy setups with strict IP validation, CIDR subnet support for `TRUSTED_PROXY_IPS`, right-to-left traversal of `X-Forwarded-For` across trusted proxy boundaries, and Cloudflare `CF-Connecting-IP` validation (`backend/app/core/security.py`, `docs/deployment_security.md`).
