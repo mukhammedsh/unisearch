@@ -109,7 +109,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(3, int(requirements.get("HKDSE_CHINESE_LANGUAGE", 0)))
         self.assertEqual(3, int(requirements.get("HKDSE_ENGLISH_LANGUAGE", 0)))
         self.assertEqual(2, int(requirements.get("HKDSE_MATHEMATICS", 0)))
-        self.assertAlmostEqual(42.88, float(stats_avg.get("HKDSE_WEIGHTED_TOTAL") or 0.0), places=2)
+        self.assertAlmostEqual(42.88, float(score_profile.get("median_raw") or 0.0), places=2)
 
     def test_all_admission_categories_profiles_and_funding_options_have_descriptions(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")

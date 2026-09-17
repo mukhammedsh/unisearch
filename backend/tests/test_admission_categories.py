@@ -123,7 +123,7 @@ class AdmissionCategoryTests(unittest.TestCase):
         self.assertEqual("high", score_profile.get("confidence"))
         self.assertEqual(31.83, score_profile.get("acceptance_rate_percent"))
         self.assertEqual("HKDSE_WEIGHTED_TOTAL", score_profile.get("exam_id"))
-        self.assertEqual(42.88, float((profile.get("stats_avg") or {}).get("HKDSE_WEIGHTED_TOTAL", 0.0)))
+        self.assertEqual(42.88, float(score_profile.get("median_raw") or 0.0))
 
     def test_nu_dataset_uses_one_category_with_three_requirement_profiles(self):
         university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")

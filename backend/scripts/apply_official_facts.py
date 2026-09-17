@@ -366,13 +366,30 @@ def _apply_description(row: Dict[str, Any], payload: Dict[str, Any]) -> bool:
     return changed
 
 
-def _apply_tags(row: Dict[str, Any], payload: Dict[str, Any]) -> bool:
+def _apply_tags(row: Dict[str, Any], payload: Dict[str, Any], verified_at: str) -> bool:
     tags = _normalize_tags(payload.get("value"))
     if not tags:
         return False
     changed = False
     if row.get("tags") != tags:
         row["tags"] = tags
+        changed = True
+
+    provenance = row.get("fact_provenance")
+    if not isinstance(provenance, dict):
+        provenance = {"schema_version": 1, "facts": {}}
+        row["fact_provenance"] = provenance
+        changed = True
+    facts = provenance.get("facts")
+    if not isinstance(facts, dict):
+        facts = {}
+        provenance["facts"] = facts
+        changed = True
+
+    unit = str(payload.get("unit") or "tags").strip()
+    new_fact = _fact_record(tags, unit, payload, verified_at)
+    if facts.get("tags") != new_fact:
+        facts["tags"] = new_fact
         changed = True
 
     source_url = _clean_text(payload.get("source_url"))
@@ -449,7 +466,7 @@ def apply_official_facts(
             _apply_description(row, description_payload)
         tags_payload = payload.get("tags")
         if isinstance(tags_payload, dict):
-            _apply_tags(row, tags_payload)
+            _apply_tags(row, tags_payload, verified_at)
         _apply_verified_source_overrides(row, payload)
         if row != before:
             changed += 1

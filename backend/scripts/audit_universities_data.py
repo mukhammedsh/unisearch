@@ -9,9 +9,11 @@ Usage examples:
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import ipaddress
 import json
 import math
+import re
 import socket
 import sys
 import time
@@ -44,6 +46,22 @@ REQUIRED_TOP_LEVEL_KEYS = (
 PROGRAM_NAME_ALLOWLIST_BY_PHRASE = {
     "bachelor of advanced computing": {"university-of-sydney-au-sydney"},
 }
+_SUBJECTIVE_OR_UNVERIFIED_TAGS = frozenset({
+    "academic_mobility",
+    "applied_learning",
+    "digital_technology",
+    "entrepreneurship",
+    "global",
+    "industry_links",
+    "industry_partnerships",
+    "innovation",
+    "international_partnerships",
+    "natural_resources",
+    "prestige",
+    "student_life",
+    "sustainability",
+    "technology",
+})
 
 
 def _is_non_empty_text(value: Any) -> bool:
@@ -59,6 +77,19 @@ def _is_valid_positive_number(value: Any) -> bool:
         val = float(value)
         return not math.isnan(val) and not math.isinf(val) and val > 0
     except (TypeError, ValueError, OverflowError):
+        return False
+
+
+def _is_valid_iso_date(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    clean = value.strip()
+    if not re.match(r"^\d{4}-\d{2}-\d{2}$", clean):
+        return False
+    try:
+        date.fromisoformat(clean)
+        return True
+    except ValueError:
         return False
 
 
@@ -525,6 +556,47 @@ def _audit_outcomes_and_salary_provenance(
         errors.append(f"{uid}: fact_provenance.facts has salary_by_major but outcomes is missing salary_by_major")
 
 
+def _audit_tags_provenance(
+    errors: List[str],
+    warnings: List[str],
+    uid: str,
+    tags: Any,
+    facts: Dict[str, Any],
+) -> None:
+    if isinstance(tags, list) and tags:
+        tag_fact = facts.get("tags")
+        if not isinstance(tag_fact, dict):
+            errors.append(f"{uid}: tags is present but missing fact_provenance.facts.tags")
+            return
+
+        fact_tags_val = tag_fact.get("value")
+        if not isinstance(fact_tags_val, list):
+            errors.append(f"{uid}: fact_provenance.facts.tags.value must be a list")
+        elif fact_tags_val != tags:
+            errors.append(f"{uid}: fact_provenance.facts.tags value != tags")
+
+        if not _is_non_empty_text(tag_fact.get("source")):
+            errors.append(f"{uid}: fact_provenance.facts.tags.source is empty")
+
+        tag_source_url = tag_fact.get("source_url")
+        if not _is_http_url(tag_source_url):
+            errors.append(f"{uid}: fact_provenance.facts.tags.source_url must be valid http/https URL")
+
+        tag_verified_at = str(tag_fact.get("verified_at") or "").strip()
+        if not _is_valid_iso_date(tag_verified_at):
+            errors.append(f"{uid}: fact_provenance.facts.tags.verified_at must be valid YYYY-MM-DD date")
+
+        tag_status = str(tag_fact.get("status") or "").strip().lower()
+        if not tag_status or tag_status not in VALID_FACT_STATUSES:
+            errors.append(f"{uid}: fact_provenance.facts.tags.status '{tag_status}' is invalid")
+
+        if not _is_non_empty_text(tag_fact.get("method")):
+            errors.append(f"{uid}: fact_provenance.facts.tags.method is empty")
+
+    if "tags" in facts and not (isinstance(tags, list) and tags):
+        errors.append(f"{uid}: fact_provenance.facts has tags but university has no tags")
+
+
 def audit_dataset(
     data_path: Path,
     check_http: bool = False,
@@ -605,8 +677,25 @@ def audit_dataset(
             warnings.append(f"{uid}: description is very short")
 
         tags = row.get("tags")
-        if isinstance(tags, list) and tags:
-            warnings.append(f"{uid}: tags contain subjective metadata and should be reviewed")
+        if isinstance(tags, list):
+            if not tags:
+                warnings.append(f"{uid}: tags is empty")
+            else:
+                seen_tags = set()
+                for tag in tags:
+                    if not isinstance(tag, str) or not tag.strip():
+                        errors.append(f"{uid}: tags contains non-string or empty tag")
+                        continue
+                    clean_tag = tag.strip()
+                    if not re.match(r"^[a-z0-9_]+$", clean_tag):
+                        errors.append(f"{uid}: tag '{clean_tag}' must be lowercase snake_case")
+                    if clean_tag in seen_tags:
+                        warnings.append(f"{uid}: duplicate tag '{clean_tag}'")
+                    seen_tags.add(clean_tag)
+                    if clean_tag in _SUBJECTIVE_OR_UNVERIFIED_TAGS:
+                        warnings.append(f"{uid}: tag '{clean_tag}' contains subjective or unverified metadata")
+        elif tags is not None:
+            errors.append(f"{uid}: tags must be a list when present")
 
         student_count = row.get("student_count")
         if student_count is not None and not isinstance(student_count, (int, float)):
@@ -857,6 +946,14 @@ def audit_dataset(
                             errors.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent.source is empty")
                         if not _is_non_empty_text(verified_at):
                             errors.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent.verified_at is empty")
+
+                _audit_tags_provenance(
+                    errors,
+                    warnings,
+                    uid,
+                    row.get("tags"),
+                    facts,
+                )
 
                 _audit_outcomes_and_salary_provenance(
                     errors,

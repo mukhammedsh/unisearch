@@ -418,14 +418,6 @@
         "url": "https://www.mit.edu/about/"
       },
       {
-        "topic": "tags",
-        "url": "https://www.mit.edu/education/schools-and-departments/"
-      },
-      {
-        "topic": "tags",
-        "url": "https://www.mit.edu/about/"
-      },
-      {
         "topic": "stats_avg",
         "url": "https://mitadmissions.org/apply/process/stats/"
       },
@@ -446,6 +438,10 @@
         "url": "https://mitadmissions.org/apply/process/stats/"
       },
       {
+        "topic": "tags",
+        "url": "https://www.mit.edu/education/schools-and-departments/"
+      },
+      {
         "topic": "outcomes",
         "url": "https://ir.mit.edu/outcomes/"
       },
@@ -464,7 +460,7 @@
       "social_sciences",
       "architecture",
       "research",
-      "innovation"
+      "private_university"
     ],
     "description_source": "https://www.mit.edu/about/",
     "factors": {
@@ -584,6 +580,26 @@
             "respondents_with_salary_data": 293,
             "median_yearly_salary_usd": 90000
           }
+        },
+        "tags": {
+          "value": [
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "business",
+            "humanities",
+            "social_sciences",
+            "architecture",
+            "research",
+            "private_university"
+          ],
+          "unit": "tags",
+          "source": "MIT Schools and Departments",
+          "source_url": "https://www.mit.edu/education/schools-and-departments/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from the official MIT Schools and Schwarzman College of Computing structure and private research status."
         }
       }
     },
@@ -1457,7 +1473,8 @@
       "engineering",
       "medicine",
       "business",
-      "research"
+      "research",
+      "public_university"
     ],
     "description_source": "https://www.imperial.ac.uk/about/",
     "factors": {
@@ -1558,6 +1575,23 @@
             "applicants": 31533,
             "admitted": 3119
           }
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "medicine",
+            "business",
+            "research",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "Imperial About",
+          "source_url": "https://www.imperial.ac.uk/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from the official About page describing Imperial's science, engineering, medicine, and business faculties and public research mission."
         }
       }
     },
@@ -2076,10 +2110,6 @@
         "url": "https://www.stanford.edu/about/"
       },
       {
-        "topic": "tags",
-        "url": "https://www.stanford.edu/about/"
-      },
-      {
         "topic": "stats_avg",
         "url": "https://news.stanford.edu/stories/2025/07/admissions-criteria-application-period"
       },
@@ -2102,6 +2132,10 @@
       {
         "topic": "acceptance_rate",
         "url": "https://ucomm.stanford.edu/cds/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.stanford.edu/about/"
       }
     ],
     "description": "Stanford University is a private research institution in California, recognized for its interdisciplinary academic programs and proximity to the technology hub of Silicon Valley.",
@@ -2114,7 +2148,9 @@
       "law",
       "education",
       "business",
-      "research"
+      "research",
+      "private_university",
+      "computer_science"
     ],
     "description_source": "https://www.stanford.edu/about/",
     "factors": {
@@ -2216,6 +2252,28 @@
             "admitted": 2067,
             "enrolled": 1693
           }
+        },
+        "tags": {
+          "value": [
+            "humanities",
+            "social_sciences",
+            "natural_sciences",
+            "engineering",
+            "medicine",
+            "law",
+            "education",
+            "business",
+            "research",
+            "private_university",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "Stanford About",
+          "source_url": "https://www.stanford.edu/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from the official Stanford University overview of schools (Humanities and Sciences, Engineering, Medicine, Law, Education, Business) and private research university status."
         }
       }
     },
@@ -2755,10 +2813,6 @@
         "url": "https://www.harvard.edu/academics/schools/"
       },
       {
-        "topic": "tags",
-        "url": "https://www.harvard.edu/academics/schools/"
-      },
-      {
         "topic": "stats_avg",
         "url": "https://oira.harvard.edu/files/2025/06/HarvardUniversity_CDS_2024-2025.pdf"
       },
@@ -2781,6 +2835,10 @@
       {
         "topic": "acceptance_rate",
         "url": "https://college.harvard.edu/admissions/admissions-statistics"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.harvard.edu/academics/schools/"
       }
     ],
     "description": "Harvard University is a private Ivy League research university in Cambridge, Massachusetts, offering comprehensive undergraduate and graduate programs across diverse academic disciplines.",
@@ -2792,7 +2850,10 @@
       "education",
       "humanities",
       "natural_sciences",
-      "research"
+      "research",
+      "private_university",
+      "computer_science",
+      "social_sciences"
     ],
     "description_source": "https://www.harvard.edu/about/",
     "factors": {
@@ -2893,6 +2954,28 @@
             "applicants": 47893,
             "admitted": 2003
           }
+        },
+        "tags": {
+          "value": [
+            "engineering",
+            "business",
+            "law",
+            "medicine",
+            "education",
+            "humanities",
+            "natural_sciences",
+            "research",
+            "private_university",
+            "computer_science",
+            "social_sciences"
+          ],
+          "unit": "tags",
+          "source": "Harvard Schools",
+          "source_url": "https://www.harvard.edu/academics/schools/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Harvard's official Schools and Faculty of Arts and Sciences academic structure."
         }
       }
     },
@@ -3483,8 +3566,7 @@
       "medicine",
       "natural_sciences",
       "computer_science",
-      "global",
-      "prestige"
+      "public_university"
     ],
     "description_source": "https://www.ox.ac.uk/about",
     "factors": {
@@ -3587,6 +3669,25 @@
             "applications": 23061,
             "offers": 3793
           }
+        },
+        "tags": {
+          "value": [
+            "research",
+            "collegiate",
+            "humanities",
+            "law",
+            "medicine",
+            "natural_sciences",
+            "computer_science",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "About Oxford",
+          "source_url": "https://www.ox.ac.uk/about",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from official Oxford divisions (Humanities, MPLS, Medical Sciences, Social Sciences) and collegiate system."
         }
       }
     },
@@ -4410,10 +4511,6 @@
         "url": "https://ethz.ch/en/the-eth-zurich/portrait.html"
       },
       {
-        "topic": "tags",
-        "url": "https://ethz.ch/en/the-eth-zurich/portrait.html"
-      },
-      {
         "topic": "campus_size",
         "url": "https://ethz.ch/en/the-eth-zurich/campus/real-estate/campus-hoenggerberg-2040.html"
       },
@@ -4430,6 +4527,10 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       },
       {
+        "topic": "tags",
+        "url": "https://ethz.ch/en/the-eth-zurich/portrait.html"
+      },
+      {
         "topic": "local_exam_requirements",
         "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
       }
@@ -4443,7 +4544,8 @@
       "humanities",
       "social_sciences",
       "public_university",
-      "research"
+      "research",
+      "architecture"
     ],
     "description_source": "https://ethz.ch/en/the-eth-zurich/portrait.html",
     "factors": {
@@ -4539,6 +4641,26 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "humanities",
+            "social_sciences",
+            "public_university",
+            "research",
+            "architecture"
+          ],
+          "unit": "tags",
+          "source": "ETH Zurich Portrait",
+          "source_url": "https://ethz.ch/en/the-eth-zurich/portrait.html",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from ETH Zurich portrait describing Swiss federal public institute of science and technology."
         }
       }
     },
@@ -5000,14 +5122,6 @@
         "url": "https://www.nus.edu.sg/education"
       },
       {
-        "topic": "tags",
-        "url": "https://www.nus.edu.sg/education"
-      },
-      {
-        "topic": "tags",
-        "url": "https://www.nus.edu.sg/about"
-      },
-      {
         "topic": "local_exam_requirements",
         "url": "https://nus.edu.sg/oam/admissions/singapore-cambridge-gce-a-level/admission-requirements"
       },
@@ -5036,6 +5150,10 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       },
       {
+        "topic": "tags",
+        "url": "https://www.nus.edu.sg/about"
+      },
+      {
         "topic": "outcomes",
         "url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/"
       },
@@ -5046,7 +5164,6 @@
     ],
     "description": "The National University of Singapore is a comprehensive research university offering diverse undergraduate and postgraduate programs with an emphasis on Asian perspectives.",
     "tags": [
-      "national_university",
       "research",
       "engineering",
       "computer_science",
@@ -5054,7 +5171,8 @@
       "law",
       "medicine",
       "social_sciences",
-      "natural_sciences"
+      "natural_sciences",
+      "public_university"
     ],
     "description_source": "https://www.nus.edu.sg/about",
     "factors": {
@@ -5179,6 +5297,26 @@
             "usd_per_sgd": 0.77531731,
             "publication_date": "2026-03-06"
           }
+        },
+        "tags": {
+          "value": [
+            "research",
+            "engineering",
+            "computer_science",
+            "business",
+            "law",
+            "medicine",
+            "social_sciences",
+            "natural_sciences",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "About NUS",
+          "source_url": "https://www.nus.edu.sg/about",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from NUS faculties and schools (Computing, Engineering, Science, Business, Law, Medicine), autonomous public university status under the National University of Singapore Act, and Kent Ridge campus."
         }
       }
     },
@@ -5667,7 +5805,7 @@
       "natural_sciences",
       "computer_science",
       "engineering",
-      "global"
+      "public_university"
     ],
     "description_source": "https://www.cam.ac.uk/about-the-university",
     "factors": {
@@ -5770,6 +5908,26 @@
             "applications": 22153,
             "offers": 4760
           }
+        },
+        "tags": {
+          "value": [
+            "research",
+            "collegiate",
+            "humanities",
+            "law",
+            "medicine",
+            "natural_sciences",
+            "computer_science",
+            "engineering",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "About Cambridge",
+          "source_url": "https://www.cam.ac.uk/about-the-university",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Cambridge's official schools structure and collegiate university organization."
         }
       }
     },
@@ -6510,7 +6668,7 @@
       "design",
       "business",
       "research",
-      "innovation"
+      "public_university"
     ],
     "description_source": "https://www.tsinghua.edu.cn/en/About.htm",
     "factors": {
@@ -6612,6 +6770,27 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "comprehensive",
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "law",
+            "medicine",
+            "design",
+            "business",
+            "research",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "Tsinghua Divisions",
+          "source_url": "https://international.join-tsinghua.edu.cn/Divisions1.htm",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Tsinghua schools and departments, public national key university status under MOE, and residential campus."
         }
       }
     },
@@ -7083,7 +7262,8 @@
       "education",
       "humanities",
       "natural_sciences",
-      "social_sciences"
+      "social_sciences",
+      "public_university"
     ],
     "description_source": "https://about.unimelb.edu.au/leadership/vice-chancellor/speeches/vice-chancellors-fifth-annual-address",
     "factors": {
@@ -7180,6 +7360,27 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "research",
+            "engineering",
+            "business",
+            "law",
+            "medicine",
+            "education",
+            "humanities",
+            "natural_sciences",
+            "social_sciences",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "University of Melbourne Faculties",
+          "source_url": "https://about.unimelb.edu.au/strategy/our-structure/faculties-and-graduate-schools",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from official faculties list and public research university charter."
         }
       }
     },
@@ -7639,10 +7840,6 @@
         "url": "https://www.tum.de/en/about-tum"
       },
       {
-        "topic": "tags",
-        "url": "https://www.tum.de/en/about-tum"
-      },
-      {
         "topic": "local_exam_requirements",
         "url": "https://academics.nat.tum.de/en/bsc/ph/apply"
       },
@@ -7665,12 +7862,17 @@
       {
         "topic": "acceptance_rate",
         "url": "https://www.topuniversities.com/world-university-rankings"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.tum.de/en/about-tum"
       }
     ],
     "description": "The Technical University of Munich is a public research university in Germany, specializing in engineering, natural sciences, life sciences, and medicine.",
     "tags": [
-      "computer_science",
+      "science_and_technology",
       "engineering",
+      "computer_science",
       "design",
       "natural_sciences",
       "life_sciences",
@@ -7678,7 +7880,7 @@
       "business",
       "social_sciences",
       "research",
-      "innovation"
+      "public_university"
     ],
     "description_source": "https://www.tum.de/en/about-tum",
     "factors": {
@@ -7775,6 +7977,28 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "computer_science",
+            "design",
+            "natural_sciences",
+            "life_sciences",
+            "medicine",
+            "business",
+            "social_sciences",
+            "research",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "About TUM",
+          "source_url": "https://www.tum.de/en/about-tum",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from TUM Schools structure (Computation, Information and Technology; Engineering and Design; Natural Sciences; Life Sciences; Medicine and Health; Management; Social Sciences and Technology) and public research status."
         }
       }
     },
@@ -8180,10 +8404,6 @@
         "url": "https://www.epfl.ch/about/"
       },
       {
-        "topic": "tags",
-        "url": "https://www.epfl.ch/about/"
-      },
-      {
         "topic": "local_exam_requirements",
         "url": "https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/"
       },
@@ -8206,6 +8426,10 @@
       {
         "topic": "acceptance_rate",
         "url": "https://www.topuniversities.com/world-university-rankings"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.epfl.ch/about/"
       }
     ],
     "description": "EPFL is a public research institution in Lausanne, Switzerland, specializing in natural sciences and engineering, known for its emphasis on innovation and technology transfer.",
@@ -8218,7 +8442,7 @@
       "business",
       "architecture",
       "research",
-      "innovation"
+      "public_university"
     ],
     "description_source": "https://www.epfl.ch/about/",
     "factors": {
@@ -8315,6 +8539,26 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "life_sciences",
+            "business",
+            "architecture",
+            "research",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "About EPFL",
+          "source_url": "https://www.epfl.ch/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from EPFL official schools (Basic Sciences, Engineering, Computer and Communication Sciences, Life Sciences, Architecture and Civil Engineering, Management of Technology) and Swiss federal public institute status."
         }
       }
     },
@@ -8893,6 +9137,23 @@
             "institution_name": "California Institute of Technology",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "science_and_technology",
+            "research",
+            "engineering",
+            "computer_science",
+            "natural_sciences"
+          ],
+          "unit": "tags",
+          "source": "Caltech About",
+          "source_url": "https://www.caltech.edu/about",
+          "verified_at": "2026-04-04",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Caltech's six academic divisions and private science and engineering research institution charter."
         }
       }
     },
@@ -9484,14 +9745,6 @@
         "url": "https://www.utoronto.ca/utogether/faculties-divisions"
       },
       {
-        "topic": "tags",
-        "url": "https://www.utoronto.ca/utogether/faculties-divisions"
-      },
-      {
-        "topic": "tags",
-        "url": "https://www.utoronto.ca/about-u-of-t"
-      },
-      {
         "topic": "local_exam_requirements",
         "url": "https://future.utoronto.ca/requirements-canadian-high-schools"
       },
@@ -9514,6 +9767,10 @@
       {
         "topic": "acceptance_rate",
         "url": "https://governingcouncil.utoronto.ca/system/files/agenda-items/20250423_BB_05.pdf"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.utoronto.ca/about-u-of-t"
       }
     ],
     "description": "The University of Toronto is a public research university in Canada, offering a wide array of undergraduate and graduate programs and recognized for its strong research output.",
@@ -9526,7 +9783,10 @@
       "education",
       "humanities",
       "natural_sciences",
-      "social_sciences"
+      "social_sciences",
+      "public_university",
+      "collegiate",
+      "computer_science"
     ],
     "description_source": "https://www.utoronto.ca/about-u-of-t",
     "factors": {
@@ -9628,6 +9888,29 @@
             "admitted": 21949,
             "scope": "undergraduate_101_plus_non_101_distinct_counts"
           }
+        },
+        "tags": {
+          "value": [
+            "research",
+            "engineering",
+            "business",
+            "law",
+            "medicine",
+            "education",
+            "humanities",
+            "natural_sciences",
+            "social_sciences",
+            "public_university",
+            "collegiate",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "About U of T",
+          "source_url": "https://www.utoronto.ca/about-u-of-t",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from U of T faculties, collegiate structure, and public research university profile."
         }
       }
     },
@@ -10230,10 +10513,6 @@
         "url": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
       },
       {
-        "topic": "tags",
-        "url": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
-      },
-      {
         "topic": "local_exam_requirements",
         "url": "https://admission.cuhk.edu.hk/application/jupas/minimum-university-requirements/"
       },
@@ -10254,6 +10533,10 @@
         "url": "https://www.topuniversities.com/world-university-rankings"
       },
       {
+        "topic": "tags",
+        "url": "https://www.cuhk.edu.hk/english/aboutus/mission.html"
+      },
+      {
         "topic": "outcomes",
         "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
       }
@@ -10271,7 +10554,9 @@
       "law",
       "medicine",
       "natural_sciences",
-      "education"
+      "education",
+      "public_university",
+      "computer_science"
     ],
     "description_source": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
     "factors": {
@@ -10396,6 +10681,31 @@
             "eur_hkd": 8.9969,
             "usd_per_hkd": 0.12764397
           }
+        },
+        "tags": {
+          "value": [
+            "research",
+            "comprehensive",
+            "bilingual",
+            "collegiate",
+            "humanities",
+            "social_sciences",
+            "engineering",
+            "business",
+            "law",
+            "medicine",
+            "natural_sciences",
+            "education",
+            "public_university",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "CUHK Mission and Vision",
+          "source_url": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from CUHK faculties, bilingual collegiate university charter, and public research institution status."
         }
       }
     },
@@ -10506,9 +10816,6 @@
               "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT": 1,
               "HKDSE_ELECTIVE_1": 3,
               "HKDSE_ELECTIVE_2_OR_M1_M2_OTHER_LANGUAGE": 3
-            },
-            "stats_avg": {
-              "HKDSE_WEIGHTED_TOTAL": 42.88
             }
           }
         ],
@@ -11217,7 +11524,11 @@
       "engineering",
       "natural_sciences",
       "humanities",
-      "social_sciences"
+      "social_sciences",
+      "public_university",
+      "medicine",
+      "law",
+      "computer_science"
     ],
     "description_source": "https://www.u-tokyo.ac.jp/en/about/about.html",
     "factors": {
@@ -11316,6 +11627,27 @@
             "applicants": 9688,
             "admitted": 3084
           }
+        },
+        "tags": {
+          "value": [
+            "national_university",
+            "research",
+            "engineering",
+            "natural_sciences",
+            "humanities",
+            "social_sciences",
+            "public_university",
+            "medicine",
+            "law",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "About UTokyo",
+          "source_url": "https://www.u-tokyo.ac.jp/en/about/about.html",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from the official About UTokyo page describing national university status, broad academic faculties, and comprehensive research mission."
         }
       }
     },
@@ -11833,7 +12165,10 @@
       "social_sciences",
       "humanities",
       "natural_sciences",
-      "public_policy"
+      "public_policy",
+      "law",
+      "medicine",
+      "business"
     ],
     "description_source": "https://www.uchicago.edu/who-we-are",
     "factors": {
@@ -11950,6 +12285,28 @@
             "institution_name": "University of Chicago",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "economics",
+            "computer_science",
+            "social_sciences",
+            "humanities",
+            "natural_sciences",
+            "public_policy",
+            "law",
+            "medicine",
+            "business"
+          ],
+          "unit": "tags",
+          "source": "Who We Are UChicago",
+          "source_url": "https://www.uchicago.edu/who-we-are",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from UChicago's academic divisions, professional schools, and private research profile."
         }
       }
     },
@@ -12448,7 +12805,9 @@
       "social_sciences",
       "business",
       "medicine",
-      "education"
+      "education",
+      "public_university",
+      "computer_science"
     ],
     "description_source": "https://en.snu.ac.kr/about/overview/vision",
     "factors": {
@@ -12545,6 +12904,29 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "comprehensive",
+            "national_university",
+            "research",
+            "engineering",
+            "natural_sciences",
+            "humanities",
+            "social_sciences",
+            "business",
+            "medicine",
+            "education",
+            "public_university",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "SNU Vision and Overview",
+          "source_url": "https://en.snu.ac.kr/about/overview/vision",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from SNU overview of colleges, national university charter, and comprehensive research structure."
         }
       }
     },
@@ -13006,7 +13388,9 @@
       "engineering",
       "natural_sciences",
       "research",
-      "innovation"
+      "public_university",
+      "architecture",
+      "computer_science"
     ],
     "description_source": "https://www.tudelft.nl/en/about-tu-delft",
     "factors": {
@@ -13106,6 +13490,24 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "natural_sciences",
+            "research",
+            "public_university",
+            "architecture",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "About TU Delft",
+          "source_url": "https://www.tudelft.nl/en/about-tu-delft",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from TU Delft's eight faculties of engineering and technology and Dutch public technical university status."
         }
       }
     },
@@ -13553,7 +13955,10 @@
       "business",
       "medicine",
       "design",
-      "social_sciences"
+      "social_sciences",
+      "humanities",
+      "natural_sciences",
+      "law"
     ],
     "description_source": "https://www.upenn.edu/about",
     "factors": {
@@ -13670,6 +14075,28 @@
             "institution_name": "University of Pennsylvania",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "computer_science",
+            "engineering",
+            "business",
+            "medicine",
+            "design",
+            "social_sciences",
+            "humanities",
+            "natural_sciences",
+            "law"
+          ],
+          "unit": "tags",
+          "source": "About Penn",
+          "source_url": "https://www.upenn.edu/about",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Penn's 12 schools including Arts and Sciences, Engineering, Wharton Business, Medicine, and Law."
         }
       }
     },
@@ -14143,7 +14570,12 @@
       "engineering",
       "natural_sciences",
       "humanities",
-      "social_sciences"
+      "social_sciences",
+      "national_university",
+      "public_university",
+      "medicine",
+      "law",
+      "agriculture"
     ],
     "description_source": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
     "factors": {
@@ -14237,6 +14669,28 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "comprehensive",
+            "research",
+            "engineering",
+            "natural_sciences",
+            "humanities",
+            "social_sciences",
+            "national_university",
+            "public_university",
+            "medicine",
+            "law",
+            "agriculture"
+          ],
+          "unit": "tags",
+          "source": "Kyoto University Profile",
+          "source_url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Kyoto University's faculties and national public research university charter."
         }
       }
     },
@@ -14685,7 +15139,9 @@
       "agriculture",
       "architecture",
       "business",
-      "humanities"
+      "humanities",
+      "social_sciences",
+      "natural_sciences"
     ],
     "description_source": "https://www.cornell.edu/about/",
     "factors": {
@@ -14801,6 +15257,28 @@
             "institution_name": "Cornell University",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "computer_science",
+            "engineering",
+            "life_sciences",
+            "agriculture",
+            "architecture",
+            "business",
+            "humanities",
+            "social_sciences",
+            "natural_sciences"
+          ],
+          "unit": "tags",
+          "source": "About Cornell",
+          "source_url": "https://www.cornell.edu/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Cornell's undergraduate colleges and schools across agriculture, architecture, arts and sciences, engineering, and business."
         }
       }
     },
@@ -15268,7 +15746,7 @@
       "law",
       "social_sciences",
       "natural_sciences",
-      "entrepreneurship"
+      "humanities"
     ],
     "description_source": "https://www.berkeley.edu/about/",
     "factors": {
@@ -15384,6 +15862,26 @@
             "institution_name": "University of California-Berkeley",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "public_university",
+            "research",
+            "engineering",
+            "computer_science",
+            "business",
+            "law",
+            "social_sciences",
+            "natural_sciences",
+            "humanities"
+          ],
+          "unit": "tags",
+          "source": "About UC Berkeley",
+          "source_url": "https://www.berkeley.edu/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from UC Berkeley's colleges (Letters and Science, Engineering, Chemistry, Haas Business, Environmental Design) and public research charter."
         }
       }
     },
@@ -15832,8 +16330,10 @@
       "computer_science",
       "business",
       "design",
-      "innovation",
-      "industry_links"
+      "medicine",
+      "law",
+      "natural_sciences",
+      "social_sciences"
     ],
     "description_source": "https://www.unsw.edu.au/about-us",
     "factors": {
@@ -15931,6 +16431,27 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "public_university",
+            "research",
+            "engineering",
+            "computer_science",
+            "business",
+            "design",
+            "medicine",
+            "law",
+            "natural_sciences",
+            "social_sciences"
+          ],
+          "unit": "tags",
+          "source": "About UNSW",
+          "source_url": "https://www.unsw.edu.au/about-us",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from UNSW faculties (Arts, Design & Architecture; Business; Engineering; Law & Justice; Medicine & Health; Science) and public university status."
         }
       }
     },
@@ -16464,7 +16985,8 @@
       "medicine",
       "social_sciences",
       "natural_sciences",
-      "computer_science"
+      "computer_science",
+      "engineering"
     ],
     "description_source": "https://www.yale.edu/about-yale",
     "factors": {
@@ -16582,6 +17104,27 @@
             "institution_name": "Yale University",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "collegiate",
+            "humanities",
+            "law",
+            "medicine",
+            "social_sciences",
+            "natural_sciences",
+            "computer_science",
+            "engineering"
+          ],
+          "unit": "tags",
+          "source": "About Yale",
+          "source_url": "https://www.yale.edu/about-yale",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Yale College residential college system, professional schools, and private research profile."
         }
       }
     },
@@ -17190,6 +17733,26 @@
             "institution_name": "Princeton University",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "liberal_arts",
+            "engineering",
+            "computer_science",
+            "humanities",
+            "social_sciences",
+            "natural_sciences",
+            "public_policy"
+          ],
+          "unit": "tags",
+          "source": "About Princeton",
+          "source_url": "https://www.princeton.edu/about",
+          "verified_at": "2026-04-04",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Princeton's undergraduate liberal arts and engineering focus, research mission, and private university status."
         }
       }
     },
@@ -17682,7 +18245,10 @@
       "law",
       "business",
       "medicine",
-      "urban"
+      "urban",
+      "humanities",
+      "natural_sciences",
+      "social_sciences"
     ],
     "description_source": "https://www.sydney.edu.au/about-us.html",
     "factors": {
@@ -17779,6 +18345,29 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "public_university",
+            "research",
+            "computer_science",
+            "software_engineering",
+            "engineering",
+            "law",
+            "business",
+            "medicine",
+            "urban",
+            "humanities",
+            "natural_sciences",
+            "social_sciences"
+          ],
+          "unit": "tags",
+          "source": "About University of Sydney",
+          "source_url": "https://www.sydney.edu.au/about-us.html",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Sydney faculties and public research university charter."
         }
       }
     },
@@ -18324,13 +18913,15 @@
     "description": "McGill is a globally recognized Montreal research university with strong medicine, science, engineering, and social-science traditions and a highly international student body.",
     "tags": [
       "research",
-      "global",
       "computer_science",
       "engineering",
       "medicine",
       "social_sciences",
       "natural_sciences",
-      "public_university"
+      "public_university",
+      "humanities",
+      "law",
+      "business"
     ],
     "description_source": "https://www.mcgill.ca/about/",
     "factors": {
@@ -18433,6 +19024,27 @@
             "applicants": 38135,
             "offers": 18132
           }
+        },
+        "tags": {
+          "value": [
+            "research",
+            "computer_science",
+            "engineering",
+            "medicine",
+            "social_sciences",
+            "natural_sciences",
+            "public_university",
+            "humanities",
+            "law",
+            "business"
+          ],
+          "unit": "tags",
+          "source": "About McGill",
+          "source_url": "https://www.mcgill.ca/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from McGill's 12 faculties and Canadian public research university charter."
         }
       }
     },
@@ -18992,7 +19604,10 @@
       "biomedical",
       "engineering",
       "computer_science",
-      "natural_sciences"
+      "natural_sciences",
+      "public_health",
+      "social_sciences",
+      "humanities"
     ],
     "description_source": "https://www.jhu.edu/about/",
     "factors": {
@@ -19110,6 +19725,28 @@
             "institution_name": "Johns Hopkins University",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "medicine",
+            "health_sciences",
+            "biomedical",
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "public_health",
+            "social_sciences",
+            "humanities"
+          ],
+          "unit": "tags",
+          "source": "About Johns Hopkins",
+          "source_url": "https://www.jhu.edu/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from JHU academic divisions (Arts & Sciences, Engineering, Medicine, Nursing, Public Health) and private research university charter."
         }
       }
     },
@@ -19595,7 +20232,10 @@
       "social_sciences",
       "natural_sciences",
       "computer_science",
-      "engineering"
+      "engineering",
+      "humanities",
+      "law",
+      "business"
     ],
     "description_source": "https://www.anu.edu.au/about",
     "factors": {
@@ -19692,6 +20332,28 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "national_university",
+            "public_university",
+            "research",
+            "public_policy",
+            "social_sciences",
+            "natural_sciences",
+            "computer_science",
+            "engineering",
+            "humanities",
+            "law",
+            "business"
+          ],
+          "unit": "tags",
+          "source": "About ANU",
+          "source_url": "https://www.anu.edu.au/about",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from ANU's seven academic colleges and national public research university act."
         }
       }
     },
@@ -20229,13 +20891,15 @@
     "description": "Edinburgh is a major research university whose strengths include informatics, medicine, humanities, and science, with a large international community and broad academic portfolio.",
     "tags": [
       "research",
-      "global",
       "computer_science",
       "medicine",
       "humanities",
       "social_sciences",
       "natural_sciences",
-      "public_university"
+      "public_university",
+      "engineering",
+      "business",
+      "law"
     ],
     "description_source": "https://www.ed.ac.uk/about",
     "factors": {
@@ -20332,6 +20996,27 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "research",
+            "computer_science",
+            "medicine",
+            "humanities",
+            "social_sciences",
+            "natural_sciences",
+            "public_university",
+            "engineering",
+            "business",
+            "law"
+          ],
+          "unit": "tags",
+          "source": "About Edinburgh",
+          "source_url": "https://www.ed.ac.uk/about",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Edinburgh's three colleges (Arts, Humanities and Social Sciences; Medicine and Veterinary Medicine; Science and Engineering) and public university status."
         }
       }
     },
@@ -20861,7 +21546,8 @@
       "medicine",
       "business",
       "social_sciences",
-      "natural_sciences"
+      "natural_sciences",
+      "humanities"
     ],
     "description_source": "https://www.manchester.ac.uk/discover/",
     "factors": {
@@ -20958,6 +21644,26 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "research",
+            "public_university",
+            "engineering",
+            "computer_science",
+            "medicine",
+            "business",
+            "social_sciences",
+            "natural_sciences",
+            "humanities"
+          ],
+          "unit": "tags",
+          "source": "Discover Manchester",
+          "source_url": "https://www.manchester.ac.uk/discover/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Manchester's faculties (Biology, Medicine and Health; Science and Engineering; Humanities) and public research university profile."
         }
       }
     },
@@ -21695,13 +22401,15 @@
     "tags": [
       "private_university",
       "research",
-      "global",
       "computer_science",
       "engineering",
       "business",
       "social_sciences",
       "natural_sciences",
-      "urban"
+      "urban",
+      "humanities",
+      "law",
+      "medicine"
     ],
     "description_source": "https://www.columbia.edu/content/about-columbia",
     "factors": {
@@ -21818,6 +22526,28 @@
             "institution_name": "Columbia University in the City of New York",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "research",
+            "computer_science",
+            "engineering",
+            "business",
+            "social_sciences",
+            "natural_sciences",
+            "urban",
+            "humanities",
+            "law",
+            "medicine"
+          ],
+          "unit": "tags",
+          "source": "About Columbia",
+          "source_url": "https://www.columbia.edu/content/about-columbia",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Columbia's undergraduate colleges and graduate/professional schools in New York City."
         }
       }
     },
@@ -22307,8 +23037,9 @@
       "engineering",
       "business",
       "natural_sciences",
-      "sustainability",
-      "global"
+      "humanities",
+      "social_sciences",
+      "medicine"
     ],
     "description_source": "https://www.ubc.ca/about/",
     "factors": {
@@ -22411,6 +23142,26 @@
             "metric": "Admit Rate",
             "value_percent": 52
           }
+        },
+        "tags": {
+          "value": [
+            "public_university",
+            "research",
+            "computer_science",
+            "engineering",
+            "business",
+            "natural_sciences",
+            "humanities",
+            "social_sciences",
+            "medicine"
+          ],
+          "unit": "tags",
+          "source": "About UBC",
+          "source_url": "https://www.ubc.ca/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from UBC faculties and public research university charter."
         }
       }
     },
@@ -22942,7 +23693,9 @@
       "social_sciences",
       "humanities",
       "natural_sciences",
-      "urban"
+      "urban",
+      "business",
+      "law"
     ],
     "description_source": "https://www.ucla.edu/about",
     "factors": {
@@ -23058,6 +23811,28 @@
             "institution_name": "University of California-Los Angeles",
             "data_source": "U.S. Department of Education College Scorecard API"
           }
+        },
+        "tags": {
+          "value": [
+            "public_university",
+            "research",
+            "computer_science",
+            "engineering",
+            "medicine",
+            "social_sciences",
+            "humanities",
+            "natural_sciences",
+            "urban",
+            "business",
+            "law"
+          ],
+          "unit": "tags",
+          "source": "About UCLA",
+          "source_url": "https://www.ucla.edu/about",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from UCLA's College of Letters and Science, professional schools, and public research university status."
         }
       }
     },
@@ -23539,9 +24314,8 @@
       "computer_science",
       "software_engineering",
       "engineering",
-      "entrepreneurship",
-      "industry_links",
-      "applied_learning"
+      "natural_sciences",
+      "health_sciences"
     ],
     "description_source": "https://uwaterloo.ca/about/",
     "factors": {
@@ -23648,6 +24422,24 @@
             "applications_total": 66575,
             "offers_total": 36618
           }
+        },
+        "tags": {
+          "value": [
+            "public_university",
+            "research",
+            "computer_science",
+            "software_engineering",
+            "engineering",
+            "natural_sciences",
+            "health_sciences"
+          ],
+          "unit": "tags",
+          "source": "About Waterloo",
+          "source_url": "https://uwaterloo.ca/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Waterloo's six faculties (Applied Health Sciences, Arts, Engineering, Environment, Mathematics, Science) and public research profile."
         }
       }
     },
@@ -24162,7 +24954,11 @@
       "science_and_technology",
       "engineering",
       "research",
-      "innovation"
+      "public_university",
+      "computer_science",
+      "natural_sciences",
+      "life_sciences",
+      "business"
     ],
     "description_source": "https://www.kaist.ac.kr/en/html/kaist/01.html",
     "factors": {
@@ -24259,6 +25055,25 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "research",
+            "public_university",
+            "computer_science",
+            "natural_sciences",
+            "life_sciences",
+            "business"
+          ],
+          "unit": "tags",
+          "source": "About KAIST",
+          "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from KAIST Colleges (Engineering, Natural Sciences, Life Science & Bioengineering, Business), public research institute status under MSIT, and Daejeon main campus."
         }
       }
     },
@@ -24716,7 +25531,6 @@
     ],
     "description": "Official materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
     "tags": [
-      "public_university",
       "research",
       "engineering",
       "computer_science",
@@ -24724,7 +25538,9 @@
       "medicine",
       "business",
       "education",
-      "social_sciences"
+      "social_sciences",
+      "humanities",
+      "english_medium"
     ],
     "description_source": "https://nu.edu.kz/wp-content/uploads/2025/11/iep_report-final_nu.pdf",
     "factors": {
@@ -24821,6 +25637,27 @@
           "confidence": "medium",
           "status": "official",
           "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
+        },
+        "tags": {
+          "value": [
+            "research",
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "medicine",
+            "business",
+            "education",
+            "social_sciences",
+            "humanities",
+            "english_medium"
+          ],
+          "unit": "tags",
+          "source": "NU Schools",
+          "source_url": "https://nu.edu.kz/academics/schools/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Nazarbayev University schools (SEDS, SSH, SOM, GSPP, GSB), English-medium instruction, residential campus, and autonomous research university status (Law of RK 'On the status of Nazarbayev University...')."
         }
       }
     },
@@ -25395,6 +26232,7 @@
     ],
     "description": "Suleyman Demirel University presents itself as a multidisciplinary institution with schools in social sciences, business and law, education and humanities, and information technologies and applied mathematics, alongside active research centers.",
     "tags": [
+      "private_university",
       "comprehensive",
       "education",
       "humanities",
@@ -25404,7 +26242,9 @@
       "law",
       "social_sciences",
       "business",
-      "research"
+      "research",
+      "english_medium",
+      "pedagogy"
     ],
     "description_source": "https://sdu.edu.kz/en/about-us-3/",
     "factors": {
@@ -25501,6 +26341,30 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "private_university",
+            "comprehensive",
+            "education",
+            "humanities",
+            "engineering",
+            "computer_science",
+            "natural_sciences",
+            "law",
+            "social_sciences",
+            "business",
+            "research",
+            "english_medium",
+            "pedagogy"
+          ],
+          "unit": "tags",
+          "source": "About SDU",
+          "source_url": "https://sdu.edu.kz/en/about-us-3/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from SDU faculties (Education and Humanities, Engineering and Natural Sciences, Law and Social Sciences, Business School) and private university status."
         }
       }
     },
@@ -25975,8 +26839,11 @@
       "science_and_technology",
       "computer_science",
       "engineering",
-      "innovation",
-      "research"
+      "cybersecurity",
+      "software_engineering",
+      "research",
+      "english_medium",
+      "private_university"
     ],
     "description_source": "https://astanait.edu.kz/en/about-aitu/",
     "factors": {
@@ -26081,6 +26948,25 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "computer_science",
+            "engineering",
+            "cybersecurity",
+            "software_engineering",
+            "research",
+            "english_medium",
+            "private_university"
+          ],
+          "unit": "tags",
+          "source": "AITU Bachelor Programs",
+          "source_url": "https://astanait.edu.kz/en/bachelor/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from AITU educational programs in IT, Computer Science, Cybersecurity, and Software Engineering."
         }
       }
     },
@@ -26500,10 +27386,11 @@
     "description": "Astana Medical University is a major medical university in Astana with bachelor programs in medicine, dentistry, public health, pharmacy and related healthcare fields. Official program pages describe integrated medical education, clinical training and multilingual instruction in Kazakh, Russian and English.",
     "tags": [
       "medicine",
-      "health sciences",
-      "clinical training",
-      "public health",
-      "research"
+      "health_sciences",
+      "clinical_training",
+      "public_health",
+      "research",
+      "public_university"
     ],
     "description_source": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
     "factors": {
@@ -26590,6 +27477,23 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "medicine",
+            "health_sciences",
+            "clinical_training",
+            "public_health",
+            "research",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "AMU Undergraduate Programs",
+          "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from AMU medical education faculties, clinical training bases, and public medical university status."
         }
       }
     },
@@ -27026,11 +27930,14 @@
     ],
     "description": "International Information Technology University is an Almaty-based IT university established in 2009. Official admissions materials describe English-focused bachelor study, UNT-based admission for Kazakhstan applicants, internal English testing and programs across artificial intelligence, information security, data and digital business.",
     "tags": [
-      "computer science",
+      "science_and_technology",
+      "computer_science",
       "engineering",
       "cybersecurity",
-      "innovation",
-      "digital technology"
+      "software_engineering",
+      "research",
+      "english_medium",
+      "private_university"
     ],
     "description_source": "https://iitu.edu.kz/en/",
     "factors": {
@@ -27118,6 +28025,25 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "computer_science",
+            "engineering",
+            "cybersecurity",
+            "software_engineering",
+            "research",
+            "english_medium",
+            "private_university"
+          ],
+          "unit": "tags",
+          "source": "IITU Official Website",
+          "source_url": "https://iitu.edu.kz/en/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from IITU academic chairs of Computer Engineering, Information Systems, and Cybersecurity."
         }
       }
     },
@@ -27576,11 +28502,13 @@
     ],
     "description": "Satbayev University is Kazakhstan's leading technical university in Almaty, focused on engineering, technology, architecture, energy, geology and applied research. Its official undergraduate page emphasizes modern laboratories, research centers and industry-oriented projects.",
     "tags": [
+      "national_university",
+      "public_university",
+      "science_and_technology",
       "engineering",
-      "computer science",
-      "technology",
-      "research",
-      "natural resources"
+      "computer_science",
+      "architecture",
+      "research"
     ],
     "description_source": "https://satbayev.university/en/undergraduate",
     "factors": {
@@ -27668,6 +28596,24 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "national_university",
+            "public_university",
+            "science_and_technology",
+            "engineering",
+            "computer_science",
+            "architecture",
+            "research"
+          ],
+          "unit": "tags",
+          "source": "Satbayev University Undergraduate Programs",
+          "source_url": "https://satbayev.university/en/undergraduate",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Satbayev National Research Technical University institutes (Mining and Metallurgy, Geology and Petroleum, Automation and IT, Architecture and Construction)."
         }
       }
     },
@@ -28092,11 +29038,15 @@
     ],
     "description": "Kazakhstan-British Technical University is an Almaty technical university whose undergraduate materials emphasize English-medium instruction, industry-developed programs, modern laboratories, digital resources, internships and international certificates depending on the program.",
     "tags": [
+      "science_and_technology",
       "engineering",
-      "computer science",
+      "computer_science",
+      "cybersecurity",
       "business",
-      "industry partnerships",
-      "english-medium"
+      "economics",
+      "english_medium",
+      "private_university",
+      "research"
     ],
     "description_source": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
     "factors": {
@@ -28184,6 +29134,26 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "science_and_technology",
+            "engineering",
+            "computer_science",
+            "cybersecurity",
+            "business",
+            "economics",
+            "english_medium",
+            "private_university",
+            "research"
+          ],
+          "unit": "tags",
+          "source": "KBTU Undergraduate Admissions",
+          "source_url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from KBTU faculties (Information Technology, Energy and Oil & Gas Industry, Business School, Applied Mathematics) and English-medium technical profile."
         }
       }
     },
@@ -28644,11 +29614,17 @@
     ],
     "description": "Al-Farabi Kazakh National University is a comprehensive national university in Almaty with more than 100 bachelor specialities across its faculties. Official materials describe KazNU as an innovative center for professional education and competitive personal development.",
     "tags": [
-      "comprehensive university",
-      "computer science",
-      "economics",
+      "comprehensive",
+      "national_university",
+      "public_university",
       "research",
-      "student life"
+      "computer_science",
+      "economics",
+      "law",
+      "medicine",
+      "humanities",
+      "social_sciences",
+      "natural_sciences"
     ],
     "description_source": "https://www.kaznu.kz/en/3360",
     "factors": {
@@ -28736,6 +29712,28 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "comprehensive",
+            "national_university",
+            "public_university",
+            "research",
+            "computer_science",
+            "economics",
+            "law",
+            "medicine",
+            "humanities",
+            "social_sciences",
+            "natural_sciences"
+          ],
+          "unit": "tags",
+          "source": "KazNU Faculties",
+          "source_url": "https://www.kaznu.kz/en/3360",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from KazNU's 16 faculties covering natural sciences, humanities, social sciences, engineering, and national research university status."
         }
       }
     },
@@ -29163,11 +30161,18 @@
     ],
     "description": "L.N. Gumilyov Eurasian National University is a national university in Astana. Official bachelor materials highlight its capital-city location, international partnerships, active student life, educational-program threshold tables and opportunities for academic mobility.",
     "tags": [
-      "comprehensive university",
-      "international relations",
-      "computer science",
+      "comprehensive",
+      "national_university",
+      "public_university",
       "research",
-      "academic mobility"
+      "international_relations",
+      "computer_science",
+      "economics",
+      "law",
+      "humanities",
+      "social_sciences",
+      "natural_sciences",
+      "engineering"
     ],
     "description_source": "https://enu.kz/en/page/applicants/bachelor",
     "factors": {
@@ -29255,6 +30260,29 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "comprehensive",
+            "national_university",
+            "public_university",
+            "research",
+            "international_relations",
+            "computer_science",
+            "economics",
+            "law",
+            "humanities",
+            "social_sciences",
+            "natural_sciences",
+            "engineering"
+          ],
+          "unit": "tags",
+          "source": "ENU Bachelor Programs",
+          "source_url": "https://enu.kz/en/page/applicants/bachelor",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from ENU's 13 faculties (International Relations, Information Technologies, Economics, Law, Philology, Natural Sciences) and national research university status."
         }
       }
     },
@@ -29693,8 +30721,9 @@
       "business",
       "economics",
       "law",
-      "digital technology",
-      "international partnerships"
+      "social_sciences",
+      "computer_science",
+      "private_university"
     ],
     "description_source": "https://en.narxoz.kz/",
     "factors": {
@@ -29782,6 +30811,23 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "business",
+            "economics",
+            "law",
+            "social_sciences",
+            "computer_science",
+            "private_university"
+          ],
+          "unit": "tags",
+          "source": "Narxoz University Official Website",
+          "source_url": "https://en.narxoz.kz/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Narxoz Schools (School of Economics and Management, School of Law and Public Administration, School of Digital Technologies)."
         }
       }
     },
@@ -30211,10 +31257,12 @@
     "description": "KIMEP University is an English-medium university in Almaty with undergraduate programs in business, social sciences, law, education and humanities. Official materials describe year-round admissions support, online application, tuition-per-credit billing and undergraduate pathways through its colleges.",
     "tags": [
       "business",
+      "economics",
       "law",
-      "english-medium",
-      "international relations",
-      "student life"
+      "international_relations",
+      "social_sciences",
+      "english_medium",
+      "private_university"
     ],
     "description_source": "https://www.kimep.kz/prospective-students/en/",
     "factors": {
@@ -30302,6 +31350,24 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "business",
+            "economics",
+            "law",
+            "international_relations",
+            "social_sciences",
+            "english_medium",
+            "private_university"
+          ],
+          "unit": "tags",
+          "source": "KIMEP Prospective Students",
+          "source_url": "https://www.kimep.kz/prospective-students/en/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from KIMEP colleges (Bang College of Business, School of Law, College of Social Sciences) and English-medium private university charter."
         }
       }
     },
@@ -30712,10 +31778,12 @@
     "description": "Asfendiyarov Kazakh National Medical University is a long-standing Almaty medical university with bachelor programs in medicine, public health, pharmacy, nursing and related healthcare fields. Official applicant pages describe UNT thresholds for healthcare, psychometric examination and enrollment stages.",
     "tags": [
       "medicine",
-      "health sciences",
-      "public health",
-      "clinical training",
-      "research"
+      "health_sciences",
+      "clinical_training",
+      "public_health",
+      "research",
+      "national_university",
+      "public_university"
     ],
     "description_source": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
     "factors": {
@@ -30803,6 +31871,24 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "medicine",
+            "health_sciences",
+            "clinical_training",
+            "public_health",
+            "research",
+            "national_university",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "KazNMU Bachelor's Degree",
+          "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from KazNMU medical faculties (General Medicine, Pediatrics, Pharmacy, Public Health) and national medical research university status."
         }
       }
     },
@@ -31197,9 +32283,13 @@
     "tags": [
       "education",
       "pedagogy",
-      "social sciences",
-      "computer science",
-      "research"
+      "social_sciences",
+      "humanities",
+      "natural_sciences",
+      "computer_science",
+      "research",
+      "national_university",
+      "public_university"
     ],
     "description_source": "https://abaiuniversity.edu.kz/en/",
     "factors": {
@@ -31287,6 +32377,26 @@
           "confidence": "medium",
           "status": "official_aggregated",
           "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+        },
+        "tags": {
+          "value": [
+            "education",
+            "pedagogy",
+            "social_sciences",
+            "humanities",
+            "natural_sciences",
+            "computer_science",
+            "research",
+            "national_university",
+            "public_university"
+          ],
+          "unit": "tags",
+          "source": "Abai University Official Website",
+          "source_url": "https://abaiuniversity.edu.kz/en/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from Abai University pedagogical institutes (Pedagogy and Psychology, Philology, Mathematics and Physics/Informatics, Natural Sciences and Geography, Arts) and national university status."
         }
       }
     },

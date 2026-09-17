@@ -198,6 +198,13 @@ class OfficialFactsSyncTests(unittest.TestCase):
             if isinstance(tags_payload, dict):
                 self.assertEqual(tags_payload.get("value"), row.get("tags"), uid)
                 self.assertEqual([tags_payload.get("source_url")], self._topic_urls(row, "tags"), uid)
+                tag_fact = facts.get("tags") or {}
+                self.assertEqual(tags_payload.get("value"), tag_fact.get("value"), uid)
+                self.assertEqual(tags_payload.get("source"), tag_fact.get("source"), uid)
+                self.assertEqual(tags_payload.get("source_url"), tag_fact.get("source_url"), uid)
+                self.assertEqual(tags_payload.get("verified_at"), tag_fact.get("verified_at"), uid)
+                self.assertEqual(tags_payload.get("status"), tag_fact.get("status"), uid)
+                self.assertEqual(tags_payload.get("method"), tag_fact.get("method"), uid)
 
             for topic in payload.get("clear_verified_topics") or []:
                 self.assertEqual([], self._topic_urls(row, str(topic)), uid)
@@ -506,6 +513,169 @@ class OfficialFactsSyncTests(unittest.TestCase):
         }
         _audit_outcomes_and_salary_provenance(errors, warnings, "coincident-uni", outcomes, facts)
         self.assertEqual([], errors, f"Coinciding numeric values between distinct facts must be allowed, got errors: {errors}")
+
+    def test_audit_tags_validates_format_and_rejects_subjective_buzzwords(self):
+        import json
+        import tempfile
+        from audit_universities_data import audit_dataset
+
+        invalid_dataset = [
+            {
+                "id": "test-invalid-tags",
+                "name": "Test University",
+                "rank": 1,
+                "location": {"country": "USA", "city": "Cambridge", "state": "MA"},
+                "coordinates": {"lat": 42.36, "lon": -71.09},
+                "website": "https://example.edu",
+                "description": "Test university description that is long enough to satisfy audit criteria.",
+                "description_source": "https://example.edu/about",
+                "tags": ["computer science", "prestige", "innovation", "research", "research"],
+                "academics": {"programs": [], "majors": ["CS"], "study_levels": ["Bachelor"], "formats": ["On-campus"]},
+                "finance": {"total_cost_year_usd": 50000, "currency": "USD"},
+                "admission_categories": [],
+                "fact_provenance": {
+                    "schema_version": 1,
+                    "facts": {
+                        "rank": {"source": "Test", "verified_at": "2026-03-25"},
+                        "tuition_total_cost_year_usd": {"source": "Test", "verified_at": "2026-03-25"},
+                    },
+                },
+            }
+        ]
+        with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".json", delete=False) as f:
+            json.dump(invalid_dataset, f)
+            temp_path = Path(f.name)
+
+        try:
+            errors, warnings = audit_dataset(temp_path, check_http=False)
+            self.assertTrue(any("must be lowercase snake_case" in e for e in errors), f"Expected snake_case error, got: {errors}")
+            self.assertTrue(any("duplicate tag" in w for w in warnings), f"Expected duplicate tag warning, got: {warnings}")
+            self.assertTrue(any("prestige" in w for w in warnings), f"Expected prestige warning, got: {warnings}")
+            self.assertTrue(any("innovation" in w for w in warnings), f"Expected innovation warning, got: {warnings}")
+        finally:
+            if temp_path.exists():
+                temp_path.unlink()
+
+    def _create_minimal_valid_university_row(self, uid="test-prov-uni"):
+        return {
+            "id": uid,
+            "name": "Test University",
+            "rank": 1,
+            "location": {"country": "USA", "city": "Cambridge", "state": "MA"},
+            "coordinates": {"lat": 42.36, "lon": -71.09},
+            "website": "https://example.edu",
+            "description": "Test university description that is long enough to satisfy audit criteria.",
+            "description_source": "https://example.edu/about",
+            "tags": ["engineering", "research"],
+            "academics": {
+                "programs": [{"name": "Computer Science"}],
+                "majors": ["CS"],
+                "study_levels": ["Bachelor"],
+                "formats": ["On-campus"],
+            },
+            "finance": {"total_cost_year_usd": 50000, "currency": "USD"},
+            "admission_categories": [
+                {
+                    "id": "general",
+                    "label": "General Admission",
+                    "scope": "general",
+                    "requirement_profiles": [{"id": "default", "label": "Default"}],
+                }
+            ],
+            "fact_provenance": {
+                "schema_version": 1,
+                "facts": {
+                    "rank": {"source": "Test", "verified_at": "2026-03-25"},
+                    "tuition_total_cost_year_usd": {"source": "Test", "verified_at": "2026-03-25"},
+                    "tags": {
+                        "value": ["engineering", "research"],
+                        "source": "Official Schools",
+                        "source_url": "https://example.edu/schools",
+                        "verified_at": "2026-09-17",
+                        "status": "official_derived",
+                        "method": "Derived from official schools structure.",
+                    },
+                },
+            },
+        }
+
+    def _run_audit_on_dataset(self, dataset):
+        import json
+        import tempfile
+        from audit_universities_data import audit_dataset
+
+        with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".json", delete=False) as f:
+            json.dump(dataset, f)
+            temp_path = Path(f.name)
+        try:
+            return audit_dataset(temp_path, check_http=False)
+        finally:
+            if temp_path.exists():
+                temp_path.unlink()
+
+    def test_audit_tags_provenance_rejects_missing_fact(self):
+        row = self._create_minimal_valid_university_row()
+        del row["fact_provenance"]["facts"]["tags"]
+        errors, _ = self._run_audit_on_dataset([row])
+        self.assertTrue(
+            any("tags is present but missing fact_provenance.facts.tags" in e for e in errors),
+            f"Expected missing tags fact error, got: {errors}",
+        )
+
+    def test_audit_tags_provenance_rejects_mismatched_tags_list(self):
+        row = self._create_minimal_valid_university_row()
+        row["fact_provenance"]["facts"]["tags"]["value"] = ["engineering"]
+        errors, _ = self._run_audit_on_dataset([row])
+        self.assertTrue(
+            any("fact_provenance.facts.tags value != tags" in e for e in errors),
+            f"Expected mismatched tags error, got: {errors}",
+        )
+
+    def test_audit_tags_provenance_rejects_missing_or_invalid_metadata(self):
+        # 1. Empty source
+        row1 = self._create_minimal_valid_university_row("uni-empty-source")
+        row1["fact_provenance"]["facts"]["tags"]["source"] = ""
+        errors1, _ = self._run_audit_on_dataset([row1])
+        self.assertTrue(
+            any("fact_provenance.facts.tags.source is empty" in e for e in errors1),
+            f"Expected empty source error, got: {errors1}",
+        )
+
+        # 2. Invalid source_url
+        row2 = self._create_minimal_valid_university_row("uni-invalid-url")
+        row2["fact_provenance"]["facts"]["tags"]["source_url"] = "ftp://invalid-url"
+        errors2, _ = self._run_audit_on_dataset([row2])
+        self.assertTrue(
+            any("fact_provenance.facts.tags.source_url must be valid http/https URL" in e for e in errors2),
+            f"Expected invalid source_url error, got: {errors2}",
+        )
+
+        # 3. Invalid verified_at
+        row3 = self._create_minimal_valid_university_row("uni-invalid-date")
+        row3["fact_provenance"]["facts"]["tags"]["verified_at"] = "2026-99-99"
+        errors3, _ = self._run_audit_on_dataset([row3])
+        self.assertTrue(
+            any("fact_provenance.facts.tags.verified_at must be valid YYYY-MM-DD date" in e for e in errors3),
+            f"Expected invalid date error, got: {errors3}",
+        )
+
+        # 4. Invalid status
+        row4 = self._create_minimal_valid_university_row("uni-invalid-status")
+        row4["fact_provenance"]["facts"]["tags"]["status"] = "fabricated"
+        errors4, _ = self._run_audit_on_dataset([row4])
+        self.assertTrue(
+            any("fact_provenance.facts.tags.status 'fabricated' is invalid" in e for e in errors4),
+            f"Expected invalid status error, got: {errors4}",
+        )
+
+        # 5. Empty method
+        row5 = self._create_minimal_valid_university_row("uni-empty-method")
+        row5["fact_provenance"]["facts"]["tags"]["method"] = ""
+        errors5, _ = self._run_audit_on_dataset([row5])
+        self.assertTrue(
+            any("fact_provenance.facts.tags.method is empty" in e for e in errors5),
+            f"Expected empty method error, got: {errors5}",
+        )
 
 
 if __name__ == "__main__":

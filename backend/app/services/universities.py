@@ -638,42 +638,62 @@ _MAJOR_QUERY_ALIASES_BY_LANG: Dict[str, Dict[str, str]] = {
 
 _TAG_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
     SEARCH_LANG_RUS: {
-        "research": "исследования",
-        "stem": "stem",
-        "ai": "ии",
-        "robotics": "робототехника",
-        "startups": "стартапы",
-        "urban": "городская среда",
-        "innovation": "инновации",
-        "engineering": "инженерия",
-        "computing": "компьютерные науки",
-        "medicine": "медицина",
-        "sustainability": "устойчивое развитие",
-        "interdisciplinary": "междисциплинарность",
-        "policy": "политика",
-        "business": "бизнес",
-        "data_science": "наука о данных",
-        "life_sciences": "науки о жизни",
-        "semiconductors": "полупроводники",
-        "mobility": "мобильность",
-        "aerospace": "аэрокосмос",
-        "biomedical": "биомедицина",
-        "cybersecurity": "кибербезопасность",
-        "software_engineering": "программная инженерия",
-        "ict": "икт",
         "academic_mobility": "академическая мобильность",
+        "aerospace": "аэрокосмос",
+        "agriculture": "сельское хозяйство",
+        "ai": "ии",
+        "architecture": "архитектура",
+        "bilingual": "двуязычное обучение",
+        "biomedical": "биомедицина",
+        "business": "бизнес",
         "clinical_training": "клиническая подготовка",
+        "collegiate": "коллегиальная система",
+        "comprehensive": "классический университет",
         "comprehensive_university": "классический университет",
+        "computer_science": "компьютерные науки",
+        "computing": "компьютерные науки",
+        "cybersecurity": "кибербезопасность",
+        "data_science": "наука о данных",
+        "design": "дизайн",
         "digital_technology": "цифровые технологии",
         "economics": "экономика",
+        "education": "образование",
+        "engineering": "инженерия",
+        "english_medium": "обучение на английском",
+        "health_sciences": "науки о здоровье",
+        "humanities": "гуманитарные науки",
+        "ict": "икт",
         "industry_partnerships": "партнерства с индустрией",
+        "innovation": "инновации",
+        "interdisciplinary": "междисциплинарность",
         "international_partnerships": "международные партнерства",
         "international_relations": "международные отношения",
+        "law": "право",
+        "liberal_arts": "свободные искусства",
+        "life_sciences": "науки о жизни",
+        "medicine": "медицина",
+        "mobility": "мобильность",
+        "national_university": "национальный университет",
         "natural_resources": "природные ресурсы",
+        "natural_sciences": "естественные науки",
         "pedagogy": "педагогика",
-        "public_health": "общественное здоровье",
+        "policy": "политика",
+        "private_university": "частный университет",
+        "public_health": "общественное здравоохранение",
+        "public_policy": "государственная политика",
+        "public_university": "государственный университет",
+        "research": "исследования",
+        "robotics": "робототехника",
+        "science_and_technology": "наука и технологии",
+        "semiconductors": "полупроводники",
+        "social_sciences": "социальные науки",
+        "software_engineering": "программная инженерия",
+        "startups": "стартапы",
+        "stem": "stem",
         "student_life": "студенческая жизнь",
+        "sustainability": "устойчивое развитие",
         "technology": "технологии",
+        "urban": "городская среда",
     },
 }
 
@@ -926,13 +946,6 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
                 score_profile = _derive_track_score_profile(u, context)
                 if score_profile:
                     profile["score_profile"] = score_profile
-                    exam_id = score_profile.get("exam_id")
-                    median = score_profile.get("median_raw")
-                    if exam_id and median is not None:
-                        if "stats_avg" not in profile or not isinstance(profile["stats_avg"], dict):
-                            profile["stats_avg"] = {}
-                        if exam_id not in profile["stats_avg"]:
-                            profile["stats_avg"][exam_id] = median
                 if _should_keep_track_for_product_scope(u, profile):
                     normalized_profiles.append(profile)
             category["requirement_profiles"] = normalized_profiles
