@@ -42,6 +42,10 @@ class ExamsApiTests(unittest.TestCase):
         self.assertIn("normalization", data.get("SAT") or {})
         self.assertEqual(1010, int(((data.get("SAT") or {}).get("normalization") or {}).get("p50", 0)))
 
+    def test_exams_config_full_is_not_routed(self):
+        response = self.client.get("/exams/config/full")
+        self.assertEqual(response.status_code, 404)
+
     def test_validate_exam_accepts_valid_score(self):
         response = self.client.post(
             "/exams/validate",

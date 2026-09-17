@@ -8,6 +8,7 @@ from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter
+from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
 
@@ -81,6 +82,96 @@ class RequestBodyLimitRegressionTests(unittest.IsolatedAsyncioTestCase):
             )
 
         self.assertEqual(response.status_code, 413)
+
+    async def test_declared_content_length_exceeding_limit_is_rejected_immediately(self):
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/exams/validate",
+                content=b"x" * 200_000,
+                headers={"Content-Type": "application/json", "Content-Length": "200000"},
+            )
+
+        self.assertEqual(response.status_code, 413)
+
+    async def test_declared_content_length_smaller_than_actual_oversized_body_is_rejected(self):
+        async def body_stream():
+            yield b'{"exam":"SAT_MATH","score":750,"pad":"'
+            yield b"x" * 140_000
+            yield b'"}'
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/exams/validate",
+                content=body_stream(),
+                headers={"Content-Type": "application/json", "Content-Length": "10"},
+            )
+
+        self.assertEqual(response.status_code, 413)
+
+    async def test_streaming_body_exceeding_limit_midway_aborts_and_stops_reading(self):
+        chunks_read = 0
+
+        async def body_stream():
+            nonlocal chunks_read
+            for _ in range(10):
+                chunks_read += 1
+                yield b"x" * 30_000
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/exams/validate",
+                content=body_stream(),
+                headers={"Content-Type": "application/json"},
+            )
+
+        self.assertEqual(response.status_code, 413)
+        self.assertLessEqual(chunks_read, 6)
+
+    async def test_invalid_and_negative_content_length_with_oversized_body_is_rejected(self):
+        async def body_stream():
+            yield b"x" * 140_000
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            res_invalid = await client.post(
+                "/exams/validate",
+                content=body_stream(),
+                headers={"Content-Type": "application/json", "Content-Length": "invalid"},
+            )
+            self.assertEqual(res_invalid.status_code, 413)
+
+            res_negative = await client.post(
+                "/exams/validate",
+                content=body_stream(),
+                headers={"Content-Type": "application/json", "Content-Length": "-1"},
+            )
+            self.assertEqual(res_negative.status_code, 413)
+
+    async def test_request_body_exact_limit_boundary(self):
+        pad_len = REQUEST_BODY_MAX_BYTES - len('{"exam":"SAT_MATH","score":750,"pad":""}')
+        exact_valid = ('{"exam":"SAT_MATH","score":750,"pad":"' + 'a' * pad_len + '"}').encode("utf-8")
+        self.assertEqual(len(exact_valid), REQUEST_BODY_MAX_BYTES)
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            res_exact = await client.post(
+                "/exams/validate",
+                content=exact_valid,
+                headers={"Content-Type": "application/json", "Content-Length": str(len(exact_valid))},
+            )
+            self.assertEqual(res_exact.status_code, 200)
+
+            exact_plus_one = exact_valid + b" "
+            self.assertEqual(len(exact_plus_one), REQUEST_BODY_MAX_BYTES + 1)
+            res_plus_one = await client.post(
+                "/exams/validate",
+                content=exact_plus_one,
+                headers={"Content-Type": "application/json", "Content-Length": str(len(exact_plus_one))},
+            )
+            self.assertEqual(res_plus_one.status_code, 413)
 
 
 class _AtomicFakeRedis:
