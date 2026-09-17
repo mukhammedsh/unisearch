@@ -1,4 +1,4 @@
-/* frontend/javascript/pages.js */
+/* frontend/javascript/pages/universities.js */
 
 import {
   API_BASE,
@@ -1293,7 +1293,7 @@ export function initUniversitiesPage() {
         updateSliderLabels();
     }
 
-    // --- Карта ---
+    // --- Map ---
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
@@ -2298,7 +2298,7 @@ export function initUniversitiesPage() {
         if (!L) return;
         markersLayer.clearLayers();
         markersByUniId = new Map();
-        const profile = loadProfile(); const userBudget = parseFloat(profile.budget);
+        const profile = loadProfileForApi(); const userBudget = parseFloat(profile.budget);
         renderMapResultsPanel(items);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
         const popupOptions = {
@@ -2834,7 +2834,7 @@ export function initUniversitiesPage() {
                 return;
             }
             renderUniversitiesState({ warningText });
-            const profile = loadProfile();
+            const profile = loadProfileForApi();
             const userBudget = parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
             markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
@@ -2958,7 +2958,7 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- RENDER CARD (БЕЗ ROI) ---
+    // --- Render University Catalog Card ---
     function renderCard(u, myBudget, idx = 99) {
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
@@ -3190,7 +3190,3 @@ export function initUniversitiesPage() {
 
     syncWorkspaceDepth();
 }
-
-// =====================================
-// PAGE: UNIVERSITY DETAILS
-// =====================================

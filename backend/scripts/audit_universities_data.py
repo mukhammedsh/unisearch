@@ -9,8 +9,11 @@ Usage examples:
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import ipaddress
 import json
+import math
+import re
 import socket
 import sys
 import time
@@ -43,10 +46,51 @@ REQUIRED_TOP_LEVEL_KEYS = (
 PROGRAM_NAME_ALLOWLIST_BY_PHRASE = {
     "bachelor of advanced computing": {"university-of-sydney-au-sydney"},
 }
+_SUBJECTIVE_OR_UNVERIFIED_TAGS = frozenset({
+    "academic_mobility",
+    "applied_learning",
+    "digital_technology",
+    "entrepreneurship",
+    "global",
+    "industry_links",
+    "industry_partnerships",
+    "innovation",
+    "international_partnerships",
+    "natural_resources",
+    "prestige",
+    "student_life",
+    "sustainability",
+    "technology",
+})
 
 
 def _is_non_empty_text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
+
+def _is_valid_positive_number(value: Any) -> bool:
+    if isinstance(value, bool):
+        return False
+    if not isinstance(value, (int, float)):
+        return False
+    try:
+        val = float(value)
+        return not math.isnan(val) and not math.isinf(val) and val > 0
+    except (TypeError, ValueError, OverflowError):
+        return False
+
+
+def _is_valid_iso_date(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    clean = value.strip()
+    if not re.match(r"^\d{4}-\d{2}-\d{2}$", clean):
+        return False
+    try:
+        date.fromisoformat(clean)
+        return True
+    except ValueError:
+        return False
 
 
 def _is_http_url(value: Any) -> bool:
@@ -214,68 +258,80 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
             yield "finance.financial_aid.source_url", str(financial_aid.get("source_url")).strip()
 
     categories = university.get("admission_categories")
-    if not isinstance(categories, list):
-        return
-    for c_idx, category in enumerate(categories):
-        if not isinstance(category, dict):
-            continue
-        category_id = str(category.get("id") or f"category_{c_idx}").strip()
-        for field_name in ("published_admission", "finance_override"):
-            structured = category.get(field_name)
-            if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
-                yield (
-                    f"admission_categories[{c_idx}]/{category_id}/{field_name}.source_url",
-                    str(structured.get("source_url")).strip(),
-                )
-        profiles = category.get("requirement_profiles")
-        if not isinstance(profiles, list):
-            continue
-        for p_idx, profile in enumerate(profiles):
-            if not isinstance(profile, dict):
+    if isinstance(categories, list):
+        for c_idx, category in enumerate(categories):
+            if not isinstance(category, dict):
                 continue
-            profile_id = str(profile.get("id") or f"profile_{p_idx}").strip()
+            category_id = str(category.get("id") or f"category_{c_idx}").strip()
             for field_name in ("published_admission", "finance_override"):
-                structured = profile.get(field_name)
+                structured = category.get(field_name)
                 if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
                     yield (
-                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/{field_name}.source_url",
+                        f"admission_categories[{c_idx}]/{category_id}/{field_name}.source_url",
                         str(structured.get("source_url")).strip(),
                     )
-            profile_source_url = profile.get("stats_avg_source_url")
-            if _is_non_empty_text(profile_source_url):
-                yield (
-                    f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/stats_avg_source_url",
-                    str(profile_source_url).strip(),
-                )
-
-            lang_reqs = profile.get("language_requirements")
-            if isinstance(lang_reqs, list):
-                for lr_idx, row in enumerate(lang_reqs):
-                    if not isinstance(row, dict):
-                        continue
-                    code = str(row.get("code") or f"lang_{lr_idx}").strip()
-                    source_url = row.get("stats_avg_source_url")
-                    if _is_non_empty_text(source_url):
+            profiles = category.get("requirement_profiles")
+            if not isinstance(profiles, list):
+                continue
+            for p_idx, profile in enumerate(profiles):
+                if not isinstance(profile, dict):
+                    continue
+                profile_id = str(profile.get("id") or f"profile_{p_idx}").strip()
+                for field_name in ("published_admission", "finance_override"):
+                    structured = profile.get(field_name)
+                    if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
                         yield (
-                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
-                            str(source_url).strip(),
+                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/{field_name}.source_url",
+                            str(structured.get("source_url")).strip(),
+                        )
+                profile_source_url = profile.get("stats_avg_source_url")
+                if _is_non_empty_text(profile_source_url):
+                    yield (
+                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/stats_avg_source_url",
+                        str(profile_source_url).strip(),
+                    )
+
+                lang_reqs = profile.get("language_requirements")
+                if isinstance(lang_reqs, list):
+                    for lr_idx, row in enumerate(lang_reqs):
+                        if not isinstance(row, dict):
+                            continue
+                        code = str(row.get("code") or f"lang_{lr_idx}").strip()
+                        source_url = row.get("stats_avg_source_url")
+                        if _is_non_empty_text(source_url):
+                            yield (
+                                f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
+                                str(source_url).strip(),
+                            )
+
+                funding_options = profile.get("funding_options")
+                if not isinstance(funding_options, list):
+                    funding_options = category.get("funding_options")
+                if not isinstance(funding_options, list):
+                    continue
+                for f_idx, funding in enumerate(funding_options):
+                    if not isinstance(funding, dict):
+                        continue
+                    funding_id = str(funding.get("id") or f"funding_{f_idx}").strip()
+                    funding_source_url = funding.get("stats_avg_source_url")
+                    if _is_non_empty_text(funding_source_url):
+                        yield (
+                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/funding_options[{f_idx}]/{funding_id}/stats_avg_source_url",
+                            str(funding_source_url).strip(),
                         )
 
-            funding_options = profile.get("funding_options")
-            if not isinstance(funding_options, list):
-                funding_options = category.get("funding_options")
-            if not isinstance(funding_options, list):
-                continue
-            for f_idx, funding in enumerate(funding_options):
-                if not isinstance(funding, dict):
-                    continue
-                funding_id = str(funding.get("id") or f"funding_{f_idx}").strip()
-                funding_source_url = funding.get("stats_avg_source_url")
-                if _is_non_empty_text(funding_source_url):
-                    yield (
-                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/funding_options[{f_idx}]/{funding_id}/stats_avg_source_url",
-                        str(funding_source_url).strip(),
-                    )
+    fact_provenance = university.get("fact_provenance")
+    if isinstance(fact_provenance, dict):
+        facts = fact_provenance.get("facts")
+        if isinstance(facts, dict):
+            for fact_name, fact_obj in facts.items():
+                if isinstance(fact_obj, dict):
+                    source = fact_obj.get("source")
+                    if _is_non_empty_text(source) and _is_http_url(source):
+                        yield f"fact_provenance.facts.{fact_name}.source", str(source).strip()
+                    source_url = fact_obj.get("source_url")
+                    if _is_non_empty_text(source_url) and _is_http_url(source_url):
+                        yield f"fact_provenance.facts.{fact_name}.source_url", str(source_url).strip()
 
 
 def _program_acceptance_values(academics: Dict[str, Any]) -> List[float]:
@@ -342,6 +398,203 @@ def _audit_published_admission(
     for key in ("scope", "audience", "cycle", "source_url", "verified_at"):
         if not _is_non_empty_text(published.get(key)):
             errors.append(f"{uid}: {label}.{key} is required for comparable admission data")
+
+
+VALID_FACT_STATUSES = {
+    "official",
+    "official_direct",
+    "official_derived",
+    "official_aggregated",
+    "official_external",
+    "reviewed",
+    "curated",
+}
+
+
+def _audit_derived_salary_basis(
+    fact_name: str,
+    fact: Dict[str, Any],
+    uid: str,
+    errors: List[str],
+) -> None:
+    prov_type = str(fact.get("provenance_type") or fact.get("status") or "").strip().lower()
+    if prov_type != "official_derived":
+        return
+    basis = fact.get("basis")
+    if not isinstance(basis, dict):
+        errors.append(f"{uid}: fact_provenance.facts.{fact_name} is official_derived but missing basis dict")
+        return
+    if not _is_non_empty_text(basis.get("fx_source")):
+        errors.append(f"{uid}: fact_provenance.facts.{fact_name}.basis.fx_source is empty")
+    if not _is_non_empty_text(basis.get("fx_date")):
+        errors.append(f"{uid}: fact_provenance.facts.{fact_name}.basis.fx_date is empty")
+
+    has_fx_rate = any(
+        _is_valid_positive_number(v)
+        for k, v in basis.items()
+        if k.startswith("usd_per_") or k.endswith("_to_usd") or k in ("fx_rate", "rate", "fx_rate_to_usd")
+    )
+    if not has_fx_rate:
+        errors.append(f"{uid}: fact_provenance.facts.{fact_name}.basis missing valid positive fx_rate")
+
+    has_source_salary = any(
+        _is_valid_positive_number(v) or (isinstance(v, dict) and bool(v))
+        for k, v in basis.items()
+        if "salary" in k or "source_values" in k or k == "amount"
+    )
+    if not has_source_salary:
+        errors.append(f"{uid}: fact_provenance.facts.{fact_name}.basis missing source salary values")
+
+
+def _audit_outcomes_and_salary_provenance(
+    errors: List[str],
+    warnings: List[str],
+    uid: str,
+    outcomes: Any,
+    facts: Dict[str, Any],
+) -> None:
+    if outcomes is not None and not isinstance(outcomes, dict):
+        errors.append(f"{uid}: outcomes must be object when present")
+        return
+
+    outcomes_dict = outcomes if isinstance(outcomes, dict) else {}
+    allowed_outcome_keys = {
+        "early_career_salary_usd",
+        "median_earnings_10yr_usd",
+        "salary_by_major",
+    }
+    for k in outcomes_dict.keys():
+        if k not in allowed_outcome_keys:
+            errors.append(f"{uid}: outcomes contains unrecognized or deprecated key '{k}'")
+
+    if "average_early_career_salary" in facts or "average_early_career_salary_usd" in facts:
+        errors.append(f"{uid}: fact_provenance.facts contains deprecated 'average_early_career_salary'")
+
+    early_val = outcomes_dict.get("early_career_salary_usd")
+    if early_val is not None:
+        if not _is_valid_positive_number(early_val):
+            errors.append(f"{uid}: outcomes.early_career_salary_usd must be positive number")
+
+        fact_early = facts.get("early_career_salary")
+        if not isinstance(fact_early, dict):
+            errors.append(f"{uid}: outcomes has early career salary but missing fact_provenance.facts.early_career_salary")
+        else:
+            if not _is_non_empty_text(fact_early.get("source")):
+                errors.append(f"{uid}: fact_provenance.facts.early_career_salary.source is empty")
+            if not _is_non_empty_text(fact_early.get("verified_at")):
+                errors.append(f"{uid}: fact_provenance.facts.early_career_salary.verified_at is empty")
+            prov_type = str(fact_early.get("provenance_type") or fact_early.get("status") or "").strip().lower()
+            if prov_type and prov_type not in VALID_FACT_STATUSES:
+                errors.append(f"{uid}: fact_provenance.facts.early_career_salary has invalid provenance_type '{prov_type}'")
+            _audit_derived_salary_basis("early_career_salary", fact_early, uid, errors)
+            f_val = fact_early.get("value")
+            if f_val is not None:
+                if not _is_valid_positive_number(f_val):
+                    errors.append(f"{uid}: fact_provenance.facts.early_career_salary.value must be positive number")
+                elif _is_valid_positive_number(early_val) and abs(float(f_val) - float(early_val)) > 0.01:
+                    errors.append(f"{uid}: fact_provenance.facts.early_career_salary value {f_val} != outcomes {early_val}")
+
+    median_10yr = outcomes_dict.get("median_earnings_10yr_usd")
+    if median_10yr is not None:
+        if not _is_valid_positive_number(median_10yr):
+            errors.append(f"{uid}: outcomes.median_earnings_10yr_usd must be positive number")
+
+        fact_10yr = facts.get("median_earnings_10yr")
+        if not isinstance(fact_10yr, dict):
+            errors.append(f"{uid}: outcomes has median_earnings_10yr_usd but missing fact_provenance.facts.median_earnings_10yr")
+        else:
+            if not _is_non_empty_text(fact_10yr.get("source")):
+                errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr.source is empty")
+            if not _is_non_empty_text(fact_10yr.get("verified_at")):
+                errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr.verified_at is empty")
+            prov_type = str(fact_10yr.get("provenance_type") or fact_10yr.get("status") or "").strip().lower()
+            if prov_type and prov_type not in VALID_FACT_STATUSES:
+                errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr has invalid provenance_type '{prov_type}'")
+            _audit_derived_salary_basis("median_earnings_10yr", fact_10yr, uid, errors)
+            f_val = fact_10yr.get("value")
+            if f_val is not None:
+                if not _is_valid_positive_number(f_val):
+                    errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr.value must be positive number")
+                elif _is_valid_positive_number(median_10yr) and abs(float(f_val) - float(median_10yr)) > 0.01:
+                    errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr value {f_val} != outcomes {median_10yr}")
+
+    salary_major = outcomes_dict.get("salary_by_major")
+    if salary_major is not None:
+        if not isinstance(salary_major, dict) or not salary_major:
+            errors.append(f"{uid}: outcomes.salary_by_major must be non-empty object")
+        else:
+            for major_name, salary_num in salary_major.items():
+                if not _is_valid_positive_number(salary_num):
+                    errors.append(f"{uid}: outcomes.salary_by_major[{major_name}] must be positive number")
+        fact_major = facts.get("salary_by_major")
+        if not isinstance(fact_major, dict):
+            errors.append(f"{uid}: outcomes has salary_by_major but missing fact_provenance.facts.salary_by_major")
+        else:
+            if not _is_non_empty_text(fact_major.get("source")):
+                errors.append(f"{uid}: fact_provenance.facts.salary_by_major.source is empty")
+            if not _is_non_empty_text(fact_major.get("verified_at")):
+                errors.append(f"{uid}: fact_provenance.facts.salary_by_major.verified_at is empty")
+            prov_type = str(fact_major.get("provenance_type") or fact_major.get("status") or "").strip().lower()
+            if prov_type and prov_type not in VALID_FACT_STATUSES:
+                errors.append(f"{uid}: fact_provenance.facts.salary_by_major has invalid provenance_type '{prov_type}'")
+            _audit_derived_salary_basis("salary_by_major", fact_major, uid, errors)
+            f_val = fact_major.get("value")
+            if not isinstance(f_val, dict):
+                errors.append(f"{uid}: fact_provenance.facts.salary_by_major.value must be object")
+            else:
+                for major_name, salary_num in f_val.items():
+                    if not _is_valid_positive_number(salary_num):
+                        errors.append(f"{uid}: fact_provenance.facts.salary_by_major.value[{major_name}] must be positive number")
+                if f_val != salary_major:
+                    errors.append(f"{uid}: fact_provenance.facts.salary_by_major value != outcomes.salary_by_major")
+
+    if "early_career_salary" in facts and early_val is None:
+        errors.append(f"{uid}: fact_provenance.facts has early_career_salary but outcomes is missing early_career_salary_usd")
+    if "median_earnings_10yr" in facts and median_10yr is None:
+        errors.append(f"{uid}: fact_provenance.facts has median_earnings_10yr but outcomes is missing median_earnings_10yr_usd")
+    if "salary_by_major" in facts and salary_major is None:
+        errors.append(f"{uid}: fact_provenance.facts has salary_by_major but outcomes is missing salary_by_major")
+
+
+def _audit_tags_provenance(
+    errors: List[str],
+    warnings: List[str],
+    uid: str,
+    tags: Any,
+    facts: Dict[str, Any],
+) -> None:
+    if isinstance(tags, list) and tags:
+        tag_fact = facts.get("tags")
+        if not isinstance(tag_fact, dict):
+            errors.append(f"{uid}: tags is present but missing fact_provenance.facts.tags")
+            return
+
+        fact_tags_val = tag_fact.get("value")
+        if not isinstance(fact_tags_val, list):
+            errors.append(f"{uid}: fact_provenance.facts.tags.value must be a list")
+        elif fact_tags_val != tags:
+            errors.append(f"{uid}: fact_provenance.facts.tags value != tags")
+
+        if not _is_non_empty_text(tag_fact.get("source")):
+            errors.append(f"{uid}: fact_provenance.facts.tags.source is empty")
+
+        tag_source_url = tag_fact.get("source_url")
+        if not _is_http_url(tag_source_url):
+            errors.append(f"{uid}: fact_provenance.facts.tags.source_url must be valid http/https URL")
+
+        tag_verified_at = str(tag_fact.get("verified_at") or "").strip()
+        if not _is_valid_iso_date(tag_verified_at):
+            errors.append(f"{uid}: fact_provenance.facts.tags.verified_at must be valid YYYY-MM-DD date")
+
+        tag_status = str(tag_fact.get("status") or "").strip().lower()
+        if not tag_status or tag_status not in VALID_FACT_STATUSES:
+            errors.append(f"{uid}: fact_provenance.facts.tags.status '{tag_status}' is invalid")
+
+        if not _is_non_empty_text(tag_fact.get("method")):
+            errors.append(f"{uid}: fact_provenance.facts.tags.method is empty")
+
+    if "tags" in facts and not (isinstance(tags, list) and tags):
+        errors.append(f"{uid}: fact_provenance.facts has tags but university has no tags")
 
 
 def audit_dataset(
@@ -424,16 +677,29 @@ def audit_dataset(
             warnings.append(f"{uid}: description is very short")
 
         tags = row.get("tags")
-        if isinstance(tags, list) and tags:
-            warnings.append(f"{uid}: tags contain subjective metadata and should be reviewed")
+        if isinstance(tags, list):
+            if not tags:
+                warnings.append(f"{uid}: tags is empty")
+            else:
+                seen_tags = set()
+                for tag in tags:
+                    if not isinstance(tag, str) or not tag.strip():
+                        errors.append(f"{uid}: tags contains non-string or empty tag")
+                        continue
+                    clean_tag = tag.strip()
+                    if not re.match(r"^[a-z0-9_]+$", clean_tag):
+                        errors.append(f"{uid}: tag '{clean_tag}' must be lowercase snake_case")
+                    if clean_tag in seen_tags:
+                        warnings.append(f"{uid}: duplicate tag '{clean_tag}'")
+                    seen_tags.add(clean_tag)
+                    if clean_tag in _SUBJECTIVE_OR_UNVERIFIED_TAGS:
+                        warnings.append(f"{uid}: tag '{clean_tag}' contains subjective or unverified metadata")
+        elif tags is not None:
+            errors.append(f"{uid}: tags must be a list when present")
 
         student_count = row.get("student_count")
         if student_count is not None and not isinstance(student_count, (int, float)):
             errors.append(f"{uid}: student_count must be numeric when present")
-
-        outcomes = row.get("outcomes")
-        if isinstance(outcomes, dict) and outcomes.get("average_early_career_salary_usd") is not None:
-            warnings.append(f"{uid}: outcomes.average_early_career_salary_usd has no verified source field")
 
         major_focus = row.get("major_focus")
         if major_focus is not None and not isinstance(major_focus, list):
@@ -539,7 +805,6 @@ def audit_dataset(
             if not isinstance(total_cost, (int, float)) or float(total_cost) < 0:
                 errors.append(f"{uid}: finance.total_cost_year_usd must be non-negative number")
             _audit_comparable_finance(errors, uid, "finance", finance)
-
 
         categories = row.get("admission_categories")
         if not isinstance(categories, list) or not categories:
@@ -681,6 +946,22 @@ def audit_dataset(
                             errors.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent.source is empty")
                         if not _is_non_empty_text(verified_at):
                             errors.append(f"{uid}: fact_provenance.facts.acceptance_rate_percent.verified_at is empty")
+
+                _audit_tags_provenance(
+                    errors,
+                    warnings,
+                    uid,
+                    row.get("tags"),
+                    facts,
+                )
+
+                _audit_outcomes_and_salary_provenance(
+                    errors,
+                    warnings,
+                    uid,
+                    row.get("outcomes"),
+                    facts,
+                )
 
         if check_http:
             url_count = 0

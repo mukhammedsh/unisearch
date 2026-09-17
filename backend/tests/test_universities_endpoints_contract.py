@@ -109,7 +109,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(3, int(requirements.get("HKDSE_CHINESE_LANGUAGE", 0)))
         self.assertEqual(3, int(requirements.get("HKDSE_ENGLISH_LANGUAGE", 0)))
         self.assertEqual(2, int(requirements.get("HKDSE_MATHEMATICS", 0)))
-        self.assertAlmostEqual(42.88, float(stats_avg.get("HKDSE_WEIGHTED_TOTAL") or 0.0), places=2)
+        self.assertAlmostEqual(42.88, float(score_profile.get("median_raw") or 0.0), places=2)
 
     def test_all_admission_categories_profiles_and_funding_options_have_descriptions(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
@@ -435,7 +435,12 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         roi_data = roi.json()
         for key in ("roi_value", "roi_label", "roi_tone", "context_type"):
             self.assertIn(key, roi_data)
-        self.assertGreaterEqual(float(roi_data.get("roi_value", 0.0)), 0.0)
+        if roi_data.get("roi_value") is not None:
+            self.assertGreaterEqual(float(roi_data["roi_value"]), 0.0)
+        else:
+            self.assertEqual("no_salary_data", roi_data.get("context_type"))
+            self.assertEqual("neutral", roi_data.get("roi_tone"))
+            self.assertEqual("No Data", roi_data.get("roi_label"))
 
     def test_compare_profiles_batch_contract_matches_single_endpoints(self):
         university_ids = self._first_university_ids(2)
@@ -504,7 +509,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         supported_ids = [
             "mit-usa-cambridge",
             "national-university-of-singapore-sg-singapore",
-            "university-of-toronto-ca-toronto",
             "cuhk-hk-shatin",
         ]
 
@@ -518,6 +522,36 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                 data = response.json()
                 self.assertNotEqual("no_salary_data", str(data.get("context_type", "")))
                 self.assertGreater(float(data.get("salary_used_usd", 0.0)), 0.0)
+
+    def test_roi_endpoint_returns_neutral_no_data_state_when_salary_missing(self):
+        no_salary_ids = [
+            "eth-zurich-ch-zurich",
+            "delft-university-of-technology-nl-delft",
+            "al-farabi-kazakh-national-university-kaz-almaty",
+            "stanford-university-usa-ca",
+            "technical-university-of-munich-de-munich",
+            "university-of-toronto-ca-toronto",
+            "caltech-usa-pasadena",
+            "uc-berkeley-usa-berkeley",
+            "columbia-university-usa-new-york",
+            "ucla-usa-los-angeles",
+            "princeton-university-usa-princeton",
+        ]
+
+        for university_id in no_salary_ids:
+            with self.subTest(university_id=university_id):
+                response = self.client.post(
+                    f"/universities/{university_id}/roi",
+                    json={"profile": {"locale": "eng", "major": "Computer Science"}},
+                )
+                self.assertEqual(response.status_code, 200)
+                data = response.json()
+                self.assertEqual("no_salary_data", data.get("context_type"))
+                self.assertIsNone(data.get("salary_used_usd"))
+                self.assertIsNone(data.get("roi_value"))
+                self.assertEqual("No Data", data.get("roi_label"))
+                self.assertEqual("neutral", data.get("roi_tone"))
+                self.assertGreater(float(data.get("annual_cost_usd", 0.0)), 0.0)
 
     def test_compare_profiles_batch_empty_list(self):
         response = self.client.post(
@@ -541,6 +575,40 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         funding_types = {opt.get("funding_type") for opt in funding_options}
         self.assertIn("grant", funding_types)
         self.assertIn("paid", funding_types)
+
+    def test_list_universities_sort_gpa_desc(self):
+        response = self.client.get("/universities?sort=gpa_desc&limit=50&fields=card")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data.get("sort"), "gpa_desc")
+        items = data.get("items") or []
+        self.assertEqual(len(items), 50)
+
+        # Retrieve raw universities to verify GPA values
+        from app.services.universities import load_universities, _get_university_gpa
+        raw_by_id = {u["id"]: u for u in load_universities()}
+
+        item_ids = [item.get("id") for item in items]
+        item_gpas = [_get_university_gpa(raw_by_id.get(uid, {})) for uid in item_ids]
+
+        # Top 25 universities have valid GPAs in non-increasing order
+        present_gpas = item_gpas[:25]
+        self.assertTrue(all(g is not None for g in present_gpas))
+        for i in range(len(present_gpas) - 1):
+            self.assertGreaterEqual(present_gpas[i], present_gpas[i + 1])
+
+        # Remaining 25 universities have no GPA requirement (None)
+        none_gpas = item_gpas[25:]
+        self.assertTrue(all(g is None for g in none_gpas))
+
+        # First items must strictly match top GPA universities
+        self.assertEqual(item_ids[0], "harvard-usa-cambridge")
+        self.assertEqual(item_ids[1], "mit-usa-cambridge")
+        self.assertEqual(item_ids[2], "university-of-pennsylvania-usa-philadelphia")
+
+        # Universities without GPA must be sorted alphabetically by name
+        none_names = [str(item.get("name") or "").lower() for item in items[25:]]
+        self.assertEqual(none_names, sorted(none_names))
 
 
 if __name__ == "__main__":

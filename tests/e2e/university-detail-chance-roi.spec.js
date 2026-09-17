@@ -45,7 +45,7 @@ test("detail page renders UniChance/ROI and recomputes after profile update", as
   await expect(page.locator(".roi-box")).toBeVisible();
 });
 
-test("detail page hides ROI block when official salary data is missing", async ({ page }) => {
+test("detail page renders neutral ROI block when official salary data is missing", async ({ page }) => {
   await seedProfile(page, {
     ...personas.enResearch.profile,
     major: "Computer Science",
@@ -54,5 +54,7 @@ test("detail page hides ROI block when official salary data is missing", async (
 
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-finance']");
-  await expect(page.locator(".roi-box")).toHaveCount(0);
+  await expect(page.locator(".roi-box")).toBeVisible();
+  await expect(page.locator(".roi-context--neutral")).toBeVisible();
+  await expect(page.locator(".roi-context--neutral")).toContainText("Insufficient graduate salary data");
 });

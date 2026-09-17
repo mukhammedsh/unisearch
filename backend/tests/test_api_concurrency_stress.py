@@ -9,7 +9,7 @@ from app.core.security import SlidingWindowRateLimiter
 
 class ApiConcurrencyStressTests(unittest.IsolatedAsyncioTestCase):
     async def test_universities_endpoint_handles_concurrent_stress_load(self):
-        """Проверяет стабильность эндпоинта /universities под нагрузкой из множества параллельных запросов."""
+        """Verify stability of the /universities endpoint under high concurrent load."""
         tasks = [f"/universities?limit=5&q=IT&page={idx % 3 + 1}" for idx in range(25)]
 
         async def worker(client, path):
@@ -23,30 +23,29 @@ class ApiConcurrencyStressTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual(len(results), len(tasks))
         for status_code, body in results:
-            # Поскольку лимиты рейт-лимитера могут отличаться или быть отключены локально,
-            # мы убеждаемся, что запросы либо проходят успешно (200), либо блокируются лимитером (429).
+            # Rate limiter thresholds may vary locally; verify requests either succeed (200) or are rate-limited (429).
             self.assertIn(status_code, [200, 429])
             if status_code == 200:
                 self.assertIn("items", body)
                 self.assertIsInstance(body.get("items"), list)
 
     def test_sliding_window_rate_limiter_concurrency(self):
-        """Проверяет потокобезопасность и корректность рейт-лимитера при параллельных запросах."""
-        # Устанавливаем лимит 5 запросов в окно
+        """Verify thread-safety and correctness of the sliding window rate limiter under concurrent requests."""
+        # Set a limit of 5 requests per window
         limiter = SlidingWindowRateLimiter(limit=5, window_seconds=5)
         client_ip = "192.168.1.100"
 
         def worker(now_time):
-            # Проверяем лимиты
+            # Check rate limit
             allowed, remaining, retry_after = limiter.check(client_ip, now=now_time)
             return allowed
 
-        # Запускаем 10 одновременных запросов в один момент времени
+        # Execute 10 concurrent requests at the same timestamp
         times = [1.0] * 10
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
             results = list(pool.map(worker, times))
 
-        # Ровно 5 запросов должны быть одобрены, а остальные 5 - отклонены
+        # Exactly 5 requests must be allowed and 5 blocked
         allowed_count = results.count(True)
         blocked_count = results.count(False)
         self.assertEqual(allowed_count, 5)

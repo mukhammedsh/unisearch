@@ -1,8 +1,8 @@
 /**
- * Точка входа стилей страницы университетов.
+ * University catalog styles entry point.
  *
- * Модули сохраняют прежний порядок исходного файла, поэтому каскад и поведение
- * не меняются. Перед переносом правил см. ./universities/README.md.
+ * Modules maintain original file order to preserve cascade and specificity.
+ * See ./universities/README.md before modifying module boundaries.
  */
 @import url("./universities/01-shell-controls.css");
 @import url("./universities/02-catalog.css");

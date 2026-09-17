@@ -105,7 +105,7 @@ def _set_verified_source(row: Dict[str, Any], topic: str, url: str) -> bool:
     return _replace_verified_sources_for_topic(row, topic, [url])
 
 
-def _fact_record(value: float, unit: str, payload: Dict[str, Any], verified_at: str) -> Dict[str, Any]:
+def _fact_record(value: Any, unit: str, payload: Dict[str, Any], verified_at: str) -> Dict[str, Any]:
     out: Dict[str, Any] = {
         "value": value,
         "unit": unit,
@@ -116,10 +116,155 @@ def _fact_record(value: float, unit: str, payload: Dict[str, Any], verified_at: 
         "status": str(payload.get("status") or "official").strip() or "official",
         "method": str(payload.get("method") or "").strip(),
     }
+    prov_type = str(payload.get("provenance_type") or "").strip()
+    if prov_type:
+        out["provenance_type"] = prov_type
     basis = payload.get("basis")
     if isinstance(basis, dict) and basis:
         out["basis"] = basis
     return out
+
+
+def _apply_early_career_salary(row: Dict[str, Any], payload: Dict[str, Any], verified_at: str) -> bool:
+    value = _safe_num(payload.get("value"))
+    if value is None or value <= 0:
+        return False
+    changed = False
+    rate_value = round(float(value), 2)
+    outcomes = row.get("outcomes")
+    if not isinstance(outcomes, dict):
+        outcomes = {}
+        row["outcomes"] = outcomes
+        changed = True
+
+    if outcomes.get("early_career_salary_usd") != rate_value:
+        outcomes["early_career_salary_usd"] = rate_value
+        changed = True
+    if "average_early_career_salary_usd" in outcomes:
+        del outcomes["average_early_career_salary_usd"]
+        changed = True
+
+    provenance = row.get("fact_provenance")
+    if not isinstance(provenance, dict):
+        provenance = {"schema_version": 1, "facts": {}}
+        row["fact_provenance"] = provenance
+        changed = True
+    facts = provenance.get("facts")
+    if not isinstance(facts, dict):
+        facts = {}
+        provenance["facts"] = facts
+        changed = True
+
+    new_fact = _fact_record(rate_value, "usd_per_year", payload, verified_at)
+    if facts.get("early_career_salary") != new_fact:
+        facts["early_career_salary"] = new_fact
+        changed = True
+    for legacy_fact_key in ("average_early_career_salary", "average_early_career_salary_usd"):
+        if legacy_fact_key in facts:
+            del facts[legacy_fact_key]
+            changed = True
+
+    source_url = str(payload.get("source_url") or "").strip()
+    if source_url:
+        changed = _set_verified_source(row, "outcomes", source_url) or changed
+    return changed
+
+
+def _apply_salary_by_major(row: Dict[str, Any], payload: Dict[str, Any], verified_at: str) -> bool:
+    val = payload.get("value")
+    if not isinstance(val, dict) or not val:
+        return False
+    clean_val = {}
+    for k, v in val.items():
+        k_str = _clean_text(k)
+        v_num = _safe_num(v)
+        if k_str and v_num is not None and v_num > 0:
+            clean_val[k_str] = round(float(v_num), 2)
+    if not clean_val:
+        return False
+    changed = False
+    outcomes = row.get("outcomes")
+    if not isinstance(outcomes, dict):
+        outcomes = {}
+        row["outcomes"] = outcomes
+        changed = True
+
+    if outcomes.get("salary_by_major") != clean_val:
+        outcomes["salary_by_major"] = clean_val
+        changed = True
+    for legacy_outcomes_key in ("average_salary_by_major", "average_salary_by_program", "average_early_career_salary_by_major_usd"):
+        if legacy_outcomes_key in outcomes:
+            del outcomes[legacy_outcomes_key]
+            changed = True
+
+    provenance = row.get("fact_provenance")
+    if not isinstance(provenance, dict):
+        provenance = {"schema_version": 1, "facts": {}}
+        row["fact_provenance"] = provenance
+        changed = True
+    facts = provenance.get("facts")
+    if not isinstance(facts, dict):
+        facts = {}
+        provenance["facts"] = facts
+        changed = True
+
+    new_fact = _fact_record(clean_val, "usd_per_year", payload, verified_at)
+    if facts.get("salary_by_major") != new_fact:
+        facts["salary_by_major"] = new_fact
+        changed = True
+
+    source_url = str(payload.get("source_url") or "").strip()
+    if source_url:
+        changed = _set_verified_source(row, "outcomes", source_url) or changed
+    return changed
+
+
+def _apply_median_earnings_10yr(row: Dict[str, Any], payload: Dict[str, Any], verified_at: str) -> bool:
+    value = _safe_num(payload.get("value"))
+    if value is None or value <= 0:
+        return False
+    changed = False
+    rate_value = round(float(value), 2)
+    outcomes = row.get("outcomes")
+    if not isinstance(outcomes, dict):
+        outcomes = {}
+        row["outcomes"] = outcomes
+        changed = True
+
+    if outcomes.get("median_earnings_10yr_usd") != rate_value:
+        outcomes["median_earnings_10yr_usd"] = rate_value
+        changed = True
+
+    # Remove deprecated legacy fields if present
+    for legacy_key in ("average_early_career_salary_usd", "average_early_career_salary"):
+        if legacy_key in outcomes:
+            del outcomes[legacy_key]
+            changed = True
+
+    provenance = row.get("fact_provenance")
+    if not isinstance(provenance, dict):
+        provenance = {"schema_version": 1, "facts": {}}
+        row["fact_provenance"] = provenance
+        changed = True
+    facts = provenance.get("facts")
+    if not isinstance(facts, dict):
+        facts = {}
+        provenance["facts"] = facts
+        changed = True
+
+    new_fact = _fact_record(rate_value, "usd_per_year", payload, verified_at)
+    if facts.get("median_earnings_10yr") != new_fact:
+        facts["median_earnings_10yr"] = new_fact
+        changed = True
+    for legacy_fact_key in ("average_early_career_salary", "average_early_career_salary_usd"):
+        if legacy_fact_key in facts:
+            del facts[legacy_fact_key]
+            changed = True
+
+    source_url = str(payload.get("source_url") or "").strip()
+    if source_url:
+        changed = _set_verified_source(row, "outcomes", source_url) or changed
+    return changed
 
 
 def _apply_student_count(row: Dict[str, Any], payload: Dict[str, Any], verified_at: str) -> bool:
@@ -221,13 +366,30 @@ def _apply_description(row: Dict[str, Any], payload: Dict[str, Any]) -> bool:
     return changed
 
 
-def _apply_tags(row: Dict[str, Any], payload: Dict[str, Any]) -> bool:
+def _apply_tags(row: Dict[str, Any], payload: Dict[str, Any], verified_at: str) -> bool:
     tags = _normalize_tags(payload.get("value"))
     if not tags:
         return False
     changed = False
     if row.get("tags") != tags:
         row["tags"] = tags
+        changed = True
+
+    provenance = row.get("fact_provenance")
+    if not isinstance(provenance, dict):
+        provenance = {"schema_version": 1, "facts": {}}
+        row["fact_provenance"] = provenance
+        changed = True
+    facts = provenance.get("facts")
+    if not isinstance(facts, dict):
+        facts = {}
+        provenance["facts"] = facts
+        changed = True
+
+    unit = str(payload.get("unit") or "tags").strip()
+    new_fact = _fact_record(tags, unit, payload, verified_at)
+    if facts.get("tags") != new_fact:
+        facts["tags"] = new_fact
         changed = True
 
     source_url = _clean_text(payload.get("source_url"))
@@ -290,12 +452,21 @@ def apply_official_facts(
         acceptance_payload = payload.get("acceptance_rate_percent")
         if isinstance(acceptance_payload, dict):
             _apply_acceptance_rate(row, acceptance_payload, verified_at)
+        early_career_salary_payload = payload.get("early_career_salary") or payload.get("average_early_career_salary_usd")
+        if isinstance(early_career_salary_payload, dict):
+            _apply_early_career_salary(row, early_career_salary_payload, verified_at)
+        salary_by_major_payload = payload.get("salary_by_major") or payload.get("average_salary_by_major")
+        if isinstance(salary_by_major_payload, dict):
+            _apply_salary_by_major(row, salary_by_major_payload, verified_at)
+        median_earnings_payload = payload.get("median_earnings_10yr") or payload.get("median_earnings_10yr_usd")
+        if isinstance(median_earnings_payload, dict):
+            _apply_median_earnings_10yr(row, median_earnings_payload, verified_at)
         description_payload = payload.get("description")
         if isinstance(description_payload, dict):
             _apply_description(row, description_payload)
         tags_payload = payload.get("tags")
         if isinstance(tags_payload, dict):
-            _apply_tags(row, tags_payload)
+            _apply_tags(row, tags_payload, verified_at)
         _apply_verified_source_overrides(row, payload)
         if row != before:
             changed += 1

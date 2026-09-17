@@ -42,6 +42,21 @@ class ExamsApiTests(unittest.TestCase):
         self.assertIn("normalization", data.get("SAT") or {})
         self.assertEqual(1010, int(((data.get("SAT") or {}).get("normalization") or {}).get("p50", 0)))
 
+    def test_exams_config_full_compatibility_alias(self):
+        canonical_response = self.client.get("/exams/config")
+        legacy_response = self.client.get("/exams/config/full")
+
+        self.assertEqual(canonical_response.status_code, 200)
+        self.assertEqual(legacy_response.status_code, 200)
+        self.assertEqual(canonical_response.headers.get("cache-control"), "public, max-age=300")
+        self.assertEqual(legacy_response.headers.get("cache-control"), "public, max-age=300")
+        self.assertEqual(canonical_response.json(), legacy_response.json())
+
+        schema = app.openapi()
+        paths = schema.get("paths", {})
+        self.assertIn("/exams/config", paths)
+        self.assertNotIn("/exams/config/full", paths)
+
     def test_validate_exam_accepts_valid_score(self):
         response = self.client.post(
             "/exams/validate",

@@ -1,22 +1,47 @@
 import './setup.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert';
+import { readFile } from 'node:fs/promises';
+import fs from 'node:fs';
 
-// Now import the function
-import { setLanguage } from '../../frontend/javascript/i18n.js';
-import {
+global.fetch = async (url) => {
+  const target = String(url || '');
+  if (target.endsWith('Localization/eng')) {
+    return {
+      ok: true,
+      async text() {
+        return readFile(new URL('../../frontend/Localization/eng', import.meta.url), 'utf8');
+      },
+    };
+  }
+  if (target.endsWith('Localization/ru')) {
+    return {
+      ok: true,
+      async text() {
+        return readFile(new URL('../../frontend/Localization/ru', import.meta.url), 'utf8');
+      },
+    };
+  }
+  return { ok: false, async text() { return ''; } };
+};
+
+const { initI18n, setLanguage } = await import('../../frontend/javascript/i18n.js');
+const {
   cleanDecoratedText,
   formatFundingOptionsCount,
+  localizeRoiLabel,
   normalizeFundingPreference,
   normalizeUrl,
   renderAdmissionsOverview,
   renderProgramAdmissionsSignals,
+  renderRoiBox,
   resolveUniversityCardPrice,
   splitPriceDisplay,
   safeUrl,
   uniThumbnailSrc,
-} from '../../frontend/javascript/pages/_shared.js';
-import fs from 'node:fs';
+} = await import('../../frontend/javascript/pages/_shared.js');
+
+await initI18n();
 
 test('normalizeFundingPreference', async (t) => {
   await t.test('should return grant for grant', () => {
@@ -314,6 +339,100 @@ test('splitPriceDisplay', async (t) => {
       splitPriceDisplay('$95,134'),
       { primary: '$95,134', secondary: '' },
     );
+  });
+});
+
+test('localizeRoiLabel', async (t) => {
+  await t.test('formats English ROI labels', () => {
+    setLanguage('eng', { persist: false, emit: false });
+    assert.strictEqual(localizeRoiLabel('Excellent Return', 'excellent'), 'Excellent Return');
+    assert.strictEqual(localizeRoiLabel('Positive Return', 'good'), 'Positive Return');
+    assert.strictEqual(localizeRoiLabel('High Investment', 'warn'), 'High Investment');
+    assert.strictEqual(localizeRoiLabel('No Data', 'neutral'), 'Insufficient Data');
+    assert.strictEqual(localizeRoiLabel('Insufficient Data', 'neutral'), 'Insufficient Data');
+    assert.strictEqual(localizeRoiLabel('', 'neutral'), 'Insufficient Data');
+    assert.strictEqual(localizeRoiLabel(null), 'Insufficient Data');
+  });
+
+  await t.test('formats Russian ROI labels', () => {
+    setLanguage('rus', { persist: false, emit: false });
+    assert.strictEqual(localizeRoiLabel('Excellent Return', 'excellent'), 'Отличная отдача');
+    assert.strictEqual(localizeRoiLabel('Positive Return', 'good'), 'Положительная отдача');
+    assert.strictEqual(localizeRoiLabel('High Investment', 'warn'), 'Большие вложения');
+    assert.strictEqual(localizeRoiLabel('No Data', 'neutral'), 'Недостаточно данных');
+    assert.strictEqual(localizeRoiLabel('Недостаточно данных', 'neutral'), 'Недостаточно данных');
+    assert.strictEqual(localizeRoiLabel('', 'neutral'), 'Недостаточно данных');
+    setLanguage('eng', { persist: false, emit: false });
+  });
+});
+
+test('renderRoiBox', async (t) => {
+  await t.test('returns empty string when ROI is missing or invalid', () => {
+    assert.strictEqual(renderRoiBox(null), '');
+    assert.strictEqual(renderRoiBox(undefined), '');
+    assert.strictEqual(renderRoiBox({}), '');
+  });
+
+  await t.test('renders neutral ROI markup in English when salary data is missing', () => {
+    setLanguage('eng', { persist: false, emit: false });
+    const markup = renderRoiBox({
+      context_type: 'no_salary_data',
+      salary_used_usd: null,
+      roi_value: null,
+      annual_cost_usd: 35000,
+      roi_label: 'No Data',
+      roi_tone: 'neutral',
+    });
+
+    assert.ok(markup.includes('roi-box'), 'Should contain roi-box');
+    assert.ok(markup.includes('roi-context--neutral'), 'Should contain neutral context class');
+    assert.ok(markup.includes('Insufficient graduate salary data for calculation.'), 'Should contain English neutral message');
+    assert.ok(markup.includes('$35,000'), 'Should contain annual cost');
+    assert.strictEqual(markup.includes('NaN'), false, 'Should not contain NaN');
+    assert.strictEqual(markup.includes('undefined'), false, 'Should not contain undefined');
+    assert.strictEqual(markup.includes('roi-tone-warn'), false, 'Should not contain warning tone');
+    assert.strictEqual(markup.includes('0x'), false, 'Should not show 0x score');
+    assert.strictEqual(markup.includes('$0'), false, 'Should not show $0 salary');
+  });
+
+  await t.test('renders neutral ROI markup in Russian when salary data is missing', () => {
+    setLanguage('rus', { persist: false, emit: false });
+    const markup = renderRoiBox({
+      context_type: 'no_salary_data',
+      salary_used_usd: null,
+      roi_value: null,
+      annual_cost_usd: 25000,
+      roi_label: 'No Data',
+      roi_tone: 'neutral',
+    });
+
+    assert.ok(markup.includes('roi-box'), 'Should contain roi-box');
+    assert.ok(markup.includes('roi-context--neutral'), 'Should contain neutral context class');
+    assert.ok(markup.includes('Недостаточно данных о зарплатах выпускников для расчёта.'), 'Should contain Russian neutral message');
+    assert.ok(markup.includes('$25,000'), 'Should contain annual cost');
+    assert.strictEqual(markup.includes('NaN'), false, 'Should not contain NaN');
+    assert.strictEqual(markup.includes('undefined'), false, 'Should not contain undefined');
+    assert.strictEqual(markup.includes('roi-tone-warn'), false, 'Should not contain warning tone');
+    setLanguage('eng', { persist: false, emit: false });
+  });
+
+  await t.test('renders ROI markup when valid salary data is provided', () => {
+    setLanguage('eng', { persist: false, emit: false });
+    const markup = renderRoiBox({
+      context_type: 'default',
+      salary_used_usd: 95000,
+      annual_cost_usd: 40000,
+      roi_value: 2.375,
+      roi_label: 'Excellent Return',
+      roi_tone: 'excellent',
+    });
+
+    assert.ok(markup.includes('roi-box'), 'Should contain roi-box section');
+    assert.ok(markup.includes('2.4x'), 'Should contain formatted ROI score (2.4x)');
+    assert.ok(markup.includes('$95,000'), 'Should contain salary');
+    assert.ok(markup.includes('$40,000'), 'Should contain annual cost');
+    assert.ok(markup.includes('roi-tone-positive'), 'Should contain positive tone class');
+    assert.ok(markup.includes('Excellent Return'), 'Should contain localized label');
   });
 });
 

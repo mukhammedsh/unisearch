@@ -7,16 +7,16 @@ from app.schemas import ExamValidateRequest
 router = APIRouter()
 
 
-@router.get("/exams/config", summary="Exam configuration", description="Returns the map of supported exams with their score ranges, input modes, and level bands.")
+@router.get(
+    "/exams/config",
+    summary="Exam configuration",
+    description="Returns the map of supported exams with their score ranges, input modes, and level bands.",
+)
+@router.get(
+    "/exams/config/full",
+    include_in_schema=False,
+)
 def get_exam_config(response: Response = None):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=300"
-    exams_service.ensure_exams_cache()
-    return exams_service.EXAMS_CONFIG
-
-
-@router.get("/exams/config/full", summary="Full exam configuration", description="Returns the complete exam configuration, identical to /exams/config in the current version.")
-def get_exam_config_full(response: Response = None):
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300"
     exams_service.ensure_exams_cache()

@@ -1733,6 +1733,80 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual(res.get("reason"), "missing_evidence")
         self.assertEqual(res.get("confidence"), "no_data")
 
+    def test_estimate_university_roi_with_valid_salary_data(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        uni_general = {
+            "id": "test-uni-salary",
+            "finance": {"total_cost_year_usd": 50000},
+            "outcomes": {"early_career_salary_usd": 100000},
+            "admission_categories": [],
+        }
+        res = estimate_university_roi(uni_general, {"major": "Physics", "studyMode": "On-campus"})
+        self.assertEqual(res["context_type"], "fallback_major")
+        self.assertEqual(res["salary_used_usd"], 100000.0)
+        self.assertEqual(res["annual_cost_usd"], 50000.0)
+        self.assertEqual(res["roi_value"], 2.0)
+        self.assertEqual(res["roi_label"], "Positive Return")
+        self.assertEqual(res["roi_tone"], "good")
+
+        uni_major = {
+            "id": "test-uni-major-salary",
+            "finance": {"total_cost_year_usd": 40000},
+            "outcomes": {
+                "salary_by_major": {
+                    "Computer Science": 120000,
+                    "Biology": 60000,
+                },
+                "early_career_salary_usd": 80000,
+            },
+            "admission_categories": [],
+        }
+        res_matched = estimate_university_roi(uni_major, {"major": "computer-science"})
+        self.assertEqual(res_matched["context_type"], "matched_major")
+        self.assertEqual(res_matched["matched_major"], "Computer Science")
+        self.assertEqual(res_matched["salary_used_usd"], 120000.0)
+        self.assertEqual(res_matched["roi_value"], 3.0)
+        self.assertEqual(res_matched["roi_label"], "Excellent Return")
+        self.assertEqual(res_matched["roi_tone"], "excellent")
+
+    def test_estimate_university_roi_without_salary_returns_neutral_no_data(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        uni_no_salary = {
+            "id": "test-uni-no-salary",
+            "finance": {"total_cost_year_usd": 30000},
+            "outcomes": {},
+            "admission_categories": [],
+        }
+        res = estimate_university_roi(uni_no_salary, {"major": "Computer Science"})
+        self.assertEqual(res["context_type"], "no_salary_data")
+        self.assertIsNone(res["salary_used_usd"])
+        self.assertIsNone(res["roi_value"])
+        self.assertEqual(res["roi_label"], "No Data")
+        self.assertEqual(res["roi_tone"], "neutral")
+        self.assertEqual(res["annual_cost_usd"], 30000.0)
+        self.assertEqual(res["matched_major"], "")
+        self.assertEqual(res["salary_data_points"], 0)
+
+    def test_estimate_university_roi_with_median_10yr_earnings_returns_neutral_no_data(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        uni_10yr_earnings = {
+            "id": "caltech-usa-pasadena",
+            "finance": {"total_cost_year_usd": 85000},
+            "outcomes": {"median_earnings_10yr_usd": 128566},
+            "admission_categories": [],
+        }
+        res = estimate_university_roi(uni_10yr_earnings, {"major": "Computer Science"})
+        self.assertEqual(res["context_type"], "no_salary_data")
+        self.assertIsNone(res["salary_used_usd"])
+        self.assertIsNone(res["roi_value"])
+        self.assertEqual(res["roi_label"], "No Data")
+        self.assertEqual(res["roi_tone"], "neutral")
+        self.assertEqual(res["annual_cost_usd"], 85000.0)
+        self.assertEqual(res["salary_data_points"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -26,6 +26,7 @@ const {
   compareProgramSummary,
   compareProgramTitle,
   compareSourceText,
+  compareSourceMeta,
   compareExtraRequirementsText,
   compareAdmissionChoiceOptionLabel,
   compareRequirementsText,
@@ -366,4 +367,93 @@ test("selected finance context keeps structured range and provenance", () => {
   assert.equal(context.academicYear, "2027-28");
 });
 
+test("compareSourceMeta and compareSourceText support early_career_salary and median_earnings_10yr", () => {
+  const uni = {
+    id: "mit-usa-cambridge",
+    outcomes: { early_career_salary_usd: 98741 },
+    fact_provenance: {
+      facts: {
+        early_career_salary: {
+          value: 98741,
+          source: "MIT Graduating Student Survey 2019",
+          source_url: "https://ir.mit.edu/gss",
+          verified_at: "2026-03-31",
+          status: "official",
+        },
+        median_earnings_10yr: {
+          value: 128566,
+          source: "U.S. Department of Education College Scorecard",
+          source_url: "https://collegescorecard.ed.gov/",
+          verified_at: "2026-03-30",
+          status: "official",
+        },
+      },
+    },
+  };
 
+  const earlyMeta = compareSourceMeta(uni, "early_career_salary");
+  assert.equal(earlyMeta.url, "https://ir.mit.edu/gss");
+  assert.equal(earlyMeta.verifiedAt, "2026-03-31");
+  assert.equal(compareSourceText(uni, "early_career_salary"), "MIT Graduating Student Survey 2019 - Official");
+
+  const medianMeta = compareSourceMeta(uni, "median_earnings_10yr");
+  assert.equal(medianMeta.url, "https://collegescorecard.ed.gov/");
+  assert.equal(compareSourceText(uni, "median_earnings_10yr"), "U.S. Department of Education College Scorecard - Official");
+});
+
+test("buildCompareDecisionSignals outcomes theme distinguishes early salary from 10yr median earnings", async () => {
+  const { buildCompareDecisionSignals } = await import("../../frontend/javascript/pages/universities/compare-specs.js");
+  const mit = {
+    id: "mit-usa-cambridge",
+    name: "MIT",
+    outcomes: { early_career_salary_usd: 98741 },
+    fact_provenance: {
+      facts: {
+        early_career_salary: {
+          source: "MIT GSS 2019",
+          source_url: "https://ir.mit.edu/gss",
+          verified_at: "2026-03-31",
+          status: "official",
+        },
+      },
+    },
+  };
+  const caltech = {
+    id: "caltech-usa-pasadena",
+    name: "Caltech",
+    outcomes: { median_earnings_10yr_usd: 128566 },
+    fact_provenance: {
+      facts: {
+        median_earnings_10yr: {
+          source: "College Scorecard",
+          source_url: "https://collegescorecard.ed.gov/",
+          verified_at: "2026-03-30",
+          status: "official",
+        },
+      },
+    },
+  };
+  const stanford = {
+    id: "stanford-university-usa-ca",
+    name: "Stanford University",
+    outcomes: {},
+    fact_provenance: { facts: {} },
+  };
+
+  const signals = buildCompareDecisionSignals([mit, caltech, stanford]);
+  const outcomesTheme = signals.find((s) => s.key === "outcomes");
+  assert.ok(outcomesTheme);
+  assert.equal(outcomesTheme.status, "missing"); // Not all have early salary
+
+  const mitFacts = outcomesTheme.universities.find((u) => u.id === "mit-usa-cambridge").facts;
+  assert.equal(mitFacts[0].label, "Verified early-career salary");
+  assert.equal(mitFacts[0].value, "$98,741");
+
+  const caltechFacts = outcomesTheme.universities.find((u) => u.id === "caltech-usa-pasadena").facts;
+  assert.equal(caltechFacts[0].label, "10-year post-entry median earnings (Scorecard)");
+  assert.equal(caltechFacts[0].value, "$128,566");
+
+  const stanfordFacts = outcomesTheme.universities.find((u) => u.id === "stanford-university-usa-ca").facts;
+  assert.equal(stanfordFacts[0].label, "Verified early-career salary");
+  assert.equal(stanfordFacts[0].value, "N/A");
+});

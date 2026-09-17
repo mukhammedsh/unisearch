@@ -281,7 +281,7 @@ class MLRecommender:
         return text
 
     def prepare_text_features(self, universities: List[Dict[str, Any]]) -> List[str]:
-        """Build corpus text from university metadata for semantic and lexical matching."""
+        """Build corpus text from university metadata for semantic matching."""
         docs: List[str] = []
         for uni in universities:
             name = _safe_text(uni.get("name"))

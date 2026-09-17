@@ -5,12 +5,12 @@ import unittest
 
 class InfrastructureHygieneTests(unittest.TestCase):
     def setUp(self):
-        # Находим корневую директорию проекта
+        # Locate the project root directory
         self.backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.root_dir = os.path.dirname(self.backend_dir)
 
     def test_no_absolute_paths_in_source_code(self):
-        """Проверяет отсутствие жестко захардкоженных абсолютных путей (C:\\... или /home/...) в исходном коде."""
+        """Verify absence of hardcoded absolute paths (C:\\... or /home/...) in source code."""
         path_patterns = [
             re.compile(r'"[a-zA-Z]:\\[^"]+"'),
             re.compile(r"'[a-zA-Z]:\\[^']+'"),
@@ -25,13 +25,13 @@ class InfrastructureHygieneTests(unittest.TestCase):
             ".vscode",
             ".venv",
             "__pycache__",
-            "test_infrastructure_hygiene.py",  # Исключаем сам этот файл
+            "test_infrastructure_hygiene.py",  # Exclude this test file itself
         ]
 
         invalid_files = []
 
         for root, dirs, files in os.walk(self.root_dir):
-            # Фильтруем исключенные директории
+            # Filter out excluded directories
             dirs[:] = [d for d in dirs if d not in exclusions]
 
             for file in files:
@@ -53,30 +53,30 @@ class InfrastructureHygieneTests(unittest.TestCase):
                         relative_path = os.path.relpath(file_path, self.root_dir)
                         invalid_files.append((relative_path, matches))
 
-        # Выводим понятную ошибку, если найдены абсолютные пути
+        # Output readable error message if absolute paths are found
         if invalid_files:
             msg = "\n".join(
-                f"Файл '{path}' содержит абсолютные пути: {matches}"
+                f"File '{path}' contains absolute paths: {matches}"
                 for path, matches in invalid_files
             )
-            self.fail(f"Найдены захардкоженные абсолютные пути в исходном коде:\n{msg}")
+            self.fail(f"Found hardcoded absolute paths in source code:\n{msg}")
 
     def test_env_example_contains_no_secrets(self):
-        """Проверяет, что .env.example не содержит реальных секретов, паролей или токенов."""
+        """Verify that .env.example contains no real secrets, passwords, or tokens."""
         env_example_path = os.path.join(self.root_dir, "backend", ".env.example")
         if not os.path.exists(env_example_path):
             env_example_path = os.path.join(self.root_dir, ".env.example")
 
         if not os.path.exists(env_example_path):
-            self.skipTest(".env.example не найден")
+            self.skipTest(".env.example not found")
 
         with open(env_example_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         suspicious_patterns = [
-            (re.compile(r"=\s*[a-zA-Z0-9]{32,}\s*$", re.MULTILINE), "Длинный хэш/токен"),
-            (re.compile(r"=\s*([a-zA-Z0-9_\-\.\+]+@[a-zA-Z0-9_\-\.]+)\s*$", re.MULTILINE), "Email адрес"),
-            (re.compile(r"(?:password|pwd|secret|key|token|auth)\s*=\s*(?!your_|placeholder|demo|test|<|\[)[a-zA-Z0-9_]{6,}\s*$", re.MULTILINE | re.IGNORECASE), "Потенциальный пароль/секрет"),
+            (re.compile(r"=\s*[a-zA-Z0-9]{32,}\s*$", re.MULTILINE), "Long hash/token"),
+            (re.compile(r"=\s*([a-zA-Z0-9_\-\.\+]+@[a-zA-Z0-9_\-\.]+)\s*$", re.MULTILINE), "Email address"),
+            (re.compile(r"(?:password|pwd|secret|key|token|auth)\s*=\s*(?!your_|placeholder|demo|test|<|\[)[a-zA-Z0-9_]{6,}\s*$", re.MULTILINE | re.IGNORECASE), "Potential password/secret"),
         ]
 
         detected_issues = []
@@ -86,10 +86,10 @@ class InfrastructureHygieneTests(unittest.TestCase):
                 detected_issues.append(f"{desc}: {matches}")
 
         if detected_issues:
-            self.fail("В .env.example обнаружены подозрительные значения (секреты):\n" + "\n".join(detected_issues))
+            self.fail("Suspicious values (secrets) detected in .env.example:\n" + "\n".join(detected_issues))
 
     def test_files_encoding_utf8_without_bom(self):
-        """Проверяет, что файлы исходного кода используют UTF-8 без BOM."""
+        """Verify that source code files use UTF-8 without BOM."""
         exclusions = ["node_modules", ".git", ".claude", ".vscode", ".venv", "__pycache__", "university_assets", "assets"]
         invalid_files = []
 
@@ -107,13 +107,13 @@ class InfrastructureHygieneTests(unittest.TestCase):
                 except FileNotFoundError:
                     continue
 
-                # UTF-8 BOM - это EF BB BF
+                # UTF-8 BOM is EF BB BF
                 if first_bytes.startswith(b"\xef\xbb\xbf"):
                     relative_path = os.path.relpath(file_path, self.root_dir)
                     invalid_files.append(relative_path)
 
         if invalid_files:
-            self.fail("Найдены файлы с BOM (UTF-8-BOM), перекодируйте их в UTF-8 без BOM:\n" + "\n".join(invalid_files))
+            self.fail("Files with UTF-8 BOM found; re-encode to UTF-8 without BOM:\n" + "\n".join(invalid_files))
 
 
 if __name__ == "__main__":

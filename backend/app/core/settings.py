@@ -87,8 +87,8 @@ DOCS_ENABLED = _env_bool(
     "1" if BACKEND_HOST in ("127.0.0.1", "localhost") else "0",
 )
 TRUST_X_FORWARDED_FOR = _env_bool("TRUST_X_FORWARDED_FOR", "0")
-TRUST_PRIVATE_NETWORK_PROXIES = _env_bool("TRUST_PRIVATE_NETWORK_PROXIES", "1")
-TRUST_CF_CONNECTING_IP = _env_bool("TRUST_CF_CONNECTING_IP", "1")
+TRUST_PRIVATE_NETWORK_PROXIES = _env_bool("TRUST_PRIVATE_NETWORK_PROXIES", "0")
+TRUST_CF_CONNECTING_IP = _env_bool("TRUST_CF_CONNECTING_IP", "0")
 TRUSTED_PROXY_IPS = [
     value.strip()
     for value in os.getenv("TRUSTED_PROXY_IPS", "").split(",")

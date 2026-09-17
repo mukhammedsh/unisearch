@@ -25,6 +25,53 @@
           "applicants": 29281,
           "admitted": 1334
         }
+      },
+      "early_career_salary": {
+        "value": 98741.0,
+        "unit": "usd_per_year",
+        "source": "MIT Graduating Student Survey 2019",
+        "source_url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf",
+        "verified_at": "2026-03-31",
+        "status": "official",
+        "confidence": "high",
+        "method": "Direct bachelor's mean yearly salary reported for MIT graduating students with accepted positions in the 2019 survey.",
+        "basis": {
+          "degree_level": "bachelor",
+          "cohort": "Class of 2019",
+          "scope": "university_wide",
+          "metric": "mean_yearly_salary_usd",
+          "respondents_with_salary_data": 293,
+          "median_yearly_salary_usd": 90000
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "outcomes",
+          "url": "https://ir.mit.edu/outcomes/"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
+        }
+      ],
+      "tags": {
+        "value": [
+          "engineering",
+          "computer_science",
+          "natural_sciences",
+          "business",
+          "humanities",
+          "social_sciences",
+          "architecture",
+          "research",
+          "private_university"
+        ],
+        "source": "MIT Schools and Departments",
+        "source_url": "https://www.mit.edu/education/schools-and-departments/",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official MIT Schools and Schwarzman College of Computing structure and private research status."
       }
     },
     "imperial-college-london-uk": {
@@ -66,14 +113,15 @@
           "engineering",
           "medicine",
           "business",
-          "research"
+          "research",
+          "public_university"
         ],
         "source": "Imperial About",
         "source_url": "https://www.imperial.ac.uk/about/",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official About page's description of Imperial's science, technology, engineering, medicine and business profile."
+        "method": "Derived from the official About page describing Imperial's science, engineering, medicine, and business faculties and public research mission."
       }
     },
     "stanford-university-usa-ca": {
@@ -100,6 +148,27 @@
           "admitted": 2067,
           "enrolled": 1693
         }
+      },
+      "tags": {
+        "value": [
+          "humanities",
+          "social_sciences",
+          "natural_sciences",
+          "engineering",
+          "medicine",
+          "law",
+          "education",
+          "business",
+          "research",
+          "private_university",
+          "computer_science"
+        ],
+        "source": "Stanford About",
+        "source_url": "https://www.stanford.edu/about/",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from the official Stanford University overview of schools (Humanities and Sciences, Engineering, Medicine, Law, Education, Business) and private research university status."
       }
     },
     "harvard-usa-cambridge": {
@@ -125,6 +194,27 @@
           "applicants": 47893,
           "admitted": 2003
         }
+      },
+      "tags": {
+        "value": [
+          "engineering",
+          "business",
+          "law",
+          "medicine",
+          "education",
+          "humanities",
+          "natural_sciences",
+          "research",
+          "private_university",
+          "computer_science",
+          "social_sciences"
+        ],
+        "source": "Harvard Schools",
+        "source_url": "https://www.harvard.edu/academics/schools/",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from Harvard's official Schools and Faculty of Arts and Sciences academic structure."
       }
     },
     "eth-zurich-ch-zurich": {
@@ -151,6 +241,25 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "engineering",
+          "computer_science",
+          "natural_sciences",
+          "humanities",
+          "social_sciences",
+          "public_university",
+          "research",
+          "architecture"
+        ],
+        "source": "ETH Zurich Portrait",
+        "source_url": "https://ethz.ch/en/the-eth-zurich/portrait.html",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from ETH Zurich portrait describing Swiss federal public institute of science and technology."
       }
     },
     "national-university-of-singapore-sg-singapore": {
@@ -175,6 +284,60 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      },
+      "early_career_salary": {
+        "value": 48314.67,
+        "unit": "usd_per_year",
+        "source": "NUS fresh graduate outcomes 2025",
+        "source_url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/",
+        "verified_at": "2026-03-31",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Annualized the official mean gross monthly salary for NUS fresh graduates in full-time permanent employment from the official news release published on 6 March 2026, converted SGD to USD using ECB euro reference rates for 2026-03-30.",
+        "basis": {
+          "degree_level": "bachelor",
+          "cohort": "Class of 2025",
+          "scope": "university_wide",
+          "metric": "mean_gross_monthly_salary_sgd",
+          "source_salary_sgd_per_month": 5193,
+          "source_median_salary_sgd_per_month": 4746,
+          "annualized_salary_sgd": 62316,
+          "fx_source": "ECB euro foreign exchange reference rates",
+          "fx_date": "2026-03-30",
+          "eur_usd": 1.1484,
+          "eur_sgd": 1.4812,
+          "usd_per_sgd": 0.77531731,
+          "publication_date": "2026-03-06"
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "outcomes",
+          "url": "https://news.nus.edu.sg/navigating-the-evolving-job-market-nus-graduates-excel-with-strong-capabilities-and-diverse-skills/"
+        },
+        {
+          "topic": "outcomes",
+          "url": "https://nus.edu.sg/ges-2024"
+        }
+      ],
+      "tags": {
+        "value": [
+          "research",
+          "engineering",
+          "computer_science",
+          "business",
+          "law",
+          "medicine",
+          "social_sciences",
+          "natural_sciences",
+          "public_university"
+        ],
+        "source": "About NUS",
+        "source_url": "https://www.nus.edu.sg/about",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from NUS faculties and schools (Computing, Engineering, Science, Business, Law, Medicine), autonomous public university status under the National University of Singapore Act, and Kent Ridge campus."
       }
     },
     "epfl-ch-lausanne": {
@@ -195,6 +358,25 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "engineering",
+          "computer_science",
+          "natural_sciences",
+          "life_sciences",
+          "business",
+          "architecture",
+          "research",
+          "public_university"
+        ],
+        "source": "About EPFL",
+        "source_url": "https://www.epfl.ch/about/",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from EPFL official schools (Basic Sciences, Engineering, Computer and Communication Sciences, Life Sciences, Architecture and Civil Engineering, Management of Technology) and Swiss federal public institute status."
       }
     },
     "technical-university-of-munich-de-munich": {
@@ -215,6 +397,27 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      },
+      "tags": {
+        "value": [
+          "science_and_technology",
+          "engineering",
+          "computer_science",
+          "design",
+          "natural_sciences",
+          "life_sciences",
+          "medicine",
+          "business",
+          "social_sciences",
+          "research",
+          "public_university"
+        ],
+        "source": "About TUM",
+        "source_url": "https://www.tum.de/en/about-tum",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from TUM Schools structure (Computation, Information and Technology; Engineering and Design; Natural Sciences; Life Sciences; Medicine and Health; Management; Social Sciences and Technology) and public research status."
       }
     },
     "university-of-toronto-ca-toronto": {
@@ -241,6 +444,28 @@
           "admitted": 21949,
           "scope": "undergraduate_101_plus_non_101_distinct_counts"
         }
+      },
+      "tags": {
+        "value": [
+          "research",
+          "engineering",
+          "business",
+          "law",
+          "medicine",
+          "education",
+          "humanities",
+          "natural_sciences",
+          "social_sciences",
+          "public_university",
+          "collegiate",
+          "computer_science"
+        ],
+        "source": "About U of T",
+        "source_url": "https://www.utoronto.ca/about-u-of-t",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from U of T faculties, collegiate structure, and public research university profile."
       }
     },
     "cuhk-hk-shatin": {
@@ -265,6 +490,60 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
+      },
+      "early_career_salary": {
+        "value": 34620.11,
+        "unit": "usd_per_year",
+        "source": "CUHK Graduate Employment Survey Profile 2019",
+        "source_url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf",
+        "verified_at": "2026-03-31",
+        "status": "official_derived",
+        "confidence": "high",
+        "method": "Annualized the official average monthly salary for CUHK full-time first-degree graduates and converted HKD to USD using ECB euro reference rates for 2026-03-30.",
+        "basis": {
+          "degree_level": "bachelor",
+          "cohort": "2019 full-time first-degree graduates",
+          "scope": "university_wide",
+          "metric": "average_monthly_salary_hkd",
+          "source_salary_hkd_per_month": 22602,
+          "source_median_salary_hkd_per_month": 19875,
+          "annualized_salary_hkd": 271224,
+          "fx_source": "ECB euro foreign exchange reference rates",
+          "fx_date": "2026-03-30",
+          "eur_usd": 1.1484,
+          "eur_hkd": 8.9969,
+          "usd_per_hkd": 0.12764397
+        }
+      },
+      "verified_sources": [
+        {
+          "topic": "outcomes",
+          "url": "https://cpdc.osa.cuhk.edu.hk/sites/cu_joblink/files/GES/Profile_2019.pdf"
+        }
+      ],
+      "tags": {
+        "value": [
+          "research",
+          "comprehensive",
+          "bilingual",
+          "collegiate",
+          "humanities",
+          "social_sciences",
+          "engineering",
+          "business",
+          "law",
+          "medicine",
+          "natural_sciences",
+          "education",
+          "public_university",
+          "computer_science"
+        ],
+        "source": "CUHK Mission and Vision",
+        "source_url": "https://www.cuhk.edu.hk/english/aboutus/mission.html",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
+        "confidence": "medium",
+        "method": "Derived from CUHK faculties, bilingual collegiate university charter, and public research institution status."
       }
     },
     "university-of-tokyo-jp-tokyo": {
@@ -307,14 +586,18 @@
           "engineering",
           "natural_sciences",
           "humanities",
-          "social_sciences"
+          "social_sciences",
+          "public_university",
+          "medicine",
+          "law",
+          "computer_science"
         ],
         "source": "About UTokyo",
         "source_url": "https://www.u-tokyo.ac.jp/en/about/about.html",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official About UTokyo page's description of national-university status, broad academic coverage, and research mission."
+        "method": "Derived from the official About UTokyo page describing national university status, broad academic faculties, and comprehensive research mission."
       }
     },
     "seoul-national-university-kr-seoul": {
@@ -347,14 +630,16 @@
           "social_sciences",
           "business",
           "medicine",
-          "education"
+          "education",
+          "public_university",
+          "computer_science"
         ],
         "source": "SNU Vision and Overview",
         "source_url": "https://en.snu.ac.kr/about/overview/vision",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official SNU overview's list of colleges and research navigation."
+        "method": "Derived from SNU overview of colleges, national university charter, and comprehensive research structure."
       },
       "acceptance_rate_percent": {
         "value": 15.0,
@@ -394,14 +679,16 @@
           "engineering",
           "natural_sciences",
           "research",
-          "innovation"
+          "public_university",
+          "architecture",
+          "computer_science"
         ],
         "source": "About TU Delft",
         "source_url": "https://www.tudelft.nl/en/about-tu-delft",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official About TU Delft page's description of technological and scientific disciplines, research facilities, and innovation focus."
+        "method": "Derived from TU Delft's eight faculties of engineering and technology and Dutch public technical university status."
       },
       "verified_sources": [
         {
@@ -443,14 +730,18 @@
           "science_and_technology",
           "engineering",
           "research",
-          "innovation"
+          "public_university",
+          "computer_science",
+          "natural_sciences",
+          "life_sciences",
+          "business"
         ],
-        "source": "KAIST Mission and Vision",
+        "source": "About KAIST",
         "source_url": "https://www.kaist.ac.kr/en/html/kaist/01.html",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from KAIST's official description of itself as a science and technology university focused on research and innovation."
+        "method": "Derived from KAIST Colleges (Engineering, Natural Sciences, Life Science & Bioengineering, Business), public research institute status under MSIT, and Daejeon main campus."
       },
       "acceptance_rate_percent": {
         "value": 22.0,
@@ -497,14 +788,14 @@
           "design",
           "business",
           "research",
-          "innovation"
+          "public_university"
         ],
-        "source": "Tsinghua Undergraduate Divisions",
+        "source": "Tsinghua Divisions",
         "source_url": "https://international.join-tsinghua.edu.cn/Divisions1.htm",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from Tsinghua's official description and the official undergraduate divisions/schools overview."
+        "method": "Derived from Tsinghua schools and departments, public national key university status under MOE, and residential campus."
       },
       "acceptance_rate_percent": {
         "value": 1.0,
@@ -546,7 +837,6 @@
       },
       "tags": {
         "value": [
-          "public_university",
           "research",
           "engineering",
           "computer_science",
@@ -554,14 +844,16 @@
           "medicine",
           "business",
           "education",
-          "social_sciences"
+          "social_sciences",
+          "humanities",
+          "english_medium"
         ],
-        "source": "Nazarbayev University Schools",
+        "source": "NU Schools",
         "source_url": "https://nu.edu.kz/academics/schools/",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official schools structure and research-university positioning published by Nazarbayev University."
+        "method": "Derived from Nazarbayev University schools (SEDS, SSH, SOM, GSPP, GSB), English-medium instruction, residential campus, and autonomous research university status (Law of RK 'On the status of Nazarbayev University...')."
       }
     },
     "kyoto-university-jp-kyoto": {
@@ -590,14 +882,19 @@
           "engineering",
           "natural_sciences",
           "humanities",
-          "social_sciences"
+          "social_sciences",
+          "national_university",
+          "public_university",
+          "medicine",
+          "law",
+          "agriculture"
         ],
-        "source": "Kyoto University Mission Statement",
+        "source": "Kyoto University Profile",
         "source_url": "https://www.kyoto-u.ac.jp/en/about/profile/ideals",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from Kyoto University's official mission statement about humanities, sciences, technology, and research."
+        "method": "Derived from Kyoto University's faculties and national public research university charter."
       },
       "acceptance_rate_percent": {
         "value": 36.0,
@@ -638,14 +935,15 @@
           "education",
           "humanities",
           "natural_sciences",
-          "social_sciences"
+          "social_sciences",
+          "public_university"
         ],
-        "source": "University of Melbourne faculties and graduate schools",
+        "source": "University of Melbourne Faculties",
         "source_url": "https://about.unimelb.edu.au/strategy/our-structure/faculties-and-graduate-schools",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official faculties and graduate schools structure published by the University of Melbourne."
+        "method": "Derived from official faculties list and public research university charter."
       },
       "acceptance_rate_percent": {
         "value": 15.0,
@@ -678,6 +976,7 @@
       },
       "tags": {
         "value": [
+          "private_university",
           "comprehensive",
           "education",
           "humanities",
@@ -687,14 +986,16 @@
           "law",
           "social_sciences",
           "business",
-          "research"
+          "research",
+          "english_medium",
+          "pedagogy"
         ],
-        "source": "SDU About us",
+        "source": "About SDU",
         "source_url": "https://sdu.edu.kz/en/about-us-3/",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official SDU schools and research-center structure."
+        "method": "Derived from SDU faculties (Education and Humanities, Engineering and Natural Sciences, Law and Social Sciences, Business School) and private university status."
       },
       "acceptance_rate_percent": {
         "value": 35.0,
@@ -738,15 +1039,18 @@
           "science_and_technology",
           "computer_science",
           "engineering",
-          "innovation",
-          "research"
+          "cybersecurity",
+          "software_engineering",
+          "research",
+          "english_medium",
+          "private_university"
         ],
-        "source": "AITU Bachelor's Degree",
+        "source": "AITU Bachelor Programs",
         "source_url": "https://astanait.edu.kz/en/bachelor/",
-        "verified_at": "2026-03-25",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Derived from the official bachelor's page and the official About AITU page, which together describe AITU's IT schools, programs, innovation focus, and research mission."
+        "method": "Derived from AITU educational programs in IT, Computer Science, Cybersecurity, and Software Engineering."
       },
       "verified_sources": [
         {
@@ -794,15 +1098,14 @@
           "medicine",
           "natural_sciences",
           "computer_science",
-          "global",
-          "prestige"
+          "public_university"
         ],
-        "source": "University of Oxford official profile",
+        "source": "About Oxford",
         "source_url": "https://www.ox.ac.uk/about",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from official Oxford divisions (Humanities, MPLS, Medical Sciences, Social Sciences) and collegiate system."
       },
       "acceptance_rate_percent": {
         "value": 16.45,
@@ -903,14 +1206,14 @@
           "natural_sciences",
           "computer_science",
           "engineering",
-          "global"
+          "public_university"
         ],
-        "source": "University of Cambridge official profile",
+        "source": "About Cambridge",
         "source_url": "https://www.cam.ac.uk/about-the-university",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Cambridge's official schools structure and collegiate university organization."
       },
       "acceptance_rate_percent": {
         "value": 21.49,
@@ -1004,20 +1307,22 @@
       "tags": {
         "value": [
           "research",
-          "global",
           "computer_science",
           "medicine",
           "humanities",
           "social_sciences",
           "natural_sciences",
-          "public_university"
+          "public_university",
+          "engineering",
+          "business",
+          "law"
         ],
-        "source": "University of Edinburgh official profile",
+        "source": "About Edinburgh",
         "source_url": "https://www.ed.ac.uk/about",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Edinburgh's three colleges (Arts, Humanities and Social Sciences; Medicine and Veterinary Medicine; Science and Engineering) and public university status."
       },
       "verified_sources": [
         {
@@ -1111,14 +1416,15 @@
           "medicine",
           "business",
           "social_sciences",
-          "natural_sciences"
+          "natural_sciences",
+          "humanities"
         ],
-        "source": "University of Manchester official profile",
+        "source": "Discover Manchester",
         "source_url": "https://www.manchester.ac.uk/discover/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Manchester's faculties (Biology, Medicine and Health; Science and Engineering; Humanities) and public research university profile."
       },
       "verified_sources": [
         {
@@ -1212,12 +1518,12 @@
           "computer_science",
           "natural_sciences"
         ],
-        "source": "California Institute of Technology official profile",
+        "source": "Caltech About",
         "source_url": "https://www.caltech.edu/about",
         "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Caltech's six academic divisions and private science and engineering research institution charter."
       },
       "verified_sources": [
         {
@@ -1277,6 +1583,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 128566.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110404&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 110404,
+          "institution_name": "California Institute of Technology",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "uc-berkeley-usa-berkeley": {
@@ -1299,14 +1624,14 @@
           "law",
           "social_sciences",
           "natural_sciences",
-          "entrepreneurship"
+          "humanities"
         ],
-        "source": "University of California, Berkeley official profile",
+        "source": "About UC Berkeley",
         "source_url": "https://www.berkeley.edu/about/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from UC Berkeley's colleges (Letters and Science, Engineering, Chemistry, Haas Business, Environmental Design) and public research charter."
       },
       "verified_sources": [
         {
@@ -1366,6 +1691,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 92446.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 110635,
+          "institution_name": "University of California-Berkeley",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "princeton-university-usa-princeton": {
@@ -1390,12 +1734,12 @@
           "natural_sciences",
           "public_policy"
         ],
-        "source": "Princeton University official profile",
+        "source": "About Princeton",
         "source_url": "https://www.princeton.edu/about",
         "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Princeton's undergraduate liberal arts and engineering focus, research mission, and private university status."
       },
       "verified_sources": [
         {
@@ -1455,6 +1799,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 110066.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 186131,
+          "institution_name": "Princeton University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "yale-university-usa-new-haven": {
@@ -1477,14 +1840,15 @@
           "medicine",
           "social_sciences",
           "natural_sciences",
-          "computer_science"
+          "computer_science",
+          "engineering"
         ],
-        "source": "Yale University official profile",
+        "source": "About Yale",
         "source_url": "https://www.yale.edu/about-yale",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Yale College residential college system, professional schools, and private research profile."
       },
       "verified_sources": [
         {
@@ -1544,6 +1908,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 100533.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=130794&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 130794,
+          "institution_name": "Yale University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "university-of-chicago-usa-chicago": {
@@ -1565,14 +1948,17 @@
           "social_sciences",
           "humanities",
           "natural_sciences",
-          "public_policy"
+          "public_policy",
+          "law",
+          "medicine",
+          "business"
         ],
-        "source": "University of Chicago official profile",
+        "source": "Who We Are UChicago",
         "source_url": "https://www.uchicago.edu/who-we-are",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from UChicago's academic divisions, professional schools, and private research profile."
       },
       "verified_sources": [
         {
@@ -1632,6 +2018,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 91885.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 144050,
+          "institution_name": "University of Chicago",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "university-of-pennsylvania-usa-philadelphia": {
@@ -1653,14 +2058,17 @@
           "business",
           "medicine",
           "design",
-          "social_sciences"
+          "social_sciences",
+          "humanities",
+          "natural_sciences",
+          "law"
         ],
-        "source": "University of Pennsylvania official profile",
+        "source": "About Penn",
         "source_url": "https://www.upenn.edu/about",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Penn's 12 schools including Arts and Sciences, Engineering, Wharton Business, Medicine, and Law."
       },
       "verified_sources": [
         {
@@ -1720,6 +2128,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 111371.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=215062&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 215062,
+          "institution_name": "University of Pennsylvania",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "cornell-university-usa-ithaca": {
@@ -1742,14 +2169,16 @@
           "agriculture",
           "architecture",
           "business",
-          "humanities"
+          "humanities",
+          "social_sciences",
+          "natural_sciences"
         ],
-        "source": "Cornell University official profile",
+        "source": "About Cornell",
         "source_url": "https://www.cornell.edu/about/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Cornell's undergraduate colleges and schools across agriculture, architecture, arts and sciences, engineering, and business."
       },
       "verified_sources": [
         {
@@ -1809,6 +2238,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 104043.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190415&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 190415,
+          "institution_name": "Cornell University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "columbia-university-usa-new-york": {
@@ -1825,20 +2273,22 @@
         "value": [
           "private_university",
           "research",
-          "global",
           "computer_science",
           "engineering",
           "business",
           "social_sciences",
           "natural_sciences",
-          "urban"
+          "urban",
+          "humanities",
+          "law",
+          "medicine"
         ],
-        "source": "Columbia University official profile",
+        "source": "About Columbia",
         "source_url": "https://www.columbia.edu/content/about-columbia",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Columbia's undergraduate colleges and graduate/professional schools in New York City."
       },
       "verified_sources": [
         {
@@ -1898,6 +2348,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 102491.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=190150&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 190150,
+          "institution_name": "Columbia University in the City of New York",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "johns-hopkins-university-usa-baltimore": {
@@ -1919,14 +2388,17 @@
           "biomedical",
           "engineering",
           "computer_science",
-          "natural_sciences"
+          "natural_sciences",
+          "public_health",
+          "social_sciences",
+          "humanities"
         ],
-        "source": "Johns Hopkins University official profile",
+        "source": "About Johns Hopkins",
         "source_url": "https://www.jhu.edu/about/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from JHU academic divisions (Arts & Sciences, Engineering, Medicine, Nursing, Public Health) and private research university charter."
       },
       "verified_sources": [
         {
@@ -1986,6 +2458,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 87555.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 162928,
+          "institution_name": "Johns Hopkins University",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "ucla-usa-los-angeles": {
@@ -2008,14 +2499,16 @@
           "social_sciences",
           "humanities",
           "natural_sciences",
-          "urban"
+          "urban",
+          "business",
+          "law"
         ],
-        "source": "University of California, Los Angeles official profile",
+        "source": "About UCLA",
         "source_url": "https://www.ucla.edu/about",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from UCLA's College of Letters and Science, professional schools, and public research university status."
       },
       "verified_sources": [
         {
@@ -2075,6 +2568,25 @@
         "status": "official_external",
         "confidence": "high",
         "method": "Direct institution-wide undergraduate admission rate from College Scorecard."
+      },
+      "median_earnings_10yr": {
+        "value": 82511.0,
+        "unit": "usd_per_year",
+        "source": "U.S. Department of Education College Scorecard",
+        "source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110662&fields=id%2Cschool.name%2Clatest.earnings.10_yrs_after_entry.median",
+        "verified_at": "2026-09-17",
+        "status": "official_external",
+        "confidence": "high",
+        "method": "Median earnings of federally aided undergraduate entrants measured 10 years after postsecondary entry from College Scorecard API (latest.earnings.10_yrs_after_entry.median).",
+        "basis": {
+          "metric": "median_earnings_10_years_after_entry",
+          "scope": "institution_wide_title_iv_aid_recipients",
+          "cohort": "title_iv_undergraduate_entrants_measured_10yr_post_entry",
+          "field": "latest.earnings.10_yrs_after_entry.median",
+          "ipeds_unitid": 110662,
+          "institution_name": "University of California-Los Angeles",
+          "data_source": "U.S. Department of Education College Scorecard API"
+        }
       }
     },
     "mcgill-university-ca-montreal": {
@@ -2090,20 +2602,22 @@
       "tags": {
         "value": [
           "research",
-          "global",
           "computer_science",
           "engineering",
           "medicine",
           "social_sciences",
           "natural_sciences",
-          "public_university"
+          "public_university",
+          "humanities",
+          "law",
+          "business"
         ],
-        "source": "McGill University official profile",
+        "source": "About McGill",
         "source_url": "https://www.mcgill.ca/about/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from McGill's 12 faculties and Canadian public research university charter."
       },
       "acceptance_rate_percent": {
         "value": 47.55,
@@ -2202,15 +2716,16 @@
           "engineering",
           "business",
           "natural_sciences",
-          "sustainability",
-          "global"
+          "humanities",
+          "social_sciences",
+          "medicine"
         ],
-        "source": "University of British Columbia official profile",
+        "source": "About UBC",
         "source_url": "https://www.ubc.ca/about/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from UBC faculties and public research university charter."
       },
       "acceptance_rate_percent": {
         "value": 52,
@@ -2308,16 +2823,15 @@
           "computer_science",
           "software_engineering",
           "engineering",
-          "entrepreneurship",
-          "industry_links",
-          "applied_learning"
+          "natural_sciences",
+          "health_sciences"
         ],
-        "source": "University of Waterloo official profile",
+        "source": "About Waterloo",
         "source_url": "https://uwaterloo.ca/about/",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Waterloo's six faculties (Applied Health Sciences, Arts, Engineering, Environment, Mathematics, Science) and public research profile."
       },
       "acceptance_rate_percent": {
         "value": 55,
@@ -2420,15 +2934,17 @@
           "computer_science",
           "business",
           "design",
-          "innovation",
-          "industry_links"
+          "medicine",
+          "law",
+          "natural_sciences",
+          "social_sciences"
         ],
-        "source": "University of New South Wales official profile",
+        "source": "About UNSW",
         "source_url": "https://www.unsw.edu.au/about-us",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from UNSW faculties (Arts, Design & Architecture; Business; Engineering; Law & Justice; Medicine & Health; Science) and public university status."
       },
       "verified_sources": [
         {
@@ -2523,14 +3039,17 @@
           "law",
           "business",
           "medicine",
-          "urban"
+          "urban",
+          "humanities",
+          "natural_sciences",
+          "social_sciences"
         ],
-        "source": "University of Sydney official profile",
+        "source": "About University of Sydney",
         "source_url": "https://www.sydney.edu.au/about-us.html",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from Sydney faculties and public research university charter."
       },
       "verified_sources": [
         {
@@ -2624,14 +3143,17 @@
           "social_sciences",
           "natural_sciences",
           "computer_science",
-          "engineering"
+          "engineering",
+          "humanities",
+          "law",
+          "business"
         ],
-        "source": "Australian National University official profile",
+        "source": "About ANU",
         "source_url": "https://www.anu.edu.au/about",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
+        "verified_at": "2026-09-17",
+        "status": "official_derived",
         "confidence": "medium",
-        "method": "Tag set curated from official university positioning and public academic structure."
+        "method": "Derived from ANU's seven academic colleges and national public research university act."
       },
       "verified_sources": [
         {
@@ -2719,17 +3241,18 @@
       "tags": {
         "value": [
           "medicine",
-          "health sciences",
-          "clinical training",
-          "public health",
-          "research"
+          "health_sciences",
+          "clinical_training",
+          "public_health",
+          "research",
+          "public_university"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "AMU Undergraduate Programs",
         "source_url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from AMU medical education faculties, clinical training bases, and public medical university status."
       },
       "verified_sources": [
         {
@@ -2771,18 +3294,21 @@
       },
       "tags": {
         "value": [
-          "computer science",
+          "science_and_technology",
+          "computer_science",
           "engineering",
           "cybersecurity",
-          "innovation",
-          "digital technology"
+          "software_engineering",
+          "research",
+          "english_medium",
+          "private_university"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "IITU Official Website",
         "source_url": "https://iitu.edu.kz/en/",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from IITU academic chairs of Computer Engineering, Information Systems, and Cybersecurity."
       },
       "verified_sources": [
         {
@@ -2828,18 +3354,20 @@
       },
       "tags": {
         "value": [
+          "national_university",
+          "public_university",
+          "science_and_technology",
           "engineering",
-          "computer science",
-          "technology",
-          "research",
-          "natural resources"
+          "computer_science",
+          "architecture",
+          "research"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "Satbayev University Undergraduate Programs",
         "source_url": "https://satbayev.university/en/undergraduate",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from Satbayev National Research Technical University institutes (Mining and Metallurgy, Geology and Petroleum, Automation and IT, Architecture and Construction)."
       },
       "verified_sources": [
         {
@@ -2885,18 +3413,22 @@
       },
       "tags": {
         "value": [
+          "science_and_technology",
           "engineering",
-          "computer science",
+          "computer_science",
+          "cybersecurity",
           "business",
-          "industry partnerships",
-          "english-medium"
+          "economics",
+          "english_medium",
+          "private_university",
+          "research"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "KBTU Undergraduate Admissions",
         "source_url": "https://kbtu.edu.kz/en/kbtu-admission-undergraduate",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from KBTU faculties (Information Technology, Energy and Oil & Gas Industry, Business School, Applied Mathematics) and English-medium technical profile."
       },
       "verified_sources": [
         {
@@ -2942,18 +3474,24 @@
       },
       "tags": {
         "value": [
-          "comprehensive university",
-          "computer science",
-          "economics",
+          "comprehensive",
+          "national_university",
+          "public_university",
           "research",
-          "student life"
+          "computer_science",
+          "economics",
+          "law",
+          "medicine",
+          "humanities",
+          "social_sciences",
+          "natural_sciences"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "KazNU Faculties",
         "source_url": "https://www.kaznu.kz/en/3360",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from KazNU's 16 faculties covering natural sciences, humanities, social sciences, engineering, and national research university status."
       },
       "verified_sources": [
         {
@@ -2999,18 +3537,25 @@
       },
       "tags": {
         "value": [
-          "comprehensive university",
-          "international relations",
-          "computer science",
+          "comprehensive",
+          "national_university",
+          "public_university",
           "research",
-          "academic mobility"
+          "international_relations",
+          "computer_science",
+          "economics",
+          "law",
+          "humanities",
+          "social_sciences",
+          "natural_sciences",
+          "engineering"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "ENU Bachelor Programs",
         "source_url": "https://enu.kz/en/page/applicants/bachelor",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from ENU's 13 faculties (International Relations, Information Technologies, Economics, Law, Philology, Natural Sciences) and national research university status."
       },
       "verified_sources": [
         {
@@ -3059,15 +3604,16 @@
           "business",
           "economics",
           "law",
-          "digital technology",
-          "international partnerships"
+          "social_sciences",
+          "computer_science",
+          "private_university"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "Narxoz University Official Website",
         "source_url": "https://en.narxoz.kz/",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from Narxoz Schools (School of Economics and Management, School of Law and Public Administration, School of Digital Technologies)."
       },
       "verified_sources": [
         {
@@ -3114,17 +3660,19 @@
       "tags": {
         "value": [
           "business",
+          "economics",
           "law",
-          "english-medium",
-          "international relations",
-          "student life"
+          "international_relations",
+          "social_sciences",
+          "english_medium",
+          "private_university"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "KIMEP Prospective Students",
         "source_url": "https://www.kimep.kz/prospective-students/en/",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from KIMEP colleges (Bang College of Business, School of Law, College of Social Sciences) and English-medium private university charter."
       },
       "verified_sources": [
         {
@@ -3171,17 +3719,19 @@
       "tags": {
         "value": [
           "medicine",
-          "health sciences",
-          "public health",
-          "clinical training",
-          "research"
+          "health_sciences",
+          "clinical_training",
+          "public_health",
+          "research",
+          "national_university",
+          "public_university"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "KazNMU Bachelor's Degree",
         "source_url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from KazNMU medical faculties (General Medicine, Pediatrics, Pharmacy, Public Health) and national medical research university status."
       },
       "verified_sources": [
         {
@@ -3229,16 +3779,20 @@
         "value": [
           "education",
           "pedagogy",
-          "social sciences",
-          "computer science",
-          "research"
+          "social_sciences",
+          "humanities",
+          "natural_sciences",
+          "computer_science",
+          "research",
+          "national_university",
+          "public_university"
         ],
-        "source": "Official bachelor and institutional pages",
+        "source": "Abai University Official Website",
         "source_url": "https://abaiuniversity.edu.kz/en/",
-        "verified_at": "2026-05-02",
+        "verified_at": "2026-09-17",
         "status": "official_derived",
         "confidence": "medium",
-        "method": "Tags derived from official program areas and institutional positioning."
+        "method": "Derived from Abai University pedagogical institutes (Pedagogy and Psychology, Philology, Mathematics and Physics/Informatics, Natural Sciences and Geography, Arts) and national university status."
       },
       "verified_sources": [
         {

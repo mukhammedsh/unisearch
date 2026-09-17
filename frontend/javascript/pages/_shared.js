@@ -1,4 +1,4 @@
-/* frontend/javascript/pages.js */
+/* frontend/javascript/pages/_shared.js */
 
 import {
   API_BASE,
@@ -391,34 +391,66 @@ export function localizeRoiLabel(rawLabel, tone = "") {
   const value = String(rawLabel || "").trim().toLowerCase();
   const toneValue = String(tone || "").trim().toLowerCase();
 
-  if (value.includes("excellent")) {
+  if (value.includes("excellent") || toneValue === "excellent") {
     return t("roi.label.excellent_return", "Excellent Return");
   }
-  if (value.includes("positive")) {
+  if (value.includes("positive") || toneValue === "good") {
     return t("roi.label.positive_return", "Positive Return");
   }
-  if (value.includes("high investment")) {
+  if (
+    value.includes("no data") ||
+    value.includes("insufficient") ||
+    value.includes("missing") ||
+    value.includes("нет данных") ||
+    value.includes("недостаточно") ||
+    toneValue === "neutral" ||
+    toneValue === "muted"
+  ) {
+    return t("roi.label.no_data", "Insufficient Data");
+  }
+  if (value.includes("high investment") || toneValue === "warn") {
     return t("roi.label.high_investment", "High Investment");
   }
-  if (toneValue === "excellent") {
-    return t("roi.label.excellent_return", "Excellent Return");
-  }
-  if (toneValue === "good") {
-    return t("roi.label.positive_return", "Positive Return");
-  }
-  return t("roi.label.high_investment", "High Investment");
+  return t("roi.label.no_data", "Insufficient Data");
 }
 
 export function renderRoiBox(roi) {
-  if (!roi || typeof roi !== "object") return "";
+  if (!roi || typeof roi !== "object" || !Object.keys(roi).length) return "";
   const salary = toFiniteNumber(roi.salary_used_usd);
   const annualCost = toFiniteNumber(roi.annual_cost_usd);
   const roiValue = toFiniteNumber(roi.roi_value);
   const contextType = String(roi.context_type || "").trim().toLowerCase();
-  if (salary === null || annualCost === null || roiValue === null || salary <= 0 || contextType === "no_salary_data") return "";
+
+  if (contextType === "no_salary_data" || salary === null || salary <= 0 || roiValue === null) {
+    const noSalaryText = t("roi.no_salary_data", "Недостаточно данных о зарплатах выпускников для расчёта.");
+    const costBlock = (annualCost !== null && annualCost > 0)
+      ? `
+        <div class="roi-metrics-row">
+          <div class="roi-metric">
+            <div class="roi-metric-label">${escapeHtml(translateWord("total_per_year", "Total / year"))}</div>
+            <div class="roi-metric-value">${escapeHtml(formatPrice(annualCost, "USD"))}</div>
+            <div class="roi-metric-note">${escapeHtml(t("roi.formula", "Simple idea: compare average graduate salary with the cost of one study year."))}</div>
+          </div>
+        </div>
+      `
+      : "";
+
+    return `
+    <section class="roi-box roi-box--neutral">
+      <h3 class="roi-title">${escapeHtml(t("roi.title", "Estimated ROI (Return on Investment)"))}</h3>
+      <p class="roi-description">${escapeHtml(t("roi.explain", "It calculates how many times your first annual salary covers the cost of one year of education."))}</p>
+      <div class="roi-context roi-context--neutral">${escapeHtml(noSalaryText)}</div>
+      ${costBlock}
+    </section>
+    `;
+  }
 
   const tone = String(roi.roi_tone || "").trim().toLowerCase();
-  const toneClass = tone === "excellent" || tone === "good" ? "roi-tone-positive" : "roi-tone-warn";
+  const toneClass = tone === "excellent" || tone === "good"
+    ? "roi-tone-positive"
+    : tone === "neutral" || tone === "muted"
+    ? "roi-tone-neutral"
+    : "roi-tone-warn";
   const userMajor = String(roi.user_major || "").trim();
   const matchedMajor = String(roi.matched_major || "").trim();
   let contextClass = "roi-context--neutral";
@@ -1020,9 +1052,7 @@ export function uniLogoSrc(universityId, opts = {}) {
   return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
 }
 
-// =====================================
-// PAGE: UNIVERSITIES LIST
-// =====================================
+// Formatting & Price Resolution Helpers
 export function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
     const n = Number(value);

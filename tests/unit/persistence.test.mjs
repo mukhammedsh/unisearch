@@ -229,6 +229,29 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(apiPayload.major, undefined);
       assert.strictEqual(apiPayload.interests, undefined);
     });
+
+    test('converts profile budget from budgetCurrency to USD for API payload', () => {
+      saveProfile({
+        name: 'Alice',
+        budget: 10000000,
+        budgetCurrency: 'KZT',
+      });
+
+      const apiPayload = loadProfileForApi();
+      // KZT rate is ~500 KZT per USD, so 10,000,000 KZT -> ~20,000 USD
+      assert.ok(apiPayload.budget > 15000 && apiPayload.budget < 25000, `Expected budget around 20,000 USD, got ${apiPayload.budget}`);
+    });
+
+    test('clamps converted budget to [0, 1000000] in loadProfileForApi', () => {
+      saveProfile({
+        name: 'Alice',
+        budget: 999999999999,
+        budgetCurrency: 'EUR',
+      });
+
+      const apiPayload = loadProfileForApi();
+      assert.strictEqual(apiPayload.budget, 1000000);
+    });
   });
 
   describe('saveSelectedAdmissionChoice & getSelectedAdmissionChoice', () => {

@@ -1,4 +1,4 @@
-/* 2. components.js - Элементы интерфейса */
+/* frontend/javascript/components.js - Interface shell and layout components */
 import {
   getCurrentTheme,
   initCustomSelect,
@@ -29,7 +29,7 @@ import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
-// Базовый HTML-каркас шапки навигации и модального окна настроек
+// Base HTML layout for navbar and settings dialog
 const LAYOUT_HTML = `
 <a class="skip-link" href="#mainContent" data-i18n="accessibility.skip_to_main">Skip to main content</a>
 <header class="navbar">
@@ -499,10 +499,10 @@ export async function loadGlobalLayout() {
 
         initSettingsUI();
 
-        // Запускаем логику профиля
+        // Initialize profile navigation action
         bindProfileNavAction();
 
-        // Запускаем быстрый глобальный поиск для страниц вне каталога
+        // Initialize quick global search for non-catalog pages
         initGlobalNavbarSearch();
 
     } catch (error) {

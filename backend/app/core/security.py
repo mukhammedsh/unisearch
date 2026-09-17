@@ -157,20 +157,64 @@ _PRIVATE_NETWORKS = (
 )
 
 
-def _is_trusted_proxy_host(direct_host: str) -> bool:
-    if not direct_host or direct_host == "unknown":
-        return False
-    if direct_host in set(TRUSTED_PROXY_IPS):
-        return True
-    if TRUST_X_FORWARDED_FOR and not TRUSTED_PROXY_IPS:
-        return True
+def _validate_and_normalize_ip(value: Optional[str]) -> Optional[str]:
+    if not value:
+        return None
+    raw = str(value).strip()
+    if not raw:
+        return None
+    try:
+        return str(ipaddress.ip_address(raw))
+    except ValueError:
+        return None
+
+
+def _parse_trusted_proxy_entry(entry: str) -> Optional[Any]:
+    raw = str(entry).strip()
+    if not raw:
+        return None
+    try:
+        if "/" in raw:
+            return ipaddress.ip_network(raw, strict=False)
+        return ipaddress.ip_address(raw)
+    except ValueError:
+        return None
+
+
+def _get_trusted_proxy_entries() -> list[Any]:
+    entries: list[Any] = []
+    for item in TRUSTED_PROXY_IPS:
+        parsed = _parse_trusted_proxy_entry(item)
+        if parsed is not None:
+            entries.append(parsed)
+    return entries
+
+
+def _is_trusted_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
     if TRUST_PRIVATE_NETWORK_PROXIES:
-        try:
-            ip_obj = ipaddress.ip_address(direct_host)
-            return ip_obj.is_loopback or any(ip_obj in net for net in _PRIVATE_NETWORKS)
-        except ValueError:
-            return False
+        if ip_obj.is_loopback or any(ip_obj in net for net in _PRIVATE_NETWORKS):
+            return True
+
+    for entry in _get_trusted_proxy_entries():
+        if isinstance(entry, (ipaddress.IPv4Network, ipaddress.IPv6Network)):
+            if ip_obj.version == entry.version and ip_obj in entry:
+                return True
+        elif isinstance(entry, (ipaddress.IPv4Address, ipaddress.IPv6Address)):
+            if ip_obj == entry:
+                return True
+
     return False
+
+
+def _is_trusted_proxy_host(direct_host: str) -> bool:
+    normalized = _validate_and_normalize_ip(direct_host)
+    if not normalized:
+        return False
+    try:
+        ip_obj = ipaddress.ip_address(normalized)
+        return _is_trusted_proxy_ip(ip_obj)
+    except ValueError:
+        return False
 
 
 def request_client_ip(request: Optional[Request]) -> str:
@@ -181,19 +225,44 @@ def request_client_ip(request: Optional[Request]) -> str:
     if request.client and request.client.host:
         direct_host = str(request.client.host).strip()
 
-    if _is_trusted_proxy_host(direct_host):
-        if TRUST_CF_CONNECTING_IP:
-            cf_ip = str(request.headers.get("cf-connecting-ip", "")).strip()
-            if cf_ip:
-                return cf_ip
+    normalized_direct = _validate_and_normalize_ip(direct_host)
+    if not normalized_direct:
+        return direct_host or "unknown"
 
-        xff = str(request.headers.get("x-forwarded-for", "")).strip()
-        if xff:
-            first = xff.split(",")[0].strip()
-            if first:
-                return first
+    try:
+        direct_ip_obj = ipaddress.ip_address(normalized_direct)
+    except ValueError:
+        return normalized_direct
 
-    return direct_host or "unknown"
+    if not _is_trusted_proxy_ip(direct_ip_obj):
+        return normalized_direct
+
+    if TRUST_CF_CONNECTING_IP:
+        cf_raw = str(request.headers.get("cf-connecting-ip", "")).strip()
+        normalized_cf = _validate_and_normalize_ip(cf_raw)
+        if normalized_cf:
+            return normalized_cf
+
+    if TRUST_X_FORWARDED_FOR:
+        xff_raw = str(request.headers.get("x-forwarded-for", "")).strip()
+        if xff_raw:
+            raw_hops = [part.strip() for part in xff_raw.split(",") if part.strip()]
+            client_candidate = normalized_direct
+            for raw_hop in reversed(raw_hops):
+                norm_hop = _validate_and_normalize_ip(raw_hop)
+                if norm_hop is None:
+                    # Malformed entry; stop traversing further left
+                    break
+                try:
+                    hop_ip_obj = ipaddress.ip_address(norm_hop)
+                except ValueError:
+                    break
+                client_candidate = norm_hop
+                if not _is_trusted_proxy_ip(hop_ip_obj):
+                    return client_candidate
+            return client_candidate
+
+    return normalized_direct
 
 
 def request_scope_path(request: Optional[Request]) -> str:
